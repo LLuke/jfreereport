@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.4.4.1 2004/12/30 14:46:11 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.6 2005/01/25 00:00:15 taqua Exp $
  *
  * Changes
  * -------
@@ -211,21 +211,6 @@ public class ItemSumFunction extends AbstractFunction implements Serializable
   public Object getValue()
   {
     return sum;
-  }
-
-  /**
-   * Initializes the function and tests that all required properties are set. If the required
-   * field property is not set, a FunctionInitializeException is thrown.
-   *
-   * @throws FunctionInitializeException when no field is set.
-   */
-  public void initialize()
-      throws FunctionInitializeException
-  {
-    if (field == null)
-    {
-      throw new FunctionInitializeException("No Such Property : field");
-    }
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupSumFunction.java,v 1.5.4.1 2004/12/30 14:46:12 taqua Exp $
+ * $Id: TotalGroupSumFunction.java,v 1.7 2005/01/25 00:00:19 taqua Exp $
  *
  * Changes
  * -------
@@ -287,22 +287,6 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
       throw new NullPointerException();
     }
     this.field = field;
-  }
-
-  /**
-   * Checks that the function has been correctly initialized.  If there is a problem, this method
-   * throws a FunctionInitializeException.
-   *
-   * @throws FunctionInitializeException if the function name is not set or the call to
-   * isInitialized returns false.
-   */
-  public void initialize() throws FunctionInitializeException
-  {
-    super.initialize();
-    if (field == null)
-    {
-      throw new FunctionInitializeException("Field is required");
-    }
   }
 
   /**

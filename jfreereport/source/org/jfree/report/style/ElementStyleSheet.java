@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.16 2005/01/25 21:40:36 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.17 2005/01/30 23:37:25 taqua Exp $
  *
  * Changes
  * -------
@@ -57,6 +57,7 @@ import java.util.Iterator;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.util.InstanceID;
 import org.jfree.report.util.SerializerHelper;
+import org.jfree.util.Log;
 
 /**
  * An element style-sheet contains zero, one or many attributes that affect the appearance
@@ -385,6 +386,11 @@ public abstract class ElementStyleSheet implements Serializable, StyleChangeList
     if (parent.isSubStyleSheet(this) == false)
     {
       final StyleSheetCarrier carrier = createCarrier(parent);
+      if (carrier == null)
+      {
+        throw new IllegalArgumentException
+                ("The given StyleSheet cannot be added to this stylesheet.");
+      }
       parents.add(position, carrier);
       parentsCached = null;
     }

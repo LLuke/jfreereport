@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.8 2005/01/25 00:00:18 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.9 2005/01/28 19:26:49 taqua Exp $
  *
  * Changes
  * -------
@@ -295,21 +295,6 @@ public class PaintDynamicComponentFunction extends AbstractFunction
   public float getScale()
   {
     return scale;
-  }
-
-  /**
-   * Initializes the function and tests that all required properties are set. If the required
-   * field property is not set, a FunctionInitializeException is thrown.
-   *
-   * @throws FunctionInitializeException when no field is set.
-   */
-  public void initialize()
-      throws FunctionInitializeException
-  {
-    if (field == null)
-    {
-      throw new FunctionInitializeException("No Such Property : field");
-    }
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BeanShellModule.java,v 1.5.4.2 2004/12/13 19:27:00 taqua Exp $
+ * $Id: BeanShellModule.java,v 1.7 2005/01/25 00:08:01 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -80,6 +80,15 @@ public class BeanShellModule extends AbstractModule
     {
       throw new ModuleInitializeException("Unable to locate BSHHeaderFile. " +
           "This file is required to execute the BeanShellExpressions.");
+    }
+    try
+    {
+      ObjectUtilities.getClassLoader(getClass()).loadClass("bsh.Interpreter");
+    }
+    catch(Exception e)
+    {
+      throw new ModuleInitializeException("Unable to load the bean shell interpreter class. " +
+          "This class is required to execute the BeanShellExpressions.");
     }
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TotalCalculationFunction.java,v 1.7.4.2 2004/12/30 14:46:12 taqua Exp $
+ * $Id: TotalCalculationFunction.java,v 1.9 2005/01/25 00:00:18 taqua Exp $
  *
  * Changes
  * -------
@@ -235,22 +235,5 @@ public class TotalCalculationFunction
   {
     in.defaultReadObject();
     storedResults = new ArrayList();
-  }
-
-
-  /**
-   * Checks that the function has been correctly initialized.
-   * <p>
-   * The only check performed at present is to make sure the name is not <code>null</code>.
-   *
-   * @throws FunctionInitializeException in case the function is not initialized properly.
-   */
-  public void initialize() throws FunctionInitializeException
-  {
-    super.initialize();
-    if (getField() == null)
-    {
-      throw new FunctionInitializeException("Field must be defined.");
-    }
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.6 2005/01/25 00:00:10 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.7 2005/01/28 19:26:49 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -179,6 +179,10 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
       trigger = (!trigger);
     }
     count += 1;
+    if (element == null)
+    {
+      return;
+    }
 
     final Element e = FunctionUtilities.findElement(event.getReport().getItemBand(), getElement());
     if (e != null)
@@ -193,24 +197,6 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
         warned = true;
       }
     }
-  }
-
-  /**
-   * Checks that the function has been correctly initialized. The functions name or the
-   * elements name have not been set, and FunctionInitializeException is thrown.
-   *
-   * @throws FunctionInitializeException if required parameters were missing and
-   *                                     initialisation cannot be performed.
-   */
-  public void initialize ()
-          throws FunctionInitializeException
-  {
-    super.initialize();
-    if (getElement() == null)
-    {
-      throw new FunctionInitializeException("Element name must be specified");
-    }
-    pagebreak = false;
   }
 
   public int getNumberOfElements ()

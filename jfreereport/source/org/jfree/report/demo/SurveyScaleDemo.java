@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScaleDemo.java,v 1.1.2.2 2004/12/30 14:46:10 taqua Exp $
+ * $Id: SurveyScaleDemo.java,v 1.2 2005/01/25 01:13:37 taqua Exp $
  *
  * Changes
  * -------
@@ -268,16 +268,10 @@ public final class SurveyScaleDemo extends SimpleDemoFrame
     pageNofM.setField(0, "PAGE_NUMBER");
     pageNofM.setField(1, "TOTAL_PAGES");
     ptf.setName("TOTAL_PAGES");
-    try
-    {
-      report.addExpression(pf);
-      report.addExpression(ptf);
-      report.addExpression(pageNofM);
-    }
-    catch (FunctionInitializeException e)
-    {
-      Log.error ("Unable to add expression", e);
-    }
+
+    report.addExpression(pf);
+    report.addExpression(ptf);
+    report.addExpression(pageNofM);
 
     final TextFieldElementFactory tff = new TextFieldElementFactory();
     tff.setName("PageIndicator");
@@ -313,15 +307,9 @@ public final class SurveyScaleDemo extends SimpleDemoFrame
     tfe2.setName("ItemNumber");
     tfe2.setPattern("{0}.");
     tfe2.setField(0, "ITEM_COUNT");
-    try
-    {
-      report.addExpression(icf);
-      report.addExpression(tfe2);
-    }
-    catch (FunctionInitializeException e)
-    {
-      Log.error ("Unable to add expression", e);
-    }
+
+    report.addExpression(icf);
+    report.addExpression(tfe2);
 
     final TextFieldElementFactory factory2 = new TextFieldElementFactory();
     factory2.setFontName("Serif");
@@ -347,14 +335,8 @@ public final class SurveyScaleDemo extends SimpleDemoFrame
     iaf1.setName("Survey Response");
     iaf1.setField(0, "Your Response");
     iaf1.setField(1, "Average Response");
-    try
-    {
-      report.addExpression(iaf1);
-    }
-    catch (FunctionInitializeException e)
-    {
-      Log.error ("Unable to add expression", e);
-    }
+
+    report.addExpression(iaf1);
 
     final DrawableFieldElementFactory f = new DrawableFieldElementFactory();
     f.setFieldname("Survey Response");
@@ -436,14 +418,8 @@ public final class SurveyScaleDemo extends SimpleDemoFrame
     tfe.setName("RESPONDENT_NAME_LABEL");
     tfe.setPattern("Respondent: {0}");
     tfe.setField(0, "RESPONDENT_NAME");
-    try
-    {
-      report.addExpression(tfe);
-    }
-    catch (FunctionInitializeException e)
-    {
-      Log.error ("Unable to add expression", e);
-    }
+
+    report.addExpression(tfe);
 
     // here is the element that displays the string calculated in the expression above.
     final TextFieldElementFactory tfef = new TextFieldElementFactory();

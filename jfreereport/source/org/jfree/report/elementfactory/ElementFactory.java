@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementFactory.java,v 1.8 2003/11/07 18:33:48 taqua Exp $
+ * $Id: ElementFactory.java,v 1.9 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -68,6 +68,10 @@ public abstract class ElementFactory
   private Point2D absolutePosition;
   /** The elements dynamic content height flag. */
   private Boolean dynamicHeight;
+  /** The elements layout cachable flag. */
+  private Boolean layoutCachable;
+  /** The elements visible flag. */
+  private Boolean visible;
 
   /**
    * Default Constructor.
@@ -207,6 +211,26 @@ public abstract class ElementFactory
     this.dynamicHeight = dynamicHeight;
   }
 
+  public Boolean getLayoutCachable ()
+  {
+    return layoutCachable;
+  }
+
+  public void setLayoutCachable (final Boolean layoutCachable)
+  {
+    this.layoutCachable = layoutCachable;
+  }
+
+  public Boolean getVisible ()
+  {
+    return visible;
+  }
+
+  public void setVisible (final Boolean visible)
+  {
+    this.visible = visible;
+  }
+
   /**
    * Applies the defined name to the created element.
    * 
@@ -232,6 +256,8 @@ public abstract class ElementFactory
     style.setStyleProperty(ElementStyleSheet.MAXIMUMSIZE, getMaximumSize());
     style.setStyleProperty(ElementStyleSheet.MINIMUMSIZE, getMinimumSize());
     style.setStyleProperty(ElementStyleSheet.PREFERREDSIZE, getPreferredSize());
+    style.setStyleProperty(ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, getLayoutCachable());
+    style.setStyleProperty(ElementStyleSheet.VISIBLE, getVisible());
   }
 
   /**

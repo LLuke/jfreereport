@@ -45,17 +45,17 @@ What changed:
 * General: All deprecated (and many non-deprecated but now obsolete)
   methods have been removed.
 * Pageable output targets:
-- report state list is now internal and no longer available outside
-- plaintext target complete rewrite (thanks Michael Tennes for all the
-  debugging, patience and tips and tricks)
-  This implementation has now a complete ESC/P printer driver and makes
-  sure that your epson compatible matrix printers will have some happy days
-  in the Java world.
-- DummyTargets are no longer used (MetaBands are used instead)
+  - report state list is now internal and no longer available outside
+  - plaintext target complete rewrite (thanks Michael Tennes for all the
+    debugging, patience and tips and tricks)
+    This implementation has now a complete ESC/P printer driver and makes
+    sure that your epson compatible matrix printers will have some happy days
+    in the Java world.
+  - DummyTargets are no longer used (MetaBands are used instead)
 * Table tagets: Complete rewrite
-- html target: html body fragment generation (for jsp:include support)
-- RTF target fixed and now considered stable (except for the image support)
-- Excel-Target: Alternate formats for Date and NumberFields can be defined
+  - html target: html body fragment generation (for jsp:include support)
+  - RTF target fixed and now considered stable (except for the image support)
+  - Excel-Target: Alternate formats for Date and NumberFields can be defined
 * ResourceBundles have been converted to property files for better
   maintainability.
 * Boot process integrates into the jcommon boot system; a new class
@@ -128,14 +128,14 @@ What changed:
   primary stylesheet to their parents. This way, the inheritance change can go from
   the root level band to the last child, allowing the same inheritance as found in HTML.
   The BandDefaults have been removed.
+* BarCode stuff ..
   
 To be implemented before the release is ready:
-* XML parsers: Support for the new features must be added
-* Bug: Drawables are not printed
+* XML parsers: Support for the new features must be added (Rewrite complete, verify ext-parser)
 * Bug: ProgressBar in the RepaginationProgressDialog is not working as expected.
 * Implement a ResourceNumberField, ResourceDateField and ResourceMessageField
   for completly localizable reports.
-* Include files to allow to reuse common parts of the report definitions (like 
+* Include-files to allow to reuse common parts of the report definitions (like
   report header/footer, page header/footer, or everything else)
 * Redesign the dialogs to follow the common usability guides
 * Hyperlinks. It should not be that hard to integrate it ...

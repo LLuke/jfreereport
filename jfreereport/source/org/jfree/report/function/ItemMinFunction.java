@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemMinFunction.java,v 1.3.4.2 2004/12/30 14:46:11 taqua Exp $
+ * $Id: ItemMinFunction.java,v 1.5 2005/01/25 00:00:15 taqua Exp $
  *
  * Changes
  * -------
@@ -216,21 +216,6 @@ public class ItemMinFunction extends AbstractFunction implements Serializable
   public Object getValue()
   {
     return min;
-  }
-
-  /**
-   * Initializes the function and tests that all required properties are set. If the required
-   * field property is not set, a FunctionInitializeException is thrown.
-   *
-   * @throws FunctionInitializeException when no field is set.
-   */
-  public void initialize()
-      throws FunctionInitializeException
-  {
-    if (field == null)
-    {
-      throw new FunctionInitializeException("No Such Property : field");
-    }
   }
 
 

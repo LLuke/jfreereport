@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.7 2004/03/16 15:09:21 taqua Exp $
+ * $Id: Group.java,v 1.8 2005/01/30 23:37:17 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -389,5 +389,4 @@ public class Group implements Serializable, Cloneable, Comparable
   {
     return reportDefinition;
   }
-
 }

@@ -29,7 +29,7 @@
  * Contributor(s): Thomas Morgner, David Gilbert (for Simba Management Limited)
  * for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotientPercentFunction.java,v 1.1.4.1 2004/12/30 14:46:12 taqua Exp $
+ * $Id: TotalGroupSumQuotientPercentFunction.java,v 1.3 2005/01/25 00:00:38 taqua Exp $
  *
  * Changes
  * -------
@@ -185,9 +185,8 @@ public class TotalGroupSumQuotientPercentFunction extends AbstractFunction imple
     else
     {
       if (FunctionUtilities.isLayoutLevel(event))
-// if (event.getState().isPrepareRun() == false)
       {
-// Activate the current group, which was filled in the prepare run.
+        // Activate the current group, which was filled in the prepare run.
         currentIndex += 1;
         groupDividend = (GroupSum) dividendResults.get(currentIndex);
         groupDivisor = (GroupSum) divisorResults.get(currentIndex);
@@ -326,27 +325,6 @@ public class TotalGroupSumQuotientPercentFunction extends AbstractFunction imple
   public void setDivisor(final String divisor)
   {
     this.divisor = divisor;
-  }
-
-  /**
-   * Checks that the function has been correctly initialized. If there is a problem, this method
-   * throws a FunctionInitializeException.
-   * <P>
-   * The implementation checks that the Dividend and Divisor have been set.
-   *
-   * @throws FunctionInitializeException if a required property was not set.
-   */
-  public void initialize() throws FunctionInitializeException
-  {
-    super.initialize();
-    if (dividend == null)
-    {
-      throw new FunctionInitializeException("Dividend is required");
-    }
-    if (divisor == null)
-    {
-      throw new FunctionInitializeException("Divisor is required");
-    }
   }
 
   /**

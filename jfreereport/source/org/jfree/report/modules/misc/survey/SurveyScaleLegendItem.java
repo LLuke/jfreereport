@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScaleLegendItem.java,v 1.1.2.2 2004/10/13 18:42:20 taqua Exp $
+ * $Id: SurveyScaleLegendItem.java,v 1.2 2005/01/25 01:25:37 taqua Exp $
  *
  * Changes
  * -------
@@ -79,7 +79,12 @@ public class SurveyScaleLegendItem implements Drawable
   /**
    * The label font.
    */
-  private Font font = new Font("Serif", Font.ITALIC, 10);
+  private Font font;
+
+  public SurveyScaleLegendItem ()
+  {
+    font = new Font("Serif", Font.ITALIC, 10);
+  }
 
   /**
    * Creates a new legend item.
@@ -108,7 +113,16 @@ public class SurveyScaleLegendItem implements Drawable
    */
   public void draw (final Graphics2D g2, final Rectangle2D area)
   {
-    final Rectangle2D b = this.shape.getBounds();
+    if (shape == null || font == null || label == null)
+    {
+      return;
+    }
+    if (draw == false && fill == false)
+    {
+      return;
+    }
+
+    final Rectangle2D b = this.shape.getBounds2D();
     double x = area.getMinX() + b.getWidth() / 2.0 + 1.0;
     final double y = area.getCenterY();
     final Shape s = SurveyScale.translateShape(this.shape, x, y);
@@ -122,9 +136,60 @@ public class SurveyScaleLegendItem implements Drawable
     {
       g2.fill(s);
     }
-    x = x + b.getWidth() / 2.0 + 3.0;
+    x += b.getWidth() / 2.0 + 3.0;
     g2.setFont(this.font);
-    TextUtilities.drawAlignedString(this.label, g2, (float) x, (float) y, TextAnchor.HALF_ASCENT_LEFT);
+    TextUtilities.drawAlignedString
+            (this.label, g2, (float) x, (float) y, TextAnchor.HALF_ASCENT_LEFT);
+  }
+
+  public boolean isDraw ()
+  {
+    return draw;
+  }
+
+  public void setDraw (final boolean draw)
+  {
+    this.draw = draw;
+  }
+
+  public boolean isFill ()
+  {
+    return fill;
+  }
+
+  public void setFill (final boolean fill)
+  {
+    this.fill = fill;
+  }
+
+  public Font getFont ()
+  {
+    return font;
+  }
+
+  public void setFont (final Font font)
+  {
+    this.font = font;
+  }
+
+  public String getLabel ()
+  {
+    return label;
+  }
+
+  public void setLabel (final String label)
+  {
+    this.label = label;
+  }
+
+  public Shape getShape ()
+  {
+    return shape;
+  }
+
+  public void setShape (final Shape shape)
+  {
+    this.shape = shape;
   }
 
 }

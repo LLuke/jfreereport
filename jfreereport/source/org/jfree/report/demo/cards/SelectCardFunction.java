@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SelectCardFunction.java,v 1.2.4.1 2004/12/30 14:46:10 taqua Exp $
+ * $Id: SelectCardFunction.java,v 1.4 2005/01/24 23:58:49 taqua Exp $
  *
  * Changes
  * -------
@@ -132,26 +132,6 @@ public class SelectCardFunction extends AbstractFunction implements Serializable
       {
         selectBand((Band) elements[i]);
       }
-    }
-  }
-
-  /**
-   * Checks that the function has been correctly initialized.
-   * <p>
-   * The only check performed at present is to make sure the name is not <code>null</code>.
-   *
-   * @throws FunctionInitializeException in case the function is not initialized properly.
-   */
-  public void initialize() throws FunctionInitializeException
-  {
-    super.initialize();
-    if (baseCard == null)
-    {
-      throw new FunctionInitializeException("'baseCard' property is not defined");
-    }
-    if (field == null)
-    {
-      throw new FunctionInitializeException("'field' property is not defined");
     }
   }
 

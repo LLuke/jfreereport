@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.6.2.1.2.4 2004/12/30 14:46:12 taqua Exp $
+ * $Id: BSHExpression.java,v 1.8 2005/01/25 00:07:59 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -51,9 +51,7 @@ import java.io.Serializable;
 import bsh.Interpreter;
 import org.jfree.report.function.AbstractExpression;
 import org.jfree.report.function.Expression;
-import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.util.Log;
-import org.jfree.util.ObjectUtilities;
 
 /**
  * An expression that uses the BeanShell scripting framework to perform a scripted calculation.
@@ -114,6 +112,7 @@ public class BSHExpression extends AbstractExpression implements Serializable
 
   /** The beanshell-interpreter used to evaluate the expression. */
   private transient Interpreter interpreter;
+  private transient boolean invalid;
 
   private String expression;
 
@@ -122,7 +121,35 @@ public class BSHExpression extends AbstractExpression implements Serializable
    */
   public BSHExpression()
   {
-    interpreter = new Interpreter();
+  }
+
+  private Interpreter createInterpreter ()
+  {
+    final Interpreter interpreter = new Interpreter();
+    try
+    {
+      final InputStream in = getClass().getResourceAsStream("BSHExpressionHeader.txt");
+      // read the header, creates a skeleton
+      final Reader r = new InputStreamReader(new BufferedInputStream(in));
+      interpreter.eval(r);
+      r.close();
+
+      // now add the userdefined expression
+      // the expression is given in form of a function with the signature of:
+      //
+      // Object getValue ()
+      //
+      if (getExpression() != null)
+      {
+        interpreter.eval(expression);
+      }
+      return interpreter;
+    }
+    catch (Exception e)
+    {
+      Log.error("Unable to initialize the expression", e);
+      return null;
+    }
   }
 
   /**
@@ -139,15 +166,22 @@ public class BSHExpression extends AbstractExpression implements Serializable
    */
   public Object getValue()
   {
+    if (invalid)
+    {
+      return null;
+    }
+    if (interpreter == null)
+    {
+      interpreter = createInterpreter();
+      if (interpreter == null)
+      {
+        invalid = true;
+        return null;
+      }
+    }
     try
     {
       interpreter.set("dataRow", getDataRow());
-      if (Boolean.FALSE.equals(interpreter.eval("__expression_initialized")))
-      {
-        interpreter.eval(expression);
-        interpreter.eval("__expression_initialized = true;");
-      }
-      // do no longer evaluate the expression without having a valid datarow.
       return interpreter.eval("getValue ();");
     }
     catch (Exception e)
@@ -155,66 +189,6 @@ public class BSHExpression extends AbstractExpression implements Serializable
       Log.warn(new Log.SimpleMessage("Evaluation error: ",
           e.getClass(), " - ", e.getMessage()), e);
       return null;
-    }
-  }
-
-  /**
-   * Initializes the expression by executing the header file and the expression. The expression
-   * should not call getValue() by itself, as the dataRow and the properties are not initialized
-   * yet.
-   * <p>
-   * Initialisations of the script can be put at the end of the script:
-   * <pre>
-   ...
-   <property name="expression">
-   ...
-   getValue ()
-   {
-   return userdefinedFunction ("Hello World :) ", new Date());
-   }
-   ...
-
-   // script initialisations here
-   System.out.println ("Script initialized @ " + new Date());
-   </property>
-   ...
-   </pre>
-   *
-   * @throws FunctionInitializeException if the expression has not been initialized correctly.
-   */
-  public void initialize() throws FunctionInitializeException
-  {
-    if (getName() == null)
-    {
-      throw new FunctionInitializeException("No null name allowed");
-    }
-    final InputStream in = ObjectUtilities.getClassLoader(getClass()).getResourceAsStream(BSHHEADERFILE);
-    if (in == null)
-    {
-      throw new FunctionInitializeException("Unable to locate BSHHeaderFile");
-    }
-
-    try
-    {
-      // read the header, creates a skeleton
-      final Reader r = new InputStreamReader(new BufferedInputStream(in));
-      interpreter.eval(r);
-      r.close();
-
-      // now add the userdefined expression
-      // the expression is given in form of a function with the signature of:
-      //
-      // Object getValue ()
-      //
-      if (expression == null)
-      {
-        throw new FunctionInitializeException("No expression set");
-      }
-    }
-    catch (Exception e)
-    {
-      Log.error("Unable to initialize the expression", e);
-      throw new FunctionInitializeException("Unable to initialize the expression", e);
     }
   }
 
@@ -228,15 +202,7 @@ public class BSHExpression extends AbstractExpression implements Serializable
   public Object clone() throws CloneNotSupportedException
   {
     final BSHExpression expression = (BSHExpression) super.clone();
-    try
-    {
-      expression.interpreter = new Interpreter();
-      expression.initialize();
-    }
-    catch (FunctionInitializeException fe)
-    {
-      throw new CloneNotSupportedException();
-    }
+    expression.interpreter = null;
     return expression;
   }
 
@@ -265,15 +231,6 @@ public class BSHExpression extends AbstractExpression implements Serializable
       throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
-    interpreter = new Interpreter();
-    try
-    {
-      initialize();
-    }
-    catch (FunctionInitializeException fe)
-    {
-      // ignore .. maybe later ..
-    }
   }
 
   public String getExpression()
@@ -281,8 +238,9 @@ public class BSHExpression extends AbstractExpression implements Serializable
     return expression;
   }
 
-  public void setExpression(String expression)
+  public void setExpression(final String expression)
   {
     this.expression = expression;
+    this.invalid = false;
   }
 }

@@ -1,5 +1,5 @@
 /**
- * $Id: BSHExpressionHeader.txt,v 1.1.4.1 2004/12/30 14:46:12 taqua Exp $
+ * $Id: BSHExpressionHeader.txt,v 1.2 2005/01/25 00:08:00 taqua Exp $
  */
 import org.jfree.report.*;
 import org.jfree.report.util.Log;
@@ -10,10 +10,8 @@ import java.util.Properties;
  */
 DataRow dataRow;
 
-boolean __expression_initialized;
-
 Object getValue ()
 {
-  Log.debug ("Warning: Not yet initialized!");
+  Log.debug ("Warning: No user defined function!");
   return null;
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.16 2005/01/25 21:39:54 taqua Exp $
+ * $Id: JFreeReport.java,v 1.17 2005/01/30 23:37:17 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -72,8 +72,6 @@ import javax.swing.table.TableModel;
 
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.ExpressionCollection;
-import org.jfree.report.function.Function;
-import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.ReportProperties;
@@ -635,23 +633,8 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
    * Adds a function to the report's collection of functions.
    *
    * @param function  the function.
-   *
-   * @throws FunctionInitializeException if any of the functions cannot be initialized.
    */
-  public void addExpression(final Expression function) throws FunctionInitializeException
-  {
-    expressions.add(function);
-  }
-
-  /**
-   * Adds a function to the report's collection of functions.
-   *
-   * @param function  the function.
-   *
-   * @throws FunctionInitializeException if any of the functions cannot be initialized.
-   * @deprecated use addExpression instead.
-   */
-  public void addFunction(final Function function) throws FunctionInitializeException
+  public void addExpression(final Expression function)
   {
     expressions.add(function);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageURLFieldElementFactory.java,v 1.7 2003/11/01 19:52:27 taqua Exp $
+ * $Id: ImageURLFieldElementFactory.java,v 1.8 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -40,6 +40,7 @@ package org.jfree.report.elementfactory;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.net.URL;
 
 import org.jfree.report.Element;
 import org.jfree.report.ImageElement;
@@ -56,6 +57,8 @@ public class ImageURLFieldElementFactory extends ImageElementFactory
 {
   /** The fieldname of the datarow from where to read the content. */
   private String fieldname;
+
+  private URL baseURL;
 
   /**
    * DefaultConstructor.
@@ -86,6 +89,16 @@ public class ImageURLFieldElementFactory extends ImageElementFactory
     this.fieldname = fieldname;
   }
 
+  public URL getBaseURL ()
+  {
+    return baseURL;
+  }
+
+  public void setBaseURL (final URL baseURL)
+  {
+    this.baseURL = baseURL;
+  }
+
   /**
    * Creates the image URL field element based on the defined properties.
    *
@@ -102,6 +115,7 @@ public class ImageURLFieldElementFactory extends ImageElementFactory
 
     final ImageURLFieldTemplate template = new ImageURLFieldTemplate();
     template.setField(getFieldname());
+    template.setBaseURL(getBaseURL());
     final ImageElement element = new ImageElement();
     applyElementName(element);
     applyStyle(element.getStyle());

@@ -52,8 +52,7 @@ to the JFreeReport object.
 Functions live in an own environment, separated from the outside world. Changing
 the original JFreeReport object does not affect the inner JFreeReport-Object. You
 are also unable to add new Functions or expressions to the report from inside, so
-all functions and expression have to be set and initialized before the report
-processing has begun.
+all functions and expression have to be set before the report processing has begun.
 <p>
 All Functions have to be cloneable. It is not guaranteed that the report is processed
 in an linear order, but it is guaranteed that a single instance of a function does

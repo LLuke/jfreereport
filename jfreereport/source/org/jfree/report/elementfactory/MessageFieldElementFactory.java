@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   J&ouml;rg Schaible (for Elsag-Solutions AG);
  *
- * $Id$
+ * $Id: MessageFieldElementFactory.java,v 1.1 2005/01/28 19:34:06 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,9 +47,7 @@ import java.text.MessageFormat;
 import org.jfree.report.Element;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.TextElement;
-import org.jfree.report.filter.DataRowDataSource;
-import org.jfree.report.filter.DataSource;
-import org.jfree.report.filter.MessageFormatFilter;
+import org.jfree.report.filter.templates.MessageFieldTemplate;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
 
@@ -130,18 +128,13 @@ public class MessageFieldElementFactory extends TextFieldElementFactory
    */
   public Element createElement()
   {
-    final DataSource dataSource;
-    final MessageFormatFilter filter = new MessageFormatFilter();
-    if (format != null)
-    {
-      filter.setFormatter(format);
-    }
-    filter.setDataSource(new DataRowDataSource(getFieldname()));
-    dataSource = filter;
+    final MessageFieldTemplate messageFieldTemplate = new MessageFieldTemplate();
+    messageFieldTemplate.setField(getFieldname());
+    messageFieldTemplate.setMessageFormat(getFormat());
 
     final TextElement element = new TextElement();
     applyElementName(element);
-    element.setDataSource(dataSource);
+    element.setDataSource(messageFieldTemplate);
     applyStyle(element.getStyle());
 
     return element;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableProcessor.java,v 1.11.2.1.2.3 2004/12/13 19:27:06 taqua Exp $
+ * $Id: TableProcessor.java,v 1.15 2005/01/25 00:12:45 taqua Exp $
  *
  * Changes
  * -------
@@ -134,14 +134,8 @@ public abstract class TableProcessor
     }
     tableWriter = new TableWriter(createMetaBandProducer());
     tableWriter.setName(TABLE_WRITER);
-    try
-    {
-      this.report.addExpression(tableWriter);
-    }
-    catch (FunctionInitializeException e)
-    {
-      throw new ReportProcessingException("Unable to add output function to the report.");
-    }
+
+    this.report.addExpression(tableWriter);
 
     // initialize with the report default.
   }

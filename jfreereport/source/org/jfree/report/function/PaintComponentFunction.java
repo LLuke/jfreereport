@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.8.4.4 2004/12/30 15:25:01 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.11 2005/01/25 00:00:18 taqua Exp $
  *
  * Changes
  * -------
@@ -294,25 +294,6 @@ public class PaintComponentFunction extends AbstractFunction
       pc.peerSupply.setLayout(new BorderLayout());
     }
     return pc;
-  }
-
-  /**
-   * Initializes the function and tests that all required properties are set. If the required
-   * field property is not set, a FunctionInitializeException is thrown.
-   *
-   * @throws FunctionInitializeException when no field is set.
-   */
-  public void initialize()
-      throws FunctionInitializeException
-  {
-    if (getField() == null)
-    {
-      throw new FunctionInitializeException("No Such Property : field");
-    }
-    if (getElement() == null)
-    {
-      throw new FunctionInitializeException("No Such Property : element");
-    }
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScale.java,v 1.1.2.3 2004/10/13 18:42:20 taqua Exp $
+ * $Id: SurveyScale.java,v 1.2 2005/01/25 01:25:37 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,6 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
@@ -57,6 +56,7 @@ import org.jfree.ui.TextAnchor;
 import org.jfree.util.BooleanList;
 import org.jfree.util.BooleanUtilities;
 import org.jfree.util.ShapeList;
+import org.jfree.util.ShapeUtilities;
 
 /**
  * Draws a survey scale.  By implementing the {@link Drawable} interface, instances can be
@@ -66,8 +66,6 @@ import org.jfree.util.ShapeList;
  */
 public class SurveyScale implements Drawable
 {
-  private static final float SQRT2 = (float) Math.pow(2.0, 0.5);
-
   /**
    * The lowest response value on the scale.
    */
@@ -217,9 +215,9 @@ public class SurveyScale implements Drawable
     final ShapeList shapes = new ShapeList();
     //this.shapes.setShape(0, createDiagonalCross(3.0f, 0.5f));
     shapes.setShape(0, new Ellipse2D.Double(-3.0, -3.0, 6.0, 6.0));
-    shapes.setShape(1, createDownTriangle(4.0f));
-    shapes.setShape(2, createUpTriangle(4.0f));
-    shapes.setShape(3, createDiamond(4.0f));
+    shapes.setShape(1, ShapeUtilities.createDownTriangle(4.0f));
+    shapes.setShape(2, ShapeUtilities.createUpTriangle(4.0f));
+    shapes.setShape(3, ShapeUtilities.createDiamond(4.0f));
     shapes.setShape(4, new Rectangle2D.Double(-4.0, -4.0, 8.0, 8.0));
     shapes.setShape(5, new Ellipse2D.Double(-4.0, -4.0, 8.0, 8.0));
     //this.shapes.setShape(5, createDiagonalCross(3.0f, 0.5f));
@@ -599,10 +597,9 @@ public class SurveyScale implements Drawable
    * @param transX the x translation.
    * @param transY the y translation.
    * @return the translated shape.
-   *         <p/>
-   *         TODO: move this to ShapeUtilities.
    */
-  public static Shape translateShape (final Shape shape, final double transX, final double transY)
+  public static Shape translateShape (final Shape shape,
+                                      final double transX, final double transY)
   {
     if (shape == null)
     {
@@ -612,112 +609,5 @@ public class SurveyScale implements Drawable
     return transform.createTransformedShape(shape);
   }
 
-
-  /**
-   * Creates a diagonal cross shape.
-   *
-   * @param l the length of each 'arm'.
-   * @param t the thickness.
-   * @return A diagonal cross shape.
-   *         <p/>
-   *         TODO: move this to ShapeUtilities.
-   */
-  public static Shape createDiagonalCross (final float l, final float t)
-  {
-    final GeneralPath p0 = new GeneralPath();
-    p0.moveTo(-l - t, -l + t);
-    p0.lineTo(-l + t, -l - t);
-    p0.lineTo(0.0f, -t * SQRT2);
-    p0.lineTo(l - t, -l - t);
-    p0.lineTo(l + t, -l + t);
-    p0.lineTo(t * SQRT2, 0.0f);
-    p0.lineTo(l + t, l - t);
-    p0.lineTo(l - t, l + t);
-    p0.lineTo(0.0f, t * SQRT2);
-    p0.lineTo(-l + t, l + t);
-    p0.lineTo(-l - t, l - t);
-    p0.lineTo(-t * SQRT2, 0.0f);
-    p0.closePath();
-    return p0;
-  }
-
-  /**
-   * Creates a diagonal cross shape.
-   *
-   * @param l the length of each 'arm'.
-   * @param t the thickness.
-   * @return A diagonal cross shape.
-   *         <p/>
-   *         TODO: move this to ShapeUtilities.
-   */
-  public static Shape createRegularCross (final float l, final float t)
-  {
-    final GeneralPath p0 = new GeneralPath();
-    p0.moveTo(-l, t);
-    p0.lineTo(-t, t);
-    p0.lineTo(-t, l);
-    p0.lineTo(t, l);
-    p0.lineTo(t, t);
-    p0.lineTo(l, t);
-    p0.lineTo(l, -t);
-    p0.lineTo(t, -t);
-    p0.lineTo(t, -l);
-    p0.lineTo(-t, -l);
-    p0.lineTo(-t, -t);
-    p0.lineTo(-l, -t);
-    p0.closePath();
-    return p0;
-  }
-
-  /**
-   * Creates a diamond shape.
-   *
-   * @param s the size factor (equal to half the height of the diamond).
-   * @return A diamond shape.
-   *         <p/>
-   *         TODO: move this to ShapeUtilities.
-   */
-  public static Shape createDiamond (final float s)
-  {
-    final GeneralPath p0 = new GeneralPath();
-    p0.moveTo(0.0f, -s);
-    p0.lineTo(s, 0.0f);
-    p0.lineTo(0.0f, s);
-    p0.lineTo(-s, 0.0f);
-    p0.closePath();
-    return p0;
-  }
-
-  /**
-   * Creates a triangle shape that points upwards.
-   *
-   * @param s the size factor (equal to half the height of the triangle).
-   * @return A triangle shape.
-   */
-  public static Shape createUpTriangle (final float s)
-  {
-    final GeneralPath p0 = new GeneralPath();
-    p0.moveTo(0.0f, -s);
-    p0.lineTo(s, s);
-    p0.lineTo(-s, s);
-    p0.closePath();
-    return p0;
-  }
-
-  /**
-   * Creates a triangle shape that points downwards.
-   *
-   * @param s the size factor (equal to half the height of the triangle).
-   * @return A triangle shape.
-   */
-  public static Shape createDownTriangle (final float s)
-  {
-    final GeneralPath p0 = new GeneralPath();
-    p0.moveTo(0.0f, s);
-    p0.lineTo(s, -s);
-    p0.lineTo(-s, -s);
-    p0.closePath();
-    return p0;
-  }
 
 }

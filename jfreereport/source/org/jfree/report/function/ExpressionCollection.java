@@ -30,12 +30,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionCollection.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.5 2005/01/25 00:00:10 taqua Exp $
  =======
- * $Id: ExpressionCollection.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.5 2005/01/25 00:00:10 taqua Exp $
  >>>>>>> 1.7
  =======
- * $Id: ExpressionCollection.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.5 2005/01/25 00:00:10 taqua Exp $
  >>>>>>> 1.8
  *
  * Changes
@@ -143,11 +143,8 @@ public class ExpressionCollection implements Cloneable, Serializable
    * this collection.
    *
    * @param e  the expression.
-   *
-   * @throws FunctionInitializeException if the Expression could not be initialized correctly
    */
   public void add(final Expression e)
-      throws FunctionInitializeException
   {
     if (e == null)
     {
@@ -158,8 +155,6 @@ public class ExpressionCollection implements Cloneable, Serializable
     {
       removeExpression(e);
     }
-
-    e.initialize();
     privateAdd(e);
   }
 

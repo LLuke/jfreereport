@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);Stefan Prange
  *
- * $Id: DefaultImageReference.java,v 1.2 2005/01/24 23:57:44 taqua Exp $
+ * $Id: DefaultImageReference.java,v 1.3 2005/01/25 21:39:54 taqua Exp $
  *
  * Changes:
  * --------
@@ -96,6 +96,8 @@ public class DefaultImageReference
     }
     this.url = url;
     this.image = ImageFactory.getInstance().createImage(url);
+    final WaitingImageObserver wob = new WaitingImageObserver(image);
+    wob.waitImageLoaded();
     this.width = image.getWidth(null);
     this.height = image.getHeight(null);
   }

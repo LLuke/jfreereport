@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScaleExpression.java,v 1.1.2.2 2004/12/30 14:46:12 taqua Exp $
+ * $Id: SurveyScaleExpression.java,v 1.2 2005/01/25 01:25:37 taqua Exp $
  *
  * Changes
  * -------
@@ -284,18 +284,18 @@ public class SurveyScaleExpression extends AbstractExpression implements Seriali
     return (String[]) fieldList.toArray(new String[fieldList.size()]);
   }
 
-  public void setField(String[] fields)
+  public void setField(final String[] fields)
   {
     this.fieldList.clear();
     this.fieldList.addAll(Arrays.asList(fields));
   }
 
-  public String getField (int idx)
+  public String getField (final int idx)
   {
     return (String) this.fieldList.get(idx);
   }
 
-  public void setField (int idx, String object)
+  public void setField (final int idx, final String object)
   {
     this.fieldList.set(idx, object);
   }
@@ -310,7 +310,7 @@ public class SurveyScaleExpression extends AbstractExpression implements Seriali
     return rangePaint;
   }
 
-  public void setRangePaint(Paint rangePaint)
+  public void setRangePaint(final Paint rangePaint)
   {
     this.rangePaint = rangePaint;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemHideFunction.java,v 1.7 2005/01/25 00:00:11 taqua Exp $
+ * $Id: ItemHideFunction.java,v 1.8 2005/01/28 19:26:49 taqua Exp $
  *
  * Changes
  * -------
@@ -228,26 +228,6 @@ public class ItemHideFunction extends AbstractFunction
     if (e != null)
     {
       e.setVisible(visible);
-    }
-  }
-
-  /**
-   * Initializes the function and tests that all required properties are set. If the required
-   * field property or the element property are not set, a FunctionInitializeException is thrown.
-   *
-   * @throws FunctionInitializeException when no field or element is set.
-   */
-  public void initialize()
-      throws FunctionInitializeException
-  {
-    super.initialize();
-    if (field == null)
-    {
-      throw new FunctionInitializeException("No Such Property : field");
-    }
-    if (element == null)
-    {
-      throw new FunctionInitializeException("No Such Property : element");
     }
   }
 

@@ -20,27 +20,6 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * As a special exception, the copyright holders of JFreeReport give you
- * permission to extend JFreeReport with independent modules that communicate with
- * JFreeReport solely through the "Expression" or the "Function" interface, regardless
- * of the license terms of these independent modules, and to copy and distribute the
- * resulting combined work under terms of your choice, provided that
- * every copy of the combined work is accompanied by a complete copy of
- * the source code of JFreeReport (the version of JFreeReport used to produce the
- * combined work), being distributed under the terms of the GNU Lesser General
- * Public License plus this exception.  An independent module is a module
- * which is not derived from or based on JFreeReport.
- *
- * This exception applies to the Java interfaces "Expression" and "Function"
- * and the classes "AbstractExpression" and "AbstractFunction".
- *
- * Note that people who make modified versions of JFreeReport are not obligated
- * to grant this special exception for their modified versions; it is
- * their choice whether to do so.  The GNU Lesser General Public License gives
- * permission to release a modified version without this exception; this
- * exception also makes it possible to release a modified version which
- * carries forward this exception.
- *
  * -----------------------
  * AbstractExpression.java
  * -----------------------
@@ -49,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExpression.java,v 1.3.2.1.2.2 2004/12/30 14:46:11 taqua Exp $
+ * $Id: AbstractExpression.java,v 1.7 2005/01/24 23:59:50 taqua Exp $
  *
  * Changes
  * -------
@@ -62,18 +41,9 @@
 
 package org.jfree.report.function;
 
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.Serializable;
-import java.util.Enumeration;
-import java.util.Properties;
 
 import org.jfree.report.DataRow;
-import org.jfree.report.util.beans.BeanException;
-import org.jfree.report.util.beans.BeanUtility;
-import org.jfree.util.Log;
 
 /**
  * An abstract base class for implementing new report expressions.
@@ -96,8 +66,6 @@ public abstract class AbstractExpression implements Expression, Serializable
   /** The data row. */
   private transient DataRow dataRow;
 
-  /** Class to support the deprecated property configuration interface. */
-  private transient BeanUtility beanUtility;
   private boolean active;
 
   /**
@@ -106,17 +74,7 @@ public abstract class AbstractExpression implements Expression, Serializable
    */
   protected AbstractExpression()
   {
-    setName(super.toString());
-    try
-    {
-      beanUtility = new BeanUtility(this);
-    }
-    catch (IntrospectionException e)
-    {
-      Log.warn ("Unable to create Introspector. Old configuration " +
-          "interface will be unavailable for Expression '" +
-          getClass().getName() + "'.");
-    }
+    name = super.toString();
   }
 
   /**
@@ -154,150 +112,20 @@ public abstract class AbstractExpression implements Expression, Serializable
   }
 
   /**
-   * Returns the value of a property, or <code>null</code> if no such property is defined.
-   *
-   * @param name  the property name.
-   *
-   * @return the property value.
-   * @deprecated use the beans property accessors instead.
-   */
-  public String getProperty(final String name)
-  {
-    return getProperty(name, null);
-  }
-
-  /**
-   * Returns the value of a property, or <code>defaultVal</code> if no such property is defined.
-   *
-   * @param name  the property name.
-   * @param defaultVal  the default value.
-   *
-   * @return the property value.
-   * @deprecated use the bean's property accessors instead.
-   */
-  public String getProperty(final String name, final String defaultVal)
-  {
-    if (beanUtility == null)
-    {
-      throw new IllegalStateException("Introspector is not available.");
-    }
-    try
-    {
-      String o = beanUtility.getPropertyAsString(name);
-      if (o == null)
-      {
-        return defaultVal;
-      }
-      return o;
-    }
-    catch (BeanException e)
-    {
-      Log.warn("Unable to query property. [" + name + "]", e);
-      return null;
-    }
-  }
-
-  /**
    * Returns <code>true</code> if this expression contains "auto-active" content and should be
    * called by the system regardless of whether this expression is referenced in the
    * {@link DataRow}.
    *
    * @return true, if the expression is activated automaticly, false otherwise.
    */
-  public boolean isActive()
+  public final boolean isActive()
   {
     return active;
   }
 
-  public void setActive(boolean active)
+  public final void setActive(final boolean active)
   {
     this.active = active;
-  }
-
-  /**
-   * Sets a property for the expression.  If the property value is <code>null</code>, the property
-   * will be removed from the property collection.
-   *
-   * @param name  the property name (<code>null</code> not permitted).
-   * @param value  the property value.
-   * @deprecated use the bean propery accessors instead.
-   */
-  public final void setProperty(final String name, final String value)
-  {
-    if (name == null)
-    {
-      throw new NullPointerException();
-    }
-    if (beanUtility == null)
-    {
-      throw new IllegalStateException("Introspector is not available.");
-    }
-    try
-    {
-      beanUtility.setPropertyAsString(name, value);
-    }
-    catch (BeanException e)
-    {
-      Log.warn("Unable to set property. [" + name + "]", e);
-    }
-  }
-
-  /**
-   * Returns a copy of the properties for this expression.
-   *
-   * @return the properties.
-   * @deprecated use the Bean's getter/setter methods to access the
-   * properties directly.
-   */
-  public Properties getProperties()
-  {
-    if (beanUtility == null)
-    {
-      throw new IllegalStateException("Introspector is not available.");
-    }
-
-    final Properties retval = new Properties();
-    PropertyDescriptor[] pds = beanUtility.getPropertyInfos();
-    for (int i = 0; i < pds.length; i++)
-    {
-      String name = pds[i].getName();
-      String value = getProperty(name);
-      if (value != null)
-      {
-        retval.setProperty(name, value);
-      }
-    }
-    return retval;
-  }
-
-  /**
-   * Adds a property collection to the properties for this expression (overwriting existing
-   * properties with the same name).
-   * <P>
-   * Expression parameters are recorded as properties.  The required parameters (if any) will be
-   * specified in the documentation for the class that implements the expression.
-   *
-   * @param p  the properties.
-   * @deprecated use the Bean's getter/setter methods to access the
-   * properties directly.
-   */
-  public void setProperties(final Properties p)
-  {
-    if (beanUtility == null)
-    {
-      throw new IllegalStateException("Introspector is not available.");
-    }
-
-    if (p != null)
-    {
-      final Enumeration names = p.keys();
-      while (names.hasMoreElements())
-      {
-        final String name = (String) names.nextElement();
-        final String prop = (String) p.get(name);
-        setProperty(name, prop);
-      }
-    }
   }
 
   /**
@@ -356,21 +184,6 @@ public abstract class AbstractExpression implements Expression, Serializable
   }
 
   /**
-   * Checks that the expression has been correctly initialized.
-   * <p>
-   * The only check performed at present is to make sure the name is not <code>null</code>.
-   *
-   * @throws FunctionInitializeException in case the expression is not initialized properly.
-   */
-  public void initialize() throws FunctionInitializeException
-  {
-    if (getName() == null)
-    {
-      throw new FunctionInitializeException("Name must not be null");
-    }
-  }
-
-  /**
    * Clones the expression.  The expression should be reinitialized after the cloning.
    * <P>
    * Expressions maintain no state, cloning is done at the beginning of the report processing to
@@ -402,20 +215,6 @@ public abstract class AbstractExpression implements Expression, Serializable
     catch (CloneNotSupportedException cne)
     {
       return null;
-    }
-  }
-
-  private void readObject(final ObjectInputStream in)
-      throws IOException, ClassNotFoundException
-  {
-    in.defaultReadObject();
-    try
-    {
-      beanUtility = new BeanUtility(this);
-    }
-    catch (IntrospectionException e)
-    {
-      Log.warn("Unable to reinitialize the bean utility.");
     }
   }
 }

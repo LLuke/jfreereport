@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemPercentageFunction.java,v 1.3.4.1 2004/12/30 14:46:11 taqua Exp $
+ * $Id: ItemPercentageFunction.java,v 1.5 2005/01/25 00:00:15 taqua Exp $
  *
  * Changes
  * -------
@@ -75,19 +75,6 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
   {
     totalSumFunction = new TotalGroupSumFunction();
     totalSumFunction.setName("total");
-  }
-
-  /**
-   * Checks that the function has been correctly initialized.  If there is a problem, this method
-   * throws a FunctionInitializeException.
-   *
-   * @throws FunctionInitializeException if the function name is not set or the call to
-   * isInitialized returns false.
-   */
-  public void initialize() throws FunctionInitializeException
-  {
-    super.initialize();
-    totalSumFunction.initialize();
   }
 
   /**

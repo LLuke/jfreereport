@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.8 2005/01/28 19:26:49 taqua Exp $
+ * $Id: PageFunction.java,v 1.9 2005/01/30 23:37:19 taqua Exp $
  *
  * Changes
  * -------
@@ -261,26 +261,6 @@ public class PageFunction extends AbstractFunction
   public Object getValue()
   {
     return new Integer(getPage());
-  }
-
-  /**
-   * Checks that the function has been correctly initialized.  If there is a problem, this method
-   * throws a FunctionInitializeException.
-   *
-   * @throws FunctionInitializeException if the function name is not set or the call to
-   * isInitialized returns false.
-   */
-  public void initialize() throws FunctionInitializeException
-  {
-    super.initialize();
-    try
-    {
-      getStartPage();
-    }
-    catch (Exception e)
-    {
-      throw new FunctionInitializeException(e.getMessage());
-    }
   }
 
   /**

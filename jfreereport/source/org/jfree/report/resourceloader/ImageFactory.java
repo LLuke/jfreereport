@@ -101,7 +101,7 @@ public class ImageFactory
       catch(IOException ioe)
       {
         // first try failed ..
-        Log.info ("Failed to load image: Trying harder ..", ioe);
+        Log.debug ("Failed to load image: Trying harder ..", ioe);
       }
     }
 
@@ -123,7 +123,7 @@ public class ImageFactory
         catch(IOException ioe)
         {
           // first try failed ..
-          Log.info ("Failed to load image: Trying harder ..", ioe);
+          Log.debug ("Failed to load image: Trying harder ..", ioe);
         }
       }
     }
@@ -146,11 +146,12 @@ public class ImageFactory
         catch(IOException ioe)
         {
           // first try failed ..
-          Log.info ("Failed to load image: Trying harder ..", ioe);
+          Log.debug ("Failed to load image: Trying harder ..", ioe);
         }
       }
     }
 
+    Log.debug ("Failed to find suitable factory for image: Using the AWT as fallback ..");
     // default failback ..
     // the JDK implementation might be able to handle some more modules
     return Toolkit.getDefaultToolkit().createImage(data);

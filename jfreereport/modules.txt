@@ -25,7 +25,7 @@ Modules are loaded during the boot process of JFreeReport. The Package
 manager is responsible to load the modules and to verify the availability
 of all required modules.
 
-Booting is done by calling "Boot.start()".
+Booting is done by calling "JFreeReportBoot.getInstance().start()".
 
 If the boot code was not called manually by the user code, the boot is
 started before the report configuration or a component using this

@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FontChangeFunction.java,v 1.2.4.1 2004/12/30 14:46:11 taqua Exp $
+ * $Id: FontChangeFunction.java,v 1.4 2005/01/24 23:59:05 taqua Exp $
  *
  * Changes
  * -------
@@ -105,23 +105,6 @@ public class FontChangeFunction extends AbstractFunction implements Serializable
       final TextElement tx = (TextElement) e;
       tx.getStyle().setFontDefinitionProperty(
           new FontDefinition(new Font(fontname, Font.PLAIN, 10)));
-    }
-  }
-
-  /**
-   * Performs the functions initialisation. The initialisation will fail, if the
-   * function has no valid name or the required parameter "element" is missing.
-   * <p>
-   * @see #setElement(java.lang.String)
-   *
-   * @throws FunctionInitializeException if the element name has not been specified.
-   */
-  public void initialize() throws FunctionInitializeException
-  {
-    super.initialize();
-    if (element == null)
-    {
-      throw new FunctionInitializeException("Element name must be specified");
     }
   }
 

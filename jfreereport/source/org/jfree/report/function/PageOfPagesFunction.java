@@ -27,7 +27,7 @@
  *
  * Original Author:  J&ouml;rg Schaible;
  *
- * $Id$
+ * $Id: PageOfPagesFunction.java,v 1.1 2005/01/28 19:34:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -106,13 +106,6 @@ public class PageOfPagesFunction extends PageFunction
       throw new NullPointerException("Format must not be null.");
     }
     this.format = format;
-  }
-
-  public void initialize ()
-          throws FunctionInitializeException
-  {
-    super.initialize();
-    pageTotalFunction.initialize();
   }
 
   public void reportInitialized (final ReportEvent event)

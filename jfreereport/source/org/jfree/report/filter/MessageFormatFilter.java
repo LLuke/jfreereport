@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   J&ouml;rg Schaible (for Elsag-Solutions AG);
  *
- * $Id$
+ * $Id: MessageFormatFilter.java,v 1.1 2005/01/28 19:34:09 taqua Exp $
  *
  * Changes
  * -------
@@ -93,6 +93,16 @@ public class MessageFormatFilter extends FormatFilter
   {
     final MessageFormat fm = (MessageFormat) f;
     super.setFormatter(fm);
+  }
+
+  public void setFormatString (final String format)
+  {
+    super.setFormatter(new MessageFormat(format));
+  }
+
+  public String getFormatString ()
+  {
+    return getMessageFormat().toPattern();
   }
 
   /**

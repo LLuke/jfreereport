@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConverterParser.java,v 1.6 2003/11/07 18:33:53 taqua Exp $
+ * $Id: ConverterParser.java,v 1.7 2004/05/07 14:29:46 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -40,8 +40,10 @@ package org.jfree.report.modules.gui.converter.parser;
 
 import java.util.Stack;
 
-import org.jfree.xml.ElementDefinitionHandler;
+import org.jfree.xml.FrontendDefaultHandler;
 import org.jfree.xml.Parser;
+import org.jfree.xml.util.ObjectFactory;
+import org.jfree.xml.util.SimpleObjectFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
@@ -58,19 +60,31 @@ import org.xml.sax.SAXParseException;
 public class ConverterParser extends Parser
 {
   /** The backend parser. */
-  private final Parser base;
+  private final FrontendDefaultHandler base;
   /** the context collection used to create the correct mappings. */
   private final Stack currentContext;
+  private SimpleObjectFactory objectFactory;
 
   /**
    * Creates a new ConverterParser using the given parser as backend.
    * 
    * @param base the backend parser that will do all the work.
    */
-  public ConverterParser(final Parser base)
+  public ConverterParser(final FrontendDefaultHandler base)
   {
+    this.objectFactory = new SimpleObjectFactory();
     this.base = base;
     currentContext = new Stack();
+  }
+
+  /**
+   * Returns the object factory.
+   *
+   * @return The object factory.
+   */
+  public ObjectFactory getFactoryLoader ()
+  {
+    return objectFactory;
   }
 
   /**
@@ -326,18 +340,6 @@ public class ConverterParser extends Parser
   }
 
   /**
-   * Returns a helper object.
-   *
-   * @param key  the key.
-   *
-   * @return The object.
-   */
-  public Object getHelperObject(final String key)
-  {
-    return base.getHelperObject(key);
-  }
-
-  /**
    * Receive an object for locating the origin of SAX document events.
    *
    * The locator allows the application to determine the end position of
@@ -362,36 +364,6 @@ public class ConverterParser extends Parser
   public Locator getLocator()
   {
     return base.getLocator();
-  }
-
-  /**
-   * Pushes a handler onto the stack.
-   *
-   * @param elementDefinitionHandler  the handler.
-   */
-  public void pushFactory(final ElementDefinitionHandler elementDefinitionHandler)
-  {
-    base.pushFactory(elementDefinitionHandler);
-  }
-
-  /**
-   * Reads a handler off the stack without removing it.
-   *
-   * @return The handler.
-   */
-  public ElementDefinitionHandler peekFactory()
-  {
-    return base.peekFactory();
-  }
-
-  /**
-   * Pops a handler from the stack.
-   *
-   * @return The handler.
-   */
-  public ElementDefinitionHandler popFactory()
-  {
-    return base.popFactory();
   }
 
   /**
@@ -436,26 +408,6 @@ public class ConverterParser extends Parser
   }
 
   /**
-   * Sets the initial handler.
-   *
-   * @param elementDefinitionHandler  the initial handler.
-   */
-  public void setInitialFactory(final ElementDefinitionHandler elementDefinitionHandler)
-  {
-    base.setInitialFactory(elementDefinitionHandler);
-  }
-
-  /**
-   * Returns the initial handler.
-   *
-   * @return The initial handler.
-   */
-  public ElementDefinitionHandler getInitialFactory()
-  {
-    return base.getInitialFactory();
-  }
-
-  /**
    * Returns the configuration property with the specified key.
    *
    * @param key  the property key.
@@ -496,17 +448,6 @@ public class ConverterParser extends Parser
   }
 
   /**
-   * Sets a helper object.
-   *
-   * @param key  the key.
-   * @param value  the value.
-   */
-  public void setHelperObject(final String key, final Object value)
-  {
-    base.setHelperObject(key, value);
-  }
-
-  /**
    * Returns a new instance of the parser.
    *
    * @return a new instance of the parser.
@@ -516,20 +457,8 @@ public class ConverterParser extends Parser
     return new ConverterParser(base);
   }
 
-  /**
-   * Returns the parsed result object after the parsing is complete. Calling
-   * this function during the parsing is undefined and may result in an
-   * IllegalStateException.
-   * <p>
-   * This is a proxy implementation. Forwards all calls to the base parser.
-   *
-   * @see Parser#getResult
-   * @return the result
-   */
-  public Object getResult()
+  public Object getResult ()
   {
-    return base.getResult();
+    return null;
   }
-
-
 }

@@ -47,7 +47,7 @@
         <label name="Line2" x="0" y="24" width="200" height="12" alignment="left">19a Hollow Road</label>
         <label name="Line3" x="0" y="48" width="200" height="12" alignment="left">9999 Boston</label>
         <!-- Silly demo of JFreeReports Image Capabilies. Uses WMF, JPG, GIF or PNG files as source -->
-        <!--<imageref x="200" y="48" width="100" height="90" src="anim0002.wmf" name="logo" dynamic="false" scale="true" keepAspectRatio="false"/> -->
+        <imageref x="200" y="48" width="100" height="90" src="anim0002.wmf" name="logo" dynamic="false" scale="true" keepAspectRatio="false"/> 
         <string-field name="FName" x="0" y="84" width="200" height="12" alignment="left" fieldname="name"/>
         <string-field name="FStreet" x="0" y="96" width="200" height="12" alignment="left" fieldname="street"/>
         <string-field name="FTown" x="0" y="120" width="200" height="12" alignment="left" fieldname="town"/>

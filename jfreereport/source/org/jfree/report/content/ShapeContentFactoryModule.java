@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ShapeContentFactoryModule.java,v 1.3 2004/05/07 08:02:49 mungady Exp $
+ * $Id: ShapeContentFactoryModule.java,v 1.4 2005/01/24 23:58:16 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ import java.awt.Shape;
 import java.awt.geom.Dimension2D;
 
 import org.jfree.report.Element;
+import org.jfree.report.ShapeElement;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.ElementLayoutInformation;
@@ -91,6 +92,12 @@ public class ShapeContentFactoryModule implements ContentFactoryModule
                                          final LayoutSupport ot)
       throws ContentCreationException
   {
+    if ((e.getStyle().getBooleanStyleProperty(ShapeElement.DRAW_SHAPE) == false) &&
+        (e.getStyle().getBooleanStyleProperty(ShapeElement.FILL_SHAPE) == false))
+    {
+      return EmptyContent.getDefaultEmptyContent();
+    }
+    
     final Shape value = (Shape) e.getValue();
     if (value == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.17 2005/01/25 00:10:11 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.18 2005/01/30 23:37:20 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,6 @@ import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
-import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.modules.output.meta.MetaPage;
 import org.jfree.report.modules.output.pageable.base.pagelayout.PageLayouter;
 import org.jfree.report.modules.output.pageable.base.pagelayout.SimplePageLayouter;
@@ -132,11 +131,6 @@ public class PageableReportProcessor
     {
       throw new ReportProcessingException("Initial Clone of Report failed");
     }
-    catch (FunctionInitializeException e)
-    {
-      throw new ReportProcessingException("Setup of the output function failed.");
-    }
-
   }
 
   /**

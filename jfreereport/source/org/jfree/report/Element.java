@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.13 2003/11/07 18:33:47 taqua Exp $
+ * $Id: Element.java,v 1.14 2005/01/30 23:37:17 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -75,15 +75,78 @@ import org.jfree.report.util.InstanceID;
  * Base class for all report elements (display items that can appear within a report band).
  * <p>
  * All elements have a non-null name and have a style sheet defined. The style sheet is
- * used to store and access all element properties that can be used to layout the
- * element or affect the elements appeareance in a ReportProcessor.
+ * used to store and access all self properties that can be used to layout the
+ * self or affect the elements appeareance in a ReportProcessor.
  *
  * @author David Gilbert
  * @author Thomas Morgner
  */
 public abstract class Element implements DataTarget, Serializable, Cloneable
 {
-  protected static class InternalElementStyleSheet extends ElementStyleSheet
+  private static class InternalElementStyleSheetCarrier implements StyleSheetCarrier
+  {
+    private transient ElementStyleSheet styleSheet;
+    private InternalElementStyleSheet self;
+    private InstanceID styleSheetID;
+
+    public InternalElementStyleSheetCarrier (final InternalElementStyleSheet parent,
+                                             final ElementStyleSheet styleSheet)
+    {
+      this.self = parent;
+      this.styleSheet = styleSheet;
+      this.styleSheetID = styleSheet.getId();
+    }
+
+    public Object clone ()
+            throws CloneNotSupportedException
+    {
+      final InternalElementStyleSheetCarrier ic =
+              (InternalElementStyleSheetCarrier) super.clone();
+      ic.self = null;
+      ic.styleSheet = null;
+      return ic;
+    }
+
+    public ElementStyleSheet getStyleSheet ()
+    {
+      if (styleSheet != null)
+      {
+        return styleSheet;
+      }
+      if (self == null)
+      {
+        // should not happen in a sane environment ..
+        throw new IllegalStateException
+                ("Stylesheet was not valid after restore operation.");
+      }
+      final Element element = self.getElement();
+      if (element == null)
+      {
+        throw new IllegalStateException();
+      }
+      final ReportDefinition reportDefinition = element.getReportDefinition();
+      if (reportDefinition == null)
+      {
+        // should not happen in a sane environment ..
+        throw new IllegalStateException
+                ("Stylesheet was not valid after restore operation.");
+      }
+      styleSheet = reportDefinition.getStyleSheetCollection().getStyleSheetByID(styleSheetID);
+      return styleSheet;
+    }
+
+    public void invalidate ()
+    {
+      this.styleSheet = null;
+    }
+
+    public boolean isSame (final ElementStyleSheet style)
+    {
+      return style.getId().equals(styleSheetID);
+    }
+  }
+
+  private static class InternalElementStyleSheet extends ElementStyleSheet
   {
     private Element element;
     private Band parent;
@@ -115,6 +178,13 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
       final InternalElementStyleSheet es = (InternalElementStyleSheet) super.clone();
       es.parent = null;
       es.element = null;
+
+      final StyleSheetCarrier[] sheets = es.getParentReferences();
+      for (int i = 0; i < sheets.length; i++)
+      {
+        final InternalElementStyleSheetCarrier esc = (InternalElementStyleSheetCarrier) sheets[i];
+        esc.self = es;
+      }
       return es;
     }
 
@@ -133,7 +203,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
 
     protected StyleSheetCarrier createCarrier (final ElementStyleSheet styleSheet)
     {
-      return null;
+      return new InternalElementStyleSheetCarrier(this, styleSheet);
     }
   }
 
@@ -142,7 +212,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     return ElementDefaultStyleSheet.getDefaultStyle();
   }
 
-  /** The internal constant to mark anonymous element names. */
+  /** The internal constant to mark anonymous self names. */
   public static final String ANONYMOUS_ELEMENT_PREFIX = "anonymousElement@";
 
   /** A null datasource. */
@@ -151,27 +221,27 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   /** The head of the data source chain. */
   private DataSource datasource;
 
-  /** The name of the element. */
+  /** The name of the self. */
   private String name;
 
   /** The stylesheet defines global appearance for elements. */
   private InternalElementStyleSheet style;
 
-  /** the parent for the element (the band where the element is contained in). */
+  /** the parent for the self (the band where the self is contained in). */
   private Band parent;
 
-  /** the tree lock to identify the element. */
+  /** the tree lock to identify the self. */
   private final InstanceID treeLock;
 
   private ReportDefinition reportDefinition;
 
   /**
-   * Constructs an element.
+   * Constructs an self.
    * <p>
-   * The element inherits the DefaultElementStyleSheet. When the element is added
+   * The self inherits the DefaultElementStyleSheet. When the self is added
    * to the band, the bands default stylesheet is also added to the elements style.
    * <p>
-   * A datasource is assigned with this element is set to a default source,
+   * A datasource is assigned with this self is set to a default source,
    * which always returns null.
    */
   protected Element()
@@ -183,10 +253,10 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Return the parent of the element.
+   * Return the parent of the self.
    * You can use this to explore the component tree.
    *
-   * @return the parent of the element.
+   * @return the parent of the self.
    */
   public final Band getParent()
   {
@@ -194,21 +264,29 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * defines the parent of the element. Only a band should call this method.
+   * defines the parent of the self. Only a band should call this method.
    *
    * @param parent (null allowed).
    */
   protected final void setParent(final Band parent)
   {
     this.parent = parent;
+    if (this.parent == null)
+    {
+      setReportDefinition(null);
+    }
+    else
+    {
+      setReportDefinition(parent.getReportDefinition());
+    }
     this.style.parentChanged();
   }
 
   /**
-   * Defines the name for this element. The name must not be empty,
+   * Defines the name for this self. The name must not be empty,
    * or a NullPointerException is thrown.
    *
-   * @param name  the name of this element (null not permitted)
+   * @param name  the name of this self (null not permitted)
    */
   public void setName(final String name)
   {
@@ -220,7 +298,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Returns the name of the element. The name of the element cannot be null.
+   * Returns the name of the self. The name of the self cannot be null.
    *
    * @return the name.
    */
@@ -230,8 +308,8 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Returns the datasource for this element. You cannot override this function as the
-   * element needs always be the last consumer in the chain of filters. This function
+   * Returns the datasource for this self. You cannot override this function as the
+   * self needs always be the last consumer in the chain of filters. This function
    * must never return null.
    *
    * @return the assigned datasource.
@@ -242,7 +320,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Sets the data source for this element. This datasource is queried on populateElements(),
+   * Sets the data source for this self. This datasource is queried on populateElements(),
    * to fill in the values.
    *
    * @param ds  the datasource (<code>null</code> not permitted).
@@ -257,7 +335,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Queries this element's datasource for a value.
+   * Queries this self's datasource for a value.
    *
    * @return the value of the datasource, which can be null.
    */
@@ -268,7 +346,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Defines whether this element should be painted. The detailed implementation is
+   * Defines whether this self should be painted. The detailed implementation is
    * up to the outputtarget.
    *
    * @return the current visiblity state.
@@ -281,7 +359,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Defines, whether this element should be drawn.
+   * Defines, whether this self should be drawn.
    *
    * @param b the new visibility state
    */
@@ -291,11 +369,11 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Clones this Element, the datasource and the private stylesheet of this element.
+   * Clones this Element, the datasource and the private stylesheet of this self.
    * The clone does no longer have a parent, as the old parent would not recognize
    * that new object.
    *
-   * @return a clone of this element.
+   * @return a clone of this self.
    * @throws CloneNotSupportedException should never happen.
    */
   public Object clone() throws CloneNotSupportedException
@@ -315,7 +393,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * Returns this elements private stylesheet. This sheet can be used to override
    * the default values set in one of the parent-stylesheets.
    *
-   * @return the element's stylesheet
+   * @return the self's stylesheet
    */
   public ElementStyleSheet getStyle()
   {
@@ -323,12 +401,12 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Defines the content-type for this element. The content-type is used as a hint
-   * how to process the contents of this element. An element implementation should
+   * Defines the content-type for this self. The content-type is used as a hint
+   * how to process the contents of this self. An self implementation should
    * restrict itself to the content-type set here, or the reportprocessing may fail
-   * or the element may not be printed.
+   * or the self may not be printed.
    * <p>
-   * An element is not allowed to change its content-type after ther report processing
+   * An self is not allowed to change its content-type after ther report processing
    * has started.
    * <p>
    * If an content-type is unknown to the output-target, the processor should ignore
@@ -339,7 +417,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   public abstract String getContentType();
 
   /**
-   * Returns the tree lock object for the element tree.
+   * Returns the tree lock object for the self tree.
    *
    * @return the treelock object.
    */
@@ -353,10 +431,10 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Checks, whether the layout manager should compute the size of this element
+   * Checks, whether the layout manager should compute the size of this self
    * based on the current content.
    * 
-   * @return true, if the element is dynamic, false otherwise.
+   * @return true, if the self is dynamic, false otherwise.
    */
   public boolean isDynamicContent()
   {
@@ -383,7 +461,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
 
 
   /**
-   * Returns whether the layout of this element is cacheable.
+   * Returns whether the layout of this self is cacheable.
    * 
    * @return true, if the layout is cacheable, false otherwise.
    */
@@ -394,7 +472,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Defines whether the layout of this element can be cached. 
+   * Defines whether the layout of this self can be cached.
    * <p>
    * Calling this function with either parameter will override any 
    * previously defined value for the layoutcachable attribute. 
@@ -410,7 +488,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
 
 
   /**
-   * Returns the minimum size of this element, if defined.
+   * Returns the minimum size of this self, if defined.
    * Warning: The returned object is not immutable and should
    * not be changed.
    * 
@@ -423,7 +501,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Defines the stylesheet property for the minimum element size. 
+   * Defines the stylesheet property for the minimum self size.
    * 
    * @param minimumSize the new minimum size or null, if the value should
    * be inherited.
@@ -435,7 +513,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Returns the maximum size of this element, if defined.
+   * Returns the maximum size of this self, if defined.
    * Warning: The returned object is not immutable and should
    * not be changed.
    * 
@@ -448,7 +526,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Defines the stylesheet property for the maximum element size. 
+   * Defines the stylesheet property for the maximum self size.
    * 
    * @param maximumSize the new maximum size or null, if the value should
    * be inherited.
@@ -460,7 +538,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Returns the preferred size of this element, if defined.
+   * Returns the preferred size of this self, if defined.
    * Warning: The returned object is not immutable and should
    * not be changed.
    * 
@@ -473,7 +551,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Defines the stylesheet property for the preferred element size. 
+   * Defines the stylesheet property for the preferred self size.
    * 
    * @param preferredSize the new preferred size or null, if the value should
    * be inherited.
@@ -529,5 +607,4 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
       disconnectDataSource(dt.getDataSource());
     }
   }
-
 }
