@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringFilter.java,v 1.14 2003/06/29 16:59:24 taqua Exp $
+ * $Id: StringFilter.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,6 @@ public class StringFilter implements DataFilter, Serializable
    */
   public StringFilter()
   {
-    nullvalue = "null";
   }
 
   /**
@@ -75,10 +74,6 @@ public class StringFilter implements DataFilter, Serializable
    */
   public void setNullValue(final String nullvalue)
   {
-    if (nullvalue == null)
-    {
-      throw new NullPointerException();
-    }
     this.nullvalue = nullvalue;
   }
 
@@ -114,7 +109,7 @@ public class StringFilter implements DataFilter, Serializable
     }
     if (o instanceof String)
     {
-      return (String) o;
+      return o;
     }
     return String.valueOf(o);
   }

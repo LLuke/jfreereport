@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.2 2003/07/10 20:02:08 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -164,7 +164,16 @@ public class JFreeReportResources extends ListResourceBundle
    */
   protected static final KeyStroke createMenuKeystroke(final int character)
   {
-    return KeyStroke.getKeyStroke(character, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+    try
+    {
+      return KeyStroke.getKeyStroke(character, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+    }
+    catch (UnsupportedOperationException he)
+    {
+      // headless exception extends UnsupportedOperation exception,
+      // but the HeadlessException is not defined in older JDKs...
+      return KeyStroke.getKeyStroke(character, KeyEvent.CTRL_MASK);
+    }
   }
 
   /** The resources to be localised. */

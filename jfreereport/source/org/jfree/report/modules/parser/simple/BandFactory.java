@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: BandFactory.java,v 1.2 2003/07/12 16:31:13 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import org.jfree.report.PageHeader;
 import org.jfree.report.ReportFooter;
 import org.jfree.report.ReportHeader;
 import org.jfree.report.modules.parser.base.ReportParserUtil;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.style.BandStyleSheet;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
@@ -84,7 +85,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
    * @param finishTag the finish tag, that should trigger the deactivation of this parser.
    * @throws NullPointerException if the finishTag or the parser are null.
    */
-  public BandFactory(final Parser parser, final String finishTag)
+  public BandFactory(final ReportParser parser, final String finishTag)
   {
     super(parser, finishTag);
     fontFactory = new FontFactory();
@@ -231,7 +232,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
-    getParser().pushFactory(new ElementFactory(getParser(), REPORT_HEADER_TAG, reportHeader));
+    getParser().pushFactory(new ElementFactory(getReportParser(), REPORT_HEADER_TAG, reportHeader));
   }
 
   /**
@@ -283,7 +284,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
-    getParser().pushFactory(new ElementFactory(getParser(), REPORT_FOOTER_TAG, reportFooter));
+    getParser().pushFactory(new ElementFactory(getReportParser(), REPORT_FOOTER_TAG, reportFooter));
   }
 
   /**
@@ -340,7 +341,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
-    getParser().pushFactory(new ElementFactory(getParser(), PAGE_HEADER_TAG, pageHeader));
+    getParser().pushFactory(new ElementFactory(getReportParser(), PAGE_HEADER_TAG, pageHeader));
   }
 
   /**
@@ -398,7 +399,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
     }
 
     getReport().setPageFooter(pageFooter);
-    getParser().pushFactory(new ElementFactory(getParser(), PAGE_FOOTER_TAG, pageFooter));
+    getParser().pushFactory(new ElementFactory(getReportParser(), PAGE_FOOTER_TAG, pageFooter));
   }
 
   /**
@@ -439,7 +440,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
       items.getBandDefaults().setStyleProperty
           (ElementStyleSheet.ALIGNMENT, ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
-    getParser().pushFactory(new ElementFactory(getParser(), ITEMS_TAG, items));
+    getParser().pushFactory(new ElementFactory(getReportParser(), ITEMS_TAG, items));
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractTemplateDescription.java,v 1.8 2003/06/29 16:59:25 taqua Exp $
+ * $Id: AbstractTemplateDescription.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -97,5 +97,25 @@ public abstract class AbstractTemplateDescription
   public Template createTemplate()
   {
     return (Template) createObject();
+  }
+
+  public boolean equals(Object o)
+  {
+    if (this == o) return true;
+    if (!(o instanceof AbstractTemplateDescription)) return false;
+    if (!super.equals(o)) return false;
+
+    final AbstractTemplateDescription abstractTemplateDescription = (AbstractTemplateDescription) o;
+
+    if (name != null ? !name.equals(abstractTemplateDescription.name) : abstractTemplateDescription.name != null) return false;
+
+    return true;
+  }
+
+  public int hashCode()
+  {
+    int result = super.hashCode();
+    result = 29 * result + (name != null ? name.hashCode() : 0);
+    return result;
   }
 }

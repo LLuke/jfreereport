@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetHandler.java,v 1.2 2003/07/12 16:31:13 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.3 2003/07/14 17:37:08 taqua Exp $
  *
  * Changes
  * -------
@@ -38,14 +38,11 @@
 
 package org.jfree.report.modules.parser.ext;
 
-import org.jfree.report.JFreeReport;
-import org.jfree.report.util.Log;
-import org.jfree.report.modules.parser.base.InitialReportHandler;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.StyleSheetCollection;
-import org.jfree.xml.ElementDefinitionHandler;
+import org.jfree.report.util.Log;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -56,7 +53,7 @@ import org.xml.sax.SAXException;
  * @author Thomas Morgner.
  * @see ElementStyleSheet
  */
-public class StyleSheetHandler implements ElementDefinitionHandler
+public class StyleSheetHandler extends AbstractExtReportParserHandler
 {
   /** The 'compound-key' tag name. */
   public static final String COMPOUND_KEY_TAG = "compound-key";
@@ -66,12 +63,6 @@ public class StyleSheetHandler implements ElementDefinitionHandler
 
   /** The 'extends' tag name. */
   public static final String EXTENDS_TAG = "extends";
-
-  /** The parser. */
-  private Parser parser;
-
-  /** The finish tag. */
-  private String finishTag;
 
   /** The element style sheet. */
   private ElementStyleSheet sheet;
@@ -89,23 +80,14 @@ public class StyleSheetHandler implements ElementDefinitionHandler
    * @param finishTag  the finish tag.
    * @param styleSheet  the style sheet.
    */
-  public StyleSheetHandler(final Parser parser, final String finishTag, final ElementStyleSheet styleSheet)
+  public StyleSheetHandler(final ReportParser parser, final String finishTag, final ElementStyleSheet styleSheet)
   {
-    if (parser == null)
-    {
-      throw new NullPointerException("Parser is null");
-    }
-    if (finishTag == null)
-    {
-      throw new NullPointerException("FinishTag is null");
-    }
+    super(parser, finishTag);
     if (styleSheet == null)
     {
       throw new NullPointerException("StyleSheet is null");
     }
 
-    this.parser = parser;
-    this.finishTag = finishTag;
     this.sheet = styleSheet;
     styleCollection = getReport().getStyleSheetCollection();
   }
@@ -150,7 +132,7 @@ public class StyleSheetHandler implements ElementDefinitionHandler
         }
       }
 
-      basicFactory = new BasicStyleKeyHandler(getParser(), tagName, name, c);
+      basicFactory = new BasicStyleKeyHandler(getReportParser(), tagName, name, c);
       getParser().pushFactory(basicFactory);
     }
     else if (tagName.equals(COMPOUND_KEY_TAG))
@@ -171,7 +153,7 @@ public class StyleSheetHandler implements ElementDefinitionHandler
         // ignore me ...
       }
 
-      basicFactory = new CompoundStyleKeyHandler(getParser(), tagName, name, c);
+      basicFactory = new CompoundStyleKeyHandler(getReportParser(), tagName, name, c);
       getParser().pushFactory(basicFactory);
     }
     else if (tagName.equals(EXTENDS_TAG))
@@ -235,7 +217,7 @@ public class StyleSheetHandler implements ElementDefinitionHandler
     else if (tagName.equals(EXTENDS_TAG))
     {
     }
-    else if (tagName.equals(finishTag))
+    else if (tagName.equals(getFinishTag()))
     {
       getParser().popFactory().endElement(tagName);
     }
@@ -244,28 +226,7 @@ public class StyleSheetHandler implements ElementDefinitionHandler
       throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
           + BASIC_KEY_TAG + ", "
           + COMPOUND_KEY_TAG + ", "
-          + finishTag);
+          + getFinishTag());
     }
-  }
-
-  /**
-   * Returns the parser.
-   *
-   * @return The parser.
-   */
-  public Parser getParser()
-  {
-    return parser;
-  }
-
-  /**
-   * Returns the report.
-   *
-   * @return The report.
-   */
-  private JFreeReport getReport()
-  {
-    return (JFreeReport) getParser().getHelperObject(
-        InitialReportHandler.REPORT_DEFINITION_TAG);
   }
 }

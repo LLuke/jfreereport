@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyFactory.java,v 1.12 2003/06/27 14:25:19 taqua Exp $
+ * $Id: StyleKeyFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -39,6 +39,7 @@
 package org.jfree.report.modules.parser.ext.factory.stylekey;
 
 import java.util.Iterator;
+import java.io.Serializable;
 
 import org.jfree.report.style.StyleKey;
 import org.jfree.xml.factory.objects.ClassFactory;
@@ -48,7 +49,7 @@ import org.jfree.xml.factory.objects.ClassFactory;
  *
  * @author Thomas Morgner
  */
-public interface StyleKeyFactory
+public interface StyleKeyFactory extends Serializable
 {
   /**
    * Returns a style key.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.15 2003/06/29 16:59:27 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ import org.jfree.report.function.Function;
 import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.report.util.Log;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
@@ -88,7 +89,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    * @param finishTag the finish tag, that should trigger the deactivation of this parser.
    * @throws NullPointerException if the finishTag or the parser are null.
    */
-  public FunctionFactory(final Parser parser, final String finishTag)
+  public FunctionFactory(final ReportParser parser, final String finishTag)
   {
     super(parser, finishTag);
     entityParser = CharacterEntityParser.createXMLEntityParser();

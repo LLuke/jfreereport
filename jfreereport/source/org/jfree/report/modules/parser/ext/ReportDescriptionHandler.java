@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: ReportDescriptionHandler.java,v 1.2 2003/07/12 16:31:13 taqua Exp $
  *
  * Changes
  * -------
@@ -39,10 +39,7 @@
 package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.Band;
-import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.parser.base.InitialReportHandler;
-import org.jfree.xml.ElementDefinitionHandler;
-import org.jfree.xml.Parser;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -52,7 +49,7 @@ import org.xml.sax.SAXException;
  *
  * @author Thomas Morgner
  */
-public class ReportDescriptionHandler implements ElementDefinitionHandler
+public class ReportDescriptionHandler extends AbstractExtReportParserHandler
 {
   /** The 'report-header' tag name. */
   public static final String REPORT_HEADER_TAG = "report-header";
@@ -72,12 +69,6 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
   /** The 'groups' tag name. */
   public static final String GROUPS_TAG = "groups";
 
-  /** The parser. */
-  private Parser parser;
-
-  /** The finish tag. */
-  private String finishTag;
-
   /** The band handler. */
   private BandHandler bandFactory;
 
@@ -87,18 +78,9 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public ReportDescriptionHandler(final Parser parser, final String finishTag)
+  public ReportDescriptionHandler(final ReportParser parser, final String finishTag)
   {
-    if (parser == null)
-    {
-      throw new NullPointerException("Parser is null");
-    }
-    if (finishTag == null)
-    {
-      throw new NullPointerException("FinishTag is null");
-    }
-    this.parser = parser;
-    this.finishTag = finishTag;
+    super(parser, finishTag);
   }
 
   /**
@@ -120,7 +102,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
       {
         band.setName(name);
       }
-      bandFactory = new BandHandler(getParser(), tagName, band);
+      bandFactory = new BandHandler(getReportParser(), tagName, band);
       getParser().pushFactory(bandFactory);
     }
     else if (tagName.equals(REPORT_FOOTER_TAG))
@@ -131,7 +113,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
       {
         band.setName(name);
       }
-      bandFactory = new BandHandler(getParser(), tagName, band);
+      bandFactory = new BandHandler(getReportParser(), tagName, band);
       getParser().pushFactory(bandFactory);
     }
     else if (tagName.equals(PAGE_HEADER_TAG))
@@ -142,7 +124,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
       {
         band.setName(name);
       }
-      bandFactory = new BandHandler(getParser(), tagName, band);
+      bandFactory = new BandHandler(getReportParser(), tagName, band);
       getParser().pushFactory(bandFactory);
     }
     else if (tagName.equals(PAGE_FOOTER_TAG))
@@ -153,7 +135,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
       {
         band.setName(name);
       }
-      bandFactory = new BandHandler(getParser(), tagName, band);
+      bandFactory = new BandHandler(getReportParser(), tagName, band);
       getParser().pushFactory(bandFactory);
     }
     else if (tagName.equals(ITEMBAND_TAG))
@@ -164,12 +146,12 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
       {
         band.setName(name);
       }
-      bandFactory = new BandHandler(getParser(), tagName, band);
+      bandFactory = new BandHandler(getReportParser(), tagName, band);
       getParser().pushFactory(bandFactory);
     }
     else if (tagName.equals(GROUPS_TAG))
     {
-      final GroupsHandler groupFactory = new GroupsHandler(getParser(), tagName);
+      final GroupsHandler groupFactory = new GroupsHandler(getReportParser(), tagName);
       getParser().pushFactory(groupFactory);
     }
     else
@@ -195,17 +177,6 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
   public void characters(final char[] ch, final int start, final int length)
   {
     // ignore the characters ...
-  }
-
-  /**
-   * Returns the report.
-   *
-   * @return The report.
-   */
-  private JFreeReport getReport()
-  {
-    return (JFreeReport) getParser().getHelperObject(
-        InitialReportHandler.REPORT_DEFINITION_TAG);
   }
 
   /**
@@ -237,7 +208,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
     {
       // groups finished, nothing to do here
     }
-    else if (tagName.equals(finishTag))
+    else if (tagName.equals(getFinishTag()))
     {
       getParser().popFactory().endElement(tagName);
     }
@@ -250,18 +221,7 @@ public class ReportDescriptionHandler implements ElementDefinitionHandler
           + PAGE_FOOTER_TAG + ", "
           + ITEMBAND_TAG + ", "
           + GROUPS_TAG + ", "
-          + finishTag);
+          + getFinishTag());
     }
   }
-
-  /**
-   * Returns the parser.
-   *
-   * @return The parser.
-   */
-  public Parser getParser()
-  {
-    return parser;
-  }
-
 }

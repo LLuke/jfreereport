@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: ReportWriter.java,v 1.2 2003/07/15 16:28:22 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,13 @@ package org.jfree.report.modules.parser.ext.writer;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.ReportBuilderHints;
+import org.jfree.report.modules.parser.ext.ParserConfigHandler;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceFactory;
 import org.jfree.report.modules.parser.ext.factory.elements.ElementFactory;
@@ -49,6 +54,7 @@ import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactory;
 import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactoryCollector;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollection;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
+import org.jfree.report.util.Log;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 
@@ -97,19 +103,101 @@ public class ReportWriter
       throw new NullPointerException("Encoding is null.");
     }
 
+    this.report = report;
+    this.encoding = encoding;
+
     dataSourceCollector = new DataSourceCollector();
     elementFactoryCollector = new ElementFactoryCollector();
     classFactoryCollector = new ClassFactoryCollector();
     classFactoryCollector.addFactory(dataSourceCollector);
     styleKeyFactoryCollector = new StyleKeyFactoryCollector();
     templateCollector = new TemplateCollector();
-    this.report = report;
-    this.encoding = encoding;
+
+    loadObjectFactories();
+    loadDataSourceFactories();
+    loadElementFactories();
+    loadStyleKeyFactories();
+    loadTemplateFactories();
 
     // configure all factories with the current report configuration ...
     dataSourceCollector.configure(report.getReportConfiguration());
     classFactoryCollector.configure(report.getReportConfiguration());
     templateCollector.configure(report.getReportConfiguration());
+  }
+
+  private void loadObjectFactories ()
+  {
+    ReportBuilderHints hints = getReport().getReportBuilderHints();
+    List l = (List) hints.getHint(getReport(), ParserConfigHandler.OBJECT_FACTORY_HINT, List.class);
+    if (l == null)
+    {
+      return;
+    }
+    ClassFactory[] list = (ClassFactory[]) loadParserHintFactories(l, ClassFactory.class);
+    for (int i = 0; i < list.length; i++)
+    {
+      addClassFactoryFactory(list[i]);
+    }
+  }
+
+  private void loadDataSourceFactories ()
+  {
+    ReportBuilderHints hints = getReport().getReportBuilderHints();
+    List l = (List) hints.getHint(getReport(), ParserConfigHandler.DATASOURCE_FACTORY_HINT, List.class);
+    if (l == null)
+    {
+      return;
+    }
+    DataSourceFactory[] list = (DataSourceFactory[]) loadParserHintFactories(l, DataSourceFactory.class);
+    for (int i = 0; i < list.length; i++)
+    {
+      addDataSourceFactory(list[i]);
+    }
+  }
+
+  private void loadTemplateFactories ()
+  {
+    ReportBuilderHints hints = getReport().getReportBuilderHints();
+    List l = (List) hints.getHint(getReport(), ParserConfigHandler.TEMPLATE_FACTORY_HINT, List.class);
+    if (l == null)
+    {
+      return;
+    }
+    TemplateCollection[] list = (TemplateCollection[]) loadParserHintFactories(l, TemplateCollection.class);
+    for (int i = 0; i < list.length; i++)
+    {
+      addTemplateCollection(list[i]);
+    }
+  }
+
+  private void loadElementFactories ()
+  {
+    ReportBuilderHints hints = getReport().getReportBuilderHints();
+    List l = (List) hints.getHint(getReport(), ParserConfigHandler.ELEMENT_FACTORY_HINT, List.class);
+    if (l == null)
+    {
+      return;
+    }
+    ElementFactory[] list = (ElementFactory[]) loadParserHintFactories(l, ElementFactory.class);
+    for (int i = 0; i < list.length; i++)
+    {
+      addElementFactory(list[i]);
+    }
+  }
+
+  private void loadStyleKeyFactories ()
+  {
+    ReportBuilderHints hints = getReport().getReportBuilderHints();
+    List l = (List) hints.getHint(getReport(), ParserConfigHandler.STYLEKEY_FACTORY_HINT, List.class);
+    if (l == null)
+    {
+      return;
+    }
+    StyleKeyFactory[] list = (StyleKeyFactory[]) loadParserHintFactories(l, StyleKeyFactory.class);
+    for (int i = 0; i < list.length; i++)
+    {
+      addStyleKeyFactory(list[i]);
+    }
   }
 
   /**
@@ -121,6 +209,47 @@ public class ReportWriter
   {
     return encoding;
   }
+
+  private Object[] loadParserHintFactories (List hints, Class factoryType)
+  {
+    Object[] hintValues = hints.toArray();
+    ArrayList factories = new ArrayList(hintValues.length);
+    for (int i = 0; i < hintValues.length; i++)
+    {
+      if (hintValues[i] instanceof String == false)
+      {
+        Log.warn (new Log.SimpleMessage
+            ("Invalid parser hint type for factory: ", factoryType,
+                ": Type found: ", hintValues[i]));
+        continue;
+      }
+
+      try
+      {
+        Class c = getClass().getClassLoader().loadClass((String) hintValues[i]);
+        if (factoryType.isAssignableFrom(c) == false)
+        {
+          Log.warn (new Log.SimpleMessage
+              ("Invalid factory type specified: Required ", factoryType,
+                  " but found ", c));
+          continue;
+        }
+
+        Object o = c.newInstance();
+        if (factories.contains(o) == false)
+        {
+          factories.add(o);
+        }
+      }
+      catch (Exception e)
+      {
+        Log.warn ("Error while applying parser hints: ", e);
+      }
+    }
+
+    return factories.toArray((Object[]) Array.newInstance(factoryType, factories.size()));
+  }
+
 
   /**
    * Adds a data-source factory.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceFactory.java,v 1.8 2003/06/27 14:25:19 taqua Exp $
+ * $Id: DataSourceFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -39,6 +39,7 @@
 package org.jfree.report.modules.parser.ext.factory.datasource;
 
 import java.util.Iterator;
+import java.io.Serializable;
 
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ObjectDescription;

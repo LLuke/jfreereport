@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.1 2003/07/07 22:43:59 taqua Exp $
+ * $Id: Element.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -82,6 +82,8 @@ import org.jfree.report.style.StyleSheetCollectionHelper;
  */
 public abstract class Element implements DataTarget, Serializable, Cloneable
 {
+  public static final String ANONYMOUS_ELEMENT_PREFIX = "anonymousElement@";
+
   /**
    * Internal helper class to handle the style sheet collection properly.
    */
@@ -157,7 +159,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    */
   protected Element()
   {
-    setName("anonymousElement@" + super.hashCode());
+    setName(ANONYMOUS_ELEMENT_PREFIX + super.hashCode());
     datasource = NULL_DATASOURCE;
     style = new ElementStyleSheet(getName());
     style.setAllowCaching(true);

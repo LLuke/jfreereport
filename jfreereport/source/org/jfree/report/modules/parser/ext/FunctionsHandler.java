@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsHandler.java,v 1.16 2003/06/29 16:59:25 taqua Exp $
+ * $Id: FunctionsHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -40,14 +40,11 @@ package org.jfree.report.modules.parser.ext;
 
 import java.util.Iterator;
 
-import org.jfree.report.JFreeReport;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.Function;
 import org.jfree.report.function.FunctionInitializeException;
-import org.jfree.report.modules.parser.base.InitialReportHandler;
-import org.jfree.xml.ElementDefinitionHandler;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.factory.objects.ObjectDescription;
@@ -60,7 +57,7 @@ import org.xml.sax.SAXException;
  *
  * @author Thomas Morgner.
  */
-public class FunctionsHandler implements ElementDefinitionHandler
+public class FunctionsHandler extends AbstractExtReportParserHandler
 {
   /** The name of the function tag. */
   public static final String FUNCTION_TAG = "function";
@@ -70,12 +67,6 @@ public class FunctionsHandler implements ElementDefinitionHandler
 
   /** The name of the 'property-ref' tag. */
   public static final String PROPERTY_REF_TAG = "property-ref";
-
-  /** The parser. */
-  private Parser parser;
-
-  /** The finish tag. */
-  private String finishTag;
 
   /** The property name. */
   private String propertyName;
@@ -92,10 +83,9 @@ public class FunctionsHandler implements ElementDefinitionHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public FunctionsHandler(final Parser parser, final String finishTag)
+  public FunctionsHandler(final ReportParser parser, final String finishTag)
   {
-    this.parser = parser;
-    this.finishTag = finishTag;
+    super(parser, finishTag);
   }
 
   /**
@@ -126,7 +116,7 @@ public class FunctionsHandler implements ElementDefinitionHandler
       final int depLevel = ParserUtil.parseInt(attrs.getValue("deplevel"), 0);
 
       final Expression e = loadExpression(className, expName, depLevel);
-      expressionHandler = new ExpressionHandler(getParser(), tagName, e);
+      expressionHandler = new ExpressionHandler(getReportParser(), tagName, e);
       getParser().pushFactory(expressionHandler);
     }
     else if (tagName.equals(FUNCTION_TAG))
@@ -146,7 +136,7 @@ public class FunctionsHandler implements ElementDefinitionHandler
       final int depLevel = ParserUtil.parseInt(attrs.getValue("deplevel"), 0);
 
       final Expression e = loadExpression(className, expName, depLevel);
-      expressionHandler = new ExpressionHandler(getParser(), tagName, e);
+      expressionHandler = new ExpressionHandler(getReportParser(), tagName, e);
       getParser().pushFactory(expressionHandler);
     }
     else if (tagName.equals(PROPERTY_REF_TAG))
@@ -166,11 +156,11 @@ public class FunctionsHandler implements ElementDefinitionHandler
       final ObjectDescription od = loadObjectDescription(className);
       if (isBasicObject(od))
       {
-        propertyRefHandler = new BasicObjectHandler(getParser(), tagName, od);
+        propertyRefHandler = new BasicObjectHandler(getReportParser(), tagName, od);
       }
       else
       {
-        propertyRefHandler = new CompoundObjectHandler(getParser(), tagName, od);
+        propertyRefHandler = new CompoundObjectHandler(getReportParser(), tagName, od);
       }
       getParser().pushFactory(propertyRefHandler);
 
@@ -180,8 +170,7 @@ public class FunctionsHandler implements ElementDefinitionHandler
       throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
           + EXPRESSION_TAG + ", "
           + FUNCTION_TAG + ", "
-          + PROPERTY_REF_TAG + ", "
-          + finishTag);
+          + PROPERTY_REF_TAG);
     }
   }
 
@@ -311,9 +300,9 @@ public class FunctionsHandler implements ElementDefinitionHandler
         getReport().setProperty(propertyName, propertyRefHandler.getValue());
       }
     }
-    else if (tagName.equals(finishTag))
+    else if (tagName.equals(getFinishTag()))
     {
-      getParser().popFactory().endElement(finishTag);
+      getParser().popFactory().endElement(tagName);
     }
     else
     {
@@ -321,29 +310,8 @@ public class FunctionsHandler implements ElementDefinitionHandler
           + EXPRESSION_TAG + ", "
           + FUNCTION_TAG + ", "
           + PROPERTY_REF_TAG + ", "
-          + finishTag);
+          + getFinishTag());
     }
-  }
-
-  /**
-   * Returns the parser.
-   *
-   * @return The parser.
-   */
-  public Parser getParser()
-  {
-    return parser;
-  }
-
-  /**
-   * Returns the report.
-   *
-   * @return The report.
-   */
-  private JFreeReport getReport()
-  {
-    return (JFreeReport) getParser().getHelperObject(
-        InitialReportHandler.REPORT_DEFINITION_TAG);
   }
 
   /**

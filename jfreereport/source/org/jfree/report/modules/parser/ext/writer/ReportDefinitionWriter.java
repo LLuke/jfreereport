@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionWriter.java,v 1.12 2003/06/29 16:59:27 taqua Exp $
+ * $Id: ReportDefinitionWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@ package org.jfree.report.modules.parser.ext.writer;
 import java.io.IOException;
 import java.io.Writer;
 
-import org.jfree.report.modules.parser.base.ParserEntityResolver;
 import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
 
 /**
@@ -89,7 +88,14 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
     w.write("<!--\n");
     w.write(" This report definition was created by the ReportDefinitionWriter.\n");
     w.write("-->\n");
-    writeTag(w, "report-definition", "name", reportName, OPEN);
+    if (reportName != null)
+    {
+      writeTag(w, "report-definition", "name", reportName, OPEN);
+    }
+    else
+    {
+      writeTag(w, "report-definition");
+    }
 
     final ParserConfigWriter parserConfigWriter =
         new ParserConfigWriter(getReportWriter(), getIndentLevel());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateCollection.java,v 1.13 2003/06/29 16:59:25 taqua Exp $
+ * $Id: TemplateCollection.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -40,6 +40,7 @@ package org.jfree.report.modules.parser.ext.factory.templates;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.io.Serializable;
 
 import org.jfree.report.filter.templates.Template;
 import org.jfree.util.Configuration;
@@ -49,7 +50,7 @@ import org.jfree.util.Configuration;
  *
  * @author Thomas Morgner
  */
-public class TemplateCollection
+public class TemplateCollection implements Serializable
 {
   /** Storage for the templates. */
   private HashMap templates;

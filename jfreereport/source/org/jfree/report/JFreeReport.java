@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: JFreeReport.java,v 1.3 2003/07/12 16:31:04 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -158,6 +158,13 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   private StyleSheetCollection styleSheetCollection;
 
   /**
+   * The report builder hints support writer and other report definition
+   * processing tools by spicing up the report object with specific properties.
+   * ReportBuilderHints do not get cloned and are removed from the clone.
+   */
+  private ReportBuilderHints reportBuilderHints;
+
+  /**
    * The default constructor. Creates an empty but fully initialized report.
    */
   public JFreeReport()
@@ -165,6 +172,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     this.reportConfiguration = new ReportConfiguration(ReportConfiguration.getGlobalConfig());
     this.properties = new ReportProperties();
     this.styleSheetCollection = new StyleSheetCollection();
+    this.reportBuilderHints = new ReportBuilderHints();
 
     this.groups = new GroupList();
     checkGroups();
@@ -744,6 +752,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     report.reportHeader.updateStyleSheetCollection(report.styleSheetCollection);
     report.pageFooter.updateStyleSheetCollection(report.styleSheetCollection);
     report.pageHeader.updateStyleSheetCollection(report.styleSheetCollection);
+    report.reportBuilderHints = new ReportBuilderHints();
     return report;
   }
 
@@ -837,5 +846,18 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   public StyleSheetCollection getStyleSheetCollection()
   {
     return styleSheetCollection;
+  }
+
+  /**
+   * Returns the report builder hints collection assigned with this report.
+   * Be aware that these hints are not cloned and that during the cloning all
+   * references to this ReportBuilderHints instance get replaced by an newly
+   * created instance.
+   *
+   * @return the report builder hints.
+   */
+  public ReportBuilderHints getReportBuilderHints()
+  {
+    return reportBuilderHints;
   }
 }

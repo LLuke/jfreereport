@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesHandler.java,v 1.15 2003/06/29 16:59:25 taqua Exp $
+ * $Id: TemplatesHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -38,11 +38,10 @@
 
 package org.jfree.report.modules.parser.ext;
 
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
-import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -54,16 +53,10 @@ import org.xml.sax.SAXException;
  * @author Thomas Morgner.
  * @see org.jfree.report.filter.templates.Template
  */
-public class TemplatesHandler implements ElementDefinitionHandler
+public class TemplatesHandler extends AbstractExtReportParserHandler
 {
   /** The template tag. */
   public static final String TEMPLATE_TAG = "template";
-
-  /** The parser. */
-  private Parser parser;
-
-  /** The finish tag. */
-  private String finishTag;
 
   /** A template collector. */
   private TemplateCollector templateCollector;
@@ -77,19 +70,9 @@ public class TemplatesHandler implements ElementDefinitionHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public TemplatesHandler(final Parser parser, final String finishTag)
+  public TemplatesHandler(final ReportParser parser, final String finishTag)
   {
-    if (parser == null)
-    {
-      throw new NullPointerException("Parser is null");
-    }
-    if (finishTag == null)
-    {
-      throw new NullPointerException("FinishTag is null");
-    }
-
-    this.parser = parser;
-    this.finishTag = finishTag;
+    super(parser, finishTag);
     templateCollector = (TemplateCollector)
         getParser().getHelperObject(ParserConfigHandler.TEMPLATE_FACTORY_TAG);
     if (templateCollector == null)
@@ -123,6 +106,11 @@ public class TemplatesHandler implements ElementDefinitionHandler
           getParser().getLocator());
     }
     final String references = attrs.getValue("references");
+    if (references == null)
+    {
+      throw new ParseException("The 'references' attribute is required for template definitions",
+          getParser().getLocator());
+    }
     TemplateDescription template = templateCollector.getTemplate(references);
     if (template == null)
     {
@@ -133,7 +121,8 @@ public class TemplatesHandler implements ElementDefinitionHandler
     // Clone the defined template ... we don't change the original ..
     template = (TemplateDescription) template.getInstance();
     template.setName(templateName);
-    templateFactory = new TemplateHandler(getParser(), TEMPLATE_TAG, template);
+    getReport().getReportBuilderHints().putHint(template, "ext.parser.template-reference", references);
+    templateFactory = new TemplateHandler(getReportParser(), TEMPLATE_TAG, template);
     getParser().pushFactory(templateFactory);
   }
 
@@ -161,26 +150,18 @@ public class TemplatesHandler implements ElementDefinitionHandler
   {
     if (tagName.equals(TEMPLATE_TAG))
     {
-      templateCollector.addTemplate(templateFactory.getTemplate());
+      TemplateDescription template = templateFactory.getTemplate();
+      templateCollector.addTemplate(template);
+      getReport().getReportBuilderHints().addHintList(getReport(), "ext.parser.template-definition", template);
     }
-    else if (tagName.equals(finishTag))
+    else if (tagName.equals(getFinishTag()))
     {
       getParser().popFactory().endElement(tagName);
     }
     else
     {
-      throw new ParseException("Wrong tag, expected one of " + finishTag + ","
+      throw new ParseException("Wrong tag, expected one of " + getFinishTag() + ","
           + TEMPLATE_TAG, getParser().getLocator());
     }
-  }
-
-  /**
-   * Returns the parser.
-   *
-   * @return The parser.
-   */
-  public Parser getParser()
-  {
-    return parser;
   }
 }

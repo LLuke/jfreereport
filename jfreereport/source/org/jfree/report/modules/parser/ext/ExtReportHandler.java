@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtReportHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: ExtReportHandler.java,v 1.2 2003/07/14 19:37:54 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,9 @@ package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.parser.base.IncludeParser;
-import org.jfree.report.modules.parser.base.InitialReportHandler;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.modules.parser.base.ReportRootHandler;
+import org.jfree.report.ReportBuilderHints;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
 import org.jfree.report.modules.parser.ext.factory.elements.ElementFactoryCollector;
 import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactoryCollector;
@@ -62,7 +63,7 @@ import org.xml.sax.SAXException;
 public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHandler
 {
   /** The report definition tag name.*/
-  public static final String REPORT_DEFINITION_TAG = InitialReportHandler.REPORT_DEFINITION_TAG;
+  public static final String REPORT_DEFINITION_TAG = ExtParserModuleInit.REPORT_DEFINITION_TAG;
 
   /** The parser config tag name. */
   public static final String PARSER_CONFIG_TAG = "parser-config";
@@ -86,10 +87,14 @@ public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHan
   public static final String DATA_DEFINITION_TAG = "data-definition";
 
   /** The parser. */
-  private Parser parser;
+  private ReportParser parser;
 
   /** The finish tag. */
   private String finishTag;
+
+  private boolean updateReportName;
+
+  public static final String EXT_PARSER_TYPE_HINT_VALUE = "org.jfree.report.modules.parser.ext";
 
   /**
    * Instantiates the handler. The handler must be initialized properly before
@@ -105,23 +110,26 @@ public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHan
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public void init (final Parser parser, final String finishTag) throws SAXException
+  public void init (final ReportParser parser, final String finishTag) throws SAXException
   {
     this.parser = parser;
     this.finishTag = finishTag;
 
     if (parser.getConfigProperty(IncludeParser.INCLUDE_PARSING_KEY, "false").equals("true"))
     {
-      if (getParser().getHelperObject(REPORT_DEFINITION_TAG) == null)
+      if (parser.getReport() == null)
       {
         throw new SAXException("This is an include report, but no report object found.");
       }
+      updateReportName = false;
     }
     else
     {
       // create the initial JFreeReport object.
       final JFreeReport report = new JFreeReport();
-      getParser().setHelperObject(REPORT_DEFINITION_TAG, report);
+      getParser().setHelperObject(ReportParser.HELPER_OBJ_REPORT_NAME, report);
+      report.getReportBuilderHints().putHint(report, "parser.type", EXT_PARSER_TYPE_HINT_VALUE);
+      updateReportName = true;
     }
     createClassFactoryHolder();
     createStyleKeyFactoryHolder();
@@ -152,34 +160,42 @@ public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHan
   public void startElement(final String tagName, final Attributes attrs)
       throws SAXException
   {
-    if (tagName.equals(PARSER_CONFIG_TAG))
+    if (tagName.equals(ExtParserModuleInit.REPORT_DEFINITION_TAG))
+    {
+      if (updateReportName)
+      {
+        parser.getReport().setName(attrs.getValue("name"));
+      }
+      // ignore it ...
+    }
+    else if (tagName.equals(PARSER_CONFIG_TAG))
     {
       // create the various factories ... order does matter ...
-      getParser().pushFactory(new ParserConfigHandler(getParser(), tagName));
+      getParser().pushFactory(new ParserConfigHandler(getReportParser(), tagName));
     }
     else if (tagName.equals(REPORT_CONFIG_TAG))
     {
-      getParser().pushFactory(new ReportConfigHandler(getParser(), tagName));
+      getParser().pushFactory(new ReportConfigHandler(getReportParser(), tagName));
     }
     else if (tagName.equals(STYLES_TAG))
     {
-      getParser().pushFactory(new StylesHandler(getParser(), tagName));
+      getParser().pushFactory(new StylesHandler(getReportParser(), tagName));
     }
     else if (tagName.equals(TEMPLATES_TAG))
     {
-      getParser().pushFactory(new TemplatesHandler(getParser(), tagName));
+      getParser().pushFactory(new TemplatesHandler(getReportParser(), tagName));
     }
     else if (tagName.equals(FUNCTIONS_TAG))
     {
-      getParser().pushFactory(new FunctionsHandler(getParser(), tagName));
+      getParser().pushFactory(new FunctionsHandler(getReportParser(), tagName));
     }
     else if (tagName.equals(DATA_DEFINITION_TAG))
     {
-      getParser().pushFactory(new DataDefinitionHandler(getParser()));
+      getParser().pushFactory(new DataDefinitionHandler(getReportParser(), tagName));
     }
     else if (tagName.equals(REPORT_DESCRIPTION_TAG))
     {
-      getParser().pushFactory(new ReportDescriptionHandler(getParser(), tagName));
+      getParser().pushFactory(new ReportDescriptionHandler(getReportParser(), tagName));
     }
     else
     {
@@ -343,6 +359,16 @@ public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHan
    * @return The parser.
    */
   public Parser getParser()
+  {
+    return parser;
+  }
+
+  /**
+   * Returns the parser as ReportParser reference.
+   *
+   * @return The parser.
+   */
+  private ReportParser getReportParser()
   {
     return parser;
   }

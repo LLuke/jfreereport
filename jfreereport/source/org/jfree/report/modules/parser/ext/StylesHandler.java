@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: StylesHandler.java,v 1.2 2003/07/12 16:31:13 taqua Exp $
  *
  * Changes
  * -------
@@ -38,13 +38,10 @@
 
 package org.jfree.report.modules.parser.ext;
 
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.StyleSheetCollection;
-import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.parser.base.InitialReportHandler;
-import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -57,19 +54,13 @@ import org.xml.sax.SAXException;
  * @author Thomas Morgner.
  * @see ElementStyleSheet
  */
-public class StylesHandler implements ElementDefinitionHandler
+public class StylesHandler extends AbstractExtReportParserHandler
 {
   /** The 'styles-collection' tag name. */
   public static final String STYLES_COLLECTION = "styles-collection";
 
   /** The 'style' tag name. */
   public static final String STYLE_TAG = "style";
-
-  /** The parser. */
-  private Parser parser;
-
-  /** The finish tag. */
-  private String finishTag;
 
   /** The style collection. */
   private StyleSheetCollection styleCollection;
@@ -83,18 +74,9 @@ public class StylesHandler implements ElementDefinitionHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public StylesHandler(final Parser parser, final String finishTag)
+  public StylesHandler(final ReportParser parser, final String finishTag)
   {
-    if (parser == null)
-    {
-      throw new NullPointerException("Parser is null");
-    }
-    if (finishTag == null)
-    {
-      throw new NullPointerException("FinishTag is null");
-    }
-    this.parser = parser;
-    this.finishTag = finishTag;
+    super(parser, finishTag);
     styleCollection = getReport().getStyleSheetCollection();
   }
 
@@ -117,7 +99,7 @@ public class StylesHandler implements ElementDefinitionHandler
       }
       styleSheet = new ElementStyleSheet(name);
 
-      final StyleSheetHandler styleSheetFactory = new StyleSheetHandler(getParser(),
+      final StyleSheetHandler styleSheetFactory = new StyleSheetHandler(getReportParser(),
           STYLE_TAG, styleSheet);
       getParser().pushFactory(styleSheetFactory);
     }
@@ -154,35 +136,14 @@ public class StylesHandler implements ElementDefinitionHandler
     {
       styleCollection.addStyleSheet(styleSheet);
     }
-    else if (tagName.equals(finishTag))
+    else if (tagName.equals(getFinishTag()))
     {
       getParser().popFactory().endElement(tagName);
     }
     else
     {
       throw new SAXException("Expected '" + STYLE_TAG + "' or "
-          + finishTag + "', found : " + tagName);
+          + getFinishTag() + "', found : " + tagName);
     }
-  }
-
-  /**
-   * Returns the parser.
-   *
-   * @return The parser.
-   */
-  public Parser getParser()
-  {
-    return parser;
-  }
-
-  /**
-   * Returns the report.
-   *
-   * @return The report.
-   */
-  private JFreeReport getReport()
-  {
-    return (JFreeReport) getParser().getHelperObject(
-        InitialReportHandler.REPORT_DEFINITION_TAG);
   }
 }

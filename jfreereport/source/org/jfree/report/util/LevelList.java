@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelList.java,v 1.14 2003/07/03 15:59:29 taqua Exp $
+ * $Id: LevelList.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -460,7 +460,7 @@ public class LevelList implements Cloneable
 
   protected Object[] getRawElements ()
   {
-    return elements.toArray(new Object[levels.size()]);
+    return elements.toArray(new Object[elements.size()]);
   }
 
   protected Integer[] getRawLevels ()

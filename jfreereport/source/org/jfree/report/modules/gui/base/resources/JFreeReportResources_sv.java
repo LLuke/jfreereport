@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_sv.java,v 1.6 2003/06/29 16:59:27 taqua Exp $
+ * $Id: JFreeReportResources_sv.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,10 @@ import java.awt.event.KeyEvent;
  */
 public class JFreeReportResources_sv extends JFreeReportResources
 {
+  public JFreeReportResources_sv()
+  {
+  }
+
   /**
    * Returns the array of strings in the resource bundle.
    *

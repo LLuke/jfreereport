@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimpleParserModuleInit.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: SimpleParserModuleInit.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,11 +41,16 @@ package org.jfree.report.modules.parser.simple;
 import java.net.URL;
 
 import org.jfree.report.modules.parser.base.ParserEntityResolver;
+import org.jfree.report.modules.parser.base.InitialReportHandler;
 import org.jfree.report.modules.ModuleInitializeException;
 import org.jfree.report.modules.ModuleInitializer;
 
 public class SimpleParserModuleInit implements ModuleInitializer
 {
+
+  /** the document element tag for the simple report format. */
+  public static final String OLD_REPORT_TAG = "report";
+
   /** the Public ID for the simple version of JFreeReport XML definitions. */
   public static final String PUBLIC_ID_SIMPLE =
       "-//JFreeReport//DTD report definition//EN//simple";
@@ -61,5 +66,7 @@ public class SimpleParserModuleInit implements ModuleInitializer
     final URL urlReportDTD = res.getClass().getResource
         ("/org/jfree/report/modules/parser/simple/resources/report.dtd");
     res.setDTDLocation(PUBLIC_ID_SIMPLE, urlReportDTD);
+
+    InitialReportHandler.registerHandler(OLD_REPORT_TAG, ReportFactory.class.getName());
   }
 }

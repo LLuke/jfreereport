@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicStyleKeyHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: BasicStyleKeyHandler.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
  *
  * Changes
  * -------
@@ -38,12 +38,11 @@
 
 package org.jfree.report.modules.parser.ext;
 
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactory;
 import org.jfree.report.style.StyleKey;
 import org.jfree.report.util.CharacterEntityParser;
-import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -58,14 +57,8 @@ import org.xml.sax.SAXException;
  *
  * @author Thomas Morgner.
  */
-public class BasicStyleKeyHandler implements ElementDefinitionHandler
+public class BasicStyleKeyHandler extends AbstractExtReportParserHandler
 {
-  /** The finish tag. */
-  private String finishTag;
-
-  /** The parser. */
-  private Parser parser;
-
   /** A buffer. */
   private StringBuffer buffer;
 
@@ -94,12 +87,11 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public BasicStyleKeyHandler(final Parser parser, final String finishTag, final String name, final Class c)
+  public BasicStyleKeyHandler(final ReportParser parser, final String finishTag, final String name, final Class c)
       throws SAXException
   {
+    super(parser, finishTag);
     this.entityParser = CharacterEntityParser.createXMLEntityParser();
-    this.parser = parser;
-    this.finishTag = finishTag;
     this.buffer = new StringBuffer();
     keyfactory = (StyleKeyFactory)
         getParser().getHelperObject(ParserConfigHandler.STYLEKEY_FACTORY_TAG);
@@ -135,7 +127,7 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
    */
   public void startElement(final String tagName, final Attributes attrs) throws SAXException
   {
-    throw new SAXException("Element '" + finishTag + "' has no child-elements.");
+    throw new SAXException("Element '" + getFinishTag() + "' has no child-elements.");
   }
 
   /**
@@ -171,9 +163,9 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
    */
   public void endElement(final String tagName) throws SAXException
   {
-    if (tagName.equals(finishTag) == false)
+    if (tagName.equals(getFinishTag()) == false)
     {
-      throw new SAXException("Expected tag '" + finishTag + "'");
+      throw new SAXException("Expected tag '" + getFinishTag() + "'");
     }
     getParser().popFactory().endElement(tagName);
   }
@@ -197,26 +189,6 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
   {
     return keyfactory.createBasicObject(key, entityParser.decodeEntities(buffer.toString()),
         keyValueClass, classFactory);
-  }
-
-  /**
-   * Returns the parser.
-   *
-   * @return The parser.
-   */
-  public Parser getParser()
-  {
-    return parser;
-  }
-
-  /**
-   * Returns the finish tag.
-   *
-   * @return The finish tag.
-   */
-  protected String getFinishTag()
-  {
-    return finishTag;
   }
 
   /**

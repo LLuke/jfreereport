@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.1 2003/07/07 22:43:59 taqua Exp $
+ * $Id: Band.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -121,6 +121,9 @@ public class Band extends Element implements Serializable, Cloneable
   /** The default style-sheet for the elements contained in the band. */
   private ElementStyleSheet bandDefaults;
 
+  /** The prefix for anonymous bands, bands without an userdefined name. */
+  public static final String ANONYMOUS_BAND_PREFIX = "anonymousBand@";
+  
   /**
    * Constructs a new band (initially empty).
    */
@@ -131,7 +134,7 @@ public class Band extends Element implements Serializable, Cloneable
     final BandLayoutManager layout = new StaticLayoutManager();
     getStyle().setStyleProperty(BandLayoutManager.LAYOUTMANAGER, layout);
 
-    setName("anonymousBand@" + super.hashCode());
+    setName(ANONYMOUS_BAND_PREFIX + super.hashCode());
     allElements = new ArrayList();
 
     // band style sheets are not accessed by names. Names are important

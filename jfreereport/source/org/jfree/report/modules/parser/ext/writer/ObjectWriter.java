@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectWriter.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.3 2003/07/14 19:37:54 taqua Exp $
  *
  * Changes
  * -------
@@ -61,14 +61,13 @@ import org.jfree.xml.factory.objects.URLObjectDescription;
  */
 public class ObjectWriter extends AbstractXMLDefinitionWriter
 {
-  /** The base object. */
-  private Object baseObject;
-
   /** The object description. */
   private ObjectDescription objectDescription;
 
   /** The object factory. */
   private ClassFactoryCollector cc;
+
+
 
   /**
    * Creates a new writer.
@@ -80,18 +79,33 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
    */
   public ObjectWriter(final ReportWriter reportWriter, final Object baseObject,
                       final ObjectDescription objectDescription, final int indentLevel)
+    throws ReportWriterException
   {
-    super(reportWriter, indentLevel);
+    this (reportWriter, objectDescription, indentLevel);
     if (baseObject == null)
     {
       throw new NullPointerException("BaseObject is null");
     }
+    try
+    {
+      objectDescription.setParameterFromObject(baseObject);
+    }
+    catch (ObjectFactoryException ofe)
+    {
+      throw new ReportWriterException("Failed to fill ObjectDescription", ofe);
+    }
+  }
+
+  public ObjectWriter(final ReportWriter reportWriter,
+                      final ObjectDescription objectDescription, final int indentLevel)
+  {
+
+    super(reportWriter, indentLevel);
     if (objectDescription == null)
     {
       throw new NullPointerException("ObjectDescription is null");
     }
 
-    this.baseObject = baseObject;
     this.objectDescription = objectDescription;
     cc = getReportWriter().getClassFactoryCollector();
   }
@@ -104,16 +118,6 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
   public ObjectDescription getObjectDescription()
   {
     return objectDescription;
-  }
-
-  /**
-   * Returns the base object.
-   *
-   * @return The base object.
-   */
-  public Object getBaseObject()
-  {
-    return baseObject;
   }
 
   /**
@@ -137,16 +141,6 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
   public void write(final Writer writer) throws IOException, ReportWriterException
   {
     writer.flush();
-
-    try
-    {
-      objectDescription.setParameterFromObject(baseObject);
-    }
-    catch (Exception e)
-    {
-      throw new ReportWriterException("Unable to save object", e);
-    }
-
     final Iterator names = objectDescription.getParameterNames();
     while (names.hasNext())
     {
@@ -234,7 +228,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     if (parameterDescription == null)
     {
       throw new ReportWriterException("Unable to get Parameter description for "
-          + getBaseObject() + " Parameter: " + parameterName);
+          + getObjectDescription().getObjectClass() + " Parameter: " + parameterName);
     }
 
     try

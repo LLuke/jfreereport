@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionHandler.java,v 1.9 2003/06/29 16:59:25 taqua Exp $
+ * $Id: ExpressionHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,7 @@
 package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.function.Expression;
-import org.jfree.xml.ElementDefinitionHandler;
-import org.jfree.xml.Parser;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -52,16 +51,10 @@ import org.xml.sax.SAXException;
  * @see org.jfree.report.function.Function
  * @author Thomas Morgner
  */
-public class ExpressionHandler implements ElementDefinitionHandler
+public class ExpressionHandler extends AbstractExtReportParserHandler
 {
   /** The properties tag name. */
   public static final String PROPERTIES_TAG = "properties";
-
-  /** The parser. */
-  private Parser parser;
-
-  /** The finish tag. */
-  private String finishTag;
 
   /** The property handler. */
   private PropertyHandler propertyHandler;
@@ -76,10 +69,9 @@ public class ExpressionHandler implements ElementDefinitionHandler
    * @param finishTag  the finish tag.
    * @param expression  the expression.
    */
-  public ExpressionHandler(final Parser parser, final String finishTag, final Expression expression)
+  public ExpressionHandler(final ReportParser parser, final String finishTag, final Expression expression)
   {
-    this.parser = parser;
-    this.finishTag = finishTag;
+    super(parser, finishTag);
     this.expression = expression;
   }
 
@@ -95,7 +87,7 @@ public class ExpressionHandler implements ElementDefinitionHandler
   {
     if (tagName.equals(PROPERTIES_TAG))
     {
-      propertyHandler = new PropertyHandler(getParser(), tagName);
+      propertyHandler = new PropertyHandler(getReportParser(), tagName);
       getParser().pushFactory(propertyHandler);
     }
     else
@@ -132,24 +124,14 @@ public class ExpressionHandler implements ElementDefinitionHandler
       expression.setProperties(propertyHandler.getProperties());
       propertyHandler = null;
     }
-    else if (tagName.equals(finishTag))
+    else if (tagName.equals(getFinishTag()))
     {
       getParser().popFactory().endElement(tagName);
     }
     else
     {
-      throw new SAXException("Expected 'properties' or '" + finishTag + "'");
+      throw new SAXException("Expected 'properties' or '" + getFinishTag() + "'");
     }
-  }
-
-  /**
-   * Returns the parser.
-   *
-   * @return The parser.
-   */
-  public Parser getParser()
-  {
-    return parser;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtParserModuleInit.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: ExtParserModuleInit.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,11 +41,15 @@ package org.jfree.report.modules.parser.ext;
 import java.net.URL;
 
 import org.jfree.report.modules.parser.base.ParserEntityResolver;
+import org.jfree.report.modules.parser.base.InitialReportHandler;
 import org.jfree.report.modules.ModuleInitializer;
 import org.jfree.report.modules.ModuleInitializeException;
 
 public class ExtParserModuleInit implements ModuleInitializer
 {
+  /** the document element tag for the extended report format. */
+  public static final String REPORT_DEFINITION_TAG = "report-definition";
+
   /** the Public ID for the extensible version of JFreeReport XML definitions. */
   public static final String PUBLIC_ID_EXTENDED =
       "-//JFreeReport//DTD report definition//EN//extended";
@@ -62,5 +66,8 @@ public class ExtParserModuleInit implements ModuleInitializer
     final URL urlExtReportDTD = res.getClass().getResource(
         "/org/jfree/report/modules/parser/ext/resources/extreport.dtd");
     res.setDTDLocation(PUBLIC_ID_EXTENDED, urlExtReportDTD);
+
+    InitialReportHandler.registerHandler(REPORT_DEFINITION_TAG, ExtReportHandler.class.getName());
+
   }
 }

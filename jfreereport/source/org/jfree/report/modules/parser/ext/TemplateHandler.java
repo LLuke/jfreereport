@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateHandler.java,v 1.15 2003/06/29 16:59:25 taqua Exp $
+ * $Id: TemplateHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,9 @@
 
 package org.jfree.report.modules.parser.ext;
 
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
-import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -52,7 +51,7 @@ import org.xml.sax.SAXException;
  * @see org.jfree.report.filter.templates.Template
  * @author Thomas Morgner.
  */
-public class TemplateHandler implements ElementDefinitionHandler
+public class TemplateHandler extends AbstractExtReportParserHandler
 {
   /** The compound object tag. */
   public static final String COMPOUND_OBJECT_TAG = "compound-object";
@@ -66,12 +65,6 @@ public class TemplateHandler implements ElementDefinitionHandler
   /** The parameter name. */
   private String parameterName;
 
-  /** The parser. */
-  private Parser parser;
-
-  /** The finish tag. */
-  private String finishTag;
-
   /** The template description. */
   private TemplateDescription template;
 
@@ -83,23 +76,14 @@ public class TemplateHandler implements ElementDefinitionHandler
    * @param finishTag  the finish tag.
    * @param template  the template description.
    */
-  public TemplateHandler(final Parser parser, final String finishTag, final TemplateDescription template)
+  public TemplateHandler(final ReportParser parser, final String finishTag, final TemplateDescription template)
   {
-    if (parser == null)
-    {
-      throw new NullPointerException("Parser is null");
-    }
-    if (finishTag == null)
-    {
-      throw new NullPointerException("FinishTag is null");
-    }
+    super(parser,  finishTag);
     if (template == null)
     {
       throw new NullPointerException("Template is null");
     }
 
-    this.parser = parser;
-    this.finishTag = finishTag;
     this.template = template;
   }
 
@@ -140,7 +124,7 @@ public class TemplateHandler implements ElementDefinitionHandler
         }
       }
 
-      basicFactory = new BasicObjectHandler(getParser(), tagName, parameter);
+      basicFactory = new BasicObjectHandler(getReportParser(), tagName, parameter);
       getParser().pushFactory(basicFactory);
     }
     else if (tagName.equals(COMPOUND_OBJECT_TAG))
@@ -169,7 +153,7 @@ public class TemplateHandler implements ElementDefinitionHandler
         }
       }
 
-      basicFactory = new CompoundObjectHandler(getParser(), tagName, parameter);
+      basicFactory = new CompoundObjectHandler(getReportParser(), tagName, parameter);
       getParser().pushFactory(basicFactory);
     }
     else
@@ -213,27 +197,17 @@ public class TemplateHandler implements ElementDefinitionHandler
       getTemplate().setParameter(parameterName, o);
       basicFactory = null;
     }
-    else if (tagName.equals(finishTag))
+    else if (tagName.equals(getFinishTag()))
     {
       getParser().popFactory().endElement(tagName);
     }
     else
     {
       throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
-          + finishTag + ", "
+          + getFinishTag() + ", "
           + COMPOUND_OBJECT_TAG + ", "
           + BASIC_OBJECT_TAG + ". ");
     }
-  }
-
-  /**
-   * Returns the parser.
-   *
-   * @return The parser.
-   */
-  public Parser getParser()
-  {
-    return parser;
   }
 
   /**

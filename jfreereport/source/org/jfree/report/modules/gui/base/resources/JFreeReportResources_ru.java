@@ -28,7 +28,7 @@
  * Original Author:  Sergey M Mozgovoi;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_ru.java,v 1.4 2003/06/29 16:59:27 taqua Exp $
+ * $Id: JFreeReportResources_ru.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  *
  */
@@ -43,6 +43,9 @@ package org.jfree.report.modules.gui.base.resources;
  */
 public class JFreeReportResources_ru extends JFreeReportResources
 {
+  public JFreeReportResources_ru()
+  {
+  }
 
   /**
    * Returns the array of strings in the resource bundle.

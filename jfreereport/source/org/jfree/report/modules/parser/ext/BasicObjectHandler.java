@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicObjectHandler.java,v 1.16 2003/06/29 16:59:25 taqua Exp $
+ * $Id: BasicObjectHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,9 @@
 
 package org.jfree.report.modules.parser.ext;
 
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.util.CharacterEntityParser;
-import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.xml.sax.Attributes;
@@ -57,14 +56,8 @@ import org.xml.sax.SAXException;
  *
  * @author Thomas Morgner.
  */
-public class BasicObjectHandler implements ElementDefinitionHandler
+public class BasicObjectHandler extends AbstractExtReportParserHandler
 {
-  /** The parser. */
-  private Parser parser;
-
-  /** The finish tag. */
-  private String finishTag;
-
   /** A buffer. */
   private StringBuffer buffer;
 
@@ -81,11 +74,10 @@ public class BasicObjectHandler implements ElementDefinitionHandler
    * @param finishTag  the finish tag.
    * @param od  the object description.
    */
-  public BasicObjectHandler(final Parser parser, final String finishTag, final ObjectDescription od)
+  public BasicObjectHandler(final ReportParser parser, final String finishTag, final ObjectDescription od)
   {
+    super(parser, finishTag);
     this.entityParser = CharacterEntityParser.createXMLEntityParser();
-    this.parser = parser;
-    this.finishTag = finishTag;
     this.buffer = new StringBuffer();
     this.objectDescription = od;
   }
@@ -99,12 +91,11 @@ public class BasicObjectHandler implements ElementDefinitionHandler
    *
    * @throws SAXException  if a parser error occurs.
    */
-  public BasicObjectHandler(final Parser parser, final String finishTag, final Class targetObject)
+  public BasicObjectHandler(final ReportParser parser, final String finishTag, final Class targetObject)
       throws SAXException
   {
+    super(parser, finishTag);
     this.entityParser = CharacterEntityParser.createXMLEntityParser();
-    this.parser = parser;
-    this.finishTag = finishTag;
     this.buffer = new StringBuffer();
 
     final ClassFactory fact = (ClassFactory) getParser().getHelperObject(
@@ -131,7 +122,7 @@ public class BasicObjectHandler implements ElementDefinitionHandler
    */
   public void startElement(final String tagName, final Attributes attrs) throws SAXException
   {
-    throw new SAXException("Element '" + finishTag + "' has no child-elements.");
+    throw new SAXException("Element '" + getFinishTag() + "' has no child-elements.");
   }
 
   /**
@@ -157,23 +148,13 @@ public class BasicObjectHandler implements ElementDefinitionHandler
    */
   public void endElement(final String tagName) throws SAXException
   {
-    if (tagName.equals(finishTag) == false)
+    if (tagName.equals(getFinishTag()) == false)
     {
-      throw new SAXException("Expected tag '" + finishTag + "'");
+      throw new SAXException("Expected tag '" + getFinishTag() + "'");
     }
     final ObjectDescription od = getTargetObjectDescription();
     od.setParameter("value", entityParser.decodeEntities(buffer.toString()));
     getParser().popFactory().endElement(tagName);
-  }
-
-  /**
-   * Returns the parser.
-   *
-   * @return The parser.
-   */
-  public Parser getParser()
-  {
-    return parser;
   }
 
   /**
@@ -194,15 +175,5 @@ public class BasicObjectHandler implements ElementDefinitionHandler
   protected ObjectDescription getTargetObjectDescription()
   {
     return objectDescription;
-  }
-
-  /**
-   * Returns the finish tag.
-   *
-   * @return The finish tag.
-   */
-  protected String getFinishTag()
-  {
-    return finishTag;
   }
 }

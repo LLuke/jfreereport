@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: GroupHandler.java,v 1.2 2003/07/12 16:31:13 taqua Exp $
  *
  * Changes
  * -------
@@ -42,10 +42,8 @@ import org.jfree.report.Band;
 import org.jfree.report.Group;
 import org.jfree.report.GroupFooter;
 import org.jfree.report.GroupHeader;
-import org.jfree.report.JFreeReport;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.util.CharacterEntityParser;
-import org.jfree.xml.ElementDefinitionHandler;
-import org.jfree.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -54,7 +52,7 @@ import org.xml.sax.SAXException;
  *
  * @author Thomas Morgner.
  */
-public class GroupHandler implements ElementDefinitionHandler
+public class GroupHandler extends AbstractExtReportParserHandler
 {
   /** The 'fields' tag name. */
   public static final String FIELDS_TAG = "fields";
@@ -67,12 +65,6 @@ public class GroupHandler implements ElementDefinitionHandler
 
   /** The 'group-footer' tag name. */
   public static final String GROUP_FOOTER_TAG = "group-footer";
-
-  /** The parser. */
-  private Parser parser;
-
-  /** The finish tag. */
-  private String finishTag;
 
   /** The group. */
   private Group group;
@@ -93,11 +85,14 @@ public class GroupHandler implements ElementDefinitionHandler
    * @param finishTag  the finish tag.
    * @param group  the group.
    */
-  public GroupHandler(final Parser parser, final String finishTag, final Group group)
+  public GroupHandler(final ReportParser parser, final String finishTag, final Group group)
   {
+    super(parser, finishTag);
+    if (group == null)
+    {
+      throw new NullPointerException("Group parameter is null");
+    }
     this.entityParser = CharacterEntityParser.createXMLEntityParser();
-    this.parser = parser;
-    this.finishTag = finishTag;
     this.group = group;
   }
 
@@ -119,7 +114,7 @@ public class GroupHandler implements ElementDefinitionHandler
       {
         band.setName(name);
       }
-      bandFactory = new BandHandler(getParser(), tagName, band);
+      bandFactory = new BandHandler(getReportParser(), tagName, band);
       getParser().pushFactory(bandFactory);
     }
     else if (tagName.equals(GROUP_FOOTER_TAG))
@@ -130,7 +125,7 @@ public class GroupHandler implements ElementDefinitionHandler
       {
         band.setName(name);
       }
-      bandFactory = new BandHandler(getParser(), tagName, band);
+      bandFactory = new BandHandler(getReportParser(), tagName, band);
       getParser().pushFactory(bandFactory);
     }
     else if (tagName.equals(FIELDS_TAG))
@@ -177,7 +172,7 @@ public class GroupHandler implements ElementDefinitionHandler
    */
   public void endElement(final String tagName) throws SAXException
   {
-    if (tagName.equals(finishTag))
+    if (tagName.equals(getFinishTag()))
     {
       getParser().popFactory().endElement(tagName);
     }
@@ -205,7 +200,7 @@ public class GroupHandler implements ElementDefinitionHandler
           + GROUP_FOOTER_TAG + ", "
           + FIELDS_TAG + ", "
           + FIELD_TAG + ", "
-          + finishTag);
+          + getFinishTag());
     }
   }
 
@@ -217,15 +212,5 @@ public class GroupHandler implements ElementDefinitionHandler
   public Group getGroup()
   {
     return group;
-  }
-
-  /**
-   * Returns the parser.
-   *
-   * @return The parser.
-   */
-  public Parser getParser()
-  {
-    return parser;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataDefinitionHandler.java,v 1.9 2003/06/29 16:59:25 taqua Exp $
+ * $Id: DataDefinitionHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,9 @@
 
 package org.jfree.report.modules.parser.ext;
 
-import org.jfree.xml.ElementDefinitionHandler;
-import org.jfree.xml.Parser;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 /**
  * Not fully implemented. Will serve as description of the used tables for the
@@ -48,19 +48,17 @@ import org.xml.sax.Attributes;
  *
  * @author Thomas Morgner.
  */
-public class DataDefinitionHandler implements ElementDefinitionHandler
+public class DataDefinitionHandler extends AbstractExtReportParserHandler
 {
-  /** The parser. */
-  private Parser parser;
-
   /**
    * Creates a new handler.
    *
    * @param parser  the parser.
+   * @param finishTag the finish tag.
    */
-  public DataDefinitionHandler(final Parser parser)
+  public DataDefinitionHandler(final ReportParser parser, final String finishTag)
   {
-    this.parser = parser;
+    super(parser, finishTag);
   }
 
   /**
@@ -69,8 +67,9 @@ public class DataDefinitionHandler implements ElementDefinitionHandler
    * @param tagName  the tag name.
    * @param attrs  the attributes.
    */
-  public void startElement(final String tagName, final Attributes attrs)
+  public void startElement(final String tagName, final Attributes attrs) throws SAXException
   {
+    throw new SAXException("Did not expect child elements here. [this section is not yet defined.]");
   }
 
   /**
@@ -89,27 +88,15 @@ public class DataDefinitionHandler implements ElementDefinitionHandler
    *
    * @param tagName  the tag name.
    */
-  public void endElement(final String tagName)
+  public void endElement(final String tagName) throws SAXException
   {
-  }
-
-  /**
-   * Returns the parser.
-   *
-   * @return The parser.
-   */
-  public Parser getParser()
-  {
-    return parser;
-  }
-
-  /**
-   * Sets the parser.
-   *
-   * @param parser  the parser.
-   */
-  public void setParser(final Parser parser)
-  {
-    this.parser = parser;
+    if (tagName.equals(getFinishTag()))
+    {
+      getParser().popFactory().endElement(tagName);
+    }
+    else
+    {
+      throw new SAXException("Expected '" + getFinishTag() + "'");
+    }
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: ParserConfigWriter.java,v 1.2 2003/07/12 16:31:13 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@ package org.jfree.report.modules.parser.ext.writer;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
-import java.util.Iterator;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.jfree.report.modules.parser.ext.ExtReportHandler;
 import org.jfree.report.modules.parser.ext.ParserConfigHandler;
@@ -75,7 +75,6 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
   public void write(final Writer writer) throws IOException
   {
     writeTag(writer, ExtReportHandler.PARSER_CONFIG_TAG);
-    writer.write(getLineSeparator());
 
     writeFactory(writer, ParserConfigHandler.OBJECT_FACTORY_TAG,
         filterFactories(getReportWriter().getClassFactoryCollector().getFactories()));
@@ -87,7 +86,6 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
         filterFactories(getReportWriter().getTemplateCollector().getFactories()));
     writeFactory(writer, ParserConfigHandler.DATASOURCE_FACTORY_TAG,
         filterFactories(getReportWriter().getDataSourceCollector().getFactories()));
-    // datadefinition not yet implemented ...
 
     writeCloseTag(writer, ExtReportHandler.PARSER_CONFIG_TAG);
     writer.write(getLineSeparator());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: ElementFactory.java,v 1.2 2003/07/10 20:02:10 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import java.awt.geom.Rectangle2D;
 import org.jfree.report.Band;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.ShapeElement;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.elementfactory.DateFieldElementFactory;
 import org.jfree.report.elementfactory.DrawableFieldElementFactory;
 import org.jfree.report.elementfactory.ImageFieldElementFactory;
@@ -109,7 +110,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws NullPointerException if the finishTag or the parser are null.
    */
-  public ElementFactory(final Parser parser, final String finishTag, final Band band)
+  public ElementFactory(final ReportParser parser, final String finishTag, final Band band)
   {
     super(parser, finishTag);
     this.currentBand = band;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceWriter.java,v 1.16 2003/06/29 16:59:26 taqua Exp $
+ * $Id: DataSourceWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -66,6 +66,7 @@ public class DataSourceWriter extends ObjectWriter
    */
   public DataSourceWriter(final ReportWriter reportWriter, final DataSource baseObject,
                           final ObjectDescription objectDescription, final int indent)
+    throws ReportWriterException
   {
     super(reportWriter, baseObject, objectDescription, indent);
     if (DataSource.class.isAssignableFrom(objectDescription.getObjectClass()) == false)

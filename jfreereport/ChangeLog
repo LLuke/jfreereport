@@ -4,9 +4,6 @@
 A list of changes in recent versions:
 
 0.8.4:
-        * BugFix: The Pageable targets created empty pages on
-          PageableProcessor.processReport();
-
         * Table targets use some kind of repagination to prepare the layouting.
           This makes it possible to compute the columns and styles before they
           are written into the stream, so that we can create streaming content.
@@ -34,13 +31,21 @@ A list of changes in recent versions:
           classes contain a bean like interface as well as the static methods of
           the old ItemFactory.
 
-        * We now have templates for Rectangles and Hrizontal- and Vertical line
+        * We now have templates for Rectangles and Horizontal- and Vertical line
           shapes. This reduces the definition code size when creating the common
           shape use-cases.
 
         * Support for <include> tags for both parsers. This allows to split the
           definition into several files;  ReportWriter creates slightly cleaner
           code by removing unnecessary class specifications. More to do!
+
+0.8.3e: (16-Jul-2003)
+        * BugFix: JFreeReportResources didn't work in a Headless environment.
+          This caused weird behaviour in Tomcat. Thanks to jxmoshe for your
+          valueable hints.
+
+        * BugFix: The Pageable targets created empty pages on
+          PageableProcessor.processReport();
 
         * BugFix: The string encoding 1251 (Windows Cyrillic) was not defined in
           the EncodingComboBox and therefore not visible.

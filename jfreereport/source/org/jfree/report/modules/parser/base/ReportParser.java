@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: ReportParser.java,v 1.2 2003/07/14 19:37:53 taqua Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,7 @@ package org.jfree.report.modules.parser.base;
 
 import org.jfree.xml.Parser;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.ReportBuilderHints;
 
 /**
  * The report parser initializes the parsing engine and coordinates the parsing
@@ -50,6 +51,8 @@ import org.jfree.report.JFreeReport;
  */
 public class ReportParser extends Parser
 {
+  public static final String HELPER_OBJ_REPORT_NAME = "report";
+
   /**
    * Default constuctor. Initalizes the parser to use the JFreeReport parser
    * files.
@@ -77,11 +80,29 @@ public class ReportParser extends Parser
    */
   public Object getResult()
   {
-    return getHelperObject(InitialReportHandler.REPORT_DEFINITION_TAG);
+    return getHelperObject(HELPER_OBJ_REPORT_NAME);
   }
 
+  /**
+   * Returns the jfreereport instance that is currently created.
+   *
+   * @return the current JFreeReport instance.
+   */
   public JFreeReport getReport ()
   {
     return (JFreeReport) getResult();
+  }
+
+  /**
+   *
+   * @return
+   */
+  public ReportBuilderHints getParserHints ()
+  {
+    if (getReport() == null)
+    {
+      throw new IllegalStateException("There is no report defined yet.");
+    }
+    return getReport().getReportBuilderHints();
   }
 }

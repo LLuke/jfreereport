@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
 
- * $Id: InitialReportHandler.java,v 1.9 2003/06/29 16:59:25 taqua Exp $
+ * $Id: InitialReportHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,8 @@
  *
  */
 package org.jfree.report.modules.parser.base;
+
+import java.util.Hashtable;
 
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
@@ -58,19 +60,39 @@ import org.xml.sax.SAXException;
  */
 public class InitialReportHandler implements ElementDefinitionHandler
 {
-  /** the document element tag for the extended report format. */
-  public static final String REPORT_DEFINITION_TAG = "report-definition";
+  public static Hashtable definedHandlers;
 
-  /** the document element tag for the simple report format. */
-  public static final String OLD_REPORT_TAG = "report";
+  public static void registerHandler (String handler, String handlerClass)
+  {
+    if (definedHandlers == null)
+    {
+      definedHandlers = new Hashtable();
+    }
+    definedHandlers.put(handler, handlerClass);
+  }
+
+  public static void unregisterHandler (String handler)
+  {
+    if (definedHandlers == null)
+    {
+      return;
+    }
+    definedHandlers.remove(handler);
+  }
+
+  public static String getRegisteredHandler (String handler)
+  {
+    if (definedHandlers == null)
+    {
+      return null;
+    }
+    return (String) definedHandlers.get(handler);
+  }
 
   /** the parser that is used to coordinate the report parsing process. */
   private Parser parser;
 
-  private static final String EXT_REPORT_HANDLER =
-      "org.jfree.report.modules.parser.ext.ExtReportHandler";
-  private static final String SIMPLE_REPORT_HANDLER =
-      "org.jfree.report.modules.parser.simple.ReportFactory";
+  private String activeRootTag;
 
   /**
    * Creates a new IntialReportHander for the given parser.
@@ -108,24 +130,17 @@ public class InitialReportHandler implements ElementDefinitionHandler
   public void startElement(final String tagName, final Attributes attrs)
       throws SAXException
   {
-    if (tagName.equals(REPORT_DEFINITION_TAG))
+    String activeHandler = getRegisteredHandler(tagName);
+    if (activeHandler == null)
     {
-      final ReportRootHandler reportDefinitionHandler = loadHandler(EXT_REPORT_HANDLER);
-      reportDefinitionHandler.init(getParser(), tagName);
-      getParser().pushFactory(reportDefinitionHandler);
+      throw new SAXException("No handler registered for the tag '" + tagName + "'");
     }
-    else if (tagName.equals(OLD_REPORT_TAG))
-    {
-      final ReportRootHandler reportDefinitionHandler = loadHandler(SIMPLE_REPORT_HANDLER);
-      reportDefinitionHandler.init(getParser(), tagName);
-      getParser().pushFactory(reportDefinitionHandler);
-      reportDefinitionHandler.startElement(tagName, attrs);
-    }
-    else
-    {
-      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
-          + REPORT_DEFINITION_TAG + ".");
-    }
+
+    final ReportRootHandler reportDefinitionHandler = loadHandler(activeHandler);
+    reportDefinitionHandler.init((ReportParser) getParser(), tagName);
+    getParser().pushFactory(reportDefinitionHandler);
+    activeRootTag = tagName;
+    reportDefinitionHandler.startElement(tagName, attrs);
   }
 
   /**
@@ -149,18 +164,14 @@ public class InitialReportHandler implements ElementDefinitionHandler
    */
   public void endElement(final String tagName) throws SAXException
   {
-    if (tagName.equals(REPORT_DEFINITION_TAG))
+    if (tagName.equals(activeRootTag))
     {
       // ignore the report definition tag
     }
-    else if (tagName.equals(OLD_REPORT_TAG))
-    {
-      // also ignore this one ...
-    }
     else
     {
-      throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
-          + REPORT_DEFINITION_TAG + ".");
+      throw new SAXException("Invalid TagName: " + tagName + ", expected one of the "
+          + " registered root tag names.");
     }
   }
 

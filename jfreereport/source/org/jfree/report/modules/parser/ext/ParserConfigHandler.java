@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigHandler.java,v 1.17 2003/06/29 16:59:25 taqua Exp $
+ * $Id: ParserConfigHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,7 @@
 
 package org.jfree.report.modules.parser.ext;
 
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceFactory;
 import org.jfree.report.modules.parser.ext.factory.elements.ElementFactory;
@@ -47,9 +48,7 @@ import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactoryColle
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollection;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
 import org.jfree.report.util.Log;
-import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.xml.sax.Attributes;
@@ -64,7 +63,7 @@ import org.xml.sax.SAXException;
  *
  * @author Thomas Morgner
  */
-public class ParserConfigHandler implements ElementDefinitionHandler
+public class ParserConfigHandler extends AbstractExtReportParserHandler
 {
   /** The 'stylekey-factory' tag name. */
   public static final String STYLEKEY_FACTORY_TAG = "stylekey-factory";
@@ -87,11 +86,11 @@ public class ParserConfigHandler implements ElementDefinitionHandler
   /** The class attribute name. */
   public static final String CLASS_ATTRIBUTE = "class";
 
-  /** The parser. */
-  private Parser parser;
-
-  /** The finish tag. */
-  private String finishTag;
+  public static final String STYLEKEY_FACTORY_HINT = "ext.parser.parser-config.stylekeyfactories";
+  public static final String OBJECT_FACTORY_HINT = "ext.parser.parser-config.objectfactories";
+  public static final String DATASOURCE_FACTORY_HINT = "ext.parser.parser-config.datasourcefactories";
+  public static final String TEMPLATE_FACTORY_HINT = "ext.parser.parser-config.templatefactories";
+  public static final String ELEMENT_FACTORY_HINT = "ext.parser.parser-config.elementfactories";
 
   /**
    * The parser configuration handler.
@@ -99,18 +98,9 @@ public class ParserConfigHandler implements ElementDefinitionHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public ParserConfigHandler(final Parser parser, final String finishTag)
+  public ParserConfigHandler(final ReportParser parser, final String finishTag)
   {
-    if (parser == null)
-    {
-      throw new NullPointerException("Parser is null");
-    }
-    if (finishTag == null)
-    {
-      throw new NullPointerException("FinishTag is null");
-    }
-    this.parser = parser;
-    this.finishTag = finishTag;
+    super(parser, finishTag);
   }
 
   /**
@@ -140,7 +130,9 @@ public class ParserConfigHandler implements ElementDefinitionHandler
         throw new ParseException
             ("Unable to create Factory: " + className, getParser().getLocator());
       }
+
       fc.addFactory(factory);
+      getParserHints().addHintList(getReport(), STYLEKEY_FACTORY_HINT, className);
     }
     else if (tagName.equals(OBJECT_FACTORY_TAG))
     {
@@ -152,6 +144,7 @@ public class ParserConfigHandler implements ElementDefinitionHandler
       final ClassFactoryCollector fc =
           (ClassFactoryCollector) getParser().getHelperObject(OBJECT_FACTORY_TAG);
       fc.addFactory((ClassFactory) createFactory(className));
+      getParserHints().addHintList(getReport(), OBJECT_FACTORY_HINT, className);
     }
     else if (tagName.equals(TEMPLATE_FACTORY_TAG))
     {
@@ -163,6 +156,7 @@ public class ParserConfigHandler implements ElementDefinitionHandler
       final TemplateCollector fc =
           (TemplateCollector) getParser().getHelperObject(TEMPLATE_FACTORY_TAG);
       fc.addTemplateCollection((TemplateCollection) createFactory(className));
+      getParserHints().addHintList(getReport(), TEMPLATE_FACTORY_HINT, className);
     }
     else if (tagName.equals(DATASOURCE_FACTORY_TAG))
     {
@@ -175,6 +169,7 @@ public class ParserConfigHandler implements ElementDefinitionHandler
       final DataSourceCollector fc =
           (DataSourceCollector) getParser().getHelperObject(DATASOURCE_FACTORY_TAG);
       fc.addFactory(factory);
+      getParserHints().addHintList(getReport(), DATASOURCE_FACTORY_HINT, className);
     }
     else if (tagName.equals(ELEMENT_FACTORY_TAG))
     {
@@ -186,6 +181,7 @@ public class ParserConfigHandler implements ElementDefinitionHandler
       final ElementFactoryCollector fc =
           (ElementFactoryCollector) getParser().getHelperObject(ELEMENT_FACTORY_TAG);
       fc.addFactory((ElementFactory) createFactory(className));
+      getParserHints().addHintList(getReport(), ELEMENT_FACTORY_HINT, className);
     }
     else if (tagName.equals(DATADEFINITION_FACTORY_TAG))
     {
@@ -256,7 +252,7 @@ public class ParserConfigHandler implements ElementDefinitionHandler
         || tagName.equals(OBJECT_FACTORY_TAG))
     {
     }
-    else if (tagName.equals(finishTag))
+    else if (tagName.equals(getFinishTag()))
     {
       getParser().popFactory().endElement(tagName);
     }
@@ -272,13 +268,5 @@ public class ParserConfigHandler implements ElementDefinitionHandler
     }
   }
 
-  /**
-   * Returns the parser.
-   *
-   * @return The parser.
-   */
-  public Parser getParser()
-  {
-    return parser;
-  }
+
 }

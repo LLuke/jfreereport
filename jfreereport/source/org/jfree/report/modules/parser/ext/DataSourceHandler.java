@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceHandler.java,v 1.14 2003/06/29 16:59:25 taqua Exp $
+ * $Id: DataSourceHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ObjectDescription;
@@ -73,7 +74,7 @@ public class DataSourceHandler extends CompoundObjectHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public DataSourceHandler(final Parser parser, final String finishTag, final String type)
+  public DataSourceHandler(final ReportParser parser, final String finishTag, final String type)
       throws SAXException
   {
     super(parser, finishTag, lookupObjectDescription(parser, type));
@@ -124,7 +125,7 @@ public class DataSourceHandler extends CompoundObjectHandler
     {
       throw new ParseException("The datasource type must be specified", getParser().getLocator());
     }
-    dataSourceHandler = new DataSourceHandler(getParser(), tagName, typeName);
+    dataSourceHandler = new DataSourceHandler(getReportParser(), tagName, typeName);
     getParser().pushFactory(dataSourceHandler);
   }
 

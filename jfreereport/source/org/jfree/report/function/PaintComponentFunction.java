@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.16 2003/06/29 16:59:25 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,7 @@ import java.io.Serializable;
 
 import org.jfree.report.Element;
 import org.jfree.report.ImageReference;
+import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.event.LayoutEvent;
 import org.jfree.report.event.LayoutListener;
 import org.jfree.report.layout.BandLayoutManagerUtil;
@@ -62,6 +63,8 @@ import org.jfree.report.layout.BandLayoutManagerUtil;
 /**
  * Paints a AWT or Swing Component, fitting the component into the element bounds.
  * The component must be contained in the dataRow.
+ * <p>
+ * In an headless environment this function wont work and will always return null.
  *
  * @author Thomas Morgner
  */
@@ -88,8 +91,11 @@ public class PaintComponentFunction extends AbstractFunction
    */
   public PaintComponentFunction()
   {
-    peerSupply = new Frame();
-    peerSupply.setLayout(new BorderLayout());
+    if (isHeadless() == false)
+    {
+      peerSupply = new Frame();
+      peerSupply.setLayout(new BorderLayout());
+    }
   }
 
   /**
@@ -150,6 +156,12 @@ public class PaintComponentFunction extends AbstractFunction
     setProperty(FIELD_PROPERTY, field);
   }
 
+  protected boolean isHeadless ()
+  {
+    return ReportConfiguration.getGlobalConfig().getConfigProperty
+        ("java.awt.headless", "false").equals("true");
+  }
+
   /**
    * Receives notification that the band layouting has completed.
    * <P>
@@ -159,6 +171,9 @@ public class PaintComponentFunction extends AbstractFunction
    */
   public void layoutComplete(final LayoutEvent event)
   {
+    if (isHeadless())
+      return;
+
     // the current value in the dataRow is no AWT-Component ...
     final Object o = getDataRow().get(getField());
     if ((o instanceof Component) == false)
@@ -274,8 +289,11 @@ public class PaintComponentFunction extends AbstractFunction
   public Expression getInstance()
   {
     final PaintComponentFunction pc = (PaintComponentFunction) super.getInstance();
-    pc.peerSupply = new Frame();
-    pc.peerSupply.setLayout(new BorderLayout());
+    if (isHeadless() == false)
+    {
+      pc.peerSupply = new Frame();
+      pc.peerSupply.setLayout(new BorderLayout());
+    }
     return pc;
   }
 
@@ -312,7 +330,10 @@ public class PaintComponentFunction extends AbstractFunction
       throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
-    peerSupply = new Frame();
-    peerSupply.setLayout(new BorderLayout());
+    if (isHeadless() == false)
+    {
+      peerSupply = new Frame();
+      peerSupply.setLayout(new BorderLayout());
+    }
   }
 }

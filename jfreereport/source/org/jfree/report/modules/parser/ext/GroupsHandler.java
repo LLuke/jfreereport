@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupsHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: GroupsHandler.java,v 1.2 2003/07/12 16:31:13 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,7 @@ package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.Group;
 import org.jfree.report.GroupList;
-import org.jfree.report.JFreeReport;
-import org.jfree.xml.ElementDefinitionHandler;
-import org.jfree.xml.Parser;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -54,16 +52,10 @@ import org.xml.sax.SAXException;
  * @see GroupList
  * @author Thomas Morgner.
  */
-public class GroupsHandler implements ElementDefinitionHandler
+public class GroupsHandler extends AbstractExtReportParserHandler
 {
   /** The 'group' tag name. */
   public static final String GROUP_TAG = "group";
-
-  /** The finish tag. */
-  private String finishTag;
-
-  /** The parser. */
-  private Parser parser;
 
   /** Contains the reference to the new group. Contains null if the group is redefined. */
   private Group newGroup;
@@ -74,20 +66,9 @@ public class GroupsHandler implements ElementDefinitionHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public GroupsHandler(final Parser parser, final String finishTag)
+  public GroupsHandler(final ReportParser parser, final String finishTag)
   {
-    this.parser = parser;
-    this.finishTag = finishTag;
-  }
-
-  /**
-   * Returns the parser.
-   *
-   * @return The parser.
-   */
-  public Parser getParser()
-  {
-    return parser;
+    super(parser, finishTag);
   }
 
   /**
@@ -118,7 +99,7 @@ public class GroupsHandler implements ElementDefinitionHandler
         newGroup = group;
         // the new group must be added after the group fields are defined.
       }
-      final GroupHandler handler = new GroupHandler(getParser(), tagName, group);
+      final GroupHandler handler = new GroupHandler(getReportParser(), tagName, group);
       getParser().pushFactory(handler);
     }
     else
@@ -151,7 +132,7 @@ public class GroupsHandler implements ElementDefinitionHandler
    */
   public void endElement(final String tagName) throws SAXException
   {
-    if (tagName.equals(finishTag))
+    if (tagName.equals(getFinishTag()))
     {
       getParser().popFactory().endElement(tagName);
     }
@@ -166,18 +147,7 @@ public class GroupsHandler implements ElementDefinitionHandler
     else
     {
       throw new SAXException("Invalid TagName: " + tagName + ", expected one of: "
-          + GROUP_TAG + ", " + finishTag);
+          + GROUP_TAG + ", " + getFinishTag());
     }
-  }
-
-  /**
-   * Returns the report (the result from the parser).
-   *
-   * @return the report.
-   */
-  public JFreeReport getReport ()
-  {
-    final JFreeReport report = (JFreeReport) getParser().getResult();
-    return report;
   }
 }

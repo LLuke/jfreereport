@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XLSExportResources_fr.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: XLSExportResources_fr.java,v 1.2 2003/07/11 09:20:55 mimil Exp $
  *
  * Changes 
  * -------------------------
@@ -68,7 +68,7 @@ public class XLSExportResources_fr extends JFreeReportResources
         
         {"error.processingfailed.title", "Echec du traitement du Report"},
         {"error.processingfailed.message", "Erreur lors du traitement de ce rapport: {0}"},
-        {"error.savefailed.message", "Erreur durant l'enregistrement en PDF : {0}"},
+        {"error.savefailed.message", "Erreur durant l'enregistrement en MS-Excel : {0}"},
         {"error.savefailed.title", "Erreur durant l'enregistrement"},
 
         {"excelexportdialog.dialogtitle", "Exporter le rapport vers un fichier Excel..."},

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.4 2003/06/27 14:25:19 taqua Exp $
+ * $Id: ElementFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -38,6 +38,8 @@
 
 package org.jfree.report.modules.parser.ext.factory.elements;
 
+import java.io.Serializable;
+
 import org.jfree.report.Element;
 
 /**
@@ -45,7 +47,7 @@ import org.jfree.report.Element;
  *
  * @author Thomas Morgner
  */
-public interface ElementFactory
+public interface ElementFactory extends Serializable
 {
   /**
    * Returns an element for the given type.

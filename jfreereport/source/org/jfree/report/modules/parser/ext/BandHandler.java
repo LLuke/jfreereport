@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandHandler.java,v 1.15 2003/06/29 16:59:25 taqua Exp $
+ * $Id: BandHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@ package org.jfree.report.modules.parser.ext;
 import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.modules.parser.ext.factory.elements.ElementFactoryCollector;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.Parser;
@@ -64,7 +65,7 @@ public class BandHandler extends ElementHandler
   /** The 'default-style' tag. */
   public static final String DEFAULT_STYLE_TAG = "default-style";
 
-  /** An element handler. */
+  /** An element handler, holding a reference to the currently processed child element. */
   private ElementHandler elementHandler;
 
   /**
@@ -74,7 +75,7 @@ public class BandHandler extends ElementHandler
    * @param finishTag  the finish tag.
    * @param band  the band.
    */
-  public BandHandler(final Parser parser, final String finishTag, final Band band)
+  public BandHandler(final ReportParser parser, final String finishTag, final Band band)
   {
     super(parser, finishTag, band);
   }
@@ -97,7 +98,7 @@ public class BandHandler extends ElementHandler
       {
         band.setName(name);
       }
-      elementHandler = new BandHandler(getParser(), tagName, band);
+      elementHandler = new BandHandler(getReportParser(), tagName, band);
       getParser().pushFactory(elementHandler);
       // ignore
     }
@@ -120,13 +121,13 @@ public class BandHandler extends ElementHandler
         element.setName(name);
       }
 
-      elementHandler = new ElementHandler(getParser(), tagName, element);
+      elementHandler = new ElementHandler(getReportParser(), tagName, element);
       getParser().pushFactory(elementHandler);
     }
     else if (tagName.equals(DEFAULT_STYLE_TAG))
     {
       final ElementStyleSheet styleSheet = getBand().getBandDefaults();
-      final StyleSheetHandler styleSheetFactory = new StyleSheetHandler(getParser(), tagName, styleSheet);
+      final StyleSheetHandler styleSheetFactory = new StyleSheetHandler(getReportParser(), tagName, styleSheet);
       getParser().pushFactory(styleSheetFactory);
     }
     else

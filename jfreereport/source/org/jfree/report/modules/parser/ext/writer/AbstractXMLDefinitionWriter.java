@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.2 2003/07/15 16:28:21 taqua Exp $
  *
  * Changes
  * -------
@@ -57,6 +57,8 @@ import org.jfree.report.modules.parser.ext.ReportDescriptionHandler;
 import org.jfree.report.modules.parser.ext.StyleSheetHandler;
 import org.jfree.report.modules.parser.ext.StylesHandler;
 import org.jfree.report.modules.parser.ext.TemplatesHandler;
+import org.jfree.report.ReportBuilderHints;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.xml.writer.SafeTagList;
 import org.jfree.xml.writer.XMLWriterSupport;
 

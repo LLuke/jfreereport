@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: ElementHandler.java,v 1.2 2003/07/14 19:37:54 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,11 @@ package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.Element;
 import org.jfree.report.filter.DataSource;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -57,7 +56,7 @@ import org.xml.sax.SAXException;
  *
  * @author Thomas Morgner.
  */
-public class ElementHandler implements ElementDefinitionHandler
+public class ElementHandler extends AbstractExtReportParserHandler
 {
   /** The 'style' tag. */
   public static final String STYLE_TAG = StylesHandler.STYLE_TAG;
@@ -67,12 +66,6 @@ public class ElementHandler implements ElementDefinitionHandler
 
   /** The 'datasource' tag. */
   public static final String DATASOURCE_TAG = DataSourceHandler.DATASOURCE_TAG;
-
-  /** The finish tag is used to detect the end of the current processing level. */
-  private String finishTag;
-
-  /** The parser. */
-  private Parser parser;
 
   /** The element. */
   private Element element;
@@ -93,10 +86,13 @@ public class ElementHandler implements ElementDefinitionHandler
    * @param finishTag  the finish tag.
    * @param element  the element.
    */
-  public ElementHandler(final Parser parser, final String finishTag, final Element element)
+  public ElementHandler(final ReportParser parser, final String finishTag, final Element element)
   {
-    this.finishTag = finishTag;
-    this.parser = parser;
+    super(parser, finishTag);
+    if (element == null)
+    {
+      throw new NullPointerException("Element is null");
+    }
     this.element = element;
     templateCollector = (TemplateCollector)
         getParser().getHelperObject(ParserConfigHandler.TEMPLATE_FACTORY_TAG);
@@ -130,8 +126,9 @@ public class ElementHandler implements ElementDefinitionHandler
             getParser().getLocator());
       }
       // Clone the defined template ... we don't change the original ..
+      getReport().getReportBuilderHints().putHint(getElement(), "ext.parser.template-reference", references);
       template = (TemplateDescription) template.getInstance();
-      templateFactory = new TemplateHandler(getParser(), TEMPLATE_TAG, template);
+      templateFactory = new TemplateHandler(getReportParser(), TEMPLATE_TAG, template);
       getParser().pushFactory(templateFactory);
     }
     else if (tagName.equals(DATASOURCE_TAG))
@@ -142,17 +139,17 @@ public class ElementHandler implements ElementDefinitionHandler
         throw new ParseException("The datasource type must be specified",
             getParser().getLocator());
       }
-      dataSourceHandler = new DataSourceHandler(getParser(), tagName, typeName);
+      dataSourceHandler = new DataSourceHandler(getReportParser(), tagName, typeName);
       getParser().pushFactory(dataSourceHandler);
     }
     else if (tagName.equals(STYLE_TAG))
     {
       final ElementStyleSheet styleSheet = element.getStyle();
       final StyleSheetHandler styleSheetFactory
-          = new StyleSheetHandler(getParser(), STYLE_TAG, styleSheet);
+          = new StyleSheetHandler(getReportParser(), STYLE_TAG, styleSheet);
       getParser().pushFactory(styleSheetFactory);
     }
-    else if (tagName.equals(finishTag))
+    else if (tagName.equals(getFinishTag()))
     {
       getParser().popFactory().endElement(tagName);
     }
@@ -197,25 +194,15 @@ public class ElementHandler implements ElementDefinitionHandler
     {
       // ignore event ...
     }
-    else if (tagName.equals(finishTag))
+    else if (tagName.equals(getFinishTag()))
     {
       getParser().popFactory().endElement(tagName);
     }
     else
     {
       throw new SAXException("Expected '" + STYLE_TAG + "' or "
-          + finishTag + "', found : " + tagName);
+          + getFinishTag() + "', found : " + tagName);
     }
-  }
-
-  /**
-   * Returns the parser.
-   *
-   * @return The parser.
-   */
-  public Parser getParser()
-  {
-    return parser;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CompoundObjectHandler.java,v 1.14 2003/06/29 16:59:25 taqua Exp $
+ * $Id: CompoundObjectHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -38,8 +38,8 @@
 
 package org.jfree.report.modules.parser.ext;
 
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -72,7 +72,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
    * @param finishTag  the finish tag.
    * @param od  the object description.
    */
-  public CompoundObjectHandler(final Parser parser, final String finishTag, final ObjectDescription od)
+  public CompoundObjectHandler(final ReportParser parser, final String finishTag, final ObjectDescription od)
   {
     super(parser, finishTag, od);
   }
@@ -86,7 +86,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public CompoundObjectHandler(final Parser parser, final String finishTag, final Class targetObject)
+  public CompoundObjectHandler(final ReportParser parser, final String finishTag, final Class targetObject)
       throws SAXException
   {
     super(parser, finishTag, targetObject);
@@ -143,7 +143,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
         }
       }
 
-      basicFactory = new BasicObjectHandler(getParser(), tagName, parameter);
+      basicFactory = new BasicObjectHandler(getReportParser(), tagName, parameter);
       getParser().pushFactory(basicFactory);
     }
     else if (tagName.equals(COMPOUND_OBJECT_TAG))
@@ -178,7 +178,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
         }
       }
 
-      basicFactory = new CompoundObjectHandler(getParser(), tagName, parameter);
+      basicFactory = new CompoundObjectHandler(getReportParser(), tagName, parameter);
       getParser().pushFactory(basicFactory);
     }
     else

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CompoundStyleKeyHandler.java,v 1.17 2003/06/29 16:59:25 taqua Exp $
+ * $Id: CompoundStyleKeyHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -38,8 +38,8 @@
 
 package org.jfree.report.modules.parser.ext;
 
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.xml.sax.Attributes;
@@ -78,7 +78,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public CompoundStyleKeyHandler(final Parser parser, final String finishTag, final String name, final Class c)
+  public CompoundStyleKeyHandler(final ReportParser parser, final String finishTag, final String name, final Class c)
       throws SAXException
   {
     super(parser, finishTag, name, c);
@@ -142,7 +142,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
         }
       }
 
-      basicFactory = new BasicObjectHandler(getParser(), tagName, parameter);
+      basicFactory = new BasicObjectHandler(getReportParser(), tagName, parameter);
       getParser().pushFactory(basicFactory);
     }
     else if (tagName.equals(COMPOUND_OBJECT_TAG))
@@ -172,7 +172,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
         }
       }
 
-      basicFactory = new CompoundObjectHandler(getParser(), tagName, parameter);
+      basicFactory = new CompoundObjectHandler(getReportParser(), tagName, parameter);
       getParser().pushFactory(basicFactory);
     }
     else

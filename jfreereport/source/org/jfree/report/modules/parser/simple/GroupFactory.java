@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: GroupFactory.java,v 1.2 2003/07/12 16:31:13 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import org.jfree.report.Group;
 import org.jfree.report.GroupFooter;
 import org.jfree.report.GroupHeader;
 import org.jfree.report.modules.parser.base.ReportParserUtil;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.style.BandStyleSheet;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.CharacterEntityParser;
@@ -79,7 +80,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    * @param finishTag the finish tag, that should trigger the deactivation of this parser.
    * @throws NullPointerException if the finishTag or the parser are null.
    */
-  public GroupFactory(final Parser parser, final String finishTag)
+  public GroupFactory(final ReportParser parser, final String finishTag)
   {
     super(parser, finishTag);
     fontFactory = new FontFactory();
@@ -241,7 +242,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
-    getParser().pushFactory(new ElementFactory(getParser(), GROUP_HEADER_TAG, groupHeader));
+    getParser().pushFactory(new ElementFactory(getReportParser(), GROUP_HEADER_TAG, groupHeader));
   }
 
   /**
@@ -301,7 +302,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
       groupFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
-    getParser().pushFactory(new ElementFactory(getParser(), GROUP_FOOTER_TAG, groupFooter));
+    getParser().pushFactory(new ElementFactory(getReportParser(), GROUP_FOOTER_TAG, groupFooter));
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractReportDefinitionHandler.java,v 1.12 2003/06/29 16:59:27 taqua Exp $
+ * $Id: AbstractReportDefinitionHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.parser.base.InitialReportHandler;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
 import org.xml.sax.Locator;
@@ -60,7 +60,7 @@ public abstract class AbstractReportDefinitionHandler implements ElementDefiniti
   private static final String NAME_GENERATOR = "name-generator";
 
   /** the parser used to coordinate the ReportDefinitionHandlers. */
-  private Parser parser;
+  private ReportParser parser;
 
   /** the current finishtag. */
   private String finishTag;
@@ -80,7 +80,7 @@ public abstract class AbstractReportDefinitionHandler implements ElementDefiniti
    *
    * @throws NullPointerException if the finishTag or the parser are null.
    */
-  protected void init (final Parser parser, final String finishTag)
+  protected void init (final ReportParser parser, final String finishTag)
   {
     if (parser == null)
     {
@@ -102,7 +102,7 @@ public abstract class AbstractReportDefinitionHandler implements ElementDefiniti
    *
    * @throws NullPointerException if the finishTag or the parser are null.
    */
-  public AbstractReportDefinitionHandler(final Parser parser, final String finishTag)
+  public AbstractReportDefinitionHandler(final ReportParser parser, final String finishTag)
   {
     init (parser, finishTag);
   }
@@ -127,8 +127,8 @@ public abstract class AbstractReportDefinitionHandler implements ElementDefiniti
    */
   public JFreeReport getReport()
   {
-    return (JFreeReport) getParser().getHelperObject(
-        InitialReportHandler.REPORT_DEFINITION_TAG);
+    ReportParser rparser = (ReportParser) getParser();
+    return rparser.getReport();
   }
 
   /**
@@ -176,6 +176,16 @@ public abstract class AbstractReportDefinitionHandler implements ElementDefiniti
    * @return The parser.
    */
   public Parser getParser()
+  {
+    return parser;
+  }
+
+  /**
+   * Returns the parser as ReportParser reference.
+   *
+   * @return The parser.
+   */
+  public ReportParser getReportParser()
   {
     return parser;
   }

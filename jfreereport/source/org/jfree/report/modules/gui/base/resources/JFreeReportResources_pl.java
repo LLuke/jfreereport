@@ -37,6 +37,9 @@ import java.awt.event.KeyEvent;
  */
 public class JFreeReportResources_pl extends JFreeReportResources
 {
+  public JFreeReportResources_pl()
+  {
+  }
 
   /**
    * Returns the array of strings in the resource bundle.

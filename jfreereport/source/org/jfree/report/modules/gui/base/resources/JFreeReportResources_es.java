@@ -28,7 +28,7 @@
  * Original Author:  Ramon Juanes;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_es.java,v 1.7 2003/06/29 16:59:27 taqua Exp $
+ * $Id: JFreeReportResources_es.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -42,6 +42,10 @@ import java.awt.event.KeyEvent;
  */
 public class JFreeReportResources_es extends JFreeReportResources
 {
+
+  public JFreeReportResources_es()
+  {
+  }
 
   /**
    * Returns the array of strings in the resource bundle.

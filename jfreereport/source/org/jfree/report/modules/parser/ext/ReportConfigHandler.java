@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigHandler.java,v 1.16 2003/06/29 16:59:25 taqua Exp $
+ * $Id: ReportConfigHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -44,13 +44,11 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.parser.base.InitialReportHandler;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.report.util.ReportConfiguration;
-import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -64,7 +62,7 @@ import org.xml.sax.SAXException;
  * @see JFreeReport#setDefaultPageFormat
  * @see JFreeReport#getDefaultPageFormat
  */
-public class ReportConfigHandler implements ElementDefinitionHandler
+public class ReportConfigHandler extends AbstractExtReportParserHandler
 {
   /** The 'object-factory' tag name. */
   public static final String OBJECT_FACTORY_TAG = ParserConfigHandler.OBJECT_FACTORY_TAG;
@@ -117,12 +115,6 @@ public class ReportConfigHandler implements ElementDefinitionHandler
   /** Literal text for an XML attribute. */
   public static final String ORIENTATION_REVERSE_LANDSCAPE_VAL = "reverselandscape";
 
-  /** The parser. */
-  private Parser parser;
-
-  /** The finish tag. */
-  private String finishTag;
-
   /** The current property handler. */
   private PropertyHandler currentPropertyFactory;
 
@@ -132,18 +124,9 @@ public class ReportConfigHandler implements ElementDefinitionHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public ReportConfigHandler(final Parser parser, final String finishTag)
+  public ReportConfigHandler(final ReportParser parser, final String finishTag)
   {
-    if (parser == null)
-    {
-      throw new NullPointerException("Parser is null");
-    }
-    if (finishTag == null)
-    {
-      throw new NullPointerException("FinishTag is null");
-    }
-    this.parser = parser;
-    this.finishTag = finishTag;
+    super(parser, finishTag);
   }
 
   /**
@@ -163,7 +146,7 @@ public class ReportConfigHandler implements ElementDefinitionHandler
     }
     else if (tagName.equals(CONFIGURATION_TAG))
     {
-      currentPropertyFactory = new PropertyHandler(getParser(), CONFIGURATION_TAG);
+      currentPropertyFactory = new PropertyHandler(getReportParser(), CONFIGURATION_TAG);
       getParser().pushFactory(currentPropertyFactory);
     }
     else if (tagName.equals(OUTPUT_TARGET_TAG))
@@ -226,7 +209,7 @@ public class ReportConfigHandler implements ElementDefinitionHandler
       }
 
     }
-    else if (tagName.equals(finishTag))
+    else if (tagName.equals(getFinishTag()))
     {
       getParser().popFactory().endElement(tagName);
     }
@@ -237,27 +220,6 @@ public class ReportConfigHandler implements ElementDefinitionHandler
           + DEFAULT_PAGEFORMAT_TAG + ", "
           + CONFIGURATION_TAG);
     }
-  }
-
-  /**
-   * Returns the parser.
-   *
-   * @return The parser.
-   */
-  public Parser getParser()
-  {
-    return parser;
-  }
-
-  /**
-   * Returns the report.
-   *
-   * @return The report.
-   */
-  private JFreeReport getReport()
-  {
-    return (JFreeReport) getParser().getHelperObject(
-        InitialReportHandler.REPORT_DEFINITION_TAG);
   }
 
   /**

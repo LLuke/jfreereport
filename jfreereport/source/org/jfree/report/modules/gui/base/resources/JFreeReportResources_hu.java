@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  *
  *
- * $Id: JFreeReportResources_hu.java,v 1.3 2003/06/29 16:59:27 taqua Exp $
+ * $Id: JFreeReportResources_hu.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  *
  */
@@ -44,6 +44,10 @@ import java.awt.event.KeyEvent;
  */
 public class JFreeReportResources_hu extends JFreeReportResources
 {
+  public JFreeReportResources_hu()
+  {
+  }
+
   /**
    * Returns the array of strings in the resource bundle.
    *

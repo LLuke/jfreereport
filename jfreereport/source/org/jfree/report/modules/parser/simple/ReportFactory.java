@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: ReportFactory.java,v 1.2 2003/07/14 19:37:54 taqua Exp $
  *
  * Changes
  * -------
@@ -48,13 +48,12 @@ import java.net.URL;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.parser.base.IncludeParser;
 import org.jfree.report.modules.parser.base.IncludeParserFrontend;
-import org.jfree.report.modules.parser.base.InitialReportHandler;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.modules.parser.base.ReportRootHandler;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -94,7 +93,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
    * @param finishTag the finish tag, that should trigger the deactivation of this parser.
    * @throws NullPointerException if the finishTag or the parser are null.
    */
-  public void init (final Parser parser, final String finishTag)
+  public void init (final ReportParser parser, final String finishTag)
   {
     super.init(parser, finishTag);
     entityParser = CharacterEntityParser.createXMLEntityParser();
@@ -122,7 +121,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
         || tagName.equals(ITEMS_TAG))
     {
       // Forward the event to the newly created
-      final BandFactory bandFactory = new BandFactory(getParser(), tagName);
+      final BandFactory bandFactory = new BandFactory(getReportParser(), tagName);
       getParser().pushFactory(bandFactory);
       bandFactory.startElement(tagName, atts);
     }
@@ -343,7 +342,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
     report.setDefaultPageFormat(format);
 
     //PageFormatFactory.logPageFormat(format);
-    getParser().setHelperObject(InitialReportHandler.REPORT_DEFINITION_TAG, report);
+    getParser().setHelperObject(ReportParser.HELPER_OBJ_REPORT_NAME, report);
   }
 
   /**
@@ -427,7 +426,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
   public void startGroups(final Attributes atts)
       throws SAXException
   {
-    getParser().pushFactory(new GroupFactory(getParser(), GROUPS_TAG));
+    getParser().pushFactory(new GroupFactory(getReportParser(), GROUPS_TAG));
   }
 
   /**
@@ -441,7 +440,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
   public void startFunctions(final Attributes atts)
       throws SAXException
   {
-    getParser().pushFactory(new FunctionFactory(getParser(), FUNCTIONS_TAG));
+    getParser().pushFactory(new FunctionFactory(getReportParser(), FUNCTIONS_TAG));
   }
 
   /**

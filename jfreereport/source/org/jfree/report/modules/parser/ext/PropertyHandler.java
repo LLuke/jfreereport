@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyHandler.java,v 1.14 2003/06/29 16:59:25 taqua Exp $
+ * $Id: PropertyHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,9 @@ package org.jfree.report.modules.parser.ext;
 
 import java.util.Properties;
 
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.util.CharacterEntityParser;
-import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -54,19 +53,13 @@ import org.xml.sax.SAXException;
  *
  * @author Thomas Morgner.
  */
-public class PropertyHandler implements ElementDefinitionHandler
+public class PropertyHandler extends AbstractExtReportParserHandler
 {
   /** The 'property' tag name. */
   public static final String PROPERTY_TAG = "property";
 
   /** The 'name' attribute text. */
   public static final String NAME_ATTR = "name";
-
-  /** The parser. */
-  private Parser parser;
-
-  /** The finish tag. */
-  private String finishTag;
 
   /** The properties. */
   private Properties properties;
@@ -86,12 +79,11 @@ public class PropertyHandler implements ElementDefinitionHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public PropertyHandler(final Parser parser, final String finishTag)
+  public PropertyHandler(final ReportParser parser, final String finishTag)
   {
+    super(parser, finishTag);
     entityParser = CharacterEntityParser.createXMLEntityParser();
     properties = new Properties();
-    this.finishTag = finishTag;
-    this.parser = parser;
   }
 
   /**
@@ -150,25 +142,15 @@ public class PropertyHandler implements ElementDefinitionHandler
       name = null;
       buffer = null;
     }
-    else if (tagName.equals(finishTag))
+    else if (tagName.equals(getFinishTag()))
     {
       getParser().popFactory().endElement(tagName);
     }
     else
     {
-      throw new ParseException("Expected 'property' tag or '" + finishTag + "'. " + tagName,
+      throw new ParseException("Expected 'property' tag or '" + getFinishTag() + "'. " + tagName,
           getParser().getLocator());
     }
-  }
-
-  /**
-   * Returns the parser.
-   *
-   * @return The parser.
-   */
-  public Parser getParser()
-  {
-    return parser;
   }
 
   /**

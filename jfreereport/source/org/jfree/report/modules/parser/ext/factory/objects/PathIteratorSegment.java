@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PathIteratorSegment.java,v 1.4 2003/06/29 16:59:25 taqua Exp $
+ * $Id: PathIteratorSegment.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -37,12 +37,14 @@
  */
 package org.jfree.report.modules.parser.ext.factory.objects;
 
+import java.io.Serializable;
+
 /**
  * This class represents a single segment in a path iterator.
  *
  * @author Thomas Morgner
  */
-public class PathIteratorSegment
+public class PathIteratorSegment implements Serializable
 {
   /** The segment type, one of the PathIterator constants. */
   private int segmentType;

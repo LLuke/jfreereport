@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceCollector.java,v 1.19 2003/06/29 16:59:25 taqua Exp $
+ * $Id: DataSourceCollector.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -40,6 +40,7 @@ package org.jfree.report.modules.parser.ext.factory.datasource;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.io.Serializable;
 
 import org.jfree.util.Configuration;
 import org.jfree.xml.factory.objects.ClassComparator;
@@ -51,7 +52,7 @@ import org.jfree.xml.factory.objects.ObjectDescription;
  *
  * @author Thomas Morgner
  */
-public class DataSourceCollector implements DataSourceFactory
+public class DataSourceCollector implements DataSourceFactory, Serializable
 {
   /** Storage for the factories. */
   private ArrayList factories;

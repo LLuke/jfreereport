@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportRootHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: ReportRootHandler.java,v 1.2 2003/07/14 19:37:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,5 +44,5 @@ import org.xml.sax.SAXException;
 
 public interface ReportRootHandler extends ElementDefinitionHandler
 {
-  public void init (Parser parser, String tagName) throws SAXException;
+  public void init (ReportParser parser, String tagName) throws SAXException;
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionWriter.java,v 1.13 2003/06/29 16:59:27 taqua Exp $
+ * $Id: ReportDescriptionWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -58,8 +58,10 @@ import org.jfree.report.modules.parser.ext.GroupsHandler;
 import org.jfree.report.modules.parser.ext.ReportDescriptionHandler;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
+import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.xml.factory.objects.ObjectDescription;
+import org.jfree.xml.factory.objects.ObjectFactoryException;
 
 /**
  * A report description writer.  The {@link ReportDefinitionWriter} class is responsible for
@@ -117,37 +119,42 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
   private void writeBand(final Writer writer, final String tagName, final Band band, final Band parent)
       throws IOException, ReportWriterException
   {
-    writeTag(writer, tagName, "name", band.getName(), OPEN);
-
-    writeTag(writer, ElementHandler.STYLE_TAG);
-    ElementStyleSheet parentSheet = null;
-    if (parent != null)
+    if (band.getName().startsWith(Band.ANONYMOUS_BAND_PREFIX))
     {
-      parentSheet = parent.getBandDefaults();
+      writeTag(writer, tagName);
+    }
+    else
+    {
+      writeTag(writer, tagName, "name", band.getName(), OPEN);
     }
 
-    final StyleWriter styleWriter =
-        new StyleWriter(getReportWriter(), band.getStyle(), parentSheet, getIndentLevel());
-    styleWriter.write(writer);
-    writeCloseTag(writer, ElementHandler.STYLE_TAG);
-
-    writeTag(writer, BandHandler.DEFAULT_STYLE_TAG);
-    final StyleWriter defaultStyleWriter =
-        new StyleWriter(getReportWriter(), band.getBandDefaults(), null, getIndentLevel());
-    defaultStyleWriter.write(writer);
-    writeCloseTag(writer, BandHandler.DEFAULT_STYLE_TAG);
-
-    if ((band.getDataSource() instanceof EmptyDataSource) == false)
+    ElementStyleSheet styleSheet = band.getStyle();
+    if (isStyleSheetEmpty(styleSheet) == false)
     {
-      if (band.getDataSource() instanceof Template)
+      writeTag(writer, ElementHandler.STYLE_TAG);
+      ElementStyleSheet parentSheet = null;
+      if (parent != null)
       {
-        writeTemplate(writer, (Template) band.getDataSource());
+        parentSheet = parent.getBandDefaults();
       }
-      else
-      {
-        writeDataSource(writer, band.getDataSource());
-      }
+
+      final StyleWriter styleWriter =
+          new StyleWriter(getReportWriter(), band.getStyle(), parentSheet, getIndentLevel());
+      styleWriter.write(writer);
+      writeCloseTag(writer, ElementHandler.STYLE_TAG);
     }
+
+    ElementStyleSheet bandDefaults = band.getBandDefaults();
+    if (isStyleSheetEmpty(bandDefaults) == false)
+    {
+      writeTag(writer, BandHandler.DEFAULT_STYLE_TAG);
+      final StyleWriter defaultStyleWriter =
+          new StyleWriter(getReportWriter(), band.getBandDefaults(), null, getIndentLevel());
+      defaultStyleWriter.write(writer);
+      writeCloseTag(writer, BandHandler.DEFAULT_STYLE_TAG);
+    }
+
+    writeDataSourceForElement(band, writer);
 
     final Element[] list = band.getElementArray();
     for (int i = 0; i < list.length; i++)
@@ -155,7 +162,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
       if (list[i] instanceof Band)
       {
         final Band b = (Band) list[i];
-        writeBand(writer, "band", b, band);
+        writeBand(writer, BandHandler.BAND_TAG, b, band);
       }
       else
       {
@@ -165,6 +172,14 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     writeCloseTag(writer, tagName);
   }
 
+  private boolean isStyleSheetEmpty (ElementStyleSheet es)
+  {
+    if (es.getParents().isEmpty() && es.getDefinedPropertyNames().hasNext() == false)
+    {
+      return true;
+    }
+    return false;
+  }
   /**
    * Writes an element to a character stream writer.
    *
@@ -184,65 +199,85 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     }
 
     final Properties p = new Properties();
-    p.setProperty("name", element.getName());
+    if (element.getName().startsWith(Element.ANONYMOUS_ELEMENT_PREFIX) == false)
+    {
+      p.setProperty("name", element.getName());
+    }
     p.setProperty("type", element.getContentType());
     writeTag(writer, BandHandler.ELEMENT_TAG, p, OPEN);
 
-    writeTag(writer, ElementHandler.STYLE_TAG);
-
-    final StyleWriter styleWriter =
-        new StyleWriter(getReportWriter(), element.getStyle(),
-            parent.getBandDefaults(), getIndentLevel());
-    styleWriter.write(writer);
-    writeCloseTag(writer, ElementHandler.STYLE_TAG);
-
-    if ((element.getDataSource() instanceof EmptyDataSource) == false)
+    ElementStyleSheet styleSheet = element.getStyle();
+    if (isStyleSheetEmpty(styleSheet) == false)
     {
-      if (element.getDataSource() instanceof Template)
-      {
-        writeTemplate(writer, (Template) element.getDataSource());
-      }
-      else
-      {
-        writeDataSource(writer, element.getDataSource());
-      }
+      writeTag(writer, ElementHandler.STYLE_TAG);
+
+      final StyleWriter styleWriter =
+          new StyleWriter(getReportWriter(), element.getStyle(),
+              parent.getBandDefaults(), getIndentLevel());
+      styleWriter.write(writer);
+      writeCloseTag(writer, ElementHandler.STYLE_TAG);
     }
+
+    writeDataSourceForElement(element, writer);
 
     writeCloseTag(writer, BandHandler.ELEMENT_TAG);
   }
 
-  /**
-   * Writes a template to a character stream writer.
-   *
-   * @param writer  the character stream writer.
-   * @param template  the template.
-   *
-   * @throws IOException if there is an I/O problem.
-   * @throws ReportWriterException if there is a problem writing the report.
-   */
-  private void writeTemplate(final Writer writer, final Template template)
-      throws IOException, ReportWriterException
+  protected void writeDataSourceForElement (Element element, Writer writer)
+    throws ReportWriterException, IOException
   {
-    final Properties p = new Properties();
-    if (template.getName() != null)
+    if ((element.getDataSource() instanceof EmptyDataSource))
     {
-      p.setProperty("name", template.getName());
+      return;
     }
-    final TemplateDescription td =
-        getReportWriter().getTemplateCollector().getDescription(template);
-    if (td == null)
+    if (element.getDataSource() instanceof Template == false)
     {
-      throw new ReportWriterException("Unknown template encountered: " + template.getClass());
+      writeDataSource(writer, element.getDataSource());
+      return;
     }
-    p.setProperty("references", td.getName());
 
-    writeTag(writer, ElementHandler.TEMPLATE_TAG, p, OPEN);
+    TemplateCollector tc = getReportWriter().getTemplateCollector();
 
-    final ObjectWriter objectWriter =
-        new ObjectWriter(getReportWriter(), template, td.getInstance(), getIndentLevel());
-    objectWriter.write(writer);
+    Template template = (Template) element.getDataSource();
 
-    writeCloseTag(writer, ElementHandler.TEMPLATE_TAG);
+    // the template description of the element template will get the
+    // template name as its name.
+    TemplateDescription templateDescription =
+        tc.getDescription(template);
+
+    if (templateDescription == null)
+    {
+      throw new ReportWriterException("Unknown template type: " + templateDescription);
+    }
+
+    // create the parent description before the template description is filled.
+    TemplateDescription parentTemplate = (TemplateDescription) templateDescription.getInstance();
+
+    try
+    {
+      templateDescription.setParameterFromObject(template);
+    }
+    catch (ObjectFactoryException ofe)
+    {
+      throw new ReportWriterException("Error while preparing the template", ofe);
+    }
+
+    // seek the parent template. If that fails for any reason, we fall back to
+    // the root template description, we safed earlier ...
+    String templateExtends = (String) getReport().getReportBuilderHints().getHint
+        (element, "ext.parser.template-reference", String.class);
+    if (templateExtends != null)
+    {
+      TemplateDescription parent = TemplatesWriter.getTemplateDescription(getReportWriter(), templateExtends);
+      if (parent != null)
+      {
+        parentTemplate = parent;
+      }
+    }
+    TemplateWriter templateWriter = new TemplateWriter
+        (getReportWriter(), getIndentLevel(),
+            templateDescription, parentTemplate);
+    templateWriter.write(writer);
   }
 
   /**

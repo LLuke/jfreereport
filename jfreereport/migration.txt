@@ -277,16 +277,13 @@ OutputTarget properties are all strings now. The PDF target uses "true" and
 
 
 ---------------------------------------------------------------------------
-Changes from 0.8.3d to 0.8.4
+Changes from 0.8.3e to 0.8.4
 
 + removed ReportPropertyFunction
 + functions do no longer receive page events by default. If they should,
   they have to implement the PageEventListener interface
 + abs_pos stylekey is no longer included in the default stylesheets
 + modules ...
-+ library version is no longer maintained by using the resource bundle.
-+ bsh: is no longer evaluated before it is initialized ...
-
 + removed ExpressionDataSource, FunctionDataSource, ReportDataSource
 + removed JFreeReportConstants.REPORT_PAGECOUNT_PROPERTY, it was no longer valid
   and not maintained anymore.

@@ -54,7 +54,9 @@
         <!-- compile the source -->
         <javac srcdir="${projectdir}/source"
                destdir="${projectdir}/build"
-               excludes="com/jrefinery/report/demo/**">
+               excludes="com/jrefinery/report/demo/**"
+               deprecation="true" debug="true"
+          >
             <classpath refid="build.classpath" />
         </javac>
 
@@ -100,7 +102,8 @@
         <!-- compile the demo source -->
         <javac srcdir="${projectdir}/source/com/jrefinery/report/demo"
                destdir="${projectdir}/build"
-	       sourcepath="${projectdir}/source">
+	             sourcepath="${projectdir}/source"
+               deprecation="true" debug="true">
             <classpath refid="build.classpath" />
         </javac>
 

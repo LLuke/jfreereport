@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources_fr.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: JFreeReportResources_fr.java,v 1.2 2003/07/11 09:20:42 mimil Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -42,6 +42,10 @@ import java.awt.event.KeyEvent;
  */
 public class JFreeReportResources_fr extends JFreeReportResources
 {
+  public JFreeReportResources_fr()
+  {
+  }
+
   /**
    * Returns an array of localised resources.
    *
