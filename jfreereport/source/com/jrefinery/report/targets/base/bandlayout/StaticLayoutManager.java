@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.5 2003/02/02 23:43:51 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.6 2003/02/04 17:56:23 taqua Exp $
  *
  * Changes
  * -------
@@ -41,11 +41,10 @@ package com.jrefinery.report.targets.base.bandlayout;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.FloatDimension;
-import com.jrefinery.report.targets.LayoutSupport;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.content.Content;
-import com.jrefinery.report.targets.base.operations.OperationFactory;
-import com.jrefinery.report.targets.base.operations.OperationModule;
+import com.jrefinery.report.targets.base.content.ContentFactory;
+import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.style.StyleKey;
 import com.jrefinery.report.util.Log;
@@ -225,8 +224,8 @@ public class StaticLayoutManager implements BandLayoutManager
     // check if we can handle the content before doing anything...
     // ...
     // bounds can be null, if no absolute dim was defined.
-    OperationModule mod = OperationFactory.getInstance().getModul(e.getContentType());
-    if (mod == null)
+    ContentFactory contentFactory = layoutSupport.getContentFactory();
+    if (contentFactory.canHandleContent(e.getContentType()) == false)
     {
       return bounds;
     }
@@ -256,7 +255,7 @@ public class StaticLayoutManager implements BandLayoutManager
     try
     {
       ElementLayoutInformation eli = new ElementLayoutInformation(absPos, minSize, maxSize, prefSize);
-      Content content = mod.createContentForElement(e, eli, getLayoutSupport());
+      Content content = contentFactory.createContentForElement(e, eli, getLayoutSupport());
       Rectangle2D contentBounds = content.getMinimumContentSize();
       if (contentBounds == null)
       {
