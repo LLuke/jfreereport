@@ -47,6 +47,12 @@ import java.io.ObjectOutputStream;
 import com.jrefinery.report.util.SerializeMethod;
 import org.jfree.ui.FloatDimension;
 
+/**
+ * A SerializeMethod implementation that handles Dimension2D objects.
+ *
+ * @author Thomas Morgner
+ * @see java.awt.geom.Dimension2D
+ */
 public class Dimension2DSerializer implements SerializeMethod
 {
   /**
@@ -56,6 +62,14 @@ public class Dimension2DSerializer implements SerializeMethod
   {
   }
 
+  /**
+   * Writes a serializable object description to the given object output stream.
+   * This method writes the width and the height of the dimension into the stream.
+   *
+   * @param o the to be serialized object.
+   * @param out the outputstream that should receive the object.
+   * @throws IOException if an I/O error occured.
+   */
   public void writeObject(Object o, ObjectOutputStream out) throws IOException
   {
     Dimension2D dim = (Dimension2D) o;
@@ -63,6 +77,15 @@ public class Dimension2DSerializer implements SerializeMethod
     out.writeDouble(dim.getHeight());
   }
 
+  /**
+   * Reads the object from the object input stream. This read the width and
+   * height and constructs a new FloatDimension object.
+   *
+   * @param in the object input stream from where to read the serialized data.
+   * @return the generated object.
+   * @throws IOException if reading the stream failed.
+   * @throws ClassNotFoundException if serialized object class cannot be found.
+   */
   public Object readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
   {
     double w = in.readDouble();
@@ -70,6 +93,11 @@ public class Dimension2DSerializer implements SerializeMethod
     return new FloatDimension((float) w, (float) h);
   }
 
+  /**
+   * Returns the class of the object, which this object can serialize.
+   *
+   * @return the class of java.awt.geom.Dimension2D.
+   */
   public Class getObjectClass()
   {
     return Point2D.class;

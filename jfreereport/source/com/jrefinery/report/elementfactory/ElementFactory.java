@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ElementFactory.java,v 1.1 2003/06/10 12:11:54 taqua Exp $
  *
  * Changes
  * -------------------------
- * 09.06.2003 : Initial version
+ * 09-Jun-2003 : Initial version
  *
  */
 

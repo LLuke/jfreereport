@@ -32,8 +32,8 @@
  *
  * Changes 
  * -------------------------
- * 30.05.2003 : Initial version
- *  
+ * 30-May-2003 : Initial version
+ * 26-Jun-2003 : Documentation.
  */
 
 package com.jrefinery.report.util.serializers;
@@ -47,6 +47,12 @@ import java.io.ObjectOutputStream;
 import com.jrefinery.report.util.SerializeMethod;
 import org.jfree.io.SerialUtilities;
 
+/**
+ * A SerializeMethod implementation that handles BasicStrokes.
+ *
+ * @author Thomas Morgner
+ * @see BasicStroke
+ */
 public class BasicStrokeSerializer implements SerializeMethod
 {
   /**
@@ -56,16 +62,36 @@ public class BasicStrokeSerializer implements SerializeMethod
   {
   }
 
+  /**
+   * Writes a serializable object description to the given object output stream.
+   *
+   * @param o the to be serialized object.
+   * @param out the outputstream that should receive the object.
+   * @throws IOException if an I/O error occured.
+   */
   public void writeObject(Object o, ObjectOutputStream out) throws IOException
   {
     SerialUtilities.writeStroke((Stroke) o, out);
   }
 
+  /**
+   * Reads the object from the object input stream.
+   *
+   * @param in the object input stream from where to read the serialized data.
+   * @return the generated object.
+   * @throws IOException if reading the stream failed.
+   * @throws ClassNotFoundException if serialized object class cannot be found.
+   */
   public Object readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
   {
     return SerialUtilities.readStroke(in);
   }
 
+  /**
+   * The class of the object, which this object can serialize.
+   *
+   * @return the class <code>java.awt.BasicStroke</code>.
+   */
   public Class getObjectClass()
   {
     return BasicStroke.class;

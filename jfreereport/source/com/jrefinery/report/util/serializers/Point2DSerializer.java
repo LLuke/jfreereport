@@ -45,6 +45,12 @@ import java.io.ObjectOutputStream;
 
 import com.jrefinery.report.util.SerializeMethod;
 
+/**
+ * A SerializeMethod implementation that handles Point2D objects.
+ *
+ * @author Thomas Morgner
+ * @see java.awt.geom.Point2D
+ */
 public class Point2DSerializer implements SerializeMethod
 {
   /**
@@ -54,6 +60,13 @@ public class Point2DSerializer implements SerializeMethod
   {
   }
 
+  /**
+   * Writes a serializable object description to the given object output stream.
+   *
+   * @param o the to be serialized object.
+   * @param out the outputstream that should receive the object.
+   * @throws IOException if an I/O error occured.
+   */
   public void writeObject(Object o, ObjectOutputStream out) throws IOException
   {
     Point2D point = (Point2D) o;
@@ -61,6 +74,14 @@ public class Point2DSerializer implements SerializeMethod
     out.writeDouble(point.getY());
   }
 
+  /**
+   * Reads the object from the object input stream.
+   *
+   * @param in the object input stream from where to read the serialized data.
+   * @return the generated object.
+   * @throws IOException if reading the stream failed.
+   * @throws ClassNotFoundException if serialized object class cannot be found.
+   */
   public Object readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
   {
     double x = in.readDouble();
@@ -68,6 +89,11 @@ public class Point2DSerializer implements SerializeMethod
     return new Point2D.Double(x, y);
   }
 
+  /**
+   * Returns the class of the object, which this object can serialize.
+   *
+   * @return the class of java.awt.geom.Point2D.
+   */
   public Class getObjectClass()
   {
     return Point2D.class;

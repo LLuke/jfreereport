@@ -46,6 +46,12 @@ import java.io.ObjectOutputStream;
 
 import com.jrefinery.report.util.SerializeMethod;
 
+/**
+ * A SerializeMethod implementation that handles Colors.
+ *
+ * @author Thomas Morgner
+ * @see Color
+ */
 public class ColorSerializer implements SerializeMethod
 {
   /**
@@ -55,6 +61,14 @@ public class ColorSerializer implements SerializeMethod
   {
   }
 
+  /**
+   * Writes a serializable object description to the given object output stream.
+   * This writes the color components, the alpha channel and the color space.
+   *
+   * @param o the to be serialized object.
+   * @param out the outputstream that should receive the object.
+   * @throws IOException if an I/O error occured.
+   */
   public void writeObject(Object o, ObjectOutputStream out) throws IOException
   {
     Color c = (Color) o;
@@ -65,6 +79,15 @@ public class ColorSerializer implements SerializeMethod
     out.writeFloat(alpha);
   }
 
+  /**
+   * Reads the object from the object input stream. This reads the color components,
+   * the alpha channel and the color space and constructs a new java.awt.Color instance.
+   *
+   * @param in the object input stream from where to read the serialized data.
+   * @return the generated object.
+   * @throws IOException if reading the stream failed.
+   * @throws ClassNotFoundException if serialized object class cannot be found.
+   */
   public Object readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
   {
     ColorSpace csp = (ColorSpace) in.readObject();
@@ -73,6 +96,11 @@ public class ColorSerializer implements SerializeMethod
     return new Color (csp, components, alpha);
   }
 
+  /**
+   * Returns the class of the object, which this object can serialize.
+   *
+   * @return the class of java.awt.Color.
+   */
   public Class getObjectClass()
   {
     return Color.class;

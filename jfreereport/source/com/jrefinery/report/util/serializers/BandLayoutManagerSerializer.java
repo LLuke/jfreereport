@@ -32,8 +32,8 @@
  *
  * Changes 
  * -------------------------
- * 30.05.2003 : Initial version
- *  
+ * 30-May-2003 : Initial version
+ * 26-Jun-2003 : Documentation.
  */
 
 package com.jrefinery.report.util.serializers;
@@ -46,6 +46,12 @@ import java.io.ObjectOutputStream;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.util.SerializeMethod;
 
+/**
+ * A SerializeMethod implementation that handles BandLayoutManagers.
+ *
+ * @author Thomas Morgner
+ * @see BandLayoutManager
+ */
 public class BandLayoutManagerSerializer implements SerializeMethod
 {
   /**
