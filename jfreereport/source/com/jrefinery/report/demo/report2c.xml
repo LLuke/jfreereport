@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!--
-	<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
--->
-
-<!--
-  ChangeLog:
-   2002-May-20: Adjusted the width of 0 to be "100%". The parser does translate values of 0 to
-                the full width, but will issue at least a warning. PageFooter adjusted.
-
+    <!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
 -->
 <report name="Sample Report 2"  pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
 
@@ -41,7 +34,7 @@
         <!-- FIRST GROUP -->
         <group name="Letter Group">
 
-	    <!-- GROUP HEADER -->
+        <!-- GROUP HEADER -->
             <groupheader height="20" fontname="Monospaced" fontstyle="bold" fontsize="9" pagebreak="true">
                 <label x="0" y="1" width="120" height="9" alignment="left">LETTER GROUP:</label>
                 <string-field x="120" y="1" width="76" height="9" alignment="left" fieldname="Letter"/>
@@ -54,7 +47,7 @@
                 <number-field fieldname="Sum2" format="#,##0.00" x="276" y="0" width="176" height="12" alignment="right"/>
             </groupfooter>
 
-	    <!-- GROUP FIELDS -->
+        <!-- GROUP FIELDS -->
             <fields>
                  <field>Letter</field>
             </fields>

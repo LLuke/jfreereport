@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.43 2002/11/27 12:20:33 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.44 2002/11/27 12:23:18 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -291,7 +291,6 @@ public class JFreeReportDemo extends JFrame
 
     buttons.setBorder(BorderFactory.createEmptyBorder(0, 4, 4, 4));
     content.add(buttons, BorderLayout.SOUTH);
-
     setContentPane(content);
 
   }
@@ -629,6 +628,7 @@ public class JFreeReportDemo extends JFrame
 
       JFreeReportDemo frame = new JFreeReportDemo(resources);
       frame.pack();
+      frame.setBounds(100, 100, 700, 400);
       RefineryUtilities.centerFrameOnScreen(frame);
       frame.setVisible(true);
     }

@@ -25,10 +25,15 @@
  * ----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: SampleReport1.java,v 1.8 2002/11/07 21:45:27 taqua Exp $
  *
- *  19-Jun-2002 : Initial version
+ * Changes:
+ * --------
+ * 19-Jun-2002 : Initial version
+ * 28-Nov-2002 : Added vertical alignment parameter (DG);
+ *
  */
+
 package com.jrefinery.report.demo;
 
 import com.jrefinery.report.Element;
@@ -96,7 +101,7 @@ public class SampleReport1
                     "date1",
                     new Rectangle2D.Float (0, 0, -100, 14),
                     null,
-                    Element.RIGHT,
+                    Element.RIGHT, Element.MIDDLE,
                     null,
                     "<null>",
                     "d-MMM-yyyy",
@@ -150,7 +155,7 @@ public class SampleReport1
                     "Label 2",
                     new Rectangle2D.Float (0, 0, -100, 24),
                     null,
-                    Element.CENTER,
+                    Element.CENTER, Element.MIDDLE,
                     null,
                     "*** END OF REPORT ***"
             )
@@ -178,7 +183,7 @@ public class SampleReport1
                     "Label 1",
                     new Rectangle2D.Float (0, 0, -100, 24),
                     null,
-                    Element.CENTER,
+                    Element.CENTER, Element.MIDDLE,
                     null,
                     "LIST OF CONTINENTS BY COUNTRY"
             )
@@ -242,7 +247,7 @@ public class SampleReport1
                     "Code Element",
                     new Rectangle2D.Float (0, 0, 176, 8),
                     null,
-                    Element.LEFT,
+                    Element.LEFT, Element.MIDDLE,
                     null,
                     "<null>",
                     "Country"
@@ -253,7 +258,7 @@ public class SampleReport1
                     "Code Element",
                     new Rectangle2D.Float (180, 0, 76, 8),
                     null,
-                    Element.LEFT,
+                    Element.LEFT, Element.MIDDLE,
                     null,
                     "<null>",
                     "ISO Code"
@@ -264,7 +269,7 @@ public class SampleReport1
                     "Population Element",
                     new Rectangle2D.Float (260, 0, 76, 8),
                     null,
-                    Element.LEFT,
+                    Element.LEFT, Element.MIDDLE,
                     null,
                     "<null>",
                     "#,##0",
@@ -380,7 +385,7 @@ public class SampleReport1
                     "Label 5",
                     new Rectangle2D.Float (0, 1, 76, 9),
                     null,
-                    Element.LEFT,
+                    Element.LEFT, Element.MIDDLE,
                     null,
                     "CONTINENT:"
             )
@@ -390,7 +395,7 @@ public class SampleReport1
                     "Continent Element",
                     new Rectangle2D.Float (96, 1, 76, 9),
                     null,
-                    Element.LEFT,
+                    Element.LEFT, Element.MIDDLE,
                     null,
                     "<null>",
                     "Continent"
@@ -414,7 +419,7 @@ public class SampleReport1
                     "Label 6",
                     new Rectangle2D.Float (0, 0, 450, 12),
                     null,
-                    Element.RIGHT,
+                    Element.RIGHT, Element.MIDDLE,
                     null,
                     "Population:"
             )
@@ -424,7 +429,7 @@ public class SampleReport1
                     "anonymous",
                     new Rectangle2D.Float (260, 0, 76, 12),
                     null,
-                    Element.RIGHT,
+                    Element.RIGHT, Element.MIDDLE,
                     null,
                     "<null>",
                     "#,##0",

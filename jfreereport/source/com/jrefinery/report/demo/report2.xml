@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!--
-	<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
+    <!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
 -->
 
-<!--
-  ChangeLog:
-   2002-May-20: Adjusted the width of 0 to be "100%". The parser does translate values of 0 to
-                the full width, but will issue at least a warning. PageFooter adjusted.
-
--->
 <report name="Sample Report 2" pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
 
     <!-- REPORT HEADER -->
     <reportheader height="144" fontname="SansSerif" fontstyle="bold" fontsize="18">
         <label x="0" y="0" width="100%" height="20" alignment="center">Sample Report Two</label>
-        <label x="0" y="24" width="100%" height="10" fontsize="10" alignment="center">Generated using JFreeReport (version 0.7.6)</label>
+        <label x="0" y="24" width="100%" height="10" fontsize="10" alignment="center">Generated using JFreeReport.</label>
     </reportheader>
 
     <!-- REPORT FOOTER -->
@@ -41,7 +35,7 @@
         <!-- FIRST GROUP -->
         <group name="Letter Group">
 
-	    <!-- GROUP HEADER -->
+        <!-- GROUP HEADER -->
             <groupheader height="20" fontname="Monospaced" fontstyle="bold" fontsize="9" pagebreak="true">
                 <label x="0" y="1" width="120" height="9" alignment="left">LETTER GROUP:</label>
                 <string-field x="120" y="1" width="76" height="9" alignment="left" fieldname="Letter"/>
@@ -51,18 +45,18 @@
 
             <!-- GROUP FOOTER -->
             <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
-                <label x="0" y="0" width="100%" height="12" alignment="left">Total for letter:</label>
-                <number-field fieldname="Sum2" format="#,##0.00" x="276" y="0" width="176" height="12" alignment="right"/>
+                <label x="0" y="2" width="100%" height="12" alignment="left">Total for letter:</label>
+                <number-field fieldname="Sum2" format="#,##0.00" x="276" y="2" width="176" height="12" alignment="right" />
             </groupfooter>
 
-	    <!-- GROUP FIELDS -->
+        <!-- GROUP FIELDS -->
             <fields>
                  <field>Letter</field>
             </fields>
 
         </group>
 
-	<!-- SECOND GROUP -->
+    <!-- SECOND GROUP -->
         <group name="Color Group">
 
             <!-- GROUP HEADER -->
@@ -75,8 +69,8 @@
             <!-- GROUP FOOTER -->
             <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
                 <line x1="0" y1="1" x2="0" y2="1" weight="0.25"/>
-                <label x="0" y="0" width="150" height="12" alignment="left">Subtotal for color:</label>
-                <number-field fieldname="Sum1" format="#,##0.00" x="276" y="0" width="176" height="12" alignment="right"/>
+                <label x="0" y="3" width="150" height="12" alignment="left">Subtotal for color:</label>
+                <number-field fieldname="Sum1" format="#,##0.00" x="276" y="3" width="176" height="12" alignment="right"/>
             </groupfooter>
 
             <!-- GROUP FIELDS -->
@@ -100,48 +94,48 @@
     </items>
     <!-- FUNCTIONS -->
     <functions>
-	 <property-ref name="report.date"/>
-  <function name="Count1" class="com.jrefinery.report.function.ItemCountFunction">
-			<properties>
-				<property name="group">Color Group</property>
-			</properties>
-		</function>
+        <property-ref name="report.date"/>
+        <function name="Count1" class="com.jrefinery.report.function.ItemCountFunction">
+            <properties>
+                <property name="group">Color Group</property>
+            </properties>
+        </function>
 
         <function name="Count2" class="com.jrefinery.report.function.ItemCountFunction">
-			<properties>
-				<property name="group">Letter Group</property>
-			</properties>
-		</function>
+            <properties>
+                <property name="group">Letter Group</property>
+            </properties>
+        </function>
         <function name="Sum1" class="com.jrefinery.report.function.ItemSumFunction">
-			<properties>
-				<property name="field">Double</property>
-				<property name="group">Color Group</property>
-			</properties>
-		</function>
+            <properties>
+                <property name="field">Double</property>
+                <property name="group">Color Group</property>
+            </properties>
+        </function>
         <function name="Sum2" class="com.jrefinery.report.function.ItemSumFunction">
-			<properties>
-				<property name="field">Double</property>
-				<property name="group">Letter Group</property>
-			</properties>
-		</function>
+            <properties>
+                <property name="field">Double</property>
+                <property name="group">Letter Group</property>
+            </properties>
+        </function>
 
-  <function name="PageNumber" class="com.jrefinery.report.function.PageFunction">
-      <properties>
-        <property name="group">Letter Group</property>
-      </properties>
-  </function>
-  <function name="PageTotal" class="com.jrefinery.report.function.PageTotalFunction">
-      <properties>
-        <property name="group">Letter Group</property>
-      </properties>
-  </function>
-    <expression name="pageXofY" class="com.jrefinery.report.function.TextFormatExpression">
-      <properties>
-        <property name="pattern">Page {0} of {1}</property>
-        <property name="0">PageNumber</property>
-        <property name="1">PageTotal</property>
-      </properties>
-    </expression>
+        <function name="PageNumber" class="com.jrefinery.report.function.PageFunction">
+            <properties>
+                <property name="group">Letter Group</property>
+            </properties>
+        </function>
+        <function name="PageTotal" class="com.jrefinery.report.function.PageTotalFunction">
+            <properties>
+                <property name="group">Letter Group</property>
+            </properties>
+        </function>
+        <expression name="pageXofY" class="com.jrefinery.report.function.TextFormatExpression">
+            <properties>
+                <property name="pattern">Page {0} of {1}</property>
+                <property name="0">PageNumber</property>
+                <property name="1">PageTotal</property>
+            </properties>
+        </expression>
 
     </functions>
 
