@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: SystemOutLogTarget.java,v 1.6 2002/11/07 21:45:29 taqua Exp $
+ * $Id: SystemOutLogTarget.java,v 1.7 2002/11/27 12:20:34 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ public class SystemOutLogTarget implements LogTarget, Serializable
    * @param level log level of the message.
    * @param message text to be logged.
    */
-  public void log (int level, String message)
+  public void log (int level, Object message)
   {
     if (level > 3)
     {
@@ -62,7 +62,8 @@ public class SystemOutLogTarget implements LogTarget, Serializable
     }
     if (level <= Log.getDebugLevel ())
     {
-      System.out.println (LEVELS[level] + message);
+      System.out.print (LEVELS[level]);
+      System.out.println (message);
     }
   }
 
@@ -77,7 +78,7 @@ public class SystemOutLogTarget implements LogTarget, Serializable
    * @param message text to be logged.
    * @param e the exception, which should be logged.
    */
-  public void log (int level, String message, Exception e)
+  public void log (int level, Object message, Exception e)
   {
     if (level > 3)
     {
@@ -85,7 +86,8 @@ public class SystemOutLogTarget implements LogTarget, Serializable
     }
     if (level <= Log.getDebugLevel ())
     {
-      System.out.println (LEVELS[level] + message);
+      System.out.print (LEVELS[level]);
+      System.out.println (message);
       e.printStackTrace (System.out);
     }
   }
@@ -95,7 +97,7 @@ public class SystemOutLogTarget implements LogTarget, Serializable
    *
    * @param message  the message.
    */
-  public void debug (String message)
+  public void debug (Object message)
   {
     log (DEBUG, message);
   }
@@ -106,7 +108,7 @@ public class SystemOutLogTarget implements LogTarget, Serializable
    * @param message  the message.
    * @param e  the exception.
    */
-  public void debug (String message, Exception e)
+  public void debug (Object message, Exception e)
   {
     log (DEBUG, message, e);
   }
@@ -116,7 +118,7 @@ public class SystemOutLogTarget implements LogTarget, Serializable
    *
    * @param message  the message.
    */
-  public void info (String message)
+  public void info (Object message)
   {
     log (INFO, message);
   }
@@ -127,7 +129,7 @@ public class SystemOutLogTarget implements LogTarget, Serializable
    * @param message  the message.
    * @param e  the exception.
    */
-  public void info (String message, Exception e)
+  public void info (Object message, Exception e)
   {
     log (INFO, message, e);
   }
@@ -137,7 +139,7 @@ public class SystemOutLogTarget implements LogTarget, Serializable
    *
    * @param message  the message.
    */
-  public void warn (String message)
+  public void warn (Object message)
   {
     log (WARN, message);
   }
@@ -148,7 +150,7 @@ public class SystemOutLogTarget implements LogTarget, Serializable
    * @param message  the message.
    * @param e  the exception.
    */
-  public void warn (String message, Exception e)
+  public void warn (Object message, Exception e)
   {
     log (WARN, message, e);
   }
@@ -158,7 +160,7 @@ public class SystemOutLogTarget implements LogTarget, Serializable
    *
    * @param message  the message.
    */
-  public void error (String message)
+  public void error (Object message)
   {
     log (ERROR, message);
   }
@@ -169,7 +171,7 @@ public class SystemOutLogTarget implements LogTarget, Serializable
    * @param message  the message.
    * @param e  the exception.
    */
-  public void error (String message, Exception e)
+  public void error (Object message, Exception e)
   {
     log (ERROR, message, e);
   }

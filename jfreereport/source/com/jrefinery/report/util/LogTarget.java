@@ -25,7 +25,7 @@
  * --------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: LogTarget.java,v 1.4 2002/11/07 21:45:29 taqua Exp $
  *
  * Changes
  * -------
@@ -76,7 +76,7 @@ public interface LogTarget
    * @param level  the log level.
    * @param message  the log message.
    */
-  public void log (int level, String message);
+  public void log (int level, Object message);
 
   /**
    * Logs a message at a specified log level.
@@ -85,14 +85,14 @@ public interface LogTarget
    * @param message  the log message.
    * @param e  the exception
    */
-  public void log (int level, String message, Exception e);
+  public void log (int level, Object message, Exception e);
 
   /**
    * A convenience method for logging a 'debug' message.
    *
    * @param message  the message.
    */
-  public void debug (String message);
+  public void debug (Object message);
 
   /**
    * A convenience method for logging a 'debug' message.
@@ -100,14 +100,14 @@ public interface LogTarget
    * @param message  the message.
    * @param e  the exception.
    */
-  public void debug (String message, Exception e);
+  public void debug (Object message, Exception e);
 
   /**
    * A convenience method for logging an 'info' message.
    *
    * @param message  the message.
    */
-  public void info (String message);
+  public void info (Object message);
 
   /**
    * A convenience method for logging an 'info' message.
@@ -115,14 +115,14 @@ public interface LogTarget
    * @param message  the message.
    * @param e  the exception.
    */
-  public void info (String message, Exception e);
+  public void info (Object message, Exception e);
 
   /**
    * A convenience method for logging a 'warning' message.
    *
    * @param message  the message.
    */
-  public void warn (String message);
+  public void warn (Object message);
 
   /**
    * A convenience method for logging a 'warning' message.
@@ -130,14 +130,14 @@ public interface LogTarget
    * @param message  the message.
    * @param e  the exception.
    */
-  public void warn (String message, Exception e);
+  public void warn (Object message, Exception e);
 
   /**
    * A convenience method for logging an 'error' message.
    *
    * @param message  the message.
    */
-  public void error (String message);
+  public void error (Object message);
 
   /**
    * A convenience method for logging an 'error' message.
@@ -145,6 +145,6 @@ public interface LogTarget
    * @param message  the message.
    * @param e  the exception.
    */
-  public void error (String message, Exception e);
+  public void error (Object message, Exception e);
 
 }

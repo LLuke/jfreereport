@@ -25,7 +25,7 @@
  * --------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: Log.java,v 1.8 2002/11/27 12:20:34 taqua Exp $
+ * $Id: Log.java,v 1.9 2002/11/29 12:07:29 mungady Exp $
  *
  * Changes
  * -------
@@ -159,7 +159,7 @@ public final class Log
    * @param level  log level of the message.
    * @param message  text to be logged.
    */
-  public static void log (int level, String message)
+  public static void log (int level, Object message)
   {
     if (level > 3)
     {
@@ -186,7 +186,7 @@ public final class Log
    * @param message  text to be logged.
    * @param e  the exception, which should be logged.
    */
-  public static void log (int level, String message, Exception e)
+  public static void log (int level, Object message, Exception e)
   {
     if (level > 3)
     {
@@ -207,7 +207,7 @@ public final class Log
    *
    * @param message  the message.
    */
-  public static void debug (String message)
+  public static void debug (Object message)
   {
     for (int i = 0; i < logTargets.size (); i++)
     {
@@ -222,7 +222,7 @@ public final class Log
    * @param message  the message.
    * @param e  the exception.
    */
-  public static void debug (String message, Exception e)
+  public static void debug (Object message, Exception e)
   {
     for (int i = 0; i < logTargets.size (); i++)
     {
@@ -236,7 +236,7 @@ public final class Log
    *
    * @param message  the message.
    */
-  public static void info (String message)
+  public static void info (Object message)
   {
     for (int i = 0; i < logTargets.size (); i++)
     {
@@ -251,7 +251,7 @@ public final class Log
    * @param message  the message.
    * @param e  the exception.
    */
-  public static void info (String message, Exception e)
+  public static void info (Object message, Exception e)
   {
     for (int i = 0; i < logTargets.size (); i++)
     {
@@ -265,7 +265,7 @@ public final class Log
    *
    * @param message  the message.
    */
-  public static void warn (String message)
+  public static void warn (Object message)
   {
     for (int i = 0; i < logTargets.size (); i++)
     {
@@ -280,7 +280,7 @@ public final class Log
    * @param message  the message.
    * @param e  the exception.
    */
-  public static void warn (String message, Exception e)
+  public static void warn (Object message, Exception e)
   {
     for (int i = 0; i < logTargets.size (); i++)
     {
@@ -294,7 +294,7 @@ public final class Log
    *
    * @param message  the message.
    */
-  public static void error (String message)
+  public static void error (Object message)
   {
     for (int i = 0; i < logTargets.size (); i++)
     {
@@ -309,7 +309,7 @@ public final class Log
    * @param message  the message.
    * @param e  the exception.
    */
-  public static void error (String message, Exception e)
+  public static void error (Object message, Exception e)
   {
     for (int i = 0; i < logTargets.size (); i++)
     {

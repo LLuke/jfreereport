@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.7 2002/12/02 17:44:51 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.8 2002/12/05 16:48:12 mungady Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,13 @@ import java.util.Properties;
  */
 public class ReportConfiguration
 {
+
+  /** The 'disable logging' property key. */
+  public static final String WARN_INVALID_COLUMNS = "com.jrefinery.report.NoDefaultDebug";
+
+  /** The default 'disable logging' property value. */
+  public static final String WARN_INVALID_COLUMNS_DEFAULT = "false";
+
   /** The 'disable logging' property key. */
   public static final String DISABLE_LOGGING = "com.jrefinery.report.NoDefaultDebug";
 
@@ -360,4 +367,13 @@ public class ReportConfiguration
     setConfigProperty(LOGTARGET, logTarget);
   }
 
+  public boolean isWarnInvalidColumns()
+  {
+    return getConfigProperty(WARN_INVALID_COLUMNS , WARN_INVALID_COLUMNS_DEFAULT).equalsIgnoreCase("true");
+  }
+
+  public void setWarnInvalidColumns(boolean warnInvalidColumns)
+  {
+    setConfigProperty(WARN_INVALID_COLUMNS, String.valueOf(warnInvalidColumns));
+  }
 }
