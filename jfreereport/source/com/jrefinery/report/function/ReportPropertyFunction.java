@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPropertyFunction.java,v 1.5 2002/05/18 16:23:51 taqua Exp $
+ * $Id: ReportPropertyFunction.java,v 1.6 2002/05/26 15:07:39 taqua Exp $
  *
  * Changes
  * -------

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.1.1.1 2002/04/25 17:02:32 taqua Exp $
+ * $Id: PageFunction.java,v 1.2 2002/05/14 21:35:04 taqua Exp $
  *
  * Changes
  * -------

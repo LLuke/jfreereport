@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.4 2002/05/17 22:13:13 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.5 2002/05/18 16:23:51 taqua Exp $
  *
  * Changes
  * -------

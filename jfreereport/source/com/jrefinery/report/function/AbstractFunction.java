@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.3 2002/05/15 20:47:23 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.4 2002/05/26 20:05:12 taqua Exp $
  *
  * Changes
  * -------

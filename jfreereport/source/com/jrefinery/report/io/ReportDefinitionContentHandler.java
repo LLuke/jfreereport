@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportDefinitionContentHandler.java,v 1.2 2002/05/14 21:35:05 taqua Exp $
+ * $Id: ReportDefinitionContentHandler.java,v 1.3 2002/05/23 22:32:22 taqua Exp $
  *
  * Changes
  * -------

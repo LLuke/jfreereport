@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.2 2002/05/14 21:35:04 taqua Exp $
+ * $Id: ItemCountFunction.java,v 1.3 2002/05/18 16:23:51 taqua Exp $
  *
  * Changes
  * -------
