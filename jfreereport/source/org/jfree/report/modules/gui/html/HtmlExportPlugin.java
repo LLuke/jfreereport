@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportPlugin.java,v 1.15 2005/01/25 00:06:07 taqua Exp $
+ * $Id: HtmlExportPlugin.java,v 1.16 2005/02/23 21:04:55 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -158,20 +158,20 @@ public class HtmlExportPlugin extends AbstractExportPlugin
       case HtmlExportDialog.EXPORT_DIR:
         {
           task = new HtmlDirExportTask
-                  (exportDialog.getDirFilename(), exportDialog.getDirDataFilename(),
+                  (exportDialog.getFilename(), exportDialog.getDataFilename(),
                           progressDialog, report);
           break;
         }
       case HtmlExportDialog.EXPORT_STREAM:
         {
           task = new HtmlStreamExportTask
-                  (exportDialog.getStreamFilename(), progressDialog, report);
+                  (exportDialog.getFilename(), progressDialog, report);
           break;
         }
       case HtmlExportDialog.EXPORT_ZIP:
         {
           task = new HtmlZipExportTask
-                  (exportDialog.getZipFilename(), exportDialog.getZipDataFilename(),
+                  (exportDialog.getFilename(), exportDialog.getDataFilename(),
                           progressDialog, report);
           break;
         }

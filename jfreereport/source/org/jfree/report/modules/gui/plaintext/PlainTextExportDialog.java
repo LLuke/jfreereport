@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.13 2005/02/23 19:31:58 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.14 2005/02/23 21:05:01 taqua Exp $
  *
  * Changes
  * --------
@@ -84,6 +84,7 @@ import org.jfree.report.modules.output.pageable.plaintext.IBMCompatiblePrinterDr
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterSpecification;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterSpecificationManager;
+import org.jfree.report.modules.gui.xls.ExcelExportDialog;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
@@ -1116,5 +1117,15 @@ public class PlainTextExportDialog extends JDialog
       }
     }
     epsonPrinters.setSelectedKey(null);
+  }
+
+
+  public static void main (final String[] args)
+  {
+    final PlainTextExportDialog dialog = new PlainTextExportDialog();
+    dialog.setModal(true);
+    dialog.pack();
+    dialog.performQueryForExport(new JFreeReport());
+    System.exit(0);
   }
 }

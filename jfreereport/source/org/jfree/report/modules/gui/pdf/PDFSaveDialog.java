@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.16 2005/01/25 00:06:27 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.17 2005/02/23 21:04:55 taqua Exp $
  *
  * Changes
  * --------
@@ -78,6 +78,7 @@ import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
+import org.jfree.report.modules.gui.plaintext.PlainTextExportDialog;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
 import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
@@ -1614,20 +1615,12 @@ public class PDFSaveDialog extends JDialog
    */
   public static void main (final String[] args)
   {
-    final JDialog d = new PDFSaveDialog();
-    d.pack();
-    d.addWindowListener(new WindowAdapter()
-    {
-      /**
-       * Invoked when a window is in the process of being closed. The close operation can
-       * be overridden at this point.
-       */
-      public void windowClosing (final WindowEvent e)
-      {
-        System.exit(0);
-      }
-    });
-    d.setVisible(true);
+    final PDFSaveDialog dialog = new PDFSaveDialog();
+    dialog.setModal(true);
+    dialog.pack();
+    dialog.performQueryForExport(new JFreeReport());
+    System.exit(0);
   }
+
 
 }

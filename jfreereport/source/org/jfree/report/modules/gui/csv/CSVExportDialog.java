@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.10 2005/01/25 00:05:31 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.11 2005/02/23 21:04:54 taqua Exp $
  *
  * Changes
  * --------
@@ -43,14 +43,12 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.Properties;
-import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -59,7 +57,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -68,18 +65,18 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-import org.jfree.report.JFreeReport;
+import org.jfree.report.modules.gui.base.components.AbstractExportDialog;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
-import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
-import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
-import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
+import org.jfree.report.modules.gui.base.components.JStatusBar;
 import org.jfree.report.modules.output.csv.CSVProcessor;
 import org.jfree.report.modules.output.table.base.TableProcessor;
 import org.jfree.report.modules.output.table.csv.CSVTableProcessor;
-import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
+import org.jfree.report.JFreeReport;
 import org.jfree.ui.ExtensionFileFilter;
 import org.jfree.ui.LengthLimitingDocument;
 import org.jfree.ui.action.ActionButton;
@@ -89,7 +86,7 @@ import org.jfree.ui.action.ActionButton;
  *
  * @author Thomas Morgner.
  */
-public class CSVExportDialog extends JDialog
+public class CSVExportDialog extends AbstractExportDialog
 {
   /**
    * The 'CSV encoding' property key.
@@ -101,35 +98,6 @@ public class CSVExportDialog extends JDialog
    */
   public static final String CSV_OUTPUT_ENCODING_DEFAULT =
           ReportConfiguration.getPlatformDefaultEncoding();
-
-
-  /**
-   * Internal action class to confirm the dialog and to validate the input.
-   */
-  private class ActionConfirm extends AbstractAction
-  {
-    /**
-     * Default constructor.
-     */
-    public ActionConfirm ()
-    {
-      putValue(Action.NAME, getResources().getString("csvexportdialog.confirm"));
-    }
-
-    /**
-     * Receives notification that the action has occurred.
-     *
-     * @param e the action event.
-     */
-    public void actionPerformed (final ActionEvent e)
-    {
-      if (performValidate())
-      {
-        setConfirmed(true);
-        setVisible(false);
-      }
-    }
-  }
 
   /**
    * Internal action class to confirm the dialog and to validate the input.
@@ -151,31 +119,6 @@ public class CSVExportDialog extends JDialog
     public void actionPerformed (final ActionEvent e)
     {
       performSeparatorSelection();
-    }
-  }
-
-  /**
-   * Internal action class to cancel the report processing.
-   */
-  private class ActionCancel extends AbstractAction
-  {
-    /**
-     * Default constructor.
-     */
-    public ActionCancel ()
-    {
-      putValue(Action.NAME, getResources().getString("csvexportdialog.cancel"));
-    }
-
-    /**
-     * Receives notification that the action has occurred.
-     *
-     * @param e the action event.
-     */
-    public void actionPerformed (final ActionEvent e)
-    {
-      setConfirmed(false);
-      setVisible(false);
     }
   }
 
@@ -203,6 +146,39 @@ public class CSVExportDialog extends JDialog
     }
   }
 
+  private class RawExportSelectionChangeListener implements ChangeListener
+  {
+    public RawExportSelectionChangeListener ()
+    {
+    }
+
+    /**
+     * Invoked when the target of the listener has changed its state.
+     *
+     * @param e a ChangeEvent object
+     */
+    public void stateChanged (final ChangeEvent e)
+    {
+      cbxColumnNamesAsFirstRow.setEnabled(rbExportData.isSelected());
+    }
+  }
+
+  private class CancelAction extends AbstractCancelAction
+  {
+    public CancelAction ()
+    {
+      putValue(Action.NAME, getResources().getString("csvexportdialog.cancel"));
+    }
+  }
+
+  private class ConfirmAction extends AbstractConfirmAction
+  {
+    public ConfirmAction ()
+    {
+      putValue(Action.NAME, getResources().getString("csvexportdialog.confirm"));
+    }
+  }
+
   /**
    * Filename text field.
    */
@@ -222,6 +198,11 @@ public class CSVExportDialog extends JDialog
    * The strict layout check-box.
    */
   private JCheckBox cbxStrictLayout;
+
+  /**
+   * The columnnames-as-first-row layout check-box.
+   */
+  private JCheckBox cbxColumnNamesAsFirstRow;
 
   /**
    * A radio button for tab separators.
@@ -263,20 +244,11 @@ public class CSVExportDialog extends JDialog
    */
   private JFileChooser fileChooser;
 
-  /**
-   * Confirmed flag.
-   */
-  private boolean confirmed;
-
-  /**
-   * Localised resources.
-   */
-  private ResourceBundle resources;
-
   private static final String COMMA_SEPARATOR = ",";
   private static final String SEMICOLON_SEPARATOR = ";";
   private static final String TAB_SEPARATOR = "\t";
   private static final String CSV_FILE_EXTENSION = ".csv";
+
 
   /**
    * Creates a new CSV export dialog.
@@ -313,34 +285,17 @@ public class CSVExportDialog extends JDialog
    */
   private void initConstructor ()
   {
-    setModal(true);
-    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+    setCancelAction(new CancelAction());
+    setConfirmAction(new ConfirmAction());
     setTitle(getResources().getString("csvexportdialog.dialogtitle"));
     initialize();
     clear();
-
-    addWindowListener(new WindowAdapter()
-    {
-      public void windowClosing (final WindowEvent e)
-      {
-        new ActionCancel().actionPerformed(null);
-      }
-    });
+    getFormValidator().setEnabled(true);
   }
 
-  /**
-   * Retrieves the resources for this dialog. If the resources are not initialized, they
-   * get loaded on the first call to this method.
-   *
-   * @return this frames ResourceBundle.
-   */
-  protected ResourceBundle getResources ()
+  protected String getResourceBaseName ()
   {
-    if (resources == null)
-    {
-      resources = ResourceBundle.getBundle(CSVExportPlugin.BASE_RESOURCE_CLASS);
-    }
-    return resources;
+    return CSVExportPlugin.BASE_RESOURCE_CLASS;
   }
 
   /**
@@ -366,14 +321,14 @@ public class CSVExportDialog extends JDialog
     gbc.gridx = 0;
     gbc.gridy = 0;
     gbc.anchor = GridBagConstraints.WEST;
-    gbc.insets = new Insets(3, 1, 1, 1);
+    gbc.insets = new Insets(3, 1, 1, 5);
     contentPane.add(lblFileName, gbc);
 
     gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.WEST;
     gbc.gridx = 0;
     gbc.gridy = 1;
-    gbc.insets = new Insets(1, 1, 1, 1);
+    gbc.insets = new Insets(1, 1, 1, 5);
     contentPane.add(lblEncoding, gbc);
 
     gbc = new GridBagConstraints();
@@ -382,9 +337,17 @@ public class CSVExportDialog extends JDialog
     gbc.gridx = 1;
     gbc.gridy = 0;
     gbc.ipadx = 120;
-    gbc.gridwidth = 2;
-    gbc.insets = new Insets(3, 1, 1, 1);
+    gbc.gridwidth = 1;
+    gbc.insets = new Insets(3, 1, 5, 1);
     contentPane.add(txFilename, gbc);
+
+    gbc = new GridBagConstraints();
+    gbc.anchor = GridBagConstraints.NORTHWEST;
+    gbc.gridx = 2;
+    gbc.gridy = 0;
+    gbc.gridheight = 2;
+    gbc.insets = new Insets(1, 5, 5, 1);
+    contentPane.add(btnSelect, gbc);
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -392,7 +355,7 @@ public class CSVExportDialog extends JDialog
     gbc.gridx = 1;
     gbc.gridy = 1;
     gbc.gridwidth = 2;
-    gbc.insets = new Insets(1, 1, 1, 1);
+    gbc.insets = new Insets(5, 1, 1, 1);
     contentPane.add(cbEncoding, gbc);
 
     gbc = new GridBagConstraints();
@@ -404,7 +367,7 @@ public class CSVExportDialog extends JDialog
     gbc.insets = new Insets(1, 1, 1, 1);
     contentPane.add(cbxStrictLayout, gbc);
 
-    final JPanel p = new JPanel(new GridLayout());
+    final JPanel p = new JPanel(new GridLayout(2,1,5,5));
     p.add(createSeparatorPanel());
     p.add(createExportTypePanel());
 
@@ -412,40 +375,46 @@ public class CSVExportDialog extends JDialog
     gbc.fill = GridBagConstraints.BOTH;
     gbc.weighty = 1;
     gbc.weightx = 1;
-    gbc.gridx = 1;
-    gbc.gridy = 3;
-    gbc.gridwidth = 2;
+    gbc.gridx = 0;
+    gbc.gridy = 4;
+    gbc.gridwidth = 3;
     gbc.insets = new Insets(10, 1, 1, 1);
     contentPane.add(p, gbc);
 
-    gbc = new GridBagConstraints();
-    gbc.anchor = GridBagConstraints.NORTHWEST;
-    gbc.gridx = 3;
-    gbc.gridy = 0;
-    gbc.gridheight = 2;
-    contentPane.add(btnSelect, gbc);
-
     // button panel
-    final JButton btnCancel = new ActionButton(new ActionCancel());
-    final JButton btnConfirm = new ActionButton(new ActionConfirm());
+    final JButton btnCancel = new ActionButton(getCancelAction());
+    final JButton btnConfirm = new ActionButton(getConfirmAction());
     final JPanel buttonPanel = new JPanel();
-    buttonPanel.setLayout(new GridLayout());
+    buttonPanel.setLayout(new GridLayout(1,2,5,5));
     buttonPanel.add(btnConfirm);
     buttonPanel.add(btnCancel);
     btnConfirm.setDefaultCapable(true);
     getRootPane().setDefaultButton(btnConfirm);
-    buttonPanel.registerKeyboardAction(new ActionConfirm(),
+    buttonPanel.registerKeyboardAction(getConfirmAction(),
             KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
             JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.NONE;
     gbc.weightx = 1;
     gbc.gridx = 0;
     gbc.gridwidth = 4;
     gbc.gridy = 6;
-    gbc.insets = new Insets(10, 0, 0, 0);
+    gbc.insets = new Insets(10, 0, 10, 0);
+    gbc.anchor = GridBagConstraints.EAST;
     contentPane.add(buttonPanel, gbc);
-    setContentPane(contentPane);
+
+
+    final JPanel contentWithStatus = new JPanel();
+    contentWithStatus.setLayout(new BorderLayout());
+    contentWithStatus.add(contentPane, BorderLayout.CENTER);
+    contentWithStatus.add(getStatusBar(), BorderLayout.SOUTH);
+
+    setContentPane(contentWithStatus);
+
+    getFormValidator().registerButton(cbxStrictLayout);
+    getFormValidator().registerTextField(txFilename);
+    getFormValidator().registerComboBox(cbEncoding);
   }
 
   /**
@@ -465,6 +434,13 @@ public class CSVExportDialog extends JDialog
 
     rbExportData = new JRadioButton(getResources().getString("csvexportdialog.export.data"));
     rbExportPrintedElements = new JRadioButton(getResources().getString("csvexportdialog.export.printed_elements"));
+    cbxColumnNamesAsFirstRow = new JCheckBox(getResources().getString("cvsexportdialog.export.columnnames"));
+    rbExportData.addChangeListener(new RawExportSelectionChangeListener());
+
+
+    getFormValidator().registerButton(rbExportData);
+    getFormValidator().registerButton(rbExportPrintedElements);
+    getFormValidator().registerButton(cbxColumnNamesAsFirstRow);
 
     final ButtonGroup btg = new ButtonGroup();
     btg.add(rbExportData);
@@ -477,7 +453,8 @@ public class CSVExportDialog extends JDialog
     gbc.gridx = 0;
     gbc.gridy = 0;
     gbc.insets = new Insets(1, 1, 1, 1);
-    exportTypePanel.add(rbExportData, gbc);
+    gbc.gridwidth = 2;
+    exportTypePanel.add(rbExportPrintedElements, gbc);
 
     gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.NORTHWEST;
@@ -486,7 +463,17 @@ public class CSVExportDialog extends JDialog
     gbc.gridx = 0;
     gbc.gridy = 1;
     gbc.insets = new Insets(1, 1, 1, 1);
-    exportTypePanel.add(rbExportPrintedElements, gbc);
+    gbc.gridwidth = 2;
+    exportTypePanel.add(rbExportData, gbc);
+
+    gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.weightx = 0;
+    gbc.gridx = 1;
+    gbc.gridy = 2;
+    gbc.gridwidth = 1;
+    gbc.insets = new Insets(1, 20, 1, 1);
+    exportTypePanel.add(cbxColumnNamesAsFirstRow, gbc);
 
     return exportTypePanel;
   }
@@ -511,6 +498,11 @@ public class CSVExportDialog extends JDialog
     rbSeparatorSemicolon = new JRadioButton(getResources().getString("csvexportdialog.separator.semicolon"));
     rbSeparatorOther = new JRadioButton(getResources().getString("csvexportdialog.separator.other"));
 
+    getFormValidator().registerButton(rbSeparatorColon);
+    getFormValidator().registerButton(rbSeparatorOther);
+    getFormValidator().registerButton(rbSeparatorSemicolon);
+    getFormValidator().registerButton(rbSeparatorTab);
+
     final ButtonGroup btg = new ButtonGroup();
     btg.add(rbSeparatorTab);
     btg.add(rbSeparatorColon);
@@ -526,11 +518,12 @@ public class CSVExportDialog extends JDialog
     final LengthLimitingDocument ldoc = new LengthLimitingDocument(1);
     txSeparatorOther = new JTextField();
     txSeparatorOther.setDocument(ldoc);
+    getFormValidator().registerTextField(txSeparatorOther);
+
 
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.WEST;
     gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.weightx = 1;
     gbc.gridx = 0;
     gbc.gridy = 0;
     gbc.insets = new Insets(1, 1, 1, 1);
@@ -539,7 +532,6 @@ public class CSVExportDialog extends JDialog
     gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.WEST;
     gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.weightx = 1;
     gbc.gridx = 0;
     gbc.gridy = 1;
     gbc.insets = new Insets(1, 1, 1, 1);
@@ -548,42 +540,29 @@ public class CSVExportDialog extends JDialog
     gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.WEST;
     gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.weightx = 1;
     gbc.gridx = 0;
     gbc.gridy = 2;
     gbc.insets = new Insets(1, 1, 1, 1);
     separatorPanel.add(rbSeparatorSemicolon, gbc);
-
-    final JPanel otherPanel = new JPanel();
-    otherPanel.setLayout(new GridBagLayout());
 
     gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.WEST;
     gbc.fill = GridBagConstraints.NONE;
     gbc.weightx = 0;
     gbc.gridx = 0;
-    gbc.gridy = 0;
+    gbc.gridy = 3;
     gbc.insets = new Insets(1, 1, 1, 1);
-    otherPanel.add(rbSeparatorOther, gbc);
+    separatorPanel.add(rbSeparatorOther, gbc);
 
     gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.WEST;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.fill = GridBagConstraints.NONE;
     gbc.weightx = 1;
     gbc.gridx = 1;
-    gbc.gridy = 0;
-    gbc.insets = new Insets(1, 1, 1, 1);
-    otherPanel.add(txSeparatorOther, gbc);
-
-    gbc = new GridBagConstraints();
-    gbc.anchor = GridBagConstraints.WEST;
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.weightx = 1;
-    gbc.gridx = 0;
     gbc.gridy = 3;
-    gbc.gridwidth = 3;
+    gbc.ipadx = 120;
     gbc.insets = new Insets(1, 1, 1, 1);
-    separatorPanel.add(otherPanel, gbc);
+    separatorPanel.add(txSeparatorOther, gbc);
 
     return separatorPanel;
   }
@@ -609,28 +588,6 @@ public class CSVExportDialog extends JDialog
   }
 
   /**
-   * Returns <code>true</code> if the user confirmed the selection, and <code>false</code>
-   * otherwise.  The file should only be saved if the result is <code>true</code>.
-   *
-   * @return A boolean.
-   */
-  public boolean isConfirmed ()
-  {
-    return confirmed;
-  }
-
-  /**
-   * Defines whether this dialog has been finished using the 'OK' or the 'Cancel' option.
-   *
-   * @param confirmed set to <code>true</code>, if OK was pressed, <code>false</code>
-   *                  otherwise
-   */
-  protected void setConfirmed (final boolean confirmed)
-  {
-    this.confirmed = confirmed;
-  }
-
-  /**
    * Clears all selections, input fields and sets the selected encryption level to none.
    */
   public void clear ()
@@ -640,6 +597,8 @@ public class CSVExportDialog extends JDialog
     rbExportPrintedElements.setSelected(true);
     rbSeparatorColon.setSelected(true);
     cbxStrictLayout.setSelected(false);
+    cbxColumnNamesAsFirstRow.setSelected(false);
+    cbxColumnNamesAsFirstRow.setEnabled(false);
     performSeparatorSelection();
   }
 
@@ -821,15 +780,13 @@ public class CSVExportDialog extends JDialog
    *
    * @return <code>true</code> if the input is valid, <code>false</code> otherwise
    */
-  public boolean performValidate ()
+  protected boolean performValidate ()
   {
     final String filename = getFilename();
     if (filename.trim().length() == 0)
     {
-      JOptionPane.showMessageDialog(this,
-              getResources().getString("csvexportdialog.targetIsEmpty"),
-              getResources().getString("csvexportdialog.errorTitle"),
-              JOptionPane.ERROR_MESSAGE);
+      getStatusBar().setStatus(JStatusBar.TYPE_ERROR,
+              getResources().getString("csvexportdialog.targetIsEmpty"));
       return false;
     }
     final File f = new File(filename);
@@ -837,75 +794,41 @@ public class CSVExportDialog extends JDialog
     {
       if (f.isFile() == false)
       {
-        JOptionPane.showMessageDialog(this,
-                getResources().getString("csvexportdialog.targetIsNoFile"),
-                getResources().getString("csvexportdialog.errorTitle"),
-                JOptionPane.ERROR_MESSAGE);
+        getStatusBar().setStatus(JStatusBar.TYPE_ERROR,
+                getResources().getString("csvexportdialog.targetIsNoFile"));
         return false;
       }
       if (f.canWrite() == false)
       {
-        JOptionPane.showMessageDialog(this,
-                getResources().getString("csvexportdialog.targetIsNotWritable"),
-                getResources().getString("csvexportdialog.errorTitle"),
-                JOptionPane.ERROR_MESSAGE);
+        getStatusBar().setStatus(JStatusBar.TYPE_ERROR,
+                getResources().getString("csvexportdialog.targetIsNotWritable"));
         return false;
       }
-      final String key1 = "csvexportdialog.targetOverwriteConfirmation";
-      final String key2 = "csvexportdialog.targetOverwriteTitle";
-      if (JOptionPane.showConfirmDialog(this,
-              MessageFormat.format(getResources().getString(key1),
-                      new Object[]{getFilename()}),
-              getResources().getString(key2),
-              JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-              == JOptionPane.NO_OPTION)
-      {
-        return false;
-      }
+
+      getStatusBar().setStatus(JStatusBar.TYPE_WARNING,
+              getResources().getString("csvexportdialog.targetExistsWarning"));
+
+    }
+    else
+    {
+      getStatusBar().setStatus(JStatusBar.TYPE_NONE, " ");
     }
 
     return true;
   }
 
-  /**
-   * Opens the dialog to query all necessary input from the user. This will not start the
-   * processing, as this is done elsewhere.
-   *
-   * @param report the report that should be processed.
-   * @return true, if the processing should continue, false otherwise.
-   */
-  public boolean performQueryForExport (final JFreeReport report)
+  protected boolean performConfirm ()
   {
-    initFromConfiguration(report.getReportConfiguration());
-    final ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
-    try
-    {
-      setDialogContents(storage.loadProperties
-              (ConfigFactory.encodePath(report.getName() + "_csvexport"),
-                      new Properties()));
-    }
-    catch (Exception cse)
-    {
-      Log.debug("Unable to load the defaults in CSV export dialog.");
-    }
-
-    setModal(true);
-    setVisible(true);
-    if (isConfirmed() == false)
+    final String key1 = "csvexportdialog.targetOverwriteConfirmation";
+    final String key2 = "csvexportdialog.targetOverwriteTitle";
+    if (JOptionPane.showConfirmDialog(this,
+            MessageFormat.format(getResources().getString(key1),
+                    new Object[]{getFilename()}),
+            getResources().getString(key2),
+            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+            == JOptionPane.NO_OPTION)
     {
       return false;
-    }
-
-    storeToConfiguration(report.getReportConfiguration());
-    try
-    {
-      storage.storeProperties
-              (ConfigFactory.encodePath(report.getName() + "_csvexport"),
-                      getDialogContents());
-    }
-    catch (ConfigStoreException cse)
-    {
-      Log.debug("Unable to store the defaults in CSV export dialog.");
     }
     return true;
   }
@@ -925,6 +848,10 @@ public class CSVExportDialog extends JDialog
                     config.getConfigProperty(TableProcessor.STRICT_LAYOUT,
                             TableProcessor.STRICT_LAYOUT_DEFAULT));
     setStrictLayout(strict.equals("true"));
+
+    final String colNames = config.getConfigProperty (CSVProcessor.CSV_DATAROWNAME, "false");
+    setColumnNamesAsFirstRow(colNames.equals("true"));
+
     final String encoding = getCSVTargetEncoding(config);
     encodingModel.ensureEncodingAvailable(encoding);
     setEncoding(encoding);
@@ -957,6 +884,16 @@ public class CSVExportDialog extends JDialog
     {
       txSeparatorOther.setEnabled(false);
     }
+  }
+
+  public boolean isColumnNamesAsFirstRow ()
+  {
+    return  cbxColumnNamesAsFirstRow.isSelected();
+  }
+
+  public void setColumnNamesAsFirstRow (final boolean colsAsFirstRow)
+  {
+    cbxColumnNamesAsFirstRow.setSelected(colsAsFirstRow);
   }
 
   /**
@@ -1002,4 +939,17 @@ public class CSVExportDialog extends JDialog
     config.setConfigProperty(CSV_OUTPUT_ENCODING, targetEncoding);
   }
 
+  protected String getConfigurationSuffix ()
+  {
+    return "_csvexport";
+  }
+
+  public static void main (final String[] args)
+  {
+    final CSVExportDialog dialog = new CSVExportDialog();
+    dialog.setModal(true);
+    dialog.pack();
+    dialog.performQueryForExport(new JFreeReport());
+    System.exit(0);
+  }
 }
