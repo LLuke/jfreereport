@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.12 2003/10/10 17:16:26 taqua Exp $
+ * $Id: TableProducer.java,v 1.13 2003/10/11 14:56:26 taqua Exp $
  *
  * Changes
  * -------
@@ -176,7 +176,7 @@ public strictfp abstract class TableProducer
   public void beginPage(final String name)
   {
     page += 1;
-    Log.debug ("Started Page: " + page);
+    // Log.debug ("Started Page: " + page);
     // the global layout reuses the layout grid from the first page to
     // unify the layout for all pages. The global layout is disabled by
     // default.

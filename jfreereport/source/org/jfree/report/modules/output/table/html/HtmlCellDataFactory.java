@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellDataFactory.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
+ * $Id: HtmlCellDataFactory.java,v 1.3 2003/09/30 19:54:32 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ import org.jfree.report.ElementAlignment;
 import org.jfree.report.ImageReference;
 import org.jfree.report.DrawableContainer;
 import org.jfree.report.util.ImageUtils;
+import org.jfree.report.util.Log;
 import org.jfree.report.modules.output.table.base.AbstractTableCellDataFactory;
 import org.jfree.report.modules.output.table.base.TableCellData;
 import org.jfree.report.style.ElementStyleSheet;
@@ -144,22 +145,22 @@ public class HtmlCellDataFactory extends AbstractTableCellDataFactory
 
     if (value instanceof DrawableContainer)
     {
+      // todo: This is not a really valid implementation. In fact, none of the code
+      // above is valid, as it does not care about the various content transformations
+      // possibly required to display the content correctly.
+      //
+      // we have to rework that .. all of that!
       final HtmlCellStyle style = new HtmlCellStyle(font, color, valign, halign);
       DrawableContainer container = (DrawableContainer) value;
       Drawable drawable = container.getDrawable();
 
-      Rectangle2D bounds = container.getClippingBounds();
-      Dimension2D size = container.getDrawableSize();
-
       Image image = ImageUtils.createTransparentImage
-          ((int) bounds.getWidth(), (int) bounds.getHeight());
+          ((int) rect.getWidth(), (int) rect.getHeight());
       Graphics2D g2 = (Graphics2D) image.getGraphics();
       // the clipping bounds are a sub-area of the whole drawable
       // we only want to print a certain area ...
-      g2.translate(-bounds.getX(), -bounds.getY());
-      g2.clip(bounds);
-
-      drawable.draw(g2, new Rectangle2D.Double (0,0, size.getWidth(), size.getHeight()));
+      drawable.draw(g2, new Rectangle2D.Double
+          (rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight()));
       g2.dispose();
       ImageReference imgref = new ImageReference(image);
       

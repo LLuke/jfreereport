@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFProducer.java,v 1.6 2003/08/25 14:29:32 taqua Exp $
+ * $Id: RTFProducer.java,v 1.7 2003/10/11 14:56:26 taqua Exp $
  *
  * Changes
  * -------
@@ -220,6 +220,12 @@ public class RTFProducer extends TableProducer
   private void generatePage(final TableGridLayout layout)
       throws DocumentException
   {
+    if (layout.getWidth() == 0 || layout.getHeight() == 0)
+    {
+      // the table is empty
+      return;
+    }
+
     final Table table = new Table(layout.getWidth(), layout.getHeight());
     table.setAutoFillEmptyCells(false);
     Rectangle2D cellBounds = new Rectangle2D.Float();
