@@ -14,11 +14,10 @@
 <!-- If you have comments about this script, please post a message -->
 <!-- in the JFreeReport forum. -->
 
-<project name="jfreereport" default="all">
+<project name="jfreereport" default="all" basedir=".">
 
     <!-- Read the latest sources from the CVS -->
     <target name="cvs-checkout" description="Retrieves the latest sources from the cvs archive at sourceforge.">
-      <property name="basedir" value="." />
       <cvspass cvsroot=":pserver:anonymous@cvs.sourceforge.net:/cvsroot/jfreereport"
              password=""
         />
@@ -33,9 +32,10 @@
     <target name="init-general" description="Initialise general parameters.">
         <tstamp />
         <!-- BaseDirectory is different for either cvs target and build target -->
-        <property name="basedir" value=".." />
-        <property name="builddir" value="${basedir}/build" />
-        <property name="libdir" value="${basedir}/lib" />
+	<!-- base dir is set elsewhere and cannot be redefined :( -->
+        <property name="projectdir" value=".." />
+        <property name="builddir" value="${projectdir}/build" />
+        <property name="libdir" value="${projectdir}/lib" />
         <property name="BeanShell-jar" value="bsh-1.2b6.jar" />
         <property name="GnuJAXP-jar" value="gnujaxp.jar" />
         <property name="iText-jar" value="iText-0.96.jar" />
@@ -66,37 +66,37 @@
             description="Compile the JFreeReport source code.">
 
         <!-- create a temp build directory -->
-        <mkdir dir="${basedir}/build" />
+        <mkdir dir="${projectdir}/build" />
 
         <!-- compile the source -->
-        <javac srcdir="${basedir}/source" 
-               destdir="${basedir}/build"
+        <javac srcdir="${projectdir}/source"
+               destdir="${projectdir}/build"
                excludes="com/jrefinery/report/demo/**">
             <classpath refid="build.classpath" />
         </javac>
 
         <!-- copy across the BeanShell header file -->
-        <copy file="${basedir}/source/com/jrefinery/report/function/BSHExpressionHeader.txt"
-          tofile="${basedir}/build/com/jrefinery/report/function/BSHExpressionHeader.txt" />
+        <copy file="${projectdir}/source/com/jrefinery/report/function/BSHExpressionHeader.txt"
+          tofile="${projectdir}/build/com/jrefinery/report/function/BSHExpressionHeader.txt" />
 
         <!-- include the jfreereport.properties -->
-        <copy file="${basedir}/source/com/jrefinery/report/jfreereport.properties"
-          tofile="${basedir}/build/com/jrefinery/report/jfreereport.properties" />
+        <copy file="${projectdir}/source/com/jrefinery/report/jfreereport.properties"
+          tofile="${projectdir}/build/com/jrefinery/report/jfreereport.properties" />
 
         <!-- copy across the icons -->
-        <copy todir="${basedir}/build/com/jrefinery/report/resources">
-            <fileset dir="${basedir}/source/com/jrefinery/report/resources">
+        <copy todir="${projectdir}/build/com/jrefinery/report/resources">
+            <fileset dir="${projectdir}/source/com/jrefinery/report/resources">
                 <include name="**/*.gif" />
                 <include name="**/*.dtd" />
             </fileset>
         </copy>
 
         <!-- make the jar -->
-        <jar jarfile="${basedir}/${jfreereport.name}-${jfreereport.version}.jar"
-             basedir="${basedir}/build" />
+        <jar jarfile="${projectdir}/${jfreereport.name}-${jfreereport.version}.jar"
+             projectdir="${projectdir}/build" />
 
         <!-- delete the temp directory -->
-        <delete dir="${basedir}/build" />
+        <delete dir="${projectdir}/build" />
     </target>
 
     <!-- Compile the JFreeReport DEMO classes -->
@@ -106,29 +106,29 @@
             description="Compile the JFreeReport demo source code.">
 
         <!-- create a temporary build directory -->
-        <delete dir="${basedir}/build" />
-        <mkdir dir="${basedir}/build" />
+        <delete dir="${projectdir}/build" />
+        <mkdir dir="${projectdir}/build" />
 
         <!-- compile the demo source -->
-        <javac srcdir="${basedir}/source/com/jrefinery/report/demo" 
-               destdir="${basedir}/build"
-	       sourcepath="${basedir}/source">
+        <javac srcdir="${projectdir}/source/com/jrefinery/report/demo"
+               destdir="${projectdir}/build"
+	       sourcepath="${projectdir}/source">
             <classpath refid="build.classpath" />
         </javac>
 
         <!-- include the report definition files -->
-        <copy todir="${basedir}/build/com/jrefinery/report/demo">
-            <fileset dir="${basedir}/source/com/jrefinery/report/demo">
+        <copy todir="${projectdir}/build/com/jrefinery/report/demo">
+            <fileset dir="${projectdir}/source/com/jrefinery/report/demo">
                 <include name="**/*.xml" />
             </fileset>
         </copy>
 
         <!-- include the butterfly image file -->
-        <copy file="${basedir}/source/com/jrefinery/report/demo/anim0002.wmf" tofile="${basedir}/build/com/jrefinery/report/demo/anim0002.wmf" />
+        <copy file="${projectdir}/source/com/jrefinery/report/demo/anim0002.wmf" tofile="${projectdir}/build/com/jrefinery/report/demo/anim0002.wmf" />
 
 	      <!-- make the jar file -->
-        <jar jarfile="${basedir}/${jfreereport.name}-${jfreereport.version}-demo.jar"
-             basedir="${basedir}/build"
+        <jar jarfile="${projectdir}/${jfreereport.name}-${jfreereport.version}-demo.jar"
+             projectdir="${projectdir}/build"
 	           includes="com/jrefinery/report/demo/**">
             <manifest>
                 <attribute name="Main-Class" value="com.jrefinery.report.demo.JFreeReportDemo" />
@@ -138,17 +138,17 @@
         </jar>
         
         <!-- remove the temp build area -->
-        <delete dir="${basedir}/build" />
+        <delete dir="${projectdir}/build" />
     </target>
 
     <!-- Generate the JFreeReport JavaDoc HTML pages -->
     <target name="javadoc-jfreereport" depends="init-jfreereport">
-        <delete dir="${basedir}/javadoc" />
-        <mkdir dir="${basedir}/javadoc" />
-        <javadoc destdir="${basedir}/javadoc" 
+        <delete dir="${projectdir}/javadoc" />
+        <mkdir dir="${projectdir}/javadoc" />
+        <javadoc destdir="${projectdir}/javadoc"
                  windowtitle="JFreeReport Class Library">
             <classpath refid="build.classpath" />
-            <packageset dir="${basedir}/source" defaultexcludes="yes">
+            <packageset dir="${projectdir}/source" defaultexcludes="yes">
                 <include name="com/jrefinery/report/**" />
                 <exclude name="com/jrefinery/report/demo/**" />  
             </packageset>
@@ -159,61 +159,61 @@
     <target name="make-jfreereport-zip" depends="compile-jfreereport-demo">
 
         <!-- make a temporary distribution directory -->
-        <mkdir dir="${basedir}/distribution" />
+        <mkdir dir="${projectdir}/distribution" />
 
         <!-- copy across README -->
-        <copy file="${basedir}/README" tofile="${basedir}/distribution/README" />
+        <copy file="${projectdir}/README" tofile="${projectdir}/distribution/README" />
 
         <!-- copy across ChangeLog -->
-        <copy file="${basedir}/ChangeLog" tofile="${basedir}/distribution/ChangeLog" />
+        <copy file="${projectdir}/ChangeLog" tofile="${projectdir}/distribution/ChangeLog" />
 
         <!-- copy across LICENCE -->
-        <copy file="${basedir}/licence-LGPL.txt" tofile="${basedir}/distribution/licence-LGPL.txt" />
+        <copy file="${projectdir}/licence-LGPL.txt" tofile="${projectdir}/distribution/licence-LGPL.txt" />
 
         <!-- copy across migration.txt -->
-        <copy file="${basedir}/migration.txt" tofile="${basedir}/distribution/migration.txt" />
+        <copy file="${projectdir}/migration.txt" tofile="${projectdir}/distribution/migration.txt" />
 
         <!-- copy across runtime jar file and demo jar file -->
-        <copy file="${basedir}/${jfreereport.name}-${jfreereport.version}.jar" tofile="${basedir}/distribution/${jfreereport.name}-${jfreereport.version}.jar" />
-        <copy file="${basedir}/${jfreereport.name}-${jfreereport.version}-demo.jar" tofile="${basedir}/distribution/${jfreereport.name}-${jfreereport.version}-demo.jar" />
+        <copy file="${projectdir}/${jfreereport.name}-${jfreereport.version}.jar" tofile="${projectdir}/distribution/${jfreereport.name}-${jfreereport.version}.jar" />
+        <copy file="${projectdir}/${jfreereport.name}-${jfreereport.version}-demo.jar" tofile="${projectdir}/distribution/${jfreereport.name}-${jfreereport.version}-demo.jar" />
     
         <!-- copy across source files -->
-        <copy todir="${basedir}/distribution/source">
-            <fileset dir="${basedir}/source" />
+        <copy todir="${projectdir}/distribution/source">
+            <fileset dir="${projectdir}/source" />
         </copy>
 
         <!-- copy across resource files (example PDFs) -->
-        <copy todir="${basedir}/distribution/resource">
-            <fileset dir="${basedir}/resource" />
+        <copy todir="${projectdir}/distribution/resource">
+            <fileset dir="${projectdir}/resource" />
         </copy>
 
         <!-- copy across lib files -->
-        <copy todir="${basedir}/distribution/lib">
-            <fileset dir="${basedir}/lib" />
+        <copy todir="${projectdir}/distribution/lib">
+            <fileset dir="${projectdir}/lib" />
         </copy>
 
         <!-- copy across ant build file (this file) -->
-        <copy todir="${basedir}/distribution/ant">
-            <fileset dir="${basedir}/ant" />
+        <copy todir="${projectdir}/distribution/ant">
+            <fileset dir="${projectdir}/ant" />
         </copy>
 
         <!-- copy across checkstyle property file -->
-        <copy todir="${basedir}/distribution/checkstyle">
-            <fileset dir="${basedir}/checkstyle" />
+        <copy todir="${projectdir}/distribution/checkstyle">
+            <fileset dir="${projectdir}/checkstyle" />
         </copy>
 
         <!-- convert end-of-line characters in text files -->
-        <fixcrlf srcdir="${basedir}/distribution/source"
+        <fixcrlf srcdir="${projectdir}/distribution/source"
                  eol="crlf" />
 
         <!-- make the zip file -->
-        <zip zipfile="${basedir}/${jfreereport.name}-${jfreereport.version}.zip">
-             <zipfileset dir="${basedir}/distribution"
+        <zip zipfile="${projectdir}/${jfreereport.name}-${jfreereport.version}.zip">
+             <zipfileset dir="${projectdir}/distribution"
                          prefix="${jfreereport.name}-${jfreereport.version}" />
         </zip>
 
         <!-- delete the temporary distribution directory -->
-        <delete dir="${basedir}/distribution" />
+        <delete dir="${projectdir}/distribution" />
 
     </target>
 
@@ -221,64 +221,64 @@
     <target name="make-jfreereport-targz" depends="compile-jfreereport-demo">
 
         <!-- make a temporary distribution directory -->
-        <mkdir dir="${basedir}/distribution" />
+        <mkdir dir="${projectdir}/distribution" />
 
         <!-- copy across README -->
-        <copy file="${basedir}/README" tofile="${basedir}/distribution/README" />
+        <copy file="${projectdir}/README" tofile="${projectdir}/distribution/README" />
 
         <!-- copy across ChangeLog -->
-        <copy file="${basedir}/ChangeLog" tofile="${basedir}/distribution/ChangeLog" />
+        <copy file="${projectdir}/ChangeLog" tofile="${projectdir}/distribution/ChangeLog" />
 
         <!-- copy across LICENCE -->
-        <copy file="${basedir}/licence-LGPL.txt" tofile="${basedir}/distribution/licence-LGPL.txt" />
+        <copy file="${projectdir}/licence-LGPL.txt" tofile="${projectdir}/distribution/licence-LGPL.txt" />
 
         <!-- copy across migration.txt -->
-        <copy file="${basedir}/migration.txt" tofile="${basedir}/distribution/migration.txt" />
+        <copy file="${projectdir}/migration.txt" tofile="${projectdir}/distribution/migration.txt" />
 
         <!-- copy across runtime jar file and demo jar file -->
-        <copy file="${basedir}/${jfreereport.name}-${jfreereport.version}.jar" tofile="${basedir}/distribution/${jfreereport.name}-${jfreereport.version}.jar" />
-        <copy file="${basedir}/${jfreereport.name}-${jfreereport.version}-demo.jar" tofile="${basedir}/distribution/${jfreereport.name}-${jfreereport.version}-demo.jar" />
+        <copy file="${projectdir}/${jfreereport.name}-${jfreereport.version}.jar" tofile="${projectdir}/distribution/${jfreereport.name}-${jfreereport.version}.jar" />
+        <copy file="${projectdir}/${jfreereport.name}-${jfreereport.version}-demo.jar" tofile="${projectdir}/distribution/${jfreereport.name}-${jfreereport.version}-demo.jar" />
     
         <!-- copy across source files -->
-        <copy todir="${basedir}/distribution/source">
-            <fileset dir="${basedir}/source" />
+        <copy todir="${projectdir}/distribution/source">
+            <fileset dir="${projectdir}/source" />
         </copy>
 
         <!-- copy across resource files (DTD and example PDFs) -->
-        <copy todir="${basedir}/distribution/resource">
-            <fileset dir="${basedir}/resource" />
+        <copy todir="${projectdir}/distribution/resource">
+            <fileset dir="${projectdir}/resource" />
         </copy>
 
         <!-- copy across lib files -->
-        <copy todir="${basedir}/distribution/lib">
-            <fileset dir="${basedir}/lib" />
+        <copy todir="${projectdir}/distribution/lib">
+            <fileset dir="${projectdir}/lib" />
         </copy>
 
         <!-- copy across ant build file (this file) -->
-        <copy todir="${basedir}/distribution/ant">
-            <fileset dir="${basedir}/ant" />
+        <copy todir="${projectdir}/distribution/ant">
+            <fileset dir="${projectdir}/ant" />
         </copy>
 
         <!-- copy across checkstyle property file -->
-        <copy todir="${basedir}/distribution/checkstyle">
-            <fileset dir="${basedir}/checkstyle" />
+        <copy todir="${projectdir}/distribution/checkstyle">
+            <fileset dir="${projectdir}/checkstyle" />
         </copy>
 
         <!-- convert end-of-line characters in text files -->
-        <fixcrlf srcdir="${basedir}/distribution/source"
+        <fixcrlf srcdir="${projectdir}/distribution/source"
                  eol="lf" />
 
         <!-- make the tar.gz file -->
-        <tar tarfile="${basedir}/${jfreereport.name}-${jfreereport.version}.tar">
-             <tarfileset dir="${basedir}/distribution"
+        <tar tarfile="${projectdir}/${jfreereport.name}-${jfreereport.version}.tar">
+             <tarfileset dir="${projectdir}/distribution"
                          prefix="${jfreereport.name}-${jfreereport.version}" />
         </tar>
-        <gzip zipfile="${basedir}/${jfreereport.name}-${jfreereport.version}.tar.gz"   
-              src="${basedir}/${jfreereport.name}-${jfreereport.version}.tar" />
-        <delete file="${basedir}/${jfreereport.name}-${jfreereport.version}.tar" />
+        <gzip zipfile="${projectdir}/${jfreereport.name}-${jfreereport.version}.tar.gz"
+              src="${projectdir}/${jfreereport.name}-${jfreereport.version}.tar" />
+        <delete file="${projectdir}/${jfreereport.name}-${jfreereport.version}.tar" />
 
         <!-- delete the temporary distribution directory -->
-        <delete dir="${basedir}/distribution" />
+        <delete dir="${projectdir}/distribution" />
 
     </target>
 
@@ -287,5 +287,15 @@
             depends="compile-jfreereport,compile-jfreereport-demo,javadoc-jfreereport,make-jfreereport-zip,make-jfreereport-targz"
             description="Compiles JFreeReport, builds the jar files, generates the Javadoc HTML pages and creates distribution files (.zip and .tar.gz).">
     </target>
+
+    <!-- Checkout the sources from sourceforge and rebuild JFreeReport -->
+    <!-- Warning: This requires a different basedir -->
+    <target name="cvs-rebuild"
+            depends="cvs-checkout"
+            description="Checksout the sources from sourceforge and rebuilds the sources by using the ant-script within the sources">
+        <property name="projectdir" value="jfreereport" />
+        <ant antfile="ant/build.xml" dir="jfreereport" target="all"/>
+    </target>
+
 
 </project>
