@@ -38,6 +38,7 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ExceptionDialog;
+import com.jrefinery.report.util.NullOutputStream;
 import com.jrefinery.ui.ExtensionFileFilter;
 
 import javax.swing.AbstractAction;
@@ -1188,16 +1189,22 @@ public class PDFSaveDialog extends JDialog
    * @param report  the report being processed.
    * @param pf  the pageformat used to write the report
    */
-  public void savePDF(JFreeReport report, PageFormat pf)
+  public boolean savePDF(JFreeReport report, PageFormat pf)
   {
     setVisible(true);
     if (isConfirmed() == false)
     {
-      return;
+      return false;
     }
+    return writePDF(report, pf);
+  }
+
+  public boolean writePDF(JFreeReport report, PageFormat pf)
+  {
+    OutputStream out = null;
     try
     {
-      OutputStream out = new BufferedOutputStream(new FileOutputStream(new File(getFilename())));
+      out = new BufferedOutputStream(new FileOutputStream(new File(getFilename())));
       PDFOutputTarget target = new PDFOutputTarget(out, pf, true);
       target.setProperty(PDFOutputTarget.AUTHOR, getAuthor());
       target.setProperty(PDFOutputTarget.TITLE, getPDFTitle());
@@ -1222,16 +1229,30 @@ public class PDFSaveDialog extends JDialog
       target.open();
       report.processReport(target);
       target.close();
+      return true;
     }
-    catch (IOException ioe)
+/*    catch (IOException ioe)
     {
       showExceptionDialog("error.savefailed", ioe);
-    }
+    }*/
     catch (Exception re)
     {
       showExceptionDialog("error.processingfailed", re);
+      return false;
+    }
+    finally
+    {
+      try
+      {
+        out.close();
+      }
+      catch (Exception e)
+      {
+        showExceptionDialog("error.savefailed", e);
+      }
     }
   }
+
 
   /**
    * Shows the exception dialog by using localized messages. The message base is
