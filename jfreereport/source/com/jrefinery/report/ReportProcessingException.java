@@ -26,7 +26,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportProcessingException.java,v 1.4 2002/06/04 21:44:34 taqua Exp $
+ * $Id: ReportProcessingException.java,v 1.5 2002/09/13 15:38:04 mungady Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@
 package com.jrefinery.report;
 
 /**
- * A ReportProcessingException is thrown, when a Error occured, while the report is being
+ * A ReportProcessingException is thrown, when a Error occurred, while the report is being
  * processed.
  *
  * @author TM

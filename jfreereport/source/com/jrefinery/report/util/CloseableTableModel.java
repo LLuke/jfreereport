@@ -36,7 +36,7 @@ import javax.swing.table.TableModel;
 public interface CloseableTableModel extends TableModel
 {
   /**
-   * If this model has an resultset assigned, close it, if this is a DefaultTableModel,
+   * If this model has a resultset assigned, close it, if this is a DefaultTableModel,
    * remove all data.
    */
   public void close ();

@@ -37,7 +37,7 @@ import java.io.PrintWriter;
 
 /**
  * An OutputTargetException is thrown if a element could not be printed in the target or
- * an TargetInternalError occured, that made proceeding impossible.
+ * an TargetInternalError occurred, that made proceeding impossible.
  *
  * @author DG
  */

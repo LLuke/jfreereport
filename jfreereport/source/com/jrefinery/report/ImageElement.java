@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElement.java,v 1.17 2002/09/08 12:38:25 taqua Exp $
+ * $Id: ImageElement.java,v 1.18 2002/09/13 15:38:04 mungady Exp $
  *
  * Changes:
  * --------
- * 24-Apr-2002 : Defines a reference to an Bitmap or Wmf-Image for the reports (TM);
+ * 24-Apr-2002 : Defines a reference to a Bitmap or Wmf-Image for the reports (TM);
  * 10-May-2002 : Removed all but the default constructor. Added accessor functions for all
  *               properties (TM);
  * 16-May-2002 : Added Javadoc comments (DG);

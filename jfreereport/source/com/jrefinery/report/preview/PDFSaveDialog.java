@@ -82,11 +82,18 @@ import java.util.ResourceBundle;
  * The main method to call the dialog is PDFSaveDialog.savePDF(). Given a report and a pageformat,
  * the dialog is shown and if the user approved the dialog, the pdf is saved using the settings
  * made in the dialog.
+ *
+ * @author TM
  */
 public class PDFSaveDialog extends JDialog
 {
+  /** Useful constant. */
   private static final int CBMODEL_NOPRINTING = 0;
+
+  /** Useful constant. */
   private static final int CBMODEL_DEGRADED = 1;
+
+  /** Useful constant. */
   private static final int CBMODEL_FULL = 2;
 
   /**
@@ -95,10 +102,18 @@ public class PDFSaveDialog extends JDialog
    */
   private class ActionSecuritySelection extends AbstractAction
   {
+    /**
+     * Default constructor.
+     */
     public ActionSecuritySelection()
     {
     }
 
+    /**
+     * Receives notification that the action has occurred.
+     *
+     * @param e  the action event.
+     */
     public void actionPerformed(ActionEvent e)
     {
       boolean b = (rbSecurityNone.isSelected() == false);
@@ -121,11 +136,19 @@ public class PDFSaveDialog extends JDialog
    */
   private class ActionConfirm extends AbstractAction
   {
+    /**
+     * Default constructor.
+     */
     public ActionConfirm()
     {
       putValue(Action.NAME, getResources().getString("pdfsavedialog.confirm"));
     }
 
+    /**
+     * Receives notification that the action has occurred.
+     *
+     * @param e  the action event.
+     */
     public void actionPerformed(ActionEvent e)
     {
       if (performValidate())
@@ -141,11 +164,19 @@ public class PDFSaveDialog extends JDialog
    */
   private class ActionCancel extends AbstractAction
   {
+    /**
+     * Default constructor.
+     */
     public ActionCancel()
     {
       putValue(Action.NAME, getResources().getString("pdfsavedialog.cancel"));
     }
 
+    /**
+     * Receives notification that the action has occurred.
+     *
+     * @param e  the action event.
+     */
     public void actionPerformed(ActionEvent e)
     {
       setConfirmed(false);
@@ -158,61 +189,123 @@ public class PDFSaveDialog extends JDialog
    */
   private class ActionSelectFile extends AbstractAction
   {
+    /**
+     * Default constructor.
+     */
     public ActionSelectFile()
     {
       putValue(Action.NAME, getResources().getString("pdfsavedialog.selectFile"));
     }
 
+    /**
+     * Receives notification that the action has occurred.
+     *
+     * @param e  the action event.
+     */
     public void actionPerformed(ActionEvent e)
     {
       performSelectFile();
     }
   }
 
+  /** Confirm action. */
   private Action actionConfirm;
+
+  /** Cancel action. */
   private Action actionCancel;
+
+  /** Security selection action. */
   private Action actionSecuritySelection;
+
+  /** Select file action. */
   private Action actionSelectFile;
 
+  /** Filename text field. */
   private JTextField txFilename;
+
+  /** Author text field. */
   private JTextField txAuthor;
+
+  /** Title text field. */
   private JTextField txTitle;
 
+  /** Security (none) radio button. */
   private JRadioButton rbSecurityNone;
+
+  /** Security (40 bit) radio button. */
   private JRadioButton rbSecurity40Bit;
+
+  /** Security (128 bit) radio button. */
   private JRadioButton rbSecurity128Bit;
 
+  /** User password text field. */
   private JTextField txUserPassword;
+
+  /** Owner password text field. */
   private JTextField txOwnerPassword;
+
+  /** Confirm user password text field. */
   private JTextField txConfUserPassword;
+
+  /** Confirm ownder password text field. */
   private JTextField txConfOwnerPassword;
 
+  /** Allow copy check box. */
   private JCheckBox cxAllowCopy;
+
+  /** Allow screen readers check box. */
   private JCheckBox cxAllowScreenReaders;
+
+  /** Allow printing check box. */
   private JComboBox cbAllowPrinting;
 
+  /** Allow assembly check box. */
   private JCheckBox cxAllowAssembly;
+
+  /** Allow modify contents check box. */
   private JCheckBox cxAllowModifyContents;
+
+  /** Allow modify annotations check box. */
   private JCheckBox cxAllowModifyAnnotations;
+
+  /** Allow fill in check box. */
   private JCheckBox cxAllowFillIn;
 
+  /** Combo box for selecting the printing model. */
   private DefaultComboBoxModel printingModel;
 
+  /** Confirmed flag. */
   private boolean confirmed;
 
+  /** Confirm button. */
   private JButton btnConfirm;
+
+  /** Cancel button. */
   private JButton btnCancel;
 
+  /** Localised resources. */
   private ResourceBundle resources;
+
+  /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
       "com.jrefinery.report.resources.JFreeReportResources";
 
+  /**
+   * Creates a new PDF save dialog.
+   *
+   * @param owner  the dialog owner.
+   */
   public PDFSaveDialog(Frame owner)
   {
     super(owner);
     initConstructor();
   }
 
+  /**
+   * Creates a new PDF save dialog.
+   *
+   * @param owner  the dialog owner.
+   */
   public PDFSaveDialog(Dialog owner)
   {
     super(owner);
@@ -220,13 +313,16 @@ public class PDFSaveDialog extends JDialog
   }
 
   /**
-   * DefaultConstructor. The created dialog is modal.
+   * Creates a new PDF save dialog.  The created dialog is modal.
    */
   public PDFSaveDialog()
   {
     initConstructor();
   }
 
+  /**
+   * Initialisation.
+   */
   private void initConstructor ()
   {
     setModal(true);
@@ -278,7 +374,9 @@ public class PDFSaveDialog extends JDialog
   }
 
   /**
-   * returns a single instance of the security selection action.
+   * Returns a single instance of the security selection action.
+   *
+   * @return the action.
    */
   private Action getActionSecuritySelection()
   {
@@ -290,7 +388,9 @@ public class PDFSaveDialog extends JDialog
   }
 
   /**
-   * returns a single instance of the file selection action.
+   * Returns a single instance of the file selection action.
+   *
+   * @return the action.
    */
   private Action getActionSelectFile()
   {
@@ -302,7 +402,9 @@ public class PDFSaveDialog extends JDialog
   }
 
   /**
-   * returns a single instance of the dialog confirm action.
+   * Returns a single instance of the dialog confirm action.
+   *
+   * @return the action.
    */
   private Action getActionConfirm()
   {
@@ -314,7 +416,9 @@ public class PDFSaveDialog extends JDialog
   }
 
   /**
-   * returns a single instance of the dialog cancel action.
+   * Returns a single instance of the dialog cancel action.
+   *
+   * @return the action.
    */
   private Action getActionCancel()
   {
@@ -326,7 +430,7 @@ public class PDFSaveDialog extends JDialog
   }
 
   /**
-   * initializes the Swing-Components of this dialog.
+   * Initializes the Swing components of this dialog.
    */
   private void initialize()
   {
@@ -660,7 +764,7 @@ public class PDFSaveDialog extends JDialog
    * to the pdf in the PDF-Editor. The user has to enter the password when opening the file
    * to enable editing functionality or to modify the file.
    *
-   * @param userPassword the defined password. The password can be null.
+   * @param ownerPassword the defined password. The password can be null.
    */
   public void setOwnerPassword(String ownerPassword)
   {
@@ -697,6 +801,8 @@ public class PDFSaveDialog extends JDialog
 
   /**
    * Defines whether the generated pdf may be reassembled.
+   *
+   * @param allowAssembly the flag.
    */
   public void setAllowAssembly(boolean allowAssembly)
   {
@@ -779,7 +885,7 @@ public class PDFSaveDialog extends JDialog
   /**
    * Defines whether the user is allowed to add or modify annotations in this file.
    *
-   * @allowModifyAnnotations set to true, if this files annotations can be modified, false otherwise
+   * @param allowModifyAnnotations the flag.
    */
   public void setAllowModifyAnnotations(boolean allowModifyAnnotations)
   {
@@ -863,7 +969,7 @@ public class PDFSaveDialog extends JDialog
   /**
    * Defines the title of the pdf file.
    *
-   * @param the title
+   * @param title the title
    */
   public void setPDFTitle(String title)
   {
@@ -914,7 +1020,7 @@ public class PDFSaveDialog extends JDialog
   /**
    * Defines the currently selected encryption.
    *
-   * @param the new encryption state, one of null, Boolean.TRUE or Boolean.FALSE
+   * @param b the new encryption state, one of null, Boolean.TRUE or Boolean.FALSE
    */
   public void setEncryptionValue(Boolean b)
   {
@@ -1079,8 +1185,8 @@ public class PDFSaveDialog extends JDialog
   /**
    * Shows this dialog and (if the dialog is confirmed) saves the complete report into a PDF-File.
    *
-   * @param report the report beeing processed.
-   * @param pf the pageformat used to write the report
+   * @param report  the report being processed.
+   * @param pf  the pageformat used to write the report
    */
   public void savePDF(JFreeReport report, PageFormat pf)
   {
@@ -1131,6 +1237,9 @@ public class PDFSaveDialog extends JDialog
    * Shows the exception dialog by using localized messages. The message base is
    * used to construct the localisation key by appending ".title" and ".message" to the
    * base name.
+   *
+   * @param localisationBase  the resource key prefix.
+   * @param e  the exception.
    */
   private void showExceptionDialog(String localisationBase, Exception e)
   {

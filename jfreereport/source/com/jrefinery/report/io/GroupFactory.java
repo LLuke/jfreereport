@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * -----------------
  * GroupFactory.java
- * -----------------------
+ * -----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 10-May-2002 : Initial version
@@ -38,16 +38,32 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * The group factory is used to construct groups.
+ * This class is a SAX handler for reading groups from a report template file.
+ *
+ * @author TM
  */
 public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
 {
+  /** The report. */
   private JFreeReport report;
+
+  /** The group under constructiom. */
   private Group currentGroup;
+
+  /** The current text. */
   private StringBuffer currentText;
+
+  /** The parent handler. */
   private ReportDefinitionContentHandler handler;
+
+  /** A font handler. */
   private FontFactory fontFactory;
 
+  /**
+   * Creates a new handler.
+   *
+   * @param baseFactory  the parent handler.
+   */
   public GroupFactory (ReportFactory baseFactory)
   {
     this.report = baseFactory.getReport ();
@@ -55,17 +71,33 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
     fontFactory = handler.getFontFactory ();
   }
 
-  protected ReportDefinitionContentHandler getHander ()
+  /**
+   * Returns the parent handler.
+   *
+   * @return the parent handler.
+   */
+  protected ReportDefinitionContentHandler getHandler ()
   {
     return handler;
   }
 
+  /**
+   * Starts an element.
+   *
+   * @param namespaceURI  the namespace URI.
+   * @param localName  the local name.
+   * @param qName  the element name.
+   * @param atts  the element attributes.
+   *
+   * @throws SAXException if there is a problem parsing the XML.
+   */
   public void startElement (String namespaceURI,
                             String localName,
                             String qName,
                             Attributes atts) throws SAXException
   {
     String elementName = qName.toLowerCase ().trim ();
+
     // *** GROUP HEADER ***
     if (elementName.equals (GROUP_HEADER_TAG))
     {
@@ -94,39 +126,66 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
     }
   }
 
+  /**
+   * Starts the fields element.
+   *
+   * @param atts  the element attributes.
+   *
+   * @throws SAXException if there is a problem parsing the report template.
+   */
   protected void startFields (Attributes atts)
           throws SAXException
   {
   }
 
+  /**
+   * Starts the field element.
+   *
+   * @param atts  the element attributes.
+   *
+   * @throws SAXException if there is a problem parsing the report template.
+   */
   protected void startField (Attributes atts)
           throws SAXException
   {
     currentText = new StringBuffer ();
   }
 
-
-  protected void startGroup (Attributes attr)
+  /**
+   * Starts the group element.
+   *
+   * @param atts  the element attributes.
+   *
+   * @throws SAXException if there is a problem parsing the report template.
+   */
+  protected void startGroup (Attributes atts)
           throws SAXException
   {
     Group group = new Group ();
-    group.setName (handler.generateName (attr.getValue ("name")));
+    group.setName (handler.generateName (atts.getValue ("name")));
     setCurrentGroup (group);
   }
 
-  protected void startGroupHeader (Attributes attr)
+  /**
+   * Starts the group header element.
+   *
+   * @param atts  the element attributes.
+   *
+   * @throws SAXException if there is a problem parsing the report template.
+   */
+  protected void startGroupHeader (Attributes atts)
           throws SAXException
 
   {
     // get the height...
-    float height = ParserUtil.parseFloat (attr.getValue ("height"),
+    float height = ParserUtil.parseFloat (atts.getValue ("height"),
                                           "Element height not specified");
-    boolean pageBreak = ParserUtil.parseBoolean (attr.getValue ("pagebreak"), false);
+    boolean pageBreak = ParserUtil.parseBoolean (atts.getValue ("pagebreak"), false);
     // create the group header...
     GroupHeader groupHeader = new GroupHeader ();
     groupHeader.setHeight (height);
     groupHeader.setPageBreakBeforePrint (pageBreak);
-    groupHeader.setDefaultFont (fontFactory.createDefaultFont (attr));
+    groupHeader.setDefaultFont (fontFactory.createDefaultFont (atts));
     currentGroup.setHeader (groupHeader);
 
     handler.getReportFactory ().setCurrentBand (groupHeader);
@@ -135,19 +194,23 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
   }
 
   /**
-   * Handles the start of a GROUPFOOTER element.
+   * Starts the group footer element.
+   *
+   * @param atts  the element attributes.
+   *
+   * @throws SAXException if there is a problem parsing the report template.
    */
-  protected void startGroupFooter (Attributes attr) throws SAXException
+  protected void startGroupFooter (Attributes atts) throws SAXException
   {
     // get the height...
-    float height = ParserUtil.parseFloat (attr.getValue ("height"),
+    float height = ParserUtil.parseFloat (atts.getValue ("height"),
                                           "Element height not specified");
 
     // get the default font...
     // create the group footer...
     GroupFooter groupFooter = new GroupFooter ();
     groupFooter.setHeight (height);
-    groupFooter.setDefaultFont (fontFactory.createDefaultFont (attr));
+    groupFooter.setDefaultFont (fontFactory.createDefaultFont (atts));
     currentGroup.setFooter (groupFooter);
 
     handler.getReportFactory ().setCurrentBand (groupFooter);
@@ -157,6 +220,10 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
 
   /**
    * Receives some (or all) of the text in the current element.
+   *
+   * @param ch  storage space for the characters.
+   * @param start  the first valid character in the array.
+   * @param length  the length of the valid data in the array.
    */
   public void characters (char[] ch, int start, int length)
   {
@@ -166,6 +233,15 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
     }
   }
 
+  /**
+   * Ends an element.
+   *
+   * @param namespaceURI  the namespace URI.
+   * @param localName  the local name.
+   * @param qName  the element name.
+   *
+   * @throws SAXException if there is a problem parsing the XML.
+   */
   public void endElement (String namespaceURI, String localName, String qName)
           throws SAXException
   {
@@ -203,12 +279,22 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
     }
   }
 
+  /**
+   * Ends the groups element.
+   *
+   * @throws SAXException if there is a problem parsing the report template.
+   */
   protected void endGroups ()
           throws SAXException
   {
     handler.finishedHandler ();
   }
 
+  /**
+   * Ends the group element.
+   *
+   * @throws SAXException if there is a problem parsing the report template.
+   */
   protected void endGroup ()
           throws SAXException
   {
@@ -216,6 +302,11 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
     setCurrentGroup (null);
   }
 
+  /**
+   * Ends the field element.
+   *
+   * @throws SAXException if there is a problem parsing the report template.
+   */
   protected void endField ()
           throws SAXException
   {
@@ -223,21 +314,43 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
     currentText = null;
   }
 
+  /**
+   * Ends the fields element.
+   *
+   * @throws SAXException if there is a problem parsing the report template.
+   */
   protected void endFields ()
           throws SAXException
   {
   }
 
+  /**
+   * Ends the group footer element.
+   *
+   * @throws SAXException if there is a problem parsing the report template.
+   */
   protected void endGroupFooter ()
           throws SAXException
   {
   }
 
+  /**
+   * Ends the group header element.
+   *
+   * @throws SAXException if there is a problem parsing the report template.
+   */
   protected void endGroupHeader ()
           throws SAXException
   {
   }
 
+  /**
+   * Sets the current group.
+   *
+   * @param currentGroup the current group.
+   *
+   * @throws SAXException if there is a problem parsing the report template.
+   */
   public void setCurrentGroup (Group currentGroup)
           throws SAXException
   {
@@ -253,6 +366,11 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
     this.currentGroup = currentGroup;
   }
 
+  /**
+   * Returns the report.
+   *
+   * @return the report.
+   */
   public JFreeReport getReport ()
   {
     return report;

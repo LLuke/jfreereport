@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.25 2002/09/08 12:38:25 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.26 2002/09/13 15:38:09 mungady Exp $
  *
  * Changes
  * -------
@@ -175,7 +175,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   private String encoding;
 
   /**
-   * An bytearray containing an empty password. iText replaces the owner password with random
+   * A bytearray containing an empty password. iText replaces the owner password with random
    * values, but Adobe allows to have encryption without an owner password set.
    */
   private static final byte PDF_PASSWORD_PAD[] = {

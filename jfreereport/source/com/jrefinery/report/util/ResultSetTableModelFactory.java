@@ -26,7 +26,7 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 25-Apr-2002 : Initial version
- * 09-Jun-2002 : Documentation and changed the returnvalue to be an CloseableTableModel
+ * 09-Jun-2002 : Documentation and changed the return value to be a CloseableTableModel
  */
 package com.jrefinery.report.util;
 
@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 /**
- * Creates an TableModel which is backed up by an ResultSet.
+ * Creates an TableModel which is backed up by a ResultSet.
  * If the resultset is scrollable, a ScrollableResultSetTableModel is
  * created, else all data is copied from the resultSet into an
  * DefaultTableModel.
@@ -98,7 +98,7 @@ public class ResultSetTableModelFactory
     }
 
     /**
-     * If this model has an resultset assgined, close it, if this is a DefaultTableModel,
+     * If this model has a resultset assigned, close it, if this is a DefaultTableModel,
      * remove all data.
      */
     public void close ()

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.33 2002/09/11 20:23:28 taqua Exp $
+ * $Id: ReportState.java,v 1.34 2002/09/13 15:38:04 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -70,7 +70,7 @@ import java.util.Date;
 public abstract class ReportState implements JFreeReportConstants, Cloneable
 {
   /**
-   * Initial state for an report. Prints the report header and proceeds to PostProcessHeader-State.
+   * Initial state for a report. Prints the report header and proceeds to PostProcessHeader-State.
    * <p>
    * alias PreReportHeader<br>
    * advances to PostReportHeader<br>
@@ -151,7 +151,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
-   * Initial state for an report. Prints the report header and proceeds to PostProcessHeader-State.
+   * Initial state for a report. Prints the report header and proceeds to PostProcessHeader-State.
    * <p>
    * alias PreReportHeader<br>
    * advances to PostReportHeader<br>

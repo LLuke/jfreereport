@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ------------------------------
  * ReportDefinitionException.java
- * -----------------------
+ * ------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 24-Apr-2002 : Initial version
@@ -38,16 +38,19 @@ import java.io.PrintStream;
 /**
  * A reportdefinition exception is thrown when the parsing of the report definition
  * failed because invalid or missing attributes are encountered.
+ *
+ * @author TM
  */
 public class ReportDefinitionException extends SAXException
 {
+  /** The parent exception. */
   private Exception parent;
 
   /**
    * Creates a new ReportDefinitionException without an parent exception and with the given
-   * message as explaination
+   * message as explanation.
    *
-   * @param message a detail message explaining the reasons for this exception
+   * @param message a detail message explaining the reasons for this exception.
    */
   public ReportDefinitionException (String message)
   {
@@ -79,7 +82,9 @@ public class ReportDefinitionException extends SAXException
   }
 
   /**
-   * returns the
+   * Returns the parent exception.
+   *
+   * @return the parent exception.
    */
   public Exception getParentException ()
   {
@@ -87,8 +92,10 @@ public class ReportDefinitionException extends SAXException
   }
 
   /**
-   * print the stack trace.  If an inner exception exists, use
+   * Prints the stack trace.  If an inner exception exists, use
    * its stack trace.
+   *
+   * @param s  the stream for writing to.
    */
   public void printStackTrace (PrintStream s)
   {
@@ -105,8 +112,10 @@ public class ReportDefinitionException extends SAXException
   }
 
   /**
-   * print the stack trace.  If an inner exception exists, use
+   * Prints the stack trace.  If an inner exception exists, use
    * its stack trace.
+   *
+   * @param s  the stream for writing to.
    */
   public void printStackTrace (PrintWriter s)
   {
@@ -121,4 +130,5 @@ public class ReportDefinitionException extends SAXException
       s.println("ParentException: <null>");
     }
   }
+
 }

@@ -38,7 +38,7 @@ import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
 /**
- * A RectangleShapeElement encapsulates an Rectangle2D-Shape to display it on the report.
+ * A RectangleShapeElement encapsulates a Rectangle2D-Shape to display it on the report.
  * This rectangle is filled with this elements paint, but no outline is drawn.
  *
  * @author TM
@@ -75,7 +75,7 @@ public class RectangleShapeElement extends ShapeElement
   }
 
   /**
-   * Sets this elements shape. If the shape is no instance of Rectangle2D an ClassCastException is
+   * Sets this elements shape. If the shape is no instance of Rectangle2D a ClassCastException is
    * thrown.
    *
    * @param shape the shape for this element of type Rectangle2D

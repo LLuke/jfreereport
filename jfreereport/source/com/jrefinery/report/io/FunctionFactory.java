@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * --------------------
  * FunctionFactory.java
- * -----------------------
+ * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 10-May-2002 : Initial version
@@ -45,16 +45,34 @@ import java.util.Properties;
 /**
  * The functionFactory creates functions and adds these functions to the FunctionCollection
  * of the current report.
+ *
+ * @author DG
  */
 public class FunctionFactory extends DefaultHandler implements ReportDefinitionTags
 {
+  /** The report. */
   private JFreeReport report;
+
+  /** The current function/expression. */
   private Expression currentFunction;
+
+  /** The report properties. */
   private Properties currentProperties;
+
+  /** The current text. */
   private StringBuffer currentText;
+
+  /** The current property. */
   private String currentProperty;
+
+  /** The SAX handler for reading the report template file. */
   private ReportDefinitionContentHandler handler;
 
+  /**
+   * Creates a new function handler.
+   *
+   * @param baseFactory  the base handler.
+   */
   public FunctionFactory (ReportFactory baseFactory)
   {
     this.report = baseFactory.getReport ();
@@ -65,6 +83,11 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
    * SAX-Handler function that is forwarded from the ReportDefinitionContentHandler.
    * StartTag-occurences of function definitions get handled by this factory. If an unknown
    * tag is encountered, a SAXException is thrown.
+   *
+   * @param namespaceURI  the namespace URI.
+   * @param localName  the local name.
+   * @param qName  the element name.
+   * @param atts  the attributes.
    *
    * @throws SAXException if an unknown tag is encountered.
    */
@@ -99,12 +122,16 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
       startExpression (atts);
     }
     else
+    {
       throw new SAXException ("Expected one of 'function', 'functions', 'data-ref', 'properties', "
                             + "'property' tag");
+    }
   }
 
   /**
-   * returns the current properties bundle for the function that is currently created
+   * Returns the current properties bundle for the function that is currently created.
+   *
+   * @return the function/expression properties.
    */
   protected Properties getProperties ()
   {
@@ -112,7 +139,9 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   }
 
   /**
-   * defines the properties for the current function.
+   * Sets the properties for the current function.
+   *
+   * @param p  the properties.
    */
   protected void setProperties (Properties p)
   {
@@ -120,7 +149,9 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   }
 
   /**
-   * @return the current function to be produced
+   * Returns the function under construction.
+   *
+   * @return the function just built (or under construction).
    */
   protected Function getCurrentFunction ()
   {
@@ -128,8 +159,10 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   }
 
   /**
-   * defines the current function. This function gets properties set and is then added
-   * to the reports function collection.
+   * Defines the current function. This function gets properties set and is then added
+   * to the report's function collection.
+   *
+   * @param function  the function.
    */
   protected void setCurrentFunction (Function function)
   {
@@ -137,7 +170,9 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   }
 
   /**
-   * @return the current function to be produced
+   * Returns the current expression.
+   *
+   * @return the expression just built (or under construction).
    */
   protected Expression getCurrentExpression ()
   {
@@ -145,8 +180,10 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   }
 
   /**
-   * defines the current function. This function gets properties set and is then added
-   * to the reports function collection.
+   * Sets the current expression. This expression gets properties set and is then added
+   * to the reports expression collection.
+   *
+   * @param function  the expression.
    */
   protected void setCurrentExpression (Expression function)
   {
@@ -154,7 +191,9 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   }
 
   /**
-   * returns the report to be processed.
+   * Returns the report to be processed.
+   *
+   * @return the report.
    */
   protected JFreeReport getReport ()
   {
@@ -162,7 +201,11 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   }
 
   /**
-   * starts the Properties tag to create a new property bundle for a function.
+   * Starts the Properties tag to create a new property bundle for a function.
+   *
+   * @param atts  the element attributes.
+   *
+   * @throws SAXException if there is an error parsing the XML.
    */
   protected void startProperties (Attributes atts)
           throws SAXException
@@ -172,6 +215,10 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
 
   /**
    * starts a new property entry for the current function
+   *
+   * @param atts  the element attributes.
+   *
+   * @throws SAXException if there is an error parsing the XML.
    */
   protected void startProperty (Attributes atts)
           throws SAXException
@@ -182,6 +229,10 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
 
   /**
    * starts a new data-reference. This is not implemented yet.
+   *
+   * @param atts  the element attributes.
+   *
+   * @throws SAXException if there is an error parsing the XML.
    */
   protected void startDataRef (Attributes atts)
           throws SAXException
@@ -189,14 +240,25 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   }
 
   /**
-   * starts a new function collection. Function collections are already contained in
+   * Starts a new function collection. Function collections are already contained in
    * the report, so this function does nothing.
+   *
+   * @param atts  the element attributes.
+   *
+   * @throws SAXException if there is an error parsing the XML.
    */
-  protected void startFunctions (Attributes attr)
+  protected void startFunctions (Attributes atts)
           throws SAXException
   {
   }
 
+  /**
+   * Starts processing an expression element.
+   *
+   * @param attr  the element attributes.
+   *
+   * @throws SAXException if there is an error parsing the XML.
+   */
   protected void startExpression (Attributes attr)
       throws SAXException
   {
@@ -233,6 +295,10 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   /**
    * starts and loads a function by instantating the functions class. The function must
    * have a default constructor defined.
+   *
+   * @param attr  the element attributes.
+   *
+   * @throws SAXException if there is an error parsing the XML.
    */
   protected void startFunction (Attributes attr)
           throws SAXException
@@ -269,6 +335,10 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
 
   /**
    * Receives some (or all) of the text in the current element.
+   *
+   * @param ch  the character array.
+   * @param start  the first character index.
+   * @param length  the length (number of valid characters).
    */
   public void characters (char[] ch, int start, int length)
   {
@@ -282,6 +352,12 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
 
   /**
    * Ends the current element.
+   *
+   * @param namespaceURI  the namespace URI.
+   * @param localName  the local name.
+   * @param qName  the element name.
+   *
+   * @throws SAXException if there is a problem parsing the element.
    */
   public void endElement (String namespaceURI,
                           String localName,
@@ -313,13 +389,16 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
       endExpression();
     }
     else
+    {
       throw new SAXException ("Expected function tag");
-
+    }
   }
 
   /**
    * Ends the function. The current function is added to the report and initialized during
    * this process.
+   *
+   * @throws SAXException if there is a problem parsing the element.
    */
   protected void endFunction ()
           throws SAXException
@@ -334,6 +413,12 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     }
   }
 
+  /**
+   * Ends the expression. The current expression is added to the report and initialized during
+   * this process.
+   *
+   * @throws SAXException if there is a problem parsing the element.
+   */
   protected void endExpression ()
     throws SAXException
   {
@@ -349,6 +434,8 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
 
   /**
    * Ends the parsing of functions.
+   *
+   * @throws SAXException if there is a problem parsing the element.
    */
   protected void endFunctions ()
           throws SAXException
@@ -358,6 +445,8 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
 
   /**
    * Data-refs are not yet implemented
+   *
+   * @throws SAXException if there is a problem parsing the element.
    */
   protected void endDataRef ()
           throws SAXException
@@ -367,6 +456,8 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   /**
    * Ends the properties parsing for the current function. The properties are added to the
    * current function.
+   *
+   * @throws SAXException if there is a problem parsing the element.
    */
   protected void endProperties ()
           throws SAXException
@@ -381,6 +472,8 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
 
   /**
    * Ends the definition of a single property entry.
+   *
+   * @throws SAXException if there is a problem parsing the element.
    */
   protected void endProperty ()
           throws SAXException

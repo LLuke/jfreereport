@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.22 2002/09/06 19:19:02 taqua Exp $
+ * $Id: ReportPane.java,v 1.23 2002/09/13 15:38:08 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -75,17 +75,31 @@ import java.awt.print.Printable;
  * to display a report.
  * <p>
  * The panel uses several properties to inform its listeners of state changes.
+ *
+ * @author DG
  */
 public class ReportPane extends JComponent implements Printable, Pageable
 {
+  /** Literal text for the 'paginated' property. */
   public static final String PAGINATED_PROPERTY = "paginated";
+
+  /** Literal text for the 'NumberOfPages' property. */
   public static final String NUMBER_OF_PAGES_PROPERTY = "NumberOfPages";
+
+  /** Literal text for the 'pagenumber' property. */
   public static final String PAGENUMBER_PROPERTY = "pagenumber";
+
+  /** Literal text for the 'zoomfactor' property. */
   public static final String ZOOMFACTOR_PROPERTY = "zoomfactor";
+
+  /** Literal text for the 'error' property. */
   public static final String ERROR_PROPERTY = "error";
+
+  /** Literal text for the 'borderPainted' property. */
   public static final String BORDER_PROPERTY = "borderPainted";
 
-  private double PaperBorderPixel = 6;
+  /** The size of the paper border. */
+  private double paperBorderPixel = 6;
 
   /**
    * For performance reasons, I buffer the rendered image and
@@ -93,13 +107,13 @@ public class ReportPane extends JComponent implements Printable, Pageable
    */
   private BufferedImage graphCache;
 
-  /** The report currently being displayed in the pane; */
+  /** The report currently being displayed in the pane. */
   protected JFreeReport report;
 
-  /** The current page number; */
+  /** The current page number. */
   private int pageNumber;
 
-  /** The current zoom-factor; */
+  /** The current zoom-factor. */
   private double zoomFactor;
 
   /** The number of pages required for the report given the current page format. */
@@ -111,10 +125,10 @@ public class ReportPane extends JComponent implements Printable, Pageable
   /** A flag to indicate whether the border is painted or not */
   private boolean borderPainted;
 
-  /** The last error that occured while printing or painting the report */
+  /** The last error that occurred while printing or painting the report */
   private Exception error;
 
-  /** A state variable containing true, if the report is currently beeing paginated */
+  /** A state variable containing true, if the report is currently being paginated */
   private boolean isPaginating;
 
   /** PageFormat */
@@ -123,13 +137,24 @@ public class ReportPane extends JComponent implements Printable, Pageable
   /** A simple class performing the locking for huge paginating runs */
   private class PaginateLock
   {
+    /** The 'paginate' state. */
     private boolean paginateState;
 
+    /**
+     * Returns the 'paginate' state.
+     *
+     * @return the 'paginate' state.
+     */
     public boolean isPaginating ()
     {
       return paginateState;
     }
 
+    /**
+     * Sets the 'paginate' state.
+     *
+     * @param p  the flag.
+     */
     public void setPaginating (boolean p)
     {
       paginateState = p;
@@ -152,8 +177,8 @@ public class ReportPane extends JComponent implements Printable, Pageable
 
   /**
    * Standard constructor - builds a report pane to display the specified report.
-   * @param report The report to display within the pane;
-   * @param target The current outputtarget, contains the current PageFormat on which to print.
+   *
+   * @param report The report to display within the pane.
    */
   public ReportPane (JFreeReport report)
   {
@@ -166,7 +191,9 @@ public class ReportPane extends JComponent implements Printable, Pageable
   }
 
   /**
-   * returns the current pageStates as a list.
+   * Returns the current pageStates as a list.
+   *
+   * @return the report state list.
    */
   protected ReportStateList getPageStateList ()
   {
@@ -174,13 +201,16 @@ public class ReportPane extends JComponent implements Printable, Pageable
   }
 
   /**
-   * defines the current page state list after the report has been repaginated.
+   * Sets the current page state list after the report has been repaginated.
    * Fires the paginating PropertyChangeEvent after the report is paginated.
+   *
+   * @param list  the report state list.
    */
   protected void setPageStateList (ReportStateList list)
   {
     ReportStateList oldList = pageStateList;
-    if (oldList != null) {
+    if (oldList != null)
+    {
       oldList.clear ();
     }
 
@@ -190,6 +220,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
 
   /**
    * Returns the page format.
+   *
    * @return The current page format;
    */
   public PageFormat getPageFormat ()
@@ -198,8 +229,12 @@ public class ReportPane extends JComponent implements Printable, Pageable
   }
 
   /**
-   * returns the pageFormat for this Pageable Object. Currently no different pageformats
+   * Returns the pageFormat for this Pageable Object. Currently no different pageformats
    * are supported within a single report, so this returns alway the same as getPageFormat()
+   *
+   * @param page  the page number.
+   *
+   * @return the page format.
    */
   public PageFormat getPageFormat (int page)
   {
@@ -208,6 +243,10 @@ public class ReportPane extends JComponent implements Printable, Pageable
 
   /**
    * Returns a self-reference (this), as this object implements its own Printable-Interface
+   *
+   * @param page  the page number.
+   *
+   * @return this object (as an instance of Printable).
    */
   public Printable getPrintable (int page)
   {
@@ -215,7 +254,9 @@ public class ReportPane extends JComponent implements Printable, Pageable
   }
 
   /**
-   * returns true, if this report has a pagestate list.
+   * Returns true, if this report has a pagestate list.
+   *
+   * @return true if the report has been paginated.
    */
   protected boolean isPaginated ()
   {
@@ -224,22 +265,23 @@ public class ReportPane extends JComponent implements Printable, Pageable
 
   /**
    * Sets the page format.
+   *
    * @param pageFormat The new page format;
    *
    */
-  public void setPageFormat (PageFormat _pageFormat)
+  public void setPageFormat (PageFormat pageFormat)
   {
-    if (_pageFormat == null)
+    if (pageFormat == null)
     {
       throw new NullPointerException ("PageFormat must not be null");
     }
 
-    this.pageFormat = _pageFormat;
+    this.pageFormat = pageFormat;
     setPageStateList (null);
     graphCache = null;
 
-    int w = (int) ((pageFormat.getWidth () + PaperBorderPixel) * zoomFactor);
-    int h = (int) ((pageFormat.getHeight () + PaperBorderPixel) * zoomFactor);
+    int w = (int) ((pageFormat.getWidth () + paperBorderPixel) * zoomFactor);
+    int h = (int) ((pageFormat.getHeight () + paperBorderPixel) * zoomFactor);
     super.setSize (w, h);
   }
 
@@ -335,8 +377,8 @@ public class ReportPane extends JComponent implements Printable, Pageable
     graphCache = null;
 
     PageFormat pageFormat = getPageFormat ();
-    int w = (int) ((pageFormat.getWidth () + PaperBorderPixel) * zoomFactor);
-    int h = (int) ((pageFormat.getHeight () + PaperBorderPixel) * zoomFactor);
+    int w = (int) ((pageFormat.getWidth () + paperBorderPixel) * zoomFactor);
+    int h = (int) ((pageFormat.getHeight () + paperBorderPixel) * zoomFactor);
     super.setSize (w, h);
     firePropertyChange (ZOOMFACTOR_PROPERTY, new Double (oldzoom), new Double (factor));
   }
@@ -394,7 +436,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
         float innerW = (float) pageFormat.getImageableWidth ();
         float innerH = (float) pageFormat.getImageableHeight ();
 
-        double paperBorder = PaperBorderPixel * zoomFactor;
+        double paperBorder = paperBorderPixel * zoomFactor;
 
         Graphics2D g2 = null;
         if (realouterW > 1500 || realouterH > 1500)
@@ -416,7 +458,8 @@ public class ReportPane extends JComponent implements Printable, Pageable
                 RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        //g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        //g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+        //                    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         /** Prepare background **/
         Rectangle2D pageArea = new Rectangle2D.Double (outerX, outerY, realouterW, realouterH);
@@ -467,10 +510,10 @@ public class ReportPane extends JComponent implements Printable, Pageable
         /** Paint Page Shadow */
         Rectangle2D southborder =
                 new Rectangle2D.Double (
-                        outerX + PaperBorderPixel - 2,
+                        outerX + paperBorderPixel - 2,
                         outerY + outerH - 2,
                         outerW,
-                        PaperBorderPixel);
+                        paperBorderPixel);
 
         g2.setPaint (UIManager.getColor ("controlShadow"));
 
@@ -478,8 +521,8 @@ public class ReportPane extends JComponent implements Printable, Pageable
         Rectangle2D eastborder =
                 new Rectangle2D.Double (
                         outerW - 2,
-                        outerY - 2 + PaperBorderPixel,
-                        PaperBorderPixel,
+                        outerY - 2 + paperBorderPixel,
+                        paperBorderPixel,
                         outerH);
         g2.fill (eastborder);
 
@@ -558,7 +601,15 @@ public class ReportPane extends JComponent implements Printable, Pageable
     }
   }
 
-  /** Supports the Printable interface by drawing a report on a single page. */
+  /**
+   * Supports the Printable interface by drawing a report on a single page.
+   *
+   * @param g  the graphics device.
+   * @param pf  the page format.
+   * @param pageIndex  the page index.
+   *
+   * @return ??
+   */
   public int print (Graphics g, PageFormat pf, int pageIndex)
   {
     Graphics2D g2 = (Graphics2D) g;
@@ -590,7 +641,9 @@ public class ReportPane extends JComponent implements Printable, Pageable
   }
 
   /**
-   * returns true, if this ReportPane is currently paginating.
+   * Returns true, if this ReportPane is currently paginating.
+   *
+   * @return true if the report pane is paginating.
    */
   public boolean isPaginating ()
   {
@@ -599,8 +652,13 @@ public class ReportPane extends JComponent implements Printable, Pageable
 
   /**
    * Repaginates this report according to the OutputTarget given.
-   * This function synchronizes on the paginageLock. While a ReportPane is paginating,
+   *
+   * This function synchronizes on the paginateLock. While a ReportPane is paginating,
    * no other pane may print.
+   *
+   * @param target  the output target.
+   *
+   * @throws ReportProcessingException if there is a problem processing the report.
    */
   protected void repaginate (OutputTarget target)
           throws ReportProcessingException
@@ -612,7 +670,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
     }
     if (isPaginating ())
     {
-      throw new IllegalStateException ("Allready paginating");
+      throw new IllegalStateException ("Already paginating");
     }
     synchronized (paginateLock)
     {
@@ -642,7 +700,9 @@ public class ReportPane extends JComponent implements Printable, Pageable
   }
 
   /**
-   * sets the last error occured. The error can be cleared with the clearError() function.
+   * sets the last error occurred. The error can be cleared with the clearError() function.
+   *
+   * @param error  the error.
    */
   public void setError (Exception error)
   {
@@ -652,7 +712,9 @@ public class ReportPane extends JComponent implements Printable, Pageable
   }
 
   /**
-   * Checks whether an error occurred since the last call to clearError()
+   * Checks whether an error occurred since the last call to clearError().
+   *
+   * @return a flag indicating whether or not here is an error.
    */
   public boolean hasError ()
   {
@@ -660,7 +722,9 @@ public class ReportPane extends JComponent implements Printable, Pageable
   }
 
   /**
-   * return the report for this ReportPane
+   * Returns the report for this ReportPane.
+   *
+   * @return the report.
    */
   public JFreeReport getReport ()
   {
@@ -668,7 +732,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
   }
 
   /**
-   * clears the error state.
+   * Clears the error state.
    */
   public void clearError ()
   {
@@ -676,7 +740,9 @@ public class ReportPane extends JComponent implements Printable, Pageable
   }
 
   /**
-   * queries the error state for this ReportPane.
+   * Queries the error state for this ReportPane.
+   *
+   * @return the last error.
    */
   public Exception getError ()
   {

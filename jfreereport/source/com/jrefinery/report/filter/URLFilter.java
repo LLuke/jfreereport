@@ -89,7 +89,7 @@ public class URLFilter implements DataFilter
   }
 
   /**
-   * Trys to form a url from the object returned from the datasource.
+   * Tries to form a url from the object returned from the datasource.
    * This function will return null if the datasource is null or returned null when
    * getValue was called.
    *

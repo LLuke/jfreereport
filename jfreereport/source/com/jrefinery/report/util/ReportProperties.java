@@ -37,15 +37,15 @@ import java.util.Hashtable;
 
 /**
  * The report properties is a hashtable with string keys. ReportProperties are bound to
- * an report as an general purpose storage. ReportProperties bound to an JFreeReport-object
+ * a report as an general purpose storage. ReportProperties bound to an JFreeReport-object
  * are visible to all generated report-state chains. A ReportState will inherit all
  * ReportProperties bound to the JFreeReport-object when the ReportState.Start object is created.
  * Properties bound to the report definition after the report state is created are not
  * visible to the ReportState and its children.
  * <p>
- * ReportProperties bound to an ReportState are not visible to the report definition (the
+ * ReportProperties bound to a ReportState are not visible to the report definition (the
  * JFreeReport object), but are visible to all ReportStates of that ReportState-chain.
- * So when you add a property at the end of a report run to an ReportState, the value of
+ * So when you add a property at the end of a report run to a ReportState, the value of
  * this property will be visible to all ReportStates when the report is restarted at a certain
  * point.
  * <p>

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.34 2002/09/08 12:38:25 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.35 2002/09/13 15:38:08 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -330,6 +330,9 @@ public class PreviewFrame
       SwingUtilities.invokeLater(this);
     }
 
+    /**
+     * The workload for this action.
+     */
     public void run()
     {
       attemptPrint();
@@ -359,6 +362,9 @@ public class PreviewFrame
       SwingUtilities.invokeLater(this);
     }
 
+    /**
+     * The workload for this action.
+     */
     public void run()
     {
       attemptPageSetup();
@@ -458,6 +464,7 @@ public class PreviewFrame
       }
       catch (Exception ex)
       {
+        Log.info("DefaultGotoAction: swallowed an exception");
       }
     }
   }
@@ -503,7 +510,7 @@ public class PreviewFrame
   private Action gotoAction;
 
   /** The available zoom factors. */
-  private static final double[] zoomFactors = {0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 3.0, 4.0};
+  private static final double[] ZOOM_FACTORS = {0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 3.0, 4.0};
 
   /** The default zoom index (corresponds to a zoomFactor of 1.0. */
   private static final int DEFAULT_ZOOM_INDEX = 3;
@@ -523,9 +530,13 @@ public class PreviewFrame
   /** Defines whether to use 24x24 icons or 16x16 icons */
   private boolean largeIconsEnabled;
 
-  //private JFreeReport report;
+  /** Label for status. */
   private JLabel statusHolder;
+
+  /** Toolbar. */
   private JToolBar toolbar;
+
+  /** A dialog for specifying PDF file properties. */
   private PDFSaveDialog pdfSaveDialog;
 
   /**
@@ -594,15 +605,22 @@ public class PreviewFrame
     pdfSaveDialog.pack();
   }
 
+  /**
+   * Returns the PDF save dialog.
+   *
+   * @return the PDF save dialog.
+   */
   public PDFSaveDialog getPdfSaveDialog()
   {
     return pdfSaveDialog;
   }
 
   /**
-   * creates the ReportPane for the report
+   * Creates the ReportPane for the report.
    *
-   * @param report the report for this pane
+   * @param report the report for this pane.
+   *
+   * @return the report pane.
    */
   protected ReportPane createReportPane(JFreeReport report)
   {
@@ -627,11 +645,12 @@ public class PreviewFrame
 
   /**
    * Returns the current zoom factor.
+   *
    * @return The current zoom factor.
    */
   public double getZoomFactor()
   {
-    return zoomFactors[zoomIndex];
+    return ZOOM_FACTORS[zoomIndex];
   }
 
   /**
@@ -694,6 +713,9 @@ public class PreviewFrame
    * Shows the exception dialog by using localized messages. The message base is
    * used to construct the localisation key by appending ".title" and ".message" to the
    * base name.
+   *
+   * @param localisationBase  the resource key prefix.
+   * @param e  the exception.
    */
   private void showExceptionDialog(String localisationBase, Exception e)
   {
@@ -763,7 +785,7 @@ public class PreviewFrame
    */
   public void increaseZoom()
   {
-    if (zoomIndex < zoomFactors.length - 1)
+    if (zoomIndex < ZOOM_FACTORS.length - 1)
     {
       zoomIndex++;
     }
@@ -774,7 +796,9 @@ public class PreviewFrame
     //validateButtons();
   }
 
-  /** Decreases the zoom factor for the report pane (unless it is already at the minimum zoom). */
+  /**
+   * Decreases the zoom factor for the report pane (unless it is already at the minimum zoom).
+   * */
   public void decreaseZoom()
   {
     if (zoomIndex > 0)
@@ -789,7 +813,9 @@ public class PreviewFrame
   }
 
   /**
-   * sets the zoomfactor of the report pane.
+   * Sets the zoomfactor of the report pane.
+   *
+   * @param index  the index into the array of standard zoom factors.
    */
   public void setZoomFactor(int index)
   {
@@ -799,8 +825,10 @@ public class PreviewFrame
   }
 
   /**
-   * checks whether this action has a keystroke assigned. If it has one, the keystroke
-   * is assigned to the frame
+   * Checks whether this action has a keystroke assigned. If it has one, the keystroke
+   * is assigned to the frame.
+   *
+   * @param action  the action.
    */
   protected void registerAction(Action action)
   {
@@ -1165,9 +1193,9 @@ public class PreviewFrame
   private JComponent createZoomPane()
   {
     DefaultComboBoxModel model = new DefaultComboBoxModel();
-    for (int i = 0; i < zoomFactors.length; i++)
+    for (int i = 0; i < ZOOM_FACTORS.length; i++)
     {
-      model.addElement(String.valueOf((int) (zoomFactors[i] * 100)) + " %");
+      model.addElement(String.valueOf((int) (ZOOM_FACTORS[i] * 100)) + " %");
     }
     zoomSelect = new JComboBox(model);
     zoomSelect.setActionCommand("ZoomSelect");
@@ -1246,7 +1274,7 @@ public class PreviewFrame
     firstPageAction.setEnabled(pn != 1);
 
     zoomOutAction.setEnabled(zoomSelect.getSelectedIndex() != 0);
-    zoomInAction.setEnabled(zoomSelect.getSelectedIndex() != (zoomFactors.length - 1));
+    zoomInAction.setEnabled(zoomSelect.getSelectedIndex() != (ZOOM_FACTORS.length - 1));
   }
 
   /**

@@ -134,7 +134,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   }
 
   /**
-   * get an rowCount. This can be a very expensive operation on large
+   * Get a rowCount. This can be a very expensive operation on large
    * datasets. Returns -1 if the total amount of rows is not known to the result set.
    */
   public int getRowCount ()
@@ -234,7 +234,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   }
 
   /**
-   * returns the class of the resultset column. Returns Object.class if an error occured.
+   * returns the class of the resultset column. Returns Object.class if an error occurred.
    */
   public Class getColumnClass (int column)
   {
@@ -254,7 +254,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
 
 
   /**
-   * returns the classname of the resultset column. Returns Object.class if an error occured.
+   * returns the classname of the resultset column. Returns Object.class if an error occurred.
    */
   public String getColumnClassName (int column)
   {

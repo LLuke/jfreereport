@@ -888,10 +888,14 @@ public class ElementFactory extends DefaultHandler
   }
 
   /**
-   * Parses the text alignment, which is one of "left", "center" or "right".
+   * Parses the text looking for a text alignment, which is one of "left", "center" or "right".
+   * <p>
+   * The method returns one of the values:  Element.LEFT, Element.CENTER and Element.RIGHT.
    *
    * @param alignment  the alignment.
-   * @param int  the default alignment.
+   * @param defaultAlignment  the default alignment.
+   *
+   * @return an alignment code.
    */
   protected int parseTextAlignment(String alignment, int defaultAlignment)
   {

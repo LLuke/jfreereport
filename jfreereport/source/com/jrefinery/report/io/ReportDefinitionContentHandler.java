@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportDefinitionContentHandler.java,v 1.7 2002/09/08 13:18:56 taqua Exp $
+ * $Id: ReportDefinitionContentHandler.java,v 1.8 2002/09/13 15:38:08 mungady Exp $
  *
  * Changes
  * -------
@@ -61,19 +61,22 @@ import java.util.Stack;
  * Different factories are used to create the report. The topmost factory on the stack
  * is expected to be able to handle the next element. EndElement, startElement and characters
  * is forwarded to the active factory.
+ *
+ * @author TM
  */
 public class ReportDefinitionContentHandler extends AbstractReportDefinitionHandler
         implements ReportDefinitionTags
 {
+  /** Storage for the handlers. */
   private Stack currentHandler;
 
+  /** The font handler. */
   private FontFactory fontFactory;
+
+  /** The report handler. */
   private ReportFactory reportFactory;
 
-  /**
-   * The report under construction. This element is null until the complete report has been
-   * parsed.
-   */
+  /** The report under construction. */
   private JFreeReport report;
 
   /**
@@ -88,6 +91,8 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   /**
    * Returns a single instance of FontFactory which is used to create Fonts for bands and
    * elements, where the element fonts depend on the bands font.
+   *
+   * @return the font handler.
    */
   public FontFactory getFontFactory ()
   {
@@ -101,6 +106,8 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   /**
    * Returns the ReportFactory for this contentHandler. It is guaranteed that there is only one
    * report factory per contentHandler.
+   *
+   * @return the report handler.
    */
   protected ReportFactory getReportFactory ()
   {
@@ -112,7 +119,9 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   }
 
   /**
-   * defines the next expected handler for SAX-Events.
+   * Sets the next expected handler for SAX-Events.
+   *
+   * @param handler  the next SAX handler.
    */
   public void setExpectedHandler (DefaultHandler handler)
   {
@@ -120,7 +129,7 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   }
 
   /**
-   * restores the previous active SAX-Handler when the current handler has finished its task.
+   * Restores the previous active SAX-Handler when the current handler has finished its task.
    */
   public void finishedHandler ()
   {
@@ -128,7 +137,9 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   }
 
   /**
-   * returns the currently active SAXHandler which will process the next SAXEvent.
+   * Returns the currently active SAXHandler which will process the next SAXEvent.
+   *
+   * @return  the current SAX handler.
    */
   public DefaultHandler getExpectedHandler ()
   {
@@ -137,7 +148,7 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
 
   /**
    * Returns the report for this content handler. This method will return null, until the report is
-   * completly build and parsing has finished.
+   * completely built and parsing has finished.
    *
    * @return the completely build report or null, if the parsing is still in progress
    */
@@ -147,7 +158,9 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   }
 
   /**
-   * Finishes the ReportDefinition by setting the given report as parsing result.
+   * Sets the report, which also indicates that the handler is finished.
+   *
+   * @param report  the parsed report.
    */
   public void setReport (JFreeReport report)
   {
@@ -158,6 +171,13 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   /**
    * An element start tag has been reached.  The SAXEvent is forwarded to the currently active
    * handler.
+   *
+   * @param namespaceURI  the namespace URI.
+   * @param localName  the local name.
+   * @param qName  the element name.
+   * @param atts  the element attributes.
+   *
+   * @throws SAXException if there is a problem parsing the XML report template.
    */
   public void startElement (String namespaceURI,
                             String localName,
@@ -169,7 +189,13 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   }
 
   /**
-   * Forward the characters method to the currently active handler
+   * Forward the characters method to the currently active handler.
+   *
+   * @param chars  storage for character data.
+   * @param i  the start index.
+   * @param i1  the number of valid characters.
+   *
+   * @throws SAXException if there is a problem parsing the XML report template.
    */
   public void characters (char[] chars, int i, int i1) throws SAXException
   {
@@ -180,6 +206,12 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   /**
    * An element ending tag has been reached.  This is a chance to make use of the element
    * text that has been accumulated.
+   *
+   * @param namespaceURI  the namespace URI.
+   * @param localName  the local name.
+   * @param qName  the element name.
+   *
+   * @throws SAXException if there is a problem parsing the XML report template.
    */
   public void endElement (String namespaceURI, String localName, String qName) throws SAXException
   {
@@ -189,6 +221,8 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
 
   /**
    * Creates a new ElementFactory.
+   *
+   * @return an element handler.
    */
   public ElementFactory createElementFactory ()
   {
@@ -197,6 +231,8 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
 
   /**
    * Creates a new FunctionFactory.
+   *
+   * @return a function handler.
    */
   public FunctionFactory createFunctionFactory ()
   {
@@ -205,6 +241,8 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
 
   /**
    * Creates a new GroupFactory.
+   *
+   * @return a group handler.
    */
   public GroupFactory createGroupFactory ()
   {
@@ -213,6 +251,8 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
 
   /**
    * Creates a new BandFactory.
+   *
+   * @return a band handler.
    */
   public BandFactory createBandFactory ()
   {
@@ -222,6 +262,8 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   /**
    * Returns a new Instance of this ReportDefinitionHandler, using this implementation as
    * prototype.
+   *
+   * @return a report handler.
    */
   public AbstractReportDefinitionHandler getInstance ()
   {

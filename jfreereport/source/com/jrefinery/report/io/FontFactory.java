@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ----------------
  * FontFactory.java
- * -----------------------
+ * ----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 10-May-2002 : Initial version
@@ -38,15 +38,22 @@ import java.awt.Font;
 
 /**
  * Parses the font specifications for bands and text elements.
+ *
+ * @author TM
  */
 public class FontFactory implements ReportDefinitionTags
 {
+  /** The default font name. */
   private String defaultFontName;
+
+  /** The default font style. */
   private int defaultFontStyle;
+
+  /** The default font size. */
   private int defaultFontSize;
 
   /**
-   * Default Constructor
+   * Default constructor.
    */
   public FontFactory ()
   {
@@ -65,7 +72,13 @@ public class FontFactory implements ReportDefinitionTags
   }
 
   /**
-   * Reads an attribute as int and returns <code>def</code> if that fails
+   * Reads an attribute as int and returns <code>def</code> if that fails.
+   *
+   * @param attr  the element attributes.
+   * @param name  the attribute name.
+   * @param def  the default value.
+   *
+   * @return the int value.
    */
   protected int readInt (Attributes attr, String name, int def)
   {
@@ -81,6 +94,7 @@ public class FontFactory implements ReportDefinitionTags
     }
     catch (NumberFormatException e)
     {
+      // swallow the exception, the default value will be returned
     }
     return def;
   }
@@ -89,8 +103,12 @@ public class FontFactory implements ReportDefinitionTags
    * Reads the fontstyle for an attribute set. The font style is appended to the given
    * font style definition.
    * <p>
-   * This implementation does not support underline or strikethrough
-   * attributes of the DTD.
+   * This implementation does not support underline or strikethrough attributes of the DTD.
+   *
+   * @param attr  the element attributes.
+   * @param def  the default font style.
+   *
+   * @return the font style.
    */
   protected int readSimpleFontStyle (Attributes attr, int def)
   {
@@ -120,8 +138,8 @@ public class FontFactory implements ReportDefinitionTags
 
     isBold = ParserUtil.parseBoolean (attr.getValue (FS_BOLD), isBold);
     isItalic = ParserUtil.parseBoolean (attr.getValue (FS_ITALIC), isItalic);
-//    isUnderline = ParserUtil.parseBoolean (attr.getValue (FS_UNDERLINE), isUnderline);
-//    isStriked = ParserUtil.parseBoolean (attr.getValue (FS_STRIKETHR), isStriked);
+    // isUnderline = ParserUtil.parseBoolean (attr.getValue (FS_UNDERLINE), isUnderline);
+    // isStriked = ParserUtil.parseBoolean (attr.getValue (FS_STRIKETHR), isStriked);
     if (isBold)
     {
       fs += Font.BOLD;
@@ -134,7 +152,13 @@ public class FontFactory implements ReportDefinitionTags
   }
 
   /**
-   * Parses an element font. Missing attributes are replaces with the default fonts attributes.
+   * Parses an element font. Missing attributes are replaces with the default font's attributes.
+   *
+   * @param attr  the element attributes.
+   *
+   * @return a font.
+   *
+   * @throws ReportDefinitionException if the font cannot be created.
    */
   public Font createFont (Attributes attr)
           throws ReportDefinitionException
@@ -159,9 +183,14 @@ public class FontFactory implements ReportDefinitionTags
   }
 
   /**
-   * Parses an band font.
-   * Missing attributes are replaces with the default fonts attributes. The result of this parsing
-   * will set the default values for element fonts
+   * Parses a band font.
+   * <P>
+   * Missing attributes are replaced with the default font's attributes. The result of this parsing
+   * will set the default values for element fonts.
+   *
+   * @param attr  the element attributes.
+   *
+   * @return a font.
    */
   public Font createDefaultFont (Attributes attr)
   {
@@ -184,4 +213,5 @@ public class FontFactory implements ReportDefinitionTags
     // return the font...
     return new Font (defaultFontName, defaultFontStyle, defaultFontSize);
   }
+
 }

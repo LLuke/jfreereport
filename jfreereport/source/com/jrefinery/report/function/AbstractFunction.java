@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.16 2002/09/11 20:23:34 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.17 2002/09/13 15:38:07 mungady Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ import java.util.Properties;
  * <p>
  * The function is initialized when it gets added to the report. The method <code>initialize</code>
  * gets called to perform the required initializations. At this point, all function properties must
- * have been set to an valid state and the function must be named. If the initialisation fails, an
+ * have been set to a valid state and the function must be named. If the initialisation fails, a
  * FunctionInitializeException is thrown and the function get not added to the report.
  *
  * @author TM

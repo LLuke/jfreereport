@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Function.java,v 1.9 2002/08/29 19:15:35 taqua Exp $
+ * $Id: Function.java,v 1.10 2002/09/13 15:38:08 mungady Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import com.jrefinery.report.event.ReportListener;
  * JFreeReport.
  * <p>
  * Although functions support the ReportListener interface, they are not directly added to
- * an report. An report FunctionCollection is used to control the functions. Functions are
+ * a report. A report FunctionCollection is used to control the functions. Functions are
  * required to be cloneable.
  * <p>
  * Todo: Give a better overview how functions are integrated into JFreeReport.

@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ---------------
  * ParserUtil.java
- * -----------------------
+ * ---------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 2002-05-21: Contains utility functions to make parsing easier.
@@ -41,14 +41,23 @@ import java.awt.geom.Rectangle2D;
 import java.lang.reflect.Field;
 
 /**
- * basic helper functions to ease up the process of parsing.
+ * Basic helper functions to ease up the process of parsing.
+ *
+ * @author TM
  */
 public class ParserUtil
 {
   /**
-   * parses the string <code>text</code> into an int. If text is null or does not
+   * Parses the string <code>text</code> into an int. If text is null or does not
    * contain a parsable value, the message given in <code>message</code> is used to
    * throw a SAXException.
+   *
+   * @param text  the text to parse.
+   * @param message  the error message if parsing fails.
+   *
+   * @return the int value.
+   *
+   * @throws SAXException if there is a problem with the parsing.
    */
   public static int parseInt(String text, String message) throws SAXException
   {
@@ -68,9 +77,16 @@ public class ParserUtil
   }
 
   /**
-   * parses the string <code>text</code> into an float. If text is null or does not
+   * Parses the string <code>text</code> into an float. If text is null or does not
    * contain a parsable value, the message given in <code>message</code> is used to
    * throw a SAXException.
+   *
+   * @param text  the text to parse.
+   * @param message  the error message if parsing fails.
+   *
+   * @return the float value.
+   *
+   * @throws SAXException if there is a problem with the parsing.
    */
   public static float parseFloat(String text, String message) throws SAXException
   {
@@ -91,6 +107,11 @@ public class ParserUtil
   /**
    * Parses a boolean. If the string <code>text</code> contains the value of "true", the
    * true value is returned, else false is returned.
+   *
+   * @param text  the text to parse.
+   * @param defaultVal  the default value.
+   *
+   * @return a boolean.
    */
   public static boolean parseBoolean(String text, boolean defaultVal)
   {
@@ -103,6 +124,11 @@ public class ParserUtil
 
   /**
    * Parses a string. If the <code>text</code> is null, defaultval is returned.
+   *
+   * @param text  the text to parse.
+   * @param defaultVal  the default value.
+   *
+   * @return a string.
    */
   public static String parseString(String text, String defaultVal)
   {
@@ -117,6 +143,10 @@ public class ParserUtil
    * Creates a basic stroke given the width contained as float in the given string.
    * If the string could not be parsed into a float, a basic stroke with the width of
    * 1 is returned.
+   *
+   * @param weight  a string containing a number (the stroke weight).
+   *
+   * @return the stroke.
    */
   public static Stroke parseStroke(String weight)
   {
@@ -141,6 +171,10 @@ public class ParserUtil
    * constants defined in java.awt.Color, this constant is used.
    * <p>
    * As fallback the color black is returned if no color can be parsed.
+   *
+   * @param color  the color (as a string).
+   *
+   * @return the paint.
    */
   public static Paint parseColor(String color)
   {
@@ -175,8 +209,15 @@ public class ParserUtil
 
 
   /**
-   * parses a position of an element. If a relative postion is given, the returnvalue
+   * Parses a position of an element. If a relative postion is given, the returnvalue
    * is a negative number between 0 and -100.
+   *
+   * @param value  the value.
+   * @param exceptionMessage  the exception message.
+   *
+   * @return the float value.
+   *
+   * @throws SAXException if there is a problem parsing the string.
    */
   public static float parseRelativeFloat(String value, String exceptionMessage) throws SAXException
   {
@@ -192,12 +233,20 @@ public class ParserUtil
       return f;
     }
     else
+    {
       return parseFloat(tvalue, exceptionMessage);
+    }
   }
 
   /**
    * Parses an element position. The position is stored in the attributes "x", "y", "width" and
    * "height". The attributes are allowed to have relative notion.
+   *
+   * @param atts  the attributes.
+   *
+   * @return the element position.
+   *
+   * @throws SAXException if there is a problem getting the element position.
    */
   public static Rectangle2D getElementPosition(Attributes atts) throws SAXException
   {
@@ -213,4 +262,5 @@ public class ParserUtil
     Rectangle2D.Float retval = new Rectangle2D.Float(x, y, w, h);
     return retval;
   }
+
 }

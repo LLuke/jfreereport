@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morger
  * Contributor(s):   Stefan Prange;
  *
- * $Id: WaitingImageObserver.java,v 1.8 2002/09/05 17:25:31 taqua Exp $
+ * $Id: WaitingImageObserver.java,v 1.9 2002/09/13 15:38:04 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -113,7 +113,7 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
   }
 
   /**
-   * The workerthread. Simply draws the image to an BufferedImage's Graphics-Object
+   * The workerthread. Simply draws the image to a BufferedImage's Graphics-Object
    * and waits for the AWT to load the image.
    */
   public void waitImageLoaded ()

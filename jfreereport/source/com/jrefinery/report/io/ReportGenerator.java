@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
- * ReportFactory.java
- * -----------------------
+ * --------------------
+ * ReportGenerator.java
+ * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 10-May-2002 : Initial version
@@ -49,16 +49,25 @@ import java.net.URL;
  * <code>
  * ReportGenerator.getInstance().parseReport (URL myURl, URL contentBase);
  * </code>
+ *
+ * @author TM
  */
 public class ReportGenerator
 {
+  /** The report generator. */
   private static ReportGenerator generator;
+
+  /** The report handler. */
   private AbstractReportDefinitionHandler defaulthandler;
+
+  /** The parser factory. */
   private SAXParserFactory factory;
+
+  /** The DTD. */
   private String dtd;
 
   /**
-   * creates a new reportgenerator. The generator uses the singleton pattern by default,
+   * Creates a new report generator. The generator uses the singleton pattern by default,
    * so use generator.getInstance() to get the generator.
    */
   protected ReportGenerator ()
@@ -69,7 +78,9 @@ public class ReportGenerator
 
   /**
    * Defines a DTD used to validate the report definition. Your XMLParser
-   * must be an validating parse for this feature to work.
+   * must be a validating parser for this feature to work.
+   *
+   * @param dtd  the URL for the DTD.
    */
   public void setDTDLocation (String dtd)
   {
@@ -77,8 +88,10 @@ public class ReportGenerator
   }
 
   /**
-   * returns the location of the DTD. This is used for validating XML parsers to
+   * Sets the location of the DTD. This is used for validating XML parsers to
    * validate the structure of the report definition.
+   *
+   * @return the URL for the DTD.
    */
   public String getDTDLocation ()
   {
@@ -86,7 +99,7 @@ public class ReportGenerator
   }
 
   /**
-   * Trys to initilialize the generator by reading the system property "com.jrefinery.report.dtd".
+   * Tries to initilialize the generator by reading the system property "com.jrefinery.report.dtd".
    * This property should point to the dtd used for parsing.
    */
   public void initFromSystem ()
@@ -105,8 +118,15 @@ public class ReportGenerator
   }
 
   /**
-   * parses an report using the given parameter as filename and the directory containing
+   * Parses a report using the given parameter as filename and the directory containing
    * the file as content base.
+   *
+   * @param file  the file name.
+   *
+   * @return the report.
+   *
+   * @throws IOException if an I/O error occurs.
+   * @throws ReportDefinitionException if there is a problem parsing the report template.
    */
   public JFreeReport parseReport (String file) throws IOException, ReportDefinitionException
   {
@@ -122,6 +142,13 @@ public class ReportGenerator
    * Parses an XML file which is loaded using the given URL. All
    * needed relative file- and resourcespecification are loaded
    * using the URL <code>file</code> as base.
+   *
+   * @param file  the URL for the report template file.
+   *
+   * @return the report.
+   *
+   * @throws IOException if an I/O error occurs.
+   * @throws ReportDefinitionException if there is a problem parsing the report template.
    */
   public JFreeReport parseReport (URL file)
           throws ReportDefinitionException, IOException
@@ -136,6 +163,14 @@ public class ReportGenerator
    * <p>
    * After the report is generated, the ReportDefinition-source and the contentbase are
    * stored as string in the reportproperties.
+   *
+   * @param file  the URL for the report template file.
+   * @param contentBase  the URL for the report template content base.
+   *
+   * @return the parsed report.
+   *
+   * @throws IOException if an I/O error occurs.
+   * @throws ReportDefinitionException if there is a problem parsing the report template.
    */
   public JFreeReport parseReport (URL file, URL contentBase)
           throws ReportDefinitionException, IOException
@@ -162,6 +197,13 @@ public class ReportGenerator
    * Parses an XML file which is loaded using the given file. All
    * needed relative file- and resourcespecification are loaded
    * using the parent directory of the file <code>file</code> as base.
+   *
+   * @param file  the report template file.
+   *
+   * @return the parsed report.
+   *
+   * @throws IOException if an I/O error occurs.
+   * @throws ReportDefinitionException if there is a problem parsing the report template.
    */
   public JFreeReport parseReport (File file) throws IOException, ReportDefinitionException
   {
@@ -175,7 +217,12 @@ public class ReportGenerator
   }
 
   /**
-   * @return an SAXParser.
+   * Returns a SAX parser.
+   *
+   * @return a SAXParser.
+   *
+   * @throws ParserConfigurationException if there is a problem configuring the parser.
+   * @throws SAXException ??
    */
   protected SAXParser getParser () throws ParserConfigurationException, SAXException
   {
@@ -189,6 +236,8 @@ public class ReportGenerator
   /**
    * Sets the default handler used for parsing reports. This handler is used to
    * initiate parsing.
+   *
+   * @param handler  the handler.
    */
   public void setDefaultHandler (AbstractReportDefinitionHandler handler)
   {
@@ -200,7 +249,9 @@ public class ReportGenerator
   }
 
   /**
-   * returns the ReportDefinitionHandler used for parsing reports.
+   * Returns the ReportDefinitionHandler used for parsing reports.
+   *
+   * @return the report handler.
    */
   public AbstractReportDefinitionHandler getDefaultHandler ()
   {
@@ -210,6 +261,10 @@ public class ReportGenerator
   /**
    * Creates a new instance of the currently set default handler and sets the contentbase
    * for the handler to <code>contentBase</code>
+   *
+   * @param contentBase  the content base.
+   *
+   * @return the report handler.
    */
   protected AbstractReportDefinitionHandler createDefaultHandler (URL contentBase)
   {
@@ -219,8 +274,14 @@ public class ReportGenerator
   }
 
   /**
-   * @return an created JFreeReport.
-   * @throws ReportDefinitionException if an error occured
+   * Parses an XML report template file.
+   *
+   * @param input  the input source.
+   * @param contentBase  the content base.
+   *
+   * @return the report.
+   *
+   * @throws ReportDefinitionException if an error occurred.
    */
   public JFreeReport parseReport (InputSource input, URL contentBase)
           throws ReportDefinitionException
@@ -251,6 +312,8 @@ public class ReportGenerator
 
   /**
    * Returns a new ReportGenerator reference.
+   *
+   * @return the report generator.
    */
   public static ReportGenerator getInstance ()
   {

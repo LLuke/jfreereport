@@ -80,7 +80,7 @@ public class LineShapeElement extends ShapeElement
   }
 
   /**
-   * Sets this elements shape. If the shape is no instance of Line2D an ClassCastException is
+   * Sets this elements shape. If the shape is no instance of Line2D a ClassCastException is
    * thrown.
    *
    * @param shape the shape for this element of type Line2D
