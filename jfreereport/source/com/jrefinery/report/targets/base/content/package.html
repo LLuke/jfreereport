@@ -11,6 +11,24 @@ can be extracted.
 <p>
 To create contents, an LayoutSupport defines a ContentFactory. This factory is resopnsible
 to create the content from the Element's value, if the OutputTarget does support the elements
-content type. 
+content type.
+<p>
+<h3>How content is created and used within the report processing</h3>
+<ul>
+<li>The ContentFactory is used to create the content for the elements.
+The elements <code>getValue()</code> method is used to read the assigned content
+for the element. This raw data and the elements style definition is used to create
+the content. When using the <code>DefaultContentFactory</code>, the content is created
+using one of the defined <code>ContentFactoryModules</code>.
+<li>The Content is then used to compute the size for the <i>dynamic</i> elements by
+the <code>BandLayoutManager</code>.
+<li><b>PageableLayout:</b>
+Once the layout is complete, the content is used in the logical page to create
+the required <code>PhysicalOperation</code>s needed to display the content in the
+<code>OutputTarget</code>. This conversion is done by one of the <code>OperationModule</code>s
+of the OutputTargets or LogicalPages <code>OperationFactory</code>.
+<li>The generated PhysicalOperations are added to the physical page and finally printed
+when the physical page is closed.
+</ul> 
 </body>
 </html>

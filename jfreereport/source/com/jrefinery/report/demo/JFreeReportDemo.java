@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.57 2003/03/05 11:30:38 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.58 2003/03/08 17:20:47 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -359,6 +359,7 @@ public class JFreeReportDemo extends JFrame
         previewBandInBandStacking();
       }
     }));
+    list.add (new DemoDefinition("Shape and Drawable", new DefaultTableModel(), new URLDemoHandler("/com/jrefinery/report/demo/shape-and-drawable.xml")));
     return list;
   }
 

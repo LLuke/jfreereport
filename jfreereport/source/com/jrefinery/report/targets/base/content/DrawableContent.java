@@ -2,7 +2,7 @@
  * Date: Mar 5, 2003
  * Time: 6:25:58 PM
  *
- * $Id: DrawableContent.java,v 1.1 2003/03/07 13:49:37 taqua Exp $
+ * $Id: DrawableContent.java,v 1.2 2003/03/07 16:56:01 taqua Exp $
  */
 package com.jrefinery.report.targets.base.content;
 
@@ -10,6 +10,7 @@ import com.jrefinery.report.DrawableContainer;
 import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Point2D;
 
 /**
  * A simple wrapper around the DrawableContainer. The ContentImplementation
@@ -27,15 +28,14 @@ public class DrawableContent implements Content
    * The content bounds define the position of this content in the global
    * coordinate space (where to print on the page).
    */
-  private Rectangle2D contentBounds;
+  private Point2D contentOrigin;
 
-  public DrawableContent(DrawableContainer drawable)
+  public DrawableContent(DrawableContainer drawable, Point2D contentOrigin)
   {
     if (drawable == null) throw new NullPointerException();
 
-    Log.debug ("Created Content ");
     this.drawable = drawable;
-    Log.debug ("Create bounds: " + getBounds());
+    this.contentOrigin = contentOrigin;
   }
 
   /**
@@ -56,7 +56,11 @@ public class DrawableContent implements Content
    */
   public Rectangle2D getBounds()
   {
-    return drawable.getClippingBounds();
+    Rectangle2D clippBounds = drawable.getClippingBounds();
+    return new Rectangle2D.Float((float) contentOrigin.getX(),
+                                 (float) contentOrigin.getY(),
+                                 (float) clippBounds.getWidth(),
+                                 (float) clippBounds.getHeight());
   }
 
   /**
@@ -82,11 +86,21 @@ public class DrawableContent implements Content
    */
   public Content getContentForBounds(Rectangle2D bounds)
   {
-    Rectangle2D newBounds = bounds.createIntersection(getBounds());
+    Rectangle2D myBounds = getBounds();
+
+    if (bounds.intersects(myBounds) == false)
+      return null;
+
+    Rectangle2D newBounds = bounds.createIntersection(myBounds);
+    Rectangle2D clipBounds = new Rectangle2D.Float((float) (newBounds.getX() - contentOrigin.getX()),
+                                                   (float) (newBounds.getY() - contentOrigin.getY()),
+                                                   (float) newBounds.getWidth(),
+                                                   (float) newBounds.getHeight());
     DrawableContainer newContainer = new DrawableContainer(drawable,
-                                                           newBounds);
-    Log.debug ("Create Content for bounds: " + drawable);
-    return new DrawableContent(newContainer);
+                                                           clipBounds);
+
+    return new DrawableContent(newContainer, new Point2D.Float((float) newBounds.getX(),
+                                                               (float) newBounds.getY()));
   }
 
   /**
