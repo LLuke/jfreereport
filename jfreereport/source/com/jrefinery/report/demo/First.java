@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: First.java,v 1.5 2002/08/22 21:08:24 taqua Exp $
+ * $Id: First.java,v 1.6 2002/08/28 15:27:27 taqua Exp $
  *
  * Changes
  * -------
@@ -323,6 +323,7 @@ public class First extends ApplicationFrame implements ActionListener
   {
     First frame = new First("First Report");
     frame.pack();
+    RefineryUtilities.centerFrameOnScreen(frame);
     frame.setVisible(true);
   }
 
