@@ -3,7 +3,8 @@
                  com.jrefinery.report.ext.demo.DefaultPageableReportServletWorker,
                  com.jrefinery.report.demo.SwingIconsDemoTableModel,
                  com.jrefinery.report.targets.pageable.output.G2OutputTarget,
-                 com.jrefinery.report.JFreeReport"%>
+                 com.jrefinery.report.JFreeReport,
+                 com.jrefinery.report.ext.demo.DemoModelProvider"%>
 
 <%
   // initalize the report if not already done ...
@@ -17,7 +18,7 @@
   AbstractPageableReportServletWorker worker =
       new DefaultPageableReportServletWorker(null,
                                              in,
-                                             new SwingIconsDemoTableModel(base));
+                                             new DemoModelProvider(base));
   JFreeReport report = worker.getReport();
   G2OutputTarget target = new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), report.getDefaultPageFormat());
   worker.setOutputTarget(target);
@@ -40,7 +41,7 @@ else
   for (int i = 0; i < numberOfPages; i++)
   {
 %>
-  <img src="pngservlet?page=<%=i%>" alt="Page <%=i%>">
+  <img src="pngreport?page=<%=i%>" alt="Page <%=i%>">
   <p>
 <%
   }

@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportPngServlet.java,v 1.5 2003/03/02 19:19:25 taqua Exp $
+ * $Id: JFreeReportPngServlet.java,v 1.6 2003/03/02 21:36:41 taqua Exp $
  *
  * Changes
  * -------
@@ -37,13 +37,13 @@
  */
 package com.jrefinery.report.ext.demo;
 
-import com.jrefinery.report.demo.SwingIconsDemoTableModel;
 import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
 import com.jrefinery.report.util.Log;
 import com.keypoint.PngEncoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
+import javax.servlet.SingleThreadModel;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -69,7 +69,7 @@ import java.net.URL;
  *
  * @author Jeevan Sunkersett
  */
-public class JFreeReportPngServlet extends HttpServlet
+public class JFreeReportPngServlet extends HttpServlet implements SingleThreadModel
 {
   /**
    * Handles the GET method for the servlet. The GET method is mapped to
@@ -120,7 +120,7 @@ public class JFreeReportPngServlet extends HttpServlet
       AbstractPageableReportServletWorker worker =
           new DefaultPageableReportServletWorker(request.getSession(true),
                                                  in,
-                                                 new SwingIconsDemoTableModel(base));
+                                                 new DemoModelProvider(base));
 
       String param = request.getParameter("page");
       if (param == null)

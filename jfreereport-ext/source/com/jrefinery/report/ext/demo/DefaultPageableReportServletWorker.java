@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DefaultPageableReportServletWorker.java,v 1.2 2003/03/01 14:55:33 taqua Exp $
+ * $Id: DefaultPageableReportServletWorker.java,v 1.3 2003/03/02 04:10:28 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.util.Log;
 
 import javax.servlet.http.HttpSession;
-import javax.swing.table.TableModel;
 import java.io.IOException;
 import java.net.URL;
 
@@ -61,7 +60,7 @@ public class DefaultPageableReportServletWorker
   /** the source url for the xml report definition. */
   private URL reportDefinition;
   /** the table model, that should be used when loading the report. */
-  private TableModel data;
+  private TableModelProvider data;
 
   /**
    * Creates a default implementation for the pageable report servlet worker. This
@@ -72,7 +71,7 @@ public class DefaultPageableReportServletWorker
    * @param data the tablemodel that should be used for the reporting.
    * @param session the current session, or null, if no session handling should be used.
    */
-  public DefaultPageableReportServletWorker(HttpSession session, URL report, TableModel data)
+  public DefaultPageableReportServletWorker(HttpSession session, URL report, TableModelProvider data)
   {
     super(session);
     if (report == null) throw new NullPointerException();
@@ -93,7 +92,7 @@ public class DefaultPageableReportServletWorker
     try
     {
       JFreeReport report = parseReport(reportDefinition);
-      report.setData(data);
+      report.setData(data.getModel());
       return report;
     }
     catch (Exception e)

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportHtmlServlet.java,v 1.6 2003/03/02 19:19:25 taqua Exp $
+ * $Id: JFreeReportHtmlServlet.java,v 1.7 2003/03/02 21:36:41 taqua Exp $
  *
  * Changes
  * -------
@@ -99,7 +99,7 @@ public class JFreeReportHtmlServlet extends HttpServlet
     URL base = getServletContext().getResource("/WEB-INF/lib/jlfgr-1_0.jar");
     Log.debug ("Base: " + base);
     AbstractTableReportServletWorker worker =
-        new DefaultTableReportServletWorker(in, new SwingIconsDemoTableModel(base));
+        new DefaultTableReportServletWorker(in, new DemoModelProvider(base));
 
     // display the content in the browser window (see RFC2183)
     response.setHeader("Content-Disposition", "inline; filename=\"" + "unknown.html" + "\"");

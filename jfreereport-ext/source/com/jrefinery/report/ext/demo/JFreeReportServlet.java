@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportServlet.java,v 1.10 2003/03/02 19:19:25 taqua Exp $
+ * $Id: JFreeReportServlet.java,v 1.11 2003/03/02 21:36:41 taqua Exp $
  *
  * Changes
  * -------
@@ -37,10 +37,8 @@
  */
 package com.jrefinery.report.ext.demo;
 
-import com.jrefinery.report.demo.SwingIconsDemoTableModel;
 import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.report.demo.SwingIconsDemoTableModel;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -98,7 +96,7 @@ public class JFreeReportServlet extends HttpServlet
     AbstractPageableReportServletWorker worker =
         new DefaultPageableReportServletWorker(null,
                                                in,
-                                               new SwingIconsDemoTableModel(base));
+                                               new DemoModelProvider(base));
 
     try
     {

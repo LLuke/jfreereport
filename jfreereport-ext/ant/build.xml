@@ -75,7 +75,7 @@
     <property name="servlet-jar" value="servlet.jar"/>
 
     <property name="jfreereport-ext.name" value="jfreereport-ext"/>
-    <property name="jfreereport-ext.version" value="0.8.1"/>
+    <property name="jfreereport-ext.version" value="0.8.1_01"/>
   </target>
 
   <!-- rebuild the base distribution if necessary -->
@@ -112,8 +112,8 @@
     <property name="JCommon-jar" value="jcommon-0.7.2.jar"/>
     <property name="Pixie-jar" value="pixie.jar"/>
     <property name="POI-jar" value="jakarta-poi-1.5.1-final-20020615.jar"/>
-    <property name="JFreeReport-jar" value="jfreereport-0.8.1.jar"/>
-    <property name="JFreeReport-demo-jar" value="jfreereport-0.8.1-demo.jar"/>
+    <property name="JFreeReport-jar" value="jfreereport-0.8.1_01.jar"/>
+    <property name="JFreeReport-demo-jar" value="jfreereport-0.8.1_01-demo.jar"/>
 
     <available file="${jfreereport-dir}/${JFreeReport-demo-jar}" property="jfreereport.present"/>
     <echo>
@@ -193,7 +193,6 @@
     <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${libdir}/${JFreeChart-jar}" failonerror="false"/>
     <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${libdir}/${junit-jar}" failonerror="false"/>
     <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${libdir}/${log4j-jar}" failonerror="false"/>
-    <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${libdir}/${servlet-jar}"/>
     <copy todir="${projectdir}/warbuild/WEB-INF/lib" file="${projectdir}/${jfreereport-ext.name}-${jfreereport-ext.version}.jar"/>
 
     <!-- make the jar file -->

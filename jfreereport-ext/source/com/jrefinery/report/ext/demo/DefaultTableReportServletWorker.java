@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DefaultTableReportServletWorker.java,v 1.2 2003/03/01 14:55:33 taqua Exp $
+ * $Id: DefaultTableReportServletWorker.java,v 1.3 2003/03/02 04:10:28 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ import com.jrefinery.report.ReportInitialisationException;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.util.Log;
 
-import javax.swing.table.TableModel;
 import java.io.IOException;
 import java.net.URL;
 
@@ -59,7 +58,7 @@ public class DefaultTableReportServletWorker extends AbstractTableReportServletW
   /** the source url for the xml report definition. */
   private URL url;
   /** the table model, that should be used when loading the report. */
-  private TableModel model;
+  private TableModelProvider model;
 
   /**
    * Creates a default implementation for the table report servlet worker. This
@@ -69,7 +68,7 @@ public class DefaultTableReportServletWorker extends AbstractTableReportServletW
    * @param url the url of the report definition.
    * @param model the tablemodel that should be used for the reporting.
    */
-  public DefaultTableReportServletWorker(URL url, TableModel model)
+  public DefaultTableReportServletWorker(URL url, TableModelProvider model)
   {
     if (model == null) throw new NullPointerException();
     if (url == null) throw new NullPointerException();
@@ -90,7 +89,7 @@ public class DefaultTableReportServletWorker extends AbstractTableReportServletW
     try
     {
       JFreeReport report = parseReport(url);
-      report.setData(model);
+      report.setData(model.getModel());
       return report;
     }
     catch (Exception e)

@@ -1,3 +1,14 @@
-* JUnit Test added to the extension project
-* Log4J-LogTarget added
+0.8.1_01: (04-Mar-2003) : 
+
+  * This is the initial official version of the extension project
+  
+  * Added a WebApplication to show how to use JFreeReport in a Servlet 
+    environment
+    
+  * Added a Java1.4 log target
+  
+
+23-Jun-2002: 
+  * JUnit Test added to the extension project
+  * Log4J-LogTarget added
 
