@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.17 2003/03/07 18:58:34 taqua Exp $
+ * $Id: ElementFactory.java,v 1.18 2003/04/02 21:14:32 taqua Exp $
  *
  * Changes
  * -------
@@ -396,7 +396,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   /**
    * Create a ImageElement with an static ImageDataSource. The ImageData is read from
    * the supplied URL (attribute "src") in conjunction with the contentbase defined in the
-   * ReportDefintionContentHandler.
+   * ReportDefinitionContentHandler.
    *
    * @param atts  the attributes.
    *
