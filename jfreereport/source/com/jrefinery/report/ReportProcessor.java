@@ -25,11 +25,12 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportProcessor.java,v 1.6 2002/06/04 21:44:34 taqua Exp $
+ * $Id: ReportProcessor.java,v 1.7 2002/06/09 14:46:04 taqua Exp $
  * Changes
  * -------------------------
  * 10-May-2002 : Initial version
  * 04-Jun-2002 : Documentation
+ * 09-Jul-2002 : Docs
  */
 package com.jrefinery.report;
 
@@ -229,7 +230,9 @@ public class ReportProcessor implements JFreeReportConstants
 
   /**
    * Tests whether there is enough space to print the given band. If there is not enough space,
-   * set the pagedone flag, to signal that a pageBreak should be done.
+   * set the pagedone flag, to signal that a pageBreak should be done. After a isSpaceFor()
+   * returned false, isDone() will also return always false and no printing can be done anymore,
+   * with the exception of the pagefooter, whose space was reserved previously.
    *
    * @param band the band which is tested
    * @throws NullPointerException if the given Band is null

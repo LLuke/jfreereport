@@ -28,6 +28,8 @@
  * 16-May-2002 : Initial version
  * 27-May-2002 : Support for the rectangle element
  * 09-Jun-2002 : Documentation
+ * 30-Jun-2002 : Added Support for ImageField, ImageFunction
+ * 10-Jul-2002 : Added Support for ImageURLField, ImageURLFunction
  */
 package com.jrefinery.report;
 
@@ -39,6 +41,8 @@ import com.jrefinery.report.filter.ReportDataSource;
 import com.jrefinery.report.filter.SimpleDateFormatFilter;
 import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.filter.ImageRefFilter;
+import com.jrefinery.report.filter.ImageLoadFilter;
+import com.jrefinery.report.filter.URLFilter;
 
 import javax.swing.table.TableModel;
 import java.awt.Font;
@@ -270,6 +274,66 @@ public class ItemFactory
     element.setPaint (paint);
     element.setBounds (bounds);
     element.setDataSource(sds);
+    return element;
+  }
+
+  /**
+   * Creates a new ImageElement, which is fed from an URL stored in the datasource.
+   *
+   * @param name the name of the new element
+   * @param bounds the bounds of the new element
+   * @param paint the color of this element (currently not used)
+   * @param source the source url from where to load the image
+   * @throws NullPointerException if bounds, name or source are null
+   * @throws IllegalArgumentException if the given alignment is invalid
+   */
+  public static ImageElement createImageURLField (String name,
+                                                  Rectangle2D bounds,
+                                                  Paint paint,
+                                                  String field)
+          throws IOException
+  {
+    URLFilter urlfilter = new URLFilter ();
+    urlfilter.setDataSource(new ReportDataSource(field));
+
+    ImageLoadFilter imagefilter = new ImageLoadFilter();
+    imagefilter.setDataSource(urlfilter);
+
+    ImageElement element = new ImageElement ();
+    element.setName (name);
+    element.setPaint (paint);
+    element.setBounds (bounds);
+    element.setDataSource(imagefilter);
+    return element;
+  }
+
+  /**
+   * Creates a new ImageElement, which is fed from an URL stored in the datasource.
+   *
+   * @param name the name of the new element
+   * @param bounds the bounds of the new element
+   * @param paint the color of this element (currently not used)
+   * @param source the source url from where to load the image
+   * @throws NullPointerException if bounds, name or source are null
+   * @throws IllegalArgumentException if the given alignment is invalid
+   */
+  public static ImageElement createImageURLFunction (String name,
+                                                  Rectangle2D bounds,
+                                                  Paint paint,
+                                                  String function)
+          throws IOException
+  {
+    URLFilter urlfilter = new URLFilter ();
+    urlfilter.setDataSource(new FunctionDataSource(function));
+
+    ImageLoadFilter imagefilter = new ImageLoadFilter();
+    imagefilter.setDataSource(urlfilter);
+
+    ImageElement element = new ImageElement ();
+    element.setName (name);
+    element.setPaint (paint);
+    element.setBounds (bounds);
+    element.setDataSource(imagefilter);
     return element;
   }
 

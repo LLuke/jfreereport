@@ -28,6 +28,8 @@
  * 10-May-2002 : Initial version
  * 16-May-2002 : parseStroke added for line width
  * 22-May-2002 : Structured parsing functions: all tags have a startXXX and endXXX function
+ * 30-Jun-2002 : Added support for ImageField, ImageFunction
+ * 10-Jul-2002 : Added support for ImageURLField, ImageURLFunction
  */
 package com.jrefinery.report.io;
 
@@ -140,6 +142,14 @@ public class ElementFactory
     {
       startImageFunction (atts);
     }
+    else if (elementName.equals (IMAGEURLFIELD_TAG))
+    {
+      startImageURLField (atts);
+    }
+    else if (elementName.equals (IMAGEURLFUNCTION_TAG))
+    {
+      startImageURLFunction (atts);
+    }
     else if (elementName.equals (LINE_TAG))
     {
       startLine (atts);
@@ -249,6 +259,14 @@ public class ElementFactory
     {
       endImageField ();
     }
+    else if (elementName.equals (IMAGEURLFUNCTION_TAG))
+    {
+      endImageURLFunction ();
+    }
+    else if (elementName.equals (IMAGEURLFIELD_TAG))
+    {
+      endImageURLField ();
+    }
     else if (elementName.equals (LINE_TAG))
     {
       endLine ();
@@ -334,7 +352,31 @@ public class ElementFactory
     String elementSource = atts.getValue (FIELDNAME_ATT);
     try
     {
-      ImageElement element = ItemFactory.createImageFunctionElement (
+      ImageElement element = ItemFactory.createImageFieldElement (
+              elementName,
+              ParserUtil.getElementPosition (atts),
+              Color.white,
+              elementSource);
+      setCurrentElement (element);
+    }
+    catch (IOException mfule)
+    {
+      throw new SAXException (mfule.toString ());
+    }
+  }
+
+  /**
+   * Create a ImageElement with an static ImageDataSource. The ImageData is read from
+   * the supplied URL (attribute "src") in conjunction with the contentbase defined in the
+   * ReportDefintionContentHandler
+   */
+  protected void startImageURLField (Attributes atts) throws SAXException
+  {
+    String elementName = handler.generateName (atts.getValue (NAME_ATT));
+    String elementSource = atts.getValue (FIELDNAME_ATT);
+    try
+    {
+      ImageElement element = ItemFactory.createImageURLField (
               elementName,
               ParserUtil.getElementPosition (atts),
               Color.white,
@@ -359,6 +401,31 @@ public class ElementFactory
     try
     {
       ImageElement element = ItemFactory.createImageFunctionElement (
+              elementName,
+              ParserUtil.getElementPosition (atts),
+              Color.white,
+              elementSource);
+      setCurrentElement (element);
+    }
+    catch (IOException mfule)
+    {
+      throw new SAXException (mfule.toString ());
+    }
+  }
+
+
+  /**
+   * Create a ImageElement with an static ImageDataSource. The ImageData is read from
+   * the supplied URL (attribute "src") in conjunction with the contentbase defined in the
+   * ReportDefintionContentHandler
+   */
+  protected void startImageURLFunction (Attributes atts) throws SAXException
+  {
+    String elementName = handler.generateName (atts.getValue (NAME_ATT));
+    String elementSource = atts.getValue (FUNCTIONNAME_ATT);
+    try
+    {
+      ImageElement element = ItemFactory.createImageURLFunction (
               elementName,
               ParserUtil.getElementPosition (atts),
               Color.white,
@@ -555,6 +622,24 @@ public class ElementFactory
    * ends the image element and adds it to the current band.
    */
   protected void endImageFunction ()
+          throws SAXException
+  {
+    getCurrentBand ().addElement (getCurrentElement ());
+  }
+
+  /**
+   * ends the image element and adds it to the current band.
+   */
+  protected void endImageURLField ()
+          throws SAXException
+  {
+    getCurrentBand ().addElement (getCurrentElement ());
+  }
+
+  /**
+   * ends the image element and adds it to the current band.
+   */
+  protected void endImageURLFunction ()
           throws SAXException
   {
     getCurrentBand ().addElement (getCurrentElement ());

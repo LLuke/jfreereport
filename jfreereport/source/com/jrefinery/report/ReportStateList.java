@@ -188,6 +188,8 @@ public class ReportStateList
    */
   public void add (ReportState state)
   {
+    if (state == null) throw new NullPointerException();
+
     MasterList master = null;
     if (getMasterPos (size ()) >= masterStates.size ())
     {
@@ -217,7 +219,7 @@ public class ReportStateList
    */
   public ReportState get (int index)
   {
-    if (index >= size ())
+    if (index >= size () || index < 0)
       throw new IndexOutOfBoundsException ();
     MasterList master = (MasterList) masterStates.get (getMasterPos (index));
     return (ReportState) master.get (index);
