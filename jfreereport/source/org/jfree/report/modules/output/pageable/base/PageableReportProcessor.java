@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.11 2003/12/06 17:15:20 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.12 2004/03/16 15:09:50 taqua Exp $
  *
  * Changes
  * -------
@@ -179,9 +179,10 @@ public class PageableReportProcessor
       return state;
     }
 
-    protected void performGenerate (PageLayouter layouter)
+    protected void performGenerate (final PageLayouter layouter)
         throws ReportProcessingException
     {
+      // this method is intentionally empty!
     }
   }
 
@@ -189,15 +190,15 @@ public class PageableReportProcessor
   {
     private OutputTarget outputTarget;
 
-    public PageGenerateProcess(OutputTarget outputTarget)
+    public PageGenerateProcess(final OutputTarget outputTarget)
     {
       this.outputTarget = outputTarget;
     }
 
-    protected void performGenerate(PageLayouter layouter)
+    protected void performGenerate(final PageLayouter layouter)
         throws ReportProcessingException
     {
-      MetaPage mp = layouter.getMetaPage();
+      final MetaPage mp = layouter.getMetaPage();
       try
       {
         commitMetaPage(mp, report.getPageDefinition(), outputTarget);
@@ -585,7 +586,7 @@ public class PageableReportProcessor
     // for the current level. Higher level functions are not available in the
     // dataRow.
 
-    PageProcess process = new PageProcess();
+    final PageProcess process = new PageProcess();
 
     while (!state.isFinish())
     {
@@ -758,16 +759,23 @@ public class PageableReportProcessor
   public ReportState processPage(final ReportState currPage, final boolean failOnError)
       throws ReportProcessingException
   {
-    PageGenerateProcess pageProcess = new PageGenerateProcess(outputTarget);
-    ReportState state = pageProcess.processPage(currPage, failOnError);
+    final PageGenerateProcess pageProcess = new PageGenerateProcess(outputTarget);
+    final ReportState state = pageProcess.processPage(currPage, failOnError);
     return state;
   }
 
+  /**
+   * Todo Change me !
+   * @param currPage
+   * @param failOnError
+   * @return
+   * @throws ReportProcessingException
+   */
   public ReportState processDummyPage(final ReportState currPage, final boolean failOnError)
       throws ReportProcessingException
   {
-    PageProcess pageProcess = new PageProcess();
-    ReportState state = pageProcess.processPage(currPage, failOnError);
+    final PageProcess pageProcess = new PageProcess();
+    final ReportState state = pageProcess.processPage(currPage, failOnError);
     return state;
   }
 
@@ -792,7 +800,9 @@ public class PageableReportProcessor
    * page
    * @param physPage the physical page which we print ...
    */
-  protected void commitMetaPage(MetaPage page, PageDefinition physPage, OutputTarget output)
+  protected void commitMetaPage(final MetaPage page,
+                                final PageDefinition physPage,
+                                final OutputTarget output)
     throws OutputTargetException
   {
     System.out.println(page);
