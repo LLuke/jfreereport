@@ -283,12 +283,17 @@
   If repeat is set to true, this header is repeated after an pagebreak
   if this group is still active and no other groupheader in an subgroup
   has the repeat flag set.
+
+  The pagebreak attribute is now deprecated and is replaced by
+  pagebreak-before-print.
   -->
 <!ELEMENT groupheader ( %itemelements; )>
 <!ATTLIST groupheader
-  pagebreak     (%boolean;)   #IMPLIED
-  repeat        (%boolean;)   #IMPLIED
-  height         CDATA        #IMPLIED
+  pagebreak                 (%boolean;)   #IMPLIED
+  pagebreak-after-print     (%boolean;)   #IMPLIED
+  pagebreak-before-print    (%boolean;)   #IMPLIED
+  repeat                    (%boolean;)   #IMPLIED
+  height                    CDATA         #IMPLIED
   %basicform;
   %fontdef;
 >
@@ -298,8 +303,10 @@
   -->
 <!ELEMENT groupfooter ( %itemelements; )>
 <!ATTLIST groupfooter
-  pagebreak     (%boolean;)   #IMPLIED
-  height         CDATA        #IMPLIED
+  pagebreak                 (%boolean;)   #IMPLIED
+  pagebreak-after-print     (%boolean;)   #IMPLIED
+  pagebreak-before-print    (%boolean;)   #IMPLIED
+  height                    CDATA         #IMPLIED
   %basicform;
   %fontdef;
 >

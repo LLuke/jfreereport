@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupFactory.java,v 1.9 2003/04/23 17:13:38 taqua Exp $
+ * $Id: GroupFactory.java,v 1.10 2003/04/24 18:08:54 taqua Exp $
  *
  * Changes
  * -------
@@ -181,7 +181,9 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     // get the height...
     float height = ParserUtil.parseFloat (atts.getValue ("height"),
                                           "Element height not specified");
-    boolean pageBreak = ParserUtil.parseBoolean (atts.getValue ("pagebreak"), false);
+    boolean pageBreak = ParserUtil.parseBoolean (atts.getValue ("pagebreak"),
+                                                 ParserUtil.parseBoolean (atts.getValue ("pagebreak-before-print"), false));
+    boolean pageBreakAfter = ParserUtil.parseBoolean (atts.getValue ("pagebreak-after-print"), false);
     boolean repeat = ParserUtil.parseBoolean (atts.getValue (REPEAT_HEADER), false);
     // create the group header...
     GroupHeader groupHeader = new GroupHeader ();
@@ -189,6 +191,8 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
                                             new FloatDimension(0, height));
     groupHeader.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE,
                                             new Boolean (pageBreak));
+    groupHeader.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_AFTER,
+                                            new Boolean (pageBreakAfter));
     groupHeader.getStyle().setStyleProperty(BandStyleSheet.REPEAT_HEADER, new Boolean (repeat));
 
     FontFactory.FontInformation fi = fontFactory.createFont(atts);
@@ -221,8 +225,11 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    */
   protected void startGroupFooter (Attributes atts) throws SAXException
   {
+    boolean pageBreak = ParserUtil.parseBoolean (atts.getValue ("pagebreak"),
+                                                 ParserUtil.parseBoolean (atts.getValue ("pagebreak-before-print"), false));
+    boolean pageBreakAfter = ParserUtil.parseBoolean (atts.getValue ("pagebreak-after-print"), false);
+
     // get the height...
-    boolean pageBreak = ParserUtil.parseBoolean (atts.getValue ("pagebreak"), false);
     float height = ParserUtil.parseFloat (atts.getValue ("height"),
                                           "Element height not specified");
 
@@ -233,6 +240,8 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
                                             new FloatDimension(0, height));
     groupFooter.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE,
                                             new Boolean (pageBreak));
+    groupFooter.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_AFTER,
+                                            new Boolean (pageBreakAfter));
 
     FontFactory.FontInformation fi = fontFactory.createFont(atts);
     FontFactory.applyFontInformation(groupFooter.getStyle(), fi);
