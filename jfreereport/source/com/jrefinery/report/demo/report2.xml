@@ -96,34 +96,33 @@
     <functions>
 	<data-ref name="Integer" class="java.lang.Object"/>
         <function name="Date" class="com.jrefinery.report.function.ReportPropertyFunction">
-					<properties>
-						<property name="field">Date</property>
-					</properties>
-				</function>
+			<properties>
+				<property name="reportProperty">report.date</property>
+			</properties>
+		</function>
         <function name="PageNumber" class="com.jrefinery.report.function.PageFunction"/>
         <function name="Count1" class="com.jrefinery.report.function.ItemCountFunction">
-					<properties>
-						<property name="group">Color Group</property>
-					</properties>
-				</function>
+			<properties>
+				<property name="group">Color Group</property>
+			</properties>
+		</function>
         <function name="Count2" class="com.jrefinery.report.function.ItemCountFunction">
-					<properties>
-						<property name="group">Letter Group</property>
-					</properties>
-				</function>
+			<properties>
+				<property name="group">Letter Group</property>
+			</properties>
+		</function>
         <function name="Sum1" class="com.jrefinery.report.function.ItemSumFunction">
-					<properties>
-						<property name="field">Double</property>
-						<property name="group">Color Group</property>
-					</properties>
-				</function>
+			<properties>
+				<property name="field">Double</property>
+				<property name="group">Color Group</property>
+			</properties>
+		</function>
         <function name="Sum2" class="com.jrefinery.report.function.ItemSumFunction">
-					<properties>
-						<property name="field">Double</property>
-						<property name="group">Letter Group</property>
-					</properties>
-				</function>
-
+			<properties>
+				<property name="field">Double</property>
+				<property name="group">Letter Group</property>
+			</properties>
+		</function>
     </functions>
 
-</report>
+</report> 

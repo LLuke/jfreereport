@@ -39,9 +39,6 @@
         <string-field x="0" y="96" width="200" height="12" alignment="left" fieldname="street"/>
         <string-field x="0" y="120" width="200" height="12" alignment="left" fieldname="town"/>
 
-        <date-function x="0" y="184" width="450" height="12" fontname="Monospaced" fontsize="9" alignment="right"
-                       baseline="10" format="dd.MM.yyyy" function="printdate"/>
-
         <label x="0" y="224" width="125" height="12" alignment="left" fontstyle="bold"
         >Invoice for your order from</label>
         <date-function x="258" y="224" width="200" height="12" alignment="left" format="EEE, MMM d, yyyy" function="printdate"/>
@@ -89,7 +86,7 @@
     </function>
     <function name="printdate" class="com.jrefinery.report.function.ReportPropertyFunction">
       <properties>
-        <property name="field">report.date</property>
+        <property name="reportProperty">report.date</property>
       </properties>
     </function>
   </functions>
