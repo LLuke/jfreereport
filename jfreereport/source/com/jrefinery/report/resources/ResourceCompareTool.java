@@ -24,7 +24,7 @@
  * ResourceCompareTool.java
  * ----------------------------
  *
- * $Id: ResourceCompareTool.java,v 1.3 2003/02/25 14:07:31 taqua Exp $
+ * $Id: ResourceCompareTool.java,v 1.4 2003/02/25 18:46:12 taqua Exp $
  *
  * Changes
  * -------
@@ -72,7 +72,7 @@ public class ResourceCompareTool
   /**
    * Starts the resource comparing process.
    *
-   * @param args a string array with only one element, the ISO code of the 
+   * @param args a string array with only one element, the ISO code of the localisation.
    */
   public static void main (String [] args)
   {

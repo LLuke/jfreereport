@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.12 2003/02/24 14:59:22 mungady Exp $
+ * $Id: ElementFactory.java,v 1.13 2003/02/25 14:07:30 taqua Exp $
  *
  * Changes
  * -------
@@ -127,6 +127,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @param parser the used parser to coordinate the parsing process.
    * @param finishTag the finish tag, that should trigger the deactivation of this parser.
+   * @param band the band that should be defined.
    * @throws NullPointerException if the finishTag or the parser are null.
    */
   public ElementFactory(Parser parser, String finishTag, Band band)
@@ -1103,7 +1104,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   }
 
   /**
-   * Appends all data element relevant attributes to the data element parsed
+   * Appends all data element relevant attributes to the data element parsed.
    *
    * @param atts  the attributes.
    *
@@ -1121,7 +1122,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   }
 
   /**
-   * Appends all function element relevant attributes to the data element parsed
+   * Appends all function element relevant attributes to the data element parsed.
    *
    * @param atts  the attributes.
    *

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.26 2003/02/19 22:13:22 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.3 2003/02/25 14:45:35 mungady Exp $
  *
  * Changes
  * --------
@@ -638,7 +638,10 @@ public class PlainTextExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * @return true, if the dialog has been confirmed and the excel file should be saved, 
+   * Gets the confirmation state of the dialog. A confirmed dialog has no invalid
+   * settings and the user confirmed any resource conflicts.
+   *
+   * @return true, if the dialog has been confirmed and the excel file should be saved,
    * false otherwise.
    */
   public boolean isConfirmed()
@@ -830,7 +833,7 @@ public class PlainTextExportDialog extends JDialog implements ExportPlugin
    * 
    * @param report  the report.
    * 
-   * @return boolean.
+   * @return true, if the report was successfully written, false otherwise.
    */
   public boolean writeReport(JFreeReport report)
   {

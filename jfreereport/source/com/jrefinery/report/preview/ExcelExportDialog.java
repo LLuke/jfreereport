@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  * 
- * $Id: ExcelExportDialog.java,v 1.7 2003/02/04 17:56:15 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.8 2003/02/25 14:45:29 mungady Exp $
  *
  * Changes
  * --------
@@ -81,7 +81,7 @@ import java.util.ResourceBundle;
 /**
  * A dialog that is used to perform the printing of a report into an Excel file.
  * <p>
- * The main method to call the dialog is {@link ExcelExportDialog#exportToExcel}. Given a report 
+ * The main method to call the dialog is {@link ExcelExportDialog#performExport}. Given a report
  * and a pageformat, the dialog is shown and if the user approved the dialog, the excel file 
  * is saved using the settings made in the dialog.
  *
@@ -402,6 +402,9 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
+   * Gets the confirmation state of the dialog. A confirmed dialog has no invalid
+   * settings and the user confirmed any resource conflicts.
+   *
    * @return true, if the dialog has been confirmed and the excel file should be saved, 
    * false otherwise.
    */

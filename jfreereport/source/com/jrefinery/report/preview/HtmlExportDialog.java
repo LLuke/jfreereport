@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited); 
  *
- * $Id: HtmlExportDialog.java,v 1.10 2003/02/22 18:52:27 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.11 2003/02/25 14:45:32 mungady Exp $
  *
  * Changes
  * -------
@@ -794,6 +794,8 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
+   * Gets the author of the dialog. This is not yet implemented in the HTML-Target.
+   *
    * @return the name of the author of this report.
    */
   public String getAuthor()
@@ -813,7 +815,10 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * @return true, if the dialog has been confirmed and the HTML file should be saved, 
+   * Gets the confirmation state of the dialog. A confirmed dialog has no invalid
+   * settings and the user confirmed any resource conflicts.
+   *
+   * @return true, if the dialog has been confirmed and the HTML file should be saved,
    * false otherwise.
    */
   public boolean isConfirmed()
@@ -1257,7 +1262,7 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
   /**
    * Returns the selected export method.
    * 
-   * @return int.
+   * @return the selected Export method, one of EXPORT_STREAM, EXPORT_ZIP or EXPORT_DIR.
    */
   public int getSelectedExportMethod ()
   {

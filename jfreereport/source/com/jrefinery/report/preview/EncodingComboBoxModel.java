@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: $
+ * $Id: EncodingComboBoxModel.java,v 1.9 2003/02/25 14:45:26 mungady Exp $
  *
  * Changes
  * --------
@@ -335,7 +335,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
   }
 
   /**
-   * Returns the selected item
+   * Returns the selected item.
    * 
    * @return The selected item or <code>null</code> if there is no selection
    */

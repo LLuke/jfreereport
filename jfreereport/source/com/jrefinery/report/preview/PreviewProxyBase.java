@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewFrame.java,v 1.48 2003/01/14 21:10:40 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.11 2003/02/25 14:45:43 mungady Exp $
  *
  * Changes
  * -------
@@ -270,7 +270,7 @@ public class PreviewProxyBase extends JComponent
     }
 
     /**
-     * Listen to the assigned reportPane
+     * Listen to the assigned reportPane.
      *
      * @param event  the property change event.
      */
@@ -354,7 +354,7 @@ public class PreviewProxyBase extends JComponent
     }
 
     /**
-     * Jump to the first page of the report
+     * Jump to the first page of the report.
      *
      * @param e The action event.
      *
@@ -381,7 +381,8 @@ public class PreviewProxyBase extends JComponent
     }
 
     /**
-     * show the next page of the report
+     * show the next page of the report.
+     *
      * @param e The action event.
      */
     public void actionPerformed(ActionEvent e)
@@ -499,7 +500,7 @@ public class PreviewProxyBase extends JComponent
     }
 
     /**
-     * Prints the report
+     * Prints the report.
      *
      * @param e The action event.
      */
@@ -538,7 +539,7 @@ public class PreviewProxyBase extends JComponent
     }
 
     /**
-     * perform page setup
+     * perform page setup.
      *
      * @param e The action event.
      */
@@ -736,7 +737,7 @@ public class PreviewProxyBase extends JComponent
   /** The default zoom index (corresponds to a zoomFactor of 1.0. */
   private static final int DEFAULT_ZOOM_INDEX = 3;
 
-  /** The combobox enables a direct selection of the desired zoomFactor */
+  /** The combobox enables a direct selection of the desired zoomFactor. */
   private JComboBox zoomSelect;
 
   /** The current zoom index (indexes into the zoomFactors array). */
@@ -748,7 +749,7 @@ public class PreviewProxyBase extends JComponent
   /** Locale-specific resources. */
   private ResourceBundle resources;
 
-  /** Defines whether to use 24x24 icons or 16x16 icons */
+  /** Defines whether to use 24x24 icons or 16x16 icons. */
   private boolean largeIconsEnabled;
 
   /** Label for status. */
@@ -990,7 +991,7 @@ public class PreviewProxyBase extends JComponent
    * defines the preferred size of this container.
    *
    * @see #setPreferredSize
-   * @param preferredSize
+   * @param preferredSize defines the preferred size for the PreviewComponent.
    */
   public void setPreferredSize(Dimension preferredSize)
   {
@@ -1116,18 +1117,15 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
-   * Method lastPage moves to the last page
+   * Method lastPage moves to the last page.
    */
   protected void lastPage()
   {
     reportPane.setPageNumber(reportPane.getNumberOfPages());
-    //validateButtons();
   }
 
   /**
-   *Increases the page number.
-   *
-   * CHANGED FUNCTION
+   * Increases the page number.
    */
   protected void increasePageNumber()
   {
@@ -1137,19 +1135,17 @@ public class PreviewProxyBase extends JComponent
     if (pn < mp)
     {
       reportPane.setPageNumber(pn + 1);
-      //validateButtons();
     }
   }
 
   /**
-   * Method firstPage changes to the first page if not already on the first page
+   * Activates the display of the first page, if not already on the first page.
    */
   protected void firstPage()
   {
     if (reportPane.getPageNumber() != 1)
     {
       reportPane.setPageNumber(1);
-      //validateButtons();
     }
   }
 
@@ -1162,13 +1158,11 @@ public class PreviewProxyBase extends JComponent
     if (pn > 1)
     {
       reportPane.setPageNumber(pn - 1);
-      //validateButtons();
     }
   }
 
   /**
    * Increases the zoom factor for the report pane (unless it is already at maximum zoom).
-   *
    */
   protected void increaseZoom()
   {
@@ -1574,7 +1568,9 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
-   * @return true when the toolbar is floatable
+   * Returns true, if the toolbar is floatable, false otherwise.
+   *
+   * @return true when the toolbar is floatable.
    */
   public boolean isToolbarFloatable()
   {
@@ -1582,7 +1578,7 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
-   * Defines whether the toolbar is floatable
+   * Defines whether the toolbar is floatable.
    *
    * @param b  a flag that indicates whether or not the toolbar is floatable.
    */

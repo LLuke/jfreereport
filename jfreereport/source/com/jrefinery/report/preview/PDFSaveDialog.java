@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.26 2003/02/19 22:13:22 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.27 2003/02/25 14:45:35 mungady Exp $
  *
  * Changes
  * --------
@@ -366,6 +366,8 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
   }
 
   /**
+   * Gets and initializes the the combobox model for the security setting "allowPrinting".
+   *
    * @return the combobox model containing the different values for the allowPrinting option.
    */
   private DefaultComboBoxModel getPrintingComboBoxModel()
@@ -866,6 +868,7 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
   }
 
   /**
+   * Gets the AllowDegradedPrinting permission for the generated PDF-file.
    * @return true if a low quality printing is allowed, false otherwise.
    */
   public boolean isAllowDegradedPrinting()
@@ -874,6 +877,8 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
   }
 
   /**
+   * Gets the AllowAssembly permission for the generated PDF-file.
+   *
    * @return true, if the generated pdf may be reassembled using an pdf editor.
    */
   public boolean isAllowAssembly()
@@ -1077,6 +1082,8 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
   }
 
   /**
+   * Gets the author of this report.
+   *
    * @return the name of the author of this report.
    */
   public String getAuthor()
@@ -1141,6 +1148,9 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
   }
 
   /**
+   * Gets the confirmation state of the dialog. A confirmed dialog has no invalid
+   * settings and the user confirmed any resource conflicts.
+   * 
    * @return true, if the dialog has been confirmed and the pdf should be saved, false otherwise.
    */
   public boolean isConfirmed()

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.42 2003/02/22 18:52:28 taqua Exp $
+ * $Id: ReportPane.java,v 1.43 2003/02/25 14:45:45 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -106,8 +106,9 @@ public class ReportPane extends JComponent implements Printable, Pageable
   private static final float PAPERBORDER_PIXEL = 6f;
 
   /**
+   * The page cache contains one complete page.
    * For performance reasons, I buffer the rendered image and
-   * discard it when the page is changed or zooming
+   * discard it when the page is changed or zooming.
    */
   private BufferedImage graphCache;
 
@@ -123,10 +124,10 @@ public class ReportPane extends JComponent implements Printable, Pageable
   /** Storage for end-of-page state information. */
   private ReportStateList pageStateList;
 
-  /** A flag to indicate whether the border is painted or not */
+  /** A flag to indicate whether the border is painted or not. */
   private boolean borderPainted;
 
-  /** The last error that occurred while printing or painting the report */
+  /** The last error that occurred while printing or painting the report. */
   private Exception error;
 
   /** The report. */
@@ -161,7 +162,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
     }
   }
 
-  /** The local paginate lock instance */
+  /** The local paginate lock instance. */
   private PaginateLock paginateLock = new PaginateLock ();
 
   /** The report processor. */
@@ -264,7 +265,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
   }
 
   /**
-   * Returns a self-reference (this), as this object implements its own Printable-Interface
+   * Returns a self-reference (this), as this object implements its own Printable-Interface.
    *
    * @param page  the page number.
    *
@@ -308,7 +309,9 @@ public class ReportPane extends JComponent implements Printable, Pageable
   }
 
   /**
-   * @return the current page shown
+   * Returns the currently displayed page.
+   *
+   * @return the current page shown.
    */
   public int getPageNumber ()
   {
@@ -316,6 +319,9 @@ public class ReportPane extends JComponent implements Printable, Pageable
   }
 
   /**
+   * Gets the number of pages in the report. If the report is not yet paginated,
+   * the pagination is done.
+   *
    * @return the page count for the current page settings.
    */
   public int getNumberOfPages ()
