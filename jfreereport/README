@@ -1,0 +1,109 @@
+##############################
+# JFREEREPORT: Version 0.7.0 #
+##############################
+
+8 March 2002
+
+Written by David Gilbert (david.gilbert@jrefinery.com).
+(C)opyright 2000-2002, by Simba Management Limited.
+
+-----------------
+1.  INTRODUCTION
+-----------------
+JFreeReport is an open-source Java class library for generating
+reports.  It runs on the Java 2 Platform (JDK1.3 or later).
+
+JFreeReport is licensed, free of charge, under the terms of the GNU
+Lesser General Public Licence (LGPL).  A copy of the licence is
+included in the download.
+
+Please note that JFreeReport is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  Please refer refer to the licence for details.
+
+-------------------
+2.  LATEST VERSION
+-------------------
+The latest version of this class library can be obtained from:
+
+    http://www.object-refinery.com/jfreereport
+
+If you have an comments, suggestions or bugs to report, please post a
+message in the JFreeReport discussion forum.
+
+-----------------
+3.  DEPENDENCIES
+-----------------
+JFreeReport requires JDK 1.3 or later.  
+
+JFreeReport uses classes from the JCommon class library (also available from
+http://www.object-refinery.com), version 0.5.6 or later.  The JCommon
+jar file is included in the JFreeReport download, but you may want to
+download JCommon separately to obtain the full source code (also under
+the GNU Lesser General Public Licence).
+
+JFreeReport uses icons from the Java Look and Feel Graphics Repository
+that are the copyright of Sun Microsystems, Inc.  See the icons
+directory for details.
+
+JFreeReport uses the open source iText library to create reports in Acrobat PDF
+format.  You can download the latest version of iText from 
+http://www.lowagie.com/iText/index.html 
+
+Finally, JFreeReport requires a SAX parser to read report definition
+files.  Any JAXP1.1 parser should work - Xerces
+(http://xml.apache.org) is a good choice, but we've included the jar
+file from the GNU JAXP project
+(http://www.gnu.org/software/classpathx/jaxp/) because of its size.
+The licence is GPL with a "library exception".
+
+
+------------------------
+4. THE DEMO APPLICATION
+------------------------
+There is a demonstration application included with JFreeReport.  To run
+it you need the files jfreereport-0.7.0.jar, jcommon-0.5.6.jar,
+iText.jar and gnujaxp.jar.  In addition the files report1.xml and
+report2.xml must be on your classpath.
+
+Using JDK 1.3 (or later) you can start the demo by running the class:
+
+    com.jrefinery.report.demo.JFreeReportDemo.
+
+For example, on Linux, the following command line will run the demo
+application (when the current working directory is
+jfreereport-0.7.0/jars):
+
+java -classpath .:jcommon-0.5.6.jar:jfreereport-0.7.0.jar:iText.jar:gnujaxp.jar com.jrefinery.chart.demo.JFreeReportDemo
+
+Depending on your system configuration and the current working
+directory, you may need to specify different paths in the above
+command line.  
+
+Windows users should separate entries in the classpath
+with a semi-colon, not a colon.
+
+Note that the demo application looks for the files report1.xml and
+report2.xml on the classpath.  These files contain sample report
+definitions.
+
+---------------
+5.  WHAT's NEW
+---------------
+A list of changes in recent versions:
+
+0.7.1 : (24-Apr-2002) A DTD exists for the default report parser, support
+        for images, multilined text, and some updates to the PreviewFrame.
+				JFreeReport includes a modified version of Pixie to support the
+				wmf-file format.
+
+0.7.0 : (8-Mar-2002) Reports can now be saved to PDF format using the
+        iText PDF generator (http://www.lowagie.com/itext/).
+        Integrated code contributed by Thomas Morgner including report
+        functions, XML report definitions and various bug fixes.
+        JFreeReport no longer user ANTLR-parsed report definitions.
+
+0.6.0 : (8-Feb-2002) A minor update to ensure compatibility with the
+        JCommon Class Library.
+
+
