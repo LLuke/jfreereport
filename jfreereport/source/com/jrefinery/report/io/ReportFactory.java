@@ -162,8 +162,22 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     defRightMargin = parseDouble(atts.getValue(RIGHTMARGIN_ATT), defRightMargin);
 
     Paper p = format.getPaper();
-    PageFormatFactory.getInstance().setBorders(p, defTopMargin, defLeftMargin,
-                                                  defBottomMargin, defRightMargin);
+    switch (format.getOrientation())
+    {
+      case PageFormat.PORTRAIT:
+        PageFormatFactory.getInstance().setBorders(p, defTopMargin, defLeftMargin,
+                                                      defBottomMargin, defRightMargin);
+        break;
+      case PageFormat.LANDSCAPE:
+        PageFormatFactory.getInstance().setBorders(p, defLeftMargin, defBottomMargin,
+                                                      defRightMargin, defTopMargin);
+        break;
+      case PageFormat.REVERSE_LANDSCAPE:
+        PageFormatFactory.getInstance().setBorders(p, defRightMargin, defTopMargin,
+                                                      defLeftMargin, defBottomMargin);
+        break;
+    }
+
     format.setPaper(p);
     report.setDefaultPageFormat(format);
 
