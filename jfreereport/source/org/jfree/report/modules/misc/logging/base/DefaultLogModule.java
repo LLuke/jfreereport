@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DefaultLogModule.java,v 1.1 2003/07/11 18:35:37 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,6 +41,8 @@ package org.jfree.report.modules.misc.logging.base;
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
 import org.jfree.report.util.Log;
+import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.SystemOutLogTarget;
 
 public class DefaultLogModule extends AbstractModule
 {
@@ -51,8 +53,16 @@ public class DefaultLogModule extends AbstractModule
 
   public void initialize() throws ModuleInitializeException
   {
-    // set the log level ...
-    // but do not define a log target ...
+    if (ReportConfiguration.getGlobalConfig().isDisableLogging())
+    {
+      return;
+    }
+    if (ReportConfiguration.getGlobalConfig().getLogTarget().equals
+        (SystemOutLogTarget.class.getName()))
+    {
+      Log.getJFreeReportLog().addTarget(new SystemOutLogTarget());
+      Log.info ("System.out log target started ... previous log messages could have been ignored.");
+    }
     Log.getJFreeReportLog().init();
   }
 }
