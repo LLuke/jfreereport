@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManager.java,v 1.2 2002/12/03 13:49:16 mungady Exp $
+ * $Id: BandLayoutManager.java,v 1.3 2002/12/09 03:56:34 taqua Exp $
  *
  * Changes
  * -------
@@ -66,7 +66,7 @@ public interface BandLayoutManager
    *
    * @return the preferred size.
    */
-  public Dimension2D preferredLayoutSize(Band b);
+  public Dimension2D preferredLayoutSize(Band b, Dimension2D containerBounds);
 
   /**
    * Calculates the minimum layout size for a band.
@@ -75,7 +75,7 @@ public interface BandLayoutManager
    *
    * @return the minimum size. 
    */
-  public Dimension2D minimumLayoutSize(Band b);
+  public Dimension2D minimumLayoutSize(Band b, Dimension2D containerBounds);
 
   /**
    * Performs the layout of a band.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackend.java,v 1.23 2002/12/05 16:55:15 mungady Exp $
+ * $Id: DataRowBackend.java,v 1.24 2002/12/06 17:59:32 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@
  * 02-Sep-2002 : Deadlock detection was no implemented correctly, fixed.
  * 05-Dec-2002 : Updated Javadocs (DG);
  * 13-Sep-2002 : Ran Checkstyle agains the sources
- * 15-Oct-2002 : Functions and Expressions are now contained in an LeveledExpressionList
+ * 15-Oct-2002 : Functions and Expressions are now contained in an LevelledExpressionList
  * 23-Oct-2002 : Added support for ReportProperty-Queries to the datarow.
  * 06-Dec-2002 : Added configurable Invalid-Column-Warning
  */
@@ -46,7 +46,7 @@
 package com.jrefinery.report;
 
 import com.jrefinery.report.function.Expression;
-import com.jrefinery.report.function.LeveledExpressionList;
+import com.jrefinery.report.function.LevelledExpressionList;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportPropertiesList;
@@ -130,7 +130,7 @@ public class DataRowBackend implements Cloneable
      * @param functions the current function collection
      * @throws IllegalStateException as this is a readonly implementation
      */
-    public void setFunctions(LeveledExpressionList functions)
+    public void setFunctions(LevelledExpressionList functions)
     {
       throw new IllegalStateException("This is a preview, not changable");
     }
@@ -192,7 +192,7 @@ public class DataRowBackend implements Cloneable
      *
      * @return the currently set function collection
      */
-    public LeveledExpressionList getFunctions()
+    public LevelledExpressionList getFunctions()
     {
       return db.getFunctions();
     }
@@ -226,7 +226,7 @@ public class DataRowBackend implements Cloneable
   private DataRowBackend preview;
 
   /** The functions (set by the report state). */
-  private LeveledExpressionList functions;
+  private LevelledExpressionList functions;
 
   /** The table model (set by the report state). */
   private TableModel tablemodel;
@@ -259,7 +259,7 @@ public class DataRowBackend implements Cloneable
    *
    * @return the currently set function collection
    */
-  public LeveledExpressionList getFunctions()
+  public LevelledExpressionList getFunctions()
   {
     return functions;
   }
@@ -302,7 +302,7 @@ public class DataRowBackend implements Cloneable
    *
    * @param functions the current function collection
    */
-  public void setFunctions(LeveledExpressionList functions)
+  public void setFunctions(LevelledExpressionList functions)
   {
     if (functions == null) 
     {

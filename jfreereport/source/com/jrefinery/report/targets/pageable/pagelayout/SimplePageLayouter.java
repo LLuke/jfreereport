@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.6 2002/12/11 01:10:41 mungady Exp $
+ * $Id: SimplePageLayouter.java,v 1.7 2002/12/11 23:32:26 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,7 @@ import com.jrefinery.report.targets.pageable.Spool;
 import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.targets.FloatDimension;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
@@ -510,10 +511,10 @@ public class SimplePageLayouter extends PageLayouter
   {
     BandLayoutManager lm
         = BandLayoutManagerUtil.getLayoutManager(band, getLogicalPage().getOutputTarget());
-    Dimension2D fdim = lm.preferredLayoutSize(band);
-
     // in this layouter the width of a band is always the full page width
     float width = (float) getLogicalPage().getWidth();
+    Dimension2D fdim = lm.preferredLayoutSize(band, new FloatDimension(width, Short.MAX_VALUE));
+
     // the height is defined by the band's requirements
     float height = (float) fdim.getHeight();
     Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, height);

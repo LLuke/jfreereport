@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentContainer.java,v 1.2 2002/12/03 16:29:18 mungady Exp $
+ * $Id: ContentContainer.java,v 1.3 2002/12/07 20:53:13 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,8 @@
  */
 
 package com.jrefinery.report.targets.pageable.contents;
+
+import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -170,20 +172,34 @@ public class ContentContainer implements Content
     for (int i = 0; i < getContentPartCount(); i++)
     {
       Content contentPart = getContentPart (i);
-      if (retval == null)
+      Rectangle2D minCBounds = contentPart.getMinimumContentSize();
+
+      if (minCBounds == null)
+        continue;
+
+      if (retval != null)
       {
-        retval = contentPart.getMinimumContentSize();
+        retval.add(minCBounds);
       }
       else
       {
-        Rectangle2D rect = contentPart.getMinimumContentSize();
-        if (rect != null)
-        {
-          retval.add(rect);
-        }
+        retval = minCBounds;
       }
     }
     return retval;
   }
-  
+
+  public String toString ()
+  {
+    StringBuffer container = new StringBuffer();
+    container.append(getClass().getName());
+    container.append("={\n");
+    for (int i = 0; i < getContentPartCount(); i++)
+    {
+      container.append (getContentPart(i));
+      container.append("\n");
+    }
+    container.append("}\n");
+    return container.toString();
+  }
 }

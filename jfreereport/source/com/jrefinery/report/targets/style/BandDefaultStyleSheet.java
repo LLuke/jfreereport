@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandDefaultStyleSheet.java,v 1.2 2002/12/05 12:18:04 mungady Exp $
+ * $Id: BandDefaultStyleSheet.java,v 1.3 2002/12/07 20:53:13 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,10 @@
 package com.jrefinery.report.targets.style;
 
 import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.report.targets.pageable.bandlayout.StaticLayoutManager;
 
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Point2D;
 
 /**
  * A default band style sheet. This StyleSheet defines the default attribute
@@ -61,6 +63,8 @@ public class BandDefaultStyleSheet extends BandStyleSheet
     super("GlobalBand");
     setStyleProperty(MINIMUMSIZE, new FloatDimension(0, 0));
     setStyleProperty(MAXIMUMSIZE, new FloatDimension(Short.MAX_VALUE, Short.MAX_VALUE));
+    setStyleProperty(StaticLayoutManager.ABSOLUTE_DIM, new FloatDimension(-100, -100));
+    setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, new Point2D.Double(0, 0));
     setStyleProperty(BOUNDS, new Rectangle2D.Float());
     setStyleProperty(PAGEBREAK_AFTER, new Boolean(false));
     setStyleProperty(PAGEBREAK_BEFORE, new Boolean(false));

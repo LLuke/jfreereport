@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.17 2002/12/09 03:56:34 taqua Exp $
+ * $Id: ReportGenerator.java,v 1.18 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@ package com.jrefinery.report.io;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.report.util.Log;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -125,6 +126,11 @@ public class ReportGenerator
     File f = new File (reportDtd);
     if (f.exists () && f.isFile () && f.canRead ())
     {
+      dtd = reportDtd;
+    }
+    else
+    {
+      Log.debug ("Local DTD exists, but cannot be read");
       dtd = reportDtd;
     }
   }

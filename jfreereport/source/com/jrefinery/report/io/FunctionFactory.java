@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.14 2002/12/02 17:30:45 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.15 2002/12/11 00:51:19 mungady Exp $
  *
  * Changes
  * -------
@@ -298,7 +298,7 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
       Class fnC = Class.forName (className);
       setCurrentExpression ((Expression) fnC.newInstance ());
       getCurrentExpression().setName (name);
-      getCurrentExpression().setDepencyLevel(depLevel);
+      getCurrentExpression().setDependencyLevel(depLevel);
     }
     catch (ClassNotFoundException e)
     {
@@ -362,7 +362,7 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
       Class fnC = Class.forName (className);
       setCurrentFunction ((Function) fnC.newInstance ());
       getCurrentFunction().setName (name);
-      getCurrentFunction().setDepencyLevel(depLevel);
+      getCurrentFunction().setDependencyLevel(depLevel);
     }
     catch (ClassNotFoundException e)
     {

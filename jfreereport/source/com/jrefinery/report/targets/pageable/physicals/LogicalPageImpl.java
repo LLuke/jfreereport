@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.9 2002/12/09 03:56:34 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.10 2002/12/11 01:10:41 mungady Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,7 @@ import com.jrefinery.report.targets.pageable.Spool;
 import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.contents.Content;
 import com.jrefinery.report.targets.pageable.operations.OperationFactory;
-import com.jrefinery.report.targets.pageable.operations.OperationModul;
+import com.jrefinery.report.targets.pageable.operations.OperationModule;
 import com.jrefinery.report.targets.pageable.operations.PhysicalOperation;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.Log;
@@ -359,7 +359,7 @@ public class LogicalPageImpl implements LogicalPage
     {
       return;
     }
-    OperationModul mod = OperationFactory.getInstance().getModul(e.getContentType());
+    OperationModule mod = OperationFactory.getInstance().getModul(e.getContentType());
     if (mod == null)
     {
       throw new OutputTargetException("No handler for content: " + e.getContentType());

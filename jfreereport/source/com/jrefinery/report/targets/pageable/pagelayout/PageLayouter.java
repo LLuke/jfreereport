@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.7 2002/12/11 01:10:41 mungady Exp $
+ * $Id: PageLayouter.java,v 1.8 2002/12/12 12:26:57 mungady Exp $
  *
  * Changes
  * -------
@@ -144,7 +144,7 @@ public abstract class PageLayouter extends AbstractFunction
    */
   public PageLayouter()
   {
-    setDepencyLevel(-1);
+    setDependencyLevel(-1);
     cloneCarrier = new CloneCarrier();
   }
 
@@ -414,7 +414,7 @@ public abstract class PageLayouter extends AbstractFunction
    *
    * @return the level.
    */
-  public int getDepencyLevel()
+  public int getDependencyLevel()
   {
     return depLevel;
   }
@@ -423,7 +423,7 @@ public abstract class PageLayouter extends AbstractFunction
    * Overrides the depency level. Should be lower than any other function depency.
    * @param deplevel the new depency level.
    */
-  public void setDepencyLevel(int deplevel)
+  public void setDependencyLevel(int deplevel)
   {
     this.depLevel = deplevel;
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.13 2002/12/11 01:10:41 mungady Exp $
+ * $Id: ReportState.java,v 1.14 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -61,7 +61,7 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.event.ReportEvent;
-import com.jrefinery.report.function.LeveledExpressionList;
+import com.jrefinery.report.function.LevelledExpressionList;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportProperties;
 import com.jrefinery.report.util.ReportPropertiesList;
@@ -104,7 +104,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   private DataRowConnector dataRowConnector;
 
   /** The functions. */
-  private LeveledExpressionList functions;
+  private LevelledExpressionList functions;
 
   /** A row number that is 'before' the first row. */
   public static final int BEFORE_FIRST_ROW = -1;
@@ -142,7 +142,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     DataRowConnector.connectDataSources (getReport (), dc);
     setDataRowConnector(dc);
 
-    LeveledExpressionList functions = new LeveledExpressionList(getReport().getExpressions(),
+    LevelledExpressionList functions = new LevelledExpressionList(getReport().getExpressions(),
                                                                 getReport().getFunctions());
     setFunctions (functions);
     functions.connectDataRow(dc);
@@ -389,7 +389,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return the functions.
    */
-  protected final LeveledExpressionList getFunctions ()
+  protected final LevelledExpressionList getFunctions ()
   {
     return this.functions;
   }
@@ -400,7 +400,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @param functions  the functions.
    */
-  protected void setFunctions (LeveledExpressionList functions)
+  protected void setFunctions (LevelledExpressionList functions)
   {
     if (functions == null)
     {
@@ -480,7 +480,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     try
     {
       ReportState result = (ReportState) super.clone ();
-      LeveledExpressionList functions = (LeveledExpressionList) getFunctions ().clone();
+      LevelledExpressionList functions = (LevelledExpressionList) getFunctions ().clone();
       result.setFunctions (functions);
       result.report = (JFreeReport) report.clone();
       result.dataRow = (DataRowBackend) dataRow.clone ();

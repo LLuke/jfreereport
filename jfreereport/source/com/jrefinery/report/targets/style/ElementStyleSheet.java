@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.6 2002/12/11 00:48:49 mungady Exp $
+ * $Id: ElementStyleSheet.java,v 1.7 2002/12/11 23:32:26 taqua Exp $
  *
  * Changes
  * -------
@@ -373,8 +373,6 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
     {
       style += Font.ITALIC;
     }
-
-    Log.debug ("Create Font in Style: " + name + ", " + style + ", " + size);
     Font retval = new Font(name, style, size);
     return retval;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextLine.java,v 1.3 2002/12/03 16:29:23 mungady Exp $
+ * $Id: TextLine.java,v 1.4 2002/12/06 20:34:13 taqua Exp $
  *
  * Changes
  * -------
@@ -299,5 +299,9 @@ public class TextLine implements Content
   {
     return getBounds();
   }
-  
+
+  public String toString ()
+  {
+    return (getClass().getName() + "={ content=\"" + getContent() + "\", bounds=" + getBounds()); 
+  }
 }

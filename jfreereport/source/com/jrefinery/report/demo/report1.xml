@@ -3,9 +3,9 @@
  This DOCType declaration is valid, uncomment it to validate the report
  -->
 <!--
+<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/_report.dtd">
 -->
 
-<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
 <report name="Sample Report 1" orientation="portrait" pageformat="LETTER" topmargin="72" leftmargin="72" bottommargin="72" rightmargin="72">
 
     <configuration>
