@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.9 2003/02/09 18:43:05 taqua Exp $
+ * $Id: ReportStateList.java,v 1.10 2003/02/10 19:33:50 taqua Exp $
  *
  * Changes
  * -------
@@ -321,7 +321,7 @@ public class ReportStateList
   }
 
   /**
-   * Removes all elements in the list
+   * Removes all elements in the list.
    */
   public void clear ()
   {

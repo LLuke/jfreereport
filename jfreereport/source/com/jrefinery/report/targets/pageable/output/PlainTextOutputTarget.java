@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PlainTextOutputTarget.java,v 1.13 2003/02/21 16:31:30 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.14 2003/02/22 18:52:29 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,6 @@ import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 
 import java.awt.Paint;
@@ -131,7 +130,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
      * Copies the state back to the specified OutputTarget.
      *
      * @param target  the OutputTarget.
-     * @
+     * @throws OutputTargetException if restoring the output target state failed.
      */
     public void restore(OutputTarget target)
         throws OutputTargetException
@@ -148,9 +147,9 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    */
   private static class PlainTextSizeCalculator implements SizeCalculator
   {
-    /** the current character width */
+    /** the current character width. */
     private float characterWidth;
-    /** the current character height */
+    /** the current character height. */
     private float characterHeight;
 
     /**
@@ -194,27 +193,27 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     }
   }
 
-  /** a flag indicating whether this OutputTarget is open */
+  /** a flag indicating whether this OutputTarget is open. */
   private boolean open;
-  /** the current font definition */
+  /** the current font definition. */
   private FontDefinition font;
-  /** the current paint, is not used */
+  /** the current paint, is not used. */
   private Paint paint;
-  /** the current stroke, is not used */
+  /** the current stroke, is not used. */
   private Stroke stroke;
-  /** the current page width in CPI */
+  /** the current page width in CPI. */
   private int currentPageWidth;
-  /** the current page height in LPI */
+  /** the current page height in LPI. */
   private int currentPageHeight;
-  /** the character width in points */
+  /** the character width in points. */
   private float characterWidth;
-  /** the character height in points */
+  /** the character height in points. */
   private float characterHeight;
-  /** the current save state of this output target */
+  /** the current save state of this output target. */
   private PlainTextState savedState;
-  /** the currently generated page */
+  /** the currently generated page. */
   private PlainTextPage pageBuffer;
-  /** the current printer command set used to write and format the page */
+  /** the current printer command set used to write and format the page. */
   private PrinterCommandSet commandSet;
 
   /**

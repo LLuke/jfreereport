@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PrinterCommandSet.java,v 1.5 2003/02/18 19:37:32 taqua Exp $
+ * $Id: PrinterCommandSet.java,v 1.6 2003/02/21 16:31:30 taqua Exp $
  *
  * Changes
  * -------
@@ -53,23 +53,23 @@ import java.util.Arrays;
  */
 public class PrinterCommandSet
 {
-  /** the roman font */
+  /** the roman font. */
   public static final byte SELECT_FONT_ROMAN = 0x00;
-  /** the swiss font */
+  /** the swiss font. */
   public static final byte SELECT_FONT_SWISS = 0x01;
-  /** the courier font */
+  /** the courier font. */
   public static final byte SELECT_FONT_COURIER = 0x02;
-  /** the prestige font */
+  /** the prestige font. */
   public static final byte SELECT_FONT_PRESTIGE = 0x03;
-  /** the OCR-A font */
+  /** the OCR-A font. */
   public static final byte SELECT_FONT_OCR_A = 0x05;
-  /** the OCR-B font */
+  /** the OCR-B font. */
   public static final byte SELECT_FONT_OCR_B = 0x06;
-  /** the orator font */
+  /** the orator font. */
   public static final byte SELECT_FONT_ORATOR = 0x07;
-  /** the swiss-bold font */
+  /** the swiss-bold font. */
   public static final byte SELECT_FONT_SWISS_BOLD = 0x7A;
-  /** the gothic font */
+  /** the gothic font. */
   public static final byte SELECT_FONT_GOTHIC = 0x7C;
   /** selects the font, which is selected on the printer menu. */
   public static final byte SELECT_FONT_FROM_MENU = 0x7F;
@@ -79,54 +79,54 @@ public class PrinterCommandSet
    * the printer carriage returns to the start of the line.
    */
   public static final byte CARRIAGE_RETURN = 0x0D;
-  /** scrolls the paper up a single line */
+  /** scrolls the paper up a single line. */
   public static final byte LINE_FEED = 0x0A;
-  /** the form feed character, ejects the current page and starts the next page */
+  /** the form feed character, ejects the current page and starts the next page. */
   public static final byte FORM_FEED = 0x0C;
-  /** the space character */
+  /** the space character. */
   public static final byte SPACE = 0x20;
 
-  /** the output stream */
+  /** the output stream. */
   private OutputStream out;
-  /** the font selector byte */
+  /** the font selector byte. */
   private byte font;
-  /** character width */
+  /** character width. */
   private byte characterWidth;
-  /** the paper height in lines */
+  /** the paper height in lines. */
   private int paperSize;
-  /** the current bold state for the font */
+  /** the current bold state for the font. */
   private boolean bold;
-  /** the current italic state for the font */
+  /** the current italic state for the font. */
   private boolean italic;
-  /** the current underline state for the font */
+  /** the current underline state for the font. */
   private boolean underline;
-  /** the current strikethrough state for the font */
+  /** the current strikethrough state for the font. */
   private boolean strikethrough;
 
-  /** the left border in characters */
+  /** the left border in characters. */
   private int borderLeft;
-  /** the right border in characters */
+  /** the right border in characters. */
   private int borderRight;
-  /** the upper border in lines */
+  /** the upper border in lines. */
   private int borderTop;
-  /** the bottom border in lines */
+  /** the bottom border in lines. */
   private int borderBottom;
 
-  /** the current codepage */
+  /** the current codepage. */
   private String codepage;
 
-  /** the current linespacing in 1/1440 inches */
+  /** the current linespacing in 1/1440 inches. */
   private int lineSpacing;
   /** the AutoLF state. */
   private boolean autoLf;
-  /** the printQuality flag, true for letter quality */
+  /** the printQuality flag, true for letter quality. */
   private boolean letterQuality;
 
-  /** the lines per inch for this page */
+  /** the lines per inch for this page. */
   private int  defaultLPI;
-  /** the characters per inch for this page */
+  /** the characters per inch for this page. */
   private int  defaultCPI;
-  /** the pageformat used in this page */
+  /** the pageformat used in this page. */
   private PageFormat pageFormat;
   /** the emptyCellCounter is used to optimize the printing. */
   private int emptyCellCounter;
@@ -313,6 +313,7 @@ public class PrinterCommandSet
    *
    * @param left the number of spaces printed on the start of a line.
    * @param right the number of spaces left free on the right paper border.
+   * @throws IOException if an IOException occured while updating the printer state.
    */
   public void setHorizontalBorder (int left, int right) throws IOException
   {
@@ -326,6 +327,7 @@ public class PrinterCommandSet
    *
    * @param top the number of blank lines printed on the start of a page.
    * @param bottom the number of blank lines printed at the end of a page
+   * @throws IOException if an IOException occured while updating the printer state.
    */
   public void setVerticalBorder (int top, int bottom) throws IOException
   {
@@ -374,6 +376,7 @@ public class PrinterCommandSet
    * 1/1440 inches.
    *
    * @param spaceInInch the linespacing in 1/1440 inches.
+   * @throws IOException if an IOException occured while updating the printer state.
    */
   public void setLineSpacing (int spaceInInch) throws IOException
   {

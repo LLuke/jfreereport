@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContent.java,v 1.3 2003/02/08 20:43:45 taqua Exp $
+ * $Id: ShapeContent.java,v 1.4 2003/02/10 19:33:50 taqua Exp $
  *
  * Changes
  * -------
@@ -123,7 +123,7 @@ public class ShapeContent implements Content
   /**
    * This class does not store sub-content items, so this method always returns zero.
    *
-   * @return zero.
+   * @return always zero, as ShapeContent does not consist of multiple content parts.
    */
   public int getContentPartCount()
   {

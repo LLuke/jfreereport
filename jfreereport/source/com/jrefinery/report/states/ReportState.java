@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.22 2003/02/17 16:07:18 taqua Exp $
+ * $Id: ReportState.java,v 1.23 2003/02/25 09:55:52 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -96,7 +96,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   /** The current group. */
   private int currentGroupIndex;
 
-  /** The report properties */
+  /** The report properties. */
   private ReportProperties reportProperties;
 
   /** The data row. */
@@ -750,6 +750,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
   /**
    * Fires an 'layout-complete' event.
+   *
+   * @param band the band, that completed layouting.
    */
   public void fireLayoutCompleteEvent(Band band)
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SubSetTableModel.java,v 1.5 2003/02/07 20:26:02 taqua Exp $
+ * $Id: SubSetTableModel.java,v 1.6 2003/02/16 23:23:26 taqua Exp $
  *
  * Changes
  * -------
@@ -54,11 +54,11 @@ public class SubSetTableModel implements TableModel
    */
   private class TableEventTranslator implements TableModelListener
   {
-    /** the registered listeners */
+    /** the registered listeners. */
     private ArrayList listeners;
 
     /**
-     * Default Constructor
+     * Default Constructor.
      */
     public TableEventTranslator()
     {
@@ -120,13 +120,13 @@ public class SubSetTableModel implements TableModel
     }
   }
 
-  /** the row that should be the first row */
+  /** the row that should be the first row. */
   private int start;
-  /** the row that should be the last row */
+  /** the row that should be the last row. */
   private int end;
-  /** the model */
+  /** the model. */
   private TableModel model;
-  /** the event translator */
+  /** the event translator. */
   private TableEventTranslator eventHandler;
 
   /**

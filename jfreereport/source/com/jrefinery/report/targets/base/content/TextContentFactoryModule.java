@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentFactoryModule.java,v 1.2 2003/02/08 20:43:45 taqua Exp $
+ * $Id: TextContentFactoryModule.java,v 1.3 2003/02/18 19:37:30 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ import java.awt.geom.Rectangle2D;
 public class TextContentFactoryModule implements ContentFactoryModule
 {
   /**
-   * creates a new TextContentFactoryModule
+   * creates a new TextContentFactoryModule.
    */
   public TextContentFactoryModule()
   {

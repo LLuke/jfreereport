@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.21 2003/02/22 18:14:08 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.22 2003/02/22 18:52:28 taqua Exp $
  *
  * Changes
  * -------
@@ -96,7 +96,7 @@ public class G2OutputTarget extends AbstractOutputTarget
   /** The open flag. */
   private boolean isOpen;
 
-  /** The current font definition for this outputtarget */
+  /** The current font definition for this outputtarget. */
   private FontDefinition fontDefinition;
 
   /**
@@ -194,6 +194,7 @@ public class G2OutputTarget extends AbstractOutputTarget
      * Copies the state back to the specified Graphics2D.
      *
      * @param target  the Graphics2D.
+     * @throws OutputTargetException if restoring the state failes.
      */
     public void restore(G2OutputTarget target)
       throws OutputTargetException
@@ -294,7 +295,7 @@ public class G2OutputTarget extends AbstractOutputTarget
   /**
    * Returns <code>true</code> if the output target is open, and <code>false</code> otherwise.
    *
-   * @return boolean.
+   * @return the open state of this target.
    */
   public boolean isOpen()
   {

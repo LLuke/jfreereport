@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultContentFactory.java,v 1.1 2003/02/07 22:40:39 taqua Exp $
+ * $Id: DefaultContentFactory.java,v 1.2 2003/02/08 20:43:45 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,11 @@ import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import java.util.ArrayList;
 
 /**
- *
+ * The DefaultContentFactory provides a default implementation for output targets,
+ * which support all known content types.
+ * <p>
+ * The implementation provides support for <code>text</code>, <code>image</code>
+ * and <code>shape</code> content. 
  */
 public class DefaultContentFactory implements ContentFactory
 {

@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_de.java,v 1.27 2003/02/21 16:31:29 taqua Exp $
+ * $Id: JFreeReportResources_de.java,v 1.28 2003/02/21 18:29:13 taqua Exp $
  *
  * Changes
  * -------
@@ -36,7 +36,7 @@ package com.jrefinery.report.resources;
 import java.awt.event.KeyEvent;
 
 /**
- * German Language Resources
+ * German Language Resources.
  *
  * @author TM
  */
@@ -342,6 +342,11 @@ public class JFreeReportResources_de extends JFreeReportResources
 
       };
 
+  /**
+   * Debugging method, prints all defined contents.
+   *
+   * @param args not used
+   */
   public static void main (String [] args)
   {
     new JFreeReportResources_de().printAll();

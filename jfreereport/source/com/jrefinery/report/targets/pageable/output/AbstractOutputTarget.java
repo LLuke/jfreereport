@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.9 2003/02/10 19:33:50 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.10 2003/02/18 19:37:32 taqua Exp $
  *
  * Changes
  * -------
@@ -83,7 +83,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
   /** The operation bounds. */
   private Rectangle2D operationBounds;
 
-  /** The content factory used to create content for this output-target */
+  /** The content factory used to create content for this output-target. */
   private ContentFactory contentFactory;
 
   /**

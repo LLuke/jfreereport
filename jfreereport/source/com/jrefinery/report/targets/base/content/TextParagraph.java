@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.6 2003/02/08 20:43:45 taqua Exp $
+ * $Id: TextParagraph.java,v 1.7 2003/02/18 19:37:30 taqua Exp $
  *
  * Changes
  * -------
@@ -69,6 +69,7 @@ public class TextParagraph extends ContentContainer
    * Creates a new text paragraph using the specified size calculator.
    *
    * @param calc  the size calculator.
+   * @param lineHeight the height of the lines contained in this paragraph.
    */
   public TextParagraph(SizeCalculator calc, float lineHeight)
   {

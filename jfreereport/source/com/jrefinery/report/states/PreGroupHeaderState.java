@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreGroupHeaderState.java,v 1.11 2002/12/12 12:26:56 mungady Exp $
+ * $Id: PreGroupHeaderState.java,v 1.12 2003/02/04 17:56:21 taqua Exp $
  *
  * Changes
  * -------
@@ -72,7 +72,7 @@ public final class PreGroupHeaderState extends ReportState
    * Returns the corrected display item for this state. As the currentItem has not yet advanced
    * we perform a readAHead lookup when populating elements.
    *
-   * @return true
+   * @return true; Header related states preview the next itemband DataRow. 
    */
   public boolean isPrefetchState ()
   {

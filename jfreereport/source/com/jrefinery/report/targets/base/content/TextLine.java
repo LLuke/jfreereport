@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextLine.java,v 1.4 2003/02/08 20:43:45 taqua Exp $
+ * $Id: TextLine.java,v 1.5 2003/02/18 19:37:30 taqua Exp $
  *
  * Changes
  * -------
@@ -148,7 +148,7 @@ public class TextLine implements Content
   /**
    * This class does not store sub-content items, so this method always returns zero.
    *
-   * @return zero.
+   * @return always zero, a text line is atomic.
    */
   public int getContentPartCount()
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContentFactoryModule.java,v 1.1 2003/02/07 22:40:39 taqua Exp $
+ * $Id: ShapeContentFactoryModule.java,v 1.2 2003/02/08 20:43:45 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ import java.awt.geom.Point2D;
 public class ShapeContentFactoryModule implements ContentFactoryModule
 {
   /**
-   * creates a new ShapeContentFactoryModule
+   * creates a new ShapeContentFactoryModule.
    */
   public ShapeContentFactoryModule()
   {

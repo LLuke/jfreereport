@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.9 2003/02/21 12:17:30 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.10 2003/02/25 09:55:52 taqua Exp $
  *
  * Changes
  * -------
@@ -116,6 +116,22 @@ public class BandLayoutManagerUtil
     e.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds.getBounds2D());
   }
 
+  /**
+   * Performs all required steps to layout the band. The bands height gets initially limited by
+   * the specified width and height. The band updates these dimensions after the initial
+   * layouting is done. The band will never exceed the specified bounds, they define a
+   * hard limit.
+   * <p>
+   * The bands elements get their BOUNDS property updated
+   * to reflect the new layout settings.
+   *
+   * @param band the band that should be laid out.
+   * @param support the LayoutSupport implementation used to calculate the bounds of dynamic content.
+   * @param width the initial maximum width of the container.
+   * @param height the initial maximum height of the container.
+   * @return the bounds for the layouted band. The band itself got updated to
+   * contain the new element bounds.
+   */
   public static Rectangle2D doLayout (Band band, LayoutSupport support, float width, float height)
   {
     BandLayoutManager lm
@@ -125,7 +141,7 @@ public class BandLayoutManagerUtil
 
     // the height is redefined by the band's requirements to support
     // the dynamic elements.
-    //Log.debug ("Band Defined a MinimumSize: " + fdim);
+    //Log.debug ("Band Defined some bounds: " + fdim);
     height = (float) fdim.getHeight();
     Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, height);
     band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);

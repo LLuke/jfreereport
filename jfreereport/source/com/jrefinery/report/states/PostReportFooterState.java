@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostReportFooterState.java,v 1.1 2002/12/18 20:31:47 taqua Exp $
+ * $Id: PostReportFooterState.java,v 1.4 2003/02/17 16:07:18 taqua Exp $
  *
  * Changes
  * -------
@@ -62,6 +62,10 @@ public class PostReportFooterState extends ReportState
   /**
    * Advance to the FinishState. The PostReportFooterState is used to catch a
    * continued reportfooter.
+   *
+   * @return a finish state, as there is nothing to be done after the report footer
+   * has been completed.
+   * @throws ReportProcessingException if advancing failed.
    */
   public ReportState advance () throws ReportProcessingException
   {

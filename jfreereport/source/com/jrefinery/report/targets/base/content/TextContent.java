@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.6 2003/02/08 20:43:45 taqua Exp $
+ * $Id: TextContent.java,v 1.7 2003/02/18 19:37:29 taqua Exp $
  *
  * Changes
  * -------
@@ -61,13 +61,13 @@ public class TextContent extends ContentContainer
   private SizeCalculator sizeCalculator;
 
   /**
-   * Creates a new container for text.
+   * Creates a new container for text. The line height can be used to extend the height
+   * of a single text line. It can not be used to narrow down the text line. 
    *
    * @param value  the text.
+   * @param lineHeight the height of a text line
    * @param bounds  the bounds.
    * @param ot  the size calculator.
-   *
-   * Versucht die Optimale Breite & H�he f�r den darzustellenden Text zu finden
    */
   public TextContent(String value, float lineHeight, Rectangle2D bounds, SizeCalculator ot)
   {

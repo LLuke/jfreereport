@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVQuoter.java,v 1.4 2003/02/24 15:00:17 mungady Exp $
+ * $Id: CSVQuoter.java,v 1.5 2003/02/25 14:54:52 mungady Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ package com.jrefinery.report.targets.csv;
  */
 public class CSVQuoter
 {
-  /** The separator used in the CSV file */
+  /** The separator used in the CSV file. */
   private String separator;
 
   /**
@@ -159,7 +159,7 @@ public class CSVQuoter
 
   /**
    * Applies the quoting to a given string, and stores the result in the
-   * StringBuffer <code>b</code>
+   * StringBuffer <code>b</code>.
    *
    * @param b the result buffer
    * @param original the string, that should be quoted.

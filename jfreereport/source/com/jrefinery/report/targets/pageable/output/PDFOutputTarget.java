@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.26 2003/02/22 01:04:30 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.27 2003/02/22 18:52:29 taqua Exp $
  *
  * Changes
  * -------
@@ -176,10 +176,10 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /** The AWT font. */
   private FontDefinition fontDefinition;
 
-  /** The stroke used for shapes */
+  /** The stroke used for shapes. */
   private Stroke awtStroke;
 
-  /** The current Paint as used in the AWT */
+  /** The current Paint as used in the AWT. */
   private Paint awtPaint;
 
   /** The PDF font support. */

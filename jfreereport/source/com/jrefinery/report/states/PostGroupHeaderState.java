@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostGroupHeaderState.java,v 1.5 2002/12/06 19:28:00 taqua Exp $
+ * $Id: PostGroupHeaderState.java,v 1.6 2003/02/04 17:56:21 taqua Exp $
  *
  * Changes
  * -------
@@ -95,7 +95,7 @@ public final class PostGroupHeaderState extends ReportState
    * Returns the corrected display item for this state. As the currentItem has not yet advanced
    * we perform a readAHead lookup when populating elements.
    *
-   * @return true.
+   * @return true; the post group header previews the next data row.
    */
   public boolean isPrefetchState ()
   {

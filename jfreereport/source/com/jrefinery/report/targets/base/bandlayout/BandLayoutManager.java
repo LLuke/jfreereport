@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManager.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
+ * $Id: BandLayoutManager.java,v 1.3 2003/02/07 22:35:05 taqua Exp $
  *
  * Changes
  * -------
@@ -63,6 +63,7 @@ public interface BandLayoutManager
    * Calculates the preferred layout size for a band.
    *
    * @param b  the band.
+   * @param containerBounds the bounds of the surrounding container.
    *
    * @return the preferred size.
    */
@@ -72,6 +73,7 @@ public interface BandLayoutManager
    * Calculates the minimum layout size for a band.
    *
    * @param b  the band.
+   * @param containerBounds the bounds of the surrounding container.
    *
    * @return the minimum size. 
    */

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PlainTextPage.java,v 1.8 2003/02/18 19:37:32 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.9 2003/02/21 16:31:30 taqua Exp $
  *
  * Changes
  * -------
@@ -54,13 +54,13 @@ public class PlainTextPage
   {
     /** The text that should be printed. */
     private String text;
-    /** The font definition stores the font style */
+    /** The font definition stores the font style. */
     private FontDefinition font;
-    /** the column where the text starts */
+    /** the column where the text starts. */
     private int x;
-    /** the row of the text */
+    /** the row of the text. */
     private int y;
-    /** the text width */
+    /** the text width. */
     private int width;
 
     /**
@@ -112,7 +112,7 @@ public class PlainTextPage
     }
 
     /**
-     * Gets the row where to print the text
+     * Gets the row where to print the text.
      *
      * @return the row.
      */
@@ -132,13 +132,13 @@ public class PlainTextPage
     }
   }
 
-  /** the page buffer is used to store all TextDataChunks */
+  /** the page buffer is used to store all TextDataChunks. */
   private TextDataChunk[][] pageBuffer;
-  /** The commandset that is used to finally print the content */
+  /** The commandset that is used to finally print the content. */
   private PrinterCommandSet commandSet;
-  /** The width of the page in characters */
+  /** The width of the page in characters. */
   private int width;
-  /** the height of the page in lines */
+  /** the height of the page in lines. */
   private int height;
 
   /**

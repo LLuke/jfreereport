@@ -30,7 +30,7 @@ package com.jrefinery.report.resources;
 import java.awt.event.KeyEvent;
 
 /**
- * Spanish Language Resources
+ * Spanish Language Resources.
  *
  * @author Ramon Juanes
  */
@@ -39,6 +39,8 @@ public class JFreeReportResources_es extends JFreeReportResources
 
   /**
    * Returns the array of strings in the resource bundle.
+   *
+   * @return an array of localised resources.
    */
   public Object[][] getContents ()
   {

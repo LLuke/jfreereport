@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.17 2003/02/22 18:52:29 taqua Exp $
+ * $Id: PageLayouter.java,v 1.18 2003/02/25 15:42:25 taqua Exp $
  *
  * Changes
  * -------
@@ -139,9 +139,10 @@ public abstract class PageLayouter extends AbstractFunction
    */
   private boolean restartingPage;
 
-  /** A flag indicating whether some content was created */
+  /** A flag indicating whether some content was created. */
   private boolean generatedPageEmpty;
 
+  /** A flag indicating whether the process of restarting the page is completed. */
   private boolean pageRestartDone;
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: EpsonPrinterCommandSet.java,v 1.4 2003/02/10 19:33:51 taqua Exp $
+ * $Id: EpsonPrinterCommandSet.java,v 1.5 2003/02/21 16:31:29 taqua Exp $
  *
  * Changes
  * -------
@@ -297,6 +297,7 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    *
    * @param left the number of spaces printed on the start of a line.
    * @param right the number of spaces left free on the right paper border.
+   * @throws IOException if an IOException occured while updating the printer state.
    */
   public void setHorizontalBorder(int left, int right) throws IOException
   {
@@ -314,6 +315,7 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    * 1/1440 inches.
    *
    * @param spaceInInch the linespacing in 1/1440 inches.
+   * @throws IOException if an IOException occured while updating the printer state.
    */
   public void setLineSpacing(int spaceInInch) throws IOException
   {
@@ -362,7 +364,7 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
    * Always returns false, as ESC/P has we assume AutoLF to be disabled for all
    * Epson-Printers.
    *
-   * @return false
+   * @return always false, as we have to assume that AutoLF is disabled.
    */
   public boolean isAutoLf()
   {

@@ -31,7 +31,7 @@ package com.jrefinery.report.resources;
 import java.awt.event.KeyEvent;
 
 /**
- * Polish Language Resources
+ * Polish Language Resources.
  *
  * @author PB
  */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.3 2003/02/07 20:26:02 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.4 2003/02/25 14:07:32 taqua Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,7 @@ import java.util.Vector;
  */
 public class ResultSetTableModelFactory
 {
-  /** Singleton instance of the factory */
+  /** Singleton instance of the factory. */
   private static ResultSetTableModelFactory defaultInstance;
 
   /**

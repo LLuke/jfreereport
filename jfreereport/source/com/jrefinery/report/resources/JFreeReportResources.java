@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.45 2003/02/22 18:52:28 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.46 2003/02/25 15:16:38 mungady Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -100,6 +100,9 @@ public class JFreeReportResources extends ListResourceBundle
     return CONTENTS;
   }
 
+  /**
+   * Prints all defined resource bundle keys and their assigned values.
+   */
   public void printAll ()
   {
     Object[][] c = getContents();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.15 2003/02/21 12:17:30 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.16 2003/02/25 09:55:53 taqua Exp $
  *
  * Changes
  * -------
@@ -105,6 +105,7 @@ public class StaticLayoutManager implements BandLayoutManager
    * Returns the minimum size for an element.
    *
    * @param e  the element.
+   * @param containerBounds the bounds of the elements parents.
    *
    * @return the minimum size.
    */
@@ -428,6 +429,7 @@ public class StaticLayoutManager implements BandLayoutManager
    * Calculates the minimum layout size for a band.
    *
    * @param b  the band.
+   * @param containerBounds the bounds of the bands parents.
    *
    * @return the minimum size.
    */

@@ -1,8 +1,35 @@
 /**
- * Date: Feb 3, 2003
- * Time: 8:41:37 PM
+ * =============================================================
+ * JFreeReport : an open source reporting class library for Java
+ * =============================================================
  *
- * $Id: ResourceCompareTool.java,v 1.2 2003/02/04 17:56:19 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ----------------------------
+ * ResourceCompareTool.java
+ * ----------------------------
+ *
+ * $Id: ResourceCompareTool.java,v 1.3 2003/02/25 14:07:31 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 03-Feb-2003 : Initial version
+ *
  */
 package com.jrefinery.report.resources;
 
@@ -11,8 +38,24 @@ import java.util.Enumeration;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * The ResourceCompareTool provides simple reporting capabilities to compare a
+ * localized resource bundle with the default resource bundle.
+ * <p>
+ * This report contains all keys, which are undefined in the localisation, which
+ * are defined with an incompabile object value or which are not defined in the
+ * default resource bundle, but defined in the localized version.
+ * <p>
+ * Using the automated comparing will help to make translations more easier.
+ */
 public class ResourceCompareTool
 {
+  /**
+   * Loads the resource bundle for the given locale.
+   *
+   * @param s the locale specification as ISO country code.
+   * @return the loaded resources or null, if there is no such translation.
+   */
   private static JFreeReportResources loadLocale (String s)
   {
     try
@@ -26,6 +69,11 @@ public class ResourceCompareTool
     }
   }
 
+  /**
+   * Starts the resource comparing process.
+   *
+   * @param args a string array with only one element, the ISO code of the 
+   */
   public static void main (String [] args)
   {
     if (args.length != 1)

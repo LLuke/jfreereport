@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationFactory.java,v 1.8 2003/02/09 23:09:15 taqua Exp $
+ * $Id: OperationFactory.java,v 1.9 2003/02/18 19:37:31 taqua Exp $
  *
  * Changes
  * -------
@@ -38,14 +38,13 @@
  */
 package com.jrefinery.report.targets.pageable.operations;
 
-import com.jrefinery.report.targets.pageable.OutputTargetException;
-import com.jrefinery.report.targets.base.content.Content;
 import com.jrefinery.report.Element;
-import com.jrefinery.report.util.Log;
+import com.jrefinery.report.targets.base.content.Content;
+import com.jrefinery.report.targets.pageable.OutputTargetException;
 
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.geom.Rectangle2D;
 
 /**
  * The OperationFactory is used to transform content into OutputTarget operations.
@@ -96,6 +95,7 @@ public class OperationFactory
    * @param content  the content type.
    *
    * @return the module or null if no handler is registered for that content-type.
+   * @throws OutputTargetException if no module was found for the given content.
    */
   public OperationModule getModule (String content)
     throws OutputTargetException
@@ -111,6 +111,13 @@ public class OperationFactory
     throw new OutputTargetException ("No operation module for " + content);
   }
 
+  /**
+   * Tests, whether this implementation would be able to handle the given content
+   * type.
+   *
+   * @param contentType the to be tested content type.
+   * @return true, if this kind of content can be handled, false otherwise.
+   */
   public boolean canHandleContent (String contentType)
   {
     for (int i = 0; i < modules.size(); i++)
@@ -124,6 +131,15 @@ public class OperationFactory
     return false;
   }
 
+  /**
+   * Creates the required Operations to output the content on an OutputTarget.
+   *
+   * @param e the element that contained the raw data for the content.
+   * @param value the content that should be printed.
+   * @param bounds the content bounds.
+   * @return the created operations, never null.
+   * @throws OutputTargetException if this factory is not able to handle that content.
+   */
   public List createOperations (Element e, Content value, Rectangle2D bounds)
     throws OutputTargetException
   {

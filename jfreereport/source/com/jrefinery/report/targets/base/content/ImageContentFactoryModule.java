@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentFactoryModule.java,v 1.3 2003/02/18 19:37:29 taqua Exp $
+ * $Id: ImageContentFactoryModule.java,v 1.4 2003/02/19 15:28:15 taqua Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,15 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+/**
+ * The ImageContentFactoryModule creates image content from the given element.
+ * The content type of the used element should fit "image/*".
+ */
 public class ImageContentFactoryModule implements ContentFactoryModule
 {
+  /**
+   * DefaultConstructor.
+   */
   public ImageContentFactoryModule()
   {
   }
@@ -76,7 +83,6 @@ public class ImageContentFactoryModule implements ContentFactoryModule
    * @return the content.
    */
   public Content createContentForElement(Element e, ElementLayoutInformation bounds, LayoutSupport ot)
-      throws ContentCreationException
   {
     Point2D point = bounds.getAbsolutePosition();
     Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),

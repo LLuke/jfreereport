@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AlignedLogicalPageWrapper.java,v 1.4 2003/02/09 18:43:05 taqua Exp $
+ * $Id: AlignedLogicalPageWrapper.java,v 1.5 2003/02/18 19:37:30 taqua Exp $
  *
  * Changes
  * -------
@@ -50,10 +50,10 @@ import java.awt.print.Paper;
  */
 public class AlignedLogicalPageWrapper implements LogicalPage
 {
-  /** the base logical page which is wrapped by this implementation */
+  /** the base logical page which is wrapped by this implementation. */
   private LogicalPage logicalPage;
 
-  /** the layout support implementation which defines the alignments */
+  /** the layout support implementation which defines the alignments. */
   private LayoutSupport layoutSupport;
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FontDefinition.java,v 1.6 2003/02/03 18:52:46 taqua Exp $
+ * $Id: FontDefinition.java,v 1.7 2003/02/07 20:26:26 taqua Exp $
  *
  * Changes
  * -------
@@ -76,7 +76,7 @@ public class FontDefinition implements Serializable, Cloneable
   private boolean isStrikeThrough;
   /** the AWT-Font represented by this font definition. */
   private transient Font font;
-  /** whether to embedd the font in the target documents, if supported */
+  /** whether to embedd the font in the target documents, if supported. */
   private boolean embeddedFont;
   // color is defined elsewhere
 

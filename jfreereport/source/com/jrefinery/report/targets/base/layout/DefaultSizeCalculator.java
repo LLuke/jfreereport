@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.2 2003/02/08 20:43:45 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.3 2003/02/17 16:13:51 taqua Exp $
  *
  * Changes
  * -------
@@ -168,7 +168,8 @@ public class DefaultSizeCalculator implements SizeCalculator
     /**
      * Gets the buggy state of the AWT implementation.
      *
-     * @return
+     * @return true, if the AWT implementation is buggy and not able to perform accurate
+     * font rendering.
      */
     public boolean isBuggyVersion ()
     {
@@ -176,7 +177,7 @@ public class DefaultSizeCalculator implements SizeCalculator
     }
   }
 
-  /** the FontRenderContext bug detector instance */
+  /** the FontRenderContext bug detector instance. */
   private static BuggyFontRendererDetector frcDetector;
 
   /**

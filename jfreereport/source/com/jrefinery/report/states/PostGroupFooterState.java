@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostGroupFooterState.java,v 1.4 2002/12/05 12:18:46 mungady Exp $
+ * $Id: PostGroupFooterState.java,v 1.5 2003/02/04 17:56:20 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,7 @@ public final class PostGroupFooterState extends ReportState
   }
 
   /**
-   * Is there a next row to read?
+   * Checks, whether there is a next row to read.
    *
    * @return true, if there is at least one more row to read.
    */
@@ -78,7 +78,7 @@ public final class PostGroupFooterState extends ReportState
   }
 
   /**
-   * Are there more groups active?
+   * Checks, whether there are more groups active.
    *
    * @return true if this is the last (outer-most) group.
    */

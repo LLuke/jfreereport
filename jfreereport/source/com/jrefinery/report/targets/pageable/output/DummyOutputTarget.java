@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DummyOutputTarget.java,v 1.3 2003/02/07 22:40:43 taqua Exp $
+ * $Id: DummyOutputTarget.java,v 1.4 2003/02/10 19:33:50 taqua Exp $
  *
  * Changes
  * -------
@@ -89,9 +89,9 @@ public class DummyOutputTarget extends AbstractOutputTarget
     }
 
     /**
-     * Saves the state of the Graphics2D.
+     * Saves the state of the OutputTarget.
      *
-     * @param source  the Graphics2D.
+     * @param source  the OutputTarget, that should save its state.
      */
     public void save(OutputTarget source)
     {
@@ -101,9 +101,10 @@ public class DummyOutputTarget extends AbstractOutputTarget
     }
 
     /**
-     * Copies the state back to the specified Graphics2D.
+     * Copies the state back to the specified OutputTarget.
      *
-     * @param target  the Graphics2D.
+     * @param target  the output target, that receives the restored state.
+     * @throws OutputTargetException if the state restoration failed. 
      */
     public void restore(OutputTarget target)
       throws OutputTargetException
@@ -115,21 +116,23 @@ public class DummyOutputTarget extends AbstractOutputTarget
   }
 
 
-  /** The wrapped outputtarget */
+  /** The wrapped outputtarget. */
   private OutputTarget backend;
-  /** A flag to maintain the open state of this output target */
+  /** A flag to maintain the open state of this output target. */
   private boolean isOpen;
-  /** The current font definition */
+  /** The current font definition. */
   private FontDefinition font;
-  /** the current color */
+  /** the current color. */
   private Paint paint;
-  /** the current stroke */
+  /** the current stroke. */
   private Stroke stroke;
-  /** the current save state */
+  /** the current save state. */
   private OutputTargetState state;
 
   /**
    * Creates a new output target based on the given backend.
+   *
+   * @param backend the original outputtarget, that should be used in this proxy.
    */
   public DummyOutputTarget(OutputTarget backend)
   {

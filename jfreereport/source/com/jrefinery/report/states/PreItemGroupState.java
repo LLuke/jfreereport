@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreItemGroupState.java,v 1.4 2002/12/05 12:18:46 mungady Exp $
+ * $Id: PreItemGroupState.java,v 1.5 2003/02/04 17:56:22 taqua Exp $
  *
  * Changes
  * -------
@@ -81,7 +81,7 @@ public final class PreItemGroupState extends ReportState
    * Returns the corrected display item for this state. As the currentItem has not yet advanced
    * we perform a readAHead lookup when populating elements.
    *
-   * @return true.
+   * @return true; Header related states preview the next itemband DataRow.
    */
   public boolean isPrefetchState ()
   {

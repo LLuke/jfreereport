@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContent.java,v 1.2 2003/02/08 20:43:45 taqua Exp $
+ * $Id: ImageContent.java,v 1.3 2003/02/18 19:37:29 taqua Exp $
  *
  * Changes
  * -------
@@ -80,7 +80,7 @@ public class ImageContent implements Content
   /**
    * This class does not store sub-content items, so this method always returns zero.
    *
-   * @return zero.
+   * @return always zero, image content does never contains multiple parts.
    */
   public int getContentPartCount()
   {

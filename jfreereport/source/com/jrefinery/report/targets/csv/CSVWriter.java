@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVWriter.java,v 1.6 2003/02/12 23:05:30 taqua Exp $
+ * $Id: CSVWriter.java,v 1.7 2003/02/24 15:00:19 mungady Exp $
  *
  * Changes
  * -------
@@ -128,16 +128,16 @@ public class CSVWriter extends AbstractFunction
     }
   }
 
-  /** the writer used to output the generated data */
+  /** the writer used to output the generated data. */
   private Writer w;
   
-  /** the functions dependency level, -1 by default */
+  /** the functions dependency level, -1 by default. */
   private int depLevel;
   
-  /** the CSVQuoter used to encode the column values */
+  /** the CSVQuoter used to encode the column values. */
   private CSVQuoter quoter;
   
-  /** a flag indicating whether to writer data row names as column header */
+  /** a flag indicating whether to writer data row names as column header. */
   private boolean writeDataRowNames;
 
   /**

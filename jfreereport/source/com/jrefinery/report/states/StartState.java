@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.8 2003/02/04 17:56:23 taqua Exp $
+ * $Id: StartState.java,v 1.9 2003/02/10 19:33:49 taqua Exp $
  *
  * Changes
  * -------
@@ -111,7 +111,7 @@ public final class StartState extends ReportState
   /**
    * Returns <code>true</code> because this *is* the start state.
    *
-   * @return true
+   * @return always true, as this state starts the report processing.
    */
   public boolean isStart ()
   {
@@ -122,7 +122,7 @@ public final class StartState extends ReportState
    * Returns the corrected display item for this state. As the currentItem has not yet advanced
    * we perform a readAHead lookup when populating elements.
    *
-   * @return true
+   * @return true; Header related states preview the next itemband DataRow.
    */
   public boolean isPrefetchState ()
   {
