@@ -25,15 +25,14 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: PostItemGroupState.java,v 1.2 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
  */
 package com.jrefinery.report.states;
 
-import com.jrefinery.report.ReportProcessor;
-import com.jrefinery.report.event.ReportEvent;
+
 
 /**
  * The only purpose for this state is to fire the itemsFinished event. After that task is done,
@@ -57,14 +56,11 @@ public class PostItemGroupState extends ReportState
    * Just inform everybody that the itemband is no longer printed. Next state will be
    * PreGroupFooterState.
    *
-   * @param rpc  the report processor.
-   *
    * @return the next report state.
    */
-  public ReportState advance (ReportProcessor rpc)
+  public ReportState advance ()
   {
-    ReportEvent event = new ReportEvent (this);
-    this.fireItemsFinishedEvent (event);
+    fireItemsFinishedEvent ();
     return new PreGroupFooterState (this);
   }
 }

@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: InItemGroupState.java,v 1.2 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
@@ -38,12 +38,8 @@
  */
 package com.jrefinery.report.states;
 
-import com.jrefinery.report.ReportProcessor;
-import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.ItemBand;
 import com.jrefinery.report.Group;
-import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.ReportProcessingException;
 
 /**
  * Prints the itemBand. Before the band is printed, the items are advanced and the next
@@ -70,43 +66,34 @@ public class InItemGroupState extends ReportState
   /**
    * Advances from this state to the next.
    *
-   * @param rpc  the report processor.
-   *
    * @return the next state.
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public ReportState advance (ReportProcessor rpc) throws ReportProcessingException
+  public ReportState advance () throws ReportProcessingException
   {
-    JFreeReport report = this.getReport ();
-    ItemBand itemBand = report.getItemBand ();
-
     // If there is enough space to print the itemband, advance the items, populate
     // the band and print it. If there was not enough space, the engine will return
     // here after the pagebreak.
-    if (rpc.isSpaceFor (itemBand))
+    advanceItem ();
+
+    fireItemsAdvancedEvent ();
+
+//    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
+//    rpc.processItemBand (itemBand);
+
+    // we have more data to work on
+    // If the group is done, print the GroupFooter of the parent
+    Group group = getReport().getGroup (getCurrentGroupIndex ());
+
+    if (group.isLastItemInGroup (getDataRowBackend (),
+                                 getDataRowBackend ().previewNextRow ()))
     {
-      this.advanceItem ();
-
-      int currItem = this.getCurrentDataItem ();
-      int currGroup = this.getCurrentGroupIndex ();
-
-      ReportEvent event = new ReportEvent (this);
-      this.fireItemsAdvancedEvent (event);
-
-      this.getDataRowConnector ().setDataRowBackend (this.getDataRowBackend ());
-      rpc.printItemBand (itemBand);
-
-      // we have more data to work on
-      // If the group is done, print the GroupFooter of the parent
-      Group group = report.getGroup (this.getCurrentGroupIndex ());
-
-      if (group.isLastItemInGroup (this.getDataRowBackend (),
-                                   this.getDataRowBackend ().previewNextRow ()))
-      {
-        return new PostItemGroupState (this);
-      }
+      return new PostItemGroupState (this);
     }
-    return this;
+    else
+    {
+      return this;
+    }
   }
 }

@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: PostGroupFooterState.java,v 1.2 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,6 @@
  */
 package com.jrefinery.report.states;
 
-import com.jrefinery.report.ReportProcessor;
 import com.jrefinery.report.Group;
 
 /**
@@ -88,15 +87,13 @@ public class PostGroupFooterState extends ReportState
   /**
    * Advances from this state to the next.
    *
-   * @param rpc  the report processor.
-   *
    * @return the next report state.
    */
-  public ReportState advance (ReportProcessor rpc)
+  public ReportState advance ()
   {
     // leave the current group and activate the parent group.
     // if this was the last active group, the group index is now BEFORE_FIRST_GROUP
-    this.leaveGroup ();
+    leaveGroup ();
 
     if (isLastGroup ())
     {
@@ -117,9 +114,9 @@ public class PostGroupFooterState extends ReportState
       {
         // we have more data to work on
         // If the group is done, print the GroupFooter of the parent
-        Group group = this.getReport ().getGroup (this.getCurrentGroupIndex ());
-        if (group.isLastItemInGroup (this.getDataRowBackend (),
-                                     this.getDataRowBackend ().previewNextRow ()))
+        Group group = getReport ().getGroup (getCurrentGroupIndex ());
+        if (group.isLastItemInGroup (getDataRowBackend (),
+                                     getDataRowBackend ().previewNextRow ()))
         {
           // Parent is finished, print the footer
           return new PreGroupFooterState (this);

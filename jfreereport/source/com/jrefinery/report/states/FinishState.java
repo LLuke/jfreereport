@@ -26,7 +26,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: FinishState.java,v 1.2 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,7 @@
  */
 package com.jrefinery.report.states;
 
-import com.jrefinery.report.ReportProcessor;
+import com.jrefinery.report.ReportProcessingException;
 
 /**
  * The report is done. No advance will be done, every call to advance will return this
@@ -61,14 +61,11 @@ public class FinishState extends ReportState
    * Advances from this state to the next.  Since this is the 'finish' state, this method just
    * returns itself.
    *
-   * @param rpc  the report processor.
-   *
    * @return this state.
    */
-  public ReportState advance (ReportProcessor rpc)
+  public ReportState advance () throws ReportProcessingException
   {
-    rpc.setPageDone ();
-    return this;
+    throw new ReportProcessingException ("Cannot advance beyond finish!");
   }
 
   /**

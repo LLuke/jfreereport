@@ -25,15 +25,12 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: PreItemGroupState.java,v 1.2 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
  */
 package com.jrefinery.report.states;
-
-import com.jrefinery.report.ReportProcessor;
-import com.jrefinery.report.event.ReportEvent;
 
 /**
  * Prepare to print the items. This state fires the itemStarted-Event and advances to
@@ -55,17 +52,15 @@ public class PreItemGroupState extends ReportState
   /**
    * Advances to the next state.
    *
-   * @param rpc  the report processor.
-   *
    * @return the next state.
    */
-  public ReportState advance (ReportProcessor rpc)
+  public ReportState advance ()
   {
     // Inform everybody, that now items will be processed.
+    fireItemsStartedEvent ();
 
-    ReportEvent event = new ReportEvent (this);
-    this.fireItemsStartedEvent (event);
-    if (this.getReport().getData().getRowCount() == 0)
+    // if the datasource is empty, skip the inItem-Section and proceed to PostItemGroup ...
+    if (getReport().getData().getRowCount() == 0)
     {
       return new PostItemGroupState(this);
     }

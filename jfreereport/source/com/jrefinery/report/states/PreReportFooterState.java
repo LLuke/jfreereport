@@ -25,17 +25,12 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: PreReportFooterState.java,v 1.3 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
  */
 package com.jrefinery.report.states;
-
-import com.jrefinery.report.ReportProcessor;
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.ReportFooter;
-import com.jrefinery.report.event.ReportEvent;
 
 /**
  * At least the report has been finished. There is no more data to print, so just print
@@ -57,26 +52,11 @@ public class PreReportFooterState extends ReportState
   /**
    * Advances from this state to the next.
    *
-   * @param rpc  the report processor.
-   *
    * @return the next report state.
    */
-  public ReportState advance (ReportProcessor rpc)
+  public ReportState advance ()
   {
-    JFreeReport report = this.getReport ();
-    ReportFooter reportFooter = report.getReportFooter ();
-
-    if (rpc.isSpaceFor (reportFooter))
-    {
-      ReportEvent event = new ReportEvent (this);
-      this.fireReportFinishedEvent (event);
-      this.getDataRowConnector ().setDataRowBackend (this.getDataRowBackend ());
-      rpc.printReportFooter (reportFooter);
-      return new FinishState (this);
-    }
-    else
-    {
-      return this;
-    }
+    fireReportFinishedEvent ();
+    return new FinishState (this);
   }
 }

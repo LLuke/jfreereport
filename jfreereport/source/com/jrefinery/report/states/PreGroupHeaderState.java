@@ -25,17 +25,14 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PreGroupHeaderState.java,v 1.6 2002/11/25 23:20:43 taqua Exp $
+ * $Id: PreGroupHeaderState.java,v 1.7 2002/11/25 23:56:30 taqua Exp $
  *
  * Changes
  * -------
  */
 package com.jrefinery.report.states;
 
-import com.jrefinery.report.ReportProcessor;
-import com.jrefinery.report.Group;
-import com.jrefinery.report.GroupHeader;
-import com.jrefinery.report.event.ReportEvent;
+
 
 /**
  * Processes an groupheader. If there is not enough space to print the header,
@@ -47,9 +44,6 @@ import com.jrefinery.report.event.ReportEvent;
  */
 public class PreGroupHeaderState extends ReportState
 {
-  /** Flag indicating whether or not the page break has been done. */
-  private boolean handledPagebreak;
-
   /**
    * Creates a new 'pre-group-header' state.
    *
@@ -63,49 +57,14 @@ public class PreGroupHeaderState extends ReportState
   /**
    * Advances from this state to the next.
    *
-   * @param rpc  the report processor.
-   *
    * @return  the next state.
    */
-  public ReportState advance (ReportProcessor rpc)
+  public ReportState advance ()
   {
-    this.enterGroup ();
-
-    Group group = this.getReport ().getGroup (this.getCurrentGroupIndex ());
-    GroupHeader header = group.getHeader ();
-
-    // if the header has a pagebreak on the first row and the first group, then
-    // ignore that pagebreak, it would create an empty page.
-    if (handledPagebreak == false
-        && header.hasPageBreakBeforePrint ()
-        && ((this.getCurrentGroupIndex() != 1 || this.getCurrentDataItem() != -1)))
-    {
-      handledPagebreak = true;
-      rpc.setPageDone ();
-    }
-    else
-    {
-    // there is a header, test if there is enough space to print it
-      if (rpc.isSpaceFor (header))
-      {
-        // enough space, fire the events and proceed to PostGroupHeaderState
-        ReportEvent event = new ReportEvent (this);
-        this.fireGroupStartedEvent (event);
-        this.getDataRowConnector ().setDataRowBackend (this.getDataRowBackend ());
-        rpc.printGroupHeader (header);
-        return new PostGroupHeaderState (this);
-      }
-      else
-      {
-        handledPagebreak = true;
-      }
-    }
-
-    // Not enough space to print the header. Undo the GroupChange and wait until the
-    // pagebreak has been done. After this the engine may return here to attemp another
-    // print
-    this.leaveGroup ();
-    return this;
+    enterGroup ();
+    // enough space, fire the events and proceed to PostGroupHeaderState
+    fireGroupStartedEvent ();
+    return new PostGroupHeaderState (this);
   }
 
   /**

@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: StartState.java,v 1.2 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
@@ -33,11 +33,10 @@
 package com.jrefinery.report.states;
 
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.ReportProcessor;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.event.ReportEvent;
 
 import java.util.Date;
+import java.util.Iterator;
 
 /**
  * Initial state for a report. Prints the report header and proceeds to PostProcessHeader-State.
@@ -56,6 +55,16 @@ public class StartState extends ReportState
   public StartState (JFreeReport report) throws ReportProcessingException
   {
     super (report);
+    Iterator it = getLevels();
+    if (it.hasNext())
+    {
+      Integer i = (Integer) getLevels().next();
+      getFunctions().setLevel(i.intValue());
+    }
+    else
+    {
+      getFunctions().setLevel(0);
+    }
   }
 
   public StartState (FinishState fstate, int level) throws ReportProcessingException
@@ -70,24 +79,19 @@ public class StartState extends ReportState
    * <p>
    * Initialises the 'report.date' property, and fires a 'report-started' event.
    *
-   * @param rpc  the report processor.
-   *
    * @return the next state ('pre-report-header').
    */
-  public ReportState advance (ReportProcessor rpc)
+  public ReportState advance ()
   {
-    JFreeReport report = this.getReport ();
-    this.setCurrentPage (1);
+    setCurrentPage (1);
 
     // A PropertyHandler should set the properties.
-    this.setProperty (JFreeReport.REPORT_DATE_PROPERTY, new Date ());
+    setProperty (JFreeReport.REPORT_DATE_PROPERTY, new Date ());
 
     // Initialize the report before any band (and especially before the pageheader)
     // is printed.
-    ReportEvent event = new ReportEvent (this);
-    this.fireReportStartedEvent (event);
-
-    return new PreReportHeaderState (this);
+    fireReportStartedEvent ();
+    return new PreGroupHeaderState (this);
   }
 
   /**

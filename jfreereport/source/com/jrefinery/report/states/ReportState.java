@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.5 2002/11/25 23:20:43 taqua Exp $
+ * $Id: ReportState.java,v 1.6 2002/11/25 23:56:31 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -60,7 +60,6 @@ import com.jrefinery.report.DataRowConnector;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.ReportProcessor;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.LeveledExpressionList;
 import com.jrefinery.report.util.Log;
@@ -111,6 +110,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   /** The first page. */
   public static final int FIRST_PAGE = 1;
 
+  private int anchestorHashcode;
+
   /**
    * Constructs a ReportState for the specified report.
    *
@@ -131,7 +132,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     reportProperties = getReport().getProperties ();
 
     DataRowConnector dc = new DataRowConnector ();
-    dc.connectDataSources (getReport ());
+    DataRowConnector.connectDataSources (getReport (), dc);
     setDataRowConnector(dc);
 
     LeveledExpressionList functions = new LeveledExpressionList(getReport().getExpressions(), getReport().getFunctions());
@@ -144,6 +145,11 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     dr.setCurrentRow (getCurrentDisplayItem ());
     dr.setReportProperties(new ReportPropertiesList(reportProperties));
     setDataRowBackend (dr);
+
+    getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
+
+    // we have no clone-anchestor, so forget everyting
+    setAnchestorHashcode(this.hashCode());
 
     resetState();
   }
@@ -172,6 +178,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
     setDataRowBackend (clone.getDataRowBackend ());
     getDataRowBackend ().setCurrentRow (getCurrentDisplayItem ());
+    // we have no clone-anchestor, so forget everyting
+    setAnchestorHashcode(this.hashCode());
   }
 
   /**
@@ -240,13 +248,11 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * The advance method performs a transition from the current report state to the next report
    * state.  Each transition will usually involve some processing of the report.
    *
-   * @param prc  the report processor.
-   *
    * @return the next report state.
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public abstract ReportState advance (ReportProcessor prc) throws ReportProcessingException;
+  public abstract ReportState advance () throws ReportProcessingException;
 
   /**
    * Sets the report for this state.
@@ -465,8 +471,17 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       ReportState result = (ReportState) super.clone ();
       LeveledExpressionList functions = (LeveledExpressionList) getFunctions ().clone();
       result.setFunctions (functions);
+      result.report = (JFreeReport) report.clone();
       result.dataRow = (DataRowBackend) dataRow.clone ();
       result.dataRow.setFunctions (functions);
+      result.dataRowConnector = new DataRowConnector();
+      // disconnect the old datarow from all clones
+      DataRowConnector.disconnectDataSources(result.report, dataRowConnector);
+      functions.disconnectDataRow(dataRowConnector);
+      // and connect connect the new datarow to them
+      DataRowConnector.connectDataSources(result.report, result.dataRowConnector);
+      functions.connectDataRow(result.dataRowConnector);
+      result.dataRowConnector.setDataRowBackend(result.getDataRowBackend());
       return result;
     }
     catch (CloneNotSupportedException cne)
@@ -507,7 +522,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     }
 
     Log.debug ("State did not proceed: In Group: " + getCurrentGroupIndex() + ", DataItem: " + getCurrentDataItem() + ",Page: " + getCurrentPage() + " Class: " + getClass());
-    Log.debug ("Old State: " + oldstate.getClass());
+    Log.debug ("Old State: " + oldstate.getClass() );
     return false;
   }
 
@@ -566,101 +581,83 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
   /**
    * Fires a 'report-started' event.
-   *
-   * @param event the report event.
    */
-  public void fireReportStartedEvent (ReportEvent event)
+  public void fireReportStartedEvent ()
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.reportStarted (event);
+    this.functions.reportStarted (new ReportEvent(this));
   }
 
   /**
    * Fires a 'report-finished' event.
-   *
-   * @param event the report event.
    */
-  public void fireReportFinishedEvent (ReportEvent event)
+  public void fireReportFinishedEvent ()
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.reportFinished (event);
+    this.functions.reportFinished (new ReportEvent(this));
   }
 
   /**
    * Fires a 'page-started' event.
-   *
-   * @param event the report event.
    */
-  public void firePageStartedEvent (ReportEvent event)
+  public void firePageStartedEvent ()
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.pageStarted (event);
+    this.functions.pageStarted (new ReportEvent(this));
   }
 
   /**
    * Fires a 'page-finished' event.
-   *
-   * @param event the report event.
    */
-  public void firePageFinishedEvent (ReportEvent event)
+  public void firePageFinishedEvent ()
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.pageFinished (event);
+    this.functions.pageFinished (new ReportEvent(this));
   }
 
   /**
    * Fires a 'group-started' event.
-   *
-   * @param event the report event.
    */
-  public void fireGroupStartedEvent (ReportEvent event)
+  public void fireGroupStartedEvent ()
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.groupStarted (event);
+    this.functions.groupStarted (new ReportEvent(this));
   }
 
   /**
    * Fires a 'group-finished' event.
-   *
-   * @param event the report event.
    */
-  public void fireGroupFinishedEvent (ReportEvent event)
+  public void fireGroupFinishedEvent ()
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.groupFinished (event);
+    this.functions.groupFinished (new ReportEvent(this));
   }
 
   /**
    * Fires an 'items-started' event.
-   *
-   * @param event the report event.
    */
-  public void fireItemsStartedEvent (ReportEvent event)
+  public void fireItemsStartedEvent ()
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.itemsStarted (event);
+    this.functions.itemsStarted (new ReportEvent(this));
   }
 
   /**
    * Fires an 'items-finished' event.
-   *
-   * @param event the report event.
    */
-  public void fireItemsFinishedEvent (ReportEvent event)
+  public void fireItemsFinishedEvent ()
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.itemsFinished (event);
+    this.functions.itemsFinished (new ReportEvent(this));
   }
 
   /**
    * Fires an 'items-advanced' event.
-   *
-   * @param event the report event.
    */
-  public void fireItemsAdvancedEvent (ReportEvent event)
+  public void fireItemsAdvancedEvent ()
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.itemsAdvanced (event);
+    functions.itemsAdvanced (new ReportEvent(this));
   }
 
   public int getLevel ()
@@ -671,5 +668,21 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   public Iterator getLevels ()
   {
     return getFunctions().getLevelsDescending();
+  }
+
+  public int getAnchestorHashcode()
+  {
+    return anchestorHashcode;
+  }
+
+  protected void setAnchestorHashcode(int anchestorHashcode)
+  {
+    this.anchestorHashcode = anchestorHashcode;
+  }
+
+  public boolean isAnchestor (ReportState state)
+  {
+    Log.debug ("Me: " + getAnchestorHashcode() + " Him: " + state.getAnchestorHashcode());
+    return (state.getAnchestorHashcode() == getAnchestorHashcode());
   }
 }

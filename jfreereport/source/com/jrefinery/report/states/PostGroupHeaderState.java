@@ -25,14 +25,12 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: PostGroupHeaderState.java,v 1.2 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
  */
 package com.jrefinery.report.states;
-
-import com.jrefinery.report.ReportProcessor;
 
 /**
  * The groupHeader has been printed. If there are more groups defined, activate them
@@ -70,11 +68,9 @@ public class PostGroupHeaderState extends ReportState
    * If there are more groups, activate the next PreGroupHeaderState state, else activate
    * the PreItemGroupState state.
    *
-   * @param rpc  the report processor.
-   *
    * @return the next state.
    */
-  public ReportState advance (ReportProcessor rpc)
+  public ReportState advance ()
   {
     if (hasMoreGroups ())
     {
