@@ -2,7 +2,7 @@
  * Date: Jan 7, 2003
  * Time: 5:15:08 PM
  *
- * $Id: CSVWriter.java,v 1.2 2003/01/22 19:38:30 taqua Exp $
+ * $Id: CSVWriter.java,v 1.3 2003/02/03 18:52:46 taqua Exp $
  */
 package com.jrefinery.report.targets.csv;
 
@@ -58,11 +58,22 @@ public class CSVWriter extends AbstractFunction
   private Writer w;
   private int depLevel;
   private CSVQuoter quoter;
+  private boolean writeDataRowNames;
 
   public CSVWriter()
   {
     setDependencyLevel(-1);
     quoter = new CSVQuoter();
+  }
+
+  public boolean isWriteDataRowNames()
+  {
+    return writeDataRowNames;
+  }
+
+  public void setWriteDataRowNames(boolean writeDataRowNames)
+  {
+    this.writeDataRowNames = writeDataRowNames;
   }
 
   public Writer getWriter()
@@ -119,11 +130,14 @@ public class CSVWriter extends AbstractFunction
   {
     try
     {
-      CSVRow names = new CSVRow(quoter);
-      names.append ("level");
-      writeDataRowNames(event.getDataRow(), names);
-      names.write(getWriter());
-      
+      if (isWriteDataRowNames())
+      {
+        CSVRow names = new CSVRow(quoter);
+        names.append ("level");
+        writeDataRowNames(event.getDataRow(), names);
+        names.write(getWriter());
+      }
+
       CSVRow row = new CSVRow(quoter);
       row.append(-1);
       row.append("reportheader");

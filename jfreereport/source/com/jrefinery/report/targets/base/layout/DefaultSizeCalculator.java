@@ -28,11 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.3 2003/02/07 20:26:26 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.1 2003/02/07 22:40:40 taqua Exp $
  *
  * Changes
  * -------
  * 29-Jan-2003 : Initial version
+ * 05-Feb-2003 : Moved from package com.jrefinery.report.targets.pageable
  *
  */
 package com.jrefinery.report.targets.base.layout;

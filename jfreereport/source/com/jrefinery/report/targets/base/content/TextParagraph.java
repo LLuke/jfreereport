@@ -28,12 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.4 2003/02/05 13:25:29 taqua Exp $
+ * $Id: TextParagraph.java,v 1.5 2003/02/07 22:35:23 taqua Exp $
  *
  * Changes
  * -------
  *
- * 21-Jan-2002: BugFix: Breakline was inaccurate 
+ * 21-Jan-2003: BugFix: Breakline was inaccurate
+ * 07-Feb-2003: Documentation
  */
 package com.jrefinery.report.targets.base.content;
 
@@ -45,7 +46,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A content container.
+ * A paragraph of an given text content. A paragraph consists of one or more
+ * {@link TextLine}s.
  *
  * @author Thomas Morgner.
  */
@@ -95,7 +97,9 @@ public class TextParagraph extends ContentContainer
    */
   public void setContent(String content, Rectangle2D maxBounds)
   {
-    if (maxBounds.getX () < 0) 
+    if (content == null) throw new NullPointerException("MaxBounds must not be null");
+    if (maxBounds == null) throw new NullPointerException("MaxBounds must not be null");
+    if (maxBounds.getX () < 0)
     {
       throw new IllegalArgumentException();
     }
@@ -112,25 +116,28 @@ public class TextParagraph extends ContentContainer
       throw new IllegalArgumentException();
     }
 
-    int maxLines = (int) Math.floor(maxBounds.getHeight() / getSizeCalculator().getLineHeight());
-    List l = breakLines(content, (float) maxBounds.getWidth(), maxLines);
 
     double x = maxBounds.getX();
     double y = maxBounds.getY();
     double usedHeight = 0;
 
-    for (int i = 0; i < l.size(); i++)
+    int maxLines = (int) Math.floor(maxBounds.getHeight() / getSizeCalculator().getLineHeight());
+    if (maxLines > 0)
     {
-      // create Lines
-      String lineText = (String) l.get(i);
-      TextLine line = new TextLine(getSizeCalculator(), lineHeight);
-      double height = maxBounds.getHeight();
-      line.setContent(lineText, new Rectangle2D.Double(x, y + usedHeight,
-                                                       maxBounds.getWidth(), height - usedHeight));
-      usedHeight += line.getBounds().getHeight();
-      if (line.getBounds().getHeight() > 0)
+      List l = breakLines(content, (float) maxBounds.getWidth(), maxLines);
+      for (int i = 0; i < l.size(); i++)
       {
-        addContentPart(line);
+        // create Lines
+        String lineText = (String) l.get(i);
+        TextLine line = new TextLine(getSizeCalculator(), lineHeight);
+        double height = maxBounds.getHeight();
+        line.setContent(lineText, new Rectangle2D.Double(x, y + usedHeight,
+                                                         maxBounds.getWidth(), height - usedHeight));
+        usedHeight += line.getBounds().getHeight();
+        if (line.getBounds().getHeight() > 0)
+        {
+          addContentPart(line);
+        }
       }
     }
     setBounds(new Rectangle2D.Double(maxBounds.getX(), maxBounds.getY(),
@@ -155,7 +162,7 @@ public class TextParagraph extends ContentContainer
    *
    * @return a list of lines.
    */
-  protected List breakLines(String mytext, final float width, int maxLines)
+  private List breakLines(String mytext, final float width, int maxLines)
   {
     if (width <= 0)
     {
@@ -164,9 +171,9 @@ public class TextParagraph extends ContentContainer
 
     // a 0 maxLines is no longer allowed - to test the max size, ask the layoutmanager to
     // create a Max-Bounds and test that bound...
-    if (maxLines == 0)
+    if (maxLines < 1)
     {
-      maxLines = 1;
+      throw new IllegalArgumentException("MaxLines of <1 is not allowed");
     }
     
     // Reserve some space for the last line if there is more than one line to display.
@@ -268,14 +275,14 @@ public class TextParagraph extends ContentContainer
    *
    * @param base  the base string.
    * @param lineStart  the position of the first character in the line.
-   * @param start  ??.
+   * @param lastCheckedChar  the last character of the line, which is known to fit into the given width.
    * @param width  the maximum width.
    *
    * @return a string with '..' appended.
    */
-  private String appendReserveLit(String base, int lineStart, int start, float width)
+  private String appendReserveLit(String base, int lineStart, int lastCheckedChar, float width)
   {
-    if (start < 0) 
+    if (lastCheckedChar < 0)
     {
       throw new IllegalArgumentException("Start must not be negative");
     }
@@ -288,25 +295,24 @@ public class TextParagraph extends ContentContainer
       throw new IllegalArgumentException("LineStart must not be negative");
     }
 
+    // check whether the complete line would fit into the given width
     float toTheEnd = getSizeCalculator().getStringWidth(base, lineStart, base.length());
     if (toTheEnd <= width)
     {
       return base.substring(lineStart);
     }
 
-    float reserved = getSizeCalculator().getStringWidth(RESERVED_LITERAL, 0, 
-                                                        RESERVED_LITERAL.length());
-    String baseLine = base.substring(lineStart, start);
+    String baseLine = base.substring(lineStart, lastCheckedChar);
     float filler = width - (getSizeCalculator().getStringWidth(baseLine, 0, baseLine.length())) 
-                         - reserved;
+                         - reservedSize;
 
-    int maxFillerLength = base.length() - start;
+    int maxFillerLength = base.length() - lastCheckedChar;
     for (int i = 0; i < maxFillerLength; i++)
     {
-      float fillerWidth = getSizeCalculator().getStringWidth(base, start, start + i);
+      float fillerWidth = getSizeCalculator().getStringWidth(base, lastCheckedChar, lastCheckedChar + i);
       if (filler < fillerWidth)
       {
-        return base.substring(lineStart, start + i) + RESERVED_LITERAL;
+        return base.substring(lineStart, lastCheckedChar + i) + RESERVED_LITERAL;
       }
     }
     return baseLine + RESERVED_LITERAL;

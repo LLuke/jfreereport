@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.4 2003/02/05 13:25:29 taqua Exp $
+ * $Id: TextContent.java,v 1.5 2003/02/07 22:35:23 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A container for text content.
+ * A container for text content. The content will be split into paragraphs.
+ *
+ * @see TextParagraph
  *
  * @author Thomas Morgner
  */

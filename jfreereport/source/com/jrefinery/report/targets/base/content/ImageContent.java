@@ -28,11 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContent.java,v 1.3 2002/12/16 17:31:01 mungady Exp $
+ * $Id: ImageContent.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
  *
  * Changes
  * -------
  * 03-Dec-2002 : Javadocs (DG);
+ * 07-Feb-2003 : Moved from package com.jrefinery.report.targets.pageable.content.
  *
  */
 package com.jrefinery.report.targets.base.content;

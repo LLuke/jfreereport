@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContent.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
+ * $Id: ShapeContent.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
  *
  * Changes
  * -------
@@ -73,6 +73,9 @@ public class ShapeContent implements Content
    */
   public ShapeContent(Shape s, Rectangle2D bounds)
   {
+    if (shape == null) throw new NullPointerException();
+    if (bounds == null) throw new NullPointerException();
+
     this.shape = s;
     this.bounds = bounds;
   }

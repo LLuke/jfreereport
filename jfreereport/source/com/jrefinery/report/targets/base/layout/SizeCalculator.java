@@ -28,12 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SizeCalculator.java,v 1.3 2003/02/07 20:26:26 taqua Exp $
+ * $Id: SizeCalculator.java,v 1.1 2003/02/07 22:40:40 taqua Exp $
  *
  * Changes
  * -------
  * 03-Dec-2002 : Javadocs (DG);
- *
+ * 05-Feb-2003 : Moved from package com.jrefinery.report.targets.pageable
+ * 08-Feb-2002 : more Docs.
  */
 
 package com.jrefinery.report.targets.base.layout;
@@ -43,8 +44,8 @@ package com.jrefinery.report.targets.base.layout;
  * height of a line of text.  The calculations rely on state information (e.g. font size,
  * graphics device, etc) maintained by the calculator.
  * <p>
- * Every {@link com.jrefinery.report.targets.pageable.OutputTarget} can create an instance of a class that implements this interface,
- * via the {@link com.jrefinery.report.targets.pageable.OutputTarget#createTextSizeCalculator} method.
+ * Every {@link com.jrefinery.report.targets.base.layout.LayoutSupport} can create an instance of a class that implements this interface,
+ * via the {@link com.jrefinery.report.targets.base.layout.LayoutSupport#createTextSizeCalculator} method.
  *
  * @author Thomas Morgner
  */

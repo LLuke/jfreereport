@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextLine.java,v 1.2 2003/02/05 13:25:29 taqua Exp $
+ * $Id: TextLine.java,v 1.3 2003/02/07 22:35:23 taqua Exp $
  *
  * Changes
  * -------
@@ -58,11 +58,14 @@ public class TextLine implements Content
   /** The content bounds. */
   private Rectangle2D bounds;
 
+  /** The lineHeight defined for this line. */
   private float lineHeight;
+
   /**
    * Creates a new line of text.
    *
    * @param sizeCalc  the size calculator.
+   * @param lineheight the line height that should be used for this text line.
    */
   public TextLine (SizeCalculator sizeCalc, float lineheight)
   {
@@ -71,7 +74,7 @@ public class TextLine implements Content
     this.sizeCalc = sizeCalc;
     if (sizeCalc.getLineHeight() == 0)
     {
-      throw new IllegalStateException();
+      throw new IllegalStateException("This size calculator is not valid");
     }
   }
 
@@ -304,8 +307,19 @@ public class TextLine implements Content
     return getBounds();
   }
 
+  /**
+   * Returns a string representation of this text line.
+   *
+   * @return a string representation.
+   */
   public String toString ()
   {
-    return (getClass().getName() + "={ content=\"" + getContent() + "\", bounds=" + getBounds());
+    StringBuffer b = new StringBuffer();
+    b.append(getClass().getName());
+    b.append("={ content=\"");
+    b.append(getContent());
+    b.append("\", bounds=");
+    b.append(getBounds());
+    return (b.toString());
   }
 }
