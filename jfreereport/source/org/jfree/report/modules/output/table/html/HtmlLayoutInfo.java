@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlLayoutInfo.java,v 1.1 2003/07/14 17:40:06 taqua Exp $
+ * $Id: HtmlLayoutInfo.java,v 1.2 2003/08/18 18:28:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,15 +38,17 @@
 
 package org.jfree.report.modules.output.table.html;
 
+import java.awt.print.PageFormat;
+
 import org.jfree.report.modules.output.table.base.TableLayoutInfo;
 
 public class HtmlLayoutInfo extends TableLayoutInfo
 {
   private HtmlStyleCollection styleCollection;
 
-  public HtmlLayoutInfo(boolean globalLayout)
+  public HtmlLayoutInfo(boolean globalLayout, PageFormat format)
   {
-    super(globalLayout);
+    super(globalLayout, format);
   }
 
   public HtmlStyleCollection getStyleCollection()

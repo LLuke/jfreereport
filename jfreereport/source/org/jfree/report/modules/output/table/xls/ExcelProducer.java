@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.5 2003/08/18 18:28:01 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.6 2003/08/19 21:01:34 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@ package org.jfree.report.modules.output.table.xls;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Properties;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -86,18 +85,21 @@ public class ExcelProducer extends TableProducer
   /** the current excel sheet. */
   private HSSFSheet sheet;
 
+  /** The cell style producer is used to create cell content. */
   private HSSFCellStyleProducer cellStyleProducer;
 
-  /** cache the configuration value until there is a cell data factory. */
-  private boolean mapData;
+  /** A flag to keep track of the open state. */
   private boolean open;
+  
+  /** the row count used to indicate the progress. */
   private int layoutRowCount;
 
   /**
-   * Creates a new Excel producer.
+   * Creates a new Excel producer that will use an predefined layout to perform
+   * the output.
    *
    * @param out  the output stream.
-   *
+   * @param layout the tablelayout that contains the layout information.
    */
   public ExcelProducer(final TableLayoutInfo layout, final OutputStream out)
   {
@@ -111,15 +113,15 @@ public class ExcelProducer extends TableProducer
   }
 
   /**
-   * Creates a new Excel producer.
+   * Creates a new Excel producer to compute the layout.
    *
    * @param strict true, if a stricter layout should be used, false otherwise.
-   *
+   * @param info the tablelayout that will contain the grid boundries.
    * @see org.jfree.report.modules.output.table.base.TableGridBounds#isStrict
    */
-  public ExcelProducer(final boolean strict)
+  public ExcelProducer(TableLayoutInfo info, final boolean strict)
   {
-    super(new TableLayoutInfo(false), strict);
+    super(info, strict);
     cellDataFactory = null;
   }
 
@@ -141,7 +143,7 @@ public class ExcelProducer extends TableProducer
   {
     final ExcelCellStyleFactory cellStyleFactory = new ExcelCellStyleFactory();
     cellDataFactory = new ExcelCellDataFactory(cellStyleFactory);
-    cellDataFactory.setDefineDataFormats(mapData);
+    cellDataFactory.setDefineDataFormats(isMapData());
 
     if (isDummy() == false)
     {
@@ -250,11 +252,8 @@ public class ExcelProducer extends TableProducer
     }
 
     HSSFPrintSetup printSetup = sheet.getPrintSetup();
-    short paperFormat = parsePaperSize(printSetup);
-    if (paperFormat != -1)
-    {
-      printSetup.setPaperSize( paperFormat );
-    }
+    ExcelPrintSetupFactory.performPageSetup
+      (printSetup, getGridBoundsCollection().getPageFormat(), getProperty("Paper"));
         
     int startY = layoutRowCount;
 
@@ -345,15 +344,14 @@ public class ExcelProducer extends TableProducer
   }
 
   /**
-   * Configures the table producer by reading the configuration settings from
-   * the given map.
-   *
-   * @param configuration the configuration supplied by the table processor.
+   * Checks, whether to map numeric and date content to excel data cells.
+   * 
+   * @return true, if enhanced mapping is enabled, false otherwise.
    */
-  public void configure(final Properties configuration)
+  private boolean isMapData ()
   {
-    final String mapData = configuration.getProperty
+    final String mapData = getProperty
         (ExcelProcessor.ENHANCED_DATA_FORMAT_PROPERTY, "true");
-    this.mapData = (mapData.equalsIgnoreCase("true"));
+    return (mapData.equalsIgnoreCase("true"));
   }
 }

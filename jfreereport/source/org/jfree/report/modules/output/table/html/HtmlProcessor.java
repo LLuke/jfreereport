@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProcessor.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.3 2003/08/19 21:01:34 taqua Exp $
  *
  * Changes
  * -------
@@ -154,7 +154,8 @@ public class HtmlProcessor extends TableProcessor
    */
   protected TableProducer createDummyProducer()
   {
-    return new HtmlProducer(new HtmlLayoutInfo(false), isStrictLayout());
+    return new HtmlProducer
+      (new HtmlLayoutInfo(false, getReport().getDefaultPageFormat()), isStrictLayout());
   }
 
   /**

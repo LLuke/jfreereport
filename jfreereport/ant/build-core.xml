@@ -64,7 +64,7 @@
          basedir="build">
       <manifest>
           <attribute name="Class-Path"
-            value="${manifest-lib-prefix}/${jcommon-jar-file} ${manifest-lib-prefix}${pixie-jar-file}"/>
+            value="${manifest-lib-prefix}${jcommon-jar-file} ${manifest-lib-prefix}${pixie-jar-file}"/>
       </manifest>
     </jar>
 

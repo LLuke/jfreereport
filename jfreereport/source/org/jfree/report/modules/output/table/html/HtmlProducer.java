@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.3 2003/07/25 00:20:35 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.4 2003/08/18 18:28:01 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.modules.output.table.base.TableCellBackground;
@@ -91,7 +90,6 @@ public class HtmlProducer extends TableProducer
 
   /** a flag indicating whether this producer is open. */
   private boolean isOpen;
-  private boolean createBodyFragment;
 
   /** the standard XHTML document type declaration and header. */
   private static final String[] XHTML_HEADER = {
@@ -108,13 +106,16 @@ public class HtmlProducer extends TableProducer
     "     \"http://www.w3.org/TR/html4/strict.dtd\">",
     "<html>",
     "<head>"};
+  
+  /** The property key to define whether to build a html body fragment. */
   public static final String BODY_FRAGMENT = "BodyFragment";
 
 
   /**
-   * Creates a new HTMLProducer.
+   * Creates a new HTMLProducer. This producer uses the precomputed layout
+   * to generate the output.
    *
-   * @param layoutInfo
+   * @param layoutInfo the precomputed table layout information used to create the report.
    * @param strict a flag whether to use the strict layout mode.
    */
   public HtmlProducer(final HtmlLayoutInfo layoutInfo,
@@ -127,10 +128,12 @@ public class HtmlProducer extends TableProducer
   }
 
   /**
-   * Creates a new HTMLProducer.
+   * Creates a new HTMLProducer. This producer will perform the layouting
+   * but will not produce any output.
    *
    * @param filesystem the filesystem used to store the generated content.
    * @param useXHTML a flag whether to generate XHTML content.
+   * @param layoutInfo the layout info used to store the generated layoutinformation.
    */
   public HtmlProducer(final HtmlFilesystem filesystem,
                       final HtmlLayoutInfo layoutInfo,
@@ -159,7 +162,11 @@ public class HtmlProducer extends TableProducer
     return String.valueOf(getProperty(ENCODING, ENCODING_DEFAULT));
   }
 
-
+  /**
+   * Returns the html layout info instance used to compute the layout.
+   * 
+   * @return the layout info instance as HTML layout.
+   */
   protected HtmlLayoutInfo getHtmlLayoutInfo ()
   {
     return (HtmlLayoutInfo) getGridBoundsCollection();
@@ -267,6 +274,13 @@ public class HtmlProducer extends TableProducer
     }
   }
 
+  /**
+   * Creates the global Cascading Stylesheet definition for the 
+   * report.
+   * 
+   * @return the global stylesheet as html reference.
+   * @throws IOException if an error occured.
+   */
   private HtmlReferenceData getGlobalCSSData () throws IOException
   {
     //
@@ -527,25 +541,25 @@ public class HtmlProducer extends TableProducer
   }
 
   /**
-   * Configures the table producer by reading the configuration settings from
-   * the given map.
-   *
-   * @param configuration the configuration supplied by the table processor.
+   * Checks, whether to create a html body fragment. This fragment contains
+   * no html header an generates no global CSS section.
+   * 
+   * @return true, if a body fragment is used, false otherwise.
    */
-  public void configure(final Properties configuration)
-  {
-    setProperty(ENCODING, configuration.getProperty(ENCODING, ENCODING_DEFAULT));
-    setCreateBodyFragment(configuration.getProperty
-        (BODY_FRAGMENT, String.valueOf(isCreateBodyFragment())).equals("true"));
-  }
-
   public boolean isCreateBodyFragment()
   {
-    return createBodyFragment;
+    return getProperty(BODY_FRAGMENT, "false").equals("true");
   }
 
+  /**
+   * Defines, whether to create a html body fragment. This fragment contains
+   * no html header an generates no global CSS section.
+   * 
+   * @param createBodyFragment true, if a body fragment should be created, 
+   * false otherwise.
+   */
   public void setCreateBodyFragment(boolean createBodyFragment)
   {
-    this.createBodyFragment = createBodyFragment;
+    setProperty(BODY_FRAGMENT, String.valueOf(createBodyFragment));
   }
 }

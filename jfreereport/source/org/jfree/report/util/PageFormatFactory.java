@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageFormatFactory.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.2 2003/08/18 18:28:03 taqua Exp $
  *
  * Changes
  * -------
@@ -65,6 +65,9 @@ public final class PageFormatFactory
 
   /** Constant for dots per inch. */
   public static final int DOTS_PER_INCH = 72;
+
+  /** A standard paper size. */
+  public static final int[] PAPER11X17 = {792, 1224};
 
   /** A standard paper size. */
   public static final int[] PAPER10X11 = {720, 792};
@@ -326,6 +329,9 @@ public final class PageFormatFactory
 
   /** A standard paper size. */
   public static final int[] ENVITALIAN = {312, 652};
+
+  /** A standard paper size. */
+  public static final int[] ENVELOPE = {312, 652};
 
   /** A standard paper size. */
   public static final int[] ENVKAKU2 = {680, 941};
@@ -660,7 +666,7 @@ public final class PageFormatFactory
    */
   public double convertInchToPoints(final double inches)
   {
-    return inches * 72;
+    return inches * 72f;
   }
 
   /**

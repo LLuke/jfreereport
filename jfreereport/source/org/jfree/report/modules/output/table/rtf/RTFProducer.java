@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFProducer.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: RTFProducer.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,6 @@ package org.jfree.report.modules.output.table.rtf;
 import java.awt.Color;
 import java.io.OutputStream;
 import java.util.List;
-import java.util.Properties;
 
 import com.lowagie.text.Cell;
 import com.lowagie.text.Document;
@@ -295,15 +294,5 @@ public class RTFProducer extends TableProducer
   public boolean isOpen()
   {
     return open;
-  }
-
-  /**
-   * Configures the table producer by reading the configuration settings from
-   * the given map.
-   *
-   * @param configuration the configuration supplied by the table processor.
-   */
-  public void configure(final Properties configuration)
-  {
   }
 }

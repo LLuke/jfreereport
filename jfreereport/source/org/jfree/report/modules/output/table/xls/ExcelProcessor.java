@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelProcessor.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.3 2003/08/19 21:01:34 taqua Exp $
  *
  * Changes
  * -------
@@ -122,7 +122,8 @@ public class ExcelProcessor extends TableProcessor
    */
   protected TableProducer createDummyProducer()
   {
-    return new ExcelProducer(isStrictLayout());
+    return new ExcelProducer
+      (new TableLayoutInfo(false, getReport().getDefaultPageFormat()), isStrictLayout());
   }
 
   /**

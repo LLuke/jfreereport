@@ -28,29 +28,57 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: TableLayoutInfo.java,v 1.1 2003/07/14 17:40:06 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 12.07.2003 : Initial version
+ * 12-Jul-2003 : Initial version
  *  
  */
 
 package org.jfree.report.modules.output.table.base;
 
+import java.awt.print.PageFormat;
 import java.util.ArrayList;
 
+/**
+ * The tablelayout info class is used to store the layout that was generated
+ * in the repagination process. This layout can be shared over several pages
+ * to unify the look of the tables.
+ * 
+ * @author Thomas Morgner
+ */
 public class TableLayoutInfo
 {
+  /** A flag defining whether to use the global layout. */
   private boolean globalLayout;
+  /** A list of page layouts, one entry for every page. */
   private ArrayList pageLayouts;
+  /** the page format used for the layouting. */
+  private PageFormat pageFormat;
 
-  public TableLayoutInfo(boolean globalLayout)
+  /**
+   * Creates a new tablelayout info object to store the layout information.
+   * 
+   * @param globalLayout whether to use a global layout for all pages
+   * @param format the page format used in the report.
+   */
+  public TableLayoutInfo(boolean globalLayout, PageFormat format)
   {
+    if (format == null)
+    {
+      throw new NullPointerException("PageFormat is null");
+    }
     this.pageLayouts = new ArrayList();
     this.globalLayout = globalLayout;
+    this.pageFormat = format;
   }
 
+  /**
+   * Adds a layout for the next page to the layout information.
+   * 
+   * @param bounds the layout.
+   */
   public void addLayout (TableGridBounds bounds)
   {
     if (isGlobalLayout())
@@ -70,11 +98,24 @@ public class TableLayoutInfo
     }
   }
 
+  /**
+   * Checks, whether to define a global layout.
+   * 
+   * @return true, if the report uses an global layout, false otherwise.
+   */
   public boolean isGlobalLayout ()
   {
     return globalLayout;
   }
 
+  /**
+   * Returns the layout for a given page. This returns the same layout for
+   * all pages if the globallayout feature is enabled.
+   * 
+   * @param page the page for that the layout is requested.
+   * @return the stored layout.
+   * @throws IndexOutOfBoundsException if the page is invalid.
+   */
   public TableGridBounds getLayoutForPage (int page)
   {
     if (isGlobalLayout())
@@ -87,8 +128,28 @@ public class TableLayoutInfo
     }
   }
 
+  /**
+   * Return the number of pages stored in that list. This
+   * returns 1 if the global layout is active.
+   * 
+   * @return the number of pages.
+   */
   public int getPageCount ()
   {
     return pageLayouts.size();
   }
+  
+  
+  /**
+   * Returns the page format assigned with this layout.
+   * This methods return type will change next release, when a better
+   * way of defining page sizes is introduced.
+   *  
+   * @return the page format.
+   */
+  public PageFormat getPageFormat()
+  {
+    return pageFormat;
+  }
+
 }
