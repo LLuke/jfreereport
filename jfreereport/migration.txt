@@ -1,0 +1,70 @@
+Migrating from version 0.7.6 to 0.8.0
+
+If you are using the XML-Definition and the predefined PreviewDialogs only,
+you can skip the code changes, your reporting process has not changed.
+
+XML-Definition and changes in the reporting behaviour
+
+- Bands now contain all elements defined for band, the bands height
+  is altered to fit the elements. The predefined height set via setHeight()
+  is now a minimumHeight
+
+- Proportional values are evaluated by calculating the band size used by
+  static (non-proportional elements). Then the dimensions of all elements are
+  calculated, and the final band dimension defined.
+
+  This dimension is finally applied to the proportional values a second time,
+  and the elements are drawn.
+
+  It can cause problems if you ignore the 100% size of those relative elements,
+  so f.i. an element at position 90% and a height of > %10 could cause trouble.
+  Trouble means, that your layout looks a little bit weird within that band,
+  and that that invalid element is not printed properly.
+
+- All text elements have now vertical alignment (as implemented in the last cvs
+  version), bands can define default values for ElementAlignments.
+
+- GroupHeader can be repeated after an pagebreak. The last groupheader that is marked
+  as repeatable is repeated. If the groupheader + pageheader + pagefooter does not
+  fit on the current page, you get State-did-not-proceed errors.
+
+- The pagefooter can now contain dynamic elements.
+
+- and Finally: The Dynamic Elements work now! Real and tested! 
+
+Code Changes
+
+- all deprecated elements have been removed. Now there are only
+  3 elements left: ImageElement, ShapeElement, TextElement
+
+- as usual: elements should be created with the ItemFactory.
+
+- Elements store their attributes in StyleSheets.
+
+  The StyleSheet is accessible via Element.getStyle()
+  and can be queried via Element.getStyle().getStlyeProperty(StyleKey);
+
+  StyleKeys are defined in the class ElementStyleSheet for Elements and Bands
+  and BandStyleSheet for Bands only.
+
+- Element bounds have now a different meaning. Bounds are defined
+  by setting the StyleKey ABS_DIMENSION and ABS_POSITION.
+  ABS_DIMENSION is of type Dimension2D. To specify a float dimension
+  you could use com.jrefinery.report.targets.FloatDimension
+  ABS_POSITION is of type Point2D.
+
+- StyleKey BOUNDS is used internaly during the layouting.
+
+- the class JFreeReport is no longer used to repaginate the report or to
+  start processing of an report, use the PageableReportProcessor instead.
+
+  Instead of calling JFreeReport.processReport() you should now use this code:
+
+   // report created elsewhere
+   // the outputtarget must be opened
+
+      PageableReportProcessor proc = new PageableReportProcessor(report);
+      proc.setOutputTarget(target);
+      proc.processReport();
+
+   // don't forget to close the outputtarget ..
