@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.15 2003/04/11 14:11:47 taqua Exp $
+ * $Id: TextParagraph.java,v 1.16 2003/04/23 16:26:49 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ public class TextParagraph extends ContentContainer
 {
   /** A literal used for lines that get shortened by the linebreak implementation. */
   public static final String RESERVED_LITERAL = "..";
-  
+
   /** The reserved size. */
   private float reservedSize = 0;
 
@@ -76,7 +76,7 @@ public class TextParagraph extends ContentContainer
   {
     super(new Rectangle2D.Float());
     this.sizeCalculator = calc;
-    this.reservedSize = getSizeCalculator().getStringWidth(RESERVED_LITERAL, 0, 
+    this.reservedSize = getSizeCalculator().getStringWidth(RESERVED_LITERAL, 0,
                                                            RESERVED_LITERAL.length());
     this.lineHeight = lineHeight;
   }
@@ -102,7 +102,7 @@ public class TextParagraph extends ContentContainer
    */
   public void setContent (String content, final float x, final float y, final float width, final float height)
   {
-    if (content == null) 
+    if (content == null)
     {
       throw new NullPointerException("MaxBounds must not be null");
     }
@@ -136,7 +136,7 @@ public class TextParagraph extends ContentContainer
         String lineText = (String) l.get(i);
         TextLine line = new TextLine(getSizeCalculator(), lineHeight);
 
-        /*
+/*
         // strict assertation ... is expensive and not enabled by default ...
         float tt = getSizeCalculator().getStringWidth(lineText, 0, lineText.length());
         if (tt >= width)
@@ -144,7 +144,6 @@ public class TextParagraph extends ContentContainer
           throw new IllegalStateException("LineBreak failed!:" + width + " -> " + tt);
         }
         */
-
         line.setContent(lineText, x, y + usedHeight, width, height - usedHeight);
 
         usedHeight += line.getHeight();
@@ -175,7 +174,7 @@ public class TextParagraph extends ContentContainer
    *
    * @return a list of lines.
    */
-  private List breakLines(String mytext, final float width, int maxLines)
+  private List breakLines(String mytext, final float width, final int maxLines)
   {
     if (width <= 0)
     {
@@ -188,7 +187,7 @@ public class TextParagraph extends ContentContainer
     {
       throw new IllegalArgumentException("MaxLines of <1 is not allowed");
     }
-    
+
     // Reserve some space for the last line if there is more than one line to display.
     // If there is only one line, don't cut the line yet. Perhaps we intruduce the strict
     // mode later, but without any visual editing it would be cruel to any report designer.
@@ -202,7 +201,6 @@ public class TextParagraph extends ContentContainer
       return returnLines;
     }
 
-
     while (lineStartPos < lineLength)
     {
       // the whole text section contains white spaces ... must be skipped ..
@@ -214,82 +212,105 @@ public class TextParagraph extends ContentContainer
         lineStartPos++;
       }
 
-      int startPos = lineStartPos;
-
-      int endPos;
-      float x = 0;
-      float w = width;
-
-      // add by leonlyong
-      int wordCnt = 0;
-
-      // check the complete line, break when the complete text is done or
-      // the end of the line has been reached.
-      while (((endPos = breakit.next()) != BreakIterator.DONE))
-      {
-
-        // add by leonlyong
-        wordCnt++;
-
-        x += getSizeCalculator().getStringWidth(mytext, startPos, endPos);
-        if (returnLines.size() == (maxLines - 1))
-        {
-          // here is the last line, check whether the reserved literal will fit in here.
-          if (x >= (w - reservedSize))
-          {
-            // it won't fit in, so break ...
-            break;
-          }
-        }
-        else
-        {
-          if (x > w)
-          {
-            // add by leonlyong
-            //when the first word of the line is too big then cut the word ...
-            if (wordCnt == 1)
-            {
-              while (getSizeCalculator().getStringWidth(mytext, startPos, endPos) > w)
-              {
-                endPos--;
-              }
-              startPos = endPos;
-              endPos = breakit.previous();
-            }
-
-            break;
-          }
-        }
-        // the word is complete ... check whether the next word will fit on the line.
-        startPos = endPos;
-      }
+      boolean forceEnd = ((returnLines.size() - 1) == maxLines);
+      int nextPos = findNextBreak(mytext, lineStartPos, width, forceEnd, breakit);
 
       // the complete text is finished, noting more to do here.
-      if (endPos == BreakIterator.DONE)
+      if (nextPos == BreakIterator.DONE)
       {
         String addString = mytext.substring(lineStartPos);
         returnLines.add(addString);
-        break;
+        return returnLines;
       }
 
-      // if this is the last allowed row, add the RESERVED_LITERAL to the string ..
-      if (returnLines.size() == (maxLines - 1))
+      if (forceEnd)
       {
-        // altered:
-        returnLines.add(appendReserveLit(mytext, lineStartPos, startPos, width));
+        // it won't fit in, so break ...
+        returnLines.add(appendReserveLit(mytext, lineStartPos, nextPos, width));
         return returnLines;
       }
       else
       {
-
         // End the line and restart for the next line ...
-        String addString = mytext.substring(lineStartPos, startPos);
+        String addString = mytext.substring(lineStartPos, nextPos);
         returnLines.add(addString);
-        lineStartPos = startPos;
+        lineStartPos = nextPos;
       }
     }
     return returnLines;
   }
+
+  /**
+   * Locates the next linebreak for the given text.
+   *
+   * @param text the text that should be broken into lines
+   * @param lineStart the position where the current line beginns
+   * @param width the maximum width for a single line
+   * @param forceEnd whether to enforce the end of the paragraph after that line
+   * @param breakit the break iterator for the text
+   * @return the most suitable position for an linebreak.
+   */
+  private int findNextBreak (final String text,
+                             final int lineStart,
+                             final float width,
+                             final boolean forceEnd,
+                             WordBreakIterator breakit)
+  {
+    int startPos = lineStart;
+    int endPos;
+    float x = 0;
+    // by default, we assume, that the line contains no break-positions,
+    // like whitespaces etc.
+    boolean enableCharBreak = true;
+
+    // Break on WORD boundries ...
+    // ---------------------------
+    // check the complete line, break when the complete text is done or
+    // the end of the line has been reached.
+    while (((endPos = breakit.next()) != BreakIterator.DONE))
+    {
+      x += getSizeCalculator().getStringWidth(text, startPos, endPos);
+      if (forceEnd)
+      {
+        // here is the last line, check whether the reserved literal will fit
+        // in to the line, if not, then we have reached the end of the text field.
+        if (x >= (width - reservedSize))
+        {
+          // return the last known linebreak pos...
+          return startPos;
+        }
+      }
+      else
+      {
+        if (x > width)
+        {
+          //when the first word of the line is too big then cut the word ...
+          if (enableCharBreak)
+          {
+            while (getSizeCalculator().getStringWidth(text, startPos, endPos) > width)
+            {
+              endPos--;
+            }
+            breakit.setPosition(endPos);
+            return endPos;
+          }
+          else
+          {
+            endPos = breakit.previous();
+            return endPos;
+          }
+        }
+      }
+
+      // we found at least one break-boundry ...
+      enableCharBreak = false;
+
+      // the word is complete ... check whether the next word will fit on the line.
+      startPos = endPos;
+    }
+    return BreakIterator.DONE;
+  }
+
 
   /**
    * Add the reserve literal to the end of the string, but make sure that as much as
@@ -298,7 +319,7 @@ public class TextParagraph extends ContentContainer
    *
    * @param base  the base string.
    * @param lineStart  the position of the first character in the line.
-   * @param lastCheckedChar  the last character of the line, which is known to fit into the given 
+   * @param lastCheckedChar  the last character of the line, which is known to fit into the given
    *                         width.
    * @param width  the maximum width.
    *
@@ -310,11 +331,11 @@ public class TextParagraph extends ContentContainer
     {
       throw new IllegalArgumentException("Start must not be negative");
     }
-    if (width < 0) 
+    if (width < 0)
     {
       throw new IllegalArgumentException("Width must not be negative");
     }
-    if (lineStart < 0) 
+    if (lineStart < 0)
     {
       throw new IllegalArgumentException("LineStart must not be negative");
     }
@@ -327,13 +348,13 @@ public class TextParagraph extends ContentContainer
     }
 
     String baseLine = base.substring(lineStart, lastCheckedChar);
-    float filler = width - (getSizeCalculator().getStringWidth(baseLine, 0, baseLine.length())) 
+    float filler = width - (getSizeCalculator().getStringWidth(baseLine, 0, baseLine.length()))
                          - reservedSize;
 
     int maxFillerLength = base.length() - lastCheckedChar;
     for (int i = 1; i < maxFillerLength; i++)
     {
-      float fillerWidth = getSizeCalculator().getStringWidth(base, lastCheckedChar, 
+      float fillerWidth = getSizeCalculator().getStringWidth(base, lastCheckedChar,
                                                              lastCheckedChar + i);
       if (filler < fillerWidth)
       {

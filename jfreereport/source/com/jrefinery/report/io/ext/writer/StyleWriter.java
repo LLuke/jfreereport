@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.11 2003/04/28 22:21:44 taqua Exp $
+ * $Id: StyleWriter.java,v 1.12 2003/05/02 12:40:17 taqua Exp $
  *
  * Changes
  * -------
@@ -116,6 +116,29 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     }
   }
 
+  private ObjectDescription findObjectDescription (StyleKey key, Object o)
+  {
+    ClassFactoryCollector cc = getReportWriter().getClassFactoryCollector();
+    ObjectDescription od = cc.getDescriptionForClass(key.getValueType());
+    if (od != null)
+    {
+      return od;
+    }
+
+    Log.warn ("Unable to find object description for native style key class: " + key.getValueType());
+    od = cc.getDescriptionForClass(o.getClass());
+    if (od != null)
+    {
+      return od;
+    }
+
+    Log.warn ("Unable to find object description for implemented style key class: " + o.getClass());
+    // search the most suitable super class object description ...
+    od = cc.getSuperClassObjectDescription(key.getValueType(), od);
+    od = cc.getSuperClassObjectDescription(o.getClass(), od);
+    return od;
+  }
+
   /**
    * Writes a stylekey.
    * 
@@ -129,17 +152,11 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
   private void writeKeyValue (Writer w, StyleKey key, Object o)
     throws IOException, ReportWriterException
   {
-    ClassFactoryCollector cc = getReportWriter().getClassFactoryCollector();
-    ObjectDescription od = cc.getDescriptionForClass(key.getValueType());
+    ObjectDescription od = findObjectDescription(key, o);
     if (od == null)
     {
-      Log.warn ("Unable to find object description for native style key class: " + key.getValueType()); 
-      od = cc.getDescriptionForClass(o.getClass());
-      if (od == null)
-      {
-        throw new ReportWriterException("Unable to find object description for key: "
-                                        + key.getName());
-      }
+      throw new ReportWriterException("Unable to find object description for key: "
+                                      + key.getName());
     }
 
     try

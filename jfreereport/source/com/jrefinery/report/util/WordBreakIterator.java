@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WordBreakIterator.java,v 1.3 2003/04/06 18:11:31 taqua Exp $
+ * $Id: WordBreakIterator.java,v 1.4 2003/04/09 00:12:30 mungady Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ public class WordBreakIterator
   private int position;
   
   /** The last position. */
-  private int lastFound;
+ // private int lastFound;
   
   /** Storage for characters. */
   private char[] text;
@@ -88,7 +88,7 @@ public class WordBreakIterator
       return DONE;
     }
 
-    lastFound = position;
+    //lastFound = position;
 
     if (Character.isWhitespace(text[position]))
     {
@@ -138,7 +138,42 @@ public class WordBreakIterator
    */
   public int previous()
   {
-    return lastFound;
+    //return lastFound;
+
+    if (position == 0)
+    {
+      return 0;
+    }
+    if (text == null)
+    {
+      return DONE;
+    }
+    if (position == DONE)
+    {
+      position = text.length;
+      return position;
+    }
+    //lastFound = position;
+
+    if (Character.isWhitespace(text[position - 1]))
+    {
+      // search the first non whitespace character ..., this is the beginning of the word
+      while ((position > 0) && (Character.isWhitespace(text[position - 1])))
+      {
+        position--;
+      }
+      return position;
+    }
+    else
+    {
+      // now search the first whitespace character ..., this is the end of the word
+      while ((position > 0) && (Character.isWhitespace(text[position - 1]) == false))
+      {
+        position--;
+      }
+      return position;
+    }
+
   }
 
   /**
@@ -159,7 +194,32 @@ public class WordBreakIterator
   public void setText(String text)
   {
     position = 0;
-    lastFound = 0;
+    //lastFound = 0;
     this.text = text.toCharArray();
+  }
+
+  public int getPosition()
+  {
+    return position;
+  }
+
+  public void setPosition(int position)
+  {
+    this.position = position;
+  }
+
+  public static void main (String [] args)
+  {
+    WordBreakIterator wb = new WordBreakIterator("FirstName a verylong text indeeed");
+    wb.setPosition(DONE);
+    while (wb.previous() != 0)
+    {
+      System.out.println ("Pos: " + wb.getPosition());
+    }
+    System.out.println ("---------------------------------------------------------");
+    while (wb.nextWithEnd() != DONE)
+    {
+      System.out.println ("Pos: " + wb.getPosition());
+    }
   }
 }

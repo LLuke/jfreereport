@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceCollector.java,v 1.10 2003/04/24 18:08:50 taqua Exp $
+ * $Id: DataSourceCollector.java,v 1.11 2003/05/02 12:40:08 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -43,6 +43,8 @@ import java.util.Iterator;
 
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ObjectDescription;
+import org.jfree.xml.factory.objects.ClassComparator;
+import org.jfree.util.Configuration;
 
 /**
  * A {@link DataSourceFactory} created from a number of other factories.
@@ -54,12 +56,17 @@ public class DataSourceCollector implements DataSourceFactory
   /** Storage for the factories. */
   private ArrayList factories;
 
+  private ClassComparator comparator;
+  /** The parser/report configuration */
+  private Configuration config;
+
   /**
    * Creates a new factory.
    */
   public DataSourceCollector()
   {
     factories = new ArrayList();
+    comparator = new ClassComparator();
   }
 
   /**
@@ -152,15 +159,28 @@ public class DataSourceCollector implements DataSourceFactory
    * 
    * @return The description.
    */
-  public ObjectDescription getSuperClassObjectDescription (Class d)
+  public ObjectDescription getSuperClassObjectDescription (Class d, ObjectDescription knownSuperClass)
   {
     for (int i = 0; i < factories.size(); i++)
     {
       DataSourceFactory fact = (DataSourceFactory) factories.get(i);
-      ObjectDescription o = fact.getSuperClassObjectDescription(d);
-      if (o != null) 
+      ObjectDescription od = fact.getSuperClassObjectDescription(d, knownSuperClass);
+      if (od != null)
       {
-        return o;
+        if (knownSuperClass == null)
+        {
+          knownSuperClass = od;
+        }
+        else
+        {
+          if (comparator.isComparable(knownSuperClass.getObjectClass(), od.getObjectClass()))
+          {
+            if (comparator.compare(knownSuperClass.getObjectClass(), od.getObjectClass()) < 0)
+            {
+              knownSuperClass = od;
+            }
+          }
+        }
       }
     }
     return null;
@@ -185,5 +205,35 @@ public class DataSourceCollector implements DataSourceFactory
     }
     return list.iterator();
   }
-  
+
+  /**
+   * Configures this factory. The configuration contains several keys and
+   * their defined values. The given reference to the configuration object
+   * will remain valid until the report parsing or writing ends.
+   * <p>
+   * The configuration contents may change during the reporting.
+   *
+   * @param config the configuration, never null
+   */
+  public void configure(Configuration config)
+  {
+    if (config == null)
+    {
+      throw new NullPointerException("The given configuration is null");
+    }
+    if (this.config != null)
+    {
+      // already configured ... ignored
+      return;
+    }
+
+    this.config = config;
+    Iterator it = factories.iterator();
+    while (it.hasNext())
+    {
+      ObjectDescription od = (ObjectDescription) it.next();
+      od.configure(config);
+    }
+
+  }
 }

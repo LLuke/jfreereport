@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtReportHandler.java,v 1.9 2003/04/24 18:08:49 taqua Exp $
+ * $Id: ExtReportHandler.java,v 1.10 2003/05/02 12:40:02 taqua Exp $
  *
  * Changes
  * -------
@@ -179,7 +179,7 @@ public class ExtReportHandler implements ElementDefinitionHandler
 
       // special treatment for URLs, they need the content base information ...
       URL contentBase = (URL) getParser().getConfigurationValue(Parser.CONTENTBASE_KEY);
-      fc.addFactory(new URLClassFactory(contentBase));
+      fc.addFactory(new URLClassFactory());
 
       getParser().setConfigurationValue(ParserConfigHandler.OBJECT_FACTORY_TAG, fc);
     }
