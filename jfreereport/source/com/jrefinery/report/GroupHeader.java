@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,42 +28,50 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: GroupHeader.java,v 1.1.1.1 2002/04/25 17:02:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 18-Feb-2002 : Changed height from Number --> float (DG);
- *
+ * 10-May-2002 : remove all compex constructors, added PageBreakBeforePrintProperty
  */
 
 package com.jrefinery.report;
 
-import java.util.Collection;
-
 /**
  * A report band that appears at the beginning of each instance of a group.
  */
-public class GroupHeader extends Band {
+public class GroupHeader extends Band
+{
 
-    /**
-     * Constructs a group header band with the specified height, containing no elements.
-     *
-     * @param height The height of the band.
-     */
-    public GroupHeader(float height) {
-        this(height, null);
-    }
+  private boolean pageBreak;
 
-    /**
-     * Constructs a group header band with the specified height, containing the specified
-     * collection of elements.
-     *
-     * @param height The height of the band.
-     * @param elements The collection of elements for the band.
-     */
-    public GroupHeader(float height, Collection elements) {
-        super(height, elements);
-    }
+  /**
+   * Constructs a group header band with the specified height, containing no elements.
+   *
+   * @param height The height of the band.
+   */
+  public GroupHeader ()
+  {
+    pageBreak = false;
+  }
+
+  /**
+   * @returns true if this group should trigger a pagebreak before its header is printed,
+   * false otherwise
+   */
+  public boolean hasPageBreakBeforePrint ()
+  {
+    return pageBreak;
+  }
+
+  /**
+   * defines whether this group should trigger a pagebreak before its header is printed.
+   */
+  public void setPageBreakBeforePrint (boolean b)
+  {
+    this.pageBreak = b;
+  }
 
 }

@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,18 +28,17 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ReportHeader.java,v 1.1.1.1 2002/04/25 17:02:20 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 18-Feb-2002 : Multiple changes with introduction of XML format for report definition (DG);
- *
+ * 10-May-2002 : Removed all complex constructors. Property "ownPage" can be set by accessor.
  */
 
 package com.jrefinery.report;
 
-import java.util.Collection;
 
 /**
  * A report band that is printed once-only at the beginning of the report.  A report header is
@@ -47,59 +47,38 @@ import java.util.Collection;
  * A flag can be set telling the report generator to begin a new page after printing the report
  * header.
  */
-public class ReportHeader extends Band {
+public class ReportHeader extends Band
+{
 
-    /** Flag indicating whether or not the report header appears on its own on page 1 of the
-        report. */
-    protected boolean ownPage;
+  /** Flag indicating whether or not the report header appears on its own on page 1 of the
+   report. */
+  private boolean ownPage;
 
-    /**
-     * Constructs a report header, initially containing no elements.
-     *
-     * @param height The band height.
-     */
-    public ReportHeader(float height) {
-        this(height, null, false);
-    }
+  /**
+   * Constructs a report header, initially containing no elements.
+   *
+   * @param height The band height.
+   */
+  public ReportHeader ()
+  {
+  }
 
-    /**
-     * Constructs a report header containing some elements.
-     *
-     * @param height The band height.
-     * @param elements The elements.
-     */
-    public ReportHeader(float height, Collection elements) {
-        this(height, elements, false);
-    }
+  /**
+   * defines whether the report header appears on its own page.
+   */
+  public void setOwnPage (boolean b)
+  {
+    this.ownPage = b;
 
-    /**
-     * Constructs a report header, initially containing no elements.
-     *
-     * @param height The height.
-     */
-    public ReportHeader(float height, boolean ownPage) {
-        this(height, null, ownPage);
-    }
+  }
 
-    /**
-     * Constructs a report header with the specified height, to contain the specified elements.
-     *
-     * @param height The height of the band.
-     * @param elements The elements that appear within the band.
-     */
-    public ReportHeader(float height, Collection elements, boolean ownPage) {
-
-        super(height, elements);
-        this.ownPage = ownPage;
-
-    }
-
-    /**
-     * Returns true if the report header appears on its own page, and false otherwise.
-     * @return A flag indicating whether or not the header appears on its own page.
-     */
-    public boolean getOwnPage() {
-        return this.ownPage;
-    }
+  /**
+   * Returns true if the report header appears on its own page, and false otherwise.
+   * @return A flag indicating whether or not the header appears on its own page.
+   */
+  public boolean isOwnPage ()
+  {
+    return this.ownPage;
+  }
 
 }

@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PreviewAction.java,v 1.1 2002/05/07 14:16:34 mungady Exp $
  *
  * Changes
  * -------
@@ -37,55 +38,59 @@
 
 package com.jrefinery.report.demo;
 
-import java.util.ResourceBundle;
-import java.awt.event.ActionEvent;
+import com.jrefinery.report.preview.PreviewFrame;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
-import javax.swing.Action;
-import javax.swing.AbstractAction;
 import javax.swing.SwingUtilities;
-import com.jrefinery.report.JFreeReportConstants;
-import com.jrefinery.report.PreviewFrame;
+import java.awt.event.ActionEvent;
+import java.util.ResourceBundle;
 
-public class PreviewAction extends AbstractAction implements Runnable {
+public class PreviewAction extends AbstractAction implements Runnable
+{
 
-    private JFreeReportDemo demo;
+  private JFreeReportDemo demo;
 
-    /**
-     * Constructs a new action.
-     */
-    public PreviewAction(JFreeReportDemo demo, ResourceBundle resources) {
+  /**
+   * Constructs a new action.
+   */
+  public PreviewAction (JFreeReportDemo demo, ResourceBundle resources)
+  {
 
-        this.demo = demo;
+    this.demo = demo;
 
-        String name = resources.getString("action.print-preview.name");
-        this.putValue(Action.NAME, name);
+    String name = resources.getString ("action.print-preview.name");
+    this.putValue (Action.NAME, name);
 
-        String description = resources.getString("action.print-preview.description");
-        this.putValue(Action.SHORT_DESCRIPTION, description);
+    String description = resources.getString ("action.print-preview.description");
+    this.putValue (Action.SHORT_DESCRIPTION, description);
 
-        Integer mnemonic = (Integer)resources.getObject("action.print-preview.mnemonic");
-        this.putValue(Action.MNEMONIC_KEY, mnemonic);
+    Integer mnemonic = (Integer) resources.getObject ("action.print-preview.mnemonic");
+    this.putValue (Action.MNEMONIC_KEY, mnemonic);
 
-        KeyStroke accelerator = (KeyStroke)resources.getObject("action.print-preview.accelerator");
-        this.putValue(Action.ACCELERATOR_KEY, accelerator);
+    KeyStroke accelerator = (KeyStroke) resources.getObject ("action.print-preview.accelerator");
+    this.putValue (Action.ACCELERATOR_KEY, accelerator);
 
-        ImageIcon icon16 = new ImageIcon(PreviewAction.class.getResource("PrintPreview16.gif"));
-        this.putValue(Action.SMALL_ICON, icon16);
+    ImageIcon icon16 = PreviewFrame.secureResourceLoad ("PrintPreview16.gif");
+    this.putValue (Action.SMALL_ICON, icon16);
 
-        ImageIcon icon24 = new ImageIcon(PreviewAction.class.getResource("PrintPreview24.gif"));
-        this.putValue("ICON24", icon24);
+    ImageIcon icon24 = PreviewFrame.secureResourceLoad ("PrintPreview24.gif");
+    this.putValue ("ICON24", icon24);
 
-        this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportDemo.PRINT_PREVIEW_COMMAND);
+    this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportDemo.PRINT_PREVIEW_COMMAND);
 
-    }
+  }
 
-    public void actionPerformed(ActionEvent e) {
-        SwingUtilities.invokeLater(this);
-    }
+  public void actionPerformed (ActionEvent e)
+  {
+    SwingUtilities.invokeLater (this);
+  }
 
-    public void run() {
-        demo.attemptPreview();
-    }
+  public void run ()
+  {
+    demo.attemptPreview ();
+  }
 
 }

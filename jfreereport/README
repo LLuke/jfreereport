@@ -74,7 +74,7 @@ For example, on Linux, the following command line will run the demo
 application (when the current working directory is
 jfreereport-0.7.0/jars):
 
-java -classpath .:jcommon-0.5.6.jar:jfreereport-0.7.0.jar:iText.jar:gnujaxp.jar com.jrefinery.chart.demo.JFreeReportDemo
+java -classpath .:pixie.jar:jcommon-0.6.1.jar:jfreereport-0.7.2.jar:iText.jar:gnujaxp.jar com.jrefinery.report.demo.JFreeReportDemo
 
 Depending on your system configuration and the current working
 directory, you may need to specify different paths in the above
@@ -86,24 +86,5 @@ with a semi-colon, not a colon.
 Note that the demo application looks for the files report1.xml and
 report2.xml on the classpath.  These files contain sample report
 definitions.
-
----------------
-5.  WHAT's NEW
----------------
-A list of changes in recent versions:
-
-0.7.1 : (24-Apr-2002) A DTD exists for the default report parser, support
-        for images, multilined text, and some updates to the PreviewFrame.
-				JFreeReport includes a modified version of Pixie to support the
-				wmf-file format.
-
-0.7.0 : (8-Mar-2002) Reports can now be saved to PDF format using the
-        iText PDF generator (http://www.lowagie.com/itext/).
-        Integrated code contributed by Thomas Morgner including report
-        functions, XML report definitions and various bug fixes.
-        JFreeReport no longer user ANTLR-parsed report definitions.
-
-0.6.0 : (8-Feb-2002) A minor update to ensure compatibility with the
-        JCommon Class Library.
 
 

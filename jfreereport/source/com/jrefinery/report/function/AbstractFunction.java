@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,166 +28,269 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: AbstractFunction.java,v 1.1.1.1 2002/04/25 17:02:32 taqua Exp $
  *
  * Changes
  * -------
  * 15-Feb-2002 : Version 1, contributed by Thomas Morgner (DG);
- * 24-Apr-2002 : Added property support and removed the get/set Field/Group 
+ * 24-Apr-2002 : Added property support and removed the get/set Field/Group
  *               functions.
+ * 10-May-2002 : Support for ReportListenerInterface added. All old eventFunctions are
+ *               marked deprecated. The name-attribute must not be null, or the validity check
+ *               will fail.
  */
 
 package com.jrefinery.report.function;
 
-import javax.swing.table.TableModel;
-import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.Group;
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.ReportState;
+import com.jrefinery.report.event.ReportListenerAdapter;
+import com.jrefinery.report.event.ReportEvent;
+
+import javax.swing.table.TableModel;
 import java.util.Properties;
 
 /**
  * Base class for implementing new report functions.  Provides empty implementations of all the
  * methods in the ReportFunction interface.
- *
+ * <p>
  * All parameters are checked by the parser using the isInitialized () function.
  * If the function returns false, one or more properties are missing and the
- * report parsing will be aborted. Make sure, that you fully implement all validity 
+ * report parsing will be aborted. Make sure, that you fully implement all validity
  * checks using this function.
  */
-public abstract class AbstractFunction implements Function, Cloneable {
+public abstract class AbstractFunction extends ReportListenerAdapter implements Function
+{
+  private Properties properties;
 
-    protected Properties properties;
+  /** The function name. */
+  private String name;
 
-    /** The function name. */
-    protected String name;
+  /**
+   * Constructs a new function.
+   *
+   * @param name The function name.
+   */
+  protected AbstractFunction ()
+  {
+    this.properties = new Properties ();
+  }
 
-    /**
-     * Constructs a new function.
-     *
-     * @param name The function name.
-     */
-    protected AbstractFunction(String name) 
-    {
-        this.name = name;
-        this.properties = new Properties ();
-    }
+  /**
+   * Returns the function name.
+   */
+  public String getName ()
+  {
+    return this.name;
+  }
 
-    /**
-     * Returns the function name.
-     */
-    public String getName() {
-        return this.name;
-    }
+  /**
+   * Sets the function name.
+   */
+  public void setName (String name)
+  {
+    if (name == null)
+      throw new NullPointerException ("Name must not be null");
 
-    /**
-     * Sets the function name.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+    this.name = name;
+  }
 
-    /**
-     * Initialises the function.
-     */
-    public void initialise() {
-        // do nothing
-    }
+  public void initialize () throws FunctionInitializeException
+  {
+    if (name == null) throw new FunctionInitializeException("FunctionName is null");
+    if (!isInitialized()) throw new FunctionInitializeException("isInitialized failed.");
+  }
 
-    /**
-     * Receives notification that a report is starting.
-     */
-    public void startReport(JFreeReport report) {
-        // do nothing
-    }
+  /**
+   * Maps the reportStarted-method to the legacy function startReport ().
+   */
+  public void reportStarted (ReportEvent event)
+  {
+    JFreeReport report = event.getReport ();
+    startReport (report);
+  }
 
-    /**
-     * Receives notification that a report is ending.
-     */
-    public void endReport(JFreeReport report) {
-        // do nothing
-    }
+  /**
+   * Receives notification that a report is starting.
+   * @deprecated Use the ReportListener interface instead.
+   */
+  public void startReport (JFreeReport report)
+  {
+    // do nothing
+  }
 
-    /**
-     * Receives notification that a page is starting.
-     */
-    public void startPage(int page) {
-        // do nothing
-    }
+  /**
+   * Maps the reportFinished-method to the legacy function endReport ().
+   */
+  public void reportFinished (ReportEvent event)
+  {
+    JFreeReport report = event.getReport ();
+    endReport (report);
+  }
 
-    /**
-     * Receives notification that a page is ending.
-     */
-    public void endPage(int page) {
-        // do nothing
-    }
+  /**
+   * Receives notification that a report is ending.
+   * @deprecated Use the ReportListener interface instead.
+   */
+  public void endReport (JFreeReport report)
+  {
+    // do nothing
+  }
 
-    /**
-     * Receives notification that a group is starting.
-     */
-    public void startGroup(Group g) {
-        // do nothing
-    }
+  /**
+   * Maps the pageStarted-method to the legacy function startPage (int).
+   */
+  public void pageStarted (ReportEvent event)
+  {
+    ReportState state = event.getState ();
+    startPage (state.getCurrentPage());
+  }
 
-    /**
-     * Receives notification that a group is ending.
-     */
-    public void endGroup(Group g) {
-        // do nothing
-    }
+  /**
+   * Maps the pageFinished-method to the legacy function endPage (int).
+   */
+  public void pageFinished (ReportEvent event)
+  {
+    ReportState state = event.getState ();
+    endPage (state.getCurrentPage());
+  }
 
-    /**
-     * Processes a row of data.
-     */
-    public void advanceItems(TableModel data, int row) {
-        // do nothing
-    }
+  /**
+   * Receives notification that a page is starting.
+   * @deprecated Use the ReportListener interface instead.
+   */
+  public void startPage (int page)
+  {
+    // do nothing
+  }
 
-    /**
-     * Returns a clone of the function.
-     *
-     * Be aware, this does not create a deep copy. If you have complex
-     * strucures contained in objects, you have to overwrite this function.
-     */
-    public Object clone() throws CloneNotSupportedException {
+  /**
+   * Receives notification that a page is ending.
+   * @deprecated Use the ReportListener interface instead.
+   */
+  public void endPage (int page)
+  {
+    // do nothing
+  }
 
-        return super.clone();
+  /**
+   * Maps the pageStarted-method to the legacy function startPage (int).
+   */
+  public void groupStarted (ReportEvent event)
+  {
+    JFreeReport report = event.getReport ();
+    ReportState state = event.getState ();
+    startGroup (report.getGroup (state.getCurrentGroupIndex()));
+  }
 
-    }
+  /**
+   * Maps the pageFinished-method to the legacy function endPage (int).
+   */
+  public void groupFinished (ReportEvent event)
+  {
+    JFreeReport report = event.getReport ();
+    ReportState state = event.getState ();
+    endGroup (report.getGroup (state.getCurrentGroupIndex()));
+  }
 
-    /**
-     * Sets the properties for this function. All parameters are defined
-     * by properties. Common parameters are "field" and "group" to define
-     * the targets of the function. 
-     *
-     * Every function defines its own set of properties and it is up to
-     * the report generator to fill the properties. 
-     *
-     * The properties in <code>p</code> are added to the functions properties,
-     * eventually overwriting existing properties with the same name.
-     *
-     * @todo create a property query interface. Maybe the same as used in
-     * JDBC (@see java.sql.PropertyInfo)?
-     */
-    public void setProperties (Properties p)
-    {
-      if (p != null) 
-        this.properties.putAll (p);
-      System.out.println ("Set Properties called" + p);
-    }
+  /**
+   * Receives notification that a group is starting.
+   * @deprecated Use the ReportListener interface instead.
+   */
+  public void startGroup (Group g)
+  {
+    // do nothing
+  }
 
-    /**
-     * Queries a property and returns null if no such property was found.
-     */
-    public String getProperty (String name)
-    {
-      return getProperty (name, null);
-    }
+  /**
+   * Receives notification that a group is ending.
+   * @deprecated Use the ReportListener interface instead.
+   */
+  public void endGroup (Group g)
+  {
+    // do nothing
+  }
 
-    /**
-     * Queries a property and returns the String contained in defaultVal if
-     * no property with that name was defined.
-     */
-    public String getProperty (String name, String defaultVal)
-    {
-      return properties.getProperty (name, defaultVal);
-    }
+  /**
+   * Maps the pageStarted-method to the legacy function startPage (int).
+   */
+  public void itemsAdvanced (ReportEvent event)
+  {
+    JFreeReport report = event.getReport ();
+    ReportState state = event.getState ();
+    advanceItems (report.getData(), state.getCurrentDataItem());
+  }
+
+  /**
+   * Processes a row of data.
+   * @deprecated Use the ReportListener interface instead.
+   */
+  public void advanceItems (TableModel data, int row)
+  {
+    // do nothing
+  }
+
+  /**
+   * Returns a clone of the function.
+   *
+   * Be aware, this does not create a deep copy. If you have complex
+   * strucures contained in objects, you have to overwrite this function.
+   */
+  public Object clone () throws CloneNotSupportedException
+  {
+    return super.clone ();
+  }
+
+  /**
+   * Sets the properties for this function. All parameters are defined
+   * by properties. Common parameters are "field" and "group" to define
+   * the targets of the function.
+   *
+   * Every function defines its own set of properties and it is up to
+   * the report generator to fill the properties.
+   *
+   * The properties in <code>p</code> are added to the functions properties,
+   * eventually overwriting existing properties with the same name.
+   *
+   * @todo create a property query interface. Maybe the same as used in
+   * JDBC (@see java.sql.PropertyInfo)?
+   */
+  public void setProperties (Properties p)
+  {
+    if (p != null)
+      this.properties.putAll (p);
+  }
+
+  /**
+   * Queries a property and returns null if no such property was found.
+   */
+  public String getProperty (String name)
+  {
+    return getProperty (name, null);
+  }
+
+  /**
+   * Queries a property and returns the String contained in defaultVal if
+   * no property with that name was defined.
+   */
+  public String getProperty (String name, String defaultVal)
+  {
+    return properties.getProperty (name, defaultVal);
+  }
+
+  public void setProperty (String name, String value)
+  {
+    if (value == null)
+      properties.remove (name);
+    else
+      properties.setProperty(name, value);
+  }
+  /**
+   * @deprecated initialize() is used to initialize a function.
+   */
+  public boolean isInitialized ()
+  {
+    return true;
+  }
 }

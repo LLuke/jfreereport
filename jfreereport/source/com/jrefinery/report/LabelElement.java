@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,132 +28,75 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: LabelElement.java,v 1.1.1.1 2002/04/25 17:02:13 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
+ * 10-May-2002 : removed all but the default constructor. Added accessor functions for all properties.
  *
  */
 
 package com.jrefinery.report;
 
-import java.awt.Paint;
-import java.awt.Font;
 
 /**
  * An element that draws static text within a report band.
  */
-public class LabelElement extends TextElement {
+public class LabelElement extends TextElement
+{
 
-    /** Text to display. */
-    protected String label;
-
-    /**
-     * Constructs a label element using integer coordinates.
-     *
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param string label The label text.
-     */
-    public LabelElement(String name,
-                        int x, int y, int w, int h,
-                        String label) {
-
-        this(name,
-             x, y, w, h,
-             DEFAULT_PAINT,
-             DEFAULT_FONT,
-             DEFAULT_FONT_NAME,
-             DEFAULT_FONT_STYLE,
-             DEFAULT_FONT_SIZE,
-             DEFAULT_ALIGNMENT,
-             label);
+  /** Text to display. */
+  private String label;
 
 
-    }
+  /**
+   * Constructs a label element using float coordinates.
+   */
+  public LabelElement ()
+  {
+  }
 
-    /**
-     * Constructs a label element using integer coordinates.
-     *
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param string label The label text.
-     */
-    public LabelElement(String name,
-                        int x, int y, int w, int h,
-                        Paint paint, Font font, String fontName, int fontStyle, int fontSize,
-                        int alignment, String label) {
+  /**
+   * Returns the label.
+   * @return The label.
+   */
+  public String getFormattedText ()
+  {
+    return String.valueOf (label);
+  }
 
-        super(name, x, y, w, h, paint, font, fontName, fontStyle, fontSize, alignment);
-        this.label = label;
+  /**
+   * Returns the label.
+   * @return The label.
+   */
+  public String getLabel ()
+  {
+    return getFormattedText ();
+  }
 
-    }
+  /**
+   * defines the label text.
+   * @param label the new label text.
+   */
+  public void setLabel (String label)
+  {
+    this.label = label;
+  }
 
-    /**
-     * Constructs a label element using float coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param string label The label text.
-     */
-    public LabelElement(String name,
-                        float x, float y, float w, float h,
-                        String label) {
-
-        this(name,
-             x, y, w, h,
-             DEFAULT_PAINT,
-             DEFAULT_FONT,
-             DEFAULT_FONT_NAME,
-             DEFAULT_FONT_STYLE,
-             DEFAULT_FONT_SIZE,
-             DEFAULT_ALIGNMENT,
-             label);
-
-    }
-
-    /**
-     * Constructs a label element using float coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param string label The label text.
-     */
-    public LabelElement(String name,
-                        float x, float y, float w, float h,
-                        Paint paint, Font font, String fontName, int fontStyle, int fontSize,
-                        int alignment, String label) {
-
-        super(name, x, y, w, h, paint, font, fontName, fontStyle, fontSize, alignment);
-        this.label = label;
-
-    }
-
-    /**
-     * Returns the label.
-     * @return The label.
-     */
-    public String getFormattedText() {
-        return label;
-    }
+  public String toString ()
+  {
+    StringBuffer b = new StringBuffer ();
+    b.append ("Label={ name=");
+    b.append (getName ());
+    b.append (", bounds=");
+    b.append (getBounds ());
+    b.append (", font=");
+    b.append (getFont ());
+    b.append (", text=");
+    b.append (getLabel ());
+    b.append ("}");
+    return b.toString ();
+  }
 
 }

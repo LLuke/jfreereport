@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DemoResources.java,v 1.1 2002/05/07 14:19:15 mungady Exp $
  *
  * Changes
  * -------
@@ -77,6 +78,14 @@ public class DemoResources extends ListResourceBundle {
 
         { "menu.file.name",     "File"},
         { "menu.file.mnemonic", new Character('F') },
+
+        { "menu.help.name",     "Help"},
+        { "menu.help.mnemonic", new Character('H') },
+
+        {"action.close.name",        "Exit"},
+        {"action.close.description", "exits JFreeReportDemo"},
+        {"action.close.mnemonic",    new Integer(KeyEvent.VK_E)},
+        {"action.close.accelerator", KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK)},
 
     };
 

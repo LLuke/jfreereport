@@ -1,4 +1,5 @@
-/* =========================================
+/**
+ * =============================================================
  * JFreeReport - a Java report printing API;
  * =========================================
  * Version 0.50;
@@ -15,7 +16,7 @@
  *
  * You should have received a copy of the GNU Lesser General Public License along with this library;
  * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- * MA 02111-1307, USA. 
+ * MA 02111-1307, USA.
  *
  * ReportProcessingException.java
  * -----------------
@@ -24,13 +25,13 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
- * Changes 
+ * $Id: ReportProcessingException.java,v 1.1.1.1 2002/04/25 17:02:14 taqua Exp $
+ * Changes
  * -------------------------
  * 18-Apr-2002 : Created the Exception to better support errorhandling. The exception
  *               is thrown if the report does not proceed while paginating. This is
  *               used to detect infinite loops on buggy report definitions.
- *               
+ *
  */
 package com.jrefinery.report;
 
@@ -39,11 +40,11 @@ public class ReportProcessingException extends Exception
   public ReportProcessingException ()
   {
   }
-  
+
   public ReportProcessingException (String message)
   {
     super (message);
   }
-  
-  
+
+
 }

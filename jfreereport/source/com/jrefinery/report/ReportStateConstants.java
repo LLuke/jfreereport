@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,18 +28,19 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ReportStateConstants.java,v 1.1.1.1 2002/04/25 17:02:18 taqua Exp $
  *
  * Changes
  * -------
  * 19-Feb-2002 : Version 1 (DG);
- *
+ * 10-May-2002 : These constants are now deprecated. The state does no longer use them.
  */
 
 package com.jrefinery.report;
 
 /**
  * Constants used by the ReportState class.
+ * @deprecated these constants are replaced by concrete subclasses of ReportState.
  */
 public interface ReportStateConstants {
 
@@ -74,9 +76,6 @@ public interface ReportStateConstants {
 
     /** A constant representing the POST_GROUP_FOOTER state. */
     public static final int POST_GROUP_FOOTER = 10;
-
-    /** A constant representing the GROUP_FINISH state. */
-    public static final int GROUP_FINISH = 11;
 
     /** A constant representing the PRE_REPORT_FOOTER state. */
     public static final int PRE_REPORT_FOOTER = 12;

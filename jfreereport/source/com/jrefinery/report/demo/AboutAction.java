@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: AboutAction.java,v 1.1 2002/05/07 14:15:29 mungady Exp $
  *
  * Changes
  * -------
@@ -37,52 +38,55 @@
 
 package com.jrefinery.report.demo;
 
-import java.util.ResourceBundle;
-import java.awt.event.ActionEvent;
-import javax.swing.ImageIcon;
-import javax.swing.KeyStroke;
-import javax.swing.Action;
+import com.jrefinery.report.preview.PreviewFrame;
+
 import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
-import com.jrefinery.report.JFreeReportConstants;
-import com.jrefinery.report.PreviewFrame;
+import java.awt.event.ActionEvent;
+import java.util.ResourceBundle;
 
-public class AboutAction extends AbstractAction implements Runnable {
+public class AboutAction extends AbstractAction implements Runnable
+{
 
-    private JFreeReportDemo demo;
+  private JFreeReportDemo demo;
 
-    /**
-     * Constructs a new action.
-     */
-    public AboutAction(JFreeReportDemo demo, ResourceBundle resources) {
+  /**
+   * Constructs a new action.
+   */
+  public AboutAction (JFreeReportDemo demo, ResourceBundle resources)
+  {
 
-        this.demo = demo;
+    this.demo = demo;
 
-        String name = resources.getString("action.about.name");
-        this.putValue(Action.NAME, name);
+    String name = resources.getString ("action.about.name");
+    this.putValue (Action.NAME, name);
 
-        String description = resources.getString("action.about.description");
-        this.putValue(Action.SHORT_DESCRIPTION, description);
+    String description = resources.getString ("action.about.description");
+    this.putValue (Action.SHORT_DESCRIPTION, description);
 
-        Integer mnemonic = (Integer)resources.getObject("action.about.mnemonic");
-        this.putValue(Action.MNEMONIC_KEY, mnemonic);
+    Integer mnemonic = (Integer) resources.getObject ("action.about.mnemonic");
+    this.putValue (Action.MNEMONIC_KEY, mnemonic);
 
-        ImageIcon icon16 = new ImageIcon(AboutAction.class.getResource("About16.gif"));
-        this.putValue(Action.SMALL_ICON, icon16);
+    ImageIcon icon16 = PreviewFrame.secureResourceLoad ("About16.gif");
+    this.putValue (Action.SMALL_ICON, icon16);
 
-        ImageIcon icon24 = new ImageIcon(AboutAction.class.getResource("About24.gif"));
-        this.putValue("ICON24", icon24);
+    ImageIcon icon24 = PreviewFrame.secureResourceLoad ("About24.gif");
+    this.putValue ("ICON24", icon24);
 
-        this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportDemo.ABOUT_COMMAND);
+    this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportDemo.ABOUT_COMMAND);
 
-    }
+  }
 
-    public void actionPerformed(ActionEvent e) {
-        SwingUtilities.invokeLater(this);
-    }
+  public void actionPerformed (ActionEvent e)
+  {
+    SwingUtilities.invokeLater (this);
+  }
 
-    public void run() {
-        demo.displayAbout();
-    }
+  public void run ()
+  {
+    demo.displayAbout ();
+  }
 
 }

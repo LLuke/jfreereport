@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,99 +28,86 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: DataElement.java,v 1.1.1.1 2002/04/25 17:02:14 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 05-Mar-2002 : Changed constructors from public --> protected (DG);
- *
+ * 10-May-2002 : Removed all complex constructors and declared abstract
  */
 
 package com.jrefinery.report;
 
-import java.awt.Paint;
-import java.awt.Font;
 
 /**
  * The base class for all report elements that display data (that is, information from the report's
  * data source) rather than just static information.
  */
-public class DataElement extends TextElement {
+public abstract class DataElement extends TextElement
+{
 
-    /** The name of the field in the data source that this element obtains its data from. */
-    protected String field;
+  /** The name of the field in the data source that this element obtains its data from. */
+  private String field;
 
-    /** The current value from the data source. */
-    protected Object value;
+  /** The current value from the data source. */
+  private Object value;
 
-    /**
-     * Constructs a data element using integer coordinates.
-     *
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param field The name of the field used to populate this element with data.
-     */
-    protected DataElement(String name,
-                          int x, int y, int w, int h,
-                          Paint paint, Font font, String fontName, int fontStyle, int fontSize,
-                          int alignment,
-                          String field) {
+  /**
+   * Constructs a data element using float coordinates.
+   */
+  protected DataElement ()
+  {
+  }
 
-        super(name, x, y, w, h, paint, font, fontName, fontStyle, fontSize, alignment);
-        this.field = field;
+  /**
+   * Sets the fieldname for this element.
+   *
+   * @throws NullPointerException if the field is null.
+   */
+  public void setField (String fieldname)
+  {
+    if (fieldname == null)
+      throw new NullPointerException ("Fieldname must not be null for field " + getName ());
 
-    }
+    this.field = fieldname;
+  }
 
-    /**
-     * Constructs a data element using float coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param baseline The baseline for the text.
-     * @param field The name of the field used to populate this element with data.
-     */
-    protected DataElement(String name,
-                          float x, float y, float w, float h,
-                          Paint paint, Font font, String fontName, int fontStyle, int fontSize,
-                          int alignment, String field) {
+  /**
+   * Returns the name of the field in the data source that this element obtains its data from.
+   * @return The field name.
+   */
+  public String getField ()
+  {
+    return this.field;
+  }
 
-        super(name, x, y, w, h, paint, font, fontName, fontStyle, fontSize, alignment);
-        this.field = field;
+  /**
+   * Sets the current value of the element.
+   * @param value The new value for the element;
+   */
+  public void setValue (Object value)
+  {
+    this.value = value;
+  }
 
-    }
+  /**
+   * Queries the current value of the element.
+   * @returns the value for the element;
+   */
+  public Object getValue ()
+  {
+    return value;
+  }
 
-    /**
-     * Returns the name of the field in the data source that this element obtains its data from.
-     * @return The field name.
-     */
-    public String getField() {
-        return this.field;
-    }
-
-    /**
-     * Sets the current value of the element.
-     * @param value The new value for the element;
-     */
-    public void setValue(Object value) {
-        this.value = value;
-    }
-
-    /**
-     * Returns a string representing the formatted data.
-     * @return A formatted version of the data value.
-     */
-    public String getFormattedText() {
-        return value.toString();
-    }
+  /**
+   * Returns a string representing the formatted data.
+   * @return A formatted version of the data value or "null" if the element
+   * is null
+   */
+  public String getFormattedText ()
+  {
+    return String.valueOf (value);
+  }
 
 }

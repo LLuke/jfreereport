@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -20,24 +21,26 @@
  * Boston, MA 02111-1307, USA.
  *
  * ----------------
- * TextElement.java
+ * WaitingImageObserver.java
  * ----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * Original Author:  Thomas Morger
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: WaitingImageObserver.java,v 1.1.1.1 2002/04/25 17:02:18 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
- * 15-Apr-2002 : first version used by the ImageElement.
+ * 15-Apr-2002 : first version used by ImageElement.
  *
  */
 package com.jrefinery.report;
 
-import java.awt.image.*;
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 
 /**
  * This image observer blocks until the image is completly loaded. AWT
@@ -52,23 +55,35 @@ public class WaitingImageObserver implements ImageObserver, Runnable
   private boolean lock;
   private Image image;
 
+  /**
+   * Creates a new ImageObserver for the given Image. The Oberver has to be started
+   * by an external thread.
+   */
   public WaitingImageObserver (Image image)
   {
     this.image = image;
     lock = true;
   }
 
-  public boolean imageUpdate(Image img, int infoflags, int x, int y, int width, int height) 
+  /**
+   * Callback function used by AWT to inform that more data is availiable. The observer
+   * waits until either all data is loaded or AWT signals that the image cannot be loaded.
+   */
+  public boolean imageUpdate (Image img, int infoflags, int x, int y, int width, int height)
   {
-    if ((infoflags & ImageObserver.ALLBITS) == ImageObserver.ALLBITS || 
-        (infoflags & ImageObserver.ABORT) == ImageObserver.ABORT ||
-        (infoflags & ImageObserver.ERROR) == ImageObserver.ERROR)
+    if ((infoflags & ImageObserver.ALLBITS) == ImageObserver.ALLBITS ||
+            (infoflags & ImageObserver.ABORT) == ImageObserver.ABORT ||
+            (infoflags & ImageObserver.ERROR) == ImageObserver.ERROR)
     {
       lock = false;
     }
-    return true;       
+    return true;
   }
- 
+
+  /**
+   * The workerthread. Simply draws the image to an BufferedImage's Graphics-Object
+   * and waits for the AWT to load the image.
+   */
   public void run ()
   {
     BufferedImage img = new BufferedImage (1, 1, BufferedImage.TYPE_INT_RGB);
@@ -76,10 +91,10 @@ public class WaitingImageObserver implements ImageObserver, Runnable
 
     while (lock)
     {
-      g.drawImage (image, 0, 0, img.getWidth(this), img.getHeight(this), this);
+      g.drawImage (image, 0, 0, img.getWidth (this), img.getHeight (this), this);
       try
       {
-        Thread.currentThread().sleep (200);
+        Thread.currentThread ().sleep (200);
       }
       catch (InterruptedException e)
       {

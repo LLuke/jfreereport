@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,35 +28,38 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportConstants.java,v 1.1.1.1 2002/04/25 17:02:21 taqua Exp $
+ * $Id: JFreeReportConstants.java,v 1.2 2002/05/07 14:22:58 mungady Exp $
  *
  * Changes
  * -------
  * 28-Feb-2002 : Version 1, code transferred out of JFreeReport.java (DG);
  * 07-May-2002 : Removed info constants, these are now in JFreeReportInfo class in the
  *               JFreeReport.java source file.  Added action constants (DG);
+ * 10-May-2002 : Documentation
  */
 
 package com.jrefinery.report;
 
-import java.util.Arrays;
-import java.util.List;
-import com.jrefinery.JCommon;
-import com.jrefinery.ui.about.Licences;
-import com.jrefinery.ui.about.Contributor;
-import com.jrefinery.ui.about.Library;
+/**
+ * Some constants for JFreeReport and PreviewPane
+ */
+public interface JFreeReportConstants
+{
 
-public interface JFreeReportConstants {
+  public static final String NAME_PROPERTY = "report.name";
+  public static final String REPORT_DATE_PROPERTY = "report.date";
+  public static final String REPORT_STATE_PROPERTY = "report.state";
 
-    public static final String SAVE_AS_COMMAND = "SAVE AS";
-    public static final String PAGE_SETUP_COMMAND = "PAGE SETUP";
-    public static final String PRINT_COMMAND = "PRINT";
-    public static final String CLOSE_COMMAND = "CLOSE";
+  public static final String SAVE_AS_COMMAND = "SAVE AS";
+  public static final String PAGE_SETUP_COMMAND = "PAGE SETUP";
+  public static final String PRINT_COMMAND = "PRINT";
+  public static final String ABOUT_COMMAND = "ABOUT";
+  public static final String CLOSE_COMMAND = "CLOSE";
 
-    /** A useful constant that signals that a page is full. */
-    public static final boolean PAGE_FULL = true;
+  /** A useful constant that signals that a page is full. */
+  public static final boolean PAGE_FULL = true;
 
-    /** A useful constant that signals that a page is not yet full. */
-    public static final boolean PAGE_NOT_FULL = false;
+  /** A useful constant that signals that a page is not yet full. */
+  public static final boolean PAGE_NOT_FULL = false;
 
 }

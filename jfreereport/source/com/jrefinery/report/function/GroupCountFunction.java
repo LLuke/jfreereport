@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,108 +28,139 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: GroupCountFunction.java,v 1.1 2002/05/07 14:20:07 mungady Exp $
  *
  * Changes
  * -------
  * 07-May-2002 : Version 1 (DG);
- *
+ * 10-May-2002 : Added propertyHandling to support the ReportGenerators initializations.
  */
 
 package com.jrefinery.report.function;
 
-import javax.swing.table.TableModel;
-import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.Group;
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.ReportState;
+import com.jrefinery.report.event.ReportEvent;
 
 /**
  * A report function that counts groups in a report.
+ * If a null-groupname is given, all groups are counted.
+ * A group can be defined using the property "group".
  */
-public class GroupCountFunction extends AbstractFunction implements Cloneable {
+public class GroupCountFunction extends AbstractFunction implements Cloneable
+{
 
-    /** The number of groups. */
-    private int count;
+  /** The number of groups. */
+  private int count;
 
-    private String groupName;
+  private String groupName;
 
-    /**
-     * Default constructor.
-     */
-    public GroupCountFunction() {
-        this(null, null);
+  /**
+   * Default constructor.
+   */
+  public GroupCountFunction ()
+  {
+  }
+
+  /**
+   * Constructs a report function for counting groups.
+   *
+   * @param name The function name.
+   * @param group The group name.
+   * @throws NullPointerException if the given name is null
+   */
+  public GroupCountFunction (String name, String group)
+  {
+    setName (name);
+    this.groupName = group;
+  }
+
+  /**
+   * Returns the name of the group to be counted.
+   */
+  public String getGroup ()
+  {
+    return groupName;
+  }
+
+  /**
+   * defines the name of the group to be counted.
+   * If the name is null, all groups are counted.
+   */
+  public void setGroup (String group)
+  {
+    this.groupName = group;
+    setProperty("group", group);
+  }
+
+  /**
+   * Receives notification that a new report is about to start.
+   */
+  public void reportStarted (ReportEvent event)
+  {
+    this.count = 0;
+  }
+
+  /**
+   * Receives notification that a new group is about to start.
+   */
+  public void groupStarted (ReportEvent event)
+  {
+    if (getGroup() == null)
+    {
+      this.count++;  // count all groups...
+      return;
     }
 
-    /**
-     * Constructs a report function for counting groups.
-     *
-     * @param name The function name.
-     * @param group The group name.
-     *
-     */
-    public GroupCountFunction(String name, String group) {
-        super(name);
-        this.groupName = group;
+    JFreeReport report = event.getReport();
+    ReportState state = event.getState();
+    Group group = report.getGroup(state.getCurrentGroupIndex());
+    if (getGroup().equals (group.getName ()))
+    {
+      this.count++;
     }
 
-    /**
-     * Initialises the function when it is first created.  The function is also given a chance
-     * to perform initialisation every time a report starts (see the startReport() method).
-     */
-    public void initialise() {
-        this.count=0;
+  }
+
+  /**
+   * Returns the number of groups processed so far (including the current group).
+   */
+  public Object getValue ()
+  {
+    return new Integer (count);
+  }
+
+  /**
+   * Returns a copy of this function.
+   */
+  public Object clone ()
+  {
+    Object result = null;
+
+    try
+    {
+      result = super.clone ();
+    }
+    catch (CloneNotSupportedException e)
+    {
+      // this should never happen...
+      System.err.println ("ItemCountFunction: clone not supported");
     }
 
-    public boolean isInitialized () {
-        return true;
-    }
+    return result;
 
-    /**
-     * Receives notification that a new report is about to start.
-     */
-    public void startReport(JFreeReport report) {
-        this.count=0;
-    }
+  }
 
-    /**
-     * Receives notification that a new group is about to start.
-     */
-    public void startGroup(Group group) {
-
-        if (this.groupName!=null) {
-            if (this.groupName.equals(group.getName())) {
-                this.count++;
-            }
-        }
-        else {
-            this.count++;  // count all groups...
-        }
-
-    }
-
-    /**
-     * Returns the number of groups processed so far (including the current group).
-     */
-    public Object getValue() {
-        return new Integer(count);
-    }
-
-    /**
-     * Returns a copy of this function.
-     */
-    public Object clone() {
-
-        Object result = null;
-
-        try {
-            result = super.clone();
-        }
-        catch (CloneNotSupportedException e) {
-            // this should never happen...
-            System.err.println("ItemCountFunction: clone not supported");
-        }
-
-        return result;
-
-    }
+  /**
+   * Initializes this function.
+   * If the property "group" is present, the group will be set to the properties value.
+   */
+  public void initialize ()
+     throws FunctionInitializeException
+  {
+    super.initialize ();
+    setGroup(getProperty("group"));
+  }
 
 }

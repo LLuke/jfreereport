@@ -1,0 +1,132 @@
+/**
+ * =============================================================
+ * JFreeReport : an open source reporting class library for Java
+ * =============================================================
+ *
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -----------------------
+ * GroupList.java
+ * -----------------------
+ * (C)opyright 2000-2002, by Simba Management Limited.
+ *
+ *
+ * 11-May-2002 : Initial version
+ */
+package com.jrefinery.report;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.TreeSet;
+
+/**
+ * The group list is used to store groups in a ordered way. The less specific groups are
+ * guaranteed to be proceeded before any more specific subgroup.
+ * <p>
+ * Groups are ordered by comparing the declared fieldnames for the groups.
+ */
+public class GroupList extends TreeSet
+{
+  // Cache. This is a set, we need list functionality, but creating Iterators is
+  // expensive.
+  private Object[] cache;
+
+  private static class GroupComparator implements Comparator
+  {
+    public int compare (Object o1, Object o2)
+    {
+      Group g1 = (Group) o1;
+      Group g2 = (Group) o2;
+
+      List c1 = g1.getFields ();
+      List c2 = g2.getFields ();
+
+      int maxIdx = Math.min (c1.size (), c2.size ());
+      for (int i = 0; i < maxIdx; i++)
+      {
+        String s1 = (String) c1.get (i);
+        String s2 = (String) c2.get (i);
+
+        int compare = s1.compareTo (s2);
+        if (compare != 0)
+          return compare;
+      }
+      if (c1.size () == c2.size ())
+      {
+        return 0;
+      }
+      else if (c1.size () < c2.size ())
+      {
+        return -1;
+      }
+      return 1;
+    }
+
+    public boolean equals (Object obj)
+    {
+      return (obj instanceof GroupComparator);
+    }
+  }
+
+  public GroupList ()
+  {
+    super (new GroupComparator ());
+  }
+
+  public Group get (int i)
+  {
+    if (cache == null)
+    {
+      cache = toArray ();
+    }
+    return (Group) cache[i];
+  }
+
+  public boolean remove (Object o)
+  {
+    cache = null;
+    return super.remove (o);
+  }
+
+  public void clear ()
+  {
+    super.clear ();
+    cache = null;
+  }
+
+  public boolean add (Object o)
+  {
+    if (o instanceof Group)
+    {
+      cache = null;
+      if (super.add (o) == false)
+      {
+        super.remove (o);
+        return super.add (o);
+      }
+      return true;
+    }
+    else
+    {
+      if (o == null)
+        throw new NullPointerException ("Try to add null");
+
+      throw new ClassCastException ("Group required, was " + o.getClass ().getName ());
+    }
+  }
+}

@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,71 +28,58 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: SaveAsAction.java,v 1.1 2002/05/07 14:06:00 mungady Exp $
  *
  * Changes
  * -------
  * 07-May-2002 : Version 1 (DG);
+ * 10-May-2002 : Removed actionhandling from class. Specific handling is implemented based on
+ *               target environment. (TM)
  *
  */
 
 package com.jrefinery.report.action;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.util.ResourceBundle;
-import javax.swing.Action;
-import javax.swing.AbstractAction;
-import javax.swing.KeyStroke;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.SwingUtilities;
 import com.jrefinery.report.JFreeReportConstants;
-import com.jrefinery.report.PreviewFrame;
+import com.jrefinery.report.preview.PreviewFrame;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ImageIcon;
+import javax.swing.KeyStroke;
+import java.util.ResourceBundle;
 
 /**
  * Save (to PDF) action for a print preview frame.
  */
-public class SaveAsAction extends AbstractAction implements Runnable {
+public abstract class SaveAsAction extends AbstractAction
+{
 
-    /** The frame that this action is assigned to. */
-    protected PreviewFrame frame;
+  /**
+   * Constructs a new action.
+   */
+  public SaveAsAction (ResourceBundle resources)
+  {
 
-    /**
-     * Constructs a new action.
-     */
-    public SaveAsAction(PreviewFrame frame, ResourceBundle resources) {
+    String name = resources.getString ("action.save-as.name");
+    this.putValue (Action.NAME, name);
 
-        this.frame = frame;
+    String description = resources.getString ("action.save-as.description");
+    this.putValue (Action.SHORT_DESCRIPTION, description);
 
-        String name = resources.getString("action.save-as.name");
-        this.putValue(Action.NAME, name);
+    Integer mnemonic = (Integer) resources.getObject ("action.save-as.mnemonic");
+    this.putValue (Action.MNEMONIC_KEY, mnemonic);
 
-        String description = resources.getString("action.save-as.description");
-        this.putValue(Action.SHORT_DESCRIPTION, description);
+    KeyStroke accelerator = (KeyStroke) resources.getObject ("action.save-as.accelerator");
+    this.putValue (Action.ACCELERATOR_KEY, accelerator);
 
-        Integer mnemonic = (Integer)resources.getObject("action.save-as.mnemonic");
-        this.putValue(Action.MNEMONIC_KEY, mnemonic);
+    ImageIcon icon16 = PreviewFrame.secureResourceLoad ("SaveAs16.gif");
+    this.putValue (Action.SMALL_ICON, icon16);
 
-        KeyStroke accelerator = (KeyStroke)resources.getObject("action.save-as.accelerator");
-        this.putValue(Action.ACCELERATOR_KEY, accelerator);
+    ImageIcon icon24 = PreviewFrame.secureResourceLoad ("SaveAs24.gif");
+    this.putValue ("ICON24", icon24);
 
-        ImageIcon icon16 = new ImageIcon(SaveAsAction.class.getResource("SaveAs16.gif"));
-        this.putValue(Action.SMALL_ICON, icon16);
+    this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportConstants.SAVE_AS_COMMAND);
 
-        ImageIcon icon24 = new ImageIcon(SaveAsAction.class.getResource("SaveAs24.gif"));
-        this.putValue("ICON24", icon24);
-
-        this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.SAVE_AS_COMMAND);
-
-    }
-
-    public void actionPerformed(ActionEvent e) {
-        SwingUtilities.invokeLater(this);
-    }
-
-    public void run() {
-        frame.handleSaveAs();
-    }
-
+  }
 }

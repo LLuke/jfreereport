@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,79 +28,82 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ImageElement.java,v 1.1.1.1 2002/04/25 17:02:24 taqua Exp $
  *
  * 24-Apr-2002 : Defines a reference to an Bitmap or Wmf-Image for the reports.
+ * 10-May-2002 : removed all but the default constructor. Added accessor functions for all properties.
  *
  */
 
 package com.jrefinery.report;
 
-import java.awt.Paint;
-import java.awt.Image;
-import java.awt.Graphics2D;
-import java.awt.geom.Line2D;
-import java.awt.geom.AffineTransform;
-import java.net.URL;
 
 /**
  * Used to draw images (Gif, JPEG, PNG or wmf) on a report band.
- * PNG Support needs JDK 1.3 or higher.
- *
- * @todo: Performance! and create something to support better drawing
- * of WMF-Elements. Don't handle them as BitMap-Images.
+ * PNG Support needs JDK 1.3 or higher. This class encapsulates an
+ * imagereference into an element.
  */
-public class ImageElement extends Element {
+public class ImageElement extends Element
+{
 
-    /** The image to draw. */
-    protected ImageReference image;
+  /** The image to draw. */
+  private ImageReference image;
 
-    /**
-     * Constructs a image element.
-     *
-     * @param name The name of the element.
-     * @param image The image.
-     */
-    public ImageElement(String name, ImageReference image) 
+  /**
+   * Constructs a image element.
+   *
+   * @param name The name of the element.
+   * @param image The image.
+   */
+  public ImageElement ()
+  {
+  }
+
+  /**
+   * sets the imagereference for this element. The bounds of this element are adjusted according
+   * to the given ImageReference.
+   *
+   * @param reference the imageReference for this element
+   * @throws NullPointerException if the reference is null
+   */
+  public void setImageReference (ImageReference reference)
+  {
+    if (reference == null)
+      throw new NullPointerException ("Reference must not be null");
+    setBounds (reference.getBounds ());
+    this.image = reference;
+  }
+
+  /**
+   * returns this elements assigned imageReference.
+   */
+  public ImageReference getImageReference ()
+  {
+    return image;
+  }
+
+  /**
+   * Draws the element at its location relative to the band co-ordinates supplied.
+   *
+   * @param target The target on which to print.
+   * @param band The band.
+   * @param bandX The x-coordinate for the element within its band.
+   * @param bandY The y-coordinate for the element within its band.
+   */
+  public void draw (OutputTarget target, Band band, float bandX, float bandY)
+  {
+
+    // set the paint...
+    if (getPaint () != null)
     {
-        this(name, image, DEFAULT_PAINT);
-
+      target.setPaint (getPaint ());
     }
-
-    /**
-     * Constructs a image element.
-     *
-     * @param name The name of the element.
-     * @param image The image.
-     * @param paint The paint.
-     */
-    public ImageElement(String name, ImageReference image, Paint paint) {
-        super(name, image.getBounds(), paint);
-        System.out.println("Image ELement created");
-        this.image = image;
-
+    else
+    {
+      target.setPaint (band.getDefaultPaint ());
     }
+    target.drawImage (getImageReference (), bandX, bandY);
 
-    /**
-     * Draws the element at its location relative to the band co-ordinates supplied.
-     *
-     * @param g2 The graphics device.
-     * @param band The band.
-     * @param bandX The x-coordinate for the element within its band.
-     * @param bandY The y-coordinate for the element within its band.
-     */
-    public void draw(OutputTarget target, Band band, float bandX, float bandY) {
-
-        System.out.println ("Draw image reference: " + bandX + ", " + bandY);
-        // set the paint...
-        if (this.paint!=null) {
-            target.setPaint(this.paint);
-        }
-        else {
-            target.setPaint(band.getDefaultPaint());
-        }
-        target.drawImage(image, bandX, bandY);
-
-    }
+  }
 
 }

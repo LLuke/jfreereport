@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,153 +28,91 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DateFunctionElement.java,v 1.1.1.1 2002/04/25 17:02:12 taqua Exp $
  *
  * Changes
  * -------
  * 18-Feb-2002 : Version 1, contributed by Thomas Morgner (DG);
- *
+ * 10-May-2002 : Removed all complex constructors.
  */
 
 package com.jrefinery.report;
 
-import java.awt.Paint;
-import java.awt.Font;
-import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Presentation element for date functions.
  */
-public class DateFunctionElement extends FunctionElement {
+public class DateFunctionElement extends FunctionElement
+{
 
-    /** The formatting object for this data element. */
-    protected DateFormat formatter;
+  /** The formatting object for this data element. */
+  private DateFormat formatter;
 
-    /**
-     * Constructs a date element using integer coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param field The name of the field used to populate this element with data.
-     * @param format The format string for the Date.
-     */
-    public DateFunctionElement(String name,
-                               int x, int y, int w, int h,
-                               String function, String format) {
+  /**
+   * Constructs a date element using float coordinates.
+   */
+  public DateFunctionElement ()
+  {
+    setFormatString (null);
+  }
 
-        this(name,
-             x, y, w, h,
-             DEFAULT_PAINT,
-             DEFAULT_FONT,
-             DEFAULT_FONT_NAME,
-             DEFAULT_FONT_STYLE,
-             DEFAULT_FONT_SIZE,
-             DEFAULT_ALIGNMENT,
-             function, format);
-
+  /**
+   * sets the format of the element to SimpleDate using the given formatString.
+   */
+  public void setFormatString (String s)
+  {
+    if (s == null)
+    {
+      setFormatter (new SimpleDateFormat ());
     }
-
-    /**
-     * Constructs a date element using integer coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param field The name of the field used to populate this element with data.
-     * @param format The format string for the Date.
-     */
-    public DateFunctionElement(String name,
-                               int x, int y, int w, int h,
-                               Paint paint, Font font, String fontName, int fontStyle, int fontSize,
-                               int alignment,
-                               String functionName, String format) {
-
-        super(name, x, y, w, h, paint, font, fontName, fontStyle, fontSize, alignment, functionName);
-        formatter = new SimpleDateFormat(format);
-        this.value = new Date();
-
+    else
+    {
+      setFormatter (new SimpleDateFormat (s));
     }
+  }
 
-    /**
-     * Constructs a date element using float coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param field The name of the field used to populate this element with data.
-     * @param format The format string for the Date.
-     */
-    public DateFunctionElement(String name,
-                               float x, float y, float w, float h,
-                               Font font, int alignment,
-                               String function, String format) {
+  /**
+   * returns the current formater for this element. This function will never
+   * return null.
+   */
+  public DateFormat getFormatter ()
+  {
+    return formatter;
+  }
 
-        this(name,
-             x, y, w, h,
-             DEFAULT_PAINT,
-             DEFAULT_FONT,
-             DEFAULT_FONT_NAME,
-             DEFAULT_FONT_STYLE,
-             DEFAULT_FONT_SIZE,
-             DEFAULT_ALIGNMENT,
-             function, format);
-
+  /**
+   * Defines the current formater for the element. If the formater is null,
+   * an exception is thrown.
+   */
+  public void setFormatter (DateFormat format)
+  {
+    if (format == null)
+    {
+      throw new NullPointerException ("Given format may not be null");
     }
+    this.formatter = format;
+  }
 
-    /**
-     * Constructs a date element using float coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param field The name of the field used to populate this element with data.
-     * @param format The format string for the Date.
-     */
-    public DateFunctionElement(String name,
-                               float x, float y, float w, float h,
-                               Paint paint, Font font, String fontName, int fontStyle, int fontSize,
-                               int alignment,
-                               String function, String format) {
+  /**
+   * Returns a string representing the formatted date.
+   * @return A formatted version of the data value;
+   */
+  public String getFormattedText ()
+  {
 
-        super(name, x, y, w, h, paint, font, fontName, fontStyle, fontSize, alignment, function);
-	formatter = new SimpleDateFormat(format);
-        this.value = new Date();
+    String result = "";
 
+    Object value = getValue ();
+    if (value instanceof Date)
+    {
+      return formatter.format (value);
     }
-
-    /**
-     * Returns a string representing the formatted date.
-     * @return A formatted version of the data value;
-     */
-    public String getFormattedText() {
-
-        String result = "";
-
-  	Object value = getValue();
-        if (value instanceof Date) {
-            result = formatter.format(value);
-        }
-        else {
-            result = value.toString();
-        }
-
-        return result;
-
+    else
+    {
+      return String.valueOf (value);
     }
-
+  }
 }

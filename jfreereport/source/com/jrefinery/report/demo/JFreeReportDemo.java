@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.1.1.1 2002/04/25 17:02:30 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.2 2002/05/07 14:28:39 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -39,468 +40,493 @@
 
 package com.jrefinery.report.demo;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowAdapter;
-import java.io.File;
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
-import javax.swing.BorderFactory;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
-import javax.swing.JOptionPane;
-import javax.swing.JToolBar;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JSeparator;
-import javax.swing.Action;
-import javax.swing.KeyStroke;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import com.jrefinery.io.FileUtilities;
+import com.jrefinery.report.ItemBand;
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.SystemOutLogTarget;
+import com.jrefinery.report.io.ReportGenerator;
+import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.ui.JRefineryUtilities;
 import com.jrefinery.ui.L1R2ButtonPanel;
 import com.jrefinery.ui.about.AboutFrame;
-import com.jrefinery.report.*;
-import com.jrefinery.report.io.*;
-import com.jrefinery.report.function.Function;
-import com.jrefinery.report.function.ItemCountFunction;
-import com.jrefinery.report.function.ItemSumFunction;
-import java.io.InputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
-import com.jrefinery.report.io.ReportDefinitionContentHandler;
+
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JTabbedPane;
+import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.File;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 
 /**
  * The main frame in the report demonstration application.
+ *
+ * ToDo: Localisation ...
  */
-public class JFreeReportDemo extends JFrame implements ActionListener, WindowListener {
+public class JFreeReportDemo extends JFrame implements WindowListener
+{
 
-    /** Constant for the 'About' command. */
-    public static final String ABOUT_COMMAND = "ABOUT";
+  /** Constant for the 'About' command. */
+  public static final String ABOUT_COMMAND = "ABOUT";
 
-    /** Constant for the 'Print Preview' command. */
-    public static final String PRINT_PREVIEW_COMMAND = "PRINT_PREVIEW";
+  /** Constant for the 'Print Preview' command. */
+  public static final String PRINT_PREVIEW_COMMAND = "PRINT_PREVIEW";
 
-    /** Constant for the 'Exit' command. */
-    public static final String EXIT_COMMAND = "EXIT";
+  /** Constant for the 'Exit' command. */
+  public static final String EXIT_COMMAND = "EXIT";
 
-    protected PreviewAction previewAction;
-    protected AboutAction aboutAction;
+  protected PreviewAction previewAction;
+  protected AboutAction aboutAction;
+  protected CloseAction closeAction;
 
-    /** A frame for displaying information about the demo application. */
-    protected AboutFrame aboutFrame;
+  /** A frame for displaying information about the demo application. */
+  protected AboutFrame aboutFrame;
 
-    /** A frame for displaying information about the system. */
-    protected JFrame infoFrame;
+  /** A frame for displaying information about the system. */
+  protected JFrame infoFrame;
 
-    /** A tabbed pane for displaying the sample data sets. */
-    protected JTabbedPane tabbedPane;
+  /** A tabbed pane for displaying the sample data sets. */
+  protected JTabbedPane tabbedPane;
 
-    /** A table model containing sample data. */
-    protected SampleData1 data1;
+  /** A table model containing sample data. */
+  protected SampleData1 data1;
 
-    /** The first sample report. */
-    protected JFreeReport report1;
+  /** The first sample report. */
+  protected JFreeReport report1;
 
-    /** The preview frame for sample report 1. */
-    protected PreviewFrame frame1;
+  /** The preview frame for sample report 1. */
+  protected PreviewFrame frame1;
 
-    /** A table model containing sample data. */
-    protected SampleData2 data2;
+  /** A table model containing sample data. */
+  protected SampleData2 data2;
 
-    /** The second sample report. */
-    protected JFreeReport report2;
+  /** The second sample report. */
+  protected JFreeReport report2;
 
-    /** The preview frame for sample report 2. */
-    protected PreviewFrame frame2;
+  /** The preview frame for sample report 2. */
+  protected PreviewFrame frame2;
 
-    /**
-     * Constructs a frame containing sample reports created using the JFreeReport Class Library.
-     */
-    public JFreeReportDemo(ResourceBundle resources) {
+  /** A table model containing sample data. */
+  private SampleData3 data3;
 
-        Object[] arguments = new Object[] { JFreeReport.INFO.getVersion() };
-        String pattern = resources.getString("main-frame.title.pattern");
-        String title = MessageFormat.format(pattern, arguments);
-        this.setTitle(title);
+  /** The second sample report. */
+  protected JFreeReport report3;
 
-        // create a couple of sample data sets
-        data1 = new SampleData1();
-        data2 = new SampleData2();
+  /** The preview frame for sample report 3. */
+  protected PreviewFrame frame3;
 
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                dispose();
-                System.exit(0);
-            }
-        });
+  private ResourceBundle resources;
 
-        this.createActions(resources);
 
-        // set up the menu
-        JMenuBar menuBar = createMenuBar(resources);
-        setJMenuBar(menuBar);
+  /**
+   * Constructs a frame containing sample reports created using the JFreeReport Class Library.
+   */
+  public JFreeReportDemo (ResourceBundle resources)
+  {
 
-        JPanel content = new JPanel(new BorderLayout());
-        JToolBar toolbar = createToolBar(resources);
-        content.add(toolbar, BorderLayout.NORTH);
+    this.resources = resources;
+    Object[] arguments = new Object[]{JFreeReport.INFO.getVersion ()};
+    String pattern = resources.getString ("main-frame.title.pattern");
+    String title = MessageFormat.format (pattern, arguments);
+    this.setTitle (title);
 
-        tabbedPane = new JTabbedPane();
+    // create a couple of sample data sets
+    data1 = new SampleData1 ();
+    data2 = new SampleData2 ();
+    data3 = new SampleData3 ();
 
-        tabbedPane.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-        tabbedPane.addTab("Example 1", JRefineryUtilities.createTablePanel(data1));
-        tabbedPane.addTab("Example 2", JRefineryUtilities.createTablePanel(data2));
+    addWindowListener (new WindowAdapter ()
+    {
+      public void windowClosing (WindowEvent e)
+      {
+        dispose ();
+        System.exit (0);
+      }
+    });
 
-        content.add(tabbedPane);
+    this.createActions ();
 
-        L1R2ButtonPanel buttons = new L1R2ButtonPanel("Help", "Preview", "Close");
+    // set up the menu
+    JMenuBar menuBar = createMenuBar ();
+    setJMenuBar (menuBar);
 
-        JButton helpButton = buttons.getLeftButton();
-        helpButton.setActionCommand("Help");
-        helpButton.addActionListener(this);
+    JPanel content = new JPanel (new BorderLayout ());
+    JToolBar toolbar = createToolBar (resources);
+    content.add (toolbar, BorderLayout.NORTH);
 
-        JButton previewButton = buttons.getRightButton1();
-        previewButton.setActionCommand(PRINT_PREVIEW_COMMAND);
-        previewButton.addActionListener(this);
+    tabbedPane = new JTabbedPane ();
 
-        JButton closeButton = buttons.getRightButton2();
-        closeButton.setActionCommand(EXIT_COMMAND);
-        closeButton.addActionListener(this);
+    tabbedPane.setBorder (BorderFactory.createEmptyBorder (4, 4, 4, 4));
+    tabbedPane.addTab ("Example 1", JRefineryUtilities.createTablePanel (data1));
+    tabbedPane.addTab ("Example 2", JRefineryUtilities.createTablePanel (data2));
+    tabbedPane.addTab ("Example 3", JRefineryUtilities.createTablePanel (data3));
 
-        buttons.setBorder(BorderFactory.createEmptyBorder(0, 4, 4, 4));
-        content.add(buttons, BorderLayout.SOUTH);
-        setContentPane(content);
+    content.add (tabbedPane);
 
+    L1R2ButtonPanel buttons = new L1R2ButtonPanel ("Help", "Preview", "Close");
+
+    JButton helpButton = buttons.getLeftButton ();
+    helpButton.setAction (aboutAction);
+
+    JButton previewButton = buttons.getRightButton1 ();
+    previewButton.setAction (previewAction);
+
+    JButton closeButton = buttons.getRightButton2 ();
+    closeButton.setAction (closeAction);
+
+    buttons.setBorder (BorderFactory.createEmptyBorder (0, 4, 4, 4));
+    content.add (buttons, BorderLayout.SOUTH);
+    setContentPane (content);
+
+  }
+
+  /**
+   * Handles a request to preview a report.  First determines which data set is visible, then
+   * calls the appropriate preview method.
+   */
+  public void attemptPreview ()
+  {
+
+    int index = tabbedPane.getSelectedIndex ();
+    if (index == 0)
+    {
+      preview1 ();
+    }
+    else
+    if (index == 1)
+    {
+      preview2 ();
+    }
+    else
+    {
+      preview3 ();
     }
 
-    /**
-     * Handles menu selections by passing control to an appropriate method.
-     */
-    public void actionPerformed(ActionEvent event) {
+  }
 
-        String command = event.getActionCommand();
-//        if (command.equals("Help")) {
-//            attemptHelp();
-//        }
-        if (command.equals(EXIT_COMMAND)) {
-            attemptExit();
-        }
+  /**
+   * Displays a preview frame for report one.  If the preview frame already exists, it is brought
+   * to the front.
+   */
+  public void preview1 ()
+  {
 
+    File file1 = FileUtilities.findFileOnClassPath ("report1.xml");
+    if (file1 == null)
+    {
+      JOptionPane.showMessageDialog (this, "ReportDefinition report1.xml not found on classpath");
+      return;
+    }
+    ReportGenerator gen = ReportGenerator.getInstance ();
+
+    try
+    {
+      report1 = gen.parseReport (file1);
+    }
+    catch (Exception ioe)
+    {
+      JOptionPane.showMessageDialog (this, ioe.getMessage (), "Error: " + ioe.getClass ().getName (), JOptionPane.ERROR_MESSAGE);
+      return;
     }
 
-    /**
-     * Handles a request to preview a report.  First determines which data set is visible, then
-     * calls the appropriate preview method.
-     */
-    public void attemptPreview() {
+    if (report1 == null)
+      throw new NullPointerException ("Damn, is null");
+    ItemBand band = report1.getItemBand ();
+    report1.setData (data1);
 
-        int index = tabbedPane.getSelectedIndex();
-        if (index==0) {
-            preview1();
-        }
-        else preview2();
+    frame1 = new PreviewFrame (report1);
+    frame1.addWindowListener (this);
+    frame1.pack ();
+    JRefineryUtilities.positionFrameRandomly (frame1);
+    frame1.show ();
+    frame1.requestFocus ();
+  }
 
+
+  /**
+   * Displays a preview frame for report two.  If the preview frame already exists, it is brought
+   * to the front.
+   */
+  public void preview2 ()
+  {
+    File file1 = FileUtilities.findFileOnClassPath ("report2.xml");
+    if (file1 == null)
+    {
+      JOptionPane.showMessageDialog (this, "ReportDefinition report2.xml not found on classpath");
+      return;
+    }
+    ReportGenerator gen = ReportGenerator.getInstance ();
+
+    try
+    {
+      report2 = gen.parseReport (file1);
+    }
+    catch (Exception ioe)
+    {
+      JOptionPane.showMessageDialog (this, ioe.getMessage (), "Error: " + ioe.getClass ().getName (), JOptionPane.ERROR_MESSAGE);
+      return;
     }
 
-    /**
-     * Displays a preview frame for report one.  If the preview frame already exists, it is brought
-     * to the front.
-     */
-    public void preview1() {
+    report2.setData (data2);
+    frame2 = new PreviewFrame (report2);
+    frame2.addWindowListener (this);
+    frame2.pack ();
+    JRefineryUtilities.positionFrameRandomly (frame2);
+    frame2.show ();
+    frame2.requestFocus ();
+  }
 
-        if (frame1==null) {
+  /**
+   * Displays a preview frame for report two.  If the preview frame already exists, it is brought
+   * to the front.
+   */
+  public void preview3 ()
+  {
+    File file1 = FileUtilities.findFileOnClassPath ("report3.xml");
+    if (file1 == null)
+    {
+      JOptionPane.showMessageDialog (this, "ReportDefinition report3.xml not found on classpath");
+      return;
+    }
+    ReportGenerator gen = ReportGenerator.getInstance ();
 
-            File file1 = FileUtilities.findFileOnClassPath("report1.xml");
-            if (file1 == null) {
-                JOptionPane.showMessageDialog(this, "ReportDefinition report1.xml not found on classpath");
-                return;
-            }
-            ReportGenerator gen = ReportGenerator.getInstance();
+    try
+    {
+      report3 = gen.parseReport (file1);
+    }
+    catch (Exception ioe)
+    {
+      JOptionPane.showMessageDialog (this, ioe.getMessage (), "Error: " + ioe.getClass ().getName (), JOptionPane.ERROR_MESSAGE);
+      return;
+    }
+    report3.setData (data3);
+    frame3 = new PreviewFrame (report3);
+    frame3.addWindowListener (this);
+    frame3.pack ();
+    JRefineryUtilities.positionFrameRandomly (frame3);
+    frame3.show ();
+    frame3.requestFocus ();
+  }
 
-            try
-            {
-                report1 = gen.parseReport (file1);
-            }
-            catch (Exception ioe)
-            {
-              JOptionPane.showMessageDialog(this, ioe.getMessage(), "Error: " + ioe.getClass().getName(), JOptionPane.ERROR_MESSAGE);
-              return;
-            }
+  /**
+   * Returns the preferred size of the frame.
+   */
+  public Dimension getPreferredSize ()
+  {
+    return new Dimension (440, 300);
+  }
 
-            ItemBand band = report1.getItemBand();
-            report1.setData(data1);
+  /**
+   * Exits the application, but only if the user agrees.
+   */
+  public void attemptExit ()
+  {
 
-            frame1 = new PreviewFrame(report1, 640, 400);
-            frame1.addWindowListener(this);
-            frame1.pack();
-            JRefineryUtilities.positionFrameRandomly(frame1);
-            frame1.show();
-
-        }
-        else {
-            frame1.requestFocus();
-        }
-
+    int result = JOptionPane.showConfirmDialog (this,
+            "Are you sure you want to exit?",
+            "Confirmation...",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+    if (result == JOptionPane.YES_OPTION)
+    {
+      dispose ();
+      System.exit (0);
     }
 
+  }
 
-    /**
-     * Displays a preview frame for report two.  If the preview frame already exists, it is brought
-     * to the front.
-     */
-    public void preview2() {
 
-        if (frame2==null) {
+  /**
+   * Displays information about the application.
+   */
+  public void displayAbout ()
+  {
 
-            File file1 = FileUtilities.findFileOnClassPath("report2.xml");
-            if (file1 == null)
-            {
-              JOptionPane.showMessageDialog(this, "ReportDefinition report2.xml not found on classpath");
-              return;
-            }
-            ReportGenerator gen = ReportGenerator.getInstance();
+    if (aboutFrame == null)
+    {
 
-            try
-            {
-              report2 = gen.parseReport (file1);
-            }
-            catch (Exception ioe)
-            {
-              JOptionPane.showMessageDialog(this, ioe.getMessage(), "Error: " + ioe.getClass().getName(), JOptionPane.ERROR_MESSAGE);
-              return;
-            }
+      aboutFrame = new AboutFrame ("About...", JFreeReport.INFO);
 
-            report2.setData(data2);
-            frame2 = new PreviewFrame(report2, 640, 400);
-            frame2.addWindowListener(this);
-            frame2.pack();
-            JRefineryUtilities.positionFrameRandomly(frame2);
-            frame2.show();
-        }
-        else {
-            frame2.requestFocus();
-        }
+      aboutFrame.pack ();
+      JRefineryUtilities.centerFrameOnScreen (aboutFrame);
+    }
+    aboutFrame.setVisible (true);
+    aboutFrame.requestFocus ();
 
+  }
+
+  private void createActions ()
+  {
+
+    this.previewAction = new PreviewAction (this, resources);
+    this.aboutAction = new AboutAction (this, resources);
+    this.closeAction = new CloseAction (this, resources);
+  }
+
+  /**
+   * Creates and returns a menu-bar for the frame.
+   *
+   * @param resources Localised resources
+   */
+  private JMenuBar createMenuBar ()
+  {
+
+    // create the menus
+    JMenuBar menuBar = new JMenuBar ();
+
+    // first the file menu
+    JMenu fileMenu = createJMenuItem ("menu.file");
+
+    JMenuItem printItem = new JMenuItem (previewAction);
+    KeyStroke accelerator = (KeyStroke) previewAction.getValue (Action.ACCELERATOR_KEY);
+    if (accelerator != null) printItem.setAccelerator (accelerator);
+    fileMenu.add (printItem);
+
+    fileMenu.add (new JSeparator ());
+
+    JMenuItem exitItem = new JMenuItem (closeAction);
+    fileMenu.add (exitItem);
+
+    // then the help menu
+    JMenu helpMenu = createJMenuItem ("menu.help");
+
+    JMenuItem aboutItem = new JMenuItem (aboutAction);
+    helpMenu.add (aboutItem);
+
+    // finally, glue together the menu and return it
+    menuBar.add (fileMenu);
+    menuBar.add (helpMenu);
+    return menuBar;
+
+  }
+
+  private JMenu createJMenuItem (String base)
+  {
+    // first the file menu
+    String label = resources.getString (base + ".name");
+    Character mnemonic = (Character) resources.getObject (base + ".mnemonic");
+
+    JMenu menu = new JMenu (label);
+    if (mnemonic != null)
+    {
+      menu.setMnemonic (mnemonic.charValue ());
+    }
+    return menu;
+  }
+
+
+  private JToolBar createToolBar (ResourceBundle resources)
+  {
+
+    JToolBar toolbar = new JToolBar ();
+
+    toolbar.add (previewAction);
+    toolbar.addSeparator ();
+    toolbar.add (aboutAction);
+    return toolbar;
+
+  }
+
+  /**
+   * Clears the reference to the print preview frames when they are closed.
+   */
+  public void windowClosed (WindowEvent e)
+  {
+
+    if (e.getWindow () == this.frame1)
+    {
+      frame1 = null;
+    }
+    else if (e.getWindow () == this.frame2)
+    {
+      frame2 = null;
+    }
+    else if (e.getWindow () == this.infoFrame)
+    {
+      infoFrame = null;
+    }
+    else if (e.getWindow () == this.aboutFrame)
+    {
+      aboutFrame = null;
     }
 
-//    /**
-//     * Displays a dialog explaining that help information has not yet been written.
-//     */
-//    public void attemptHelp() {
-//
-//       JOptionPane.showMessageDialog(null,
-//                                     "No help has been implemented!",
-//                                     "Important Message...",
-//                                     JOptionPane.INFORMATION_MESSAGE);
-//
-//    }
+  }
 
-    /**
-     * Returns the preferred size of the frame.
-     */
-    public Dimension getPreferredSize() {
-        return new Dimension(440, 300);
-    }
+  /**
+   * Required for WindowListener interface, but not used by this class.
+   */
+  public void windowActivated (WindowEvent e)
+  {
+  }
 
-    /**
-     * Exits the application, but only if the user agrees.
-     */
-    private void attemptExit() {
+  /**
+   * Required for WindowListener interface, but not used by this class.
+   */
+  public void windowClosing (WindowEvent e)
+  {
+  }
 
-       int result = JOptionPane.showConfirmDialog(this,
-                                                  "Are you sure you want to exit?",
-                                                  "Confirmation...",
-                                                  JOptionPane.YES_NO_OPTION,
-                                                  JOptionPane.QUESTION_MESSAGE);
-        if (result==JOptionPane.YES_OPTION) {
-            dispose();
-            System.exit(0);
-        }
+  /**
+   * Required for WindowListener interface, but not used by this class.
+   */
+  public void windowDeactivated (WindowEvent e)
+  {
+  }
 
-    }
+  /**
+   * Required for WindowListener interface, but not used by this class.
+   */
+  public void windowDeiconified (WindowEvent e)
+  {
+  }
 
+  /**
+   * Required for WindowListener interface, but not used by this class.
+   */
+  public void windowIconified (WindowEvent e)
+  {
+  }
 
-    /**
-     * Displays information about the application.
-     */
-    public void displayAbout() {
+  /**
+   * Required for WindowListener interface, but not used by this class.
+   */
+  public void windowOpened (WindowEvent e)
+  {
+  }
 
-        if (aboutFrame==null) {
+  ////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////
 
-            aboutFrame = new AboutFrame("About...", JFreeReport.INFO);
+  /**
+   * The starting point for the demonstration application.
+   */
+  public static void main (String[] args)
+  {
+    Log.addTarget(new SystemOutLogTarget());
+    String baseName = "com.jrefinery.report.demo.resources.DemoResources";
+    ResourceBundle resources = ResourceBundle.getBundle (baseName);
 
-            aboutFrame.pack();
-            JRefineryUtilities.centerFrameOnScreen(aboutFrame);
-        }
-        aboutFrame.setVisible(true);
-        aboutFrame.requestFocus();
+    JFreeReportDemo frame = new JFreeReportDemo (resources);
+    frame.pack ();
+    JRefineryUtilities.centerFrameOnScreen (frame);
+    frame.setVisible (true);
 
-    }
-
-    private void createActions(ResourceBundle resources) {
-
-        this.previewAction = new PreviewAction(this, resources);
-        this.aboutAction = new AboutAction(this, resources);
-
-    }
-
-    /**
-     * Creates and returns a menu-bar for the frame.
-     *
-     * @param resources Localised resources
-     */
-    private JMenuBar createMenuBar(ResourceBundle resources) {
-
-        // create the menus
-        JMenuBar menuBar = new JMenuBar();
-
-        // first the file menu
-        String label = resources.getString("menu.file.name");
-        Character mnemonic = (Character)resources.getObject("menu.file.mnemonic");
-        JMenu fileMenu = new JMenu(label);
-        fileMenu.setMnemonic(mnemonic.charValue());
-
-        JMenuItem printItem = new JMenuItem(previewAction);
-        KeyStroke accelerator = (KeyStroke)previewAction.getValue(Action.ACCELERATOR_KEY);
-        if (accelerator!=null) printItem.setAccelerator(accelerator);
-        fileMenu.add(printItem);
-
-        fileMenu.add(new JSeparator());
-
-        JMenuItem exitItem = new JMenuItem("Exit", 'x');
-        exitItem.setActionCommand(EXIT_COMMAND);
-        exitItem.addActionListener(this);
-        fileMenu.add(exitItem);
-
-        // then the help menu
-        JMenu helpMenu = new JMenu("Help");
-//        helpMenu.setMnemonic('H');
-//
-//        JMenuItem helpItem = new JMenuItem("Help...", 'H');
-//        helpItem.setActionCommand("Help");
-//        helpItem.addActionListener(this);
-//        helpMenu.add(helpItem);
-//
-//        helpMenu.addSeparator();
-
-        JMenuItem aboutItem = new JMenuItem(aboutAction);
-        helpMenu.add(aboutItem);
-
-        // finally, glue together the menu and return it
-        menuBar.add(fileMenu);
-        menuBar.add(helpMenu);
-        return menuBar;
-
-    }
-
-    private JToolBar createToolBar(ResourceBundle resources) {
-
-        JToolBar toolbar = new JToolBar();
-
-        JButton printPreview = new JButton(previewAction);
-        printPreview.setText(null);
-        ImageIcon icon = (ImageIcon)previewAction.getValue("ICON24");
-        printPreview.setIcon(icon);
-        printPreview.setActionCommand(PRINT_PREVIEW_COMMAND);
-        toolbar.add(printPreview);
-
-        toolbar.addSeparator();
-
-        JButton about = new JButton(aboutAction);
-        about.setText(null);
-        icon = (ImageIcon)aboutAction.getValue("ICON24");
-        about.setIcon(icon);
-        about.setActionCommand(ABOUT_COMMAND);
-        toolbar.add(about);
-
-        return toolbar;
-
-    }
-
-    /**
-     * Clears the reference to the print preview frames when they are closed.
-     */
-    public void windowClosed(WindowEvent e) {
-
-        if (e.getWindow()==this.frame1) {
-            frame1=null;
-        }
-        else if (e.getWindow()==this.frame2) {
-            frame2=null;
-        }
-        else if (e.getWindow()==this.infoFrame) {
-            infoFrame=null;
-        }
-        else if (e.getWindow()==this.aboutFrame) {
-            aboutFrame=null;
-        }
-
-    }
-
-    /**
-     * Required for WindowListener interface, but not used by this class.
-     */
-    public void windowActivated(WindowEvent e) {
-    }
-
-    /**
-     * Required for WindowListener interface, but not used by this class.
-     */
-    public void windowClosing(WindowEvent e) {
-    }
-
-    /**
-     * Required for WindowListener interface, but not used by this class.
-     */
-    public void windowDeactivated(WindowEvent e) {
-    }
-
-    /**
-     * Required for WindowListener interface, but not used by this class.
-     */
-    public void windowDeiconified(WindowEvent e) {
-    }
-
-    /**
-     * Required for WindowListener interface, but not used by this class.
-     */
-    public void windowIconified(WindowEvent e) {
-    }
-
-    /**
-     * Required for WindowListener interface, but not used by this class.
-     */
-    public void windowOpened(WindowEvent e) {
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * The starting point for the demonstration application.
-     */
-    public static void main(String[] args) {
-
-        String baseName = "com.jrefinery.report.demo.resources.DemoResources";
-        ResourceBundle resources = ResourceBundle.getBundle(baseName);
-
-        JFreeReportDemo frame = new JFreeReportDemo(resources);
-        frame.pack();
-        JRefineryUtilities.centerFrameOnScreen(frame);
-        frame.setVisible(true);
-
-    }
+  }
 
 }

@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,147 +28,94 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: NumberFunctionElement.java,v 1.1.1.1 2002/04/25 17:02:15 taqua Exp $
  *
  * Changes
  * -------
  * 15-Feb-2002 : Version 1, contributed by Thomas Morgner (DG);
- *
+ * 10-May-2002 : Removed all complex constructors
  */
 
 package com.jrefinery.report;
 
-import java.awt.Paint;
-import java.awt.Font;
 import java.text.DecimalFormat;
-import com.jrefinery.report.function.Function;
+import java.text.NumberFormat;
 
 /**
  * Presentation Element for numerical functions.
  */
-public class NumberFunctionElement extends FunctionElement {
+public class NumberFunctionElement extends FunctionElement
+{
 
-    /** Useful constant for zero. */
-    private static final Number ZERO = new Double(0.0);
+  /** Useful constant for zero. */
+  private static final Number ZERO = new Double (0.0);
 
-    /** The formatting object for this data element. */
-    protected DecimalFormat formatter;
+  /** The formatting object for this data element. */
+  private NumberFormat formatter;
 
-    /**
-     * Constructs a number element using integer coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param function The name of the function used to populate this element with data.
-     * @param format The format string for the number.
-     */
-    public NumberFunctionElement(String name, int x, int y, int w, int h,
-                                 String function, String format) {
+  /**
+   * Constructs a number element using float coordinates.
+   */
+  public NumberFunctionElement ()
+  {
+    setDecimalFormatString(null);
+  }
 
-        this(name,
-             x, y, w, h,
-             DEFAULT_PAINT,
-             DEFAULT_FONT,
-             DEFAULT_FONT_NAME,
-             DEFAULT_FONT_STYLE,
-             DEFAULT_FONT_SIZE,
-             DEFAULT_ALIGNMENT,
-             function, format);
+  /**
+   * Returns the numberformater of this element. Initialy this is a DecimalFormat.
+   */
+  public NumberFormat getFormatter ()
+  {
+    return formatter;
+  }
 
+  /**
+   * Sets the NumberFormater for this element. The formater must not be null, or a
+   * NullPointerException is thrown.
+   */
+  public void setFormatter (NumberFormat nf)
+  {
+    if (nf == null)
+      throw new NullPointerException ("NumberFormat may not be null");
+
+    this.formatter = nf;
+  }
+
+  /**
+   * Defines the numberformater for this element using a DecimalFormat and initializing it
+   * with the given format string. If the format string is null, a reasonable default value
+   * is choosen.
+   */
+  public void setDecimalFormatString (String df)
+  {
+    if (df == null)
+    {
+      df = "0";
+    }
+    setFormatter (new DecimalFormat (df));
+  }
+
+  /**
+   * Returns a formatted version of the number.
+   * @return A formatted version of the number.
+   */
+  public String getFormattedText ()
+  {
+
+    String result = "";
+
+    Object value = getValue ();
+    if (value instanceof Number)
+    {
+      result = getFormatter ().format (value);
+    }
+    else
+    {
+      String.valueOf (value);
     }
 
-    /**
-     * Constructs a number element using integer coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param field The name of the field used to populate this element with data.
-     * @param format The format string for the number.
-     */
-    public NumberFunctionElement(String name,
-                                 int x, int y, int w, int h,
-                                 Paint paint,
-                                 Font font, String fontName, int fontStyle, int fontSize,
-                                 int alignment, String function, String format) {
+    return result;
 
-        super(name, x, y, w, h, paint, font, fontName, fontStyle, fontSize, alignment, function);
-        this.formatter = new DecimalFormat(format);
-        this.value = ZERO;
-
-    }
-
-    /**
-     * Constructs a number element using float coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param field The name of the field used to populate this element with data.
-     * @param format The format string for the number.
-     */
-    public NumberFunctionElement(String name, float x, float y, float w, float h,
-                                 String function, String format) {
-
-        this(name,
-             x, y, w, h,
-             DEFAULT_PAINT,
-             DEFAULT_FONT,
-             DEFAULT_FONT_NAME,
-             DEFAULT_FONT_STYLE,
-             DEFAULT_FONT_SIZE,
-             DEFAULT_ALIGNMENT,
-             function, format);
-
-    }
-
-    /**
-     * Constructs a number element using float coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param field The name of the field used to populate this element with data.
-     * @param format The format string for the number.
-     */
-    public NumberFunctionElement(String name, float x, float y, float w, float h,
-                                 Paint paint, Font font, String fontName, int fontStyle, int fontSize,
-                                 int alignment,
-                                 String function, String format) {
-
-        super(name, x, y, w, h, paint, font, fontName, fontSize, fontStyle, alignment, function);
-        this.formatter = new DecimalFormat(format);
-        this.value = ZERO;
-
-    }
-
-    /**
-     * Returns a formatted version of the number.
-     * @return A formatted version of the number.
-     */
-    public String getFormattedText() {
-
-        String result = "";
-
-        Object value = getValue();
-        if (value instanceof Number) {
-            result = this.formatter.format(value);
-        }
-        else {
-            result = value.toString();
-        }
-
-        return result;
-
-    }
+  }
 
 }

@@ -1,4 +1,5 @@
-/* =========================================
+/**
+ * =============================================================
  * JFreeReport - a Java report printing API;
  * =========================================
  * Version 0.50;
@@ -24,17 +25,17 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ReportPane.java,v 1.1.1.1 2002/04/25 17:02:23 taqua Exp $
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 18-Feb-2002 : Multiple changes with introduction of XML format for report definition (DG);
  * 18-Apr-2002 : Caching painted graphics for performance reasons if the cached graphic is not
  *               greater than 1500 pixels. Provides propertyChangeEvents for zoom and paginating.
- *               
+ * 10-May-2002 : Updated code to work with last changes in report processing.
  */
 
-package com.jrefinery.report;
+package com.jrefinery.report.preview;
 
 import java.awt.Graphics2D;
 import java.awt.Dimension;
@@ -55,6 +56,14 @@ import javax.swing.UIManager;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.G2OutputTarget;
+import com.jrefinery.report.OutputTarget;
+import com.jrefinery.report.ReportState;
+import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.ReportStateConstants;
+import com.jrefinery.report.util.Log;
+
 /** 
  * A panel used to display one page of a report.  Works in tandem with a ReportPreviewFrame to
  * display a report. 
@@ -68,7 +77,7 @@ public class ReportPane extends JComponent implements Printable
 	public static final String ZOOMFACTOR_PROPERTY = "zoomfactor";
 	public static final String ERROR_PROPERTY = "error";
 
-	double PaperBorderPixel = 6;
+	private double PaperBorderPixel = 6;
 
 	/** For performance reasons, I buffer the rendered image and
    discard it when the page is changed or zooming */
@@ -78,7 +87,7 @@ public class ReportPane extends JComponent implements Printable
 	protected JFreeReport report;
 
 	/** The page format corresponding to the current printer setup; */
-	private PageFormat pageFormat;
+//	private PageFormat pageFormat;
 
 	/** The current page number; */
 	private int pageNumber;
@@ -111,7 +120,6 @@ public class ReportPane extends JComponent implements Printable
   	propsupp = new PropertyChangeSupport (this);
     this.target = target;
 		this.report = report;
-		this.pageFormat = target.getPageFormat();
 		this.pageNumber = 1;
     setZoomFactor (1.0);
 		paginated = false;
@@ -122,14 +130,17 @@ public class ReportPane extends JComponent implements Printable
 	@return The current page format; */
 	public PageFormat getPageFormat()
 	{
-		return pageFormat;
+		return getOutputTarget().getPageFormat ();
 	}
 
 	/** Sets the page format.
 	@param pageFormat The new page format; */
 	public void setPageFormat(PageFormat pageFormat)
 	{
-		this.pageFormat = pageFormat;
+    if (pageFormat == null)
+        throw new NullPointerException ("PageFormat must not be null");
+        
+		getOutputTarget().setPageFormat (pageFormat);
 		this.paginated = false;
 		int w = (int)(pageFormat.getWidth()*zoomFactor);
 		int h = (int)(pageFormat.getHeight()*zoomFactor);
@@ -184,6 +195,7 @@ public class ReportPane extends JComponent implements Printable
 	{
   	double oldzoom = factor;
 		this.zoomFactor = factor;
+    PageFormat pageFormat = getPageFormat ();
 		int w = (int)((pageFormat.getWidth() + PaperBorderPixel)*zoomFactor);
 		int h = (int)((pageFormat.getHeight() + PaperBorderPixel)*zoomFactor);
 		graphCache = null;
@@ -210,14 +222,11 @@ public class ReportPane extends JComponent implements Printable
 	@param g The graphics device; */
 	public void paintComponent(Graphics g)
 	{
-    if (hasError ())
-    {
-      super.paintComponent (g);
-    }
-    
 		Graphics2D g2org = (Graphics2D)g;
 		if (graphCache == null)
     {
+      PageFormat pageFormat = getPageFormat ();
+      
 	    Dimension size = getSize();
 	    Insets insets = getInsets();
 
@@ -244,7 +253,6 @@ public class ReportPane extends JComponent implements Printable
       }
       else
       {
-        System.out.println ("Create Image for :" + (int) (realouterW) + "  " + (int) (realouterH));
   			graphCache = g2org.getDeviceConfiguration().createCompatibleImage ((int) (realouterW), (int) (realouterH));
   			g2 = graphCache.createGraphics();
 			}
@@ -259,12 +267,14 @@ public class ReportPane extends JComponent implements Printable
       }
       catch (ReportProcessingException rpe)
       {
-        //Log.error ("Report generated an error", rpe);
+        Log.error ("Repaginate failed: ", rpe);
         setError (rpe);
+        
       }
-      
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
+      g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			//g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			//g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
       /** Prepare background **/
 			Rectangle2D pageArea = new Rectangle2D.Double(outerX, outerY, realouterW, realouterH);
@@ -285,7 +295,7 @@ public class ReportPane extends JComponent implements Printable
 			ReportState state = (ReportState)this.pageStates.get(pageNumber - 1);
 			ReportState clone = (ReportState)state.clone();
 			//report.processPage(pageNumber, state, g2, this.pageFormat, true);
-			report.processPage(pageNumber, target, clone, true);
+			report.processPage(target, clone, true);
 
       /** Paint Page Shadow */
  			Rectangle2D southborder = new Rectangle2D.Double(outerX + PaperBorderPixel - 2, outerY + outerH - 2, outerW, PaperBorderPixel);
@@ -331,13 +341,15 @@ public class ReportPane extends JComponent implements Printable
     {
       g2org.drawImage (graphCache, new AffineTransformOp (g2org.getDeviceConfiguration().getDefaultTransform (), g2org.getRenderingHints()), 0,0);
     }
-    
+    else
+    {
+      super.paintComponent (g);
+    }
 	}
 
 	/** Supports the Printable interface by drawing a report on a single page. */
 	public int print(Graphics g, PageFormat pf, int pageIndex)
 	{
-    System.out.println ("Print Page : " + pageIndex);
 		Graphics2D g2 = (Graphics2D)g;
     try
     {
@@ -349,7 +361,6 @@ public class ReportPane extends JComponent implements Printable
 		catch (ReportProcessingException rpe)
 		{
 		  //Log.error ("Report generated an error", rpe);
-		  System.out.println ("Print Page Error : ");
       rpe.printStackTrace ();
 		  setError (rpe);
 		}
@@ -358,7 +369,7 @@ public class ReportPane extends JComponent implements Printable
 
 		ReportState state = (ReportState)this.pageStates.get(pageIndex);
     G2OutputTarget target = new G2OutputTarget (g2, pf);
-		report.processPage(pageIndex+1, target, state, true);
+		report.processPage(target, state, true);
 		return Printable.PAGE_EXISTS;
 	}
 
@@ -366,25 +377,24 @@ public class ReportPane extends JComponent implements Printable
 	protected void repaginate(Graphics2D g2)
     throws ReportProcessingException
 	{
-		this.pageStates.clear();
-		ReportState state = new ReportState(report);
-		this.pageStates.add(0, state);
+    long currentTime = System.currentTimeMillis();
     
-		int pp = 1;
-		state = report.processPage(1, target, state, false);
-		this.pageStates.add(pp, state);
-		while (!(state.getState()==ReportStateConstants.FINISH))
+		this.pageStates.clear();
+		ReportState state = new ReportState.Start (report);
+		this.pageStates.add(state);
+    
+		state = report.processPage(target, state, false);
+		while (! state.isFinish ())
 		{
-			ReportState oldstate = (ReportState) state.clone();
-			pp = pp+1;
-			state = report.processPage(pp, target, state, false);
+      this.pageStates.add(state);
+      ReportState oldstate = state;
+			state = report.processPage(target, state, false);
 			if (!state.isProceeding (oldstate))
       {
       	throw new ReportProcessingException ("State did not proceed, bailing out!");
       }
-			this.pageStates.add(pp, state);
 		}
-    setCurrentPageCount (pp);
+    setCurrentPageCount (state.getCurrentPage() - 1);
 		boolean oldpagination = paginated;
     paginated = true;
     propsupp.firePropertyChange (PAGINATED_PROPERTY, oldpagination, paginated);

@@ -1,8 +1,13 @@
-<!-- 
+<!--
   Report DTD for JFreeReport version 0.7.0.
+
+	ChangeLog:
+
+	2002-05-01: Taq: Added multiline-field and multiline-function element
+
  -->
 
-<!ENTITY % boolean 
+<!ENTITY % boolean
    "true | false"
 >
 
@@ -23,7 +28,7 @@
  When positioning an element be aware to take care of the elements width.
  The next element should be placed at the absolute position x+width,
  or the elements will overwrite each other.
- 
+
 -->
 <!ENTITY % position
  "x           CDATA          #IMPLIED
@@ -42,82 +47,82 @@
   baseline       CDATA          #IMPLIED
   color          CDATA          #IMPLIED
 	name           CDATA          #IMPLIED"
-	
+
  >
 
 <!ENTITY % itemelements
-  "(label | general-field | string-field | string-function | 
-  number-field | number-function | date-field | date-function | 
-	imageref | line)*">
+  "(label | general-field | string-field | string-function |
+  number-field | number-function | date-field | date-function |
+	multiline-field | multiline-function | imageref | line)*">
 
-<!-- 
+<!--
 
    A foreword:
-   
-     colordefinitions are given either as predefined names as defined 
-     in HTML or as HTML-RGB-Color-Reference ("#rrggbb"); 
- 
+
+     colordefinitions are given either as predefined names as defined
+     in HTML or as HTML-RGB-Color-Reference ("#rrggbb");
+
  -->
 
 
 <!--
-   
+
    A report constists of several elements, which are all optional:
-   
+
    * reportheader
      printed at the first page
-     
+
    * reportfooter
      printed on the last page
-     
+
    * a page header
      Printed before any content is printed to the page.
-   
+
    * a page footer
      printed, after the last content for the page is printed
      The pagefooter is always positionated at the bottom of a page,
      regardless how much space of the page is filled.
-     
+
    * one or more group definitions in the "groups" element
      If no groups are defined, a default group is created to contain
      all data elements of the current report.
-   
+
    * the (optional) item band. This is where the data rows are printed.
-     If no item band is defined, only printing is disabled. All 
-     calculations are performed regardless of the appearance of the 
+     If no item band is defined, only printing is disabled. All
+     calculations are performed regardless of the appearance of the
      items.
-   
+
    Attributes:
-    Width  = the width of the report in Java-Printing-Units 
+    Width  = the width of the report in Java-Printing-Units
     Height = the height of the report
-    
+
     All printing units are defined in 1/72 inches, the default printing
     resolution on java.awt.graphics.
-   
+
     minPageFormat = a predefined page format, for instance "A4" or "US-LETTER"
-       
-   
+
+
   -->
 
 <!ENTITY % pageFormats
-  "(  A | A0 | A1 | A10 | A2 | A3 | A4 | A5 | A6 | A7 | A8 | A9 | B | B0 | B1 | B10 | 
-    B2 | B3 | B4 | B5  | B6 | B7 | B8 | B9 | C | C0 | C1 | C10 | C2 | C3 | C4 | C5 | 
-    C6 | C7 | C8 | C9 | D  | E  | ENV_10 | ENV_10X13 | ENV_10X14 | ENV_10X15 | ENV_11 | 
-    ENV_12 | ENV_14 | ENV_6X9 | ENV_7X9 | ENV_9 | ENV_9X11 | ENV_9X12 | ENV_INVITE | 
-    ENV_ITALY  | ENV_MONARCH | ENV_PERSONAL | EXECUTIVE | FOLIO  | INVITE | INVITE_ENVELOPE | 
-    INVOICE | ISO_2A0 | ISO_4A0 | ISO_A0 | ISO_A1 | ISO_A10 | ISO_A2 | ISO_A3  | ISO_A4  | 
-    ISO_A5  | ISO_A6  | ISO_A7  | ISO_A8  | ISO_A9  | ISO_B0  | ISO_B1  | ISO_B10 | ISO_B2  | 
-    ISO_B3  | ISO_B4  | ISO_B4_ENVELOPE    | ISO_B5 | ISO_B5_ENVELOPE | ISO_B6 | ISO_B7 | 
-    ISO_B8 | ISO_B9 | ISO_C0 | ISO_C0_ENVELOPE | ISO_C1 | ISO_C1_ENVELOPE | ISO_C10 | 
-    ISO_C10_ENVELOPE  | ISO_C2 | ISO_C2_ENVELOPE | ISO_C3 | ISO_C3_ENVELOPE | ISO_C4 | 
-    ISO_C4_ENVELOPE | ISO_C5 | ISO_C5_ENVELOPE | ISO_C6 | ISO_C6_ENVELOPE | ISO_C7 | 
-    ISO_C7_ENVELOPE | ISO_C8 | ISO_C8_ENVELOPE | ISO_C9 | ISO_C9_ENVELOPE | ISO_DESIGNATED_LONG | 
-    ISO_DESIGNATED_LONG_ENVELOPE | ITALY | ITALY_ENVELOPE | JIS_B0 | JIS_B1 | JIS_B10  | 
-    JIS_B2  | JIS_B3  | JIS_B4  | JIS_B5  | JIS_B6  | JIS_B7  | JIS_B8  | JIS_B9  | LEDGER  | 
-    LEGAL   | LETTER  | MONARCH | MONARCH_ENVELOPE  | NA_10X13_ENVELOPE | NA_10X14_ENVELOPE | 
-    NA_10X15_ENVELOPE | NA_6X9_ENVELOPE   | NA_7X9_ENVELOPE   | NA_9X11_ENVELOPE  | 
-    NA_9X12_ENVELOPE | NA_LEGAL | NA_LETTER  | NA_NUMBER_10_ENVELOPE | NA_NUMBER_11_ENVELOPE | 
-    NA_NUMBER_12_ENVELOPE | NA_NUMBER_14_ENVELOPE | NA_NUMBER_9_ENVELOPE | NOTE | PERSONAL | 
+  "(  A | A0 | A1 | A10 | A2 | A3 | A4 | A5 | A6 | A7 | A8 | A9 | B | B0 | B1 | B10 |
+    B2 | B3 | B4 | B5  | B6 | B7 | B8 | B9 | C | C0 | C1 | C10 | C2 | C3 | C4 | C5 |
+    C6 | C7 | C8 | C9 | D  | E  | ENV_10 | ENV_10X13 | ENV_10X14 | ENV_10X15 | ENV_11 |
+    ENV_12 | ENV_14 | ENV_6X9 | ENV_7X9 | ENV_9 | ENV_9X11 | ENV_9X12 | ENV_INVITE |
+    ENV_ITALY  | ENV_MONARCH | ENV_PERSONAL | EXECUTIVE | FOLIO  | INVITE | INVITE_ENVELOPE |
+    INVOICE | ISO_2A0 | ISO_4A0 | ISO_A0 | ISO_A1 | ISO_A10 | ISO_A2 | ISO_A3  | ISO_A4  |
+    ISO_A5  | ISO_A6  | ISO_A7  | ISO_A8  | ISO_A9  | ISO_B0  | ISO_B1  | ISO_B10 | ISO_B2  |
+    ISO_B3  | ISO_B4  | ISO_B4_ENVELOPE    | ISO_B5 | ISO_B5_ENVELOPE | ISO_B6 | ISO_B7 |
+    ISO_B8 | ISO_B9 | ISO_C0 | ISO_C0_ENVELOPE | ISO_C1 | ISO_C1_ENVELOPE | ISO_C10 |
+    ISO_C10_ENVELOPE  | ISO_C2 | ISO_C2_ENVELOPE | ISO_C3 | ISO_C3_ENVELOPE | ISO_C4 |
+    ISO_C4_ENVELOPE | ISO_C5 | ISO_C5_ENVELOPE | ISO_C6 | ISO_C6_ENVELOPE | ISO_C7 |
+    ISO_C7_ENVELOPE | ISO_C8 | ISO_C8_ENVELOPE | ISO_C9 | ISO_C9_ENVELOPE | ISO_DESIGNATED_LONG |
+    ISO_DESIGNATED_LONG_ENVELOPE | ITALY | ITALY_ENVELOPE | JIS_B0 | JIS_B1 | JIS_B10  |
+    JIS_B2  | JIS_B3  | JIS_B4  | JIS_B5  | JIS_B6  | JIS_B7  | JIS_B8  | JIS_B9  | LEDGER  |
+    LEGAL   | LETTER  | MONARCH | MONARCH_ENVELOPE  | NA_10X13_ENVELOPE | NA_10X14_ENVELOPE |
+    NA_10X15_ENVELOPE | NA_6X9_ENVELOPE   | NA_7X9_ENVELOPE   | NA_9X11_ENVELOPE  |
+    NA_9X12_ENVELOPE | NA_LEGAL | NA_LETTER  | NA_NUMBER_10_ENVELOPE | NA_NUMBER_11_ENVELOPE |
+    NA_NUMBER_12_ENVELOPE | NA_NUMBER_14_ENVELOPE | NA_NUMBER_9_ENVELOPE | NOTE | PERSONAL |
     PERSONAL_ENVELOPE | QUARTO  | STATEMENT | TABLOID ) "
 >
 
@@ -129,24 +134,24 @@
   name           CDATA           #IMPLIED
   minpageformat  %pageFormats;   #IMPLIED
 >
-	
+
 
 <!--
 
-  The reportheader can contain any band-element. 
+  The reportheader can contain any band-element.
   The height of the report header is ignored, if the header is
   printed on an own page.
-  
+
   As with every element container you may define default font settings
   for sub elements without an own font definition.
-  
+
   -->
 <!ELEMENT reportheader ( %itemelements; )>
 <!ATTLIST reportheader
   ownpage        (%boolean;)    #IMPLIED
   %basicform;
 >
- 
+
 <!ELEMENT reportfooter ( %itemelements; )>
 <!ATTLIST reportfooter
   ownpage        (%boolean;)    #IMPLIED
@@ -157,20 +162,20 @@
 
 <!--
 
-  The reportheader can contain any band-element. 
+  The reportheader can contain any band-element.
   The height of the report header is ignored, if the header is
   printed on an own page.
-  
+
   As with every element container you may define default font settings
   for sub elements without an own font definition.
-  
+
   -->
 <!ELEMENT pageheader ( %itemelements; )>
 <!ATTLIST pageheader
   onfirstpage    (%boolean;)   #IMPLIED
   %basicform;
 >
- 
+
 
 <!ELEMENT pagefooter ( %itemelements; )>
 <!ATTLIST pagefooter
@@ -184,12 +189,12 @@
   The tag encapsulates all groups. This tag helps to keep parsing
   simple. If no groups are defined, a default group has to be created
   containing all elements of the report data
-  
+
   -->
 <!ELEMENT groups (group+)>
 
 <!ELEMENT group  (groupheader?, groupfooter?, fields+)>
-<!ATTLIST group 
+<!ATTLIST group
   name           CDATA         #IMPLIED
 >
 
@@ -201,7 +206,7 @@
 
   If pagebreak is set to true, a page break will be forced before
   the group header is printed.
-  
+
   -->
 <!ELEMENT groupheader ( %itemelements; )>
 <!ATTLIST groupheader
@@ -214,20 +219,20 @@
   %basicform;
 >
 
-<!-- 
+<!--
   the name of the elements that have to change for
-  a group break. 
-  
+  a group break.
+
   A report group may have more than one group element.
   A group element may only contain Strings defining the
   names of the items which form a group. This is not
   limited to items from the data model, you may also
   enter functions here.
-  
+
  -->
 <!ELEMENT fields  (field*)>
 <!ELEMENT field  (#PCDATA)>
-  
+
 <!ELEMENT items   ( %itemelements; )>
 <!ATTLIST items
   %basicform;
@@ -250,7 +255,7 @@
 <!ATTLIST general-field
   %basicform;
   %position;
-  fieldname   CDATA    #REQUIRED    
+  fieldname   CDATA    #REQUIRED
 >
 
 <!--
@@ -260,7 +265,17 @@
 <!ATTLIST string-field
   %basicform;
   %position;
-  fieldname   CDATA    #REQUIRED    
+  fieldname   CDATA    #REQUIRED
+>
+
+<!--
+  A simple text field, no line break capability
+  -->
+<!ELEMENT multiline-field   EMPTY>
+<!ATTLIST multiline-field
+  %basicform;
+  %position;
+  fieldname   CDATA    #REQUIRED
 >
 
 <!ELEMENT number-field   EMPTY>
@@ -268,7 +283,7 @@
   %basicform;
   %position;
   format		CDATA      #IMPLIED
-  fieldname   CDATA    #REQUIRED    
+  fieldname   CDATA    #REQUIRED
 >
 
 <!ELEMENT date-field   EMPTY>
@@ -276,7 +291,7 @@
   %basicform;
   %position;
   format		CDATA      #IMPLIED
-  fieldname   CDATA    #REQUIRED    
+  fieldname   CDATA    #REQUIRED
 >
 
 <!--
@@ -285,10 +300,22 @@
   which is used to display the results of a certain function. If
   you want to reuse function results, then this feature is usefull,
   especially when calculating the results is expensive.
-  
+
   -->
 <!ELEMENT string-function   EMPTY>
 <!ATTLIST string-function
+  %basicform;
+  %position;
+  function    CDATA    #REQUIRED
+>
+
+<!--
+
+  @0.7.2 This on is not yet implemented. Next release.
+
+  -->
+<!ELEMENT multiline-function   EMPTY>
+<!ATTLIST multiline-function
   %basicform;
   %position;
   function    CDATA    #REQUIRED
@@ -320,7 +347,7 @@
 <!--
 
    The image reference links an external image into the report.
-   
+
   -->
 <!ELEMENT imageref   EMPTY>
 <!ATTLIST imageref
@@ -331,29 +358,29 @@
 
 <!--
 
-  Functions are defined in a function library. 
+  Functions are defined in a function library.
   Every referenced function has to be defined in the
   library in order to be loaded and executed correctly.
-  
+
   -->
 <!ELEMENT functions  (function | data-ref)*>
 
-<!-- 
+<!--
 
   A data reference is used to validate the table model against
 	the declared format of the datasource. It simply checks that
-	all fields declared are present and are assignable from the 
-	given type. 
-	
+	all fields declared are present and are assignable from the
+	given type.
+
 	The attribute class is used to validate the data models objects.
-	This function uses TableModel.getColumnClass() to query the 
+	This function uses TableModel.getColumnClass() to query the
 	table models data types. If the tablemodel returns java.lang.Object
 	no check is done, java.lang.Object is considered as an indicator
 	that the table model does not know about it's internal data
 	structure.
 
 	0.7.0 - This function will be implemented in the next release
-	
+
 -->
 <!ELEMENT data-ref  EMPTY>
 <!ATTLIST data-ref
@@ -362,14 +389,14 @@
 >
 
 <!--
-  
+
   A defined function has a valid implementing class that implement
   the com.jrefinery.report.function.Function interface.
-  
+
   Function parameters are given by propery elements. For visual
   editing, function must obey to the java-beans rules (use get*/set*
   methods, perhaps provide beaninfo and so on)
-  
+
   -->
 <!ELEMENT function   (properties?)>
 <!ATTLIST function
@@ -385,17 +412,17 @@
 >
 
 
-<!-- 
-  
-  Shapes 
-  
+<!--
+
+  Shapes
+
   -->
 <!ELEMENT line      EMPTY>
 <!ATTLIST line
   x1        CDATA       #REQUIRED
-  y1        CDATA       #REQUIRED  
+  y1        CDATA       #REQUIRED
   x2        CDATA       #REQUIRED
-  y2        CDATA       #REQUIRED  
+  y2        CDATA       #REQUIRED
 	color     CDATA       #IMPLIED
 	name      CDATA       #IMPLIED
 	weight    CDATA       #IMPLIED

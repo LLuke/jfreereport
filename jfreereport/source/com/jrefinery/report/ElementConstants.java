@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,47 +28,40 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ElementConstants.java,v 1.1.1.1 2002/04/25 17:02:26 taqua Exp $
  *
  * Changes
  * -------
  * 05-Mar-2002 : Version 1 (DG);
- *
+ * 10-May-2002 : Removed DEFAULT_FONT.. constants. The font can be determined on construction
+ *               time.
  */
 
 package com.jrefinery.report;
 
-import java.awt.Paint;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Paint;
 
 /**
  * Useful constants for report elements.
  */
-public interface ElementConstants {
+public interface ElementConstants
+{
 
-    /** Useful constant representing left-alignment. */
-    public static final int LEFT = 1;
+  /** Useful constant representing left-alignment. */
+  public static final int LEFT = 1;
 
-    /** Useful constant representing right-alignment. */
-    public static final int RIGHT = 2;
+  /** Useful constant representing right-alignment. */
+  public static final int RIGHT = 2;
 
-    /** Useful constant representing center-alignment. */
-    public static final int CENTER = 3;
+  /** Useful constant representing center-alignment. */
+  public static final int CENTER = 3;
 
-    /** The default paint. */
-    public static final Paint DEFAULT_PAINT = Color.black;
+  /** The default paint. */
+  public static final Paint DEFAULT_PAINT = Color.black;
 
-    /** The default element font (null indicates that the font should be derived from the band). */
-    public static final Font DEFAULT_FONT = null;
-
-    public static final String DEFAULT_FONT_NAME = null;
-
-    public static final int DEFAULT_FONT_STYLE = -1;
-
-    public static final int DEFAULT_FONT_SIZE = 0;
-
-    /** The default alignment. */
-    public static int DEFAULT_ALIGNMENT = Element.LEFT;
+   /** The default alignment. */
+  public static int DEFAULT_ALIGNMENT = Element.LEFT;
 
 }

@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,81 +28,80 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PageHeader.java,v 1.1.1.1 2002/04/25 17:02:25 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 18-Feb-2002 : Multiple changes with introduction of XML format for report definition (DG);
+ * 10-May-2002 : removed all but the default constructor. Added accessor functions for all properties.
  *
  */
 
 package com.jrefinery.report;
 
-import java.util.Collection;
 
 /**
  * A report band used to print information at the top of every page in the report.  There is an
  * option to suppress the page header on the first page.
  */
-public class PageHeader extends Band {
+public class PageHeader extends Band
+{
 
-    /** Show the header on the first page? */
-    protected boolean displayOnFirstPage;
 
-    /**
-     * Constructs a page header.
-     *
-     * @param height The height (in points).
-     */
-    public PageHeader(float height) {
-        this(height, null, false);
-    }
+  /** Flag that indicates whether or not the footer is printed on the first page of the report. */
+  private boolean displayOnFirstPage;
 
-    /**
-     * Constructs a page header
-     */
-    public PageHeader(float height, boolean displayOnFirstPage) {
-        this(height, null, displayOnFirstPage);
-    }
+  /** Flag that indicates whether or not the footer is printed on the last page of the report. */
+  private boolean displayOnLastPage;
 
-    /**
-     * Constructs a header with the specified height containing the specified elements.
-     * @param height The height of the band.
-     * @param elements The collection of elements to add to the band.
-     */
-    public PageHeader(float height, Collection elements) {
-        this(height, elements, false);
-    }
+  /**
+   * Constructs a page header.
+   *
+   * @param height The height (in points).
+   */
+  public PageHeader ()
+  {
+    displayOnFirstPage = true;
+    displayOnLastPage = true;
+  }
 
-    /**
-     * Constructs a header with the specified height containing the specified
-     * collection of elements, and sets the flag that determines whether or not the header is
-     * displayed on the first page.
-     *
-     * @param height The height of the band.
-     * @param elements The collection of elements to add to the band.
-     * @param showOnFirstPage A flag that determines whether or not the header is shown on the
-     *                        first page.
-     */
-    public PageHeader(float height, Collection elements,
-                      boolean displayOnFirstPage) {
+  /**
+   * Returns true if the header should be shown on page 1, and false otherwise.
+   * @return A flag indicating whether or not the footer is shown on the first page.
+   */
+  public boolean isDisplayOnFirstPage ()
+  {
+    return this.displayOnFirstPage;
+  }
 
-        super(height, elements);
-        this.displayOnFirstPage = displayOnFirstPage;
+  /**
+   * defines whether the header should be shown on the first page. This property defaults
+   * to true.
+   * @param b A flag indicating whether or not the header is shown on the first page.
+   */
+  public void setDisplayOnFirstPage (boolean b)
+  {
+    this.displayOnFirstPage = b;
+  }
 
-    }
+  /**
+   * Returns true if the header should be shown on the last page, and false otherwise.
+   * @return A flag indicating whether or not the header is shown on the last page.
+   */
+  public boolean isDisplayOnLastPage ()
+  {
+    return this.displayOnLastPage;
+  }
 
-    /**
-     * Returns true if the header should be shown on the first page.
-     * <P>
-     * You might decide to suppress the page header on page 1 of the report if there is a report
-     * header.
-     *
-     * @return True if the header should be shown on the first page.
-     */
-    public boolean displayOnFirstPage() {
-        return this.displayOnFirstPage;
-    }
+  /**
+   * defines whether the header should be shown on the last page. This property defaults to
+   * true
+   * @param b A flag indicating whether or not the header is shown on the last page.
+   */
+  public void setDisplayOnLastPage (boolean b)
+  {
+    this.displayOnLastPage = b;
+  }
 
 }

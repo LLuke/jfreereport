@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,114 +28,27 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: StringElement.java,v 1.1.1.1 2002/04/25 17:02:20 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 05-Mar-2002 : Integrated Thomas Morgner's code plus PDF report generation (DG);
- *
+ * 10-May-2002 : removed all complex constructors (TM)
  */
 
 package com.jrefinery.report;
 
-import java.awt.Paint;
-import java.awt.Font;
-
 /**
  * A data element that handles String objects.
  */
-public class StringElement extends DataElement {
-
-    /**
-     * Constructs a string element using integer coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param field The name of the field used to populate this element with data.
-     */
-    public StringElement(String name,
-                         int x, int y, int w, int h,
-                         String field) {
-
-        this(name,
-             x, y, w, h,
-             DEFAULT_PAINT,
-             DEFAULT_FONT,
-             DEFAULT_FONT_NAME,
-             DEFAULT_FONT_STYLE,
-             DEFAULT_FONT_SIZE,
-             DEFAULT_ALIGNMENT,
-             field);
-
-    }
-
-    /**
-     * Constructs a string element using integer coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param field The name of the field used to populate this element with data.
-     */
-    public StringElement(String name,
-                         int x, int y, int w, int h,
-                         Paint paint, Font font, String fontName, int fontStyle, int fontSize,
-                         int alignment, String field) {
-
-        super(name, x, y, w, h, paint, font, fontName, fontStyle, fontSize, alignment, field);
-
-    }
-
-    /**
-     * Constructs a string element using float coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-
-     * @param field The name of the field used to populate this element with data.
-     */
-    public StringElement(String name,
-                         float x, float y, float w, float h,
-                         String field) {
-
-        this(name,
-             x, y, w, h,
-             DEFAULT_PAINT,
-             DEFAULT_FONT,
-             DEFAULT_FONT_NAME,
-             DEFAULT_FONT_STYLE,
-             DEFAULT_FONT_SIZE,
-             DEFAULT_ALIGNMENT,
-             field);
-
-    }
-
-    /**
-     * Constructs a string element using float coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param field The name of the field used to populate this element with data.
-     */
-    public StringElement(String name,
-                         float x, float y, float w, float h,
-                         Paint paint, Font font, String fontName, int fontStyle, int fontSize,
-                         int alignment, String field) {
-
-        super(name, x, y, w, h, paint, font, fontName, fontStyle, fontSize, alignment, field);
-
-    }
+public class StringElement extends DataElement
+{
+  /**
+   * Constructs a string element using float coordinates.
+   */
+  public StringElement ()
+  {
+  }
 
 }

@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,51 +28,95 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: Cursor.java,v 1.1.1.1 2002/04/25 17:02:14 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
- *
+ * 10-May-2002 : Declared all fields private and created accessor functions. Functionaltiy is
+ *               encapsulated in functions.
  */
 
 package com.jrefinery.report;
 
+
 /**
  * A utility class for keeping track of the current position on a report page.
+ *
+ * @todo accessor
  */
-public class Cursor {
+public class Cursor
+{
 
-    /** The y-coordinate. */
-    public float y;
+  /** The y-coordinate. */
+  private float y;
 
-    /** The left edge of the page. */
-    public float pageLeft;
+  /** The left edge of the page. */
+  private float pageLeft;
 
-    /** The bottom of the page. */
-    public float pageBottom;
+  /** The bottom of the page. */
+  private float pageBottom;
 
-    /**
-     * Constructs a new cursor.
-     */
-    public Cursor() {
-    }
+  /**
+   * Constructs a new cursor.
+   */
+  public Cursor (OutputTarget target)
+  {
+    pageLeft = target.getUsableX ();
+    pageBottom = target.getUsableY () + target.getUsableHeight ();
+    y = target.getUsableY ();
+  }
 
-    /**
-     * Adds the specified amount to the y-coordinate.
-     * @param amount The amount that the cursor should advance down the page.
-     */
-    public void advance(float amount) {
-        y = y + amount;
-    }
+  public void reserveSpace (float reserve)
+  {
+    if (reserve < 0)
+      throw new IllegalArgumentException ("Cannot free reserved space");
 
-    /**
-     * Returns true if there is space for a band with the specified height, and false otherwise.
-     * @param height The height of the proposed band.
-     * @return A flag indicating whether or not there is room to print the band.
-     */
-    public boolean spaceFor(float height) {
-        return (y+height<pageBottom);
-    }
+    pageBottom -= reserve;
+  }
 
+  /**
+   * Adds the specified amount to the y-coordinate.
+   * @param amount The amount that the cursor should advance down the page.
+   */
+  public void advance (float amount)
+  {
+    if (amount < 0)
+      throw new IllegalArgumentException ("Cannot advance negative");
+    y += amount;
+  }
+
+  /**
+   * Returns true if there is space for a band with the specified height, and false otherwise.
+   * @param height The height of the proposed band.
+   * @return A flag indicating whether or not there is room to print the band.
+   */
+  public boolean isSpaceFor (float height)
+  {
+    return (getY() + height < getPageBottom());
+  }
+
+  /**
+   * returns the current y-position of this cursor.
+   */
+  public float getY ()
+  {
+    return y;
+  }
+
+  /**
+   * returns the left border of the printable area.
+   */
+  public float getPageLeft ()
+  {
+    return pageLeft;
+  }
+
+  /**
+   * returns the bottom border of the printable area.
+   */
+  public float getPageBottom ()
+  {
+    return pageBottom;
+  }
 }

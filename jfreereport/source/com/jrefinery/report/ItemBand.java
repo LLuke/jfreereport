@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,42 +28,27 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: ItemBand.java,v 1.1.1.1 2002/04/25 17:02:15 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 18-Feb-2002 : Changed height from Number --> float (DG);
- *
+ * 10-May-2002 : Removed all complex constructors
  */
 
 package com.jrefinery.report;
 
-import java.util.Collection;
 
 /**
  * A report band that displays a row of data items.
  */
-public class ItemBand extends Band {
-
-    /**
-     * Constructs an item band with the specified height, containing no elements.
-     *
-     * @param height The height of the band.
-     */
-    public ItemBand(float height) {
-        this(height, null);
-    }
-
-    /**
-     * Constructs an item band with the specified height, containing the specified collection of
-     * elements.
-     *
-     * @param height The height of the band.
-     * @param elements The collection of elements for the band.
-     */
-    public ItemBand(float height, Collection elements) {
-        super(height, elements);
-    }
-
+public class ItemBand extends Band
+{
+  /**
+   * Constructs an item band with the specified height, containing no elements.
+   */
+  public ItemBand ()
+  {
+  }
 }

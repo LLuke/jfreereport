@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,125 +28,29 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: StringFunctionElement.java,v 1.1.1.1 2002/04/25 17:02:18 taqua Exp $
  *
  * Changes
  * -------
  * 18-Feb-2002 : Version 1, contributed by Thomas Morgner, with modifications by DG (DG);
- *
+ * 10-May-2002 : removed all but the default constructor. Added accessor functions for all properties.
  */
 
 package com.jrefinery.report;
 
-import java.awt.Paint;
-import java.awt.Font;
 
 /**
  * A function element that displays String values.
  * <P>
  * This class adds nothing to the FunctionElement class apart from a descriptive name.
  */
-public class StringFunctionElement extends FunctionElement {
+public class StringFunctionElement extends FunctionElement
+{
 
-    /**
-     * Constructs a string element using integer coordinates.
-     *
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param function The name of the function used to populate this element with data.
-     */
-    public StringFunctionElement(String name,
-                                 int x, int y, int w, int h,
-                                 String function) {
-
-        this(name,
-             x, y, w, h,
-             DEFAULT_PAINT,
-             DEFAULT_FONT,
-             DEFAULT_FONT_NAME,
-             DEFAULT_FONT_STYLE,
-             DEFAULT_FONT_SIZE,
-             DEFAULT_ALIGNMENT,
-             function);
-
-    }
-
-    /**
-     * Constructs a string element using integer coordinates.
-     *
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param function The name of the function used to populate this element with data.
-     */
-    public StringFunctionElement(String name,
-                                 int x, int y, int w, int h,
-                                 Paint paint,
-                                 Font font, String fontName, int fontStyle, int fontSize,
-                                 int alignment, String function) {
-
-        super(name, x, y, w, h, paint, font, fontName, fontStyle, fontSize, alignment, function);
-
-    }
-
-    /**
-     * Constructs a string element using float coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param function The name of the function used to populate this element with data.
-     */
-    public StringFunctionElement(String name,
-                                 float x, float y, float w, float h,
-                                 String function) {
-
-        super(name,
-              x, y, w, h,
-              DEFAULT_PAINT,
-              DEFAULT_FONT,
-              DEFAULT_FONT_NAME,
-              DEFAULT_FONT_STYLE,
-              DEFAULT_FONT_SIZE,
-              DEFAULT_ALIGNMENT,
-              function);
-
-    }
-
-    /**
-     * Constructs a string element using float coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param function The name of the function used to populate this element with data.
-     */
-    public StringFunctionElement(String name,
-                                 float x, float y, float w, float h,
-                                 Paint paint,
-                                 Font font, String fontName, int fontStyle, int fontSize,
-                                 int alignment, String function) {
-
-        super(name,
-              x, y, w, h,
-              paint,
-              font, fontName, fontStyle, fontSize,
-              alignment,
-              function);
-
-    }
-
+  /**
+   * Constructs a string function element.
+   */
+  public StringFunctionElement ()
+  {
+  }
 }

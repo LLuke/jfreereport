@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,57 +28,57 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PageFunction.java,v 1.1.1.1 2002/04/25 17:02:32 taqua Exp $
  *
  * Changes
  * -------
  * 18-Feb-2002 : Version 1, contributed by Thomas Morgner (DG);
  * 24-Apr-2002 : Changed the implementation to reflect the changes in Function and
  *               AbstractFunction
- *
+ * 10-May-2002 : Applied the ReportEvent interface
  */
 
 package com.jrefinery.report.function;
 
+import com.jrefinery.report.event.ReportEvent;
+
 /**
  * A report function that counts pages.
  */
-public class PageFunction extends AbstractFunction {
+public class PageFunction extends AbstractFunction
+{
 
-    /** The page. */
-    private int page;
+  /** The page. */
+  private int page;
 
-    /**
-     * Default constructor.
-     */
-    public PageFunction() {
-        this(null);
-    }
+  /**
+   * Default constructor.
+   */
+  public PageFunction ()
+  {
+  }
 
-    /**
-     * Constructs a named function.
-     */
-    public PageFunction(String name) {
-        super(name);
-        page = 1;
-    }
+  /**
+   * Constructs a named function.
+   */
+  public PageFunction (String name)
+  {
+    setName (name);
+  }
 
-    /**
-     * Receives notification from the report engine that a new page is starting.
-     */
-    public void startPage(int page) {
-  	this.page = page;
-    }
+  /**
+   * Receives notification from the report engine that a new page is starting.
+   */
+  public void pageStarted (ReportEvent event)
+  {
+    this.page = event.getState ().getCurrentPage ();
+  }
 
-    /**
-     * Returns the function value.
-     */
-    public Object getValue() {
-  	return new Integer(page);
-    }
-
-    public boolean isInitialized ()
-    {
-      return true;
-    }
+  /**
+   * Returns the function value.
+   */
+  public Object getValue ()
+  {
+    return new Integer (page);
+  }
 }

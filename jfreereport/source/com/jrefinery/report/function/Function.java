@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,19 +28,22 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: Function.java,v 1.1.1.1 2002/04/25 17:02:33 taqua Exp $
  *
  * Changes
  * -------
  * 15-Feb-2002 : Version 1, contributed by Thomas Morgner and modified by DG (DG);
- *
+ * 10-May-2002 : Functions now extend the ReportListener interface. Initialize is replaced
+ *               by reportStarted ()
  */
 
 package com.jrefinery.report.function;
 
-import javax.swing.table.TableModel;
-import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.Group;
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.event.ReportListener;
+
+import javax.swing.table.TableModel;
 import java.util.Properties;
 
 /**
@@ -49,84 +53,50 @@ import java.util.Properties;
  * state of the function on certain checkpoints to support the ReportState implementation of
  * JFreeReport.
  * <p>
+ * Although functions support the ReportListener interface, they are not directly added to
+ * an report. An report FunctionCollection is used to control the functions. Functions are
+ * required to be cloneable.
+ * <p>
+ * Todo: Give a better overview how functions are integrated into JFreeReport.
  */
-public interface Function {
+public interface Function extends ReportListener, Cloneable
+{
 
-    /**
-     * Returns the name of the function (every function is required to have a unique name).
-     */
-    public String getName();
+  /**
+   * Returns the name of the function (every function is required to have a unique name).
+   */
+  public String getName ();
 
-    /**
-     * Sets the name of the function.
-     * @param name The name.
-     */
-    public void setName(String name);
+  /**
+   * Sets the name of the function. The name must not be null and must be unique within
+   * the function group.
+   *
+   * @param name The name.
+   */
+  public void setName (String name);
 
-    /**
-     * A new report will be generated. Reset internal values to an initial state.
-     */
-    public void initialise();
+  /**
+   * Return the current function value. The value depends on the
+   * function. A page counting function for instance will return the
+   * current page number.
+   */
+  public Object getValue ();
 
-    /**
-     * This method will be called when a new report is started, giving the function a chance to
-     * initialise itself.
-     */
-    public void startReport(JFreeReport report);
+  /**
+   * Clones the function in its current state.  This is used for recording the report state at
+   * page boundaries.
+   */
+  public Object clone () throws CloneNotSupportedException;
 
-    /**
-     * This method will be called when a report is ended.
-     */
-    public void endReport(JFreeReport report);
+  /**
+   * Set the function properties. This is the only way to feed
+   * parameters to an function
+   */
+  public void setProperties (Properties p);
 
-    /**
-     * A new page will be started. Prepare for printing the page header.
-     */
-    public void startPage(int page);
-
-    /**
-     * A page is fully printed. Prepare for printing the page footer.
-     */
-    public void endPage(int page);
-
-    /**
-     * A new group has been encountered. Prepare for printing the group header.
-     */
-    public void startGroup(Group group);
-
-    /**
-     * A group has ended. Prepare for printing the group footer.
-     */
-    public void endGroup(Group group);
-
-    /**
-     * A data line will be printed.
-     */
-    public void advanceItems(TableModel data, int row);
-
-    /**
-     * Return the current function value. The value depends on the
-     * function. A page counting function for instance will return the
-     * current page number.
-     */
-    public Object getValue();
-
-    /**
-     * Clones the function in its current state.  This is used for recording the report state at
-     * page boundaries.
-     */
-    public Object clone() throws CloneNotSupportedException;
-
-    /**
-     * Set the function properties. This is the only way to feed
-     * parameters to an function
-     */
-    public void setProperties (Properties p);
-    
-    /**
-     * return false, if not all parameters are set, or some other
-     * error occures during initialisation
-     */
-    public boolean isInitialized ();
-    
+  /**
+   * return false, if not all parameters are set, or some other
+   * error occures during initialisation. A valid function has an valid (not null) name.
+   */
+  public void initialize () throws FunctionInitializeException;
 }

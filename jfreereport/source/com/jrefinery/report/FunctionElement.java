@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,19 +28,19 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: FunctionElement.java,v 1.1.1.1 2002/04/25 17:02:23 taqua Exp $
  *
  * Changes
  * -------
  * 15-Feb-2002 : Version 1, contributed by Thomas Morgner, with modifications by DG (DG);
- *
+ * 10-May-2002 : Removed all complex constructors
  */
 
 package com.jrefinery.report;
 
-import java.awt.Paint;
 import java.awt.Font;
-import com.jrefinery.report.function.Function;
+import java.awt.Paint;
+import java.awt.geom.Rectangle2D;
 
 /**
  * The base class for all elements in JFreeReport that display function values.
@@ -47,86 +48,66 @@ import com.jrefinery.report.function.Function;
  * layer.  The report-function given at construction time is used as key for the
  * function collection.
  */
-public abstract class FunctionElement extends TextElement {
+public abstract class FunctionElement extends TextElement
+{
 
-    /** The name of the function that this element gets its value from. */
-    protected String functionName;
+  /** The name of the function that this element gets its value from. */
+  private String functionName;
 
-    /** The current value of the function. */
-    protected Object value;
+  /** The current value of the function. */
+  private Object value;
 
-    /**
-     * Constructs a function element using integer coordinates.
-     *
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param baseline The baseline for the text.
-     */
-    protected FunctionElement (String name,
-                               int x, int y, int w, int h,
-                               Paint paint, Font font, String fontName, int fontStyle, int fontSize,
-                               int alignment, String functionName) {
+  /**
+   * Constructs a function element using float coordinates.
+   */
+  protected FunctionElement ()
+  {
+  }
 
-        super (name, x, y, w, h, paint, font, fontName, fontStyle, fontSize, alignment);
-        this.functionName = functionName;
+  /**
+   * Returns the name of the function that this element obtains its value from.
+   * @return The function name.
+   */
+  public String getFunctionName ()
+  {
+    return this.functionName;
+  }
 
-    }
+  /**
+   * defines the name of the function that this element obtains its value from.
+   * @param function The function name.
+   */
+  public void setFunctionName (String function)
+  {
+    if (function == null)
+      throw new NullPointerException ("Function must not be null");
 
-    /**
-     * Constructs a function element using float coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param baseline The baseline for the text.
-     */
-    protected FunctionElement (String name,
-                               float x, float y, float w, float h,
-                               Paint paint, Font font, String fontName, int fontStyle, int fontSize,
-                               int alignment, String functionName) {
+    this.functionName = function;
+  }
 
- 	super (name, x, y, w, h, paint, font, fontName, fontStyle, fontSize, alignment);
-	this.functionName = functionName;
+  /**
+   * Returns the value for the element.
+   */
+  public Object getValue ()
+  {
+    return this.value;
+  }
 
-    }
+  /**
+   * Sets the current value of the element.
+   * @param value The new value for the element;
+   */
+  public void setValue (Object value)
+  {
+    this.value = value;
+  }
 
-    /**
-     * Returns the name of the function that this element obtains its value from.
-     * @return The function name.
-     */
-    public String getFunctionName() {
-        return this.functionName;
-    }
-
-    /**
-     * Returns the value for the element.
-     */
-    public Object getValue() {
-        return this.value;
-    }
-
-    /**
-     * Sets the current value of the element.
-     * @param value The new value for the element;
-     */
-    public void setValue(Object value) {
-        this.value = value;
-    }
-
-    /**
-     * Returns a string representing the formatted data.
-     * @return A formatted version of the data value.
-     */
-    public String getFormattedText() {
-        return value.toString();
-    }
-
+  /**
+   * Returns a string representing the formatted data.
+   * @return A formatted version of the data value.
+   */
+  public String getFormattedText ()
+  {
+    return String.valueOf (getValue ());
+  }
 }

@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: SampleData2.java,v 1.1.1.1 2002/04/25 17:02:32 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -213,6 +214,7 @@ public class SampleData2 extends AbstractTableModel {
      * Returns the data value at the specified row and column.
      */
     public Object getValueAt(int row, int column) {
+      //System.out.println ("R: " + row + " , C: " + column);
         return data[row][column];
     }
 

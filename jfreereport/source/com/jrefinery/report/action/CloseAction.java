@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,64 +28,49 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: CloseAction.java,v 1.1 2002/05/07 14:06:00 mungady Exp $
  *
  * Changes
  * -------
  * 07-May-2002 : Version 1 (DG);
+ * 10-May-2002 : Removed actionhandling from class. Specific handling is implemented based on
+ *               target environment. (TM)
  *
  */
 
 package com.jrefinery.report.action;
 
-import java.util.ResourceBundle;
-import java.awt.event.ActionEvent;
-import javax.swing.Action;
-import javax.swing.AbstractAction;
-import com.jrefinery.report.PreviewFrame;
 import com.jrefinery.report.JFreeReportConstants;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import java.util.ResourceBundle;
 
 /**
  * An action for closing the print preview frame.
  */
-public class CloseAction extends AbstractAction {
+public abstract class CloseAction extends AbstractAction
+{
 
-    /** The preview frame that this action is assigned to. */
-    protected PreviewFrame frame;
+  /**
+   * Constructs a new action.
+   *
+   * @param resources Localised resources for the action.
+   */
+  public CloseAction (ResourceBundle resources)
+  {
+    String name = resources.getString ("action.close.name");
+    this.putValue (Action.NAME, name);
 
-    /**
-     * Constructs a new action.
-     *
-     * @param resources Localised resources for the action.
-     */
-    public CloseAction(PreviewFrame frame, ResourceBundle resources) {
+    String description = resources.getString ("action.close.description");
+    this.putValue (Action.SHORT_DESCRIPTION, description);
 
-        this.frame = frame;
+    Integer mnemonic = (Integer) resources.getObject ("action.close.mnemonic");
+    this.putValue (Action.MNEMONIC_KEY, mnemonic);
 
-        String name = resources.getString("action.close.name");
-        this.putValue(Action.NAME, name);
+    this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportConstants.CLOSE_COMMAND);
 
-        String description = resources.getString("action.close.description");
-        this.putValue(Action.SHORT_DESCRIPTION, description);
+  }
 
-        Integer mnemonic = (Integer)resources.getObject("action.close.mnemonic");
-        this.putValue(Action.MNEMONIC_KEY, mnemonic);
-
-        this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.CLOSE_COMMAND);
-
-    }
-
-    /**
-     * Closes the preview frame.
-     *
-     * @param e The action event.
-     */
-    public void actionPerformed(ActionEvent e) {
-
-        if (frame!=null) {
-            frame.dispose();
-        }
-
-    }
 
 }

@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,83 +28,55 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PageSetupAction.java,v 1.1 2002/05/07 14:06:00 mungady Exp $
  *
  * Changes
  * -------
  * 07-May-2002 : Version 1 (DG);
+ * 10-May-2002 : Removed actionhandling from class. Specific handling is implemented based on
+ *               target environment. (TM)
  *
  */
 
 package com.jrefinery.report.action;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.util.ResourceBundle;
-import javax.swing.Action;
-import javax.swing.AbstractAction;
-import javax.swing.KeyStroke;
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
-import javax.swing.SwingUtilities;
 import com.jrefinery.report.JFreeReportConstants;
-import com.jrefinery.report.PreviewFrame;
+import com.jrefinery.report.preview.PreviewFrame;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.ImageIcon;
+import java.util.ResourceBundle;
 
 /**
  * Page setup action for a print preview frame.
  */
-public class PageSetupAction extends AbstractAction implements Runnable {
+public abstract class PageSetupAction extends AbstractAction implements Runnable
+{
 
-    /** The frame that this action is assigned to. */
-    protected PreviewFrame frame;
+  /**
+   * Constructs a new action.
+   */
+  public PageSetupAction (ResourceBundle resources)
+  {
 
-    /**
-     * Constructs a new action.
-     */
-    public PageSetupAction(PreviewFrame frame, ResourceBundle resources) {
+    String name = resources.getString ("action.page-setup.name");
+    this.putValue (Action.NAME, name);
 
-        this.frame = frame;
+    String description = resources.getString ("action.page-setup.description");
+    this.putValue (Action.SHORT_DESCRIPTION, description);
 
-        String name = resources.getString("action.page-setup.name");
-        this.putValue(Action.NAME, name);
+    Integer mnemonic = (Integer) resources.getObject ("action.page-setup.mnemonic");
+    this.putValue (Action.MNEMONIC_KEY, mnemonic);
 
-        String description = resources.getString("action.page-setup.description");
-        this.putValue(Action.SHORT_DESCRIPTION, description);
+    ImageIcon icon16 = PreviewFrame.secureResourceLoad ("PageSetup16.gif");
+    this.putValue (Action.SMALL_ICON, icon16);
 
-        Integer mnemonic = (Integer)resources.getObject("action.page-setup.mnemonic");
-        this.putValue(Action.MNEMONIC_KEY, mnemonic);
+    ImageIcon icon24 = PreviewFrame.secureResourceLoad ("PageSetup24.gif");
+    this.putValue ("ICON24", icon24);
 
-        ImageIcon icon16 = new ImageIcon(PageSetupAction.class.getResource("PageSetup16.gif"));
-        this.putValue(Action.SMALL_ICON, icon16);
+    this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportConstants.PAGE_SETUP_COMMAND);
 
-        ImageIcon icon24 = new ImageIcon(PageSetupAction.class.getResource("PageSetup24.gif"));
-        this.putValue("ICON24", icon24);
-
-        this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportConstants.PAGE_SETUP_COMMAND);
-
-    }
-
-    /**
-     * Handles a page setup action.
-     *
-     * @param e The action event.
-     */
-    public void actionPerformed(ActionEvent e) {
-        SwingUtilities.invokeLater(this);
-    }
-
-    /**
-     * Triggers a page setup.
-     */
-    public void run() {
-
-        if (frame!=null) {
-            frame.attemptPageSetup();
-        }
-        else {
-            System.out.println("PageSetupAction: trying to run against a null frame.");
-        }
-
-    }
+  }
 
 }

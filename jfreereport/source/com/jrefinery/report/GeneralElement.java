@@ -1,4 +1,5 @@
-/* =============================================================
+/**
+ * =============================================================
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
@@ -27,19 +28,19 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: GeneralElement.java,v 1.1.1.1 2002/04/25 17:02:19 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
- *
+ * 10-May-2002 : Removed all complex constructors
  */
 
 package com.jrefinery.report;
 
 import java.awt.Paint;
 import java.awt.Font;
-
+import java.awt.geom.Rectangle2D;
 /**
  * This class displays data items that are not Dates, Numbers or Strings.  That is, general
  * java.lang.Object subclasses - converts to strings using the toString() method.
@@ -47,95 +48,9 @@ import java.awt.Font;
 public class GeneralElement extends DataElement {
 
     /**
-     * Constructs a general element using integer coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param field The name of the field used to populate this element with data.
-     */
-    public GeneralElement(String name,
-                          int x, int y, int w, int h,
-                          String field) {
-
-        super(name,
-              x, y, w, h,
-              DEFAULT_PAINT,
-              DEFAULT_FONT,
-              DEFAULT_FONT_NAME,
-              DEFAULT_FONT_STYLE,
-              DEFAULT_FONT_SIZE,
-              DEFAULT_ALIGNMENT,
-              field);
-
-    }
-
-    /**
-     * Constructs a general element using integer coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param field The name of the field used to populate this element with data.
-     */
-    public GeneralElement(String name,
-                          int x, int y, int w, int h,
-                          Paint paint, Font font, String fontName, int fontStyle, int fontSize,
-                          int alignment, String field) {
-
-        super(name, x, y, w, h, paint, font, fontName, fontStyle, fontSize, alignment, field);
-
-    }
-
-    /**
      * Constructs a general element using float coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param field The name of the field used to populate this element with data.
      */
-    public GeneralElement(String name,
-                          float x, float y, float w, float h,
-                          String field) {
-
-        this(name,
-             x, y, w, h,
-             DEFAULT_PAINT,
-             DEFAULT_FONT,
-             DEFAULT_FONT_NAME,
-             DEFAULT_FONT_STYLE,
-             DEFAULT_FONT_SIZE,
-             DEFAULT_ALIGNMENT,
-             field);
-
+    public GeneralElement()
+    {
     }
-
-    /**
-     * Constructs a general element using float coordinates.
-     * @param name The name of the element.
-     * @param x The x-coordinate of the element (within its band).
-     * @param y The y-coordinate of the element (within its band).
-     * @param w The width of the element.
-     * @param h The height of the element.
-     * @param font The font used to display the element.
-     * @param alignment The text alignment (LEFT, CENTER or RIGHT).
-     * @param field The name of the field used to populate this element with data.
-     */
-    public GeneralElement(String name,
-                          float x, float y, float w, float h,
-                          Paint paint, Font font, String fontName, int fontStyle, int fontSize,
-                          int alignment, String field) {
-
-        super(name, x, y, w, h, paint, font, fontName, fontStyle, fontSize, alignment, field);
-
-    }
-
 }
