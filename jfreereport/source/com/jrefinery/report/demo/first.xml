@@ -75,6 +75,8 @@
     </reportfooter>
 
     <!-- PAGE HEADER -->
+    <!-- Displays the report name and date. -->
+    <!-- Suppressed on the first page to avoid duplication with report header. -->
     <pageheader height="18"
                 onfirstpage="false" onlastpage="true"
                 fontname="SansSerif" fontstyle="bold" fontsize="9">
@@ -112,7 +114,12 @@
     <!-- Data items are grouped by category. -->
     <groups>
 
-        <group name="Category">
+        <!-- Category Group -->
+        <group name="Category Group">
+
+            <fields>
+                 <field>Category</field>
+            </fields>
 
             <groupheader height="30"
                          fontname="SansSerif" fontstyle="bold" fontsize="12"
@@ -182,10 +189,6 @@
 
             </groupfooter>
 
-            <fields>
-                 <field>Category</field>
-            </fields>
-
         </group>
 
     </groups>
@@ -211,41 +214,49 @@
 
     </items>
 
+    <!-- FUNCTIONS -->
+    <!-- Declares the functions used in this report. -->
     <functions>
 
-      <function name="Date" class="com.jrefinery.report.function.ReportPropertyFunction">
-        <properties>
-          <property name="reportProperty">report.date</property>
-        </properties>
-      </function>
+        <function name="Date"
+                  class="com.jrefinery.report.function.ReportPropertyFunction">
+            <properties>
+                <property name="reportProperty">report.date</property>
+            </properties>
+        </function>
 
-      <function name="PageNumber" class="com.jrefinery.report.function.PageFunction"/>
+        <function name="PageNumber"
+                  class="com.jrefinery.report.function.PageFunction"/>
 
-      <function name="GroupCount" class="com.jrefinery.report.function.ItemCountFunction">
-           <properties>
-               <property name="field">Name</property>
-               <property name="group">Category</property>
-           </properties>
-      </function>
+        <function name="GroupCount"
+                  class="com.jrefinery.report.function.ItemCountFunction">
+            <properties>
+                <property name="field">Name</property>
+                <property name="group">Category</property>
+            </properties>
+        </function>
 
-      <function name="GroupSum" class="com.jrefinery.report.function.ItemSumFunction">
-        <properties>
-          <property name="field">Size</property>
-          <property name="group">Category</property>
-        </properties>
-      </function>
+        <function name="GroupSum"
+                  class="com.jrefinery.report.function.ItemSumFunction">
+            <properties>
+                <property name="field">Size</property>
+                <property name="group">Category</property>
+            </properties>
+        </function>
 
-      <function name="OverallCount" class="com.jrefinery.report.function.ItemCountFunction">
-           <properties>
-               <property name="field">Name</property>
-           </properties>
-      </function>
+        <function name="OverallCount"
+                  class="com.jrefinery.report.function.ItemCountFunction">
+            <properties>
+                <property name="field">Name</property>
+            </properties>
+        </function>
 
-      <function name="OverallSum" class="com.jrefinery.report.function.ItemSumFunction">
-        <properties>
-          <property name="field">Size</property>
-        </properties>
-      </function>
+        <function name="OverallSum"
+                  class="com.jrefinery.report.function.ItemSumFunction">
+            <properties>
+                <property name="field">Size</property>
+            </properties>
+        </function>
 
     </functions>
 
