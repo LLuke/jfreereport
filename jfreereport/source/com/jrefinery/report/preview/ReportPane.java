@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.34 2002/12/10 15:47:01 mungady Exp $
+ * $Id: ReportPane.java,v 1.35 2002/12/12 15:36:05 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -301,6 +301,17 @@ public class ReportPane extends JComponent implements Printable, Pageable
    */
   public int getNumberOfPages ()
   {
+    if (isPaginated() == false)
+    {
+      try
+      {
+        repaginate();
+      }
+      catch (Exception e)
+      {
+        this.pageCount = 0;
+      }
+    }
     return this.pageCount;
   }
 
