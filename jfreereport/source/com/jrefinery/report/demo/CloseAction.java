@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,17 +28,19 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: CloseAction.java,v 1.8 2002/08/31 16:50:48 taqua Exp $
+ * $Id: CloseAction.java,v 1.9 2002/09/13 15:38:07 mungady Exp $
  *
  * Changes
  * -------
  * 07-May-2002 : Version 1 (DG);
  * 05-Jun-2002 : Documentation
  * 29-Aug-2002 : Downport to JDK 1.2.2
+ * 04-Dec-2002 : Added ActionDowngrade reference to resolve ambiguity (compile error) (DG);
  */
 
 package com.jrefinery.report.demo;
 
+import com.jrefinery.report.util.ActionDowngrade;
 import com.jrefinery.report.util.AbstractActionDowngrade;
 
 import java.util.ResourceBundle;
@@ -60,6 +62,7 @@ public abstract class CloseAction extends AbstractActionDowngrade
   {
     this.putValue (NAME, resources.getString ("action.close.name"));
     this.putValue (SHORT_DESCRIPTION, resources.getString ("action.close.description"));
-    this.putValue (MNEMONIC_KEY, resources.getObject ("action.close.mnemonic"));
+    this.putValue (ActionDowngrade.MNEMONIC_KEY, 
+                   resources.getObject ("action.close.mnemonic"));
   }
 }

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: AboutAction.java,v 1.9 2002/08/31 16:50:48 taqua Exp $
+ * $Id: AboutAction.java,v 1.10 2002/09/13 15:38:07 mungady Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 
 package com.jrefinery.report.demo;
 
+import com.jrefinery.report.util.ActionDowngrade;
 import com.jrefinery.report.util.AbstractActionDowngrade;
 
 import java.util.ResourceBundle;
@@ -61,7 +62,8 @@ public abstract class AboutAction extends AbstractActionDowngrade
   {
     this.putValue (NAME, resources.getString ("action.about.name"));
     this.putValue (SHORT_DESCRIPTION, resources.getString ("action.about.description"));
-    this.putValue (MNEMONIC_KEY, resources.getObject ("action.about.mnemonic"));
+    this.putValue (ActionDowngrade.MNEMONIC_KEY, 
+                   resources.getObject ("action.about.mnemonic"));
     this.putValue (SMALL_ICON, resources.getObject ("action.about.small-icon"));
     this.putValue ("ICON24", resources.getObject ("action.about.icon"));
   }
