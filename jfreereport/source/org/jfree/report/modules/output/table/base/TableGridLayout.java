@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGridLayout.java,v 1.5 2003/09/15 18:26:51 taqua Exp $
+ * $Id: TableGridLayout.java,v 1.6 2003/10/10 17:16:26 taqua Exp $
  *
  * Changes
  * -------
@@ -227,16 +227,16 @@ public class TableGridLayout
     // +1 for outer boundry ...
     final int width = xCuts.length;
     final int height = yCuts.length;
-
-    Log.info ("Created GridLayout with " + width + ", " + height);
-    for (int i = 0; i < xCuts.length; i++)
-    {
-      Log.info ("X-Cuts: " + xCuts[i]);
-    }
-    for (int i = 0; i < yCuts.length; i++)
-    {
-      Log.info ("Y-Cuts: " + yCuts[i]);
-    }
+//
+//    Log.info ("Created GridLayout with " + width + ", " + height);
+//    for (int i = 0; i < xCuts.length; i++)
+//    {
+//      Log.info ("X-Cuts: " + xCuts[i]);
+//    }
+//    for (int i = 0; i < yCuts.length; i++)
+//    {
+//      Log.info ("Y-Cuts: " + yCuts[i]);
+//    }
 
     data = new Object[width][height];
 
@@ -274,7 +274,7 @@ public class TableGridLayout
         // if not the first row, then bind it to the previous cell ...
         row = row - 1;
       }
-      gPos = new TableGridPosition(pos, col, row, colspan, 0);
+      gPos = new TableGridPosition(pos, col, row, colspan, 1);
     }
     else if (bounds.getWidth() == 0)
     {
@@ -286,7 +286,7 @@ public class TableGridLayout
         // if not the first column, bind to the previous cell ...
         col = col - 1;
       }
-      gPos = new TableGridPosition(pos, col, row, 0, rowspan);
+      gPos = new TableGridPosition(pos, col, row, 1, rowspan);
     }
     else
     {
@@ -297,7 +297,18 @@ public class TableGridLayout
       gPos = new TableGridPosition(pos, col, row, colspan, rowspan);
     }
 
-
+    final int startY = gPos.getRow();
+    final int endY = gPos.getRow() + gPos.getRowSpan();
+    // calculated the x and y position in the table, now add it to the element.
+    for (int posY = startY; posY < endY; posY++)
+    {
+      final int startX = gPos.getCol();
+      final int endX = gPos.getCol() + gPos.getColSpan();
+      for (int posX = startX; posX < endX; posX++)
+      {
+        addToGrid(posX, posY, gPos);
+      }
+    }
 
 //    Log.info ("AddTablePos: Col=" + gPos.getCol() +
 //              "; Row= " + gPos.getRow() +
@@ -316,19 +327,6 @@ public class TableGridLayout
 //      Log.debug ("gPos.getRowSpan: " + gPos.getRowSpan() + " -> "
 //                 + getRowEnd(gPos.getRowSpan() + gPos.getRow() - 1));
 //    }
-
-    final int startY = gPos.getRow();
-    final int endY = gPos.getRow() + gPos.getRowSpan();
-    // calculated the x and y position in the table, now add it to the element.
-    for (int posY = startY; posY < endY; posY++)
-    {
-      final int startX = gPos.getCol();
-      final int endX = gPos.getCol() + gPos.getColSpan();
-      for (int posX = startX; posX < endX; posX++)
-      {
-        addToGrid(posX, posY, gPos);
-      }
-    }
 
     this.maxX = Math.max(this.maxX, maxBoundsX);
     this.maxY = Math.max(this.maxY, maxBoundsY);

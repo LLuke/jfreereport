@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellBackground.java,v 1.4 2003/09/13 15:14:41 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.5 2003/10/10 17:16:26 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,8 @@ import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+import org.jfree.report.util.Log;
+
 /**
  * Encapsulates all TableCellBackground informations, such as borders and background color.
  * <p>
@@ -52,7 +54,7 @@ import java.awt.image.BufferedImage;
  *
  * @author Thomas Morgner
  */
-public strictfp class TableCellBackground extends TableCellData
+public strictfp class TableCellBackground extends TableCellData implements Cloneable
 {
   /** The top border's size. */
   private float borderSizeTop;
@@ -79,7 +81,7 @@ public strictfp class TableCellBackground extends TableCellData
   private Color colorRight;
 
   /** The cell background color. */
-  private final Color color;
+  private Color color;
 
   /**
    * Creates a table cell background with the given bounds, no borders and the specified
@@ -271,14 +273,35 @@ public strictfp class TableCellBackground extends TableCellData
       }
     }
 
-    final TableCellBackground merged = createMergedInstance(color);
-    mergeBorders(background, merged);
-    return merged;
+    if (getBounds().contains(background.getBounds()))
+    {
+      final TableCellBackground merged = createMergedInstance();
+      merged.color = color;
+      merged.mergeBorders(background);
+      Log.debug ("Merge Result: " + merged);
+      return merged;
+    }
+    else
+    {
+      final TableCellBackground merged = background.createMergedInstance();
+      merged.color = color;
+      merged.mergeBorders(this);
+      Log.debug ("Merge Result: " + merged);
+      return merged;
+    }
   }
 
-  protected TableCellBackground createMergedInstance (Color color)
+  protected TableCellBackground createMergedInstance ()
   {
-    return new TableCellBackground(getBounds(), color);
+    try
+    {
+      return (TableCellBackground) clone();
+    }
+    catch (CloneNotSupportedException cne)
+    {
+      // should not happen
+      throw new IllegalStateException("Clone caused an unexpected error.");
+    }
   }
 
   /**
@@ -286,44 +309,60 @@ public strictfp class TableCellBackground extends TableCellData
    * the <code>merged</code> cell.
    *
    * @param background the background cell that should be merged with this cell.
-   * @param merged the resulting cell background.
    */
-  private void mergeBorders(final TableCellBackground background, final TableCellBackground merged)
+  private void mergeBorders(final TableCellBackground background)
   {
-    if (getColorTop() == null || getBorderSizeTop() == 0)
-    {
-      merged.setBorderTop(background.getColorTop(), background.getBorderSizeTop());
-    }
-    else
-    {
-      merged.setBorderTop(getColorTop(), getBorderSizeTop());
-    }
+    Rectangle2D bgBounds = background.getBounds();
+    Log.debug ("Merge: " + bgBounds);
+    Log.debug (" This: " + this.getBounds());
 
-    if (getColorBottom() == null || getBorderSizeBottom() == 0)
+    if ((bgBounds.getHeight() == 0) && (bgBounds.getY() == getBounds().getHeight()))
     {
-      merged.setBorderBottom(background.getColorBottom(), background.getBorderSizeBottom());
-    }
-    else
-    {
-      merged.setBorderBottom(getColorBottom(), getBorderSizeBottom());
-    }
+      Log.debug ("Merge: Top " + background);
 
-    if (getColorLeft() == null || getBorderSizeLeft() == 0)
-    {
-      merged.setBorderLeft(background.getColorLeft(), background.getBorderSizeLeft());
+      // map the background's top border to the bottom side
+      if (getColorBottom() == null || getBorderSizeBottom() == 0)
+      {
+        setBorderBottom(background.getColorTop(), background.getBorderSizeTop());
+      }
     }
-    else
+    else if ((bgBounds.getWidth() == 0) && (bgBounds.getX() == getBounds().getWidth()))
     {
-      merged.setBorderLeft(getColorLeft(), getBorderSizeLeft());
-    }
+      Log.debug ("Merge: Left " + background);
 
-    if (getColorRight() == null || getBorderSizeRight() == 0)
-    {
-      merged.setBorderRight(background.getColorRight(), background.getBorderSizeRight());
+      // map the background's left border to the right side
+      if (getColorRight() == null || getBorderSizeRight() == 0)
+      {
+        setBorderRight(background.getColorLeft(), background.getBorderSizeLeft());
+      }
     }
     else
     {
-      merged.setBorderRight(getColorRight(), getBorderSizeRight());
+      Log.debug ("Merge: All " + background);
+      if (getColorTop() == null || getBorderSizeTop() == 0)
+      {
+        setBorderTop(background.getColorTop(), background.getBorderSizeTop());
+      }
+      if (getColorLeft() == null || getBorderSizeLeft() == 0)
+      {
+        setBorderLeft(background.getColorLeft(), background.getBorderSizeLeft());
+      }
+
+      if (bgBounds.getWidth() == getBounds().getWidth())
+      {
+        if (getColorRight() == null || getBorderSizeRight() == 0)
+        {
+          setBorderRight(background.getColorRight(), background.getBorderSizeRight());
+        }
+      }
+
+      if (bgBounds.getHeight() == getBounds().getHeight())
+      {
+        if (getColorBottom() == null || getBorderSizeBottom() == 0)
+        {
+          setBorderBottom(background.getColorBottom(), background.getBorderSizeBottom());
+        }
+      }
     }
   }
 
@@ -358,7 +397,9 @@ public strictfp class TableCellBackground extends TableCellData
   public String toString()
   {
     final StringBuffer b = new StringBuffer();
-    b.append("TableCellBackground={color=");
+    b.append("TableCellBackground={bounds=");
+    b.append(getBounds());
+    b.append(", color=");
     b.append(color);
     b.append(", colorTop=");
     b.append(colorTop);

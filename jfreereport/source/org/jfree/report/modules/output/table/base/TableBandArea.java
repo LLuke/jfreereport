@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableBandArea.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
+ * $Id: TableBandArea.java,v 1.3 2003/10/10 17:16:26 taqua Exp $
  *
  * Changes
  * -------
@@ -77,10 +77,5 @@ public class TableBandArea extends TableCellBackground
   public String toString()
   {
     return "TableBandArea={bounds=" + getBounds() + "}";
-  }
-
-  protected TableCellBackground createMergedInstance(Color color)
-  {
-    return new TableBandArea(getBounds(), color);
   }
 }

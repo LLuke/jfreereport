@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGrid.java,v 1.6 2003/08/25 14:29:32 taqua Exp $
+ * $Id: TableGrid.java,v 1.7 2003/10/10 17:16:26 taqua Exp $
  *
  * Changes
  * -------
@@ -151,7 +151,7 @@ public class TableGrid
     final TableCellData[] positions =
         (TableCellData[]) elements.toArray(new TableCellData[elements.size()]);
 
-    Log.debug ("Performing Layout for " + positions.length + " elements");
+    // Log.debug ("Performing Layout for " + positions.length + " elements");
     final TableGridLayout layout = new TableGridLayout(bounds.getXCuts(), getYCuts(), positions);
     return layout;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractTableCellDataFactory.java,v 1.3 2003/08/24 15:06:10 taqua Exp $
+ * $Id: AbstractTableCellDataFactory.java,v 1.4 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -135,7 +135,6 @@ public abstract class AbstractTableCellDataFactory implements TableCellDataFacto
         {
           // horizontal line
           bg = new TableCellBackground(shapeBounds, null);
-
           bg.setBorderTop(color, width);
         }
         else if (shapeBounds.getWidth() == 0)
