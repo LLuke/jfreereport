@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.9 2003/01/03 16:18:41 mungady Exp $
+ * $Id: ElementStyleSheet.java,v 1.10 2003/01/12 21:33:53 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Enumeration;
 
 /**
  * An element style-sheet contains zero, one or many attributes that affect the appearance of
@@ -190,7 +191,28 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
     {
       throw new NullPointerException("ElementStyleSheet.addParent(...): parent is null.");
     }
-    parents.add (position, parent);
+    if (parent.isSubStyleSheet(this) == false)
+    {
+      parents.add (position, parent);
+    }
+    else
+    {
+      throw new IllegalArgumentException("Cannot add parent as child.");
+    }
+  }
+
+  public boolean isSubStyleSheet (ElementStyleSheet parent)
+  {
+    for (int i = 0; i < parents.size(); i++)
+    {
+      ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
+      if (es == parent)
+        return true;
+
+      if (es.isSubStyleSheet(parent) == true)
+        return true;
+    }
+    return false;
   }
 
   /**
@@ -396,5 +418,10 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
     setStyleProperty(BOLD, new Boolean(font.isBold()));
     setStyleProperty(ITALIC, new Boolean(font.isItalic()));
     setStyleProperty(FONTSIZE, new Integer(font.getSize()));
+  }
+
+  public Enumeration getDefinedPropertyNames ()
+  {
+    return properties.keys();
   }
 }

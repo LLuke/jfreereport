@@ -2,7 +2,7 @@
  * Date: Jan 9, 2003
  * Time: 9:08:15 PM
  *
- * $Id$
+ * $Id: TemplatesHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -22,7 +22,6 @@ public class TemplatesHandler implements ReportDefinitionHandler
   private Parser parser;
   private String finishTag;
   private TemplateCollector templateCollector;
-  private String templateName;
   private TemplateHandler templateFactory;
 
   public TemplatesHandler(Parser parser, String finishTag)
@@ -46,7 +45,7 @@ public class TemplatesHandler implements ReportDefinitionHandler
       throw new SAXException("Expected tag '" + TEMPLATE_TAG + "'");
     }
 
-    templateName = attrs.getValue("name");
+    String templateName = attrs.getValue("name");
     if (templateName == null)
       throw new SAXException("The 'name' attribute is required for template definitions");
     String references = attrs.getValue("references");
@@ -55,6 +54,7 @@ public class TemplatesHandler implements ReportDefinitionHandler
 
     // Clone the defined template ... we don't change the original ..
     template = (Template) template.getInstance();
+    template.setName(templateName);
     templateFactory = new TemplateHandler(getParser(),TEMPLATE_TAG, template);
     getParser().pushFactory(templateFactory);
   }
@@ -69,7 +69,7 @@ public class TemplatesHandler implements ReportDefinitionHandler
   {
     if (tagName.equals(TEMPLATE_TAG))
     {
-      templateCollector.addTemplate(templateName, templateFactory.getTemplate());
+      templateCollector.addTemplate(templateFactory.getTemplate());
     }
     else if (tagName.equals(finishTag))
     {

@@ -2,13 +2,12 @@
  * Date: Jan 10, 2003
  * Time: 8:17:01 PM
  *
- * $Id$
+ * $Id: BeanObjectDescription.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.FloatDimension;
-import com.jrefinery.report.io.ext.factory.objects.AbstractObjectDescription;
+import com.jrefinery.report.util.Log;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -64,7 +63,7 @@ public class BeanObjectDescription extends AbstractObjectDescription
       while (it.hasNext())
       {
         String name = (String) it.next();
-        Method method = findMethod(name);
+        Method method = findSetMethod(name);
         Object parameterValue = getParameter(name);
         if (parameterValue == null)
         {
@@ -72,26 +71,33 @@ public class BeanObjectDescription extends AbstractObjectDescription
         }
         else
         {
-          method.invoke(o, new Object[] {parameterValue});
+          method.invoke(o, new Object[]{parameterValue});
         }
       }
       return o;
     }
     catch (Exception e)
     {
-      Log.error ("Unable to invoke bean method",e);
+      Log.error("Unable to invoke bean method", e);
     }
     return null;
-   }
-
-  private Method findMethod (String parameterName)
-    throws NoSuchMethodException
-  {
-    return getObjectClass().getMethod(getSetterName(parameterName),
-                                new Class[] { getParameterDefinition(parameterName) });
   }
 
-  private String getSetterName (String parameterName)
+  private Method findSetMethod(String parameterName)
+      throws NoSuchMethodException
+  {
+    return getObjectClass().getMethod(getSetterName(parameterName),
+                                      new Class[]{getParameterDefinition(parameterName)});
+  }
+
+  private Method findGetMethod(String parameterName)
+      throws NoSuchMethodException
+  {
+    return getObjectClass().getMethod(getGetterName(parameterName),
+                                      new Class[0]);
+  }
+
+  private String getSetterName(String parameterName)
   {
     if (parameterName.length() == 0)
       return "set";
@@ -106,7 +112,22 @@ public class BeanObjectDescription extends AbstractObjectDescription
     return b.toString();
   }
 
-  private String getPropertyName (String methodName)
+  private String getGetterName(String parameterName)
+  {
+    if (parameterName.length() == 0)
+      return "get";
+
+    StringBuffer b = new StringBuffer();
+    b.append("get");
+    b.append(Character.toUpperCase(parameterName.charAt(0)));
+    if (parameterName.length() > 1)
+    {
+      b.append(parameterName.substring(1));
+    }
+    return b.toString();
+  }
+
+  private String getPropertyName(String methodName)
   {
     if (methodName.length() < 3) throw new IllegalArgumentException();
     if (methodName.length() == 3)
@@ -121,11 +142,42 @@ public class BeanObjectDescription extends AbstractObjectDescription
     return b.toString();
   }
 
-  public static void main (String [] args)
+  public static void main(String[] args)
   {
     BeanObjectDescription o = new BeanObjectDescription(FloatDimension.class);
     o.setParameter("height", new Float(100));
     o.setParameter("width", new Float(100));
-    System.out.println (o.createObject());
+    System.out.println(o.createObject());
+  }
+
+  public void setParameterFromObject(Object o)
+      throws ObjectFactoryException
+  {
+    Class c = getObjectClass();
+    if (c.isInstance(o) == false)
+    {
+      throw new ObjectFactoryException("Object is no instance of " + c);
+    }
+
+    Iterator it = getParameterNames();
+    while (it.hasNext())
+    {
+      String propertyName = (String) it.next();
+
+      try
+      {
+        Method method = findGetMethod(propertyName);
+        Object retval = method.invoke(o, new Object[]{});
+        if (retval != null)
+        {
+          setParameter(propertyName, retval);
+        }
+      }
+      catch (Exception e)
+      {
+        Log.debug("Exception on method invokation.", e);
+      }
+
+    }
   }
 }

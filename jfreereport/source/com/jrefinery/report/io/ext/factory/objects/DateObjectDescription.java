@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 9:07:48 PM
  *
- * $Id$
+ * $Id: DateObjectDescription.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
@@ -36,5 +36,26 @@ public class DateObjectDescription extends AbstractObjectDescription
     Integer p = (Integer) getParameter(param);
     if (p == null) return 0;
     return p.intValue();
+  }
+
+  public void setParameterFromObject(Object o) throws ObjectFactoryException
+  {
+    if (o instanceof Date)
+    {
+      GregorianCalendar gc = new GregorianCalendar();
+      gc.setTime((Date) o);
+      int year = gc.get(GregorianCalendar.YEAR);
+      int month = gc.get(GregorianCalendar.MONTH);
+      int day = gc.get(GregorianCalendar.DAY_OF_MONTH);
+
+      setParameter("year", String.valueOf(year));
+      setParameter("month", String.valueOf(month));
+      setParameter("day", String.valueOf(day));
+    }
+    else
+    {
+      throw new ObjectFactoryException("Is no instance of date");
+    }
+
   }
 }

@@ -2,13 +2,14 @@
  * Date: Jan 12, 2003
  * Time: 4:31:10 PM
  *
- * $Id$
+ * $Id: DataSourceCollector.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.datasource;
 
 import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class DataSourceCollector implements DataSourceFactory
 {
@@ -24,6 +25,10 @@ public class DataSourceCollector implements DataSourceFactory
     factories.add (factory);
   }
 
+  public Iterator getFactories ()
+  {
+    return factories.iterator();
+  }
 
   public ObjectDescription getDataSourceDescription(String name)
   {

@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 7:13:34 PM
  *
- * $Id$
+ * $Id: StylesHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -46,15 +46,6 @@ public class StylesHandler implements ReportDefinitionHandler
 
       styleSheet = new ElementStyleSheet(name);
 
-      String extend = attrs.getValue("extends");
-      if (extend != null)
-      {
-        ElementStyleSheet exSheet = (ElementStyleSheet) styleCollection.get(extend);
-        if (exSheet == null)
-          throw new SAXException("Invalid parent styleSheet, StyleSheet not defined");
-
-        styleSheet.addParent(exSheet);
-      }
       StyleSheetHandler styleSheetFactory = new StyleSheetHandler(getParser(), STYLE_TAG, styleSheet);
       getParser().pushFactory(styleSheetFactory);
     }

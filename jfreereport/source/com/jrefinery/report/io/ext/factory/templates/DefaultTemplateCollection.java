@@ -2,7 +2,7 @@
  * Date: Jan 11, 2003
  * Time: 3:13:18 PM
  *
- * $Id$
+ * $Id: DefaultTemplateCollection.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.templates;
 
@@ -12,12 +12,12 @@ public class DefaultTemplateCollection extends TemplateCollection
 {
   public DefaultTemplateCollection()
   {
-    addTemplate("date-field", new DateFieldTemplate());
-    addTemplate("image-field", new ImageFieldTemplate());
-    addTemplate("image-url-field", new ImageURLFieldTemplate());
-    addTemplate("image-url-element", new ImageURLElementTemplate());
-    addTemplate("label", new LabelTemplate());
-    addTemplate("number-field", new NumberFieldTemplate());
-    addTemplate("string-field", new StringFieldTemplate());
+    addTemplate(new DateFieldTemplate("date-field"));
+    addTemplate(new ImageFieldTemplate("image-field"));
+    addTemplate(new ImageURLFieldTemplate("image-url-field"));
+    addTemplate(new ImageURLElementTemplate("image-url-element"));
+    addTemplate(new LabelTemplate("label"));
+    addTemplate(new NumberFieldTemplate("number-field"));
+    addTemplate(new StringFieldTemplate("string-field"));
   }
 }

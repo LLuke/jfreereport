@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 9:07:48 PM
  *
- * $Id$
+ * $Id: LongObjectDescription.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
@@ -20,5 +20,13 @@ public class LongObjectDescription extends AbstractObjectDescription
   {
     String o = (String) getParameter("value");
     return Long.valueOf(o);
+  }
+
+  public void setParameterFromObject(Object o) throws ObjectFactoryException
+  {
+    if (o instanceof Long)
+    {
+      setParameter("value", String.valueOf(o));
+    }
   }
 }

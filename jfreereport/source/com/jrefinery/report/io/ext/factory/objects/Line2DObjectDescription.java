@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 9:07:48 PM
  *
- * $Id$
+ * $Id: Line2DObjectDescription.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
@@ -38,5 +38,22 @@ public class Line2DObjectDescription extends AbstractObjectDescription
     Float p = (Float) getParameter(param);
     if (p == null) return 0;
     return p.floatValue();
+  }
+
+  public void setParameterFromObject(Object o) throws ObjectFactoryException
+  {
+    if (o instanceof Line2D == false)
+      throw new ObjectFactoryException("In not assignable");
+
+    Line2D line = (Line2D) o;
+    float x1 = (float) line.getX1();
+    float x2 = (float) line.getX2();
+    float y1 = (float) line.getY1();
+    float y2 = (float) line.getY2();
+
+    setParameter("x1", String.valueOf(x1));
+    setParameter("x2", String.valueOf(x2));
+    setParameter("y1", String.valueOf(y1));
+    setParameter("y2", String.valueOf(y2));
   }
 }

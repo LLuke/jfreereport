@@ -2,7 +2,7 @@
  * Date: Jan 11, 2003
  * Time: 4:52:58 PM
  *
- * $Id$
+ * $Id: BandHandler.java,v 1.1 2003/01/12 21:33:52 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -11,6 +11,7 @@ import org.xml.sax.SAXException;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.ItemBand;
 import com.jrefinery.report.Element;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.io.ext.factory.elements.ElementFactoryCollector;
 import com.jrefinery.report.io.Parser;
 
@@ -18,6 +19,7 @@ public class BandHandler extends ElementHandler
 {
   public static final String BAND_TAG = "band";
   public static final String ELEMENT_TAG = "element";
+  public static final String DEFAULT_STYLE_TAG = "default-style";
 
   private ElementHandler elementHandler;
 
@@ -52,6 +54,12 @@ public class BandHandler extends ElementHandler
       elementHandler = new ElementHandler(getParser(), tagName, element);
       getParser().pushFactory(elementHandler);
     }
+    else if (tagName.equals(DEFAULT_STYLE_TAG))
+    {
+      ElementStyleSheet styleSheet = getBand().getBandDefaults();
+      StyleSheetHandler styleSheetFactory = new StyleSheetHandler(getParser(), tagName, styleSheet);
+      getParser().pushFactory(styleSheetFactory);
+    }
     else
     {
       super.startElement(tagName, attrs);
@@ -79,6 +87,10 @@ public class BandHandler extends ElementHandler
     else if (tagName.equals(ELEMENT_TAG))
     {
       getBand().addElement(elementHandler.getElement());
+    }
+    else if (tagName.equals(DEFAULT_STYLE_TAG))
+    {
+      // ignore event ...
     }
     else
     {

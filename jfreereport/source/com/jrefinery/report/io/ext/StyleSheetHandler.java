@@ -2,7 +2,7 @@
  * Date: Jan 9, 2003
  * Time: 9:08:15 PM
  *
- * $Id$
+ * $Id: StyleSheetHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -14,6 +14,8 @@ import com.jrefinery.report.io.ReportDefinitionHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+import java.util.Hashtable;
+
 /**
  * Used for the styles definition ...
  */
@@ -21,17 +23,24 @@ public class StyleSheetHandler implements ReportDefinitionHandler
 {
   public static final String COMPOUND_KEY_TAG = "compound-key";
   public static final String BASIC_KEY_TAG = "basic-key";
+  public static final String EXTENDS_TAG = "extends";
 
   private Parser parser;
   private String finishTag;
   private ElementStyleSheet sheet;
   private BasicStyleKeyHandler basicFactory;
+  private Hashtable styleCollection;
 
   public StyleSheetHandler(Parser parser, String finishTag, ElementStyleSheet styleSheet)
   {
     this.parser = parser;
     this.finishTag = finishTag;
     this.sheet = styleSheet;
+    styleCollection = (Hashtable) getParser().getConfigurationValue(StylesHandler.STYLES_COLLECTION);
+    if (styleCollection == null)
+    {
+      throw new IllegalStateException("No styles collection found in the configuration");
+    }
   }
 
   public void startElement(String tagName, Attributes attrs)
@@ -54,6 +63,18 @@ public class StyleSheetHandler implements ReportDefinitionHandler
 
       basicFactory = new CompoundStyleKeyHandler(getParser(), tagName, name);
       getParser().pushFactory(basicFactory);
+    }
+    else if (tagName.equals(EXTENDS_TAG))
+    {
+      String extend = attrs.getValue("name");
+      if (extend != null)
+      {
+        ElementStyleSheet exSheet = (ElementStyleSheet) styleCollection.get(extend);
+        if (exSheet == null)
+          throw new SAXException("Invalid parent styleSheet, StyleSheet not defined");
+
+        sheet.addParent(exSheet);
+      }
     }
     else
     {

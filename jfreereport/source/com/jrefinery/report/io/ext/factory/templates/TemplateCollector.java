@@ -2,7 +2,7 @@
  * Date: Jan 11, 2003
  * Time: 3:33:07 PM
  *
- * $Id$
+ * $Id: TemplateCollector.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.templates;
 
@@ -10,6 +10,7 @@ import com.jrefinery.report.io.ext.factory.templates.Template;
 import com.jrefinery.report.io.ext.factory.templates.TemplateCollection;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class TemplateCollector extends TemplateCollection
 {
@@ -25,6 +26,11 @@ public class TemplateCollector extends TemplateCollection
     factories.add(tc);
   }
 
+  public Iterator getFactories ()
+  {
+    return factories.iterator();
+  }
+  
   public Template getTemplate(String name)
   {
     for (int i = 0; i < factories.size(); i++)

@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 9:07:48 PM
  *
- * $Id$
+ * $Id: ClassLoaderObjectDescription.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
@@ -27,5 +27,10 @@ public class ClassLoaderObjectDescription extends AbstractObjectDescription
     {
       return null;
     }
+  }
+
+  public void setParameterFromObject(Object o) throws ObjectFactoryException
+  {
+    setParameter("value", o.getClass().getName());
   }
 }

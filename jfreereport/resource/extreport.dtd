@@ -86,10 +86,19 @@
   external       CDATA           #IMPLIED
 >
 
-<!ELEMENT style  (basic-key|compound-key)*>
+<!ELEMENT style  (extends*, (basic-key|compound-key)*)>
 <!ATTLIST style
   name           CDATA           #IMPLIED
-  extends        CDATA           #IMPLIED
+>
+
+<!ELEMENT default-style  (extends*, (basic-key|compound-key)*)>
+<!ATTLIST default-style
+  name           CDATA           #IMPLIED
+>
+
+<!ELEMENT extends  EMPTY>
+<!ATTLIST extends
+  name          CDATA  #REQUIRED
 >
 
 <!ELEMENT compound-key (basic-object|compound-object)*>
@@ -130,27 +139,27 @@
 <!ELEMENT report-description
   (report-header?, report-footer?, page-header?, page-footer?, itemband?, groups?)>
 
-<!ELEMENT report-header   (style, (template | datasource), (band | element)*)>
+<!ELEMENT report-header   (style, default-style, (template | datasource), (band | element)*)>
 <!ATTLIST report-header
   name           CDATA           #IMPLIED
 >
 
-<!ELEMENT report-footer   (style, (template | datasource), (band | element)*)>
+<!ELEMENT report-footer   (style, default-style, (template | datasource), (band | element)*)>
 <!ATTLIST report-footer
   name           CDATA           #IMPLIED
 >
 
-<!ELEMENT page-header   (style, (template | datasource), (band | element)*)>
+<!ELEMENT page-header   (style, default-style, (template | datasource), (band | element)*)>
 <!ATTLIST page-header
   name           CDATA           #IMPLIED
 >
 
-<!ELEMENT page-footer   (style, (template | datasource), (band | element)*)>
+<!ELEMENT page-footer   (style, default-style, (template | datasource), (band | element)*)>
 <!ATTLIST page-footer
   name           CDATA           #IMPLIED
 >
 
-<!ELEMENT itemband   (style, (template | datasource), (band | element)*)>
+<!ELEMENT itemband   (style, default-style, (template | datasource), (band | element)*)>
 <!ATTLIST itemband
   name           CDATA           #IMPLIED
 >
@@ -164,17 +173,17 @@
 <!ELEMENT fields     (field*)>
 <!ELEMENT field      (#PCDATA)>
 
-<!ELEMENT group-header   (style, (template | datasource), (band | element)*)>
+<!ELEMENT group-header   (style, default-style, (template | datasource), (band | element)*)>
 <!ATTLIST group-header
   name           CDATA           #IMPLIED
 >
 
-<!ELEMENT group-footer   (style, (template | datasource), (band | element)*)>
+<!ELEMENT group-footer   (style, default-style, (template | datasource), (band | element)*)>
 <!ATTLIST group-footer
   name           CDATA           #IMPLIED
 >
 
-<!ELEMENT band  (style, (template | datasource)*, (band | element)*)>
+<!ELEMENT band  (style, default-style, (template | datasource)*, (band | element)*)>
 <!ATTLIST band
   name           CDATA           #IMPLIED
 >

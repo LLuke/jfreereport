@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.23 2003/01/03 16:19:12 mungady Exp $
+ * $Id: ReportConfiguration.java,v 1.24 2003/01/12 21:33:54 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import com.lowagie.text.pdf.BaseFont;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.Enumeration;
 
 /**
  * Global and local configurations for JFreeReport.
@@ -788,5 +789,17 @@ public class ReportConfiguration
   public void setG2BuggyFRC(boolean buggy)
   {
     setConfigProperty(G2TARGET_ISBUGGY_FRC, String.valueOf(buggy));
+  }
+
+  /**
+   * Returns all defined configuration properties for the report. The enumeration
+   * contains all keys of the changed properties, properties set from files or
+   * the system properties are not included.
+   *
+   * @return all defined configuration properties for the report.
+   */
+  public Enumeration getConfigProperties ()
+  {
+    return configuration.keys();
   }
 }
