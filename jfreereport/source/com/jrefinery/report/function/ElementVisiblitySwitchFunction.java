@@ -54,6 +54,8 @@ public class ElementVisiblitySwitchFunction extends AbstractFunction
    */
   public void itemsAdvanced (ReportEvent event)
   {
+    if (event.getState().isPrepareRun()) return;
+
     trigger = (!trigger);
     Element e = event.getReport().getItemBand().getElement(getElement());
     if (e != null)

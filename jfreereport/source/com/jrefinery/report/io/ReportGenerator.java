@@ -105,6 +105,17 @@ public class ReportGenerator
   /**
    * Parses an XML file which is loaded using the given URL. All
    * needed relative file- and resourcespecification are loaded
+   * using the URL <code>file</code> as base.
+   */
+  public JFreeReport parseReport (URL file)
+          throws ReportDefinitionException, IOException
+  {
+    return parseReport(file, file);
+  }
+
+  /**
+   * Parses an XML file which is loaded using the given URL. All
+   * needed relative file- and resourcespecification are loaded
    * using the URL <code>contentBase</code> as base.
    */
   public JFreeReport parseReport (URL file, URL contentBase)

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.11 2002/05/26 20:05:13 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.12 2002/05/26 20:09:41 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -917,7 +917,7 @@ public class PreviewFrame
     int mp = reportPane.getNumberOfPages();
 
     nextPageAction.setEnabled (pn < mp);
-    previousPageAction.setEnabled(pn == 1);
+    previousPageAction.setEnabled(pn != 1);
 
     zoomOutAction.setEnabled(zoomSelect.getSelectedIndex() != 0);
     zoomInAction.setEnabled(zoomSelect.getSelectedIndex() != (zoomFactors.length - 1));

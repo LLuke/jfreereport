@@ -54,7 +54,8 @@ public class FloatingButtonEnabler extends MouseAdapter
     if (e.getSource() instanceof AbstractButton)
     {
       AbstractButton button = (AbstractButton) e.getSource();
-      button.setBorderPainted(true);
+      if (button.isEnabled())
+        button.setBorderPainted(true);
     }
 	}
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.2 2002/05/22 21:39:05 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.3 2002/05/23 22:32:22 taqua Exp $
  *
  * Changes
  * -------
@@ -68,6 +68,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.StreamTokenizer;
 import java.net.MalformedURLException;
 import java.util.Map;
 import java.util.TreeMap;
@@ -299,7 +300,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     String fontKey = null;
     String logicalName = font.getName ();
 
-    if (logicalName.equals ("DialogInput") || (logicalName.equals ("Monospaced")))
+    if (logicalName.equalsIgnoreCase("DialogInput") || (logicalName.equalsIgnoreCase ("Monospaced")))
     {
 
       if (font.isItalic ())
@@ -326,7 +327,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       }
     }
 
-    else if (logicalName.equals ("Serif"))
+    else if (logicalName.equalsIgnoreCase ("Serif"))
     {
 
       if (font.isItalic ())
@@ -388,7 +389,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     {
       try
       {
-        f = BaseFont.createFont (fontKey, BaseFont.CP1252, this.embedFonts);
+        f = BaseFont.createFont (fontKey, BaseFont.WINANSI, this.embedFonts);
       }
       catch (Exception e)
       {

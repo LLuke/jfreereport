@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.10 2002/05/26 16:56:31 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.11 2002/05/26 20:05:12 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -52,6 +52,7 @@ import java.awt.event.WindowListener;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
+import java.net.URL;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -113,29 +114,14 @@ public class JFreeReportDemo extends JFrame implements WindowListener
   /** A table model containing sample data. */
   protected SampleData1 data1;
 
-  /** The first sample report. */
-  protected JFreeReport report1;
-
-  /** The preview frame for sample report 1. */
-  protected PreviewFrame frame1;
-
   /** A table model containing sample data. */
   protected SampleData2 data2;
-
-  /** The second sample report. */
-  protected JFreeReport report2;
-
-  /** The preview frame for sample report 2. */
-  protected PreviewFrame frame2;
 
   /** A table model containing sample data. */
   private SampleData3 data3;
 
-  /** The second sample report. */
-  protected JFreeReport report3;
-
-  /** The preview frame for sample report 3. */
-  protected PreviewFrame frame3;
+  /** A table model containing sample data. */
+  private SampleData4 data4;
 
   private ResourceBundle m_resources;
 
@@ -154,6 +140,7 @@ public class JFreeReportDemo extends JFrame implements WindowListener
     data1 = new SampleData1();
     data2 = new SampleData2();
     data3 = new SampleData3();
+    data4 = new SampleData4();
 
     createActions();
 
@@ -169,6 +156,7 @@ public class JFreeReportDemo extends JFrame implements WindowListener
     tabbedPane.addTab("Example 1", JRefineryUtilities.createTablePanel(data1));
     tabbedPane.addTab("Example 2", JRefineryUtilities.createTablePanel(data2));
     tabbedPane.addTab("Example 3", JRefineryUtilities.createTablePanel(data3));
+    tabbedPane.addTab("Example 4", JRefineryUtilities.createTablePanel(data4));
 
     content.add(tabbedPane);
 
@@ -210,9 +198,13 @@ public class JFreeReportDemo extends JFrame implements WindowListener
     {
       preview2();
     }
-    else
+    else if (index == 2)
     {
       preview3();
+    }
+    else
+    {
+      preview4();
     }
   }
 
@@ -222,8 +214,7 @@ public class JFreeReportDemo extends JFrame implements WindowListener
    */
   public void preview1()
   {
-    File in =
-      new File(getClass().getResource("/com/jrefinery/report/demo/report1.xml").getFile());
+    URL in = getClass().getResource("/com/jrefinery/report/demo/report1.xml");
     if (in == null)
     {
       JOptionPane.showMessageDialog(this, "ReportDefinition report1.xml not found");
@@ -231,9 +222,10 @@ public class JFreeReportDemo extends JFrame implements WindowListener
     }
     ReportGenerator gen = ReportGenerator.getInstance();
 
+    JFreeReport report1 = null;
     try
     {
-      report1 = gen.parseReport(in);
+      report1 = gen.parseReport(in, in);
     }
     catch (Exception ioe)
     {
@@ -251,7 +243,7 @@ public class JFreeReportDemo extends JFrame implements WindowListener
     ItemBand band = report1.getItemBand();
     report1.setData(data1);
 
-    frame1 = new PreviewFrame(report1);
+    PreviewFrame frame1 = new PreviewFrame(report1);
     frame1.addWindowListener(this);
     frame1.pack();
     JRefineryUtilities.positionFrameRandomly(frame1);
@@ -265,8 +257,7 @@ public class JFreeReportDemo extends JFrame implements WindowListener
    */
   public void preview2()
   {
-    File in =
-      new File(getClass().getResource("/com/jrefinery/report/demo/report2.xml").getFile());
+    URL in = getClass().getResource("/com/jrefinery/report/demo/report2.xml");
     if (in == null)
     {
       JOptionPane.showMessageDialog(
@@ -276,9 +267,10 @@ public class JFreeReportDemo extends JFrame implements WindowListener
     }
     ReportGenerator gen = ReportGenerator.getInstance();
 
+    JFreeReport report2 = null;
     try
     {
-      report2 = gen.parseReport(in);
+      report2 = gen.parseReport(in, in);
     }
     catch (Exception ioe)
     {
@@ -292,7 +284,7 @@ public class JFreeReportDemo extends JFrame implements WindowListener
     }
 
     report2.setData(data2);
-    frame2 = new PreviewFrame(report2);
+    PreviewFrame frame2 = new PreviewFrame(report2);
     frame2.addWindowListener(this);
     frame2.pack();
     JRefineryUtilities.positionFrameRandomly(frame2);
@@ -308,8 +300,7 @@ public class JFreeReportDemo extends JFrame implements WindowListener
   {
     // it would be nice to load the report file from the arcive with
     // getResourceAsStream() ! (JS)
-    File in =
-      new File(getClass().getResource("/com/jrefinery/report/demo/report3.xml").getFile());
+    URL in = getClass().getResource("/com/jrefinery/report/demo/report3.xml");
     if (in == null)
     {
       JOptionPane.showMessageDialog(
@@ -319,9 +310,10 @@ public class JFreeReportDemo extends JFrame implements WindowListener
     }
     ReportGenerator gen = ReportGenerator.getInstance();
 
+    JFreeReport report3 = null;
     try
     {
-      report3 = gen.parseReport(in);
+      report3 = gen.parseReport(in, in);
     }
     catch (Exception ioe)
     {
@@ -334,12 +326,53 @@ public class JFreeReportDemo extends JFrame implements WindowListener
       return;
     }
     report3.setData(data3);
-    frame3 = new PreviewFrame(report3);
+    PreviewFrame frame3 = new PreviewFrame(report3);
     frame3.addWindowListener(this);
     frame3.pack();
     JRefineryUtilities.positionFrameRandomly(frame3);
     frame3.show();
     frame3.requestFocus();
+  }
+
+  /**
+   * Displays a preview frame for report two.  If the preview frame already exists, it is brought
+   * to the front.
+   */
+  public void preview4()
+  {
+    URL in = getClass().getResource("/com/jrefinery/report/demo/report4.xml");
+    if (in == null)
+    {
+      JOptionPane.showMessageDialog(
+        this,
+        "ReportDefinition report4.xml not found on classpath");
+      return;
+    }
+
+    ReportGenerator gen = ReportGenerator.getInstance();
+
+    JFreeReport report4 = null;
+    try
+    {
+      report4 = gen.parseReport(in, in);
+    }
+    catch (Exception ioe)
+    {
+      ioe.printStackTrace();
+      JOptionPane.showMessageDialog(
+        this,
+        ioe.getMessage(),
+        "Error: " + ioe.getClass().getName(),
+        JOptionPane.ERROR_MESSAGE);
+      return;
+    }
+    report4.setData(data4);
+    PreviewFrame frame4 = new PreviewFrame(report4);
+    frame4.addWindowListener(this);
+    frame4.pack();
+    JRefineryUtilities.positionFrameRandomly(frame4);
+    frame4.show();
+    frame4.requestFocus();
   }
 
   /**
@@ -476,15 +509,7 @@ public class JFreeReportDemo extends JFrame implements WindowListener
    */
   public void windowClosed(WindowEvent e)
   {
-    if (e.getWindow() == this.frame1)
-    {
-      frame1 = null;
-    }
-    else if (e.getWindow() == this.frame2)
-    {
-      frame2 = null;
-    }
-    else if (e.getWindow() == this.infoFrame)
+    if (e.getWindow() == this.infoFrame)
     {
       infoFrame = null;
     }

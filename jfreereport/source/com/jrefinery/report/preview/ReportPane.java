@@ -25,7 +25,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportPane.java,v 1.8 2002/05/26 16:56:31 taqua Exp $
+ * $Id: ReportPane.java,v 1.9 2002/05/26 20:05:13 taqua Exp $
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
@@ -132,6 +132,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
     propsupp = new PropertyChangeSupport (this);
     this.target = target;
     this.report = report;
+    setBorderPainted(false);
     setPageNumber(1);
     setZoomFactor (1.0);
     setPaginated(false);
@@ -240,6 +241,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
   {
     boolean oldval = isBorderPainted();
     borderPainted = b;
+    revalidate();
     propsupp.firePropertyChange(BORDER_PROPERTY, oldval, b);
   }
 
@@ -393,11 +395,6 @@ public class ReportPane extends JComponent implements Printable, Pageable
        * set to true.
        */
       Rectangle2D printingArea = new Rectangle2D.Float (innerX, innerY, innerW, innerH);
-      if (isBorderPainted())
-      {
-        g2.setPaint (Color.lightGray);
-        g2.draw (printingArea);
-      }
 
       int pageNumber = getPageNumber();
       if (pageNumber > 0)
@@ -472,8 +469,11 @@ public class ReportPane extends JComponent implements Printable, Pageable
 
       g2.setPaint (Color.black);
       g2.draw (transPageArea);
-      g2.setPaint (Color.gray);
-      g2.draw (printingArea);
+      if (isBorderPainted())
+      {
+        g2.setPaint (Color.gray);
+        g2.draw (printingArea);
+      }
     }
 
     if (graphCache != null)
