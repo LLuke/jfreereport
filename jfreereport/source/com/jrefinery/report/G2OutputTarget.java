@@ -28,15 +28,14 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.3 2002/05/16 11:46:14 jaosch Exp $
  *
  * Changes
  * -------
  * 21-Feb-2002 : Version 1 (DG);
  * 18-Apr-2002 : MultilineText is working again, ImageElement support
- * 16-May-2002 : Line thickness reduced to 0.5 
- *               in future it should be a property in the line object (JS)
- *
+ * 16-May-2002 : Interface of drawShape changhed so we can draw different line width (JS)
+ * 
  */
 
 package com.jrefinery.report;
@@ -60,8 +59,6 @@ import java.util.Vector;
  */
 public class G2OutputTarget implements OutputTarget
 {
-  private BasicStroke stroke = new BasicStroke(0.5f);
-
   /** The graphics device. */
   private Graphics2D g2;
 
@@ -74,7 +71,7 @@ public class G2OutputTarget implements OutputTarget
    * @param g2 The graphics device.
    * @param pageFormat The page format.
    */
-  public G2OutputTarget (Graphics2D g2, PageFormat pageFormat)
+  public G2OutputTarget(Graphics2D g2, PageFormat pageFormat)
   {
     this.g2 = g2;
     this.pageFormat = pageFormat;
@@ -85,15 +82,15 @@ public class G2OutputTarget implements OutputTarget
    *
    * @param g2 The graphics device.
    */
-  public void setGraphics2D (Graphics2D g2)
+  public void setGraphics2D(Graphics2D g2)
   {
     if (g2 == null)
-      throw new NullPointerException ("Graphics must not be null");
+      throw new NullPointerException("Graphics must not be null");
 
     this.g2 = g2;
   }
 
-  public Graphics2D getGraphics2D ()
+  public Graphics2D getGraphics2D()
   {
     return g2;
   }
@@ -104,7 +101,7 @@ public class G2OutputTarget implements OutputTarget
    * @param title The report title.
    * @param author The report author.
    */
-  public void open (String title, String author)
+  public void open(String title, String author)
   {
     // do nothing.
   }
@@ -112,7 +109,7 @@ public class G2OutputTarget implements OutputTarget
   /**
    * Closes the target.
    */
-  public void close ()
+  public void close()
   {
     // do nothing.
   }
@@ -122,7 +119,7 @@ public class G2OutputTarget implements OutputTarget
    *
    * @return The page format.
    */
-  public PageFormat getPageFormat ()
+  public PageFormat getPageFormat()
   {
     return this.pageFormat;
   }
@@ -132,7 +129,7 @@ public class G2OutputTarget implements OutputTarget
    *
    * @param format The page format.
    */
-  public void setPageFormat (PageFormat format)
+  public void setPageFormat(PageFormat format)
   {
     this.pageFormat = format;
   }
@@ -142,7 +139,7 @@ public class G2OutputTarget implements OutputTarget
    *
    * @return The left edge of the page.
    */
-  public float getPageX ()
+  public float getPageX()
   {
     return 0.0f;
   }
@@ -152,7 +149,7 @@ public class G2OutputTarget implements OutputTarget
    *
    * @return The top edge of the page.
    */
-  public float getPageY ()
+  public float getPageY()
   {
     return 0.0f;
   }
@@ -162,9 +159,9 @@ public class G2OutputTarget implements OutputTarget
    *
    * @return The page width.
    */
-  public float getPageWidth ()
+  public float getPageWidth()
   {
-    return (float) (pageFormat.getWidth ());
+    return (float) (pageFormat.getWidth());
   }
 
   /**
@@ -172,9 +169,9 @@ public class G2OutputTarget implements OutputTarget
    *
    * @return The page height.
    */
-  public float getPageHeight ()
+  public float getPageHeight()
   {
-    return (float) (pageFormat.getHeight ());
+    return (float) (pageFormat.getHeight());
   }
 
   /**
@@ -182,9 +179,9 @@ public class G2OutputTarget implements OutputTarget
    *
    * @return The left edge of the printable area of the page.
    */
-  public float getUsableX ()
+  public float getUsableX()
   {
-    return (float) (pageFormat.getImageableX ());
+    return (float) (pageFormat.getImageableX());
   }
 
   /**
@@ -192,9 +189,9 @@ public class G2OutputTarget implements OutputTarget
    *
    * @return The top edge of the printable area of the page.
    */
-  public float getUsableY ()
+  public float getUsableY()
   {
-    return (float) (pageFormat.getImageableY ());
+    return (float) (pageFormat.getImageableY());
   }
 
   /**
@@ -202,9 +199,9 @@ public class G2OutputTarget implements OutputTarget
    *
    * @return The width of the printable area of the page.
    */
-  public float getUsableWidth ()
+  public float getUsableWidth()
   {
-    return (float) (pageFormat.getImageableWidth ());
+    return (float) (pageFormat.getImageableWidth());
   }
 
   /**
@@ -212,9 +209,9 @@ public class G2OutputTarget implements OutputTarget
    *
    * @return The height of the printable area of the page.
    */
-  public float getUsableHeight ()
+  public float getUsableHeight()
   {
-    return (float) (pageFormat.getImageableHeight ());
+    return (float) (pageFormat.getImageableHeight());
   }
 
   /**
@@ -228,9 +225,13 @@ public class G2OutputTarget implements OutputTarget
    * @param y2 The y-coordinate for the lower right corner.
    * @param alignment The horizontal alignment.
    */
-  public void drawString (String text,
-                          float x1, float y1, float x2, float y2,
-                          int alignment)
+  public void drawString(
+    String text,
+    float x1,
+    float y1,
+    float x2,
+    float y2,
+    int alignment)
   {
 
     float x = x1;
@@ -242,17 +243,17 @@ public class G2OutputTarget implements OutputTarget
     }
     else if (alignment == Element.CENTER)
     {
-      FontRenderContext frc = g2.getFontRenderContext ();
-      Rectangle2D textBounds = g2.getFont ().getStringBounds (text, frc);
-      x = ((x1 + x2) / 2) - ((float) (textBounds.getWidth ()) / 2);
+      FontRenderContext frc = g2.getFontRenderContext();
+      Rectangle2D textBounds = g2.getFont().getStringBounds(text, frc);
+      x = ((x1 + x2) / 2) - ((float) (textBounds.getWidth()) / 2);
     }
     else if (alignment == Element.RIGHT)
     {
-      FontRenderContext frc = g2.getFontRenderContext ();
-      Rectangle2D textBounds = g2.getFont ().getStringBounds (text, frc);
-      x = x2 - (float) (textBounds.getWidth ());
+      FontRenderContext frc = g2.getFontRenderContext();
+      Rectangle2D textBounds = g2.getFont().getStringBounds(text, frc);
+      x = x2 - (float) (textBounds.getWidth());
     }
-    g2.drawString (text, x, baseline);
+    g2.drawString(text, x, baseline);
 
   }
 
@@ -261,9 +262,9 @@ public class G2OutputTarget implements OutputTarget
    *
    * @param font The font.
    */
-  public void setFont (Font font)
+  public void setFont(Font font)
   {
-    g2.setFont (font);
+    g2.setFont(font);
   }
 
   /**
@@ -271,9 +272,9 @@ public class G2OutputTarget implements OutputTarget
    *
    * @param paint The paint.
    */
-  public void setPaint (Paint paint)
+  public void setPaint(Paint paint)
   {
-    g2.setPaint (paint);
+    g2.setPaint(paint);
   }
 
   /**
@@ -287,30 +288,34 @@ public class G2OutputTarget implements OutputTarget
    * @param x The x coordinate.
    * @param y The y coordinate.
    */
-  public void drawShape (Shape shape, float x, float y)
+  public void drawShape(ShapeElement shape, float x, float y)
   {
-
-    AffineTransform saved = g2.getTransform ();
-    g2.transform (AffineTransform.getTranslateInstance (x, y));
-    g2.setStroke(stroke);
-    g2.draw (shape);
-    g2.setTransform (saved);
-
+    AffineTransform saved = g2.getTransform();
+    g2.transform(AffineTransform.getTranslateInstance(x, y));
+    g2.setStroke(shape.getStroke());
+    g2.draw(shape.getShape());
+    g2.setTransform(saved);
   }
 
   /**
    * This method is called when the page is ended.  Here we ignore this.
    */
-  public void endPage ()
+  public void endPage()
   {
   }
 
-  public void drawImage (ImageReference image, float x, float y)
+  public void drawImage(ImageReference image, float x, float y)
   {
-    AffineTransform saved = g2.getTransform ();
-    g2.transform (AffineTransform.getTranslateInstance (x, y));
-    g2.drawImage (image.getImage (), (int) (image.getX ()), (int) (image.getY ()), (int) image.getWidth (), (int) image.getHeight (), null);
-    g2.setTransform (saved);
+    AffineTransform saved = g2.getTransform();
+    g2.transform(AffineTransform.getTranslateInstance(x, y));
+    g2.drawImage(
+      image.getImage(),
+      (int) (image.getX()),
+      (int) (image.getY()),
+      (int) image.getWidth(),
+      (int) image.getHeight(),
+      null);
+    g2.setTransform(saved);
   }
 
   /**
@@ -319,18 +324,24 @@ public class G2OutputTarget implements OutputTarget
    * @param x The x-coordinate for the band.
    * @param y The y-coordinate for the band.
    */
-  public void drawMultiLineText (String mytext, float x1, float y1, float x2, float y2, int align)
+  public void drawMultiLineText(
+    String mytext,
+    float x1,
+    float y1,
+    float x2,
+    float y2,
+    int align)
   {
-    FontRenderContext frc = g2.getFontRenderContext ();
-    FontMetrics fm = g2.getFontMetrics ();
+    FontRenderContext frc = g2.getFontRenderContext();
+    FontMetrics fm = g2.getFontMetrics();
 
-    Vector lines = breakLines (mytext, frc, x2 - x1);
-    int fontheight = fm.getHeight ();
+    Vector lines = breakLines(mytext, frc, x2 - x1);
+    int fontheight = fm.getHeight();
 
-    for (int i = 0; i < lines.size (); i++)
+    for (int i = 0; i < lines.size(); i++)
     {
-      String line = (String) lines.elementAt (i);
-      drawString (line, x1, y1 + i * fontheight, x2, y2, align);
+      String line = (String) lines.elementAt(i);
+      drawString(line, x1, y1 + i * fontheight, x2, y2, align);
     }
 
   }
@@ -338,37 +349,37 @@ public class G2OutputTarget implements OutputTarget
   /**
    * Breaks the text into multiple lines
    */
-  private Vector breakLines (String mytext, FontRenderContext frc, float w)
+  private Vector breakLines(String mytext, FontRenderContext frc, float w)
   {
-    BreakIterator breakit = BreakIterator.getWordInstance ();
-    breakit.setText (mytext);
+    BreakIterator breakit = BreakIterator.getWordInstance();
+    breakit.setText(mytext);
 
-    Font font = g2.getFont ();
+    Font font = g2.getFont();
 
-    Vector lines = new Vector ();
+    Vector lines = new Vector();
     int pos = 0;
-    int len = mytext.length ();
+    int len = mytext.length();
 
     while (pos < len)
     {
-      int last = breakit.next ();
+      int last = breakit.next();
       float x = 0;
 
       while (x < w && last != BreakIterator.DONE)
       {
-        Rectangle2D textBounds = font.getStringBounds (mytext, pos, last, frc);
-        x = (float) textBounds.getWidth ();
-        last = breakit.next ();
+        Rectangle2D textBounds = font.getStringBounds(mytext, pos, last, frc);
+        x = (float) textBounds.getWidth();
+        last = breakit.next();
       }
 
       if (last == BreakIterator.DONE)
       {
-        lines.add (mytext.substring (pos));
+        lines.add(mytext.substring(pos));
         pos = len;
       }
       else
       {
-        lines.add (mytext.substring (pos, last));
+        lines.add(mytext.substring(pos, last));
         pos = last;
       }
     }
