@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionEntry.java,v 1.2 2003/09/08 18:11:49 taqua Exp $
+ * $Id: ConfigDescriptionEntry.java,v 1.3 2003/09/10 18:19:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -53,6 +53,8 @@ public abstract class ConfigDescriptionEntry
   private String keyName;
   /** a flag defining whether this is a boot time key. */
   private boolean global;
+  /** a flag defining whether this is a hidden key. */
+  private boolean hidden;
 
   /**
    * Creates a new config description entry with the given name.
@@ -119,6 +121,28 @@ public abstract class ConfigDescriptionEntry
   public void setGlobal(boolean global)
   {
     this.global = global;
+  }
+
+  /**
+   * Returns, whether the key is hidden. Hidden keys will not be visible
+   * in the configuration editor.
+   *
+   * @return true, if the key is hidden, false otherwise
+   */
+  public boolean isHidden()
+  {
+    return hidden;
+  }
+
+  /**
+   * Defines, whether the key is hidden. Hidden keys will not be visible
+   * in the configuration editor.
+   *
+   * @param hidden set to true, if the key is hidden, false otherwise 
+   */
+  public void setHidden(boolean hidden)
+  {
+    this.hidden = hidden;
   }
 
   /**

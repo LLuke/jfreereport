@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionModel.java,v 1.3 2003/09/08 18:11:49 taqua Exp $
+ * $Id: ConfigDescriptionModel.java,v 1.4 2003/09/11 22:17:09 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -257,7 +257,8 @@ public class ConfigDescriptionModel extends AbstractListModel
 
   /**
    * Imports all entries from the given report configuration. Only new entries
-   * will be added to the list.
+   * will be added to the list. This does not add report properties supplied via
+   * the System.properties.
    * 
    * @param config the report configuration from where to add the entries.
    */
@@ -267,6 +268,10 @@ public class ConfigDescriptionModel extends AbstractListModel
     while (it.hasNext())
     {
       String keyname = (String) it.next();
+      if (System.getProperties().containsKey(keyname))
+      {
+        continue;
+      }
       TextConfigDescriptionEntry entry = new TextConfigDescriptionEntry(keyname);
       if (contains(entry) == false)
       {
@@ -297,6 +302,7 @@ public class ConfigDescriptionModel extends AbstractListModel
       Element keyElement = (Element) list.item(i);
       String keyName = keyElement.getAttribute("name");
       boolean keyGlobal = StringUtil.parseBoolean (keyElement.getAttribute("global"), false);
+      boolean keyHidden = StringUtil.parseBoolean (keyElement.getAttribute("hidden"), false);
       String descr = getDescription(keyElement);
 
       NodeList enumNodes = keyElement.getElementsByTagName("enum");
@@ -306,6 +312,7 @@ public class ConfigDescriptionModel extends AbstractListModel
         EnumConfigDescriptionEntry en = new EnumConfigDescriptionEntry(keyName);
         en.setDescription(descr);
         en.setGlobal(keyGlobal);
+        en.setHidden(keyHidden);
         en.setOptions(alteratives);
         add(en);
         continue;
@@ -333,6 +340,7 @@ public class ConfigDescriptionModel extends AbstractListModel
         ce.setBaseClass(baseClass);
         ce.setDescription(descr);
         ce.setGlobal(keyGlobal);
+        ce.setHidden(keyHidden);
         add(ce);
         continue;
       }
@@ -343,6 +351,7 @@ public class ConfigDescriptionModel extends AbstractListModel
         TextConfigDescriptionEntry textEntry = new TextConfigDescriptionEntry(keyName);
         textEntry.setDescription(descr);
         textEntry.setGlobal(keyGlobal);
+        textEntry.setHidden(keyHidden);
         add(textEntry);
         continue;
       }
@@ -401,6 +410,7 @@ public class ConfigDescriptionModel extends AbstractListModel
     writer.println("<!ATTLIST key");
     writer.println("   name   CDATA #REQUIRED");
     writer.println("   global CDATA #IMPLIED");
+    writer.println("   hidden CDATA #IMPLIED");
     writer.println(" >");
     writer.println();
     writer.println("<!ELEMENT description         (#PCDATA)>");
@@ -422,6 +432,7 @@ public class ConfigDescriptionModel extends AbstractListModel
       Properties p = new Properties();
       p.setProperty("name", entry.getKeyName());
       p.setProperty("global", String.valueOf(entry.isGlobal()));
+      p.setProperty("hidden", String.valueOf(entry.isHidden()));
       dwriter.writeTag(writer, "key", p, false);
       if (entry.getDescription() != null)
       {

@@ -67,6 +67,44 @@ A list of changes in recent versions:
         * The PDF target can now control what PDF document version will be
           generated.
           
+0.8.3g:
+        * BugFix: XML encoding for entity 'apos' was invalid.
+
+        * BugFix: The call to the AWT print dialog is now completly
+          removed from the event-handler thread to work around a
+          Java-Bug.
+
+        * BugFix: Exceptions were not logged and caused no valid error
+          message when exporting a report with the GUI dialogs.
+
+        * BugFix: ExcelFiles were not visible from the ExcelExportDialog.
+
+        * BugFix: Image- and Shape content was not aligned in the pageable
+          output targets.
+
+        * BugFix: Another fix for the image references of the HTML target.
+          Images contained in a separate data directory were not visible.
+
+        * BugFix: The multithreading caused problems due to an missing
+          sychronize block in the worker class. This caused the worker to
+          dead-lock in some cases.
+
+        * BugFix: The preview components did not kill the worker threads
+          when being finalized. The repagination worker was not interrupted
+          if the pagination was aborted.
+
+        * The Report templates for the reference documentation were not
+          included in the JFreeReport jar file.
+
+        * The LayoutManagers now synchronizes on the Element-Tree instead of
+          the "this" reference.
+
+        * The PDF layouting bug, which appeared in some VMs has been resolved.
+          The bug was caused by an non-strict floating point implementation
+          as allowed since Java 1.2; this feature seems to have influence
+          on all layouting operations and the PDF generation. The readme file
+          contains more details.
+
 0.8.3f: (24-Aug-2003)
         * BugFix: SwingIcons demo definition was invalid.
 

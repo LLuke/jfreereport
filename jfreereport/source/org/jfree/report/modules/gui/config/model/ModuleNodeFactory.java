@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ModuleNodeFactory.java,v 1.3 2003/09/08 18:11:49 taqua Exp $
+ * $Id: ModuleNodeFactory.java,v 1.4 2003/09/11 22:17:09 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -236,6 +236,13 @@ public class ModuleNodeFactory
       }
       return;
     }
+
+    // We ignore hidden keys.
+    if (cde.isHidden())
+    {
+      return;
+    }
+
     if (cde.isGlobal() == false)
     {
       ConfigTreeModuleNode node = lookupNode(mod, localNodes);

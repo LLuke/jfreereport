@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.7 2003/08/25 14:29:34 taqua Exp $
+ * $Id: Log.java,v 1.8 2003/08/27 20:19:54 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@
  */
 
 package org.jfree.report.util;
+
+import java.util.Arrays;
 
 import org.jfree.util.LogTarget;
 
@@ -81,6 +83,48 @@ public final class Log extends org.jfree.util.Log
       return (message
           + "Free: " + Runtime.getRuntime().freeMemory() + "; "
           + "Total: " + Runtime.getRuntime().totalMemory());
+    }
+  }
+
+  /**
+   * A message object that pads the output if the text is shorted than
+   * the given length.
+   */
+  public static class PadMessage
+  {
+    /** The message. */
+    private Object text;
+    /** The padding size. */
+    private int length;
+
+    /**
+     * Creates a new message.
+     *
+     * @param message  the message.
+     * @param length the padding size.
+     */
+    public PadMessage(Object message, int length)
+    {
+      this.text = message;
+      this.length = length;
+    }
+
+    /**
+     * Returns a string representation of the message.
+     *
+     * @return the string.
+     */
+    public String toString ()
+    {
+      StringBuffer b = new StringBuffer();
+      b.append(text);
+      if (b.length() < length)
+      {
+        char[] pad = new char[length - b.length()];
+        Arrays.fill(pad, ' ');
+        b.append(pad);
+      }
+      return b.toString();
     }
   }
 

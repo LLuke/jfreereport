@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.3 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -229,7 +229,6 @@ public class JFreeReportDemo extends AbstractDemoFrame
      */
     public void actionPerformed(final ActionEvent event)
     {
-      System.gc();
       displayAbout();
     }
   }

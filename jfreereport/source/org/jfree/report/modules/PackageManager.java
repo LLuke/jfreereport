@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageManager.java,v 1.13 2003/09/02 15:05:32 taqua Exp $
+ * $Id: PackageManager.java,v 1.14 2003/09/08 18:11:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -172,8 +172,9 @@ public final class PackageManager
       final PackageState mod = (PackageState) modules.get(i);
       if (mod.configure())
       {
-        Log.debug("Conf: " + mod.getModule().getModuleClass() +
-            "[" + mod.getModule().getSubSystem() + "]");
+        Log.debug(new Log.SimpleMessage("Conf: ",
+            new Log.PadMessage(mod.getModule().getModuleClass(), 70),
+            " [" , mod.getModule().getSubSystem() , "]"));
       }
     }
 
@@ -182,8 +183,9 @@ public final class PackageManager
       final PackageState mod = (PackageState) modules.get(i);
       if (mod.initialize())
       {
-        Log.debug("Init: " + mod.getModule().getModuleClass() +
-            "[" + mod.getModule().getSubSystem() + "]");
+        Log.debug(new Log.SimpleMessage("Init: ",
+            new Log.PadMessage(mod.getModule().getModuleClass(), 70),
+            " [" , mod.getModule().getSubSystem() , "]"));
       }
     }
   }

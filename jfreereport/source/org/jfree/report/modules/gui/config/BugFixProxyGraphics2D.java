@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BugFixProxyGraphics2D.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
+ * $Id: BugFixProxyGraphics2D.java,v 1.2 2003/09/08 18:11:48 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -690,7 +690,7 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * @return a reference to an instance of FontRenderContext.
    * @see FontRenderContext
    * @see Font#createGlyphVector
-   * @see TextLayout
+   * @see java.awt.font.TextLayout
    * @since     1.2
    */
 
@@ -1543,9 +1543,9 @@ public class BugFixProxyGraphics2D extends Graphics2D
    * a <code>Graphics</code> object only if it was created
    * directly from a component or another <code>Graphics</code> object.
    * @see         Graphics#finalize
-   * @see         Component#paint
-   * @see         Component#update
-   * @see         Component#getGraphics
+   * @see         java.awt.Component#paint
+   * @see         java.awt.Component#update
+   * @see         java.awt.Component#getGraphics
    * @see         Graphics#create
    */
   public void dispose()

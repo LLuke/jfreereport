@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigResources.java,v 1.3 2003/09/08 18:11:49 taqua Exp $
+ * $Id: ConfigResources.java,v 1.4 2003/09/09 15:52:52 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -90,7 +90,7 @@ public class ConfigResources extends JFreeReportResources
 
         {"action.exit.name", "Exit"},
         {"action.update.name", "Update"},
-        {"action.cancel.name", "Save"},
+        {"action.cancel.name", "Cancel"},
         {"action.boolean.name", "Boolean"},
 
         {"action.remove-enum-entry.name", "Remove"},
@@ -98,7 +98,7 @@ public class ConfigResources extends JFreeReportResources
         {"action.update-enum-entry.name", "Update"},
 
         {"default-editor.error-icon",
-          getIcon("org/jfree/report/modules/gui/config/resources/Stop24.gif")},
+          getIcon("org/jfree/report/modules/gui/config/resources/Stop16.gif")},
           
         {"config-description-editor.import-complete", "Import complete"},
         {"config-description-editor.unnamed-entry", "<unnamed entry>"},
@@ -112,6 +112,7 @@ public class ConfigResources extends JFreeReportResources
         {"config-description-editor.description", "Description:"},
         {"config-description-editor.type", "Type:"},
         {"config-description-editor.global", "Global:"},
+        {"config-description-editor.hidden", "Hidden:"},
         {"config-description-editor.type-text", "Text"},
         {"config-description-editor.type-class", "Class"},
         {"config-description-editor.type-enum", "Enum"},

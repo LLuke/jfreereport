@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionEditor.java,v 1.5 2003/09/08 18:11:48 taqua Exp $
+ * $Id: ConfigDescriptionEditor.java,v 1.6 2003/09/09 15:52:52 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -559,6 +559,8 @@ public class ConfigDescriptionEditor extends JFrame
   private JTextArea descriptionField;
   /** Allows to check, whether the key is a global (boot-time) key. */ 
   private JCheckBox globalField;
+  /** Allows to check, whether the key is hidden. */
+  private JCheckBox hiddenField;
   /** The name of the base class for the class detail editor. */
   private JTextField baseClassField;
   /** contains a message after validating the given base class. */ 
@@ -663,7 +665,7 @@ public class ConfigDescriptionEditor extends JFrame
     panel.add(toolbar, BorderLayout.NORTH);
     panel.add(new JScrollPane
         (entryList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER), BorderLayout.CENTER);
+            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED), BorderLayout.CENTER);
     return panel;
   }
 
@@ -808,7 +810,9 @@ public class ConfigDescriptionEditor extends JFrame
       (resources.getString ("config-description-editor.description"));
     JLabel typeLabel = new JLabel(resources.getString ("config-description-editor.type"));
     JLabel globalLabel = new JLabel(resources.getString ("config-description-editor.global"));
+    JLabel hiddenLabel = new JLabel(resources.getString ("config-description-editor.hidden"));
 
+    hiddenField = new JCheckBox();
     globalField = new JCheckBox();
     String font = ReportConfiguration.getGlobalConfig().getConfigProperty
         ("org.jfree.report.modules.gui.config.EditorFont", "Monospaced");
@@ -896,7 +900,7 @@ public class ConfigDescriptionEditor extends JFrame
     gbc.gridy = 3;
     gbc.anchor = GridBagConstraints.NORTHWEST;
     gbc.insets = new Insets(3, 1, 1, 1);
-    commonEntryEditorPanel.add(typeLabel, gbc);
+    commonEntryEditorPanel.add(hiddenLabel, gbc);
 
     gbc = new GridBagConstraints();
     gbc.gridx = 1;
@@ -906,11 +910,28 @@ public class ConfigDescriptionEditor extends JFrame
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.insets = new Insets(3, 1, 1, 1);
     gbc.ipadx = 120;
-    commonEntryEditorPanel.add(createTypeSelectionPane(), gbc);
+    commonEntryEditorPanel.add(hiddenField, gbc);
 
     gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridy = 4;
+    gbc.anchor = GridBagConstraints.NORTHWEST;
+    gbc.insets = new Insets(3, 1, 1, 1);
+    commonEntryEditorPanel.add(typeLabel, gbc);
+
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 4;
+    gbc.anchor = GridBagConstraints.NORTHWEST;
+    gbc.weightx = 1;
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.insets = new Insets(3, 1, 1, 1);
+    gbc.ipadx = 120;
+    commonEntryEditorPanel.add(createTypeSelectionPane(), gbc);
+
+    gbc = new GridBagConstraints();
+    gbc.gridx = 0;
+    gbc.gridy = 5;
     gbc.gridwidth = 2;
     gbc.weighty = 1;
     gbc.anchor = GridBagConstraints.NORTHWEST;
@@ -1055,6 +1076,7 @@ public class ConfigDescriptionEditor extends JFrame
       deepEnable(detailEditorPane, true);
       keyNameField.setText(selectedEntry.getKeyName());
       globalField.setSelected(selectedEntry.isGlobal());
+      hiddenField.setSelected(selectedEntry.isHidden());
       descriptionField.setText(selectedEntry.getDescription());
       if (selectedEntry instanceof ClassConfigDescriptionEntry)
       {
@@ -1176,6 +1198,7 @@ public class ConfigDescriptionEditor extends JFrame
               new ClassConfigDescriptionEntry(keyNameField.getText());
           ce.setDescription(descriptionField.getText());
           ce.setGlobal(globalField.isSelected());
+          ce.setHidden(hiddenField.isSelected());
           try
           {
             Class c = this.getClass().getClassLoader().loadClass(baseClassField.getText());
@@ -1196,6 +1219,7 @@ public class ConfigDescriptionEditor extends JFrame
               new EnumConfigDescriptionEntry(keyNameField.getText());
           ece.setDescription(descriptionField.getText());
           ece.setGlobal(globalField.isSelected());
+          ece.setHidden(hiddenField.isSelected());
           String[] enumEntries = new String[enumEntryListModel.getSize()];
           for (int i = 0; i < enumEntryListModel.getSize(); i++)
           {
@@ -1211,6 +1235,7 @@ public class ConfigDescriptionEditor extends JFrame
               new TextConfigDescriptionEntry(keyNameField.getText());
           te.setDescription(descriptionField.getText());
           te.setGlobal(globalField.isSelected());
+          te.setHidden(hiddenField.isSelected());
           entry = te;
           break;
         }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultModuleEditor.java,v 1.2 2003/09/12 18:46:18 taqua Exp $
+ * $Id: DefaultModuleEditor.java,v 1.3 2003/09/12 21:06:42 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,21 +38,27 @@
 
 package org.jfree.report.modules.gui.config.editor;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.StringWriter;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.text.html.HTMLEditorKit;
 
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.modules.Module;
+import org.jfree.report.modules.gui.config.VerticalLayout;
+import org.jfree.report.modules.gui.config.model.ClassConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.EnumConfigDescriptionEntry;
-import org.jfree.report.modules.gui.config.model.ClassConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.ModuleNodeFactory;
-import org.jfree.report.modules.gui.config.VerticalLayout;
+import org.jfree.report.util.ReportConfiguration;
 
 /**
  * The default module editor provides a simple default implementation to
@@ -151,6 +157,10 @@ public class DefaultModuleEditor implements ModuleEditor
   private Module module;
   /** The package of the module implementation. */
   private String modulePackage;
+  /** The rootpane holds the editor and the help area. */
+  private JSplitPane rootpane;
+  /** The rootpane holds the editor and the help area. */
+  private JEditorPane helpPane;
 
   /**
    * Creates a new, uninitialized module editor.
@@ -159,6 +169,19 @@ public class DefaultModuleEditor implements ModuleEditor
   {
     contentpane = new JPanel();
     contentpane.setLayout(new VerticalLayout());
+
+    helpPane = new JEditorPane();
+    helpPane.setEditable(false);
+    helpPane.setEditorKit(new HTMLEditorKit());
+    JPanel toolbar = new JPanel();
+    toolbar.setLayout(new BorderLayout());
+    toolbar.add (new JScrollPane(helpPane));
+    toolbar.setMinimumSize(new Dimension (100, 150));
+
+    rootpane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+    rootpane.setResizeWeight(1);
+    rootpane.setBottomComponent(toolbar);
+    rootpane.setTopComponent(new JScrollPane(contentpane));
   }
 
   /**
@@ -266,7 +289,7 @@ public class DefaultModuleEditor implements ModuleEditor
    */
   public JComponent getComponent()
   {
-    return contentpane;
+    return rootpane;
   }
 
   /**
@@ -291,6 +314,9 @@ public class DefaultModuleEditor implements ModuleEditor
    */
   protected void build()
   {
+    StringWriter writer = new StringWriter();
+    writer.write("<html><head><title></title></head><body>");
+
     JLabel mangleInfo = new JLabel();
     mangleInfo.setText
         ("All keys marked with '~.' are relative to the module package '" +
@@ -333,6 +359,13 @@ public class DefaultModuleEditor implements ModuleEditor
 
       contentpane.add(panel);
       activeEditors[i] = new EditorCarrier(editor, enableCB);
+
+      writer.write("<h3><b>");
+      writer.write(keyNames[i].getKeyName());
+      writer.write("</b></h3>");
+      writer.write("<p>");
+      writer.write(keyNames[i].getDescription());
+      writer.write("</p><hr>");
     }
 
     int width = 0;
@@ -344,6 +377,10 @@ public class DefaultModuleEditor implements ModuleEditor
     {
       activeEditors[i].getEditor().setLabelWidth(width);
     }
+    writer.write("</body></html>");
+
+    helpPane.setText(writer.toString());
+
   }
 
   /**

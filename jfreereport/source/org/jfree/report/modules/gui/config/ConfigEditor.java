@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigEditor.java,v 1.3 2003/09/08 18:11:48 taqua Exp $
+ * $Id: ConfigEditor.java,v 1.4 2003/09/12 21:06:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -192,6 +192,7 @@ public class ConfigEditor extends JFrame
       if (lastPathElement instanceof ConfigTreeModuleNode)
       {
         ConfigTreeModuleNode node = (ConfigTreeModuleNode) lastPathElement;
+        detailEditorPane.store();
         detailEditorPane.editModule
             (node.getModule(), node.getConfiguration(), node.getAssignedKeys());
       }
@@ -425,6 +426,8 @@ public class ConfigEditor extends JFrame
   private void save()
   {
     setStatusText("Saving: Select file ...");
+    detailEditorPane.store();
+
     if (fileChooser == null)
     {
       fileChooser = new JFileChooser();
