@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.41 2002/12/10 21:04:19 taqua Exp $
+ * $Id: JFreeReport.java,v 1.42 2002/12/13 10:18:00 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -739,6 +739,9 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
 
   /**
    * Returns the report configuration.
+   * <p>
+   * The report configuration is automatically set up when the report is first created, and uses
+   * the global JFreeReport configuration as its parent.
    *
    * @return the report configuration.
    */
