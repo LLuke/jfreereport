@@ -13,7 +13,7 @@ and others.
 
 For the latest news and information about JFreeReport, please refer to:
 
-    http://www.object-refinery.com/jfreereport/index.html
+    http://www.jfree.org/jfreereport/index.html
 
 
 2. INSTALLATION
@@ -27,7 +27,7 @@ JFreeReport home page.
 ------------------
 JFreeReport uses several other open source libraries:
 
-JCommon - http://www.object-refinery.com/jcommon/index.html
+JCommon - http://www.jfree.org/jcommon/index.html
 BeanShell - http://www.beanshell.org
 GnuJAXP - http://www.gnu.org/software/classpathx/jaxp
 iText - http://www.lowagie.com/iText
