@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.14 2002/07/03 18:49:48 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.15 2002/07/20 20:48:47 taqua Exp $
  *
  * Changes
  * -------
@@ -712,7 +712,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
               (float) (getPageHeight () - bounds.getY () - bounds.getHeight ()));
       image.scaleAbsolute ((float) bounds.getWidth (), (float) bounds.getHeight ());
 
-      document.add (image);
+      if (document.add (image) == false)
+        throw new OutputTargetException ("Unable to add the element");
     }
     catch (BadElementException be)
     {

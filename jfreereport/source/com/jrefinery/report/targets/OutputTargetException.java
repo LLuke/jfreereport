@@ -31,6 +31,9 @@
  */
 package com.jrefinery.report.targets;
 
+import java.io.PrintStream;
+import java.io.PrintWriter;
+
 /**
  * An OutputTargetException is thrown if a element could not be printed in the target or
  * an TargetInternalError occured, that made proceeding impossible.
@@ -53,5 +56,25 @@ public class OutputTargetException extends Exception
   public Exception getParent ()
   {
     return parent;
+  }
+
+  public void printStackTrace (PrintStream stream)
+  {
+    super.printStackTrace (stream);
+    if (getParent() != null)
+    {
+      stream.println("ParentException: ");
+      getParent().printStackTrace(stream);
+    }
+  }
+
+  public void printStackTrace (PrintWriter writer)
+  {
+    super.printStackTrace (writer);
+    if (getParent() != null)
+    {
+      writer.println("ParentException: ");
+      getParent().printStackTrace(writer);
+    }
   }
 }
