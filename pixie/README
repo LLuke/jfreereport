@@ -1,3 +1,14 @@
+*************************************************
+* THE PIXIE CLASS LIBRARY: Version 0.8.4        *
+*************************************************
+
+4 March 2005.
+
+(C)opyright, 2000-2005, by Object Refinery Limited and Contributors.
+
+-----------------
+1.  INTRODUCTION
+-----------------
 Pixie is a WMF-File reading library originally written by David R. Harris as
 converter for the Pixie-ImageViewer. Pixie was long time dead and is now
 resurrected as WMF-Reader and ImageProducer for Java 1.2.2 or higher.
@@ -6,11 +17,20 @@ Pixie lacks the support for most BitMap-Formats but everything else is working
 fine. Write-Support will be implemented somewhere in the future, classes
 for the writesupport are mostly dummies at the moment.
 
+Pixie is licensed, free of charge, under the terms of the GNU Lesser
+General Public Licence.  A copy of the licence is included in the download.
 
-WARNING: Pixie moved from package gnu.bhresearch.pixie to the package
-         org.jfree.pixie
-         
-         Additionally we removed all leftovers from the original pixie
-         library, so that only the WMF file format is supported.
-         
-         
+The latest version of this class library can be obtained from:
+
+    http://www.jfree.org/jfreereport/
+
+If you have any comments, suggestions or bugs to report, please post a
+message in the JFreeReport forum.
+
+-----------------
+2.  CONTRIBUTORS
+-----------------
+We whish to thank the original developer of the gnu.bhresearch package,
+from where the initial version of this code was forked. 
+
+
