@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ShapeElement.java,v 1.7 2002/05/23 22:32:22 taqua Exp $
+ * $Id: ShapeElement.java,v 1.8 2002/05/26 20:05:11 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -38,7 +38,8 @@
  * 12-May-2002 : Declared abstract and moved line functionality into LineShapeElement-class
  * 16-May-2002 : using protected member m_paint instead of getter methode
  *               stroke property added (JS)
- * 
+ * 26-May-2002 : Added shoudDraw and shouldFill properties. These are internal and customize
+ *               whether a shape is drawn, filled or both by the default drawing engine
  */
 
 package com.jrefinery.report;

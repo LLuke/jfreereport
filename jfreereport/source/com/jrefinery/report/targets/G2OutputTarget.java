@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.2 2002/05/22 21:39:05 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.3 2002/05/23 22:32:22 taqua Exp $
  *
  * Changes
  * -------
@@ -312,6 +312,11 @@ public class G2OutputTarget extends AbstractOutputTarget
       FontRenderContext frc = g2.getFontRenderContext ();
       Rectangle2D textBounds = g2.getFont ().getStringBounds (text, frc);
       x = (float) ((bounds.getX () + bounds.getWidth ()) - textBounds.getWidth ());
+    }
+    int display = getFont().canDisplayUpTo(text);
+    if (display != text.length())
+    {
+      Log.warn("Unable to display the string completely. Can display up to " + display + " chars.");
     }
     g2.drawString (text, x, baseline);
   }

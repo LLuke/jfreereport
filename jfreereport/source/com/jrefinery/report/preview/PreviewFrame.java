@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.12 2002/05/26 20:09:41 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.13 2002/05/26 22:00:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -486,7 +486,7 @@ public class PreviewFrame
         OutputStream out = new FileOutputStream(new File(selFileName));
         PDFOutputTarget target = new PDFOutputTarget(out, pf, true);
         target.open("Title", "Author");
-        getReport().processReport(target, true);
+        getReport().processReport(target);
         target.close();
       }
       catch (IOException ioe)

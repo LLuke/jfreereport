@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.10 2002/05/26 15:07:35 taqua Exp $
+ * $Id: JFreeReport.java,v 1.11 2002/05/26 16:56:29 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -501,27 +501,27 @@ public class JFreeReport implements JFreeReportConstants
   }
 
   /**
-   * Sends the entire report to the specified target.
+   * Sends the entire report to the specified target. The report is always drawn.
    *
    * @param target The output target.
    * @return The last state of the report, usually ReportState.Finish
    * @throws ReportProcessingException if the report did not proceed and got stuck.
    */
-  public ReportState processReport(OutputTarget target, boolean draw)
+  public ReportState processReport(OutputTarget target)
     throws ReportProcessingException
   {
     int page = 1;
     ReportState rs = new ReportState.Start(this);
-    ReportProcessor prc = new ReportProcessor(target, draw, getPageFooter());
+    ReportProcessor prc = new ReportProcessor(target, true, getPageFooter());
 
     // To a repagination
     repaginate(target, rs);
-
     rs = rs.advance(prc);
-    rs = processPage(target, rs, draw);
+
+    rs = processPage(target, rs, true);
     while (!rs.isFinish())
     {
-      ReportState nrs = processPage(target, rs, draw);
+      ReportState nrs = processPage(target, rs, true);
       Log.error (String.valueOf (getProperty(REPORT_DATE_PROPERTY)));
       if (nrs.isProceeding(rs) == false)
       {
@@ -592,7 +592,7 @@ public class JFreeReport implements JFreeReportConstants
     ReportState state = (ReportState) currPage.clone();
     try
     {
-      target.beginPage();
+      if (draw) target.beginPage();
     }
     catch (OutputTargetException e)
     {
@@ -648,7 +648,7 @@ public class JFreeReport implements JFreeReportConstants
     // return the state at the end of the page...
     try
     {
-      target.endPage();
+      if (draw) target.endPage();
     }
     catch (OutputTargetException e)
     {

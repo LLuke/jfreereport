@@ -126,7 +126,7 @@ public class Bug1 extends TestCase
   public void testGroupCount () throws Exception
   {
 
-    ReportState state = this.report.processReport (target, false);
+    ReportState state = this.report.processReport (target);
     System.out.println (state.getClass().getName ());
     Function function = state.getFunctions ().get ("f1");
     Integer value = (Integer) function.getValue ();

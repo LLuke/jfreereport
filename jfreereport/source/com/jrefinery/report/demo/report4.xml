@@ -10,10 +10,6 @@
   2: "sample"   = String;
 -->
 <report name="Fonts" width="450" height="699">
-  <reportheader  height="36" fontname="SansSerif" fontstyle="bold" fontsize="11" baseline="11">>
-    <label x="0" y="0" width="100%" height="100%"
-    >WARNING! Font embedding is not yet working for PDF files. I'm working on that.</label>
-  </reportheader>
   <groups>
     <group name="fontfamily">
       <groupheader height="16" fontname="SansSerif" fontstyle="plain" fontsize="11" baseline="11">

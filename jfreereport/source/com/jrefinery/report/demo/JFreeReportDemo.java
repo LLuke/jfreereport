@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.11 2002/05/26 20:05:12 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.12 2002/05/26 22:00:18 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -72,6 +72,7 @@ import javax.swing.Icon;
 
 import com.jrefinery.report.ItemBand;
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.util.Log;
@@ -598,6 +599,9 @@ public class JFreeReportDemo extends JFrame implements WindowListener
     {
       Log.addTarget(new SystemOutLogTarget());
     }
+
+    PDFOutputTarget.getFontFactory().registerDefaultFontPath();
+
     String baseName = "com.jrefinery.report.demo.resources.DemoResources";
     ResourceBundle resources = ResourceBundle.getBundle(baseName);
 

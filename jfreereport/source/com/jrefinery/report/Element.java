@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Element.java,v 1.4 2002/05/21 23:06:18 taqua Exp $
+ * $Id: Element.java,v 1.5 2002/05/26 20:05:11 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -143,11 +143,21 @@ public abstract class Element implements ElementConstants, DataTarget
     m_paint = p;
   }
 
+  /**
+   * Returns the datasource for this element. You cannot override this function as the
+   * element needs always be the last consumer in the chain.
+   *
+   * @return the assigned datasource.
+   */
   public final DataSource getDataSource ()
   {
     return datasource;
   }
 
+  /**
+   * Define the datasource for this element. This datasource is queried on populateElements(),
+   * to fill in the values.
+   */
   public void setDataSource (DataSource ds)
   {
     if (ds == null)
@@ -155,6 +165,11 @@ public abstract class Element implements ElementConstants, DataTarget
     this.datasource = ds;
   }
 
+  /**
+   * Queries this elements datasource for a value. If no datasource is set, null will be returned.
+   *
+   * @returns the value of the datasource, which can be null or also null if no datasource is set.
+   */
   public Object getValue ()
   {
     DataSource ds = getDataSource();
@@ -184,6 +199,10 @@ public abstract class Element implements ElementConstants, DataTarget
     return carrier;
   }
 
+  /**
+   * Checks whether an element is equal to this element. Equality is based on names, so make
+   * sure, that you have no elements with the same name within the same band.
+   */
   public boolean equals (Object o)
   {
     if (o instanceof Element)
@@ -194,11 +213,22 @@ public abstract class Element implements ElementConstants, DataTarget
     return false;
   }
 
+  /**
+   * Defines whether this element will be painted. Regardless of the state of this property,
+   * a band will reserve space for this element.
+   *
+   * @returns the current visiblity state.
+   */
   public boolean isVisible ()
   {
     return visible;
   }
 
+  /**
+   * Defines, whether this element will be drawn.
+   *
+   * @param the new visibility state
+   */
   public void setVisible (boolean b)
   {
     this.visible = b;

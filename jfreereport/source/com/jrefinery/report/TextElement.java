@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: TextElement.java,v 1.7 2002/05/22 21:39:03 taqua Exp $
+ * $Id: TextElement.java,v 1.8 2002/05/23 22:32:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -41,6 +41,7 @@
  * 20-May-2002 : TextElement is now line break capable. (Functionality moved from MultilineTextElement)
  *               This class is no longer abstract. The filter/datasource interfaces are used to feed
  *               and convert data.
+ * 24-May-2002 : BugFix: Alignment was not initialized and made pdf-printing imposible.
  */
 
 package com.jrefinery.report;

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Group.java,v 1.1.1.1 2002/04/25 17:02:26 taqua Exp $
+ * $Id: Group.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -40,6 +40,8 @@
  */
 
 package com.jrefinery.report;
+
+import com.jrefinery.report.util.ReadOnlyList;
 
 import javax.swing.table.TableModel;
 import java.util.Collection;
@@ -57,213 +59,6 @@ import java.util.Vector;
  */
 public class Group
 {
-  /**
-   * A readOnly list iterator that will ignore all operations which could modify its contents.
-   */
-  private class ReadOnlyListIterator implements ListIterator
-  {
-    private ListIterator it;
-
-    public ReadOnlyListIterator (ListIterator it)
-    {
-      this.it = it;
-    }
-
-    public void add (Object o)
-    {
-    }
-
-    public boolean hasNext ()
-    {
-      return it.hasNext ();
-    }
-
-    public Object next ()
-    {
-      return it.next ();
-    }
-
-    public boolean hasPrevious ()
-    {
-      return it.hasPrevious ();
-    }
-
-    public Object previous ()
-    {
-      return it.previous ();
-    }
-
-    public int nextIndex ()
-    {
-      return it.nextIndex ();
-    }
-
-    public int previousIndex ()
-    {
-      return it.previousIndex ();
-    }
-
-    public void remove ()
-    {
-    }
-
-    public void set (Object o)
-    {
-    }
-  }
-
-  /**
-   * A readOnly iterator that will ignore all operations which could modify its contents.
-   */
-  private class ReadOnlyIterator implements Iterator
-  {
-    private Iterator it;
-
-    public ReadOnlyIterator (Iterator it)
-    {
-      this.it = it;
-    }
-
-    public boolean hasNext ()
-    {
-      return it.hasNext ();
-    }
-
-    public Object next ()
-    {
-      return it.next ();
-    }
-
-    public void remove ()
-    {
-    }
-  }
-
-  /**
-   * A readOnly list that will ignore all operations which could modify its contents.
-   */
-  private class ReadOnlyList implements List
-  {
-    private List parent;
-
-    public ReadOnlyList (List parent)
-    {
-      this.parent = parent;
-    }
-
-    public int size ()
-    {
-      return parent.size ();
-    }
-
-    public boolean isEmpty ()
-    {
-      return parent.isEmpty ();
-    }
-
-    public boolean contains (Object o)
-    {
-      return parent.contains (o);
-    }
-
-    public Iterator iterator ()
-    {
-      return new ReadOnlyIterator (parent.iterator ());
-    }
-
-    public Object[] toArray ()
-    {
-      return parent.toArray ();
-    }
-
-    public Object[] toArray (Object[] objects)
-    {
-      return parent.toArray ();
-    }
-
-    public boolean add (Object o)
-    {
-      return false;
-    }
-
-    public boolean remove (Object o)
-    {
-      return false;
-    }
-
-    public boolean containsAll (Collection collection)
-    {
-      return parent.containsAll (collection);
-    }
-
-    public boolean addAll (Collection collection)
-    {
-      return false;
-    }
-
-    public boolean addAll (int i, Collection collection)
-    {
-      return false;
-    }
-
-    public boolean removeAll (Collection collection)
-    {
-      return false;
-    }
-
-    public boolean retainAll (Collection collection)
-    {
-      return false;
-    }
-
-    public void clear ()
-    {
-    }
-
-    public Object get (int i)
-    {
-      return parent.get (i);
-    }
-
-    public Object set (int i, Object o)
-    {
-      return null;
-    }
-
-    public void add (int i, Object o)
-    {
-    }
-
-    public Object remove (int i)
-    {
-      return null;
-    }
-
-    public int indexOf (Object o)
-    {
-      return parent.indexOf (o);
-    }
-
-    public int lastIndexOf (Object o)
-    {
-      return parent.lastIndexOf (o);
-    }
-
-    public ListIterator listIterator ()
-    {
-      return new ReadOnlyListIterator (parent.listIterator ());
-    }
-
-    public ListIterator listIterator (int i)
-    {
-      return new ReadOnlyListIterator (parent.listIterator (i));
-    }
-
-    public List subList (int i, int i1)
-    {
-      return new ReadOnlyList (parent.subList (i, i1));
-    }
-  }
 
   /** The name of the group. */
   private String name;

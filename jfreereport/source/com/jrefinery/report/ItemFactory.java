@@ -26,6 +26,7 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 16-May-2002 : Initial version
+ * 27-May-2002 : Support for the rectangle element
  */
 package com.jrefinery.report;
 
@@ -56,6 +57,21 @@ import java.io.IOException;
  */
 public class ItemFactory
 {
+  /**
+   * Creates a new TextElement containing a date filter structure.
+   *
+   * @param name the name of the new element
+   * @param bounds the bounds of the new element
+   * @param paint the text color of this text element
+   * @param alignment the text alignment (one of ElementConstants.LEFT,
+   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param font the font for this element
+   * @param nullString the text used when the value of this element is null
+   * @param format the SimpleDateFormat-formatstring used to format the date
+   * @param field the fieldname to retrieve values from
+   * @throws NullPointerException if bounds, name, format or field are null
+   * @throws IllegalArgumentException if the given alignment is invalid
+   */
   public static TextElement createDateElement (String name,
                                                Rectangle2D bounds,
                                                Paint paint,
@@ -80,6 +96,21 @@ public class ItemFactory
     return dateElement;
   }
 
+  /**
+   * Creates a new TextElement containing a date filter structure.
+   *
+   * @param name the name of the new element
+   * @param bounds the bounds of the new element
+   * @param paint the text color of this text element
+   * @param alignment the text alignment (one of ElementConstants.LEFT,
+   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param font the font for this element
+   * @param nullString the text used when the value of this element is null
+   * @param format the SimpleDateFormat used to format the date
+   * @param field the fieldname to retrieve values from
+   * @throws NullPointerException if bounds, name, format or field are null
+   * @throws IllegalArgumentException if the given alignment is invalid
+   */
   public static TextElement createDateElement (String name,
                                                Rectangle2D bounds,
                                                Paint paint,
@@ -104,6 +135,21 @@ public class ItemFactory
     return dateElement;
   }
 
+  /**
+   * Creates a new TextElement containing a date filter structure.
+   *
+   * @param name the name of the new element
+   * @param bounds the bounds of the new element
+   * @param paint the text color of this text element
+   * @param alignment the text alignment (one of ElementConstants.LEFT,
+   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param font the font for this element
+   * @param nullString the text used when the value of this element is null
+   * @param format the SimpleDateFormat-formatstring used to format the date
+   * @param function the function name to retrieve values from
+   * @throws NullPointerException if bounds, name, format or function are null
+   * @throws IllegalArgumentException if the given alignment is invalid
+   */
   public static TextElement createDateFunction (String name,
                                                Rectangle2D bounds,
                                                Paint paint,
@@ -128,6 +174,21 @@ public class ItemFactory
     return dateElement;
   }
 
+  /**
+   * Creates a new TextElement containing a date filter structure.
+   *
+   * @param name the name of the new element
+   * @param bounds the bounds of the new element
+   * @param paint the text color of this text element
+   * @param alignment the text alignment (one of ElementConstants.LEFT,
+   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param font the font for this element
+   * @param nullString the text used when the value of this element is null
+   * @param format the SimpleDateFormat-formatstring used to format the date
+   * @param function the function name to retrieve values from
+   * @throws NullPointerException if bounds, name, format or function are null
+   * @throws IllegalArgumentException if the given alignment is invalid
+   */
   public static TextElement createDateFunction (String name,
                                                Rectangle2D bounds,
                                                Paint paint,
@@ -152,6 +213,20 @@ public class ItemFactory
     return dateElement;
   }
 
+  /**
+   * Creates a new TextElement containing a general filter structure.
+   *
+   * @param name the name of the new element
+   * @param bounds the bounds of the new element
+   * @param paint the text color of this text element
+   * @param alignment the text alignment (one of ElementConstants.LEFT,
+   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param font the font for this element
+   * @param nullString the text used when the value of this element is null
+   * @param function the function to retrieve values from
+   * @throws NullPointerException if bounds, name or function are null
+   * @throws IllegalArgumentException if the given alignment is invalid
+   */
   public static TextElement createGeneralElement (String name,
                                                Rectangle2D bounds,
                                                Paint paint,
@@ -171,6 +246,16 @@ public class ItemFactory
     return gElement;
   }
 
+  /**
+   * Creates a new ImageElement.
+   *
+   * @param name the name of the new element
+   * @param bounds the bounds of the new element
+   * @param paint the color of this element (currently not used)
+   * @param source the source url from where to load the image
+   * @throws NullPointerException if bounds, name or source are null
+   * @throws IllegalArgumentException if the given alignment is invalid
+   */
   public static ImageElement createImageElement (String name,
                                                Rectangle2D bounds,
                                                Paint paint,
@@ -186,6 +271,19 @@ public class ItemFactory
     return element;
   }
 
+  /**
+   * Creates a new TextElement containing a label.
+   *
+   * @param name the name of the new element
+   * @param bounds the bounds of the new element
+   * @param paint the text color of this text element
+   * @param alignment the text alignment (one of ElementConstants.LEFT,
+   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param font the font for this element
+   * @param labeltext the text to display
+   * @throws NullPointerException if bounds, name, format or field are null
+   * @throws IllegalArgumentException if the given alignment is invalid
+   */
   public static TextElement createLabelElement (String name,
                                                 Rectangle2D bounds,
                                                 Paint paint,
@@ -203,6 +301,17 @@ public class ItemFactory
     return label;
   }
 
+  /**
+   * Creates a new LineShapeElement.
+   *
+   * @param name the name of the new element
+   * @param bounds the bounds of the new element
+   * @param paint the line color of this element
+   * @param stroke the stroke of this shape. For pdf use, restrict to BasicStokes.
+   * @param shape the Line2D shape
+   * @throws NullPointerException if bounds, name or shape are null
+   * @throws IllegalArgumentException if the given alignment is invalid
+   */
   public static LineShapeElement createLineShapeElement (String name,
                                                          Paint paint,
                                                          Stroke stroke,

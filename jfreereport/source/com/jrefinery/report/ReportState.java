@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.8 2002/05/26 15:07:35 taqua Exp $
+ * $Id: ReportState.java,v 1.9 2002/05/26 16:56:30 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -41,6 +41,9 @@
  *               knowledge how to display the elements.
  * 17-May-2002 : Fixed the ReportPropertyBug by adding a new state (PreReportHeader).
  *               ReportState.Start.advance has to be executed before the first page is printed.
+ * 26-May-2002 : Moved ReportProperties into the state so that different runs do not affect
+ *               each other. Added Property isPrepareRun() to signal whether the report is currently
+ *               repaginated.
  */
 
 package com.jrefinery.report;

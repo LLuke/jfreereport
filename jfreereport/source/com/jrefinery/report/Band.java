@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.3 2002/05/21 23:06:17 taqua Exp $
+ * $Id: Band.java,v 1.4 2002/05/26 20:05:11 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -42,7 +42,8 @@
  *               before any element starts to draw and restored afterwards. This will greatly
  *               reduce sideeffects from changed fonts or paints which are not restored by the
  *               element.
- * 26-May-2002 : Elements are not stored ordered.
+ * 26-May-2002 : Elements are now stored ordered. Updated drawing to reflect new element property
+ *               "Visible".
  */
 
 package com.jrefinery.report;
@@ -54,6 +55,7 @@ import com.jrefinery.report.filter.ReportDataSource;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.util.HashNMap;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReadOnlyList;
 import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.targets.OutputTargetException;
 
@@ -329,7 +331,6 @@ public abstract class Band
   {
     if (value >= 0) return (float) value;
     float retval = (float) (value * full / -100);
-    Log.debug ("Adjusted Relative value: " + retval);
     return retval;
   }
 
@@ -345,6 +346,11 @@ public abstract class Band
       }
     }
     return null;
+  }
+
+  public List getElements ()
+  {
+    return new ReadOnlyList (allElements);
   }
 
   public String toString ()
