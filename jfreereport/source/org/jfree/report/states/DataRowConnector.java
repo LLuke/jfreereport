@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowConnector.java,v 1.2 2003/08/25 14:29:33 taqua Exp $
+ * $Id: DataRowConnector.java,v 1.3 2003/08/27 20:19:54 taqua Exp $
  *
  * Changes
  * -------
@@ -200,6 +200,7 @@ public class DataRowConnector implements DataRow
     DataRowConnector.connectDataSources(report.getReportFooter(), con);
     DataRowConnector.connectDataSources(report.getReportHeader(), con);
     DataRowConnector.connectDataSources(report.getItemBand(), con);
+    DataRowConnector.connectDataSources(report.getWatermark(), con);
 
     final int groupCount = report.getGroupCount();
     for (int i = 0; i < groupCount; i++)
@@ -253,7 +254,7 @@ public class DataRowConnector implements DataRow
     disconnectDataSources(report.getReportFooter(), con);
     disconnectDataSources(report.getReportHeader(), con);
     disconnectDataSources(report.getItemBand(), con);
-
+    disconnectDataSources(report.getWatermark(), con);
     final int groupCount = report.getGroupCount();
     for (int i = 0; i < groupCount; i++)
     {

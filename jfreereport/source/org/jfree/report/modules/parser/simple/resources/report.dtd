@@ -175,7 +175,7 @@
       SUPERB | TABLOID | TABLOIDEXTRA )"
 >
 
-<!ELEMENT report   (configuration?, reportheader?, reportfooter?, pageheader?, pagefooter?, groups?, items?, functions?)>
+<!ELEMENT report   (configuration?, reportheader?, reportfooter?, pageheader?, pagefooter?, watermark?, groups?, items?, functions?)>
 
 <!ATTLIST report
   width          CDATA           #IMPLIED
@@ -330,6 +330,14 @@
  -->
 <!ELEMENT fields  (field*)>
 <!ELEMENT field  (#PCDATA)>
+
+<!ELEMENT watermark   ( %itemelements; )>
+<!ATTLIST watermark
+  height         CDATA          #IMPLIED
+  %basicform;
+  %fontdef;
+>
+
 
 <!ELEMENT items   ( %itemelements; )>
 <!ATTLIST items

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionHandler.java,v 1.9 2003/08/25 14:29:32 taqua Exp $
+ * $Id: ReportDescriptionHandler.java,v 1.10 2003/12/04 18:04:06 taqua Exp $
  *
  * Changes
  * -------
@@ -77,6 +77,8 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
 
   /** The 'groups' tag name. */
   public static final String GROUPS_TAG = "groups";
+
+  public static final String WATERMARK_TAG = "watermark";
 
   /** The band handler. */
   private BandHandler bandFactory;
@@ -155,6 +157,19 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
       bandFactory = new BandHandler(getReportParser(), tagName, band, ROOT_BAND_PATH);
       getParser().pushFactory(bandFactory);
     }
+    else if (tagName.equals(WATERMARK_TAG))
+    {
+      final Band band = getReport().getWatermark();
+      final String name = attrs.getValue("name");
+      if (name != null)
+      {
+        band.setName(name);
+      }
+      final CommentHintPath path = createCommentPath(band);
+      addComment(path, CommentHandler.OPEN_TAG_COMMENT);
+      bandFactory = new BandHandler(getReportParser(), tagName, band, ROOT_BAND_PATH);
+      getParser().pushFactory(bandFactory);
+    }
     else if (tagName.equals(ITEMBAND_TAG))
     {
       final Band band = getReport().getItemBand();
@@ -182,6 +197,7 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
           + PAGE_HEADER_TAG + ", "
           + PAGE_FOOTER_TAG + ", "
           + ITEMBAND_TAG + ", "
+          + WATERMARK_TAG + ", "
           + GROUPS_TAG);
     }
 
@@ -225,6 +241,10 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
     {
       addComment(createCommentPath(bandFactory.getElement()), CommentHandler.CLOSE_TAG_COMMENT);
     }
+    else if (tagName.equals(WATERMARK_TAG))
+    {
+      addComment(createCommentPath(bandFactory.getElement()), CommentHandler.CLOSE_TAG_COMMENT);
+    }
     else if (tagName.equals(ITEMBAND_TAG))
     {
       addComment(createCommentPath(bandFactory.getElement()), CommentHandler.CLOSE_TAG_COMMENT);
@@ -245,6 +265,7 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
           + PAGE_HEADER_TAG + ", "
           + PAGE_FOOTER_TAG + ", "
           + ITEMBAND_TAG + ", "
+          + WATERMARK_TAG + ", "
           + GROUPS_TAG + ", "
           + getFinishTag());
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGrid.java,v 1.9 2003/11/01 19:52:29 taqua Exp $
+ * $Id: TableGrid.java,v 1.10 2003/11/07 18:33:56 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,8 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.TreeSet;
+
+import org.jfree.report.util.Log;
 
 /**
  * The TableGrid is used to collect all table cells and to finally create the
@@ -121,6 +123,7 @@ public class TableGrid
    */
   public void addData(final TableCellData pos)
   {
+    Log.debug ("Added: " + pos);
     bounds.addData(pos);
     elements.add(pos);
     // collect the bounds and add them to the xBounds and yBounds collection.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionWriter.java,v 1.5 2003/11/07 15:31:40 taqua Exp $
+ * $Id: ReportDescriptionWriter.java,v 1.6 2003/12/04 18:04:07 taqua Exp $
  *
  * Changes
  * -------
@@ -118,6 +118,8 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
         getReport().getPageHeader(), null, REPORT_DESCRIPTION_HINT_PATH);
     writeBand(writer, ReportDescriptionHandler.PAGE_FOOTER_TAG,
         getReport().getPageFooter(), null, REPORT_DESCRIPTION_HINT_PATH);
+    writeBand(writer, ReportDescriptionHandler.WATERMARK_TAG,
+        getReport().getWatermark(), null, REPORT_DESCRIPTION_HINT_PATH);
     writeGroups(writer);
     writeBand(writer, ReportDescriptionHandler.ITEMBAND_TAG,
         getReport().getItemBand(), null, REPORT_DESCRIPTION_HINT_PATH);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.15 2003/11/01 19:52:29 taqua Exp $
+ * $Id: TableProducer.java,v 1.16 2003/11/07 18:33:56 taqua Exp $
  *
  * Changes
  * -------
@@ -324,7 +324,7 @@ public abstract strictfp class TableProducer
       {
         final Rectangle2D bbounds = (Rectangle2D)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
-        if (processBand(translateSubRect(bbounds, bounds), (Band) e) == true)
+        if (processBand(translateSubRect(bounds, bbounds), (Band) e) == true)
         {
           retval = true;
         }
@@ -385,6 +385,11 @@ public abstract strictfp class TableProducer
    */
   private boolean processElement(final Rectangle2D drawBounds, final Element e)
   {
+    if (e.isVisible() == false)
+    {
+      return false;
+    }
+
     final TableCellData data = getCellDataFactory().createCellData(e, drawBounds);
     if (data != null)
     {

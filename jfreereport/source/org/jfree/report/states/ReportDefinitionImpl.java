@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionImpl.java,v 1.2 2003/08/25 14:29:33 taqua Exp $
+ * $Id: ReportDefinitionImpl.java,v 1.3 2003/08/27 20:19:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,6 +47,7 @@ import org.jfree.report.PageHeader;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportFooter;
 import org.jfree.report.ReportHeader;
+import org.jfree.report.Band;
 import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.ReportProperties;
@@ -81,6 +82,8 @@ public class ReportDefinitionImpl implements ReportDefinition
   /** The item band - used once for each row of data. */
   private ItemBand itemBand;
 
+  private Band watermark;
+
   /** Storage for arbitrary properties that a user can assign to the report. */
   private ReportProperties properties;
 
@@ -109,6 +112,7 @@ public class ReportDefinitionImpl implements ReportDefinition
     pageFooter = (PageFooter) report.getPageFooter().clone();
     pageHeader = (PageHeader) report.getPageHeader().clone();
     itemBand = (ItemBand) report.getItemBand().clone();
+    watermark = (Band) report.getWatermark().clone();
     reportConfiguration = report.getReportConfiguration();
     styleSheetCollection = (StyleSheetCollection) report.getStyleSheetCollection().clone();
     groups.updateStyleSheetCollection(styleSheetCollection);
@@ -117,6 +121,7 @@ public class ReportDefinitionImpl implements ReportDefinition
     reportHeader.updateStyleSheetCollection(styleSheetCollection);
     pageFooter.updateStyleSheetCollection(styleSheetCollection);
     pageHeader.updateStyleSheetCollection(styleSheetCollection);
+    watermark.updateStyleSheetCollection(styleSheetCollection);
     dataRowConnector = new DataRowConnector();
     DataRowConnector.connectDataSources(this, dataRowConnector);
   }
@@ -260,6 +265,7 @@ public class ReportDefinitionImpl implements ReportDefinition
     report.properties = (ReportProperties) properties.clone();
     report.reportFooter = (ReportFooter) reportFooter.clone();
     report.reportHeader = (ReportHeader) reportHeader.clone();
+    report.watermark = (Band) watermark.clone();
     report.styleSheetCollection = (StyleSheetCollection) styleSheetCollection.clone();
     report.groups.updateStyleSheetCollection(report.styleSheetCollection);
     report.itemBand.updateStyleSheetCollection(report.styleSheetCollection);
@@ -267,6 +273,7 @@ public class ReportDefinitionImpl implements ReportDefinition
     report.reportHeader.updateStyleSheetCollection(report.styleSheetCollection);
     report.pageFooter.updateStyleSheetCollection(report.styleSheetCollection);
     report.pageHeader.updateStyleSheetCollection(report.styleSheetCollection);
+    report.watermark.updateStyleSheetCollection(report.styleSheetCollection);
     report.dataRowConnector = new DataRowConnector();
     // disconnect the old datarow and connect the new one ..
     DataRowConnector.disconnectDataSources(report, dataRowConnector);
@@ -297,5 +304,10 @@ public class ReportDefinitionImpl implements ReportDefinition
   public DataRowConnector getDataRowConnector()
   {
     return dataRowConnector;
+  }
+
+  public Band getWatermark()
+  {
+    return watermark;
   }
 }

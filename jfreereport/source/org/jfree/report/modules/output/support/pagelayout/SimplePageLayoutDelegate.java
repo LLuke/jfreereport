@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayoutDelegate.java,v 1.5 2003/11/23 16:32:20 taqua Exp $
+ * $Id: SimplePageLayoutDelegate.java,v 1.6 2003/11/25 17:26:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,6 +44,7 @@ import org.jfree.report.Band;
 import org.jfree.report.Group;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDefinition;
+import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.event.ReportListener;
@@ -226,6 +227,39 @@ public class SimplePageLayoutDelegate implements
     this.pageCarrier.setMaxPages(maxPage);
   }
 
+  private void handlePageHeaderPrinting (final Band b, final ReportEvent event)
+    throws ReportProcessingException
+  {
+    if (event.getState().getCurrentPage() == 1)
+    {
+      if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
+      {
+        worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED,
+            SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
+      }
+    }
+    else if (event.getState().getCurrentPage() == getMaxPage())
+    {
+      if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
+      {
+        worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED,
+            SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
+      }
+    }
+    else if (isLastPagebreak())
+    {
+      if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
+      {
+        worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED,
+            SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
+      }
+    }
+    else
+    {
+      worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED,
+          SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
+    }
+  }
   /**
    * Receives notification that a page has started.
    * <P>
@@ -254,41 +288,17 @@ public class SimplePageLayoutDelegate implements
     }
     try
     {
-      // a new page has started, so reset the cursor ...
-      // setCursor(new SimplePageLayoutCursor(getLogicalPage().getHeight()));
-      worker.resetCursor();
-
       final ReportDefinition report = event.getReport();
+
+      // a new page has started, so reset the cursor ...
+      worker.resetCursor();
+      final Band watermark = report.getWatermark();
+      handlePageHeaderPrinting(watermark, event);
+
+      // after printing the watermark, we are still at the top of the page.
+      worker.resetCursor();
       final Band b = report.getPageHeader();
-      if (event.getState().getCurrentPage() == 1)
-      {
-        if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
-        {
-          worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED, 
-              SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
-        }
-      }
-      else if (event.getState().getCurrentPage() == getMaxPage())
-      {
-        if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
-        {
-          worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED, 
-              SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
-        }
-      }
-      else if (isLastPagebreak())
-      {
-        if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
-        {
-          worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED, 
-              SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
-        }
-      }
-      else
-      {
-        worker.print(b, SimplePageLayoutWorker.BAND_SPOOLED, 
-            SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
-      }
+      handlePageHeaderPrinting(b, event);
 
       /**
        * Repeating group header are only printed while ItemElements are

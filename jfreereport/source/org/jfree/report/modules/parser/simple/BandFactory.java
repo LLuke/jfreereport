@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandFactory.java,v 1.6 2003/08/25 14:29:33 taqua Exp $
+ * $Id: BandFactory.java,v 1.7 2003/10/11 20:44:06 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import org.jfree.report.PageFooter;
 import org.jfree.report.PageHeader;
 import org.jfree.report.ReportFooter;
 import org.jfree.report.ReportHeader;
+import org.jfree.report.Band;
 import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.modules.parser.base.ReportParserUtil;
 import org.jfree.report.style.BandStyleSheet;
@@ -122,6 +123,10 @@ public class BandFactory extends AbstractReportDefinitionHandler
     {
       startItems(atts);
     }
+    else if (elementName.equals(WATERMARK_TAG))
+    {
+      startWatermark(atts);
+    }
     else
     {
       throw new SAXException("Expected one of: reportheader, reportfooter, pageheader, "
@@ -165,6 +170,10 @@ public class BandFactory extends AbstractReportDefinitionHandler
     else if (elementName.equals(ITEMS_TAG))
     {
       endItems();
+    }
+    else if (elementName.equals(WATERMARK_TAG))
+    {
+      endWatermark();
     }
     else if (elementName.equals(getFinishTag()))
     {
@@ -404,6 +413,47 @@ public class BandFactory extends AbstractReportDefinitionHandler
    *
    * @see org.jfree.report.ItemBand
    */
+  public void startWatermark(final Attributes attr)
+      throws SAXException
+  {
+    final Band watermark = getReport().getWatermark();
+    final String heightAttr = attr.getValue("height");
+    if (heightAttr != null)
+    {
+      // get the height...
+      final float height = ParserUtil.parseFloat(heightAttr, 0);
+
+      watermark.getStyle().setStyleProperty
+          (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
+    }
+
+    final FontFactory.FontInformation fi = FontFactory.createFont(attr);
+    FontFactory.applyFontInformation(watermark.getBandDefaults(), fi);
+
+    final String valign = attr.getValue(VALIGNMENT_ATT);
+    if (valign != null)
+    {
+      watermark.getBandDefaults().setStyleProperty
+          (ElementStyleSheet.VALIGNMENT, ReportParserUtil.parseVerticalElementAlignment(valign));
+    }
+    final String halign = attr.getValue(ALIGNMENT_ATT);
+    if (halign != null)
+    {
+      watermark.getBandDefaults().setStyleProperty
+          (ElementStyleSheet.ALIGNMENT, ReportParserUtil.parseHorizontalElementAlignment(halign));
+    }
+    getParser().pushFactory(new ElementFactory(getReportParser(), WATERMARK_TAG, watermark));
+  }
+
+  /**
+   * Handles the start of an ItemBand definition.
+   *
+   * @param attr  the element attributes.
+   *
+   * @throws SAXException if there is a parsing problem.
+   *
+   * @see org.jfree.report.ItemBand
+   */
   public void startItems(final Attributes attr)
       throws SAXException
   {
@@ -434,6 +484,18 @@ public class BandFactory extends AbstractReportDefinitionHandler
           (ElementStyleSheet.ALIGNMENT, ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
     getParser().pushFactory(new ElementFactory(getReportParser(), ITEMS_TAG, items));
+  }
+
+  /**
+   * Handles the end of an ItemBand definition.
+   *
+   * @see org.jfree.report.ItemBand
+   *
+   * @throws SAXException if a Parser error occurs.
+   */
+  public void endWatermark() throws SAXException
+  {
+    getParser().popFactory().endElement(WATERMARK_TAG);
   }
 
   /**

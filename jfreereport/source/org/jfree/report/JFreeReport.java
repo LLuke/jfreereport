@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.7 2003/08/25 14:29:28 taqua Exp $
+ * $Id: JFreeReport.java,v 1.8 2003/12/04 18:03:50 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -169,6 +169,9 @@ public class JFreeReport implements Cloneable, Serializable
   /** The item band - used once for each row of data. */
   private ItemBand itemBand;
 
+  /** The watermark band - used as page background for output targets who support this feature. */
+  private Band watermark;
+
   /** The report configuration. */
   private final ReportConfiguration reportConfiguration;
 
@@ -206,6 +209,7 @@ public class JFreeReport implements Cloneable, Serializable
     this.pageFooter.registerStyleSheetCollection(this.styleSheetCollection);
     this.itemBand = new ItemBand();
     this.itemBand.registerStyleSheetCollection(this.styleSheetCollection);
+    this.watermark = new Band();
 
     this.data = new DefaultTableModel();
     this.functions = new ExpressionCollection();
@@ -684,6 +688,7 @@ public class JFreeReport implements Cloneable, Serializable
     report.properties = (ReportProperties) properties.clone();
     report.reportFooter = (ReportFooter) reportFooter.clone();
     report.reportHeader = (ReportHeader) reportHeader.clone();
+    report.watermark = (Band) watermark.clone();
     report.functions = (ExpressionCollection) functions.clone();
     report.expressions = (ExpressionCollection) expressions.clone();
     report.styleSheetCollection = (StyleSheetCollection) styleSheetCollection.clone();
@@ -693,6 +698,7 @@ public class JFreeReport implements Cloneable, Serializable
     report.reportHeader.updateStyleSheetCollection(report.styleSheetCollection);
     report.pageFooter.updateStyleSheetCollection(report.styleSheetCollection);
     report.pageHeader.updateStyleSheetCollection(report.styleSheetCollection);
+    report.watermark.updateStyleSheetCollection(report.styleSheetCollection);
     report.reportBuilderHints = new ReportBuilderHints();
     return report;
   }
@@ -800,5 +806,22 @@ public class JFreeReport implements Cloneable, Serializable
   public ReportBuilderHints getReportBuilderHints()
   {
     return reportBuilderHints;
+  }
+
+  public Band getWatermark()
+  {
+    return watermark;
+  }
+
+  public void setWatermark(Band watermark)
+  {
+    if (watermark == null)
+    {
+      throw new NullPointerException("JFreeReport.setWatermark(...) : null not permitted.");
+    }
+
+    this.watermark.unregisterStyleSheetCollection(getStyleSheetCollection());
+    this.watermark = watermark;
+    this.watermark.registerStyleSheetCollection(getStyleSheetCollection());
   }
 }

@@ -477,7 +477,7 @@
 
  -->
 <!ELEMENT report-description
-  (report-header?, report-footer?, page-header?, page-footer?, groups?, itemband?)>
+  (report-header?, report-footer?, page-header?, page-footer?, watermark?, groups?, itemband?)>
 
 <!--
 
@@ -504,6 +504,11 @@
 
 <!ELEMENT page-footer   (style?, default-style?, (band | element)*)>
 <!ATTLIST page-footer
+  name           CDATA           #IMPLIED
+>
+
+<!ELEMENT watermark   (style?, default-style?, (band | element)*)>
+<!ATTLIST watermark
   name           CDATA           #IMPLIED
 >
 
