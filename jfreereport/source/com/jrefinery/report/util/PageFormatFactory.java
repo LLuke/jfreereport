@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageFormatFactory.java,v 1.15 2003/02/05 15:38:29 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.16 2003/02/05 17:56:03 taqua Exp $
  *
  * Changes
  * -------
@@ -616,8 +616,6 @@ public class PageFormatFactory
   {
     double w = paper.getWidth() - (right + left);
     double h = paper.getHeight() - (bottom + top);
-    Log.debug ("SetBorders: Top: " + top + " Left " + left
-                   + " Bottom; " + bottom + " Right " + right + " Width " + w + " Height " + h);
     paper.setImageableArea(left, top, w, h);
   }
 

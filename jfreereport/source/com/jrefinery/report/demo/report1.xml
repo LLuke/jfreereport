@@ -17,9 +17,14 @@
       <property name="com.jrefinery.report.preview.MaximumHeight">600</property>
 -->      
     </configuration>
-    <reportheader height="70" fontname="Serif" fontstyle="bold" fontsize="18" fsunderline="true">
-        <label x="0" y="0" width="100%" height="20" vertical-alignment="top" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
+    <reportheader height="95" invalid="true" fontname="Serif" fontstyle="bold" fontsize="12" fsunderline="true">
+        <rectangle name="background" x="0" y="64" width="100%" height="30" color="#DCFFDC" />
+        <line x1="0" y1="64" x2="0" y2="64" weight="0.5" />
+        <line x1="0" y1="94" x2="0" y2="94" weight="0.5" />
+        <label x="0" y="64" width="100%" height="30" vertical-alignment="middle" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
+      <!--
         <label x="0" y="20" width="100%" height="30" vertical-alignment="bottom" alignment="center">This text is valign="bottom"</label>
+        -->
     </reportheader>
     <reportfooter height="48" fontname="Serif" fontstyle="bold" fontsize="16">
         <label x="0" y="0" width="100%" height="24" alignment="center">*** END OF REPORT ***</label>

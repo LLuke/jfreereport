@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 6:50:48 PM
  *
- * $Id: PreviewProxyBase.java,v 1.4 2003/02/02 22:46:43 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.5 2003/02/02 23:43:51 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -1881,6 +1881,5 @@ public class PreviewProxyBase extends JComponent
         }
       }
     });
-    Log.info ("Returned from Repagination" + Thread.currentThread());
   }
 }

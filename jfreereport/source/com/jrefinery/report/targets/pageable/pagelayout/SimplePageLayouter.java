@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.20 2003/01/30 00:04:54 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.21 2003/02/01 18:27:04 taqua Exp $
  *
  * Changes
  * -------
@@ -746,14 +746,14 @@ public class SimplePageLayouter extends PageLayouter
       getLogicalPage().open();
       return; // no state yet, maybe the first state?
     }
-
+/*
     Log.debug (new Log.SimpleMessage("State: " ,
                                      new Integer(anchestor.getCurrentPage()) ,
                                      new Log.SimpleMessage (" " ,
                                                             new Integer(anchestor.getCurrentDataItem()),
                                                             " " ,
                                                             anchestor.getDataRow())));
-
+*/
     getLogicalPage().open();
     startPage(anchestor);
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandFactory.java,v 1.3 2003/01/25 20:34:11 taqua Exp $
+ * $Id: BandFactory.java,v 1.4 2003/02/02 23:43:50 taqua Exp $
  *
  * Changes
  * -------
@@ -377,8 +377,6 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
     FontFactory.FontInformation fi = fontFactory.createFont(attr);
     FontFactory.applyFontInformation(items.getStyle(), fi);
     FontFactory.applyFontInformation(items.getBandDefaults(), fi);
-
-    Log.debug ("FontInformation: " + fi.getBold());
     
     String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)

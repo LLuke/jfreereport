@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.23 2003/02/01 18:27:03 taqua Exp $
+ * $Id: ReportGenerator.java,v 1.24 2003/02/04 17:56:09 taqua Exp $
  *
  * Changes
  * -------
@@ -278,7 +278,6 @@ public class ReportGenerator
   {
     Parser handler = getDefaultHandler ().getInstance ();
     handler.setConfigurationValue (Parser.CONTENTBASE_KEY, contentBase);
-    Log.debug ("ContentBase: " + handler.getConfigurationValue (Parser.CONTENTBASE_KEY));
     return handler;
   }
 
@@ -303,12 +302,9 @@ public class ReportGenerator
       reader.setFeature("http://xml.org/sax/features/validation", isValidateDTD());
       reader.setEntityResolver(getEntityResolver());
 
-      Log.debug ("IS Validate: " + isValidateDTD());
-
       Parser handler = createDefaultHandler (contentBase);
       try
       {
-        Log.debug ("ContentBase: " + handler.getConfigurationValue (Parser.CONTENTBASE_KEY));
         reader.setContentHandler(handler);
         reader.setDTDHandler(handler);
         reader.setEntityResolver(getEntityResolver());

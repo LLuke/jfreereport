@@ -37,7 +37,7 @@
   Needs some better control when to display the page header. Group should be able to declare whether a
   pageheader should be displayed or not
 
-  <pageheader onfirstpage="false" height="17" fontname="SansSerif" fontstyle="plain" fontsize="11" baseline="11">
+  <pageheader onfirstpage="false" height="17" fontname="SansSerif" fontstyle="plain" fontsize="11">
     <label x="0" y="0" width="450" height="12" alignment="right">Salingers Bookstore - you'll get what you deserve</label>
     <line  x1="0" y1="15" x2="0" y2="15" weight="0.5"/>
   </pageheader>

@@ -2,7 +2,7 @@
  * Date: Jan 21, 2003
  * Time: 7:54:06 PM
  *
- * $Id: EncodingComboBoxModel.java,v 1.4 2003/02/03 18:52:44 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.5 2003/02/04 17:56:15 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -11,12 +11,16 @@ import com.jrefinery.report.util.Log;
 import javax.swing.ComboBoxModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Hashtable;
 
 public class EncodingComboBoxModel implements ComboBoxModel
 {
+  private static Hashtable knownEncodings;
+
   private static class EncodingCarrierComparator implements Comparator
   {
     /**
@@ -134,19 +138,17 @@ public class EncodingComboBoxModel implements ComboBoxModel
 
   public boolean addEncoding (String name, String description)
   {
-    try
+    if (isValidEncoding(name))
     {
-      new String (" ").getBytes(name);
       encodings.add (new EncodingCarrier(name, description));
-
-      fireContentsChanged();
-      return true;
     }
-    catch (Exception e)
+    else
     {
-      Log.debug ("Encoding " + name + " is not supported on this system.");
       return false;
     }
+
+    fireContentsChanged();
+    return true;
   }
 
   public void sort ()
@@ -411,5 +413,33 @@ public class EncodingComboBoxModel implements ComboBoxModel
   public static void main (String [] args)
   {
     createDefaultModel();
+  }
+
+  public static boolean isValidEncoding (String encoding)
+  {
+    if (encoding == null) throw new NullPointerException();
+    if (knownEncodings == null)
+    {
+      knownEncodings = new Hashtable();
+    }
+
+    Boolean value = (Boolean) knownEncodings.get(encoding);
+    if (value != null)
+    {
+      return value.booleanValue();
+    }
+
+    try
+    {
+      new String (" ").getBytes(encoding);
+      knownEncodings.put (encoding, Boolean.TRUE);
+      return true;
+    }
+    catch (UnsupportedEncodingException ue)
+    {
+      knownEncodings.put (encoding, Boolean.FALSE);
+      Log.debug (new Log.SimpleMessage ("Encoding ", encoding, " is not supported."));
+      return false;
+    }
   }
 }
