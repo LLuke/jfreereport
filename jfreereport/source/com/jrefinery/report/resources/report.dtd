@@ -304,6 +304,7 @@
 >
 
 <!--
+
   the name of the elements that have to change for
   a group break.
 
@@ -312,6 +313,9 @@
   names of the items which form a group. This is not
   limited to items from the data model, you may also
   enter functions here.
+
+  If you define a subgroup, then you'll have to include all
+  fields of the parent group and at least one new field.
 
  -->
 <!ELEMENT fields  (field*)>

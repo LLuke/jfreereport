@@ -15,4 +15,4 @@
 * Create a report configuration interface for the TableTargets
 * Add Drawable Support
 * Implement JFreeChart adapter and Barcode stuff
-  
+* External style definitions for the ext-parser
