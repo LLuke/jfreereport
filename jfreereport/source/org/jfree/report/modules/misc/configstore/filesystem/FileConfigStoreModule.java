@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: FileConfigStoreModule.java,v 1.1 2003/07/14 17:37:07 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 14.07.2003 : Initial version
+ * 14-Jul-2003 : Initial version
  *  
  */
 
@@ -42,13 +42,32 @@ import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
 import org.jfree.report.util.ReportConfiguration;
 
+/**
+ * The module definition for the filesystem config storage module.
+ * This module provides an configuration store implementation that 
+ * saves all properties to an configurable directory on the filesystem.
+ * 
+ * @author Thomas Morgner
+ */
 public class FileConfigStoreModule extends AbstractModule
 {
+  /** 
+   * DefaultConstructor. Loads the module specification.
+   * @throws ModuleInitializeException if an error occured.
+   */
   public FileConfigStoreModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
+  /**
+   * Initalizes the module. If this module is the selected provider for
+   * the config storage system, the module will be set as provider.
+   *  
+   * @see org.jfree.report.modules.Module#initialize()
+   * 
+   * @throws ModuleInitializeException if an error occured.
+   */
   public void initialize() throws ModuleInitializeException
   {
     String value = ReportConfiguration.getGlobalConfig().getConfigProperty
@@ -57,10 +76,5 @@ public class FileConfigStoreModule extends AbstractModule
     {
       performExternalInitialize(FileConfigStoreModuleInitializer.class.getName());
     }
-  }
-
-  public static void main (String [] args)
-  {
-    ReportConfiguration.getGlobalConfig();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProcessor.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: CSVTableProcessor.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
  *
  * Changes
  * -------
@@ -174,13 +174,19 @@ public class CSVTableProcessor extends TableProcessor
   /**
    * Creates the CSVTableProducer. The TableProducer is responsible to create the table.
    *
+   * @param layoutBounds the grid layout that contain the bounds from the pagination run.
    * @return the created table producer, never null.
    */
-  public TableProducer createProducer(final TableLayoutInfo layoutBounds)
+  protected TableProducer createProducer(final TableLayoutInfo layoutBounds)
   {
     return new CSVTableProducer(layoutBounds, getWriter());
   }
 
+  /**
+   * Creates a dummy TableProducer. The TableProducer is responsible to compute the layout.
+   *
+   * @return the created table producer, never null.
+   */
   protected TableProducer createDummyProducer()
   {
     // csv always uses the global layout. We dont support pages, so why introduce

@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FileConfigStorage.java,v 1.2 2003/07/23 16:02:20 taqua Exp $
+ * $Id: FileConfigStorage.java,v 1.3 2003/08/18 18:28:00 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 14.07.2003 : Initial version
+ * 14-Jul-2003 : Initial version
  *  
  */
 
@@ -51,16 +51,45 @@ import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
 import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
 
+/**
+ * The FileConfigStorage is a storage provider that stores its content on
+ * the local filesystem. The directory used contains the data as plain text
+ * property files.
+ *  
+ * @author Thomas Morgner
+ */
 public class FileConfigStorage implements ConfigStorage
 {
+  /** The base directory of the storage provider. */
   private File baseDirectory;
-  private static final String CONFIGHEADER = "part of the jfreereport filesystem config store";
+  /** The configuration header text that is appended to all property files. */
+  private static final String CONFIGHEADER = 
+    "part of the jfreereport filesystem config store";
 
+  /**
+   * Creates a new file config storage and stores the contents in the given
+   * directory.
+   * 
+   * @param baseDirectory the directory that should contain the files.
+   */
   public FileConfigStorage(File baseDirectory)
   {
     this.baseDirectory = baseDirectory;
   }
 
+  /**
+   * Stores the given properties on the defined path.
+   * <p>
+   * This implementation stores the data as property files.
+   *  
+   * @see org.jfree.report.modules.misc.configstore.base.ConfigStorage
+   * #storeProperties(java.lang.String, java.util.Properties)
+   * 
+   * @param configPath the configuration path that specifies where to store
+   * the properties.
+   * @param properties the properties which should be stored.
+   * @throws ConfigStoreException if an error occured.
+   */
   public void storeProperties(String configPath, Properties properties)
     throws ConfigStoreException
   {
@@ -86,8 +115,11 @@ public class FileConfigStorage implements ConfigStorage
    * Loads the properties from the given path, specifying the given properties
    * as default.
    *
-   * @param configPath
-   * @return
+   * @param configPath the configuration path from where to load the properties.
+   * @param defaults the property set that acts as fallback to provide default
+   * values. 
+   * @return the loaded properties.
+   * @throws ConfigStoreException if an error occured.
    */
   public Properties loadProperties(String configPath, Properties defaults)
     throws ConfigStoreException

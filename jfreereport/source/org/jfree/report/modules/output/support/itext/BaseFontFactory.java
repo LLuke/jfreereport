@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.5 2003/08/18 18:28:01 taqua Exp $
  *
  * Changes
  * -------
@@ -80,6 +80,10 @@ public final class BaseFontFactory extends DefaultFontMapper
   /** The default 'PDF auto init' property value. */
   public static final String ITEXT_FONT_AUTOINIT_DEFAULT = ITEXT_FONT_AUTOINIT_LAZY;
 
+  /** 
+   * The iText font encoding specifies how to encode the text of iText documents
+   * for the given font.
+   */
   public static final String ITEXT_FONT_ENCODING
       = "org.jfree.report.modules.output.support.itext.Encoding";
 
@@ -156,7 +160,12 @@ public final class BaseFontFactory extends DefaultFontMapper
   /** The singleton instance of the font path filter. */
   private static final FontPathFilter FONTPATHFILTER = new FontPathFilter();
 
+  /** 
+   * The storage path for the config storage provider to cache the registered
+   * font names.
+   */
   private static final String FONTS_STORAGE_PATH = "registered_itext_fonts";
+  
   /**
    * Creates a new factory.
    */
@@ -390,6 +399,11 @@ public final class BaseFontFactory extends DefaultFontMapper
     return (String) fontsByName.get(font);
   }
 
+  /**
+   * Checks, whether the factory is initialized.
+   * 
+   * @return true, if the factory is initalized, false otherwise.
+   */
   public boolean isInitialized()
   {
     return initialized;

@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BeanShellModule.java,v 1.1 2003/07/10 20:06:00 taqua Exp $
+ * $Id: BeanShellModule.java,v 1.2 2003/08/19 13:37:24 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 10.07.2003 : Initial version
+ * 10-Jul-2003 : Initial version
  *  
  */
 

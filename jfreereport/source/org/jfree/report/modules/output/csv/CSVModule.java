@@ -21,18 +21,18 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * XMLModule.java
+ * CSVModule.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: CSVModule.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 05.07.2003 : Initial version
+ * 05-Jul-2003 : Initial version
  *  
  */
 
@@ -41,13 +41,28 @@ package org.jfree.report.modules.output.csv;
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
 
+/**
+ * The module definition for the raw csv export module.
+ * 
+ * @author Thomas Morgner
+ */
 public class CSVModule extends AbstractModule
 {
+  /** 
+   * DefaultConstructor. Loads the module specification.
+   * @throws ModuleInitializeException if an error occured.
+   */
   public CSVModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
+  /**
+   * Initalizes the module. This method is empty. 
+   * @see org.jfree.report.modules.Module#initialize()
+   * 
+   * @throws ModuleInitializeException if an error occured.
+   */
   public void initialize() throws ModuleInitializeException
   {
     // nothing required ...

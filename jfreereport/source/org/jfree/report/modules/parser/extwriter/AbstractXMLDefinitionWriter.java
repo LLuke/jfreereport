@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.1 2003/07/23 16:02:22 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.2 2003/08/18 18:28:02 taqua Exp $
  *
  * Changes
  * -------
@@ -250,9 +250,9 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
   /**
    * Writes the given comment. This method does nothing if the comment is null.
    *
-   * @param writer
-   * @param comment
-   * @throws java.io.IOException
+   * @param writer the writer that should receive the content.
+   * @param comment the xml comment that should be written.
+   * @throws IOException if an error occurs.
    */
   protected void writeComment (Writer writer, String comment) throws IOException
   {
@@ -267,7 +267,16 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
     writer.write(getLineSeparator());
   }
 
-//  protected boolean logComment;
+  /**
+   * Reads a comment from the given comment hint path and hint name and Writes 
+   * that comment to the xml stream. This method does nothing if there is no
+   * comment stored at that position.
+   *  
+   * @param writer the writer that should receive the content
+   * @param path the comment hint path that points to the comment
+   * @param hintName the hint name used to store the comment 
+   * @throws IOException if an error occured.
+   */
   protected void writeComment (Writer writer, CommentHintPath path, String hintName)
     throws IOException
   {
@@ -275,10 +284,8 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
         (path, hintName, String[].class);
     if (comment == null)
     {
-//      if (logComment) Log.debug ("Not writing: " + path);
       return;
     }
-//    if (logComment) Log.debug ("Writing: " + path + " Com: " + comment);
     for (int i = 0; i < comment.length; i++)
     {
       writeComment(writer, comment[i]);

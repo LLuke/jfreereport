@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ConfigStoreBaseModule.java,v 1.1 2003/07/14 17:37:07 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 14.07.2003 : Initial version
+ * 14-Jul-2003 : Initial version
  *  
  */
 
@@ -41,13 +41,28 @@ package org.jfree.report.modules.misc.configstore.base;
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
 
+/**
+ * The module definition for the config store system.
+ * 
+ * @author Thomas Morgner
+ */
 public class ConfigStoreBaseModule extends AbstractModule
 {
+  /** 
+   * DefaultConstructor. Loads the module specification.
+   * @throws ModuleInitializeException if an error occured.
+   */
   public ConfigStoreBaseModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
+  /**
+   * Initalizes the module. This method is empty. 
+   * @see org.jfree.report.modules.Module#initialize()
+   * 
+   * @throws ModuleInitializeException if an error occured.
+   */
   public void initialize() throws ModuleInitializeException
   {
   }

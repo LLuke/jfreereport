@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.5 2003/08/18 18:28:01 taqua Exp $
  *
  * Changes
  * -------
@@ -235,57 +235,6 @@ public class ExcelProducer extends TableProducer
     open = false;
   }
 
-  /**
-   * Parses the defined paper size for the excel sheets. The paper size can
-   * be defined using the report configuration properties. 
-   * 
-   * @return the parsed HSSF paper size constant or -1 if undefined.
-   */
-  private short parsePaperSize (HSSFPrintSetup printSetup)
-  {
-    String paper = getProperty("Paper");
-    if (paper == null)
-    {
-      return -1;
-    }
-    if (paper.equalsIgnoreCase("A4"))
-    {
-      return printSetup.A4_PAPERSIZE;
-    }
-    if (paper.equalsIgnoreCase("A5"))
-    {
-      return printSetup.A5_PAPERSIZE;
-    }
-    if (paper.equalsIgnoreCase("ENVELOPE_10"))
-    {
-      return printSetup.ENVELOPE_10_PAPERSIZE;
-    }
-    if (paper.equalsIgnoreCase("ENVELOPE_CS"))
-    {
-      return printSetup.ENVELOPE_CS_PAPERSIZE;
-    }
-    if (paper.equalsIgnoreCase("ENVELOPE_DL"))
-    {
-      return printSetup.ENVELOPE_DL_PAPERSIZE;
-    }
-    if (paper.equalsIgnoreCase("ENVELOPE_MONARCH"))
-    {
-      return printSetup.ENVELOPE_MONARCH_PAPERSIZE;
-    }
-    if (paper.equalsIgnoreCase("EXECUTIVE"))
-    {
-      return printSetup.EXECUTIVE_PAPERSIZE;
-    }
-    if (paper.equalsIgnoreCase("LEGAL"))
-    {
-      return printSetup.LEGAL_PAPERSIZE;
-    }
-    if (paper.equalsIgnoreCase("LETTER"))
-    {
-      return printSetup.LETTER_PAPERSIZE;
-    }
-    return -1;
-  }
 
   /**
    * Generate the XLS data structure.

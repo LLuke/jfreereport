@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontModule.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: BaseFontModule.java,v 1.2 2003/07/10 20:02:09 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 05.07.2003 : Initial version
+ * 05-Jul-2003 : Initial version
  *  
  */
 
@@ -41,13 +41,30 @@ package org.jfree.report.modules.output.support.itext;
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
 
+/**
+ * The module definition for the itext font processing module.
+ * 
+ * @author Thomas Morgner
+ */
 public class BaseFontModule extends AbstractModule
 {
+  /** 
+   * DefaultConstructor. Loads the module specification.
+   * @throws ModuleInitializeException if an error occured.
+   */
   public BaseFontModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
+  /**
+   * Initialialize the font factory when this class is loaded and the system property
+   * of  <code>"org.jfree.report.modules.output.pageable.itext.PDFOutputTarget.AutoInit"</code> is
+   * set to <code>true</code>.
+   * 
+   * @see org.jfree.report.modules.Module#initialize()
+   * @throws ModuleInitializeException if an error occured.
+   */
   public void initialize() throws ModuleInitializeException
   {
     if (isClassLoadable("com.lowagie.text.Document") == false)
@@ -56,11 +73,6 @@ public class BaseFontModule extends AbstractModule
           "Check your classpath configuration.");
     }
 
-    /**
-     * Initialialize the font factory when this class is loaded and the system property
-     * of  <code>"org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.AutoInit"</code> is
-     * set to <code>true</code>.
-     */
     if (BaseFontFactory.getFontFactory().getPDFTargetAutoInit().equals
         (BaseFontFactory.ITEXT_FONT_AUTOINIT_ONINIT))
     {

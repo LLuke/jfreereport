@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FileConfigStoreModuleInitializer.java,v 1.1 2003/07/14 17:37:07 taqua Exp $
+ * $Id: FileConfigStoreModuleInitializer.java,v 1.2 2003/07/23 16:02:20 taqua Exp $
  *
  * Changes
  * -------------------------
- * 14.07.2003 : Initial version
+ * 14-Jul-2003 : Initial version
  *
  */
 
@@ -45,18 +45,47 @@ import org.jfree.report.modules.ModuleInitializer;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.util.ReportConfiguration;
 
+/**
+ * The initializer is used to setup the file system storage provider
+ * and to register the providers at the configfactory.
+ * <p>
+ * The directories are specified in the report configuration at boot time.
+ * If an directory name starts with "~/", the users home directory is used
+ * as base directory for that string.   
+ * 
+ * @author Thomas Morgner
+ */
 public class FileConfigStoreModuleInitializer implements ModuleInitializer
 {
+  /** 
+   * The configuration key that specifies the base directory for
+   * the user configuration storage.
+   */
   public static final String USER_BASEDIR_CONFIG_KEY =
       "org.jfree.report.modules.misc.configstore.filesystem.UserTargetDir";
 
+  /** 
+   * The configuration key that specifies the base directory for
+   * the system configuration storage.
+   */
   public static final String SYSTEM_BASEDIR_CONFIG_KEY =
       "org.jfree.report.modules.misc.configstore.filesystem.SystemTargetDir";
 
+  /**
+   * DefaultConstructor.
+   */
   public FileConfigStoreModuleInitializer()
   {
   }
 
+  /**
+   * Performs the module initialization and registers the storage providers
+   * at the config factory.
+   *  
+   * @see org.jfree.report.modules.ModuleInitializer#performInit()
+   * 
+   * @throws ModuleInitializeException if an error occures
+   */
   public void performInit() throws ModuleInitializeException
   {
     String userBaseDirectory =
@@ -72,6 +101,16 @@ public class FileConfigStoreModuleInitializer implements ModuleInitializer
     factory.defineUserStorage(new FileConfigStorage(getStoragePath(systemBaseDirectory)));
   }
 
+  /**
+   * Tries to fint the specified directory and creates a new one if the directory
+   * does not yet exist. An occurence of "~/" at the beginning of the name will
+   * be replaced with the users home directory.
+   * 
+   * @param baseDirectory the base directory as specified in the configuration.
+   * @return the file object pointing to that directory.
+   * @throws ModuleInitializeException if an error occured or the directory could
+   * not be created.
+   */
   private File getStoragePath (String baseDirectory) throws ModuleInitializeException
   {
     File baseDirectoryFile = null;

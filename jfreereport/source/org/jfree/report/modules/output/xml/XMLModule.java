@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: XMLModule.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 05.07.2003 : Initial version
+ * 05-Jul-2003 : Initial version
  *  
  */
 
@@ -42,13 +42,28 @@ import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.Module;
 import org.jfree.report.modules.ModuleInitializeException;
 
+/**
+ * The module definition for the raw csv export module.
+ * 
+ * @author Thomas Morgner
+ */
 public class XMLModule extends AbstractModule implements Module
 {
+  /** 
+   * DefaultConstructor. Loads the module specification.
+   * @throws ModuleInitializeException if an error occured.
+   */
   public XMLModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
+  /**
+   * Initalizes the module. This method is empty. 
+   * @see org.jfree.report.modules.Module#initialize()
+   * 
+   * @throws ModuleInitializeException if an error occured.
+   */
   public void initialize() throws ModuleInitializeException
   {
     // nothing required ...

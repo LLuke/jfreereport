@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelProcessor.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
  *
  * Changes
  * -------
@@ -107,6 +107,7 @@ public class ExcelProcessor extends TableProcessor
   /**
    * Creates a TableProducer. The TableProducer is responsible to create the table.
    *
+   * @param gridLayoutBounds the grid layout that contain the bounds from the pagination run.
    * @return the created table producer, never null.
    */
   protected TableProducer createProducer(TableLayoutInfo gridLayoutBounds)
