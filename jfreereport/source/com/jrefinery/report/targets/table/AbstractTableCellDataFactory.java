@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractTableCellDataFactory.java,v 1.6 2003/02/18 19:37:34 taqua Exp $
+ * $Id: AbstractTableCellDataFactory.java,v 1.7 2003/02/24 15:02:20 mungady Exp $
  *
  * Changes
  * -------
@@ -109,7 +109,6 @@ public abstract class AbstractTableCellDataFactory implements TableCellDataFacto
                   shape,
                   e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE),
                   e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO),
-                  point,
                   dim);
     Rectangle2D shapeBounds = s.getBounds2D();
     shapeBounds.setRect(point.getX(),

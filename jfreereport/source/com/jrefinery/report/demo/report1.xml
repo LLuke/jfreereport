@@ -22,9 +22,8 @@
 
   <reportfooter height="48" fontname="Serif" fontstyle="bold" fontsize="16">
     <label x="0" y="0" width="100%" height="24" alignment="center">*** END OF REPORT ***</label>
-    <shape-field x="25" y="25" width="100%" height="50" fieldname="shapecreator"/>
   </reportfooter>
-  <!--
+
   <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="10" onfirstpage="true">
     <rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0"/>
     <date-field x="0" y="0" width="100%" height="14" alignment="right" format="d-MMM-yyyy" fieldname="report.date"/>
@@ -34,6 +33,7 @@
   <pagefooter height="18">
     <rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0" draw="false" fill="true"/>
   </pagefooter>
+
   <groups>
     <group name="Continent Group">
       <groupheader height="18" fontname="Monospaced" fontstyle="bold" fontsize="9" vertical-alignment="middle" pagebreak="false">
@@ -50,46 +50,20 @@
       </fields>
     </group>
   </groups>
+
   <items height="10" fontname="Serif" fontstyle="plain" fontsize="8" vertical-alignment="middle">
-  -->
     <!-- the rectangle is named as it is referenced later in the function section -->
-<!--
     <rectangle name="background" x="0" y="0" width="100%" height="100%" color="#DFDFDF" weight="0"/>
-    <line x1="0" y1="0" x2="0" y2="0" color="#FF0FFF" weight="0.1"/>
     <line x1="0" y1="10" x2="0" y2="10" color="#0FDFDF" weight="0.1"/>
+    <line x1="0" y1="0" x2="0" y2="0" color="#FF0FFF" weight="0.1"/>
     <string-field x="0" y="0" width="176" height="10" alignment="left" fieldname="Country"/>
     <string-field x="180" y="0" width="50" height="10" alignment="left" fieldname="ISO Code"/>
     <number-field x="240" y="0" width="76" height="10" alignment="right" format="#,##0" fieldname="Population"/>
     <string-field x="330" y="0" width="76" height="10" alignment="right" fieldname="expression"/>
     <number-field x="390" y="0" width="76" height="10" alignment="right" format="#,##0.00 '%'" fieldname="percent"/>
   </items>
--->
   <functions>
     <property-ref name="report.date"/>
-    <expression name="drawable" class="com.jrefinery.report.function.BSHExpression">
-      <properties>
-        <property name="expression">
-          import com.jrefinery.report.ext.junit.TestDrawable;
-
-          Object getValue()
-          {
-          return new TestDrawable();
-          }
-        </property>
-      </properties>
-    </expression>
-    <expression name="shapecreator" class="com.jrefinery.report.function.BSHExpression">
-      <properties>
-        <property name="expression">
-          import java.awt.geom.*;
-
-          Object getValue()
-          {
-          return new RoundRectangle2D.Float(100,16,40,20, 5,5);
-          }
-        </property>
-      </properties>
-    </expression>
     <expression name="expression" class="com.jrefinery.report.function.BSHExpression">
       <properties>
         <property name="expression">

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.56 2003/03/04 20:28:40 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.57 2003/03/05 11:30:38 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -84,6 +84,8 @@ import java.awt.event.WindowEvent;
 import java.net.URL;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * The main frame in the report demonstration application. This demo has huge reports
@@ -96,6 +98,71 @@ import java.util.ResourceBundle;
  */
 public class JFreeReportDemo extends JFrame
 {
+
+  private static final String RESOURCE_BASE = "com.jrefinery.report.demo.resources.DemoResources";
+
+  protected static abstract class DemoHandler
+  {
+    public abstract void performPreview (DemoDefinition def);
+  }
+
+  protected class URLDemoHandler extends DemoHandler
+  {
+    private String definitionURL;
+
+    public URLDemoHandler(String definitionURL)
+    {
+      this.definitionURL = definitionURL;
+    }
+
+    public void performPreview(DemoDefinition def)
+    {
+      preview(definitionURL, def.getData());
+    }
+  }
+
+  protected static class DemoDefinition
+  {
+    private String name;
+    private TableModel data;
+    private DemoHandler handler;
+
+    public DemoDefinition(String name, TableModel data, DemoHandler handler)
+    {
+      if (name == null)
+      {
+        throw new NullPointerException("Name must not be null");
+      }
+      if (data == null)
+      {
+        throw new NullPointerException("TableModel must not be null");
+      }
+      if (handler == null)
+      {
+        throw new NullPointerException("Handler must not be null");
+      }
+
+      this.name = name;
+      this.data = data;
+      this.handler = handler;
+    }
+
+    public String getName()
+    {
+      return name;
+    }
+
+    public TableModel getData()
+    {
+      return data;
+    }
+
+    public DemoHandler getHandler()
+    {
+      return handler;
+    }
+  }
+
   /**
    * About action.
    */
@@ -200,51 +267,26 @@ public class JFreeReportDemo extends JFrame
   /** A tabbed pane for displaying the sample data sets. */
   private JTabbedPane tabbedPane;
 
-  /** A table model containing sample data. */
-  private SampleData1 data1;
-
-  /** A table model containing sample data. */
-  private SampleData2 data2;
-
-  /** A table model containing sample data. */
-  private SampleData3 data3;
-
-  /** A table model containing sample data. */
-  private SampleData4 data4;
-
   /** Localised resources. */
   private ResourceBundle resources;
 
-  /**
-   * Returns the localised resources.
-   *
-   * @return localised resources.
-   */
-  private ResourceBundle getResources()
-  {
-    return this.resources;
-  }
+  private List availableDemos;
 
   /**
    * Constructs a frame containing sample reports created using the JFreeReport Class Library.
-   *
-   * @param resources  localised resources.
    */
-  public JFreeReportDemo(ResourceBundle resources)
+  public JFreeReportDemo()
   {
+    resources = ResourceBundle.getBundle(RESOURCE_BASE);
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     addWindowListener(new CloseHandler());
-    this.resources = resources;
+
+
     Object[] arguments = new Object[]{JFreeReport.getInfo().getVersion()};
     String pattern = resources.getString("main-frame.title.pattern");
     setTitle(MessageFormat.format(pattern, arguments));
 
-    // create a couple of sample data sets
-    data1 = new SampleData1();
-    data2 = new SampleData2();
-    data3 = new SampleData3();
-    data4 = new SampleData4();
-
+    availableDemos = createAvailableDemos();
     createActions();
 
     // set up the menu
@@ -256,20 +298,12 @@ public class JFreeReportDemo extends JFrame
 
     tabbedPane = new JTabbedPane();
     tabbedPane.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-    tabbedPane.addTab(formExample(1), RefineryUtilities.createTablePanel(data1));
-    tabbedPane.addTab(formExample(2), RefineryUtilities.createTablePanel(data2));
-    tabbedPane.addTab(formExample(3), RefineryUtilities.createTablePanel(data3));
-    tabbedPane.addTab(formExample(4), RefineryUtilities.createTablePanel(data4));
-    tabbedPane.addTab("Manual Created Report (see Source)",
-                      RefineryUtilities.createTablePanel(data1));
-    tabbedPane.addTab("ExtReport definition format (report1a.xml)",
-                      RefineryUtilities.createTablePanel(data1));
-    tabbedPane.addTab("Example 2 - with Image-Function",
-                      RefineryUtilities.createTablePanel(data2));
-    tabbedPane.addTab("ItemHideFunction-Demo", RefineryUtilities.createTablePanel(data2));
-    tabbedPane.addTab("Dynamic-Demo", RefineryUtilities.createTablePanel(data2));
-    tabbedPane.addTab("Band in Band Stacking", 
-                      RefineryUtilities.createTablePanel(new DefaultTableModel()));
+    for (int i = 0; i < availableDemos.size(); i++)
+    {
+      DemoDefinition dd = (DemoDefinition) availableDemos.get (i);
+      tabbedPane.addTab(dd.getName(),
+            RefineryUtilities.createTablePanel (dd.getData()));
+    }
 
     content.add(tabbedPane);
 
@@ -294,7 +328,53 @@ public class JFreeReportDemo extends JFrame
     buttons.setBorder(BorderFactory.createEmptyBorder(0, 4, 4, 4));
     content.add(buttons, BorderLayout.SOUTH);
     setContentPane(content);
+  }
 
+  protected List createAvailableDemos ()
+  {
+    // create a couple of sample data sets
+    TableModel data1 = new SampleData1();
+    TableModel data2 = new SampleData2();
+    TableModel data3 = new SampleData3();
+    TableModel data4 = new SampleData4();
+
+    ArrayList list = new ArrayList();
+    list.add (new DemoDefinition(createExampleName(1), data1, new URLDemoHandler("/com/jrefinery/report/demo/report1.xml")));
+    list.add (new DemoDefinition(createExampleName(2), data2, new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
+    list.add (new DemoDefinition(createExampleName(3), data3, new URLDemoHandler("/com/jrefinery/report/demo/report3.xml")));
+    list.add (new DemoDefinition(createExampleName(4), data4, new URLDemoHandler("/com/jrefinery/report/demo/report4.xml")));
+    list.add (new DemoDefinition("Report created by API", data1, new DemoHandler(){
+      public void performPreview(DemoDefinition def)
+      {
+        previewAPIReport(def.getData());
+      }
+    }));
+    list.add (new DemoDefinition("Example 1 - using Extended Report Definition format", data1, new URLDemoHandler("/com/jrefinery/report/demo/report1a.xml")));
+    list.add (new DemoDefinition("Example 2 - with Image-Function", data2, new URLDemoHandler("/com/jrefinery/report/demo/report2a.xml")));
+    list.add (new DemoDefinition("ItemHideFunction-Demo", data2, new URLDemoHandler("/com/jrefinery/report/demo/report2b.xml")));
+    list.add (new DemoDefinition("Dynamic-Demo", data2, new URLDemoHandler("/com/jrefinery/report/demo/report2c.xml")));
+    list.add (new DemoDefinition("Band in Band Stacking", data2, new DemoHandler() {
+      public void performPreview(DemoDefinition def)
+      {
+        previewBandInBandStacking();
+      }
+    }));
+    return list;
+  }
+
+  public List getAvailableDemos()
+  {
+    return availableDemos;
+  }
+
+  /**
+   * Returns the localised resources.
+   *
+   * @return localised resources.
+   */
+  private ResourceBundle getResources()
+  {
+    return this.resources;
   }
 
   /**
@@ -304,7 +384,7 @@ public class JFreeReportDemo extends JFrame
    *
    * @return the string.
    */
-  private String formExample(int ex)
+  protected String createExampleName(int ex)
   {
     return MessageFormat.format(getResources().getString("example"),
                                 new Object[]{new Integer(ex)});
@@ -317,58 +397,19 @@ public class JFreeReportDemo extends JFrame
   public void attemptPreview()
   {
     int index = tabbedPane.getSelectedIndex();
-
-    if (index == 0)
-    {
-      preview("/com/jrefinery/report/demo/report1.xml", data1);
-    }
-    else if (index == 1)
-    {
-      preview("/com/jrefinery/report/demo/report2.xml", data2);
-    }
-    else if (index == 2)
-    {
-      preview("/com/jrefinery/report/demo/report3.xml", data3);
-    }
-    else if (index == 3)
-    {
-      preview("/com/jrefinery/report/demo/report4.xml", data4);
-    }
-    else if (index == 4)
-    {
-      previewManual();
-    }
-    else if (index == 5)
-    {
-      preview("/com/jrefinery/report/demo/report1a.xml", data1);
-    }
-    else if (index == 6)
-    {
-      preview("/com/jrefinery/report/demo/report2a.xml", data2);
-    }
-    else if (index == 7)
-    {
-      preview("/com/jrefinery/report/demo/report2b.xml", data2);
-    }
-    else if (index == 8)
-    {
-      preview("/com/jrefinery/report/demo/report2c.xml", data2);
-    }
-    else if (index == 9)
-    {
-      previewManual2();
-    }
+    DemoDefinition dd = (DemoDefinition) getAvailableDemos().get(index);
+    dd.getHandler().performPreview(dd);
   }
 
   /**
    * Preview.
    */
-  private void previewManual()
+  private void previewAPIReport(TableModel data)
   {
     try
     {
       JFreeReport report1 = new SampleReport1().createReport();
-      report1.setData(data1);
+      report1.setData(data);
 
       PreviewFrame frame1 = new PreviewFrame(report1);
       frame1.pack();
@@ -385,7 +426,7 @@ public class JFreeReportDemo extends JFrame
   /**
    * Preview.
    */
-  private void previewManual2()
+  private void previewBandInBandStacking()
   {
     try
     {
@@ -653,10 +694,7 @@ public class JFreeReportDemo extends JFrame
         System.out.println("Look and feel problem.");
       }
 
-      String baseName = "com.jrefinery.report.demo.resources.DemoResources";
-      ResourceBundle resources = ResourceBundle.getBundle(baseName);
-
-      JFreeReportDemo frame = new JFreeReportDemo(resources);
+      JFreeReportDemo frame = new JFreeReportDemo();
       frame.pack();
       frame.setBounds(100, 100, 700, 400);
       RefineryUtilities.centerFrameOnScreen(frame);

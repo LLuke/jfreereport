@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContent.java,v 1.6 2003/02/27 10:35:38 mungady Exp $
+ * $Id: ShapeContent.java,v 1.7 2003/03/08 16:08:07 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,6 @@
 package com.jrefinery.report.targets.base.content;
 
 import java.awt.Shape;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.util.Log;
@@ -75,11 +74,11 @@ public class ShapeContent implements Content
    */
   public ShapeContent(Shape s, Rectangle2D bounds)
   {
-    if (s == null) 
+    if (s == null)
     {
       throw new NullPointerException();
     }
-    if (bounds == null) 
+    if (bounds == null)
     {
       throw new NullPointerException();
     }
@@ -91,7 +90,7 @@ public class ShapeContent implements Content
   }
 
   /**
-   * Returns the content type, in this case 
+   * Returns the content type, in this case
    * {@link com.jrefinery.report.targets.base.content.ContentType#SHAPE}.
    *
    * @return the content type.
@@ -154,19 +153,6 @@ public class ShapeContent implements Content
   }
 
   /**
-   * Returns a shape that starts a 0.0, 0.0.
-   * Why?
-   *
-   * @return a shape.
-   */
-  public Shape getNormalizedShape ()
-  {
-    Rectangle2D bounds = shape.getBounds2D();
-    return AffineTransform.getTranslateInstance(0 - bounds.getX(),
-                                              0 - bounds.getY()).createTransformedShape(getShape());
-  }
-
-  /**
    * Returns content that falls within the specified bounds.
    *
    * @param bounds  the bounds.
@@ -176,8 +162,6 @@ public class ShapeContent implements Content
   public Content getContentForBounds(Rectangle2D bounds)
   {
     Rectangle2D newBounds = bounds.createIntersection(getBounds());
-    Log.debug ("Shape::getContentForBounds : " + newBounds);
-    Log.debug ("Shape::shape : " + getShape());
     return new ShapeContent(getShape(), newBounds);
   }
 

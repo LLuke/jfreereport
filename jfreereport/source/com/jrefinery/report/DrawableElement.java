@@ -2,7 +2,7 @@
  * Date: Mar 5, 2003
  * Time: 6:23:53 PM
  *
- * $Id$
+ * $Id: DrawableElement.java,v 1.1 2003/03/07 13:49:37 taqua Exp $
  */
 package com.jrefinery.report;
 
@@ -11,8 +11,12 @@ package com.jrefinery.report;
  */
 public class DrawableElement extends Element
 {
+  /** The content type for the element */
   public static final String CONTENT_TYPE = "drawable/generic";
 
+  /**
+   * Default constructor.
+   */
   public DrawableElement()
   {
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeTransform.java,v 1.4 2003/02/27 10:35:37 mungady Exp $
+ * $Id: ShapeTransform.java,v 1.5 2003/03/08 16:08:06 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,11 @@ package com.jrefinery.report.targets;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 /**
  * Utility class, which resizes a Shape.
- * 
+ *
  * @author Thomas Morgner
  */
 public class ShapeTransform
@@ -60,14 +59,11 @@ public class ShapeTransform
    * @param s the shape that should be transformed
    * @param scale true, if the shape should be scaled, false otherwise
    * @param keepAR true, if the scaled shape should keep the aspect ratio
-   * @param point the origin, the shape will be translate-transformed to this new origin
    * @param dim the target dimension.
    * @return the transformed shape
    */
-  public static Shape transformShape (Shape s, boolean scale, boolean keepAR, Point2D point, 
-                                      Dimension2D dim)
+  public static Shape transformShape (Shape s, boolean scale, boolean keepAR, Dimension2D dim)
   {
-    //AffineTransform af = AffineTransform.getTranslateInstance(-point.getX(), -point.getY());
     AffineTransform af = AffineTransform.getTranslateInstance(0, 0);
 
     /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContentFactoryModule.java,v 1.4 2003/02/27 10:35:38 mungady Exp $
+ * $Id: ShapeContentFactoryModule.java,v 1.5 2003/03/08 16:08:07 taqua Exp $
  *
  * Changes
  * -------
@@ -38,21 +38,20 @@ package com.jrefinery.report.targets.base.content;
 
 import java.awt.Shape;
 import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.ShapeTransform;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.util.StringUtil;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.StringUtil;
 
 /**
  * The ShapeContentFactoryModule is used to create a content wrapper for java.awt.Shape
  * objects. This FactoryModules is able to handle all elements with the content type
  * "shape/*".
- * 
+ *
  * @author Thomas Morgner
  */
 public class ShapeContentFactoryModule implements ContentFactoryModule
@@ -90,18 +89,17 @@ public class ShapeContentFactoryModule implements ContentFactoryModule
    *
    * @throws ContentCreationException if there is a problem with the OutputTarget.
    */
-  public Content createContentForElement(Element e, ElementLayoutInformation bounds, 
+  public Content createContentForElement(Element e, ElementLayoutInformation bounds,
                                          LayoutSupport ot)
       throws ContentCreationException
   {
-    Point2D point = bounds.getAbsolutePosition();
     Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
                                                             bounds.getPreferredSize());
 
     Shape s = ShapeTransform.transformShape((Shape) e.getValue(),
                          e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE),
                          e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO),
-                         point, iBounds);
+                         iBounds);
     Log.debug ("CreateContentForElement: " + s + " -> " + s.getBounds2D());
     return new ShapeContent (s);
   }

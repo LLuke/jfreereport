@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.26 2003/03/07 16:56:03 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.27 2003/03/08 16:08:08 taqua Exp $
  *
  * Changes
  * -------
@@ -419,8 +419,6 @@ public class G2OutputTarget extends AbstractOutputTarget
    */
   public void drawShape(Shape shape)
   {
-    Log.debug ("Draw Shape: " + shape  +" -> " + shape.getBounds2D());
-    Log.debug ("Draw Shape: " + getOperationBounds());
     g2.draw(shape);
   }
 
@@ -433,8 +431,6 @@ public class G2OutputTarget extends AbstractOutputTarget
    */
   public void fillShape(Shape shape)
   {
-    Log.debug ("Fill Shape: " + shape  +" -> " + shape.getBounds2D());
-    Log.debug ("Fill Shape: " + getOperationBounds());
     g2.fill(shape);
   }
 

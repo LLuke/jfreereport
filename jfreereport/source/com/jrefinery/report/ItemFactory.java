@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.36 2003/03/07 18:58:00 taqua Exp $
+ * $Id: ItemFactory.java,v 1.37 2003/03/08 16:08:05 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,23 @@
  */
 
 package com.jrefinery.report;
+
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Paint;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.print.PageFormat;
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import javax.swing.table.TableModel;
 
 import com.jrefinery.report.filter.DataRowDataSource;
 import com.jrefinery.report.filter.DataSource;
@@ -68,23 +85,6 @@ import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-
-import javax.swing.table.TableModel;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Paint;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.print.PageFormat;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.List;
 
 /**
  * A factory used to create elements and bands using a single line command.
@@ -190,10 +190,10 @@ public class ItemFactory
       dateElement.getStyle().setFontDefinitionProperty(new FontDefinition(font));
     }
     dateElement.getStyle().setStyleProperty(
-        ElementStyleSheet.ALIGNMENT, 
+        ElementStyleSheet.ALIGNMENT,
         ElementAlignment.translateHorizontalAlignment(alignment));
     dateElement.getStyle().setStyleProperty(
-        ElementStyleSheet.VALIGNMENT, 
+        ElementStyleSheet.VALIGNMENT,
         ElementAlignment.translateVerticalAlignment(valign));
     dateElement.setDataSource(dft);
 
@@ -226,8 +226,8 @@ public class ItemFactory
                                               DateFormat format,
                                               String field)
   {
-    return createDateElement(name, bounds, paint, alignment, 
-                             ElementAlignment.TOP.getOldAlignment(), 
+    return createDateElement(name, bounds, paint, alignment,
+                             ElementAlignment.TOP.getOldAlignment(),
                              font, nullString, format, field);
   }
   /**
@@ -293,10 +293,10 @@ public class ItemFactory
       dateElement.getStyle().setFontDefinitionProperty(new FontDefinition(font));
     }
     dateElement.getStyle().setStyleProperty(
-        ElementStyleSheet.ALIGNMENT, 
+        ElementStyleSheet.ALIGNMENT,
         ElementAlignment.translateHorizontalAlignment(alignment));
     dateElement.getStyle().setStyleProperty(
-        ElementStyleSheet.VALIGNMENT, 
+        ElementStyleSheet.VALIGNMENT,
         ElementAlignment.translateVerticalAlignment(valign));
     dateElement.setDataSource(ds);
     return dateElement;
@@ -764,8 +764,8 @@ public class ItemFactory
                                                Font font,
                                                String labeltext)
   {
-    return createLabelElement(name, bounds, paint, alignment, 
-                              ElementAlignment.TOP.getOldAlignment(), 
+    return createLabelElement(name, bounds, paint, alignment,
+                              ElementAlignment.TOP.getOldAlignment(),
                               font, labeltext);
   }
 
@@ -811,10 +811,10 @@ public class ItemFactory
       label.getStyle().setFontDefinitionProperty(new FontDefinition(font));
     }
     label.getStyle().setStyleProperty(
-        ElementStyleSheet.ALIGNMENT, 
+        ElementStyleSheet.ALIGNMENT,
         ElementAlignment.translateHorizontalAlignment(alignment));
     label.getStyle().setStyleProperty(
-        ElementStyleSheet.VALIGNMENT, 
+        ElementStyleSheet.VALIGNMENT,
         ElementAlignment.translateVerticalAlignment(valign));
     label.setDataSource(template);
     return label;
@@ -841,9 +841,8 @@ public class ItemFactory
     if (shape.getX1() == shape.getX2() && shape.getY1 () == shape.getY2())
     {
       // scale the line, is horizontal,the line is on pos 0,0 within the element
-      shape.setLine(0, 0, 100, 0);
       Rectangle2D bounds = new Rectangle2D.Float (0, (float) shape.getY1(), -100, 0);
-      return createShapeElement(name, bounds, paint, stroke, shape, true, false, true);
+      return createShapeElement(name, bounds, paint, stroke, new Line2D.Float(0,0, 100, 0), true, false, true);
     }
     else
     {
@@ -1110,8 +1109,8 @@ public class ItemFactory
                                                 NumberFormat format,
                                                 String field)
   {
-    return createNumberElement(name, bounds, paint, alignment, 
-                               ElementAlignment.TOP.getOldAlignment(), 
+    return createNumberElement(name, bounds, paint, alignment,
+                               ElementAlignment.TOP.getOldAlignment(),
                                font, nullString,
                                format, field);
   }
@@ -1178,11 +1177,11 @@ public class ItemFactory
       element.getStyle().setFontDefinitionProperty(new FontDefinition(font));
     }
     element.getStyle().setStyleProperty(
-        ElementStyleSheet.ALIGNMENT, 
+        ElementStyleSheet.ALIGNMENT,
         ElementAlignment.translateHorizontalAlignment(alignment)
     );
     element.getStyle().setStyleProperty(
-        ElementStyleSheet.VALIGNMENT, 
+        ElementStyleSheet.VALIGNMENT,
         ElementAlignment.translateVerticalAlignment(valign)
     );
     element.setDataSource(ds);
@@ -1215,8 +1214,8 @@ public class ItemFactory
                                                 String format,
                                                 String field)
   {
-    return createNumberElement(name, bounds, paint, alignment, 
-                               ElementAlignment.TOP.getOldAlignment(), 
+    return createNumberElement(name, bounds, paint, alignment,
+                               ElementAlignment.TOP.getOldAlignment(),
                                font, nullString,
                                format, field);
   }
@@ -1272,11 +1271,11 @@ public class ItemFactory
       element.getStyle().setFontDefinitionProperty(new FontDefinition(font));
     }
     element.getStyle().setStyleProperty(
-        ElementStyleSheet.ALIGNMENT, 
+        ElementStyleSheet.ALIGNMENT,
         ElementAlignment.translateHorizontalAlignment(alignment)
     );
     element.getStyle().setStyleProperty(
-        ElementStyleSheet.VALIGNMENT, 
+        ElementStyleSheet.VALIGNMENT,
         ElementAlignment.translateVerticalAlignment(valign)
     );
     element.setDataSource(template);
@@ -1424,11 +1423,11 @@ public class ItemFactory
       element.getStyle().setFontDefinitionProperty(new FontDefinition(font));
     }
     element.getStyle().setStyleProperty(
-        ElementStyleSheet.ALIGNMENT, 
+        ElementStyleSheet.ALIGNMENT,
         ElementAlignment.translateHorizontalAlignment(alignment)
     );
     element.getStyle().setStyleProperty(
-        ElementStyleSheet.VALIGNMENT, 
+        ElementStyleSheet.VALIGNMENT,
         ElementAlignment.translateVerticalAlignment(valign)
     );
     element.setDataSource(template);
@@ -1834,11 +1833,11 @@ public class ItemFactory
       element.getStyle().setFontDefinitionProperty(new FontDefinition(font));
     }
     element.getStyle().setStyleProperty(
-        ElementStyleSheet.ALIGNMENT, 
+        ElementStyleSheet.ALIGNMENT,
         ElementAlignment.translateHorizontalAlignment(alignment)
     );
     element.getStyle().setStyleProperty(
-        ElementStyleSheet.VALIGNMENT, 
+        ElementStyleSheet.VALIGNMENT,
         ElementAlignment.translateVerticalAlignment(valignment)
     );
     element.setDataSource(template);
@@ -1891,11 +1890,11 @@ public class ItemFactory
       label.getStyle().setFontDefinitionProperty(new FontDefinition(font));
     }
     label.getStyle().setStyleProperty(
-        ElementStyleSheet.ALIGNMENT, 
+        ElementStyleSheet.ALIGNMENT,
         ElementAlignment.translateHorizontalAlignment(alignment)
     );
     label.getStyle().setStyleProperty(
-        ElementStyleSheet.VALIGNMENT, 
+        ElementStyleSheet.VALIGNMENT,
         ElementAlignment.translateVerticalAlignment(valign)
     );
     label.setDataSource(template);
