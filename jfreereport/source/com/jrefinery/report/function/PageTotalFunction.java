@@ -141,7 +141,7 @@ public class PageTotalFunction extends PageFunction
   {
     if (event.getState().isPrepareRun())
     {
-      this.page = new PageStorage(getStartPage());
+      this.page = new PageStorage(getStartPage() - 1);
       this.groupPages.clear();
     }
   }
