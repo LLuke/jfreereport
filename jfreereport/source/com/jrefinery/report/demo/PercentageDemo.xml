@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple"
+                        "http://jfreereport.sourceforge.net/report.dtd">
+
+<report name="Percentage Demo" pageformat="A4">
+
+    <!-- FUNCTIONS -->
+    <!-- Declares the functions used in this report. -->
+    <functions>
+
+        <function name="Percentage"
+                  class="com.jrefinery.report.function.ItemColumnQuotientFunction">
+            <properties>
+                <property name="dividend">A</property>
+                <property name="divisor">B</property>
+            </properties>
+        </function>
+
+    </functions>
+
+    <groups>
+    </groups>
+
+    <!-- REPORT HEADER -->
+    <!-- This band appears once at the beginning of the report. -->
+    <reportheader height="35"
+                  fontname="SansSerif" fontstyle="plain" fontsize="10">
+
+        <rectangle x="0" y="0" width="100%" height="30"
+                   color="#CCFFCC" weight="0"/>
+
+        <rectangle x="0" y="0" width="100%" height="30"
+                   color="#CCCCCC" weight="0" draw="true" fill="false" />
+
+        <label fontstyle="bold" fontsize="18"
+               x="0" y="7" width="100%" height="18"
+               alignment="center"
+            >Percentage Demo</label>
+
+    </reportheader>
+
+    <!-- THE ITEM BAND -->
+    <!-- This band is printed once for each row of data in the TableModel. -->
+    <items height="0"
+           fontname="SansSerif" fontstyle="plain" fontsize="9">
+
+        <number-field x="0" y="2" width="33%" height="10" alignment="center"
+                      fieldname="A" format="0.0"/>
+
+        <number-field x="33%" y="2" width="33%" height="10" alignment="center"
+                      fieldname="B" format="0.0"/>
+
+        <number-field x="66%" y="2" width="33%" height="10" alignment="center"
+                      fieldname="Percentage" format="0.000%"/>
+
+    </items>
+
+</report>
