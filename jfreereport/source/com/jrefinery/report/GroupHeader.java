@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: GroupHeader.java,v 1.9 2002/12/02 18:23:59 taqua Exp $
+ * $Id: GroupHeader.java,v 1.10 2002/12/06 17:17:31 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -36,7 +36,9 @@
  * 18-Feb-2002 : Changed height from Number --> float (DG);
  * 10-May-2002 : remove all compex constructors, added PageBreakBeforePrintProperty
  * 04-Jun-2002 : Documentation tags changed.
+ * 02-Dec-2002 : Moved local properties into the StyleSheet.
  * 06-Dec-2002 : Updated Javadocs (DG);
+ * 06-Dec-2002 : Updated the changelog, deprecated the local methods.
  */
 
 package com.jrefinery.report;
@@ -58,10 +60,14 @@ public class GroupHeader extends Band
   }
 
   /**
-   * Returns true if this group should trigger a pagebreak before its header is printed,
-   * false otherwise.
+   * Checks whether a pagebreak should be triggered before the group header is printed.
+   * This is a local and deprecated method to define the PAGEBREAK_BEFORE attribute of
+   * an Band.
    *
-   * @return true or false.
+   * @return true if this group should trigger a pagebreak before its header is printed,
+   * false otherwise
+   * @deprecated use the ElementStyleSheet to access this property as every band is able
+   * to request such a pageBreak
    */
   public boolean hasPageBreakBeforePrint ()
   {
@@ -72,6 +78,8 @@ public class GroupHeader extends Band
    * Defines whether this group should trigger a pagebreak before its header is printed.
    *
    * @param pageBreakBefore  the new trigger state
+   * @deprecated use the ElementStyleSheet to access this property as every band is able
+   * to request such a pageBreak
    */
   public void setPageBreakBeforePrint (boolean pageBreakBefore)
   {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: GroupFooter.java,v 1.6 2002/12/02 18:23:59 taqua Exp $
+ * $Id: GroupFooter.java,v 1.7 2002/12/06 17:17:24 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -37,7 +37,6 @@
  * 10-May-2002 : Removed all complex constructors
  * 04-Jun-2002 : Documentation tags changed.
  * 06-Dec-2002 : Updated Javadocs (DG);
- *
  */
 
 package com.jrefinery.report;

@@ -1,6 +1,6 @@
 /**
  * ========================================
- * JFreeReport : a free Java report library 
+ * JFreeReport : a free Java report library
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.16 2002/12/02 18:23:59 taqua Exp $
+ * $Id: Group.java,v 1.17 2002/12/06 17:17:22 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -40,8 +40,15 @@
  * 03-Jul-2002 : Serializable and cloneable, replaces own ReadOnlyList with standard implementation
  * 26-Jul-2002 : Introduced DataRowBackend as replacement for the raw data access
  * 05-Sep-2002 : Documentation
+<<<<<<< Group.java
+ * 09-Sep-2002 : Removed log messages
+ * 13-Sep-2002 : Ran checkstyle against the source
+ * 02-Dec-2002 : Removed To-Do item, caching of field-name to index pos is done.
+ * 06-Dec-2002 : Updated changelog, removed Iterator-usage for performance reasons
+=======
  * 06-Dec-2002 : Updated Javadocs (DG);
  *
+>>>>>>> 1.17
  */
 
 package com.jrefinery.report;
@@ -53,8 +60,10 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * A report group definition.  Reports can contain any number of (nested) groups.  The order of 
- * the fields is important.
+ * A report group.  Reports can contain any number of (nested) groups.
+ * The order of the fields is important. If the group does not contain
+ * any fields, the Group spans the whole report from the first to the last
+ * row.
  *
  * @see GroupList
  *
@@ -75,13 +84,14 @@ public class Group implements Serializable, Cloneable
   private GroupFooter footer;
 
   /**
-   * Constructs a group with no fields, and no header or footer.
+   * Constructs a group with no fields, and an empty header and footer.
    */
-  public Group ()
+  public Group()
   {
-    fields = new ArrayList ();
-    setFooter (new GroupFooter ());
-    setHeader (new GroupHeader ());
+    name = "anonymousGroup@" + hashCode();
+    fields = new ArrayList();
+    setFooter(new GroupFooter());
+    setHeader(new GroupHeader());
   }
 
   /**
@@ -90,11 +100,11 @@ public class Group implements Serializable, Cloneable
    *
    * @param name  the group name (null not permitted).
    */
-  public void setName (String name)
+  public void setName(String name)
   {
     if (name == null)
     {
-      throw new NullPointerException ("Name must not be null");
+      throw new NullPointerException("Name must not be null");
     }
 
     this.name = name;
@@ -105,7 +115,7 @@ public class Group implements Serializable, Cloneable
    *
    * @return the group name.
    */
-  public String getName ()
+  public String getName()
   {
     return this.name;
   }
@@ -118,7 +128,7 @@ public class Group implements Serializable, Cloneable
    *
    * @return the group header.
    */
-  public GroupHeader getHeader ()
+  public GroupHeader getHeader()
   {
     return header;
   }
@@ -126,13 +136,14 @@ public class Group implements Serializable, Cloneable
   /**
    * Sets the header for the group.
    *
-   * @param header  the header (null not permitted).
+   * @param header  the header.
+   * @throws NullPointerException if the given header is null
    */
-  public void setHeader (GroupHeader header)
+  public void setHeader(GroupHeader header)
   {
     if (header == null)
     {
-      throw new NullPointerException ("Header must not be null");
+      throw new NullPointerException("Header must not be null");
     }
     this.header = header;
   }
@@ -142,7 +153,7 @@ public class Group implements Serializable, Cloneable
    *
    * @return the footer.
    */
-  public GroupFooter getFooter ()
+  public GroupFooter getFooter()
   {
     return footer;
   }
@@ -152,28 +163,32 @@ public class Group implements Serializable, Cloneable
    *
    * @param footer  the footer (null not permitted).
    */
-  public void setFooter (GroupFooter footer)
+  public void setFooter(GroupFooter footer)
   {
     if (footer == null)
     {
-      throw new NullPointerException ("The footer must not be null");
+      throw new NullPointerException("The footer must not be null");
     }
     this.footer = footer;
   }
 
   /**
-   * Sets the fields for this group. The given list should contain Strings defining the
-   * needed fields from the data model.
+   * Sets the fields for this group. The given list must contain Strings defining the
+   * needed fields from the DataRow. Don't reference Function-Fields here, functions are
+   * not supported in th groupfield definition.
    *
    * @param c  the list containing strings.
+   * @throws NullPointerException if the given list is null or the list contains null-values
    */
-  public void setFields (List c)
+  public void setFields(List c)
   {
-    fields.clear ();
-    Iterator it = c.iterator ();
-    while (it.hasNext ())
+    if (c == null) throw new NullPointerException();
+    fields.clear();
+    Iterator it = c.iterator();
+    while (it.hasNext())
     {
-      addField (it.next ().toString ());
+      String field = (String) it.next();
+      addField(field);
     }
   }
 
@@ -182,10 +197,12 @@ public class Group implements Serializable, Cloneable
    * report's TableModel.
    *
    * @param name  the field name.
+   * @throws NullPointerException if the name is null
    */
-  public void addField (String name)
+  public void addField(String name)
   {
-    fields.add (name);
+    if (name == null) throw new NullPointerException();
+    fields.add(name);
   }
 
   /**
@@ -193,9 +210,9 @@ public class Group implements Serializable, Cloneable
    *
    * @return a list (unmodifiable) of fields for the group.
    */
-  public List getFields ()
+  public List getFields()
   {
-    return Collections.unmodifiableList (fields);
+    return Collections.unmodifiableList(fields);
   }
 
   /**
@@ -206,7 +223,7 @@ public class Group implements Serializable, Cloneable
    *
    * @return true, if both objects are null or both objects are equal, false otherwise.
    */
-  private boolean secureEquals (Object item1, Object item2)
+  private boolean secureEquals(Object item1, Object item2)
   {
     if ((item1 == null) && (item2 == null))
     {
@@ -220,7 +237,7 @@ public class Group implements Serializable, Cloneable
     {
       return false;
     }
-    return item1.equals (item2);
+    return item1.equals(item2);
   }
 
   /**
@@ -230,12 +247,12 @@ public class Group implements Serializable, Cloneable
    *
    * @throws CloneNotSupportedException should never be thrown.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    Group g = (Group) super.clone ();
-    g.fields = (ArrayList) fields.clone ();
-    g.footer = (GroupFooter) footer.clone ();
-    g.header = (GroupHeader) header.clone ();
+    Group g = (Group) super.clone();
+    g.fields = (ArrayList) fields.clone();
+    g.footer = (GroupFooter) footer.clone();
+    g.header = (GroupHeader) header.clone();
     return g;
   }
 
@@ -248,29 +265,31 @@ public class Group implements Serializable, Cloneable
    *
    * @return A flag indicating whether or not the current item is the last in its group.
    */
-  public boolean isLastItemInGroup (DataRowBackend lastDataRow, DataRowBackend currentDataRow)
+  public boolean isLastItemInGroup(DataRowBackend lastDataRow, DataRowBackend currentDataRow)
   {
     // return true if this is the last row in the model.
-    if (currentDataRow.isLastRow ())
+    if (currentDataRow.isLastRow())
     {
       return true;
     }
     else
-    { // compare item and item+1, if any field differs, then item==last in group
+    {
+      // compare item and item+1, if any field differs, then item==last in group
       boolean last = false;
-      Iterator iterator = fields.iterator ();
-      while (iterator.hasNext ())
+      String[] fieldArray = (String[]) fields.toArray(new String[fields.size()]);
+
+      for (int i = 0; i < fieldArray.length; i++)
       {
-        String field = (String) iterator.next ();
-        int column = currentDataRow.findColumn (field);
+        String field = fieldArray[i];
+        int column = currentDataRow.findColumn(field);
         if (column == -1)
         {
           continue;
         }
 
-        Object item1 = lastDataRow.get (column);
-        Object item2 = currentDataRow.get (column);
-        if (!(secureEquals (item1, item2)))
+        Object item1 = lastDataRow.get(column);
+        Object item2 = currentDataRow.get(column);
+        if (!(secureEquals(item1, item2)))
         {
           return true;
         }
@@ -279,4 +298,34 @@ public class Group implements Serializable, Cloneable
     }
   }
 
+  /**
+   * Compares this group with an other object.
+   * @param o the object which should be compared with this group
+   * @return true, if the given object is a group with the same name and fields,
+   * false otherwise
+   */
+  public boolean equals(Object o)
+  {
+    if (this == o) return true;
+    if (!(o instanceof Group)) return false;
+
+    final Group group = (Group) o;
+
+    if (fields != null ? !fields.equals(group.fields) : group.fields != null) return false;
+    if (name != null ? !name.equals(group.name) : group.name != null) return false;
+
+    return true;
+  }
+
+  /**
+   * Calculates the hashcode for this group.
+   * @return the hashcode.
+   */
+  public int hashCode()
+  {
+    int result;
+    result = (name != null ? name.hashCode() : 0);
+    result = 29 * result + (fields != null ? fields.hashCode() : 0);
+    return result;
+  }
 }
