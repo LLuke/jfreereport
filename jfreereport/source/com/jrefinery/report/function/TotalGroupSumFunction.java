@@ -30,6 +30,7 @@
  * 23-Jun-2002 : Inital version
  * 17-Jul-2002 : Handle empty data source without a crashing
  * 18-Jul-2002 : Handle out-of-bounds dataquery to the tablemodel
+ * 21-Jul-2002 : Corrected the out-of-bounds constraint
  */
 package com.jrefinery.report.function;
 
@@ -166,7 +167,7 @@ public class TotalGroupSumFunction extends AbstractFunction
     int row = event.getState ().getCurrentDataItem ();
 
     // Handle the case when the tablemodel contains no rows
-    if (data.getRowCount () >= row) return;
+    if (data.getRowCount () <= row) return;
 
     Object fieldValue = null;
     for (int c = 0; c < data.getColumnCount (); c++)

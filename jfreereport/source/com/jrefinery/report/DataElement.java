@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DataElement.java,v 1.9 2002/07/03 18:49:45 taqua Exp $
+ * $Id: DataElement.java,v 1.10 2002/07/20 20:48:47 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -114,11 +114,8 @@ public abstract class DataElement extends TextElement
   public Object clone () throws CloneNotSupportedException
   {
     DataElement e = (DataElement) super.clone();
-    if ((e.getDataSource() instanceof ReportDataSource) == false)
-    {
-      throw new CloneNotSupportedException("Modified data element is not clonable");
-    }
-    e.fieldsource = (ReportDataSource) e.getDataSource();
+    e.fieldsource = (ReportDataSource) fieldsource.clone();
+    e.setDataSource(fieldsource);
     return e;
   }
 

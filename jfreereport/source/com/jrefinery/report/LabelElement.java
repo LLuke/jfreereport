@@ -36,6 +36,7 @@
  * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
  *               TextElements instead which get different filters attached.
  * 04-Jun-2002 : Documentation
+ * 21-Jul-2002 : Bug fixed: Label did not handle null-labels correctly
  */
 
 package com.jrefinery.report;
@@ -74,7 +75,7 @@ public class LabelElement extends TextElement
    */
   public String getLabel ()
   {
-    return String.valueOf (label.getValue ());
+    return (String) (getValue ());
   }
 
   /**

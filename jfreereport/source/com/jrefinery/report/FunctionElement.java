@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionElement.java,v 1.7 2002/07/03 18:49:45 taqua Exp $
+ * $Id: FunctionElement.java,v 1.8 2002/07/20 20:48:47 taqua Exp $
  *
  * Changes
  * -------
@@ -101,11 +101,8 @@ public abstract class FunctionElement extends TextElement
   public Object clone () throws CloneNotSupportedException
   {
     FunctionElement e = (FunctionElement) super.clone();
-    if ((e.getDataSource() instanceof FunctionDataSource) == false)
-    {
-      throw new CloneNotSupportedException("Modified function element is not clonable");
-    }
-    e.functionsource = (FunctionDataSource) e.getDataSource();
+    e.functionsource = (FunctionDataSource) functionsource.clone();
+    e.setDataSource(e.functionsource);
     return e;
   }
 }

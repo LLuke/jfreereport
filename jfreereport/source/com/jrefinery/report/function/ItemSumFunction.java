@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.12 2002/07/18 18:47:27 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.13 2002/07/20 20:48:47 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
  * 23-Jun-2002 : Documentation
  * 17-Jul-2002 : Handle empty data source without a crashing
  * 18-Jul-2002 : Handle out-of-bounds dataquery to the tablemodel
+ * 21-Jul-2002 : Corrected the out-of-bounds constraint
  */
 
 package com.jrefinery.report.function;
@@ -220,7 +221,11 @@ public class ItemSumFunction extends AbstractFunction
     int row = event.getState().getCurrentDataItem();
 
     // Handle the case when the tablemodel contains no rows
-    if (data.getRowCount() >= row) return;
+    if (row >= data.getRowCount())
+    {
+      Log.debug ("Out of bounds");
+      return;
+    }
 
     Object fieldValue = null;
     for (int c = 0; c < data.getColumnCount (); c++)
@@ -233,6 +238,7 @@ public class ItemSumFunction extends AbstractFunction
 
     if (fieldValue == null)
     {
+      Log.debug ("NullValue in function");
       return;
     }
     datasource.setValue(fieldValue);

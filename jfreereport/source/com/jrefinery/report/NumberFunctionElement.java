@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFunctionElement.java,v 1.6 2002/07/02 20:33:08 taqua Exp $
+ * $Id: NumberFunctionElement.java,v 1.7 2002/07/03 18:49:46 taqua Exp $
  *
  * Changes
  * -------
@@ -37,12 +37,14 @@
  * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
  *               TextElements instead which get different filters attached.
  * 04-Jun-2002 : Documentation.
+ * 21-Jul-2002 : Cloning-Bug fixed.
  */
 
 package com.jrefinery.report;
 
 import com.jrefinery.report.filter.NumberFormatFilter;
 import com.jrefinery.report.filter.DataFilter;
+import com.jrefinery.report.util.Log;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -108,12 +110,14 @@ public class NumberFunctionElement extends FunctionElement
 
   public Object clone () throws CloneNotSupportedException
   {
-    NumberFunctionElement e = (NumberFunctionElement) super.clone();
-    if ((e.getDataSource() instanceof NumberFormatFilter) == false)
+    if ((getDataSource() instanceof NumberFormatFilter) == false)
     {
       throw new CloneNotSupportedException("Modified function element is not clonable");
     }
-    e.filter = (NumberFormatFilter) e.getDataSource();
+    NumberFunctionElement e = (NumberFunctionElement) super.clone();
+    e.filter = (NumberFormatFilter) filter.clone();
+    e.setDataSource(filter);
+    e.filter.setDataSource(getFunctionDataSource());
     return e;
   }
 

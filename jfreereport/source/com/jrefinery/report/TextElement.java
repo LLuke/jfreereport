@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: TextElement.java,v 1.13 2002/07/02 20:33:08 taqua Exp $
+ * $Id: TextElement.java,v 1.14 2002/07/02 20:55:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -106,7 +106,7 @@ public class TextElement extends Element
   {
     stringfilter = new StringFilter ();
     setAlignment (ElementConstants.LEFT);
-    setNullString ("-");
+    setNullString (null);
   }
 
   /**
@@ -210,7 +210,7 @@ public class TextElement extends Element
    */
   public void setNullString (String s)
   {
-    String nstring = (s == null) ? "null" : s;
+    String nstring = (s == null) ? "-" : s;
     stringfilter.setNullValue (nstring);
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: NumberElement.java,v 1.7 2002/07/02 20:33:08 taqua Exp $
+ * $Id: NumberElement.java,v 1.8 2002/07/03 18:49:45 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -37,6 +37,7 @@
  * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
  *               TextElements instead which get different filters attached.
  * 04-Jun-2002 : Documentation.
+ * 21-Jul-2002 : Cloning Bug fixed
  */
 
 package com.jrefinery.report;
@@ -111,11 +112,9 @@ public class NumberElement extends DataElement
   public Object clone () throws CloneNotSupportedException
   {
     NumberElement e = (NumberElement) super.clone();
-    if ((e.getDataSource() instanceof NumberFormatFilter) == false)
-    {
-      throw new CloneNotSupportedException("Modified function element is not clonable");
-    }
-    e.formatter = (NumberFormatFilter) e.getDataSource();
+    e.formatter = (NumberFormatFilter) formatter.clone();
+    e.setDataSource(formatter);
+    e.formatter.setDataSource(getReportDataSource());
     return e;
   }
 
