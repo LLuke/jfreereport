@@ -11,7 +11,6 @@ public class JFreeReportResources_de extends JFreeReportResources
   /**
    * Returns the array of strings in the resource bundle.
    */
-
   public Object[][] getContents()
   {
     return contents;
@@ -39,6 +38,12 @@ public class JFreeReportResources_de extends JFreeReportResources
       { "action.about.name", "Über..." }, 
       { "action.about.description", "Informationen über JFreeReport" }, 
       { "action.about.mnemonic", new Integer(KeyEvent.VK_A) },
+
+      { "action.firstpage.name", "Pos1"},
+      { "action.firstpage.description", "gehe zum Start"},
+
+      { "action.lastpage.name", "Ende"},
+      { "action.lastpage.description", "gehe zum Ende"},
 
       { "preview-frame.title", "Seitenansicht" },
 
