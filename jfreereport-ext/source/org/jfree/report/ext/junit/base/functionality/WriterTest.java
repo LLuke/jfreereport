@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WriterTest.java,v 1.3 2003/09/09 10:27:58 taqua Exp $
+ * $Id: WriterTest.java,v 1.4 2003/11/01 19:57:03 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,7 +47,6 @@ import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportBuilderHints;
 import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.report.modules.parser.ext.ExtReportHandler;
 import org.jfree.report.modules.parser.extwriter.ReportConverter;
 import org.jfree.report.modules.parser.extwriter.ReportWriter;
 import org.jfree.report.util.Log;
@@ -104,10 +103,10 @@ public class WriterTest extends TestCase
         {
           continue;
         }
-        if (type.equals(ExtReportHandler.EXT_PARSER_TYPE_HINT_VALUE) == false)
-        {
-          continue;
-        }
+//        if (type.equals(ExtReportHandler.EXT_PARSER_TYPE_HINT_VALUE) == false)
+//        {
+//          continue;
+//        }
       }
       catch (Exception e)
       {

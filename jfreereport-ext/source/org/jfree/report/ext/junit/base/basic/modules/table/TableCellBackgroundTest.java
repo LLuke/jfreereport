@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellBackgroundTest.java,v 1.2.2.1 2004/04/06 16:52:36 taqua Exp $
+ * $Id: TableCellBackgroundTest.java,v 1.3 2005/01/31 17:16:34 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,7 +39,6 @@
 package org.jfree.report.ext.junit.base.basic.modules.table;
 
 import java.awt.Color;
-import java.awt.geom.Rectangle2D;
 
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReportBoot;
@@ -47,6 +46,7 @@ import org.jfree.report.content.EmptyContent;
 import org.jfree.report.ext.junit.base.basic.style.DebugStyleSheet;
 import org.jfree.report.modules.output.table.base.TableCellBackground;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.util.geom.StrictBounds;
 
 public class TableCellBackgroundTest extends TestCase
 {
@@ -64,11 +64,11 @@ public class TableCellBackgroundTest extends TestCase
     JFreeReportBoot.getInstance().start();
 
     final TableCellBackground bg1 = createBackground
-      (new Rectangle2D.Float(0,0, 500, 20), Color.black);
+      (new StrictBounds(0,0, 500, 20), Color.black);
     final TableCellBackground bgBottom = createBackground
-      (new Rectangle2D.Float(0,20, 500, 0), Color.black);
+      (new StrictBounds(0,20, 500, 0), Color.black);
     final TableCellBackground bgRight = createBackground
-      (new Rectangle2D.Float(500, 0, 0, 20), Color.black);
+      (new StrictBounds(500, 0, 0, 20), Color.black);
 
     bgRight.setBorderLeft(Color.black, 10);
     bgBottom.setBorderTop(Color.black, 10);
@@ -87,9 +87,9 @@ public class TableCellBackgroundTest extends TestCase
     JFreeReportBoot.getInstance().start();
 
     final TableCellBackground bgLineBottom =
-      createBackground(new Rectangle2D.Float(0, 536, 592, 0), Color.black);
+      createBackground(new StrictBounds(0, 536, 592, 0), Color.black);
     final TableCellBackground bgBackground =
-      createBackground(new Rectangle2D.Float(0, 526, 592, 10), Color.black);
+      createBackground(new StrictBounds(0, 526, 592, 10), Color.black);
 
     bgLineBottom.setBorderTop(Color.black, 10);
 
@@ -104,12 +104,12 @@ public class TableCellBackgroundTest extends TestCase
     JFreeReportBoot.getInstance().start();
 
     final TableCellBackground bgUnion =
-      createBackground(new Rectangle2D.Float(0, 126, 592, 10), Color.green);
+      createBackground(new StrictBounds(0, 126, 592, 10), Color.green);
 
     final TableCellBackground bgLineTop =
-      createBackground(new Rectangle2D.Float(0, 126, 592, 0), Color.red);
+      createBackground(new StrictBounds(0, 126, 592, 0), Color.red);
     final TableCellBackground bgLineBottom =
-      createBackground(new Rectangle2D.Float(0, 136, 592, 0), Color.black);
+      createBackground(new StrictBounds(0, 136, 592, 0), Color.black);
 
     bgLineTop.setBorderTop(Color.red, 10);
     bgLineBottom.setBorderTop(Color.black, 10);
@@ -127,7 +127,7 @@ public class TableCellBackgroundTest extends TestCase
   }
 
   private TableCellBackground createBackground
-          (final Rectangle2D bounds, final Color color)
+          (final StrictBounds bounds, final Color color)
   {
 
     final ElementStyleSheet es = new DebugStyleSheet("Name");
@@ -143,13 +143,13 @@ public class TableCellBackgroundTest extends TestCase
     JFreeReportBoot.getInstance().start();
 
     final TableCellBackground bg1 = createBackground
-      (new Rectangle2D.Float(0,0, 500, 20), Color.black);
+      (new StrictBounds(0,0, 500, 20), Color.black);
     bg1.setBorderLeft(Color.green, 11);
     bg1.setBorderTop(Color.red, 9);
 
     // join bg1 with a bottom cell (row + 1)
     final TableCellBackground bgBottom = createBackground
-      (new Rectangle2D.Float(0,20, 500, 0), Color.black);
+      (new StrictBounds(0,20, 500, 0), Color.black);
     bgBottom.setBorderLeft(Color.green, 11);
     bgBottom.setBorderBottom(Color.black, 10);
 

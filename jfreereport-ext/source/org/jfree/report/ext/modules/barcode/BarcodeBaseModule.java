@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BarcodeBaseModule.java,v 1.1 2004/06/26 16:09:26 mimil Exp $
+ * $Id: BarcodeBaseModule.java,v 1.2 2005/01/31 17:16:37 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -61,7 +61,7 @@ public class BarcodeBaseModule extends AbstractModule
    * @throws org.jfree.base.modules.ModuleInitializeException
    *          if an error ocurred while initializing the module.
    */
-  public void initialize (SubSystem subSystem)
+  public void initialize (final SubSystem subSystem)
           throws ModuleInitializeException
   {
   }

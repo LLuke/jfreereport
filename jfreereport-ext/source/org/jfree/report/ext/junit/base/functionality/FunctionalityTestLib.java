@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionalityTestLib.java,v 1.6 2003/11/01 19:57:03 taqua Exp $
+ * $Id: FunctionalityTestLib.java,v 1.7 2005/01/31 17:16:36 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -95,14 +95,14 @@ public class FunctionalityTestLib
     new ReportTest ("/org/jfree/report/demo/shape-and-drawable.xml", new DefaultTableModel()),
     new ReportTest ("/org/jfree/report/demo/swing-icons.xml", new SwingIconsDemoTableModel()),
     new ReportTest ("/org/jfree/report/demo/cards/usercards.xml", CardDemo.createSimpleDemoModel()),
-    new ReportTest 
-      ("/org/jfree/report/modules/misc/referencedoc/ObjectReferenceReport.xml", 
+    new ReportTest
+      ("/org/jfree/report/modules/misc/referencedoc/ObjectReferenceReport.xml",
       ObjectReferenceGenerator.createData()),
-    new ReportTest 
-      ("/org/jfree/report/modules/misc/referencedoc/StyleKeyReferenceReport.xml", 
+    new ReportTest
+      ("/org/jfree/report/modules/misc/referencedoc/StyleKeyReferenceReport.xml",
       StyleKeyReferenceGenerator.createData()),
-    new ReportTest 
-      ("/org/jfree/report/modules/misc/referencedoc/DataSourceReferenceReport.xml", 
+    new ReportTest
+      ("/org/jfree/report/modules/misc/referencedoc/DataSourceReferenceReport.xml",
       DataSourceReferenceGenerator.createData())
   };
 
@@ -262,25 +262,24 @@ public class FunctionalityTestLib
     }
   }
 
-  public static JFreeReport createReport (ReportTest reportDefinition)
+  public static JFreeReport createReport (final ReportTest reportDefinition)
   {
     final URL url = reportDefinition.getClass().getResource(reportDefinition.getReportDefinition());
     if (url == null)
     {
       throw new IllegalStateException("URL is null.");
     }
-    JFreeReport report = null;
     try
     {
-      report = ReportGenerator.getInstance().parseReport(url);
+      final JFreeReport report = ReportGenerator.getInstance().parseReport(url);
       report.setData(reportDefinition.getReportTableModel());
+      return report;
     }
     catch (Exception e)
     {
       Log.debug("Failed to parse " + url, e);
       throw new IllegalStateException("Failed to parse");
     }
-    return report;
   }
 
   public static class ReportTest

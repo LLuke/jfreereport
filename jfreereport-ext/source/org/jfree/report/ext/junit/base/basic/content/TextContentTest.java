@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentTest.java,v 1.5 2003/11/01 19:57:02 taqua Exp $
+ * $Id: TextContentTest.java,v 1.6 2005/01/31 17:16:31 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,8 +42,9 @@ import java.awt.geom.Rectangle2D;
 
 import junit.framework.TestCase;
 import org.jfree.report.TextElement;
-import org.jfree.report.content.Content;
+import org.jfree.report.content.ContentContainer;
 import org.jfree.report.content.DefaultContentFactory;
+import org.jfree.report.content.EmptyContent;
 import org.jfree.report.content.TextContent;
 import org.jfree.report.content.TextContentFactoryModule;
 import org.jfree.report.content.TextLine;
@@ -52,6 +53,8 @@ import org.jfree.report.filter.StaticDataSource;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.util.ElementLayoutInformation;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictGeomUtility;
 
 public class TextContentTest extends TestCase
 {
@@ -91,6 +94,8 @@ public class TextContentTest extends TestCase
     }
   }
 
+  private static final long STRICT_FACTOR = StrictGeomUtility.toInternalValue(1);
+
   public TextContentTest()
   {
   }
@@ -112,11 +117,11 @@ public class TextContentTest extends TestCase
     df.addModule(new TextContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli = 
-      new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
-    assertNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+      new ElementLayoutInformation(new StrictBounds(0, 0, 10 * STRICT_FACTOR, 10 * STRICT_FACTOR));
+    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
 
-    eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 0, 0));
-    assertNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    eli = new ElementLayoutInformation(new StrictBounds(0, 0, 0, 0));
+    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
   }
 
   public void testInvisibleContent() throws Exception
@@ -126,25 +131,34 @@ public class TextContentTest extends TestCase
     final DefaultContentFactory df = new DefaultContentFactory();
     df.addModule(new TextContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
-    ElementLayoutInformation eli = 
-      new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
-    assertNotNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
 
-    eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 0, 0));
-    assertNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    ElementLayoutInformation eli =
+      new ElementLayoutInformation(new StrictBounds(0, 0, 10 * STRICT_FACTOR, 10 * STRICT_FACTOR));
+    assertNotSame(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+
+    eli = new ElementLayoutInformation(new StrictBounds(0, 0, 0, 0));
+    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
   }
 
   public void testLeadingWhiteSpaces () throws Exception
   {
     final String textLeadWhite = "  abc\n  abc";
+    final StrictBounds inputBounds = new StrictBounds (0,0, StrictGeomUtility.toInternalValue(100),
+                            StrictGeomUtility.toInternalValue(10));
+
     final TextContent content = new TextContent
-        (textLeadWhite, 10, new Rectangle2D.Float (0,0, 100, 10),
+        (textLeadWhite, StrictGeomUtility.toInternalValue(10), inputBounds,
             new DebugSizeCalculator(10, 10), "..", false);
-    assertEquals(new Rectangle2D.Float(0,0, 50, 10), content.getMinimumContentSize());
+
+    final StrictBounds expectedResultBounds =
+            new StrictBounds(0,0, StrictGeomUtility.toInternalValue(50),
+                StrictGeomUtility.toInternalValue(10));
+    assertEquals(expectedResultBounds, content.getMinimumContentSize());
 
     final TextParagraph tp = (TextParagraph) content.getContentPart(0);
     final TextLine tl = (TextLine) tp.getContentPart(0);
-    assertEquals(new Rectangle2D.Float(0,0, 50, 10), tl.getMinimumContentSize());
+
+    assertEquals(expectedResultBounds, tl.getMinimumContentSize());
     assertEquals(tl.getContent(), "  abc");
   }
 
@@ -152,12 +166,12 @@ public class TextContentTest extends TestCase
   {
     final String content = "123 thousand people";
     final SizeCalculator ds = new DebugSizeCalculator(10, 10);
-    final TextParagraph tp = new TextParagraph(ds, 10, "..", false);
-    tp.setContent(content, 0, 0, 100, 10);
+    final TextParagraph tp = new TextParagraph(ds, 10 * STRICT_FACTOR, "..", false);
+    tp.setContent(content, 0, 0, 100*STRICT_FACTOR, 10 * STRICT_FACTOR);
 
     final TextLine tl = (TextLine) tp.getContentPart(0);
     assertEquals("123 thou..", tl.getContent());
-    assertEquals(new Rectangle2D.Float(0,0, 100, 10), tl.getBounds());
+    assertEquals(new StrictBounds(0,0, STRICT_FACTOR * 100, STRICT_FACTOR * 10), tl.getBounds());
   }
 
   public static void testLineBreaking1()
@@ -182,16 +196,16 @@ public class TextContentTest extends TestCase
     };
 
     final TextParagraph tp = new TextParagraph
-        (new DebugSizeCalculator(10, 10), 10, "..", false);
-    tp.setContent(content, 0, 0, 345, 5000);
-    assertEquals(new Rectangle2D.Float(0,0, 330, 100), tp.getMinimumContentSize());
+        (new DebugSizeCalculator(10, 10), 10 * STRICT_FACTOR, "..", false);
+    tp.setContent(content, 0, 0, 345 * STRICT_FACTOR, 5000 * STRICT_FACTOR);
+    assertEquals(new StrictBounds(0,0, STRICT_FACTOR * 330, STRICT_FACTOR * 100), tp.getMinimumContentSize());
 
     for (int i = 0; i < tp.getContentPartCount(); i++)
     {
       final TextLine tl = (TextLine) tp.getContentPart(i);
-      assertTrue(tl.getBounds().getWidth() < 345);
-      assertTrue(tl.getBounds().getY() == (i * 10));
-      assertTrue(tl.getBounds().getHeight() == (10));
+      assertTrue(tl.getBounds().getWidth() < 345 * STRICT_FACTOR);
+      assertTrue(tl.getBounds().getY() == (i * 10 * STRICT_FACTOR));
+      assertTrue(tl.getBounds().getHeight() == (10 * STRICT_FACTOR));
       assertEquals(results[i], tl.getContent());
     }
   }
@@ -210,19 +224,21 @@ public class TextContentTest extends TestCase
       "middle and some of them will be missing all ",
       "together."
     };
-    Content tc = new TextContent
-        (content, 10, new Rectangle2D.Float(0, 0, 500, 5000),
+    final StrictBounds bounds =
+            new StrictBounds (0, 0, STRICT_FACTOR * 500, STRICT_FACTOR * 500);
+    ContentContainer tc = new TextContent (content, 10 * STRICT_FACTOR, bounds,
             new DebugSizeCalculator(10, 10), "..", false);
-    tc = tc.getContentForBounds(tc.getMinimumContentSize());
-//    final Content tp = tc.getContentPart(0);
-//    for (int i = 0; i < tp.getContentPartCount(); i++)
-//    {
-//      final TextLine tl = (TextLine) tp.getContentPart(i);
-//      assertTrue(tl.getBounds().getWidth() <= 500);
-//      assertTrue(tl.getBounds().getY() == (i * 10));
-//      assertTrue(tl.getBounds().getHeight() == (10));
-//      assertEquals(results[i], tl.getContent());
-//    }
+    tc = (ContentContainer) tc.getContentForBounds(tc.getMinimumContentSize());
+
+    final ContentContainer tp = (ContentContainer) tc.getContentPart(0);
+    for (int i = 0; i < tp.getContentPartCount(); i++)
+    {
+      final TextLine tl = (TextLine) tp.getContentPart(i);
+      assertTrue(tl.getBounds().getWidth() <= 500 * STRICT_FACTOR);
+      assertTrue(tl.getBounds().getY() == (i * 10 * STRICT_FACTOR));
+      assertTrue(tl.getBounds().getHeight() == (10 * STRICT_FACTOR));
+      assertEquals(results[i], tl.getContent());
+    }
 
     assertEquals(tc.getContentForBounds(tc.getMinimumContentSize()).getBounds(),
         tc.getMinimumContentSize());
@@ -234,29 +250,30 @@ public class TextContentTest extends TestCase
     final String content = 
         "Thisisareallylongword, noone thought thatawordcanbethatlong, " +
         "itwontfitonaline, but these words do, so heres the test!";
-    Content tc = new TextContent(content, 10, new Rectangle2D.Float(0, 0, 200, 5000),
+    ContentContainer tc = new TextContent(content, 10,
+            new StrictBounds(0, 0, STRICT_FACTOR * 200, STRICT_FACTOR * 5000),
         new DebugSizeCalculator(10, 10),"..", false);
 
     final String[] results = {
-      "Thisisareallylongwor",
-      "d, noone thought ",
-      "thatawordcanbethatlo",
-      "ng, ",
-      "itwontfitonaline, ",
-      "but these words do, ",
-      "so heres the test!"
+      "Thisisareallylongwor", // 20 chars
+      "d, noone thought ",    // 17 chars
+      "thatawordcanbethatlo", // 20
+      "ng, ",                 // 4
+      "itwontfitonaline, ",   // 18
+      "but these words do, ", // 20
+      "so heres the test!"    // 18
     };
-    tc = tc.getContentForBounds(tc.getMinimumContentSize());
-//    final Content tp = tc.getContentPart(0);
-//    for (int i = 0; i < tp.getContentPartCount(); i++)
-//    {
-//      final TextLine tl = (TextLine) tp.getContentPart(i);
-//      assertTrue(tl.getBounds().getWidth() <= 500);
-//      assertTrue(tl.getBounds().getY() == (i * 10));
-//      assertTrue(tl.getBounds().getHeight() == (10));
-//      assertEquals(results[i], tl.getContent());
-//    }
-//    assertEquals(new Rectangle2D.Float(0,0, 200, 70), tp.getMinimumContentSize());
+    tc = (ContentContainer) tc.getContentForBounds(tc.getMinimumContentSize());
+    final ContentContainer tp = (ContentContainer) tc.getContentPart(0);
+    for (int i = 0; i < tp.getContentPartCount(); i++)
+    {
+      final TextLine tl = (TextLine) tp.getContentPart(i);
+      assertTrue(tl.getBounds().getWidth() <= 200 * STRICT_FACTOR);
+      assertTrue(tl.getBounds().getY() == (i * 10 * STRICT_FACTOR));
+      assertTrue(tl.getBounds().getHeight() == (10 * STRICT_FACTOR));
+      assertEquals(results[i], tl.getContent());
+    }
+    assertEquals(new StrictBounds(0,0, STRICT_FACTOR * 200, STRICT_FACTOR * 70), tp.getMinimumContentSize());
   }
 
 }

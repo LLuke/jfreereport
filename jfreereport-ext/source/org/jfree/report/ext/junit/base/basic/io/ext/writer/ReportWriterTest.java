@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriterTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
+ * $Id: ReportWriterTest.java,v 1.4 2003/11/01 19:57:02 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -72,7 +72,7 @@ public class ReportWriterTest extends TestCase
   private ReportWriter createWriter()
   {
     final JFreeReport report = new JFreeReport();
-    ReportConfiguration repConf = new ReportConfiguration(report.getReportConfiguration());
+    final ReportConfiguration repConf = new ReportConfiguration(report.getReportConfiguration());
     repConf.setConfigProperty
         (Parser.CONTENTBASE_KEY, "file://tmp/");
 

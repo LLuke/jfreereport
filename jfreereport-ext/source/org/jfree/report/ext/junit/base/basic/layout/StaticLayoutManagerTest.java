@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManagerTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
+ * $Id: StaticLayoutManagerTest.java,v 1.4 2003/11/01 19:57:02 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,6 +45,8 @@ import java.awt.geom.Rectangle2D;
 
 import junit.framework.TestCase;
 import org.jfree.report.Band;
+import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.layout.DefaultLayoutSupport;
@@ -122,37 +124,40 @@ public class StaticLayoutManagerTest extends TestCase
     return header;
   }
 
+  public static final long STRICT_FACTOR = StrictGeomUtility.toInternalValue(1);
+
   public void testBandInBandLayout ()
   {
     final Band band = createBand();
     band.setLayout(new StaticLayoutManager());
-    BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500, 500);
+    BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(),
+            500 * STRICT_FACTOR, 500 * STRICT_FACTOR);
 
-    assertEquals(new Rectangle2D.Float(0,0, 500, 100),
+    assertEquals(new StrictBounds(0,0, 500 * STRICT_FACTOR, 100 * STRICT_FACTOR),
         BandLayoutManagerUtil.getBounds(band, null));
 
     final Band bandA1 = (Band) band.getElement("Band-A1");
     final Band bandA2 = (Band) band.getElement("Band-A2");
 
-    assertEquals(new Rectangle2D.Float(0,0, 100, 100),
+    assertEquals(new StrictBounds(0,0, 100 * STRICT_FACTOR, 100 * STRICT_FACTOR),
         BandLayoutManagerUtil.getBounds(bandA1, null));
 
-    assertEquals(new Rectangle2D.Float(0,50, 50, 50),
+    assertEquals(new StrictBounds(0,50 * STRICT_FACTOR, 50 * STRICT_FACTOR, 50 * STRICT_FACTOR),
         BandLayoutManagerUtil.getBounds(bandA1.getElement("Band-A1-B1"), null));
 
-    assertEquals(new Rectangle2D.Float(50,0, 50, 50),
+    assertEquals(new StrictBounds(50 * STRICT_FACTOR,0, 50 * STRICT_FACTOR, 50 * STRICT_FACTOR),
         BandLayoutManagerUtil.getBounds(bandA1.getElement("Band-A1-B2"), null));
 
-    assertEquals(new Rectangle2D.Float(250,0, 250, 100),
+    assertEquals(new StrictBounds(250 * STRICT_FACTOR,0, 250 * STRICT_FACTOR, 100 * STRICT_FACTOR),
         BandLayoutManagerUtil.getBounds(bandA2, null));
 
     // Band is relative to the parent ...
     // parent starts at 250, and A2-B1 on pos 0 within the parent ...
-    assertEquals(new Rectangle2D.Float(0, 50, 125, 50),
+    assertEquals(new StrictBounds(0, 50 * STRICT_FACTOR, 125 * STRICT_FACTOR, 50 * STRICT_FACTOR),
         BandLayoutManagerUtil.getBounds(bandA2.getElement("Band-A2-B1"), null));
 
     // all values +/- 5%
-    assertEquals(new Rectangle2D.Float(137.5f ,5, 100, 40),
+    assertEquals(new StrictBounds((long) (137.5f  * STRICT_FACTOR),5 * STRICT_FACTOR, 100 * STRICT_FACTOR, 40 * STRICT_FACTOR),
         BandLayoutManagerUtil.getBounds(bandA2.getElement("Band-A2-B2"), null));
 
   }

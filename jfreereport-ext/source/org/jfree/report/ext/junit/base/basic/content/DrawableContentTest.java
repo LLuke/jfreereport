@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableContentTest.java,v 1.4 2003/11/01 19:57:02 taqua Exp $
+ * $Id: DrawableContentTest.java,v 1.5 2005/01/31 17:16:31 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,17 +38,16 @@
 
 package org.jfree.report.ext.junit.base.basic.content;
 
-import java.awt.geom.Rectangle2D;
-
 import junit.framework.TestCase;
 import org.jfree.report.DrawableElement;
 import org.jfree.report.content.DefaultContentFactory;
 import org.jfree.report.content.DrawableContentFactoryModule;
+import org.jfree.report.content.EmptyContent;
 import org.jfree.report.ext.junit.TestDrawable;
 import org.jfree.report.filter.StaticDataSource;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.util.ElementLayoutInformation;
-import org.jfree.ui.FloatDimension;
+import org.jfree.report.util.geom.StrictBounds;
 
 public class DrawableContentTest extends TestCase
 {
@@ -68,11 +67,11 @@ public class DrawableContentTest extends TestCase
     df.addModule(new DrawableContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli = new ElementLayoutInformation
-      (new Rectangle2D.Float(0, 0, 10, 10));
-    assertNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+      (new StrictBounds(0, 0, 10, 10));
+    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
 
-    eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 0, 0));
-    assertNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    eli = new ElementLayoutInformation(new StrictBounds(0, 0, 0, 0));
+    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
   }
 
   public void testInvisibleContent() throws Exception
@@ -84,11 +83,11 @@ public class DrawableContentTest extends TestCase
     df.addModule(new DrawableContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
     ElementLayoutInformation eli = 
-      new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
-    assertNotNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+      new ElementLayoutInformation(new StrictBounds(0, 0, 10, 10));
+    assertNotSame(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
 
-    eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 0, 0));
-    assertNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
+    eli = new ElementLayoutInformation(new StrictBounds(0, 0, 0, 0));
+    assertEquals(EmptyContent.getDefaultEmptyContent(), df.createContentForElement(se, eli, new DefaultLayoutSupport()));
   }
 
 }

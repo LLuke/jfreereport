@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementTest.java,v 1.4 2003/11/01 19:57:02 taqua Exp $
+ * $Id: ElementTest.java,v 1.5 2005/01/31 17:16:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -113,7 +113,7 @@ public class ElementTest extends TestCase
     assertNotNull(clientElement.getStyle());
     assertNotNull(clientElement.getName());
     assertTrue(clientElement.isVisible());
-
+    assertEquals(clonedBand, clientElement.getParent());
 
     clonedBand.getStyle().setStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT, Boolean.TRUE);
     assertTrue(clientElement.isDynamicContent());

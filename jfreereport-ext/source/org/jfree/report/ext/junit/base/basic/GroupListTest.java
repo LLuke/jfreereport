@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupListTest.java,v 1.4 2003/11/01 19:57:02 taqua Exp $
+ * $Id: GroupListTest.java,v 1.5 2005/01/31 17:16:31 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -95,6 +95,6 @@ public class GroupListTest extends TestCase
     {
       // expected, ignored
     }
-    assertTrue(gl.size() == 2);
+    assertEquals(2, gl.size());
   }
 }

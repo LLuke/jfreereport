@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeElementTest.java,v 1.3 2003/11/01 19:57:02 taqua Exp $
+ * $Id: ShapeElementTest.java,v 1.4 2005/01/31 17:16:31 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -66,21 +66,6 @@ public class ShapeElementTest extends TestCase
           (null, null, null, line2, true, false);
     s = (Shape) e.getValue();
     assertEquals(s.getBounds2D(), line.getBounds2D());
-
-    try
-    {
-      StaticShapeElementFactory.createShapeElement
-          (null, null, null,
-          new Line2D.Double(26.0, 8.0, 26.0, -5.0),
-          true, false);
-      fail();
-    }
-    catch (IllegalArgumentException iae)
-    {
-      // expected, ignored
-    }
-
-
   }
 
 }

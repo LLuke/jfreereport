@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutTest.java,v 1.6 2003/11/01 19:57:02 taqua Exp $
+ * $Id: BandLayoutTest.java,v 1.7 2005/01/31 17:16:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -54,6 +54,8 @@ import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.Log;
+import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.xml.ParserUtil;
 
 public class BandLayoutTest extends TestCase
@@ -66,37 +68,42 @@ public class BandLayoutTest extends TestCase
   {
     super(s);
   }
+  public static final long STRICT_FACTOR = StrictGeomUtility.toInternalValue(1);
 
   public void testBasicLayout()
   {
     JFreeReportBoot.getInstance().start();
     final Band band = new Band();
-    BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500, 200);
+    BandLayoutManagerUtil.doLayout(band,
+            new DefaultLayoutSupport(), 500 * STRICT_FACTOR, 200 * STRICT_FACTOR);
     // width is preserved  ...
-    assertEquals(new Rectangle2D.Float(0, 0, 500, 0), BandLayoutManagerUtil.getBounds(band, null));
+    assertEquals(new StrictBounds(0, 0, 500 * STRICT_FACTOR, 0),
+            BandLayoutManagerUtil.getBounds(band, null));
 
     final Element e = StaticShapeElementFactory.createRectangleShapeElement(null, null, null,
         new Rectangle2D.Float(0, 0, 10, 10), true, true);
     band.addElement(e);
-    BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500, 200);
+    BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(),
+            500 * STRICT_FACTOR, 200 * STRICT_FACTOR);
     // width is preserved  ... height is the one given in the element
-    assertEquals(new Rectangle2D.Float(0, 0, 500, 10), BandLayoutManagerUtil.getBounds(band, null));
+    assertEquals(new StrictBounds(0, 0, 500 * STRICT_FACTOR, 10 * STRICT_FACTOR), BandLayoutManagerUtil.getBounds(band, null));
 
   }
 
   public void testLineLayout()
   {
     final Band band = new Band();
-    BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500, 200);
+    BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(),
+            500 * STRICT_FACTOR, 200 * STRICT_FACTOR);
     // width is preserved  ...
-    assertEquals(new Rectangle2D.Float(0, 0, 500, 0), BandLayoutManagerUtil.getBounds(band, null));
+    assertEquals(new StrictBounds(0, 0, 500 * STRICT_FACTOR, 0), BandLayoutManagerUtil.getBounds(band, null));
 
     final Element e = StaticShapeElementFactory.createHorizontalLine
         (null, null, null, 10);
     band.addElement(e);
-    BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500, 200);
+    BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500 * STRICT_FACTOR, 200 * STRICT_FACTOR);
     // width is preserved  ... height is the one given in the element
-    assertEquals(new Rectangle2D.Float(0, 0, 500, 10), BandLayoutManagerUtil.getBounds(band, null));
+    assertEquals(new StrictBounds(0, 0, 500 * STRICT_FACTOR, 10 * STRICT_FACTOR), BandLayoutManagerUtil.getBounds(band, null));
 
   }
 
@@ -117,8 +124,9 @@ public class BandLayoutTest extends TestCase
     Log.debug (element.getStyle().getStyleProperty(StaticLayoutManager.ABSOLUTE_POS));
     Log.debug (BandLayoutManagerUtil.getBounds(element, null));
 
-    BandLayoutManagerUtil.doLayout(report.getReportHeader(), new DefaultLayoutSupport(), 500, 200);
-    assertEquals(new Rectangle2D.Float(0, 0, 500, 70),
+    BandLayoutManagerUtil.doLayout(report.getReportHeader(),
+            new DefaultLayoutSupport(), 500 * STRICT_FACTOR, 200 * STRICT_FACTOR);
+    assertEquals(new StrictBounds(0, 0, 500 * STRICT_FACTOR, 70 * STRICT_FACTOR),
               BandLayoutManagerUtil.getBounds(report.getReportHeader(), null));
   }
 }
