@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.32 2002/09/06 17:56:40 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.33 2002/09/06 19:19:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -462,7 +462,7 @@ public class PreviewFrame
     content.add(toolbar, BorderLayout.NORTH);
 
     reportPane = createReportPane(report);
-    //reportPane.addPropertyChangeListener(this);
+    reportPane.addPropertyChangeListener(this);
 
     JPanel reportPaneHolder = new JPanel(new CenterLayout());
     reportPaneHolder.add(reportPane);
@@ -1070,6 +1070,7 @@ public class PreviewFrame
     {
       Log.debug ("ZoomFactor changed!");
       validateButtons();
+      validate();
     }
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElement.java,v 1.15 2002/09/05 09:34:53 taqua Exp $
+ * $Id: ImageElement.java,v 1.16 2002/09/06 17:02:29 taqua Exp $
  *
  * Changes:
  * --------
@@ -123,7 +123,6 @@ public class ImageElement extends Element
 
   public Object clone() throws CloneNotSupportedException
   {
-    System.out.println ("Element Cloned: " + getDataSource());
     return super.clone();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.23 2002/09/05 08:31:52 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.24 2002/09/06 17:02:43 taqua Exp $
  *
  * Changes
  * -------
@@ -236,6 +236,13 @@ public class PDFOutputTarget extends AbstractOutputTarget
      */
     public void registerDefaultFontPath()
     {
+      String encoding = getDefaultFontEncoding();
+      // Correct the encoding for truetype fonts
+      if (encoding.equals(BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
+      {
+        encoding = "iso-8859-1";
+      }
+
       String osname = System.getProperty("os.name");
       String jrepath = System.getProperty("java.home");
       String fontPath = null;
@@ -246,7 +253,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
       {
         Log.debug("Assuming unix like file structures");
         // Assume X11 is installed in the default location.
-        registerFontPath(new File(jrepath, "lib/fonts").toString());
         fontPath = "/usr/X11R6/lib/X11/fonts/truetype";
       }
       else
@@ -279,15 +285,15 @@ public class PDFOutputTarget extends AbstractOutputTarget
       Log.debug("Fonts located in \"" + fontPath + "\"");
       if (fontPath != null)
       {
-        registerFontPath(fontPath);
+        registerFontPath(fontPath, encoding);
       }
-      registerFontPath(new File(jrepath, "lib" + fs + "fonts").toString());
+      registerFontPath(new File(jrepath, "lib" + fs + "fonts").toString(), encoding);
     }
 
     /**
      * Register all fonts (*.ttf files) in the given path.
      */
-    public void registerFontPath(String path)
+    public void registerFontPath(String path, String encoding)
     {
       File file = new File(path);
       if (file.exists() && file.isDirectory() && file.canRead())
@@ -295,7 +301,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
         File[] files = file.listFiles();
         for (int i = 0; i < files.length; i++)
         {
-          registerFontFile(files[i].toString());
+          registerFontFile(files[i].toString(), encoding);
         }
       }
       file = null;
@@ -305,7 +311,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     /**
      * Register the font (must end this *.ttf) to the FontFactory.
      */
-    public void registerFontFile(String filename)
+    public void registerFontFile(String filename, String encoding)
     {
       if (!filename.toLowerCase().endsWith("ttf"))
       {
@@ -316,12 +322,13 @@ public class PDFOutputTarget extends AbstractOutputTarget
       {
         try
         {
-          addFont(filename);
+          addFont(filename, encoding);
           Log.debug("Registered truetype font " + filename);
         }
         catch (Exception e)
         {
-          Log.warn("Font " + filename + " is invalid." + e.getMessage());
+          Log.warn("Font " + filename + " is invalid. Message:" + e.toString());
+          e.printStackTrace();
         }
       }
     }
@@ -329,10 +336,10 @@ public class PDFOutputTarget extends AbstractOutputTarget
     /**
      * Adds the fontname by creating the basefont object
      */
-    private void addFont(String font)
+    private void addFont(String font, String encoding)
         throws DocumentException, IOException
     {
-      BaseFont bfont = BaseFont.createFont(font, BaseFont.WINANSI, true);
+      BaseFont bfont = BaseFont.createFont(font, encoding, true);
       String[][] fi = bfont.getFullFontName();
       for (int i = 0; i < fi.length; i++)
       {
@@ -379,7 +386,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * of  <code>"com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT"</code> is set to
    * <code>true</code>
    */
-/*
   static
   {
     String prop = System.getProperty ("com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT", "false");
@@ -388,7 +394,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       getFontFactory ().registerDefaultFontPath ();
     }
   }
-*/
+
   /**
    * Creates a PDFBandCursor to support coordinate space transformation.
    */
@@ -411,9 +417,13 @@ public class PDFOutputTarget extends AbstractOutputTarget
     this.out = out;
     this.embedFonts = embedFonts;
     this.baseFonts = new TreeMap();
-    setFontEncoding(System.getProperty("com.jrefinery.report.targets.PDFOutputTarget.ENCODING", BaseFont.WINANSI));
+    setFontEncoding(getDefaultFontEncoding());
   }
 
+  public static final String getDefaultFontEncoding ()
+  {
+    return System.getProperty("com.jrefinery.report.targets.PDFOutputTarget.ENCODING", BaseFont.WINANSI);
+  }
 
   /**
    * Returns the coordinate of the left edge of the page.
@@ -586,16 +596,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
       {
         fontKey = BaseFont.COURIER;
       }
-      // hope this one is correct ...
-      if (encoding.equals(BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
-      {
-        encoding = "iso-8859-1";
-      }
-      else
-      {
-        encoding = "Cp1252";
-      }
-
     }
     else if (startsWithIgnoreCase(logicalName, "Serif"))
     {
@@ -635,17 +635,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
       {
         fontKey = BaseFont.TIMES_ROMAN;
       }
-
-      // hope this one is correct ...
-      if (encoding.equals(BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
-      {
-        encoding = "iso-8859-1";
-      }
-      else
-      {
-        encoding = "Cp1252";
-      }
-
     }
     else if (startsWithIgnoreCase(logicalName, "SansSerif") ||
         startsWithIgnoreCase(logicalName, "Dialog"))
@@ -686,19 +675,19 @@ public class PDFOutputTarget extends AbstractOutputTarget
       {
         fontKey = BaseFont.HELVETICA;
       }
-      // hope this one is correct ...
-      if (encoding.equals(BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
-      {
-        encoding = "iso-8859-1";
-      }
-      else
-      {
-        encoding = "Cp1252";
-      }
     }
     else
     {
       fontKey = logicalName;
+    }
+
+    // iText uses some weird mapping between IDENTY-H/V and java supported encoding, IDENTITY-H/V is
+    // used to recognize TrueType fonts, but the real JavaEncoding is used to encode Type1 fonts
+    String stringEncoding = encoding;
+    // Correct the encoding for truetype fonts
+    if (encoding.equals(BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
+    {
+      stringEncoding = "iso-8859-1";
     }
 
     BaseFont f = (BaseFont) this.baseFonts.get(fontKey);
@@ -735,7 +724,24 @@ public class PDFOutputTarget extends AbstractOutputTarget
             fontKey = filename;
           }
         }
-        f = BaseFont.createFont(fontKey, encoding, this.embedFonts);
+        // TrueType fonts need extra handling if the font is a symbolic font.
+        if ((filename != null) &&
+            (endsWithIgnoreCase(filename, ".ttf") || endsWithIgnoreCase(filename, ".ttc")))
+        {
+          try
+          {
+            f = BaseFont.createFont(fontKey, encoding, this.embedFonts);
+          }
+          catch (DocumentException de)
+          {
+            // Fallback to iso8859-1 encoding (!this is not IDENTITY-H)
+            f = BaseFont.createFont(fontKey, stringEncoding, this.embedFonts);
+          }
+        }
+        else
+        {
+          f = BaseFont.createFont(fontKey, stringEncoding, this.embedFonts);
+        }
       }
       catch (Exception e)
       {
@@ -746,7 +752,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
         // fallback .. use BaseFont.HELVETICA as default
         try
         {
-          f = BaseFont.createFont(BaseFont.HELVETICA, encoding, this.embedFonts);
+          f = BaseFont.createFont(BaseFont.HELVETICA, stringEncoding, this.embedFonts);
         }
         catch (Exception e)
         {
