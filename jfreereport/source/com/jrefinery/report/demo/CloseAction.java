@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: CloseAction.java,v 1.2 2002/05/16 13:05:36 jaosch Exp $
+ * $Id: CloseAction.java,v 1.3 2002/05/28 19:28:23 taqua Exp $
  *
  * Changes
  * -------
@@ -41,21 +41,18 @@ package com.jrefinery.report.demo;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.SwingUtilities;
+import javax.swing.JFrame;
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 
-public class CloseAction extends AbstractAction implements Runnable
+public abstract class CloseAction extends AbstractAction
 {
-
-  private JFreeReportDemo demo;
 
   /**
    * Constructs a new action.
    */
-  public CloseAction(JFreeReportDemo demo, ResourceBundle resources)
+  public CloseAction(ResourceBundle resources)
   {
-
-    this.demo = demo;
 
     String name = resources.getString("action.close.name");
     this.putValue(Action.NAME, name);
@@ -68,15 +65,5 @@ public class CloseAction extends AbstractAction implements Runnable
 
     this.putValue(Action.ACTION_COMMAND_KEY, JFreeReportDemo.EXIT_COMMAND);
 
-  }
-
-  public void actionPerformed(ActionEvent e)
-  {
-    SwingUtilities.invokeLater(this);
-  }
-
-  public void run()
-  {
-    demo.attemptExit();
   }
 }

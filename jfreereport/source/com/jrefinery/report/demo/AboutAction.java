@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: AboutAction.java,v 1.3 2002/05/16 13:05:35 jaosch Exp $
+ * $Id: AboutAction.java,v 1.4 2002/05/28 19:28:23 taqua Exp $
  *
  * Changes
  * -------
@@ -47,19 +47,13 @@ import javax.swing.SwingUtilities;
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 
-public class AboutAction extends AbstractAction implements Runnable
+public abstract class AboutAction extends AbstractAction
 {
-
-  private JFreeReportDemo demo;
-
   /**
    * Constructs a new action.
    */
-  public AboutAction (JFreeReportDemo demo, ResourceBundle resources)
+  public AboutAction (ResourceBundle resources)
   {
-
-    this.demo = demo;
-
     String name = resources.getString ("action.about.name");
     this.putValue (Action.NAME, name);
 
@@ -77,15 +71,5 @@ public class AboutAction extends AbstractAction implements Runnable
 
     this.putValue (Action.ACTION_COMMAND_KEY, JFreeReportDemo.ABOUT_COMMAND);
 
-  }
-
-  public void actionPerformed (ActionEvent e)
-  {
-    SwingUtilities.invokeLater (this);
-  }
-
-  public void run ()
-  {
-    demo.displayAbout ();
   }
 }

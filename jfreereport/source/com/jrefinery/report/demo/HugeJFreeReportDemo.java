@@ -21,24 +21,17 @@
  * Boston, MA 02111-1307, USA.
  *
  * --------------------
- * JFreeReportDemo.java
+ * HugeJFreeReportDemo.java
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.15 2002/05/30 16:35:19 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
- * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
- * 07-May-2002 : Demo now uses resource bundles for localisation...just need some translations
- *               now (DG);
- * 16-May-2002 : Line delimiters adjusted
- *               get report definition from jar (getResource())
- *               close behaviour unified
- *
+ * 31-May-2002 : Derived from JFreeReportDemo
  */
 
 package com.jrefinery.report.demo;
@@ -92,8 +85,16 @@ import com.jrefinery.ui.about.AboutFrame;
  *
  * ToDo: Localisation ...
  */
-public class JFreeReportDemo extends JFrame
+public class HugeJFreeReportDemo extends JFrame
 {
+  private class CloseHandler extends WindowAdapter
+  {
+    public void windowClosing (WindowEvent event)
+    {
+      attemptExit();
+    }
+  }
+
   private class DemoAboutAction extends AboutAction
    {
     public DemoAboutAction ()
@@ -133,15 +134,6 @@ public class JFreeReportDemo extends JFrame
      }
    }
 
-  private class CloseHandler extends WindowAdapter
-  {
-    public void windowClosing (WindowEvent event)
-    {
-      attemptExit();
-    }
-  }
-
-
   /** Constant for the 'About' command. */
   public static final String ABOUT_COMMAND = "ABOUT";
 
@@ -176,6 +168,12 @@ public class JFreeReportDemo extends JFrame
   /** A table model containing sample data. */
   private SampleData4 data4;
 
+  /** A table model containing sample data. */
+  private SampleData5 data5;
+
+  /** A table model containing sample data. */
+  private SampleData6 data6;
+
   private ResourceBundle m_resources;
 
   private ResourceBundle getResources ()
@@ -186,7 +184,7 @@ public class JFreeReportDemo extends JFrame
   /**
    * Constructs a frame containing sample reports created using the JFreeReport Class Library.
    */
-  public JFreeReportDemo(ResourceBundle resources)
+  public HugeJFreeReportDemo(ResourceBundle resources)
   {
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     addWindowListener(new CloseHandler());
@@ -200,6 +198,8 @@ public class JFreeReportDemo extends JFrame
     data2 = new SampleData2();
     data3 = new SampleData3();
     data4 = new SampleData4();
+    data5 = new SampleData5();
+    data6 = new SampleData6();
 
     createActions();
 
@@ -216,6 +216,8 @@ public class JFreeReportDemo extends JFrame
     tabbedPane.addTab("Example 2", JRefineryUtilities.createTablePanel(data2));
     tabbedPane.addTab("Example 3", JRefineryUtilities.createTablePanel(data3));
     tabbedPane.addTab("Example 4", JRefineryUtilities.createTablePanel(data4));
+    tabbedPane.addTab("Example 5 (HUGE)", JRefineryUtilities.createTablePanel(data5));
+    tabbedPane.addTab("Example 6 (HUGE)", JRefineryUtilities.createTablePanel(data6));
 
     content.add(tabbedPane);
 
@@ -265,6 +267,14 @@ public class JFreeReportDemo extends JFrame
     {
       preview("/com/jrefinery/report/demo/report4.xml", data4);
     }
+    else if (index == 4)
+    {
+      preview("/com/jrefinery/report/demo/report2.xml", data5);
+    }
+    else
+    {
+      preview("/com/jrefinery/report/demo/report2.xml", data6);
+    }
   }
 
   /**
@@ -276,7 +286,7 @@ public class JFreeReportDemo extends JFrame
     URL in = getClass().getResource(urlname);
     if (in == null)
     {
-      JOptionPane.showMessageDialog(this, "ReportDefinition " + urlname + " not found", "Error", JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(this, "ReportDefinition " + urlname + " not found");
       return;
     }
     ReportGenerator gen = ReportGenerator.getInstance();
@@ -458,7 +468,7 @@ public class JFreeReportDemo extends JFrame
     String baseName = "com.jrefinery.report.demo.resources.DemoResources";
     ResourceBundle resources = ResourceBundle.getBundle(baseName);
 
-    JFreeReportDemo frame = new JFreeReportDemo(resources);
+    HugeJFreeReportDemo frame = new HugeJFreeReportDemo(resources);
     frame.pack();
     JRefineryUtilities.centerFrameOnScreen(frame);
     frame.setVisible(true);

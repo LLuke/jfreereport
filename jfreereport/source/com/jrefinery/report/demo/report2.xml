@@ -112,6 +112,7 @@
 				<property name="group">Color Group</property>
 			</properties>
 		</function>
+
         <function name="Count2" class="com.jrefinery.report.function.ItemCountFunction">
 			<properties>
 				<property name="group">Letter Group</property>
@@ -129,6 +130,7 @@
 				<property name="group">Letter Group</property>
 			</properties>
 		</function>
+
     </functions>
 
-</report> 
+</report>

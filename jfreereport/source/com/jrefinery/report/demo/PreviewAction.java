@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewAction.java,v 1.3 2002/05/16 13:05:36 jaosch Exp $
+ * $Id: PreviewAction.java,v 1.4 2002/05/28 19:28:23 taqua Exp $
  *
  * Changes
  * -------
@@ -48,19 +48,13 @@ import javax.swing.SwingUtilities;
 import java.awt.event.ActionEvent;
 import java.util.ResourceBundle;
 
-public class PreviewAction extends AbstractAction implements Runnable
+public abstract class PreviewAction extends AbstractAction
 {
-
-  private JFreeReportDemo demo;
-
   /**
    * Constructs a new action.
    */
-  public PreviewAction(JFreeReportDemo demo, ResourceBundle resources)
+  public PreviewAction(ResourceBundle resources)
   {
-
-    this.demo = demo;
-
     String name = resources.getString("action.print-preview.name");
     this.putValue(Action.NAME, name);
 
@@ -85,13 +79,4 @@ public class PreviewAction extends AbstractAction implements Runnable
 
   }
 
-  public void actionPerformed(ActionEvent e)
-  {
-    SwingUtilities.invokeLater(this);
-  }
-
-  public void run()
-  {
-    demo.attemptPreview();
-  }
 }

@@ -4,6 +4,7 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.GroupList;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.targets.G2OutputTarget;
+import com.jrefinery.report.targets.PDFOutputTarget;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.SystemOutLogTarget;
 import com.jrefinery.report.io.ReportDefinitionContentHandler;
@@ -19,6 +20,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.BufferedOutputStream;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.net.URL;
@@ -32,7 +35,7 @@ public class Test
 
   public static void main (String[] args)
   {
-    Log.addTarget(new SystemOutLogTarget ());
+   // Log.addTarget(new SystemOutLogTarget ());
     if (args.length < 1)
     {
     }
@@ -42,7 +45,7 @@ public class Test
       URL url = Log.class.getResource("/com/jrefinery/report/demo/report2.xml");
 
       JFreeReport report = ReportGenerator.getInstance().parseReport(url);
-      report.setData(new SampleData5());
+      report.setData(new SampleData6());
 
       // set LandScape
       Paper paper = new Paper ();
@@ -54,14 +57,26 @@ public class Test
       format.setPaper (paper);
 
       long start = System.currentTimeMillis();
-      G2OutputTarget t = new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), format);
-      report.processReport(t);
-      System.out.println("Time: " + (System.currentTimeMillis() - start));
+      FileOutputStream fo = new FileOutputStream ("C:/report.pdf");
+      BufferedOutputStream bo = new BufferedOutputStream(fo, 100000);
+      PDFOutputTarget t = new PDFOutputTarget(bo, format, true);
+      t.open("Test" , "Autor");
+//      for (int i = 0; i < 2; i++)
+      {
+        System.out.println("Time: " + (System.currentTimeMillis() - start));
+        report.processReport(t);
+        System.out.println("Time: " + (System.currentTimeMillis() - start));
+        System.out.println("TotalMem: " + Runtime.getRuntime().totalMemory());
+      }
+      t.close();
+      fo.close ();
     }
     catch (Exception e)
     {
+      e.printStackTrace();
       System.out.println (e.getMessage ());
     }
+    System.exit(0);
   }
 
 }
