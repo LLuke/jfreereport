@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.7 2003/04/05 18:57:15 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.8 2003/04/06 18:11:30 taqua Exp $
  *
  * Changes
  * -------
@@ -218,9 +218,11 @@ public class DefaultSizeCalculator implements SizeCalculator
   private FontDefinition font;
 
   /**
+   * Returns an instance.
    * 
-   * @param font
-   * @return
+   * @param font  The font definition.
+   * 
+   * @return A default size calculator.
    */
   public static DefaultSizeCalculator getDefaultSizeCalculator (FontDefinition font)
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.20 2003/04/05 18:57:09 taqua Exp $
+ * $Id: GroupList.java,v 1.21 2003/04/06 18:10:54 taqua Exp $
  *
  * Changes:
  * --------
@@ -66,6 +66,8 @@ public class GroupList implements Cloneable, Serializable
 {
   /** Cache (this is a set, we need list functionality, but creating Iterators is expensive). */
   private Object[] cache;
+  
+  /** Storage for the groups. */
   private TreeSet backend;
 
   /**
@@ -76,6 +78,11 @@ public class GroupList implements Cloneable, Serializable
     backend = new TreeSet ();
   }
 
+  /**
+   * Creates a new group list.
+   * 
+   * @param list  groups to add to the list.
+   */
   public GroupList(GroupList list)
   {
     backend = new TreeSet();
@@ -180,8 +187,9 @@ public class GroupList implements Cloneable, Serializable
   }
 
   /**
-   *
-   * @return
+   * Returns an iterator for the list.
+   * 
+   * @return An iterator for the list.
    */
   public Iterator iterator ()
   {
@@ -219,11 +227,21 @@ public class GroupList implements Cloneable, Serializable
     return true;
   }
 
+  /**
+   * Returns the number of groups in the list.
+   * 
+   * @return The number of groups in the list.
+   */
   public int size()
   {
     return backend.size();
   }
 
+  /**
+   * Returns a string representation of the list (useful for debugging).
+   * 
+   * @return A string.
+   */
   public String toString ()
   {
     StringBuffer b = new StringBuffer();

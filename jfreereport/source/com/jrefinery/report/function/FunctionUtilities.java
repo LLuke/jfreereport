@@ -1,16 +1,52 @@
 /**
- * Date: Mar 7, 2003
- * Time: 6:22:53 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: FunctionUtilities.java,v 1.1 2003/03/07 18:59:39 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ----------------------
+ * FunctionUtilities.java
+ * ----------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: Function.java,v 1.13 2002/12/12 12:26:56 mungady Exp $
+ *
+ * Changes
+ * -------
+ * 07-Mar-2003 : Version 1;
+ * 
  */
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.Element;
 import com.jrefinery.report.Band;
+import com.jrefinery.report.Element;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.event.ReportEvent;
 
+/**
+ * A collection of utility methods relating to functions.
+ * 
+ * @author Thomas Morgner.
+ */
 public class FunctionUtilities
 {
   /**
@@ -42,6 +78,12 @@ public class FunctionUtilities
     return null;
   }
 
+  /**
+   * Returns true if ??.
+   * 
+   * @param groupName  the group name.
+   * @param event  the report event.
+   */
   public static boolean isGroupInGroup (String groupName, ReportEvent event)
   {
     if (groupName == null)
@@ -66,7 +108,8 @@ public class FunctionUtilities
    *  
    * @param f
    * @param event
-   * @return
+   * 
+   * @return A boolean.
    */
   public static boolean isDefinedPrepareRunLevel (Function f, ReportEvent event)
   {
@@ -87,6 +130,11 @@ public class FunctionUtilities
     return (event.getState().getLevel() == f.getDependencyLevel());
   }
 
+  /**
+   * Returns true or false.
+   * 
+   * @param event  the report event.
+   */
   public static boolean isLayoutLevel(ReportEvent event)
   {
     if (event == null)

@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -----------------
  * ShapeElement.java
  * -----------------
- * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ShapeElement.java,v 1.22 2003/03/30 21:22:57 taqua Exp $
+ * $Id: ShapeElement.java,v 1.23 2003/04/05 18:57:09 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -47,12 +47,12 @@
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.targets.style.StyleKey;
-import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
-
 import java.awt.BasicStroke;
 import java.awt.Stroke;
+
+import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.targets.style.StyleKey;
 
 /**
  * Used to draw shapes (typically lines and boxes) on a report band. The drawing style
@@ -219,7 +219,8 @@ public class ShapeElement extends Element
    */
   public void setKeepAspectRatio(boolean kar)
   {
-    getStyle().setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, kar ? Boolean.TRUE : Boolean.FALSE);
+    getStyle().setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, 
+                                kar ? Boolean.TRUE : Boolean.FALSE);
   }
 
   /** A string for the content type. */

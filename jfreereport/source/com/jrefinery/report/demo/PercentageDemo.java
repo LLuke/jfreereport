@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: $
+ * $Id: PercentageDemo.java,v 1.1 2003/04/04 10:41:07 mungady Exp $
  *
  * Changes
  * -------
@@ -133,7 +133,6 @@ public class PercentageDemo extends ApplicationFrame implements ActionListener
     textArea.setLineWrap(true);
     textArea.setWrapStyleWord(true);
     textArea.setEditable(false);
-    //textArea.setRows(5);
     JScrollPane scroll = new JScrollPane(textArea);
     scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     this.data = createData();

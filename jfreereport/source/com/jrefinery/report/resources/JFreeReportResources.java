@@ -28,15 +28,11 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.50 2003/03/04 20:28:53 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.51 2003/04/05 18:57:12 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
 
-import com.jrefinery.report.util.Log;
-
-import javax.swing.ImageIcon;
-import javax.swing.KeyStroke;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -45,6 +41,11 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.ListResourceBundle;
+
+import javax.swing.ImageIcon;
+import javax.swing.KeyStroke;
+
+import com.jrefinery.report.util.Log;
 
 /**
  * English language resources.

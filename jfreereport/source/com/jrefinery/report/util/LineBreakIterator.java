@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
- * WordBreakIterator.java
- * ----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ----------------------
+ * LineBreakIterator.java
+ * ----------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineBreakIterator.java,v 1.1 2003/03/13 17:43:11 taqua Exp $
+ * $Id: LineBreakIterator.java,v 1.2 2003/03/18 17:14:45 taqua Exp $
  *
  * Changes
  * -------
@@ -41,29 +41,54 @@ package com.jrefinery.report.util;
  */
 public class LineBreakIterator
 {
+  /** A useful constant. */
   public static final int DONE = -1;
 
+  /** Storage for the text. */
   private char[] text;
+  
+  /** The current position. */
   private int position;
+  
+  /** The last line break. */
   private int lastFound;
 
   // ignore the next lf that may be encountered ...
   private boolean skipLF;
 
+  /**
+   * Default constructor.
+   */
   public LineBreakIterator()
   {
     setText("");
   }
 
+  /**
+   * Creates a new line break iterator.
+   * 
+   * @param text the text to be broken up.
+   */
   public LineBreakIterator(String text)
   {
     setText(text);
   }
 
+  /**
+   * Returns the position of the next break.
+   * 
+   * @return A position.
+   */
   public synchronized int next()
   {
-    if (text == null) return DONE;
-    if (position == DONE) return DONE;
+    if (text == null) 
+    {
+      return DONE;
+    }
+    if (position == DONE) 
+    {
+      return DONE;
+    }
 
     // recognize \n, \n\r, \r\n
     boolean omitLF = skipLF;
@@ -119,7 +144,8 @@ public class LineBreakIterator
   /**
    * Same like next(), but returns the End-Of-Text as
    * if there was a linebreak added (Reader.readLine() compatible)
-   * @return
+   * 
+   * @return The next position.
    */
   public int nextWithEnd ()
   {
@@ -136,11 +162,21 @@ public class LineBreakIterator
     return retval;
   }
 
+  /**
+   * Returns the text to be broken up.
+   * 
+   * @return The text.
+   */
   public String getText()
   {
     return new String(text);
   }
 
+  /**
+   * Sets the text to be broken up.
+   * 
+   * @param text  the text.
+   */
   public void setText(String text)
   {
     position = 0;
@@ -148,11 +184,19 @@ public class LineBreakIterator
     this.text = text.toCharArray();
   }
 
+  /**
+   * Returns the position of the previous item.
+   * 
+   * @return The position.
+   */
   public int previous()
   {
     return lastFound;
   }
 
+  /**
+   * Testing code - please ignore.
+   */
   public static void main (String[] args)
   {
     String test = "The lazy \n fox \r\n jumps \nover the funny tree\n";

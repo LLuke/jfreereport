@@ -1,9 +1,41 @@
 /**
- * Date: Mar 7, 2003
- * Time: 5:46:55 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id$
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -----------------------
+ * ShapeFieldTemplate.java
+ * -----------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: StringFieldTemplate.java,v 1.5 2003/03/07 16:55:55 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 07-Mar-2003 : Version 1;
+ *  
  */
+
 package com.jrefinery.report.filter.templates;
 
 import com.jrefinery.report.DataRow;
@@ -11,6 +43,11 @@ import com.jrefinery.report.filter.DataRowConnectable;
 import com.jrefinery.report.filter.DataRowDataSource;
 import com.jrefinery.report.filter.ShapeFilter;
 
+/**
+ * A shape field template.
+ * 
+ * @author Thomas Morgner.
+ */
 public class ShapeFieldTemplate extends AbstractTemplate implements DataRowConnectable
 {
   /** The data row reader. */

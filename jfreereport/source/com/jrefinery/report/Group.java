@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------
  * Group.java
  * ----------
- * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.19 2002/12/11 01:00:04 mungady Exp $
+ * $Id: Group.java,v 1.20 2003/04/06 18:10:54 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -55,8 +55,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
-import com.jrefinery.report.util.Log;
 
 /**
  * A report group.  Reports can contain any number of (nested) groups.
@@ -400,6 +398,11 @@ public class Group implements Serializable, Cloneable, Comparable
                                        + "subgroup relation");
   }
 
+  /**
+   * Returns a string representation of the group (useful for debugging).
+   * 
+   * @return A string.
+   */
   public String toString ()
   {
     StringBuffer b = new StringBuffer();

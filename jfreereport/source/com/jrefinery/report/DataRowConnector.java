@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowConnector.java,v 1.15 2003/03/18 22:34:26 taqua Exp $
+ * $Id: DataRowConnector.java,v 1.16 2003/04/05 18:57:09 taqua Exp $
  *
  * Changes
  * -------
@@ -41,11 +41,11 @@
 
 package com.jrefinery.report;
 
+import java.util.List;
+
 import com.jrefinery.report.filter.DataRowConnectable;
 import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.filter.DataTarget;
-
-import java.util.List;
 
 /**
  * This is the connection-proxy to the various data sources contained in the elements.

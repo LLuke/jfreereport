@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------------
  * ItemFactory.java
  * ----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.40 2003/03/20 18:28:09 taqua Exp $
+ * $Id: ItemFactory.java,v 1.41 2003/03/22 16:41:44 taqua Exp $
  *
  * Changes
  * -------
@@ -845,7 +845,8 @@ public class ItemFactory
     {
       // scale the line, is horizontal,the line is on pos 0,0 within the element
       Rectangle2D bounds = new Rectangle2D.Float (0, (float) shape.getY1(), -100, 0);
-      return createShapeElement(name, bounds, paint, stroke, new Line2D.Float(0,0, 100, 0), true, false, true);
+      return createShapeElement(name, bounds, paint, stroke, new Line2D.Float(0, 0, 100, 0), 
+                                true, false, true);
     }
     else
     {
@@ -912,7 +913,8 @@ public class ItemFactory
                                 shouldDraw, shouldFill, true);
     }
 
-    AffineTransform af = AffineTransform.getTranslateInstance(-shapeBounds.getX(), -shapeBounds.getY());
+    AffineTransform af = AffineTransform.getTranslateInstance(-shapeBounds.getX(), 
+                                                              -shapeBounds.getY());
     return createShapeElement(name, shapeBounds, paint, stroke, af.createTransformedShape(shape),
                               shouldDraw, shouldFill, true);
   }
@@ -1078,7 +1080,7 @@ public class ItemFactory
                                 shouldDraw, shouldFill, true);
     }
     Rectangle2D rect = (Rectangle2D) shape.clone();
-    rect.setRect(0,0, rect.getWidth(), rect.getHeight());
+    rect.setRect(0, 0, rect.getWidth(), rect.getHeight());
     return createShapeElement(name, shape, paint, stroke, rect, shouldDraw, shouldFill, false);
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportConstants.java,v 1.13 2003/02/25 14:06:32 taqua Exp $
+ * $Id: JFreeReportConstants.java,v 1.14 2003/03/18 15:53:08 mungady Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ package com.jrefinery.report;
 
 /**
  * An interface that defines some useful constants used by the {@link JFreeReport} and 
- * {@link ReportState} classes.
+ * {@link com.jrefinery.report.states.ReportState} classes.
  * <p>
  * A number of report property keys are defined.  These can be used to access report properties
  * using the <code>getProperty(String)</code> method in the <code>JFreeReport</code> class.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackend.java,v 1.33 2003/04/05 18:57:08 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.34 2003/04/06 18:10:53 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@
 package com.jrefinery.report;
 
 import java.util.HashMap;
+
 import javax.swing.table.TableModel;
 
 import com.jrefinery.report.function.Expression;
@@ -91,11 +92,19 @@ public class DataRowBackend implements Cloneable
   /** if true, invalid columns get printed to the logs. */
   private boolean warnInvalidColumns;
 
+  /** An empty boolean array. */
   private static final boolean[] EMPTY_BOOLS = new boolean[0];
 
+  /** The index of the last function. */
   private int functionsEndIndex;
+  
+  /** The index of the last property. */
   private int propertiesEndIndex;
+  
+  /** The index of the table end. */
   private int tableEndIndex;
+  
+  /** The last row. */
   private int lastRow;
 
   /**
@@ -114,6 +123,8 @@ public class DataRowBackend implements Cloneable
 
   /**
    * Creates a new DataRowBackend.
+   * 
+   * @param db  the data row backend.
    */
   protected DataRowBackend(DataRowBackend db)
   {

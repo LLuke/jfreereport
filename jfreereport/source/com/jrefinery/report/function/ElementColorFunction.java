@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
+ * -------------------------
  * ElementColorFunction.java
- * ----------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * -------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ElementColorFunction.java,v 1.1 2003/04/07 19:32:10 taqua Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,10 @@ package com.jrefinery.report.function;
 
 import java.awt.Color;
 
-import com.jrefinery.report.io.ext.factory.objects.ColorObjectDescription;
-import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
+import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.io.ext.factory.objects.ColorObjectDescription;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 
 /**
@@ -64,10 +64,16 @@ public class ElementColorFunction extends AbstractFunction
 
   /** the color if the field is TRUE */
   private Color elementColorTrue;
+  
   /** the color if the field is FALSE */
   private Color elementColorFalse;
+  
+  /** The color object descripion. */
   private ColorObjectDescription cod;
 
+  /**
+   * Default constructor. 
+   */
   public ElementColorFunction()
   {
     cod = new ColorObjectDescription();
@@ -146,6 +152,11 @@ public class ElementColorFunction extends AbstractFunction
     }
   }
 
+  /**
+   * Sets the color for true values.
+   * 
+   * @param elementColorTrue  the color.
+   */
   public void setElementColorTrue(Color elementColorTrue)
   {
     if (elementColorTrue == null)
@@ -163,6 +174,11 @@ public class ElementColorFunction extends AbstractFunction
     this.elementColorTrue = elementColorTrue;
   }
 
+  /**
+   * Sets the color for false values.
+   * 
+   * @param elementColorFalse  the color.
+   */
   public void setElementColorFalse(Color elementColorFalse)
   {
     if (elementColorFalse == null)
@@ -181,8 +197,9 @@ public class ElementColorFunction extends AbstractFunction
   }
 
   /**
-   *
-   * @return
+   * Returns the color for true values.
+   * 
+   * @return A color.
    */
   public Color getElementColorTrue()
   {
@@ -190,8 +207,9 @@ public class ElementColorFunction extends AbstractFunction
   }
 
   /**
-   *
-   * @return
+   * Returns the color for false values.
+   * 
+   * @return A color.
    */
   public Color getElementColorFalse()
   {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.49 2003/04/05 18:57:07 taqua Exp $
+ * $Id: Band.java,v 1.50 2003/04/06 18:10:53 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -115,7 +115,8 @@ public class Band extends Element implements Serializable, Cloneable
   /** All the elements for this band, stored by name. */
   private ArrayList allElements;
 
-  private Element[] allElements_cached;
+  /** Cached elements. */
+  private Element[] allElementsCached;
 
   /** The default style-sheet for the elements contained in the band. */
   private ElementStyleSheet bandDefaults;
@@ -139,14 +140,23 @@ public class Band extends Element implements Serializable, Cloneable
     bandDefaults.setAllowCaching(true);
   }
 
+  /**
+   * Returns the layout manager for the band.
+   * 
+   * @return The layout manager.
+   */
   public BandLayoutManager getLayout ()
   {
     return (BandLayoutManager) getStyle().getStyleProperty(BandLayoutManager.LAYOUTMANAGER);
   }
 
+  /**
+   * Sets the band layout manager.
+   * 
+   * @param layoutManager  the layout manager.
+   */
   public void setLayout (BandLayoutManager layoutManager)
   {
-
     getStyle().setStyleProperty(BandLayoutManager.LAYOUTMANAGER, layoutManager);
   }
 
@@ -228,7 +238,7 @@ public class Band extends Element implements Serializable, Cloneable
 
     // add the element, update the childs Parent and the childs stylesheet.
     allElements.add(position, element);
-    allElements_cached = null;
+    allElementsCached = null;
     element.getStyle().addDefaultParent(getBandDefaults());
     element.setParent(this);
   }
@@ -310,7 +320,7 @@ public class Band extends Element implements Serializable, Cloneable
     e.getStyle().removeDefaultParent(getBandDefaults());
     e.setParent(null);
     allElements.remove(e);
-    allElements_cached = null;
+    allElementsCached = null;
   }
 
   /**
@@ -340,13 +350,13 @@ public class Band extends Element implements Serializable, Cloneable
    */
   public synchronized Element[] getElementArray ()
   {
-    if (allElements_cached == null)
+    if (allElementsCached == null)
     {
       Element[] elements = new Element[allElements.size()];
       elements = (Element[]) allElements.toArray(elements);
-      allElements_cached = elements;
+      allElementsCached = elements;
     }
-    return allElements_cached;
+    return allElementsCached;
   }
 
   /**
@@ -393,18 +403,18 @@ public class Band extends Element implements Serializable, Cloneable
     b.bandDefaults = (ElementStyleSheet) bandDefaults.clone();
     int elementSize = allElements.size();
     b.allElements = new ArrayList(elementSize);
-    b.allElements_cached = new Element[elementSize];
+    b.allElementsCached = new Element[elementSize];
 
     ElementStyleSheet myBandDefaults = getBandDefaults();
     ElementStyleSheet cloneBandDefaults = b.getBandDefaults();
 
-    if (allElements_cached != null)
+    if (allElementsCached != null)
     {
-      for (int i = 0; i < allElements_cached.length; i++)
+      for (int i = 0; i < allElementsCached.length; i++)
       {
-        Element eC = (Element) allElements_cached[i].clone();
+        Element eC = (Element) allElementsCached[i].clone();
         b.allElements.add (eC);
-        b.allElements_cached[i] = eC;
+        b.allElementsCached[i] = eC;
         eC.setParent(b);
         eC.getStyle().removeDefaultParent(myBandDefaults);
         eC.getStyle().addDefaultParent(cloneBandDefaults);
@@ -417,7 +427,7 @@ public class Band extends Element implements Serializable, Cloneable
         Element e = (Element) allElements.get(i);
         Element eC = (Element) e.clone();
         b.allElements.add (eC);
-        b.allElements_cached[i] = eC;
+        b.allElementsCached[i] = eC;
         eC.setParent(b);
         eC.getStyle().removeDefaultParent(myBandDefaults);
         eC.getStyle().addDefaultParent(cloneBandDefaults);
