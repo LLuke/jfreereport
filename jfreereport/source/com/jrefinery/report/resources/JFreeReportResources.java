@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.40 2003/02/02 23:43:51 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.41 2003/02/03 18:52:45 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -152,7 +152,7 @@ public class JFreeReportResources extends ListResourceBundle
             {"project.copyright",
                 "(C)opyright 2000-2002, by Simba Management Limited and Contributors"},
 
-            {"action.save-as.name", "Save As..."},
+            {"action.save-as.name", "Save As PDF..."},
             {"action.save-as.description", "Save to PDF format"},
             {"action.save-as.mnemonic", new Integer (KeyEvent.VK_A)},
             {"action.save-as.accelerator", KeyStroke.getKeyStroke ("control S")},
@@ -183,7 +183,7 @@ public class JFreeReportResources extends ListResourceBundle
             {"action.export-to-csv.small-icon", getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
             {"action.export-to-csv.icon", getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
 
-            {"action.export-to-plaintext.name", "Export to plain text..."},
+            {"action.export-to-plaintext.name", "Save as text file..."},
             {"action.export-to-plaintext.description", "Save to PlainText format"},
             {"action.export-to-plaintext.mnemonic", new Integer (KeyEvent.VK_T)},
             {"action.export-to-plaintext.accelerator", KeyStroke.getKeyStroke ("control T")},

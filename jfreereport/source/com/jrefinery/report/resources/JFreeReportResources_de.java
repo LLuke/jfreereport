@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_de.java,v 1.20 2003/01/18 20:47:35 taqua Exp $
+ * $Id: JFreeReportResources_de.java,v 1.21 2003/01/22 19:38:29 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -121,12 +121,15 @@ public class JFreeReportResources_de extends JFreeReportResources
             {"file.save.pdfdescription", "PDF Dateien"},
             {"statusline.pages", "Seite {0} von {1}"},
             {"statusline.error", "Die ReportGenerierung ist fehlgeschlagen: {0}"},
+            {"statusline.repaginate", "Erzeuge Seitenumbrüche ..."},
             {"error.processingfailed.title", "Fehler beim bearbeiten des Berichtes"},
             {"error.processingfailed.message", "Die Berichtsgenerierung ist fehlgeschlagen: {0}"},
             {"error.savefailed.message", "Der Bericht konnte nicht gespeichert werden: {0}"},
             {"error.savefailed.title", "Speichern fehlgeschlagen"},
             {"error.printfailed.message", "Das Drucken ist fehlgeschlagen: {0}"},
             {"error.printfailed.title", "Druck fehlgeschlagen"},
+            {"error.printfailed.message", "Die Überprüfung der Benutzereingaben schlug fehl."},
+            {"error.printfailed.title", "Eingabeüberprüfung fehlgeschlagen"},
 
             {"pdfsavedialog.warningTitle", "Warnung"},
             {"pdfsavedialog.dialogtitle", "Bericht in eine PDF-Datei speichern ..."},
@@ -178,6 +181,7 @@ public class JFreeReportResources_de extends JFreeReportResources
             {"pdfsavedialog.confirm", "OK"},
 
 
+            {"excelexportdialog.strict-layout", "Genaue Layout-Umwandlung benutzen."},
             {"excelexportdialog.dialogtitle", "Bericht als eine Excel-Datei speichern ..."},
             {"excelexportdialog.filename", "Dateiname"},
             {"excelexportdialog.author", "Autor"},
@@ -220,6 +224,26 @@ public class JFreeReportResources_de extends JFreeReportResources
             {"htmlexportdialog.cancel", "Abbrechen"},
             {"htmlexportdialog.confirm", "OK"},
 
+            {"htmlexportdialog.strict-layout", "Genaue Layout-Umwandlung benutzen."},
+            {"htmlexportdialog.copy-external-references", "Externe Resourcen kopieren."},
+            {"htmlexportdialog.datafilename", "Datenverzeichnis"},
+            {"htmlexportdialog.encoding", "Zeichensatz"},
+            {"htmlexportdialog.generate-html4", "Datei im HTML4 Format erzeugen"},
+            {"htmlexportdialog.generate-xhtml", "Datei im XHTML1.0 Format erzeugen"},
+
+            {"htmlexportdialog.selectDirFile", "Auswählen"},
+            {"htmlexportdialog.selectStreamFile", "Auswählen"},
+            {"htmlexportdialog.selectZipFile", "Auswählen"},
+
+            {"htmlexportdialog.targetCreateDataDirConfirmation",
+                  "Das eingegebene Datenverzeichnis existiert nicht, " +
+                  "soll ein neues Verzeichnis erzeugt werden?"},
+            {"htmlexportdialog.targetCreateDataDirTitle", "Datenverzeichnis erzeugen?"},
+            {"htmlexportdialog.targetDataDirIsNoDirectory",
+                  "Das angegebene Datenverzeichnis verweist nicht auf ein Verzeichnis."},
+            {"htmlexportdialog.targetPathIsAbsolute",
+                  "Das eingebene Datenverzeichnis ist kein Pfad innerhalb der ZIP-Datei."},
+
             {"csvexportdialog.dialogtitle", "Bericht als CSV-Datei speichern ..."},
             {"csvexportdialog.filename", "Dateiname"},
             {"csvexportdialog.encoding", "Zeichensatz"},
@@ -240,6 +264,7 @@ public class JFreeReportResources_de extends JFreeReportResources
 
             {"csvexportdialog.cancel", "Abbrechen"},
             {"csvexportdialog.confirm", "OK"},
+            {"csvexportdialog.strict-layout", "Genaue Layout-Umwandlung benutzen."},
 
             {"csvexportdialog.separator.tab", "Tabulator"},
             {"csvexportdialog.separator.colon", "Komma (,)"},
@@ -249,6 +274,46 @@ public class JFreeReportResources_de extends JFreeReportResources
             {"csvexportdialog.exporttype", "Bitte Export-Methode auswählen"},
             {"csvexportdialog.export.data", "Exportiere die Datenquelle (Rohdaten)"},
             {"csvexportdialog.export.printed_elements", "Exportiere die gedruckten Daten (Bearbeitete Daten)"},
+
+            {"convertdialog.action.convert.description","Konvertiert die Quelldatei"},
+            {"convertdialog.action.convert.name","Konvertieren"},
+            {"convertdialog.action.selectSource.description","Wählt die Quelldatei aus."},
+            {"convertdialog.action.selectSource.name","Auswählen"},
+            {"convertdialog.action.selectTarget.description","Wählt die Zieldatei aus"},
+            {"convertdialog.action.selectTarget.name","Auswählen"},
+            {"convertdialog.errorTitle","Fehler"},
+            {"convertdialog.sourceFile","Quelldatei"},
+            {"convertdialog.sourceIsEmpty","Es wurde keine Quelldatei angegeben."},
+            {"convertdialog.sourceIsNoFile","Die Quelldatei ist keine normale Datei."},
+            {"convertdialog.sourceIsNotReadable","Die Quelldatei kann nicht gelesen werden."},
+            {"convertdialog.targetFile","Zieldatei"},
+            {"convertdialog.targetIsEmpty","Es wurde keine Zieldatei angegeben."},
+            {"convertdialog.targetIsNoFile","Die Zieldatei ist keine normale Datei."},
+            {"convertdialog.targetIsNotWritable","Die Zieldatei ist nicht beschreibbar."},
+            {"convertdialog.targetOverwriteConfirmation","Die Zieldatei existiert bereits.\nSoll die Datei überschrieben werden?"},
+            {"convertdialog.targetOverwriteTitle","Datei überschreiben?"},
+            {"convertdialog.title","Report-Konverter"},
+
+            {"plain-text-exportdialog.cancel","Abbrechen"},
+            {"plain-text-exportdialog.chars-per-inch","cpi (Zeichen pro Zoll)"},
+            {"plain-text-exportdialog.confirm","OK"},
+            {"plain-text-exportdialog.dialogtitle","Bericht als Text speichern ..."},
+            {"plain-text-exportdialog.encoding","Zeichensatz"},
+            {"plain-text-exportdialog.errorTitle","Fehler"},
+            {"plain-text-exportdialog.filename","Dateiname"},
+            {"plain-text-exportdialog.font-settings","Drucker-Schriftart"},
+            {"plain-text-exportdialog.lines-per-inch","lpi (Zeilen pro Zoll)"},
+            {"plain-text-exportdialog.printer","Drucker"},
+            {"plain-text-exportdialog.printer.epson","Epson ESC/P kompatibler Drucker"},
+            {"plain-text-exportdialog.printer.ibm","IBM kompatibler Drucker"},
+            {"plain-text-exportdialog.printer.plain","Einfache Textausgabe"},
+            {"plain-text-exportdialog.selectFile","Auswählen"},
+            {"plain-text-exportdialog.targetIsEmpty","Es wurde keine Zieldatei angegeben."},
+            {"plain-text-exportdialog.targetIsNoFile","Die angegebene Zieldatei ist keine gewöhnliche Datei."},
+            {"plain-text-exportdialog.targetIsNotWritable","Die Zieldatei kann nicht beschrieben werden."},
+            {"plain-text-exportdialog.targetOverwriteConfirmation","Die Zieldatei existiert bereits. Soll diese Datei überschrieben werden?"},
+            {"plain-text-exportdialog.targetOverwriteTitle","Datei überschreiben?"},
+            {"plain-text-exportdialog.warningTitle","Warnung"},
 
           };
 }
