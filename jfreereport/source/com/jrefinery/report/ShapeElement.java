@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ShapeElement.java,v 1.1.1.1 2002/04/25 17:02:23 taqua Exp $
+ * $Id: ShapeElement.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -36,14 +36,15 @@
  * 05-Mar-2002 : Added paint attribute to Element.java (DG);
  * 10-May-2002 : removed all but the default constructor. Added accessor functions for all properties.
  * 12-May-2002 : Declared abstract and moved line functionality into LineShapeElement-class
+ * 16-May-2002 : using protected member m_paint instead of getter methode
  */
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.util.Log;
-
 import java.awt.Paint;
 import java.awt.Shape;
+
+import com.jrefinery.report.util.Log;
 
 /**
  * Used to draw shapes (typically lines and boxes) on a report band. This is the abstract
@@ -58,14 +59,14 @@ public abstract class ShapeElement extends Element
   /**
    * Constructs a shape element.
    */
-  public ShapeElement ()
+  public ShapeElement()
   {
   }
 
   /**
    * @return the shape to draw.
    */
-  public Shape getShape ()
+  public Shape getShape()
   {
     return shape;
   }
@@ -74,10 +75,10 @@ public abstract class ShapeElement extends Element
    * Defines the shape to draw in this element. subclasses should not override this element
    * directly instead they sould provide accessor functionality suitable for their shape-type.
    */
-  protected void setShape (Shape shape)
+  protected void setShape(Shape shape)
   {
     if (shape == null)
-      throw new NullPointerException ("NullShape is not valid");
+      throw new NullPointerException("NullShape is not valid");
 
     this.shape = shape;
   }
@@ -85,17 +86,17 @@ public abstract class ShapeElement extends Element
   /**
    * Debugging function.
    */
-  public String toString ()
+  public String toString()
   {
-    StringBuffer b = new StringBuffer ();
-    b.append ("Shape={ name=");
-    b.append (getName ());
-    b.append (", bounds=");
-    b.append (getBounds ());
-    b.append (", shape=");
-    b.append (getShape ());
-    b.append ("}");
-    return b.toString ();
+    StringBuffer b = new StringBuffer();
+    b.append("Shape={ name=");
+    b.append(getName());
+    b.append(", bounds=");
+    b.append(getBounds());
+    b.append(", shape=");
+    b.append(getShape());
+    b.append("}");
+    return b.toString();
   }
 
   /**
@@ -106,24 +107,22 @@ public abstract class ShapeElement extends Element
    * @param bandX The x-coordinate for the element within its band.
    * @param bandY The y-coordinate for the element within its band.
    */
-  public void draw (OutputTarget target, Band band, float bandX, float bandY)
+  public void draw(OutputTarget target, Band band, float bandX, float bandY)
   {
-    Paint paint = getPaint ();
-
     // set the paint...
-    if (paint != null)
+    if (m_paint != null)
     {
-      target.setPaint (paint);
+      target.setPaint(m_paint);
     }
     else
     {
-      target.setPaint (band.getDefaultPaint ());
+      target.setPaint(band.getDefaultPaint());
     }
 
-    Shape s = getShape ();
+    Shape s = getShape();
 
-    target.drawShape (s, bandX, bandY);
-    Log.debug (this.toString ());
+    target.drawShape(s, bandX, bandY);
+    Log.debug(this.toString());
   }
 
 }
