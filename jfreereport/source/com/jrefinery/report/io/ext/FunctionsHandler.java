@@ -1,9 +1,41 @@
 /**
- * Date: Jan 9, 2003
- * Time: 9:08:15 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: FunctionsHandler.java,v 1.2 2003/01/22 19:38:24 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ---------------------
+ * FunctionsHandler.java
+ * ---------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id:$
+ *
+ * Changes
+ * -------
+ * 24-Feb-2003 : Added standard header and Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.io.ext;
 
 import com.jrefinery.report.JFreeReport;
@@ -21,24 +53,57 @@ import org.xml.sax.SAXException;
 
 import java.util.Iterator;
 
+/**
+ * A functions handler.
+ * 
+ * @author Thomas Morgner.
+ */
 public class FunctionsHandler implements ReportDefinitionHandler
 {
+  /** The name of the function tag. */
   public static final String FUNCTION_TAG = "function";
+  
+  /** The name of the expression tag. */
   public static final String EXPRESSION_TAG = "expression";
+  
+  /** The name of the 'property-ref' tag. */
   public static final String PROPERTY_REF_TAG = "property-ref";
 
+  /** The parser. */
   private Parser parser;
+  
+  /** The finish tag. */
   private String finishTag;
+
+  /** The property name. */
   private String propertyName;
+  
+  /** The expression handler. */
   private ExpressionHandler expressionHandler;
+  
+  /** The property reference handler. */
   private BasicObjectHandler propertyRefHandler;
 
+  /** 
+   * Creates a new functions handler.
+   * 
+   * @param parser  the parser.
+   * @param finishTag  the finish tag. 
+   */
   public FunctionsHandler(Parser parser, String finishTag)
   {
     this.parser = parser;
     this.finishTag = finishTag;
   }
 
+  /**
+   * Callback to indicate that an XML element start tag has been read by the parser. 
+   * 
+   * @param tagName  the tag name.
+   * @param attrs  the attributes.
+   * 
+   * @throws SAXException ??.
+   */
   public void startElement(String tagName, Attributes attrs)
     throws SAXException
   {
@@ -46,12 +111,14 @@ public class FunctionsHandler implements ReportDefinitionHandler
     {
       String className = attrs.getValue("class");
       if (className == null)
+      {
         throw new SAXException("The attribute 'class' is missing for expression");
-
+      }
       String expName = attrs.getValue("name");
       if (expName == null)
+      {
         throw new SAXException("The attribute 'name' is missing for expression");
-
+      }
       int depLevel = ParserUtil.parseInt(attrs.getValue("deplevel"), 0);
 
       Expression e = loadExpression(className, expName, depLevel);
@@ -62,12 +129,14 @@ public class FunctionsHandler implements ReportDefinitionHandler
     {
       String className = attrs.getValue("class");
       if (className == null)
+      {
         throw new SAXException("The attribute 'class' is missing for function");
-
+      }
       String expName = attrs.getValue("name");
       if (expName == null)
+      {
         throw new SAXException("The attribute 'name' is missing for function");
-
+      }
       int depLevel = ParserUtil.parseInt(attrs.getValue("deplevel"), 0);
 
       Expression e = loadExpression(className, expName, depLevel);
@@ -84,8 +153,9 @@ public class FunctionsHandler implements ReportDefinitionHandler
 
       propertyName = attrs.getValue("name");
       if (propertyName == null)
+      {
         throw new SAXException("The attribute 'name' is missing for the property-ref");
-
+      }
       ObjectDescription od = loadObjectDescription(className);
       if (isBasicObject(od))
       {
@@ -100,22 +170,31 @@ public class FunctionsHandler implements ReportDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " +
-                              EXPRESSION_TAG + ", " +
-                              FUNCTION_TAG + ", " +
-                              PROPERTY_REF_TAG + ", " +
-                              finishTag);
+      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
+                              + EXPRESSION_TAG + ", "
+                              + FUNCTION_TAG + ", "
+                              + PROPERTY_REF_TAG + ", "
+                              + finishTag);
     }
   }
 
+  /**
+   * Loads an object description.
+   * 
+   * @param className  the class name.
+   * 
+   * @return The description.
+   * 
+   * @throws SAXException ??.
+   */
   private ObjectDescription loadObjectDescription (String className)
     throws SAXException
   {
     try
     {
       Class propertyClass = getClass().getClassLoader().loadClass(className);
-      ClassFactoryCollector fc =
-          (ClassFactoryCollector) getParser().getConfigurationValue(ParserConfigHandler.OBJECT_FACTORY_TAG);
+      ClassFactoryCollector fc = (ClassFactoryCollector) getParser().getConfigurationValue(
+          ParserConfigHandler.OBJECT_FACTORY_TAG);
       return fc.getDescriptionForClass(propertyClass);
     }
     catch (Exception e)
@@ -124,6 +203,17 @@ public class FunctionsHandler implements ReportDefinitionHandler
     }
   }
 
+  /**
+   * Loads an expression.
+   * 
+   * @param className  the class name.
+   * @param expName  the expression name.
+   * @param depLevel  the dependency level.
+   * 
+   * @return The expression.
+   * 
+   * @throws SAXException ??.
+   */
   private Expression loadExpression (String className, String expName, int depLevel)
     throws SAXException
   {
@@ -152,11 +242,25 @@ public class FunctionsHandler implements ReportDefinitionHandler
     }
   }
 
+  /**
+   * Callback to indicate that some character data has been read.
+   * 
+   * @param ch  the character array.
+   * @param start  the start index for the characters.
+   * @param length  the length of the character sequence.
+   */  
   public void characters(char ch[], int start, int length)
   {
     // ignore ..
   }
 
+  /**
+   * Callback to indicate that an XML element end tag has been read by the parser. 
+   * 
+   * @param tagName  the tag name.
+   * 
+   * @throws SAXException ??.
+   */
   public void endElement(String tagName)
     throws SAXException
   {
@@ -197,34 +301,54 @@ public class FunctionsHandler implements ReportDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " +
-                              EXPRESSION_TAG + ", " +
-                              FUNCTION_TAG + ", " +
-                              PROPERTY_REF_TAG + ", " +
-                              finishTag);
+      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
+                              + EXPRESSION_TAG + ", "
+                              + FUNCTION_TAG + ", "
+                              + PROPERTY_REF_TAG + ", "
+                              + finishTag);
     }
   }
 
+  /**
+   * Returns the parser.
+   * 
+   * @return The parser.
+   */
   public Parser getParser()
   {
     return parser;
   }
 
+  /**
+   * Returns the report.
+   * 
+   * @return The report.
+   */
   private JFreeReport getReport ()
   {
-    return (JFreeReport) getParser().getConfigurationValue(InitialReportHandler.REPORT_DEFINITION_TAG);
+    return (JFreeReport) getParser().getConfigurationValue(
+        InitialReportHandler.REPORT_DEFINITION_TAG);
   }
 
- private boolean isBasicObject(ObjectDescription od)
+  /**
+   * Returns <code>true</code> for...
+   * 
+   * @param od  the object description.
+   * 
+   * @return A boolean.
+   */ 
+  private boolean isBasicObject(ObjectDescription od)
   {
     Iterator odNames = od.getParameterNames();
     if (odNames.hasNext() == false)
+    {
       return false;
-
+    }
     String param = (String) odNames.next();
     if (odNames.hasNext() == true)
+    {
       return false;
-
+    }
     if (param.equals("value"))
     {
       if (od.getParameterDefinition("value").equals(String.class))

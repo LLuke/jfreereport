@@ -1,9 +1,41 @@
 /**
- * Date: Jan 9, 2003
- * Time: 9:08:15 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: ReportConfigHandler.java,v 1.3 2003/02/04 17:56:11 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ------------------------
+ * ReportConfigHandler.java
+ * ------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id:$
+ *
+ * Changes
+ * -------
+ * 24-Feb-2003 : Added standard header and Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.io.ext;
 
 import com.jrefinery.report.JFreeReport;
@@ -22,10 +54,20 @@ import java.awt.print.Paper;
 import java.util.Enumeration;
 import java.util.Properties;
 
+/**
+ * A report configuration handler.
+ * 
+ * @author Thomas Morgner.
+ */
 public class ReportConfigHandler implements ReportDefinitionHandler
 {
+  /** The 'default page format' tag name. */
   public static final String DEFAULT_PAGEFORMAT_TAG = "defaultpageformat";
+
+  /** The 'configuration' tag name. */
   public static final String CONFIGURATION_TAG = "configuration";
+
+  /** The 'output-config' tag name. */
   public static final String OUTPUT_TARGET_TAG = "output-config";
 
   /** Literal text for an XML attribute. */
@@ -61,17 +103,35 @@ public class ReportConfigHandler implements ReportDefinitionHandler
   /** Literal text for an XML attribute. */
   public static final String ORIENTATION_REVERSE_LANDSCAPE_VAL = "reverselandscape";
 
-
+  /** The parser. */
   private Parser parser;
+  
+  /** The finish tag. */
   private String finishTag;
+  
+  /** The current property handler. */
   private PropertyHandler currentPropertyFactory;
 
+  /**
+   * Creates a new handler.
+   * 
+   * @param parser  the parser.
+   * @param finishTag  the finish tag.
+   */
   public ReportConfigHandler(Parser parser, String finishTag)
   {
     this.parser = parser;
     this.finishTag = finishTag;
   }
 
+  /**
+   * Callback to indicate that an XML element start tag has been read by the parser. 
+   * 
+   * @param tagName  the tag name.
+   * @param attrs  the attributes.
+   * 
+   * @throws SAXException ??.
+   */
   public void startElement(String tagName, Attributes attrs)
     throws SAXException
   {
@@ -89,19 +149,33 @@ public class ReportConfigHandler implements ReportDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " +
-                              OUTPUT_TARGET_TAG + ", " +
-                              DEFAULT_PAGEFORMAT_TAG + ", " +
-                              CONFIGURATION_TAG);
+      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
+                              + OUTPUT_TARGET_TAG + ", "
+                              + DEFAULT_PAGEFORMAT_TAG + ", "
+                              + CONFIGURATION_TAG);
     }
 
   }
 
+  /**
+   * Callback to indicate that some character data has been read.
+   * 
+   * @param ch  the character array.
+   * @param start  the start index for the characters.
+   * @param length  the length of the character sequence.
+   */  
   public void characters(char ch[], int start, int length)
   {
     // is not used ... ignore all events ..
   }
 
+  /**
+   * Callback to indicate that an XML element end tag has been read by the parser. 
+   * 
+   * @param tagName  the tag name.
+   * 
+   * @throws SAXException ??.
+   */
   public void endElement(String tagName) throws SAXException
   {
     if (tagName.equals(DEFAULT_PAGEFORMAT_TAG))
@@ -136,28 +210,51 @@ public class ReportConfigHandler implements ReportDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " +
-                              OUTPUT_TARGET_TAG + ", " +
-                              DEFAULT_PAGEFORMAT_TAG + ", " +
-                              CONFIGURATION_TAG);
+      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
+                              + OUTPUT_TARGET_TAG + ", "
+                              + DEFAULT_PAGEFORMAT_TAG + ", "
+                              + CONFIGURATION_TAG);
     }
   }
 
+  /**
+   * Returns the parser.
+   * 
+   * @return The parser.
+   */
   public Parser getParser()
   {
     return parser;
   }
 
+  /**
+   * Sets the parser.
+   * 
+   * @param parser  the parser.
+   */
   public void setParser(Parser parser)
   {
     this.parser = parser;
   }
 
+  /**
+   * Returns the report.
+   * 
+   * @return The report.   
+   */
   private JFreeReport getReport ()
   {
-    return (JFreeReport) getParser().getConfigurationValue(InitialReportHandler.REPORT_DEFINITION_TAG);
+    return (JFreeReport) getParser().getConfigurationValue(
+        InitialReportHandler.REPORT_DEFINITION_TAG);
   }
 
+  /**
+   * Handles the page format.
+   * 
+   * @param atts  the attributes.
+   * 
+   * @throws SAXException ??.
+   */
   private void handlePageFormat (Attributes atts) throws SAXException
   {
     JFreeReport report = getReport();
@@ -199,7 +296,6 @@ public class ReportConfigHandler implements ReportDefinitionHandler
     report.setDefaultPageFormat(format);
   }
 
-
   /**
    * Creates the pageFormat by using the given Attributes. If an PageFormat name is given, the
    * named PageFormat is used and the parameters width and height are ignored. If no name is
@@ -212,7 +308,7 @@ public class ReportConfigHandler implements ReportDefinitionHandler
    *
    * @return the page format.
    *
-   * @throws org.xml.sax.SAXException if there is an error parsing the report.
+   * @throws SAXException if there is an error parsing the report.
    */
   private PageFormat createPageFormat(PageFormat format, Attributes atts) throws SAXException
   {
@@ -270,6 +366,5 @@ public class ReportConfigHandler implements ReportDefinitionHandler
     Log.warn ("Insufficient Data to create a pageformat: Returned default.");
     return format;
   }
-
 
 }

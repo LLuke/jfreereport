@@ -1,36 +1,93 @@
 /**
- * Date: Jan 12, 2003
- * Time: 5:21:13 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: DataSourceHandler.java,v 1.2 2003/02/02 23:43:49 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ----------------------
+ * DataSourceHandler.java
+ * ----------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id:$
+ *
+ * Changes
+ * -------
+ * 24-Feb-2003 : Added standard header and Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.io.ext;
 
 import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
 import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
-import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+/**
+ * A datasource handler.
+ * 
+ * @author Thomas Morgner.
+ */
 public class DataSourceHandler extends CompoundObjectHandler
 {
+  /** The datasource tag name. */
   public static final String DATASOURCE_TAG = "datasource";
 
+  /** The handler. */
   private DataSourceHandler dataSourceHandler;
 
+  /**
+   * Creates a new handler.
+   * 
+   * @param parser  the parser.
+   * @param finishTag  the finish tag.
+   * @param type  the type.
+   * 
+   * @throws SAXException ??.
+   */
   public DataSourceHandler(Parser parser, String finishTag, String type)
     throws SAXException
   {
     super(parser, finishTag, lookupObjectDescription(parser, type));
   }
 
+  /**
+   * ??
+   * 
+   * @param parser  the parser.
+   * @param type  the type.
+   * 
+   * @return The object description.
+   * 
+   * @throws SAXException ??.
+   */
   private static ObjectDescription lookupObjectDescription (Parser parser, String type)
     throws SAXException
   {
-    DataSourceCollector fc =
-        (DataSourceCollector) parser.getConfigurationValue(ParserConfigHandler.DATASOURCE_FACTORY_TAG);
+    DataSourceCollector fc = (DataSourceCollector) parser.getConfigurationValue(
+        ParserConfigHandler.DATASOURCE_FACTORY_TAG);
     ObjectDescription od = fc.getDataSourceDescription(type);
     if (od == null)
     {
@@ -39,6 +96,38 @@ public class DataSourceHandler extends CompoundObjectHandler
     return od;
   }
 
+  /**
+   * Callback to indicate that an XML element start tag has been read by the parser. 
+   * 
+   * @param tagName  the tag name.
+   * @param attrs  the attributes.
+   * 
+   * @throws SAXException ??.
+   */
+  public void startElement(String tagName, Attributes attrs) throws SAXException
+  {
+    if (tagName.equals(DATASOURCE_TAG) == false)
+    {
+      super.startElement(tagName, attrs);
+      return;
+    }
+
+    String typeName = attrs.getValue("type");
+    if (typeName == null)
+    {
+      throw new SAXException("The datasource type must be specified");
+    }
+    dataSourceHandler = new DataSourceHandler(getParser(), tagName, typeName);
+    getParser().pushFactory(dataSourceHandler);
+  }
+
+  /**
+   * Callback to indicate that an XML element end tag has been read by the parser. 
+   * 
+   * @param tagName  the tag name.
+   * 
+   * @throws SAXException ??.
+   */
   public void endElement(String tagName) throws SAXException
   {
     if (tagName.equals(DATASOURCE_TAG) == false)
@@ -59,19 +148,4 @@ public class DataSourceHandler extends CompoundObjectHandler
     }
   }
 
-  public void startElement(String tagName, Attributes attrs) throws SAXException
-  {
-    if (tagName.equals(DATASOURCE_TAG) == false)
-    {
-      super.startElement(tagName, attrs);
-      return;
-    }
-
-    String typeName = attrs.getValue("type");
-    if (typeName == null)
-      throw new SAXException("The datasource type must be specified");
-
-    dataSourceHandler = new DataSourceHandler(getParser(), tagName, typeName);
-    getParser().pushFactory(dataSourceHandler);
-  }
 }

@@ -1,9 +1,41 @@
 /**
- * Date: Jan 11, 2003
- * Time: 4:14:03 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: TemplateHandler.java,v 1.3 2003/02/02 23:43:49 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * --------------------
+ * TemplateHandler.java
+ * --------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: FunctionsWriter.java,v 1.5 2003/02/21 11:31:13 mungady Exp $
+ *
+ * Changes
+ * -------
+ * 21-Feb-2003 : Added standard header and Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.io.ext;
 
 import com.jrefinery.report.io.Parser;
@@ -13,39 +45,75 @@ import com.jrefinery.report.io.ext.factory.templates.TemplateDescription;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+/**
+ * A template handler.
+ * 
+ * @author Thomas Morgner. 
+ */
 public class TemplateHandler implements ReportDefinitionHandler
 {
+  /** The compound object tag. */
   public static final String COMPOUND_OBJECT_TAG = "compound-object";
+  
+  /** The basic object tag. */
   public static final String BASIC_OBJECT_TAG = "basic-object";
 
+  /** A basic object handler. */
   private BasicObjectHandler basicFactory;
+  
+  /** The parameter name. */
   private String parameterName;
 
+  /** The parser. */
   private Parser parser;
+  
+  /** The finish tag. */
   private String finishTag;
+  
+  /** The template description. */
   private TemplateDescription template;
 
+  /**
+   * Creates a new template handler.
+   * 
+   * @param parser  the parser.
+   * @param finishTag  the finish tag.
+   * @param template  the template description.
+   */
   public TemplateHandler(Parser parser, String finishTag, TemplateDescription template)
   {
     this.parser = parser;
     this.finishTag = finishTag;
     this.template = template;
-    if (template == null) throw new NullPointerException();
+    if (template == null) 
+    {
+      throw new NullPointerException();
+    }
   }
 
+  /**
+   * Callback to indicate that an XML element start tag has been read by the parser. 
+   * 
+   * @param tagName  the tag name.
+   * @param attrs  the attributes.
+   * 
+   * @throws SAXException ??.
+   */
   public void startElement(String tagName, Attributes attrs) throws SAXException
   {
     if (tagName.equals(BASIC_OBJECT_TAG))
     {
       parameterName = attrs.getValue("name");
       if (parameterName == null)
+      {
         throw new SAXException ("Attribute 'name' is missing.");
-
+      }
       ObjectDescription od = getTemplate();
       Class parameter = od.getParameterDefinition(parameterName);
       if (parameter == null)
+      {
         throw new SAXException("No such parameter '" + parameterName + "' in template. ");
-
+      }
       String overrideClassName = attrs.getValue("class");
       if (overrideClassName != null)
       {
@@ -66,13 +134,15 @@ public class TemplateHandler implements ReportDefinitionHandler
     {
       parameterName = attrs.getValue("name");
       if (parameterName == null)
+      {
         throw new SAXException ("Attribute 'name' is missing.");
-
+      }
       ObjectDescription od = getTemplate();
       Class parameter = od.getParameterDefinition(parameterName);
       if (parameter == null)
+      {
         throw new SAXException("No such parameter");
-
+      }
       String overrideClassName = attrs.getValue("class");
       if (overrideClassName != null)
       {
@@ -91,26 +161,42 @@ public class TemplateHandler implements ReportDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " +
-                              COMPOUND_OBJECT_TAG + ", " +
-                              BASIC_OBJECT_TAG + ". ");
+      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " 
+                              + COMPOUND_OBJECT_TAG + ", " + BASIC_OBJECT_TAG + ". ");
     }
   }
 
+  /**
+   * Callback to indicate that some character data has been read.
+   * 
+   * @param ch  the character array.
+   * @param start  the start index for the characters.
+   * @param length  the length of the character sequence.
+   * 
+   * @throws SAXException ??.
+   */  
   public void characters(char ch[], int start, int length) throws SAXException
   {
     // ignore ...
   }
 
+  /**
+   * Callback to indicate that an XML element end tag has been read by the parser. 
+   * 
+   * @param tagName  the tag name.
+   * 
+   * @throws SAXException ??.
+   */
   public void endElement(String tagName) throws SAXException
   {
-    if ((tagName.equals(BASIC_OBJECT_TAG)) ||
-        (tagName.equals(COMPOUND_OBJECT_TAG)))
+    if ((tagName.equals(BASIC_OBJECT_TAG)) 
+        || (tagName.equals(COMPOUND_OBJECT_TAG)))
     {
       Object o = basicFactory.getValue();
       if (o == null)
+      {
         throw new SAXException("Parameter value is null");
-
+      }
       getTemplate().setParameter(parameterName, o);
       basicFactory = null;
     }
@@ -120,18 +206,28 @@ public class TemplateHandler implements ReportDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " +
-                              finishTag + ", " +
-                              COMPOUND_OBJECT_TAG + ", " +
-                              BASIC_OBJECT_TAG + ". ");
+      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
+                              + finishTag + ", "
+                              + COMPOUND_OBJECT_TAG + ", "
+                              + BASIC_OBJECT_TAG + ". ");
     }
   }
 
+  /**
+   * Returns the parser.
+   * 
+   * @return The parser.
+   */
   public Parser getParser()
   {
     return parser;
   }
 
+  /**
+   * Returns the template description.
+   * 
+   * @return The template description.
+   */
   public TemplateDescription getTemplate()
   {
     return template;

@@ -1,9 +1,41 @@
 /**
- * Date: Jan 11, 2003
- * Time: 4:52:58 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: BandHandler.java,v 1.3 2003/01/23 18:07:44 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ----------------
+ * BandHandler.java
+ * ----------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: FunctionsWriter.java,v 1.5 2003/02/21 11:31:13 mungady Exp $
+ *
+ * Changes
+ * -------
+ * 21-Feb-2003 : Added standard header and Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.io.ext;
 
 import com.jrefinery.report.Band;
@@ -14,19 +46,45 @@ import com.jrefinery.report.targets.style.ElementStyleSheet;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+/**
+ * A band handler.
+ * 
+ * @author Thomas Morgner
+ */
 public class BandHandler extends ElementHandler
 {
+  /** The 'band' tag. */
   public static final String BAND_TAG = "band";
+  
+  /** The 'element' tag. */
   public static final String ELEMENT_TAG = "element";
+  
+  /** The 'default-style' tag. */
   public static final String DEFAULT_STYLE_TAG = "default-style";
 
+  /** An element handler. */
   private ElementHandler elementHandler;
 
+  /**
+   * Creates a new band handler.
+   * 
+   * @param parser  the parser.
+   * @param finishTag  the finish tag.
+   * @param band  the band.
+   */
   public BandHandler(Parser parser, String finishTag, Band band)
   {
     super(parser, finishTag, band);
   }
 
+  /**
+   * Callback to indicate that an XML element start tag has been read by the parser. 
+   * 
+   * @param tagName  the tag name.
+   * @param attrs  the attributes.
+   * 
+   * @throws SAXException ??.
+   */
   public void startElement(String tagName, Attributes attrs) throws SAXException
   {
     if (tagName.equals(BAND_TAG))
@@ -45,10 +103,12 @@ public class BandHandler extends ElementHandler
     {
       String type = attrs.getValue("type");
       if (type == null)
+      {
         throw new SAXException("The element's 'type' attribute is missing");
-
-      ElementFactoryCollector fc =
-          (ElementFactoryCollector) getParser().getConfigurationValue(ParserConfigHandler.ELEMENT_FACTORY_TAG);
+      }
+      
+      ElementFactoryCollector fc = (ElementFactoryCollector) getParser().getConfigurationValue(
+          ParserConfigHandler.ELEMENT_FACTORY_TAG);
       Element element = fc.getElementForType(type);
 
       String name = attrs.getValue("name");
@@ -72,11 +132,23 @@ public class BandHandler extends ElementHandler
     }
   }
 
+  /**
+   * Returns the band.
+   * 
+   * @return The band.
+   */
   private Band getBand ()
   {
     return (Band) getElement();
   }
 
+  /**
+   * Callback to indicate that an XML element end tag has been read by the parser. 
+   * 
+   * @param tagName  the tag name.
+   * 
+   * @throws SAXException ??.
+   */
   public void endElement(String tagName) throws SAXException
   {
     if (tagName.equals(BAND_TAG))

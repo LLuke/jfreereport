@@ -1,9 +1,41 @@
 /**
- * Date: Jan 22, 2003
- * Time: 3:45:29 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: GroupHandler.java,v 1.2 2003/01/23 18:07:44 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -----------------
+ * GroupHandler.java
+ * -----------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id:$
+ *
+ * Changes
+ * -------
+ * 24-Feb-2003 : Added standard header and Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.io.ext;
 
 import com.jrefinery.report.Band;
@@ -16,20 +48,50 @@ import com.jrefinery.report.util.CharacterEntityParser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
+/**
+ * A group handler.
+ * 
+ * @author Thomas Morgner.
+ */
 public class GroupHandler implements ReportDefinitionHandler
 {
+  /** The 'fields' tag name. */
   public static final String FIELDS_TAG = "fields";
+  
+  /** The 'field' tag name. */
   public static final String FIELD_TAG = "field";
+  
+  /** The 'group-header' tag name. */  
   public static final String GROUP_HEADER_TAG = "group-header";
+  
+  /** The 'group-footer' tag name. */
   public static final String GROUP_FOOTER_TAG = "group-footer";
 
+  /** The parser. */  
   private Parser parser;
+  
+  /** The finish tag. */
   private String finishTag;
+
+  /** The group. */
   private Group group;
+  
+  /** A buffer. */
   private StringBuffer buffer;
+  
+  /** The band handler. */
   private BandHandler bandFactory;
+  
+  /** A character entity parser. */
   private CharacterEntityParser entityParser;
 
+  /**
+   * Creates a new handler.
+   * 
+   * @param parser  the parser.
+   * @param finishTag  the finish tag.
+   * @param group  the group.
+   */
   public GroupHandler(Parser parser, String finishTag, Group group)
   {
     this.entityParser = CharacterEntityParser.createXMLEntityParser();
@@ -38,6 +100,14 @@ public class GroupHandler implements ReportDefinitionHandler
     this.group = group;
   }
 
+  /**
+   * Callback to indicate that an XML element start tag has been read by the parser. 
+   * 
+   * @param tagName  the tag name.
+   * @param attrs  the attributes.
+   * 
+   * @throws SAXException ??.
+   */
   public void startElement(String tagName, Attributes attrs) throws SAXException
   {
     if (tagName.equals (GROUP_HEADER_TAG))
@@ -72,14 +142,23 @@ public class GroupHandler implements ReportDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " +
-                              GROUP_HEADER_TAG + ", " +
-                              GROUP_FOOTER_TAG + ", " +
-                              FIELDS_TAG + ", " +
-                              FIELD_TAG);
+      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " 
+                              + GROUP_HEADER_TAG + ", "
+                              + GROUP_FOOTER_TAG + ", "
+                              + FIELDS_TAG + ", "
+                              + FIELD_TAG);
     }
   }
 
+  /**
+   * Callback to indicate that some character data has been read.
+   * 
+   * @param ch  the character array.
+   * @param start  the start index for the characters.
+   * @param length  the length of the character sequence.
+   * 
+   * @throws SAXException ??.
+   */  
   public void characters(char ch[], int start, int length) throws SAXException
   {
     if (buffer != null)
@@ -88,6 +167,13 @@ public class GroupHandler implements ReportDefinitionHandler
     }
   }
 
+  /**
+   * Callback to indicate that an XML element end tag has been read by the parser. 
+   * 
+   * @param tagName  the tag name.
+   * 
+   * @throws SAXException ??.
+   */
   public void endElement(String tagName) throws SAXException
   {
     if (tagName.equals(finishTag))
@@ -113,20 +199,30 @@ public class GroupHandler implements ReportDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " +
-                              GROUP_HEADER_TAG + ", " +
-                              GROUP_FOOTER_TAG + ", " +
-                              FIELDS_TAG + ", " +
-                              FIELD_TAG + ", " +
-                              finishTag);
+      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
+                              + GROUP_HEADER_TAG + ", "
+                              + GROUP_FOOTER_TAG + ", "
+                              + FIELDS_TAG + ", "
+                              + FIELD_TAG + ", "
+                              + finishTag);
     }
   }
 
+  /**
+   * Returns the group.
+   * 
+   * @return The group.
+   */
   public Group getGroup()
   {
     return group;
   }
 
+  /**
+   * Returns the parser.
+   * 
+   * @return The parser.
+   */
   public Parser getParser()
   {
     return parser;

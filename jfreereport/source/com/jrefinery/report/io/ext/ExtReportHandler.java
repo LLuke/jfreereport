@@ -1,9 +1,41 @@
 /**
- * Date: Jan 9, 2003
- * Time: 8:49:58 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: ExtReportHandler.java,v 1.2 2003/01/22 19:38:24 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ---------------------
+ * ExtReportHandler.java
+ * ---------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id:$
+ *
+ * Changes
+ * -------
+ * 24-Feb-2003 : Added standard header and Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.io.ext;
 
 import com.jrefinery.report.JFreeReport;
@@ -22,20 +54,49 @@ import org.xml.sax.SAXException;
 import java.net.URL;
 import java.util.Hashtable;
 
+/**
+ * A handler for the extended report definition format.
+ * 
+ * @author Thomas Morgner.
+ */
 public class ExtReportHandler implements ReportDefinitionHandler
 {
+  /** The report definition tag name.*/
   public static final String REPORT_DEFINITION_TAG = InitialReportHandler.REPORT_DEFINITION_TAG;
+  
+  /** The parser config tag name. */
   public static final String PARSER_CONFIG_TAG = "parser-config";
+  
+  /** The report config tag name. */
   public static final String REPORT_CONFIG_TAG = "report-config";
+  
+  /** The styles tag name. */
   public static final String STYLES_TAG = "styles";
+  
+  /** The templates tag name. */
   public static final String TEMPLATES_TAG = "templates";
+  
+  /** The report description tag name. */
   public static final String REPORT_DESCRIPTION_TAG = "report-description";
+  
+  /** The functions tag name. */
   public static final String FUNCTIONS_TAG = "functions";
+
+  /** The data definition tag name. */
   public static final String DATA_DEFINITION_TAG = "data-definition";
 
+  /** The parser. */
   private Parser parser;
+  
+  /** The finish tag. */
   private String finishTag;
 
+  /** 
+   * Creates a new handler.
+   * 
+   * @param parser  the parser.
+   * @param finishTag  the finish tag.
+   */
   public ExtReportHandler(Parser parser, String finishTag)
   {
     this.parser = parser;
@@ -51,6 +112,14 @@ public class ExtReportHandler implements ReportDefinitionHandler
     createElementFactoryHolder();
   }
 
+  /**
+   * Callback to indicate that an XML element start tag has been read by the parser. 
+   * 
+   * @param tagName  the tag name.
+   * @param attrs  the attributes.
+   * 
+   * @throws SAXException ??.
+   */
   public void startElement(String tagName, Attributes attrs)
     throws SAXException
   {
@@ -85,21 +154,24 @@ public class ExtReportHandler implements ReportDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " +
-                              PARSER_CONFIG_TAG + ", " +
-                              REPORT_DESCRIPTION_TAG + ", " +
-                              REPORT_CONFIG_TAG + ", " +
-                              STYLES_TAG + ", " +
-                              TEMPLATES_TAG + ", " +
-                              FUNCTIONS_TAG + ", " +
-                              DATA_DEFINITION_TAG + ".");
+      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
+                              + PARSER_CONFIG_TAG + ", "
+                              + REPORT_DESCRIPTION_TAG + ", "
+                              + REPORT_CONFIG_TAG + ", "
+                              + STYLES_TAG + ", "
+                              + TEMPLATES_TAG + ", "
+                              + FUNCTIONS_TAG + ", "
+                              + DATA_DEFINITION_TAG + ".");
     }
   }
 
+  /**
+   * Creates a class factory collector.
+   */
   private void createClassFactoryHolder ()
   {
-    ClassFactoryCollector fc =
-        (ClassFactoryCollector) getParser().getConfigurationValue(ParserConfigHandler.OBJECT_FACTORY_TAG);
+    ClassFactoryCollector fc = (ClassFactoryCollector) getParser().getConfigurationValue(
+        ParserConfigHandler.OBJECT_FACTORY_TAG);
     if (fc == null)
     {
       fc = new ClassFactoryCollector();
@@ -112,10 +184,13 @@ public class ExtReportHandler implements ReportDefinitionHandler
     }
   }
 
+  /**
+   * Creates a style-key factory collector.
+   */
   private void createStyleKeyFactoryHolder ()
   {
-    StyleKeyFactoryCollector fc =
-        (StyleKeyFactoryCollector) getParser().getConfigurationValue(ParserConfigHandler.STYLEKEY_FACTORY_TAG);
+    StyleKeyFactoryCollector fc = (StyleKeyFactoryCollector) getParser().getConfigurationValue(
+        ParserConfigHandler.STYLEKEY_FACTORY_TAG);
     if (fc == null)
     {
       fc = new StyleKeyFactoryCollector();
@@ -124,10 +199,13 @@ public class ExtReportHandler implements ReportDefinitionHandler
     }
   }
 
+  /**
+   * Creates a template collector.
+   */
   private void createTemplateFactoryHolder ()
   {
-    TemplateCollector fc =
-        (TemplateCollector) getParser().getConfigurationValue(ParserConfigHandler.TEMPLATE_FACTORY_TAG);
+    TemplateCollector fc = (TemplateCollector) getParser().getConfigurationValue(
+        ParserConfigHandler.TEMPLATE_FACTORY_TAG);
     if (fc == null)
     {
       fc = new TemplateCollector();
@@ -135,25 +213,31 @@ public class ExtReportHandler implements ReportDefinitionHandler
     }
   }
 
+  /**
+   * Creates a data source collector. 
+   */
   private void createDataSourceFactoryHolder ()
   {
-    DataSourceCollector fc =
-        (DataSourceCollector) getParser().getConfigurationValue(ParserConfigHandler.DATASOURCE_FACTORY_TAG);
+    DataSourceCollector fc = (DataSourceCollector) getParser().getConfigurationValue(
+        ParserConfigHandler.DATASOURCE_FACTORY_TAG);
     if (fc == null)
     {
       fc = new DataSourceCollector();
       getParser().setConfigurationValue(ParserConfigHandler.DATASOURCE_FACTORY_TAG, fc);
 
-      ClassFactoryCollector cfc =
-          (ClassFactoryCollector) getParser().getConfigurationValue(ParserConfigHandler.OBJECT_FACTORY_TAG);
+      ClassFactoryCollector cfc = (ClassFactoryCollector) getParser().getConfigurationValue(
+          ParserConfigHandler.OBJECT_FACTORY_TAG);
       cfc.addFactory(fc);
     }
   }
 
+  /**
+   * Creates an element factory collector.
+   */
   private void createElementFactoryHolder ()
   {
-    ElementFactoryCollector fc =
-        (ElementFactoryCollector) getParser().getConfigurationValue(ParserConfigHandler.ELEMENT_FACTORY_TAG);
+    ElementFactoryCollector fc = (ElementFactoryCollector) getParser().getConfigurationValue(
+        ParserConfigHandler.ELEMENT_FACTORY_TAG);
     if (fc == null)
     {
       fc = new ElementFactoryCollector();
@@ -161,11 +245,25 @@ public class ExtReportHandler implements ReportDefinitionHandler
     }
   }
 
+  /**
+   * Callback to indicate that some character data has been read.
+   * 
+   * @param ch  the character array.
+   * @param start  the start index for the characters.
+   * @param length  the length of the character sequence.
+   */
   public void characters(char ch[], int start, int length)
   {
     // characters are ignored at this point...
   }
 
+  /**
+   * Callback to indicate that an XML element end tag has been read by the parser. 
+   * 
+   * @param tagName  the tag name.
+   * 
+   * @throws SAXException ??.
+   */
   public void endElement(String tagName) throws SAXException
   {
     if (tagName.equals(finishTag))
@@ -202,17 +300,22 @@ public class ExtReportHandler implements ReportDefinitionHandler
     }
     else
     {
-      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: " +
-                              REPORT_DESCRIPTION_TAG+ ", " +
-                              PARSER_CONFIG_TAG + ", " +
-                              REPORT_CONFIG_TAG + ", " +
-                              STYLES_TAG + ", " +
-                              TEMPLATES_TAG + ", " +
-                              FUNCTIONS_TAG + ", " +
-                              DATA_DEFINITION_TAG + ".");
+      throw new SAXException ("Invalid TagName: " + tagName + ", expected one of: "
+                              + REPORT_DESCRIPTION_TAG + ", "
+                              + PARSER_CONFIG_TAG + ", "
+                              + REPORT_CONFIG_TAG + ", "
+                              + STYLES_TAG + ", "
+                              + TEMPLATES_TAG + ", "
+                              + FUNCTIONS_TAG + ", "
+                              + DATA_DEFINITION_TAG + ".");
     }
   }
 
+  /**
+   * Returns the parser.
+   * 
+   * @return The parser.
+   */
   public Parser getParser()
   {
     return parser;
