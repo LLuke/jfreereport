@@ -93,7 +93,7 @@
 
         <!-- make the jar -->
         <jar jarfile="${projectdir}/${jfreereport.name}-${jfreereport.version}.jar"
-             projectdir="${projectdir}/build" />
+             basedir="${projectdir}/build" />
 
         <!-- delete the temp directory -->
         <delete dir="${projectdir}/build" />
@@ -128,7 +128,7 @@
 
 	      <!-- make the jar file -->
         <jar jarfile="${projectdir}/${jfreereport.name}-${jfreereport.version}-demo.jar"
-             projectdir="${projectdir}/build"
+             basedir="${projectdir}/build"
 	           includes="com/jrefinery/report/demo/**">
             <manifest>
                 <attribute name="Main-Class" value="com.jrefinery.report.demo.JFreeReportDemo" />
@@ -293,7 +293,7 @@
     <target name="cvs-rebuild"
             depends="cvs-checkout"
             description="Checksout the sources from sourceforge and rebuilds the sources by using the ant-script within the sources">
-        <property name="projectdir" value="jfreereport" />
+        <property name="projectdir" value="." />
         <ant antfile="ant/build.xml" dir="jfreereport" target="all"/>
     </target>
 
