@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.34 2003/02/23 20:39:10 taqua Exp $
+ * $Id: ItemFactory.java,v 1.35 2003/02/24 14:57:15 mungady Exp $
  *
  * Changes
  * -------
@@ -857,7 +857,7 @@ public class ItemFactory
    * @param name  the name of the new element.
    * @param paint  the line color of this element.
    * @param stroke  the stroke of this shape. For pdf use, restrict to BasicStrokes.
-   * @param shape  the Line2D shape.
+   * @param shape  the shape.
    * @param shouldDraw  draw the shape?
    * @param shouldFill  fill the shape?
    *
@@ -885,7 +885,7 @@ public class ItemFactory
    * @param bounds  the bounds.
    * @param paint  the line color of this element.
    * @param stroke  the stroke of this shape. For pdf use, restrict to BasicStrokes.
-   * @param shape  the Line2D shape.
+   * @param shape  the shape.
    * @param shouldDraw  draw the shape?
    * @param shouldFill  fill the shape?
    * @param shouldScale  scale the shape?
@@ -915,7 +915,7 @@ public class ItemFactory
    * @param bounds  the bounds.
    * @param paint  the line color of this element.
    * @param stroke  the stroke of this shape. For pdf use, restrict to BasicStrokes.
-   * @param shape  the Line2D shape.
+   * @param shape  the shape.
    * @param shouldDraw  draw the shape?
    * @param shouldFill  fill the shape?
    * @param shouldScale  scale the shape?
@@ -958,6 +958,56 @@ public class ItemFactory
     return shapeElement;
   }
 
+
+  /**
+   * Creates a new ShapeElement.
+   *
+   * @param name  the name of the new element.
+   * @param bounds  the bounds.
+   * @param paint  the line color of this element.
+   * @param stroke  the stroke of this shape. For pdf use, restrict to BasicStrokes.
+   * @param fieldname  the fieldname from where to get the shape.
+   * @param shouldDraw  draw the shape?
+   * @param shouldFill  fill the shape?
+   * @param shouldScale  scale the shape?
+   * @param keepAspectRatio  preserve the aspect ratio?
+   *
+   * @return a report element for drawing a line.
+   *
+   * @throws NullPointerException if bounds, name or shape are null
+   * @throws IllegalArgumentException if the given alignment is invalid
+   */
+  public static ShapeElement createShapeElement(String name,
+                                                Rectangle2D bounds,
+                                                Paint paint,
+                                                Stroke stroke,
+                                                String fieldname,
+                                                boolean shouldDraw,
+                                                boolean shouldFill,
+                                                boolean shouldScale,
+                                                boolean keepAspectRatio)
+  {
+    ShapeElement shapeElement = new ShapeElement();
+    if (name != null)
+    {
+      shapeElement.setName(name);
+    }
+    if (paint != null)
+    {
+      shapeElement.getStyle().setStyleProperty(ElementStyleSheet.PAINT, paint);
+    }
+    if (stroke != null)
+    {
+      shapeElement.setStroke(stroke);
+    }
+    shapeElement.setDataSource(new DataRowDataSource(fieldname));
+    shapeElement.setShouldDraw(shouldDraw);
+    shapeElement.setShouldFill(shouldFill);
+    shapeElement.setScale(shouldScale);
+    shapeElement.setKeepAspectRatio(keepAspectRatio);
+    setElementBounds(shapeElement, bounds);
+    return shapeElement;
+  }
   /**
    * Creates a new RectangleShapeElement.
    *

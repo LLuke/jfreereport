@@ -101,7 +101,8 @@
 <!ENTITY % itemelements
   "(label | string-field | number-field | date-field |
 	imageref | image-field | imageurl-field | rectangle |
-  resource-label | resource-field | line | drawable-field)*">
+  resource-label | resource-field | line |
+  drawable-field | shape-field)*">
 
 
 <!--
@@ -510,6 +511,8 @@
   draw     (%boolean;)   #IMPLIED
   fill     (%boolean;)   #IMPLIED
   weight    CDATA        #IMPLIED
+  scale       (%boolean;)   #IMPLIED
+  keepAspectRatio     (%boolean;)   #IMPLIED
 >
 
 <!--

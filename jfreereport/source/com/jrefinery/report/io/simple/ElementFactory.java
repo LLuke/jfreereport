@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.15 2003/02/26 13:57:57 mungady Exp $
+ * $Id: ElementFactory.java,v 1.16 2003/03/07 16:56:01 taqua Exp $
  *
  * Changes
  * -------
@@ -205,6 +205,10 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     {
       startLine(atts);
     }
+    else if (elementName.equals(SHAPE_FIELD_TAG))
+    {
+      startShapeField(atts);
+    }
     else if (elementName.equals(GENERAL_FIELD_TAG))
     {
       throw new SAXException("The usage of general field is deprecated, use string field instead");
@@ -339,6 +343,10 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     else if (elementName.equals(LINE_TAG))
     {
       endLine();
+    }
+    else if (elementName.equals(SHAPE_FIELD_TAG))
+    {
+      endShapeField();
     }
     else if (elementName.equals(GENERAL_FIELD_TAG))
     {
@@ -614,6 +622,33 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   }
 
   /**
+   * Creates a RectangleShapeElement.
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
+   */
+  protected void startShapeField(Attributes atts) throws SAXException
+  {
+    String name = getNameGenerator().generateName(atts.getValue(NAME_ATT));
+    String elementSource = atts.getValue(FIELDNAME_ATT);
+    Color c = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
+    Rectangle2D bounds = ParserUtil.getElementPosition(atts);
+    boolean shouldDraw = ParserUtil.parseBoolean(atts.getValue("draw"), false);
+    boolean shouldFill = ParserUtil.parseBoolean(atts.getValue("fill"), true);
+    boolean scale = ParserUtil.parseBoolean(atts.getValue("keepAspectRatio"), false);
+    boolean kar = ParserUtil.parseBoolean(atts.getValue("scale"), true);
+
+    ShapeElement element = ItemFactory.createShapeElement(
+        name,
+        bounds,
+        c,
+        ParserUtil.parseStroke(atts.getValue("weight")),
+        elementSource, shouldDraw, shouldFill, scale, kar);
+    getCurrentBand().addElement(element);
+  }
+
+  /**
    * Creates a label element, an text element with an static datasource attached.
    *
    * @param atts  the attributes.
@@ -749,6 +784,15 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    * @throws SAXException if there is a SAX problem.
    */
   protected void endLine() throws SAXException
+  {
+  }
+
+  /**
+   * Ends the shape element.
+   *
+   * @throws SAXException if there is a SAX problem.
+   */
+  protected void endShapeField() throws SAXException
   {
   }
 
