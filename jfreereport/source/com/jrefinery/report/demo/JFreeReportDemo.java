@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.5 2002/05/16 16:58:19 jaosch Exp $
+ * $Id: JFreeReportDemo.java,v 1.6 2002/05/16 23:08:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -46,7 +46,6 @@ package com.jrefinery.report.demo;
 import java.awt.AWTEvent;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -216,7 +215,8 @@ public class JFreeReportDemo extends JFrame implements WindowListener
    */
   public void preview1()
   {
-    File in = new File(getClass().getResource("com/jrefinery/report/demo/report1.xml").getFile());
+    File in =
+      new File(getClass().getResource("/com/jrefinery/report/demo/report1.xml").getFile());
     if (in == null)
     {
       JOptionPane.showMessageDialog(this, "ReportDefinition report1.xml not found");
@@ -257,7 +257,8 @@ public class JFreeReportDemo extends JFrame implements WindowListener
    */
   public void preview2()
   {
-    File in = new File(getClass().getResource("com/jrefinery/report/demo/report2.xml").getFile());
+    File in =
+      new File(getClass().getResource("/com/jrefinery/report/demo/report2.xml").getFile());
     if (in == null)
     {
       JOptionPane.showMessageDialog(
@@ -298,7 +299,8 @@ public class JFreeReportDemo extends JFrame implements WindowListener
   {
     // it would be nice to load the report file from the arcive with 
     // getResourceAsStream() ! (JS)
-    File in = new File(getClass().getResource("com/jrefinery/report/demo/report3.xml").getFile());
+    File in =
+      new File(getClass().getResource("/com/jrefinery/report/demo/report3.xml").getFile());
     if (in == null)
     {
       JOptionPane.showMessageDialog(
@@ -349,13 +351,14 @@ public class JFreeReportDemo extends JFrame implements WindowListener
         "Are you sure you want to exit?",
         "Confirmation...",
         JOptionPane.YES_NO_OPTION,
-        JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
+        JOptionPane.QUESTION_MESSAGE)
+        == JOptionPane.YES_OPTION;
     if (close)
     {
       dispose();
       System.exit(0);
     }
-    
+
     return close;
   }
 
@@ -516,10 +519,16 @@ public class JFreeReportDemo extends JFrame implements WindowListener
    */
   protected void processWindowEvent(WindowEvent windowEvent)
   {
-    if (windowEvent.getID() == WindowEvent.WINDOW_CLOSING) {
-      if (attemptExit()) {
+    if (windowEvent.getID() == WindowEvent.WINDOW_CLOSING)
+    {
+      if (attemptExit())
+      {
         super.processWindowEvent(windowEvent);
       }
+    }
+    else
+    {
+      super.processWindowEvent(windowEvent);
     }
   }
 
