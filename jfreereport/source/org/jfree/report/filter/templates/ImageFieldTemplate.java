@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageFieldTemplate.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ImageFieldTemplate.java,v 1.3 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -49,7 +49,8 @@ import org.jfree.report.filter.ImageRefFilter;
  *
  * @author Thomas Morgner
  */
-public class ImageFieldTemplate extends AbstractTemplate implements DataRowConnectable
+public class ImageFieldTemplate extends AbstractTemplate
+    implements DataRowConnectable
 {
   /** The data row reader. */
   private DataRowDataSource dataRowDataSource;
