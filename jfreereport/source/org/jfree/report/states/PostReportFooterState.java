@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------
- * ReportGenerator.java
- * --------------------
- * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ * --------------------------
+ * PostReportFooterState.java
+ * --------------------------
+ * (C)opyright 2000-2004, by Object Refinery Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
+ * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostReportFooterState.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: PostReportFooterState.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------

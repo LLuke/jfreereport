@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------------
  * PostGroupHeaderState.java
  * -------------------------
- * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2000-2002, by Object Refinery Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
+ * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostGroupHeaderState.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: PostGroupHeaderState.java,v 1.3 2003/09/21 10:49:08 taqua Exp $
  *
  * Changes
  * -------

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SystemOutLogTarget.java,v 1.7 2003/11/07 18:33:57 taqua Exp $
+ * $Id: SystemOutLogTarget.java,v 1.8 2003/12/04 18:04:07 taqua Exp $
  *
  * Changes
  * -------

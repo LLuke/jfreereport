@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ------------------
  * StraightToPDF.java
  * ------------------
- * (C)opyright 2002, 2003, by Simba Management Limited.
+ * (C)opyright 2002, 2003, by Object Refinery Limited.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
+ * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.7 2003/08/25 14:29:28 taqua Exp $
+ * $Id: StraightToPDF.java,v 1.8 2004/03/16 15:09:22 taqua Exp $
  *
  * Changes
  * -------

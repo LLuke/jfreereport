@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------------
  * SampleData5.java
  * ----------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Object Refinery Limited.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SampleData5.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: SampleData5.java,v 1.3 2003/11/15 20:51:04 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,9 +23,9 @@
  * -----------------------
  * PageFormatFactory.java
  * -----------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: PageFormatFactory.java,v 1.5 2003/08/25 14:29:34 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.6 2003/12/21 20:51:44 taqua Exp $
  *
  * Changes
  * -------
