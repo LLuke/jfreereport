@@ -25,18 +25,18 @@
  * -----------------------
  * (C)opyright 2003, by Hawesko GmbH & Co KG and Contributors.
  *
- * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG), based on ideas and code from 
+ * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG), based on ideas and code from
  *                   JRXlsExporter.java of JasperReports
  * Contributor(s):   David Gilbert (for Simba Management Limited);
- * 
  *
- * $Id: ExcelDataCellStyle.java,v 1.5 2003/02/26 13:58:03 mungady Exp $
+ *
+ * $Id: ExcelDataCellStyle.java,v 1.6 2003/05/09 17:12:13 taqua Exp $
  *
  * Changes
  * -------
  * 25-Jan-2003 : initial version
  * 25-Feb-2003 : Fixed Checkstyle issues (DG);
- * 
+ *
  */
 
 package com.jrefinery.report.targets.table.excel;
@@ -50,7 +50,7 @@ import com.jrefinery.report.targets.FontDefinition;
  * The ExcelDataCellStyle is used to collect style information for
  * an excel cell. This information is later transformed into a excel
  * HSSFCellStyle using the ExcelCellStyleFactory.
- * 
+ *
  * @author Heiko Evermann.
  */
 public class ExcelDataCellStyle
@@ -213,38 +213,38 @@ public class ExcelDataCellStyle
     {
       return true;
     }
-    if (!(o instanceof ExcelDataCellStyle)) 
+    if (!(o instanceof ExcelDataCellStyle))
     {
       return false;
     }
 
     final ExcelDataCellStyle style = (ExcelDataCellStyle) o;
 
-    if (wrapText != style.wrapText) 
+    if (wrapText != style.wrapText)
     {
       return false;
     }
-    if (fontDefinition != null ? !fontDefinition.equals(style.fontDefinition) 
-                               : style.fontDefinition != null) 
+    if (fontDefinition != null ? !fontDefinition.equals(style.fontDefinition)
+        : style.fontDefinition != null)
     {
       return false;
     }
-    if (horizontalAlignment != null ? !horizontalAlignment.equals(style.horizontalAlignment) 
-                                    : style.horizontalAlignment != null) 
+    if (horizontalAlignment != null ? !horizontalAlignment.equals(style.horizontalAlignment)
+        : style.horizontalAlignment != null)
     {
       return false;
     }
-    if (textColor != null ? !textColor.equals(style.textColor) : style.textColor != null) 
+    if (textColor != null ? !textColor.equals(style.textColor) : style.textColor != null)
     {
       return false;
     }
-    if (verticalAlignment != null ? !verticalAlignment.equals(style.verticalAlignment) 
-                                  : style.verticalAlignment != null) 
+    if (verticalAlignment != null ? !verticalAlignment.equals(style.verticalAlignment)
+        : style.verticalAlignment != null)
     {
       return false;
     }
     if (dataStyle != null ? !dataStyle.equals(style.dataStyle)
-                                  : style.dataStyle!= null)
+        : style.dataStyle != null)
     {
       return false;
     }

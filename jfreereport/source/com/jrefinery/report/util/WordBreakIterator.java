@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WordBreakIterator.java,v 1.4 2003/04/09 00:12:30 mungady Exp $
+ * $Id: WordBreakIterator.java,v 1.5 2003/05/02 16:35:04 taqua Exp $
  *
  * Changes
  * -------
@@ -51,10 +51,7 @@ public class WordBreakIterator
   
   /** The current position. */
   private int position;
-  
-  /** The last position. */
- // private int lastFound;
-  
+
   /** Storage for characters. */
   private char[] text;
 
@@ -198,16 +195,35 @@ public class WordBreakIterator
     this.text = text.toCharArray();
   }
 
+  /**
+   * Returns the current parsing position of this iterator.
+   *
+   * @return returns the current parsing position of this iterator.
+   */
   public int getPosition()
   {
     return position;
   }
 
+  /**
+   * Defines the current parse position for the word break iterator. The position
+   * must be positive and within the range of the current text.
+   *
+   * @param position the position.
+   */
   public void setPosition(int position)
   {
+    if (position < 0)
+    {
+      throw new IndexOutOfBoundsException("Position < 0");
+    }
+    if (position > text.length)
+    {
+      throw new IndexOutOfBoundsException("Position > text.length");
+    }
     this.position = position;
   }
-
+/*
   public static void main (String [] args)
   {
     WordBreakIterator wb = new WordBreakIterator("FirstName a verylong text indeeed");
@@ -222,4 +238,5 @@ public class WordBreakIterator
       System.out.println ("Pos: " + wb.getPosition());
     }
   }
+*/  
 }

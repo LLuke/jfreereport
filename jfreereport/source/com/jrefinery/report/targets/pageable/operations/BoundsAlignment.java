@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BoundsAlignment.java,v 1.5 2003/02/07 22:40:41 taqua Exp $
+ * $Id: BoundsAlignment.java,v 1.6 2003/02/27 10:35:39 mungady Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import java.awt.geom.Rectangle2D;
 public abstract class BoundsAlignment
 {
   /** The bounds against which the alignment is performed. */
-  protected Rectangle2D referenceBounds;
+  private Rectangle2D referenceBounds;
 
   /**
    * Creates a new alignment object.
@@ -57,7 +57,22 @@ public abstract class BoundsAlignment
    */
   protected BoundsAlignment (Rectangle2D bounds)
   {
+    if (bounds == null)
+    {
+      throw new NullPointerException("Bounds are null");
+    }
     this.referenceBounds = bounds;
+  }
+
+  /**
+   * Returns the internal reference bounds. This is no clone or copy, so take
+   * care!
+   *
+   * @return the reference bounds.
+   */
+  public Rectangle2D getReferenceBounds()
+  {
+    return referenceBounds;
   }
 
   /**

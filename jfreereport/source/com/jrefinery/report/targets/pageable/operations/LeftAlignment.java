@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LeftAlignment.java,v 1.10 2003/02/27 10:35:39 mungady Exp $
+ * $Id: LeftAlignment.java,v 1.11 2003/04/05 18:57:18 taqua Exp $
  *
  * Changes
  * -------
@@ -71,11 +71,11 @@ public class LeftAlignment extends HorizontalBoundsAlignment
     {
       throw new NullPointerException("Inner Bound must not be null");
     }
-    inner = referenceBounds.createIntersection(inner);
-    float x = (float) referenceBounds.getX();
+    inner = getReferenceBounds().createIntersection(inner);
+    float x = (float) getReferenceBounds().getX();
     float y = (float) inner.getY();
-    float w = (float) Math.min (inner.getWidth(), referenceBounds.getWidth());
-    float h = (float) Math.min (inner.getHeight(), referenceBounds.getHeight());
+    float w = (float) Math.min (inner.getWidth(), getReferenceBounds().getWidth());
+    float h = (float) Math.min (inner.getHeight(), getReferenceBounds().getHeight());
 
     inner.setRect(x, y, w, h);
     return inner;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.8 2003/05/02 12:40:16 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.9 2003/05/06 14:03:21 taqua Exp $
  *
  * Changes
  * -------
@@ -452,7 +452,8 @@ public class ReportConverterGUI extends JFrame
     catch (Exception e)
     {
       Log.error ("Failed to convert.", e);
-      ExceptionDialog.showExceptionDialog("Failed to convert.", "Error while converting the reports.", e);
+      ExceptionDialog.showExceptionDialog
+          ("Failed to convert.", "Error while converting the reports.", e);
       return false;
     }
   }

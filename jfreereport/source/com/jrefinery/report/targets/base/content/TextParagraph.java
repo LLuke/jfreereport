@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.17 2003/05/02 16:35:03 taqua Exp $
+ * $Id: TextParagraph.java,v 1.18 2003/05/06 14:03:58 taqua Exp $
  *
  * Changes
  * -------
@@ -77,7 +77,7 @@ public class TextParagraph extends ContentContainer
     super(new Rectangle2D.Float());
     this.sizeCalculator = calc;
     this.reservedSize = getSizeCalculator().getStringWidth(RESERVED_LITERAL, 0,
-                                                           RESERVED_LITERAL.length());
+        RESERVED_LITERAL.length());
     this.lineHeight = lineHeight;
   }
 
@@ -100,7 +100,8 @@ public class TextParagraph extends ContentContainer
    * @param width the width of the bounds.
    * @param height the height of the bounds.
    */
-  public void setContent (String content, final float x, final float y, final float width, final float height)
+  public void setContent
+      (String content, final float x, final float y, final float width, final float height)
   {
     if (content == null)
     {
@@ -256,11 +257,11 @@ public class TextParagraph extends ContentContainer
    * @param breakit the break iterator for the text
    * @return the most suitable position for an linebreak.
    */
-  private int findNextBreak (final String text,
-                             final int lineStart,
-                             final float width,
-                             final boolean forceEnd,
-                             WordBreakIterator breakit)
+  private int findNextBreak(final String text,
+                            final int lineStart,
+                            final float width,
+                            final boolean forceEnd,
+                            WordBreakIterator breakit)
   {
     int startPos = lineStart;
     int endPos;
@@ -355,13 +356,13 @@ public class TextParagraph extends ContentContainer
 
     String baseLine = base.substring(lineStart, lastCheckedChar);
     float filler = width - (getSizeCalculator().getStringWidth(baseLine, 0, baseLine.length()))
-                         - reservedSize;
+        - reservedSize;
 
     int maxFillerLength = base.length() - lastCheckedChar;
     for (int i = 1; i < maxFillerLength; i++)
     {
       float fillerWidth = getSizeCalculator().getStringWidth(base, lastCheckedChar,
-                                                             lastCheckedChar + i);
+          lastCheckedChar + i);
       if (filler < fillerWidth)
       {
         return base.substring(lineStart, lastCheckedChar + i - 1) + RESERVED_LITERAL;

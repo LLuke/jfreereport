@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellDataFactory.java,v 1.8 2003/02/26 13:58:02 mungady Exp $
+ * $Id: ExcelCellDataFactory.java,v 1.9 2003/05/09 17:12:13 taqua Exp $
  *
  * Changes
  * -------
@@ -64,6 +64,9 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
   /** the style factory, which is used to create the excel styles. */
   private ExcelCellStyleFactory styleFactory;
 
+  /** A flag defining whether to use excel data formats (POI 1.10). */
+  private boolean defineDataFormats;
+
   /**
    * Creates a new ExcelCellDataFactory.
    *
@@ -76,6 +79,41 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
       throw new NullPointerException();
     }
     this.styleFactory = styleFactory;
+    defineDataFormats = false;
+  }
+
+  /**
+   * Defines whether to map java objects into excel extended cell formats. This
+   * feature can be used to create numeric and date cells in the excel sheet,
+   * but the mapping may contain errors.
+   * <p>
+   * We try to directly map the java.text.SimpleDateFormat and java.text.DecimalFormat
+   * into their excel counter parts and hope that everything works fine. If not,
+   * you will have to adjust the format afterwards.
+   *
+   * @return true if cells should contain a custom data format for numeric or date
+   * cells or false when all cells should contain strings.
+   */
+  public boolean isDefineDataFormats()
+  {
+    return defineDataFormats;
+  }
+
+  /**
+   * Defines whether to map java objects into excel extended cell formats. This
+   * feature can be used to create numeric and date cells in the excel sheet,
+   * but the mapping may contain errors.
+   * <p>
+   * We try to directly map the java.text.SimpleDateFormat and java.text.DecimalFormat
+   * into their excel counter parts and hope that everything works fine. If not,
+   * you will have to adjust the format afterwards.
+   *
+   * @param defineDataFormats set to true if cells should contain a custom data
+   * format for numeric or date cells or false when all cells should contain strings.
+   */ 
+  public void setDefineDataFormats(boolean defineDataFormats)
+  {
+    this.defineDataFormats = defineDataFormats;
   }
 
   /**
@@ -124,7 +162,9 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
     {
       TableCellData retval = handleTemplate((Template) ds, element, bounds);
       if (retval != null)
+      {
         return retval;
+      }
     }
 
     // fallback, no template or unknown template

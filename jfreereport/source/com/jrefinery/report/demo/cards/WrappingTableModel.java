@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WrappingTableModel.java,v 1.2 2003/04/09 15:30:27 mungady Exp $
+ * $Id: WrappingTableModel.java,v 1.3 2003/04/12 13:43:03 taqua Exp $
  *
  * Changes
  * -------
@@ -225,14 +225,14 @@ public class WrappingTableModel implements TableModel
    */
   public String getColumnName(int columnIndex)
   {
-    int _columnIndex = (columnIndex % model.getColumnCount());
+    int tmpColumnIndex = (columnIndex % model.getColumnCount());
     if (columnIndex < model.getColumnCount())
     {
-      return getColumnPrefix1() + model.getColumnName(_columnIndex);
+      return getColumnPrefix1() + model.getColumnName(tmpColumnIndex);
     }
     else
     {
-      return getColumnPrefix2() + model.getColumnName(_columnIndex);
+      return getColumnPrefix2() + model.getColumnName(tmpColumnIndex);
     }
   }
 
@@ -246,8 +246,8 @@ public class WrappingTableModel implements TableModel
    */
   public Class getColumnClass(int columnIndex)
   {
-    int _columnIndex = (columnIndex % model.getColumnCount());
-    return model.getColumnClass(_columnIndex);
+    int tmpColumnIndex = (columnIndex % model.getColumnCount());
+    return model.getColumnClass(tmpColumnIndex);
   }
 
   /**
@@ -264,13 +264,13 @@ public class WrappingTableModel implements TableModel
    */
   public boolean isCellEditable(int rowIndex, int columnIndex)
   {
-    int _columnIndex = (columnIndex % model.getColumnCount());
-    int _rowIndex = calculateRow(rowIndex, columnIndex);
-    if (_rowIndex >= model.getRowCount())
+    int tmpColumnIndex = (columnIndex % model.getColumnCount());
+    int tmpRowIndex = calculateRow(rowIndex, columnIndex);
+    if (tmpRowIndex >= model.getRowCount())
     {
       return false;
     }
-    return model.isCellEditable(_rowIndex, _columnIndex);
+    return model.isCellEditable(tmpRowIndex, tmpColumnIndex);
   }
 
   /**
@@ -305,13 +305,13 @@ public class WrappingTableModel implements TableModel
    */
   public Object getValueAt(int rowIndex, int columnIndex)
   {
-    int _columnIndex = (columnIndex % model.getColumnCount());
-    int _rowIndex = calculateRow(rowIndex, columnIndex);
-    if (_rowIndex >= model.getRowCount())
+    int tmpColumnIndex = (columnIndex % model.getColumnCount());
+    int tmpRowIndex = calculateRow(rowIndex, columnIndex);
+    if (tmpRowIndex >= model.getRowCount())
     {
       return null;
     }
-    return model.getValueAt(_rowIndex, _columnIndex);
+    return model.getValueAt(tmpRowIndex, tmpColumnIndex);
   }
 
   /**
@@ -326,13 +326,13 @@ public class WrappingTableModel implements TableModel
    */
   public void setValueAt(Object aValue, int rowIndex, int columnIndex)
   {
-    int _columnIndex = (columnIndex % model.getColumnCount());
-    int _rowIndex = calculateRow(rowIndex, columnIndex);
-    if (_rowIndex >= model.getRowCount())
+    int tmpColumnIndex = (columnIndex % model.getColumnCount());
+    int tmpRowIndex = calculateRow(rowIndex, columnIndex);
+    if (tmpRowIndex >= model.getRowCount())
     {
       return;
     }
-    model.setValueAt(aValue, _rowIndex, _columnIndex);
+    model.setValueAt(aValue, tmpRowIndex, tmpColumnIndex);
   }
 
   /**

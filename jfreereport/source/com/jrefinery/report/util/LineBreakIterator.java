@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineBreakIterator.java,v 1.5 2003/05/02 12:40:47 taqua Exp $
+ * $Id: LineBreakIterator.java,v 1.6 2003/05/08 21:46:16 taqua Exp $
  *
  * Changes
  * -------
@@ -37,11 +37,10 @@
 package com.jrefinery.report.util;
 
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * Same as BreakIterator.getLineInstance().
- * 
+ *
  * @author Thomas Morgner
  */
 public class LineBreakIterator implements Iterator
@@ -51,7 +50,7 @@ public class LineBreakIterator implements Iterator
 
   /** Storage for the text. */
   private char[] text;
-  
+
   /** The current position. */
   private int position;
 
@@ -65,7 +64,7 @@ public class LineBreakIterator implements Iterator
 
   /**
    * Creates a new line break iterator.
-   * 
+   *
    * @param text the text to be broken up.
    */
   public LineBreakIterator(String text)
@@ -75,16 +74,16 @@ public class LineBreakIterator implements Iterator
 
   /**
    * Returns the position of the next break.
-   * 
+   *
    * @return A position.
    */
   public synchronized int nextPosition()
   {
-    if (text == null) 
+    if (text == null)
     {
       return DONE;
     }
-    if (position == DONE) 
+    if (position == DONE)
     {
       return DONE;
     }
@@ -146,10 +145,10 @@ public class LineBreakIterator implements Iterator
   /**
    * Same like next(), but returns the End-Of-Text as
    * if there was a linebreak added (Reader.readLine() compatible)
-   * 
+   *
    * @return The next position.
    */
-  public int nextWithEnd ()
+  public int nextWithEnd()
   {
     int pos = position;
     if (pos == DONE)
@@ -171,7 +170,7 @@ public class LineBreakIterator implements Iterator
 
   /**
    * Returns the text to be broken up.
-   * 
+   *
    * @return The text.
    */
   public String getText()
@@ -181,7 +180,7 @@ public class LineBreakIterator implements Iterator
 
   /**
    * Sets the text to be broken up.
-   * 
+   *
    * @param text  the text.
    */
   public void setText(String text)
@@ -206,14 +205,12 @@ public class LineBreakIterator implements Iterator
    * Returns the next element in the iteration.
    *
    * @return the next element in the iteration.
-   * @exception NoSuchElementException iteration has no more elements.
    */
   public Object next()
   {
     if (position == DONE)
     {
       // allready at the end ...
-      System.out.println ("Position == DONE");
       return null;
     }
 
@@ -222,7 +219,7 @@ public class LineBreakIterator implements Iterator
     if (pos == DONE)
     {
       // the end of the text has been reached ...
-      return new String (text, lastFound, text.length - lastFound);
+      return new String(text, lastFound, text.length - lastFound);
     }
 
     // step one char back
@@ -236,7 +233,7 @@ public class LineBreakIterator implements Iterator
     }
     //System.out.println ("text: " + new String (text));
     //System.out.println ("pos: " + pos + " lastFound: " + lastFound);
-    return new String (text, lastFound, pos - lastFound);
+    return new String(text, lastFound, pos - lastFound);
   }
 
   /**
@@ -248,12 +245,11 @@ public class LineBreakIterator implements Iterator
    * progress in any way other than by calling this method.
    *
    * @exception UnsupportedOperationException if the <tt>remove</tt>
-   *		  operation is not supported by this Iterator.
-
+   *    operation is not supported by this Iterator.
    * @exception IllegalStateException if the <tt>next</tt> method has not
-   *		  yet been called, or the <tt>remove</tt> method has already
-   *		  been called after the last call to the <tt>next</tt>
-   *		  method.
+   *    yet been called, or the <tt>remove</tt> method has already
+   *    been called after the last call to the <tt>next</tt>
+   *    method.
    */
   public void remove()
   {
@@ -261,21 +257,21 @@ public class LineBreakIterator implements Iterator
 
   /**
    * Testing code - please ignore.
-   * 
+   *
    * @param args  ignored.
    */
-  public static void main (String[] args)
+  public static void main(String[] args)
   {
     String test = "The lazy \n fox \r\n jumps \nover the funny tree\n";
     LineBreakIterator lbi = new LineBreakIterator(test);
     while (lbi.hasNext())
     {
-      System.out.println ("Text: " + lbi.next());
+      System.out.println("Text: " + lbi.next());
     }
     lbi = new LineBreakIterator("\n");
     while (lbi.hasNext())
     {
-      System.out.println ("Text: " + lbi.next());
+      System.out.println("Text: " + lbi.next());
     }
   }
 }

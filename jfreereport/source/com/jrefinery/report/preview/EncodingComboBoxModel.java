@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.17 2003/04/24 18:08:54 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.18 2003/05/02 12:40:21 taqua Exp $
  *
  * Changes
  * --------
@@ -62,6 +62,7 @@ import com.jrefinery.report.util.ReportConfiguration;
  */
 public class EncodingComboBoxModel implements ComboBoxModel
 {
+  /** A default description. */
   private static final String ENCODING_DEFAULT_DESCRIPTION = "[no description]";
 
   /**
@@ -223,6 +224,9 @@ public class EncodingComboBoxModel implements ComboBoxModel
       return name.hashCode();
     }
   }
+
+  /** Contains the known default encodings. */
+  private static Properties defaultEncodings;
 
   /** Storage for the encodings. */
   private ArrayList encodings;
@@ -429,8 +433,12 @@ public class EncodingComboBoxModel implements ComboBoxModel
     listDataListeners.remove(l);
   }
 
-  private static Properties defaultEncodings;
-
+  /**
+   * Initializes the known names for the default encodings. Not all encodings may
+   * be available on a specific platform, these encoding will be ignored later.
+   *
+   * @return the singleton instance of the initialized default encoding names
+   */
   private static Properties getDefaultEncodings ()
   {
     if (defaultEncodings == null)

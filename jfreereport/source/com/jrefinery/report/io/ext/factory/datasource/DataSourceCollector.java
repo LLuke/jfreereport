@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceCollector.java,v 1.11 2003/05/02 12:40:08 taqua Exp $
+ * $Id: DataSourceCollector.java,v 1.12 2003/05/02 16:35:01 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -55,7 +55,7 @@ public class DataSourceCollector implements DataSourceFactory
 {
   /** Storage for the factories. */
   private ArrayList factories;
-
+  /** The comparator used to compare class instances. */
   private ClassComparator comparator;
   /** The parser/report configuration */
   private Configuration config;
@@ -156,30 +156,32 @@ public class DataSourceCollector implements DataSourceFactory
    * Returns a description for the super class.
    * 
    * @param d  the class.
+   * @param knownSuperClass the last known super class for the given class or null
+   * if none was found yet.
    * 
-   * @return The description.
+   * @return The object description suitable to create instances of the given class d.
    */
-  public ObjectDescription getSuperClassObjectDescription (Class d, ObjectDescription knownSuperClass)
+  public ObjectDescription getSuperClassObjectDescription
+      (Class d, ObjectDescription knownSuperClass)
   {
     for (int i = 0; i < factories.size(); i++)
     {
       DataSourceFactory fact = (DataSourceFactory) factories.get(i);
       ObjectDescription od = fact.getSuperClassObjectDescription(d, knownSuperClass);
-      if (od != null)
+      if (od == null)
       {
-        if (knownSuperClass == null)
+        continue;
+      }
+      if (knownSuperClass == null)
+      {
+        knownSuperClass = od;
+      }
+      else
+      {
+        if (comparator.isComparable(knownSuperClass.getObjectClass(), od.getObjectClass()) &&
+            (comparator.compare(knownSuperClass.getObjectClass(), od.getObjectClass()) < 0))
         {
           knownSuperClass = od;
-        }
-        else
-        {
-          if (comparator.isComparable(knownSuperClass.getObjectClass(), od.getObjectClass()))
-          {
-            if (comparator.compare(knownSuperClass.getObjectClass(), od.getObjectClass()) < 0)
-            {
-              knownSuperClass = od;
-            }
-          }
         }
       }
     }

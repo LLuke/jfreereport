@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: GeneralPathObjectDescription.java,v 1.1 2003/05/09 17:12:13 taqua Exp $
  *
  * Changes
  * -------
@@ -36,26 +36,48 @@
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
+import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.PathIterator;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
-import java.awt.Shape;
 import java.util.ArrayList;
 
 import org.jfree.xml.factory.objects.AbstractObjectDescription;
 import org.jfree.xml.factory.objects.ObjectFactoryException;
 
 /**
- *
+ * An Object Description for general shapes and the GeneralPath-class.
  */
 public class GeneralPathObjectDescription extends AbstractObjectDescription
 {
+  /** A constant for the "segments" parameter. */
+  private static final String SEGMENTS_NAME = "segments";
+
+  /** A constant for the "windingRule" parameter. */
+  private static final String WINDING_RULE_NAME = "windingRule";
+
+  /** A constant value for the "windingRule" parameter. */
+  private static final String WINDING_RULE_EVEN_ODD = "wind-even-odd";
+
+  /** A constant value for the "windingRule" parameter. */
+  private static final String WINDING_RULE_NON_ZERO = "wind-non-zero";
+
+  /**
+   * DefaultConstructor. Initializes this object description to produce
+   * GeneralPath objects.
+   */
   public GeneralPathObjectDescription()
   {
     this(GeneralPath.class);
   }
 
+  /**
+   * Creates a new GeneralPathObjectDescription. The given class must be
+   * an instance of an shape, the generated objects will be general path
+   * objects.
+   *
+   * @param c the registered base class, an instance of shape.
+   */
   public GeneralPathObjectDescription(Class c)
   {
     super(c);
@@ -64,8 +86,8 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
       throw new IllegalArgumentException("Must be a shape instance");
     }
     // "even-odd" or "non-zero"
-    setParameterDefinition("windingRule", String.class);
-    setParameterDefinition("segments", PathIteratorSegment[].class);
+    setParameterDefinition(WINDING_RULE_NAME, String.class);
+    setParameterDefinition(SEGMENTS_NAME, PathIteratorSegment[].class);
   }
 
   /**
@@ -81,7 +103,7 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
       return null;
     }
 
-    PathIteratorSegment[] segments = (PathIteratorSegment[]) getParameter("segments");
+    PathIteratorSegment[] segments = (PathIteratorSegment[]) getParameter(SEGMENTS_NAME);
     if (segments == null)
     {
       return null;
@@ -127,19 +149,24 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
     return path;
   }
 
+  /**
+   * Translates the winding rule parameter into a predefined PathIterator constant.
+   *
+   * @return the translated winding rule or -1 if the rule was invalid. 
+   */
   private int parseWindingRule()
   {
-    String windingRule = (String) getParameter("windingRule");
+    String windingRule = (String) getParameter(WINDING_RULE_NAME);
     int wRule = -1;
     if (windingRule == null)
     {
       return wRule;
     }
-    if (windingRule.equals("wind-even-odd"))
+    if (windingRule.equals(WINDING_RULE_EVEN_ODD))
     {
       wRule = PathIterator.WIND_EVEN_ODD;
     }
-    else if (windingRule.equals("wind-non-zero"))
+    else if (windingRule.equals(WINDING_RULE_NON_ZERO))
     {
       wRule = PathIterator.WIND_NON_ZERO;
     }
@@ -164,11 +191,11 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
     PathIterator pi = s.getPathIterator(AffineTransform.getTranslateInstance(0,0));
     if (pi.getWindingRule() == PathIterator.WIND_EVEN_ODD)
     {
-      setParameter("windingRule", "wind-even-odd");
+      setParameter(WINDING_RULE_NAME, WINDING_RULE_EVEN_ODD);
     }
     else
     {
-      setParameter("windingRule", "wind-non-zero");
+      setParameter(WINDING_RULE_NAME, WINDING_RULE_NON_ZERO);
     }
 
     float[] points = new float[6];
@@ -223,6 +250,6 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
       pi.next();
     }
 
-    setParameter("segments", segments.toArray(new PathIteratorSegment[0]));
+    setParameter(SEGMENTS_NAME, segments.toArray(new PathIteratorSegment[0]));
   }
 }

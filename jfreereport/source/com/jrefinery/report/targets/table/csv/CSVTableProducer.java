@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProducer.java,v 1.7 2003/04/11 14:11:47 taqua Exp $
+ * $Id: CSVTableProducer.java,v 1.8 2003/05/02 12:40:38 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@
 package com.jrefinery.report.targets.table.csv;
 
 import java.io.PrintWriter;
+import java.util.Properties;
 
 import com.jrefinery.report.targets.csv.CSVQuoter;
 import com.jrefinery.report.targets.table.TableCellDataFactory;
@@ -67,33 +68,31 @@ public class CSVTableProducer extends TableProducer
   /** The CSVQuoter that is used when writing the content. */
   private CSVQuoter quoter;
   
-  /** The class used to convert each {@link com.jrefinery.report.Element} into a {@link CSVCellData} instance. */
+  /**
+   * The class used to convert each {@link com.jrefinery.report.Element}
+   * into a {@link CSVCellData} instance.
+   */
   private CSVCellDataFactory cellDataFactory;
 
   /** A flag that maintains the open state. */
   private boolean isOpen;
 
   /**
-   * Creates a new <code>CSVTableProducer</code>, using the given writer, strict mode and separator.
+   * Creates a new <code>CSVTableProducer</code>, using the given writer,
+   * strict mode and separator.
    *
    * @param writer  the character stream writer for writing the generated content.
    * @param strict  the strict mode that is used for the layouting.
-   * @param separator  the separator that is used to divide the generated cells.
    */
-  public CSVTableProducer(PrintWriter writer, boolean strict, String separator)
+  public CSVTableProducer(PrintWriter writer, boolean strict)
   {
     super(strict);
     if (writer == null) 
     {
       throw new NullPointerException("Writer is null");
     }
-    if (separator == null) 
-    {
-      throw new NullPointerException("Separator is null");
-    }
 
     this.writer = writer;
-    this.quoter = new CSVQuoter(separator);
     this.cellDataFactory = new CSVCellDataFactory();
   }
 
@@ -208,5 +207,17 @@ public class CSVTableProducer extends TableProducer
   public boolean isOpen()
   {
     return isOpen;
+  }
+
+  /**
+   * Configures the table producer by reading the configuration settings from
+   * the given map.
+   *
+   * @param configuration the configuration supplied by the table processor.
+   */
+  public void configure(Properties configuration)
+  {
+    String separator = configuration.getProperty(CSVTableProcessor.SEPARATOR_KEY, ",");
+    this.quoter = new CSVQuoter(separator);
   }
 }

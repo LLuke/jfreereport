@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TopAlignment.java,v 1.7 2003/02/27 10:35:39 mungady Exp $
+ * $Id: TopAlignment.java,v 1.8 2003/04/05 18:57:19 taqua Exp $
  *
  * Changes
  * -------
@@ -70,11 +70,11 @@ public class TopAlignment extends VerticalBoundsAlignment
     {
       throw new NullPointerException("TopAlignment.align(...) : null not permitted.");
     }
-    r = referenceBounds.createIntersection(r);
+    r = getReferenceBounds().createIntersection(r);
     float x = (float) r.getX();
-    float y = (float) referenceBounds.getY();
-    float w = (float) Math.min (r.getWidth(), referenceBounds.getWidth());
-    float h = (float) Math.min (r.getHeight(), referenceBounds.getHeight());
+    float y = (float) getReferenceBounds().getY();
+    float w = (float) Math.min (r.getWidth(), getReferenceBounds().getWidth());
+    float h = (float) Math.min (r.getHeight(), getReferenceBounds().getHeight());
 
     r.setRect(x, y, w, h);
     return r;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.19 2003/03/18 18:28:45 taqua Exp $
+ * $Id: TableProducer.java,v 1.20 2003/04/01 20:25:38 taqua Exp $
  *
  * Changes
  * -------
@@ -39,10 +39,9 @@
 package com.jrefinery.report.targets.table;
 
 import java.awt.geom.Rectangle2D;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.Properties;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
@@ -76,7 +75,7 @@ public abstract class TableProducer
   private boolean dummy;
 
   /** Storage for the output target properties. */
-  private HashMap properties;
+  private Properties properties;
 
   /**
    * Creates a new TableProducer.
@@ -86,7 +85,7 @@ public abstract class TableProducer
    */
   public TableProducer(boolean strictLayout)
   {
-    properties = new HashMap();
+    properties = new Properties();
     grid = new TableGrid(strictLayout);
     dummy = false;
   }
@@ -341,7 +340,7 @@ public abstract class TableProducer
    * @param value  the value of the property.  If the value is <code>null</code>, the property is
    * removed from the output target.
    */
-  public void setProperty(String property, Object value)
+  public void setProperty(String property, String value)
   {
     if (property == null)
     {
@@ -368,7 +367,7 @@ public abstract class TableProducer
    *
    * @throws java.lang.NullPointerException if <code>property</code> is null
    */
-  public Object getProperty(String property)
+  public String getProperty(String property)
   {
     return getProperty(property, null);
   }
@@ -384,19 +383,14 @@ public abstract class TableProducer
    *
    * @throws NullPointerException if <code>property</code> is null
    */
-  public Object getProperty(String property, Object defaultValue)
+  public String getProperty(String property, String defaultValue)
   {
     if (property == null)
     {
       throw new NullPointerException();
     }
 
-    Object retval = properties.get(property);
-    if (retval == null)
-    {
-      return defaultValue;
-    }
-    return retval;
+    return properties.getProperty(property, defaultValue);
   }
 
   /**
@@ -410,14 +404,10 @@ public abstract class TableProducer
   }
 
   /**
-   * Sets the properties from the given hashtable into the internal properties
-   * storage. All properties not contained in the given hashtable are removed.
+   * Configures the table producer by reading the configuration settings from
+   * the given map.
    *
-   * @param table the new properties collection.
+   * @param configuration the configuration supplied by the table processor.
    */
-  public void setProperties (Map table)
-  {
-    properties.clear();
-    properties.putAll(table);
-  }
+  public abstract void configure (Properties configuration);
 }

@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.13 2003/04/08 14:35:18 mungady Exp $
+ * $Id: ExcelProducer.java,v 1.14 2003/05/02 12:40:39 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package com.jrefinery.report.targets.table.excel;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Properties;
 
 import com.jrefinery.report.targets.table.TableCellBackground;
 import com.jrefinery.report.targets.table.TableCellDataFactory;
@@ -65,10 +66,6 @@ import org.apache.poi.hssf.util.Region;
  */
 public class ExcelProducer extends TableProducer
 {
-  /** The configuration prefix. */
-  public static final String CONFIGURATION_PREFIX =
-      "com.jrefinery.report.targets.excel.default.";
-
   /** The output stream. */
   private OutputStream out;
 
@@ -291,4 +288,22 @@ public class ExcelProducer extends TableProducer
     return workbook != null;
   }
 
+  /**
+   * Configures the table producer by reading the configuration settings from
+   * the given map.
+   *
+   * @param configuration the configuration supplied by the table processor.
+   */
+  public void configure(Properties configuration)
+  {
+    String mapData = configuration.getProperty("UseDataFormats", "true");
+    if (mapData.equalsIgnoreCase("true"))
+    {
+      cellDataFactory.setDefineDataFormats(true);
+    }
+    else
+    {
+      cellDataFactory.setDefineDataFormats(false);
+    }
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFProcessor.java,v 1.4 2003/02/25 11:57:58 taqua Exp $
+ * $Id: RTFProcessor.java,v 1.5 2003/02/26 16:42:30 mungady Exp $
  *
  * Changes
  * -------
@@ -111,5 +111,16 @@ public class RTFProcessor extends TableProcessor
     }
 
     return prod;
+  }
+
+  /**
+   * Gets the report configuration prefix for that processor. This prefix defines
+   * how to map the property names into the global report configuration.
+   *
+   * @return the report configuration prefix.
+   */
+  protected String getReportConfigurationPrefix()
+  {
+    return "com.jrefinery.report.targets.table.rtf.";
   }
 }

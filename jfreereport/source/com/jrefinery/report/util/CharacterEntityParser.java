@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CharacterEntityParser.java,v 1.8 2003/04/23 13:43:06 taqua Exp $
+ * $Id: CharacterEntityParser.java,v 1.9 2003/05/02 12:40:46 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,6 @@
 package com.jrefinery.report.util;
 
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.Enumeration;
 import java.util.Properties;
 
@@ -192,14 +191,12 @@ public class CharacterEntityParser
    * We assume, that both writers access the same stream and that both
    * of them are unbuffered.
    *
-   * @param value
-   * @param writer
+   * @param value the string that should be encoded
+   * @param writer the writer which should receive the encoded contents.
    */
   public void encodeEntities (String value, HtmlWriter writer)
     throws IOException
   {
-    Log.debug ("ENcoding: " + value);
-
     for (int i = 0; i < value.length(); i++)
     {
       String character = String.valueOf (value.charAt(i));
@@ -261,7 +258,7 @@ public class CharacterEntityParser
     }
     return bufValue.toString();
   }
-
+/*
   public static void main (String [] args) throws Exception
   {
     String test = "Test is a הצüהצü test";
@@ -275,5 +272,6 @@ public class CharacterEntityParser
     ep.encodeEntities(test, new HtmlWriter (System.err, "UTF-16"));
 
   }
+*/
 }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BottomAlignment.java,v 1.6 2003/02/18 19:37:31 taqua Exp $
+ * $Id: BottomAlignment.java,v 1.7 2003/04/05 18:57:16 taqua Exp $
  *
  * Changes
  * -------
@@ -71,9 +71,10 @@ public class BottomAlignment extends VerticalBoundsAlignment
     {
       throw new NullPointerException("BottomAlignment.align(...): null not permitted.");
     }
-    r = referenceBounds.createIntersection(r);
+    r = getReferenceBounds().createIntersection(r);
     float x = (float) r.getX();
-    float y = (float) (referenceBounds.getY() + referenceBounds.getHeight() - r.getHeight());
+    float y = (float) (getReferenceBounds().getY() +
+        getReferenceBounds().getHeight() - r.getHeight());
     float w = (float) r.getWidth();
     float h = (float) r.getHeight();
     r.setRect(x, y, w, h);

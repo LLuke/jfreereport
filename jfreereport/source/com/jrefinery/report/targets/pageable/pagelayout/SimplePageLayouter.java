@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.44 2003/05/07 20:31:31 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.45 2003/05/09 17:12:13 taqua Exp $
  *
  * Changes
  * -------
@@ -774,8 +774,9 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
         endPage(ENDPAGE_FORCED);
         return false;
       }
-      else if (isPageEnded()) // page has ended before, that band should be printed on the next page
+      else if (isPageEnded())
       {
+        // page has ended before, that band should be printed on the next page
         createSaveState(band);
         return false;
       }
@@ -953,7 +954,8 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
       }
       catch (CloneNotSupportedException cne)
       {
-        throw new ReportProcessingException("Unable to initialize the new page. Clone failed.", cne);
+        throw new ReportProcessingException
+            ("Unable to initialize the new page. Clone failed.", cne);
       }
     }
     clearSaveState();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ReportParserUtil.java,v 1.1 2003/04/23 16:26:09 taqua Exp $
  *
  * Changes
  * -------
@@ -39,18 +39,19 @@ package com.jrefinery.report.io;
 import com.jrefinery.report.ElementAlignment;
 import org.xml.sax.SAXException;
 
+/**
+ * A helper class to make parsing the xml files a lot easier.
+ */
 public class ReportParserUtil
 {
   /**
    * Parses a vertical alignment value.
    *
    * @param value  the text to parse.
-   *
    * @return the element alignment.
-   *
-   * @throws org.xml.sax.SAXException if the alignment value is not recognised.
+   * @throws SAXException if the alignment value is not recognised.
    */
-  public static ElementAlignment parseVerticalElementAlignment (String value) throws SAXException
+  public static ElementAlignment parseVerticalElementAlignment(String value) throws SAXException
   {
     if (value.equals("top"))
     {
@@ -71,12 +72,10 @@ public class ReportParserUtil
    * Parses a horizontal alignment value.
    *
    * @param value  the text to parse.
-   *
    * @return the element alignment.
-   *
-   * @throws  org.xml.sax.SAXException if the alignment value is not recognised.
+   * @throws SAXException if the alignment value is not recognised.
    */
-  public static ElementAlignment parseHorizontalElementAlignment (String value) throws SAXException
+  public static ElementAlignment parseHorizontalElementAlignment(String value) throws SAXException
   {
     if (value.equals("left"))
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.22 2003/04/23 17:13:36 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.23 2003/04/24 18:08:47 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -63,7 +63,9 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
 
   /** The function value. */
   private boolean trigger;
+  /** A flag indicating whether a waring has been printed. */
   private boolean warned;
+  /** A flag indicating whether a pagebreak was encountered. */
   private boolean pagebreak;
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.22 2003/04/24 18:08:58 taqua Exp $
+ * $Id: Log.java,v 1.23 2003/04/28 22:21:44 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,8 @@ package com.jrefinery.report.util;
 import org.jfree.util.LogTarget;
 
 /**
- * A simple logging facility. Create a class implementing the {@link org.jfree.util.LogTarget} interface to use
+ * A simple logging facility. Create a class implementing the
+ * {@link org.jfree.util.LogTarget} interface to use
  * this feature.
  *
  * @author Thomas Morgner
@@ -258,11 +259,5 @@ public final class Log extends org.jfree.util.Log
   public static void log (int level, Object message, Exception e)
   {
     org.jfree.util.Log.log(level, message, e);
-  }
-
-
-  public static void main (String [] args)
-  {
-    org.jfree.util.Log.debug ("Test.org");
   }
 }

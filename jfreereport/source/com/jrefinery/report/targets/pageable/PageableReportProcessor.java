@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.36 2003/04/06 20:43:00 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.37 2003/04/09 16:13:49 mungady Exp $
  *
  * Changes
  * -------
@@ -431,13 +431,6 @@ public class PageableReportProcessor
       while (hasNext == true);
 
       dummyOutput.close();
-      // root of evilness here ... pagecount should not be handled specially ...
-      // The pagecount should not be added as report property, there are functions to
-      // do this.
-      /*
-      state.setProperty(JFreeReportConstants.REPORT_PAGECOUNT_PROPERTY,
-                        new Integer(state.getCurrentPage() - 1));
-      */
       state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
 
       // finally return the saved page states.

@@ -25,7 +25,7 @@
  * ----------------
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
- * $Id: FontFactory.java,v 1.7 2003/04/23 13:43:05 taqua Exp $
+ * $Id: FontFactory.java,v 1.8 2003/04/24 18:08:54 taqua Exp $
  *
  * Changes
  * -------
@@ -432,7 +432,7 @@ public class FontFactory implements ReportDefinitionTags
    *
    * @param attr  the element attributes.
    * @param target the target element style sheet, that should receive the created font definition.
-   * @throws org.jfree.xml.ElementDefinitionException if the font cannot be created.
+   * @throws ElementDefinitionException if the font cannot be created.
    */
   public void createFont (Attributes attr, ElementStyleSheet target)
           throws ElementDefinitionException
@@ -461,7 +461,7 @@ public class FontFactory implements ReportDefinitionTags
    *
    * @param attr  the element attributes.
    * @return the created font information.
-   * @throws org.jfree.xml.ElementDefinitionException if the font cannot be created.
+   * @throws ElementDefinitionException if the font cannot be created.
    */
   public FontInformation createFont (Attributes attr)
           throws ElementDefinitionException

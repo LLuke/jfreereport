@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CenterAlignment.java,v 1.8 2003/02/27 10:35:39 mungady Exp $
+ * $Id: CenterAlignment.java,v 1.9 2003/04/05 18:57:16 taqua Exp $
  *
  * Changes
  * -------
@@ -71,9 +71,9 @@ public class CenterAlignment extends HorizontalBoundsAlignment
     {
       throw new NullPointerException("Inner Bound must not be null");
     }
-    inner = referenceBounds.createIntersection(inner);
-    float x = (float) (referenceBounds.getX() 
-                       + ((referenceBounds.getWidth() - inner.getWidth()) / 2));
+    inner = getReferenceBounds().createIntersection(inner);
+    float x = (float) (getReferenceBounds().getX()
+                       + ((getReferenceBounds().getWidth() - inner.getWidth()) / 2));
     float y = (float) inner.getY();
     float w = (float) inner.getWidth();
     float h = (float) inner.getHeight();

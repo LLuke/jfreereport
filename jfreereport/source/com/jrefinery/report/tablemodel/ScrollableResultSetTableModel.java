@@ -25,7 +25,7 @@
  * ----------------------------------
  * (C)opyright 2002, 2003, by Thomas Morgner.
  *
- * $Id: ScrollableResultSetTableModel.java,v 1.4 2003/02/28 12:02:39 taqua Exp $
+ * $Id: ScrollableResultSetTableModel.java,v 1.5 2003/05/02 12:40:28 taqua Exp $
  *
  * Changes
  * -------
@@ -60,12 +60,12 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   /**
    * The scrollable ResultSet source.
    */
-  protected ResultSet resultset;
+  private ResultSet resultset;
 
   /**
    * The ResultSetMetaData object for this result set.
    */
-  protected ResultSetMetaData dbmd;
+  private ResultSetMetaData dbmd;
 
   /**
    * The number of rows in the result set.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.12 2003/05/02 12:40:17 taqua Exp $
+ * $Id: StyleWriter.java,v 1.13 2003/05/02 16:35:03 taqua Exp $
  *
  * Changes
  * -------
@@ -116,26 +116,39 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     }
   }
 
+  /**
+   * Tries to find an object description suitable for the given stylekey type.
+   * If first tries to find an implementation which matches the given object,
+   * if that fails, it tries to find a description for the key types.
+   * If this also fails, the method starts to search for super class descriptions
+   * for the key and the object.
+   *
+   * @param key the stylekey.
+   * @param o the stylekey value.
+   * @return the found object description or null, if none was found.
+   */
   private ObjectDescription findObjectDescription (StyleKey key, Object o)
   {
     ClassFactoryCollector cc = getReportWriter().getClassFactoryCollector();
-    ObjectDescription od = cc.getDescriptionForClass(key.getValueType());
+    ObjectDescription od = cc.getDescriptionForClass(o.getClass());
     if (od != null)
     {
       return od;
     }
 
-    Log.warn ("Unable to find object description for native style key class: " + key.getValueType());
-    od = cc.getDescriptionForClass(o.getClass());
+    Log.warn
+        ("Unable to find object description for implemented style key class: " + o.getClass());
+    od = cc.getDescriptionForClass(key.getValueType());
     if (od != null)
     {
       return od;
     }
 
-    Log.warn ("Unable to find object description for implemented style key class: " + o.getClass());
+    Log.warn
+        ("Unable to find object description for native style key class: " + key.getValueType());
     // search the most suitable super class object description ...
-    od = cc.getSuperClassObjectDescription(key.getValueType(), od);
     od = cc.getSuperClassObjectDescription(o.getClass(), od);
+    od = cc.getSuperClassObjectDescription(key.getValueType(), od);
     return od;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProcessor.java,v 1.8 2003/02/25 11:57:58 taqua Exp $
+ * $Id: CSVTableProcessor.java,v 1.9 2003/05/02 12:40:38 taqua Exp $
  *
  * Changes
  * -------
@@ -70,9 +70,15 @@ public class CSVTableProcessor extends TableProcessor
 {
   /** The writer used for the output. */
   private Writer writer;
-  
-  /** The separator that should be used to separate cells. */
-  private String separator;
+
+  /** the configuration prefix for the csv table producer. */
+  private static final String CONFIGURATION_PREFIX = "com.jrefinery.report.targets.table.csv.";
+
+  /** the key for the separator string. */
+  public static final String SEPARATOR_KEY = "Separator";
+
+  /** The default value for the separator string (","). */
+  public static final String SEPARATOR_DEFAULT = ",";
 
   /**
    * Creates a new CSV table processor for the given report. 
@@ -88,8 +94,15 @@ public class CSVTableProcessor extends TableProcessor
   public CSVTableProcessor(JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
   {
+    // query:
+    // the report configuration for the new separator property
+    // on fail: query for the old separator property
+    // on fail: set ","
     this(report,
-         report.getReportConfiguration().getConfigProperty(CSVProcessor.CSV_SEPARATOR, ","));
+         report.getReportConfiguration().getConfigProperty(
+             CONFIGURATION_PREFIX + SEPARATOR_KEY,
+             report.getReportConfiguration().getConfigProperty(
+                 CSVProcessor.CSV_SEPARATOR, ",")));
   }
 
   /**
@@ -111,7 +124,7 @@ public class CSVTableProcessor extends TableProcessor
     {
       throw new NullPointerException("Separator is null");
     }
-    this.separator = separator;
+    setSeparator(separator);
   }
 
   /**
@@ -121,7 +134,7 @@ public class CSVTableProcessor extends TableProcessor
    */
   public String getSeparator()
   {
-    return separator;
+    return String.valueOf(getProperty(SEPARATOR_KEY, ","));
   }
 
   /**
@@ -137,7 +150,7 @@ public class CSVTableProcessor extends TableProcessor
     {
       throw new NullPointerException("Separator is null");
     }
-    this.separator = separator;
+    setProperty(SEPARATOR_KEY, separator);
   }
 
   /**
@@ -173,13 +186,24 @@ public class CSVTableProcessor extends TableProcessor
     if (dummy)
     {
       prod = new CSVTableProducer(new PrintWriter(new NullOutputStream()), 
-                                  isStrictLayout(), separator);
+                                  isStrictLayout());
     }
     else
     {
-      prod = new CSVTableProducer(new PrintWriter(getWriter()), isStrictLayout(), separator);
+      prod = new CSVTableProducer(new PrintWriter(getWriter()), isStrictLayout());
     }
     prod.setDummy(dummy);
     return prod;
+  }
+
+  /**
+   * Gets the report configuration prefix for that processor. This prefix defines
+   * how to map the property names into the global report configuration.
+   *
+   * @return the report configuration prefix.
+   */
+  protected String getReportConfigurationPrefix()
+  {
+    return CONFIGURATION_PREFIX;
   }
 }

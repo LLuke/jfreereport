@@ -30,12 +30,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * 
- * $Id: ExpressionCollection.java,v 1.6 2003/02/26 13:57:57 mungady Exp $
+ * $Id: ExpressionCollection.java,v 1.9 2003/04/08 14:41:48 mungady Exp $
 =======
- * $Id: ExpressionCollection.java,v 1.7 2003/03/13 17:41:51 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.9 2003/04/08 14:41:48 mungady Exp $
 >>>>>>> 1.7
 =======
- * $Id: ExpressionCollection.java,v 1.8 2003/03/18 18:28:16 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.9 2003/04/08 14:41:48 mungady Exp $
 >>>>>>> 1.8
  *
  * Changes
@@ -66,10 +66,10 @@ import java.util.Iterator;
 public class ExpressionCollection implements Cloneable
 {
   /** Storage for the Expressions in the collection. */
-  protected HashMap expressionPositions;
+  private HashMap expressionPositions;
 
   /** Ordered storage for the Expressions. */
-  protected ArrayList expressionList;
+  private ArrayList expressionList;
 
   /**
    * Creates a new expression collection (initially empty).

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.13 2003/04/09 16:09:52 mungady Exp $
+ * $Id: TableProcessor.java,v 1.14 2003/05/02 12:40:37 taqua Exp $
  *
  * Changes
  * -------
@@ -39,9 +39,9 @@
 package com.jrefinery.report.targets.table;
 
 import java.awt.print.PageFormat;
-import java.util.HashMap;
+import java.util.Enumeration;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.Properties;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
@@ -52,6 +52,7 @@ import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.ReportStateProgress;
 import com.jrefinery.report.states.StartState;
+import com.jrefinery.report.util.ReportConfiguration;
 
 /**
  * The TableProcessor is the abstract base class for all table based output targets.
@@ -60,7 +61,7 @@ import com.jrefinery.report.states.StartState;
  * <p>
  * Implementing classes should supply a table producer by implementing the createProducer
  * method.
- * 
+ *
  * @author Thomas Morgner
  */
 public abstract class TableProcessor
@@ -70,19 +71,19 @@ public abstract class TableProcessor
 
   /** the report that should be processed. */
   private JFreeReport report;
-  
+
   /** the strict layout flag. */
   private boolean strictLayout;
 
   /** Storage for the output target properties. */
-  private HashMap properties;
+  private Properties properties;
 
   /**
    * Creates a new TableProcessor. The TableProcessor creates a private copy
    * of the supplied report.
    *
    * @param report the report that should be processed.
-   * 
+   *
    * @throws ReportProcessingException if the report initialization failed
    * @throws FunctionInitializeException if the table writer initialization failed.
    */
@@ -103,7 +104,7 @@ public abstract class TableProcessor
       throw new ReportProcessingException("Initial Clone of Report failed");
     }
 
-    properties = new HashMap();
+    properties = new Properties();
 
     TableWriter lm = new TableWriter();
     lm.setName(TABLE_WRITER);
@@ -150,12 +151,15 @@ public abstract class TableProcessor
    * Processes the entire report and records the state at the end of every page.
    *
    * @return a list of report states (one for the beginning of each page in the report).
-   * 
+   *
    * @throws ReportProcessingException if there was a problem processing the report.
    * @throws CloneNotSupportedException if there is a cloning problem.
    */
   private ReportState repaginate() throws ReportProcessingException, CloneNotSupportedException
   {
+    // apply the configuration ...
+    configure();
+
     StartState startState = new StartState(getReport());
     ReportState state = startState;
     ReportState retval = null;
@@ -184,7 +188,7 @@ public abstract class TableProcessor
     // output in the prepare runs.
     TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
     w.setProducer(createProducer(true));
-    w.getProducer().setProperties(getProperties());
+    w.getProducer().configure(getProperties());
 
     // now process all function levels.
     // there is at least one level defined, as we added the CSVWriter
@@ -211,7 +215,7 @@ public abstract class TableProcessor
       // inner loop: process the complete report, calculate the function values
       // for the current level. Higher level functions are not available in the
       // dataRow.
-      boolean failOnError 
+      boolean failOnError
           = (level == -1) && getReport().getReportConfiguration().isStrictErrorHandling();
       while (!state.isFinish())
       {
@@ -289,8 +293,8 @@ public abstract class TableProcessor
 
       TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
       w.setProducer(createProducer(false));
-      w.getProducer().setProperties(getProperties());
-      
+      w.getProducer().configure(getProperties());
+
       w.setMaxWidth((float) getReport().getDefaultPageFormat().getImageableWidth());
 
       boolean failOnError =
@@ -408,8 +412,43 @@ public abstract class TableProcessor
    *
    * @return the internal properties storage.
    */
-  protected Map getProperties ()
+  protected Properties getProperties ()
   {
     return properties;
+  }
+
+  /**
+   * Gets the report configuration prefix for that processor. This prefix defines
+   * how to map the property names into the global report configuration.
+   *
+   * @return the report configuration prefix.
+   */
+  protected abstract String getReportConfigurationPrefix ();
+
+  /**
+   * Copies all report configuration properties which match the configuration
+   * prefix of this table processor into the property set of this processor.
+   */
+  protected void configure ()
+  {
+    ReportConfiguration rc = getReport().getReportConfiguration();
+    Enumeration enum = rc.getConfigProperties();
+    String prefix = getReportConfigurationPrefix();
+
+    while (enum.hasMoreElements())
+    {
+      String key = (String) enum.nextElement();
+      if (key.startsWith(prefix)  == false)
+      {
+        continue;
+      }
+      String propKey = key.substring(prefix.length());
+      if (getProperties().containsKey(propKey))
+      {
+        continue;
+      }
+      Object value = rc.getConfigProperty(key);
+      setProperty(propKey, value);
+    }
   }
 }

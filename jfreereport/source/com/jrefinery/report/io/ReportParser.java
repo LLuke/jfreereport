@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.2 2003/04/24 18:08:48 taqua Exp $
+ * $Id: ReportParser.java,v 1.3 2003/04/29 22:12:59 taqua Exp $
  *
  * Changes
  * -------
@@ -36,11 +36,21 @@
  */
 package com.jrefinery.report.io;
 
-import com.jrefinery.report.JFreeReport;
 import org.jfree.xml.Parser;
 
+/**
+ * The report parser initializes the parsing engine and coordinates the parsing
+ * process. Once the parsing is complete, the generated report instance can be
+ * queries with getResult();
+ * <p>
+ * This parser produces JFreeReport objects.
+ */
 public class ReportParser extends Parser
 {
+  /**
+   * Default constuctor. Initalizes the parser to use the JFreeReport parser
+   * files.
+   */
   public ReportParser()
   {
     setInitialFactory(new InitialReportHandler(this));
@@ -64,6 +74,6 @@ public class ReportParser extends Parser
    */
   public Object getResult()
   {
-    return (JFreeReport) getConfigurationValue(InitialReportHandler.REPORT_DEFINITION_TAG);
+    return getConfigurationValue(InitialReportHandler.REPORT_DEFINITION_TAG);
   }
 }

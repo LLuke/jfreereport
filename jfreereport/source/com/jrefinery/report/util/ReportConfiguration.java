@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.42 2003/04/24 18:08:58 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.43 2003/05/02 17:16:12 taqua Exp $
  *
  * Changes
  * -------
@@ -113,7 +113,7 @@ import org.jfree.util.Configuration;
  *
  * <li><code>com.jrefinery.report.TableFactoryMode</code>
  * <p>
- * The table model factory mode for the 
+ * The table model factory mode for the
  * {@link com.jrefinery.report.tablemodel.ResultSetTableModelFactory}.
  * If set to "simple" the factory will always return a <code>DefaultTableModel</code>.
  * This property is not set by default and it should not be necessary to change this.
@@ -273,58 +273,65 @@ public class ReportConfiguration implements Configuration
 {
   /** The text aliasing configuration key. */
   public static final String G2TARGET_USEALIASING
-                             = "com.jrefinery.report.targets.G2OutputTarget.useAliasing";
+      = "com.jrefinery.report.targets.G2OutputTarget.useAliasing";
 
   /** The text aliasing configuration default value. Is "false". */
   public static final String G2TARGET_USEALIASING_DEFAULT = "false";
 
   /** The G2 fontrenderer bug override configuration key. */
   public static final String G2TARGET_ISBUGGY_FRC
-                             = "com.jrefinery.report.targets.G2OutputTarget.isBuggyFRC";
+      = "com.jrefinery.report.targets.G2OutputTarget.isBuggyFRC";
 
   /** The G2 fontrenderer bug override. Is "false". */
   public static final String G2TARGET_ISBUGGY_FRC_DEFAULT = "false";
 
   /** The preferred width key. */
   public static final String PREVIEW_PREFERRED_WIDTH
-                             = "com.jrefinery.report.preview.PreferredWidth";
+      = "com.jrefinery.report.preview.PreferredWidth";
 
   /** The preferred height key. */
   public static final String PREVIEW_PREFERRED_HEIGHT
-                             = "com.jrefinery.report.preview.PreferredHeight";
+      = "com.jrefinery.report.preview.PreferredHeight";
 
   /** The maximum width key. */
-  public static final String PREVIEW_MAXIMUM_WIDTH = "com.jrefinery.report.preview.MaximumWidth";
+  public static final String PREVIEW_MAXIMUM_WIDTH
+      = "com.jrefinery.report.preview.MaximumWidth";
 
   /** The maximum height key. */
-  public static final String PREVIEW_MAXIMUM_HEIGHT = "com.jrefinery.report.preview.MaximumHeight";
+  public static final String PREVIEW_MAXIMUM_HEIGHT
+      = "com.jrefinery.report.preview.MaximumHeight";
 
   /** The 'disable logging' property key. */
-  public static final String PRINT_OPERATION_COMMENT = "com.jrefinery.report.PrintOperationComment";
+  public static final String PRINT_OPERATION_COMMENT
+      = "com.jrefinery.report.PrintOperationComment";
 
   /** The default 'disable logging' property value. */
   public static final String PRINT_OPERATION_COMMENT_DEFAULT = "false";
 
   /** The 'disable logging' property key. */
-  public static final String STRICT_ERRORHANDLING = "com.jrefinery.report.StrictErrorHandling";
+  public static final String STRICT_ERRORHANDLING
+      = "com.jrefinery.report.StrictErrorHandling";
 
   /** The default 'disable logging' property value. */
   public static final String STRICT_ERRORHANDLING_DEFAULT = "false";
 
   /** The 'disable logging' property key. */
-  public static final String WARN_INVALID_COLUMNS = "com.jrefinery.report.WarnInvalidColumns";
+  public static final String WARN_INVALID_COLUMNS
+      = "com.jrefinery.report.WarnInvalidColumns";
 
   /** The default 'disable logging' property value. */
   public static final String WARN_INVALID_COLUMNS_DEFAULT = "false";
 
   /** The 'disable logging' property key. */
-  public static final String DISABLE_LOGGING = "com.jrefinery.report.NoDefaultDebug";
+  public static final String DISABLE_LOGGING
+      = "com.jrefinery.report.NoDefaultDebug";
 
   /** The default 'disable logging' property value. */
   public static final String DISABLE_LOGGING_DEFAULT = "false";
 
   /** The 'log level' property key. */
-  public static final String LOGLEVEL = "com.jrefinery.report.LogLevel";
+  public static final String LOGLEVEL
+      = "com.jrefinery.report.LogLevel";
 
   /** The default 'log level' property value. */
   public static final String LOGLEVEL_DEFAULT = "Info";
@@ -357,10 +364,12 @@ public class ReportConfiguration implements Configuration
   public static final String PDFTARGET_ENCODING_DEFAULT = "Cp1252";
 
   /** The 'ResultSet factory mode'. */
-  public static final String RESULTSET_FACTORY_MODE = "com.jrefinery.report.TableFactoryMode";
+  public static final String RESULTSET_FACTORY_MODE
+      = "com.jrefinery.report.TableFactoryMode";
 
   /** Enable DTD validation of the parsed XML. */
-  public static final String PARSER_VALIDATE = "com.jrefinery.report.io.validate";
+  public static final String PARSER_VALIDATE
+      = "com.jrefinery.report.io.validate";
 
   /** disable DTD validation by default. */
   public static final String PARSER_VALIDATE_DEFAULT = "true";
@@ -369,56 +378,70 @@ public class ReportConfiguration implements Configuration
    * The default resourcebundle that should be used for ResourceFileFilter.
    * This property must be applied by the parser.
    */
-  public static final String REPORT_RESOURCE_BUNDLE = "com.jrefinery.report.ResourceBundle";
+  public static final String REPORT_RESOURCE_BUNDLE
+      = "com.jrefinery.report.ResourceBundle";
 
   /** Enable stricter table layouting for all TableProcessors. */
-  public static final String STRICT_TABLE_LAYOUT 
+  public static final String STRICT_TABLE_LAYOUT
       = "com.jrefinery.report.targets.table.StrictLayout";
 
   /** Disable strict layout by default. */
   public static final String STRICT_TABLE_LAYOUT_DEFAULT = "false";
 
   /** The property that defines whether to enable PDF export in the PreviewFrame. */
-  public static final String ENABLE_EXPORT_PDF = "com.jrefinery.report.preview.plugin.pdf";
-  
+  public static final String ENABLE_EXPORT_PDF
+      = "com.jrefinery.report.preview.plugin.pdf";
+
   /** The property that defines whether to enable CSV export in the PreviewFrame. */
-  public static final String ENABLE_EXPORT_CSV = "com.jrefinery.report.preview.plugin.csv";
-  
+  public static final String ENABLE_EXPORT_CSV
+      = "com.jrefinery.report.preview.plugin.csv";
+
   /** The property that defines whether to enable Html export in the PreviewFrame. */
-  public static final String ENABLE_EXPORT_HTML = "com.jrefinery.report.preview.plugin.html";
-  
+  public static final String ENABLE_EXPORT_HTML
+      = "com.jrefinery.report.preview.plugin.html";
+
   /** The property that defines whether to enable Excel export in the PreviewFrame. */
-  public static final String ENABLE_EXPORT_EXCEL = "com.jrefinery.report.preview.plugin.excel";
-  
+  public static final String ENABLE_EXPORT_EXCEL
+      = "com.jrefinery.report.preview.plugin.excel";
+
   /** The property that defines whether to enable PlainText export in the PreviewFrame. */
-  public static final String ENABLE_EXPORT_PLAIN = "com.jrefinery.report.preview.plugin.plain";
+  public static final String ENABLE_EXPORT_PLAIN
+      = "com.jrefinery.report.preview.plugin.plain";
 
   /** The property that defines which encodings are available in the export dialogs. */
-  public static  final String AVAILABLE_ENCODINGS="com.jrefinery.report.encodings.available";
+  public static final String AVAILABLE_ENCODINGS
+      = "com.jrefinery.report.encodings.available";
 
   /** The encodings available properties value for all properties. */
-  public static  final String AVAILABLE_ENCODINGS_ALL="all";
+  public static final String AVAILABLE_ENCODINGS_ALL = "all";
   /** The encodings available properties value for properties defined in the properties file. */
-  public static  final String AVAILABLE_ENCODINGS_FILE="file";
+  public static final String AVAILABLE_ENCODINGS_FILE = "file";
   /**
    * The encodings available properties value for no properties defined. The encoding selection
    * will be disabled.
    */
-  public static  final String AVAILABLE_ENCODINGS_NONE="none";
+  public static final String AVAILABLE_ENCODINGS_NONE = "none";
 
   /** The 'HTML encoding' property key. */
-  public static final String HTML_OUTPUT_ENCODING = "com.jrefinery.report.targets.table.html.Encoding";
+  public static final String HTML_OUTPUT_ENCODING
+      = "com.jrefinery.report.targets.table.html.Encoding";
   public static final String HTML_OUTPUT_ENCODING_DEFAULT = "UTF-16";
 
   /** The 'CSV encoding' property key. */
-  public static final String CSV_OUTPUT_ENCODING = "com.jrefinery.report.targets.csv.Encoding";
+  public static final String CSV_OUTPUT_ENCODING
+      = "com.jrefinery.report.targets.csv.Encoding";
   public static final String CSV_OUTPUT_ENCODING_DEFAULT = getPlatformDefaultEncoding();
 
   /** The 'XML encoding' property key. */
-  public static final String TEXT_OUTPUT_ENCODING = "com.jrefinery.report.targets.pageable.output.PlainText.Encoding";
+  public static final String TEXT_OUTPUT_ENCODING
+      = "com.jrefinery.report.targets.pageable.output.PlainText.Encoding";
   public static final String TEXT_OUTPUT_ENCODING_DEFAULT = getPlatformDefaultEncoding();
 
-  private static String getPlatformDefaultEncoding ()
+  /**
+   * Helper method to read the platform default encoding from the VM's system properties.
+   * @return the contents of the system property "file.encoding".
+   */
+  private static String getPlatformDefaultEncoding()
   {
     try
     {
@@ -434,13 +457,15 @@ public class ReportConfiguration implements Configuration
    * The name of the properties file used to define the available encodings.
    * The property points to a resources in the classpath, not to a real file!
    */
-  public static  final String ENCODINGS_DEFINITION_FILE="com.jrefinery.report.encodings.file";
+  public static final String ENCODINGS_DEFINITION_FILE
+      = "com.jrefinery.report.encodings.file";
 
   /**
    * The default name for the encoding properties file. This property defaults to
    * &quot;/com/jrefinery/report/jfreereport-encodings.properties&quot;.
    */
-  public static  final String ENCODINGS_DEFINITION_FILE_DEFAULT="/com/jrefinery/report/jfreereport-encodings.properties";
+  public static final String ENCODINGS_DEFINITION_FILE_DEFAULT
+      = "/com/jrefinery/report/jfreereport-encodings.properties";
 
   /** Storage for the configuration properties. */
   private Properties configuration;
@@ -454,7 +479,7 @@ public class ReportConfiguration implements Configuration
   /**
    * Default constructor.
    */
-  protected ReportConfiguration ()
+  protected ReportConfiguration()
   {
     configuration = new Properties();
   }
@@ -464,7 +489,7 @@ public class ReportConfiguration implements Configuration
    *
    * @param globalConfig  the global configuration.
    */
-  public ReportConfiguration (ReportConfiguration globalConfig)
+  public ReportConfiguration(ReportConfiguration globalConfig)
   {
     this();
     parentConfiguration = globalConfig;
@@ -477,24 +502,24 @@ public class ReportConfiguration implements Configuration
    *
    * @return the property value.
    */
-  public String getConfigProperty (String key)
+  public String getConfigProperty(String key)
   {
     return getConfigProperty(key, null);
   }
 
   /**
-   * Returns the configuration property with the specified key (or the specified default value
-   * if there is no such property).
+   * Returns the configuration property with the specified key
+   * (or the specified default value if there is no such property).
    * <p>
-   * If the property is not defined in this configuration, the code will lookup the property in
-   * the parent configuration.
+   * If the property is not defined in this configuration, the code
+   * will lookup the property in the parent configuration.
    *
    * @param key  the property key.
    * @param defaultValue  the default value.
    *
    * @return the property value.
    */
-  public String getConfigProperty (String key, String defaultValue)
+  public String getConfigProperty(String key, String defaultValue)
   {
     String value = configuration.getProperty(key);
     if (value == null)
@@ -517,7 +542,7 @@ public class ReportConfiguration implements Configuration
    * @param key  the property key.
    * @param value  the property value.
    */
-  public void setConfigProperty (String key, String value)
+  public void setConfigProperty(String key, String value)
   {
     if (key == null)
     {
@@ -539,7 +564,7 @@ public class ReportConfiguration implements Configuration
    *
    * @return true, if this report is the root configuration, false otherwise.
    */
-  private boolean isRootConfig ()
+  private boolean isRootConfig()
   {
     return parentConfiguration == null;
   }
@@ -555,8 +580,8 @@ public class ReportConfiguration implements Configuration
   }
 
   /**
-   * Sets the log level, which is read from the global report configuration at the point that
-   * the classloader loads the {@link Log} class.
+   * Sets the log level, which is read from the global report configuration at
+   * the point that the classloader loads the {@link Log} class.
    * <p>
    * Valid log levels are:
    *
@@ -570,8 +595,8 @@ public class ReportConfiguration implements Configuration
    * Notes:
    * <ul>
    * <li>the setting is not case sensitive.</li>
-   * <li>changing the log level after the {@link Log} class has been loaded will have no 
-   *     effect.</li>
+   * <li>changing the log level after the {@link Log} class has been
+   * loaded will have no effect.</li>
    * <li>to turn of logging altogether, use the {@link #setDisableLogging} method.</li>
    * </ul>
    *
@@ -590,7 +615,7 @@ public class ReportConfiguration implements Configuration
   public boolean isPDFTargetAutoInit()
   {
     return getConfigProperty(PDFTARGET_AUTOINIT,
-                             PDFTARGET_AUTOINIT_DEFAULT).equalsIgnoreCase("true");
+        PDFTARGET_AUTOINIT_DEFAULT).equalsIgnoreCase("true");
   }
 
   /**
@@ -610,7 +635,8 @@ public class ReportConfiguration implements Configuration
    */
   public boolean isDisableLogging()
   {
-    return getConfigProperty(DISABLE_LOGGING, DISABLE_LOGGING_DEFAULT).equalsIgnoreCase("true");
+    return getConfigProperty
+        (DISABLE_LOGGING, DISABLE_LOGGING_DEFAULT).equalsIgnoreCase("true");
   }
 
   /**
@@ -660,20 +686,18 @@ public class ReportConfiguration implements Configuration
   /**
    * Returns the global configuration for JFreeReport.
    * <p>
-   * In the current implementation, the configuration has no properties defined, but references
-   * a parent configuration that:
+   * In the current implementation, the configuration has no properties defined,
+   * but references a parent configuration that:
    * <ul>
-   * <li>copies across all the <code>System</code> properties to use as report configuration
-   *     properties (obviously the majority of them will not apply to reports);</li>
+   * <li>copies across all the <code>System</code> properties to use as report
+   * configuration properties (obviously the majority of them will not apply to reports);</li>
    * <li>itself references a parent configuration that reads its properties from a file
    *     <code>jfreereport.properties</code>.
    * </ul>
-   * This three-level set up is probably not necessary - it looks like it has arisen from
-   * evolving code.
    *
    * @return the global configuration.
    */
-  public static ReportConfiguration getGlobalConfig ()
+  public static ReportConfiguration getGlobalConfig()
   {
     if (globalConfig == null)
     {
@@ -687,7 +711,7 @@ public class ReportConfiguration implements Configuration
       SystemPropertyConfiguration systemConfig = new SystemPropertyConfiguration();
       systemConfig.setParentConfig(baseProperty);
 
-      globalConfig = new ReportConfiguration ();
+      globalConfig = new ReportConfiguration();
       globalConfig.setParentConfig(systemConfig);
 
     }
@@ -700,7 +724,7 @@ public class ReportConfiguration implements Configuration
    *
    * @param config  the parent configuration.
    */
-  protected void setParentConfig (ReportConfiguration config)
+  protected void setParentConfig(ReportConfiguration config)
   {
     parentConfiguration = config;
   }
@@ -732,7 +756,7 @@ public class ReportConfiguration implements Configuration
    */
   public boolean isWarnInvalidColumns()
   {
-    return getConfigProperty(WARN_INVALID_COLUMNS ,
+    return getConfigProperty(WARN_INVALID_COLUMNS,
         WARN_INVALID_COLUMNS_DEFAULT).equalsIgnoreCase("true");
   }
 
@@ -846,7 +870,7 @@ public class ReportConfiguration implements Configuration
    *
    * @return all defined configuration properties for the report.
    */
-  public Enumeration getConfigProperties ()
+  public Enumeration getConfigProperties()
   {
     return configuration.keys();
   }
@@ -856,7 +880,7 @@ public class ReportConfiguration implements Configuration
    *
    * @param validate true, if the parser should validate the xml files.
    */
-  public void setValidateXML (boolean validate)
+  public void setValidateXML(boolean validate)
   {
     setConfigProperty(PARSER_VALIDATE, String.valueOf(validate));
   }
@@ -867,7 +891,7 @@ public class ReportConfiguration implements Configuration
    *
    * @return true, if the parser should validate, false otherwise.
    */
-  public boolean isValidateXML ()
+  public boolean isValidateXML()
   {
     return getConfigProperty(PARSER_VALIDATE, PARSER_VALIDATE_DEFAULT).equalsIgnoreCase("true");
   }
@@ -883,18 +907,18 @@ public class ReportConfiguration implements Configuration
    */
   public boolean isStrictTableLayout()
   {
-    return getConfigProperty(STRICT_TABLE_LAYOUT, 
-                             STRICT_TABLE_LAYOUT_DEFAULT).equalsIgnoreCase("true");
+    return getConfigProperty(STRICT_TABLE_LAYOUT,
+        STRICT_TABLE_LAYOUT_DEFAULT).equalsIgnoreCase("true");
   }
 
   /**
    * Defines whether strict layouting rules should be used for the TableLayouter.
    *
    * @param strict set to true, to use strict layouting rules, false otherwise.
-   * 
+   *
    * @see ReportConfiguration#isStrictTableLayout
    */
-  public void setStrictTableLayout (boolean strict)
+  public void setStrictTableLayout(boolean strict)
   {
     setConfigProperty(STRICT_TABLE_LAYOUT, String.valueOf(strict));
   }
@@ -1027,8 +1051,8 @@ public class ReportConfiguration implements Configuration
    */
   public boolean isStrictErrorHandling()
   {
-    return getConfigProperty(STRICT_ERRORHANDLING, 
-                             STRICT_ERRORHANDLING_DEFAULT).equalsIgnoreCase("true");
+    return getConfigProperty(STRICT_ERRORHANDLING,
+        STRICT_ERRORHANDLING_DEFAULT).equalsIgnoreCase("true");
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupFactory.java,v 1.11 2003/04/29 19:33:20 taqua Exp $
+ * $Id: GroupFactory.java,v 1.12 2003/05/02 12:40:20 taqua Exp $
  *
  * Changes
  * -------
@@ -93,37 +93,37 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @throws SAXException if there is a problem parsing the XML.
    */
-  public void startElement (String qName,
-                            Attributes atts) throws SAXException
+  public void startElement(String qName,
+                           Attributes atts) throws SAXException
   {
-    String elementName = qName.toLowerCase ().trim ();
+    String elementName = qName.toLowerCase().trim();
 
     // *** GROUP HEADER ***
-    if (elementName.equals (GROUP_HEADER_TAG))
+    if (elementName.equals(GROUP_HEADER_TAG))
     {
-      startGroupHeader (atts);
+      startGroupHeader(atts);
     }
     // *** GROUP FOOTER ***
-    else if (elementName.equals (GROUP_FOOTER_TAG))
+    else if (elementName.equals(GROUP_FOOTER_TAG))
     {
-      startGroupFooter (atts);
+      startGroupFooter(atts);
     }
-    else if (elementName.equals (FIELDS_TAG))
+    else if (elementName.equals(FIELDS_TAG))
     {
-      startFields (atts);
+      startFields(atts);
     }
-    else if (elementName.equals (FIELD_TAG))
+    else if (elementName.equals(FIELD_TAG))
     {
-      startField (atts);
+      startField(atts);
     }
-    else if (elementName.equals (GROUP_TAG))
+    else if (elementName.equals(GROUP_TAG))
     {
-      startGroup (atts);
+      startGroup(atts);
     }
     else
     {
-      throw new SAXException ("Expected one of: group, groupfooter, groutheader, fields, field. -> "
-                              + qName);
+      throw new SAXException("Expected one of: group, groupfooter, groutheader, fields, field. -> "
+          + qName);
     }
   }
 
@@ -134,8 +134,8 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @throws SAXException if there is a problem parsing the report template.
    */
-  protected void startFields (Attributes atts)
-          throws SAXException
+  protected void startFields(Attributes atts)
+      throws SAXException
   {
   }
 
@@ -146,10 +146,10 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @throws SAXException if there is a problem parsing the report template.
    */
-  protected void startField (Attributes atts)
-          throws SAXException
+  protected void startField(Attributes atts)
+      throws SAXException
   {
-    currentText = new StringBuffer ();
+    currentText = new StringBuffer();
   }
 
   /**
@@ -159,12 +159,12 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @throws SAXException if there is a problem parsing the report template.
    */
-  protected void startGroup (Attributes atts)
-          throws SAXException
+  protected void startGroup(Attributes atts)
+      throws SAXException
   {
-    Group group = new Group ();
-    group.setName (getNameGenerator().generateName (atts.getValue ("name")));
-    setCurrentGroup (group);
+    Group group = new Group();
+    group.setName(getNameGenerator().generateName(atts.getValue("name")));
+    setCurrentGroup(group);
   }
 
   /**
@@ -174,26 +174,28 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @throws SAXException if there is a problem parsing the report template.
    */
-  protected void startGroupHeader (Attributes atts)
-          throws SAXException
+  protected void startGroupHeader(Attributes atts)
+      throws SAXException
 
   {
     // get the height...
-    float height = ParserUtil.parseFloat (atts.getValue ("height"),
-                                          "Element height not specified");
-    boolean pageBreak = ParserUtil.parseBoolean (atts.getValue ("pagebreak"),
-                                                 ParserUtil.parseBoolean (atts.getValue ("pagebreak-before-print"), false));
-    boolean pageBreakAfter = ParserUtil.parseBoolean (atts.getValue ("pagebreak-after-print"), false);
-    boolean repeat = ParserUtil.parseBoolean (atts.getValue (REPEAT_HEADER), false);
+    float height = ParserUtil.parseFloat(atts.getValue("height"),
+        "Element height not specified");
+    boolean pageBreak = ParserUtil.parseBoolean
+        (atts.getValue("pagebreak"),
+            ParserUtil.parseBoolean(atts.getValue("pagebreak-before-print"), false));
+    boolean pageBreakAfter = ParserUtil.parseBoolean
+        (atts.getValue("pagebreak-after-print"), false);
+    boolean repeat = ParserUtil.parseBoolean(atts.getValue(REPEAT_HEADER), false);
     // create the group header...
-    GroupHeader groupHeader = new GroupHeader ();
+    GroupHeader groupHeader = new GroupHeader();
     groupHeader.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
-                                            new FloatDimension(0, height));
+        new FloatDimension(0, height));
     groupHeader.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE,
-                                            new Boolean (pageBreak));
+        new Boolean(pageBreak));
     groupHeader.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_AFTER,
-                                            new Boolean (pageBreakAfter));
-    groupHeader.getStyle().setStyleProperty(BandStyleSheet.REPEAT_HEADER, new Boolean (repeat));
+        new Boolean(pageBreakAfter));
+    groupHeader.getStyle().setStyleProperty(BandStyleSheet.REPEAT_HEADER, new Boolean(repeat));
 
     FontFactory.FontInformation fi = fontFactory.createFont(atts);
     FontFactory.applyFontInformation(groupHeader.getStyle(), fi);
@@ -212,7 +214,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
-    currentGroup.setHeader (groupHeader);
+    currentGroup.setHeader(groupHeader);
     getParser().pushFactory(new ElementFactory(getParser(), GROUP_HEADER_TAG, groupHeader));
   }
 
@@ -223,25 +225,26 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @throws SAXException if there is a problem parsing the report template.
    */
-  protected void startGroupFooter (Attributes atts) throws SAXException
+  protected void startGroupFooter(Attributes atts) throws SAXException
   {
-    boolean pageBreak = ParserUtil.parseBoolean (atts.getValue ("pagebreak"),
-                                                 ParserUtil.parseBoolean (atts.getValue ("pagebreak-before-print"), false));
-    boolean pageBreakAfter = ParserUtil.parseBoolean (atts.getValue ("pagebreak-after-print"), false);
+    boolean pageBreak = ParserUtil.parseBoolean(atts.getValue("pagebreak"),
+        ParserUtil.parseBoolean(atts.getValue("pagebreak-before-print"), false));
+    boolean pageBreakAfter = ParserUtil.parseBoolean
+        (atts.getValue("pagebreak-after-print"), false);
 
     // get the height...
-    float height = ParserUtil.parseFloat (atts.getValue ("height"),
-                                          "Element height not specified");
+    float height = ParserUtil.parseFloat(atts.getValue("height"),
+        "Element height not specified");
 
     // get the default font...
     // create the group footer...
-    GroupFooter groupFooter = new GroupFooter ();
+    GroupFooter groupFooter = new GroupFooter();
     groupFooter.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
-                                            new FloatDimension(0, height));
+        new FloatDimension(0, height));
     groupFooter.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE,
-                                            new Boolean (pageBreak));
+        new Boolean(pageBreak));
     groupFooter.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_AFTER,
-                                            new Boolean (pageBreakAfter));
+        new Boolean(pageBreakAfter));
 
     FontFactory.FontInformation fi = fontFactory.createFont(atts);
     FontFactory.applyFontInformation(groupFooter.getStyle(), fi);
@@ -260,7 +263,7 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
-    currentGroup.setFooter (groupFooter);
+    currentGroup.setFooter(groupFooter);
     getParser().pushFactory(new ElementFactory(getParser(), GROUP_FOOTER_TAG, groupFooter));
   }
 
@@ -271,11 +274,11 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    * @param start  the first valid character in the array.
    * @param length  the length of the valid data in the array.
    */
-  public void characters (char[] ch, int start, int length)
+  public void characters(char[] ch, int start, int length)
   {
     if (currentText != null)
     {
-      this.currentText.append (String.copyValueOf (ch, start, length));
+      this.currentText.append(String.copyValueOf(ch, start, length));
     }
   }
 
@@ -286,35 +289,35 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @throws SAXException if there is a problem parsing the XML.
    */
-  public void endElement (String qName)
-          throws SAXException
+  public void endElement(String qName)
+      throws SAXException
   {
-    String elementName = qName.toLowerCase ().trim ();
+    String elementName = qName.toLowerCase().trim();
     // *** GROUP HEADER ***
-    if (elementName.equals (GROUP_HEADER_TAG))
+    if (elementName.equals(GROUP_HEADER_TAG))
     {
-      endGroupHeader ();
+      endGroupHeader();
     }
     // *** GROUP FOOTER ***
-    else if (elementName.equals (GROUP_FOOTER_TAG))
+    else if (elementName.equals(GROUP_FOOTER_TAG))
     {
-      endGroupFooter ();
+      endGroupFooter();
     }
-    else if (elementName.equals (FIELDS_TAG))
+    else if (elementName.equals(FIELDS_TAG))
     {
-      endFields ();
+      endFields();
     }
-    else if (elementName.equals (GROUP_TAG))
+    else if (elementName.equals(GROUP_TAG))
     {
-      endGroup ();
+      endGroup();
     }
-    else if (elementName.equals (FIELD_TAG))
+    else if (elementName.equals(FIELD_TAG))
     {
-      endField ();
+      endField();
     }
-    else if (elementName.equals (GROUPS_TAG))
+    else if (elementName.equals(GROUPS_TAG))
     {
-      endGroups ();
+      endGroups();
     }
     else if (elementName.equals(getFinishTag()))
     {
@@ -322,8 +325,8 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     }
     else
     {
-      throw new SAXException ("Expected one of: group, groupfooter, groutheader, fields, "
-                            + "field - but found " + elementName);
+      throw new SAXException("Expected one of: group, groupfooter, groutheader, fields, "
+          + "field - but found " + elementName);
     }
   }
 
@@ -332,8 +335,8 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @throws SAXException if there is a problem parsing the report template.
    */
-  protected void endGroups ()
-          throws SAXException
+  protected void endGroups()
+      throws SAXException
   {
     getParser().popFactory().endElement(GROUPS_TAG);
   }
@@ -343,11 +346,11 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @throws SAXException if there is a problem parsing the report template.
    */
-  protected void endGroup ()
-          throws SAXException
+  protected void endGroup()
+      throws SAXException
   {
-    getReport ().addGroup (currentGroup);
-    setCurrentGroup (null);
+    getReport().addGroup(currentGroup);
+    setCurrentGroup(null);
   }
 
   /**
@@ -355,10 +358,10 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @throws SAXException if there is a problem parsing the report template.
    */
-  protected void endField ()
-          throws SAXException
+  protected void endField()
+      throws SAXException
   {
-    this.currentGroup.addField (entityParser.decodeEntities(currentText.toString ()));
+    this.currentGroup.addField(entityParser.decodeEntities(currentText.toString()));
     currentText = null;
   }
 
@@ -367,8 +370,8 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @throws SAXException if there is a problem parsing the report template.
    */
-  protected void endFields ()
-          throws SAXException
+  protected void endFields()
+      throws SAXException
   {
   }
 
@@ -377,8 +380,8 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @throws SAXException if there is a problem parsing the report template.
    */
-  protected void endGroupFooter ()
-          throws SAXException
+  protected void endGroupFooter()
+      throws SAXException
   {
   }
 
@@ -387,8 +390,8 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @throws SAXException if there is a problem parsing the report template.
    */
-  protected void endGroupHeader ()
-          throws SAXException
+  protected void endGroupHeader()
+      throws SAXException
   {
   }
 
@@ -399,16 +402,16 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
    *
    * @throws SAXException if there is a problem parsing the report template.
    */
-  public void setCurrentGroup (Group currentGroup)
-          throws SAXException
+  public void setCurrentGroup(Group currentGroup)
+      throws SAXException
   {
     if (currentGroup == null && this.currentGroup == null)
     {
-      throw new SAXException ("Band end before band start?");
+      throw new SAXException("Band end before band start?");
     }
     if (currentGroup != null && this.currentGroup != null)
     {
-      throw new SAXException ("Unable to stack a band into an other band");
+      throw new SAXException("Unable to stack a band into an other band");
     }
 
     this.currentGroup = currentGroup;

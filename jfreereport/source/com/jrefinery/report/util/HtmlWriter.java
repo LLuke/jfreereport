@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlWriter.java,v 1.1 2003/04/23 16:26:50 taqua Exp $
+ * $Id: HtmlWriter.java,v 1.2 2003/05/02 12:40:47 taqua Exp $
  *
  * Changes
  * -------
@@ -42,26 +42,37 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 
+/**
+ * The HTML writer is an extended print stream and is used to handle the
+ * special needs while writing HTML code. In html, the tags need to be
+ * ascii, while the tag contents must be encoded in the specified content
+ * encoding.
+ * <p>
+ * This class provides the methods <code>printEncoded</code> for printing
+ * the text contents. The PrintStream methods can be used to write tags
+ * and attributes.
+ */
 public class HtmlWriter extends PrintStream
 {
-  private String encoding;
+  /** The output stream used as base for this writer. */
   private OutputStreamWriter cout;
   /**
    * Create a new print stream.  This stream will not flush automatically.
    *
-   * @param  out        The output stream to which values and objects will be
-   *                    printed
+   * @param out The output stream to which values and objects will be printed.
+   * @param encoding the encoding for the text sections of the generated html stream.
    *
    * @see java.io.PrintWriter#PrintWriter(OutputStream)
+   * @throws UnsupportedEncodingException if the given encoding is invalid.
    */
   public HtmlWriter(OutputStream out, String encoding)
     throws UnsupportedEncodingException
   {
     super(out);
     if (encoding == null)
+    {
       throw new NullPointerException();
-
-    this.encoding = encoding;
+    }
     this.cout = new OutputStreamWriter(out, encoding);
   }
 
@@ -82,9 +93,10 @@ public class HtmlWriter extends PrintStream
   {
     super(out, autoFlush);
     if (encoding == null)
+    {
       throw new NullPointerException();
+    }
 
-    this.encoding = encoding;
     this.cout = new OutputStreamWriter(out, encoding);
   }
 

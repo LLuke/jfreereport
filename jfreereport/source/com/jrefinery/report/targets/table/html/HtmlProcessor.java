@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProcessor.java,v 1.11 2003/02/26 16:42:27 mungady Exp $
+ * $Id: HtmlProcessor.java,v 1.12 2003/03/04 20:29:00 taqua Exp $
  *
  * Changes
  * -------
@@ -170,5 +170,16 @@ public class HtmlProcessor extends TableProcessor
     }
 
     return prod;
+  }
+
+  /**
+   * Gets the report configuration prefix for that processor. This prefix defines
+   * how to map the property names into the global report configuration.
+   *
+   * @return the report configuration prefix.
+   */
+  protected String getReportConfigurationPrefix()
+  {
+    return "com.jrefinery.report.targets.table.html.";
   }
 }

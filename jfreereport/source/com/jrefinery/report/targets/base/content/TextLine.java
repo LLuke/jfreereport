@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextLine.java,v 1.9 2003/04/06 18:11:30 taqua Exp $
+ * $Id: TextLine.java,v 1.10 2003/04/23 16:26:49 taqua Exp $
  *
  * Changes
  * -------
@@ -274,7 +274,8 @@ public class TextLine implements Content
    *
    * @return the position, where the string width is nearest or equal to maxWidth..
    */
-  private int calculateWidthPos (final int lineStart, int startPos, int endPos, final float maxWidth)
+  private int calculateWidthPos
+      (final int lineStart, int startPos, int endPos, final float maxWidth)
   {
     if (startPos == endPos)
     {

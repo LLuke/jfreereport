@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.30 2003/04/24 18:08:47 taqua Exp $
+ * $Id: ReportGenerator.java,v 1.31 2003/05/02 12:39:53 taqua Exp $
  *
  * Changes
  * -------
@@ -66,8 +66,8 @@ public class ReportGenerator extends ParserFrontend
   private static ReportGenerator generator;
 
   /**
-   * Creates a new report generator. The generator uses the singleton pattern by default,
-   * so use generator.getInstance() to get the generator.
+   * Creates a new report generator. The generator uses the singleton pattern by
+   * default, so use generator.getInstance() to get the generator.
    */
   protected ReportGenerator ()
   {
@@ -76,8 +76,9 @@ public class ReportGenerator extends ParserFrontend
   }
 
   /**
-   * Tries to initilialize the generator by reading the system property "com.jrefinery.report.dtd".
-   * This property should point to the dtd used for parsing.
+   * Tries to initilialize the generator by reading the system property
+   * "com.jrefinery.report.dtd". This property should point to the dtd
+   * used for parsing.
    */
   public void initFromSystem ()
   {
@@ -86,17 +87,19 @@ public class ReportGenerator extends ParserFrontend
   }
 
   /**
-   * Parses a report using the given parameter as filename and the directory containing
-   * the file as content base.
+   * Parses a report using the given parameter as filename and the directory
+   * containing the file as content base.
    *
    * @param file  the file name.
    *
    * @return the report.
    *
    * @throws IOException if an I/O error occurs.
-   * @throws org.jfree.xml.ElementDefinitionException if there is a problem parsing the report template.
+   * @throws ElementDefinitionException if there is a problem parsing the
+   * report template.
    */
-  public JFreeReport parseReport (String file) throws IOException, ElementDefinitionException
+  public JFreeReport parseReport (String file)
+      throws IOException, ElementDefinitionException
   {
     if (file == null)
     {
@@ -116,7 +119,8 @@ public class ReportGenerator extends ParserFrontend
    * @return the report.
    *
    * @throws IOException if an I/O error occurs.
-   * @throws org.jfree.xml.ElementDefinitionException if there is a problem parsing the report template.
+   * @throws ElementDefinitionException if there is a problem parsing
+   * the report template.
    */
   public JFreeReport parseReport (URL file)
           throws ElementDefinitionException, IOException
@@ -129,8 +133,8 @@ public class ReportGenerator extends ParserFrontend
    * needed relative file- and resourcespecification are loaded
    * using the URL <code>contentBase</code> as base.
    * <p>
-   * After the report is generated, the ReportDefinition-source and the contentbase are
-   * stored as string in the reportproperties.
+   * After the report is generated, the ReportDefinition-source and the
+   * contentbase are stored as string in the reportproperties.
    *
    * @param file  the URL for the report template file.
    * @param contentBase  the URL for the report template content base.
@@ -138,7 +142,8 @@ public class ReportGenerator extends ParserFrontend
    * @return the parsed report.
    *
    * @throws IOException if an I/O error occurs.
-   * @throws org.jfree.xml.ElementDefinitionException if there is a problem parsing the report template.
+   * @throws ElementDefinitionException if there is a problem parsing
+   * the report template.
    */
   public JFreeReport parseReport (URL file, URL contentBase)
           throws ElementDefinitionException, IOException
@@ -147,11 +152,13 @@ public class ReportGenerator extends ParserFrontend
     report.setProperty(JFreeReport.REPORT_DEFINITION_SOURCE, file.toString());
     if (contentBase != null)
     {
-      report.setProperty(JFreeReport.REPORT_DEFINITION_CONTENTBASE, contentBase.toString());
+      report.setProperty
+          (JFreeReport.REPORT_DEFINITION_CONTENTBASE, contentBase.toString());
     }
     else
     {
-      report.setProperty(JFreeReport.REPORT_DEFINITION_CONTENTBASE, file.toString());
+      report.setProperty
+          (JFreeReport.REPORT_DEFINITION_CONTENTBASE, file.toString());
     }
     return report;
   }
@@ -166,9 +173,11 @@ public class ReportGenerator extends ParserFrontend
    * @return the parsed report.
    *
    * @throws IOException if an I/O error occurs.
-   * @throws org.jfree.xml.ElementDefinitionException if there is a problem parsing the report template.
+   * @throws ElementDefinitionException if there is a problem parsing
+   * the report template.
    */
-  public JFreeReport parseReport (File file) throws IOException, ElementDefinitionException
+  public JFreeReport parseReport (File file)
+      throws IOException, ElementDefinitionException
   {
     if (file == null)
     {
@@ -187,7 +196,7 @@ public class ReportGenerator extends ParserFrontend
    *
    * @return the report.
    *
-   * @throws org.jfree.xml.ElementDefinitionException if an error occurred.
+   * @throws ElementDefinitionException if an error occurred.
    */
   public JFreeReport parseReport (InputSource input, URL contentBase)
           throws ElementDefinitionException

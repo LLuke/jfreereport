@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverter.java,v 1.12 2003/05/02 16:35:01 taqua Exp $
+ * $Id: ReportConverter.java,v 1.13 2003/05/09 17:12:13 taqua Exp $
  *
  * Changes
  * -------
@@ -77,6 +77,7 @@ public class ReportConverter
    * 
    * @param report  the report.
    * @param w  a character stream writer.
+   * @param contentBase the content base for creating relative URLs.
    * 
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there were problems while serializing

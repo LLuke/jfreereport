@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.26 2003/04/24 18:08:58 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.27 2003/05/02 12:40:40 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
@@ -92,6 +93,7 @@ public class HtmlProducer extends TableProducer
 
   /** the fileencoding for the main html file. */
   public static final String ENCODING = "Encoding";
+  public static final String ENCODING_DEFAULT = "UTF-8";
 
   /** the content cache for the main html file. */
   private ByteArrayOutputStream content;
@@ -148,7 +150,7 @@ public class HtmlProducer extends TableProducer
    */
   public String getEncoding()
   {
-    return String.valueOf(getProperty(ENCODING, "UTF-8"));
+    return String.valueOf(getProperty(ENCODING, ENCODING_DEFAULT));
   }
 
   /**
@@ -503,5 +505,16 @@ public class HtmlProducer extends TableProducer
       }
       pout.println("</tr>");
     }
+  }
+
+  /**
+   * Configures the table producer by reading the configuration settings from
+   * the given map.
+   *
+   * @param configuration the configuration supplied by the table processor.
+   */
+  public void configure(Properties configuration)
+  {
+    setProperty(ENCODING, configuration.getProperty(ENCODING, ENCODING_DEFAULT));
   }
 }

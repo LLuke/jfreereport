@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlTextCellData.java,v 1.6 2003/04/23 13:43:06 taqua Exp $
+ * $Id: HtmlTextCellData.java,v 1.7 2003/05/02 12:40:41 taqua Exp $
  *
  * Changes
  * -------
@@ -108,6 +108,7 @@ public class HtmlTextCellData extends HtmlCellData
    * @param pout the target writer
    * @param text the text that should be printed.
    * @param useXHTML true, if XHTML is generated, false otherwise.
+   * @throws IOException if printing the text failed.
    */
   public static void printText(HtmlWriter pout, String text, boolean useXHTML)
     throws IOException

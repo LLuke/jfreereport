@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableModelInfo.java,v 1.1 2003/01/27 03:20:01 taqua Exp $
+ * $Id: TableModelInfo.java,v 1.2 2003/04/23 13:43:06 taqua Exp $
  *
  * Changes
  * -------
@@ -76,12 +76,14 @@ public class TableModelInfo
         {
           if (c.isAssignableFrom(value.getClass()) == false)
           {
-            System.out.println ("ValueAt (" + rows + ", " + i + ") is not assignable from " + c);
+            System.out.println
+                ("ValueAt (" + rows + ", " + i + ") is not assignable from " + c);
           }
           if (c.equals(Object.class))
           {
-            System.out.println ("ValueAt (" + rows + ", " + i + ") is in a generic column and is of "
-                                + "type " + value.getClass());
+            System.out.println
+                ("ValueAt (" + rows + ", " + i + ") is in a generic column and is of "
+                + "type " + value.getClass());
           }
         }
       }

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner; 
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelProcessor.java,v 1.7 2003/02/26 13:58:03 mungady Exp $
+ * $Id: ExcelProcessor.java,v 1.8 2003/04/08 14:35:18 mungady Exp $
  *
  * Changes
  * -------
@@ -111,5 +111,16 @@ public class ExcelProcessor extends TableProcessor
       prod.setDummy(false);
     }
     return prod;
+  }
+
+  /**
+   * Gets the report configuration prefix for that processor. This prefix defines
+   * how to map the property names into the global report configuration.
+   *
+   * @return the report configuration prefix.
+   */
+  protected String getReportConfigurationPrefix()
+  {
+    return "com.jrefinery.report.targets.table.excel.";
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FloatDimension.java,v 1.8 2003/04/23 17:13:39 taqua Exp $
+ * $Id: FloatDimension.java,v 1.9 2003/04/24 18:08:56 taqua Exp $
  *
  * Changes
  * -------
@@ -37,8 +37,11 @@
 package com.jrefinery.report.targets;
 
 /**
- * 
+ * A float based implementation of the java.awt.geom.Dimension2D class.
+ * This class remains here for compatibility, as this implementation moved
+ * into the JCommon library.
  *
+ * @author Thomas Morgner
  * @deprecated this class moved into the JCommon library and is now located
  * in the package com.jrefinery.ui.
  */
