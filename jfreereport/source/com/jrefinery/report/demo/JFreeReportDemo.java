@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.12 2002/05/26 22:00:18 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.13 2002/05/27 21:42:46 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------

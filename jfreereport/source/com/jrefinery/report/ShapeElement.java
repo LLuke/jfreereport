@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ShapeElement.java,v 1.8 2002/05/26 20:05:11 taqua Exp $
+ * $Id: ShapeElement.java,v 1.9 2002/05/27 21:42:46 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morger
  * Contributor(s):   -;
  *
- * $Id: WaitingImageObserver.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: WaitingImageObserver.java,v 1.3 2002/05/16 13:21:54 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------

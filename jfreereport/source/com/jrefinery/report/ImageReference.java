@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageReference.java,v 1.6 2002/05/17 13:22:32 jaosch Exp $
+ * $Id: ImageReference.java,v 1.7 2002/05/21 23:06:18 taqua Exp $
  *
  * Changes:
  * --------

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionCollection.java,v 1.4 2002/05/18 16:23:49 taqua Exp $
+ * $Id: FunctionCollection.java,v 1.5 2002/05/21 23:06:18 taqua Exp $
  *
  * Changes
  * -------

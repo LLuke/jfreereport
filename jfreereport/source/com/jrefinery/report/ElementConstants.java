@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ElementConstants.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: ElementConstants.java,v 1.3 2002/05/16 10:17:37 mungady Exp $
  *
  * Changes
  * -------

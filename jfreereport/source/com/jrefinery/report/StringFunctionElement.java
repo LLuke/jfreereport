@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringFunctionElement.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: StringFunctionElement.java,v 1.3 2002/05/21 23:06:18 taqua Exp $
  *
  * Changes
  * -------

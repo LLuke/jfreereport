@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DemoResources_de.java,v 1.2 2002/05/16 13:04:16 jaosch Exp $
+ * $Id: DemoResources_de.java,v 1.3 2002/05/16 23:08:02 taqua Exp $
  *
  * Changes
  * -------

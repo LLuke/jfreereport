@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Cursor.java,v 1.4 2002/05/17 13:22:32 jaosch Exp $
+ * $Id: Cursor.java,v 1.5 2002/05/21 23:06:18 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------

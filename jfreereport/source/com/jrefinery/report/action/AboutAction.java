@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: AboutAction.java,v 1.2 2002/05/16 13:35:28 jaosch Exp $
+ * $Id: AboutAction.java,v 1.3 2002/05/16 16:51:03 jaosch Exp $
  *
  * Changes
  * -------

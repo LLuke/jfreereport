@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupHeader.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: GroupHeader.java,v 1.3 2002/05/17 13:22:32 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------

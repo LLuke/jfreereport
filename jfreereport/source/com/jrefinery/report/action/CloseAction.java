@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: CloseAction.java,v 1.4 2002/05/26 16:56:30 taqua Exp $
+ * $Id: CloseAction.java,v 1.5 2002/05/26 20:05:12 taqua Exp $
  *
  * Changes
  * -------
