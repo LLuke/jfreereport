@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,14 +23,18 @@
  * ----------------
  * SampleReport1.java
  * ----------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
- * $Id: SampleReport1.java,v 1.10 2002/12/02 17:17:00 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: SampleReport1.java,v 1.11 2002/12/07 14:58:33 taqua Exp $
  *
  * Changes:
  * --------
  * 19-Jun-2002 : Initial version
  * 28-Nov-2002 : Added vertical alignment parameter (DG);
+ * 10-Dec-2002 : Minor Javadoc changes (DG);
  *
  */
 
@@ -61,9 +65,9 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 /**
- * This creates a report similar to the Report defined by report1.xml.
+ * This creates a report similar to the one defined by report1.xml.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class SampleReport1
 {
