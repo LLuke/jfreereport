@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.10 2003/09/09 15:52:53 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.11 2003/10/11 14:56:26 taqua Exp $
  *
  * Changes
  * -------
@@ -448,7 +448,7 @@ public class HtmlProducer extends TableProducer
       final int lastRowHeight = layout.getRowEnd(y) - layout.getRowStart(y);
 
       styleBuilder.delete(0, styleBuilder.length());
-      styleBuilder.append("height");
+      styleBuilder.append("height: ");
       styleBuilder.append(lastRowHeight);
       styleBuilder.append("pt");
 
@@ -475,7 +475,7 @@ public class HtmlProducer extends TableProducer
         {
           final int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
           styleBuilder.delete(0, styleBuilder.length());
-          styleBuilder.append("width");
+          styleBuilder.append("width: ");
           styleBuilder.append(width);
           styleBuilder.append("pt");
 
@@ -516,7 +516,7 @@ public class HtmlProducer extends TableProducer
 
         final int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
         styleBuilder.delete(0, styleBuilder.length());
-        styleBuilder.append("width");
+        styleBuilder.append("width: ");
         styleBuilder.append(width);
         styleBuilder.append("pt");
 

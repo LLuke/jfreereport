@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.4 2003/09/07 15:27:08 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.5 2003/09/09 15:52:53 taqua Exp $
  *
  * Changes
  * -------
@@ -311,6 +311,7 @@ public class HtmlStyleCollection
    */
   public String getBackgroundStyle(final TableCellBackground bg)
   {
+    // todo: remove the use of the array list and append directly
     final ArrayList style = new ArrayList();
     final Color c = bg.getColor();
     if (c != null)
@@ -326,7 +327,7 @@ public class HtmlStyleCollection
       final StringBuffer b = new StringBuffer();
       b.append("border-top: ");
       b.append(bg.getBorderSizeTop());
-      b.append("pt solid ");
+      b.append("pt; border-top-style: solid; border-top-color: ");
       b.append(getColorString(bg.getColorTop()));
       style.add(b.toString());
     }
@@ -336,7 +337,7 @@ public class HtmlStyleCollection
       final StringBuffer b = new StringBuffer();
       b.append("border-bottom: ");
       b.append(bg.getBorderSizeBottom());
-      b.append("pt solid ");
+      b.append("pt; border-bottom-style: solid; border-bottom-color: ");
       b.append(getColorString(bg.getColorBottom()));
       style.add(b.toString());
     }
@@ -346,7 +347,7 @@ public class HtmlStyleCollection
       final StringBuffer b = new StringBuffer();
       b.append("border-left: ");
       b.append(bg.getBorderSizeLeft());
-      b.append("pt solid ");
+      b.append("pt; border-left-style: solid; border-left-color: ");
       b.append(getColorString(bg.getColorLeft()));
       style.add(b.toString());
     }
@@ -356,7 +357,7 @@ public class HtmlStyleCollection
       final StringBuffer b = new StringBuffer();
       b.append("border-right: ");
       b.append(bg.getBorderSizeRight());
-      b.append("pt solid ");
+      b.append("pt; border-right-style: solid; border-right-color: ");
       b.append(getColorString(bg.getColorRight()));
       style.add(b.toString());
     }
