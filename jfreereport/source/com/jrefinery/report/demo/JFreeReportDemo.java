@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.60 2003/03/20 18:28:33 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.61 2003/04/09 16:21:34 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -574,7 +574,7 @@ public class JFreeReportDemo extends JFrame
       }
 
       report1.setData(data);
-      report1.getReportConfiguration().setStrictErrorHandling(false);  // DG
+      //report1.getReportConfiguration().setStrictErrorHandling(false);  // DG
       PreviewFrame frame1 = new PreviewFrame(report1);
       frame1.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
       frame1.pack();

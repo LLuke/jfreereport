@@ -1,8 +1,8 @@
 *********************
-* JFREEREPORT 0.8.1 *
+* JFREEREPORT 0.8.2 *
 *********************
 
-28 February 2003
+11 April 2003
 
 1. INTRODUCTION
 ---------------
@@ -143,8 +143,28 @@ PlainText output target:
   could look weird. Using one of the predefined AWT colors is always safe,
   everything else should work, but there are no guarantees.
 
+11. DEFINING THE SELECTABLE ENCODINGS IN THE EXPORT DIALOGS
+-----------------------------------------------------------
+By default, the export dialogs make all defined string encodings available
+in the encodings comboboxes. As the availability of all encodings is not
+necessary for most deployment scenarios, we implemeted a way to customize
+the available encodings.
 
-11. OTHER FEEDBACK
+The general availabilty can be defined by specifying the report configuration
+key "com.jrefinery.report.encodings.available". If the key is set to "all", then
+all supported encodings of the JDK are enabled and selectable. Setting the key
+to "none" will disable the encodings completly, and only the report's defined
+target encoding is visible and selectable.
+
+If the configuration key is set to "file", then a encodings property file can
+be specified with the configuration key "com.jrefinery.report.encodings.file".
+The key should point to a properties file, which contains all selectable
+encodings. A sample for such an property file can be found as resource
+"/com/jrefinery/report/jfreereport-encodings.properties" in the library and the
+sources.
+
+
+12. OTHER FEEDBACK
 -----------------
 For other feedback and comments, please post a message on the
 JFreeReport forum.
