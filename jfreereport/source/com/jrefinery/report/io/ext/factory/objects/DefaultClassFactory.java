@@ -2,12 +2,13 @@
  * Date: Jan 10, 2003
  * Time: 9:04:41 PM
  *
- * $Id: DefaultClassFactory.java,v 1.2 2003/01/22 19:38:26 taqua Exp $
+ * $Id: DefaultClassFactory.java,v 1.3 2003/01/25 02:47:09 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.report.targets.FontDefinition;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -61,5 +62,7 @@ public class DefaultClassFactory extends ClassFactoryImpl
     registerClass(DateFormat.class, new ClassLoaderObjectDescription());
     registerClass(SimpleDateFormat.class, new BeanObjectDescription(DecimalFormatSymbols.class));
     registerClass(DateFormatSymbols.class, new ClassLoaderObjectDescription());
+
+    registerClass(FontDefinition.class, new FontDefinitionObjectDescription());
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.14 2003/01/29 21:57:12 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.15 2003/01/30 00:04:53 taqua Exp $
  *
  * Changes
  * -------
@@ -46,32 +46,28 @@
 package com.jrefinery.report.targets.pageable.output;
 
 import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
-import com.jrefinery.report.targets.pageable.LogicalPage;
-import com.jrefinery.report.targets.pageable.OutputTargetException;
-import com.jrefinery.report.targets.pageable.OutputTarget;
-import com.jrefinery.report.targets.SizeCalculator;
 import com.jrefinery.report.targets.DefaultSizeCalculator;
 import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.targets.SizeCalculator;
+import com.jrefinery.report.targets.pageable.LogicalPage;
+import com.jrefinery.report.targets.pageable.OutputTarget;
+import com.jrefinery.report.targets.pageable.OutputTargetException;
+import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.font.FontRenderContext;
-import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
-import java.util.Enumeration;
 
 /**
  * A report output target that uses a Graphics2D object to draw the report.  This allows reports

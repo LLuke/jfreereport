@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.19 2003/01/29 23:05:55 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.20 2003/01/30 00:04:54 taqua Exp $
  *
  * Changes
  * -------
@@ -47,17 +47,13 @@ import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.FunctionProcessingException;
 import com.jrefinery.report.states.PostReportFooterState;
 import com.jrefinery.report.states.ReportState;
-import com.jrefinery.report.targets.FloatDimension;
-import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
 import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.Spool;
 import com.jrefinery.report.targets.style.BandStyleSheet;
-import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.Log;
 
-import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 
 /**
@@ -543,19 +539,12 @@ public class SimplePageLayouter extends PageLayouter
    */
   protected Rectangle2D doLayout(Band band)
   {
-    BandLayoutManager lm
-        = BandLayoutManagerUtil.getLayoutManager(band, getLogicalPage().getOutputTarget());
-    // in this layouter the width of a band is always the full page width
     float width = (float) getLogicalPage().getWidth();
     float height = getCursor().getPageBottomReserved() - getCursor().getPageTop();
-    Dimension2D fdim = lm.preferredLayoutSize(band, new FloatDimension(width, height));
-
-    // the height is defined by the band's requirements
-    height = (float) fdim.getHeight();
-    Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, height);
-    band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
-    lm.doLayout(band);
-    return bounds;
+    return BandLayoutManagerUtil.doLayout(band, 
+                                   getLogicalPage().getOutputTarget(),
+                                   width,
+                                   height);
   }
 
   /**

@@ -2,13 +2,15 @@
  * Date: Jan 29, 2003
  * Time: 2:30:07 PM
  *
- * $Id: PlainTextPage.java,v 1.3 2003/01/30 00:04:53 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.4 2003/01/30 22:52:45 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable.output;
 
 import com.jrefinery.report.targets.FontDefinition;
 
 import java.io.IOException;
+
+import com.jrefinery.report.util.Log;
 
 public class PlainTextPage
 {
@@ -81,22 +83,22 @@ public class PlainTextPage
     return height;
   }
 
-  public void addTextChunk (int x, int y, int w, String text, FontDefinition format)
+  public void addTextChunk(int x, int y, int w, String text, FontDefinition format)
   {
-    //Log.debug ("Add TextChunk: (" + x + ", " + y + ") -> " + w);
-    //Log.debug ("    Backend  : (" + width + ", " + height + ")");
+    Log.debug("Add TextChunk: (" + x + ", " + y + ") -> " + w);
+    Log.debug("    Backend  : (" + width + ", " + height + ")");
     if (x < 0) throw new IllegalArgumentException("X < 0");
     if (y < 0) throw new IllegalArgumentException("y < 0");
     if (w < 0) throw new IllegalArgumentException("w < 0");
-    if (x+w > width) throw new IllegalArgumentException("X+W > bufferWidth");
-    if (y > height) throw new IllegalArgumentException("Y > bufferHeight");
+    if (x + w >= width) throw new IllegalArgumentException("X+W > bufferWidth");
+    if (y >= height) throw new IllegalArgumentException("Y > bufferHeight: " + text);
 
     TextDataChunk chunk = new TextDataChunk(text, format, x, y, w);
     for (int i = 0; i < w; i++)
     {
-      if (pageBuffer[x+i][y] == null)
+      if (pageBuffer[x + i][y] == null)
       {
-        pageBuffer[x+i][y] = chunk;
+        pageBuffer[x + i][y] = chunk;
       }
       /*
       else
@@ -107,13 +109,13 @@ public class PlainTextPage
     }
   }
 
-  protected TextDataChunk getChunk (int x, int y)
+  protected TextDataChunk getChunk(int x, int y)
   {
     return pageBuffer[x][y];
   }
 
-  public void writePage ()
-    throws IOException
+  public void writePage()
+      throws IOException
   {
     commandSet.resetPrinter();
     commandSet.startPage();
@@ -122,7 +124,7 @@ public class PlainTextPage
       commandSet.startLine();
       for (int x = 0; x < width; x++)
       {
-        TextDataChunk chunk = getChunk(x,y);
+        TextDataChunk chunk = getChunk(x, y);
         if (chunk == null)
         {
           commandSet.printEmptyChunk();

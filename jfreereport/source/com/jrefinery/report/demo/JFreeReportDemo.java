@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.48 2002/12/12 12:26:55 mungady Exp $
+ * $Id: JFreeReportDemo.java,v 1.49 2003/01/23 18:07:43 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -73,6 +73,7 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -271,6 +272,7 @@ public class JFreeReportDemo extends JFrame
                       RefineryUtilities.createTablePanel(data2));
     tabbedPane.addTab("ItemHideFunction-Demo", RefineryUtilities.createTablePanel(data2));
     tabbedPane.addTab("Dynamic-Demo", RefineryUtilities.createTablePanel(data2));
+    tabbedPane.addTab("Band in Band Stacking", RefineryUtilities.createTablePanel(new DefaultTableModel()));
 
     content.add(tabbedPane);
 
@@ -355,6 +357,10 @@ public class JFreeReportDemo extends JFrame
     {
       preview("/com/jrefinery/report/demo/report2c.xml", data2);
     }
+    else if (index == 9)
+    {
+      previewManual2();
+    }
   }
 
   /**
@@ -366,6 +372,28 @@ public class JFreeReportDemo extends JFrame
     {
       JFreeReport report1 = new SampleReport1().createReport();
       report1.setData(data1);
+
+      PreviewFrame frame1 = new PreviewFrame(report1);
+      frame1.pack();
+      RefineryUtilities.positionFrameRandomly(frame1);
+      frame1.setVisible(true);
+      frame1.requestFocus();
+    }
+    catch (Exception e)
+    {
+      showExceptionDialog("report.definitionfailure", e);
+    }
+  }
+
+  /**
+   * Preview.
+   */
+  private void previewManual2()
+  {
+    try
+    {
+      JFreeReport report1 = new SampleReport2().createReport();
+      report1.setData(new DefaultTableModel());
 
       PreviewFrame frame1 = new PreviewFrame(report1);
       frame1.pack();

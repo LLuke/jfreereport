@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!--
  This DOCType declaration is valid, uncomment it to validate the report
- -->
-<!--
-<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
--->
+ -->                    
+<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple"
+                        "http://jfreereport.sourceforge.net/report.dtd">
 
 <report name="Sample Report 1" orientation="portrait" pageformat="LETTER" topmargin="72" leftmargin="72" bottommargin="72" rightmargin="72">
 
@@ -18,7 +17,7 @@
       <property name="com.jrefinery.report.preview.MaximumHeight">600</property>
 -->      
     </configuration>
-    <reportheader height="50" fontname="Serif" fontstyle="bold" fontsize="18" fsunderline="true">
+    <reportheader height="70" fontname="Serif" fontstyle="bold" fontsize="18" fsunderline="true">
         <label x="0" y="0" width="100%" height="20" vertical-alignment="top" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
         <label x="0" y="20" width="100%" height="30" vertical-alignment="bottom" alignment="center">This text is valign="bottom"</label>
     </reportheader>

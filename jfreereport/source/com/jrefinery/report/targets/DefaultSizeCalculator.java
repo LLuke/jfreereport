@@ -2,17 +2,16 @@
  * Date: Jan 29, 2003
  * Time: 3:47:42 AM
  *
- * $Id$
+ * $Id: DefaultSizeCalculator.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
  */
 package com.jrefinery.report.targets;
 
-import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportConfiguration;
 
+import java.awt.Font;
 import java.awt.font.FontRenderContext;
 import java.awt.geom.Rectangle2D;
-import java.awt.Font;
 
 public class DefaultSizeCalculator implements SizeCalculator
 {
@@ -179,4 +178,8 @@ public class DefaultSizeCalculator implements SizeCalculator
     return "DefaultSizeCalculator={font=" + font + "}";
   }
 
+  public FontDefinition getFont()
+  {
+    return font;
+  }
 }

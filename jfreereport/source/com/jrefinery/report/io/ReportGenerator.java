@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.21 2003/01/12 21:33:52 taqua Exp $
+ * $Id: ReportGenerator.java,v 1.22 2003/01/24 16:39:03 taqua Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,11 @@
 package com.jrefinery.report.io;
 
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportConfiguration;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -77,7 +78,7 @@ public class ReportGenerator
   private SAXParserFactory factory;
 
   /** The DTD. */
-  private String dtd;
+  private ParserEntityResolver entityResolver;
 
   private boolean validateDTD;
 
@@ -101,26 +102,14 @@ public class ReportGenerator
     this.validateDTD = validateDTD;
   }
 
-  /**
-   * Defines a DTD used to validate the report definition. Your XMLParser
-   * must be a validating parser for this feature to work.
-   *
-   * @param dtd  the URL for the DTD.
-   */
-  public void setDTDLocation (String dtd)
+  public ParserEntityResolver getEntityResolver()
   {
-    this.dtd = dtd;
+    return entityResolver;
   }
 
-  /**
-   * Sets the location of the DTD. This is used for validating XML parsers to
-   * validate the structure of the report definition.
-   *
-   * @return the URL for the DTD.
-   */
-  public String getDTDLocation ()
+  public void setEntityResolver(ParserEntityResolver entityResolver)
   {
-    return dtd;
+    this.entityResolver = entityResolver;
   }
 
   /**
@@ -129,34 +118,8 @@ public class ReportGenerator
    */
   public void initFromSystem ()
   {
-    String reportDtd
-        = ReportConfiguration.getGlobalConfig().getConfigProperty(ReportConfiguration.PARSER_DTD);
-    if (reportDtd == null)
-    {
-      return;
-    }
-
-    File f = new File (reportDtd);
-    if (f.exists () == false)
-    {
-      Log.debug ("Local DTD cannot be read.");
-      dtd = reportDtd;
-    }
-    else if (f.isFile ()== false)
-    {
-      Log.debug ("Local DTD is no ordinary file");
-      dtd = reportDtd;
-    }
-    else if (f.canRead()== false)
-    {
-      Log.debug ("Unable to read the DTD-file.");
-      dtd = reportDtd;
-    }
-    else
-    {
-      dtd = reportDtd;
-    }
     setValidateDTD(ReportConfiguration.getGlobalConfig().isValidateXML());
+    entityResolver = ParserEntityResolver.getDefaultResolver();
   }
 
   /**
@@ -336,13 +299,22 @@ public class ReportGenerator
     try
     {
       SAXParser parser = getParser ();
-      parser.getXMLReader().setFeature("http://xml.org/sax/features/validation", isValidateDTD());
-      
+      XMLReader reader = parser.getXMLReader();
+
+      reader.setFeature("http://xml.org/sax/features/validation", isValidateDTD());
+      reader.setEntityResolver(getEntityResolver());
+
+      Log.debug ("IS Validate: " + isValidateDTD());
+
       Parser handler = createDefaultHandler (contentBase);
       try
       {
         Log.debug ("ContentBase: " + handler.getConfigurationValue (Parser.CONTENTBASE_KEY));
-        parser.parse (input, handler);
+        reader.setContentHandler(handler);
+        reader.setDTDHandler(handler);
+        reader.setEntityResolver(getEntityResolver());
+        reader.setErrorHandler(handler);
+        reader.parse (input);
         return handler.getReport ();
       }
       catch (IOException e)

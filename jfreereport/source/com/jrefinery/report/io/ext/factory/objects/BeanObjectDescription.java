@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 8:17:01 PM
  *
- * $Id: BeanObjectDescription.java,v 1.3 2003/01/22 19:38:26 taqua Exp $
+ * $Id: BeanObjectDescription.java,v 1.4 2003/01/23 18:07:45 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
@@ -55,7 +55,7 @@ public class BeanObjectDescription extends AbstractObjectDescription
         try
         {
           String propertyName = getPropertyName(m.getName());
-          findGetMethod(propertyName);
+          findGetMethod(propertyName, m.getParameterTypes()[0]);
           setParameterDefinition(propertyName,
                                  m.getParameterTypes()[0]);
         }
@@ -109,10 +109,10 @@ public class BeanObjectDescription extends AbstractObjectDescription
                                       new Class[]{getParameterDefinition(parameterName)});
   }
 
-  private Method findGetMethod(String parameterName)
+  private Method findGetMethod(String parameterName, Class retval)
       throws NoSuchMethodException
   {
-    return getObjectClass().getMethod(getGetterName(parameterName),
+    return getObjectClass().getMethod(getGetterName(parameterName, retval),
                                       new Class[0]);
   }
 
@@ -131,13 +131,19 @@ public class BeanObjectDescription extends AbstractObjectDescription
     return b.toString();
   }
 
-  private String getGetterName(String parameterName)
+  private String getGetterName(String parameterName, Class retval)
   {
+    String prefix = "get";
+    if (Boolean.TYPE.equals(retval))
+    {
+      prefix = "is";
+    }
+
     if (parameterName.length() == 0)
-      return "get";
+      return prefix;
 
     StringBuffer b = new StringBuffer();
-    b.append("get");
+    b.append(prefix);
     b.append(Character.toUpperCase(parameterName.charAt(0)));
     if (parameterName.length() > 1)
     {
@@ -188,7 +194,8 @@ public class BeanObjectDescription extends AbstractObjectDescription
 
       try
       {
-        Method method = findGetMethod(propertyName);
+        Class parameter = getParameterDefinition(propertyName);
+        Method method = findGetMethod(propertyName, parameter);
         Object retval = method.invoke(o, new Object[]{});
         if (retval != null)
         {

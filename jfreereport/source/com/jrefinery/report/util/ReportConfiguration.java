@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.29 2003/01/25 20:34:12 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.30 2003/01/27 03:17:43 taqua Exp $
  *
  * Changes
  * -------
@@ -347,9 +347,6 @@ public class ReportConfiguration
   /** The default 'PDF encoding' property value. */
   public static final String PDFTARGET_ENCODING_DEFAULT = BaseFont.WINANSI;
 
-  /** The path to a local copy of the DTD. */
-  public static final String PARSER_DTD = "com.jrefinery.report.dtd";
-
   /** The 'ResultSet factory mode'. */
   public static final String RESULTSET_FACTORY_MODE = "com.jrefinery.report.TableFactoryMode";
 
@@ -357,7 +354,7 @@ public class ReportConfiguration
   public static final String PARSER_VALIDATE = "com.jrefinery.report.io.validate";
 
   /** disable DTD validation by default */
-  public static final String PARSER_VALIDATE_DEFAULT = "false";
+  public static final String PARSER_VALIDATE_DEFAULT = "true";
 
   public static final String REPORT_RESOURCE_BUNDLE = "com.jrefinery.report.ResourceBundle";
 

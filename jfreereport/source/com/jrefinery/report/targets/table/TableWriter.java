@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 2:32:12 PM
  *
- * $Id: TableWriter.java,v 1.4 2003/01/29 18:37:13 taqua Exp $
+ * $Id: TableWriter.java,v 1.5 2003/01/30 00:04:54 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -14,15 +14,10 @@ import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.function.FunctionProcessingException;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.targets.DefaultLayoutSupport;
-import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.LayoutSupport;
-import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
 import com.jrefinery.report.targets.style.BandStyleSheet;
-import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.util.Log;
 
-import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 
 public class TableWriter extends AbstractFunction
@@ -123,20 +118,12 @@ public class TableWriter extends AbstractFunction
    */
   protected Rectangle2D doLayout(Band band)
   {
-    BandLayoutManager lm
-        = BandLayoutManagerUtil.getLayoutManager(band, getLayoutSupport());
-
     // in this layouter the width of a band is always the full page width.
     // the height is not limited ...
     float width = getMaxWidth();
-    Dimension2D fdim = lm.preferredLayoutSize(band, new FloatDimension(width, Short.MAX_VALUE));
+    float height = Short.MAX_VALUE;
 
-    // the height is now defined by the band's requirements
-    float height = (float) fdim.getHeight();
-    Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, height);
-    band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
-    lm.doLayout(band);
-    return bounds;
+    return BandLayoutManagerUtil.doLayout(band, getLayoutSupport(), width, height);
   }
 
   protected void doPrint (Rectangle2D bounds, Band band)

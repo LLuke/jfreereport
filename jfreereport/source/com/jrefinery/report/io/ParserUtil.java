@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserUtil.java,v 1.16 2003/01/12 21:33:52 taqua Exp $
+ * $Id: ParserUtil.java,v 1.17 2003/01/22 19:38:22 taqua Exp $
  *
  * Changes
  * -------
@@ -220,7 +220,7 @@ public class ParserUtil
     }
     catch (NumberFormatException nfe)
     {
-      Log.debug("Invalid weight for stroke", nfe);
+      Log.warn("Invalid weight for stroke", nfe);
     }
     return new BasicStroke(1);
   }
@@ -260,7 +260,7 @@ public class ParserUtil
       }
       catch (Exception ce)
       {
-        Log.debug("No such Color : " + color);
+        Log.warn("No such Color : " + color);
         // if we can't get any color return black
         return Color.black;
       }

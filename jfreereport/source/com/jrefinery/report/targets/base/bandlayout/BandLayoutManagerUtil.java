@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.2 2003/01/29 18:37:11 taqua Exp $
  *
  * Changes
  * -------
@@ -39,10 +39,13 @@
 package com.jrefinery.report.targets.base.bandlayout;
 
 import com.jrefinery.report.Element;
+import com.jrefinery.report.Band;
 import com.jrefinery.report.targets.LayoutSupport;
+import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Dimension2D;
 
 /**
  * A collection of utility methods for use by classes that implement the BandLayoutManager 
@@ -112,5 +115,20 @@ public class BandLayoutManagerUtil
   {
     e.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds.getBounds2D());
   }
-  
+
+  public static Rectangle2D doLayout (Band band, LayoutSupport support, float width, float height)
+  {
+    BandLayoutManager lm
+        = BandLayoutManagerUtil.getLayoutManager(band, support);
+    // in this layouter the width of a band is always the full page width
+    Dimension2D fdim = lm.minimumLayoutSize(band, new FloatDimension(width, height));
+
+    // the height is redefined by the band's requirements to support
+    // the dynamic elements.
+    height = (float) fdim.getHeight();
+    Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, height);
+    band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
+    lm.doLayout(band);
+    return bounds;
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.17 2003/01/29 03:13:04 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.18 2003/01/29 18:37:13 taqua Exp $
  *
  * Changes
  * -------
@@ -311,7 +311,9 @@ public class LogicalPageImpl implements LogicalPage
       Element e = (Element) l.get(i);
       if (e instanceof Band)
       {
+        Log.debug ("SubBand detected: " + e);
         Rectangle2D bbounds = (Rectangle2D) e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+        Log.debug ("SubBand detected: " + bbounds);
         spoolBand(translateSubRect(bbounds, bounds), (Band) e, spool);
       }
       else
@@ -332,16 +334,15 @@ public class LogicalPageImpl implements LogicalPage
    */
   private Rectangle2D translateSubRect(Rectangle2D outer, Rectangle2D inner)
   {
-    Rectangle2D rt = outer.getBounds2D();
-
-    double w = Math.min (rt.getWidth() - inner.getX(), inner.getWidth());
-    double h = Math.min (rt.getHeight() - inner.getY(), inner.getHeight());
-    rt.setRect(
-        rt.getX() + inner.getX(),
-        rt.getY() + inner.getY(),
+    double w = Math.min (outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
+    double h = Math.min (outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
+    Rectangle2D rc = new Rectangle2D.Double(
+        outer.getX() + inner.getX(),
+        outer.getY() + inner.getY(),
         Math.max(0, w),
         Math.max(0, h));
-    return rt;
+
+    return rc;
   }
 
   /**

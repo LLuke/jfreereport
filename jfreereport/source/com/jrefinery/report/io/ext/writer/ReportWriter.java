@@ -2,7 +2,7 @@
  * Date: Jan 13, 2003
  * Time: 12:39:06 PM
  *
- * $Id: ReportWriter.java,v 1.3 2003/01/22 19:38:28 taqua Exp $
+ * $Id: ReportWriter.java,v 1.4 2003/01/23 18:07:46 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -33,7 +33,8 @@ public class ReportWriter
 
   public ReportWriter (JFreeReport report)
   {
-    this(report, System.getProperty ("file.encoding", "UTF-8"));
+    // all JAXP XML-Parser support at least UTF-8 or UTF-16 encoding.
+    this(report, "UTF-8");
   }
 
   public ReportWriter (JFreeReport report, String encoding)

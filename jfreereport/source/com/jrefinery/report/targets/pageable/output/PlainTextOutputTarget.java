@@ -2,7 +2,7 @@
  * Date: Jan 29, 2003
  * Time: 1:49:26 PM
  *
- * $Id: PlainTextOutputTarget.java,v 1.4 2003/01/30 00:04:53 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.5 2003/01/30 22:52:45 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable.output;
 
@@ -186,8 +186,8 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
       Integer lpi = (Integer) getProperty(LPI_PROPERTY, LPI_PROPERTY_DEFAULT);
       Integer cpi = (Integer) getProperty(CPI_PROPERTY, CPI_PROPERTY_DEFAULT);
       // 1 inch = 72 point
-      characterWidth = (72 / cpi.intValue());
-      characterHeight = (72 / lpi.intValue());
+      characterWidth = (72f / cpi.floatValue());
+      characterHeight = (72f / lpi.floatValue());
     }
     catch (Exception e)
     {
@@ -228,6 +228,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   {
     currentPageHeight = (int) (page.getPageFormat().getImageableHeight() / characterHeight);
     currentPageWidth = (int) (page.getPageFormat().getImageableWidth() / characterWidth);
+
     this.pageBuffer = new PlainTextPage(currentPageWidth, currentPageHeight, getCommandSet());
     savedState = saveState();
   }

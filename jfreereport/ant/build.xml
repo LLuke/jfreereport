@@ -87,6 +87,7 @@
         <copy todir="${basedir}/build/com/jrefinery/report/resources">
             <fileset dir="${basedir}/source/com/jrefinery/report/resources">
                 <include name="**/*.gif" />
+                <include name="**/*.dtd" />
             </fileset>
         </copy>
 
@@ -181,7 +182,7 @@
             <fileset dir="${basedir}/source" />
         </copy>
 
-        <!-- copy across resource files (DTD and example PDFs) -->
+        <!-- copy across resource files (example PDFs) -->
         <copy todir="${basedir}/distribution/resource">
             <fileset dir="${basedir}/resource" />
         </copy>
