@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,19 +20,20 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------
+ * -------------------
  * ImageReference.java
- * -------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * -------------------
+ * (C)opyright 2002, by Thomas Morgner.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageReference.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: ImageReference.java,v 1.3 2002/05/15 21:02:07 taqua Exp $
  *
- * Changes (from 25-May-2002)
- * -------------------------
- * 25-Apr-2002 : Created the class
+ * Changes:
+ * --------
+ * 25-Apr-2002 : Version 1 (TM);
+ * 16-May-2002 : Updated Javadoc comments (DG);
  *
  */
 package com.jrefinery.report;
@@ -56,18 +57,23 @@ import java.net.URL;
  */
 public class ImageReference
 {
+  /** The image. */
   private Image image;
+
+  /** The image URL. */
   private URL url;
+
+  /** The image bounds. */
   private Rectangle2D bounds;
 
   /**
    * Creates a new ImageReference with an origin of 0,0 and the desired
    * width. The image data is read from the given URL.
    *
-   * @param url the source url. The url must be readable while generating
-   * reports.
+   * @param url the source url. The url must be readable while generating reports.
    * @param width the desired width of the image in report-units (1/72 inch).
    * @param height the desired height of the image in report-units (1/72 inch).
+   *
    * @throws IOException if the url could not be read.
    */
   public ImageReference (URL url, float width, float height)
@@ -82,10 +88,8 @@ public class ImageReference
    *
    * @param url the source url. The url must be readable while generating
    * reports.
-   * @param width the desired width of the image in report-units (1/72 inch).
-   * @param x the desired left border of the image within the image element.
-   * @param y the desired upper border of the image within the image element.
-   * @param height the desired height of the image in report-units (1/72 inch).
+   * @param bounds The image size.
+   *
    * @throws IOException if the url could not be read.
    */
   public ImageReference (URL url, Rectangle2D bounds)
@@ -126,8 +130,11 @@ public class ImageReference
   }
 
   /**
-   * @returns the current image instance. The image is not scaled in any
-   * way.
+   * Returns the current image instance.
+   * <P>
+   * The image is not scaled in any way.
+   *
+   * @returns The current image instance.
    */
   public Image getImage ()
   {
@@ -135,19 +142,31 @@ public class ImageReference
   }
 
   /**
-   * @returns the source url of the image.
+   * Returns the source URL for the image.
+   *
+   * @returns The URL.
    */
   public URL getSourceURL ()
   {
     return url;
   }
 
+  /**
+   * Sets the source URL for the image.
+   *
+   * @param surl The URL.
+   */
   protected void setSourceURL (URL surl)
   {
     if (surl == null) throw new NullPointerException();
     this.url = surl;
   }
 
+  /**
+   * Sets the required size for the image.
+   *
+   * @param bounds The size.
+   */
   protected void setBounds (Rectangle2D bounds)
   {
     if (bounds == null) throw new NullPointerException();
@@ -155,7 +174,9 @@ public class ImageReference
   }
 
   /**
-   * @returns the desired width of the image.
+   * Returns the required width of the image (in points, 1/72 inch).
+   *
+   * @returns The width.
    */
   public float getWidth ()
   {
@@ -163,6 +184,8 @@ public class ImageReference
   }
 
   /**
+   * Returns the required height of the image (in points, 1/72 inch).
+   *
    * @returns the desired height of the image.
    */
   public float getHeight ()
@@ -171,7 +194,9 @@ public class ImageReference
   }
 
   /**
-   * @returns the desired left origin of the image.
+   * Returns the required left origin of the image.
+   *
+   * @returns The left origin.
    */
   public float getX ()
   {
@@ -179,7 +204,9 @@ public class ImageReference
   }
 
   /**
-   * @returns the desired upper origin of the image.
+   * Returns the upper origin of the image.
+   *
+   * @returns The upper origin.
    */
   public float getY ()
   {
@@ -187,7 +214,12 @@ public class ImageReference
   }
 
   /**
-   * @returns the bounds of the image as rectangle.
+   * Returns the required size of the image.
+   *
+   * @param carrier You can supply a rectangle in which to store the result, if you want to avoid
+   *                creating new objects unnecessarily.
+   *
+   * @returns The size.
    */
   public Rectangle2D getBounds (Rectangle2D carrier)
   {
@@ -198,13 +230,23 @@ public class ImageReference
     return carrier;
   }
 
+  /**
+   * Returns the required size of the image.
+   * <P>
+   * See also the getBounds(Rectangle2D) method, if you prefer not to create a new Rectangle2D for
+   * each call to this method.
+   *
+   * @return The size.
+   */
   public Rectangle2D getBounds ()
   {
     return getBounds (null);
   }
 
   /**
-   * @returns the string representation of this class for debugging purposes.
+   * Returns a String representing this object.  Useful for debugging.
+   *
+   * @returns The string.
    */
   public String toString ()
   {
@@ -216,4 +258,5 @@ public class ImageReference
     buf.append ("}");
     return buf.toString ();
   }
+
 }
