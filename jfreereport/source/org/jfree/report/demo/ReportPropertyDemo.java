@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------
  * PercentageDemo.java
  * -------------------
- * (C)opyright 2003, by Simba Management Limited.
+ * (C)opyright 2003, by Object Refinery Limited.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
+ * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportPropertyDemo.java,v 1.1 2003/11/01 13:45:16 taqua Exp $
+ * $Id: ReportPropertyDemo.java,v 1.2 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------

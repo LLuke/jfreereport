@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ------------------
  * PreviewAction.java
  * ------------------
- * (C)opyright 2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2002, by Object Refinery Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
+ * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewAction.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: PreviewAction.java,v 1.3 2004/03/16 15:09:22 taqua Exp $
  *
  * Changes
  * -------
