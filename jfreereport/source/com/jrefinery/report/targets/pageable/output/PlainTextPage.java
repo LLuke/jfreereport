@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PlainTextPage.java,v 1.7 2003/02/10 21:22:59 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.8 2003/02/18 19:37:32 taqua Exp $
  *
  * Changes
  * -------
@@ -192,8 +192,8 @@ public class PlainTextPage
     if (x < 0) throw new IllegalArgumentException("X < 0");
     if (y < 0) throw new IllegalArgumentException("y < 0");
     if (w < 0) throw new IllegalArgumentException("w < 0");
-    if (x + w >= width) throw new IllegalArgumentException("X+W > bufferWidth");
-    if (y >= height) throw new IllegalArgumentException("Y > bufferHeight: " + text + " y=" + y + " h=" + height);
+    if (x + w > width) throw new IllegalArgumentException("X+W > bufferWidth");
+    if (y > height) throw new IllegalArgumentException("Y > bufferHeight: " + text + " y=" + y + " h=" + height);
 
     TextDataChunk chunk = new TextDataChunk(text, format, x, y, w);
     for (int i = 0; i < w; i++)

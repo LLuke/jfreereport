@@ -28,12 +28,12 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PlainTextOutputTarget.java,v 1.11 2003/02/19 15:28:15 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.12 2003/02/21 12:17:30 taqua Exp $
  *
  * Changes
  * -------
  * 29-Jan-2003 : Initial version
- *
+ * 21-Feb-2003 : Fixed a bug with unclean calculations when writing strings.
  */
 package com.jrefinery.report.targets.pageable.output;
 
@@ -333,13 +333,6 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     currentPageHeight = (int) (page.getPageFormat().getImageableHeight() / characterHeight);
     currentPageWidth = (int) (page.getPageFormat().getImageableWidth() / characterWidth);
 
-    /*
-    if ((currentPageHeight * characterHeight) != page.getPageFormat().getImageableHeight() )
-      throw new IllegalStateException("Vertical Alignment is not valid");
-    if ((currentPageWidth * characterWidth) != page.getPageFormat().getImageableWidth() )
-      throw new IllegalStateException("Horizontal Alignment is not valid");
-    */
-
     this.pageBuffer = new PlainTextPage(currentPageWidth, currentPageHeight, getCommandSet());
     savedState = new PlainTextState(this);
   }
@@ -447,29 +440,26 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   public void drawString(String text)
   {
     Rectangle2D bounds = getOperationBounds();
-    
+
     int x = correctedDivisionFloor((float) bounds.getX() , characterWidth);
     int y = correctedDivisionFloor((float) bounds.getY() , characterHeight);
     int w = correctedDivisionFloor((float) bounds.getWidth(), characterWidth);
 
-
     pageBuffer.addTextChunk(x, y, w, text, getFont());
   }
 
+  /**
+   * Fixes some floating point errors when calculating positions.
+   *
+   * @param c the divisor
+   * @param d the divident
+   * @return the corrected division result.
+   */
   private int correctedDivisionFloor (float c, float d)
   {
-    c = c * 100;
-    d = d * 100;
-    Log.debug ("C = " + c + "; D = " + d + "; = " + Math.floor(c / d)); 
+    c = Math.round(c * 100);
+    d = Math.round(d * 100);
     return (int) Math.floor(c / d);
-  }
-
-  private int correctedDivision (float c, float d)
-  {
-    c = c * 100;
-    d = d * 100;
-    Log.debug ("C = " + c + "; D = " + d + "; = " + Math.round(c / d));
-    return Math.round(c / d);
   }
 
   /**

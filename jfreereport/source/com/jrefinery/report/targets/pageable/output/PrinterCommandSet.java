@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PrinterCommandSet.java,v 1.4 2003/02/10 21:22:59 taqua Exp $
+ * $Id: PrinterCommandSet.java,v 1.5 2003/02/18 19:37:32 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,6 @@
 package com.jrefinery.report.targets.pageable.output;
 
 import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.PageFormatFactory;
 
 import java.awt.print.PageFormat;

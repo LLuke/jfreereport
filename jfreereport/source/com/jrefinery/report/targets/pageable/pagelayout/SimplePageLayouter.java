@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.30 2003/02/18 19:37:33 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.31 2003/02/20 21:05:01 taqua Exp $
  *
  * Changes
  * -------
@@ -715,8 +715,6 @@ public class SimplePageLayouter extends PageLayouter
                                           getLogicalPage().getOutputTarget(),
                                           width,
                                           height);
-    Log.debug ("After Layout: " + bounds);
-    Log.debug ("After Layout: " + band);
     getCurrentEvent().getState().fireLayoutCompleteEvent();
     return bounds;
   }
@@ -740,7 +738,6 @@ public class SimplePageLayouter extends PageLayouter
     try
     {
       float height = (float) bounds.getHeight();
-      Log.debug ("Printing: " + bounds);
       // handle the end of the page
       if (isFinishingPage())
       {
@@ -762,7 +759,7 @@ public class SimplePageLayouter extends PageLayouter
           spooledBand = null;
         }
 
-        Log.debug ("Y=" + getCursor().getY() + " Height=" + height + " band=" + band);
+        //Log.debug ("Y=" + getCursor().getY() + " Height=" + height + " band=" + band);
         createSaveState(band);
         endPage(ENDPAGE_FORCED);
         return false;

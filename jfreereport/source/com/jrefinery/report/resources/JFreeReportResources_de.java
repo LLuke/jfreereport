@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_de.java,v 1.25 2003/02/16 19:02:38 taqua Exp $
+ * $Id: JFreeReportResources_de.java,v 1.26 2003/02/19 22:14:02 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,7 @@ public class JFreeReportResources_de extends JFreeReportResources
   /** The resources to be localised. */
   private static final Object[][] CONTENTS =
       {
-        {"action.save-as.name", "Speichern als..."},
+        {"action.save-as.name", "Speichern als PDF-Datei ..."},
         {"action.save-as.description", "Speichert den Bericht als PDF-Datei"},
         {"action.save-as.mnemonic", new Integer(KeyEvent.VK_S)},
 
@@ -76,7 +76,7 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"action.page-setup.description", "Seite einrichten"},
         {"action.page-setup.mnemonic", new Integer(KeyEvent.VK_E)},
 
-        {"action.export-to-plaintext.name", "Speichert den Bericht als Text-Datei"},
+        {"action.export-to-plaintext.name", "Speichen als Text-Datei ..."},
         {"action.export-to-plaintext.description", "Speichert den Bericht als Text Datei"},
         {"action.export-to-plaintext.mnemonic", new Integer(KeyEvent.VK_T)},
 

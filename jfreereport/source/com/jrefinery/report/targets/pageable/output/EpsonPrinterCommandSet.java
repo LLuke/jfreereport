@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: EpsonPrinterCommandSet.java,v 1.3 2003/02/04 17:56:28 taqua Exp $
+ * $Id: EpsonPrinterCommandSet.java,v 1.4 2003/02/10 19:33:51 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,9 @@ import java.io.UnsupportedEncodingException;
 /**
  * Implements the printer command set for Epson ESC/P compatible printers.
  * This implementation assumes that AutoLF is disabled.
+ * <p>
+ * This implementation is untested. If you have access to an ESC/P compatible
+ * printer, you could try this command set to improve printing quality.
  *
  * @see PrinterCommandSet
  * @see PlainTextOutputTarget
