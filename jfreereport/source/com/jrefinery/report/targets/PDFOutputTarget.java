@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.28 2002/10/15 20:37:31 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.29 2002/11/04 16:02:27 taqua Exp $
  *
  * Changes
  * -------
@@ -53,9 +53,6 @@ import com.jrefinery.report.Element;
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ShapeElement;
-import com.jrefinery.report.demo.SampleData1;
-import com.jrefinery.report.io.ReportGenerator;
-import com.jrefinery.report.preview.PDFSaveDialog;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.NullOutputStream;
 import com.jrefinery.report.util.StringUtil;
@@ -72,8 +69,6 @@ import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfPatternPainter;
 import com.lowagie.text.pdf.PdfWriter;
 
-import javax.swing.table.TableModel;
-import javax.swing.JOptionPane;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -87,13 +82,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
-import java.text.MessageFormat;
 
 /**
  * An output target for the report engine that generates a PDF file using the iText class library
@@ -988,7 +981,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     PdfContentByte cb = this.writer.getDirectContent();
 
     cb.newPath();
-    cb.moveTo (xcorr, getCorrectedY(ycorr));
+    cb.moveTo(xcorr, getCorrectedY(ycorr));
 
     float[] params = new float[6];
     // How to apply this? This should be needed in fillShape
@@ -1056,7 +1049,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     PdfContentByte cb = this.writer.getDirectContent();
 
     cb.newPath();
-    cb.moveTo (xcorr, getCorrectedY(ycorr));
+    cb.moveTo(xcorr, getCorrectedY(ycorr));
 
     int windingRule = pit.getWindingRule();
 
@@ -1554,24 +1547,4 @@ public class PDFOutputTarget extends AbstractOutputTarget
     this.document = document;
   }
 
-  public static void main (String [] args)
-  {
-    ReportGenerator gen = ReportGenerator.getInstance();
-    JFreeReport report1 = null;
-      try
-      {
-        report1 = gen.parseReport(gen.getClass().getResource("/com/jrefinery/report/demo/report5.xml"));
-      }
-      catch (Exception ioe)
-      {
-        ioe.printStackTrace();
-        return;
-      }
-
-    report1.setData(new SampleData1());
-    PDFSaveDialog d = new PDFSaveDialog();
-    d.setFilename("C:/weird.pdf");
-    d.writePDF(report1, report1.getDefaultPageFormat());
-    System.exit(0);
-  }
 }
