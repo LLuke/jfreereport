@@ -25,7 +25,7 @@
       <cvs cvsRoot=":pserver:anonymous@cvs.sourceforge.net:/cvsroot/jfreereport"
            package="jfreereport"
            compression="true" compressionlevel="5"
-           dest="jfreereport-cvs"
+           dest="."
         />
     </target>
 
