@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,14 +28,16 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: GroupList.java,v 1.9 2002/11/07 21:45:19 taqua Exp $
  *
  * Changes:
  * --------
  * 11-May-2002 : Version 1 (TM);
  * 16-May-2002 : Added Javadoc comments (DG);
  * 29-Aug-2002 : TreeSet does no cloning in JDK 1.2.2, it returns a "new TreeSet()".
- *               Why would a same programmer mess up the source like this?
+ *               Why would a sane programmer mess up the source like this?
+ * 06-Dec-2002 : Updated Javadocs (DG);
+ *
  */
 
 package com.jrefinery.report;
@@ -53,7 +55,7 @@ import java.util.TreeSet;
  * <p>
  * Groups are ordered by comparing the declared fieldnames for the groups.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class GroupList extends TreeSet implements Cloneable, Serializable
 {
@@ -68,10 +70,10 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
     /**
      * Compares two objects (required to be instances of the Group class).
      *
-     * @param o1 The first group.
-     * @param o2 The second group.
+     * @param o1  the first group.
+     * @param o2  the second group.
      *
-     * @return An integer indicating the relative ordering of the two groups.
+     * @return an integer indicating the relative ordering of the two groups.
      */
     public int compare (Object o1, Object o2)
     {
@@ -107,7 +109,7 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
     /**
      * Returns true if this comparator is equal to an object.
      *
-     * @param obj The object.
+     * @param obj  the object.
      *
      * @return a boolean indicating equality or otherwise.
      */
@@ -128,7 +130,7 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
   /**
    * Returns the group at a position in the list.
    *
-   * @param i The position index (zero-based).
+   * @param i  the position index (zero-based).
    *
    * @return the report group.
    */
@@ -144,9 +146,9 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
   /**
    * Removes an object from the list.
    *
-   * @param o The object.
+   * @param o  the object.
    *
-   * @return A boolean indicating whether or not the object was removed.
+   * @return a boolean indicating whether or not the object was removed.
    */
   public boolean remove (Object o)
   {
@@ -166,7 +168,7 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
   /**
    * Adds an object to the list.
    *
-   * @param o The object (must be an instance of the Group class).
+   * @param o  the object (must be an instance of the Group class).
    *
    * @return true if the list did not already contain the specified element.
    */
@@ -194,6 +196,8 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
   }
 
   /**
+   * Clones the list.
+   * <p>
    * Warning: No real cloning involved due to a bug in JDK 1.2.2; TreeSet does not clone, so
    * we can't too.
    *

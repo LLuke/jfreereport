@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.19 2002/10/17 16:14:00 taqua Exp $
+ * $Id: ImageReference.java,v 1.20 2002/12/02 18:23:59 taqua Exp $
  *
  * Changes:
  * --------
@@ -37,6 +37,8 @@
  * 16-May-2002 : Line Delimiters adjusted and imports organized (JS);
  * 14-Jul-2002 : BugFixed: WaitingImageObserver dead-locked (bugfix by Stefan Prange)
  * 15-Jul-2002 : Fixed a bug in the constructor (DG);
+ * 06-Dec-2002 : Updated Javadocs (DG);
+ *
  */
 
 package com.jrefinery.report;
@@ -60,9 +62,8 @@ import java.net.URL;
  * <p>
  * An ImageReference is always used in conjunction with an ImageElement.
  *
- * @author TM
+ * @author Thomas Morgner
  */
-
 public class ImageReference implements Serializable, Cloneable
 {
 
@@ -72,12 +73,20 @@ public class ImageReference implements Serializable, Cloneable
   /** The image URL. */
   private URL url;
 
-  private Rectangle2D bounds = new Rectangle2D.Double(); // the area of the unscaled image that should be displayed
-  private float scaleX = 1.0f; // the scale factor for the width
-  private float scaleY = 1.0f; // the scale factor for the height
+  /** The area of the unscaled image that hould be displayed. */
+  private Rectangle2D bounds = new Rectangle2D.Double();
+  
+  /** The width scale factor. */
+  private float scaleX = 1.0f; 
+  
+  /** The height scale factor. */
+  private float scaleY = 1.0f; 
 
-  private int width;  // width of the unscaled image
-  private int height; // height of the unscaled image
+  /** The width of the (unscaled) image. */
+  private int width;  
+  
+  /** The height of the (unscaled) image. */
+  private int height; 
 
   /**
    * Creates a new ImageReference with an origin of 0,0 and the desired
@@ -111,8 +120,9 @@ public class ImageReference implements Serializable, Cloneable
         this.url = url;
         image = Toolkit.getDefaultToolkit().createImage(url);
         if (image == null)
+        {
           throw new IOException("Image could not be instantiated.");
-
+        }
         WaitingImageObserver obs = new WaitingImageObserver(image);
         obs.waitImageLoaded();
       }
@@ -150,6 +160,13 @@ public class ImageReference implements Serializable, Cloneable
     this.height = image.getHeight(null);
   }
 
+  /**
+   * Creates a new image reference.
+   *
+   * @param w  the width of the unscaled image.
+   * @param h  the height of the unscaled image.
+   * @param bounds  the area of the unscaled image to draw.
+   */
   public ImageReference (int w, int h, Rectangle2D bounds)
   {
     this.width = w;
@@ -162,7 +179,7 @@ public class ImageReference implements Serializable, Cloneable
    * the natural bounds of the raw image, no scaling applied. These bounds may define
    * a sub-area of the real image contained in that Reference.
    *
-   * @return
+   * @return the bounds.
    */
   public Rectangle2D getBounds()
   {
@@ -170,36 +187,68 @@ public class ImageReference implements Serializable, Cloneable
   }
 
   /**
-   * Define the bounds of the image contained in that reference
-   * @param bounds
+   * Define the bounds of the image contained in that reference.
+   *
+   * @param bounds  the bounds.
    */
   public void setBounds (Rectangle2D bounds)
   {
     this.bounds.setRect(bounds);
   }
 
+  /**
+   * Returns the x scale factor.
+   *
+   * @return the x scale factor.
+   */
   public float getScaleX()
   {
     return scaleX;
   }
 
+  /**
+   * Sets the x scale factor.
+   *
+   * @param scaleX  the new factor.
+   */
   public void setScaleX(float scaleX)
   {
-    if (scaleX == 0) throw new IllegalArgumentException("Scale factor must not be 0");
+    if (scaleX == 0) 
+    {
+      throw new IllegalArgumentException("Scale factor must not be 0");
+    }
     this.scaleX = scaleX;
   }
 
+  /**
+   * Returns the y scale factor.
+   *
+   * @return the y scale factor.
+   */
   public float getScaleY()
   {
     return scaleY;
   }
 
+  /**
+   * Sets the y scale factor.
+   *
+   * @param scaleY  the y scale factor.
+   */
   public void setScaleY(float scaleY)
   {
-    if (scaleY == 0) throw new IllegalArgumentException("Scale factor must not be 0");
+    if (scaleY == 0) 
+    {
+      throw new IllegalArgumentException("Scale factor must not be 0");
+    }
     this.scaleY = scaleY;
   }
 
+  /**
+   * Sets the scaled bounds.
+   *
+   * @param bounds  the bounds.
+   */
   public void setBoundsScaled (Rectangle2D bounds)
   {
     Rectangle2D boundsNew = getBounds();
@@ -210,6 +259,11 @@ public class ImageReference implements Serializable, Cloneable
     setBounds(boundsNew);
   }
 
+  /**
+   * Returns the scaled bounds.
+   *
+   * @return the scaled bounds.
+   */
   public Rectangle2D getBoundsScaled ()
   {
     Rectangle2D bounds = getBounds();
@@ -321,11 +375,21 @@ public class ImageReference implements Serializable, Cloneable
     return ref;
   }
 
+  /**
+   * Returns the image width.
+   *
+   * @return the image width.
+   */
   public int getImageWidth ()
   {
     return width;
   }
 
+  /**
+   * Returns the image height.
+   *
+   * @return the image height.
+   */
   public int getImageHeight ()
   {
     return height;

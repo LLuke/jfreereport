@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,12 +23,12 @@
  * ----------------
  * TextElement.java
  * ----------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextElement.java,v 1.23 2002/11/29 11:28:48 mungady Exp $
+ * $Id: TextElement.java,v 1.24 2002/12/02 18:24:33 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -48,6 +48,8 @@
  * 19-Jun-2002 : More documentation
  * 02-Jul-2002 : TextElements constructor has to be public, of course.
  * 05-Sep-2002 : Cloning added
+ * 06-Dec-2002 : Updated Javadocs (DG);
+ *
  */
 
 package com.jrefinery.report;
@@ -55,7 +57,6 @@ package com.jrefinery.report;
 import com.jrefinery.report.filter.StringFilter;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.style.StyleSheet;
-import com.jrefinery.report.util.Log;
 
 import java.awt.Font;
 
@@ -84,15 +85,12 @@ import java.awt.Font;
  * <p>
  * The font style flags isUnderlined and isStriketrough are not implemented in version 0.7.3
  *
- * @author DG
+ * @author David Gilbert
+ * @author Thomas Morgner
  */
 public class TextElement extends Element
 {
-  public static final int LEFT   = 1;
-  public static final int RIGHT  = 2;
-  public static final int CENTER = 3;
-
-  /** This elements stringfilter is used to convert any value into an string */
+  /** The filter used to convert values (Objects) to strings. */
   private StringFilter stringfilter;
 
   /**
@@ -105,7 +103,9 @@ public class TextElement extends Element
   }
 
   /**
-   * @return true, if the text should be printed in underline style.
+   * Returns true, if the text should be underlined, and false otherwise.
+   *
+   * @return true or false.
    */
   public boolean isUnderlined()
   {
@@ -123,7 +123,9 @@ public class TextElement extends Element
   }
 
   /**
-   * @return true, if the text should be printed in strike-though style.
+   * Returns true, if the text should be strike-through style, and false otherwise.
+   *
+   * @return true or false.
    */
   public boolean isStrikethrough()
   {
@@ -131,7 +133,7 @@ public class TextElement extends Element
   }
 
   /**
-   * Defines whether the text should be printed in strike-though style.
+   * Defines whether the text should be printed in strike-through style.
    *
    * @param b  the flag.
    */
@@ -141,10 +143,10 @@ public class TextElement extends Element
   }
 
   /**
-   * Defines the font for this element. If no font is defined, on drawing time the bands font
+   * Defines the font for this element. If no font is defined, on drawing time the band's font
    * is used.
    *
-   * @param f the new elements font or null if the default font should be used.
+   * @param f  the font.
    */
   public void setFont(Font f)
   {
@@ -164,18 +166,19 @@ public class TextElement extends Element
   /**
    * Returns the font for this element.
    * <p>
-   * If a font has been explicitly set for the element,
-   * then it is used. If nothing at all has been
-   * specified, the band's default font is used.
+   * If a font has been explicitly set for the element, then it is used. If nothing at all has 
+   * been specified, the band's default font is used.
    * <p>
    * If no band is specified, this function may return null.
    * If a band is defined, the function will never return null.
-   * If neither the band and the element have defined a font, a
-   * NullPointerException is thrown instead.
+   * If neither the band and the element have defined a font, a NullPointerException is thrown 
+   * instead.
    *
    * @param band  the band.
-   * @deprecated the StyleSheet is used to resolve cascadings
+   *
    * @return the font.
+   *
+   * @deprecated the StyleSheet is used to resolve cascadings
    */
   public Font getFont(StyleSheet band)
   {
@@ -197,7 +200,7 @@ public class TextElement extends Element
 
   /**
    * Defines the null value representation for this element. If null is given, the value
-   * is set to a reasonable value (this implementation sets the value to the string "null".
+   * is set to a reasonable value (this implementation sets the value to the string "-").
    *
    * @param s  the null string.
    */
@@ -213,7 +216,7 @@ public class TextElement extends Element
    * This is one of <code>ElementConstants.LEFT</code>, <code>ElementConstants.CENTER</code> or
    * <code>ElementConstants.RIGHT</code>.
    *
-   * @return the alignment for this element
+   * @return the alignment for this element.
    */
   public int getAlignment()
   {
@@ -225,10 +228,10 @@ public class TextElement extends Element
   /**
    * Defines the text alignment for this element's text.
    * <p>
-   * This is one of <code>ElementConstants.LEFT</code>, <code>ElementConstants.CENTER</code> or
-   * <code>ElementConstants.RIGHT</code>.
+   * This is one of <code>Element.LEFT</code>, <code>Element.CENTER</code> or
+   * <code>Element.RIGHT</code>.
    *
-   * @param alignment the alignment for this element.
+   * @param alignment  the alignment for this element.
    */
   public void setAlignment(int alignment)
   {
@@ -253,8 +256,8 @@ public class TextElement extends Element
   /**
    * Returns the vertical alignment for this element's text.
    * <p>
-   * This is one of <code>ElementConstants.TOP</code>, <code>ElementConstants.MIDDLE</code> or
-   * <code>ElementConstants.BOTTOM</code>.
+   * This is one of <code>Element.TOP</code>, <code>Element.MIDDLE</code> or
+   * <code>Element.BOTTOM</code>.
    *
    * @return the alignment.
    */
@@ -268,7 +271,7 @@ public class TextElement extends Element
   /**
    * Defines the vertical alignment for this element's text.
    * <p>
-   * This is one of the constants defined in <code>ElementConstants</code>: <code>TOP</code>,
+   * This is one of the constants defined in the <code>Element</code> class: <code>TOP</code>,
    * <code>MIDDLE</code> or <code>RIGHT</code>.
    *
    * @param alignment the alignment.
@@ -297,9 +300,10 @@ public class TextElement extends Element
    * Returns a formatted version of the data element.  Typically used for numbers and dates which
    * can be formatted in various ways.
    *
-   * @return A formatted version of the data value.
+   * @return  a formatted version of the data value.
    *
-   * @deprecated this method is replaced by Element.getValue().
+   * @deprecated this method is replaced by Element.getValue(), filters are used for any
+   *             formatting that is required.
    */
   public String getFormattedText()
   {
@@ -307,7 +311,10 @@ public class TextElement extends Element
   }
 
   /**
-   * Makes sure that getFormattedText is called and evaluated.
+   * Returns the value for this text element.  
+   * <p>
+   * Internally, a <code>StringFilter</code> is used to ensure that the final result is an 
+   * instance of String (even though it is returned as an Object.
    *
    * @return the value for the element.
    */
@@ -318,7 +325,7 @@ public class TextElement extends Element
   }
 
   /**
-   * Debugging: returns the String representation of this element.
+   * Returns a string representation of this element, useful for debugging purposes.
    *
    * @return a string.
    */
@@ -339,7 +346,7 @@ public class TextElement extends Element
   }
 
   /**
-   * Clones this Element.
+   * Clones this element.
    *
    * @return a clone of this element.
    *
@@ -352,8 +359,14 @@ public class TextElement extends Element
     return te;
   }
 
+  /** The content type string. */
   public static final String CONTENT_TYPE = "text/plain";
 
+  /**
+   * Returns the content type, in this case '<code>text/plain</code>'.
+   *
+   * @return the content type.
+   */
   public String getContentType()
   {
     return CONTENT_TYPE;

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library 
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,12 +23,12 @@
  * ----------
  * Group.java
  * ----------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.15 2002/09/13 15:38:04 mungady Exp $
+ * $Id: Group.java,v 1.16 2002/12/02 18:23:59 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -40,6 +40,8 @@
  * 03-Jul-2002 : Serializable and cloneable, replaces own ReadOnlyList with standard implementation
  * 26-Jul-2002 : Introduced DataRowBackend as replacement for the raw data access
  * 05-Sep-2002 : Documentation
+ * 06-Dec-2002 : Updated Javadocs (DG);
+ *
  */
 
 package com.jrefinery.report;
@@ -51,15 +53,15 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * A report group.  Reports can contain any number of groups.
- * The order of the fields is important.
+ * A report group definition.  Reports can contain any number of (nested) groups.  The order of 
+ * the fields is important.
  *
  * @see GroupList
- * @author DG
+ *
+ * @author David Gilbert
  */
 public class Group implements Serializable, Cloneable
 {
-
   /** The name of the group. */
   private String name;
 
@@ -101,7 +103,7 @@ public class Group implements Serializable, Cloneable
   /**
    * Returns the name of the group.
    *
-   * @return The group name.
+   * @return the group name.
    */
   public String getName ()
   {
@@ -109,12 +111,12 @@ public class Group implements Serializable, Cloneable
   }
 
   /**
-   * Returns the group header (possibly null).
+   * Returns the group header.
    * <P>
    * The group header is a report band that contains elements that should be printed at the
    * start of a group.
    *
-   * @return The group header.
+   * @return the group header.
    */
   public GroupHeader getHeader ()
   {
@@ -122,9 +124,9 @@ public class Group implements Serializable, Cloneable
   }
 
   /**
-   * Sets the header for the group (null forbidden).
+   * Sets the header for the group.
    *
-   * @param header  the header.
+   * @param header  the header (null not permitted).
    */
   public void setHeader (GroupHeader header)
   {
@@ -146,9 +148,9 @@ public class Group implements Serializable, Cloneable
   }
 
   /**
-   * Sets the footer for the group (null forbidden).
+   * Sets the footer for the group.
    *
-   * @param footer  the footer.
+   * @param footer  the footer (null not permitted).
    */
   public void setFooter (GroupFooter footer)
   {

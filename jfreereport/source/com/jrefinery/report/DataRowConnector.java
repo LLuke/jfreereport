@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowConnector.java,v 1.7 2002/12/02 18:23:58 taqua Exp $
+ * $Id: DataRowConnector.java,v 1.8 2002/12/05 16:55:15 mungady Exp $
  *
  * Changes
  * -------
@@ -111,7 +111,10 @@ public class DataRowConnector implements DataRow
    */
   public Object get (String col)
   {
-    if (dataRow == null) throw new IllegalStateException("Not connected");
+    if (dataRow == null) 
+    {
+      throw new IllegalStateException("Not connected");
+    }
     return dataRow.get (col);
   }
 
@@ -156,6 +159,7 @@ public class DataRowConnector implements DataRow
    * Connects the Report and all contained bands and all Elements within the bands to this DataRow.
    *
    * @param report the report which will be connected
+   * @param con  the data row connector.
    */
   public static void connectDataSources (JFreeReport report, DataRowConnector con)
   {

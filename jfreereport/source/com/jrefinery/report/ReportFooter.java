@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,18 +23,20 @@
  * -----------------
  * ReportFooter.java
  * -----------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportFooter.java,v 1.6 2002/09/13 15:38:04 mungady Exp $
+ * $Id: ReportFooter.java,v 1.7 2002/12/02 18:24:10 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 18-Feb-2002 : Multiple changes with introduction of XML format for report definition (DG);
  * 10-May-2002 : Removed all complex constructors. property "ownpage" added.
+ * 06-Dec-2002 : Updated Javadocs (DG);
+ *
  */
 
 package com.jrefinery.report;
@@ -43,8 +45,13 @@ import com.jrefinery.report.targets.style.BandStyleSheet;
 
 /**
  * A report band that appears as the very last band on the report.
+ * <p>
+ * Note that if there is a page footer on the last page of your report, it will be printed
+ * below the report footer, the logic being that the page footer *always* appears at the bottom
+ * of the page.  In many cases, it makes better sense to suppress the page footer on the last
+ * page of the report (leaving just the report footer on the final page).
  *
- * @author DG
+ * @author David Gilbert
  */
 public class ReportFooter extends Band
 {
@@ -62,7 +69,8 @@ public class ReportFooter extends Band
    */
   public boolean isOwnPage ()
   {
-    Boolean b = (Boolean) getStyle().getStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, Boolean.FALSE);
+    Boolean b = (Boolean) getStyle().getStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, 
+                                                      Boolean.FALSE);
     return b.booleanValue();
   }
 
@@ -75,5 +83,4 @@ public class ReportFooter extends Band
   {
     getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, new Boolean(b));
   }
-
 }

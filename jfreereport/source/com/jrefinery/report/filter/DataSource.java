@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,19 +23,22 @@
  * ---------------
  * DataSource.java
  * ---------------
- * (C)opyright 2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSource.java,v 1.5 2002/08/28 15:27:39 taqua Exp $
+ * $Id: DataSource.java,v 1.6 2002/09/13 15:38:07 mungady Exp $
  *
  * Changes
  * -------
  * 20-May-2002 : Initial version
  * 06-Jun-2002 : Updated Javadoc comments (DG);
  * 03-Jul-2002 : Cloneable and Serializable added
+ * 06-Dec-2002 : Updated Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.filter;
 
 import java.io.Serializable;
@@ -49,21 +52,21 @@ import java.io.Serializable;
  * cloned with all assigned filters and DataSources. Reports are cloned before they are processed
  * to remove the side effect when having multiple report processors working on the same object.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public interface DataSource extends Serializable, Cloneable
 {
   /**
    * Returns the current value for the data source.
    *
-   * @return The value.
+   * @return the value.
    */
   public Object getValue ();
 
   /**
-   * Clones this datasource.
+   * Clones this <code>DataSource</code>.
    *
-   * @return a clone of the datasource.
+   * @return the clone.
    *
    * @throws CloneNotSupportedException this should never happen.
    */

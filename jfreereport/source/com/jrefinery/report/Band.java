@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,12 +23,12 @@
  * ---------
  * Band.java
  * ---------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.24 2002/11/05 18:56:21 taqua Exp $
+ * $Id: Band.java,v 1.26 2002/12/02 18:23:57 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -77,17 +77,18 @@ import java.util.List;
  * The elements in a report band can contain fixed values, field values from the dataset, or
  * function values. The elements are not required to have unique names.
  * <p>
- * This implementation is not synchronized, to take care that you externaly synchronize
+ * This implementation is not synchronized, to take care that you externally synchronize
  * it when using multiple threads.
  *
- * @author DG
+ * @author David Gilbert
+ * @author Thomas Morgner
  */
 public class Band extends Element implements Serializable, Cloneable
 {
   /** All the elements for this band, stored by name. */
   private ArrayList allElements;
 
-  // The defaults for the elements contained in the band.
+  /** The default style-sheet for the elements contained in the band. */
   private ElementStyleSheet bandDefaults;
 
   /**
@@ -104,15 +105,20 @@ public class Band extends Element implements Serializable, Cloneable
     bandDefaults = new BandStyleSheet("default");
   }
 
+  /**
+   * Returns the default style-sheet for the band's elements.
+   *
+   * @return the default style-sheet.
+   */
   public ElementStyleSheet getBandDefaults ()
   {
     return bandDefaults;
   }
 
   /**
-   * Adds an element (display item) to the band.
+   * Adds a report element to the band.
    *
-   * @param element The element.
+   * @param element  the element (null not permitted).
    *
    * @throws NullPointerException if the Element is null or contains Null-Values.
    * @throws IllegalArgumentException if the element violates validity rules
@@ -121,7 +127,7 @@ public class Band extends Element implements Serializable, Cloneable
   {
     if (element == null)
     {
-      throw new NullPointerException("Cannot add null-Element");
+      throw new NullPointerException("Band.addElement(...): element is null.");
     }
     allElements.add(element);
     element.getStyle().addParent(getBandDefaults());
@@ -130,16 +136,15 @@ public class Band extends Element implements Serializable, Cloneable
   /**
    * Adds a collection of elements to the band.
    *
-   * @param elements The element collection.
+   * @param elements  the element collection.
    *
-   * @throws NullPointerException if the collection given is null
+   * @throws NullPointerException if the collection given is <code>null</code>.
    */
   public void addElements(Collection elements)
   {
-
     if (elements == null)
     {
-      throw new NullPointerException();
+      throw new NullPointerException("Band.addElements(...): collection is null.");
     }
 
     Iterator iterator = elements.iterator();
@@ -148,15 +153,15 @@ public class Band extends Element implements Serializable, Cloneable
       Element element = (Element) iterator.next();
       addElement(element);
     }
-
   }
 
   /**
-   * Returns the first element in that list which is registered by the given name
+   * Returns the first element in the list that is registered by the given name.
    *
    * @param name  the element name.
    *
-   * @return the first element with the specified name, or null if there is no such element.
+   * @return the first element with the specified name, or <code>null</code> if there is no 
+   *         such element.
    *
    * @throws NullPointerException if the given name is null.
    */
@@ -164,7 +169,7 @@ public class Band extends Element implements Serializable, Cloneable
   {
     if (name == null)
     {
-      throw new NullPointerException();
+      throw new NullPointerException("Band.getElement(...): name is null.");
     }
 
     Iterator it = allElements.iterator();
@@ -172,14 +177,21 @@ public class Band extends Element implements Serializable, Cloneable
     {
       Element e = (Element) it.next();
       if (e.getName() != null)
+      {
         if (e.getName().equals(name))
         {
           return e;
         }
+      }
     }
     return null;
   }
 
+  /**
+   * Removes an element from the band.
+   *
+   * @param e  the element.
+   */
   public void removeElement (Element e)
   {
     e.getStyle().removeParent(getBandDefaults());
@@ -187,6 +199,8 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
+   * Returns a list of the elements in the band.
+   *
    * @return an immutable list of all registered elements for this band.
    */
   public List getElements()
@@ -194,6 +208,11 @@ public class Band extends Element implements Serializable, Cloneable
     return Collections.unmodifiableList(allElements);
   }
 
+  /**
+   * Returns an array of the elements in the band.
+   *
+   * @return the elements.
+   */
   public Element[] getElementArray ()
   {
     Element[] elements = new Element[allElements.size()];
@@ -202,7 +221,10 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * @return a string representation of this band and all contained elements.
+   * Returns a string representation of the band and all the elements it contains, useful 
+   * mainly for debugging purposes.
+   *
+   * @return a string.
    */
   public String toString()
   {
@@ -215,8 +237,9 @@ public class Band extends Element implements Serializable, Cloneable
    * Clones this Band and all Elements contained in this band.
    *
    * @return the clone of this band.
+   *
    * @throws CloneNotSupportedException if this band or an element contained in this band does not
-   * support cloning.
+   *                                    support cloning.
    */
   public Object clone() throws CloneNotSupportedException
   {
@@ -232,15 +255,27 @@ public class Band extends Element implements Serializable, Cloneable
     return b;
   }
 
+  /** The content type. */
   public static final String CONTENT_TYPE = "X-container";
 
+  /** 
+   * Returns a string indicating the band's content type.
+   *
+   * @return the content type.
+   */
   public String getContentType()
   {
     return CONTENT_TYPE;
   }
 
+  /// DEPRECATED METHODS //////////////////////////////////////////////////////////////////////////
+  
   /**
-   * @deprecated do not manipulate the element properties that way, use a stylesheet
+   * Sets the height of the band.
+   *
+   * @param height  the band height.
+   *
+   * @deprecated do not manipulate the element properties that way, use a stylesheet.
    */
   public void setHeight (float height)
   {
@@ -248,12 +283,17 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
+   * Returns the band height.
+   *
+   * @return the band height.
+   *
    * @deprecated do not manipulate the element properties that way, use a stylesheet and take care
-   * of the layoutmanager reading this data ...
+   * of the layoutmanager reading this data.
    */
   public float getHeight ()
   {
-    Dimension2D d = (Dimension2D) getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 0));
+    Dimension2D d = (Dimension2D) getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE, 
+                                                              new FloatDimension(0, 0));
     return (float) d.getHeight();
   }
 }

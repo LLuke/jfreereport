@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,22 +23,27 @@
  * ------------
  * DataRow.java
  * ------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id$
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: DataRow.java,v 1.4 2002/11/07 21:45:19 taqua Exp $
  *
  * Changes
  * -------
  * 27-Jul-2002 : Initial version
+ * 05-Dec-2002 : Updated Javadocs (DG);
  *
  */
+
 package com.jrefinery.report;
 
 /**
- * The datarow is used to access the current row in the tablemodel as well as expressions
- * and functions using a generic interface.
+ * The datarow is used to access the current row in the <code>TableModel</code> as well as 
+ * expressions and functions using a generic interface.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public interface DataRow
 {
@@ -76,14 +81,14 @@ public interface DataRow
    *
    * @param name  the item name.
    *
-   * @return The item index.
+   * @return the item index.
    */
   public int findColumn (String name);
 
   /**
    * Returns the number of columns, expressions and functions in the report.
    *
-   * @return The item count.
+   * @return the item count.
    */
   public int getColumnCount ();
 

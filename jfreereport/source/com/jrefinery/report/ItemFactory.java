@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,9 +23,12 @@
  * ----------------
  * ItemFactory.java
  * ----------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: ItemFactory.java,v 1.19 2002/11/07 21:45:19 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: ItemFactory.java,v 1.21 2002/12/02 18:23:59 taqua Exp $
  *
  * Changes
  * -------
@@ -36,7 +39,10 @@
  * 10-Jul-2002 : Added Support for ImageURLField, ImageURLFunction
  * 31-Aug-2002 : Replaced ReportDataSource and FunctionDataSource with DataRowDataSource
  *               Deprecated create*Function and create*Field methods.
+ * 06-Dec-2002 : Fixed issues reported by Checkstyle (DG);
+ *
  */
+
 package com.jrefinery.report;
 
 import com.jrefinery.report.filter.DataRowDataSource;
@@ -72,7 +78,7 @@ import java.util.List;
  * A factory used to create elements and bands using a single line command.
  * The factory creates elements suitable for the static layout.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ItemFactory
 {
@@ -145,15 +151,27 @@ public class ItemFactory
   {
 
     SimpleDateFormatFilter filter = new SimpleDateFormatFilter();
-    if (format != null) filter.setFormatString(format);
+    if (format != null) 
+    {
+      filter.setFormatString(format);
+    }
     filter.setDataSource(new DataRowDataSource(field));
 
     TextElement dateElement = new TextElement();
-    if (name != null) dateElement.setName(name);
+    if (name != null)
+    {
+      dateElement.setName(name);
+    }
     setElementBounds(dateElement, bounds);
-    if (paint != null) dateElement.setPaint(paint);
+    if (paint != null) 
+    {
+      dateElement.setPaint(paint);
+    }
     dateElement.setAlignment(alignment);
-    if (font != null) dateElement.setFont(font);
+    if (font != null) 
+    {
+      dateElement.setFont(font);
+    }
     dateElement.setNullString(nullString);
     dateElement.setVerticalAlignment(valign);
     dateElement.setDataSource(filter);
@@ -188,7 +206,8 @@ public class ItemFactory
                                               DateFormat format,
                                               String field)
   {
-    return createDateElement(name, bounds, paint, alignment, Element.TOP, font, nullString, format, field);
+    return createDateElement(name, bounds, paint, alignment, Element.TOP, font, nullString, format, 
+                             field);
   }
   /**
    * Creates a new TextElement containing a date filter structure.
@@ -224,11 +243,20 @@ public class ItemFactory
     filter.setDataSource(new DataRowDataSource(field));
 
     TextElement dateElement = new TextElement();
-    if (name != null) dateElement.setName(name);
+    if (name != null) 
+    {
+      dateElement.setName(name);
+    }
     setElementBounds(dateElement, bounds);
-    if (paint != null) dateElement.setPaint(paint);
+    if (paint != null) 
+    {
+      dateElement.setPaint(paint);
+    }
     dateElement.setAlignment(alignment);
-    if (font != null) dateElement.setFont(font);
+    if (font != null) 
+    {
+      dateElement.setFont(font);
+    }
     dateElement.setNullString(nullString);
     dateElement.setVerticalAlignment(valign);
     dateElement.setDataSource(filter);
@@ -357,10 +385,11 @@ public class ItemFactory
    * Creates a new ImageElement. The source URL is predefined in an StaticDataSource and will
    * not change during the report processing.
    *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the color of this element (currently not used)
-   * @param source the source url from where to load the image
+   * @param name  the name of the new element.
+   * @param bounds  the bounds of the new element.
+   * @param paint  the color of this element (currently not used).
+   * @param source  the source url from where to load the image.
+   * @param scale  scale the image?
    *
    * @return a report element for displaying an image.
    *
@@ -377,14 +406,17 @@ public class ItemFactory
   {
     return createImageElement(name, bounds, paint, source, scale, false);
   }
+  
   /**
    * Creates a new ImageElement. The source URL is predefined in an StaticDataSource and will
    * not change during the report processing.
    *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the color of this element (currently not used)
-   * @param source the source url from where to load the image
+   * @param name  the name of the new element.
+   * @param bounds  the bounds of the new element.
+   * @param paint  the color of this element (currently not used).
+   * @param source  the source url from where to load the image.
+   * @param scale  scale the image?
+   * @param keepAspectRatio  preserve the aspect ratio?
    *
    * @return a report element for displaying an image.
    *
@@ -403,8 +435,14 @@ public class ItemFactory
     ImageReference reference = new ImageReference(source);
     StaticDataSource sds = new StaticDataSource(reference);
     ImageElement element = new ImageElement();
-    if (name != null) element.setName(name);
-    if (paint != null) element.setPaint(paint);
+    if (name != null) 
+    {
+      element.setName(name);
+    }
+    if (paint != null) 
+    {
+      element.setPaint(paint);
+    }
     setElementBounds(element, bounds);
     element.setDataSource(sds);
     element.setScale(scale);
@@ -459,10 +497,11 @@ public class ItemFactory
   /**
    * Creates a new ImageElement, which is fed from an URL stored in the datasource.
    *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the color of this element (currently not used)
+   * @param name  the name of the new element.
+   * @param bounds  the bounds of the new element.
+   * @param paint  the color of this element (currently not used).
    * @param field  the name of the column/function/expression that returns the URL for the image.
+   * @param scale  scale the image?
    *
    * @return a report element for displaying an image based on a URL.
    *
@@ -477,15 +516,16 @@ public class ItemFactory
   {
     return createImageURLElement(name, bounds, paint, field, scale, false);
   }
+  
   /**
    * Creates a new ImageElement, which is fed from an URL stored in the datasource.
    *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the color of this element (currently not used)
+   * @param name  the name of the new element
+   * @param bounds  the bounds of the new element
+   * @param paint  the color of this element (currently not used)
    * @param field  the name of the column/function/expression that returns the URL for the image.
-   * @param scale true if the content should be scaled to fit...
-   * @param keepAspectRatio
+   * @param scale  true if the content should be scaled to fit.
+   * @param keepAspectRatio  preserve the aspect ratio.
    *
    * @return a report element for displaying an image based on a URL.
    *
@@ -506,8 +546,14 @@ public class ItemFactory
     imagefilter.setDataSource(urlfilter);
 
     ImageElement element = new ImageElement();
-    if (name != null) element.setName(name);
-    if (paint != null) element.setPaint(paint);
+    if (name != null) 
+    {
+      element.setName(name);
+    }
+    if (paint != null) 
+    {
+      element.setPaint(paint);
+    }
     setElementBounds(element, bounds);
     element.setDataSource(imagefilter);
     element.setScale(scale);
@@ -586,10 +632,11 @@ public class ItemFactory
   /**
    * Creates a new ImageElement.
    *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the color of this element (currently not used)
+   * @param name  the name of the new element.
+   * @param bounds  the bounds of the new element.
+   * @param paint  the color of this element (currently not used).
    * @param field  the name of the column/function/expression that returns the URL for the image.
+   * @param scale  scale the image?
    *
    * @return a report element for displaying an image.
    *
@@ -607,10 +654,12 @@ public class ItemFactory
   /**
    * Creates a new ImageElement.
    *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the color of this element (currently not used)
+   * @param name  the name of the new element.
+   * @param bounds  the bounds of the new element.
+   * @param paint  the color of this element (currently not used).
    * @param field  the name of the column/function/expression that returns the URL for the image.
+   * @param scale  scale the image?
+   * @param keepAspectRatio  preserve the aspect ratio?
    *
    * @return a report element for displaying an image.
    *
@@ -628,8 +677,14 @@ public class ItemFactory
     filter.setDataSource(new DataRowDataSource(field));
 
     ImageElement element = new ImageElement();
-    if (name != null) element.setName(name);
-    if (paint != null) element.setPaint(paint);
+    if (name != null) 
+    {
+      element.setName(name);
+    }
+    if (paint != null) 
+    {
+      element.setPaint(paint);
+    }
     setElementBounds(element, bounds);
     element.setDataSource(filter);
     element.setScale(scale);
@@ -689,14 +744,14 @@ public class ItemFactory
   /**
    * Creates a new TextElement containing a label.
    *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
-   * @param valign
-   * @param font the font for this element
-   * @param labeltext the text to display
+   * @param name  the name of the new element.
+   * @param bounds  the bounds of the new element.
+   * @param paint  the text color of this text element.
+   * @param alignment  the text alignment (one of ElementConstants.LEFT,
+   *        ElementConstants.CENTER, ElementConstants.RIGHT).
+   * @param valign  the vertical alignment.
+   * @param font  the font for this element.
+   * @param labeltext  the text to display.
    *
    * @return a report element for displaying a label (static text).
    *
@@ -712,11 +767,20 @@ public class ItemFactory
                                                String labeltext)
   {
     TextElement label = new TextElement();
-    if (name != null) label.setName(name);
+    if (name != null) 
+    {
+      label.setName(name);
+    }
     setElementBounds(label, bounds);
-    if (paint != null) label.setPaint(paint);
+    if (paint != null) 
+    {
+      label.setPaint(paint);
+    }
     label.setAlignment(alignment);
-    if (font != null) label.setFont(font);
+    if (font != null) 
+    {
+      label.setFont(font);
+    }
     label.setDataSource(new StaticDataSource(labeltext));
     label.setVerticalAlignment(valign);
     return label;
@@ -756,12 +820,12 @@ public class ItemFactory
   /**
    * Creates a new LineShapeElement.
    *
-   * @param name the name of the new element
-   * @param paint the line color of this element
-   * @param stroke the stroke of this shape. For pdf use, restrict to BasicStokes.
-   * @param shape the Line2D shape
-   * @param shouldDraw
-   * @param shouldFill
+   * @param name  the name of the new element.
+   * @param paint  the line color of this element.
+   * @param stroke  the stroke of this shape. For pdf use, restrict to BasicStrokes.
+   * @param shape  the Line2D shape.
+   * @param shouldDraw  draw the shape?
+   * @param shouldFill  fill the shape?
    *
    * @return a report element for drawing a line.
    *
@@ -775,20 +839,22 @@ public class ItemFactory
                                                 boolean shouldDraw,
                                                 boolean shouldFill)
   {
-    return createShapeElement(name, shape.getBounds2D(), paint, stroke, shape, shouldDraw, shouldFill, true);
+    return createShapeElement(name, shape.getBounds2D(), paint, stroke, shape, 
+                              shouldDraw, shouldFill, true);
   }
 
 
   /**
-   * Creates a new LineShapeElement.
+   * Creates a new ShapeElement.
    *
-   * @param name the name of the new element
-   * @param paint the line color of this element
-   * @param stroke the stroke of this shape. For pdf use, restrict to BasicStokes.
-   * @param shape the Line2D shape
-   * @param shouldDraw
-   * @param shouldFill
-   * @param shouldScale
+   * @param name  the name of the new element.
+   * @param bounds  the bounds.
+   * @param paint  the line color of this element.
+   * @param stroke  the stroke of this shape. For pdf use, restrict to BasicStrokes.
+   * @param shape  the Line2D shape.
+   * @param shouldDraw  draw the shape?
+   * @param shouldFill  fill the shape?
+   * @param shouldScale  scale the shape?
    *
    * @return a report element for drawing a line.
    *
@@ -804,20 +870,22 @@ public class ItemFactory
                                                 boolean shouldFill,
                                                 boolean shouldScale)
   {
-    return createShapeElement(name, bounds, paint, stroke, shape, shouldDraw, shouldFill, shouldScale, false);
+    return createShapeElement(name, bounds, paint, stroke, shape, shouldDraw, 
+                              shouldFill, shouldScale, false);
   }
 
   /**
-   * Creates a new LineShapeElement.
+   * Creates a new ShapeElement.
    *
-   * @param name the name of the new element
-   * @param paint the line color of this element
-   * @param stroke the stroke of this shape. For pdf use, restrict to BasicStokes.
-   * @param shape the Line2D shape
-   * @param shouldDraw
-   * @param shouldFill
-   * @param shouldScale
-   * @param keepAspectRatio
+   * @param name  the name of the new element.
+   * @param bounds  the bounds.
+   * @param paint  the line color of this element.
+   * @param stroke  the stroke of this shape. For pdf use, restrict to BasicStrokes.
+   * @param shape  the Line2D shape.
+   * @param shouldDraw  draw the shape?
+   * @param shouldFill  fill the shape?
+   * @param shouldScale  scale the shape?
+   * @param keepAspectRatio  preserve the aspect ratio?
    *
    * @return a report element for drawing a line.
    *
@@ -835,12 +903,18 @@ public class ItemFactory
                                                 boolean keepAspectRatio)
   {
     ShapeElement shapeElement = new ShapeElement();
-    if (name != null) shapeElement.setName(name);
+    if (name != null) 
+    {
+      shapeElement.setName(name);
+    }
     if (paint != null)
     {
       shapeElement.setPaint(paint);
     }
-    if (stroke != null) shapeElement.setStroke(stroke);
+    if (stroke != null) 
+    {
+      shapeElement.setStroke(stroke);
+    }
     shapeElement.setDataSource(new StaticDataSource(shape));
     shapeElement.setShouldDraw(shouldDraw);
     shapeElement.setShouldFill(shouldFill);
@@ -874,7 +948,8 @@ public class ItemFactory
   {
     if (shape.getX() < 0 || shape.getY() < 0 || shape.getWidth() < 0 || shape.getHeight() < 0)
     {
-      return createShapeElement(name, shape, paint, stroke, new Rectangle2D.Float(0,0, 100, 100), shouldDraw, shouldFill, true);
+      return createShapeElement(name, shape, paint, stroke, new Rectangle2D.Float(0, 0, 100, 100), 
+                                shouldDraw, shouldFill, true);
     }
     return createShapeElement(name, paint, stroke, shape, shouldDraw, shouldFill);
   }
@@ -937,21 +1012,22 @@ public class ItemFactory
                                                 NumberFormat format,
                                                 String field)
   {
-    return createNumberElement(name, bounds, paint, alignment, Element.TOP, font, nullString, format, field);
+    return createNumberElement(name, bounds, paint, alignment, Element.TOP, font, nullString, 
+                               format, field);
   }
   /**
    * Creates a new TextElement containing a numeric filter structure.
    *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
-   * @param font the font for this element
-   * @param nullString the text used when the value of this element is null
-   * @param field the field in the datamodel to retrieve values from
-   * @param format the NumberFormat used in this number element
-   * @param valign
+   * @param name  the name of the new element.
+   * @param bounds  the bounds of the new element.
+   * @param paint  the text color of this text element.
+   * @param alignment  the text alignment (one of ElementConstants.LEFT,
+   *        ElementConstants.CENTER, ElementConstants.RIGHT).
+   * @param valign  the vertical alignment.
+   * @param font  the font for this element.
+   * @param nullString  the text used when the value of this element is null.
+   * @param field  the field in the datamodel to retrieve values from.
+   * @param format  the NumberFormat used in this number element.
    *
    * @return a report element for displaying <code>Number</code> objects.
    *
@@ -973,11 +1049,20 @@ public class ItemFactory
     filter.setDataSource(new DataRowDataSource(field));
 
     TextElement element = new TextElement();
-    if (name != null) element.setName(name);
+    if (name != null) 
+    {
+      element.setName(name);
+    }
     setElementBounds(element, bounds);
-    if (paint != null) element.setPaint(paint);
+    if (paint != null) 
+    {
+      element.setPaint(paint);
+    }
     element.setAlignment(alignment);
-    if (font != null) element.setFont(font);
+    if (font != null) 
+    {
+      element.setFont(font);
+    }
     element.setNullString(nullString);
     element.setDataSource(filter);
     element.setVerticalAlignment(valign);
@@ -1011,22 +1096,23 @@ public class ItemFactory
                                                 String format,
                                                 String field)
   {
-    return createNumberElement(name, bounds, paint, alignment, Element.TOP, font,nullString, format, field);
+    return createNumberElement(name, bounds, paint, alignment, Element.TOP, font, nullString, 
+                               format, field);
   }
 
   /**
    * Creates a new TextElement containing a numeric filter structure.
    *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
-   * @param font the font for this element
-   * @param nullString the text used when the value of this element is null
-   * @param field the fieldname in the datamodel to retrieve values from
-   * @param format the DecimalFormatString used in this text field
-   * @param valign
+   * @param name  the name of the new element.
+   * @param bounds  the bounds of the new element.
+   * @param paint  the text color of this text element.
+   * @param alignment  the text alignment (one of ElementConstants.LEFT,
+   *        ElementConstants.CENTER, ElementConstants.RIGHT).
+   * @param valign  the vertical alignment.
+   * @param font  the font for this element.
+   * @param nullString t he text used when the value of this element is null.
+   * @param field  the fieldname in the datamodel to retrieve values from.
+   * @param format  the DecimalFormatString used in this text field.
    *
    * @return a report element for displaying <code>Number</code> objects.
    *
@@ -1044,15 +1130,27 @@ public class ItemFactory
                                                 String field)
   {
     DecimalFormatFilter filter = new DecimalFormatFilter();
-    if (format != null) filter.setFormatString(format);
+    if (format != null) 
+    {
+      filter.setFormatString(format);
+    }
     filter.setDataSource(new DataRowDataSource(field));
 
     TextElement element = new TextElement();
-    if (name != null) element.setName(name);
+    if (name != null) 
+    {
+      element.setName(name);
+    }
     setElementBounds(element, bounds);
-    if (paint != null) element.setPaint(paint);
+    if (paint != null) 
+    {
+      element.setPaint(paint);
+    }
     element.setAlignment(alignment);
-    if (font != null) element.setFont(font);
+    if (font != null) 
+    {
+      element.setFont(font);
+    }
     element.setNullString(nullString);
     element.setDataSource(filter);
     element.setVerticalAlignment(valign);
@@ -1148,21 +1246,22 @@ public class ItemFactory
                                                 String nullString,
                                                 String field)
   {
-    return createStringElement(name, bounds, paint, alignment, Element.TOP, font, nullString, field);
+    return createStringElement(name, bounds, paint, alignment, Element.TOP, font, nullString, 
+                               field);
   }
 
   /**
    * Creates a new TextElement without any additional filtering.
    *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
-   * @param font the font for this element
-   * @param nullString the text used when the value of this element is null
-   * @param field the field in the datamodel to retrieve values from
-   * @param valign
+   * @param name  the name of the new element
+   * @param bounds  the bounds of the new element
+   * @param paint  the text color of this text element
+   * @param alignment  the text alignment (one of ElementConstants.LEFT,
+   *        ElementConstants.CENTER, ElementConstants.RIGHT).
+   * @param valign  the vertical alignment.
+   * @param font  the font for this element
+   * @param nullString  the text used when the value of this element is null
+   * @param field  the field in the datamodel to retrieve values from
    *
    * @return a report element for displaying <code>String</code> objects.
    *
@@ -1179,11 +1278,20 @@ public class ItemFactory
                                                 String field)
   {
     TextElement element = new TextElement();
-    if (name != null) element.setName(name);
+    if (name != null) 
+    {
+      element.setName(name);
+    }
     setElementBounds(element, bounds);
-    if (paint != null) element.setPaint(paint);
+    if (paint != null) 
+    {
+      element.setPaint(paint);
+    }
     element.setAlignment(alignment);
-    if (font != null) element.setFont(font);
+    if (font != null) 
+    {
+      element.setFont(font);
+    }
     element.setNullString(nullString);
     element.setDataSource(new DataRowDataSource(field));
     element.setVerticalAlignment(valign);
@@ -1233,11 +1341,16 @@ public class ItemFactory
   public static Band createGroupFooter(float height, Font defaultFont, Paint defaultPaint)
   {
     GroupFooter footer = new GroupFooter();
-    footer.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
+    footer.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, 
+                                       new FloatDimension(0, height));
     if (defaultFont != null)
+    {
       footer.getBandDefaults().setFontStyleProperty(defaultFont);
+    }
     if (defaultPaint != null)
+    {
       footer.getBandDefaults().setStyleProperty(ElementStyleSheet.PAINT, defaultPaint);
+    }
     return footer;
   }
 
@@ -1256,11 +1369,16 @@ public class ItemFactory
                                        boolean pageBreak)
   {
     GroupHeader header = new GroupHeader();
-    header.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
+    header.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, 
+                                       new FloatDimension(0, height));
     if (defaultFont != null)
+    {
       header.getBandDefaults().setFontStyleProperty(defaultFont);
+    }
     if (defaultPaint != null)
+    {
       header.getBandDefaults().setStyleProperty(ElementStyleSheet.PAINT, defaultPaint);
+    }
     header.setPageBreakBeforePrint(pageBreak);
     return header;
   }
@@ -1283,11 +1401,16 @@ public class ItemFactory
                                       boolean onfirstpage, boolean onlastpage)
   {
     PageFooter footer = new PageFooter();
-    footer.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension (0, height));
+    footer.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, 
+                                       new FloatDimension (0, height));
     if (defaultFont != null)
+    {
       footer.getBandDefaults().setFontStyleProperty(defaultFont);
+    }
     if (defaultPaint != null)
+    {
       footer.getBandDefaults().setStyleProperty(ElementStyleSheet.PAINT, defaultPaint);
+    }
 
     footer.setDisplayOnFirstPage(onfirstpage);
     footer.setDisplayOnLastPage(onlastpage);
@@ -1312,11 +1435,16 @@ public class ItemFactory
                                       boolean onfirstpage, boolean onlastpage)
   {
     PageHeader header = new PageHeader();
-    header.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension (0, height));
+    header.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, 
+                                       new FloatDimension (0, height));
     if (defaultFont != null)
+    {
       header.getBandDefaults().setFontStyleProperty(defaultFont);
-    if (defaultPaint != null)
+    }
+    if (defaultPaint != null) 
+    {
       header.getBandDefaults().setStyleProperty(ElementStyleSheet.PAINT, defaultPaint);
+    }
     header.setDisplayOnFirstPage(onfirstpage);
     header.setDisplayOnLastPage(onlastpage);
     return header;
@@ -1338,11 +1466,16 @@ public class ItemFactory
                                         boolean isownpage)
   {
     ReportFooter footer = new ReportFooter();
-    footer.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension (0, height));
+    footer.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, 
+                                       new FloatDimension (0, height));
     if (defaultFont != null)
+    {
       footer.getBandDefaults().setFontStyleProperty(defaultFont);
+    }
     if (defaultPaint != null)
+    {
       footer.getBandDefaults().setStyleProperty(ElementStyleSheet.PAINT, defaultPaint);
+    }
     footer.setOwnPage(isownpage);
     return footer;
   }
@@ -1363,11 +1496,16 @@ public class ItemFactory
                                         boolean isownpage)
   {
     ReportHeader header = new ReportHeader();
-    header.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension (0, height));
+    header.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, 
+                                       new FloatDimension (0, height));
     if (defaultFont != null)
+    {
       header.getBandDefaults().setFontStyleProperty(defaultFont);
+    }
     if (defaultPaint != null)
+    {
       header.getBandDefaults().setStyleProperty(ElementStyleSheet.PAINT, defaultPaint);
+    }
     header.setOwnPage(isownpage);
     return header;
   }
@@ -1388,9 +1526,13 @@ public class ItemFactory
     ItemBand band = new ItemBand();
     band.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension (0, height));
     if (defaultFont != null)
+    {
       band.getBandDefaults().setFontStyleProperty(defaultFont);
-    if (defaultPaint != null)
+    }
+    if (defaultPaint != null) 
+    {
       band.getBandDefaults().setStyleProperty(ElementStyleSheet.PAINT, defaultPaint);
+    }
     return band;
   }
 
@@ -1427,17 +1569,18 @@ public class ItemFactory
   }
 
   /**
-   * Creates a new ReportDefinition.
+   * Creates a new report.
    *
-   * @param name the name of the report
-   * @param rheader the optional report header
-   * @param rfooter the optional report footer
-   * @param pheader the optional page header
-   * @param pfooter the optional page footer
-   * @param groups the list of groups for this report (optional)
-   * @param items the itemband for this report (optional)
-   * @param functions the optional functioncollection used in this report
-   * @param pageformat the (optional) default pageformat
+   * @param name  the name of the report.
+   * @param rheader  the optional report header.
+   * @param rfooter  the optional report footer.
+   * @param pheader  the optional page header.
+   * @param pfooter  the optional page footer.
+   * @param groups  the list of groups for this report (optional).
+   * @param items  the itemband for this report (optional).
+   * @param functions  the (optional) functions used in this report.
+   * @param expressions  the (optional) expressions used in this report.
+   * @param pageformat the (optional) default pageformat.
    * @param data the data for this report, which is optional at this point.
    *
    * @return the created report.
@@ -1496,9 +1639,18 @@ public class ItemFactory
     return report;
   }
 
+  /**
+   * A utility method for setting the element bounds.
+   *
+   * @param e  the element.
+   * @param bounds  the bounds.
+   */
   public static void setElementBounds (Element e, Rectangle2D bounds)
   {
-    e.getStyle().setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, new Point2D.Double(bounds.getX(), bounds.getY()));
-    e.getStyle().setStyleProperty(StaticLayoutManager.ABSOLUTE_DIM, new FloatDimension((float)bounds.getWidth(), (float)bounds.getHeight()));
+    e.getStyle().setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, 
+                                  new Point2D.Double(bounds.getX(), bounds.getY()));
+    e.getStyle().setStyleProperty(StaticLayoutManager.ABSOLUTE_DIM, 
+                                  new FloatDimension((float) bounds.getWidth(), 
+                                                     (float) bounds.getHeight()));
   }
 }

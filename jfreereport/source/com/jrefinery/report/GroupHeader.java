@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,12 +23,12 @@
  * ----------------
  * GroupHeader.java
  * ----------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: GroupHeader.java,v 1.8 2002/09/13 15:38:04 mungady Exp $
+ * $Id: GroupHeader.java,v 1.9 2002/12/02 18:23:59 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -36,6 +36,7 @@
  * 18-Feb-2002 : Changed height from Number --> float (DG);
  * 10-May-2002 : remove all compex constructors, added PageBreakBeforePrintProperty
  * 04-Jun-2002 : Documentation tags changed.
+ * 06-Dec-2002 : Updated Javadocs (DG);
  */
 
 package com.jrefinery.report;
@@ -45,7 +46,7 @@ import com.jrefinery.report.targets.style.BandStyleSheet;
 /**
  * A report band that appears at the beginning of each instance of a group.
  *
- * @author DG
+ * @author David Gilbert
  */
 public class GroupHeader extends Band
 {
@@ -57,8 +58,10 @@ public class GroupHeader extends Band
   }
 
   /**
-   * @return true if this group should trigger a pagebreak before its header is printed,
-   * false otherwise
+   * Returns true if this group should trigger a pagebreak before its header is printed,
+   * false otherwise.
+   *
+   * @return true or false.
    */
   public boolean hasPageBreakBeforePrint ()
   {
@@ -68,7 +71,7 @@ public class GroupHeader extends Band
   /**
    * Defines whether this group should trigger a pagebreak before its header is printed.
    *
-   * @param pageBreakBefore the new trigger state
+   * @param pageBreakBefore  the new trigger state
    */
   public void setPageBreakBeforePrint (boolean pageBreakBefore)
   {

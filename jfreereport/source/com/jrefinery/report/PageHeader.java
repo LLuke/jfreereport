@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,12 +23,12 @@
  * ---------------
  * PageHeader.java
  * ---------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: PageHeader.java,v 1.5 2002/09/13 15:38:04 mungady Exp $
+ * $Id: PageHeader.java,v 1.6 2002/12/02 18:24:09 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -37,17 +37,18 @@
  * 10-May-2002 : Removed all but the default constructor. Added accessor functions for all
  *               properties.
  * 04-Jun-2002 : Documentation tags changed.
+ * 06-Dec-2002 : Updated Javadocs (DG);
  */
 package com.jrefinery.report;
 
 import com.jrefinery.report.targets.style.BandStyleSheet;
 
-
 /**
  * A report band used to print information at the top of every page in the report.  There is an
- * option to suppress the page header on the first page and the last page.
+ * option to suppress the page header on the first page and the last page of the report (this
+ * is often useful if you are using a report header and/or report footer).
  *
- * @author DG
+ * @author David Gilbert
  */
 public class PageHeader extends Band
 {
@@ -60,7 +61,8 @@ public class PageHeader extends Band
 
   /**
    * Returns true if the header should be shown on page 1, and false otherwise.
-   * @return A flag indicating whether or not the footer is shown on the first page.
+   *
+   * @return true or false.
    */
   public boolean isDisplayOnFirstPage ()
   {
@@ -68,9 +70,9 @@ public class PageHeader extends Band
   }
 
   /**
-   * defines whether the header should be shown on the first page. This property defaults
-   * to true.
-   * @param b A flag indicating whether or not the header is shown on the first page.
+   * Defines whether the header should be shown on the first page.
+   *
+   * @param b  a flag indicating whether or not the header is shown on the first page.
    */
   public void setDisplayOnFirstPage (boolean b)
   {
@@ -79,7 +81,8 @@ public class PageHeader extends Band
 
   /**
    * Returns true if the header should be shown on the last page, and false otherwise.
-   * @return A flag indicating whether or not the header is shown on the last page.
+   *
+   * @return true or false.
    */
   public boolean isDisplayOnLastPage ()
   {
@@ -87,13 +90,12 @@ public class PageHeader extends Band
   }
 
   /**
-   * defines whether the header should be shown on the last page. This property defaults to
-   * true
-   * @param b A flag indicating whether or not the header is shown on the last page.
+   * Defines whether the header should be shown on the last page. 
+   *
+   * @param b  a flag indicating whether or not the header is shown on the last page.
    */
   public void setDisplayOnLastPage (boolean b)
   {
     getStyle().setStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE, new Boolean(b));
   }
-
 }

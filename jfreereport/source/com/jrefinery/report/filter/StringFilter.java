@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringFilter.java,v 1.9 2002/09/05 08:31:52 taqua Exp $
+ * $Id: StringFilter.java,v 1.10 2002/09/13 15:38:07 mungady Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,11 @@ package com.jrefinery.report.filter;
  * A filter that returns the value from a data source as a String. The value is converted to an
  * String using String.valueOf () which uses Object.toString() to convert the object into the
  * string.
+ * <p>
+ * You can specify a default string to return when the value from the data source is 
+ * <code>null</code>.  Initially the string 'null' is used.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class StringFilter implements DataFilter
 {
@@ -66,7 +69,7 @@ public class StringFilter implements DataFilter
   /**
    * Sets the string used to represent a null value.
    *
-   * @param nullvalue The null value.
+   * @param nullvalue  the null value.
    */
   public void setNullValue (String nullvalue)
   {
@@ -80,7 +83,7 @@ public class StringFilter implements DataFilter
   /**
    * Returns the string used to represent a null value.
    *
-   * @return The string.
+   * @return the string.
    */
   public String getNullValue ()
   {
@@ -90,9 +93,10 @@ public class StringFilter implements DataFilter
   /**
    * Returns the value obtained from the data source.
    * <P>
-   * The filter ensures that the returned value is a String, even though the return type is Object.
+   * The filter ensures that the returned value is a String, even though the return type is 
+   * Object (as required by the DataSource interface).
    *
-   * @return The string.
+   * @return the string.
    */
   public Object getValue ()
   {
@@ -116,7 +120,7 @@ public class StringFilter implements DataFilter
   /**
    * Returns the data source for this filter.
    *
-   * @return The data source.
+   * @return the data source.
    */
   public DataSource getDataSource ()
   {
@@ -126,7 +130,7 @@ public class StringFilter implements DataFilter
   /**
    * Sets the data source for this filter.
    *
-   * @param ds The data source.
+   * @param ds  the data source.
    */
   public void setDataSource (DataSource ds)
   {

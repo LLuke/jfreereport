@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,12 +23,12 @@
  * -----------------
  * ReportHeader.java
  * -----------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportHeader.java,v 1.7 2002/09/13 15:38:04 mungady Exp $
+ * $Id: ReportHeader.java,v 1.8 2002/12/02 18:24:12 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -36,6 +36,8 @@
  * 18-Feb-2002 : Multiple changes with introduction of XML format for report definition (DG);
  * 10-May-2002 : Removed all complex constructors. Property "ownPage" can be set by accessor.
  * 04-Jun-2002 : Documentation tags changed.
+ * 06-Dec-2002 : Updated Javadocs (DG);
+ *
  */
 
 package com.jrefinery.report;
@@ -43,13 +45,19 @@ package com.jrefinery.report;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 
 /**
- * A report band that is printed once-only at the beginning of the report.  A report header is
+ * A report band that is printed once only at the beginning of the report.  A report header is
  * optional.
- * <P>
+ * <p>
  * A flag can be set forcing the report generator to start a new page after printing the report
  * header.
+ * <p>
+ * Note that if there is a page header on the first page of your report, it will be printed
+ * above the report header, the logic being that the page header *always* appears at the top
+ * of the page.  In many cases, it makes better sense to suppress the page header on the first
+ * page of the report (leaving just the report header on page 1).
  *
- * @author DG
+ * @author David Gilbert
+ * @author Thomas Morgner
  */
 public class ReportHeader extends Band
 {
@@ -61,8 +69,9 @@ public class ReportHeader extends Band
   }
 
   /**
-   * defines whether the report header appears on its own page.
-   * @param b the new flag indicating whether to force a pagebreak.
+   * Defines whether the report header appears on its own page.
+   *
+   * @param b  the new flag indicating whether to force a pagebreak.
    */
   public void setOwnPage (boolean b)
   {
@@ -71,11 +80,13 @@ public class ReportHeader extends Band
 
   /**
    * Returns true if the report header appears on its own page, and false otherwise.
-   * @return A flag indicating whether or not the header appears on its own page.
+   *
+   * @return a flag indicating whether or not the header appears on its own page.
    */
   public boolean isOwnPage ()
   {
-    Boolean b = (Boolean) getStyle().getStyleProperty(BandStyleSheet.PAGEBREAK_AFTER, Boolean.FALSE);
+    Boolean b = (Boolean) getStyle().getStyleProperty(BandStyleSheet.PAGEBREAK_AFTER, 
+                                                      Boolean.FALSE);
     return b.booleanValue();
   }
 }

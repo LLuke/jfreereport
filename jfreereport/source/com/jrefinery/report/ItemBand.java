@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,12 +23,12 @@
  * -------------
  * ItemBand.java
  * -------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: ItemBand.java,v 1.4 2002/06/04 21:44:34 taqua Exp $
+ * $Id: ItemBand.java,v 1.5 2002/09/13 15:38:04 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -44,7 +44,7 @@ package com.jrefinery.report;
 /**
  * A report band that displays a row of data items.
  *
- * @author DG
+ * @author David Gilbert
  */
 public class ItemBand extends Band
 {

@@ -1,10 +1,12 @@
 /**
- * =============================================================
- * JFreeReport - a Java report printing API;
- * =========================================
- * Version 0.50;
- * (C) Copyright 2000, Simba Management Limited;
- * Contact: David Gilbert (david.gilbert@bigfoot.com);
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
+ *
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -14,46 +16,47 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License along with this library;
- * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- * MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
  * ReportProcessingException.java
  * ------------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProcessingException.java,v 1.5 2002/09/13 15:38:04 mungady Exp $
+ * $Id: ReportProcessingException.java,v 1.6 2002/09/16 16:59:03 mungady Exp $
  *
  * Changes
  * -------
  * 18-Apr-2002 : Created the Exception to better support errorhandling. The exception
  *               is thrown if the report does not proceed while paginating. This is
  *               used to detect infinite loops on buggy report definitions.
+ * 06-Dec-2002 : Updated Javadocs (DG);
  *
  */
+
 package com.jrefinery.report;
 
 /**
- * A ReportProcessingException is thrown, when a Error occurred, while the report is being
- * processed.
+ * An exception that can be thrown during report processing, if an error occurs.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ReportProcessingException extends Exception
 {
   /**
-   * Initializes the exception without a message.
+   * Creates a new exception (no message).
    */
   public ReportProcessingException ()
   {
   }
 
   /**
-   * Initializes the exception with the message added.
+   * Creates a new exception with a specific error message.
    *
    * @param message  the exception message.
    */
@@ -61,5 +64,4 @@ public class ReportProcessingException extends Exception
   {
     super (message);
   }
-
 }

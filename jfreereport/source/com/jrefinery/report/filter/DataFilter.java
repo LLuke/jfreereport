@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,12 +23,12 @@
  * ---------------
  * DataFilter.java
  * ---------------
- * (C)opyright 2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataFilter.java,v 1.3 2002/06/06 16:00:58 mungady Exp $
+ * $Id: DataFilter.java,v 1.4 2002/09/13 15:38:07 mungady Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,11 @@
 package com.jrefinery.report.filter;
 
 /**
- * A datafilter is a combined input-/out target. Use filters to perform stateless
+ * A data filter is a combined input-/out target. Use filters to perform stateless
  * data transformation. If you need to access the report state to perform a task,
  * use functions instead.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public interface DataFilter extends DataSource, DataTarget
 {

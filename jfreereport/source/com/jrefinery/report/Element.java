@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,12 +23,12 @@
  * ------------
  * Element.java
  * ------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.13 2002/09/13 15:38:03 mungady Exp $
+ * $Id: Element.java,v 1.14 2002/12/02 18:23:58 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -47,6 +47,8 @@
  *               with and exception.
  * 04-Jul-2002 : Serializable and Cloneable
  * 05-Sep-2002 : Documentation
+ * 06-Dec-2002 : Updated Javadocs (DG);
+ *
  */
 
 package com.jrefinery.report;
@@ -64,7 +66,8 @@ import java.io.Serializable;
 /**
  * Base class for all report elements (display items that can appear within a report band).
  *
- * @author DG
+ * @author David Gilbert
+ * @author Thomas Morgner
  */
 public abstract class Element implements DataTarget, Serializable, Cloneable
 {
@@ -77,15 +80,25 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   /** The name of the element. */
   private String name;
 
-  /** The stylesheet defines global appeareance for elements */
+  /** The stylesheet defines global appearance for elements */
   private ElementStyleSheet style;
 
+  /** Represents left alignment. */
   public static final int LEFT = 1;
+  
+  /** Represents right alignment. */
   public static final int RIGHT = 2;
+  
+  /** Represents center (horizontal) alignment. */
   public static final int CENTER = 3;
 
+  /** Represents top alignment. */
   public static final int TOP = 14;
+  
+  /** Represents middle (vertical) alignment. */
   public static final int MIDDLE = 15;
+  
+  /** Represents bottom alignment. */
   public static final int BOTTOM = 16;
 
   /**
@@ -106,16 +119,15 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Defines the name for this element. The name must not be empty, or a NullPointerException
-   * is thrown.
+   * Sets the name for this element.
    *
-   * @param name the name of this element (null not permitted)
+   * @param name  the name of this element (null not permitted)
    */
   public void setName(String name)
   {
     if (name == null)
     {
-      throw new NullPointerException("The name must be valid");
+      throw new NullPointerException("Element.setName(...): name is null.");
     }
     this.name = name;
   }
@@ -123,7 +135,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   /**
    * Returns the name of the element. The name of the element cannot be null.
    *
-   * @return The name.
+   * @return the name.
    */
   public String getName()
   {
@@ -131,14 +143,17 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Returns the m_paint used to draw this element.
+   * Returns the paint used to draw this element.
    *
-   * @return The m_paint.
+   * @return the paint.
    */
   public Paint getPaint()
   {
     Paint retval = (Paint) getStyle().getStyleProperty(ElementStyleSheet.PAINT);
-    if (retval == null) throw new IllegalStateException("No Paint Defined?");
+    if (retval == null)
+    {
+      throw new IllegalStateException("Element.getPaint(): no Paint defined.");
+    }
     return retval;
   }
 
@@ -155,8 +170,10 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * NullPointerException is thrown instead.
    *
    * @param band  the band that the element belongs to (used to obtain default settings).
+   *
+   * @return the paint for this element.
+   *
    * @deprecated StyleSheets cascade by default, this method is no longer needed.
-   * @return The paint for this element.
    */
   public Paint getPaint(StyleSheet band)
   {
@@ -164,10 +181,10 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Sets the m_paint for this element. The m_paint can be null, in this case the
+   * Sets the paint for this element. The paint can be null, in this case the
    * default paint of the band used to draw this element is used.
    *
-   * @param p  the m_paint for this element (null permitted).
+   * @param p  the paint for this element (null permitted).
    *
    */
   public void setPaint(Paint p)
@@ -270,16 +287,31 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     return e;
   }
 
+  /**
+   * Returns the style-sheet for this element.
+   *
+   * @return the style-sheet.
+   */
   public ElementStyleSheet getStyle()
   {
     return style;
   }
 
+  /**
+   * Sets the style-sheet for this element.
+   *
+   * @param style  the new style-sheet.
+   */
   public void setStyle(ElementStyleSheet style)
   {
     this.style = style;
   }
 
+  /**
+   * Returns the element's content type.
+   *
+   * @return the content type.
+   */
   public abstract String getContentType ();
 
 }

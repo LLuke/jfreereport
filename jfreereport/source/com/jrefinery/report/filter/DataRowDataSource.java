@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,46 +23,49 @@
  * ----------------------
  * DataRowDataSource.java
  * ----------------------
- * (C)opyright 2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id$
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: DataRowDataSource.java,v 1.3 2002/11/07 21:45:27 taqua Exp $
  *
  * Changes
  * -------
  * 27-Jul-2002 : Initial version
  * 28-Aug-2002 : Documentation
+ * 06-Dec-2002 : Updated Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.filter;
 
 import com.jrefinery.report.DataRow;
 
 /**
- * A DataSource that queries the datarow for the value in a named column. The DataRow
- * contains all values from the current row of the report's TableModel and the current value of
- * the defined expressions and functions.
+ * A DataSource that can access values from the 'data-row'. The data-row contains all values from 
+ * the current row of the report's <code>TableModel</code>, plus the current values of the defined 
+ * expressions and functions for the report.
  * <p>
- * This class replaces the three classes: ExpressionDataSource, FunctionDataSource and
- * ReportDataSource.
+ * This class replaces the three classes: <code>ExpressionDataSource</code>, 
+ * <code>FunctionDataSource</code> and <code>ReportDataSource</code>.
  * <p>
  * @see com.jrefinery.report.DataRow
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class DataRowDataSource implements DataSource, DataRowConnectable
 {
-  /**
-   * The name of the field/expression/function referenced by this data source.
-   */
+  /**  The name of the field/expression/function referenced by this data source. */
   private String dataSourceColumnName;
 
-  /**
-   * the DataRow connected with this DataSource.
-   */
+  /** The DataRow connected with this DataSource. */
   private DataRow dataRow;
 
   /**
-   * Default constructor. The expression name is empty ("", not null), the value initially
-   * null.
+   * Default constructor. 
+   * <p>
+   * The expression name is empty ("", not null), the value initially null.
    */
   public DataRowDataSource ()
   {
@@ -70,19 +73,19 @@ public class DataRowDataSource implements DataSource, DataRowConnectable
   }
 
   /**
-   * Constructs a new expression data source.
+   * Constructs a new data source.
    *
-   * @param expression The expression.
+   * @param column  the name of the field, function or expression in the data-row.
    */
-  public DataRowDataSource (String expression)
+  public DataRowDataSource (String column)
   {
-    setDataSourceColumnName(expression);
+    setDataSourceColumnName(column);
   }
 
   /**
    * Returns the data source column name.
    *
-   * @return  the column name.
+   * @return the column name.
    */
   public String getDataSourceColumnName()
   {
@@ -92,8 +95,10 @@ public class DataRowDataSource implements DataSource, DataRowConnectable
   /**
    * Defines the name of the column in the datarow to be queried.
    *
-   * @param dataSourceColumnName the name of the column in the datarow to be queried.
-   * @throws NullPointerException if the name is null
+   * @param dataSourceColumnName  the name of the column in the datarow to be queried.
+   *
+   * @throws NullPointerException if the name is <code>null</code>.
+   *
    * @see com.jrefinery.report.DataRow#get
    */
   public void setDataSourceColumnName(String dataSourceColumnName)
@@ -106,10 +111,12 @@ public class DataRowDataSource implements DataSource, DataRowConnectable
   }
 
   /**
-   * Returns the value of the dataRow-column named by the DataSourceColumnName.
+   * Returns the current value of the data source, obtained from a particular column in the
+   * data-row.
    *
-   * @return The value.
-   * @throws IllegalStateException if there is no datarow connected.
+   * @return  the value.
+   *
+   * @throws IllegalStateException if there is no data-row connected.
    */
   public Object getValue ()
   {
@@ -121,7 +128,10 @@ public class DataRowDataSource implements DataSource, DataRowConnectable
   }
 
   /**
-   * @return a clone of this DataRowDataSource
+   * Clones the data source.
+   *
+   * @return a clone.
+   *
    * @throws CloneNotSupportedException if the cloning is not supported.
    */
   public Object clone () throws CloneNotSupportedException
@@ -130,12 +140,9 @@ public class DataRowDataSource implements DataSource, DataRowConnectable
   }
 
   /**
-   * Connects the DataRowBackend with the named DataSource or DataFilter.
-   * The filter is now able to query the other DataSources to compute the result.
-   * <p>
-   * If there is already a datarow connected, an IllegalStateException is thrown.
+   * Connects a data-row to the data source.
    *
-   * @param row the datarow to be connected.
+   * @param row  the data-row (null not permitted).
    *
    * @throws NullPointerException if the given row is null
    * @throws IllegalStateException if there is a datarow already connected.
@@ -144,22 +151,26 @@ public class DataRowDataSource implements DataSource, DataRowConnectable
   {
     if (row == null)
     {
-      throw new NullPointerException ("Null-DataRowBackend cannot be set.");
+      throw new NullPointerException ("DataRowDataSource.connectDataRow: null data-row.");
     }
     if (dataRow != null)
     {
-      throw new IllegalStateException ("There is a datarow already connected");
+      throw new IllegalStateException ("DataRowDataSource.connectDataRow: "
+                                       + "datarow already connected.");
     }
     dataRow = row;
   }
 
   /**
-   * Releases the connection to the datarow. If no datarow is connected, an
-   * IllegalStateException is thrown to indicate the programming error.
+   * Releases the connection to the data-row. 
+   * <p>
+   * If no datarow is connected, an <code>IllegalStateException</code> is thrown to indicate the 
+   * programming error.
+   *
+   * @param row the datarow to be disconnected.
    *
    * @throws NullPointerException if the given row is null
    * @throws IllegalStateException if there is currently no datarow connected.
-   * @param row the datarow to be disconnected.
    */
   public void disconnectDataRow (DataRow row) throws IllegalStateException
   {
@@ -175,7 +186,9 @@ public class DataRowDataSource implements DataSource, DataRowConnectable
   }
 
   /**
-   * @return the datarow connected with this datasource.
+   * Returns the current data-row.
+   *
+   * @return the data-row.
    */
   protected DataRow getDataRow ()
   {

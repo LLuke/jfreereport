@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElement.java,v 1.19 2002/09/16 16:59:03 mungady Exp $
+ * $Id: ImageElement.java,v 1.20 2002/12/02 18:23:59 taqua Exp $
  *
  * Changes:
  * --------
@@ -52,10 +52,11 @@ import com.jrefinery.report.targets.style.ElementStyleSheet;
  * ImageReference into an element.
  * <p>
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ImageElement extends Element
 {
+  /** A string for the content type. */
   public static final String CONTENT_TYPE = "image/generic";
 
   /**
@@ -65,16 +66,20 @@ public class ImageElement extends Element
   {
   }
 
+  /**
+   * Returns the content type, in this case 'image/generic'.
+   *
+   * @return the content type.
+   */
   public String getContentType()
   {
     return CONTENT_TYPE;
   }
 
   /**
-   * Specifies whether the contents of this elements shape should be filled with this elements
-   * paint. By default this returns true.
+   * Returns true if the image should be scaled, and false otherwise.
    *
-   * @return true if the outline should be drawn, false otherwise
+   * @return true or false.
    */
   public boolean isScale()
   {
@@ -82,9 +87,9 @@ public class ImageElement extends Element
   }
 
   /**
-   * Sets a flag that controls whether the shape should be scaled to fit the element bounds
+   * Sets a flag that controls whether the image should be scaled to fit the element bounds.
    *
-   * @param scale the flag.
+   * @param scale  the flag.
    */
   public void setScale(boolean scale)
   {
@@ -92,10 +97,9 @@ public class ImageElement extends Element
   }
 
   /**
-   * Specifies whether the contents of this elements shape should be filled with this elements
-   * paint. By default this returns true.
+   * Returns true if the image's aspect ratio should be preserved, and false otherwise.
    *
-   * @return true if the outline should be drawn, false otherwise
+   * @return true or false.
    */
   public boolean isKeepAspectRatio()
   {
@@ -103,7 +107,7 @@ public class ImageElement extends Element
   }
 
   /**
-   * Sets a flag that controls whether the shape should be scaled to fit the element bounds
+   * Sets a flag that controls whether the shape's aspect ratio should be preserved.
    *
    * @param kar the flag.
    */
@@ -111,5 +115,4 @@ public class ImageElement extends Element
   {
     getStyle().setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, new Boolean(kar));
   }
-
 }

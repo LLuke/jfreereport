@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,33 +23,35 @@
  * -----------------------
  * DataRowConnectable.java
  * -----------------------
- * (C)opyright 2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowConnectable.java,v 1.1 2002/07/28 13:25:26 taqua Exp $
+ * $Id: DataRowConnectable.java,v 1.2 2002/09/13 15:38:07 mungady Exp $
  *
  * Changes
  * -------
  * 27-Jul-2002 : Initial version
+ * 06-Dec-2002 : Updated Javadocs (DG);
  *
  */
+
 package com.jrefinery.report.filter;
 
 import com.jrefinery.report.DataRow;
 
 /**
- * Marks data sources or filters that can be connected to the data row. (FunctionDataSources,
- * ReportDataSources and ExpressionDataSources).
+ * Marks data sources that can be connected to the data row (for example, the DataRowDataSource).
  *
- * @author TM
+ * @see DataRowDataSource
+ *
+ * @author Thomas Morgner
  */
 public interface DataRowConnectable
 {
   /**
-   * Connects the DataRow with the named DataSource or DataFilter.
-   * The filter is now able to query the other DataSources to compute the result.
+   * Connects the DataRow to the data source.
    *
    * @param row  the data row.
    *
@@ -58,8 +60,10 @@ public interface DataRowConnectable
   public void connectDataRow (DataRow row) throws IllegalStateException;
 
   /**
-   * Releases the connection to the data row. If no data row is connected, an
-   * IllegalStateException is thrown to indicate the programming error.
+   * Releases the connection to the data row. 
+   * <p>
+   * If no data row is connected, an <code>IllegalStateException</code> is thrown to indicate the 
+   * programming error.
    *
    * @param row  the data row.
    *
