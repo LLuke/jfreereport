@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.23 2003/02/16 19:02:39 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.24 2003/02/17 16:07:20 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,7 @@ public class PageableReportProcessor
 
   /** The report being processed. */
   private JFreeReport report;
-  
+
   /** The output target. */
   private OutputTarget outputTarget;
 
@@ -186,12 +186,12 @@ public class PageableReportProcessor
   }
 
   /**
-   * Processes the report in two passes, the first pass calculates page boundaries and function 
+   * Processes the report in two passes, the first pass calculates page boundaries and function
    * values, the second pass sends each page to the output target.
    * <p>
    * It is possible for the report processing to fail.  A base cause is that the report is
-   * designed for a certain page size, but ends up being sent to an output target with a much 
-   * smaller page size.  If the headers and footers don't leave enough room on the page for at 
+   * designed for a certain page size, but ends up being sent to an output target with a much
+   * smaller page size.  If the headers and footers don't leave enough room on the page for at
    * least one row of data to be printed, then no progress is made.  An exception will be thrown
    * if this happens.
    *
@@ -306,15 +306,9 @@ public class PageableReportProcessor
           // if layout level has reached, and some content was generated, then add the page
           if (level == -1)
           {
-            System.out.println ("State: " + state);
-            System.out.println ("Old: " + oldstate);
             if (isEmptyPageGenerated(state) == false)
             {
               pageStates.add(oldstate);
-            }
-            else
-            {
-              Log.debug ("Ignored State: " + oldstate + " -> Will produce empty page");
             }
           }
         }
@@ -373,7 +367,7 @@ public class PageableReportProcessor
    * @throws IllegalArgumentException if the given state is a start or a finish state.
    * @throws ReportProcessingException if there is a problem processing the report or the current thread has been interrupted.
    */
-  public ReportState processPage(final ReportState currPage, OutputTarget out) 
+  public ReportState processPage(final ReportState currPage, OutputTarget out)
       throws ReportProcessingException
   {
     if (isHandleInterruptedState() && Thread.interrupted())
@@ -385,11 +379,11 @@ public class PageableReportProcessor
     {
       throw new NullPointerException("OutPutTarget != null");
     }
-    if (out.isOpen() == false) 
+    if (out.isOpen() == false)
     {
       throw new IllegalStateException("OutputTarget is not open!");
     }
-    if (currPage == null) 
+    if (currPage == null)
     {
       throw new NullPointerException("State != null");
     }

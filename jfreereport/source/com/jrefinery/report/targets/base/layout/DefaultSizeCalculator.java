@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.1 2003/02/07 22:40:40 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.2 2003/02/08 20:43:45 taqua Exp $
  *
  * Changes
  * -------
@@ -104,9 +104,9 @@ public class DefaultSizeCalculator implements SizeCalculator
       if (isAliased())
       {
         Log.debug ("The G2OutputTarget uses Antialiasing. \n" +
-                   "The FontRendererBugs should not be visible in TextAntiAliasing-Mode." +
-                   "If there are problems with the string-placement, please report your " +
-                   "Operating System version and your JDK Version to www.object-refinery.com/jfreereport.");
+                   "The FontRendererBugs should not be visible in TextAntiAliasing-Mode.\n" +
+                   "If there are problems with the string-placement, please report your \n" +
+                   "Operating System version and your JDK Version to www.object-refinery.com/jfreereport.\n");
       }
       else
       {
@@ -115,18 +115,18 @@ public class DefaultSizeCalculator implements SizeCalculator
           Log.debug ("The G2OutputTarget does not use Antialiasing. \n" +
                      "If your FontRenderer is buggy (text is not displayed correctly by default). \n" +
                      "The system was able to detect this and will try to correct the bug. \n" +
-                     "If your strings are not displayed correctly, report your OperationSystem version and your " +
-                     "JDK Version to www.object-refinery.com/jfreereport");
+                     "If your strings are not displayed correctly, report your OperationSystem version and your \n" +
+                     "JDK Version to www.object-refinery.com/jfreereport\n");
         }
         else
         {
           Log.debug ("The G2OutputTarget does not use Antialiasing. \n" +
                      "If your FontRenderer seems to be ok. \n" +
-                     "If your strings are not displayed correctly, try to enable the configuration key " +
-                     "\"com.jrefinery.report.targets.G2OutputTarget.isBuggyFRC=true\"" +
-                     "in the file 'jfreereport.properties' or set this property as System-property. " +
-                     "If the bug remains alive, please report your Operating System version and your " +
-                     "JDK Version to www.object-refinery.com/jfreereport.");
+                     "If your strings are not displayed correctly, try to enable the configuration key \n" +
+                     "\"com.jrefinery.report.targets.G2OutputTarget.isBuggyFRC=true\"\n" +
+                     "in the file 'jfreereport.properties' or set this property as System-property. \n" +
+                     "If the bug remains alive, please report your Operating System version and your \n" +
+                     "JDK Version to www.object-refinery.com/jfreereport.\n");
         }
       }
 

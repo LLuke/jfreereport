@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.27 2003/02/16 23:23:45 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.28 2003/02/17 16:07:21 taqua Exp $
  *
  * Changes
  * -------
@@ -645,7 +645,6 @@ public class SimplePageLayouter extends PageLayouter
       }
       // a pagebreak was requested, printing is delayed
       setStartNewPage(true);
-      Log.debug ("PageBreak Before");
       return false;
     }
     else
