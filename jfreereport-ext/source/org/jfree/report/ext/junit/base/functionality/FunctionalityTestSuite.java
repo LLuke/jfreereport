@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionalityTestSuite.java,v 1.1 2003/07/11 20:07:56 taqua Exp $
+ * $Id: FunctionalityTestSuite.java,v 1.2 2003/09/09 10:27:58 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,6 +46,10 @@ public class FunctionalityTestSuite extends TestSuite
   public FunctionalityTestSuite(final String s)
   {
     super(s);
+    addTestSuite(BandRemoveTest.class);
+    addTestSuite(PlainTextExportTest.class);
+    addTestSuite(SubBandParsingTest.class);
+    addTestSuite(TableExportVerificationTest.class);
     addTestSuite(ParseTest.class);
     addTestSuite(WriterTest.class);
     addTestSuite(ExportTest.class);

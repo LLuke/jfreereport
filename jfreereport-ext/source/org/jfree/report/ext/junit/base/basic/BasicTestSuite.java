@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicTestSuite.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
+ * $Id: BasicTestSuite.java,v 1.4 2003/09/12 17:47:34 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,6 +46,8 @@ import org.jfree.report.ext.junit.base.basic.preview.PreviewTestSuite;
 import org.jfree.report.ext.junit.base.basic.style.StyleTestSuite;
 import org.jfree.report.ext.junit.base.basic.util.UtilTestSuite;
 import org.jfree.report.ext.junit.base.basic.modules.ModuleTestSuite;
+import org.jfree.report.ext.junit.base.basic.io.IOTestSuite;
+import org.jfree.report.ext.junit.base.basic.function.FunctionTestSuite;
 
 public class BasicTestSuite extends TestSuite
 {
@@ -59,7 +61,11 @@ public class BasicTestSuite extends TestSuite
     addTestSuite(GroupTest.class);
     addTestSuite(GroupListTest.class);
     addTestSuite(JFreeReportTest.class);
+    addTestSuite(ShapeElementTest.class);
+    addTestSuite(ReportDefinitionTest.class);
     addTest(new ContentTestSuite(ContentTestSuite.class.getName()));
+    addTest(new FunctionTestSuite(FunctionTestSuite.class.getName()));
+    addTest(new IOTestSuite(IOTestSuite.class.getName()));
     addTest(new LayoutTestSuite(LayoutTestSuite.class.getName()));
     addTest(new UtilTestSuite(UtilTestSuite.class.getName()));
     addTest(new StyleTestSuite(StyleTestSuite.class.getName()));

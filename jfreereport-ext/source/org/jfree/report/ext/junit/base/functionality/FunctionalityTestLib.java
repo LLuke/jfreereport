@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionalityTestLib.java,v 1.3 2003/07/23 16:06:24 taqua Exp $
+ * $Id: FunctionalityTestLib.java,v 1.4 2003/09/09 10:27:58 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,6 +44,7 @@ import java.io.BufferedWriter;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.net.URL;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -71,6 +72,7 @@ import org.jfree.report.modules.output.table.html.StreamHtmlFilesystem;
 import org.jfree.report.modules.output.table.html.ZIPHtmlFilesystem;
 import org.jfree.report.modules.output.table.rtf.RTFProcessor;
 import org.jfree.report.modules.output.table.xls.ExcelProcessor;
+import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.NullOutputStream;
 
@@ -251,6 +253,27 @@ public class FunctionalityTestLib
         Log.error("Saving PDF failed.", e);
       }
     }
+  }
+
+  public static JFreeReport createReport (ReportTest reportDefinition)
+  {
+    final URL url = reportDefinition.getClass().getResource(reportDefinition.getReportDefinition());
+    if (url == null)
+    {
+      throw new IllegalStateException("URL is null.");
+    }
+    JFreeReport report = null;
+    try
+    {
+      report = ReportGenerator.getInstance().parseReport(url);
+      report.setData(reportDefinition.getReportTableModel());
+    }
+    catch (Exception e)
+    {
+      Log.debug("Failed to parse " + url, e);
+      throw new IllegalStateException("Failed to parse");
+    }
+    return report;
   }
 
   public static class ReportTest

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14PrintingPlugin.java,v 1.4 2003/09/21 10:50:04 taqua Exp $
+ * $Id: Java14PrintingPlugin.java,v 1.5 2003/10/05 21:53:53 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -121,7 +121,8 @@ public class Java14PrintingPlugin extends PrintingPlugin
     }
     PrintRequestAttributeSet attributes = new HashPrintRequestAttributeSet();
     PrintService service =  ServiceUI.printDialog
-        (null, 50, 50, services, null, null, attributes);
+        (null, 50, 50, services, PrintServiceLookup.lookupDefaultPrintService(),
+            DocFlavor.SERVICE_FORMATTED.PAGEABLE, attributes);
     if (service == null)
     {
       setFailureDescription("Print job cancelled.");
@@ -129,6 +130,14 @@ public class Java14PrintingPlugin extends PrintingPlugin
     }
     else
     {
+      // the user may have changed the PageFormat here ... we have to check
+      // that
+//      MediaSize msize = (MediaSize) attributes.get(MediaSize.class);
+//      MediaPrintableArea mprintArea = (MediaPrintableArea)
+//          attributes.get (MediaPrintableArea.class);
+//      OrientationRequested oReq = (OrientationRequested)
+//          attributes.get (OrientationRequested.class);
+
       getBase().addRepaginationListener(progressDialog);
       Java14PrintExportTask task = new Java14PrintExportTask
           (progressDialog, service, getBase().getPageable(), attributes);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportTest.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
+ * $Id: ExportTest.java,v 1.3 2003/09/09 10:27:58 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -73,7 +73,7 @@ public class ExportTest extends TestCase
         Log.debug("   PLAIN_TEXT ..");
         assertTrue(FunctionalityTestLib.createPlainText(report));
         Log.debug("   RTF ..");
-        FunctionalityTestLib.createRTF(report); 
+        FunctionalityTestLib.createRTF(report);
         Log.debug("   STREAM_HTML ..");
         FunctionalityTestLib.createStreamHTML(report);
         Log.debug("   EXCEL ..");

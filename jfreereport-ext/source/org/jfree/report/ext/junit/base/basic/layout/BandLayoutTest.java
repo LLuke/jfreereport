@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutTest.java,v 1.3 2003/07/23 16:06:24 taqua Exp $
+ * $Id: BandLayoutTest.java,v 1.4 2003/09/09 10:27:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,6 +47,7 @@ import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ShapeElement;
+import org.jfree.report.Boot;
 import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.layout.DefaultLayoutSupport;
@@ -68,6 +69,7 @@ public class BandLayoutTest extends TestCase
 
   public void testBasicLayout()
   {
+    Boot.start();
     final Band band = new Band();
     BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500, 200);
     // width is preserved  ...
