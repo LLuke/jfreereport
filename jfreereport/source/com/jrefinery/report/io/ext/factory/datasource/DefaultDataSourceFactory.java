@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DefaultDataSourceFactory.java,v 1.6 2003/03/07 16:55:56 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
  * 19-Feb-2003 : Added standard header and Javadocs (DG);
- *  
+ *
  */
 
 package com.jrefinery.report.io.ext.factory.datasource;
@@ -57,6 +57,7 @@ import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.filter.StringFilter;
 import com.jrefinery.report.filter.URLFilter;
 import com.jrefinery.report.filter.DrawableFilter;
+import com.jrefinery.report.filter.ShapeFilter;
 import com.jrefinery.report.io.ext.factory.objects.BeanObjectDescription;
 import com.jrefinery.report.io.ext.factory.templates.DateFieldTemplateDescription;
 import com.jrefinery.report.io.ext.factory.templates.ImageFieldTemplateDescription;
@@ -67,10 +68,11 @@ import com.jrefinery.report.io.ext.factory.templates.NumberFieldTemplateDescript
 import com.jrefinery.report.io.ext.factory.templates.ResourceFieldTemplateDescription;
 import com.jrefinery.report.io.ext.factory.templates.ResourceLabelTemplateDescription;
 import com.jrefinery.report.io.ext.factory.templates.StringFieldTemplateDescription;
+import com.jrefinery.report.io.ext.factory.templates.ShapeFieldTemplateDescription;
 
 /**
  * A default implementation of the {@link DataSourceFactory} interface.
- * 
+ *
  * @author Thomas Morgner
  */
 public class DefaultDataSourceFactory extends AbstractDataSourceFactory
@@ -83,9 +85,9 @@ public class DefaultDataSourceFactory extends AbstractDataSourceFactory
     registerDataSources("DataRowDataSource", new BeanObjectDescription(DataRowDataSource.class));
     registerDataSources("DateFormatFilter", new BeanObjectDescription(DateFormatFilter.class));
     registerDataSources("DateFormatParser", new BeanObjectDescription(DateFormatParser.class));
-    registerDataSources("DecimalFormatFilter", 
+    registerDataSources("DecimalFormatFilter",
                         new BeanObjectDescription(DecimalFormatFilter.class));
-    registerDataSources("DecimalFormatParser", 
+    registerDataSources("DecimalFormatParser",
                         new BeanObjectDescription(DecimalFormatParser.class));
     registerDataSources("EmptyDataSource", new BeanObjectDescription(EmptyDataSource.class));
     registerDataSources("FormatFilter", new BeanObjectDescription(FormatFilter.class));
@@ -94,30 +96,33 @@ public class DefaultDataSourceFactory extends AbstractDataSourceFactory
     registerDataSources("ImageRefFilter", new BeanObjectDescription(ImageRefFilter.class));
     registerDataSources("NumberFormatFilter", new BeanObjectDescription(NumberFormatFilter.class));
     registerDataSources("NumberFormatParser", new BeanObjectDescription(NumberFormatParser.class));
-    registerDataSources("SimpleDateFormatFilter", 
+    registerDataSources("SimpleDateFormatFilter",
                         new BeanObjectDescription(SimpleDateFormatFilter.class));
-    registerDataSources("SimpleDateFormatParser", 
+    registerDataSources("SimpleDateFormatParser",
                         new BeanObjectDescription(SimpleDateFormatParser.class));
     registerDataSources("StaticDataSource", new BeanObjectDescription(StaticDataSource.class));
     registerDataSources("StringFilter", new BeanObjectDescription(StringFilter.class));
     registerDataSources("URLFilter", new BeanObjectDescription(URLFilter.class));
     registerDataSources("ResourceFileFilter", new BeanObjectDescription(ResourceFileFilter.class));
     registerDataSources("DrawableFilter", new BeanObjectDescription(DrawableFilter.class));
+    registerDataSources("ShapeFilter", new BeanObjectDescription(ShapeFilter.class));
 
     // templates are also datasources ...
     registerDataSources("DateFieldTemplate", new DateFieldTemplateDescription("date-field"));
     registerDataSources("ImageFieldTemplate", new ImageFieldTemplateDescription("image-field"));
-    registerDataSources("ImageURLFieldTemplate", 
+    registerDataSources("ImageURLFieldTemplate",
                         new ImageURLFieldTemplateDescription("image-url-field"));
-    registerDataSources("ImageURLElementTemplate", 
+    registerDataSources("ImageURLElementTemplate",
                         new ImageURLElementTemplateDescription("image-url-element"));
     registerDataSources("LabelTemplate", new LabelTemplateDescription("label"));
     registerDataSources("NumberFieldTemplate", new NumberFieldTemplateDescription("number-field"));
     registerDataSources("StringFieldTemplate", new StringFieldTemplateDescription("string-field"));
-    registerDataSources("ResourceFieldTemplate", 
+    registerDataSources("ResourceFieldTemplate",
                         new ResourceFieldTemplateDescription("resource-field"));
-    registerDataSources("ResourceLabelTemplate", 
+    registerDataSources("ResourceLabelTemplate",
                         new ResourceLabelTemplateDescription("resource-label"));
+    registerDataSources("ShapeFieldTemplate",
+                        new ShapeFieldTemplateDescription("shape-field"));
   }
-  
+
 }
