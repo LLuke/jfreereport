@@ -2,7 +2,7 @@
  * Date: Jan 13, 2003
  * Time: 1:01:18 PM
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.4 2003/01/23 18:36:01 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.5 2003/01/30 22:52:39 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -16,16 +16,15 @@ import com.jrefinery.report.io.ext.FunctionsHandler;
 import com.jrefinery.report.io.ext.GroupHandler;
 import com.jrefinery.report.io.ext.GroupsHandler;
 import com.jrefinery.report.io.ext.ParserConfigHandler;
+import com.jrefinery.report.io.ext.PropertyHandler;
 import com.jrefinery.report.io.ext.ReportConfigHandler;
 import com.jrefinery.report.io.ext.ReportDescriptionHandler;
 import com.jrefinery.report.io.ext.StyleSheetHandler;
 import com.jrefinery.report.io.ext.StylesHandler;
 import com.jrefinery.report.io.ext.TemplatesHandler;
-import com.jrefinery.report.io.ext.PropertyHandler;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Properties;
 

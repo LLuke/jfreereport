@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalOperation.java,v 1.7 2003/01/24 16:39:06 taqua Exp $
+ * $Id: PhysicalOperation.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
  *
  * Changes
  * -------
@@ -39,15 +39,12 @@
 package com.jrefinery.report.targets.base.operations;
 
 import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
-import com.jrefinery.report.targets.pageable.Spool;
-import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
-import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.util.Log;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;  // for Javadoc link

@@ -2,18 +2,17 @@
  * Date: Jan 10, 2003
  * Time: 5:11:51 PM
  *
- * $Id: PropertyHandler.java,v 1.2 2003/01/23 18:07:44 taqua Exp $
+ * $Id: PropertyHandler.java,v 1.3 2003/01/23 18:36:01 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-
-import java.util.Properties;
 
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ReportDefinitionHandler;
 import com.jrefinery.report.util.CharacterEntityParser;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
+
+import java.util.Properties;
 
 public class PropertyHandler implements ReportDefinitionHandler
 {

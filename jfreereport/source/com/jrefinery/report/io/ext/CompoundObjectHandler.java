@@ -2,16 +2,14 @@
  * Date: Jan 10, 2003
  * Time: 10:29:08 PM
  *
- * $Id: CompoundObjectHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: CompoundObjectHandler.java,v 1.2 2003/01/23 18:07:44 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
-import org.xml.sax.SAXException;
-import org.xml.sax.Attributes;
-import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
-import com.jrefinery.report.io.ext.BasicObjectHandler;
 import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.util.Log;
+import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 public class CompoundObjectHandler extends BasicObjectHandler
 {

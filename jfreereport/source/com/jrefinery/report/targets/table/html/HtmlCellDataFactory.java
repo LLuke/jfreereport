@@ -2,14 +2,14 @@
  * Date: Jan 18, 2003
  * Time: 8:01:24 PM
  *
- * $Id: HtmlCellDataFactory.java,v 1.5 2003/01/27 18:24:54 taqua Exp $
+ * $Id: HtmlCellDataFactory.java,v 1.6 2003/01/28 22:05:34 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
+import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.Band;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.table.AbstractTableCellDataFactory;

@@ -2,15 +2,15 @@
  * Date: Jan 14, 2003
  * Time: 6:35:22 PM
  *
- * $Id: NumberFieldTemplate.java,v 1.2 2003/01/15 15:55:39 taqua Exp $
+ * $Id: NumberFieldTemplate.java,v 1.3 2003/01/15 16:54:06 taqua Exp $
  */
 package com.jrefinery.report.filter.templates;
 
+import com.jrefinery.report.DataRow;
+import com.jrefinery.report.filter.DataRowConnectable;
 import com.jrefinery.report.filter.DataRowDataSource;
 import com.jrefinery.report.filter.DecimalFormatFilter;
 import com.jrefinery.report.filter.StringFilter;
-import com.jrefinery.report.filter.DataRowConnectable;
-import com.jrefinery.report.DataRow;
 
 import java.text.DecimalFormat;
 

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner, David Gilbert (for Simba Management Limited)
  *                   for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotientFunction.java,v 1.1 2002/12/19 17:40:37 taqua Exp $
+ * $Id: TotalGroupSumQuotientFunction.java,v 1.2 2003/01/14 21:07:25 taqua Exp $
  *
  * Changes
  * -------
@@ -45,8 +45,6 @@ import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.filter.DecimalFormatParser;
 import com.jrefinery.report.filter.NumberFormatParser;
 import com.jrefinery.report.filter.StaticDataSource;
-import com.jrefinery.report.function.AbstractFunction;
-import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.util.Log;
 

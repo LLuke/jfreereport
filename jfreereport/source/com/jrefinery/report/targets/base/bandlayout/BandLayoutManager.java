@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManager.java,v 1.4 2002/12/12 20:24:03 taqua Exp $
+ * $Id: BandLayoutManager.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
  *
  * Changes
  * -------
@@ -36,9 +36,8 @@
 package com.jrefinery.report.targets.base.bandlayout;
 
 import com.jrefinery.report.Band;
-import com.jrefinery.report.targets.style.StyleKey;
-import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.LayoutSupport;
+import com.jrefinery.report.targets.style.StyleKey;
 
 import java.awt.geom.Dimension2D;
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.38 2003/01/30 22:52:45 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.39 2003/02/02 22:46:43 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -42,9 +42,9 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.ListResourceBundle;
-import java.util.Arrays;
 
 /**
  * English Language Resources.
@@ -182,6 +182,14 @@ public class JFreeReportResources extends ListResourceBundle
             // temporarily using the same icon as "Save to PDF", till we have a better one
             {"action.export-to-csv.small-icon", getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
             {"action.export-to-csv.icon", getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
+
+            {"action.export-to-plaintext.name", "Export to plain text..."},
+            {"action.export-to-plaintext.description", "Save to PlainText format"},
+            {"action.export-to-plaintext.mnemonic", new Integer (KeyEvent.VK_T)},
+            {"action.export-to-plaintext.accelerator", KeyStroke.getKeyStroke ("control T")},
+            // temporarily using the same icon as "Save to PDF", till we have a better one
+            {"action.export-to-plaintext.small-icon", getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
+            {"action.export-to-plaintext.icon", getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
 
             {"action.page-setup.name", "Page Setup"},
             {"action.page-setup.description", "Page Setup"},
@@ -351,6 +359,7 @@ public class JFreeReportResources extends ListResourceBundle
 
             {"excelexportdialog.cancel", "Cancel"},
             {"excelexportdialog.confirm", "Confirm"},
+            {"excelexportdialog.strict-layout", "Perform strict table layouting on export."},
 
             {"htmlexportdialog.dialogtitle", "Export Report into an Html-File ..."},
 
@@ -365,7 +374,7 @@ public class JFreeReportResources extends ListResourceBundle
             {"htmlexportdialog.selectStreamFile", "Select File"},
             {"htmlexportdialog.selectDirFile", "Select File"},
 
-            {"htmlexportdialog.strictlayout", "Perform strict table layouting on export."},
+            {"htmlexportdialog.strict-layout", "Perform strict table layouting on export."},
 
             {"htmlexportdialog.warningTitle", "Warning"},
             {"htmlexportdialog.errorTitle", "Error"},
@@ -405,6 +414,7 @@ public class JFreeReportResources extends ListResourceBundle
             {"csvexportdialog.exporttype", "Select Export engine"},
             {"csvexportdialog.export.data", "Export the DataRow (Raw Data)"},
             {"csvexportdialog.export.printed_elements", "Printed Elements  (Layouted Data)"},
+            {"csvexportdialog.strict-layout", "Perform strict table layouting on export."},
 
             {"convertdialog.targetIsEmpty", "The target file is not specified"},
             {"convertdialog.errorTitle", "Error"},

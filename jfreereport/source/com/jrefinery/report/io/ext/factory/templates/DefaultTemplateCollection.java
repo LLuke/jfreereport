@@ -2,11 +2,11 @@
  * Date: Jan 11, 2003
  * Time: 3:13:18 PM
  *
- * $Id: DefaultTemplateCollection.java,v 1.3 2003/01/14 21:08:17 taqua Exp $
+ * $Id: DefaultTemplateCollection.java,v 1.4 2003/01/25 02:47:09 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.templates;
 
-import com.jrefinery.report.io.ext.factory.templates.DateFieldTemplateDescription;
+
 
 public class DefaultTemplateCollection extends TemplateCollection
 {

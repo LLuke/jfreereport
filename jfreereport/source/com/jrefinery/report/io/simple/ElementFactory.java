@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.7 2003/01/27 23:38:59 taqua Exp $
+ * $Id: ElementFactory.java,v 1.8 2003/01/29 03:13:00 taqua Exp $
  *
  * Changes
  * -------
@@ -51,9 +51,9 @@ import com.jrefinery.report.TextElement;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
+import com.jrefinery.report.util.CharacterEntityParser;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.report.util.CharacterEntityParser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

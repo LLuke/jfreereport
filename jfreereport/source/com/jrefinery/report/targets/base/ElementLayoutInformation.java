@@ -2,14 +2,14 @@
  * Date: Jan 21, 2003
  * Time: 2:22:18 PM
  *
- * $Id: ElementLayoutInformation.java,v 1.1 2003/01/21 17:17:07 taqua Exp $
+ * $Id: ElementLayoutInformation.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
  */
 package com.jrefinery.report.targets.base;
 
 import com.jrefinery.report.targets.FloatDimension;
 
-import java.awt.geom.Point2D;
 import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 public class ElementLayoutInformation

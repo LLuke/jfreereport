@@ -2,7 +2,7 @@
  * Date: Jan 25, 2003
  * Time: 6:17:21 AM
  *
- * $Id: HtmlStyleCollection.java,v 1.3 2003/01/27 18:24:55 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.4 2003/01/30 00:04:54 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
@@ -13,9 +13,9 @@ import com.jrefinery.report.targets.table.TableCellBackground;
 import com.jrefinery.report.util.Log;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 public class HtmlStyleCollection

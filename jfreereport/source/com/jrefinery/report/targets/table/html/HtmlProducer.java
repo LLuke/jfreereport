@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 8:06:54 PM
  *
- * $Id: HtmlProducer.java,v 1.11 2003/01/29 21:57:13 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.12 2003/02/02 22:46:44 taqua Exp $
  *
  * This file now produces valid HTML4
  */
@@ -24,9 +24,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
-import java.io.OutputStreamWriter;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.zip.Deflater;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.6 2003/01/24 16:39:07 taqua Exp $
+ * $Id: TextOperationModule.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
  *
  * Changes
  * -------
@@ -42,20 +42,12 @@ import com.jrefinery.report.Element;
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.LayoutSupport;
-import com.jrefinery.report.targets.pageable.OutputTargetException;
+import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.content.Content;
 import com.jrefinery.report.targets.base.content.TextContent;
 import com.jrefinery.report.targets.base.content.TextLine;
-import com.jrefinery.report.targets.base.operations.HorizontalBoundsAlignment;
-import com.jrefinery.report.targets.base.operations.RightAlignment;
-import com.jrefinery.report.targets.base.operations.LeftAlignment;
-import com.jrefinery.report.targets.base.operations.VerticalBoundsAlignment;
-import com.jrefinery.report.targets.base.operations.OperationModule;
-import com.jrefinery.report.targets.base.operations.MiddleAlignment;
-import com.jrefinery.report.targets.base.operations.CenterAlignment;
-import com.jrefinery.report.targets.base.operations.PhysicalOperation;
+import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.Log;
 

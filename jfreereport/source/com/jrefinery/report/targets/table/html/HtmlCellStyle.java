@@ -2,13 +2,12 @@
  * Date: Jan 18, 2003
  * Time: 7:59:00 PM
  *
- * $Id: HtmlCellStyle.java,v 1.5 2003/01/27 18:24:54 taqua Exp $
+ * $Id: HtmlCellStyle.java,v 1.6 2003/01/30 00:04:54 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.targets.FontDefinition;
-import com.jrefinery.report.util.Log;
 
 import java.awt.Color;
 

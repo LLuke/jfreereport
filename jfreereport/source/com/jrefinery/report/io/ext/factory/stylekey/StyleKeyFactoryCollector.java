@@ -2,13 +2,12 @@
  * Date: Jan 10, 2003
  * Time: 5:01:31 PM
  *
- * $Id: StyleKeyFactoryCollector.java,v 1.2 2003/01/13 19:01:00 taqua Exp $
+ * $Id: StyleKeyFactoryCollector.java,v 1.3 2003/01/22 19:38:27 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.stylekey;
 
-import com.jrefinery.report.targets.style.StyleKey;
-import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactory;
 import com.jrefinery.report.io.Parser;
+import com.jrefinery.report.targets.style.StyleKey;
 
 import java.util.ArrayList;
 import java.util.Iterator;

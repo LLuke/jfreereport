@@ -2,13 +2,13 @@
  * Date: Jan 14, 2003
  * Time: 6:18:08 PM
  *
- * $Id$
+ * $Id: ImageURLElementTemplate.java,v 1.1 2003/01/14 21:04:55 taqua Exp $
  */
 package com.jrefinery.report.filter.templates;
 
-import com.jrefinery.report.filter.URLFilter;
-import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.filter.ImageLoadFilter;
+import com.jrefinery.report.filter.StaticDataSource;
+import com.jrefinery.report.filter.URLFilter;
 
 import java.net.URL;
 

@@ -2,12 +2,10 @@
  * Date: Jan 10, 2003
  * Time: 9:07:48 PM
  *
- * $Id: URLObjectDescription.java,v 1.2 2003/01/13 19:00:59 taqua Exp $
+ * $Id: URLObjectDescription.java,v 1.3 2003/01/27 03:17:43 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
-import com.jrefinery.report.io.ext.factory.objects.AbstractObjectDescription;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.IOUtils;
 
 import java.net.URL;

@@ -2,17 +2,15 @@
  * Date: Jan 25, 2003
  * Time: 9:40:17 AM
  *
- * $Id: TableGridLayout.java,v 1.6 2003/01/29 21:57:12 taqua Exp $
+ * $Id: TableGridLayout.java,v 1.7 2003/01/30 00:04:54 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
-import com.jrefinery.report.util.Log;
-
 import java.awt.geom.Rectangle2D;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public class TableGridLayout
 {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SimplePageLayoutCursor.java,v 1.4 2003/01/29 23:05:55 taqua Exp $
+ * $Id: SimplePageLayoutCursor.java,v 1.5 2003/01/30 00:04:53 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -43,8 +43,6 @@
  */
 
 package com.jrefinery.report.targets.pageable.pagelayout;
-
-import com.jrefinery.report.util.Log;
 
 import java.io.Serializable;
 

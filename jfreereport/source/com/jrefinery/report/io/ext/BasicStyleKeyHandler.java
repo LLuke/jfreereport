@@ -2,17 +2,17 @@
  * Date: Jan 10, 2003
  * Time: 6:53:26 PM
  *
- * $Id: BasicStyleKeyHandler.java,v 1.2 2003/01/22 19:38:23 taqua Exp $
+ * $Id: BasicStyleKeyHandler.java,v 1.3 2003/01/23 18:07:44 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactory;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ReportDefinitionHandler;
+import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactory;
 import com.jrefinery.report.targets.style.StyleKey;
 import com.jrefinery.report.util.CharacterEntityParser;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 public class BasicStyleKeyHandler implements ReportDefinitionHandler
 {

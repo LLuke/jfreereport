@@ -2,25 +2,25 @@
  * Date: Jan 9, 2003
  * Time: 9:08:15 PM
  *
- * $Id: ParserConfigHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: ParserConfigHandler.java,v 1.2 2003/01/22 19:38:24 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactoryCollector;
-import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactory;
-import com.jrefinery.report.io.ext.factory.objects.ClassFactoryCollector;
-import com.jrefinery.report.io.ext.factory.objects.ClassFactory;
-import com.jrefinery.report.io.ext.factory.templates.TemplateCollection;
-import com.jrefinery.report.io.ext.factory.templates.TemplateCollector;
-import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
-import com.jrefinery.report.io.ext.factory.datasource.DataSourceFactory;
-import com.jrefinery.report.io.ext.factory.elements.ElementFactoryCollector;
-import com.jrefinery.report.io.ext.factory.elements.ElementFactory;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ReportDefinitionHandler;
+import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
+import com.jrefinery.report.io.ext.factory.datasource.DataSourceFactory;
+import com.jrefinery.report.io.ext.factory.elements.ElementFactory;
+import com.jrefinery.report.io.ext.factory.elements.ElementFactoryCollector;
+import com.jrefinery.report.io.ext.factory.objects.ClassFactory;
+import com.jrefinery.report.io.ext.factory.objects.ClassFactoryCollector;
+import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactory;
+import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactoryCollector;
+import com.jrefinery.report.io.ext.factory.templates.TemplateCollection;
+import com.jrefinery.report.io.ext.factory.templates.TemplateCollector;
+import com.jrefinery.report.util.Log;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 public class ParserConfigHandler implements ReportDefinitionHandler
 {

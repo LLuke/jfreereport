@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.5 2003/01/29 18:37:12 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.6 2003/01/29 23:05:21 taqua Exp $
  *
  * Changes
  * -------
@@ -48,12 +48,12 @@
  */
 package com.jrefinery.report.targets.pageable.output;
 
-import com.jrefinery.report.targets.pageable.physicals.LogicalPageImpl;
-import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
-import com.jrefinery.report.targets.pageable.OutputTarget;
-import com.jrefinery.report.targets.pageable.LogicalPage;
+import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.pageable.AlignedLogicalPageWrapper;
+import com.jrefinery.report.targets.pageable.LogicalPage;
+import com.jrefinery.report.targets.pageable.OutputTarget;
+import com.jrefinery.report.targets.pageable.physicals.LogicalPageImpl;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;

@@ -30,7 +30,7 @@
                      based on PDFSaveDialog by Thomas Morgner, David Gilbert (for Simba Management Limited) and contributors
  * Contributor(s):
  *
- * $Id: ExcelExportDialog.java,v 1.3 2003/01/30 22:52:43 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.4 2003/02/02 22:46:43 taqua Exp $
  *
  * Changes
  * --------
@@ -45,12 +45,14 @@ import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FilesystemFilter;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.report.util.StringUtil;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -176,11 +178,7 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
   /** Filename text field. */
   private JTextField txFilename;
 
-  /** Author text field. */
-  private JTextField txAuthor;
-
-  /** Title text field. */
-  private JTextField txTitle;
+  private JCheckBox cbStrictLayout;
 
   /** Confirmed flag. */
   private boolean confirmed;
@@ -319,13 +317,12 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
     contentPane.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 
     JLabel lblFileName = new JLabel(getResources().getString("excelexportdialog.filename"));
-    JLabel lblAuthor = new JLabel(getResources().getString("excelexportdialog.author"));
-    JLabel lblTitel = new JLabel(getResources().getString("excelexportdialog.title"));
+//    JLabel lblAuthor = new JLabel(getResources().getString("excelexportdialog.author"));
+//    JLabel lblTitel = new JLabel(getResources().getString("excelexportdialog.title"));
     JButton btnSelect = new ActionButton(getActionSelectFile());
 
-    txAuthor = new JTextField();
     txFilename = new JTextField();
-    txTitle = new JTextField();
+    cbStrictLayout = new JCheckBox(getResources().getString("excelexportdialog.strict-layout"));
 
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = 0;
@@ -334,6 +331,7 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
     gbc.insets = new Insets(3, 1, 1, 1);
     contentPane.add(lblFileName, gbc);
 
+/*
     gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.WEST;
     gbc.gridx = 0;
@@ -347,7 +345,7 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
     gbc.gridy = 2;
     gbc.insets = new Insets(1, 1, 1, 1);
     contentPane.add(lblAuthor, gbc);
-
+*/
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 1;
@@ -364,8 +362,8 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
     gbc.gridy = 1;
     gbc.ipadx = 120;
     gbc.insets = new Insets(1, 1, 1, 1);
-    contentPane.add(txTitle, gbc);
-
+    contentPane.add(cbStrictLayout, gbc);
+/*
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 1;
@@ -374,7 +372,7 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
     gbc.ipadx = 120;
     gbc.insets = new Insets(1, 1, 1, 1);
     contentPane.add(txAuthor, gbc);
-
+*/
     gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.NORTHWEST;
     gbc.gridx = 2;
@@ -434,45 +432,6 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * Returns the title of the excel file.
-   *
-   * @return the title
-   */
-  public String getExcelTitle()
-  {
-    return txTitle.getText();
-  }
-
-  /**
-   * Defines the title of the excel file.
-   *
-   * @param title the title
-   */
-  public void setExcelTitle(String title)
-  {
-    this.txTitle.setText(title);
-  }
-
-  /**
-   * @return the name of the author of this report.
-   */
-  public String getAuthor()
-  {
-    return txAuthor.getText();
-  }
-
-  /**
-   * Defines the Author of the report. Any freeform text is valid. This defaults to the value of
-   * the systemProperty "user.name".
-   *
-   * @param author the name of the author.
-   */
-  public void setAuthor(String author)
-  {
-    this.txAuthor.setText(author);
-  }
-
-  /**
    * @return true, if the dialog has been confirmed and the excel file should be saved, false otherwise.
    */
   public boolean isConfirmed()
@@ -490,14 +449,23 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
     this.confirmed = confirmed;
   }
 
+  public boolean isStrictLayout()
+  {
+    return cbStrictLayout.isSelected();
+  }
+
+  public void setStrictLayout(boolean strictLayout)
+  {
+    cbStrictLayout.setSelected(strictLayout);
+  }
+
   /**
    * clears all selections, input fields and set the selected encryption level to none.
    */
   public void clear()
   {
-    txAuthor.setText(System.getProperty("user.name"));
     txFilename.setText("");
-    txTitle.setText("");
+    cbStrictLayout.setSelected(false);
   }
 
   /**
@@ -515,7 +483,7 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
       String selFileName = selFile.getAbsolutePath();
 
       // Test if ends on xls
-      if (selFileName.toUpperCase().endsWith(".XLS") == false)
+      if (StringUtil.endsWithIgnoreCase(selFileName, ".xls") == false)
       {
         selFileName = selFileName + ".xls";
       }
@@ -609,6 +577,7 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
 
       out = new BufferedOutputStream(new FileOutputStream(new File(getFilename())));
       ExcelProcessor target = new ExcelProcessor(report);
+      target.setStrictLayout(isStrictLayout());
       target.setOutputStream(out);
       target.processReport();
       out.close();

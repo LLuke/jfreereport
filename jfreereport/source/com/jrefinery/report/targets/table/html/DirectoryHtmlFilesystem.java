@@ -2,14 +2,14 @@
  * Date: Jan 26, 2003
  * Time: 5:58:35 PM
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.3 2003/02/01 22:10:36 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.4 2003/02/02 22:46:44 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.util.IOUtils;
-import com.jrefinery.report.util.StringUtil;
 import com.jrefinery.report.util.ImageComparator;
+import com.jrefinery.report.util.StringUtil;
 import com.keypoint.PngEncoder;
 
 import java.io.BufferedInputStream;

@@ -2,14 +2,14 @@
  * Date: Jan 13, 2003
  * Time: 6:47:38 PM
  *
- * $Id$
+ * $Id: TemplatesWriter.java,v 1.1 2003/01/13 21:39:27 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
 import com.jrefinery.report.io.ext.ExtReportHandler;
 
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
 
 public class TemplatesWriter extends AbstractXMLDefinitionWriter
 {

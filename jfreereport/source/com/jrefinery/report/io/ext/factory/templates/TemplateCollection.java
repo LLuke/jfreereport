@@ -2,14 +2,14 @@
  * Date: Jan 11, 2003
  * Time: 2:06:28 AM
  *
- * $Id: TemplateCollection.java,v 1.3 2003/01/14 21:09:26 taqua Exp $
+ * $Id: TemplateCollection.java,v 1.4 2003/01/22 19:38:27 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.templates;
 
 import com.jrefinery.report.filter.templates.Template;
 
-import java.util.Hashtable;
 import java.util.Enumeration;
+import java.util.Hashtable;
 
 public class TemplateCollection
 {

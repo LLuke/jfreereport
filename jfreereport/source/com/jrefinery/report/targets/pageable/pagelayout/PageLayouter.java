@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.12 2003/01/08 19:33:23 taqua Exp $
+ * $Id: PageLayouter.java,v 1.13 2003/01/29 18:37:12 taqua Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,10 @@ package com.jrefinery.report.targets.pageable.pagelayout;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.states.ReportState;
+import com.jrefinery.report.targets.pageable.LogicalPage;
 
 /**
  * The baseclass for all PageLayouter. A page layouter is the layoutmanager of

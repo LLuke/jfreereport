@@ -2,18 +2,17 @@
  * Date: Jan 12, 2003
  * Time: 5:21:13 PM
  *
- * $Id$
+ * $Id: DataSourceHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
-import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
-import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
 import com.jrefinery.report.filter.DataSource;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.io.ext.CompoundObjectHandler;
 import com.jrefinery.report.io.Parser;
-import org.xml.sax.SAXException;
+import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
+import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
+import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 public class DataSourceHandler extends CompoundObjectHandler
 {

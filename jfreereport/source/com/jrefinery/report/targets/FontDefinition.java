@@ -2,14 +2,14 @@
  * Date: Jan 24, 2003
  * Time: 4:08:26 PM
  *
- * $Id: FontDefinition.java,v 1.3 2003/01/27 03:17:43 taqua Exp $
+ * $Id: FontDefinition.java,v 1.4 2003/02/02 22:46:44 taqua Exp $
  */
 package com.jrefinery.report.targets;
 
 import com.jrefinery.report.util.StringUtil;
 
-import java.io.Serializable;
 import java.awt.Font;
+import java.io.Serializable;
 
 public class FontDefinition implements Serializable, Cloneable
 {

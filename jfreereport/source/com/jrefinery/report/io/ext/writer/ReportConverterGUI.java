@@ -2,10 +2,11 @@
  * Date: Jan 30, 2003
  * Time: 9:44:28 PM
  *
- * $Id$
+ * $Id: ReportConverterGUI.java,v 1.1 2003/01/30 22:58:28 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
+import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.FilesystemFilter;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.StringUtil;
@@ -24,6 +25,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
@@ -117,9 +120,9 @@ public class ReportConverterGUI extends JFrame
   {
     sourceField = new JTextField();
     targetField = new JTextField();
-    JButton selectSourceButton = new JButton(new SelectSourceAction());
-    JButton selectTargetButton = new JButton(new SelectTargetAction());
-    JButton convertFilesButton = new JButton(new ConvertAction());
+    JButton selectSourceButton = new ActionButton(new SelectSourceAction());
+    JButton selectTargetButton = new ActionButton(new SelectTargetAction());
+    JButton convertFilesButton = new ActionButton(new ConvertAction());
 
     JPanel contentPane = new JPanel();
     contentPane.setLayout(new GridBagLayout());
@@ -194,7 +197,16 @@ public class ReportConverterGUI extends JFrame
   public static void main (String [] args)
   {
     ReportConverterGUI gui = new ReportConverterGUI();
-    gui.setDefaultCloseOperation(ReportConverterGUI.EXIT_ON_CLOSE);
+    gui.addWindowListener(new WindowAdapter(){
+      /**
+       * Invoked when a window is in the process of being closed.
+       * The close operation can be overridden at this point.
+       */
+      public void windowClosing(WindowEvent e)
+      {
+        System.exit(0);
+      }
+    });
     gui.pack();
     gui.setVisible(true);
   }

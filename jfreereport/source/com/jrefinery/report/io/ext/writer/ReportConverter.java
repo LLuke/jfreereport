@@ -2,26 +2,25 @@
  * Date: Jan 22, 2003
  * Time: 6:42:09 PM
  *
- * $Id: ReportConverter.java,v 1.2 2003/01/23 18:07:46 taqua Exp $
+ * $Id: ReportConverter.java,v 1.3 2003/01/30 22:52:40 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.io.ext.factory.objects.URLClassFactory;
+import com.jrefinery.report.io.ReportGenerator;
+import com.jrefinery.report.io.ext.factory.datasource.DefaultDataSourceFactory;
+import com.jrefinery.report.io.ext.factory.elements.DefaultElementFactory;
 import com.jrefinery.report.io.ext.factory.objects.DefaultClassFactory;
+import com.jrefinery.report.io.ext.factory.objects.URLClassFactory;
 import com.jrefinery.report.io.ext.factory.stylekey.DefaultStyleKeyFactory;
 import com.jrefinery.report.io.ext.factory.stylekey.PageableLayoutStyleKeyFactory;
 import com.jrefinery.report.io.ext.factory.templates.DefaultTemplateCollection;
-import com.jrefinery.report.io.ext.factory.elements.DefaultElementFactory;
-import com.jrefinery.report.io.ext.factory.datasource.DefaultDataSourceFactory;
-import com.jrefinery.report.io.ReportGenerator;
+import com.jrefinery.report.util.Log;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.io.OutputStreamWriter;
-import java.io.FileWriter;
 import java.net.URL;
 
 public class ReportConverter

@@ -2,15 +2,15 @@
  * Date: Jan 14, 2003
  * Time: 1:14:54 PM
  *
- * $Id$
+ * $Id: DateFieldTemplate.java,v 1.1 2003/01/14 21:04:43 taqua Exp $
  */
 package com.jrefinery.report.filter.templates;
 
-import com.jrefinery.report.filter.SimpleDateFormatFilter;
-import com.jrefinery.report.filter.DataRowDataSource;
-import com.jrefinery.report.filter.StringFilter;
-import com.jrefinery.report.filter.DataRowConnectable;
 import com.jrefinery.report.DataRow;
+import com.jrefinery.report.filter.DataRowConnectable;
+import com.jrefinery.report.filter.DataRowDataSource;
+import com.jrefinery.report.filter.SimpleDateFormatFilter;
+import com.jrefinery.report.filter.StringFilter;
 
 import java.text.SimpleDateFormat;
 

@@ -2,7 +2,7 @@
  * Date: Jan 22, 2003
  * Time: 5:02:13 PM
  *
- * $Id: DataSourceWriter.java,v 1.1 2003/01/22 19:45:28 taqua Exp $
+ * $Id: DataSourceWriter.java,v 1.2 2003/01/23 18:07:46 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -10,7 +10,6 @@ import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.io.ext.DataSourceHandler;
 import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
 import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
-import com.jrefinery.report.util.Log;
 
 import java.io.IOException;
 import java.io.Writer;

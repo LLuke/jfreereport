@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RightAlignment.java,v 1.5 2002/12/16 17:31:05 mungady Exp $
+ * $Id: RightAlignment.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
  *
  * Changes
  * -------
@@ -37,8 +37,6 @@
  */
 
 package com.jrefinery.report.targets.base.operations;
-
-import com.jrefinery.report.targets.base.operations.HorizontalBoundsAlignment;
 
 import java.awt.geom.Rectangle2D;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.17 2003/01/30 00:04:53 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.18 2003/02/02 22:46:44 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@ package com.jrefinery.report.targets.pageable;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
-import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.ReportInterruptedException;
+import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;

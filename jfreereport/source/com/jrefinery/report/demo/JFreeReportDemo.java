@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.49 2003/01/23 18:07:43 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.50 2003/02/01 18:27:03 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -49,12 +49,12 @@ package com.jrefinery.report.demo;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.preview.PreviewFrame;
+import com.jrefinery.report.util.ActionButton;
+import com.jrefinery.report.util.ActionDowngrade;
+import com.jrefinery.report.util.ActionMenuItem;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.ActionButton;
-import com.jrefinery.report.util.ActionMenuItem;
-import com.jrefinery.report.util.ActionDowngrade;
 import com.jrefinery.ui.RefineryUtilities;
 import com.jrefinery.ui.about.AboutFrame;
 
@@ -72,8 +72,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
-import javax.swing.table.TableModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;

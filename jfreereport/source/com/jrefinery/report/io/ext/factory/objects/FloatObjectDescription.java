@@ -2,11 +2,11 @@
  * Date: Jan 10, 2003
  * Time: 9:07:48 PM
  *
- * $Id: FloatObjectDescription.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: FloatObjectDescription.java,v 1.2 2003/01/13 19:00:55 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
-import com.jrefinery.report.io.ext.factory.objects.AbstractObjectDescription;
+
 
 public class FloatObjectDescription extends AbstractObjectDescription
 {

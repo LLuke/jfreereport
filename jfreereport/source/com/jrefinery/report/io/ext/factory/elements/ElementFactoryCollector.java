@@ -2,12 +2,11 @@
  * Date: Jan 12, 2003
  * Time: 5:53:06 PM
  *
- * $Id: ElementFactoryCollector.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: ElementFactoryCollector.java,v 1.2 2003/01/13 19:00:49 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.elements;
 
 import com.jrefinery.report.Element;
-import com.jrefinery.report.io.ext.factory.elements.ElementFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;

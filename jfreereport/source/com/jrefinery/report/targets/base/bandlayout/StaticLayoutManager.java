@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.3 2003/01/30 00:04:52 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.4 2003/02/01 18:27:04 taqua Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,9 @@ import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.LayoutSupport;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
-import com.jrefinery.report.targets.base.operations.OperationModule;
-import com.jrefinery.report.targets.base.operations.OperationFactory;
 import com.jrefinery.report.targets.base.content.Content;
+import com.jrefinery.report.targets.base.operations.OperationFactory;
+import com.jrefinery.report.targets.base.operations.OperationModule;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.style.StyleKey;
 import com.jrefinery.report.util.Log;

@@ -2,13 +2,13 @@
  * Date: Jan 9, 2003
  * Time: 9:08:15 PM
  *
- * $Id$
+ * $Id: DataDefinitionHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
-import org.xml.sax.Attributes;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ReportDefinitionHandler;
+import org.xml.sax.Attributes;
 
 public class DataDefinitionHandler implements ReportDefinitionHandler
 {

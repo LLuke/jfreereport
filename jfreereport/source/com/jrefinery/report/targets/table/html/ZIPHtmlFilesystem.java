@@ -2,31 +2,31 @@
  * Date: Jan 26, 2003
  * Time: 7:06:56 PM
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.3 2003/02/01 22:10:36 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.4 2003/02/02 22:46:44 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.util.IOUtils;
-import com.jrefinery.report.util.StringUtil;
+import com.jrefinery.report.util.ImageComparator;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.NoCloseOutputStream;
-import com.jrefinery.report.util.ImageComparator;
+import com.jrefinery.report.util.StringUtil;
 import com.keypoint.PngEncoder;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.ByteArrayInputStream;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
-import java.util.zip.ZipOutputStream;
-import java.util.zip.ZipEntry;
 import java.util.zip.InflaterInputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 public class ZIPHtmlFilesystem implements HtmlFilesystem
 {

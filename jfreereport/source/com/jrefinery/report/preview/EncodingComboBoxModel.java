@@ -2,18 +2,18 @@
  * Date: Jan 21, 2003
  * Time: 7:54:06 PM
  *
- * $Id: EncodingComboBoxModel.java,v 1.1 2003/01/22 19:45:28 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.2 2003/01/29 03:13:00 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
 import com.jrefinery.report.util.Log;
 
 import javax.swing.ComboBoxModel;
-import javax.swing.event.ListDataListener;
 import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class EncodingComboBoxModel implements ComboBoxModel
 {

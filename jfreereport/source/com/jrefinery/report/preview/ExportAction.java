@@ -2,12 +2,12 @@
  * Date: Feb 2, 2003
  * Time: 6:28:35 PM
  *
- * $Id$
+ * $Id: ExportAction.java,v 1.1 2003/02/02 22:47:39 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
-import com.jrefinery.report.util.ActionDowngrade;
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.util.ActionDowngrade;
 
 import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;

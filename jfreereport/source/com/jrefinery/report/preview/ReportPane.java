@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.36 2003/02/02 16:06:57 taqua Exp $
+ * $Id: ReportPane.java,v 1.37 2003/02/02 22:46:43 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -50,12 +50,12 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.ReportState;
-import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
-import com.jrefinery.report.targets.pageable.output.DummyOutputTarget;
+import com.jrefinery.report.targets.pageable.OutputTarget;
+import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.PageableReportProcessor;
 import com.jrefinery.report.targets.pageable.ReportStateList;
-import com.jrefinery.report.targets.pageable.OutputTargetException;
-import com.jrefinery.report.targets.pageable.OutputTarget;
+import com.jrefinery.report.targets.pageable.output.DummyOutputTarget;
+import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
 import com.jrefinery.report.util.Log;
 
 import javax.swing.JComponent;

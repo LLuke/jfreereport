@@ -2,12 +2,11 @@
  * Date: Jan 24, 2003
  * Time: 7:18:58 PM
  *
- * $Id$
+ * $Id: SimpleDateFormatObjectDescription.java,v 1.1 2003/01/25 02:50:56 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
 import java.text.SimpleDateFormat;
-import java.text.DecimalFormat;
 
 public class SimpleDateFormatObjectDescription extends BeanObjectDescription
 {

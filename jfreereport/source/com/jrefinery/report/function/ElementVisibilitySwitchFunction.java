@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.9 2002/12/12 12:26:55 mungady Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.10 2003/01/23 18:07:44 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -39,8 +39,8 @@
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.Element;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.util.Log;
 
 /**
  * A function that alternates between true and false for each item within a group. The functions

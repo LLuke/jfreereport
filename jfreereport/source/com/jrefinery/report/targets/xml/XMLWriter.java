@@ -2,20 +2,20 @@
  * Date: Jan 7, 2003
  * Time: 5:15:08 PM
  *
- * $Id: XMLWriter.java,v 1.2 2003/01/18 20:47:36 taqua Exp $
+ * $Id: XMLWriter.java,v 1.3 2003/01/21 17:11:41 taqua Exp $
  */
 package com.jrefinery.report.targets.xml;
 
-import com.jrefinery.report.function.AbstractFunction;
-import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.Group;
-import com.jrefinery.report.util.Log;
+import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.util.CharacterEntityParser;
+import com.jrefinery.report.util.Log;
 
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.List;
 
 public class XMLWriter extends AbstractFunction

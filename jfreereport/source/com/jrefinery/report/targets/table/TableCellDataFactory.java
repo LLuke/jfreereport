@@ -2,12 +2,11 @@
  * Date: Jan 18, 2003
  * Time: 7:25:38 PM
  *
- * $Id: TableCellDataFactory.java,v 1.1 2003/01/18 20:47:36 taqua Exp $
+ * $Id: TableCellDataFactory.java,v 1.2 2003/01/25 20:34:11 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
 import com.jrefinery.report.Element;
-import com.jrefinery.report.targets.table.TableCellData;
 
 import java.awt.geom.Rectangle2D;
 

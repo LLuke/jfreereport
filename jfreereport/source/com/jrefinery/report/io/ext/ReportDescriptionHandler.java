@@ -2,23 +2,22 @@
  * Date: Jan 9, 2003
  * Time: 9:08:15 PM
  *
- * $Id: ReportDescriptionHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: ReportDescriptionHandler.java,v 1.2 2003/01/22 19:38:25 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import com.jrefinery.report.ReportHeader;
-import com.jrefinery.report.ReportFooter;
 import com.jrefinery.report.Band;
-import com.jrefinery.report.PageHeader;
-import com.jrefinery.report.PageFooter;
 import com.jrefinery.report.ItemBand;
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.io.ext.BandHandler;
+import com.jrefinery.report.PageFooter;
+import com.jrefinery.report.PageHeader;
+import com.jrefinery.report.ReportFooter;
+import com.jrefinery.report.ReportHeader;
 import com.jrefinery.report.io.InitialReportHandler;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ReportDefinitionHandler;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 public class ReportDescriptionHandler implements ReportDefinitionHandler
 {

@@ -2,22 +2,21 @@
  * Date: Jan 13, 2003
  * Time: 6:32:21 PM
  *
- * $Id: ObjectWriter.java,v 1.2 2003/01/22 19:38:28 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.3 2003/01/23 18:07:46 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
-import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
-import com.jrefinery.report.io.ext.factory.objects.ClassFactoryCollector;
-import com.jrefinery.report.io.ext.factory.objects.ObjectFactoryException;
-import com.jrefinery.report.io.ext.StyleSheetHandler;
 import com.jrefinery.report.io.ext.CompoundObjectHandler;
+import com.jrefinery.report.io.ext.factory.objects.ClassFactoryCollector;
+import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
+import com.jrefinery.report.io.ext.factory.objects.ObjectFactoryException;
 import com.jrefinery.report.util.Log;
 
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.Properties;
 
 public class ObjectWriter extends AbstractXMLDefinitionWriter

@@ -2,21 +2,20 @@
  * Date: Jan 24, 2003
  * Time: 11:00:35 PM
  *
- * $Id: FirstDemoTableModel.java,v 1.1 2003/01/25 02:50:56 taqua Exp $
+ * $Id: FirstDemoTableModel.java,v 1.2 2003/01/27 03:17:43 taqua Exp $
  */
 package com.jrefinery.report.demo;
 
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.IOUtils;
+import com.jrefinery.report.util.Log;
 
 import javax.swing.ImageIcon;
 import javax.swing.table.TableModel;
 import java.awt.Image;
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.net.URL;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;

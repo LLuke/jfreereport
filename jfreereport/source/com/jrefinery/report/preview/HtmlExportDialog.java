@@ -30,7 +30,7 @@
                      based on PDFSaveDialog by Thomas Morgner, David Gilbert (for Simba Management Limited) and contributors
  * Contributor(s):
  *
- * $Id: HtmlExportDialog.java,v 1.4 2003/01/30 22:52:43 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.5 2003/02/02 22:46:43 taqua Exp $
  *
  * Changes
  * --------
@@ -40,9 +40,9 @@
 package com.jrefinery.report.preview;
 
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.targets.table.html.DirectoryHtmlFilesystem;
 import com.jrefinery.report.targets.table.html.HtmlProcessor;
 import com.jrefinery.report.targets.table.html.StreamHtmlFilesystem;
-import com.jrefinery.report.targets.table.html.DirectoryHtmlFilesystem;
 import com.jrefinery.report.targets.table.html.ZIPHtmlFilesystem;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ExceptionDialog;
@@ -55,17 +55,17 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import javax.swing.JTabbedPane;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
@@ -73,9 +73,9 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.KeyEvent;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -401,7 +401,7 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
     encodingModel = EncodingComboBoxModel.createDefaultModel();
     encodingModel.sort();
     cbEncoding = new JComboBox(encodingModel);
-    cbxStrictLayout = new JCheckBox(getResources().getString("htmlexportdialog.strictlayout"));
+    cbxStrictLayout = new JCheckBox(getResources().getString("htmlexportdialog.strict-layout"));
 
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = 0;
@@ -1227,7 +1227,16 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
   public static void main (String [] args)
   {
     HtmlExportDialog dialog = new HtmlExportDialog();
-    dialog.setDefaultCloseOperation(EXIT_ON_CLOSE);
+    dialog.addWindowListener(new WindowAdapter(){
+      /**
+       * Invoked when a window is in the process of being closed.
+       * The close operation can be overridden at this point.
+       */
+      public void windowClosing(WindowEvent e)
+      {
+        System.exit(0);
+      }
+    });
     dialog.setVisible(true);
   }
 }

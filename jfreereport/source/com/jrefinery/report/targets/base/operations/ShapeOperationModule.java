@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeOperationModule.java,v 1.5 2003/01/27 18:24:51 taqua Exp $
+ * $Id: ShapeOperationModule.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
  *
  * Changes
  * -------
@@ -40,14 +40,12 @@ package com.jrefinery.report.targets.base.operations;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ShapeElement;
+import com.jrefinery.report.targets.LayoutSupport;
 import com.jrefinery.report.targets.ShapeTransform;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
-import com.jrefinery.report.targets.LayoutSupport;
-import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.base.content.Content;
 import com.jrefinery.report.targets.base.content.ShapeContent;
-import com.jrefinery.report.targets.base.operations.OperationModule;
-import com.jrefinery.report.targets.base.operations.PhysicalOperation;
+import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 
 import java.awt.Color;

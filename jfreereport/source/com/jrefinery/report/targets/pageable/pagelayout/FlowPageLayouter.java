@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FlowPageLayouter.java,v 1.3 2002/12/07 14:58:33 taqua Exp $
+ * $Id: FlowPageLayouter.java,v 1.4 2003/01/08 19:33:23 taqua Exp $
  *
  * Changes
  * -------
@@ -37,13 +37,13 @@
  */
 package com.jrefinery.report.targets.pageable.pagelayout;
 
-import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.FunctionInitializeException;
+import com.jrefinery.report.states.ReportState;
 
-import java.util.Stack;
 import java.util.ArrayList;
+import java.util.Stack;
 
 /**
  * A page layouter.  No real implementation ... next release ..

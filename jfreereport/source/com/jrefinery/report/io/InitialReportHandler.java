@@ -2,16 +2,14 @@
  * Date: Jan 9, 2003
  * Time: 8:49:58 PM
  *
- * $Id$
+ * $Id: InitialReportHandler.java,v 1.1 2003/01/12 21:35:08 taqua Exp $
  */
 package com.jrefinery.report.io;
 
+import com.jrefinery.report.io.ext.ExtReportHandler;
+import com.jrefinery.report.io.simple.ReportFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import com.jrefinery.report.io.ext.ExtReportHandler;
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ReportDefinitionHandler;
-import com.jrefinery.report.io.simple.ReportFactory;
 
 public class InitialReportHandler implements ReportDefinitionHandler
 {

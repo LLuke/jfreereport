@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.2 2003/01/29 18:37:11 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.3 2003/02/01 18:27:04 taqua Exp $
  *
  * Changes
  * -------
@@ -38,14 +38,14 @@
 
 package com.jrefinery.report.targets.base.bandlayout;
 
-import com.jrefinery.report.Element;
 import com.jrefinery.report.Band;
-import com.jrefinery.report.targets.LayoutSupport;
+import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.report.targets.LayoutSupport;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.Dimension2D;
+import java.awt.geom.Rectangle2D;
 
 /**
  * A collection of utility methods for use by classes that implement the BandLayoutManager 

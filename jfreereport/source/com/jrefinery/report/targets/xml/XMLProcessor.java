@@ -2,7 +2,7 @@
  * Date: Jan 7, 2003
  * Time: 5:28:29 PM
  *
- * $Id: XMLProcessor.java,v 1.1 2003/01/07 17:34:28 taqua Exp $
+ * $Id: XMLProcessor.java,v 1.2 2003/01/14 23:48:12 taqua Exp $
  */
 package com.jrefinery.report.targets.xml;
 
@@ -17,8 +17,8 @@ import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.NullOutputStream;
 
 import java.awt.print.PageFormat;
-import java.io.Writer;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.Iterator;
 
 public class XMLProcessor

@@ -2,16 +2,16 @@
  * Date: Jan 21, 2003
  * Time: 4:47:16 PM
  *
- * $Id: CSVTableProcessor.java,v 1.2 2003/01/25 20:34:12 taqua Exp $
+ * $Id: CSVTableProcessor.java,v 1.3 2003/01/29 21:57:12 taqua Exp $
  */
 package com.jrefinery.report.targets.table.csv;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.function.FunctionInitializeException;
+import com.jrefinery.report.targets.csv.CSVProcessor;
 import com.jrefinery.report.targets.table.TableProcessor;
 import com.jrefinery.report.targets.table.TableProducer;
-import com.jrefinery.report.targets.csv.CSVProcessor;
 import com.jrefinery.report.util.NullOutputStream;
 
 import java.io.PrintWriter;

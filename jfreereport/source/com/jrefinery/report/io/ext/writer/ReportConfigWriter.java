@@ -2,24 +2,24 @@
  * Date: Jan 13, 2003
  * Time: 1:34:28 PM
  *
- * $Id: ReportConfigWriter.java,v 1.2 2003/01/22 19:38:28 taqua Exp $
+ * $Id: ReportConfigWriter.java,v 1.3 2003/01/23 18:07:46 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
-import com.jrefinery.report.io.ext.ReportConfigHandler;
 import com.jrefinery.report.io.ext.ExtReportHandler;
-import com.jrefinery.report.util.PageFormatFactory;
+import com.jrefinery.report.io.ext.ReportConfigHandler;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.PageFormatFactory;
 import com.jrefinery.report.util.ReportConfiguration;
 
-import java.io.Writer;
-import java.io.IOException;
-import java.util.Properties;
-import java.util.Enumeration;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
+import java.io.IOException;
+import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Enumeration;
+import java.util.Properties;
 
 public class ReportConfigWriter extends AbstractXMLDefinitionWriter
 {

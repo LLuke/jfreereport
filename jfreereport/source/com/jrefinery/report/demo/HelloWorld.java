@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: HelloWorld.java,v 1.1 2002/12/10 15:55:48 mungady Exp $
+ * $Id: HelloWorld.java,v 1.2 2002/12/11 01:03:13 mungady Exp $
  *
  * Changes
  * -------
@@ -38,15 +38,16 @@
 
 package com.jrefinery.report.demo;
 
+import com.jrefinery.report.ItemFactory;
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.TextElement;
+import com.jrefinery.report.preview.PreviewFrame;
+
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
-import javax.swing.table.TableModel;
-import javax.swing.table.DefaultTableModel;
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.ItemFactory;
-import com.jrefinery.report.TextElement;
-import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.preview.PreviewFrame;
 
 /**
  * A very simple JFreeReport demo.  The purpose of this demo is to illustrate the basic steps

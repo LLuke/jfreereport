@@ -2,7 +2,7 @@
  * Date: Feb 1, 2003
  * Time: 7:53:14 PM
  *
- * $Id$
+ * $Id: RTFProducer.java,v 1.1 2003/02/01 22:10:37 taqua Exp $
  */
 package com.jrefinery.report.targets.table.rtf;
 
@@ -21,7 +21,6 @@ import com.lowagie.text.Table;
 import com.lowagie.text.rtf.RtfWriter;
 
 import java.awt.Color;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 

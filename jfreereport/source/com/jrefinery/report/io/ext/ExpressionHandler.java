@@ -1,10 +1,10 @@
 package com.jrefinery.report.io.ext;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ReportDefinitionHandler;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 /**
  * The functionFactory creates functions and adds these functions to the FunctionCollection

@@ -42,8 +42,8 @@
  */
 package com.jrefinery.report.action;
 
-import com.jrefinery.report.util.ActionDowngrade;
 import com.jrefinery.report.util.AbstractActionDowngrade;
+import com.jrefinery.report.util.ActionDowngrade;
 
 import java.util.ResourceBundle;
 

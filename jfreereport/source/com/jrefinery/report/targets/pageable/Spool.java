@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Spool.java,v 1.5 2003/01/16 15:35:35 taqua Exp $
+ * $Id: Spool.java,v 1.6 2003/01/29 03:13:02 taqua Exp $
  *
  * Changes
  * -------
@@ -37,9 +37,6 @@
  */
 
 package com.jrefinery.report.targets.pageable;
-
-import com.jrefinery.report.targets.base.operations.PhysicalOperation;
-import com.jrefinery.report.util.Log;
 
 import java.util.ArrayList;
 

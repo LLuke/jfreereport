@@ -2,15 +2,15 @@
  * Date: Jan 24, 2003
  * Time: 6:14:09 PM
  *
- * $Id$
+ * $Id: ResourceFieldTemplate.java,v 1.1 2003/01/25 02:50:56 taqua Exp $
  */
 package com.jrefinery.report.filter.templates;
 
-import com.jrefinery.report.filter.DataRowDataSource;
-import com.jrefinery.report.filter.StringFilter;
-import com.jrefinery.report.filter.DataRowConnectable;
-import com.jrefinery.report.filter.ResourceFileFilter;
 import com.jrefinery.report.DataRow;
+import com.jrefinery.report.filter.DataRowConnectable;
+import com.jrefinery.report.filter.DataRowDataSource;
+import com.jrefinery.report.filter.ResourceFileFilter;
+import com.jrefinery.report.filter.StringFilter;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;

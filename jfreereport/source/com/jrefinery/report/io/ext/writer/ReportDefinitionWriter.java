@@ -2,14 +2,14 @@
  * Date: Jan 13, 2003
  * Time: 12:53:49 PM
  *
- * $Id: ReportDefinitionWriter.java,v 1.4 2003/01/23 18:36:01 taqua Exp $
+ * $Id: ReportDefinitionWriter.java,v 1.5 2003/02/01 22:10:36 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
 import com.jrefinery.report.io.ParserEntityResolver;
 
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
 
 public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
 {

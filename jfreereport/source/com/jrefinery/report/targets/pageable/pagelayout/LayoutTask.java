@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutTask.java,v 1.2 2002/12/04 16:20:57 mungady Exp $
+ * $Id: LayoutTask.java,v 1.3 2002/12/07 14:58:33 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 package com.jrefinery.report.targets.pageable.pagelayout;
 
 import com.jrefinery.report.event.ReportEvent;
+
 import java.util.Hashtable;
 
 /**

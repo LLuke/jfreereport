@@ -2,15 +2,15 @@
  * Date: Jan 14, 2003
  * Time: 1:42:50 PM
  *
- * $Id: ImageFieldTemplate.java,v 1.1 2003/01/14 21:04:50 taqua Exp $
+ * $Id: ImageFieldTemplate.java,v 1.2 2003/01/25 02:47:09 taqua Exp $
  */
 package com.jrefinery.report.filter.templates;
 
 import com.jrefinery.report.DataRow;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.filter.ImageRefFilter;
-import com.jrefinery.report.filter.DataRowDataSource;
 import com.jrefinery.report.filter.DataRowConnectable;
+import com.jrefinery.report.filter.DataRowDataSource;
+import com.jrefinery.report.filter.ImageRefFilter;
+import com.jrefinery.report.util.Log;
 
 public class ImageFieldTemplate extends AbstractTemplate implements DataRowConnectable
 {

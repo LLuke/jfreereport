@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.5 2002/12/13 10:48:22 mungady Exp $
+ * $Id: TextContent.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,6 @@
 package com.jrefinery.report.targets.base.content;
 
 import com.jrefinery.report.targets.SizeCalculator;
-import com.jrefinery.report.targets.base.content.ContentContainer;
 import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Rectangle2D;

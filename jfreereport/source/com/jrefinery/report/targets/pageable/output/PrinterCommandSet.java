@@ -2,18 +2,18 @@
  * Date: Jan 30, 2003
  * Time: 3:46:18 PM
  *
- * $Id$
+ * $Id: PrinterCommandSet.java,v 1.1 2003/01/30 22:58:44 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable.output;
 
-import com.jrefinery.report.util.PageFormatFactory;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.PageFormatFactory;
 
-import java.io.OutputStream;
-import java.io.IOException;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Arrays;
 
 public class PrinterCommandSet

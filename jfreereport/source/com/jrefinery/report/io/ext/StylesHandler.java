@@ -2,18 +2,17 @@
  * Date: Jan 10, 2003
  * Time: 7:13:34 PM
  *
- * $Id: StylesHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: StylesHandler.java,v 1.2 2003/01/13 19:00:45 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
+import com.jrefinery.report.io.Parser;
+import com.jrefinery.report.io.ReportDefinitionHandler;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 import java.util.Hashtable;
-
-import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ReportDefinitionHandler;
 
 public class StylesHandler implements ReportDefinitionHandler
 {

@@ -2,12 +2,12 @@
  * Date: Jan 14, 2003
  * Time: 10:28:32 PM
  *
- * $Id$
+ * $Id: PropertyFileReportConfiguration.java,v 1.1 2003/01/14 23:50:10 taqua Exp $
  */
 package com.jrefinery.report.util;
 
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /** A report configuration that reads its values from the jfreereport.properties file. */
 public class PropertyFileReportConfiguration extends ReportConfiguration

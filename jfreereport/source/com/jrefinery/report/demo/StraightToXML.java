@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.3 2002/12/18 20:31:47 taqua Exp $
+ * $Id: StraightToXML.java,v 1.1 2003/01/07 17:34:26 taqua Exp $
  *
  * Changes
  * -------
@@ -40,20 +40,13 @@ package com.jrefinery.report.demo;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.ReportGenerator;
-import com.jrefinery.report.targets.pageable.PageableReportProcessor;
-import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
 import com.jrefinery.report.targets.xml.XMLProcessor;
-import com.jrefinery.report.util.ReportConfiguration;
 
 import javax.swing.table.TableModel;
-import java.awt.print.PageFormat;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.io.BufferedWriter;
-import java.io.Writer;
+import java.io.File;
 import java.io.FileWriter;
+import java.io.Writer;
 import java.net.URL;
 
 /**

@@ -2,18 +2,17 @@
  * Date: Jan 11, 2003
  * Time: 4:52:58 PM
  *
- * $Id: BandHandler.java,v 1.2 2003/01/13 19:00:41 taqua Exp $
+ * $Id: BandHandler.java,v 1.3 2003/01/23 18:07:44 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
+import com.jrefinery.report.Band;
+import com.jrefinery.report.Element;
+import com.jrefinery.report.io.Parser;
+import com.jrefinery.report.io.ext.factory.elements.ElementFactoryCollector;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import com.jrefinery.report.Band;
-import com.jrefinery.report.ItemBand;
-import com.jrefinery.report.Element;
-import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.io.ext.factory.elements.ElementFactoryCollector;
-import com.jrefinery.report.io.Parser;
 
 public class BandHandler extends ElementHandler
 {

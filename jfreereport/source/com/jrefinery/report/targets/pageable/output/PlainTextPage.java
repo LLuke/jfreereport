@@ -2,15 +2,14 @@
  * Date: Jan 29, 2003
  * Time: 2:30:07 PM
  *
- * $Id: PlainTextPage.java,v 1.4 2003/01/30 22:52:45 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.5 2003/02/01 18:27:04 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable.output;
 
 import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.util.Log;
 
 import java.io.IOException;
-
-import com.jrefinery.report.util.Log;
 
 public class PlainTextPage
 {

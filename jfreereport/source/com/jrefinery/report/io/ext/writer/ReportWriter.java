@@ -2,24 +2,24 @@
  * Date: Jan 13, 2003
  * Time: 12:39:06 PM
  *
- * $Id: ReportWriter.java,v 1.4 2003/01/23 18:07:46 taqua Exp $
+ * $Id: ReportWriter.java,v 1.5 2003/02/01 18:27:04 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
+import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
 import com.jrefinery.report.io.ext.factory.datasource.DataSourceFactory;
-import com.jrefinery.report.io.ext.factory.elements.ElementFactoryCollector;
 import com.jrefinery.report.io.ext.factory.elements.ElementFactory;
-import com.jrefinery.report.io.ext.factory.objects.ClassFactoryCollector;
+import com.jrefinery.report.io.ext.factory.elements.ElementFactoryCollector;
 import com.jrefinery.report.io.ext.factory.objects.ClassFactory;
-import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactoryCollector;
+import com.jrefinery.report.io.ext.factory.objects.ClassFactoryCollector;
 import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactory;
-import com.jrefinery.report.io.ext.factory.templates.TemplateCollector;
+import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactoryCollector;
 import com.jrefinery.report.io.ext.factory.templates.TemplateCollection;
-import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.io.ext.factory.templates.TemplateCollector;
 
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
 
 public class ReportWriter
 {

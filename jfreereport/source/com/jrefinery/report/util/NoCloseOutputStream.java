@@ -2,13 +2,13 @@
  * Date: Jan 29, 2003
  * Time: 6:49:31 PM
  *
- * $Id$
+ * $Id: NoCloseOutputStream.java,v 1.1 2003/01/29 18:46:04 taqua Exp $
  */
 package com.jrefinery.report.util;
 
 import java.io.FilterOutputStream;
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 public class NoCloseOutputStream extends FilterOutputStream
 {

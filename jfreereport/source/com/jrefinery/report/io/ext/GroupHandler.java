@@ -2,17 +2,16 @@
  * Date: Jan 22, 2003
  * Time: 3:45:29 PM
  *
- * $Id: GroupHandler.java,v 1.1 2003/01/22 19:45:27 taqua Exp $
+ * $Id: GroupHandler.java,v 1.2 2003/01/23 18:07:44 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
-import com.jrefinery.report.io.ReportDefinitionHandler;
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.Group;
 import com.jrefinery.report.Band;
-import com.jrefinery.report.ReportHeader;
-import com.jrefinery.report.GroupHeader;
+import com.jrefinery.report.Group;
 import com.jrefinery.report.GroupFooter;
+import com.jrefinery.report.GroupHeader;
+import com.jrefinery.report.io.Parser;
+import com.jrefinery.report.io.ReportDefinitionHandler;
 import com.jrefinery.report.util.CharacterEntityParser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

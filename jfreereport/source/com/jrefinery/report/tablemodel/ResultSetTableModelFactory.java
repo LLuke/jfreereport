@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.14 2002/12/18 10:13:16 mungady Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.1 2003/01/27 03:20:01 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@
 package com.jrefinery.report.tablemodel;
 
 import com.jrefinery.report.util.CloseableTableModel;
-import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportConfiguration;
 
 import javax.swing.table.DefaultTableModel;
 import java.sql.ResultSet;

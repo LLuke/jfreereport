@@ -2,18 +2,18 @@
  * Date: Jan 25, 2003
  * Time: 5:53:06 AM
  *
- * $Id: HtmlImageCellData.java,v 1.2 2003/01/27 03:17:43 taqua Exp $
+ * $Id: RTFImageCellData.java,v 1.1 2003/02/01 22:10:37 taqua Exp $
  */
 package com.jrefinery.report.targets.table.rtf;
 
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.StringUtil;
+import com.keypoint.PngEncoder;
+import com.lowagie.text.BadElementException;
 import com.lowagie.text.Cell;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
-import com.lowagie.text.BadElementException;
-import com.keypoint.PngEncoder;
 
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackend.java,v 1.26 2003/01/14 23:48:09 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.27 2003/01/16 15:35:31 taqua Exp $
  *
  * Changes
  * -------
@@ -46,11 +46,11 @@
 package com.jrefinery.report;
 
 import com.jrefinery.report.function.Expression;
-import com.jrefinery.report.function.LevelledExpressionList;
 import com.jrefinery.report.function.Function;
+import com.jrefinery.report.function.LevelledExpressionList;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.ReportPropertiesList;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.report.util.ReportPropertiesList;
 
 import javax.swing.table.TableModel;
 import java.util.Hashtable;

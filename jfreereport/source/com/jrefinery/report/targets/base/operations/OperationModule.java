@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationModule.java,v 1.3 2003/01/21 17:11:39 taqua Exp $
+ * $Id: OperationModule.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
  *
  * Changes
  * -------
@@ -36,10 +36,10 @@
 package com.jrefinery.report.targets.base.operations;
 
 import com.jrefinery.report.Element;
-import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.LayoutSupport;
-import com.jrefinery.report.targets.pageable.OutputTargetException;
+import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.content.Content;
+import com.jrefinery.report.targets.pageable.OutputTargetException;
 
 import java.awt.geom.Rectangle2D;
 import java.util.List;

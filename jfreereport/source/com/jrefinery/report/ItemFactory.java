@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.27 2003/01/25 02:47:09 taqua Exp $
+ * $Id: ItemFactory.java,v 1.28 2003/01/29 03:12:52 taqua Exp $
  *
  * Changes
  * -------
@@ -56,9 +56,9 @@ import com.jrefinery.report.filter.templates.ImageURLElementTemplate;
 import com.jrefinery.report.filter.templates.ImageURLFieldTemplate;
 import com.jrefinery.report.filter.templates.LabelTemplate;
 import com.jrefinery.report.filter.templates.NumberFieldTemplate;
-import com.jrefinery.report.filter.templates.StringFieldTemplate;
-import com.jrefinery.report.filter.templates.ResourceLabelTemplate;
 import com.jrefinery.report.filter.templates.ResourceFieldTemplate;
+import com.jrefinery.report.filter.templates.ResourceLabelTemplate;
+import com.jrefinery.report.filter.templates.StringFieldTemplate;
 import com.jrefinery.report.function.ExpressionCollection;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
@@ -66,11 +66,11 @@ import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 
 import javax.swing.table.TableModel;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.Color;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;

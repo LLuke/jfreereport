@@ -2,14 +2,14 @@
  * Date: Jan 14, 2003
  * Time: 6:40:52 PM
  *
- * $Id: StringFieldTemplate.java,v 1.1 2003/01/14 21:05:27 taqua Exp $
+ * $Id: StringFieldTemplate.java,v 1.2 2003/01/15 16:54:06 taqua Exp $
  */
 package com.jrefinery.report.filter.templates;
 
+import com.jrefinery.report.DataRow;
+import com.jrefinery.report.filter.DataRowConnectable;
 import com.jrefinery.report.filter.DataRowDataSource;
 import com.jrefinery.report.filter.StringFilter;
-import com.jrefinery.report.filter.DataRowConnectable;
-import com.jrefinery.report.DataRow;
 
 public class StringFieldTemplate extends AbstractTemplate implements DataRowConnectable
 {

@@ -2,23 +2,23 @@
  * Date: Jan 18, 2003
  * Time: 8:59:32 PM
  *
- * $Id: CSVTableProcessor.java,v 1.1 2003/01/18 20:47:35 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.2 2003/01/22 19:38:29 taqua Exp $
  */
 package com.jrefinery.report.targets.csv;
 
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.JFreeReportConstants;
-import com.jrefinery.report.util.NullOutputStream;
-import com.jrefinery.report.util.Log;
+import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.function.FunctionInitializeException;
+import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.StartState;
-import com.jrefinery.report.states.FinishState;
-import com.jrefinery.report.function.FunctionInitializeException;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.NullOutputStream;
 
-import java.io.Writer;
-import java.io.OutputStreamWriter;
 import java.awt.print.PageFormat;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.Iterator;
 
 public class CSVProcessor

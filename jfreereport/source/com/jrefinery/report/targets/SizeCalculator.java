@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SizeCalculator.java,v 1.3 2002/12/16 17:30:38 mungady Exp $
+ * $Id: SizeCalculator.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@
 
 package com.jrefinery.report.targets;
 
-import com.jrefinery.report.targets.pageable.OutputTarget;  // required for Javadoc links
+// required for Javadoc links
 
 /**
  * The interface for an object that can calculate the width of a given string, and the

@@ -2,16 +2,14 @@
  * Date: Jan 9, 2003
  * Time: 9:08:15 PM
  *
- * $Id: TemplatesHandler.java,v 1.2 2003/01/13 19:00:46 taqua Exp $
+ * $Id: TemplatesHandler.java,v 1.3 2003/01/14 21:07:49 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
+import com.jrefinery.report.io.Parser;
+import com.jrefinery.report.io.ReportDefinitionHandler;
 import com.jrefinery.report.io.ext.factory.templates.TemplateCollector;
 import com.jrefinery.report.io.ext.factory.templates.TemplateDescription;
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ext.ParserConfigHandler;
-import com.jrefinery.report.io.ReportDefinitionHandler;
-import com.jrefinery.report.io.ext.TemplateHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

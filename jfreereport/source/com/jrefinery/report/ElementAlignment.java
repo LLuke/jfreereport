@@ -38,7 +38,7 @@
 
 package com.jrefinery.report;
 
-import java.io.Serializable;
+
 
 /**
  * Represents the alignment of an element.

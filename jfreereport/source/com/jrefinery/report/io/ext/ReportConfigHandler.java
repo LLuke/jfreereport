@@ -2,26 +2,25 @@
  * Date: Jan 9, 2003
  * Time: 9:08:15 PM
  *
- * $Id$
+ * $Id: ReportConfigHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.io.InitialReportHandler;
 import com.jrefinery.report.io.Parser;
+import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.io.ReportDefinitionHandler;
-import com.jrefinery.report.io.ext.PropertyHandler;
-import com.jrefinery.report.util.PageFormatFactory;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.PageFormatFactory;
 import com.jrefinery.report.util.ReportConfiguration;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
-import java.util.Properties;
 import java.util.Enumeration;
+import java.util.Properties;
 
 public class ReportConfigHandler implements ReportDefinitionHandler
 {

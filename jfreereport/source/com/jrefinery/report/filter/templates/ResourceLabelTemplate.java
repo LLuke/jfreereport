@@ -2,16 +2,16 @@
  * Date: Jan 24, 2003
  * Time: 6:14:20 PM
  *
- * $Id$
+ * $Id: ResourceLabelTemplate.java,v 1.1 2003/01/25 02:50:56 taqua Exp $
  */
 package com.jrefinery.report.filter.templates;
 
+import com.jrefinery.report.filter.ResourceFileFilter;
 import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.filter.StringFilter;
-import com.jrefinery.report.filter.ResourceFileFilter;
 
-import java.util.ResourceBundle;
 import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 public class ResourceLabelTemplate extends AbstractTemplate
 {

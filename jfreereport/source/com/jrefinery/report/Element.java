@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.19 2003/01/22 19:38:21 taqua Exp $
+ * $Id: Element.java,v 1.20 2003/01/27 03:17:33 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -60,8 +60,8 @@ import com.jrefinery.report.filter.EmptyDataSource;
 import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 
-import java.awt.Paint;
 import java.awt.Color;
+import java.awt.Paint;
 import java.io.Serializable;
 
 /**

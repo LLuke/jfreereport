@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: LGPLTextDemo.java,v 1.1 2003/01/07 15:10:10 taqua Exp $
+ * $Id: LGPLTextDemo.java,v 1.2 2003/01/14 21:04:00 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import com.jrefinery.report.preview.PreviewFrame;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.ui.ApplicationFrame;
 import com.jrefinery.ui.RefineryUtilities;
+
 import javax.swing.BorderFactory;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;

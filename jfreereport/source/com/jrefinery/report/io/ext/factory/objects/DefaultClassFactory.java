@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 9:04:41 PM
  *
- * $Id: DefaultClassFactory.java,v 1.3 2003/01/25 02:47:09 taqua Exp $
+ * $Id: DefaultClassFactory.java,v 1.4 2003/02/01 18:27:04 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
@@ -16,14 +16,14 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Date;
-import java.text.Format;
-import java.text.NumberFormat;
+import java.text.DateFormat;
+import java.text.DateFormatSymbols;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.DateFormat;
+import java.text.Format;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.text.DateFormatSymbols;
+import java.util.Date;
 
 public class DefaultClassFactory extends ClassFactoryImpl
 {

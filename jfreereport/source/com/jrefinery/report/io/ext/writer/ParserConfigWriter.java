@@ -2,19 +2,18 @@
  * Date: Jan 13, 2003
  * Time: 1:20:24 PM
  *
- * $Id: ParserConfigWriter.java,v 1.1 2003/01/13 21:39:07 taqua Exp $
+ * $Id: ParserConfigWriter.java,v 1.2 2003/01/23 18:07:46 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
 import com.jrefinery.report.io.ext.ExtReportHandler;
 import com.jrefinery.report.io.ext.ParserConfigHandler;
-import com.jrefinery.report.io.ext.factory.objects.URLClassFactory;
 import com.jrefinery.report.util.Log;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Iterator;
 import java.lang.reflect.Constructor;
+import java.util.Iterator;
 
 public class ParserConfigWriter extends AbstractXMLDefinitionWriter
 {

@@ -2,24 +2,23 @@
  * Date: Jan 28, 2003
  * Time: 3:14:12 PM
  *
- * $Id: AbstractTableCellDataFactory.java,v 1.1 2003/01/28 22:32:57 taqua Exp $
+ * $Id: AbstractTableCellDataFactory.java,v 1.2 2003/01/29 18:37:13 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ShapeElement;
-import com.jrefinery.report.util.Log;
-import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.ShapeTransform;
+import com.jrefinery.report.targets.style.ElementStyleSheet;
 
-import java.awt.Shape;
-import java.awt.Color;
 import java.awt.BasicStroke;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.Point2D;
+import java.awt.Color;
+import java.awt.Shape;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 public abstract class AbstractTableCellDataFactory implements TableCellDataFactory
 {

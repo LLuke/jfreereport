@@ -2,15 +2,12 @@
  * Date: Jan 10, 2003
  * Time: 9:07:48 PM
  *
- * $Id: DateObjectDescription.java,v 1.2 2003/01/13 19:00:53 taqua Exp $
+ * $Id: DateObjectDescription.java,v 1.3 2003/01/22 19:38:26 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
-import com.jrefinery.report.io.ext.factory.objects.AbstractObjectDescription;
-
-import java.awt.geom.Point2D;
-import java.util.GregorianCalendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class DateObjectDescription extends AbstractObjectDescription
 {

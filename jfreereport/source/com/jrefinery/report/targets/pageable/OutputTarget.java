@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: OutputTarget.java,v 1.5 2003/01/24 16:39:06 taqua Exp $
+ * $Id: OutputTarget.java,v 1.6 2003/01/29 03:13:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,13 +47,11 @@
 package com.jrefinery.report.targets.pageable;
 
 import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
-import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.LayoutSupport;
+import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.util.ReportConfiguration;
 
-import java.awt.Font;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;

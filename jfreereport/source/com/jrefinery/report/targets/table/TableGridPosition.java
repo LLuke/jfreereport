@@ -2,11 +2,9 @@
  * Date: Jan 18, 2003
  * Time: 7:23:00 PM
  *
- * $Id: TableGridPosition.java,v 1.4 2003/01/29 18:37:13 taqua Exp $
+ * $Id: TableGridPosition.java,v 1.5 2003/01/29 21:57:12 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
-
-import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Rectangle2D;
 

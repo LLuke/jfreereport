@@ -2,7 +2,7 @@
  * Date: Jan 25, 2003
  * Time: 5:53:06 AM
  *
- * $Id: HtmlImageCellData.java,v 1.1 2003/01/25 20:38:34 taqua Exp $
+ * $Id: HtmlImageCellData.java,v 1.2 2003/01/27 03:17:43 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
@@ -10,8 +10,8 @@ import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Rectangle2D;
-import java.io.PrintWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class HtmlImageCellData extends HtmlCellData
 {

@@ -2,7 +2,7 @@
  * Date: Jan 21, 2003
  * Time: 7:48:58 PM
  *
- * $Id: CSVExportDialog.java,v 1.1 2003/01/22 19:45:28 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.2 2003/02/02 22:46:42 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -21,6 +21,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -163,9 +164,9 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   /** Filename text field. */
   private JTextField txFilename;
 
-  /** Author text field. */
   private JComboBox cbEncoding;
   private EncodingComboBoxModel encodingModel;
+  private JCheckBox cbxStrictLayout;
 
   private JRadioButton rbSeparatorTab;
   private JRadioButton rbSeparatorColon;
@@ -313,6 +314,7 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
     JLabel lblFileName = new JLabel(getResources().getString("csvexportdialog.filename"));
     JLabel lblEncoding = new JLabel(getResources().getString("csvexportdialog.encoding"));
     JButton btnSelect = new ActionButton(getActionSelectFile());
+    cbxStrictLayout = new JCheckBox(getResources().getString("csvexportdialog.strict-layout"));
 
     txFilename = new JTextField();
     encodingModel = EncodingComboBoxModel.createDefaultModel();
@@ -352,6 +354,15 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
     gbc.insets = new Insets(1, 1, 1, 1);
     contentPane.add(cbEncoding, gbc);
 
+    gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.weightx = 0;
+    gbc.gridx = 1;
+    gbc.gridy = 2;
+    gbc.gridwidth = 2;
+    gbc.insets = new Insets(1, 1, 1, 1);
+    contentPane.add(cbxStrictLayout, gbc);
+
     JPanel p = new JPanel (new GridLayout());
     p.add(createSeparatorPanel());
     p.add(createExportTypePanel());
@@ -361,7 +372,7 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
     gbc.weighty = 1;
     gbc.weightx = 1;
     gbc.gridx = 1;
-    gbc.gridy = 2;
+    gbc.gridy = 3;
     gbc.gridwidth = 2;
     gbc.insets = new Insets(10, 1, 1, 1);
     contentPane.add(p, gbc);
@@ -937,4 +948,16 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   {
     return false;
   }
+
+  public boolean isStrictLayout()
+  {
+    return cbxStrictLayout.isSelected();
+  }
+
+  public void setStrictLayout(boolean strictLayout)
+  {
+    cbxStrictLayout.setSelected(strictLayout);
+  }
+
+
 }

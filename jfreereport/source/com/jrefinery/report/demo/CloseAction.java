@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: CloseAction.java,v 1.10 2002/12/04 16:26:18 mungady Exp $
+ * $Id: CloseAction.java,v 1.11 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@
 
 package com.jrefinery.report.demo;
 
-import com.jrefinery.report.util.ActionDowngrade;
 import com.jrefinery.report.util.AbstractActionDowngrade;
+import com.jrefinery.report.util.ActionDowngrade;
 
 import java.util.ResourceBundle;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContent.java,v 1.3 2002/12/16 17:31:01 mungady Exp $
+ * $Id: ShapeContent.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
  *
  * Changes
  * -------
@@ -37,9 +37,6 @@
  */
 
 package com.jrefinery.report.targets.base.content;
-
-import com.jrefinery.report.targets.base.content.Content;
-import com.jrefinery.report.targets.base.content.ContentType;
 
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;

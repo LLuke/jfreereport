@@ -2,11 +2,9 @@
  * Date: Jan 26, 2003
  * Time: 10:44:22 PM
  *
- * $Id: ImageComparator.java,v 1.2 2003/01/30 00:04:54 taqua Exp $
+ * $Id: ImageComparator.java,v 1.1 2003/02/01 22:11:28 taqua Exp $
  */
 package com.jrefinery.report.util;
-
-import com.jrefinery.report.util.Log;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

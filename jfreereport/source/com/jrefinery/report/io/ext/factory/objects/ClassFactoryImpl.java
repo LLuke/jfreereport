@@ -2,14 +2,12 @@
  * Date: Jan 10, 2003
  * Time: 8:04:30 PM
  *
- * $Id: ClassFactoryImpl.java,v 1.1 2003/01/22 19:45:28 taqua Exp $
+ * $Id: ClassFactoryImpl.java,v 1.2 2003/01/23 18:07:45 taqua Exp $
  */
 package com.jrefinery.report.io.ext.factory.objects;
 
-import com.jrefinery.report.util.Log;
-
-import java.util.Hashtable;
 import java.util.Enumeration;
+import java.util.Hashtable;
 
 public abstract class ClassFactoryImpl implements ClassFactory
 {

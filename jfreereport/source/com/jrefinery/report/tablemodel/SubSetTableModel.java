@@ -2,13 +2,13 @@
  * Date: Jan 26, 2003
  * Time: 3:55:42 PM
  *
- * $Id: SubSetTableModel.java,v 1.1 2003/01/27 03:20:01 taqua Exp $
+ * $Id: SubSetTableModel.java,v 1.2 2003/01/29 03:13:00 taqua Exp $
  */
 package com.jrefinery.report.tablemodel;
 
-import javax.swing.table.TableModel;
-import javax.swing.event.TableModelListener;
 import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
 import java.util.ArrayList;
 
 public class SubSetTableModel implements TableModel

@@ -2,11 +2,10 @@
  * Date: Jan 29, 2003
  * Time: 3:44:05 AM
  *
- * $Id: DefaultLayoutSupport.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
+ * $Id: DefaultLayoutSupport.java,v 1.2 2003/01/29 18:37:11 taqua Exp $
  */
 package com.jrefinery.report.targets;
 
-import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.pageable.OutputTargetException;

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ZoomOutAction.java,v 1.11 2002/12/02 17:13:14 taqua Exp $
+ * $Id: ZoomOutAction.java,v 1.12 2002/12/04 16:19:55 mungady Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,8 @@
  */
 package com.jrefinery.report.action;
 
-import com.jrefinery.report.util.ActionDowngrade;
 import com.jrefinery.report.util.AbstractActionDowngrade;
+import com.jrefinery.report.util.ActionDowngrade;
 
 import java.util.ResourceBundle;
 
