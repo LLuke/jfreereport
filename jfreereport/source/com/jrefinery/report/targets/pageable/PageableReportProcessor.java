@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.24 2003/02/17 16:07:20 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.25 2003/02/17 16:14:16 taqua Exp $
  *
  * Changes
  * -------
@@ -323,6 +323,8 @@ public class PageableReportProcessor
           if (state instanceof FinishState)
           {
             state = new StartState((FinishState) state, level);
+            if (state.getCurrentPage() != 1)
+              throw new IllegalStateException("State was not set up properly");
           }
           else
           {
@@ -434,6 +436,7 @@ public class PageableReportProcessor
         }
       }
     }
+    Log.debug ("Returning State: " + state + " -> " + state.getCurrentPage());
     return state;
   }
 

@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 6:50:48 PM
  *
- * $Id: PreviewProxyBase.java,v 1.7 2003/02/16 19:02:38 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.8 2003/02/18 19:37:27 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -1878,6 +1878,7 @@ public class PreviewProxyBase extends JComponent
         catch (Exception e)
         {
           Log.debug ("Failed to repaginate" , e);
+          reportPane.setError(e);
         }
       }
     });

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.14 2003/02/02 23:43:52 taqua Exp $
+ * $Id: PageLayouter.java,v 1.15 2003/02/17 16:07:21 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package com.jrefinery.report.targets.pageable.pagelayout;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.states.ReportState;
@@ -322,7 +323,7 @@ public abstract class PageLayouter extends AbstractFunction
     // rethink that.
     if (isRestartingPage())
     {
-      throw new ReportProcessingException ("Report does not proceed");
+      throw new ReportProcessingException ("Report does not proceed (PageEnd during RestartPage)");
     }
     // cannot finish
     if (isFinishingPage())
@@ -490,6 +491,7 @@ public abstract class PageLayouter extends AbstractFunction
       throws ReportProcessingException
   {
     Object state = getLayoutManagerState();
+    Log.debug (state);
     // reset the report finished flag...
     //setStartNewPage(false);
     setGeneratedPageEmpty(true);
@@ -499,7 +501,10 @@ public abstract class PageLayouter extends AbstractFunction
     {
       if (anchestor.getCurrentPage() != 1)
       {
-        throw new IllegalStateException("State is null, but this is not the first page");
+        Log.debug ("Anchestor: "+ anchestor);
+        Log.debug ("Anchestor: "+ anchestor.getCurrentDataItem());
+        Log.debug ("Anchestor: "+ anchestor.getCurrentGroupIndex());
+        throw new IllegalStateException("State is null, but this is not the first page." + anchestor.getCurrentPage());
       }
     }
     // open the logical page ...

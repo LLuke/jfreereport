@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.29 2003/02/17 16:14:17 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.30 2003/02/18 19:37:33 taqua Exp $
  *
  * Changes
  * -------
@@ -116,6 +116,11 @@ public class SimplePageLayouter extends PageLayouter
     public Band getBand()
     {
       return band;
+    }
+
+    public String toString ()
+    {
+      return "State={" + band + "}";
     }
   }
 
@@ -305,7 +310,7 @@ public class SimplePageLayouter extends PageLayouter
     }
     catch (Exception e)
     {
-      throw new FunctionProcessingException("ItemsFinished", e);
+      throw new FunctionProcessingException("ItemsStarted", e);
     }
 
     isInItemGroup = true;
@@ -340,7 +345,7 @@ public class SimplePageLayouter extends PageLayouter
     try
     {
       // a new page has started, so reset the cursor ...
-      setCursor(new SimplePageLayoutCursor((float) getLogicalPage().getHeight()));
+      setCursor(new SimplePageLayoutCursor(getLogicalPage().getHeight()));
 
       Band b = getReport().getPageHeader();
       if (event.getState().getCurrentPage() == 1)
@@ -704,12 +709,14 @@ public class SimplePageLayouter extends PageLayouter
    */
   protected Rectangle2D doLayout(Band band)
   {
-    float width = (float) getLogicalPage().getWidth();
+    float width = getLogicalPage().getWidth();
     float height = getCursor().getPageBottomReserved() - getCursor().getPageTop();
     Rectangle2D bounds = BandLayoutManagerUtil.doLayout(band,
                                           getLogicalPage().getOutputTarget(),
                                           width,
                                           height);
+    Log.debug ("After Layout: " + bounds);
+    Log.debug ("After Layout: " + band);
     getCurrentEvent().getState().fireLayoutCompleteEvent();
     return bounds;
   }
@@ -733,6 +740,7 @@ public class SimplePageLayouter extends PageLayouter
     try
     {
       float height = (float) bounds.getHeight();
+      Log.debug ("Printing: " + bounds);
       // handle the end of the page
       if (isFinishingPage())
       {
@@ -741,7 +749,6 @@ public class SimplePageLayouter extends PageLayouter
           getLogicalPage().replaySpool(spooledBand);
           spooledBand = null;
         }
-        Log.debug ("Printing on : " + bounds);
         getLogicalPage().addBand(bounds, band);
         cursor.advance(height);
         return true;
@@ -755,6 +762,7 @@ public class SimplePageLayouter extends PageLayouter
           spooledBand = null;
         }
 
+        Log.debug ("Y=" + getCursor().getY() + " Height=" + height + " band=" + band);
         createSaveState(band);
         endPage(ENDPAGE_FORCED);
         return false;
@@ -916,12 +924,15 @@ public class SimplePageLayouter extends PageLayouter
       return;
     }
 
+    setRestartingPage(true);
     // if there was a pagebreak_after_print, there is no band to print for now
     if (state.getBand() != null)
     {
+      Log.debug ("Printing band on Restart: " + state.getBand());
       print(state.getBand(), false);
     }
     clearSaveState();
+    setRestartingPage(false);
   }
 
   /**
@@ -941,7 +952,7 @@ public class SimplePageLayouter extends PageLayouter
   public void setLogicalPage(LogicalPage logicalPage)
   {
     super.setLogicalPage(logicalPage);
-    setCursor(new SimplePageLayoutCursor((float) getLogicalPage().getHeight()));
+    setCursor(new SimplePageLayoutCursor(getLogicalPage().getHeight()));
   }
 
   /**
@@ -965,6 +976,7 @@ public class SimplePageLayouter extends PageLayouter
         spooledBand = null;
       }
       super.endPage();
+//      Log.debug ("Ended Page: " , new Exception());
       return true;
     }
     else

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextElement.java,v 1.27 2003/02/04 17:56:07 taqua Exp $
+ * $Id: TextElement.java,v 1.28 2003/02/05 15:38:13 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -306,10 +306,6 @@ public class TextElement extends Element
     b.append(getName());
     b.append(", font=");
     b.append(getStyle().getFontDefinitionProperty());
-    b.append(", text=");
-    b.append(getValue());
-    b.append(", getFormattedText=");
-    b.append(getValue());
     b.append("}");
     return b.toString();
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.6 2003/02/16 23:23:43 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.7 2003/02/17 16:07:19 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package com.jrefinery.report.targets.base.bandlayout;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
@@ -125,7 +126,7 @@ public class BandLayoutManagerUtil
 
     // the height is redefined by the band's requirements to support
     // the dynamic elements.
-   // Log.debug ("Band Defined a MinimumSize: " + fdim);
+    Log.debug ("Band Defined a MinimumSize: " + fdim);
     height = (float) fdim.getHeight();
     Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, height);
     band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
