@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.11 2003/02/17 16:07:20 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.12 2003/02/18 19:37:28 taqua Exp $
  *
  * Changes
  * -------
@@ -336,6 +336,10 @@ public class StaticLayoutManager implements BandLayoutManager
     for (int i = 0; i < elements.length; i++)
     {
       Element e = elements[i];
+
+      if (e.isVisible() == false)
+        continue;
+
       boolean staticWidth = isElementStaticWidth(e);
       boolean staticHeight = isElementStaticHeight(e);
       if (staticWidth || staticHeight)
@@ -368,6 +372,10 @@ public class StaticLayoutManager implements BandLayoutManager
     for (int i = 0; i < elements.length; i++)
     {
       Element e = elements[i];
+
+      if (e.isVisible() == false)
+        continue;
+
       boolean staticWidth = isElementStaticWidth(e);
       boolean staticHeight = isElementStaticHeight(e);
       if (staticWidth == false || staticHeight == false)
@@ -456,6 +464,10 @@ public class StaticLayoutManager implements BandLayoutManager
     for (int i = 0; i < elements.length; i++)
     {
       Element e = elements[i];
+
+      if (e.isVisible() == false)
+        continue;
+
       boolean staticWidth = isElementStaticWidth(e);
       boolean staticHeight = isElementStaticHeight(e);
       if (staticWidth || staticHeight)
@@ -490,6 +502,10 @@ public class StaticLayoutManager implements BandLayoutManager
     for (int i = 0; i < elements.length; i++)
     {
       Element e = elements[i];
+
+      if (e.isVisible() == false)
+        continue;
+
       boolean staticWidth = isElementStaticWidth(e);
       boolean staticHeight = isElementStaticHeight(e);
       if (staticWidth == false || staticHeight == false)
@@ -552,6 +568,10 @@ public class StaticLayoutManager implements BandLayoutManager
     for (int i = 0; i < elements.length; i++)
     {
       Element e = elements[i];
+
+      if (e.isVisible() == false)
+        continue;
+
       Dimension2D uncorrectedSize = getPreferredSize(e, parentDim);
       Dimension2D size = correctDimension(uncorrectedSize, parentDim);
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentFactoryModule.java,v 1.2 2003/02/08 20:43:45 taqua Exp $
+ * $Id: ImageContentFactoryModule.java,v 1.3 2003/02/18 19:37:29 taqua Exp $
  *
  * Changes
  * -------
@@ -83,6 +83,10 @@ public class ImageContentFactoryModule implements ContentFactoryModule
                                                             bounds.getPreferredSize());
 
     ImageReference ir = (ImageReference) e.getValue();
+    // there is no content?
+    if (ir == null)
+      return null;
+
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE))
     {
       double w = ir.getImageWidth();

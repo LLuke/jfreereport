@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!--
  This DOCType declaration is valid, uncomment it to validate the report
- -->                    
+ -->
 <!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple"
                         "http://jfreereport.sourceforge.net/report.dtd">
 
@@ -15,7 +15,7 @@
       <property name="com.jrefinery.report.preview.PreferredHeight">480</property>
       <property name="com.jrefinery.report.preview.MaximumWidth">800</property>
       <property name="com.jrefinery.report.preview.MaximumHeight">600</property>
--->      
+-->
     </configuration>
     <reportheader height="95" fontname="Serif" fontstyle="bold" fontsize="12" fsunderline="true">
         <rectangle name="background" x="0" y="64" width="100%" height="30" color="#DCFFDC" />

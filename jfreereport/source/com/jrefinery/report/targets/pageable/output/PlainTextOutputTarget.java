@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PlainTextOutputTarget.java,v 1.9 2003/02/10 21:22:59 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.10 2003/02/18 19:37:32 taqua Exp $
  *
  * Changes
  * -------
@@ -447,11 +447,11 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   public void drawString(String text)
   {
     Rectangle2D bounds = getOperationBounds();
-
+    
     int x = (int) Math.floor((float) bounds.getX() / characterWidth);
     int y = (int) Math.floor((float) bounds.getY() / characterHeight);
     int w = (int) Math.floor((float) bounds.getWidth() / characterWidth);
-    
+
     pageBuffer.addTextChunk(x, y, w, text, getFont());
   }
 
@@ -552,7 +552,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
 
   /**
    * Creates a content factory. The factory does only support TextContent.
-   * 
+   *
    * @return the created content factory.
    */
   protected ContentFactory createContentFactory()

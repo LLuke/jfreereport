@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.23 2003/02/10 19:33:51 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.24 2003/02/18 19:37:33 taqua Exp $
  *
  * Changes
  * -------
@@ -416,8 +416,10 @@ public class LogicalPageImpl implements LogicalPage
     try
     {
       Content content = factory.createContentForElement(e, eli, getOutputTarget());
-      // split the elements contents, then write ..
+      if (content == null)
+        return;
 
+      // split the elements contents, then write ..
       List opsList = getOperationFactory().createOperations(e, content, drawBounds);
       PhysicalOperation[] ops = new PhysicalOperation[opsList.size()];
       ops = (PhysicalOperation[]) opsList.toArray(ops);
