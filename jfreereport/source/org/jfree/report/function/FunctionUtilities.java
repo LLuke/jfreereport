@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionUtilities.java,v 1.5 2003/10/08 19:48:58 taqua Exp $
+ * $Id: FunctionUtilities.java,v 1.6 2003/10/30 19:38:43 taqua Exp $
  *
  * Changes
  * -------
@@ -143,14 +143,9 @@ public final class FunctionUtilities
     {
       return false;
     }
-    if (debug)
-    Log.debug ("Event: " + event.getState().getLevel() + " - " +
-        f.getDependencyLevel() + " vs. " +
-        (event.getState().getLevel() == f.getDependencyLevel()));
     return (event.getState().getLevel() == f.getDependencyLevel());
   }
 
-  public static boolean debug;
   /**
    * Returns true or false.
    *
