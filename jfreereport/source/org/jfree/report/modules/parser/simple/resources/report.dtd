@@ -566,12 +566,28 @@
   weight               CDATA         #IMPLIED
 >
 
+<!--
+  Creates a line shape element. When using relative coordinates,
+  you should also supply a width and a height for the bounds.
+
+  JFreeReport will construct the bounds for the line shape using
+  the x1, y1 coordinates and the given width or height. If no
+  width or height is given, the missing values will be computed from
+  the difference between x2 and x1 and y2 to y1.
+
+  This heuristic might fail for relative coordinates.
+
+  Line shapes will always be scaled, without preserving the aspect
+  ratio.
+ -->
 <!ELEMENT line      EMPTY>
 <!ATTLIST line
   x1                   CDATA         #REQUIRED
   y1                   CDATA         #REQUIRED
   x2                   CDATA         #REQUIRED
   y2                   CDATA         #REQUIRED
+  width                CDATA         #IMPLIED
+  height               CDATA         #IMPLIED
 	color                CDATA         #IMPLIED
 	name                 CDATA         #IMPLIED
 	weight               CDATA         #IMPLIED

@@ -44,6 +44,28 @@ public class LineReadHandler extends AbstractXmlReadHandler
     final float y2 = ParserUtil.parseRelativeFloat(atts.getValue("y2"), "Element y2 not specified");
     final Stroke stroke = ParserUtil.parseStroke(atts.getValue("weight"));
 
+    final String widthValue = atts.getValue("width");
+    final float width;
+    if (widthValue != null)
+    {
+      width = ParserUtil.parseRelativeFloat(widthValue, "Width is invalid");
+    }
+    else
+    {
+      width = x2 - x1;
+    }
+
+    final String heightValue = atts.getValue("height");
+    final float height;
+    if (heightValue != null)
+    {
+      height = ParserUtil.parseRelativeFloat(heightValue, "Height is invalid");
+    }
+    else
+    {
+      height = y2 - y1;
+    }
+
     if (x1 == x2 && y1 == y2)
     {
       Log.warn ("creating a horizontal line with 'x1 == x2 && y1 == y2' is deprecated. " +
@@ -53,9 +75,19 @@ public class LineReadHandler extends AbstractXmlReadHandler
     }
     else
     {
+      // create the bounds as specified by the user
+      final Rectangle2D.Double bounds =
+              new Rectangle2D.Double(x1, y1, width, height);
+      // first version of the line (not originating @(0,0))
       final Line2D line = new Line2D.Float(x1, y1, x2, y2);
+      // the bounds of that line
+      final Rectangle2D shapeBounds = line.getBounds2D();
+      // translate so that the shape starts at position (0,0)
+      final Shape transformedShape =
+          ShapeTransform.translateShape(line, -shapeBounds.getX(), -shapeBounds.getY());
+      // and use that shape with the user's bounds to create the element.
       element = StaticShapeElementFactory.createShapeElement
-                (name, c, stroke, line, true, false);
+                (name, bounds, c, stroke, transformedShape, true, false, true, false);
     }
   }
 

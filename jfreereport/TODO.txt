@@ -110,8 +110,8 @@ What changed:
   makes it possible to supply an own JFreeReport implementation to the parser.
 * The PageFinished event is now handled correctly. This catches all pagebreak
   related bugs.
-* MessageFormatElements (contribution by Jörg Schaible)
-* PageOfPagesFunction (contributed by Jörg Schaible)
+* MessageFormatElements (contribution by Joerg Schaible)
+* PageOfPagesFunction (contributed by Joerg Schaible)
 * All Preview.. Components now use a factory method
   "protected PreviewProxyBase createPreviewProxyBase ()"
   to create the ProxyBaseImplementation. This should make it easier to replace
@@ -153,5 +153,3 @@ What will be impossible:
 Known bugs:
 * Non-Area shapes, which are not instances of Line2D cannot be
   drawn right now. The clipping fails for these shapes. [Not fixable yet]
-
-* Simple-XML: Lines with Width=100% are not displayed correctly. Why?

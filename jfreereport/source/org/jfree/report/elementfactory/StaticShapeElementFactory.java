@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticShapeElementFactory.java,v 1.8 2005/01/24 23:59:23 taqua Exp $
+ * $Id: StaticShapeElementFactory.java,v 1.9 2005/01/28 19:26:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -203,6 +203,10 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    * correct the shape to start from point (0,0) by using an AffineTransform. Use one of
    * the createShape methods, that allow you to supply separate bounds and shapes, if you
    * want to have full control over the creation process.
+   * <p>
+   * <strong>Warning:</strong> This function will misbehave, if you supply a Line2D
+   * instance with relative coordinates. The bounds of such lines cannot be securely
+   * translated into relative coordinates as used by JFreeReport.
    *
    * @param name       the name of the new element.
    * @param paint      the line color of this element.
@@ -231,7 +235,6 @@ public class StaticShapeElementFactory extends ShapeElementFactory
     // the shapes origin (x,y).
 
     // we have to translate the shape, as anything else would mess up the table layout
-
     final Rectangle2D shapeBounds = shape.getBounds2D();
     // Log.debug ("ShapeBounds: " + shapeBounds);
     if (shapeBounds.getX() == 0 && shapeBounds.getY() == 0)
@@ -246,7 +249,6 @@ public class StaticShapeElementFactory extends ShapeElementFactory
     return createShapeElement(name, shapeBounds, paint, stroke, transformedShape,
         shouldDraw, shouldFill, true);
   }
-
 
   /**
    * Creates a new ShapeElement.
