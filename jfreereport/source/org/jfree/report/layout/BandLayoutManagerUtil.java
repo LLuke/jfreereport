@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.8 2003/11/01 19:52:27 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.9 2003/11/10 18:00:36 taqua Exp $
  *
  * Changes
  * -------
@@ -154,7 +154,8 @@ public final strictfp class BandLayoutManagerUtil
         = BandLayoutManagerUtil.getLayoutManager(band);
     // in this layouter the width of a band is always the full page width
     //final Dimension2D fdim = lm.minimumLayoutSize(band, new FloatDimension(width, height));
-    final Dimension2D fdim = lm.preferredLayoutSize(band, new FloatDimension(width, height), support);
+    final Dimension2D fdim = lm.preferredLayoutSize
+      (band, new FloatDimension(width, height), support);
 
     // the height is redefined by the band's requirements to support
     // the dynamic elements.

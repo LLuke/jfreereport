@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.10 2003/11/07 18:33:57 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.11 2003/11/10 18:01:35 taqua Exp $
  *
  * Changes
  * -------
@@ -675,6 +675,10 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     if (key == null)
     {
       throw new NullPointerException("ElementStyleSheet.setStyleProperty: key is null.");
+    }
+    if (isFontDefinitionProperty(key))
+    {
+      fontDefinition = null;
     }
     if (value == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.11 2003/11/07 18:33:49 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.12 2003/11/10 18:00:37 taqua Exp $
  *
  * Changes
  * -------
@@ -105,6 +105,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
    * @param containerBounds the bounds of the elements parents.
    * @param retval a dimension object that should be filled, or null,
    * if a new object should be created
+   * @param support the layout support used to compute sizes.
    *
    * @return the minimum size.
    */
@@ -194,6 +195,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
    * @param containerBounds  the bounds of the element's container.
    * @param retval a dimension object that should be filled, or null,
    * if a new object should be created
+   * @param support the layout support used to compute sizes.
    *
    * @return the preferred size of the element.
    */
@@ -296,6 +298,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
    *
    * @param b  the band.
    * @param containerDims the maximum size the band should use for that container.
+   * @param support the layout support used to compute sizes.
    *
    * @return the preferred size.
    */
@@ -448,6 +451,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
    *
    * @param b  the band.
    * @param containerBounds the bounds of the bands parents.
+   * @param support the layout support used to compute sizes.
    *
    * @return the minimum size.
    */
@@ -601,6 +605,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
    * and <code>MINIMUM_SIZE</code> properties set to valid values.
    *
    * @param b the band to lay out.
+   * @param support the layout support used to compute sizes.
    * @throws java.lang.IllegalStateException if the bands has no bounds set.
    */
   public synchronized void doLayout(final Band b, final LayoutSupport support)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.12 2003/11/07 18:33:49 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.13 2003/11/10 18:00:36 taqua Exp $
  *
  * Changes
  * -------
@@ -70,11 +70,13 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    * @param containerBounds the bounds of the elements parents.
    * @param retval a dimension object that should be filled, or null,
    * if a new object should be created
+   * @param support the layout support used to compute sizes.
    *
    * @return the minimum size.
    */
   protected strictfp Dimension2D computeMinimumSize
-    (final Element e, final Dimension2D containerBounds, Dimension2D retval, final LayoutSupport support)
+    (final Element e, final Dimension2D containerBounds, 
+     Dimension2D retval, final LayoutSupport support)
   {
     if (containerBounds.getWidth() < 0 || containerBounds.getHeight() < 0)
     {
@@ -127,6 +129,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    * @param containerBounds  the bounds of the element's container.
    * @param retval a dimension object that should be filled, or null,
    * if a new object should be created
+   * @param support the layout support used to compute sizes.
    *
    * @return the preferred size of the element.
    */
@@ -205,6 +208,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    * and returned.
    * @param e  the element.
    * @param conBounds  the bounds of the surrounding container.
+   * @param support the layout support used to compute sizes.
    *
    * @return the new elements dimension.
    */

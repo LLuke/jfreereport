@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateCollection.java,v 1.7 2003/08/24 15:08:21 taqua Exp $
+ * $Id: TemplateCollection.java,v 1.8 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -106,6 +106,10 @@ public class TemplateCollection implements Serializable
    */
   public TemplateDescription getDescription(final Template template)
   {
+    if (template == null)
+    {
+      throw new NullPointerException("Template given must not be null.");
+    }
     final Iterator enum = templates.values().iterator();
     while (enum.hasNext())
     {

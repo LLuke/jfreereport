@@ -2,7 +2,24 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+0.8.4-6:
+        * BugFix: In some cases the band layout manager "lost" the
+          reference to the local LayoutSupport. This part was ugly
+          and was completly rewritten.
 
+        * BugFix: Exceptions in the SimplePageLayouter may be lost when
+          the clearCurrentEvent() method throws an other exception. This
+          was stupid coding and this method does no longer throw that
+          unnecessary exception.
+
+        * The preview components are now fully configurable. The creation
+          and contents of the toolbar and menubar can now be controlled
+          using the report configuration.
+
+        * The Total* Function now support a global computation, if no
+          group is defined. They do no longer depend on the existence
+          of the default group.
+           
 0.8.4-5 (07-Nov-2003):
         * BugFix: The report footer was not printed, if an automatic
           pagebreak was done right before the printing of the footer.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GridBLayoutManager.java,v 1.5 2003/09/13 15:14:40 taqua Exp $
+ * $Id: GridBLayoutManager.java,v 1.6 2003/11/10 18:00:37 taqua Exp $
  *
  * Changes
  * -------
@@ -61,6 +61,7 @@ public strictfp class GridBLayoutManager extends AbstractBandLayoutManager
    *
    * @param b  the band.
    * @param containerDims the bounds of the surrounding container.
+   * @param support the layout support used to compute sizes.
    *
    * @return the preferred size.
    */
@@ -89,6 +90,7 @@ public strictfp class GridBLayoutManager extends AbstractBandLayoutManager
    *
    * @param b  the band.
    * @param containerBounds the bounds of the surrounding container.
+   * @param support the layout support used to compute sizes.
    *
    * @return the minimum size.
    */
@@ -105,6 +107,7 @@ public strictfp class GridBLayoutManager extends AbstractBandLayoutManager
    * Performs the layout of a band.
    *
    * @param b  the band.
+   * @param support the layout support used to compute sizes.
    */
   public void doLayout(final Band b, final LayoutSupport support)
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardLayoutBLayoutManager.java,v 1.5 2003/09/15 18:26:50 taqua Exp $
+ * $Id: CardLayoutBLayoutManager.java,v 1.6 2003/11/10 18:00:37 taqua Exp $
  *
  * Changes
  * -------
@@ -74,6 +74,7 @@ public strictfp class CardLayoutBLayoutManager extends AbstractBandLayoutManager
    *
    * @param b  the band.
    * @param containerDims the bounds of the surrounding container.
+   * @param support the layout support used to compute sizes.
    *
    * @return the preferred size.
    */
@@ -98,6 +99,7 @@ public strictfp class CardLayoutBLayoutManager extends AbstractBandLayoutManager
    *
    * @param b  the band.
    * @param containerDims the bounds of the surrounding container.
+   * @param support the layout support used to compute sizes.
    *
    * @return the preferred size.
    */
@@ -139,6 +141,7 @@ public strictfp class CardLayoutBLayoutManager extends AbstractBandLayoutManager
    * Performs the layout of a band.
    *
    * @param b  the band.
+   * @param layoutSupport the layout support used to compute sizes.
    */
   public void doLayout(final Band b, final LayoutSupport layoutSupport)
   {
