@@ -2,13 +2,13 @@
  * Date: Jan 31, 2003
  * Time: 4:24:01 PM
  *
- * $Id: BarcodeFilter.java,v 1.2 2003/07/03 16:06:17 taqua Exp $
+ * $Id: BarcodeFilter.java,v 1.1 2003/07/08 14:21:46 taqua Exp $
  */
 package org.jfree.report.ext.barcode.base.filter;
 
-import org.jfree.report.ext.barcode.base.Barcode;
 import org.jfree.report.filter.DataFilter;
 import org.jfree.report.filter.DataSource;
+import org.jfree.report.ext.modules.barcode.base.content.Barcode;
 
 import java.awt.Color;
 import java.awt.Image;

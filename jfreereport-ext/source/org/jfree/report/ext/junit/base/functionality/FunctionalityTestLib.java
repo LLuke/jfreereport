@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionalityTestLib.java,v 1.3 2003/07/03 16:06:19 taqua Exp $
+ * $Id: FunctionalityTestLib.java,v 1.1 2003/07/11 20:07:56 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -60,17 +60,16 @@ import org.jfree.report.demo.cards.CardDemo;
 import org.jfree.report.modules.misc.referencedoc.DataSourceReferenceGenerator;
 import org.jfree.report.modules.misc.referencedoc.ObjectReferenceGenerator;
 import org.jfree.report.modules.misc.referencedoc.StyleKeyReferenceGenerator;
-import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterCommandSet;
 import org.jfree.report.modules.output.table.csv.CSVTableProcessor;
-import org.jfree.report.modules.output.table.xls.ExcelProcessor;
 import org.jfree.report.modules.output.table.html.HtmlProcessor;
 import org.jfree.report.modules.output.table.html.StreamHtmlFilesystem;
 import org.jfree.report.modules.output.table.html.ZIPHtmlFilesystem;
 import org.jfree.report.modules.output.table.rtf.RTFProcessor;
+import org.jfree.report.modules.output.table.xls.ExcelProcessor;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.NullOutputStream;
 
@@ -93,9 +92,9 @@ public class FunctionalityTestLib
     new ReportTest ("/org/jfree/report/demo/shape-and-drawable.xml", new DefaultTableModel()),
     new ReportTest ("/org/jfree/report/demo/swing-icons.xml", new SwingIconsDemoTableModel()),
     new ReportTest ("/org/jfree/report/demo/cards/usercards.xml", CardDemo.createSimpleDemoModel()),
-    new ReportTest ("/org/jfree/report/io/ext/factory/objects/ObjectReferenceReport.xml", ObjectReferenceGenerator.createData()),
-    new ReportTest ("/org/jfree/report/io/ext/factory/stylekey/StyleKeyReferenceReport.xml", StyleKeyReferenceGenerator.createData()),
-    new ReportTest ("/org/jfree/report/io/ext/factory/datasource/DataSourceReferenceReport.xml", DataSourceReferenceGenerator.createData())
+    new ReportTest ("/org/jfree/report/modules/misc/referencedoc/ObjectReferenceReport.xml", ObjectReferenceGenerator.createData()),
+    new ReportTest ("/org/jfree/report/modules/misc/referencedoc/StyleKeyReferenceReport.xml", StyleKeyReferenceGenerator.createData()),
+    new ReportTest ("/org/jfree/report/modules/misc/referencedoc/DataSourceReferenceReport.xml", DataSourceReferenceGenerator.createData())
   };
 
   public static boolean createPlainText(final JFreeReport report)

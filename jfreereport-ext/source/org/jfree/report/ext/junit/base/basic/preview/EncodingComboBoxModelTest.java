@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModelTest.java,v 1.1 2003/07/03 16:10:22 taqua Exp $
+ * $Id: EncodingComboBoxModelTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,13 +38,32 @@
 
 package org.jfree.report.ext.junit.base.basic.preview;
 
+import java.io.InputStream;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.util.Properties;
+import java.util.Enumeration;
 import javax.swing.JComboBox;
 
 import junit.framework.TestCase;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
+import org.jfree.report.util.Log;
+import org.jfree.report.util.ReportConfiguration;
 
 public class EncodingComboBoxModelTest extends TestCase
 {
+  private class EncCBModelTestClass extends EncodingComboBoxModel
+  {
+    public EncCBModelTestClass()
+    {
+    }
+
+    public Properties getDefaults ()
+    {
+      return EncodingComboBoxModel.getDefaultEncodings();
+    }
+  }
+
   public EncodingComboBoxModelTest()
   {
   }
@@ -60,11 +79,15 @@ public class EncodingComboBoxModelTest extends TestCase
     assertNotNull(EncodingComboBoxModel.createDefaultModel());
   }
 
-  public void testSelectItem ()
+  public void testSelectItemAllAvailable ()
   {
+    String org = ReportConfiguration.getGlobalConfig().getConfigProperty(EncodingComboBoxModel.AVAILABLE_ENCODINGS);
+    ReportConfiguration.getGlobalConfig().setConfigProperty
+        (EncodingComboBoxModel.AVAILABLE_ENCODINGS, EncodingComboBoxModel.AVAILABLE_ENCODINGS_ALL);
     final EncodingComboBoxModel def = EncodingComboBoxModel.createDefaultModel();
 
     final int index = def.indexOf("Cp850");
+    Log.debug ("Size: " + def.getSize());
     assertTrue(index > -1);
 
     final Object element = def.getElementAt(index);
@@ -76,5 +99,90 @@ public class EncodingComboBoxModelTest extends TestCase
     cb.setSelectedIndex(index);
     assertEquals(element, cb.getSelectedItem());
     assertEquals(index, cb.getSelectedIndex());
+
+    ReportConfiguration.getGlobalConfig().setConfigProperty
+        (EncodingComboBoxModel.AVAILABLE_ENCODINGS, org);
   }
+
+  public void testSelectItemFileAvailable ()
+  {
+    String org = ReportConfiguration.getGlobalConfig().getConfigProperty(EncodingComboBoxModel.AVAILABLE_ENCODINGS);
+    ReportConfiguration.getGlobalConfig().setConfigProperty
+        (EncodingComboBoxModel.AVAILABLE_ENCODINGS, EncodingComboBoxModel.AVAILABLE_ENCODINGS_FILE);
+    final EncodingComboBoxModel def = EncodingComboBoxModel.createDefaultModel();
+
+    final int index = def.indexOf("Cp850");
+    Log.debug ("Size: " + def.getSize());
+    assertTrue(index > -1);
+
+    final Object element = def.getElementAt(index);
+    def.setSelectedItem(def.getElementAt(index));
+    assertEquals(element, def.getSelectedItem());
+    assertEquals(index, def.getSelectedIndex());
+
+    final JComboBox cb = new JComboBox(def);
+    cb.setSelectedIndex(index);
+    assertEquals(element, cb.getSelectedItem());
+    assertEquals(index, cb.getSelectedIndex());
+
+    ReportConfiguration.getGlobalConfig().setConfigProperty
+        (EncodingComboBoxModel.AVAILABLE_ENCODINGS, org);
+  }
+
+  public void testSelectItemNoneAvailable ()
+  {
+    String org = ReportConfiguration.getGlobalConfig().getConfigProperty(EncodingComboBoxModel.AVAILABLE_ENCODINGS);
+    ReportConfiguration.getGlobalConfig().setConfigProperty
+        (EncodingComboBoxModel.AVAILABLE_ENCODINGS, EncodingComboBoxModel.AVAILABLE_ENCODINGS_NONE);
+    final EncodingComboBoxModel def = EncodingComboBoxModel.createDefaultModel();
+
+    final int index = def.indexOf("Cp850");
+    assertTrue(index == -1);
+
+    ReportConfiguration.getGlobalConfig().setConfigProperty
+        (EncodingComboBoxModel.AVAILABLE_ENCODINGS, org);
+  }
+
+  public void testAllEncodingsDefined ()
+  {
+    final String encFile = ReportConfiguration.getGlobalConfig().getConfigProperty
+        (EncodingComboBoxModel.ENCODINGS_DEFINITION_FILE, EncodingComboBoxModel.ENCODINGS_DEFINITION_FILE_DEFAULT);
+    final InputStream in = this.getClass().getResourceAsStream(encFile);
+    if (in == null)
+    {
+      fail ("The specified encodings definition file was not found: " + encFile);
+    }
+    else
+    {
+      try
+      {
+        final Properties defaultEncodings = new EncCBModelTestClass().getDefaults();
+        final Properties encDef = new Properties();
+        final BufferedInputStream bin = new BufferedInputStream(in);
+        encDef.load(bin);
+        bin.close();
+        final Enumeration enum = defaultEncodings.keys();
+        while (enum.hasMoreElements())
+        {
+          final String enc = (String) enum.nextElement();
+          // if not set to "true"
+          String defined = encDef.getProperty(enc);
+          if (defined == null)
+          {
+            throw new IllegalStateException("Encoding not defined: " + enc);
+          }
+          if (defined.equalsIgnoreCase("true")== false && defined.equalsIgnoreCase("false") == false)
+          {
+            throw new IllegalStateException("Encoding not invalid: " + enc);
+          }
+        }
+      }
+      catch (IOException e)
+      {
+        Log.warn(new Log.SimpleMessage
+            ("There was an error while reading the encodings definition file: ", encFile), e);
+      }
+    }
+  }
+
 }

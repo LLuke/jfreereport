@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigurationTest.java,v 1.1 2003/07/03 16:10:22 taqua Exp $
+ * $Id: ReportConfigurationTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,7 +43,7 @@ import org.jfree.report.util.ReportConfiguration;
 
 public class ReportConfigurationTest extends TestCase
 {
-  private static final String key = "org.jfree.report.encodings.file";
+  private static final String key = ReportConfiguration.LOGTARGET;;
 
   public ReportConfigurationTest()
   {

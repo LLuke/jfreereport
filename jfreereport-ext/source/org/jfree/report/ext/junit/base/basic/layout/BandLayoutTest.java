@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutTest.java,v 1.2 2003/07/03 16:06:18 taqua Exp $
+ * $Id: BandLayoutTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,12 +39,20 @@
 package org.jfree.report.ext.junit.base.basic.layout;
 
 import java.awt.geom.Rectangle2D;
+import java.awt.geom.Line2D;
+import java.awt.Color;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
+import org.jfree.report.JFreeReport;
+import org.jfree.report.ShapeElement;
+import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.util.Log;
 import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.layout.DefaultLayoutSupport;
+import org.jfree.report.layout.StaticLayoutManager;
+import org.jfree.xml.ParserUtil;
 import junit.framework.TestCase;
 
 public class BandLayoutTest extends TestCase
@@ -72,5 +80,41 @@ public class BandLayoutTest extends TestCase
     // width is preserved  ... height is the one given in the element
     assertEquals(new Rectangle2D.Float(0, 0, 500, 10), BandLayoutManagerUtil.getBounds(band, null));
 
+  }
+
+  public void testLineLayout()
+  {
+    final Band band = new Band();
+    BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500, 200);
+    // width is preserved  ...
+    assertEquals(new Rectangle2D.Float(0, 0, 500, 0), BandLayoutManagerUtil.getBounds(band, null));
+
+    final Element e = StaticShapeElementFactory.createLineShapeElement(null, null, null,
+        new Line2D.Float(10, 10, 10, 10));
+    band.addElement(e);
+    BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(), 500, 200);
+    // width is preserved  ... height is the one given in the element
+    assertEquals(new Rectangle2D.Float(0, 0, 500, 10), BandLayoutManagerUtil.getBounds(band, null));
+
+  }
+
+  public void testShapeLayout ()
+  {
+    final JFreeReport report = new JFreeReport();
+    final Line2D line = new Line2D.Float(40, 70, 140, 70);
+    Log.debug ("Line: " + line.getBounds2D());
+    final ShapeElement element = StaticShapeElementFactory.createLineShapeElement(
+        null,
+        Color.black,
+        ParserUtil.parseStroke("1"),
+        line);
+    report.getReportHeader().addElement(element);
+
+    Log.debug (element.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE));
+    Log.debug (element.getStyle().getStyleProperty(StaticLayoutManager.ABSOLUTE_POS));
+    Log.debug (BandLayoutManagerUtil.getBounds(element, null));
+
+    BandLayoutManagerUtil.doLayout(report.getReportHeader(), new DefaultLayoutSupport(), 500, 200);
+    assertEquals(new Rectangle2D.Float(0, 0, 500, 70), BandLayoutManagerUtil.getBounds(report.getReportHeader(), null));
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventOrderTest.java,v 1.2 2003/07/03 16:06:19 taqua Exp $
+ * $Id: EventOrderTest.java,v 1.1 2003/07/11 20:07:56 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -382,7 +382,7 @@ public class EventOrderTest extends TestCase
     Log.debug("   PLAIN_TEXT ..");
     assertTrue(FunctionalityTestLib.createPlainText(report));
     Log.debug("   RTF ..");
-    FunctionalityTestLib.createRTF(report); 
+    FunctionalityTestLib.createRTF(report);
     Log.debug("   STREAM_HTML ..");
     FunctionalityTestLib.createStreamHTML(report);
     Log.debug("   EXCEL ..");

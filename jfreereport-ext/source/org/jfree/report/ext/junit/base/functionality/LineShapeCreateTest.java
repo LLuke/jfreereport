@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineShapeCreateTest.java,v 1.4 2003/07/03 16:06:19 taqua Exp $
+ * $Id: LineShapeCreateTest.java,v 1.1 2003/07/11 20:07:56 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,6 +51,10 @@ import org.jfree.report.ElementAlignment;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportHeader;
 import org.jfree.report.ShapeElement;
+import org.jfree.report.layout.BandLayoutManagerUtil;
+import org.jfree.report.layout.DefaultLayoutSupport;
+import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
+import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.elementfactory.LabelElementFactory;
 import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.style.FontDefinition;
@@ -71,9 +75,9 @@ public class LineShapeCreateTest extends TestCase
     /**
      * Opens the target.
      *
-     * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is some problem opening the target.
+     * @throws OutputTargetException if there is some problem opening the target.
      */
-    public void open() throws org.jfree.report.modules.output.pageable.base.OutputTargetException
+    public void open() throws OutputTargetException
     {
       super.open();
       shapeCount = 0;
@@ -150,7 +154,7 @@ public class LineShapeCreateTest extends TestCase
     report.setDefaultPageFormat(pf);
     assertEquals(report.getDefaultPageFormat(), pf);
     final LSDebugOutputTarget lsd = new LSDebugOutputTarget(report.getDefaultPageFormat());
-    final org.jfree.report.modules.output.pageable.base.PageableReportProcessor prp = new org.jfree.report.modules.output.pageable.base.PageableReportProcessor(report);
+    final PageableReportProcessor prp = new PageableReportProcessor(report);
     prp.setOutputTarget(lsd);
     lsd.open();
     prp.processReport();
@@ -167,6 +171,11 @@ public class LineShapeCreateTest extends TestCase
         ParserUtil.parseStroke("1"),
         line);
     report.getReportHeader().addElement(element);
+    
+    BandLayoutManagerUtil.doLayout(report.getReportHeader(), new DefaultLayoutSupport(), 500, 200);
+    assertEquals(new Rectangle2D.Float(0, 0, 500, 70), BandLayoutManagerUtil.getBounds(report.getReportHeader(), null));
+
+
     final PageFormatFactory pff = PageFormatFactory.getInstance();
     final Paper paper = pff.createPaper("A0");
     final PageFormat pf = pff.createPageFormat(paper, PageFormat.PORTRAIT);
@@ -175,7 +184,7 @@ public class LineShapeCreateTest extends TestCase
     report.setDefaultPageFormat(pf);
     assertEquals(report.getDefaultPageFormat(), pf);
     final LSDebugOutputTarget lsd = new LSDebugOutputTarget(report.getDefaultPageFormat());
-    final org.jfree.report.modules.output.pageable.base.PageableReportProcessor prp = new org.jfree.report.modules.output.pageable.base.PageableReportProcessor(report);
+    final PageableReportProcessor prp = new PageableReportProcessor(report);
     prp.setOutputTarget(lsd);
     lsd.open();
     prp.processReport();
