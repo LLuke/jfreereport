@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ElementConstants.java,v 1.5 2002/06/04 21:44:34 taqua Exp $
+ * $Id: ElementConstants.java,v 1.6 2002/09/13 15:38:04 mungady Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,8 @@
  * 10-May-2002 : Removed DEFAULT_FONT.. constants. The font can be determined on construction
  *               time (TM);
  * 16-May-2002 : Updated source header (DG);
+ * 13-Nov-2002 : Added vertical alignment constants (DG);
+ *
  */
 
 package com.jrefinery.report;
@@ -60,10 +62,22 @@ public interface ElementConstants
   /** Useful constant representing center-alignment. */
   public static final int CENTER = 3;
 
+  /** Constant for vertical alignment (top). */
+  public static final int TOP = 4;
+
+  /** Constant for vertical alignment (bottom). */
+  public static final int BOTTOM = 5;
+
+  /** Constant for vertical alignment (middle). */
+  public static final int MIDDLE = 3;
+
   /** The default paint. */
   public static final Paint DEFAULT_PAINT = Color.black;
 
-  /** The default alignment. */
+  /** The default horizontal alignment. */
   public static int DEFAULT_ALIGNMENT = Element.LEFT;
+
+  /** The default vertical alignment. */
+  public static int DEFAULT_VERTICAL_ALIGNMENT = Element.TOP;
 
 }
