@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.49 2003/05/16 17:26:47 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.50 2003/06/13 17:55:30 taqua Exp $
  *
  * Changes
  * -------
@@ -1040,13 +1040,12 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
    */
   protected boolean endPage(boolean force) throws ReportProcessingException
   {
-    Log.debug (getLogicalPage().isEmpty() + " LogicalPAge Empty");
     if (getLogicalPage().isEmpty() == false || force)
     {
       if (spooledBand != null)
       {
-       // getLogicalPage().replaySpool(spooledBand);
-        Log.warn ("Spool contained data, this data is lost now ...!");
+        // getLogicalPage().replaySpool(spooledBand);
+        // Log.warn ("Spool contained data, this data is lost now ...!");
         spooledBand = null;
       }
       super.endPage();

@@ -160,6 +160,7 @@ public class BaseFontFactory extends DefaultFontMapper
       Log.debug("Assuming unix like file structures");
       // Assume X11 is installed in the default location.
       registerFontPath(new File ("/usr/X11R6/lib/X11/fonts"), encoding);
+      registerFontPath(new File ("/usr/share/fonts"), encoding);
     }
     registerFontPath(new File(jrepath, "lib" + fs + "fonts"), encoding);
   }
