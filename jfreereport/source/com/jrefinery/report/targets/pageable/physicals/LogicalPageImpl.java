@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.16 2003/01/21 17:11:40 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.17 2003/01/29 03:13:04 taqua Exp $
  *
  * Changes
  * -------
@@ -41,14 +41,11 @@ package com.jrefinery.report.targets.pageable.physicals;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
+import com.jrefinery.report.targets.base.content.Content;
 import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.Spool;
-import com.jrefinery.report.targets.base.content.Content;
-import com.jrefinery.report.targets.base.operations.OperationFactory;
-import com.jrefinery.report.targets.base.operations.OperationModule;
-import com.jrefinery.report.targets.base.operations.PhysicalOperation;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
@@ -110,7 +107,7 @@ public class LogicalPageImpl implements LogicalPage
   public LogicalPageImpl(PageFormat log, PageFormat phys)
   {
     addOperationComments = ReportConfiguration.getGlobalConfig().isPrintOperationComment();
-    closed = false;
+    closed = true; // logical page is closed by default ..
     setPageFormat(log);
     setPhysicalPageFormat(phys);
 
@@ -235,7 +232,7 @@ public class LogicalPageImpl implements LogicalPage
   public void addBand(Rectangle2D bounds, Band band) throws OutputTargetException
   {
     Spool operations = spoolBand(bounds, band);
-    if (operations == null)
+    if (operations.isEmpty())
     {
       return;
     }
@@ -279,10 +276,6 @@ public class LogicalPageImpl implements LogicalPage
 
     Spool spool = new Spool();
     spoolBand(bounds, band, spool);
-    if (spool.isEmpty())
-    {
-      return null;
-    }
     return spool;
   }
 

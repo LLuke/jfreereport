@@ -2,7 +2,7 @@
  * Date: Jan 26, 2003
  * Time: 6:19:12 PM
  *
- * $Id: IOUtils.java,v 1.2 2003/01/27 18:24:55 taqua Exp $
+ * $Id: IOUtils.java,v 1.3 2003/01/29 03:13:04 taqua Exp $
  */
 package com.jrefinery.report.util;
 
@@ -212,4 +212,13 @@ public class IOUtils
 
     return file.substring(last);
   }
+
+  public String stripFileExtension (String file)
+  {
+    int idx = file.lastIndexOf(".");
+    // handles unix hidden files and files without an extension.
+    if (idx < 1) return file;
+    return file.substring(0, idx);
+  }
+  
 }

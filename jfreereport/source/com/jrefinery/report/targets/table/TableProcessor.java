@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 7:47:41 PM
  *
- * $Id: TableProcessor.java,v 1.1 2003/01/18 20:47:36 taqua Exp $
+ * $Id: TableProcessor.java,v 1.2 2003/01/25 20:34:11 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -141,8 +141,6 @@ public abstract class TableProcessor
     try
     {
       ReportState state = repaginate();
-
-      Log.debug ("CDI " + state.getCurrentDisplayItem());
 
       TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
       w.setProducer(createProducer(false));

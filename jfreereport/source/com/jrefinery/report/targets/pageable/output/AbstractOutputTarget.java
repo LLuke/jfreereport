@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.3 2002/12/18 10:13:16 mungady Exp $
+ * $Id: AbstractOutputTarget.java,v 1.4 2003/01/29 03:13:03 taqua Exp $
  *
  * Changes
  * -------
@@ -107,8 +107,8 @@ public abstract class AbstractOutputTarget implements OutputTarget
   public AbstractOutputTarget(LogicalPage logicalPage)
   {
     properties = new Hashtable();
-    this.logicalPage = logicalPage;
-    logicalPage.setOutputTarget(this);
+    this.logicalPage = logicalPage.newInstance();
+    this.logicalPage.setOutputTarget(this);
     operationBounds = new Rectangle2D.Double();
   }
 
@@ -230,5 +230,29 @@ public abstract class AbstractOutputTarget implements OutputTarget
     BandLayoutManager lm = new StaticLayoutManager();
     lm.setLayoutSupport(this);
     return lm;
+  }
+
+  /**
+   * Returns the element alignment. Elements will be layouted aligned to this
+   * border, so that <code>mod(X, horizontalAlignment) == 0</code> and
+   * <code>mod(Y, verticalAlignment) == 0</code>
+   *
+   * @return the vertical alignment grid boundry
+   */
+  public float getHorizontalAlignmentBorder()
+  {
+    return 0;
+  }
+
+  /**
+   * Returns the element alignment. Elements will be layouted aligned to this
+   * border, so that <code>mod(X, horizontalAlignment) == 0</code> and
+   * <code>mod(Y, verticalAlignment) == 0</code>
+   *
+   * @return the vertical alignment grid boundry
+   */
+  public float getVerticalAlignmentBorder()
+  {
+    return 0;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.11 2002/12/13 10:43:45 mungady Exp $
+ * $Id: PageLayouter.java,v 1.12 2003/01/08 19:33:23 taqua Exp $
  *
  * Changes
  * -------
@@ -333,7 +333,6 @@ public abstract class PageLayouter extends AbstractFunction
       throw new NullPointerException("PageLayouter.startPage(...): state is null.");
     }
 
-    getLogicalPage().open();
     setRestartingPage(true);
     state.firePageStartedEvent();
     setRestartingPage(false);

@@ -2,7 +2,7 @@
  * Date: Jan 26, 2003
  * Time: 5:58:35 PM
  *
- * $Id$
+ * $Id: DirectoryHtmlFilesystem.java,v 1.1 2003/01/27 03:20:01 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
@@ -80,7 +80,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
     return rootStream;
   }
 
-  public boolean isSupportedImageFormat (URL url)
+  protected boolean isSupportedImageFormat (URL url)
   {
     String file = url.getFile();
     if (StringUtil.endsWithIgnoreCase(file, ".jpg"))

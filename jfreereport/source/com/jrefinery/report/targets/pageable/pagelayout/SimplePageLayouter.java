@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.16 2003/01/27 18:24:51 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.17 2003/01/29 03:13:04 taqua Exp $
  *
  * Changes
  * -------
@@ -43,20 +43,19 @@ package com.jrefinery.report.targets.pageable.pagelayout;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.PageFooter;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.FunctionProcessingException;
-import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.PostReportFooterState;
+import com.jrefinery.report.states.ReportState;
+import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
+import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.Spool;
-import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.targets.FloatDimension;
+import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
@@ -634,7 +633,7 @@ public class SimplePageLayouter extends PageLayouter
           Spool newSpool = getLogicalPage().spoolBand(bounds, band);
           if (newSpool.isEmpty() == false)
           {
-            if ((spooledBand != null) && (spool == false))
+            if (spooledBand != null)
             {
               getLogicalPage().replaySpool (spooledBand);
               spooledBand = null;
@@ -757,12 +756,18 @@ public class SimplePageLayouter extends PageLayouter
       {
         throw new IllegalStateException("State is null, but this is not the first page");
       }
+
+      // open the logical page ...
+      getLogicalPage().open();
       return; // no state yet, maybe the first state?
     }
 
-
     Log.debug ("State: " + anchestor.getCurrentPage() + " " + anchestor.getCurrentDataItem() + " " + anchestor.getDataRow());
+
+    getLogicalPage().open();
     startPage(anchestor);
+
+    Log.debug ("getLogicalPage: " + getLogicalPage().isOpen());
 
     // if there was a pagebreak_after_print, there is no band to print for now
     if (state.getBand() != null)
@@ -775,6 +780,7 @@ public class SimplePageLayouter extends PageLayouter
     if (anchestor instanceof PostReportFooterState && state.getBand() != null)
     {
       createSaveState(null);
+      Log.debug ("Forced ENDPAGE");
       endPage(ENDPAGE_FORCED);
     }
   }

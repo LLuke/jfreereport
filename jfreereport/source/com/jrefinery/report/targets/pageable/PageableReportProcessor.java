@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.13 2003/01/08 19:33:23 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.14 2003/01/29 03:13:02 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.StartState;
 import com.jrefinery.report.targets.pageable.pagelayout.PageLayouter;
 import com.jrefinery.report.targets.pageable.pagelayout.SimplePageLayouter;
+import com.jrefinery.report.targets.pageable.output.PlainTextOutputTarget;
 import com.jrefinery.report.util.Log;
 
 import java.awt.print.PageFormat;
@@ -110,6 +111,7 @@ public class PageableReportProcessor
    */
   public void setOutputTarget(OutputTarget outputTarget)
   {
+    if (this.outputTarget != null) throw new IllegalAccessError("Redefinition?");
     this.outputTarget = outputTarget;
   }
 
@@ -173,10 +175,15 @@ public class PageableReportProcessor
       throw new ReportProcessingException("Repaginating returned no pages");
     }
     ReportState rs = list.get(0);
-    rs = processPage(rs, outputTarget);
+    PlainTextOutputTarget ot = (PlainTextOutputTarget) getOutputTarget();
+    Log.debug ("                                   ProcessReport: " + ot.isDummyTarget());
+
+    rs = processPage(rs, getOutputTarget());
     while (!rs.isFinish())
     {
-      ReportState nrs = processPage(rs, outputTarget);
+      ReportState nrs = processPage(rs, getOutputTarget());
+      ot = (PlainTextOutputTarget) getOutputTarget();
+      Log.debug ("                                   ProcessReport: " + ot.isDummyTarget());
       if ((nrs.isFinish() == false) && nrs.isProceeding(rs) == false)
       {
         throw new ReportProcessingException("Report is not proceeding");
@@ -205,13 +212,13 @@ public class PageableReportProcessor
 
       // all prepare runs have this property set, test details with getLevel()
       state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
-      PageFormat p = outputTarget.getLogicalPage().getPhysicalPageFormat();
+      PageFormat p = getOutputTarget().getLogicalPage().getPhysicalPageFormat();
       state.setProperty(JFreeReportConstants.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
       // the levels are defined from +inf to 0
       // we don't draw and we do not collect states in a StateList yet
       ReportStateList pageStates = null;
-      OutputTarget dummyOutput = outputTarget.createDummyWriter();
+      OutputTarget dummyOutput = getOutputTarget().createDummyWriter();
       dummyOutput.configure(report.getReportConfiguration());
       dummyOutput.open();
 
@@ -303,7 +310,9 @@ public class PageableReportProcessor
   public ReportState processPage(final ReportState currPage, OutputTarget out) 
       throws ReportProcessingException
   {
-    if (out == null) 
+    Log.error ("Entered ProcessPage");
+
+    if (out == null)
     {
       throw new NullPointerException("OutPutTarget != null");
     }
@@ -315,6 +324,10 @@ public class PageableReportProcessor
     {
       throw new NullPointerException("State != null");
     }
+
+    PlainTextOutputTarget ot = (PlainTextOutputTarget) getOutputTarget();
+    Log.debug ("                                   ProcessPage: " + ot.hashCode());
+    Log.debug ("                                   ProcessPage: " + out.hashCode());
 
     // just crash to make sure that FinishStates are caught outside, we cannot handle them here
     if (currPage.isFinish())
@@ -354,6 +367,7 @@ public class PageableReportProcessor
       }
     }
 
+    Log.error ("Left ProcessPage");
     return state;
   }
   

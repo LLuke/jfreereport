@@ -2,7 +2,7 @@
  * Date: Jan 29, 2003
  * Time: 3:44:05 AM
  *
- * $Id$
+ * $Id: DefaultLayoutSupport.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
  */
 package com.jrefinery.report.targets;
 
@@ -44,5 +44,31 @@ public class DefaultLayoutSupport implements LayoutSupport
     BandLayoutManager lm = new StaticLayoutManager();
     lm.setLayoutSupport(this);
     return lm;
+  }
+
+  /**
+   * Returns the element alignment. Elements will be layouted aligned to this
+   * border, so that <code>mod(X, horizontalAlignment) == 0</code> and
+   * <code>mod(Y, verticalAlignment) == 0</code>. Returning 0 will disable
+   * the alignment.
+   *
+   * @return the vertical alignment grid boundry
+   */
+  public float getVerticalAlignmentBorder()
+  {
+    return 0;
+  }
+
+  /**
+   * Returns the element alignment. Elements will be layouted aligned to this
+   * border, so that <code>mod(X, horizontalAlignment) == 0</code> and
+   * <code>mod(Y, verticalAlignment) == 0</code>. Returning 0 will disable
+   * the alignment.
+   *
+   * @return the vertical alignment grid boundry
+   */
+  public float getHorizontalAlignmentBorder()
+  {
+    return 0;
   }
 }

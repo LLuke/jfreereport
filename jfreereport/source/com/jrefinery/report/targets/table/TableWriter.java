@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 2:32:12 PM
  *
- * $Id: TableWriter.java,v 1.2 2003/01/25 20:34:11 taqua Exp $
+ * $Id: TableWriter.java,v 1.3 2003/01/29 03:13:04 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -13,25 +13,24 @@ import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.function.FunctionProcessingException;
 import com.jrefinery.report.states.ReportState;
+import com.jrefinery.report.targets.DefaultLayoutSupport;
 import com.jrefinery.report.targets.FloatDimension;
-import com.jrefinery.report.targets.pageable.OutputTarget;
+import com.jrefinery.report.targets.LayoutSupport;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
-import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
-import java.awt.print.PageFormat;
 
 public class TableWriter extends AbstractFunction
 {
   public static final String SHEET_NAME_FUNCTION_PROPERTY =
       "com.jrefinery.report.targets.table.TableWriter.SheetNameFunction";
 
-  private OutputTarget dummyOutputTarget;
+  private LayoutSupport layoutSupport;
   private ReportEvent currentEvent;
   private TableProducer producer;
   private TableWriterCursor cursor;
@@ -83,13 +82,13 @@ public class TableWriter extends AbstractFunction
    *
    * @return a dummy output target.
    */
-  private OutputTarget getOutputTarget()
+  private LayoutSupport getLayoutSupport()
   {
-    if (dummyOutputTarget == null)
+    if (layoutSupport == null)
     {
-      dummyOutputTarget = new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), new PageFormat());
+      layoutSupport = new DefaultLayoutSupport();
     }
-    return dummyOutputTarget;
+    return layoutSupport;
   }
 
   /**
@@ -125,7 +124,7 @@ public class TableWriter extends AbstractFunction
   protected Rectangle2D doLayout(Band band)
   {
     BandLayoutManager lm
-        = BandLayoutManagerUtil.getLayoutManager(band, getOutputTarget());
+        = BandLayoutManagerUtil.getLayoutManager(band, getLayoutSupport());
 
     // in this layouter the width of a band is always the full page width.
     // the height is not limited ...

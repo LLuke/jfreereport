@@ -2,7 +2,7 @@
  * Date: Jan 25, 2003
  * Time: 9:40:17 AM
  *
- * $Id: TableGridLayout.java,v 1.3 2003/01/27 18:24:53 taqua Exp $
+ * $Id: TableGridLayout.java,v 1.4 2003/01/28 22:05:25 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -67,10 +67,12 @@ public class TableGridLayout
         }
         else
         {
+          /*
           Log.warn (new Log.SimpleMessage("Root already added: " , pos.getElement().getBounds()));
           Log.warn (new Log.SimpleMessage("+            added: " , root.getElement().getBounds()));
           Log.warn (new Log.SimpleMessage("+            added: " , pos.getElement().debugChunk));
           Log.warn (new Log.SimpleMessage("+            added: Col=" , new Integer(root.getCol()) , "  Row=" , new Integer(root.getRow())));
+          */
         }
       }
     }
@@ -115,8 +117,10 @@ public class TableGridLayout
     Arrays.sort(yCuts);
 
     // +1 for outer boundry ...
-    Log.debug ("Created GridLayout with " + xCuts.length + ", " + yCuts.length);
-    data = new Object[xCuts.length][yCuts.length];
+    int width = xCuts.length;
+    int height = yCuts.length;
+    Log.debug ("Created GridLayout with " + width + ", " + height);
+    data = new Object[width][height];
 
     for (int i = 0; i < positions.length; i++)
     {
@@ -155,7 +159,19 @@ public class TableGridLayout
       int endX = gPos.getCol() + gPos.getColSpan();
       for (int posX = startX; posX < endX; posX ++)
       {
-        addToGrid(posX, posY, gPos);
+        try
+        {
+          addToGrid(posX, posY, gPos);
+        }
+        catch (IndexOutOfBoundsException ie)
+        {
+          Log.debug ("DebugChunk: " + pos.debugChunk);
+          Log.debug ("gPos.getCol: " + gPos.getCol());// + " -> " + getColumnStart(gPos.getCol()));
+          Log.debug ("gPos.getRow: " + gPos.getRow());// + " -> " + getRowStart(gPos.getRow()));
+          Log.debug ("gPos.getColSpan: " + gPos.getColSpan());// + " -> " + getColumnEnd(gPos.getColSpan() + gPos.getCol() - 1));
+          Log.debug ("gPos.getRowSpan: " + gPos.getRowSpan());// + " -> " + getRowEnd(gPos.getRowSpan() + gPos.getRow() - 1));
+          throw ie;
+        }
       }
     }
 
@@ -165,6 +181,12 @@ public class TableGridLayout
 
   protected void addToGrid (int posX, int posY, TableGridPosition gPos)
   {
+    if (posX >= getWidth())
+      throw new IndexOutOfBoundsException("X: " + posX + " > " + getWidth());
+
+    if (posY >= getHeight())
+      throw new IndexOutOfBoundsException("Y: " + posY + " > " + getHeight());
+
     Object o = data[posX][posY];
     if (o == null)
     {
@@ -256,7 +278,7 @@ public class TableGridLayout
         }
       }
     }
-    return data.length;
+    return data.length - 1;
   }
 
 

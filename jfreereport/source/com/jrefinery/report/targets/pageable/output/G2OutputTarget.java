@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.11 2003/01/24 16:39:07 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.12 2003/01/29 03:13:04 taqua Exp $
  *
  * Changes
  * -------
@@ -146,7 +146,7 @@ public class G2OutputTarget extends AbstractOutputTarget
     private Paint mypaint;
 
     /** The font. */
-    private Font myfont;
+    private FontDefinition myfont;
 
     /** The stroke. */
     private Stroke mystroke;
@@ -165,7 +165,7 @@ public class G2OutputTarget extends AbstractOutputTarget
      *
      * @param s  the graphics device.
      */
-    public G2State(Graphics2D s)
+    public G2State(G2OutputTarget s)
     {
       save(s);
     }
@@ -175,14 +175,14 @@ public class G2OutputTarget extends AbstractOutputTarget
      *
      * @param source  the Graphics2D.
      */
-    public void save(Graphics2D source)
+    public void save(G2OutputTarget source)
     {
       mypaint = source.getPaint();
       myfont = source.getFont();
       mystroke = source.getStroke();
-      mytransform = source.getTransform();
-      mybackground = source.getBackground();
-      myclip = source.getClip();
+      mytransform = source.g2.getTransform();
+      mybackground = source.g2.getBackground();
+      myclip = source.g2.getClip();
     }
 
     /**
@@ -190,14 +190,15 @@ public class G2OutputTarget extends AbstractOutputTarget
      *
      * @param target  the Graphics2D.
      */
-    public void restore(Graphics2D target)
+    public void restore(G2OutputTarget target)
+      throws OutputTargetException
     {
       target.setStroke(mystroke);
       target.setFont(myfont);
       target.setPaint(mypaint);
-      target.setTransform(mytransform);
-      target.setBackground(mybackground);
-      target.setClip(myclip);
+      target.g2.setTransform(mytransform);
+      target.g2.setBackground(mybackground);
+      target.g2.setClip(myclip);
     }
   }
 
@@ -271,6 +272,7 @@ public class G2OutputTarget extends AbstractOutputTarget
   public void open() throws OutputTargetException
   {
     originalClip = g2.getClip();
+    setFont(new FontDefinition (g2.getFont().getName(), g2.getFont().getSize()));
     isOpen = true;
   }
 
@@ -342,6 +344,9 @@ public class G2OutputTarget extends AbstractOutputTarget
    */
   public void setFont(FontDefinition font)
   {
+    if (font == null)
+      throw new NullPointerException();
+
     this.fontDefinition = font;
     g2.setFont(font.getFont());
   }
@@ -508,7 +513,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    */
   public void restoreState() throws OutputTargetException
   {
-    savedState.restore(this.getGraphics2D());
+    savedState.restore(this);
   }
 
   /**
@@ -521,7 +526,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    */
   protected G2State saveState() throws OutputTargetException
   {
-    return new G2State(this.getGraphics2D());
+    return new G2State(this);
   }
 
   /**
@@ -533,7 +538,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    */
   public OutputTarget createDummyWriter()
   {
-    G2OutputTarget dummy = new G2OutputTarget(getLogicalPage().newInstance(),
+    G2OutputTarget dummy = new G2OutputTarget(getLogicalPage(),
                                               createEmptyGraphics());
     Enumeration enum = getPropertyNames();
     while (enum.hasMoreElements())

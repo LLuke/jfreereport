@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.11 2003/01/25 02:47:09 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
  *
  * Changes
  * -------
@@ -40,17 +40,13 @@ package com.jrefinery.report.targets.base.bandlayout;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.FloatDimension;
-import com.jrefinery.report.targets.base.operations.OperationModule;
-import com.jrefinery.report.targets.base.operations.OperationFactory;
-import com.jrefinery.report.targets.base.content.Content;
-import com.jrefinery.report.targets.base.content.ImageContent;
-import com.jrefinery.report.targets.pageable.OutputTarget;
-import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.LayoutSupport;
+import com.jrefinery.report.targets.base.ElementLayoutInformation;
+import com.jrefinery.report.targets.base.content.Content;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.style.StyleKey;
+import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
@@ -329,9 +325,27 @@ public class StaticLayoutManager implements BandLayoutManager
       }
     }
 
-    return new FloatDimension((int) width, (int) height);
+    // now align the calculated data ...
+    return new FloatDimension(alignUp(width, layoutSupport.getHorizontalAlignmentBorder()),
+                              alignUp(height, layoutSupport.getVerticalAlignmentBorder()));
   }
 
+  private double alignUp (double value, double boundry)
+  {
+    if (boundry == 0)
+      return value;
+
+    return Math.ceil(value / boundry) * boundry;
+  }
+/*
+  private double alignDown (double value, double boundry)
+  {
+    if (boundry == 0)
+      return value;
+
+    return Math.floor(value / boundry) * boundry;
+  }
+*/
   /**
    * Calculates the minimum layout size for a band.
    *
@@ -421,7 +435,9 @@ public class StaticLayoutManager implements BandLayoutManager
       width = Math.min(width, maxSize.getWidth());
     }
 
-    return new FloatDimension((int) width, (int) height);
+    // now align the calculated data ...
+    return new FloatDimension(alignUp(width, layoutSupport.getHorizontalAlignmentBorder()),
+                              alignUp(height, layoutSupport.getVerticalAlignmentBorder()));
   }
 
   /**
@@ -461,8 +477,10 @@ public class StaticLayoutManager implements BandLayoutManager
       Point2D absPos
           = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS), parentDim);
       absPos.setLocation(absPos.getX() + parentPoint.getX(), absPos.getY() + parentPoint.getY());
-      Rectangle2D bounds = new Rectangle2D.Double(absPos.getX(), absPos.getY(),
-                                                  size.getWidth(), size.getHeight());
+      Rectangle2D bounds = new Rectangle2D.Double(alignUp(absPos.getX(), layoutSupport.getHorizontalAlignmentBorder()),
+                                                  alignUp(absPos.getY(), layoutSupport.getVerticalAlignmentBorder()),
+                                                  alignUp(size.getWidth(), layoutSupport.getHorizontalAlignmentBorder()),
+                                                  alignUp(size.getHeight(), layoutSupport.getVerticalAlignmentBorder()));
       BandLayoutManagerUtil.setBounds(e, bounds);
 //      Log.debug ("Set Bounds: " + bounds);
       if (e instanceof Band)

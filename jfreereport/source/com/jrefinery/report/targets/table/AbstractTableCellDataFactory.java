@@ -2,7 +2,7 @@
  * Date: Jan 28, 2003
  * Time: 3:14:12 PM
  *
- * $Id$
+ * $Id: AbstractTableCellDataFactory.java,v 1.1 2003/01/28 22:32:57 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -27,8 +27,7 @@ public abstract class AbstractTableCellDataFactory implements TableCellDataFacto
   {
     if (rect.getHeight() == 0)
     {
-      Log.debug ("Band " + e + " has Rect Height of 0" + e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS));
-      Log.debug ("--------> 0" + rect);
+      // bands with a height of 0 are ignored ...
       return null;
     }
     return new TableBandArea(rect);

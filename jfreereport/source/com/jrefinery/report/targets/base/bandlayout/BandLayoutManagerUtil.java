@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.2 2002/12/03 13:49:16 mungady Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
  *
  * Changes
  * -------
@@ -65,6 +65,8 @@ public class BandLayoutManagerUtil
     BandLayoutManager lm =
         (BandLayoutManager) e.getStyle().getStyleProperty(BandLayoutManager.LAYOUTMANAGER);
 
+    if (ot == null)
+      throw new NullPointerException();
 
     if (lm == null)
     {

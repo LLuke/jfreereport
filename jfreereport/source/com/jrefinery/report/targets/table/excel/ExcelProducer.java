@@ -21,7 +21,7 @@
  * Boston, MA 02111-1307, USA.
  *
  * --------------------
- * ExcelOutputTarget.java
+ * ExcelProducer.java
  * --------------------
  * (C)opyright 2002, by Hawesko GmbH & Co KG
  *
@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.2 2003/01/25 20:34:12 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.3 2003/01/28 22:05:29 taqua Exp $
  *
  * Changes
  * -------

@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 8:06:54 PM
  *
- * $Id: HtmlProducer.java,v 1.8 2003/01/27 18:24:54 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.9 2003/01/28 22:05:35 taqua Exp $
  *
  * This file now produces valid HTML4
  */
@@ -206,8 +206,8 @@ public class HtmlProducer extends TableProducer
 
   public void beginPage(String name)
   {
-    // border=\"2\"
-    pout.println("<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
+    //pout.println("<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
+    pout.println("<table border=\"2\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
   }
 
   public TableCellDataFactory getCellDataFactory()
@@ -258,8 +258,6 @@ public class HtmlProducer extends TableProducer
           pout.print(width);
           pout.print("pt");
 
-
-          Log.debug ("GridElement: " + gridElement);
           String style = createHtmlBackgroundStyle(gridElement.getBackground());
           if (style != null)
           {
@@ -331,13 +329,15 @@ public class HtmlProducer extends TableProducer
         x += gridPosition.getColSpan() - 1;
         printed = true;
       }
+
       if (!printed)
       {
-        for (int x = 0; x < layout.getWidth(); x++)
+        Log.debug ("The Row at " + y + " was not printed");
+/*        for (int x = 0; x < layout.getWidth(); x++)
         {
           Log.debug(layout.getData(x,y).getRoot());
           Log.debug(layout.getData(x,y).getBackground());
-        }
+        }*/
       }
       pout.println("</tr>");
     }

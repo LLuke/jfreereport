@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 7:23:00 PM
  *
- * $Id: TableGridPosition.java,v 1.2 2003/01/25 20:34:11 taqua Exp $
+ * $Id: TableGridPosition.java,v 1.3 2003/01/27 18:24:53 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -80,24 +80,24 @@ public final class TableGridPosition
   {
     if (row > pos.getRow())
     {
-      Log.debug ("Contains Row: " + row + " -> " + pos.getRow());
+      //Log.debug ("Contains Row: " + row + " -> " + pos.getRow());
       return false;
     }
     if (col > pos.getCol())
     {
-      Log.debug ("Contains Column: " + col + " -> " + pos.getCol());
+      //Log.debug ("Contains Column: " + col + " -> " + pos.getCol());
       return false;
     }
 
     if ((col + colSpan) < (pos.getCol() + pos.getColSpan()))
     {
-      Log.debug ("Contains ColSpan: " + (col + colSpan) + " -> " + (pos.getCol() + pos.getColSpan()));
+      //Log.debug ("Contains ColSpan: " + (col + colSpan) + " -> " + (pos.getCol() + pos.getColSpan()));
       return false;
     }
 
     if ((row + rowSpan) < (pos.getRow() + pos.getRowSpan()))
     {
-      Log.debug ("Contains RowSpan: " + (row + rowSpan) + " -> " + (pos.getRow() + pos.getRowSpan()));
+      //Log.debug ("Contains RowSpan: " + (row + rowSpan) + " -> " + (pos.getRow() + pos.getRowSpan()));
       return false;
     }
 
