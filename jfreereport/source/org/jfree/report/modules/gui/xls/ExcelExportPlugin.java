@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.17 2004/03/27 17:23:20 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.15.4.1 2004/02/03 15:14:51 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,7 +40,6 @@ package org.jfree.report.modules.gui.xls;
 
 import java.awt.Dialog;
 import java.awt.Frame;
-import java.util.ResourceBundle;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
@@ -48,9 +47,9 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
-import org.jfree.report.modules.gui.base.ResourceBundleUtils;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * Encapsulates the ExcelExportDialog into a separate plugin.
@@ -63,11 +62,11 @@ public class ExcelExportPlugin extends AbstractExportPlugin
   private ExcelExportDialog exportDialog;
 
   /** Localised resources. */
-  private final ResourceBundle resources;
+  private final ResourceBundleSupport resources;
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
-      "org.jfree.report.modules.gui.xls.resources.xls-export-resources";
+          "org.jfree.report.modules.gui.xls.resources.xls-export-resources";
   public static final String PROGRESS_DIALOG_ENABLE_KEY =
       "org.jfree.report.modules.gui.xls.ProgressDialogEnabled";
 
@@ -76,7 +75,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public ExcelExportPlugin()
   {
-    resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    resources = new ResourceBundleSupport(BASE_RESOURCE_CLASS);
   }
 
   /**
@@ -171,7 +170,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public Icon getSmallIcon()
   {
-    return ResourceBundleUtils.getIcon(getResources().getString("action.export-to-excel.small-icon"));
+    return resources.getIcon("action.export-to-excel.small-icon");
   }
 
   /**
@@ -181,7 +180,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public Icon getLargeIcon()
   {
-    return ResourceBundleUtils.getIcon(getResources().getString("action.export-to-excel.icon"));
+    return resources.getIcon("action.export-to-excel.icon");
   }
 
   /**
@@ -191,7 +190,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public KeyStroke getAcceleratorKey()
   {
-    return ResourceBundleUtils.createMenuKeystroke(getResources().getString("action.export-to-excel.accelerator"));
+    return resources.getKeyStroke("action.export-to-excel.accelerator");
   }
 
   /**
@@ -201,7 +200,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public Integer getMnemonicKey()
   {
-    return ResourceBundleUtils.createMnemonic(getResources().getString("action.export-to-excel.mnemonic"));
+    return resources.getMnemonic("action.export-to-excel.mnemonic");
   }
 
   /**
@@ -257,7 +256,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    * 
    * @return the resourcebundle for the localisation.
    */
-  protected ResourceBundle getResources()
+  protected ResourceBundleSupport getResources()
   {
     return resources;
   }

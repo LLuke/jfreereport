@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelExportGUIModule.java,v 1.6 2003/08/25 14:29:30 taqua Exp $
+ * $Id: ExcelExportGUIModule.java,v 1.7 2004/05/07 14:29:43 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -38,10 +38,11 @@
 
 package org.jfree.report.modules.gui.xls;
 
-import org.jfree.report.modules.AbstractModule;
-import org.jfree.report.modules.ModuleInitializeException;
 import org.jfree.report.modules.gui.base.ExportPluginFactory;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.base.modules.AbstractModule;
+import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.SubSystem;
 
 /**
  * The module definition for the excel export gui module.
@@ -58,19 +59,24 @@ public class ExcelExportGUIModule extends AbstractModule
   /**
    * DefaultConstructor. Loads the module specification.
    * @throws ModuleInitializeException if an error occured.
-   */
+     */
   public ExcelExportGUIModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
   /**
-   * Initalizes the module and registes it with the export plugin factory.
-   * @see org.jfree.report.modules.Module#initialize()
+   * Initializes the module. Use this method to perform all initial setup operations. This
+   * method is called only once in a modules lifetime. If the initializing cannot be
+   * completed, throw a ModuleInitializeException to indicate the error,. The module will
+   * not be available to the system.
    *
-   * @throws ModuleInitializeException if an error occured.
+   * @param subSystem the subSystem.
+   * @throws org.jfree.base.modules.ModuleInitializeException
+   *          if an error ocurred while initializing the module.
    */
-  public void initialize() throws ModuleInitializeException
+  public void initialize (SubSystem subSystem)
+          throws ModuleInitializeException
   {
     final String order = ReportConfiguration.getGlobalConfig().getConfigProperty
         (ORDER_KEY, "0");

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportPlugin.java,v 1.13 2004/03/16 15:09:45 taqua Exp $
+ * $Id: PlainTextExportPlugin.java,v 1.12.4.2 2004/11/21 16:39:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,7 +40,6 @@ package org.jfree.report.modules.gui.plaintext;
 
 import java.awt.Dialog;
 import java.awt.Frame;
-import java.util.ResourceBundle;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
@@ -48,9 +47,9 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
-import org.jfree.report.modules.gui.base.ResourceBundleUtils;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * Encapsulates the PlainTextExportDialog into a separate plugin.
@@ -63,11 +62,12 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
   private PlainTextExportDialog exportDialog;
 
   /** Localised resources. */
-  private final ResourceBundle resources;
+  private final ResourceBundleSupport resources;
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
-      "org.jfree.report.modules.gui.plaintext.resources.plaintext-export-resources";
+          "org.jfree.report.modules.gui.plaintext.resources/plaintext-export-resources";
+
   public static final String PROGRESS_DIALOG_ENABLE_KEY =
       "org.jfree.report.modules.gui.plaintext.ProgressDialogEnabled";
 
@@ -76,7 +76,7 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
    */
   public PlainTextExportPlugin()
   {
-    resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    resources = new ResourceBundleSupport(BASE_RESOURCE_CLASS);
   }
 
   /** 
@@ -149,7 +149,8 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
 
     final PlainTextExportTask task = new PlainTextExportTask
         (exportDialog.getFilename(), progressDialog,
-            exportDialog.getSelectedPrinter(), report);
+            exportDialog.getSelectedPrinter(), report,
+            exportDialog.getSelectedPrinterModel());
     task.addExportTaskListener(new DefaultExportTaskListener ());
     delegateTask(task);
     return handleExportResult(task);
@@ -182,7 +183,7 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
    */
   public Icon getSmallIcon()
   {
-    return ResourceBundleUtils.getIcon(getResources().getString("action.export-to-plaintext.small-icon"));
+    return resources.getIcon("action.export-to-plaintext.small-icon");
   }
 
   /**
@@ -192,7 +193,7 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
    */
   public Icon getLargeIcon()
   {
-    return ResourceBundleUtils.getIcon(getResources().getString("action.export-to-plaintext.icon"));
+    return resources.getIcon("action.export-to-plaintext.icon");
   }
 
   /**
@@ -202,7 +203,7 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
    */
   public KeyStroke getAcceleratorKey()
   {
-    return ResourceBundleUtils.createMenuKeystroke(getResources().getString("action.export-to-plaintext.accelerator"));
+    return resources.getKeyStroke("action.export-to-plaintext.accelerator");
   }
 
   /**
@@ -212,7 +213,7 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
    */
   public Integer getMnemonicKey()
   {
-    return ResourceBundleUtils.createMnemonic(getResources().getString("action.export-to-plaintext.mnemonic"));
+    return resources.getMnemonic("action.export-to-plaintext.mnemonic");
   }
 
 
@@ -256,7 +257,7 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
    *
    * @return the resourcebundle for the localisation.
    */
-  protected ResourceBundle getResources()
+  protected ResourceBundleSupport getResources()
   {
     return resources;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: OperationResultTableModel.java,v 1.6 2004/04/15 15:14:19 taqua Exp $
+ * $Id: OperationResultTableModel.java,v 1.7 2004/05/07 14:29:48 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -41,8 +41,8 @@ package org.jfree.report.modules.gui.converter.components;
 import java.util.ResourceBundle;
 import javax.swing.table.AbstractTableModel;
 
-import org.jfree.report.modules.parser.base.OperationResult;
 import org.jfree.report.modules.gui.converter.ReportConverterGUI;
+import org.jfree.report.modules.parser.base.OperationResult;
 
 /**
  * The operation result tablemodel is used to display the parser and converter

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigFactory.java,v 1.7 2004/03/16 15:09:48 taqua Exp $
+ * $Id: ConfigFactory.java,v 1.6.4.4 2004/10/13 18:42:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -37,6 +37,8 @@
  */
 
 package org.jfree.report.modules.misc.configstore.base;
+
+
 
 /**
  * The config factory is used to access the currently active config storage
@@ -65,7 +67,7 @@ public final class ConfigFactory
    *
    * @return the config factory
    */
-  public static ConfigFactory getInstance()
+  public synchronized static ConfigFactory getInstance()
   {
     if (factory == null)
     {
@@ -158,7 +160,7 @@ public final class ConfigFactory
   public static String encodePath(final String path)
   {
     final char[] data = path.toCharArray();
-    StringBuffer encoded = new StringBuffer();
+    final StringBuffer encoded = new StringBuffer();
     for (int i = 0; i < data.length; i++)
     {
       if (data[i] == '$')
@@ -171,7 +173,7 @@ public final class ConfigFactory
       {
         // padded hex string
         encoded.append('$');
-        String hex = Integer.toHexString(data[i]);
+        final String hex = Integer.toHexString(data[i]);
         for (int x = hex.length(); x < 4; x++)
         {
           encoded.append('0');
@@ -184,6 +186,6 @@ public final class ConfigFactory
       }
     }
     return encoded.toString();
+
   }
-  
 }

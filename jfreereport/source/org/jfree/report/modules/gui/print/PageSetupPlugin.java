@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageSetupPlugin.java,v 1.9 2004/03/16 15:09:45 taqua Exp $
+ * $Id: PageSetupPlugin.java,v 1.8.2.1.2.3 2004/10/13 18:42:19 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,10 +42,8 @@ import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ResourceBundle;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
@@ -53,10 +51,10 @@ import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.PreviewProxyBase;
 import org.jfree.report.modules.gui.base.ReportPane;
-import org.jfree.report.modules.gui.base.ResourceBundleUtils;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * An export control plugin that handles the setup of page format objects for
@@ -68,17 +66,22 @@ public class PageSetupPlugin extends AbstractExportPlugin
 {
   private class RepaginationListener implements PropertyChangeListener
   {
+    public RepaginationListener ()
+    {
+    }
+
     /**
      * This method gets called when a bound property is changed.
      * @param evt A PropertyChangeEvent object describing the event source
      *   	and the property that has changed.
      */
-    public void propertyChange(PropertyChangeEvent evt)
+    public void propertyChange(final PropertyChangeEvent evt)
     {
       if (ReportPane.PRINTING_PROPERTY.equals(evt.getPropertyName()) ||
           ReportPane.PAGINATING_PROPERTY.equals(evt.getPropertyName()))
       {
-        setEnabled((reportPane.isPrinting() || reportPane.isPaginating()) == false);
+        setEnabled((reportPane.isPrinting() == false) &&
+                   (reportPane.isPaginating() == false));
       }
       else if (PreviewProxyBase.REPORT_PANE_PROPERTY.equals(evt.getPropertyName()))
       {
@@ -88,11 +91,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
   }
 
   /** Localised resources. */
-  private ResourceBundle resources;
-
-  /** The base resource class. */
-  public static final String BASE_RESOURCE_CLASS =
-      "org.jfree.report.modules.gui.print.resources.print-export-resources";
+  private ResourceBundleSupport resources;
 
   private ReportPane reportPane;
   private RepaginationListener repaginationListener;
@@ -102,7 +101,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
    */
   public PageSetupPlugin()
   {
-    resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    resources = new ResourceBundleSupport(PrintingPlugin.BASE_RESOURCE_CLASS);
     repaginationListener = new RepaginationListener();
   }
 
@@ -113,7 +112,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
    * @throws NullPointerException if the proxy or the proxy's basecomponent
    * is null.
    */
-  public void init(PreviewProxy proxy)
+  public void init(final PreviewProxy proxy)
   {
     super.init(proxy);
     reportPane = proxy.getBase().getReportPane();
@@ -132,39 +131,34 @@ public class PageSetupPlugin extends AbstractExportPlugin
   }
 
   /**
-   * Performs the pagesetup for a report. This method has to be called from
-   * the EventDispatcher thread, or funny side effects may happen.
+   * Exports a report.
    *
-   * @param report  the report to be set up.
+   * @param report  the report.
    *
-   * @return true, if the user confirmed the page setup, false otherwise.
+   * @return A boolean.
    */
   public boolean performExport(final JFreeReport report)
   {
-    if (SwingUtilities.isEventDispatchThread() == false)
-    {
-      Log.debug ("PageSetupPlugin was not called from the EventDispatcher.");
-    }
-    // todo page format stuff
     final PrinterJob pj = PrinterJob.getPrinterJob();
-//    final PageFormat pf = pj.pageDialog(report.getDefaultPageFormat());
-//    if (PageFormatFactory.isEqual(pf, report.getDefaultPageFormat()))
+    final PageFormat original = report.getPageDefinition().getPageFormat(0);
+    final PageFormat pf = pj.pageDialog(original);
+    if (PageFormatFactory.isEqual(pf, original))
     {
       return false;
     }
-//    else
-//    {
-//      try
-//      {
-//        getBase().updatePageFormat(pf);
-//      }
-//      catch (ReportProcessingException rpe)
-//      {
-//        Log.warn ("Invalid pageformat update");
-//        return false;
-//      }
-//      return true;
-//    }
+    else
+    {
+      try
+      {
+        getBase().updatePageFormat(pf);
+      }
+      catch (ReportProcessingException rpe)
+      {
+        Log.warn ("Invalid pageformat update");
+        return false;
+      }
+      return true;
+    }
   }
 
   /**
@@ -194,7 +188,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
    */
   public Icon getSmallIcon()
   {
-    return ResourceBundleUtils.getIcon(getResources().getString("action.page-setup.small-icon"));
+    return resources.getIcon("action.page-setup.small-icon");
   }
 
   /**
@@ -204,7 +198,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
    */
   public Icon getLargeIcon()
   {
-    return ResourceBundleUtils.getIcon(getResources().getString("action.page-setup.icon"));
+    return resources.getIcon("action.page-setup.icon");
   }
 
   /**
@@ -224,7 +218,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
    */
   public Integer getMnemonicKey()
   {
-    return ResourceBundleUtils.createMnemonic(getResources().getString("action.page-setup.mnemonic"));
+    return resources.getMnemonic("action.page-setup.mnemonic");
   }
 
 
@@ -234,7 +228,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
    *
    * @return the resourcebundle for the localisation.
    */
-  protected ResourceBundle getResources()
+  protected ResourceBundleSupport getResources()
   {
     return resources;
   }
@@ -270,6 +264,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
     reportPane.removePropertyChangeListener(repaginationListener);
     reportPane = getBase().getReportPane();
     reportPane.addPropertyChangeListener(repaginationListener);
-    setEnabled((reportPane.isPrinting() || reportPane.isPaginating()) == false);
+    setEnabled((reportPane.isPrinting() == false) &&
+               (reportPane.isPaginating() == false));
   }
 }

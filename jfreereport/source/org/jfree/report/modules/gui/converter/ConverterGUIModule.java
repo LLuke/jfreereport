@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConverterGUIModule.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
+ * $Id: ConverterGUIModule.java,v 1.5 2004/05/07 14:29:46 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -38,8 +38,10 @@
 
 package org.jfree.report.modules.gui.converter;
 
-import org.jfree.report.modules.AbstractModule;
-import org.jfree.report.modules.ModuleInitializeException;
+import org.jfree.base.modules.AbstractModule;
+import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.SubSystem;
+
 
 /**
  * Provides the module definition for the ReportConverterGUI.
@@ -59,13 +61,17 @@ public class ConverterGUIModule extends AbstractModule
   }
 
   /**
-   * This method does nothing.
+   * Initializes the module. Use this method to perform all initial setup operations. This
+   * method is called only once in a modules lifetime. If the initializing cannot be
+   * completed, throw a ModuleInitializeException to indicate the error,. The module will
+   * not be available to the system.
    *
-   * @see org.jfree.report.modules.Module#initialize()
-   *
-   * @throws ModuleInitializeException if an error occures.
+   * @param subSystem the subSystem.
+   * @throws org.jfree.base.modules.ModuleInitializeException
+   *          if an error ocurred while initializing the module.
    */
-  public void initialize() throws ModuleInitializeException
+  public void initialize (final SubSystem subSystem)
+          throws ModuleInitializeException
   {
   }
 }

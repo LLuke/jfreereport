@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.8 2004/03/16 15:09:42 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.7.4.6 2004/12/13 19:26:33 taqua Exp $
  *
  * Changes
  * --------
@@ -70,9 +70,7 @@ import javax.swing.KeyStroke;
 import javax.swing.border.TitledBorder;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
-import org.jfree.report.modules.gui.base.components.LengthLimitingDocument;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
 import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
@@ -83,6 +81,8 @@ import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 import org.jfree.ui.ExtensionFileFilter;
+import org.jfree.ui.LengthLimitingDocument;
+import org.jfree.ui.action.ActionButton;
 
 /**
  * A dialog for exporting a report to CSV format.
@@ -241,10 +241,6 @@ public class CSVExportDialog extends JDialog
   /** Localised resources. */
   private ResourceBundle resources;
 
-  /** The base resource class. */
-  public static final String BASE_RESOURCE_CLASS =
-      "org.jfree.report.modules.gui.csv.resources.csv-export-resources";
-
   private static final String COMMA_SEPARATOR = ",";
   private static final String SEMICOLON_SEPARATOR = ";";
   private static final String TAB_SEPARATOR = "\t";
@@ -311,7 +307,7 @@ public class CSVExportDialog extends JDialog
   {
     if (resources == null)
     {
-      resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+      resources = ResourceBundle.getBundle(CSVExportPlugin.BASE_RESOURCE_CLASS);
     }
     return resources;
   }
@@ -621,6 +617,36 @@ public class CSVExportDialog extends JDialog
   }
 
   /**
+   * Returns the user input of this dialog as properties collection.
+   *
+   * @return the user input.
+   */
+  public Properties getDialogContents ()
+  {
+    final Properties p = new Properties();
+    p.setProperty("filename", getFilename());
+    p.setProperty("encoding", getEncoding());
+    p.setProperty("separator-string", getSeparatorString());
+    p.setProperty("strict-layout", String.valueOf(isStrictLayout()));
+    p.setProperty("export-raw-data", String.valueOf(isExportRawData()));
+    return p;
+  }
+
+  /**
+   * Restores the user input from a properties collection.
+   *
+   * @param p the user input.
+   */
+  public void setDialogContents (final Properties p)
+  {
+    setFilename(p.getProperty("filename", getFilename()));
+    setEncoding(p.getProperty("encoding", getEncoding()));
+    setSeparatorString(p.getProperty("separator-string", getSeparatorString()));
+    setStrictLayout(StringUtil.parseBoolean(p.getProperty("strict-layout"), isStrictLayout()));
+    setExportRawData(StringUtil.parseBoolean(p.getProperty("export-raw-data"), isExportRawData()));
+  }
+
+  /**
    * Returns the separator string, which is controlled by the selection of radio buttons.
    *
    * @return The separator string.
@@ -861,36 +887,6 @@ public class CSVExportDialog extends JDialog
   }
 
   /**
-   * Returns the user input of this dialog as properties collection.
-   *
-   * @return the user input.
-   */
-  public Properties getDialogContents ()
-  {
-    final Properties p = new Properties();
-    p.setProperty("filename", getFilename());
-    p.setProperty("encoding", getEncoding());
-    p.setProperty("separator-string", getSeparatorString());
-    p.setProperty("strict-layout", String.valueOf(isStrictLayout()));
-    p.setProperty("export-raw-data", String.valueOf(isExportRawData()));
-    return p;
-  }
-
-  /**
-   * Restores the user input from a properties collection.
-   *
-   * @param p the user input.
-   */
-  public void setDialogContents (final Properties p)
-  {
-    setFilename(p.getProperty("filename", getFilename()));
-    setEncoding(p.getProperty("encoding", getEncoding()));
-    setSeparatorString(p.getProperty("separator-string", getSeparatorString()));
-    setStrictLayout(StringUtil.parseBoolean(p.getProperty("strict-layout"), isStrictLayout()));
-    setExportRawData(StringUtil.parseBoolean(p.getProperty("export-raw-data"), isExportRawData()));
-  }
-
-  /**
    * Initialises the CSV export dialog from the settings in the report configuration.
    *
    * @param config  the report configuration.
@@ -903,7 +899,7 @@ public class CSVExportDialog extends JDialog
         (CSVTableProcessor.CONFIGURATION_PREFIX +
         CSVTableProcessor.STRICT_LAYOUT,
             config.getConfigProperty(TableProcessor.STRICT_LAYOUT,
-                TableProcessor.STRICT_TABLE_LAYOUT_DEFAULT));
+                TableProcessor.STRICT_LAYOUT_DEFAULT));
     setStrictLayout(strict.equals("true"));
     final String encoding = getCSVTargetEncoding(config);
     encodingModel.ensureEncodingAvailable(encoding);

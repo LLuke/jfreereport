@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTask.java,v 1.10 2004/03/16 15:09:45 taqua Exp $
+ * $Id: PlainTextExportTask.java,v 1.9.4.6 2004/12/13 20:23:56 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,10 +49,12 @@ import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
-import org.jfree.report.modules.output.pageable.plaintext.EpsonPrinterCommandSet;
-import org.jfree.report.modules.output.pageable.plaintext.IBMPrinterCommandSet;
+import org.jfree.report.modules.output.pageable.plaintext.Epson24PinPrinterDriver;
+import org.jfree.report.modules.output.pageable.plaintext.IBMCompatiblePrinterDriver;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
-import org.jfree.report.modules.output.pageable.plaintext.PrinterCommandSet;
+import org.jfree.report.modules.output.pageable.plaintext.PlainTextReportUtil;
+import org.jfree.report.modules.output.pageable.plaintext.PrinterDriver;
+import org.jfree.report.modules.output.pageable.plaintext.TextFilePrinterDriver;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.StringUtil;
 
@@ -76,6 +78,8 @@ public class PlainTextExportTask extends ExportTask
   /** The lines per inch for the export. */
   private final int linesPerInch;
 
+  private String printer;
+
   /**
    * Creates a new plain text export task.
    * 
@@ -86,7 +90,7 @@ public class PlainTextExportTask extends ExportTask
    */
   public PlainTextExportTask
       (final String fileName, final ReportProgressDialog dialog,
-       final int exportType, final JFreeReport report)
+       final int exportType, final JFreeReport report, final String printer)
   {
     if (fileName == null)
     {
@@ -100,6 +104,7 @@ public class PlainTextExportTask extends ExportTask
     this.progressDialog = dialog;
     this.report = report;
     this.exportType = exportType;
+    this.printer = printer;
 
     charPerInch = StringUtil.parseInt(report.getReportConfiguration().getConfigProperty
         (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.CHARS_PER_INCH),10);
@@ -115,21 +120,26 @@ public class PlainTextExportTask extends ExportTask
    *
    * @return The printer command set.
    */
-  public PrinterCommandSet getPrinterCommandSet(final OutputStream out, final JFreeReport report)
+  protected PrinterDriver getPrinterCommandSet(final OutputStream out,
+                                                   final JFreeReport report,
+                                                   final String printer)
   {
     switch (exportType)
     {
       case PlainTextExportDialog.TYPE_PLAIN_OUTPUT:
         {
-          return new PrinterCommandSet(out, charPerInch, linesPerInch);
+          return new TextFilePrinterDriver(out,
+              charPerInch, linesPerInch);
         }
       case PlainTextExportDialog.TYPE_IBM_OUTPUT:
         {
-          return new IBMPrinterCommandSet(out, charPerInch, linesPerInch);
+          return new IBMCompatiblePrinterDriver (out,
+              charPerInch, linesPerInch);
         }
       case PlainTextExportDialog.TYPE_EPSON_OUTPUT:
         {
-          return new EpsonPrinterCommandSet(out, charPerInch, linesPerInch);
+          return new Epson24PinPrinterDriver(out,
+              charPerInch, linesPerInch, printer);
         }
       default:
         throw new IllegalArgumentException();
@@ -147,9 +157,8 @@ public class PlainTextExportTask extends ExportTask
     {
       out = new BufferedOutputStream(
           new FileOutputStream(file));
-      final PrinterCommandSet pc = getPrinterCommandSet(out, report);
-      final PlainTextOutputTarget target =
-        new PlainTextOutputTarget(pc);
+      final PrinterDriver pc = getPrinterCommandSet(out, report, printer);
+      final PlainTextOutputTarget target = new PlainTextOutputTarget(pc);
       target.configure(report.getReportConfiguration());
 
       final PageableReportProcessor proc = new PageableReportProcessor(report);
@@ -163,6 +172,12 @@ public class PlainTextExportTask extends ExportTask
       proc.setOutputTarget(target);
 
       target.open();
+      final byte[] sequence = PlainTextReportUtil.getInitSequence(report);
+      if (sequence != null)
+      {
+        pc.printRaw(sequence);
+      }
+
       proc.processReport();
       target.close();
       if (progressDialog != null)

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ClassKeyEditor.java,v 1.4 2003/11/07 18:33:52 taqua Exp $
+ * $Id: ClassKeyEditor.java,v 1.4.4.2 2004/12/13 19:26:32 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,6 +41,7 @@ package org.jfree.report.modules.gui.config.editor;
 import org.jfree.report.modules.gui.config.model.ClassConfigDescriptionEntry;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * The class key editor is used to edit report configuration keys which
@@ -88,7 +89,7 @@ public class ClassKeyEditor extends TextKeyEditor
     }
     try
     {
-      final Class c = getClass().getClassLoader().loadClass(getContent());
+      final Class c = ObjectUtilities.getClassLoader(getClass()).loadClass(getContent());
       setValidInput (baseClass.isAssignableFrom(c));
     }
     catch (Exception e)

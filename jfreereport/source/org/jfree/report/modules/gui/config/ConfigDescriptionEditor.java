@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionEditor.java,v 1.10 2004/03/16 15:09:24 taqua Exp $
+ * $Id: ConfigDescriptionEditor.java,v 1.9.4.4 2004/12/13 19:26:23 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -59,7 +59,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.MessageFormat;
-import java.util.ResourceBundle;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -80,10 +79,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.jfree.report.modules.gui.base.ResourceBundleUtils;
-import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
-import org.jfree.report.modules.gui.base.components.ActionButton;
-import org.jfree.report.modules.gui.base.components.ActionRadioButton;
 import org.jfree.report.modules.gui.config.model.ClassConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionModel;
@@ -93,6 +88,11 @@ import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 import org.jfree.ui.ExtensionFileFilter;
+import org.jfree.ui.action.AbstractActionDowngrade;
+import org.jfree.ui.action.ActionRadioButton;
+import org.jfree.ui.action.ActionButton;
+import org.jfree.util.ObjectUtilities;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * The config description editor is used to edit the configuration
@@ -145,8 +145,7 @@ public class ConfigDescriptionEditor extends JFrame
     public SaveAction()
     {
       putValue(NAME, getResources().getString("action.save.name"));
-      putValue(SMALL_ICON,
-          ResourceBundleUtils.getIcon(getResources().getString("action.save.small-icon")));
+      putValue(SMALL_ICON, getResources().getIcon("action.save.small-icon"));
     }
 
     /**
@@ -172,8 +171,7 @@ public class ConfigDescriptionEditor extends JFrame
     public ImportAction()
     {
       putValue(NAME, getResources().getString("action.import.name"));
-      putValue(SMALL_ICON,
-          ResourceBundleUtils.getIcon(getResources().getString("action.import.small-icon")));
+      putValue(SMALL_ICON, getResources().getIcon("action.import.small-icon"));
 
     }
 
@@ -202,8 +200,7 @@ public class ConfigDescriptionEditor extends JFrame
     public AddEntryAction()
     {
       putValue(NAME, getResources().getString("action.add-entry.name"));
-      putValue(SMALL_ICON,
-          ResourceBundleUtils.getIcon(getResources().getString("action.add-entry.small-icon")));
+      putValue(SMALL_ICON, getResources().getIcon("action.add-entry.small-icon"));
     }
 
     /**
@@ -233,8 +230,7 @@ public class ConfigDescriptionEditor extends JFrame
     public RemoveEntryAction()
     {
       putValue(NAME, getResources().getString("action.remove-entry.name"));
-      putValue(SMALL_ICON,
-          ResourceBundleUtils.getIcon(getResources().getString("action.remove-entry.small-icon")));
+      putValue(SMALL_ICON, getResources().getIcon("action.remove-entry.small-icon"));
     }
 
     /**
@@ -265,8 +261,7 @@ public class ConfigDescriptionEditor extends JFrame
     public LoadAction()
     {
       putValue(NAME, getResources().getString("action.load.name"));
-      putValue(SMALL_ICON,
-          ResourceBundleUtils.getIcon(getResources().getString("action.load.small-icon")));
+      putValue(SMALL_ICON, getResources().getIcon("action.load.small-icon"));
     }
 
     /**
@@ -441,7 +436,7 @@ public class ConfigDescriptionEditor extends JFrame
      */
     public void actionPerformed(final ActionEvent e)
     {
-      DefaultListModel enumEntryListModel = getEnumEntryListModel();
+      final DefaultListModel enumEntryListModel = getEnumEntryListModel();
       enumEntryListModel.clear();
       getEnumEntryEditField().setText("");
       enumEntryListModel.addElement("true");
@@ -548,14 +543,8 @@ public class ConfigDescriptionEditor extends JFrame
   private static final int TYPE_CLASS = 1;
   /** An internal value to mark a enumeration detail editor type. */
   private static final int TYPE_ENUM = 2;
-  /** 
-   * Contains the name of the resource bundle to be used to translate the 
-   * dialogs.
-   */
-  private static final String RESOURCE_BUNDLE =
-      "org.jfree.report.modules.gui.config.resources.config-resources";
 
-  /** A radio button to select the text editor type for the current key. */ 
+  /** A radio button to select the text editor type for the current key. */
   private ActionRadioButton rbText;
   /** A radio button to select the class editor type for the current key. */ 
   private ActionRadioButton rbClass;
@@ -580,7 +569,7 @@ public class ConfigDescriptionEditor extends JFrame
   /** contains all entries of the enumeration detail editor. */
   private DefaultListModel enumEntryListModel;
   /** The current resource bundle used to translate the strings in this dialog. */
-  private final ResourceBundle resources;
+  private ResourceBundleSupport resources;
   /** This cardlayout is used to display the currently selected detail editor. */
   private CardLayout detailManager;
   /** Contains the detail editor manager. */
@@ -606,7 +595,7 @@ public class ConfigDescriptionEditor extends JFrame
    */
   public ConfigDescriptionEditor()
   {
-    this.resources = ResourceBundle.getBundle(RESOURCE_BUNDLE);
+    this.resources = new ResourceBundleSupport(ConfigEditor.RESOURCE_BUNDLE);
 
     setTitle(resources.getString("config-description-editor.title"));
     final JPanel contentPane = new JPanel();
@@ -1142,8 +1131,8 @@ public class ConfigDescriptionEditor extends JFrame
       }
       else if (selectedEntry instanceof EnumConfigDescriptionEntry)
       {
-        final EnumConfigDescriptionEntry enum = (EnumConfigDescriptionEntry) selectedEntry;
-        final String[] enums = enum.getOptions();
+        final EnumConfigDescriptionEntry en = (EnumConfigDescriptionEntry) selectedEntry;
+        final String[] enums = en.getOptions();
         for (int i= 0; i < enums.length; i++)
         {
           enumEntryListModel.addElement(enums[i]);
@@ -1254,7 +1243,7 @@ public class ConfigDescriptionEditor extends JFrame
           ce.setHidden(hiddenField.isSelected());
           try
           {
-            final Class c = this.getClass().getClassLoader().loadClass(baseClassField.getText());
+            final Class c = ObjectUtilities.getClassLoader(getClass()).loadClass(baseClassField.getText());
             ce.setBaseClass(c);
           }
           catch (Exception e)
@@ -1327,7 +1316,7 @@ public class ConfigDescriptionEditor extends JFrame
    * Returns the resource bundle of this editor for translating strings. 
    * @return the resource bundle.
    */
-  protected ResourceBundle getResources ()
+  protected ResourceBundleSupport getResources ()
   {
     return resources;
   }

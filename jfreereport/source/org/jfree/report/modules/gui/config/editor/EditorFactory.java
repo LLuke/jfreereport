@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EditorFactory.java,v 1.4 2003/11/07 18:33:52 taqua Exp $
+ * $Id: EditorFactory.java,v 1.4.4.2 2004/05/11 13:25:32 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,7 +41,7 @@ package org.jfree.report.modules.gui.config.editor;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import org.jfree.report.modules.Module;
+import org.jfree.base.modules.Module;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 import org.jfree.report.util.ReportConfiguration;
 
@@ -75,7 +75,7 @@ public final class EditorFactory
    * 
    * @return the editor factory instance.
    */
-  public static EditorFactory getInstance()
+  public synchronized static EditorFactory getInstance()
   {
     if (factory == null)
     {
@@ -111,7 +111,7 @@ public final class EditorFactory
    * is suitable for the given module.
    */
   public ModuleEditor getModule
-      (final Module module, final ReportConfiguration config, 
+      (final Module module, final ReportConfiguration config,
        final ConfigDescriptionEntry[] keyNames)
   {
     if (module == null)
@@ -126,13 +126,13 @@ public final class EditorFactory
     {
       throw new NullPointerException ("keyNames is null.");
     }
-    final Enumeration enum = priorities.keys();
+    final Enumeration keys = priorities.keys();
     ModuleEditor currentEditor = null;
     int currentEditorPriority = Integer.MIN_VALUE;
 
-    while (enum.hasMoreElements())
+    while (keys.hasMoreElements())
     {
-      final ModuleEditor ed = (ModuleEditor) enum.nextElement();
+      final ModuleEditor ed = (ModuleEditor) keys.nextElement();
       if (ed.canHandle(module))
       {
         final Integer prio = (Integer) priorities.get (ed);

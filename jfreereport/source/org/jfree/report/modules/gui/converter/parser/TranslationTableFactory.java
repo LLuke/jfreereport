@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TranslationTableFactory.java,v 1.6 2003/11/07 18:33:53 taqua Exp $
+ * $Id: TranslationTableFactory.java,v 1.6.4.2 2004/05/11 13:25:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -163,7 +163,7 @@ public final class TranslationTableFactory
    * 
    * @return the factory.
    */
-  public static TranslationTableFactory getInstance ()
+  public synchronized static TranslationTableFactory getInstance ()
   {
     if (singleton == null)
     {
@@ -241,10 +241,10 @@ public final class TranslationTableFactory
       }
 
       // now validate the mappings
-      final Enumeration enum = contexts.keys();
-      while (enum.hasMoreElements())
+      final Enumeration keys = contexts.keys();
+      while (keys.hasMoreElements())
       {
-        final Object key = enum.nextElement();
+        final Object key = keys.nextElement();
         final ContextRule rule = (ContextRule) contexts.get(key);
         if (rule.isMappingDefined())
         {

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintExportTask.java,v 1.9 2004/03/16 15:09:45 taqua Exp $
+ * $Id: PrintExportTask.java,v 1.8.4.3 2004/12/13 21:42:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,12 +38,11 @@
 
 package org.jfree.report.modules.gui.print;
 
-import java.awt.print.Pageable;
 import java.awt.print.PrinterJob;
 
 import org.jfree.report.modules.gui.base.ExportTask;
-import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.gui.base.ReportPane;
+import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.util.Log;
 
 /**
@@ -63,7 +62,7 @@ public class PrintExportTask extends ExportTask
 
   /**
    * Creates a new print export task.
-   *
+   * 
    * @param pageable the pageable that should be printed.
    * @param progressDialog the progress dialog that will monitor the progress.
    * @param jobname the desired jobname (or null, if undefined)
@@ -82,7 +81,7 @@ public class PrintExportTask extends ExportTask
   }
 
   /**
-   * Displays the print dialog and executes the printing in a spearate thread.
+   * Displays the print dialog and executes the printing in a spearate thread. 
    * This is a workaround for an java bug.
    */
   protected void performExport()
@@ -108,7 +107,12 @@ public class PrintExportTask extends ExportTask
         synchronized (pageable.getReportLock())
         {
           pageable.setPrinting(true);
-          pj.print();
+        }
+
+        // printing can be done outside, as now it is safe ..
+        pj.print();
+        synchronized(pageable.getReportLock())
+        {
           pageable.setPrinting(false);
         }
         setTaskDone();
@@ -143,7 +147,6 @@ public class PrintExportTask extends ExportTask
       progressDialog.dispose();
     }
   }
-
   
 }
 

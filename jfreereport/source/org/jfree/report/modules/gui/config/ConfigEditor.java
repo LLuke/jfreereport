@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigEditor.java,v 1.10 2004/03/16 15:09:24 taqua Exp $
+ * $Id: ConfigEditor.java,v 1.9.4.2 2004/10/11 21:00:38 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -57,7 +57,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Properties;
-import java.util.ResourceBundle;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -77,11 +76,7 @@ import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
-import org.jfree.report.Boot;
-import org.jfree.report.modules.gui.base.ResourceBundleUtils;
-import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
-import org.jfree.report.modules.gui.base.components.ActionButton;
-import org.jfree.report.modules.gui.base.components.FilesystemFilter;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.modules.gui.config.editor.ConfigEditorPanel;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.ConfigTreeModel;
@@ -91,6 +86,10 @@ import org.jfree.report.util.LineBreakIterator;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
+import org.jfree.ui.FilesystemFilter;
+import org.jfree.ui.action.AbstractActionDowngrade;
+import org.jfree.ui.action.ActionButton;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * The ConfigEditor can be used to edit the global jfreereport.properties files.
@@ -136,7 +135,7 @@ public class ConfigEditor extends JFrame
     public SaveAction()
     {
       putValue(NAME, getResources().getString("action.save.name"));
-      putValue(SMALL_ICON, ResourceBundleUtils.getIcon(getResources().getString("action.save.small-icon")));
+      putValue(SMALL_ICON, getResources().getIcon("action.save.small-icon"));
     }
 
     /**
@@ -160,7 +159,7 @@ public class ConfigEditor extends JFrame
     public LoadAction()
     {
       putValue(NAME, getResources().getString("action.load.name"));
-      putValue(SMALL_ICON, ResourceBundleUtils.getIcon(getResources().getString("action.load.small-icon")));
+      putValue(SMALL_ICON, getResources().getIcon("action.load.small-icon"));
     }
 
     /**
@@ -184,7 +183,7 @@ public class ConfigEditor extends JFrame
     public NewAction()
     {
       putValue(NAME, getResources().getString("action.new.name"));
-      putValue(SMALL_ICON, ResourceBundleUtils.getIcon(getResources().getString("action.new.small-icon")));
+      putValue(SMALL_ICON, getResources().getIcon("action.new.small-icon"));
     }
 
     /**
@@ -221,7 +220,7 @@ public class ConfigEditor extends JFrame
       if (lastPathElement instanceof ConfigTreeModuleNode)
       {
         final ConfigTreeModuleNode node = (ConfigTreeModuleNode) lastPathElement;
-        ConfigEditorPanel detailEditorPane = getDetailEditorPane();
+        final ConfigEditorPanel detailEditorPane = getDetailEditorPane();
         detailEditorPane.store();
         detailEditorPane.editModule
             (node.getModule(), node.getConfiguration(), node.getAssignedKeys());
@@ -246,13 +245,12 @@ public class ConfigEditor extends JFrame
   private static final int ESCAPE_COMMENT = 2;
 
   /** The name of the resource bundle implementation used in this dialog. */
-  private static final String RESOURCE_BUNDLE =
-      "org.jfree.report.modules.gui.config.resources.config-resources";
-
+  public static final String RESOURCE_BUNDLE =
+      "org.jfree.report.modules.gui.config.resources/config-resources";
   /** A label that serves as status bar. */
   private JLabel statusHolder;
   /** The resource bundle instance of this dialog. */
-  private final ResourceBundle resources;
+  private final ResourceBundleSupport resources;
 
   /** The detail editor for the currently selected tree node. */
   private final ConfigEditorPanel detailEditorPane;
@@ -272,7 +270,7 @@ public class ConfigEditor extends JFrame
    */
   public ConfigEditor() throws ConfigTreeModelException
   {
-    resources = ResourceBundle.getBundle(RESOURCE_BUNDLE);
+    resources = new ResourceBundleSupport(RESOURCE_BUNDLE);
     currentReportConfiguration = new ReportConfiguration
         (ReportConfiguration.getGlobalConfig());
     detailEditorPane = new ConfigEditorPanel();
@@ -315,7 +313,7 @@ public class ConfigEditor extends JFrame
    * Returns the resource bundle of this editor for translating strings. 
    * @return the resource bundle.
    */
-  protected ResourceBundle getResources ()
+  protected ResourceBundleSupport getResources ()
   {
     return resources;
   }
@@ -454,10 +452,10 @@ public class ConfigEditor extends JFrame
 
       reset();
 
-      final Enumeration enum = prop.keys();
-      while (enum.hasMoreElements())
+      final Enumeration keys = prop.keys();
+      while (keys.hasMoreElements())
       {
-        final String key = (String) enum.nextElement();
+        final String key = (String) keys.nextElement();
         final String value = prop.getProperty(key);
         currentReportConfiguration.setConfigProperty(key, value);
       }
@@ -730,7 +728,7 @@ public class ConfigEditor extends JFrame
   {
     try
     {
-      Boot.start();
+      JFreeReportBoot.getInstance().start();
       final ConfigEditor ed = new ConfigEditor();
       ed.pack();
       ed.setVisible(true);

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.6 2003/08/25 14:29:30 taqua Exp $
+ * $Id: BSHExpression.java,v 1.6.2.1.2.4 2004/12/30 14:46:12 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -41,8 +41,10 @@
 package org.jfree.report.modules.misc.beanshell;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.Reader;
 import java.io.Serializable;
 
@@ -51,6 +53,7 @@ import org.jfree.report.function.AbstractExpression;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * An expression that uses the BeanShell scripting framework to perform a scripted calculation.
@@ -110,7 +113,9 @@ public class BSHExpression extends AbstractExpression implements Serializable
       "org/jfree/report/modules/misc/beanshell/BSHExpressionHeader.txt";
 
   /** The beanshell-interpreter used to evaluate the expression. */
-  private Interpreter interpreter;
+  private transient Interpreter interpreter;
+
+  private String expression;
 
   /**
    * default constructor, create a new BeanShellExpression.
@@ -136,18 +141,21 @@ public class BSHExpression extends AbstractExpression implements Serializable
   {
     try
     {
-      interpreter.set("properties", getProperties());
       interpreter.set("dataRow", getDataRow());
+      if (Boolean.FALSE.equals(interpreter.eval("__expression_initialized")))
+      {
+        interpreter.eval(expression);
+        interpreter.eval("__expression_initialized = true;");
+      }
+      // do no longer evaluate the expression without having a valid datarow.
       return interpreter.eval("getValue ();");
     }
     catch (Exception e)
     {
-      e.printStackTrace();
-      Log.error(new Log.SimpleMessage("Evaluation error: ",
-          e.getClass(), " - ", e.getMessage()));
-      throw new NullPointerException();
+      Log.warn(new Log.SimpleMessage("Evaluation error: ",
+          e.getClass(), " - ", e.getMessage()), e);
+      return null;
     }
-    //return null;
   }
 
   /**
@@ -180,7 +188,7 @@ public class BSHExpression extends AbstractExpression implements Serializable
     {
       throw new FunctionInitializeException("No null name allowed");
     }
-    final InputStream in = this.getClass().getClassLoader().getResourceAsStream(BSHHEADERFILE);
+    final InputStream in = ObjectUtilities.getClassLoader(getClass()).getResourceAsStream(BSHHEADERFILE);
     if (in == null)
     {
       throw new FunctionInitializeException("Unable to locate BSHHeaderFile");
@@ -198,14 +206,10 @@ public class BSHExpression extends AbstractExpression implements Serializable
       //
       // Object getValue ()
       //
-      final String expression = getProperty("expression");
       if (expression == null)
       {
         throw new FunctionInitializeException("No expression set");
       }
-
-      // do no longer evaluate the expression without having a valid datarow.
-      interpreter.eval(expression);
     }
     catch (Exception e)
     {
@@ -247,5 +251,38 @@ public class BSHExpression extends AbstractExpression implements Serializable
   {
     final BSHExpression expression = (BSHExpression) super.getInstance();
     return expression;
+  }
+
+  /**
+   * Serialisation support. The transient child elements were not saved.
+   *
+   * @param in  the input stream.
+   *
+   * @throws IOException if there is an I/O error.
+   * @throws ClassNotFoundException if a serialized class is not defined on this system.
+   */
+  private void readObject(final ObjectInputStream in)
+      throws IOException, ClassNotFoundException
+  {
+    in.defaultReadObject();
+    interpreter = new Interpreter();
+    try
+    {
+      initialize();
+    }
+    catch (FunctionInitializeException fe)
+    {
+      // ignore .. maybe later ..
+    }
+  }
+
+  public String getExpression()
+  {
+    return expression;
+  }
+
+  public void setExpression(String expression)
+  {
+    this.expression = expression;
   }
 }

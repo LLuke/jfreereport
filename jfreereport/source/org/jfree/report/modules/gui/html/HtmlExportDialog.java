@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -27,9 +27,9 @@
  *
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG) based on PDFSaveDialog;
  * Contributor(s):   Thomas Morgner;
- *                   David Gilbert (for Object Refinery Limited);
+ *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportDialog.java,v 1.9 2004/03/16 15:09:43 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.8.4.6 2004/12/13 19:26:35 taqua Exp $
  *
  * Changes
  * -------
@@ -74,10 +74,8 @@ import javax.swing.KeyStroke;
 
 import org.jfree.io.IOUtils;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
-import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
 import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
@@ -86,6 +84,8 @@ import org.jfree.report.modules.output.table.html.HtmlProcessor;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
+import org.jfree.ui.action.ActionButton;
+import org.jfree.ui.FilesystemFilter;
 
 /**
  * A dialog that is used to perform the printing of a report into an HTML file.
@@ -353,10 +353,6 @@ public class HtmlExportDialog extends JDialog
   /** Localised resources. */
   private ResourceBundle resources;
 
-  /** The base resource class. */
-  public static final String BASE_RESOURCE_CLASS =
-      "org.jfree.report.modules.gui.html.resources.html-export-resources";
-
   /**
    * Creates a new HTML save dialog.
    *
@@ -428,7 +424,7 @@ public class HtmlExportDialog extends JDialog
   {
     if (resources == null)
     {
-      resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+      resources = ResourceBundle.getBundle(HtmlExportPlugin.BASE_RESOURCE_CLASS);
     }
     return resources;
   }
@@ -858,6 +854,50 @@ public class HtmlExportDialog extends JDialog
     cbxCopyExternalReferencesZip.setSelected(false);
     cbxStrictLayout.setSelected(false);
     rbGenerateHTML4.setSelected(true);
+  }
+
+  /**
+   * Returns the user input of this dialog as properties collection.
+   *
+   * @return the user input.
+   */
+  public Properties getDialogContents ()
+  {
+    final Properties p = new Properties();
+    p.setProperty("author", getAuthor());
+    p.setProperty("dir.data-file", getDirDataFilename());
+    p.setProperty("dir.filename", getDirFilename());
+    p.setProperty("encoding", getEncoding());
+    p.setProperty("html.title", getHTMLTitle());
+    p.setProperty("stream.filename", getStreamFilename());
+    p.setProperty("zip.data-file", getZipDataFilename());
+    p.setProperty("zip.filename", getZipFilename());
+
+    p.setProperty("selected-exportmethod", String.valueOf(getSelectedExportMethod()));
+    p.setProperty("strict-layout", String.valueOf(isStrictLayout()));
+    p.setProperty("generate-xhtml", String.valueOf(isGenerateXHTML()));
+    return p;
+  }
+
+  /**
+   * Restores the user input from a properties collection.
+   *
+   * @param p the user input.
+   */
+  public void setDialogContents (final Properties p)
+  {
+    setAuthor(p.getProperty("author", getAuthor()));
+    setDirDataFilename(p.getProperty("dir.data-file", getDirDataFilename()));
+    setDirFilename(p.getProperty("dir.filename", getDirFilename()));
+    setEncoding(p.getProperty("encoding", getEncoding()));
+    setHTMLTitle(p.getProperty("html.title", getHTMLTitle()));
+    setStreamFilename(p.getProperty("stream.filename", getStreamFilename()));
+    setZipDataFilename(p.getProperty("zip.data-file", getZipDataFilename()));
+    setZipFilename(p.getProperty("zip.filename", getZipFilename()));
+
+    setSelectedExportMethod(StringUtil.parseInt(p.getProperty("selected-exportmethod"), getSelectedExportMethod()));
+    setStrictLayout(StringUtil.parseBoolean(p.getProperty("strict-layout"), isStrictLayout()));
+    setGenerateXHTML(StringUtil.parseBoolean(p.getProperty("generate-xhtml"), isGenerateXHTML()));
   }
 
   /**
@@ -1304,50 +1344,6 @@ public class HtmlExportDialog extends JDialog
   }
 
   /**
-   * Returns the user input of this dialog as properties collection.
-   *
-   * @return the user input.
-   */
-  public Properties getDialogContents ()
-  {
-    final Properties p = new Properties();
-    p.setProperty("author", getAuthor());
-    p.setProperty("dir.data-file", getDirDataFilename());
-    p.setProperty("dir.filename", getDirFilename());
-    p.setProperty("encoding", getEncoding());
-    p.setProperty("html.title", getHTMLTitle());
-    p.setProperty("stream.filename", getStreamFilename());
-    p.setProperty("zip.data-file", getZipDataFilename());
-    p.setProperty("zip.filename", getZipFilename());
-
-    p.setProperty("selected-exportmethod", String.valueOf(getSelectedExportMethod()));
-    p.setProperty("strict-layout", String.valueOf(isStrictLayout()));
-    p.setProperty("generate-xhtml", String.valueOf(isGenerateXHTML()));
-    return p;
-  }
-
-  /**
-   * Restores the user input from a properties collection.
-   *
-   * @param p the user input.
-   */
-  public void setDialogContents (final Properties p)
-  {
-    setAuthor(p.getProperty("author", getAuthor()));
-    setDirDataFilename(p.getProperty("dir.data-file", getDirDataFilename()));
-    setDirFilename(p.getProperty("dir.filename", getDirFilename()));
-    setEncoding(p.getProperty("encoding", getEncoding()));
-    setHTMLTitle(p.getProperty("html.title", getHTMLTitle()));
-    setStreamFilename(p.getProperty("stream.filename", getStreamFilename()));
-    setZipDataFilename(p.getProperty("zip.data-file", getZipDataFilename()));
-    setZipFilename(p.getProperty("zip.filename", getZipFilename()));
-
-    setSelectedExportMethod(StringUtil.parseInt(p.getProperty("selected-exportmethod"), getSelectedExportMethod()));
-    setStrictLayout(StringUtil.parseBoolean(p.getProperty("strict-layout"), isStrictLayout()));
-    setGenerateXHTML(StringUtil.parseBoolean(p.getProperty("generate-xhtml"), isGenerateXHTML()));
-  }
-
-  /**
    * Returns the selected export method.
    *
    * @return the selected Export method, one of EXPORT_STREAM, EXPORT_ZIP or EXPORT_DIR.
@@ -1486,7 +1482,7 @@ public class HtmlExportDialog extends JDialog
         (HtmlProcessor.CONFIGURATION_PREFIX +
         HtmlProcessor.STRICT_LAYOUT,
             config.getConfigProperty(TableProcessor.STRICT_LAYOUT,
-                TableProcessor.STRICT_TABLE_LAYOUT_DEFAULT));
+                TableProcessor.STRICT_LAYOUT_DEFAULT));
     setStrictLayout(strict.equals("true"));
     final String encoding = config.getConfigProperty
         (HtmlProcessor.CONFIGURATION_PREFIX +

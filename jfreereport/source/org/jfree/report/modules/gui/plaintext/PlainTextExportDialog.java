@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.9 2004/03/16 15:09:45 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.8.4.9 2004/12/13 20:23:54 taqua Exp $
  *
  * Changes
  * --------
@@ -38,7 +38,9 @@
 
 package org.jfree.report.modules.gui.plaintext;
 
+import java.awt.BorderLayout;
 import java.awt.Dialog;
+import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -48,15 +50,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.print.PageFormat;
 import java.io.File;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -71,21 +74,21 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.gui.base.components.ActionButton;
-import org.jfree.report.modules.gui.base.components.ActionRadioButton;
-import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
 import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
-import org.jfree.report.modules.output.pageable.plaintext.EpsonPrinterCommandSet;
-import org.jfree.report.modules.output.pageable.plaintext.IBMPrinterCommandSet;
+import org.jfree.report.modules.output.pageable.plaintext.AbstractEpsonPrinterDriver;
+import org.jfree.report.modules.output.pageable.plaintext.IBMCompatiblePrinterDriver;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
-import org.jfree.report.modules.output.pageable.plaintext.PrinterCommandSet;
+import org.jfree.report.modules.output.pageable.plaintext.PrinterSpecification;
+import org.jfree.report.modules.output.pageable.plaintext.PrinterSpecificationManager;
 import org.jfree.report.util.Log;
-import org.jfree.report.util.NullOutputStream;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
-import org.jfree.ui.ExtensionFileFilter;
+import org.jfree.ui.KeyedComboBoxModel;
+import org.jfree.ui.action.AbstractFileSelectionAction;
+import org.jfree.ui.action.ActionButton;
+import org.jfree.ui.action.ActionRadioButton;
 
 /**
  * A dialog that is used to export reports to plain text.
@@ -150,7 +153,7 @@ public class PlainTextExportDialog extends JDialog
   /**
    * An action to select a file.
    */
-  private class ActionSelectFile extends AbstractAction
+  private class ActionSelectFile extends AbstractFileSelectionAction
   {
     /**
      * Defines an <code>Action</code> object with a default
@@ -158,7 +161,28 @@ public class PlainTextExportDialog extends JDialog
      */
     public ActionSelectFile()
     {
+      super (PlainTextExportDialog.this);
       putValue(NAME, getResources().getString("plain-text-exportdialog.selectFile"));
+    }
+
+    /**
+     * Returns a descriptive text describing the file extension.
+     *
+     * @return the file description.
+     */
+    protected String getFileDescription ()
+    {
+      return "Text Files";
+    }
+
+    /**
+     * Returns the file extension that should be used for the operation.
+     *
+     * @return the file extension.
+     */
+    protected String getFileExtension ()
+    {
+      return ".txt";
     }
 
     /**
@@ -168,22 +192,30 @@ public class PlainTextExportDialog extends JDialog
      */
     public void actionPerformed(final ActionEvent e)
     {
-      performSelectFile();
+      final File selectedFile = performSelectFile
+              (new File (getFilename()), JFileChooser.SAVE_DIALOG, true);
+      if (selectedFile != null)
+      {
+        setFilename(selectedFile.getPath());
+      }
     }
   }
 
   /**
    * An action to select a plain printer.
    */
-  private class ActionSelectPlainPrinter extends AbstractAction
+  private class ActionSelectPrinter extends AbstractAction
   {
+    private int printer;
+
     /**
      * Defines an <code>Action</code> object with a default
      * description string and default icon.
      */
-    public ActionSelectPlainPrinter()
+    public ActionSelectPrinter(final int printer)
     {
-      putValue(NAME, getResources().getString("plain-text-exportdialog.printer.plain"));
+      putValue(NAME, getResources().getString(PRINTER_NAMES[printer]));
+      this.printer = printer;
     }
 
     /**
@@ -193,57 +225,26 @@ public class PlainTextExportDialog extends JDialog
      */
     public void actionPerformed(final ActionEvent e)
     {
-      setSelectedPrinter(TYPE_PLAIN_OUTPUT);
+      setSelectedPrinter(printer);
     }
   }
 
-  /**
-   * An action to select an Epson printer.
-   */
-  private class ActionSelectEpsonPrinter extends AbstractAction
+  private class SelectEpsonModelAction extends AbstractAction
   {
     /**
-     * Defines an <code>Action</code> object with a default
-     * description string and default icon.
+     * Defines an <code>Action</code> object with a default description string and default
+     * icon.
      */
-    public ActionSelectEpsonPrinter()
+    public SelectEpsonModelAction ()
     {
-      putValue(NAME, getResources().getString("plain-text-exportdialog.printer.epson"));
     }
 
     /**
      * Invoked when an action occurs.
-     *
-     * @param e  the action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
-      setSelectedPrinter(TYPE_EPSON_OUTPUT);
-    }
-  }
-
-  /**
-   * An action to select an IBM printer.
-   */
-  private class ActionSelectIBMPrinter extends AbstractAction
-  {
-    /**
-     * Defines an <code>Action</code> object with a default
-     * description string and default icon.
-     */
-    public ActionSelectIBMPrinter()
-    {
-      putValue(NAME, getResources().getString("plain-text-exportdialog.printer.ibm"));
-    }
-
-    /**
-     * Invoked when an action occurs.
-     *
-     * @param e  an action event.
-     */
-    public void actionPerformed(final ActionEvent e)
-    {
-      setSelectedPrinter(TYPE_IBM_OUTPUT);
+      updateEpsonEncoding();
     }
   }
 
@@ -255,6 +256,12 @@ public class PlainTextExportDialog extends JDialog
 
   /** IBM printer output. */
   public static final int TYPE_IBM_OUTPUT = 2;
+
+  private static final String[] PRINTER_NAMES = new String[] {
+    "plain-text-exportdialog.printer.plain",
+    "plain-text-exportdialog.printer.epson",
+    "plain-text-exportdialog.printer.ibm"
+  };
 
   /** 6 lines per inch. */
   public static final Integer LPI_6 = new Integer(6);
@@ -283,20 +290,8 @@ public class PlainTextExportDialog extends JDialog
   /** Localised resources. */
   private ResourceBundle resources;
 
-  /** The plain text encodings. */
-  private EncodingComboBoxModel plainTextEncodingModel;
-
-  /** The IBM printer encodings. */
-  private EncodingComboBoxModel ibmPrinterEncodingModel;
-
-  /** The Epson printer encodings. */
-  private EncodingComboBoxModel epsonPrinterEncodingModel;
-
-  /** The selected encoding model. */
-  private EncodingComboBoxModel selectedEncodingModel;
-
   /** A combo-box for selecting the encoding. */
-  private JComboBox cbEncoding;
+  private EncodingSelector encodingSelector;
 
   /** A radio button for selecting plain printer commands. */
   private JRadioButton rbPlainPrinterCommandSet;
@@ -316,19 +311,9 @@ public class PlainTextExportDialog extends JDialog
   /** A combo-box for selecting characters per inch. */
   private JComboBox cbCharsPerInch;
 
-  /** A file chooser. */
-  private JFileChooser fileChooser;
+  private JComboBox cbEpsonPrinterType;
 
-  /** The printer command set for generic text printers. */
-  private PrinterCommandSet plainTextCommandSet;
-  /** The printer command set for ibm compatible text printers. */
-  private PrinterCommandSet ibmPrinterCommandSet;
-  /** The printer command set for epson compatible text printers. */
-  private PrinterCommandSet epsonPrinterCommandSet;
-
-  /** The base resource class. */
-  public static final String BASE_RESOURCE_CLASS =
-      "org.jfree.report.modules.gui.plaintext.resources.plaintext-export-resources";
+  private KeyedComboBoxModel epsonPrinters;
 
   /**
    * Creates a non-modal dialog without a title and without
@@ -373,17 +358,9 @@ public class PlainTextExportDialog extends JDialog
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     setTitle(getResources().getString("plain-text-exportdialog.dialogtitle"));
 
-    plainTextCommandSet = new PrinterCommandSet(new NullOutputStream(), 10, 6);
-    plainTextEncodingModel = createEncodingModel(plainTextCommandSet);
-
-    epsonPrinterCommandSet = new EpsonPrinterCommandSet(new NullOutputStream(),10, 6);
-    epsonPrinterEncodingModel = createEncodingModel(epsonPrinterCommandSet);
-
-    ibmPrinterCommandSet = new IBMPrinterCommandSet(new NullOutputStream(),10, 6);
-    ibmPrinterEncodingModel = createEncodingModel(ibmPrinterCommandSet);
-
-    selectedEncodingModel = plainTextEncodingModel;
-    cbEncoding = new JComboBox(selectedEncodingModel);
+    epsonPrinters = loadEpsonPrinters();
+    cbEpsonPrinterType = new JComboBox(epsonPrinters);
+    cbEpsonPrinterType.setAction(new SelectEpsonModelAction());
 
     final Integer[] lpiModel = {
       LPI_6,
@@ -401,27 +378,24 @@ public class PlainTextExportDialog extends JDialog
     cbLinesPerInch = new JComboBox(new DefaultComboBoxModel(lpiModel));
     cbCharsPerInch = new JComboBox(new DefaultComboBoxModel(cpiModel));
 
-    rbPlainPrinterCommandSet = new ActionRadioButton(new ActionSelectPlainPrinter());
-    rbEpsonPrinterCommandSet = new ActionRadioButton(new ActionSelectEpsonPrinter());
-    rbIBMPrinterCommandSet = new ActionRadioButton(new ActionSelectIBMPrinter());
+    rbPlainPrinterCommandSet = new ActionRadioButton (new ActionSelectPrinter(TYPE_PLAIN_OUTPUT));
+    rbEpsonPrinterCommandSet = new ActionRadioButton(new ActionSelectPrinter(TYPE_EPSON_OUTPUT));
+    rbIBMPrinterCommandSet = new ActionRadioButton(new ActionSelectPrinter(TYPE_IBM_OUTPUT));
 
     txFilename = new JTextField();
+    encodingSelector = new EncodingSelector();
 
     final ButtonGroup bg = new ButtonGroup();
     bg.add(rbPlainPrinterCommandSet);
     bg.add(rbEpsonPrinterCommandSet);
     bg.add(rbIBMPrinterCommandSet);
 
-    final JComponent contentPane = createContentPane();
-    final GridBagConstraints gbc = new GridBagConstraints();
-    gbc.fill = GridBagConstraints.NONE;
-    gbc.weightx = 1;
-    gbc.gridx = 0;
-    gbc.gridwidth = 4;
-    gbc.gridy = 8;
-    gbc.insets = new Insets(10, 0, 0, 0);
-    contentPane.add(createButtonPanel(), gbc);
-    setContentPane(contentPane);
+    final JPanel rootPane = new JPanel ();
+    rootPane.setLayout(new BorderLayout());
+
+    rootPane.add(createButtonPanel(), BorderLayout.SOUTH);
+    rootPane.add(createContentPane(), BorderLayout.CENTER);
+    setContentPane(rootPane);
 
     clear();
 
@@ -433,6 +407,22 @@ public class PlainTextExportDialog extends JDialog
       }
     }
     );
+  }
+
+  private KeyedComboBoxModel loadEpsonPrinters ()
+  {
+    final KeyedComboBoxModel epsonPrinters = new KeyedComboBoxModel();
+    final PrinterSpecificationManager specManager =
+            AbstractEpsonPrinterDriver.getPrinterSpecificationManager();
+    final String[] printerNames =
+            specManager.getPrinterNames();
+    Arrays.sort(printerNames);
+    for (int i = 0; i < printerNames.length; i++)
+    {
+      final PrinterSpecification pspec = specManager.getPrinter(printerNames[i]);
+      epsonPrinters.add(pspec, pspec.getDisplayName());
+    }
+    return epsonPrinters;
   }
 
   /**
@@ -488,7 +478,7 @@ public class PlainTextExportDialog extends JDialog
     gbc.gridx = 1;
     gbc.gridy = 0;
     gbc.ipadx = 120;
-    gbc.gridwidth = 2;
+    gbc.gridwidth = 3;
     gbc.insets = new Insets(3, 1, 1, 1);
     contentPane.add(txFilename, gbc);
 
@@ -508,7 +498,7 @@ public class PlainTextExportDialog extends JDialog
     gbc.gridy = 2;
     gbc.gridwidth = 2;
     gbc.insets = new Insets(1, 1, 1, 1);
-    contentPane.add(rbEpsonPrinterCommandSet, gbc);
+    contentPane.add(rbIBMPrinterCommandSet, gbc);
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -517,16 +507,25 @@ public class PlainTextExportDialog extends JDialog
     gbc.gridy = 3;
     gbc.gridwidth = 2;
     gbc.insets = new Insets(1, 1, 1, 1);
-    contentPane.add(rbIBMPrinterCommandSet, gbc);
+    contentPane.add(rbEpsonPrinterCommandSet, gbc);
+
+    gbc = new GridBagConstraints();
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    gbc.gridx = 3;
+    gbc.gridy = 3;
+    gbc.gridwidth = 1;
+    gbc.insets = new Insets(1, 1, 1, 1);
+    gbc.fill = GridBagConstraints.HORIZONTAL;
+    contentPane.add(cbEpsonPrinterType, gbc);
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 0;
     gbc.gridx = 1;
     gbc.gridy = 4;
-    gbc.gridwidth = 2;
+    gbc.gridwidth = 3;
     gbc.insets = new Insets(1, 1, 1, 1);
-    contentPane.add(cbEncoding, gbc);
+    contentPane.add(encodingSelector, gbc);
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.NONE;
@@ -570,9 +569,8 @@ public class PlainTextExportDialog extends JDialog
 
     gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.NORTHWEST;
-    gbc.gridx = 3;
+    gbc.gridx = 4;
     gbc.gridy = 0;
-    gbc.gridheight = 2;
     contentPane.add(btnSelect, gbc);
 
     return contentPane;
@@ -597,7 +595,27 @@ public class PlainTextExportDialog extends JDialog
         KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
         JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-    return buttonPanel;
+    final JPanel buttonCarrier = new JPanel();
+    buttonCarrier.setLayout(new FlowLayout(FlowLayout.RIGHT));
+    buttonCarrier.add(buttonPanel);
+    return buttonCarrier;
+  }
+
+  private void updateEpsonEncoding ()
+  {
+    final PrinterSpecification spec = (PrinterSpecification)
+            epsonPrinters.getSelectedKey();
+    if (spec == null)
+    {
+      Log.debug ("Invalid selection: " + spec);
+      encodingSelector.setEncodings
+              (AbstractEpsonPrinterDriver.getPrinterSpecificationManager().
+              getGenericPrinter());
+    }
+    else
+    {
+      encodingSelector.setEncodings(spec);
+    }
   }
 
   /**
@@ -607,33 +625,32 @@ public class PlainTextExportDialog extends JDialog
    */
   public void setSelectedPrinter(final int type)
   {
+    final String oldEncoding = getEncoding();
     if (type == TYPE_EPSON_OUTPUT)
     {
       rbEpsonPrinterCommandSet.setSelected(true);
-      selectedEncodingModel = epsonPrinterEncodingModel;
-      cbEncoding.setModel(selectedEncodingModel);
-      // transfer the selected encoding ...
-      setEncoding(getEncoding());
+      cbEpsonPrinterType.setEnabled(true);
+      updateEpsonEncoding();
     }
     else if (type == TYPE_IBM_OUTPUT)
     {
       rbIBMPrinterCommandSet.setSelected(true);
-      selectedEncodingModel = ibmPrinterEncodingModel;
-      cbEncoding.setModel(selectedEncodingModel);
-      // transfer the selected encoding ...
-      setEncoding(getEncoding());
+      cbEpsonPrinterType.setEnabled(false);
+      encodingSelector.setEncodings(new IBMCompatiblePrinterDriver.GenericIBMPrinterSpecification());
     }
     else if (type == TYPE_PLAIN_OUTPUT)
     {
       rbPlainPrinterCommandSet.setSelected(true);
-      selectedEncodingModel = plainTextEncodingModel;
-      cbEncoding.setModel(selectedEncodingModel);
-      // transfer the selected encoding ...
-      setEncoding(getEncoding());
+      cbEpsonPrinterType.setEnabled(false);
+      encodingSelector.setEncodings(new EncodingSelector.GenericPrinterSpecification());
     }
     else
     {
       throw new IllegalArgumentException();
+    }
+    if (oldEncoding != null)
+    {
+      setEncoding(oldEncoding);
     }
   }
 
@@ -703,17 +720,50 @@ public class PlainTextExportDialog extends JDialog
   public void clear()
   {
     txFilename.setText("");
-    rbPlainPrinterCommandSet.setSelected(true);
-    selectedEncodingModel = plainTextEncodingModel;
-    int idx = selectedEncodingModel.indexOf(System.getProperty("file.encoding", "Cp1251"));
-    if (idx == -1 && selectedEncodingModel.getSize() > 0)
-    {
-      idx = 0;
-    }
-    cbEncoding.setSelectedIndex(idx);
-
+    setSelectedPrinter(TYPE_PLAIN_OUTPUT);
+    cbEpsonPrinterType.setEnabled(false);
+    cbEpsonPrinterType.setSelectedItem(AbstractEpsonPrinterDriver.getDefaultPrinter());
     cbCharsPerInch.setSelectedItem(CPI_10);
     cbLinesPerInch.setSelectedItem(LPI_6);
+    setEncoding(System.getProperty("file.encoding", "Cp1251"));
+  }
+
+  /**
+   * Returns the user input of this dialog as properties collection.
+   *
+   * @return the user input.
+   */
+  public Properties getDialogContents ()
+  {
+    final Properties p = new Properties();
+    p.setProperty("filename", getFilename());
+    p.setProperty("encoding", getEncoding());
+    if (getSelectedPrinterModel() != null)
+    {
+      p.setProperty("printer-model", getSelectedPrinterModel());
+    }
+
+    p.setProperty("chars-per-inch", String.valueOf(getCharsPerInch()));
+    p.setProperty("lines-per-inch", String.valueOf(getLinesPerInch()));
+    p.setProperty("selected-printer", String.valueOf(getSelectedPrinter()));
+    return p;
+  }
+
+  /**
+   * Restores the user input from a properties collection.
+   *
+   * @param p the user input.
+   */
+  public void setDialogContents (final Properties p)
+  {
+    setSelectedPrinter(StringUtil.parseInt(p.getProperty("selected-printer"), getSelectedPrinter()));
+
+    setCharsPerInch(StringUtil.parseInt(p.getProperty("chars-per-inch"), getCharsPerInch()));
+    setLinesPerInch(StringUtil.parseInt(p.getProperty("lines-per-inch"), getLinesPerInch()));
+
+    setEncoding(p.getProperty("encoding", getEncoding()));
+    setFilename(p.getProperty("filename", getFilename()));
+    setSelectedPrinterModel(p.getProperty("printer-model", getSelectedPrinterModel()));
   }
 
   /**
@@ -734,18 +784,21 @@ public class PlainTextExportDialog extends JDialog
   /**
    * Sets the lines per inch.
    *
-   * @param i  the lines per inch.
+   * @param lpi  the lines per inch.
    */
-  public void setLinesPerInch(final int i)
+  public void setLinesPerInch(final int lpi)
   {
-    if (i == LPI_10.intValue() || i == LPI_6.intValue())
+    final Integer lpiObj = new Integer (lpi);
+    final ComboBoxModel model = cbLinesPerInch.getModel();
+    for (int i = 0; i < model.getSize(); i++)
     {
-      cbLinesPerInch.setSelectedItem(new Integer(i));
+      if (lpiObj.equals(model.getElementAt(i)))
+      {
+        cbLinesPerInch.setSelectedIndex(i);
+        return;
+      }
     }
-    else
-    {
-      throw new IllegalArgumentException();
-    }
+    throw new IllegalArgumentException("There is no such LPI: " + lpi);
   }
 
   /**
@@ -766,21 +819,21 @@ public class PlainTextExportDialog extends JDialog
   /**
    * Sets the characters per inch.
    *
-   * @param i  the characters per inch.
+   * @param cpi  the characters per inch.
    */
-  public void setCharsPerInch(final int i)
+  public void setCharsPerInch(final int cpi)
   {
-    if (i == CPI_10.intValue() || i == CPI_12.intValue()
-        || i == CPI_15.intValue()
-        || i == CPI_17.intValue()
-        || i == CPI_20.intValue())
+    final Integer cpiObj = new Integer (cpi);
+    final ComboBoxModel model = cbCharsPerInch.getModel();
+    for (int i = 0; i < model.getSize(); i++)
     {
-      cbCharsPerInch.setSelectedItem(new Integer(i));
+      if (cpiObj.equals(model.getElementAt(i)))
+      {
+        cbCharsPerInch.setSelectedIndex(i);
+        return;
+      }
     }
-    else
-    {
-      throw new IllegalArgumentException();
-    }
+    throw new IllegalArgumentException("There is no such CPI: " + cpi);
   }
 
   /**
@@ -790,19 +843,7 @@ public class PlainTextExportDialog extends JDialog
    */
   public String getEncoding()
   {
-    if (cbEncoding.getSelectedIndex() == -1)
-    {
-      if (selectedEncodingModel.getSize() > 0)
-      {
-        // return the first selected encoding, unless specified otherwise.
-        return selectedEncodingModel.getEncoding(0);
-      }
-      return PlainTextOutputTarget.getTextTargetEncoding(null);
-    }
-    else
-    {
-      return selectedEncodingModel.getEncoding(cbEncoding.getSelectedIndex());
-    }
+    return encodingSelector.getSelectedEncoding();
   }
 
   /**
@@ -816,53 +857,7 @@ public class PlainTextExportDialog extends JDialog
     {
       throw new NullPointerException("Encoding must not be null");
     }
-
-    if (cbEncoding.getModel() != selectedEncodingModel)
-    {
-      throw new IllegalStateException("Model for the combobox is not set up correctly.");
-    }
-
-    ensureEncodingAvailable(plainTextCommandSet, plainTextEncodingModel, encoding);
-    ensureEncodingAvailable(ibmPrinterCommandSet, ibmPrinterEncodingModel, encoding);
-    ensureEncodingAvailable(epsonPrinterCommandSet, epsonPrinterEncodingModel, encoding);
-
-    if (selectedEncodingModel.indexOf(encoding) == -1)
-    {
-      throw new IllegalStateException("This encoding is not known.");
-    }
-
-    final int ibmIndex = ibmPrinterEncodingModel.indexOf(encoding);
-    final int epsonIndex = epsonPrinterEncodingModel.indexOf(encoding);
-    final int plainIndex = plainTextEncodingModel.indexOf(encoding);
-
-    if (ibmIndex >= 0)
-    {
-      ibmPrinterEncodingModel.setSelectedIndex(ibmIndex);
-      if (ibmPrinterEncodingModel.getSelectedIndex() == -1)
-      {
-        throw new IllegalStateException("Unable to select encoding for IBM model.");
-      }
-    }
-    if (plainIndex >= 0)
-    {
-      plainTextEncodingModel.setSelectedIndex(plainIndex);
-      if (plainTextEncodingModel.getSelectedIndex() == -1)
-      {
-        throw new IllegalStateException("Unable to select encoding for plain text model.");
-      }
-    }
-    if (epsonIndex >= 0)
-    {
-      epsonPrinterEncodingModel.setSelectedIndex(epsonIndex);
-      if (epsonPrinterEncodingModel.getSelectedIndex() == -1)
-      {
-        throw new IllegalStateException("Unable to select encoding for epson model.");
-      }
-    }
-    final int selectedIndex = selectedEncodingModel.indexOf(encoding);
-    final Object o = cbEncoding.getModel().getElementAt(selectedIndex);
-    cbEncoding.setSelectedItem(o);
-
+    encodingSelector.setSelectedEncoding(encoding);
   }
 
   /**
@@ -875,6 +870,9 @@ public class PlainTextExportDialog extends JDialog
     setEncoding(config.getConfigProperty
         (PlainTextOutputTarget.TEXT_OUTPUT_ENCODING,
             PlainTextOutputTarget.TEXT_OUTPUT_ENCODING_DEFAULT));
+    config.getConfigProperty
+            (AbstractEpsonPrinterDriver.EPSON_PRINTER_TYPE, getSelectedPrinterModel());
+
     try
     {
       setLinesPerInch(StringUtil.parseInt(config.getConfigProperty
@@ -912,7 +910,8 @@ public class PlainTextExportDialog extends JDialog
         PlainTextOutputTarget.CHARS_PER_INCH, String.valueOf(getCharsPerInch()));
     config.setConfigProperty(PlainTextOutputTarget.CONFIGURATION_PREFIX +
         PlainTextOutputTarget.LINES_PER_INCH, String.valueOf(getLinesPerInch()));
-
+    config.setConfigProperty
+            (AbstractEpsonPrinterDriver.EPSON_PRINTER_TYPE, getSelectedPrinterModel());
   }
 
   /**
@@ -925,7 +924,7 @@ public class PlainTextExportDialog extends JDialog
   public boolean performQueryForExport(final JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
-    ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
+    final ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
     try
     {
       setDialogContents(storage.loadProperties
@@ -934,7 +933,7 @@ public class PlainTextExportDialog extends JDialog
     }
     catch (Exception cse)
     {
-      Log.debug ("Unable to load the defaults in PlainText export dialog.");
+      Log.debug ("Unable to load the defaults in PlainText export dialog: " + cse.getLocalizedMessage());
     }
 
     setModal(true);
@@ -961,38 +960,6 @@ public class PlainTextExportDialog extends JDialog
   }
 
   /**
-   * Returns the user input of this dialog as properties collection.
-   *
-   * @return the user input.
-   */
-  public Properties getDialogContents ()
-  {
-    Properties p = new Properties();
-    p.setProperty("filename", getFilename());
-    p.setProperty("encoding", getEncoding());
-
-    p.setProperty("chars-per-inch", String.valueOf(getCharsPerInch()));
-    p.setProperty("lines-per-inch", String.valueOf(getLinesPerInch()));
-    p.setProperty("selected-printer", String.valueOf(getSelectedPrinter()));
-    return p;
-  }
-
-  /**
-   * Restores the user input from a properties collection.
-   *
-   * @param p the user input.
-   */
-  public void setDialogContents (Properties p)
-  {
-    setEncoding(p.getProperty("encoding", getEncoding()));
-    setFilename(p.getProperty("filename", getFilename()));
-
-    setCharsPerInch(StringUtil.parseInt(p.getProperty("chars-per-inch"), getCharsPerInch()));
-    setLinesPerInch(StringUtil.parseInt(p.getProperty("lines-per-inch"), getLinesPerInch()));
-    setSelectedPrinter(StringUtil.parseInt(p.getProperty("selected-printer"), getSelectedPrinter()));
-  }
-
-  /**
    * Retrieves the resources for this dialog. If the resources are not initialized,
    * they get loaded on the first call to this method.
    *
@@ -1002,78 +969,9 @@ public class PlainTextExportDialog extends JDialog
   {
     if (resources == null)
     {
-      resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+      resources = ResourceBundle.getBundle(PlainTextExportPlugin.BASE_RESOURCE_CLASS);
     }
     return resources;
-  }
-
-  /**
-   * Checks, whether the printer supports the given encoding and adds it if possible.
-   *
-   * @param cmd the printer command set that should used for printing.
-   * @param model the encoding combobox model that should contain the encoding.
-   * @param encoding the specified encoding.
-   */
-  private void ensureEncodingAvailable
-      (final PrinterCommandSet cmd, final EncodingComboBoxModel model, final String encoding)
-  {
-    if (cmd.isEncodingSupported(encoding))
-    {
-      model.ensureEncodingAvailable(encoding);
-    }
-  }
-
-  /**
-   * Creates an encoding model.
-   *
-   * @param cmd  the printer command set.
-   *
-   * @return The encoding model.
-   */
-  private EncodingComboBoxModel createEncodingModel(final PrinterCommandSet cmd)
-  {
-    final EncodingComboBoxModel defaultEncodingModel = EncodingComboBoxModel.createDefaultModel();
-
-    final EncodingComboBoxModel retval = new EncodingComboBoxModel();
-    for (int i = 0; i < defaultEncodingModel.getSize(); i++)
-    {
-      final String encoding = defaultEncodingModel.getEncoding(i);
-      if (cmd.isEncodingSupported(encoding))
-      {
-        final String description = defaultEncodingModel.getDescription(i);
-        retval.addEncoding(encoding, description);
-      }
-    }
-    retval.sort();
-    return retval;
-  }
-
-  /**
-   * Selects a file to use as target for the report processing.
-   */
-  protected void performSelectFile()
-  {
-    if (fileChooser == null)
-    {
-      fileChooser = new JFileChooser();
-      fileChooser.addChoosableFileFilter(new ExtensionFileFilter("Plain text files", ".txt"));
-      fileChooser.setMultiSelectionEnabled(false);
-    }
-
-    fileChooser.setSelectedFile(new File(getFilename()));
-    final int option = fileChooser.showSaveDialog(this);
-    if (option == JFileChooser.APPROVE_OPTION)
-    {
-      final File selFile = fileChooser.getSelectedFile();
-      String selFileName = selFile.getAbsolutePath();
-
-      // Test if ends on xls
-      if (StringUtil.endsWithIgnoreCase(selFileName, ".txt") == false)
-      {
-        selFileName = selFileName + ".txt";
-      }
-      setFilename(selFileName);
-    }
   }
 
   /**
@@ -1128,5 +1026,29 @@ public class PlainTextExportDialog extends JDialog
     }
 
     return true;
+  }
+
+  public String getSelectedPrinterModel ()
+  {
+    final String model = (String) cbEpsonPrinterType.getSelectedItem();
+    if (model == null)
+    {
+      return AbstractEpsonPrinterDriver.getPrinterSpecificationManager().getGenericPrinter().getName();
+    }
+    return model;
+  }
+
+  public void setSelectedPrinterModel (final String selectedPrinterModel)
+  {
+    final PrinterSpecificationManager mgr = AbstractEpsonPrinterDriver.getPrinterSpecificationManager();
+    final PrinterSpecification spec = mgr.getPrinter(selectedPrinterModel);
+    if (spec != null)
+    {
+      epsonPrinters.setSelectedKey(spec);
+    }
+    else
+    {
+      epsonPrinters.setSelectedKey(mgr.getGenericPrinter());
+    }
   }
 }

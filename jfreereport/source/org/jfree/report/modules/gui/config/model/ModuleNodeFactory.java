@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ModuleNodeFactory.java,v 1.8 2003/11/07 18:33:52 taqua Exp $
+ * $Id: ModuleNodeFactory.java,v 1.8.4.1 2004/05/11 13:25:33 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,11 +47,11 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.jfree.report.Boot;
+import org.jfree.base.modules.Module;
+import org.jfree.base.modules.PackageManager;
 import org.jfree.report.DefaultLogModule;
+import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.JFreeReportCoreModule;
-import org.jfree.report.modules.Module;
-import org.jfree.report.modules.PackageManager;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.xml.sax.SAXException;
@@ -124,8 +124,8 @@ public class ModuleNodeFactory
    */
   private ModuleNodeFactory ()
   {
-    Boot.start();
-    final PackageManager pm = PackageManager.getInstance();
+    JFreeReportBoot.getInstance().start();
+    final PackageManager pm = JFreeReportBoot.getInstance().getPackageManager();
     activeModules = pm.getAllModules();
     Arrays.sort(activeModules, new ModuleSorter());
     globalNodes = new ArrayList();
@@ -183,10 +183,10 @@ public class ModuleNodeFactory
     localNodes.clear();
     
     //Iterator enum = config.findPropertyKeys("");
-    final Enumeration enum = configEntryLookup.keys();
-    while (enum.hasMoreElements())
+    final Enumeration keys = configEntryLookup.keys();
+    while (keys.hasMoreElements())
     {
-      final String key = (String) enum.nextElement();
+      final String key = (String) keys.nextElement();
       processKey(key, config);
     }
   }

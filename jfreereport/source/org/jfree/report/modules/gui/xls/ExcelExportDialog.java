@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -27,9 +27,9 @@
  *
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG, based on PDFSaveDialog);
  * Contributor(s):   Thomas Morgner;
- *                   David Gilbert (for Object Refinery Limited);
+ *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportDialog.java,v 1.9 2004/03/16 15:09:47 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.8.4.6 2004/12/13 19:26:59 taqua Exp $
  *
  * Changes
  * --------
@@ -68,8 +68,6 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.gui.base.components.ActionButton;
-import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
 import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
@@ -78,6 +76,8 @@ import org.jfree.report.modules.output.table.xls.ExcelProcessor;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
+import org.jfree.ui.action.ActionButton;
+import org.jfree.ui.FilesystemFilter;
 
 /**
  * A dialog that is used to prepare the printing of a report into an Excel file.
@@ -198,10 +198,6 @@ public class ExcelExportDialog extends JDialog
   /** A file chooser. */
   private JFileChooser fileChooser;
 
-  /** The base resource class. */
-  public static final String BASE_RESOURCE_CLASS =
-      "org.jfree.report.modules.gui.xls.resources.xls-export-resources";
-
   /**
    * Creates a new Excel save dialog.
    *
@@ -239,7 +235,7 @@ public class ExcelExportDialog extends JDialog
   {
     setModal(true);
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-    resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    resources = ResourceBundle.getBundle(ExcelExportPlugin.BASE_RESOURCE_CLASS);
     setTitle(resources.getString("excelexportdialog.dialogtitle"));
     initialize();
     clear();
@@ -448,6 +444,30 @@ public class ExcelExportDialog extends JDialog
   }
 
   /**
+   * Returns the user input of this dialog as properties collection.
+   *
+   * @return the user input.
+   */
+  public Properties getDialogContents ()
+  {
+    final Properties p = new Properties();
+    p.setProperty("filename", getFilename());
+    p.setProperty("strict-layout", String.valueOf(isStrictLayout()));
+    return p;
+  }
+
+  /**
+   * Restores the user input from a properties collection.
+   *
+   * @param p the user input.
+   */
+  public void setDialogContents (final Properties p)
+  {
+    setFilename(p.getProperty("filename", getFilename()));
+    setStrictLayout(StringUtil.parseBoolean(p.getProperty("strict-layout"), isStrictLayout()));
+  }
+
+  /**
    * Selects a file to use as target for the report processing.
    */
   protected void performSelectFile()
@@ -535,14 +555,14 @@ public class ExcelExportDialog extends JDialog
   /**
    * Opens the dialog to query all necessary input from the user.
    * This will not start the processing, as this is done elsewhere.
-   *
+   * 
    * @param report the report that should be processed.
    * @return true, if the processing should continue, false otherwise.
    */
   public boolean performQueryForExport(final JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
-    ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
+    final ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
     try
     {
       setDialogContents(storage.loadProperties
@@ -576,30 +596,6 @@ public class ExcelExportDialog extends JDialog
   }
 
   /**
-   * Returns the user input of this dialog as properties collection.
-   *
-   * @return the user input.
-   */
-  public Properties getDialogContents ()
-  {
-    Properties p = new Properties();
-    p.setProperty("filename", getFilename());
-    p.setProperty("strict-layout", String.valueOf(isStrictLayout()));
-    return p;
-  }
-
-  /**
-   * Restores the user input from a properties collection.
-   *
-   * @param p the user input.
-   */
-  public void setDialogContents (Properties p)
-  {
-    setFilename(p.getProperty("filename", getFilename()));
-    setStrictLayout(StringUtil.parseBoolean(p.getProperty("strict-layout"), isStrictLayout()));
-  }
-
-  /**
    * Initialises the Excel export dialog from the settings in the report configuration.
    *
    * @param config  the report configuration.
@@ -610,7 +606,7 @@ public class ExcelExportDialog extends JDialog
         (ExcelProcessor.CONFIGURATION_PREFIX +
         ExcelProcessor.STRICT_LAYOUT,
             config.getConfigProperty(TableProcessor.STRICT_LAYOUT,
-                TableProcessor.STRICT_TABLE_LAYOUT_DEFAULT));
+                TableProcessor.STRICT_LAYOUT_DEFAULT));
     setStrictLayout(strict.equals("true"));
   }
 

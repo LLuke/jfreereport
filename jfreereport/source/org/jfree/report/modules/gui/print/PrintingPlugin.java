@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintingPlugin.java,v 1.14 2004/03/27 17:23:19 taqua Exp $
+ * $Id: PrintingPlugin.java,v 1.12.4.2 2004/02/03 15:14:50 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,16 +38,15 @@
 
 package org.jfree.report.modules.gui.print;
 
-import java.util.ResourceBundle;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
-import org.jfree.report.modules.gui.base.ResourceBundleUtils;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * An export plugin for the <code>java.awt.print</code> API.
@@ -57,11 +56,11 @@ import org.jfree.ui.RefineryUtilities;
 public class PrintingPlugin extends AbstractExportPlugin
 {
   /** Localised resources. */
-  private final ResourceBundle resources;
+  private final ResourceBundleSupport resources;
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
-      "org.jfree.report.modules.gui.print.resources.print-export-resources";
+          "org.jfree.report.modules.gui.print.resources.print-export-resources";
   public static final String PROGRESS_DIALOG_ENABLE_KEY =
       "org.jfree.report.modules.gui.print.ProgressDialogEnabled";
 
@@ -70,14 +69,14 @@ public class PrintingPlugin extends AbstractExportPlugin
    */
   public PrintingPlugin()
   {
-    resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    resources = new ResourceBundleSupport(BASE_RESOURCE_CLASS);
   }
 
   /**
    * Returns the resourcebundle used to translate strings.
    * @return the resourcebundle.
    */
-  protected ResourceBundle getResources ()
+  protected ResourceBundleSupport getResources ()
   {
     return resources;
   }
@@ -156,7 +155,7 @@ public class PrintingPlugin extends AbstractExportPlugin
    */
   public Icon getSmallIcon()
   {
-    return ResourceBundleUtils.getIcon(getResources().getString("action.print.small-icon"));
+    return resources.getIcon("action.print.small-icon");
   }
 
   /**
@@ -166,7 +165,7 @@ public class PrintingPlugin extends AbstractExportPlugin
    */
   public Icon getLargeIcon()
   {
-    return ResourceBundleUtils.getIcon(getResources().getString("action.print.icon"));
+    return resources.getIcon("action.print.icon");
   }
 
   /**
@@ -176,7 +175,7 @@ public class PrintingPlugin extends AbstractExportPlugin
    */
   public KeyStroke getAcceleratorKey()
   {
-    return ResourceBundleUtils.createMenuKeystroke(getResources().getString("action.print.accelerator"));
+    return (resources.getKeyStroke("action.print.accelerator"));
   }
 
   /**
@@ -186,7 +185,7 @@ public class PrintingPlugin extends AbstractExportPlugin
    */
   public Integer getMnemonicKey()
   {
-    return ResourceBundleUtils.createMnemonic(getResources().getString("action.print.mnemonic"));
+    return  (resources.getMnemonic("action.print.mnemonic"));
   }
 
 

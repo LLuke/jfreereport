@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExceptionDialog.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
+ * $Id: ExceptionDialog.java,v 1.5 2004/05/07 14:29:24 mungady Exp $
  *
  * Changes
  * -------
@@ -59,6 +59,8 @@ import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
 import org.jfree.report.util.Log;
+import org.jfree.ui.action.ActionButton;
+import org.jfree.ui.FloatingButtonEnabler;
 
 /**
  * The exception dialog is used to display an exception and the exceptions stacktrace to

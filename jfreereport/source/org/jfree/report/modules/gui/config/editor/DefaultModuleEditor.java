@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultModuleEditor.java,v 1.6 2003/11/07 18:33:52 taqua Exp $
+ * $Id: DefaultModuleEditor.java,v 1.7 2004/05/07 14:29:52 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -53,7 +53,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.text.html.HTMLEditorKit;
 
-import org.jfree.report.modules.Module;
+import org.jfree.base.modules.Module;
 import org.jfree.report.modules.gui.config.VerticalLayout;
 import org.jfree.report.modules.gui.config.model.ClassConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;

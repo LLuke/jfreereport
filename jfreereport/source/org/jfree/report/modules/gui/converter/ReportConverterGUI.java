@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.12 2004/04/15 15:14:19 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.13 2004/05/07 14:29:46 mungady Exp $
  *
  * Changes
  * -------
@@ -70,9 +70,7 @@ import javax.swing.JTextField;
 import javax.swing.UIManager;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
-import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.modules.gui.converter.components.OperationResultTableModel;
 import org.jfree.report.modules.gui.converter.parser.ConverterParserFrontend;
 import org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceFactory;
@@ -89,6 +87,8 @@ import org.jfree.util.DefaultConfiguration;
 import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ArrayClassFactory;
 import org.jfree.xml.factory.objects.URLClassFactory;
+import org.jfree.ui.FilesystemFilter;
+import org.jfree.ui.action.ActionButton;
 
 /**
  * A utility application for converting XML report files from the old format to the

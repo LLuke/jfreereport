@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.10 2003/11/07 18:33:51 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.10.4.5 2004/11/21 18:28:19 taqua Exp $
  *
  * Changes
  * --------
@@ -50,6 +50,7 @@ import javax.swing.ComboBoxModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import org.jfree.report.util.EncodingSupport;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 
@@ -99,6 +100,10 @@ public class EncodingComboBoxModel implements ComboBoxModel
    */
   private static class EncodingCarrierComparator implements Comparator
   {
+    public EncodingCarrierComparator ()
+    {
+    }
+
     /**
      * Compares its two arguments for order.  Returns a negative integer,
      * zero, or a positive integer as the first argument is less than, equal
@@ -290,7 +295,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    */
   public boolean addEncoding(final String name, final String description)
   {
-    if (org.jfree.report.util.EncodingSupport.isSupportedEncoding(name))
+    if (EncodingSupport.isSupportedEncoding(name))
     {
       encodings.add(new EncodingCarrier(name, description));
     }
@@ -322,6 +327,10 @@ public class EncodingComboBoxModel implements ComboBoxModel
    */
   public void ensureEncodingAvailable(final String encoding)
   {
+    if (encoding == null)
+    {
+      throw new NullPointerException("Encoding must not be null");
+    }
     final String desc = getDefaultEncodings().getProperty(encoding, ENCODING_DEFAULT_DESCRIPTION);
     final EncodingCarrier ec = new EncodingCarrier(encoding, desc);
     if (encodings.contains(ec) == false)
@@ -694,11 +703,11 @@ public class EncodingComboBoxModel implements ComboBoxModel
     if (availEncs.equalsIgnoreCase(AVAILABLE_ENCODINGS_ALL))
     {
       final Properties encodings = getDefaultEncodings();
-      final Enumeration enum = encodings.keys();
-      while (enum.hasMoreElements())
+      final Enumeration en = encodings.keys();
+      while (en.hasMoreElements())
       {
         // add all known properties...
-        final String enc = (String) enum.nextElement();
+        final String enc = (String) en.nextElement();
         ecb.addEncoding(enc, encodings.getProperty(enc, ENCODING_DEFAULT_DESCRIPTION));
       }
     }
@@ -720,10 +729,10 @@ public class EncodingComboBoxModel implements ComboBoxModel
           final BufferedInputStream bin = new BufferedInputStream(in);
           encDef.load(bin);
           bin.close();
-          final Enumeration enum = encDef.keys();
-          while (enum.hasMoreElements())
+          final Enumeration en = encDef.keys();
+          while (en.hasMoreElements())
           {
-            final String enc = (String) enum.nextElement();
+            final String enc = (String) en.nextElement();
             // if not set to "true"
             if (encDef.getProperty(enc, "false").equalsIgnoreCase("true"))
             {
@@ -805,5 +814,26 @@ public class EncodingComboBoxModel implements ComboBoxModel
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
         (AVAILABLE_ENCODINGS, AVAILABLE_ENCODINGS_ALL);
+  }
+
+  public void setSelectedEncoding (final String encoding)
+  {
+    final int size = encodings.size();
+    for (int i = 0; i < size; i++)
+    {
+      final EncodingCarrier carrier = (EncodingCarrier) encodings.get(i);
+      if (encoding.equals(carrier.getName()))
+      {
+        selectedIndex = i;
+        selectedObject = carrier.getDisplayName();
+        return;
+      }
+    }
+    // default fall-back to have a valid value ..
+    if (size > 0)
+    {
+      selectedIndex = 0;
+      selectedObject = getElementAt(0);
+    }
   }
 }

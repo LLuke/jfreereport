@@ -70,6 +70,13 @@
             <text>false</text>
         </enum>
     </key>
+    <key name="org.jfree.report.content.DebugTextContent" global="true" hidden="false">
+        <description>Defines, whether the content creation engine should warn on invalid columns.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
     <key name="org.jfree.report.ext.modules.barcode.base.Module" global="true" hidden="true">
         <description>A module definition. Please do not edit this entry.</description>
         <class instanceof="org.jfree.report.modules.Module"/>
@@ -86,8 +93,12 @@
         <description>A module definition. Please do not edit this entry.</description>
         <class instanceof="org.jfree.report.modules.Module"/>
     </key>
-    <key name="org.jfree.report.ext.modules.java14print.AddToToolbar" global="false" hidden="false">
-        <text/>
+    <key name="org.jfree.report.ext.modules.java14print.AddToToolbar" global="true" hidden="false">
+        <description>Set to true, to show a button for this export type on the toolbar. Defaults to true.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
     </key>
     <key name="org.jfree.report.ext.modules.java14print.Enable" global="true" hidden="false">
         <description>Defines, whether to enable the Java.1.4 style printing plugin. At the moment, this only usses the default dialogs, and you should not see any difference to the AWT engine.</description>
@@ -104,8 +115,12 @@
         <description>Defines the export plugin order in the preview dialogs.</description>
         <text/>
     </key>
-    <key name="org.jfree.report.ext.modules.java14print.Separated" global="false" hidden="false">
-        <text/>
+    <key name="org.jfree.report.ext.modules.java14print.Separated" global="true" hidden="false">
+        <description>Set to true, to separate the menu and toolbar entry from other elements. This inserts an separator after the menu entry. Defaults to false.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
     </key>
     <key name="org.jfree.report.ext.modules.jfreechart.Module" global="true" hidden="true">
         <description>A module definition. Please do not edit this entry.</description>
@@ -133,6 +148,20 @@
         <description>Defines, whether an how the About-Dialog functionallity will be exposed to the user. (Yes, it is an very, very important part of JFreeReport, isn&apos;t it :))</description>
         <enum>
             <text>disable</text>
+            <text>toolbar</text>
+            <text>menubar</text>
+            <text>enable</text>
+        </enum>
+    </key>
+    <key name="org.jfree.report.modules.gui.base.Close" global="true" hidden="false">
+        <description>Defines, whether and how the exit-dialog functionallity will be exposed to the user. Possible values are:
+ &quot;toolbar&quot; to have this functionality on the toolbar only
+ &quot;menubar&quot; to have this functionality in the menu only
+ &quot;enable&quot;  to show the functionality in the menu and the toolbar
+
+The exit menu entry cannot be disabled, the system only checks, whether this button should appear in the toolbar.
+</description>
+        <enum>
             <text>toolbar</text>
             <text>menubar</text>
             <text>enable</text>
@@ -179,6 +208,20 @@ The property points to a resources in the classpath, not to a real file!</descri
             <text>toolbar</text>
             <text>menubar</text>
             <text>enable</text>
+        </enum>
+    </key>
+    <key name="org.jfree.report.modules.gui.base.ProgressBarEnabled" global="true" hidden="false">
+        <description>Defines, whether the progress bar should be visible when repaginating the report. The progress bar is not available for the other exports.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
+    <key name="org.jfree.report.modules.gui.base.ProgressDialogEnabled" global="true" hidden="false">
+        <description>Defines, whether the progress dialog should be visible when repaginating the report. Whether the dialog is enabled or diabled for the various exports, can be configured in the export modules.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
         </enum>
     </key>
     <key name="org.jfree.report.modules.gui.base.SwingDialogTranslation" global="true" hidden="false">
@@ -256,6 +299,13 @@ If not defined here, it will default to the platform specific encoding.</descrip
         <description>Defines the export plugin order in the preview dialogs.</description>
         <text/>
     </key>
+    <key name="org.jfree.report.modules.gui.csv.ProgressDialogEnabled" global="true" hidden="false">
+        <description>Defines, whether the progress dialog should be visible when exporting the report.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
     <key name="org.jfree.report.modules.gui.csv.Separated" global="true" hidden="false">
         <description>Defines, whether the this export menu entry will be separated from other entries in the menu or toolbar.</description>
         <enum>
@@ -285,6 +335,13 @@ If not defined here, it will default to the platform specific encoding.</descrip
         <description>Defines the export plugin order in the preview dialogs.</description>
         <text/>
     </key>
+    <key name="org.jfree.report.modules.gui.html.ProgressDialogEnabled" global="true" hidden="false">
+        <description>Defines, whether the progress dialog should be visible when exporting the report.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
     <key name="org.jfree.report.modules.gui.html.Separated" global="true" hidden="false">
         <description>Defines, whether the this export menu entry will be separated from other entries in the menu or toolbar.</description>
         <enum>
@@ -313,6 +370,13 @@ If not defined here, it will default to the platform specific encoding.</descrip
     <key name="org.jfree.report.modules.gui.pdf.Order" global="true" hidden="false">
         <description>Defines the export plugin order in the preview dialogs.</description>
         <text/>
+    </key>
+    <key name="org.jfree.report.modules.gui.pdf.ProgressDialogEnabled" global="true" hidden="false">
+        <description>Defines, whether the progress dialog should be visible when exporting the report.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
     </key>
     <key name="org.jfree.report.modules.gui.pdf.Separated" global="true" hidden="false">
         <description>Defines, whether the this export menu entry will be separated from other entries in the menu or toolbar.</description>
@@ -344,6 +408,13 @@ If not defined here, it will default to the platform specific encoding.</descrip
         <description>Defines the export plugin order in the preview dialogs.</description>
         <text/>
     </key>
+    <key name="org.jfree.report.modules.gui.plaintext.ProgressDialogEnabled" global="true" hidden="false">
+        <description>Defines, whether the progress dialog should be visible when exporting the report.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
     <key name="org.jfree.report.modules.gui.plaintext.Separated" global="true" hidden="false">
         <description>Defines, whether the this export menu entry will be separated from other entries in the menu or toolbar.</description>
         <enum>
@@ -373,6 +444,13 @@ If not defined here, it will default to the platform specific encoding.</descrip
     <key name="org.jfree.report.modules.gui.print.Order" global="true" hidden="false">
         <description>Defines the export plugin order in the preview dialogs.</description>
         <text/>
+    </key>
+    <key name="org.jfree.report.modules.gui.print.ProgressDialogEnabled" global="true" hidden="false">
+        <description>Defines, whether the progress dialog should be visible when exporting the report.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
     </key>
     <key name="org.jfree.report.modules.gui.print.Separated" global="true" hidden="false">
         <description>Defines, whether the this export menu entry will be separated from other entries in the menu or toolbar.</description>
@@ -430,6 +508,13 @@ If not defined here, it will default to the platform specific encoding.</descrip
         <description>Defines the export plugin order in the preview dialogs.</description>
         <text/>
     </key>
+    <key name="org.jfree.report.modules.gui.xls.ProgressDialogEnabled" global="true" hidden="false">
+        <description>Defines, whether the progress dialog should be visible when exporting the report.</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
+    </key>
     <key name="org.jfree.report.modules.gui.xls.Separated" global="true" hidden="false">
         <description>Defines, whether the this export menu entry will be separated from other entries in the menu or toolbar.</description>
         <enum>
@@ -466,6 +551,10 @@ If not defined here, it will default to the platform specific encoding.</descrip
     <key name="org.jfree.report.modules.misc.referencedoc.Module" global="true" hidden="true">
         <description>A module definition. Please do not edit this entry.</description>
         <class instanceof="org.jfree.report.modules.Module"/>
+    </key>
+    <key name="org.jfree.report.modules.misc.survey.Module" global="true" hidden="true">
+        <description>A module definition.</description>
+        <text/>
     </key>
     <key name="org.jfree.report.modules.misc.tablemodel.ColumnNameMapping" global="true" hidden="false">
         <description>Defines, whether ResultSetMetaData.getLabel() or ResultSetMetaData.getName() should be used to map column names into column indices.
@@ -640,7 +729,7 @@ This setting defaults to &quot;1.4&quot;.</description>
     </key>
     <key name="org.jfree.report.modules.output.pageable.plaintext.Encoding" global="false" hidden="false">
         <description>This property defaults to the current platform encoding, but should
-be adjusted when using one of the printer specifc command sets, as these command sets don&apos;t support all encodings.</description>
+be adjusted when using one of the printer specific command sets, as these command sets don&apos;t support all encodings.</description>
         <text/>
     </key>
     <key name="org.jfree.report.modules.output.pageable.plaintext.LinesPerInch" global="false" hidden="false">
@@ -653,6 +742,18 @@ be adjusted when using one of the printer specifc command sets, as these command
     <key name="org.jfree.report.modules.output.pageable.plaintext.Module" global="true" hidden="true">
         <description>A module definition. Please do not edit this entry.</description>
         <class instanceof="org.jfree.report.modules.Module"/>
+    </key>
+    <key name="org.jfree.report.modules.output.pageable.plaintext.RawEncoding" global="false" hidden="false">
+        <description>Defines the encoding for the init string. This defaults to &quot;Raw&quot; to disable the conversion.</description>
+        <text/>
+    </key>
+    <key name="org.jfree.report.modules.output.pageable.plaintext.RawInitSequence" global="false" hidden="false">
+        <description>Defines an init string for the plain text output target. This string will be sent to the printer as is, without any translation applied.</description>
+        <text/>
+    </key>
+    <key name="org.jfree.report.modules.output.pageable.plaintext.epson.PrinterType" global="true" hidden="false">
+        <description>Defines the Epson printer model. The models are defined in the &apos;epson-printerspecs.properties&apos; file and define how java encodings are mapped into printer specific control sequences.</description>
+        <text/>
     </key>
     <key name="org.jfree.report.modules.output.support.itext.AutoInit" global="true" hidden="false">
         <description>Defines, whether and how to register the fonts installed on that system. This will search the installed fonts on well-known locations based on the detected system environment.
@@ -805,6 +906,14 @@ Valid values are &quot;Landscape&quot; or &quot;Portrait&quot; </description>
     <key name="org.jfree.report.modules.output.xml.Module" global="true" hidden="true">
         <description>A module definition. Please do not edit this entry.</description>
         <class instanceof="org.jfree.report.modules.Module"/>
+    </key>
+    <key name="org.jfree.report.modules.pageable.base.WatermarkPrinted" global="false" hidden="false">
+        <description>Defines, whether the watermark section will be printed by the report processor. This setting is usally configured on the report level, not globally. A printing target might use this setting do disable printing of the the form layout  when printing on form-paper. 
+</description>
+        <enum>
+            <text>true</text>
+            <text>false</text>
+        </enum>
     </key>
     <key name="org.jfree.report.modules.parser.base.Module" global="true" hidden="true">
         <description>A module definition. Please do not edit this entry.</description>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigTreeModuleNode.java,v 1.5 2003/11/07 18:33:52 taqua Exp $
+ * $Id: ConfigTreeModuleNode.java,v 1.6 2004/05/07 14:29:24 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -40,7 +40,7 @@ package org.jfree.report.modules.gui.config.model;
 
 import java.util.ArrayList;
 
-import org.jfree.report.modules.Module;
+import org.jfree.base.modules.Module;
 import org.jfree.report.util.ReportConfiguration;
 
 /**

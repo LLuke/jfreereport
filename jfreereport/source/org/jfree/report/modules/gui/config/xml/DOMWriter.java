@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DOMWriter.java,v 1.5 2003/11/07 18:33:52 taqua Exp $
+ * $Id: DOMWriter.java,v 1.5.4.1 2004/04/06 14:22:36 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -83,7 +83,7 @@ public final class DOMWriter extends XMLWriterSupport
    * 
    * @return the instance.
    */
-  public static DOMWriter getInstance()
+  public synchronized static DOMWriter getInstance()
   {
     if (singleton == null)
     {

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BeanShellModule.java,v 1.5 2003/08/25 14:29:30 taqua Exp $
+ * $Id: BeanShellModule.java,v 1.5.4.2 2004/12/13 19:27:00 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,8 +40,10 @@ package org.jfree.report.modules.misc.beanshell;
 
 import java.io.InputStream;
 
-import org.jfree.report.modules.AbstractModule;
-import org.jfree.report.modules.ModuleInitializeException;
+import org.jfree.util.ObjectUtilities;
+import org.jfree.base.modules.AbstractModule;
+import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.SubSystem;
 
 /**
  * The module definition for the beanshell expression support module.
@@ -60,15 +62,20 @@ public class BeanShellModule extends AbstractModule
   }
 
   /**
-   * Initalizes the module. Checks that the beanshell module is usable.
-   * @see org.jfree.report.modules.Module#initialize()
+   * Initializes the module. Use this method to perform all initial setup operations. This
+   * method is called only once in a modules lifetime. If the initializing cannot be
+   * completed, throw a ModuleInitializeException to indicate the error,. The module will
+   * not be available to the system.
    *
-   * @throws ModuleInitializeException if an error occured.
+   * @param subSystem the subSystem.
+   * @throws org.jfree.base.modules.ModuleInitializeException
+   *          if an error ocurred while initializing the module.
    */
-  public void initialize() throws ModuleInitializeException
+  public void initialize (final SubSystem subSystem)
+          throws ModuleInitializeException
   {
     final InputStream in =
-        this.getClass().getClassLoader().getResourceAsStream(BSHExpression.BSHHEADERFILE);
+        ObjectUtilities.getClassLoader(getClass()).getResourceAsStream(BSHExpression.BSHHEADERFILE);
     if (in == null)
     {
       throw new ModuleInitializeException("Unable to locate BSHHeaderFile. " +

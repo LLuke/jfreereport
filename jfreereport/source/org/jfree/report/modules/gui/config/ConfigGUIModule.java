@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigGUIModule.java,v 1.1 2003/08/27 20:19:53 taqua Exp $
+ * $Id: ConfigGUIModule.java,v 1.2 2004/05/07 14:29:21 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -38,8 +38,10 @@
 
 package org.jfree.report.modules.gui.config;
 
-import org.jfree.report.modules.AbstractModule;
-import org.jfree.report.modules.ModuleInitializeException;
+import org.jfree.base.modules.AbstractModule;
+import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.SubSystem;
+
 
 /**
  * Provides the module definition for the report configuration editor.
@@ -59,13 +61,17 @@ public class ConfigGUIModule extends AbstractModule
   }
 
   /**
-   * This method does nothing.
+   * Initializes the module. Use this method to perform all initial setup operations. This
+   * method is called only once in a modules lifetime. If the initializing cannot be
+   * completed, throw a ModuleInitializeException to indicate the error,. The module will
+   * not be available to the system.
    *
-   * @see org.jfree.report.modules.Module#initialize()
-   *
-   * @throws ModuleInitializeException if an error occures.
+   * @param subSystem the subSystem.
+   * @throws org.jfree.base.modules.ModuleInitializeException
+   *          if an error ocurred while initializing the module.
    */
-  public void initialize() throws ModuleInitializeException
+  public void initialize (SubSystem subSystem)
+          throws ModuleInitializeException
   {
   }
 }

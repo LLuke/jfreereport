@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractKeyEditor.java,v 1.6 2004/03/16 15:09:29 taqua Exp $
+ * $Id: AbstractKeyEditor.java,v 1.5 2003/11/07 18:33:51 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,16 +39,16 @@
 package org.jfree.report.modules.gui.config.editor;
 
 import java.awt.BorderLayout;
-import java.util.ResourceBundle;
 import javax.swing.Icon;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import org.jfree.report.modules.gui.base.ResourceBundleUtils;
+import org.jfree.report.modules.gui.config.ConfigEditor;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 import org.jfree.report.util.ImageUtils;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * This key editor class is the base class for all key editor components.
@@ -58,9 +58,6 @@ import org.jfree.report.util.ReportConfiguration;
  */
 public abstract class AbstractKeyEditor extends JComponent implements KeyEditor
 {
-  /** The name of the resource bundle implementation used to translate texts. */
-  private static final String RESOURCE_BUNDLE =
-      "org.jfree.report.modules.gui.config.resources.config-resources";
   /** A constant for the "validInput" property name. */
   public static final String VALID_INPUT_PROPERTY = "validInput";
 
@@ -78,7 +75,7 @@ public abstract class AbstractKeyEditor extends JComponent implements KeyEditor
   /** A label that holds the error indicator icons. */
   private final JLabel stateLabel;
   /** the resource bundle instance used to translate the text. */
-  private final ResourceBundle resources;
+  private final ResourceBundleSupport resources;
 
   /**
    * Creates a new key editor for the given report configuration and key
@@ -89,7 +86,7 @@ public abstract class AbstractKeyEditor extends JComponent implements KeyEditor
    */
   public AbstractKeyEditor (final ReportConfiguration config, final ConfigDescriptionEntry entry)
   {
-    this.resources = ResourceBundle.getBundle(RESOURCE_BUNDLE);
+    this.resources = new ResourceBundleSupport(ConfigEditor.RESOURCE_BUNDLE);
     this.setLayout(new BorderLayout());
     this.config = config;
     this.entry = entry;
@@ -122,8 +119,7 @@ public abstract class AbstractKeyEditor extends JComponent implements KeyEditor
   {
     if (errorIcon == null)
     {
-      errorIcon = ResourceBundleUtils.getIcon
-          (resources.getString("default-editor.error-icon"));
+      errorIcon = resources.getIcon("default-editor.error-icon");
     }
     return errorIcon;
   }

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlDirExportTask.java,v 1.8 2004/03/16 15:09:43 taqua Exp $
+ * $Id: HtmlDirExportTask.java,v 1.7.4.2 2004/10/11 21:00:39 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -71,7 +71,7 @@ public class HtmlDirExportTask extends ExportTask
    * 
    * @param fileName the name of the target file.
    * @param dataDirectory the name of the data directory (relative to the target file).
-   * @param dialog the progress monitor component.
+   * @param dialog the progress monitor component (may be null).
    * @param report the report that should be exported.
    */
   public HtmlDirExportTask(final String fileName, final String dataDirectory,
@@ -110,7 +110,7 @@ public class HtmlDirExportTask extends ExportTask
       }
       if (targetDataFile.mkdirs() == false)
       {
-        if ((targetDataFile.exists() && targetDataFile.isDirectory()) == false)
+        if (targetDataFile.exists() == false || targetDataFile.isDirectory() == false)
         {
           throw new IOException("Unable to create the mssing directories.");
         }
@@ -157,6 +157,6 @@ public class HtmlDirExportTask extends ExportTask
     if (progressDialog != null)
     {
       progressDialog.dispose();
-    }
+    }      
   }
 }

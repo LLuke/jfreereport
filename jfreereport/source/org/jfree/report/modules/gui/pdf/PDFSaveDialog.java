@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Object Refinery Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.14 2004/03/16 15:09:44 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.13.4.5 2004/10/13 18:42:18 taqua Exp $
  *
  * Changes
  * --------
@@ -77,9 +77,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
-import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
 import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
@@ -87,6 +85,8 @@ import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
+import org.jfree.ui.action.ActionButton;
+import org.jfree.ui.FilesystemFilter;
 
 /**
  * A dialog that is used to perform the printing of a report into a PDF file. It is primarily
@@ -298,10 +298,6 @@ public class PDFSaveDialog extends JDialog
   /** A file chooser. */
   private JFileChooser fileChooser;
 
-  /** The base resource class. */
-  public static final String BASE_RESOURCE_CLASS =
-      "org.jfree.report.modules.gui.pdf.resources.pdf-export-resources";
-
   /**
    * Creates a new PDF save dialog.
    *
@@ -402,7 +398,7 @@ public class PDFSaveDialog extends JDialog
   {
     if (resources == null)
     {
-      resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+      resources = ResourceBundle.getBundle(PDFExportPlugin.BASE_RESOURCE_CLASS);
     }
     return resources;
   }
@@ -1228,6 +1224,54 @@ public class PDFSaveDialog extends JDialog
   }
 
   /**
+   * Returns the user input of this dialog as properties collection.
+   *
+   * @return the user input.
+   */
+  public Properties getDialogContents ()
+  {
+    final Properties p = new Properties();
+    p.setProperty("author", getAuthor());
+    p.setProperty("filename", getFilename());
+    p.setProperty("encoding", getEncoding());
+    p.setProperty("title", getPDFTitle());
+    p.setProperty("encryption", getEncryptionValue());
+
+    p.setProperty("allow-assembly", String.valueOf(isAllowAssembly()));
+    p.setProperty("allow-copy", String.valueOf(isAllowCopy()));
+    p.setProperty("allow-degraded-printing", String.valueOf(isAllowDegradedPrinting()));
+    p.setProperty("allow-fill-in", String.valueOf(isAllowFillIn()));
+    p.setProperty("allow-modify-annotations", String.valueOf(isAllowModifyAnnotations()));
+    p.setProperty("allow-modify-contents", String.valueOf(isAllowModifyContents()));
+    p.setProperty("allow-printing", String.valueOf(isAllowPrinting()));
+    p.setProperty("allow-screenreaders", String.valueOf(isAllowScreenreaders()));
+    return p;
+  }
+
+  /**
+   * Restores the user input from a properties collection.
+   *
+   * @param p the user input.
+   */
+  public void setDialogContents (final Properties p)
+  {
+    setAuthor(p.getProperty("author", getAuthor()));
+    setEncoding(p.getProperty("encoding", getEncoding()));
+    setFilename(p.getProperty("filename", getFilename()));
+    setPDFTitle(p.getProperty("title", getPDFTitle()));
+    setEncryptionValue(p.getProperty("encryption", getEncryptionValue()));
+
+    setAllowAssembly(StringUtil.parseBoolean(p.getProperty("allow-assembly"), isAllowAssembly()));
+    setAllowCopy(StringUtil.parseBoolean(p.getProperty("allow-copy"), isAllowCopy()));
+    setAllowFillIn(StringUtil.parseBoolean(p.getProperty("allow-fill-in"), isAllowFillIn()));
+    setAllowModifyAnnotations(StringUtil.parseBoolean(p.getProperty("allow-modify-annotations"), isAllowModifyAnnotations()));
+    setAllowModifyContents(StringUtil.parseBoolean(p.getProperty("allow-modify-contents"), isAllowModifyContents()));
+    setPrintLevel(StringUtil.parseBoolean(p.getProperty("allow-printing"), isAllowPrinting()),
+        StringUtil.parseBoolean(p.getProperty("allow-degraded-printing"), isAllowDegradedPrinting()));
+    setAllowScreenreaders(StringUtil.parseBoolean(p.getProperty("allow-screenreaders"), isAllowScreenreaders()));
+  }
+
+  /**
    * selects a file to use as target for the report processing.
    */
   protected void performSelectFile()
@@ -1348,14 +1392,14 @@ public class PDFSaveDialog extends JDialog
   /**
    * Opens the dialog to query all necessary input from the user.
    * This will not start the processing, as this is done elsewhere.
-   *
+   * 
    * @param report the report that should be processed.
    * @return true, if the processing should continue, false otherwise.
    */
   public boolean performQueryForExport(final JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
-    ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
+    final ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
     try
     {
       setDialogContents(storage.loadProperties
@@ -1386,54 +1430,6 @@ public class PDFSaveDialog extends JDialog
       Log.debug ("Unable to store the defaults in PDF export dialog.");
     }
     return true;
-  }
-
-  /**
-   * Returns the user input of this dialog as properties collection.
-   *
-   * @return the user input.
-   */
-  public Properties getDialogContents ()
-  {
-    Properties p = new Properties();
-    p.setProperty("author", getAuthor());
-    p.setProperty("filename", getFilename());
-    p.setProperty("encoding", getEncoding());
-    p.setProperty("title", getPDFTitle());
-    p.setProperty("encryption", getEncryptionValue());
-
-    p.setProperty("allow-assembly", String.valueOf(isAllowAssembly()));
-    p.setProperty("allow-copy", String.valueOf(isAllowCopy()));
-    p.setProperty("allow-degraded-printing", String.valueOf(isAllowDegradedPrinting()));
-    p.setProperty("allow-fill-in", String.valueOf(isAllowFillIn()));
-    p.setProperty("allow-modify-annotations", String.valueOf(isAllowModifyAnnotations()));
-    p.setProperty("allow-modify-contents", String.valueOf(isAllowModifyContents()));
-    p.setProperty("allow-printing", String.valueOf(isAllowPrinting()));
-    p.setProperty("allow-screenreaders", String.valueOf(isAllowScreenreaders()));
-    return p;
-  }
-
-  /**
-   * Restores the user input from a properties collection.
-   *
-   * @param p the user input.
-   */
-  public void setDialogContents (Properties p)
-  {
-    setAuthor(p.getProperty("author", getAuthor()));
-    setEncoding(p.getProperty("encoding", getEncoding()));
-    setFilename(p.getProperty("filename", getFilename()));
-    setPDFTitle(p.getProperty("title", getPDFTitle()));
-    setEncryptionValue(p.getProperty("encryption", getEncryptionValue()));
-
-    setAllowAssembly(StringUtil.parseBoolean(p.getProperty("allow-assembly"), isAllowAssembly()));
-    setAllowCopy(StringUtil.parseBoolean(p.getProperty("allow-copy"), isAllowCopy()));
-    setAllowFillIn(StringUtil.parseBoolean(p.getProperty("allow-fill-in"), isAllowFillIn()));
-    setAllowModifyAnnotations(StringUtil.parseBoolean(p.getProperty("allow-modify-annotations"), isAllowModifyAnnotations()));
-    setAllowModifyContents(StringUtil.parseBoolean(p.getProperty("allow-modify-contents"), isAllowModifyContents()));
-    setPrintLevel(StringUtil.parseBoolean(p.getProperty("allow-printing"), isAllowPrinting()),
-        StringUtil.parseBoolean(p.getProperty("allow-degraded-printing"), isAllowDegradedPrinting()));
-    setAllowScreenreaders(StringUtil.parseBoolean(p.getProperty("allow-screenreaders"), isAllowScreenreaders()));
   }
 
   /**
@@ -1523,7 +1519,8 @@ public class PDFSaveDialog extends JDialog
         + PDFOutputTarget.SECURITY_OWNERPASSWORD, getOwnerPassword()));
 
     encodingModel.ensureEncodingAvailable(config.getConfigProperty
-        (PDFOutputTarget.PDFTARGET_ENCODING));
+        (PDFOutputTarget.PDFTARGET_ENCODING,
+                ReportConfiguration.getPlatformDefaultEncoding()));
     setEncoding(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX
         + PDFOutputTarget.ENCODING, getEncoding()));
     setPDFTitle(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX +
