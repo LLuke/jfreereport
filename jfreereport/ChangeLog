@@ -3,9 +3,19 @@
 ---------------
 A list of changes in recent versions:
 
+0.8.0-3 : (07-Jan-2003): 
+        * BugFix: Fixed the ReportStateList. Element were added at the wrong position, causing
+          NullPointerExceptions. Also fixed the dynamic element, if the element contained too much
+          data which would not fit on a single page, the report generation failed. Now the data
+          is cut down to the size of a single page. The LGPL-Demo shows the new behaviour.
+
+0.8.0-2 : (19-Dec-2002): 
+        * BugFix: fix for a ReportFooter bug in the layoutmanagement. Printing the ReportFooter on
+          its own page caused the report generation to fail.
+
 0.8.0-1 : (16-Dec-2002): 
-        * BugFix: fix for a PageHeader bug in the layoutmanagement. The fix caused the pageheader to
-          drive crazy and print strange values in the elements.
+        * BugFix: fix for a PageHeader bug in the layoutmanagement. The bug 
+          caused the pageheader to drive crazy and print strange values in the elements.
 
 0.8.0 : (13-Dec-2002):
         * Many, many ... (repeat it several times: many) ... many lines of JavaDoc documentation.

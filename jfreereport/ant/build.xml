@@ -22,7 +22,7 @@
         <property name="builddir" value="${basedir}/build" />
         <property name="BeanShell-jar" value="${basedir}/lib/bsh-1.2b6.jar" />
         <property name="GnuJAXP-jar" value="${basedir}/lib/gnujaxp.jar" />
-        <property name="iText-jar" value="${basedir}/lib/iText-0.95.jar" />
+        <property name="iText-jar" value="${basedir}/lib/iText-0.96.jar" />
         <property name="JCommon-jar" value="${basedir}/lib/jcommon-0.7.1.jar" />
         <property name="Pixie-jar" value="${basedir}/lib/pixie.jar" />
 
@@ -40,7 +40,7 @@
     <target name="init-jfreereport" depends="init-general"
             description="Initialise JFreeReport parameters.">
         <property name="jfreereport.name" value="jfreereport" />
-        <property name="jfreereport.version" value="0.8.0_2" />
+        <property name="jfreereport.version" value="0.8.0_3" />
     </target>
 
     <!-- Compile the JFreeReport classes -->
@@ -111,7 +111,7 @@
 	     includes="com/jrefinery/report/demo/**">
             <manifest>
                 <attribute name="Main-Class" value="com.jrefinery.report.demo.JFreeReportDemo" />
-                <attribute name="Class-Path" value="${jfreereport.name}-${jfreereport.version}.jar ${jfreereport.name}-${jfreereport.version}-demo.jar lib/gnujaxp.jar lib/iText-0.95.jar lib/jcommon-0.7.1.jar lib/pixie.jar lib/bsh-1.2b6.jar"/>
+                <attribute name="Class-Path" value="${jfreereport.name}-${jfreereport.version}.jar ${jfreereport.name}-${jfreereport.version}-demo.jar lib/gnujaxp.jar lib/iText-0.96.jar lib/jcommon-0.7.1.jar lib/pixie.jar lib/bsh-1.2b6.jar"/>
             </manifest> 
         </jar>
         

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.15 2002/12/12 20:24:03 taqua Exp $
+ * $Id: ReportState.java,v 1.16 2002/12/18 20:31:47 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -472,6 +472,17 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
+   * Creates a shallow clone. Handle with care.
+   *
+   * @return a shallow clone of this state.
+   * @throws CloneNotSupportedException
+   */
+  public ReportState copyState () throws CloneNotSupportedException
+  {
+    return (ReportState) super.clone();
+  }
+
+  /**
    * Clones the report state.
    *
    * @return a clone.
@@ -529,12 +540,12 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     // a state proceeds if it is an other class than the old state
     if (this.getClass().equals(oldstate.getClass()) == false)
     {
-      Log.debug (new StateProceedMessage(this, oldstate.getClass(),
+      Log.debug (new StateProceedMessage(this, oldstate,
                                          "State did proceed: In Group: "));
       return true;
     }
 
-    Log.debug (new StateProceedMessage(this, oldstate.getClass(),
+    Log.debug (new StateProceedMessage(this, oldstate,
                                        "State did not proceed: In Group: "));
     return false;
   }
@@ -549,7 +560,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     private ReportState currentState;
 
     /** The old state. */
-    private Class oldState;
+    private ReportState oldState;
 
     /** The message. */
     private String message;
@@ -561,7 +572,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
      * @param oldState  the old state.
      * @param message  the message.
      */
-    public StateProceedMessage(ReportState currentState, Class oldState, String message)
+    public StateProceedMessage(ReportState currentState, ReportState oldState, String message)
     {
       this.currentState = currentState;
       this.oldState = oldState;
@@ -578,7 +589,11 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       return message + currentState.getCurrentGroupIndex() + ", DataItem: "
                      + currentState.getCurrentDataItem() + ",Page: "
                      + currentState.getCurrentPage() + " Class: "
-                     + currentState.getClass() + "\n" + "Old State: " + oldState;
+                     + currentState.getClass() + "\n" +
+          "Old State: " + oldState.getCurrentGroupIndex() + ", DataItem: "
+                     + oldState.getCurrentDataItem() + ",Page: "
+                     + oldState.getCurrentPage() + " Class: "
+                     + oldState.getClass() + "\n";
     }
   }
 
