@@ -1,0 +1,191 @@
+<!-- An ANT build file for JFreeReport -->
+
+<!-- Written by David Gilbert. -->
+<!-- 12-Nov-2002 -->
+
+<!-- To run this script, you need to make sure the libraries used by -->
+<!-- JFreeReport are copied to the ../lib directory (or edit the -->
+<!-- init-general task to point to the appropriate jar files). -->
+
+<!-- This script will create temporary directories ../build and -->
+<!-- ../distribution, as working areas.  A ../javadoc directory will -->
+<!-- be created for the Javadoc HTML pages. -->
+
+<!-- If you have comments about this script, please post a message -->
+<!-- in the JFreeReport forum. -->
+
+<project name="jfreereport" default="build-jfreereport" basedir="..">
+
+    <!-- General initialisation. -->
+    <target name="init-general" description="Initialise general parameters.">
+        <tstamp />
+        <property name="builddir" value="${basedir}/build" />
+        <property name="BeanShell-jar" value="${basedir}/lib/bsh-1.2b6.jar" />
+        <property name="GnuJAXP-jar" value="${basedir}/lib/gnujaxp.jar" />
+        <property name="iText-jar" value="${basedir}/lib/iText-0.95.jar" />
+        <property name="JCommon-jar" value="${basedir}/lib/jcommon-0.7.1.jar" />
+        <property name="Pixie-jar" value="${basedir}/lib/pixie.jar" />
+    </target>
+
+    <!-- JFreeReport initialisation. -->
+    <target name="init-jfreereport" depends="init-general"
+            description="Initialise JFreeReport parameters.">
+        <property name="jfreereport.name" value="jfreereport" />
+        <property name="jfreereport.version" value="0.7.7" />
+    </target>
+
+    <!-- Compile the JFreeReport classes -->
+    <target name="compile-jfreereport" depends="init-jfreereport"
+            description="Compile the JFreeReport source code.">
+
+        <!-- create a temp build directory -->
+        <mkdir dir="${basedir}/build" />
+
+        <!-- compile the source -->
+        <javac srcdir="${basedir}/source" 
+               destdir="${basedir}/build"
+               classpath="${BeanShell-jar}:${GnuJAXP-jar}:${iText-jar}:${JCommon-jar}:${Pixie-jar}" 
+               excludes="com/jrefinery/report/demo/**">
+        </javac>
+
+        <!-- copy across the BeanShell header file -->
+        <copy file="${basedir}/source/com/jrefinery/report/function/BSHExpressionHeader.txt" tofile="${basedir}/build/com/jrefinery/report/function/BSHExpressionHeader.txt" />
+
+        <!-- copy across the icons -->
+        <copy todir="${basedir}/build/com/jrefinery/report/resources">
+            <fileset dir="${basedir}/source/com/jrefinery/report/resources">
+                <include name="**/*.gif" />
+            </fileset>
+        </copy>
+
+        <!-- make the jar -->
+        <jar jarfile="${basedir}/${jfreereport.name}-${jfreereport.version}.jar"
+             basedir="${basedir}/build" />
+
+        <!-- delete the temp directory -->
+        <delete dir="${basedir}/build" />
+    </target>
+
+    <!-- Compile the JFreeReport DEMO classes -->
+    <target name="compile-jfreereport-demo" depends="compile-jfreereport"
+            description="Compile the JFreeReport demo source code.">
+
+        <!-- create a temporary build directory -->
+        <delete dir="${basedir}/build" />
+        <mkdir dir="${basedir}/build" />
+
+        <!-- compile the demo source -->
+        <javac srcdir="${basedir}/source" 
+               destdir="${basedir}/build"
+               classpath="${basedir}/${jfreereport.name}-${jfreereport.version}.jar:${BeanShell-jar}:${GnuJAXP-jar}:${iText-jar}:${JCommon-jar}:${Pixie-jar}" 
+               includes="com/jrefinery/report/demo/**">
+        </javac>
+
+        <!-- include the report definition files -->
+        <copy todir="${basedir}/build/com/jrefinery/report/demo">
+            <fileset dir="${basedir}/source/com/jrefinery/report/demo">
+                <include name="**/*.xml" />
+            </fileset>
+        </copy>
+
+        <!-- include the butterfly image file -->
+        <copy file="${basedir}/source/com/jrefinery/report/demo/anim0002.wmf" tofile="${basedir}/build/com/jrefinery/report/demo/anim0002.wmf" />
+
+	<!-- make the jar file -->
+        <jar jarfile="${basedir}/${jfreereport.name}-${jfreereport.version}-demo.jar"
+             basedir="${basedir}/build" />
+        
+        <!-- remove the temp build area -->
+        <delete dir="${basedir}/build" />
+
+    </target>
+
+    <!-- Generate the JFreeReport JavaDoc HTML pages -->
+    <target name="javadoc-jfreereport" depends="init-jfreereport">
+        <delete dir="${basedir}/javadoc" />
+        <mkdir dir="${basedir}/javadoc" />
+        <javadoc destdir="${basedir}/javadoc" 
+                 windowtitle="JFreeReport Class Library"
+                 classpath="${BeanShell-jar}:${GnuJAXP-jar}:${iText-jar}:${JCommon-jar}:${Pixie-jar}">
+            <packageset dir="${basedir}/source" defaultexcludes="yes">
+                <include name="com/jrefinery/report/**" />
+                <exclude name="com/jrefinery/report/demo/**" />  
+            </packageset>
+        </javadoc>
+    </target>
+
+    <!-- Make .zip distribution for JFreeReport -->
+    <target name="make-jfreereport-zip" depends="compile-jfreereport-demo">
+
+        <!-- make a temporary distribution directory -->
+        <mkdir dir="${basedir}/distribution" />
+
+        <!-- copy across README -->
+        <copy file="${basedir}/README" tofile="${basedir}/distribution/README" />
+
+        <!-- copy across CHANGELOG -->
+        <copy file="${basedir}/CHANGELOG" tofile="${basedir}/distribution/CHANGELOG" />
+
+        <!-- copy across LICENCE -->
+        <copy file="${basedir}/licence-LGPL.txt" tofile="${basedir}/distribution/licence-LGPL.txt" />
+
+        <!-- copy across runtime jar file and demo jar file -->
+        <copy file="${basedir}/${jfreereport.name}-${jfreereport.version}.jar" tofile="${basedir}/distribution/${jfreereport.name}-${jfreereport.version}.jar" />
+        <copy file="${basedir}/${jfreereport.name}-${jfreereport.version}-demo.jar" tofile="${basedir}/distribution/${jfreereport.name}-${jfreereport.version}-demo.jar" />
+    
+        <!-- copy across source files -->
+        <copy todir="${basedir}/distribution/source">
+            <fileset dir="${basedir}/source" />
+        </copy>
+
+        <!-- copy across ant build file (this file) -->
+        <copy todir="${basedir}/distribution/ant">
+            <fileset dir="${basedir}/ant" />
+        </copy>
+
+        <!-- copy across checkstyle property file -->
+        <copy todir="${basedir}/distribution/checkstyle">
+            <fileset dir="${basedir}/checkstyle" />
+        </copy>
+
+        <!-- convert end-of-line characters in text files -->
+        <fixcrlf srcdir="${basedir}/distribution/source"
+                 eol="crlf" eof="add" />
+
+        <!-- make the zip file -->
+        <zip zipfile="${basedir}/${jfreereport.name}-${jfreereport.version}.zip">
+             <zipfileset dir="${basedir}/distribution"
+                         prefix="${jfreereport.name}-${jfreereport.version}" />
+        </zip>
+
+        <!-- delete the temporary distribution directory -->
+        <delete dir="${basedir}/distribution" />
+
+    </target>
+
+    <!-- Make .zip archive for required libs -->
+    <target name="make-lib-zip" depends="init-jfreereport">
+        <zip zipfile="${basedir}/${jfreereport.name}-${jfreereport.version}-libs.zip">
+             <zipfileset dir="${basedir}/lib"
+                         prefix="" />
+        </zip>
+    </target>
+
+    <!-- Make .tar.gz archive for required libs -->
+    <target name="make-lib-targz" depends="init-jfreereport">
+        <tar tarfile="${basedir}/${jfreereport.name}-${jfreereport.version}-libs.tar">
+            <tarfileset dir="${basedir}/lib"
+                        prefix="" />
+        </tar>
+        <gzip zipfile="${basedir}/${jfreereport.name}-${jfreereport.version}-libs.tar.gz"   
+              src="${basedir}/${jfreereport.name}-${jfreereport.version}-libs.tar" />
+        <delete file="${basedir}/${jfreereport.name}-${jfreereport.version}-libs.tar" />
+    </target>
+
+    <!-- ALL -->
+    <target name="all" 
+            depends="compile-jfreereport,compile-jfreereport-demo,javadoc-jfreereport,make-jfreereport-zip,make-lib-zip,make-lib-targz"
+            description="Compiles JFreeReport, builds the jar files, generates the Javadoc HTML pages and creates distribution files (.zip and .tar.gz).">
+    </target>
+
+</project>
