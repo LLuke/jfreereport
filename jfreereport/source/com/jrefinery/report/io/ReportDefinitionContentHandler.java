@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportDefinitionContentHandler.java,v 1.5 2002/06/08 16:28:58 taqua Exp $
+ * $Id: ReportDefinitionContentHandler.java,v 1.6 2002/08/31 16:50:48 taqua Exp $
  *
  * Changes
  * -------
@@ -165,7 +165,6 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
                             Attributes atts) throws SAXException
   {
     DefaultHandler handler = getExpectedHandler ();
-    Log.debug ("Parsing delegated to : " + handler.getClass ().getName () + " for start tag " + qName);
     handler.startElement (namespaceURI, localName, qName, atts);
   }
 
@@ -185,7 +184,6 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   public void endElement (String namespaceURI, String localName, String qName) throws SAXException
   {
     DefaultHandler handler = getExpectedHandler ();
-    Log.debug ("Parsing delegated to : " + handler.getClass ().getName () + " for end tag " + qName);
     handler.endElement (namespaceURI, localName, qName);
   }
 

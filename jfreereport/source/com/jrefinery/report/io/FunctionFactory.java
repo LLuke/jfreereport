@@ -380,7 +380,6 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
       throw new SAXException ("EndProperty without properties tag?");
 
     currentProps.setProperty (currentProperty, currentText.toString ());
-    Log.debug ("FunctionProperty: " + currentProperty + " = " + currentText.toString ());
     currentText = null;
   }
 }

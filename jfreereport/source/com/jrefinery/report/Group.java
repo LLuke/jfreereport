@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Group.java,v 1.12 2002/08/14 21:14:04 taqua Exp $
+ * $Id: Group.java,v 1.13 2002/09/05 09:34:53 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -228,7 +228,6 @@ public class Group implements Serializable, Cloneable
     // return true if this is the last row in the model.
     if (currentDataRow.isLastRow ())
     {
-      Log.debug ("Is lastRow!");
       return true;
     }
     else
@@ -248,7 +247,6 @@ public class Group implements Serializable, Cloneable
         Object item2 = currentDataRow.get (column);
         if (!(secureEquals (item1, item2)))
         {
-          Log.debug ("FIELD: " + field + " is not equal !" + item1 + " vs. " + item2);
           return true;
         }
       }

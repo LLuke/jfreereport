@@ -14,7 +14,7 @@
     <!-- REPORT HEADER -->
     <reportheader height="144" fontname="SansSerif" fontstyle="bold" fontsize="18">
         <label name="label1" x="0" y="0" width="100%" height="20" alignment="center">Sample Report Two</label>
-        <label name="label2" x="0" y="24" width="100%" height="10" fontsize="10" alignment="center">Generated using JFreeReport (version 0.7.5)</label>
+        <label name="label2" x="0" y="24" width="100%" height="10" fontsize="10" alignment="center">Generated using JFreeReport (version 0.7.6)</label>
     </reportheader>
 
     <!-- REPORT FOOTER -->

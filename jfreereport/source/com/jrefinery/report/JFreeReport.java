@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.25 2002/08/19 22:06:02 taqua Exp $
+ * $Id: JFreeReport.java,v 1.26 2002/09/06 17:02:31 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -618,7 +618,6 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     while (!rs.isFinish ())
     {
       ReportState nrs = processPage (target, rs, true);
-      Log.error (String.valueOf (rs.getProperty (REPORT_DATE_PROPERTY)));
       if (nrs.isProceeding (rs) == false)
       {
         throw new ReportProcessingException ("Report is not proceeding");

@@ -127,7 +127,6 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
                             Attributes atts) throws SAXException
   {
     String elementName = qName.toLowerCase ().trim ();
-    Log.debug ("Band factory received: " + elementName);
     if (elementName.equals (REPORT_HEADER_TAG))
     {
       startReportHeader (atts);

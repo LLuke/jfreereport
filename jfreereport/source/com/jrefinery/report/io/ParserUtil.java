@@ -177,7 +177,6 @@ public class ParserUtil
     {
       String number = tvalue.substring(0, tvalue.indexOf("%"));
       float f = parseFloat(number, exceptionMessage) * -1.0f;
-      Log.debug("  Parsed Relative value: " + f);
       return f;
     }
     else
