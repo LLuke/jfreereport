@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToEverything.java,v 1.2 2003/02/06 17:38:01 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.3 2003/02/12 17:36:05 taqua Exp $
  *
  * Changes
  * -------
@@ -175,6 +175,7 @@ public class StraightToEverything
    *
    * @param report  the report.
    * @param filename target file name.
+   * @throws Exception if an error occurs.
    */
   public static void createPlainText (JFreeReport report, String filename)
     throws Exception
@@ -195,6 +196,7 @@ public class StraightToEverything
    *
    * @param report  the report.
    * @param filename target file name.
+   * @throws Exception if an error occurs.
    */
   public static void createRTF (JFreeReport report, String filename)
     throws Exception
@@ -212,6 +214,7 @@ public class StraightToEverything
    *
    * @param report  the report.
    * @param filename target file name.
+   * @throws Exception if an error occurs.
    */
   public static void createCSV (JFreeReport report, String filename)
     throws Exception
@@ -229,6 +232,7 @@ public class StraightToEverything
    *
    * @param report  the report.
    * @param filename target file name.
+   * @throws Exception if an error occurs.
    */
   public static void createXLS (JFreeReport report, String filename)
     throws Exception
@@ -246,6 +250,7 @@ public class StraightToEverything
    *
    * @param report  the report.
    * @param filename target file name.
+   * @throws Exception if an error occurs.
    */
   public static void createStreamHTML (JFreeReport report, String filename)
     throws Exception
@@ -263,6 +268,7 @@ public class StraightToEverything
    *
    * @param report  the report.
    * @param filename target file name.
+   * @throws Exception if an error occurs.
    */
   public static void createDirectoryHTML (JFreeReport report, String filename)
     throws Exception
@@ -277,6 +283,7 @@ public class StraightToEverything
    *
    * @param report  the report.
    * @param filename target file name.
+   * @throws Exception if an error occurs.
    */
   public static void createZIPHTML (JFreeReport report, String filename)
     throws Exception

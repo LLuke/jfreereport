@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: HugeJFreeReportDemo.java,v 1.21 2002/12/12 12:26:55 mungady Exp $
+ * $Id: HugeJFreeReportDemo.java,v 1.22 2003/02/04 17:56:08 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -192,7 +192,7 @@ public class HugeJFreeReportDemo extends JFrame
   /** A tabbed pane for displaying the sample data sets. */
   private JTabbedPane tabbedPane;
 
-  /** all ReportDefinitions and their datamodels  */
+  /** all ReportDefinitions and their datamodels.  */
   private PreviewConf[] previewData =
           {
             new PreviewConf (
@@ -436,7 +436,7 @@ public class HugeJFreeReportDemo extends JFrame
   }
 
   /**
-   * Create the actions used in the demo
+   * Create the actions used in the demo.
    */
   private void createActions ()
   {

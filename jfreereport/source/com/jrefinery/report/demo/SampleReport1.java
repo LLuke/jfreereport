@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.15 2003/01/29 03:13:00 taqua Exp $
+ * $Id: SampleReport1.java,v 1.16 2003/02/22 18:52:00 taqua Exp $
  *
  * Changes:
  * --------
@@ -163,11 +163,7 @@ public class SampleReport1
   }
 
   /**
-   <pre>
-   <pagefooter height="18">
-   <!-- insert a page number field here -->
-   </pagefooter>
-   </pre>
+   * Creates the report footer.
    *
    * @return the report footer.
    */
@@ -189,12 +185,7 @@ public class SampleReport1
   }
 
   /**
-   <pre>
-   <reportheader height="48" fontname="Serif" fontstyle="bold" fontsize="20">
-   <label name="Label 1" x="0" y="0" width="100%" height="24" alignment="center"
-   baseline="20">LIST OF COUNTRIES BY CONTINENT</label>
-   </reportheader>
-   </pre>
+   * Creates the report header.
    *
    * @return the report header.
    */

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: IconTableModel.java,v 1.5 2002/09/17 09:49:09 mungady Exp $
+ * $Id: IconTableModel.java,v 1.6 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes
  * -------
@@ -114,7 +114,7 @@ public class IconTableModel extends AbstractTableModel
   }
 
   /**
-   * Returns the class of the specified column
+   * Returns the class of the specified column.
    *
    * @param column The column index.
    *

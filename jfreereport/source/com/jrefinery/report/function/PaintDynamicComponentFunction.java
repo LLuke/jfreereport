@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.2 2003/02/25 09:55:52 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.3 2003/02/25 14:07:27 taqua Exp $
  *
  * Changes
  * -------
@@ -169,7 +169,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction
   /**
    * Creates the component.
    *
-   * @returns the created image or null, if no image could be created.
+   * @return the created image or null, if no image could be created.
    */
   private Image createComponentImage()
   {

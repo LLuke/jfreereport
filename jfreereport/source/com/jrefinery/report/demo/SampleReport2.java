@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport2.java,v 1.2 2003/02/06 17:38:01 taqua Exp $
+ * $Id: SampleReport2.java,v 1.3 2003/02/16 23:22:29 taqua Exp $
  *
  * Changes:
  * --------
@@ -57,7 +57,7 @@ import java.awt.geom.Point2D;
 public class SampleReport2
 {
   /**
-   * Default constructor
+   * Default constructor.
    */
   public SampleReport2()
   {
@@ -137,9 +137,4 @@ public class SampleReport2
     return report;
   }
 
-  public static void main (String [] args)
-  {
-    JFreeReport r = new SampleReport2().createReport();
-    BandLayoutManagerUtil.doLayout(r.getReportHeader(), new DefaultLayoutSupport(), 1000, 1000);
-  }
 }
