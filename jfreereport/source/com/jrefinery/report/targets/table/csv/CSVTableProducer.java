@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProducer.java,v 1.5 2003/02/17 22:01:40 taqua Exp $
+ * $Id: CSVTableProducer.java,v 1.6 2003/02/24 15:06:33 mungady Exp $
  *
  * Changes
  * -------
@@ -67,7 +67,7 @@ public class CSVTableProducer extends TableProducer
   /** The CSVQuoter that is used when writing the content. */
   private CSVQuoter quoter;
   
-  /** The class used to convert each {@link Element} into a {@link CSVCellData} instance. */
+  /** The class used to convert each {@link com.jrefinery.report.Element} into a {@link CSVCellData} instance. */
   private CSVCellDataFactory cellDataFactory;
 
   /** A flag that maintains the open state. */

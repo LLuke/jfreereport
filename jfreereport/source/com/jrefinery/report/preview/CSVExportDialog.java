@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.6 2003/02/25 14:45:25 mungady Exp $
+ * $Id: CSVExportDialog.java,v 1.7 2003/03/13 17:41:51 taqua Exp $
  *
  * Changes
  * --------
@@ -939,6 +939,8 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   public void initFromConfiguration(ReportConfiguration config)
   {
     setSeparatorString(config.getConfigProperty(CSVProcessor.CSV_SEPARATOR, ","));
+    encodingModel.ensureEncodingAvailable(config.getCSVTargetEncoding());
+    setEncoding(config.getCSVTargetEncoding());
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.28 2003/04/06 18:11:30 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.29 2003/04/09 15:49:56 mungady Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
@@ -143,12 +144,6 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       retval = correctDimension(dim, containerBounds, null);
     }
 
-    // docmark: minimum size also checks the dynamic height.
-    if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
-    {
-      retval = getElementContentBounds(retval, e, containerBounds);
-    }
-
     // now apply the maximum bounds to the retval.
     // the maximum bounds are defined by the element and the elements container.
     Dimension2D maxSize = correctDimension((Dimension2D)
@@ -156,6 +151,12 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
 
     maxSize.setSize(Math.min (containerBounds.getWidth() - absPos.getX(), maxSize.getWidth()),
                     Math.min (containerBounds.getHeight() - absPos.getY(), maxSize.getHeight()));
+
+    // docmark: minimum size also checks the dynamic height.
+    if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
+    {
+      retval = getElementContentBounds(retval, e, maxSize);
+    }
 
     retval.setSize(Math.min (retval.getWidth(), maxSize.getWidth()),
                    Math.min (retval.getHeight(), maxSize.getHeight()));
@@ -223,11 +224,6 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       }
     }
 
-    if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
-    {
-      retval = getElementContentBounds(retval, e, containerBounds);
-    }
-
     // now apply the maximum bounds to the retval.
     // the maximum bounds are defined by the element and the elements container.
     Dimension2D maxSize = correctDimension(
@@ -236,6 +232,10 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     maxSize.setSize(Math.min (containerBounds.getWidth() - absPos.getX(), maxSize.getWidth()),
                     Math.min (containerBounds.getHeight() - absPos.getY(), maxSize.getHeight()));
 
+    if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
+    {
+      retval = getElementContentBounds(retval, e, maxSize);
+    }
 
     retval.setSize(Math.min (retval.getWidth(), maxSize.getWidth()),
                    Math.min (retval.getHeight(), maxSize.getHeight()));
@@ -247,6 +247,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
           "Layouting failed, getPreferredSize returned negative values.");
     }
 
+    Log.debug ("PreferredSize: " + retval);
     if (isCachable)
     {
       cache.setPrefSize(cacheKey, e, retval);

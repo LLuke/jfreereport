@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited); 
  *
- * $Id: HtmlExportDialog.java,v 1.13 2003/03/04 20:28:49 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.14 2003/03/13 17:41:53 taqua Exp $
  *
  * Changes
  * -------
@@ -1541,7 +1541,8 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
    */
   public void initFromConfiguration(ReportConfiguration config)
   {
-    // nothing to initialize so far. We have much less options than in "save to PDF"
+    encodingModel.ensureEncodingAvailable(config.getHTMLTargetEncoding());
+    setEncoding(config.getHTMLTargetEncoding());
   }
 
   /**

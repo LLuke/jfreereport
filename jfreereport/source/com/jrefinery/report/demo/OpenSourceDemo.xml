@@ -34,7 +34,7 @@
                alignment="center" vertical-alignment="middle"
             >http://www.object-refinery.com/open.html</label>
 
-        <line x1="0" y1="104" x2="0" y2="104"  
+        <line x1="0" y1="104" x2="0" y2="104"
                    color="#CCCCCC" weight="0.5"/>
 
     </reportheader>

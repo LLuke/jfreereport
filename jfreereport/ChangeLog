@@ -2,7 +2,103 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
-0.8.2    :
+0.8.3    : (not completed yet)
+        * Drawable elements are supported now.
+
+0.8.2    : (12-Apr-2003):
+        * Important: There were fixes in the shape handling and the order of the
+          function events, please read the file migration.txt for detailed
+          information about API changes of this release.
+
+        * BugFix: Layouting was broken for band in band stacking and complex layouts.
+
+        * BugFix: SimplePageLayouter layouting was broken.
+
+        * BugFix: The event handling and pagebreaking within the SimplePageLayouter
+          was unclean and under some circumstances the row of a last page which
+          triggered a pagebreak could got lost.
+
+          The event handling is now in a better defined state: It is guaranteed, that
+          page-start events are invoked before any other report event for the page.
+          When starting a new report, the page-start event will be the first event that
+          is received. When the itemAdvanced event is triggered all previous bands are
+          printed completly and no other event is issued between the itemAdvanced and
+          the print event (unless the printing would trigger a new pagebreak).
+
+        * BugFix: Images were not printed correctly, when an image was not loaded
+          completly using an ImageObserver. The return value of Graphics2D.drawImage
+          is now used to determine whether the image must be loaded and reprinted.
+          If the image was not yet loaded, the printing process waits until the image
+          is completly loaded by the AWT.
+
+        * BugFix: When no content was generated for given bounds, the resulting null
+          content was not checked and caused NullPointerExceptions.
+
+        * BugFix: The PlainTextDialog had no CloseListener, so an attemp to close the
+          window had no effect.
+
+        * BugFix: TextLayout was buggy, if the minimum size was greater than the
+          element's maximum size.
+
+        * BugFix: The template writer was buggy.
+
+        * BugFix: Extended report definition parser had a bug in the handling of
+          the extends-tag of stylesheets.
+
+        * BugFix: Several MemoryLeaks have been fixed. The leaks were non-fatal for
+          smaller reports but killed report with more than 300 pages. The reference
+          to the JFreeReport object within the ReportStates was replaced by a smallscale
+          ReportDefinition object.
+
+          The report definition object is readonly and limits access to the bands and
+          group definitions and the report configuration. The function/expression
+          collections and the tablemodel are no longer directly available within the
+          report definition and can only be accessed indirectly by using the DataRow.
+
+        * BugFix: The excel export generated too many CellStyle-definitions. The generated
+          excel file could not be read if more than 4000 CellStyles were generated. The
+          fixed implementation fixes the caching of previously generated styles.
+          The 4000 CellStyles limitation is a hard limit imposed by MS Excel.
+
+        * "shape-element" added for the simple report definition format. The shape
+          element can be used to draw shapes retrieved from the dataRow.
+
+        * ShapeFieldTemplate added to create a easy to use "shape-element" for the
+          extended report definition profile.
+
+        * The report processing performance is heavily increased.
+
+        * LineShapes were now created correctly when using the ItemFactory.
+
+        * We have an complete french translation of the core libraries now. Thanks
+          mimil :)
+
+        * Bands now bind their own BandLayoutManagers.
+
+        * New demo: The card demo has been added to show a complexer use and the power
+          of the extended report definition format. The demo uses templates and
+          stylesheets to coordinate the appearance of several fields.
+
+          The demo can be found in the package com.jrefinery.report.demo.cards
+
+        * New demo: The PercentageDemo shows the use of NumberFields and the format
+          decimal format string of the number field.
+
+        * A new ElementColorFunction defines the color of an element depending on
+          a boolean expression.
+
+        * JFreeReport now uses iText 0.98. This iText version is incompatible with
+          the previously used iText version 0.96.
+
+        * The available encodings for the various export dialogs can now be defined
+          using a properties file. The properties file is referenced in the report
+          configuration in the Key "com.jrefinery.report.encodings.available" and
+          the key "com.jrefinery.report.encodings.file". The available key
+          can be set to "all", "none" or "file".
+
+          A sample encodings property file can be found in the file
+          "/com/jrefinery/report/jfreereport-encodings.properties". Disabling
+          unnessary encodings will speed up the initial loading of the preview dialogs.
 
 0.8.1_02 : (09-Mar-2003):
         * BugFix: Shape handling was invalid. All Shapes were painted at position

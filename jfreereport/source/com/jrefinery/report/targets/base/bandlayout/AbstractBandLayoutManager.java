@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.4 2003/04/06 18:11:30 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.5 2003/04/09 15:49:50 mungady Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import com.jrefinery.report.targets.base.content.Content;
 import com.jrefinery.report.targets.base.content.ContentFactory;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.util.Log;
 
 /**
  * An abstract band layout manager.
@@ -217,6 +218,10 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
 
       Content content = contentFactory.createContentForElement(e, eli, getLayoutSupport());
       Rectangle2D contentBounds = content.getMinimumContentSize();
+      Log.debug ("Dynamic Content : " + content);
+      Log.debug ("Dynamic element : " + e);
+      Log.debug ("Dynamic max     : " + conBounds);
+      Log.debug ("Dynamic result  : " + contentBounds);
       if (contentBounds == null)
       {
         return new FloatDimension();
@@ -226,6 +231,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     }
     catch (Exception ex)
     {
+      Log.debug ("Exception: " + ex);
       return new FloatDimension((float) Math.max (minSize.getWidth(), bounds.getWidth()),
                                 (float) Math.max (minSize.getHeight(), bounds.getHeight()));
     }

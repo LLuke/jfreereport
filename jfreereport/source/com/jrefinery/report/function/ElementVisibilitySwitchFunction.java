@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.18 2003/04/05 18:57:11 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.19 2003/04/09 15:47:30 mungady Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -63,13 +63,14 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
 
   /** The function value. */
   private boolean trigger;
-
+  private boolean warned;
 
   /**
    * Default constructor.
    */
   public ElementVisibilitySwitchFunction()
   {
+    warned = false;
   }
 
   /**
@@ -103,11 +104,11 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
     }
     else
     {
-      Log.warn ("Element not defined in the item band");
-    }
-    if (event.getState().getCurrentDataItem() % 100 == 0)
-    {
-      Log.debug ("CheckPoint: " + event.getState().getCurrentDataItem());
+      if (warned == false)
+      {
+        Log.warn (new Log.SimpleMessage("Element ", getElement(), "not defined in the item band"));
+        warned = true;
+      }
     }
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo.java,v 1.10 2003/03/19 10:27:28 mungady Exp $
+ * $Id: OpenSourceDemo.java,v 1.11 2003/04/08 13:55:55 mungady Exp $
  *
  * Changes
  * -------
@@ -201,7 +201,7 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener
       Image image = Toolkit.getDefaultToolkit().createImage(imageURL);
       WaitingImageObserver obs = new WaitingImageObserver(image);
       obs.waitImageLoaded();
-      this.report.setProperty("logo", image);
+      //this.report.setProperty("logo", image);
       this.report.setPropertyMarked("logo", true);
       
       PreviewFrame frame = new PreviewFrame(this.report);

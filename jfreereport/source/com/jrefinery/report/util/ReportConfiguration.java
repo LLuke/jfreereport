@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.38 2003/03/04 20:29:04 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.39 2003/04/09 15:55:10 mungady Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,6 @@
  */
 
 package com.jrefinery.report.util;
-
-import com.lowagie.text.pdf.BaseFont;
 
 import java.util.Enumeration;
 import java.util.Properties;
@@ -354,7 +352,7 @@ public class ReportConfiguration
       = "com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.Encoding";
 
   /** The default 'PDF encoding' property value. */
-  public static final String PDFTARGET_ENCODING_DEFAULT = BaseFont.WINANSI;
+  public static final String PDFTARGET_ENCODING_DEFAULT = "Cp1252";
 
   /** The 'ResultSet factory mode'. */
   public static final String RESULTSET_FACTORY_MODE = "com.jrefinery.report.TableFactoryMode";
@@ -392,6 +390,55 @@ public class ReportConfiguration
   
   /** The property that defines whether to enable PlainText export in the PreviewFrame. */
   public static final String ENABLE_EXPORT_PLAIN = "com.jrefinery.report.preview.plugin.plain";
+
+  /** The property that defines which encodings are available in the export dialogs. */
+  public static  final String AVAILABLE_ENCODINGS="com.jrefinery.report.encodings.available";
+
+  /** The encodings available properties value for all properties. */
+  public static  final String AVAILABLE_ENCODINGS_ALL="all";
+  /** The encodings available properties value for properties defined in the properties file. */
+  public static  final String AVAILABLE_ENCODINGS_FILE="file";
+  /**
+   * The encodings available properties value for no properties defined. The encoding selection
+   * will be disabled.
+   */
+  public static  final String AVAILABLE_ENCODINGS_NONE="none";
+
+  /** The 'HTML encoding' property key. */
+  public static final String HTML_OUTPUT_ENCODING = "com.jrefinery.report.targets.table.html.Encoding";
+  public static final String HTML_OUTPUT_ENCODING_DEFAULT = "UTF-16";
+
+  /** The 'CSV encoding' property key. */
+  public static final String CSV_OUTPUT_ENCODING = "com.jrefinery.report.targets.csv.Encoding";
+  public static final String CSV_OUTPUT_ENCODING_DEFAULT = getPlatformDefaultEncoding();
+
+  /** The 'XML encoding' property key. */
+  public static final String TEXT_OUTPUT_ENCODING = "com.jrefinery.report.targets.pageable.output.PlainText.Encoding";
+  public static final String TEXT_OUTPUT_ENCODING_DEFAULT = getPlatformDefaultEncoding();
+
+  private static String getPlatformDefaultEncoding ()
+  {
+    try
+    {
+      return System.getProperty("file.encoding", "Cp1252");
+    }
+    catch (SecurityException se)
+    {
+      return "Cp1252";
+    }
+  }
+
+  /**
+   * The name of the properties file used to define the available encodings.
+   * The property points to a resources in the classpath, not to a real file!
+   */
+  public static  final String ENCODINGS_DEFINITION_FILE="com.jrefinery.report.encodings.file";
+
+  /**
+   * The default name for the encoding properties file. This property defaults to
+   * &quot;/com/jrefinery/report/jfreereport-encodings.properties&quot;.
+   */
+  public static  final String ENCODINGS_DEFINITION_FILE_DEFAULT="/com/jrefinery/report/jfreereport-encodings.properties";
 
   /** Storage for the configuration properties. */
   private Properties configuration;
@@ -998,4 +1045,89 @@ public class ReportConfiguration
   {
     setConfigProperty(STRICT_ERRORHANDLING, String.valueOf(strictErrorHandling));
   }
+
+  /**
+   * Defines the loader settings for the available encodings shown to the user.
+   * The property defaults to AVAILABLE_ENCODINGS_ALL.
+   *
+   * @return either AVAILABLE_ENCODINGS_ALL, AVAILABLE_ENCODINGS_FILE or AVAILABLE_ENCODINGS_NONE.
+   */
+  public String getAvailableEncodings()
+  {
+    return getConfigProperty(AVAILABLE_ENCODINGS, AVAILABLE_ENCODINGS_ALL);
+  }
+
+
+  /**
+   * Defines the loader settings for the available encodings shown to the user.
+   * The property defaults to AVAILABLE_ENCODINGS_ALL.
+   *
+   * @return either AVAILABLE_ENCODINGS_ALL, AVAILABLE_ENCODINGS_FILE or AVAILABLE_ENCODINGS_NONE.
+   */
+  public String getEncodingsDefinitionFile()
+  {
+    return getConfigProperty(ENCODINGS_DEFINITION_FILE, ENCODINGS_DEFINITION_FILE_DEFAULT);
+  }
+
+  /**
+   * Returns the plain text encoding property value.
+   *
+   * @return the plain text encoding property value.
+   */
+  public String getTextTargetEncoding()
+  {
+    return getConfigProperty(TEXT_OUTPUT_ENCODING, TEXT_OUTPUT_ENCODING_DEFAULT);
+  }
+
+  /**
+   * Sets the plain text encoding property value.
+   *
+   * @param targetEncoding  the new encoding.
+   */
+  public void setXMLTargetEncoding(String targetEncoding)
+  {
+    setConfigProperty(TEXT_OUTPUT_ENCODING, targetEncoding);
+  }
+
+  /**
+   * Returns the HTML encoding property value.
+   *
+   * @return the HTML encoding property value.
+   */
+  public String getHTMLTargetEncoding()
+  {
+    return getConfigProperty(HTML_OUTPUT_ENCODING, HTML_OUTPUT_ENCODING_DEFAULT);
+  }
+
+  /**
+   * Sets the HTML encoding property value.
+   *
+   * @param targetEncoding  the new encoding.
+   */
+  public void setHTMLTargetEncoding(String targetEncoding)
+  {
+    setConfigProperty(HTML_OUTPUT_ENCODING, targetEncoding);
+  }
+
+  /**
+   * Returns the CSV encoding property value.
+   *
+   * @return the CSV encoding property value.
+   */
+  public String getCSVTargetEncoding()
+  {
+    return getConfigProperty(CSV_OUTPUT_ENCODING, CSV_OUTPUT_ENCODING_DEFAULT);
+  }
+
+  /**
+   * Sets the CSV encoding property value.
+   *
+   * @param targetEncoding  the new encoding.
+   */
+  public void setCSVTargetEncoding(String targetEncoding)
+  {
+    setConfigProperty(CSV_OUTPUT_ENCODING, targetEncoding);
+  }
+
+
 }

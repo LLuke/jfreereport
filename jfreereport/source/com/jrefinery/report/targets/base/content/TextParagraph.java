@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.13 2003/04/06 18:11:30 taqua Exp $
+ * $Id: TextParagraph.java,v 1.14 2003/04/09 15:50:27 mungady Exp $
  *
  * Changes
  * -------
@@ -135,7 +135,7 @@ public class TextParagraph extends ContentContainer
         // create Lines
         String lineText = (String) l.get(i);
         TextLine line = new TextLine(getSizeCalculator(), lineHeight);
-        line.setContent(lineText, x, y, width, height);
+        line.setContent(lineText, x, y + usedHeight, width, height - usedHeight);
 
         usedHeight += line.getHeight();
         if (line.getBounds().getHeight() > 0)

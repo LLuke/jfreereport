@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.9 2003/03/18 19:38:31 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.10 2003/03/29 20:17:25 taqua Exp $
  *
  * Changes
  * --------
@@ -55,7 +55,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -81,10 +80,12 @@ import com.jrefinery.report.targets.pageable.output.IBMPrinterCommandSet;
 import com.jrefinery.report.targets.pageable.output.PlainTextOutputTarget;
 import com.jrefinery.report.targets.pageable.output.PrinterCommandSet;
 import com.jrefinery.report.util.ActionButton;
+import com.jrefinery.report.util.ActionRadioButton;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.NullOutputStream;
+import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.StringUtil;
-import com.jrefinery.report.util.ActionRadioButton;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.ui.ExtensionFileFilter;
 
 /**
@@ -283,9 +284,6 @@ public class PlainTextExportDialog extends JDialog implements ExportPlugin
   /** Localised resources. */
   private ResourceBundle resources;
 
-  /** The default encoding model. */
-  private EncodingComboBoxModel defaultEncodingModel;
-
   /** The plain text encodings. */
   private EncodingComboBoxModel plainTextEncodingModel;
   
@@ -321,6 +319,10 @@ public class PlainTextExportDialog extends JDialog implements ExportPlugin
   
   /** A file chooser. */
   private JFileChooser fileChooser;
+
+  private PrinterCommandSet plainTextCommandSet;
+  private PrinterCommandSet ibmPrinterCommandSet;
+  private PrinterCommandSet epsonPrinterCommandSet;
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
@@ -369,14 +371,18 @@ public class PlainTextExportDialog extends JDialog implements ExportPlugin
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     setTitle(getResources().getString("plain-text-exportdialog.dialogtitle"));
 
-    defaultEncodingModel = EncodingComboBoxModel.createDefaultModel();
-    plainTextEncodingModel = createEncodingModel(new PrinterCommandSet(new NullOutputStream(),
-                                                                       new PageFormat(),
-                                                                       10, 6));
-    epsonPrinterEncodingModel = createEncodingModel(
-        new EpsonPrinterCommandSet(new NullOutputStream(), new PageFormat(), 10, 6));
-    ibmPrinterEncodingModel = createEncodingModel(
-        new IBMPrinterCommandSet(new NullOutputStream(), new PageFormat(), 10, 6));
+    plainTextCommandSet = new PrinterCommandSet(new NullOutputStream(),
+                                                new PageFormat(), 10, 6);
+    plainTextEncodingModel = createEncodingModel(plainTextCommandSet);
+
+    epsonPrinterCommandSet = new EpsonPrinterCommandSet(new NullOutputStream(),
+                                                     new PageFormat(), 10, 6);
+    epsonPrinterEncodingModel = createEncodingModel(epsonPrinterCommandSet);
+
+    ibmPrinterCommandSet = new IBMPrinterCommandSet(new NullOutputStream(),
+                                                    new PageFormat(), 10, 6);
+    ibmPrinterEncodingModel = createEncodingModel(ibmPrinterCommandSet);
+
     selectedEncodingModel = plainTextEncodingModel;
     cbEncoding = new JComboBox(selectedEncodingModel);
 
@@ -786,7 +792,35 @@ public class PlainTextExportDialog extends JDialog implements ExportPlugin
     {
       throw new NullPointerException("Encoding must not be null");
     }
+
+    ensureEncodingAvailable(plainTextCommandSet, plainTextEncodingModel, encoding);
+    ensureEncodingAvailable(ibmPrinterCommandSet, ibmPrinterEncodingModel, encoding);
+    ensureEncodingAvailable(epsonPrinterCommandSet, epsonPrinterEncodingModel, encoding);
+
     cbEncoding.setSelectedIndex(selectedEncodingModel.indexOf(encoding));
+    if (ibmPrinterEncodingModel.indexOf(encoding) >= 0)
+    {
+      ibmPrinterEncodingModel.setSelectedItem(encoding);
+    }
+    if (plainTextEncodingModel.indexOf(encoding) >= 0)
+    {
+      plainTextEncodingModel.setSelectedItem(encoding);
+    }
+    if (epsonPrinterEncodingModel.indexOf(encoding) >= 0)
+    {
+      epsonPrinterEncodingModel.setSelectedItem(encoding);
+    }
+
+  }
+
+  /**
+   * Initialises the CSV export dialog from the settings in the report configuration.
+   *
+   * @param config  the report configuration.
+   */
+  public void initFromConfiguration(ReportConfiguration config)
+  {
+    setEncoding(config.getTextTargetEncoding());
   }
 
   /**
@@ -798,6 +832,7 @@ public class PlainTextExportDialog extends JDialog implements ExportPlugin
    */
   public boolean performExport(JFreeReport report)
   {
+    initFromConfiguration(report.getReportConfiguration());
     setVisible(true);
     if (isConfirmed() == false)
     {
@@ -1002,6 +1037,21 @@ public class PlainTextExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
+   * Checks, whether the printer supports the given encoding and adds it if possible.
+   *
+   * @param cmd
+   * @param model
+   * @param encoding
+   */
+  private void ensureEncodingAvailable(PrinterCommandSet cmd, EncodingComboBoxModel model, String encoding)
+  {
+    if (cmd.isEncodingSupported(encoding))
+    {
+      model.ensureEncodingAvailable(encoding);
+    }
+  }
+
+  /**
    * Creates an encoding model.
    * 
    * @param cmd  the printer command set.
@@ -1010,6 +1060,8 @@ public class PlainTextExportDialog extends JDialog implements ExportPlugin
    */
   private EncodingComboBoxModel createEncodingModel(PrinterCommandSet cmd)
   {
+    EncodingComboBoxModel defaultEncodingModel = EncodingComboBoxModel.createDefaultModel();
+
     EncodingComboBoxModel retval = new EncodingComboBoxModel();
     for (int i = 0; i < defaultEncodingModel.getSize(); i++)
     {
