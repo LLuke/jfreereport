@@ -70,6 +70,17 @@ Code Changes
 
    // don't forget to close the outputtarget ..
 
+- The PreviewFrame was modified. All functionality moved into a separate
+  delegate object, so that implementing other kinds of dialogs get easier.
+
+  At the moment, a PreviewFrame (JFrame), a PreviewDialog (JDialog) and a
+  PreviewInternalFrame (JInternalFrame) are implemented.
+
+  All old preview methods can be reached via:
+
+    PreviewFrame.getBase()
+
+  Please see the JavaDoc for details on the available methods.
 ----------------------------------------------------------------------------------
 Changes from 0.8.0 to 0.8.1
 

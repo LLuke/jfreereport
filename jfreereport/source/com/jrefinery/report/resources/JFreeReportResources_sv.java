@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_de.java,v 1.31 2003/03/04 20:28:54 taqua Exp $
+ * $Id: JFreeReportResources_sv.java,v 1.1 2003/05/30 18:49:43 taqua Exp $
  *
  * Changes
  * -------
@@ -33,40 +33,16 @@
  */
 package com.jrefinery.report.resources;
 
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Hashtable;
-import java.util.ListResourceBundle;
-
-import javax.swing.ImageIcon;
 import javax.swing.KeyStroke;
 
-import com.jrefinery.report.util.Log;
-
 /**
- * German Language Resources.
+ * Swedish Language Resources.
  *
- * @author Thomas Morgner
+ * @author Thomas Dilts
  */
 public class JFreeReportResources_sv extends JFreeReportResources
 {
-
-  /**
-   * Unicode translation:
-   *
-   * &auml; - \u00E4
-   * &Auml; - \u00C4
-   * &ouml; - \u00f6
-   * &Ouml; - \u00d6
-   * &Uuml; - \u00dc
-   * &uuml; - \u00fc
-   * &szlig; - \u00df
-   *
-   */
   /**
    * Returns the array of strings in the resource bundle.
    *
@@ -80,12 +56,6 @@ public class JFreeReportResources_sv extends JFreeReportResources
   /** The resources to be localised. */
   private static final Object[][] CONTENTS =
       {
-            {"project.name", "JFreeReport"},
-            {"project.version", "0.8.2"},
-            {"project.info", "http://www.object-refinery.com/jfreereport/index.html"},
-            {"project.copyright",
-                "(C)opyright 2000-2003, by Simba Management Limited and Contributors"},
-
             {"action.save-as.name", "Spara som PDF..."},
             {"action.save-as.description", "Spara till PDF format"},
             {"action.save-as.mnemonic", new Integer (KeyEvent.VK_A)},
@@ -107,45 +77,25 @@ public class JFreeReportResources_sv extends JFreeReportResources
             {"action.export-to-html.description", "Spara till HTML format"},
             {"action.export-to-html.mnemonic", new Integer (KeyEvent.VK_H)},
             {"action.export-to-html.accelerator", KeyStroke.getKeyStroke ("control H")},
-            // temporarily using the same icon as "Spara till PDF", till we have a better one
-            {"action.export-to-html.small-icon", 
-                getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
-            {"action.export-to-html.icon", 
-                getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
 
             {"action.export-to-csv.name", "Exportera till CSV..."},
             {"action.export-to-csv.description", "Spara till CSV format"},
             {"action.export-to-csv.mnemonic", new Integer (KeyEvent.VK_C)},
             {"action.export-to-csv.accelerator", KeyStroke.getKeyStroke ("control C")},
-            // temporarily using the same icon as "Spara till PDF", till we have a better one
-            {"action.export-to-csv.small-icon", 
-                getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
-            {"action.export-to-csv.icon", 
-                getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
 
             {"action.export-to-plaintext.name", "Spara som text file..."},
             {"action.export-to-plaintext.description", "Spara till vanlig text fil"},
             {"action.export-to-plaintext.mnemonic", new Integer (KeyEvent.VK_T)},
             {"action.export-to-plaintext.accelerator", KeyStroke.getKeyStroke ("control T")},
-            // temporarily using the same icon as "Spara till PDF", till we have a better one
-            {"action.export-to-plaintext.small-icon", 
-                getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
-            {"action.export-to-plaintext.icon", 
-                getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
 
             {"action.page-setup.name", "Sida inställningar"},
             {"action.page-setup.description", "Sida inställningar"},
             {"action.page-setup.mnemonic", new Integer (KeyEvent.VK_G)},
-            {"action.page-setup.small-icon",
-                getIcon ("com/jrefinery/report/resources/PageSetup16.gif")},
-            {"action.page-setup.icon", getIcon ("com/jrefinery/report/resources/PageSetup24.gif")},
 
             {"action.print.name", "Skriva ut..."},
             {"action.print.description", "Skriva ut rapporten"},
             {"action.print.mnemonic", new Integer (KeyEvent.VK_P)},
             {"action.print.accelerator", KeyStroke.getKeyStroke ("control P")},
-            {"action.print.small-icon", getIcon ("com/jrefinery/report/resources/Print16.gif")},
-            {"action.print.icon", getIcon ("com/jrefinery/report/resources/Print24.gif")},
 
             {"action.close.name", "Stänga"},
             {"action.close.description", "Stänga förhandsgransknings-fönster"},
@@ -163,53 +113,35 @@ public class JFreeReportResources_sv extends JFreeReportResources
             {"action.about.name", "Om..."},
             {"action.about.description", "Information om applikationen"},
             {"action.about.mnemonic", new Integer (KeyEvent.VK_A)},
-            {"action.about.small-icon", getIcon ("com/jrefinery/report/resources/About16.gif")},
-            {"action.about.icon", getIcon ("com/jrefinery/report/resources/About24.gif")},
 
             {"action.firstpage.name", "Hem"},
             {"action.firstpage.mnemonic", new Integer (KeyEvent.VK_HOME)},
             {"action.firstpage.description", "Bläddra till den första sidan"},
-            {"action.firstpage.small-icon",
-                getIcon ("com/jrefinery/report/resources/FirstPage16.gif")},
-            {"action.firstpage.icon", getIcon ("com/jrefinery/report/resources/FirstPage24.gif")},
             {"action.firstpage.accelerator", KeyStroke.getKeyStroke (KeyEvent.VK_HOME, 0)},
 
             {"action.back.name", "Bläddra bakåt"},
             {"action.back.description", "Bläddra till den föregående sidan"},
             {"action.back.mnemonic", new Integer (KeyEvent.VK_PAGE_UP)},
-            {"action.back.small-icon", getIcon ("com/jrefinery/report/resources/Back16.gif")},
-            {"action.back.icon", getIcon ("com/jrefinery/report/resources/Back24.gif")},
             {"action.back.accelerator", KeyStroke.getKeyStroke ("PAGE_UP")},
 
             {"action.forward.name", "Bläddra framåt"},
             {"action.forward.description", "Bläddra till den nästa sidan"},
             {"action.forward.mnemonic", new Integer (KeyEvent.VK_PAGE_DOWN)},
-            {"action.forward.small-icon",
-                getIcon ("com/jrefinery/report/resources/Forward16.gif")},
-            {"action.forward.icon", getIcon ("com/jrefinery/report/resources/Forward24.gif")},
             {"action.forward.accelerator", KeyStroke.getKeyStroke ("PAGE_DOWN")},
 
             {"action.lastpage.name", "Sista sida"},
             {"action.lastpage.description", "Bläddra till den sista sidan"},
             {"action.lastpage.mnemonic", new Integer (KeyEvent.VK_END)},
-            {"action.lastpage.small-icon",
-                getIcon ("com/jrefinery/report/resources/LastPage16.gif")},
-            {"action.lastpage.icon", getIcon ("com/jrefinery/report/resources/LastPage24.gif")},
             {"action.lastpage.accelerator", KeyStroke.getKeyStroke (KeyEvent.VK_END, 0)},
 
             {"action.zoomIn.name", "Zooma in"},
             {"action.zoomIn.description", "Förstärka zoomen"},
             {"action.zoomIn.mnemonic", new Integer (KeyEvent.VK_PLUS)},
-            {"action.zoomIn.small-icon", getIcon ("com/jrefinery/report/resources/ZoomIn16.gif")},
-            {"action.zoomIn.icon", getIcon ("com/jrefinery/report/resources/ZoomIn24.gif")},
             {"action.zoomIn.accelerator", KeyStroke.getKeyStroke ("PLUS")},
 
             {"action.zoomOut.name", "Zooma ut"},
             {"action.zoomOut.description", "Minska zoomen"},
             {"action.zoomOut.mnemonic", new Integer (KeyEvent.VK_MINUS)},
-            {"action.zoomOut.small-icon",
-                getIcon ("com/jrefinery/report/resources/ZoomOut16.gif")},
-            {"action.zoomOut.icon", getIcon ("com/jrefinery/report/resources/ZoomOut24.gif")},
             {"action.zoomOut.accelerator", KeyStroke.getKeyStroke ("MINUS")},
 
             // preview frame...
@@ -428,10 +360,10 @@ public class JFreeReportResources_sv extends JFreeReportResources
    *
    * @param args not used
    */
-  public static void main (String [] args)
+  public static void main(String[] args)
   {
-    new JFreeReportResources_sv().printAll();
+    ResourceCompareTool.main(new String[]{"sv"});
   }
-  
+
 }
 

@@ -2,7 +2,9 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
-0.8.4    : 
+        * There are still open bugs, so expect some more updates here :)
+
+0.8.3a : (04-Jun-2003)
         * BugFix: Serialization works again. All functions are serializable
           now.
         
@@ -17,9 +19,19 @@ A list of changes in recent versions:
         
         * BugFix: Unclean definition in Group and GroupList methods removed.
           Groups can no longer be composed in an invalid way.
-        ... 
-          
-        * Swedish translation
+
+        * BugFix: ReportWriter was unclean and did not handle complex stylesheet
+          definitions.
+
+        * BugFix: The parser/writer object factories did not handle inherited objects
+          correctly in some cases.
+
+        * BugFix: Generating URLs in the ReportParser was unclean.
+
+        * BugFix: ItemColumnQuotientFunction did not implement the function interface
+          causing classcast exceptions when used as function.
+
+        * We got a new Swedish translation. All fame goes to Thomas Dilts.
 
 0.8.3    : (26-May-2003)
         * BugFix: The report states where unclean when a pagebreak was issued,
