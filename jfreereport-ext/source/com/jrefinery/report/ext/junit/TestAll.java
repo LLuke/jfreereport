@@ -9,9 +9,9 @@ package com.jrefinery.report.ext.junit;
  * No rigths to files and no responsibility for code generated
  * by this tool are belonged to author of 'unittestsgen' utility.
  *
- * $Id: TestAll.java,v 1.3 2002/09/30 19:06:06 taqua Exp $
+ * $Id: TestAll.java,v 1.4 2002/12/10 19:54:24 taqua Exp $
  * $Author: taqua $
- * $Date: 2002/09/30 19:06:06 $
+ * $Date: 2002/12/10 19:54:24 $
  */
 
 import junit.framework.Test;
@@ -40,3 +40,5 @@ public class TestAll
     return suite;
   } // end of suite()
 } // end of com.jrefinery.report.ext.junit.TestAll
+
+

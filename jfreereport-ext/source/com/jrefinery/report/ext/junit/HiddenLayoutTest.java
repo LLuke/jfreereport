@@ -2,7 +2,7 @@
  * Date: Feb 20, 2003
  * Time: 9:00:04 PM
  *
- * $Id$
+ * $Id: HiddenLayoutTest.java,v 1.1 2003/03/01 15:00:12 taqua Exp $
  */
 package com.jrefinery.report.ext.junit;
 
@@ -66,8 +66,8 @@ public class HiddenLayoutTest
       HiddenLayoutTest t = new HiddenLayoutTest();
       JFreeReport report = t.previewReport2();
 
-      Log.debug ("report.pageHeader " + report.getPageHeader().getElements().size());
-      Log.debug ("report.reportHeader " + report.getReportHeader().getElements().size());
+      Log.debug ("report.pageHeader " + report.getPageHeader().getElementCount());
+      Log.debug ("report.reportHeader " + report.getReportHeader().getElementCount());
 
       Group g = report.getGroup(1);
       BandLayoutManagerUtil.doLayout(g.getHeader(), new DefaultLayoutSupport(), 450, 500);

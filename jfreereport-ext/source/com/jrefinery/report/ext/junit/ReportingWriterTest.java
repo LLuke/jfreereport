@@ -2,7 +2,7 @@
  * Date: Jan 25, 2003
  * Time: 4:25:02 PM
  *
- * $Id$
+ * $Id: ReportingWriterTest.java,v 1.1 2003/03/01 15:00:14 taqua Exp $
  */
 package com.jrefinery.report.ext.junit;
 
@@ -125,8 +125,8 @@ public class ReportingWriterTest
       JFreeReport report = t.previewReport2();
 
 
-      Log.debug ("report.pageHeader " + report.getPageHeader().getElements().size());
-      Log.debug ("report.reportHeader " + report.getReportHeader().getElements().size());
+      Log.debug ("report.pageHeader " + report.getPageHeader().getElementCount());
+      Log.debug ("report.reportHeader " + report.getReportHeader().getElementCount());
 
       //report.setData(new DefaultTableModel());
       //createXLS(report);
