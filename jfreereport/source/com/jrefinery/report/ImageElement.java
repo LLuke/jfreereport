@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElement.java,v 1.13 2002/08/14 21:14:04 taqua Exp $
+ * $Id: ImageElement.java,v 1.14 2002/08/22 21:08:23 taqua Exp $
  *
  * Changes:
  * --------
@@ -52,8 +52,7 @@ import com.jrefinery.report.targets.OutputTargetException;
  * PNG Support needs JDK 1.3 or higher. This class encapsulates an
  * ImageReference into an element.
  * <p>
- * ToDo: Use the image filter to remove the static binding to the imageReference.
- * Better scaling
+ * ToDo: Better scaling
  */
 public class ImageElement extends Element
 {

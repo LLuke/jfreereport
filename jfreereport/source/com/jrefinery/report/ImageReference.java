@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.14 2002/08/08 15:28:38 taqua Exp $
+ * $Id: ImageReference.java,v 1.15 2002/08/14 21:14:04 taqua Exp $
  *
  * Changes:
  * --------
@@ -113,6 +113,12 @@ public class ImageReference implements Serializable, Cloneable
     }
   }
 
+  /**
+   * Creates a new ImageReference without an assigned URL for the Image.
+   *
+   * @param img the image for this reference
+   * @throws NullPointerException if the image is null
+   */
   public ImageReference (Image img)
   {
     if (img == null) throw new NullPointerException ();
@@ -176,6 +182,9 @@ public class ImageReference implements Serializable, Cloneable
     return buf.toString ();
   }
 
+  /**
+   * Checks for equality.
+   */
   public boolean equals (Object o)
   {
     if (o == null) return false;
@@ -187,6 +196,11 @@ public class ImageReference implements Serializable, Cloneable
     return ref.url.equals (url);
   }
 
+  /**
+   * Clones this Element.
+   *
+   * @return a clone of this element.
+   */
   public Object clone () throws CloneNotSupportedException
   {
     return super.clone ();

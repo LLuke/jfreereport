@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Group.java,v 1.11 2002/08/08 15:28:38 taqua Exp $
+ * $Id: Group.java,v 1.12 2002/08/14 21:14:04 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -39,6 +39,7 @@
  *               data had been reached.
  * 03-Jul-2002 : Serializable and cloneable, replaces own ReadOnlyList with standard implementation
  * 26-Jul-2002 : Introduced DataRowBackend as replacement for the raw data access
+ * 05-Sep-2002 : Documentation
  */
 
 package com.jrefinery.report;
@@ -200,6 +201,11 @@ public class Group implements Serializable, Cloneable
     return item1.equals (item2);
   }
 
+  /**
+   * Clones this Element.
+   *
+   * @return a clone of this element.
+   */
   public Object clone () throws CloneNotSupportedException
   {
     Group g = (Group) super.clone ();

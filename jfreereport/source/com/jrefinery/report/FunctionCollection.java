@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionCollection.java,v 1.10 2002/07/28 13:25:24 taqua Exp $
+ * $Id: FunctionCollection.java,v 1.11 2002/08/20 20:58:19 taqua Exp $
  *
  * Changes
  * -------
@@ -63,8 +63,17 @@ import java.util.Iterator;
  */
 public class FunctionCollection implements Cloneable, Serializable, ReportListener
 {
+  /**
+   * A ReadOnlyFunctionCollection cannot be modified in any way. Trying to add or remove
+   * an function will result in an IllegalStateException. This ReadOnlyFunctionCollection
+   * is able to connect a datarow.
+   */
   private static class ReadOnlyFunctionCollection extends FunctionCollection
   {
+    /**
+     * Creates a new ReadOnlyFunctionCollection based on the given FunctionCollection.
+     * The new ReadOnbly-Collection cannot be modified.
+     */
     public ReadOnlyFunctionCollection (FunctionCollection copy)
     {
       functionPositions = copy.functionPositions;
@@ -85,10 +94,11 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
     }
 
     /**
-     * Adds a new function to the collection.
-     * The function is initialized before it is added to this collection.
+     * Adds a new function to the collection. Throws always an IllegalStateException
+     *
      * @param f the new function instance.
      * @throws FunctionInitializeException if the function could not be initialized correctly
+     * @throws IllegalStateException as this is a ReadOnly class
      */
     public void add (Function f)
             throws FunctionInitializeException
@@ -96,12 +106,27 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
       throw new IllegalStateException ("This is a readonly collection");
     }
 
+    /**
+     * removes a Function from the collection.
+     * Throws an IllegalStateException as this ReadOnlyFunctionCollection cannot be modified.
+     *
+     * @param f the new Expression instance.
+     * @throws IllegalStateException as this is a ReadOnlyFunctionCollection
+     */
     public void removeFunction (Function f)
     {
       throw new IllegalStateException ("This is a readonly collection");
     }
 
 
+    /**
+     * Connects the given datarow to the function collection and all functions contained in this
+     * collection.
+     *
+     * @param dr the datarow to be connected.
+     * @throws IllegalStateException if there is a datarow already connected.
+     * @throws NullPointerException if the given datarow is null.
+     */
     public void connectDataRow (DataRow dr)
     {
       if (dr == null) throw new NullPointerException();
@@ -112,6 +137,14 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
       }
     }
 
+    /**
+     * Disconnects the given datarow from the function collection and all functions contained in this
+     * collection.
+     *
+     * @param dr the datarow to be connected.
+     * @throws IllegalStateException if there is a datarow already connected.
+     * @throws NullPointerException if the given datarow is null.
+     */
     public void disconnectDataRow (DataRow dr)
     {
       if (dr == null) throw new NullPointerException ("Null-DataRowBackend cannot be disconnected.");
@@ -426,11 +459,19 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
     return functionList.size ();
   }
 
+  /**
+   * Returns the function on the given position in the list
+   * @throws IndexOutOfBoundsException if the given position is invalid
+   * @returns the function.
+   */
   public Function getFunction (int pos)
   {
     return (Function) functionList.get (pos);
   }
 
+  /**
+   * Clones this function collection and all functions contained in the collection.
+   */
   public Object clone () throws CloneNotSupportedException
   {
     FunctionCollection col = (FunctionCollection) super.clone ();
@@ -439,12 +480,24 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
     return col;
   }
 
-  public void connectDataRow (DataRow dr)
+  /**
+   * Connects the given datarow to the function collection and all functions contained in this
+   * collection.
+   *
+   * @throws IllegalStateException as only ReadOnlyFunctionCollections can be connected to a datarow
+   */
+  public void connectDataRow(DataRow dr)
   {
     throw new IllegalStateException("Only readonly collections can be connected");
   }
 
-  public void disconnectDataRow (DataRow dr)
+  /**
+   * Disconnects the given datarow to the function collection and all expressions contained in this
+   * collection.
+   *
+   * @throws IllegalStateException as only ReadOnlyFunctionCollections can be connected to a datarow
+   */
+  public void disconnectDataRow(DataRow dr)
   {
     throw new IllegalStateException("Only readonly collections can be connected");
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.28 2002/08/28 14:09:30 taqua Exp $
+ * $Id: ReportState.java,v 1.29 2002/08/29 19:15:33 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -48,6 +48,7 @@
  * 24-Jun-2002 : Populate Elements must not be called before Function values are calculated.
  * 28-Jul-2002 : Added datarow support, the report is now cloned on start
  * 21-Aug-2002 : isProceeding() was buggy, did not test the reportstate correctly (returned always true)
+ * 28-Aug-2002 : Downport to JDK1.2.2, added many this-references for innerclasses ...
  */
 
 package com.jrefinery.report;
@@ -679,6 +680,10 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     setDataRowBackend (dr);
   }
 
+  /**
+   * @returns the ReportStates DataRowConnector. The connector is used as frontend for all datarow
+   * users and provides a 777777
+   */
   protected DataRowConnector getDataRowConnector ()
   {
     return dataRowConnector;

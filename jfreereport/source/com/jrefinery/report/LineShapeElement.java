@@ -30,6 +30,7 @@
  *  -----------------
  *  10-May-2002 : Initial version
  *  16-May-2002 : recalculate line width when orientation changed
+ *  05-Sep-2002 : Documentation
  *
  */
 package com.jrefinery.report;
@@ -47,6 +48,9 @@ public class LineShapeElement extends ShapeElement
 {
   private boolean m_clacWidth;
 
+  /**
+   * Creates a new LineShapeElement.
+   */
   public LineShapeElement ()
   {
     setLine (new Line2D.Float ());

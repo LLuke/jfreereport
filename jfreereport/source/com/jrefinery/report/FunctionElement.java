@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionElement.java,v 1.9 2002/07/21 13:22:26 taqua Exp $
+ * $Id: FunctionElement.java,v 1.10 2002/08/08 15:28:38 taqua Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,7 @@
  *               TextElements instead which get different filters attached.
  * 04-Jun-2002 : Documentation, removed useless imports.
  * 03-Jul-2002 : Serializable and cloneable, Simplified filter handling
+ * 05-Sep-2002 : Documentation
  */
 
 package com.jrefinery.report;
@@ -97,6 +98,11 @@ public abstract class FunctionElement extends TextElement
     return functionsource;
   }
 
+  /**
+   * Clones this Element.
+   *
+   * @return a clone of this element.
+   */
   public Object clone () throws CloneNotSupportedException
   {
     FunctionElement e = (FunctionElement) super.clone ();

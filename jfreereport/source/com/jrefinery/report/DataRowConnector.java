@@ -47,50 +47,83 @@ public class DataRowConnector implements DataRow
 {
   private DataRowBackend dataRow;
 
-  public DataRowBackend getDataRowBackend ()
-  {
-    return dataRow;
-  }
-
-  public void setDataRowBackend (DataRowBackend dataRow)
-  {
-    this.dataRow = dataRow;
-  }
-
-  public Object get (int col)
-  {
-    return dataRow.get (col);
-  }
-
-  public Object get (String col)
-  {
-    return dataRow.get (col);
-  }
-
-  public String getColumnName (int col)
-  {
-    return dataRow.getColumnName (col);
-  }
-
   public DataRowConnector ()
   {
   }
 
   /**
+   * @returns the currently assigned DataRowBackend for this DataRowConnector
+   */
+  public DataRowBackend getDataRowBackend ()
+  {
+    return dataRow;
+  }
+
+  /**
+   * Sets the datarowbackend for this DataRowConnector. The backend actually contains the data
+   * which will be queried, while this DataRowConnector is simply a proxy forwarding all requests to
+   * the Backend.
+   *
+   * @param dataRow the
+   */
+  public void setDataRowBackend (DataRowBackend dataRow)
+  {
+    this.dataRow = dataRow;
+  }
+
+  /**
+   * return the value of the function,expression or column in the tablemodel using the column
+   * number.
+   */
+  public Object get (int col)
+  {
+    return dataRow.get (col);
+  }
+
+  /**
+   * returns the value of the function, expression or column using its specific name.
+   */
+  public Object get (String col)
+  {
+    return dataRow.get (col);
+  }
+
+  /**
+   * returns the name of the column, expression or function
+   */
+  public String getColumnName (int col)
+  {
+    return dataRow.getColumnName (col);
+  }
+
+  /**
    * looks up the position of the column with the name <code>name</code>.
    * returns the position of the column or -1 if no columns could be retrieved.
+   *
+   * @returns the column position of the column, expression or function with the given name or
+   * -1 if the given name does not exist in this DataRow.
    */
   public int findColumn (String name)
   {
     return getDataRowBackend ().findColumn (name);
   }
 
-
+  /**
+   * Returns the count of columns in this datarow. The columncount is the sum of all DataSource-Rows,
+   * all Functions and all expressions.
+   *
+   * @returns the number of accessible columns in this datarow
+   */
   public int getColumnCount ()
   {
     return getDataRowBackend ().getColumnCount ();
   }
 
+  /**
+   * Connects the Report and all contained bands and all Elements within the bands to this DataRow.
+   *
+   * @param report the report which will be connected
+   */
   public void connectDataSources (JFreeReport report)
   {
     connectDataSources (report.getPageFooter ());
@@ -108,6 +141,11 @@ public class DataRowConnector implements DataRow
     }
   }
 
+  /**
+   * Connects the Band and all Elements within the band to this DataRow.
+   *
+   * @param band the band which will be connected
+   */
   public void connectDataSources (Band band)
   {
     List l = band.getElements ();
@@ -123,6 +161,12 @@ public class DataRowConnector implements DataRow
     }
   }
 
+  /**
+   * Removes the reference to this DataRow from the Report and all contained Bands and all
+   * Elements contained in the Bands.
+   *
+   * @param report the report which will be disconnected from this DataRow.
+   */
   public void disconnectDataSources (JFreeReport report)
   {
     disconnectDataSources (report.getPageFooter ());
@@ -140,6 +184,11 @@ public class DataRowConnector implements DataRow
     }
   }
 
+  /**
+   * Removes the reference to this DataRow from the Band and all Elements contained in the Band.
+   *
+   * @param band the band which will be disconnected from this DataRow.
+   */
   public void disconnectDataSources (Band band)
   {
     List l = band.getElements ();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFunctionElement.java,v 1.9 2002/08/08 15:28:38 taqua Exp $
+ * $Id: NumberFunctionElement.java,v 1.10 2002/08/14 21:14:06 taqua Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,7 @@
  *               TextElements instead which get different filters attached.
  * 04-Jun-2002 : Documentation.
  * 21-Jul-2002 : Cloning-Bug fixed.
+ * 05-Sep-2002 : Documentation
  */
 
 package com.jrefinery.report;
@@ -106,6 +107,11 @@ public class NumberFunctionElement extends FunctionElement
     setFormatter (new DecimalFormat (df));
   }
 
+  /**
+   * Clones this Element.
+   *
+   * @return a clone of this element.
+   */
   public Object clone () throws CloneNotSupportedException
   {
     if ((getDataSource () instanceof NumberFormatFilter) == false)
