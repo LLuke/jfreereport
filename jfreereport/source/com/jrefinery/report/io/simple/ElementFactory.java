@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------
  * ElementFactory.java
  * -------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.10 2003/02/04 17:56:12 taqua Exp $
+ * $Id: ElementFactory.java,v 1.11 2003/02/22 18:52:27 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ package com.jrefinery.report.io.simple;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
+import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.ImageElement;
 import com.jrefinery.report.ItemFactory;
 import com.jrefinery.report.ShapeElement;
@@ -109,13 +110,16 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   /** The text element format string. */
   private String textElementFormatString;
 
+  /** The resource base. */
   private String resourceBase;
 
   /** Dynamic flag. */
   private boolean textElementDynamic;
 
+  /** Font information. */
   private FontFactory.FontInformation textElementFont;
 
+  /** The character entity parser. */
   private CharacterEntityParser entityParser;
 
   /**
@@ -1005,9 +1009,10 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     this.textElementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
     this.textElementBounds = ParserUtil.getElementPosition(atts);
     this.textElementFont = fontFactory.createFont(atts);
-    this.textElementAlignment = parseTextAlignment(atts.getValue(ALIGNMENT_ATT), TextElement.LEFT);
+    this.textElementAlignment = parseTextAlignment(atts.getValue(ALIGNMENT_ATT), 
+                                                   ElementAlignment.LEFT.getOldAlignment());
     this.textElementVerticalAlignment = parseTextVerticalAlignment(atts.getValue(VALIGNMENT_ATT),
-                                                                   TextElement.BOTTOM);
+                                                       ElementAlignment.BOTTOM.getOldAlignment());
     this.textElementColor = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
     this.textElementDynamic = ParserUtil.parseBoolean(atts.getValue("dynamic"), false);
   }
@@ -1029,15 +1034,15 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     {
       if (alignment.equals("left"))
       {
-        elementAlignment = Element.LEFT;
+        elementAlignment = ElementAlignment.LEFT.getOldAlignment();
       }
       if (alignment.equals("center"))
       {
-        elementAlignment = Element.CENTER;
+        elementAlignment = ElementAlignment.CENTER.getOldAlignment();
       }
       if (alignment.equals("right"))
       {
-        elementAlignment = Element.RIGHT;
+        elementAlignment = ElementAlignment.RIGHT.getOldAlignment();
       }
     }
     return elementAlignment;
@@ -1061,15 +1066,15 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     {
       if (alignment.equals("top"))
       {
-        elementAlignment = Element.TOP;
+        elementAlignment = ElementAlignment.TOP.getOldAlignment();
       }
       if ((alignment.equals("center")) || (alignment.equals("middle")))
       {
-        elementAlignment = Element.MIDDLE;
+        elementAlignment = ElementAlignment.MIDDLE.getOldAlignment();
       }
       if (alignment.equals("bottom"))
       {
-        elementAlignment = Element.BOTTOM;
+        elementAlignment = ElementAlignment.BOTTOM.getOldAlignment();
       }
     }
     return elementAlignment;
