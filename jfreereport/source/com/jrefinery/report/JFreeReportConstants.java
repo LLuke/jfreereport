@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportConstants.java,v 1.5 2002/05/26 16:56:30 taqua Exp $
+ * $Id: JFreeReportConstants.java,v 1.6 2002/05/28 19:28:22 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,8 @@ public interface JFreeReportConstants
   public static final String ABOUT_COMMAND = "ABOUT";
   public static final String CLOSE_COMMAND = "CLOSE";
 
+  public static final String FIRSTPAGE_COMMAND = "FIRSTPAGE";
+  public static final String LASTPAGE_COMMAND = "LASTPAGE";
   public static final String NEXTPAGE_COMMAND = "PREVPAGE";
   public static final String PREVPAGE_COMMAND = "NEXTPAGE";
   public static final String ZOOMIN_COMMAND = "ZOOMIN";
