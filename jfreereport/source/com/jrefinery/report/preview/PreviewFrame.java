@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.2 2002/05/16 13:39:57 jaosch Exp $
+ * $Id: PreviewFrame.java,v 1.3 2002/05/16 17:07:21 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -834,7 +834,7 @@ public class PreviewFrame
   {
     if (windowEvent.getID() == WindowEvent.WINDOW_CLOSING) {
       closeAction.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, closeAction.NAME));
-//      super.processWindowEvent(windowEvent);
     }
+    super.processWindowEvent(windowEvent);
   }
 }
