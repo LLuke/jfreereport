@@ -3,12 +3,37 @@ package org.jfree.pixie.wmf.records;
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
+import org.jfree.pixie.wmf.bitmap.DIBReader;
 import org.jfree.pixie.wmf.records.MfCmd;
 
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+/**
+ * The StretchDIBits function copies the color data for a rectangle of
+ * pixels in a DIB to the specified destination rectangle. If the destination
+ * rectangle is larger than the source rectangle, this function stretches
+ * the rows and columns of color data to fit the destination rectangle.
+ * If the destination rectangle is smaller than the source rectangle,
+ * this function compresses the rows and columns by using the specified
+ * raster operation.
+ */
 public class MfCmdStretchDibits extends MfCmd
 {
+  private static final int RECORD_BASE_SIZE = 11;
+  private static final int POS_ROP = 0;
+  private static final int POS_USAGE = 2;
+  private static final int POS_SRC_H = 3;
+  private static final int POS_SRC_W = 4;
+  private static final int POS_SRC_Y = 5;
+  private static final int POS_SRC_X = 6;
+  private static final int POS_DST_H = 7;
+  private static final int POS_DST_W = 8;
+  private static final int POS_DST_Y = 9;
+  private static final int POS_DST_X = 10;
+  private static final int POS_DIB = 11;
+
   private int rop;
   private int srcX;
   private int srcY;
@@ -29,23 +54,41 @@ public class MfCmdStretchDibits extends MfCmd
   private int scaled_destW;
   private int scaled_destH;
 
+  private BufferedImage image;
 
   public MfCmdStretchDibits ()
   {
   }
 
-  public void replay (org.jfree.pixie.wmf.WmfFile file)
+  /**
+   * Replays the command on the given WmfFile.
+   *
+   * @param file the meta file.
+   */
+  public void replay (WmfFile file)
   {
+    // not implemented ...
   }
 
+  /**
+   * Creates a empty unintialized copy of this command implementation.
+   *
+   * @return a new instance of the command.
+   */
   public MfCmd getInstance ()
   {
     return new MfCmdStretchDibits ();
   }
 
+  /**
+   * Reads the function identifier. Every record type is identified by a
+   * function number corresponding to one of the Windows GDI functions used.
+   *
+   * @return the function identifier.
+   */
   public int getFunction ()
   {
-    return org.jfree.pixie.wmf.MfType.STRETCH_DIBITS;
+    return MfType.STRETCH_DIBITS;
   }
 
   public int getROP ()
@@ -58,6 +101,16 @@ public class MfCmdStretchDibits extends MfCmd
     this.rop = rop;
   }
 
+  public BufferedImage getImage()
+  {
+    return image;
+  }
+
+  public void setImage(BufferedImage image)
+  {
+    this.image = image;
+  }
+
   public int getUsage ()
   {
     return usage;
@@ -68,23 +121,53 @@ public class MfCmdStretchDibits extends MfCmd
     this.usage = usage;
   }
 
-  public void setRecord (org.jfree.pixie.wmf.MfRecord record)
+  /**
+   * Reads the command data from the given record and adjusts the internal
+   * parameters according to the data parsed.
+   * <p>
+   * After the raw record was read from the datasource, the record is parsed
+   * by the concrete implementation.
+   *
+   * @param record the raw data that makes up the record.
+   */
+  public void setRecord (MfRecord record)
   {
-    int rop = record.getLongParam (0);
-    int usage = record.getParam (2); // This is the only parameter left, so I assume this
-    int srcH = record.getParam (3);
-    int srcW = record.getParam (4);
-    int ySrc = record.getParam (5);
-    int xSrc = record.getParam (6);
-    int destH = record.getParam (7);
-    int destW = record.getParam (8);
-    int yDest = record.getParam (9);
-    int xDest = record.getParam (10);
+    int rop = record.getLongParam (POS_ROP);
+    int usage = record.getParam (POS_USAGE); // This is the only parameter left, so I assume this
+    int srcH = record.getParam (POS_SRC_H);
+    int srcW = record.getParam (POS_SRC_W);
+    int ySrc = record.getParam (POS_SRC_Y);
+    int xSrc = record.getParam (POS_SRC_X);
+    int destH = record.getParam (POS_DST_H);
+    int destW = record.getParam (POS_DST_W);
+    int yDest = record.getParam (POS_DST_Y);
+    int xDest = record.getParam (POS_DST_X);
+
+    try
+    {
+      DIBReader reader = new DIBReader ();
+      setImage(reader.setRecord (record, POS_DIB));
+    }
+    catch (IOException ioe)
+    {
+      // failed to load the bitmap ..
+    }
+
     // DIB ab pos 11
     setROP (rop);
     setUsage (usage);
     setSrcRect (xSrc, ySrc, srcH, srcW);
     setDestRect (xDest, yDest, destH, destW);
+  }
+
+  /**
+   * Creates a new record based on the data stored in the MfCommand.
+   *
+   * @return the created record.
+   */
+  public MfRecord getRecord() throws RecordCreationException
+  {
+    throw new RecordCreationException("StretchDIBits is not implemented");
   }
 
   public String toString ()
@@ -141,6 +224,10 @@ public class MfCmdStretchDibits extends MfCmd
     return new Rectangle (scaled_destX, scaled_destY, scaled_destW, scaled_destH);
   }
 
+  /**
+   * A callback function to inform the object, that the x scale has changed and the
+   * internal coordinate values have to be adjusted.
+   */
   protected void scaleXChanged ()
   {
     scaled_srcX = getScaledX (srcX);
@@ -149,6 +236,10 @@ public class MfCmdStretchDibits extends MfCmd
     scaled_destW = getScaledX (destW);
   }
 
+  /**
+   * A callback function to inform the object, that the y scale has changed and the
+   * internal coordinate values have to be adjusted.
+   */
   protected void scaleYChanged ()
   {
     scaled_srcY = getScaledY (srcY);

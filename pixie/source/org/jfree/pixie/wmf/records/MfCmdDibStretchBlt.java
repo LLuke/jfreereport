@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmd.java,v 1.2 2003/03/14 20:06:04 taqua Exp $
+ * $Id: MfCmdDibStretchBlt.java,v 1.1 2003/03/15 17:17:53 taqua Exp $
  *
  * Changes
  * -------
@@ -235,12 +235,20 @@ public class MfCmdDibStretchBlt extends MfCmd
     return new Rectangle (scaled_destX, scaled_destY, scaled_destW, scaled_destH);
   }
 
+  /**
+   * A callback function to inform the object, that the x scale has changed and the
+   * internal coordinate values have to be adjusted.
+   */
   protected void scaleXChanged ()
   {
     scaled_destX = getScaledX (destX);
     scaled_destW = getScaledX (destW);
   }
 
+  /**
+   * A callback function to inform the object, that the y scale has changed and the
+   * internal coordinate values have to be adjusted.
+   */
   protected void scaleYChanged ()
   {
     scaled_destY = getScaledY (destY);

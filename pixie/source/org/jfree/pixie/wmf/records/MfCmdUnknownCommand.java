@@ -16,7 +16,7 @@ public class MfCmdUnknownCommand extends MfCmd
   {
   }
 
-  public void replay (org.jfree.pixie.wmf.WmfFile file)
+  public void replay (WmfFile file)
   {
   }
 
@@ -25,15 +25,18 @@ public class MfCmdUnknownCommand extends MfCmd
     return new MfCmdUnknownCommand ();
   }
 
-  public void setRecord (org.jfree.pixie.wmf.MfRecord record)
+  public void setRecord (MfRecord record)
   {
-    System.out.println (this);
   }
 
-  /** Writer function */
-  public org.jfree.pixie.wmf.MfRecord getRecord ()
+  /**
+   * Creates a new record based on the data stored in the MfCommand.
+   *
+   * @return the created record.
+   */
+  public MfRecord getRecord() throws RecordCreationException
   {
-    return null;
+    throw new RecordCreationException("The {Unknown Command} is not writeable");
   }
 
   public String toString ()
@@ -53,12 +56,19 @@ public class MfCmdUnknownCommand extends MfCmd
     return function;
   }
 
-  protected void scaleXChanged ()
+  /**
+   * A callback function to inform the object, that the x scale has changed and the
+   * internal coordinate values have to be adjusted.
+   */
+  protected void scaleXChanged()
   {
   }
 
-  protected void scaleYChanged ()
+  /**
+   * A callback function to inform the object, that the y scale has changed and the
+   * internal coordinate values have to be adjusted.
+   */
+  protected void scaleYChanged()
   {
   }
-
 }

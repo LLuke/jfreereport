@@ -6,8 +6,18 @@ import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
 import org.jfree.pixie.wmf.records.MfCmd;
 
+/**
+ * The SetTextJustification function specifies the amount of space
+ * the system should add to the break characters in a string of text.
+ * The space is added when an application calls the TextOut or
+ * ExtTextOut functions.
+ */
 public class MfCmdSetTextJustification extends MfCmd
 {
+  private static final int RECORD_SIZE = 2;
+  private static final int POS_SPACELENGTH = 0;
+  private static final int POS_BREAKCOUNT = 1;
+
   private int extraSpaceLength;
   private int breakCount;
 
@@ -15,12 +25,22 @@ public class MfCmdSetTextJustification extends MfCmd
   {
   }
 
-  public void replay (org.jfree.pixie.wmf.WmfFile file)
+  /**
+   * Replays the command on the given WmfFile.
+   *
+   * @param file the meta file.
+   */
+  public void replay (WmfFile file)
   {
-    org.jfree.pixie.wmf.MfDcState state = file.getCurrentState ();
+    MfDcState state = file.getCurrentState ();
     state.setTextJustification (extraSpaceLength, breakCount);
   }
 
+  /**
+   * Creates a empty unintialized copy of this command implementation.
+   *
+   * @return a new instance of the command.
+   */
   public MfCmd getInstance ()
   {
     return new MfCmdSetTextJustification ();
@@ -36,17 +56,45 @@ public class MfCmdSetTextJustification extends MfCmd
     return b.toString ();
   }
 
-  public void setRecord (org.jfree.pixie.wmf.MfRecord record)
+  /**
+   * Reads the command data from the given record and adjusts the internal
+   * parameters according to the data parsed.
+   * <p>
+   * After the raw record was read from the datasource, the record is parsed
+   * by the concrete implementation.
+   *
+   * @param record the raw data that makes up the record.
+   */
+  public void setRecord (MfRecord record)
   {
-    int spaceLength = record.getParam (0);
-    int breakCount = record.getParam (1);
+    int spaceLength = record.getParam (POS_SPACELENGTH);
+    int breakCount = record.getParam (POS_BREAKCOUNT);
     setExtraSpaceLength (spaceLength);
     setBreakCount (breakCount);
   }
 
+  /**
+   * Creates a new record based on the data stored in the MfCommand.
+   *
+   * @return the created record.
+   */
+  public MfRecord getRecord() throws RecordCreationException
+  {
+    MfRecord record = new MfRecord(RECORD_SIZE);
+    record.setParam(POS_BREAKCOUNT, getBreakCount());
+    record.setParam(POS_SPACELENGTH, getExtraSpaceLength());
+    return record;
+  }
+
+  /**
+   * Reads the function identifier. Every record type is identified by a
+   * function number corresponding to one of the Windows GDI functions used.
+   *
+   * @return the function identifier.
+   */
   public int getFunction ()
   {
-    return org.jfree.pixie.wmf.MfType.SET_TEXT_JUSTIFICATION;
+    return MfType.SET_TEXT_JUSTIFICATION;
   }
 
   public int getBreakCount ()
@@ -69,12 +117,19 @@ public class MfCmdSetTextJustification extends MfCmd
     this.extraSpaceLength = count;
   }
 
-  protected void scaleXChanged ()
+  /**
+   * A callback function to inform the object, that the x scale has changed and the
+   * internal coordinate values have to be adjusted.
+   */
+  protected void scaleXChanged()
   {
   }
 
-  protected void scaleYChanged ()
+  /**
+   * A callback function to inform the object, that the y scale has changed and the
+   * internal coordinate values have to be adjusted.
+   */
+  protected void scaleYChanged()
   {
   }
-
 }

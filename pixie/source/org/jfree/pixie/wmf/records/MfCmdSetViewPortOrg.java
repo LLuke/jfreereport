@@ -11,9 +11,17 @@ import java.awt.Point;
 /**
  * Defines the upper left corner of the viewport. The size of the
  * viewport is defined using setViewportExt.
+ * <p>
+ * SetViewportOrgEx specifies which device point maps to the logical
+ * point (0,0). It has the effect of shifting the axes so that the
+ * logical point (0,0) no longer refers to the upper-left corner.
  */
 public class MfCmdSetViewPortOrg extends MfCmd
 {
+  private static final int RECORD_SIZE = 2;
+  private static final int POS_Y = 0;
+  private static final int POS_X = 1;
+
   private int x;
   private int y;
   private int scaled_x;
@@ -24,15 +32,22 @@ public class MfCmdSetViewPortOrg extends MfCmd
   }
 
   /**
-   * Implemented!!
+   * Replays the command on the given WmfFile.
+   *
+   * @param file the meta file.
    */
-  public void replay (org.jfree.pixie.wmf.WmfFile file)
+  public void replay (WmfFile file)
   {
-    org.jfree.pixie.wmf.MfDcState state = file.getCurrentState ();
+    MfDcState state = file.getCurrentState ();
     Point p = getScaledTarget ();
     state.setViewportOrg (p.x, p.y);
   }
 
+  /**
+   * Creates a empty unintialized copy of this command implementation.
+   *
+   * @return a new instance of the command.
+   */
   public MfCmd getInstance ()
   {
     return new MfCmdSetViewPortOrg ();
@@ -46,11 +61,34 @@ public class MfCmdSetViewPortOrg extends MfCmd
     return b.toString ();
   }
 
-  public void setRecord (org.jfree.pixie.wmf.MfRecord record)
+  /**
+   * Reads the command data from the given record and adjusts the internal
+   * parameters according to the data parsed.
+   * <p>
+   * After the raw record was read from the datasource, the record is parsed
+   * by the concrete implementation.
+   *
+   * @param record the raw data that makes up the record.
+   */
+  public void setRecord (MfRecord record)
   {
-    int y = record.getParam (0);
-    int x = record.getParam (1);
+    int y = record.getParam (POS_Y);
+    int x = record.getParam (POS_X);
     setTarget (x, y);
+  }
+
+  /**
+   * Creates a new record based on the data stored in the MfCommand.
+   *
+   * @return the created record.
+   */
+  public MfRecord getRecord() throws RecordCreationException
+  {
+    MfRecord record = new MfRecord(RECORD_SIZE);
+    Point p = getTarget();
+    record.setParam(POS_X, p.x);
+    record.setParam(POS_Y, p.y);
+    return record;
   }
 
   public Point getTarget ()
@@ -64,7 +102,6 @@ public class MfCmdSetViewPortOrg extends MfCmd
     this.y = y;
     scaleXChanged ();
     scaleYChanged ();
-
   }
 
   public Point getScaledTarget ()
@@ -72,16 +109,30 @@ public class MfCmdSetViewPortOrg extends MfCmd
     return new Point (scaled_x, scaled_y);
   }
 
+  /**
+   * Reads the function identifier. Every record type is identified by a
+   * function number corresponding to one of the Windows GDI functions used.
+   *
+   * @return the function identifier.
+   */
   public int getFunction ()
   {
-    return org.jfree.pixie.wmf.MfType.SET_VIEWPORT_ORG;
+    return MfType.SET_VIEWPORT_ORG;
   }
 
+  /**
+   * A callback function to inform the object, that the x scale has changed and the
+   * internal coordinate values have to be adjusted.
+   */
   protected void scaleXChanged ()
   {
     scaled_x = getScaledX (x);
   }
 
+  /**
+   * A callback function to inform the object, that the y scale has changed and the
+   * internal coordinate values have to be adjusted.
+   */
   protected void scaleYChanged ()
   {
     scaled_y = getScaledY (y);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmdBitBlt.java,v 1.2 2003/03/14 20:06:04 taqua Exp $
+ * $Id: MfCmdDibBitBlt.java,v 1.1 2003/03/15 17:17:53 taqua Exp $
  *
  * Changes
  * -------
@@ -65,6 +65,21 @@ BOOL BitBlt(
  */
 public class MfCmdDibBitBlt extends MfCmd implements ROPConstants
 {
+  private static final int RECORD_SIZE_SIMPLE = 9;
+  private static final int RECORD_BASE_SIZE_EXT = 8;
+  private static final int POS_OPERATION = 0;
+  private static final int POS_SRC_Y = 2;
+  private static final int POS_SRC_X = 3;
+  private static final int SIMPLE_POS_HEIGHT = 5;
+  private static final int SIMPLE_POS_WIDTH = 6;
+  private static final int SIMPLE_POS_DST_Y = 7;
+  private static final int SIMPLE_POS_DST_X = 8;
+
+  private static final int EXT_POS_HEIGHT = 4;
+  private static final int EXT_POS_WIDTH = 5;
+  private static final int EXT_POS_DST_Y = 6;
+  private static final int EXT_POS_DST_X = 7;
+
   private BufferedImage image;
 
   private int scaled_destX;
@@ -219,21 +234,6 @@ public class MfCmdDibBitBlt extends MfCmd implements ROPConstants
   {
     return operation;
   }
-
-  private static final int RECORD_SIZE_SIMPLE = 9;
-  private static final int RECORD_BASE_SIZE_EXT = 8;
-  private static final int POS_OPERATION = 0;
-  private static final int POS_SRC_Y = 2;
-  private static final int POS_SRC_X = 3;
-  private static final int SIMPLE_POS_HEIGHT = 5;
-  private static final int SIMPLE_POS_WIDTH = 6;
-  private static final int SIMPLE_POS_DST_Y = 7;
-  private static final int SIMPLE_POS_DST_X = 8;
-
-  private static final int EXT_POS_HEIGHT = 4;
-  private static final int EXT_POS_WIDTH = 5;
-  private static final int EXT_POS_DST_Y = 6;
-  private static final int EXT_POS_DST_X = 7;
 
   /**
    * Creates a new record based on the data stored in the MfCommand.

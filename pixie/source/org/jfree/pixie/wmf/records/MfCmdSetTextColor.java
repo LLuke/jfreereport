@@ -9,34 +9,78 @@ import org.jfree.pixie.wmf.records.MfCmd;
 
 import java.awt.Color;
 
+/**
+ * The SetTextColor function sets the text color
+ * for the specified device context to the specified color.
+ */
 public class MfCmdSetTextColor extends MfCmd
 {
+  private static final int RECORD_SIZE = 2;
+  private static final int POS_COLOR = 0;
+
   private Color color;
 
   public MfCmdSetTextColor ()
   {
   }
 
-  public void replay (org.jfree.pixie.wmf.WmfFile file)
+  /**
+   * Replays the command on the given WmfFile.
+   *
+   * @param file the meta file.
+   */
+  public void replay (WmfFile file)
   {
-    org.jfree.pixie.wmf.MfDcState state = file.getCurrentState ();
+    MfDcState state = file.getCurrentState ();
     state.setTextColor (color);
   }
 
+  /**
+   * Creates a empty unintialized copy of this command implementation.
+   *
+   * @return a new instance of the command.
+   */
   public MfCmd getInstance ()
   {
     return new MfCmdSetTextColor ();
   }
 
-  public void setRecord (org.jfree.pixie.wmf.MfRecord record)
+  /**
+   * Reads the command data from the given record and adjusts the internal
+   * parameters according to the data parsed.
+   * <p>
+   * After the raw record was read from the datasource, the record is parsed
+   * by the concrete implementation.
+   *
+   * @param record the raw data that makes up the record.
+   */
+  public void setRecord (MfRecord record)
   {
-    int colref = record.getLongParam (0);
-    setColor (new org.jfree.pixie.wmf.GDIColor (colref));
+    int colref = record.getLongParam (POS_COLOR);
+    setColor (new GDIColor (colref));
   }
 
+  /**
+   * Creates a new record based on the data stored in the MfCommand.
+   *
+   * @return the created record.
+   */
+  public MfRecord getRecord() throws RecordCreationException
+  {
+    MfRecord record = new MfRecord(RECORD_SIZE);
+    record.setLongParam(POS_COLOR, GDIColor.translateColor(getColor()));
+    return record;
+  }
+
+  /**
+   * Reads the function identifier. Every record type is identified by a
+   * function number corresponding to one of the Windows GDI functions used.
+   *
+   * @return the function identifier.
+   */
   public int getFunction ()
   {
-    return org.jfree.pixie.wmf.MfType.SET_TEXT_COLOR;
+    return MfType.SET_TEXT_COLOR;
   }
 
   public Color getColor ()
@@ -57,12 +101,19 @@ public class MfCmdSetTextColor extends MfCmd
     return b.toString ();
   }
 
-  protected void scaleXChanged ()
+  /**
+   * A callback function to inform the object, that the x scale has changed and the
+   * internal coordinate values have to be adjusted.
+   */
+  protected void scaleXChanged()
   {
   }
 
-  protected void scaleYChanged ()
+  /**
+   * A callback function to inform the object, that the y scale has changed and the
+   * internal coordinate values have to be adjusted.
+   */
+  protected void scaleYChanged()
   {
   }
-
 }
