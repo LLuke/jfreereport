@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.2 2003/07/08 17:46:52 hevermann Exp $
+ * $Id: ExcelProducer.java,v 1.3 2003/07/14 17:37:08 taqua Exp $
  *
  * Changes
  * -------
@@ -52,8 +52,8 @@ import org.jfree.report.modules.output.table.base.TableCellBackground;
 import org.jfree.report.modules.output.table.base.TableCellDataFactory;
 import org.jfree.report.modules.output.table.base.TableGridLayout;
 import org.jfree.report.modules.output.table.base.TableGridPosition;
-import org.jfree.report.modules.output.table.base.TableProducer;
 import org.jfree.report.modules.output.table.base.TableLayoutInfo;
+import org.jfree.report.modules.output.table.base.TableProducer;
 import org.jfree.report.util.Log;
 
 /**

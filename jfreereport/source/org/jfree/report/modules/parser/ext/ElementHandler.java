@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementHandler.java,v 1.4 2003/07/20 19:31:16 taqua Exp $
+ * $Id: ElementHandler.java,v 1.5 2003/07/23 13:56:43 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,9 @@ package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.Element;
 import org.jfree.report.filter.DataSource;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.ReportParser;
-import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
 import org.jfree.report.style.ElementStyleSheet;

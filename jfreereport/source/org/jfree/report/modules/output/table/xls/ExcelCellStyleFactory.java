@@ -29,7 +29,7 @@
  *                   JRXlsExporter.java of JasperReports;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellStyleFactory.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: ExcelCellStyleFactory.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
  *
  * Changes
  * -------
@@ -38,15 +38,9 @@
 package org.jfree.report.modules.output.table.xls;
 
 import java.awt.Color;
-import java.util.HashMap;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFDataFormat;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
 import org.jfree.report.Element;
 import org.jfree.report.ElementAlignment;
-import org.jfree.report.modules.output.table.base.TableCellBackground;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
 

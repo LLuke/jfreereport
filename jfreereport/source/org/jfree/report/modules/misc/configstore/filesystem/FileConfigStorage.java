@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: FileConfigStorage.java,v 1.1 2003/07/14 17:37:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,17 +38,17 @@
 
 package org.jfree.report.modules.misc.configstore.filesystem;
 
-import java.util.Properties;
-import java.io.File;
-import java.io.OutputStream;
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
+import java.io.OutputStream;
+import java.util.Properties;
 
-import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
+import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
 import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
 
 public class FileConfigStorage implements ConfigStorage
@@ -107,7 +107,7 @@ public class FileConfigStorage implements ConfigStorage
     }
     catch (Exception e)
     {
-      throw new ConfigStoreException("Failed to write config" + configPath, e);
+      throw new ConfigStoreException("Failed to read config" + configPath, e);
     }
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.4 2003/07/14 20:16:05 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.5 2003/07/15 16:28:21 taqua Exp $
  *
  * Changes
  * -------
@@ -78,17 +78,17 @@ import org.jfree.report.ImageReference;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ShapeElement;
 import org.jfree.report.layout.SizeCalculator;
+import org.jfree.report.modules.output.pageable.base.LogicalPage;
+import org.jfree.report.modules.output.pageable.base.OutputTarget;
+import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.output.AbstractOutputTarget;
 import org.jfree.report.modules.output.pageable.base.output.DummyOutputTarget;
 import org.jfree.report.modules.output.pageable.base.physicals.LogicalPageImpl;
 import org.jfree.report.modules.output.pageable.base.physicals.PhysicalPage;
-import org.jfree.report.modules.output.pageable.base.LogicalPage;
-import org.jfree.report.modules.output.pageable.base.OutputTargetException;
-import org.jfree.report.modules.output.pageable.base.OutputTarget;
+import org.jfree.report.modules.output.support.itext.BaseFontCreateException;
 import org.jfree.report.modules.output.support.itext.BaseFontFactory;
 import org.jfree.report.modules.output.support.itext.BaseFontRecord;
 import org.jfree.report.modules.output.support.itext.BaseFontSupport;
-import org.jfree.report.modules.output.support.itext.BaseFontCreateException;
 import org.jfree.report.style.ElementDefaultStyleSheet;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.Log;

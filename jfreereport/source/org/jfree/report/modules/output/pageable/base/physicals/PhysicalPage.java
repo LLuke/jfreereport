@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalPage.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: PhysicalPage.java,v 1.2 2003/07/14 20:16:05 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,9 @@ import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
 import java.util.ArrayList;
 
-import org.jfree.report.modules.output.pageable.base.operations.PhysicalOperation;
-import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.OutputTarget;
+import org.jfree.report.modules.output.pageable.base.OutputTargetException;
+import org.jfree.report.modules.output.pageable.base.operations.PhysicalOperation;
 
 /**
  * Represents a physical page.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: RTFLayoutInfo.java,v 1.1 2003/07/14 17:40:06 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,8 +38,8 @@
 
 package org.jfree.report.modules.output.table.rtf;
 
-import org.jfree.report.modules.output.table.base.TableLayoutInfo;
 import org.jfree.report.modules.output.support.itext.BaseFontSupport;
+import org.jfree.report.modules.output.table.base.TableLayoutInfo;
 
 public class RTFLayoutInfo extends TableLayoutInfo
 {

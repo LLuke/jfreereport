@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: IncludeParserFrontend.java,v 1.1 2003/07/14 19:38:42 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,12 +38,12 @@
 
 package org.jfree.report.modules.parser.base;
 
-import java.net.URL;
 import java.io.IOException;
+import java.net.URL;
 
-import org.jfree.xml.ParserFrontend;
-import org.jfree.xml.Parser;
 import org.jfree.xml.ElementDefinitionException;
+import org.jfree.xml.Parser;
+import org.jfree.xml.ParserFrontend;
 
 public class IncludeParserFrontend extends ParserFrontend
 {

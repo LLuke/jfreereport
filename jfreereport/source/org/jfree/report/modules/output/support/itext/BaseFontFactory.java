@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.2 2003/07/10 20:02:09 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.3 2003/07/14 17:37:07 taqua Exp $
  *
  * Changes
  * -------
@@ -49,12 +49,12 @@ import java.util.StringTokenizer;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.DefaultFontMapper;
-import org.jfree.report.util.Log;
-import org.jfree.report.util.ReportConfiguration;
-import org.jfree.report.util.StringUtil;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
 import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
+import org.jfree.report.util.Log;
+import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.StringUtil;
 
 /**
  * The BaseFontFactory is used to find and register all TrueType fonts for embedding them
@@ -172,7 +172,7 @@ public class BaseFontFactory extends DefaultFontMapper
    */
   public synchronized void registerDefaultFontPath()
   {
-    ConfigStorage store = ConfigFactory.getInstance().getStorage();
+    ConfigStorage store = ConfigFactory.getInstance().getSystemStorage();
     if (store.existsProperties(FONTS_STORAGE_PATH))
     {
       try

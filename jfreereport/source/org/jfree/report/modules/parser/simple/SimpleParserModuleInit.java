@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimpleParserModuleInit.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
+ * $Id: SimpleParserModuleInit.java,v 1.3 2003/07/18 17:56:39 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,10 +40,10 @@ package org.jfree.report.modules.parser.simple;
 
 import java.net.URL;
 
-import org.jfree.report.modules.parser.base.ParserEntityResolver;
-import org.jfree.report.modules.parser.base.InitialReportHandler;
 import org.jfree.report.modules.ModuleInitializeException;
 import org.jfree.report.modules.ModuleInitializer;
+import org.jfree.report.modules.parser.base.InitialReportHandler;
+import org.jfree.report.modules.parser.base.ParserEntityResolver;
 
 public class SimpleParserModuleInit implements ModuleInitializer
 {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.3 2003/07/14 19:37:53 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.4 2003/07/14 20:16:04 taqua Exp $
  *
  * Changes
  * -------
@@ -82,7 +82,6 @@ import javax.swing.UIManager;
 import org.jfree.layout.CenterLayout;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.layout.LayoutManagerCache;
 import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.ActionDowngrade;
@@ -721,7 +720,7 @@ public class PreviewProxyBase extends JComponent
   {
     setLargeIconsEnabled(true);
 
-    final ExportPluginFactory factory = new ExportPluginFactory();
+    final ExportPluginFactory factory = ExportPluginFactory.getInstance();
     exportPlugIns = factory.createExportPlugIns(proxy, report.getReportConfiguration());
     pluginActions = new HashMap(exportPlugIns.size());
     final Iterator it = exportPlugIns.iterator();

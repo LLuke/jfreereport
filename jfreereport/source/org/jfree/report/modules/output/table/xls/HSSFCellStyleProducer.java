@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: HSSFCellStyleProducer.java,v 1.1 2003/07/14 17:40:06 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,12 +40,12 @@ package org.jfree.report.modules.output.table.xls;
 
 import java.util.HashMap;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
-import org.jfree.report.modules.output.table.base.TableCellBackground;
 import org.jfree.report.ElementAlignment;
+import org.jfree.report.modules.output.table.base.TableCellBackground;
 
 public class HSSFCellStyleProducer
 {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionHandler.java,v 1.4 2003/07/21 20:46:56 taqua Exp $
+ * $Id: ReportDescriptionHandler.java,v 1.5 2003/07/23 13:56:43 taqua Exp $
  *
  * Changes
  * -------
@@ -39,9 +39,9 @@
 package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.Band;
-import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.5 2003/06/29 16:59:27 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,7 +47,7 @@ import javax.swing.KeyStroke;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.PreviewProxy;
-import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
+import org.jfree.report.modules.gui.xls.resources.XLSExportResources;
 
 /**
  * Encapsulates the ExcelExportDialog into a separate plugin.
@@ -64,7 +64,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
-      JFreeReportResources.class.getName();
+      XLSExportResources.class.getName();
 
   /**
    * DefaultConstructor.

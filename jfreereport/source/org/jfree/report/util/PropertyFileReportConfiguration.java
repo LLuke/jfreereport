@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyFileReportConfiguration.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: PropertyFileReportConfiguration.java,v 1.2 2003/07/10 20:02:10 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@ package org.jfree.report.util;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * A report configuration that reads its values from the jfreereport.properties file.
@@ -85,7 +86,9 @@ public class PropertyFileReportConfiguration extends ReportConfiguration
     try
     {
       final BufferedInputStream bin = new BufferedInputStream(in);
-      this.getConfiguration().load(bin);
+      Properties p = new Properties();
+      p.load(bin);
+      this.getConfiguration().putAll(p);
       bin.close();
     }
     catch (IOException ioe)

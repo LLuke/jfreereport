@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.2 2003/07/10 20:02:09 taqua Exp $
+ * $Id: ReportGenerator.java,v 1.3 2003/07/20 19:31:16 taqua Exp $
  *
  * Changes
  * -------
@@ -44,14 +44,14 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.Log;
+import org.jfree.report.util.ReportConfiguration;
 import org.jfree.xml.ElementDefinitionException;
-import org.jfree.xml.ParserFrontend;
 import org.jfree.xml.Parser;
+import org.jfree.xml.ParserFrontend;
 import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 /**
  * The reportgenerator initializes the parser and provides an interface

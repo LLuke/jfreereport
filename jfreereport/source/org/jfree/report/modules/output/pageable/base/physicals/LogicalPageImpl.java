@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.2 2003/07/14 20:16:05 taqua Exp $
  *
  * Changes
  * -------
@@ -50,16 +50,16 @@ import org.jfree.report.Element;
 import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.content.ContentFactory;
+import org.jfree.report.modules.output.pageable.base.LogicalPage;
+import org.jfree.report.modules.output.pageable.base.OutputTarget;
+import org.jfree.report.modules.output.pageable.base.OutputTargetException;
+import org.jfree.report.modules.output.pageable.base.Spool;
 import org.jfree.report.modules.output.pageable.base.operations.DrawableOperationModule;
 import org.jfree.report.modules.output.pageable.base.operations.ImageOperationModule;
 import org.jfree.report.modules.output.pageable.base.operations.OperationFactory;
 import org.jfree.report.modules.output.pageable.base.operations.PhysicalOperation;
 import org.jfree.report.modules.output.pageable.base.operations.ShapeOperationModule;
 import org.jfree.report.modules.output.pageable.base.operations.TextOperationModule;
-import org.jfree.report.modules.output.pageable.base.LogicalPage;
-import org.jfree.report.modules.output.pageable.base.OutputTargetException;
-import org.jfree.report.modules.output.pageable.base.Spool;
-import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.ElementLayoutInformation;
 import org.jfree.report.util.Log;

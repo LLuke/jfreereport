@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: ReportPane.java,v 1.2 2003/07/14 20:16:05 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -64,11 +64,11 @@ import javax.swing.UIManager;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.function.FunctionInitializeException;
-import org.jfree.report.modules.output.pageable.base.output.DummyOutputTarget;
-import org.jfree.report.modules.output.pageable.base.ReportStateList;
-import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
-import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.OutputTarget;
+import org.jfree.report.modules.output.pageable.base.OutputTargetException;
+import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
+import org.jfree.report.modules.output.pageable.base.ReportStateList;
+import org.jfree.report.modules.output.pageable.base.output.DummyOutputTarget;
 import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.util.Log;

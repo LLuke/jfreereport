@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.2 2003/07/20 19:31:15 taqua Exp $
  *
  * Changes
  * --------
@@ -79,11 +79,11 @@ import org.jfree.report.modules.gui.base.components.ActionRadioButton;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.plaintext.resources.PlainTextExportResources;
+import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.plaintext.EpsonPrinterCommandSet;
 import org.jfree.report.modules.output.pageable.plaintext.IBMPrinterCommandSet;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterCommandSet;
-import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.util.NullOutputStream;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.2 2003/07/14 20:16:05 taqua Exp $
+ * $Id: PageLayouter.java,v 1.3 2003/07/20 19:31:15 taqua Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,10 @@ package org.jfree.report.modules.output.pageable.base.pagelayout;
 
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.modules.output.pageable.base.LogicalPage;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
+import org.jfree.report.modules.output.pageable.base.LogicalPage;
 import org.jfree.report.states.ReportState;
 
 /**

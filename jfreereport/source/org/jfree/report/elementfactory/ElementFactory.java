@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.4 2003/06/29 16:59:24 taqua Exp $
+ * $Id: ElementFactory.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,7 +42,6 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 
 import org.jfree.report.Element;
-import org.jfree.report.style.StyleKey;
 
 public abstract class ElementFactory
 {

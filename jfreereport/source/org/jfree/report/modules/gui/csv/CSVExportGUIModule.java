@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportGUIModule.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: CSVExportGUIModule.java,v 1.2 2003/07/10 20:02:08 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -58,9 +58,7 @@ public class CSVExportGUIModule extends AbstractModule
   {
     String order = ReportConfiguration.getGlobalConfig().getConfigProperty
         (ORDER_KEY, "0");
-    String enable = ReportConfiguration.getGlobalConfig().getConfigProperty
-        (ENABLE_KEY, "false");
 
-    ExportPluginFactory.getInstance().registerPlugin(CSVExportPlugin.class, order, enable);
+    ExportPluginFactory.getInstance().registerPlugin(CSVExportPlugin.class, order, ENABLE_KEY);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectReferenceGenerator.java,v 1.11 2003/06/29 16:59:25 taqua Exp $
+ * $Id: ObjectReferenceGenerator.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -46,8 +46,8 @@ import org.jfree.report.modules.output.pageable.pdf.PDFReportUtil;
 import org.jfree.report.modules.output.table.html.HTMLReportUtil;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceFactory;
-import org.jfree.report.modules.parser.ext.factory.templates.TemplateClassFactory;
 import org.jfree.report.modules.parser.ext.factory.objects.DefaultClassFactory;
+import org.jfree.report.modules.parser.ext.factory.templates.TemplateClassFactory;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 
 /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.2 2003/07/10 20:02:08 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.3 2003/07/14 20:16:00 taqua Exp $
  *
  * Changes
  * -------
@@ -50,10 +50,10 @@ import java.net.URL;
 import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterCommandSet;
-import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.table.csv.CSVTableProcessor;
 import org.jfree.report.modules.output.table.html.DirectoryHtmlFilesystem;
 import org.jfree.report.modules.output.table.html.HtmlProcessor;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SystemOutLogModule.java,v 1.1 2003/07/11 18:35:42 taqua Exp $
+ * $Id: SystemOutLogModule.java,v 1.2 2003/07/11 19:12:26 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,8 +40,8 @@ package org.jfree.report.modules.misc.logging.systemout;
 
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.Log;
+import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.SystemOutLogTarget;
 
 public class SystemOutLogModule extends AbstractModule

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
+ * $Id: PropertyHandler.java,v 1.3 2003/07/21 20:46:56 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,9 @@ package org.jfree.report.modules.parser.ext;
 
 import java.util.Properties;
 
-import org.jfree.report.modules.parser.base.ReportParser;
-import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.xml.ParseException;
 import org.xml.sax.Attributes;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: FileConfigStoreModuleInitializer.java,v 1.1 2003/07/14 17:37:07 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,15 +40,18 @@ package org.jfree.report.modules.misc.configstore.filesystem;
 
 import java.io.File;
 
-import org.jfree.report.modules.ModuleInitializer;
 import org.jfree.report.modules.ModuleInitializeException;
+import org.jfree.report.modules.ModuleInitializer;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.util.ReportConfiguration;
 
 public class FileConfigStoreModuleInitializer implements ModuleInitializer
 {
-  public static final String BASEDIR_CONFIG_KEY =
-      "org.jfree.report.modules.misc.configstore.filesystem.TargetDir";
+  public static final String USER_BASEDIR_CONFIG_KEY =
+      "org.jfree.report.modules.misc.configstore.filesystem.UserTargetDir";
+
+  public static final String SYSTEM_BASEDIR_CONFIG_KEY =
+      "org.jfree.report.modules.misc.configstore.filesystem.SystemTargetDir";
 
   public FileConfigStoreModuleInitializer()
   {
@@ -56,9 +59,21 @@ public class FileConfigStoreModuleInitializer implements ModuleInitializer
 
   public void performInit() throws ModuleInitializeException
   {
-    String baseDirectory =
-        ReportConfiguration.getGlobalConfig().getConfigProperty(BASEDIR_CONFIG_KEY, "~/.jfreereport");
+    String userBaseDirectory =
+        ReportConfiguration.getGlobalConfig().getConfigProperty
+        (USER_BASEDIR_CONFIG_KEY, "~/.jfreereport/user");
 
+    String systemBaseDirectory =
+        ReportConfiguration.getGlobalConfig().getConfigProperty
+        (SYSTEM_BASEDIR_CONFIG_KEY, "~/.jfreereport/system");
+
+    ConfigFactory factory = ConfigFactory.getInstance();
+    factory.defineUserStorage(new FileConfigStorage(getStoragePath(userBaseDirectory)));
+    factory.defineUserStorage(new FileConfigStorage(getStoragePath(systemBaseDirectory)));
+  }
+
+  private File getStoragePath (String baseDirectory) throws ModuleInitializeException
+  {
     File baseDirectoryFile = null;
 
     if (baseDirectory.startsWith("~/") == false)
@@ -82,7 +97,8 @@ public class FileConfigStoreModuleInitializer implements ModuleInitializer
       }
       catch (Exception e)
       {
-        throw new ModuleInitializeException("Failed to create the file config storage.", e);
+        throw new ModuleInitializeException
+            ("Failed to create the file config storage.", e);
       }
     }
 
@@ -90,17 +106,18 @@ public class FileConfigStoreModuleInitializer implements ModuleInitializer
     {
       if (baseDirectoryFile.mkdirs() == false)
       {
-        throw new ModuleInitializeException("Unable to create the specified directory.");
+        throw new ModuleInitializeException
+            ("Unable to create the specified directory.");
       }
     }
     else
     {
       if ((baseDirectoryFile.canRead() && baseDirectoryFile.canWrite()) == false)
       {
-        throw new ModuleInitializeException("Unable to access the specified directory.");
+        throw new ModuleInitializeException
+            ("Unable to access the specified directory.");
       }
     }
-
-    ConfigFactory.getInstance().defineStorage(new FileConfigStorage(baseDirectoryFile));
+    return baseDirectoryFile;
   }
 }

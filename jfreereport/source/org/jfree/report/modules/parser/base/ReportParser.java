@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.4 2003/07/20 19:31:16 taqua Exp $
+ * $Id: ReportParser.java,v 1.5 2003/07/21 20:46:56 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,8 @@ package org.jfree.report.modules.parser.base;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportBuilderHints;
 import org.jfree.xml.Parser;
-import org.xml.sax.SAXException;
 import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 /**
  * The report parser initializes the parsing engine and coordinates the parsing

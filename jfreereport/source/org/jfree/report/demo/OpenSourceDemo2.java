@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo2.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: OpenSourceDemo2.java,v 1.2 2003/07/14 20:16:00 taqua Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,6 @@ import org.jfree.report.modules.gui.base.PreviewDialog;
 import org.jfree.report.modules.gui.base.components.ActionMenuItem;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.FloatDimension;
 import org.jfree.ui.RefineryUtilities;
 

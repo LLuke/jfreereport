@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.2 2003/07/20 19:31:15 taqua Exp $
  *
  * Changes
  * -------
@@ -59,10 +59,10 @@ import org.jfree.report.content.DrawableContentFactoryModule;
 import org.jfree.report.content.ImageContentFactoryModule;
 import org.jfree.report.content.ShapeContentFactoryModule;
 import org.jfree.report.content.TextContentFactoryModule;
-import org.jfree.report.modules.output.pageable.base.physicals.LogicalPageImpl;
-import org.jfree.report.modules.output.pageable.base.LogicalPage;
 import org.jfree.report.modules.output.pageable.base.AlignedLogicalPageWrapper;
+import org.jfree.report.modules.output.pageable.base.LogicalPage;
 import org.jfree.report.modules.output.pageable.base.OutputTarget;
+import org.jfree.report.modules.output.pageable.base.physicals.LogicalPageImpl;
 
 /**
  * The abstract OutputTarget implements base code for all OutputTargets. It contains

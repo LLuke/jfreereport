@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyReferenceTableModel.java,v 1.6 2003/06/29 16:59:25 taqua Exp $
+ * $Id: StyleKeyReferenceTableModel.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -43,9 +43,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import javax.swing.table.AbstractTableModel;
 
-import org.jfree.report.style.StyleKey;
 import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactory;
 import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactoryCollector;
+import org.jfree.report.style.StyleKey;
 
 /**
  * A table model for the style key reference generator.

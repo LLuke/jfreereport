@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportResources_fr.java,v 1.2 2003/07/11 09:20:54 mimil Exp $
+ * $Id: CSVExportResources_fr.java,v 1.3 2003/07/14 20:16:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,8 +40,8 @@ package org.jfree.report.modules.gui.csv.resources;
 
 import java.awt.event.KeyEvent;
 
-import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
+import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 public class CSVExportResources_fr extends JFreeReportResources
 {

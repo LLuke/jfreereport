@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
+ * $Id: BandHandler.java,v 1.3 2003/07/23 13:56:42 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,9 @@ package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.ReportParser;
-import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.modules.parser.ext.factory.elements.ElementFactoryCollector;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.xml.ParseException;

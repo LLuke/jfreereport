@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.2 2003/07/10 20:02:09 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.3 2003/07/14 20:16:05 taqua Exp $
  *
  * Changes
  * --------
@@ -84,8 +84,8 @@ import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.pdf.resources.PDFExportResources;
-import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
+import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
 import org.jfree.report.util.FilesystemFilter;
 import org.jfree.report.util.ReportConfiguration;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceReferenceTableModel.java,v 1.4 2003/06/29 16:59:25 taqua Exp $
+ * $Id: DataSourceReferenceTableModel.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -43,9 +43,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import javax.swing.table.AbstractTableModel;
 
-import org.jfree.xml.factory.objects.ObjectDescription;
-import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceFactory;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
+import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceFactory;
+import org.jfree.xml.factory.objects.ObjectDescription;
 
 /**
  * A table model for the style key reference generator.

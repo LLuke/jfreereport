@@ -28,23 +28,22 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExtReportParserHandler.java,v 1.1 2003/07/18 18:31:25 taqua Exp $
+ * $Id: AbstractExtReportParserHandler.java,v 1.2 2003/07/23 13:56:42 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 15.07.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.parser.ext;
 
+import org.jfree.report.JFreeReport;
+import org.jfree.report.ReportBuilderHints;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
-import org.jfree.report.modules.parser.base.ReportParser;
-import org.jfree.report.modules.parser.base.CommentHintPath;
-import org.jfree.report.ReportBuilderHints;
-import org.jfree.report.JFreeReport;
-import org.jfree.report.util.Log;
 
 public abstract class AbstractExtReportParserHandler
     implements ElementDefinitionHandler

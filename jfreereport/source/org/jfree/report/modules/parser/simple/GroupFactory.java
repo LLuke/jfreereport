@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupFactory.java,v 1.2 2003/07/12 16:31:13 taqua Exp $
+ * $Id: GroupFactory.java,v 1.3 2003/07/18 17:56:39 taqua Exp $
  *
  * Changes
  * -------
@@ -42,14 +42,13 @@ package org.jfree.report.modules.parser.simple;
 import org.jfree.report.Group;
 import org.jfree.report.GroupFooter;
 import org.jfree.report.GroupHeader;
-import org.jfree.report.modules.parser.base.ReportParserUtil;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.ReportParserUtil;
 import org.jfree.report.style.BandStyleSheet;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.ui.FloatDimension;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.2 2003/07/14 19:37:53 taqua Exp $
  *
  * Changes
  * -------
@@ -49,19 +49,19 @@ import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JComboBox;
 
 import org.jfree.report.modules.gui.base.components.ActionButton;
-import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
+import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.converter.resources.ConverterResources;
-import org.jfree.report.modules.parser.ext.writer.ReportConverter;
+import org.jfree.report.modules.parser.extwriter.ReportConverter;
 import org.jfree.report.util.FilesystemFilter;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.StringUtil;

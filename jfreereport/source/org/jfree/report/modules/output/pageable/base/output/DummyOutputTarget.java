@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DummyOutputTarget.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: DummyOutputTarget.java,v 1.2 2003/07/14 20:16:05 taqua Exp $
  *
  * Changes
  * -------
@@ -46,9 +46,9 @@ import org.jfree.report.ImageReference;
 import org.jfree.report.content.ContentFactory;
 import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.layout.SizeCalculatorException;
-import org.jfree.report.modules.output.pageable.base.physicals.PhysicalPage;
 import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
+import org.jfree.report.modules.output.pageable.base.physicals.PhysicalPage;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.ReportConfiguration;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicObjectHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
+ * $Id: BasicObjectHandler.java,v 1.3 2003/07/23 13:56:42 taqua Exp $
  *
  * Changes
  * -------
@@ -38,8 +38,8 @@
 
 package org.jfree.report.modules.parser.ext;
 
-import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.factory.objects.ClassFactory;

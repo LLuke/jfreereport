@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.2 2003/07/10 20:02:10 taqua Exp $
+ * $Id: ElementFactory.java,v 1.3 2003/07/18 17:56:39 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,6 @@ import java.awt.geom.Rectangle2D;
 import org.jfree.report.Band;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.ShapeElement;
-import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.elementfactory.DateFieldElementFactory;
 import org.jfree.report.elementfactory.DrawableFieldElementFactory;
 import org.jfree.report.elementfactory.ImageFieldElementFactory;
@@ -66,11 +65,11 @@ import org.jfree.report.elementfactory.StaticImageURLElementFactory;
 import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.elementfactory.TextElementFactory;
 import org.jfree.report.elementfactory.TextFieldElementFactory;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.FloatDimension;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

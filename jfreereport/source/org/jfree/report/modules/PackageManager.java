@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageManager.java,v 1.3 2003/07/11 19:12:25 taqua Exp $
+ * $Id: PackageManager.java,v 1.4 2003/07/14 17:37:07 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,13 +40,13 @@ package org.jfree.report.modules;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Collections;
+import java.util.Iterator;
 
+import org.jfree.report.JFreeReport;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.PackageConfiguration;
 import org.jfree.report.util.ReportConfiguration;
-import org.jfree.report.JFreeReport;
 
 /**
  * This class will help to manage the extension classes of JFreeReport 0.8.4 and

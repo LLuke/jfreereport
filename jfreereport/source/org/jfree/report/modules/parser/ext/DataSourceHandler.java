@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
+ * $Id: DataSourceHandler.java,v 1.3 2003/07/23 13:56:43 taqua Exp $
  *
  * Changes
  * -------
@@ -39,10 +39,10 @@
 package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.filter.DataSource;
-import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
-import org.jfree.report.modules.parser.base.ReportParser;
-import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ObjectDescription;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.2 2003/07/14 20:16:05 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.3 2003/07/23 13:56:42 taqua Exp $
  *
  * Changes
  * -------
@@ -52,14 +52,14 @@ import org.jfree.report.Band;
 import org.jfree.report.Group;
 import org.jfree.report.JFreeReportConstants;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.modules.output.pageable.base.Spool;
-import org.jfree.report.modules.output.pageable.base.LogicalPage;
-import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.event.PrepareEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.layout.BandLayoutManagerUtil;
+import org.jfree.report.modules.output.pageable.base.LogicalPage;
+import org.jfree.report.modules.output.pageable.base.OutputTargetException;
+import org.jfree.report.modules.output.pageable.base.Spool;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.style.BandStyleSheet;
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.42 2003/07/03 15:59:29 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -63,16 +63,16 @@ import org.jfree.report.DrawableContainer;
 import org.jfree.report.ImageReference;
 import org.jfree.report.layout.DefaultSizeCalculator;
 import org.jfree.report.layout.SizeCalculator;
+import org.jfree.report.modules.output.pageable.base.LogicalPage;
+import org.jfree.report.modules.output.pageable.base.OutputTarget;
+import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.output.AbstractOutputTarget;
 import org.jfree.report.modules.output.pageable.base.output.DummyOutputTarget;
 import org.jfree.report.modules.output.pageable.base.physicals.PhysicalPage;
-import org.jfree.report.modules.output.pageable.base.OutputTarget;
-import org.jfree.report.modules.output.pageable.base.OutputTargetException;
-import org.jfree.report.modules.output.pageable.base.LogicalPage;
 import org.jfree.report.style.FontDefinition;
+import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.WaitingImageObserver;
-import org.jfree.report.util.Log;
 
 /**
  * A report output target that uses a Graphics2D object to draw the report.  This allows reports

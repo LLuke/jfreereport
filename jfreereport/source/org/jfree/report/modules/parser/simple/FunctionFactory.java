@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.2 2003/07/18 17:56:39 taqua Exp $
  *
  * Changes
  * -------
@@ -47,11 +47,10 @@ import java.util.Properties;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.Function;
 import org.jfree.report.function.FunctionInitializeException;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.report.util.Log;
-import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.Parser;
 import org.jfree.xml.ParserUtil;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

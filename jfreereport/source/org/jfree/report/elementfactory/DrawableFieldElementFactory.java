@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DrawableFieldElementFactory.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,12 +38,12 @@
 
 package org.jfree.report.elementfactory;
 
-import org.jfree.report.Element;
 import org.jfree.report.DrawableElement;
-import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.report.layout.StaticLayoutManager;
+import org.jfree.report.Element;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.DrawableFilter;
+import org.jfree.report.layout.StaticLayoutManager;
+import org.jfree.report.style.ElementStyleSheet;
 
 public class DrawableFieldElementFactory extends ElementFactory
 {

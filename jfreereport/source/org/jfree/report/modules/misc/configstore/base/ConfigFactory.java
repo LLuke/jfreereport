@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ConfigFactory.java,v 1.1 2003/07/14 17:37:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,30 +43,46 @@ public class ConfigFactory
   public static final String CONFIG_TARGET_KEY = "org.jfree.report.ConfigStore";
 
   private static ConfigFactory factory;
-  private ConfigStorage storage;
+  private ConfigStorage userStorage;
+  private ConfigStorage systemStorage;
 
   public static ConfigFactory getInstance()
   {
     if (factory == null)
     {
       factory = new ConfigFactory();
-      factory.defineStorage(new NullConfigStorage());
+      factory.defineSystemStorage(new NullConfigStorage());
+      factory.defineUserStorage(new NullConfigStorage());
     }
     return factory;
   }
 
-  public void defineStorage (ConfigStorage storage)
+  public void defineUserStorage (ConfigStorage storage)
   {
     if (storage == null)
     {
       throw new NullPointerException();
     }
-    this.storage = storage;
+    this.userStorage  = storage;
   }
 
-  public ConfigStorage getStorage ()
+  public void defineSystemStorage (ConfigStorage storage)
   {
-    return storage;
+    if (storage == null)
+    {
+      throw new NullPointerException();
+    }
+    this.systemStorage = storage;
+  }
+
+  public ConfigStorage getUserStorage ()
+  {
+    return systemStorage;
+  }
+
+  public ConfigStorage getSystemStorage ()
+  {
+    return userStorage;
   }
 
   public static boolean isValidPath (String path)

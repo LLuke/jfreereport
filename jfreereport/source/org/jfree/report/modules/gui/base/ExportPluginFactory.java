@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPluginFactory.java,v 1.2 2003/07/10 20:02:08 taqua Exp $
+ * $Id: ExportPluginFactory.java,v 1.3 2003/07/14 17:37:07 taqua Exp $
  *
  * Changes
  * --------
@@ -58,6 +58,18 @@ public class ExportPluginFactory
 
     public PluginDefinition(Class pluginClass, String preference, String enableKey)
     {
+      if (pluginClass == null)
+      {
+        throw new NullPointerException("PluginClass is null.");
+      }
+      if (enableKey == null)
+      {
+        throw new NullPointerException("PluginClass is null.");
+      }
+      if (preference == null)
+      {
+        throw new NullPointerException("PluginClass is null.");
+      }
       this.pluginClass = pluginClass;
       this.enableKey = enableKey;
       this.preference = preference;
@@ -213,7 +225,7 @@ public class ExportPluginFactory
       }
       else
       {
-        Log.warn(new Log.SimpleMessage("Plugin ", definition.getPluginClass(), " is not enabled."));
+        Log.debug(new Log.SimpleMessage("Plugin ", definition.getPluginClass(), " is not enabled."));
       }
     }
     return retval;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: BSHExpression.java,v 1.2 2003/07/10 20:02:09 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -47,10 +47,10 @@ import java.io.Reader;
 import java.io.Serializable;
 
 import bsh.Interpreter;
-import org.jfree.report.util.Log;
 import org.jfree.report.function.AbstractExpression;
-import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.function.Expression;
+import org.jfree.report.function.FunctionInitializeException;
+import org.jfree.report.util.Log;
 
 /**
  * An expression that uses the BeanShell scripting framework to perform a scripted calculation.

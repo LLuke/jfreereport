@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultStyleKeyFactory.java,v 1.8 2003/06/27 14:25:19 taqua Exp $
+ * $Id: DefaultStyleKeyFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -39,9 +39,9 @@
 package org.jfree.report.modules.parser.ext.factory.stylekey;
 
 import org.jfree.report.ShapeElement;
-import org.jfree.report.util.Log;
 import org.jfree.report.style.BandStyleSheet;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.util.Log;
 
 /**
  * A default implementation of the {@link StyleKeyFactory} interface.
