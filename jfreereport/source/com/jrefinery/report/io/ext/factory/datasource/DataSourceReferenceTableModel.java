@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyReferenceTableModel.java,v 1.4 2003/05/02 12:40:13 taqua Exp $
+ * $Id: DataSourceReferenceTableModel.java,v 1.1 2003/06/10 18:14:28 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -71,6 +71,7 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
      *
      * @param datasourceFactory the datasource factory
      * @param name the name of the datasource within the factory.
+     * @param implementingClass the class that implements the named datasource.
      */
     public DataSourceDescriptionRow(DataSourceFactory datasourceFactory,
                                   String name, Class implementingClass)
@@ -91,15 +92,20 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
     }
 
     /**
-     * Returns the key.
+     * Returns the datasource name.
      * 
-     * @return The key.
+     * @return The datasource name.
      */
     public String getName()
     {
       return datasourceName;
     }
 
+    /**
+     * Returns the class object for the datasource.
+     *
+     * @return the datasource class.
+     */
     public Class getImplementingClass()
     {
       return implementingClass;

@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetCollection.java,v 1.1 2003/06/12 19:52:14 taqua Exp $
+ * $Id: StyleSheetCollection.java,v 1.2 2003/06/15 19:05:48 taqua Exp $
  *
  * Changes
  * -------------------------
- * 12.06.2003 : Initial version
+ * 12-Jun-2003 : Initial version
  *
  */
 

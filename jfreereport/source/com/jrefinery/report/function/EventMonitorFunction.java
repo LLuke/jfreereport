@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventMonitorFunction.java,v 1.6 2003/06/01 17:39:26 taqua Exp $
+ * $Id: EventMonitorFunction.java,v 1.7 2003/06/13 16:21:23 taqua Exp $
  *
  * Changes
  * -------
@@ -63,6 +63,8 @@ public class EventMonitorFunction extends AbstractFunction implements Serializab
   
   /**
    * Creates a new function.
+   *
+   * @param name the name of the function
    */
   public EventMonitorFunction(String name)
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PostReportInitializedState.java,v 1.1 2003/06/13 16:23:32 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,6 +41,12 @@ package com.jrefinery.report.states;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.event.ReportEvent;
 
+/**
+ * Prints the report header. This state is the second state in the report
+ * processing and was created after the report was initialized.
+ *
+ * @author Thomas Morgner 
+ */
 public class PostReportInitializedState extends ReportState
 {
   /**

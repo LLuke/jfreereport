@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: EmptyReportException.java,v 1.1 2003/06/12 23:19:41 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,10 +38,16 @@
 
 package com.jrefinery.report;
 
+/**
+ * The EmptyReportException is thrown, it the report processing generated
+ * no content.
+ *
+ * @author Thomas Morgner.
+ */
 public class EmptyReportException extends ReportProcessingException
 {
   /**
-   * Creates an exception.
+   * Creates an EmptyReportException.
    *
    * @param message  the exception message.
    * @param ex  the parent exception.
@@ -52,7 +58,7 @@ public class EmptyReportException extends ReportProcessingException
   }
 
   /**
-   * Creates an exception.
+   * Creates an EmptyReportException.
    *
    * @param message  the exception message.
    */

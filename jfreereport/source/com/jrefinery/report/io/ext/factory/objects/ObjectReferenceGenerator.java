@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectReferenceGenerator.java,v 1.6 2003/05/02 12:40:10 taqua Exp $
+ * $Id: ObjectReferenceGenerator.java,v 1.7 2003/06/12 23:17:13 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -60,6 +60,11 @@ public class ObjectReferenceGenerator
   private static final String REFERENCE_REPORT =
     "/com/jrefinery/report/io/ext/factory/objects/ObjectReferenceReport.xml";
 
+  /**
+   * Creates the default tablemodel for the object reference generator.
+   *
+   * @return the tablemodel for the object reference generator.
+   */
   public static TableModel createData ()
   {
     ClassFactoryCollector cc = new ClassFactoryCollector();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverter.java,v 1.15 2003/06/01 17:39:27 taqua Exp $
+ * $Id: ReportConverter.java,v 1.16 2003/06/12 19:49:38 taqua Exp $
  *
  * Changes
  * -------
@@ -81,6 +81,7 @@ public class ReportConverter
    * @param report  the report.
    * @param w  a character stream writer.
    * @param contentBase the content base for creating relative URLs.
+   * @param encoding the encoding of the generated file.
    * 
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there were problems while serializing
@@ -162,7 +163,8 @@ public class ReportConverter
    * 
    * @param inName  the input report file.
    * @param outFile  the output report file.
-   * 
+   * @param encoding the encoding of the generated file.
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
@@ -201,6 +203,7 @@ public class ReportConverter
    *
    * @param in  the input report file.
    * @param out the output report file.
+   * @param encoding the encoding of the generated file.
    *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
@@ -227,7 +230,8 @@ public class ReportConverter
    * @param in the input resource from where to read the report
    * @param contentBase the contentbase where the new report will be stored.
    * @param w the report writer
-   * 
+   * @param encoding the encoding of the generated file.
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */

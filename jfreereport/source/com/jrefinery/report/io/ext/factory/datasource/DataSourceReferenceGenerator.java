@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceReferenceGenerator.java,v 1.1 2003/06/10 18:14:27 taqua Exp $
+ * $Id: DataSourceReferenceGenerator.java,v 1.2 2003/06/12 23:17:13 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -57,6 +57,11 @@ public class DataSourceReferenceGenerator
   private static final String REFERENCE_REPORT =
     "/com/jrefinery/report/io/ext/factory/datasource/DataSourceReferenceReport.xml";
 
+  /**
+   * Returns the DataSourceReferenceTableModel.
+   *
+   * @return the tablemodel for the reference documentation.
+   */
   public static TableModel createData ()
   {
     DataSourceCollector cc = new DataSourceCollector();

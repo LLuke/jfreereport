@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PageEventListener.java,v 1.1 2003/06/13 18:59:08 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,6 +38,21 @@
 
 package com.jrefinery.report.event;
 
+/**
+ * The PageEventListener gets informed of PageEvents.
+ * <p>
+ * This is an extracted interface of the original ReportEventListener.
+ * As page events are only fired by some (page sensitive) report processors,
+ * there is no need to support page events in the ReportEventListener interface.
+ * <p>
+ * Functions that should be informed of page events should implement this
+ * interface.
+ * <p>
+ * Information: The pageCanceled method is called, if a empty page was created
+ * and was removed from the report afterwards.
+ *
+ * @author Thomas Morgner
+ */
 public interface PageEventListener
 {
 
@@ -57,6 +72,8 @@ public interface PageEventListener
 
   /**
    * Receives notification that a page was canceled by the ReportProcessor.
+   * This method is called, when a page was removed from the report after
+   * it was generated. 
    *
    * @param event The event.
    */

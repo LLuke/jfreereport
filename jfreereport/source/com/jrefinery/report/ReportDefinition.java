@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinition.java,v 1.3 2003/06/01 17:39:23 taqua Exp $
+ * $Id: ReportDefinition.java,v 1.4 2003/06/15 19:05:41 taqua Exp $
  *
  * Changes
  * -------
@@ -77,6 +77,7 @@ public class ReportDefinition implements Cloneable
   /** The report configuration. */
   private ReportConfiguration reportConfiguration;
 
+  /** The StyleSheet collection can be used to access stylesheets by their name. */
   private StyleSheetCollection styleSheetCollection;
   
   /**
@@ -244,6 +245,13 @@ public class ReportDefinition implements Cloneable
     return report;
   }
 
+  /**
+   * Returns the style sheet collection assigned with this report definition.
+   * The style sheet collection can be used to access inherited stylesheets by
+   * their name.
+   *
+   * @return the StyleSheetCollection of this report definition.
+   */
   public StyleSheetCollection getStyleSheetCollection()
   {
     return styleSheetCollection;

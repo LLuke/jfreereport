@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyReferenceGenerator.java,v 1.4 2003/05/02 12:40:13 taqua Exp $
+ * $Id: StyleKeyReferenceGenerator.java,v 1.5 2003/06/12 23:17:13 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -57,6 +57,11 @@ public class StyleKeyReferenceGenerator
   private static final String REFERENCE_REPORT =
     "/com/jrefinery/report/io/ext/factory/stylekey/StyleKeyReferenceReport.xml";
 
+  /**
+   * Creates the default tablemodel for the stylekey reference generator.
+   *
+   * @return the tablemodel for the stylekey reference generator.
+   */
   public static TableModel createData()
   {
     StyleKeyFactoryCollector cc = new StyleKeyFactoryCollector();

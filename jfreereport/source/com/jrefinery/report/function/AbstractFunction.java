@@ -49,7 +49,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.32 2003/05/23 20:12:14 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.33 2003/06/13 16:21:22 taqua Exp $
  *
  * Changes
  * -------
@@ -110,6 +110,8 @@ public abstract class AbstractFunction implements Function
 
   /**
    * Creates an named function.
+   *
+   * @param name the name of the function.
    */
   protected AbstractFunction(String name)
   {

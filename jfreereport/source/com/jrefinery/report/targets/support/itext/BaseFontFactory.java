@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.11 2003/06/13 16:21:40 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.13 2003/06/13 18:58:23 taqua Exp $
  *
  * Changes
  * -------
@@ -67,8 +67,15 @@ public class BaseFontFactory extends DefaultFontMapper
   /** Fonts stored by name. */
   private HashMap fontsByName;
 
+  /**
+   * The font path filter is used to collect font files and directories
+   * during the font path registration.
+   */
   private static class FontPathFilter implements FileFilter
   {
+    /**
+     * Default Constructor.
+     */
     public FontPathFilter()
     {
     }
@@ -109,6 +116,7 @@ public class BaseFontFactory extends DefaultFontMapper
 
   }
 
+  /** The singleton instance of the font path filter. */
   private static final FontPathFilter fontPathFilter = new FontPathFilter();
 
   /**
@@ -165,6 +173,11 @@ public class BaseFontFactory extends DefaultFontMapper
     registerFontPath(new File(jrepath, "lib" + fs + "fonts"), encoding);
   }
 
+  /**
+   * Registers the default windows font path.
+   *
+   * @param encoding the default font encoding.
+   */
   private void registerWindowsFontPath (String encoding)
   {
     Log.debug("Found windows in os name, assuming DOS/Win32 structures");
