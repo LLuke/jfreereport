@@ -115,7 +115,7 @@ public abstract class AbstractElementReadHandler extends AbstractXmlReadHandler
    * @return the parsed element position, never null.
    * @throws SAXException if parsing the element position failed.
    */
-  private Point2D getElementPosition(final Attributes atts) throws SAXException
+  protected final Point2D getElementPosition(final Attributes atts) throws SAXException
   {
     final float x = ParserUtil.parseRelativeFloat(atts.getValue("x"),
         "Element x not specified");

@@ -2,9 +2,13 @@ package org.jfree.report.modules.parser.simple.readhandlers;
 
 import java.awt.Color;
 import java.awt.Stroke;
+import java.awt.Shape;
 import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.Element;
+import org.jfree.report.ShapeElement;
+import org.jfree.report.content.ShapeTransform;
 import org.jfree.report.util.Log;
 import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.xml.ParserUtil;
@@ -43,9 +47,9 @@ public class LineReadHandler extends AbstractXmlReadHandler
     if (x1 == x2 && y1 == y2)
     {
       Log.warn ("creating a horizontal line with 'x1 == x2 && y1 == y2' is deprecated. " +
-              "Use relative coordinates instead."); 
-      element = StaticShapeElementFactory.createHorizontalLine
-          (name, c, stroke, y2);
+              "Use relative coordinates instead.");
+      element = (StaticShapeElementFactory.createHorizontalLine
+                  (name, c, stroke, y2));
     }
     else
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HSSFCellStyleProducer.java,v 1.5.4.2 2004/12/13 19:27:12 taqua Exp $
+ * $Id: HSSFCellStyleProducer.java,v 1.9 2005/01/25 00:16:36 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -171,9 +171,9 @@ public class HSSFCellStyleProducer
     final ElementAlignment vertical =
             (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT);
     final String dataStyle =
-            (String) element.getProperty(ExcelProcessor.DATA_FORMAT_STRING);
+            (String) element.getProperty(ElementStyleSheet.EXCEL_DATA_FORMAT_STRING);
     final boolean wrapText =
-            element.getProperty(ExcelProcessor.WRAP_TEXT, "true").equals("true");
+            element.getProperty(ElementStyleSheet.EXCEL_WRAP_TEXT, Boolean.TRUE).equals(Boolean.TRUE);
 
     final ExcelDataCellStyle style = new ExcelDataCellStyle
             (element.getFontDefinitionProperty(), textColor, horizontal,

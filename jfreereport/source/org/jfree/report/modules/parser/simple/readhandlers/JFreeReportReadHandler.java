@@ -5,6 +5,7 @@ import java.awt.print.Paper;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.SimplePageDefinition;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.util.ObjectUtilities;
@@ -34,7 +35,7 @@ import org.xml.sax.SAXException;
  */
 public class JFreeReportReadHandler extends AbstractXmlReadHandler
 {
-  public static final String REPORT_KEY = "report";
+  public static final String REPORT_KEY = ReportParser.HELPER_OBJ_REPORT_NAME;
 
   /**
    * Literal text for an XML report element.

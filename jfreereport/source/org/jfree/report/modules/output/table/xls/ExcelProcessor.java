@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelProcessor.java,v 1.7.4.1 2004/12/13 19:27:11 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.11 2005/01/25 00:16:33 taqua Exp $
  *
  * Changes
  * -------
@@ -62,15 +62,8 @@ import org.jfree.report.style.StyleKey;
 public class ExcelProcessor extends TableProcessor
 {
   /** The property key to enable the enhanced data formats of POI 1.10. */
-  public static final String ENHANCED_DATA_FORMAT_PROPERTY = "EnhancedDataFormat";
-
-  /** The StyleKey for the user defined cell data format. */
-  public static final StyleKey WRAP_TEXT =
-      StyleKey.getStyleKey("Excel.WrapText", Boolean.class);
-
-  /** The StyleKey for the user defined cell data format. */
-  public static final StyleKey DATA_FORMAT_STRING =
-      StyleKey.getStyleKey("Excel.CellDataFormat", String.class);
+  public static final String ENHANCED_DATA_FORMAT_PROPERTY =
+          "EnhancedDataFormat";
 
   /** The output stream that is used to write the excel file. */
   private OutputStream outputStream;

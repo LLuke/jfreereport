@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextElementFactory.java,v 1.11 2003/11/07 18:33:48 taqua Exp $
+ * $Id: TextElementFactory.java,v 1.12 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -80,6 +80,7 @@ public abstract class TextElementFactory extends ElementFactory
   private String reservedLiteral;
   /** A flag defining whether to remove leading and trailing whitespaces from text lines. */
   private Boolean trimTextContent;
+  private Boolean wrapText;
 
   /**
    * Default Constructor.
@@ -387,6 +388,16 @@ public abstract class TextElementFactory extends ElementFactory
     this.trimTextContent = trimTextContent;
   }
 
+  public Boolean getWrapText ()
+  {
+    return wrapText;
+  }
+
+  public void setWrapText (final Boolean wrapText)
+  {
+    this.wrapText = wrapText;
+  }
+
   /**
    * Applies the defined element style to the given stylesheet. This is a
    * helper function to reduce the code size of the implementors.
@@ -410,5 +421,6 @@ public abstract class TextElementFactory extends ElementFactory
     style.setStyleProperty(ElementStyleSheet.VALIGNMENT, getVerticalAlignment());
     style.setStyleProperty(ElementStyleSheet.RESERVED_LITERAL, getReservedLiteral());
     style.setStyleProperty(ElementStyleSheet.TRIM_TEXT_CONTENT, getTrimTextContent());
+    style.setStyleProperty(ElementStyleSheet.EXCEL_WRAP_TEXT, getWrapText());
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.11 2005/01/25 21:40:19 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.12 2005/01/30 23:37:21 taqua Exp $
  *
  * Changes
  * -------
@@ -75,6 +75,7 @@ import org.jfree.report.content.ShapeContentFactoryModule;
 import org.jfree.report.content.TextContentFactoryModule;
 import org.jfree.report.content.TextLine;
 import org.jfree.report.content.AnchorContentFactoryModule;
+import org.jfree.report.content.ShapeTransform;
 import org.jfree.report.modules.output.meta.MetaBand;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.meta.MetaPage;
@@ -307,9 +308,19 @@ public abstract class AbstractOutputTarget implements OutputTarget
     }
   }
 
+  protected void printHRefTarget (final MetaElement element, final String target)
+  {
+  }
+
   protected void printElement (final MetaElement element, final Rectangle2D bounds)
     throws OutputTargetException
   {
+    final String hrefTarget = (String) element.getProperty(ElementStyleSheet.HREF_TARGET);
+    if (hrefTarget != null)
+    {
+      printHRefTarget(element, hrefTarget);
+    }
+
     final Content content = element.getContent().getContentForBounds(bounds);
     if (content instanceof EmptyContent)
     {
@@ -322,10 +333,10 @@ public abstract class AbstractOutputTarget implements OutputTarget
     {
       final VerticalBoundsAlignment vba = AlignmentTools.getVerticalLayout(va, bounds);
       // calculate the horizontal shift ... is applied later
-
       final Rectangle2D cBounds = content.getMinimumContentSize();
+      final Rectangle2D alignedBounds = vba.align(cBounds.getBounds2D());
       final float vbaShift =
-              (float) (vba.align(cBounds).getY() - cBounds.getY());
+              (float) (alignedBounds.getY() - cBounds.getY());
       printContent(element, content, vbaShift);
     }
     else
@@ -438,8 +449,8 @@ public abstract class AbstractOutputTarget implements OutputTarget
       return;
     }
 
-    final ShapeContent sc = (ShapeContent) content;
-    setOperationBounds(AlignmentTools.computeAlignmentBounds(element));
+    final Rectangle2D operationBounds = AlignmentTools.computeAlignmentBounds(element);
+    setOperationBounds(operationBounds);
 
     final Stroke stroke = (Stroke) element.getProperty(ElementStyleSheet.STROKE);
     updateStroke(stroke);
@@ -455,7 +466,9 @@ public abstract class AbstractOutputTarget implements OutputTarget
       updatePaint(paint);
     }
 
-    final Shape s = sc.getShape();
+    final ShapeContent sc = (ShapeContent) content;
+    final Shape s = ShapeTransform.performCliping(sc.getShape(), operationBounds);
+    //final Shape s = sc.getShape();
     if (shouldDraw == true)
     {
       drawShape(s);

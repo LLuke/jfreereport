@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.17 2005/01/25 00:17:50 taqua Exp $
+ * $Id: ReportParser.java,v 1.18 2005/02/04 19:07:13 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ import org.xml.sax.SAXParseException;
 public class ReportParser extends RootXmlReadHandler
 {
   /** The key that stores the report defintion in the helper objects collection. */
-  public static final String HELPER_OBJ_REPORT_NAME = "report";
+  public static final String HELPER_OBJ_REPORT_NAME = "::report";
 
   private ObjectFactory objectFactory;
 

@@ -98,23 +98,22 @@ public abstract class AbstractTextElementReadHandler extends AbstractElementRead
   private ElementAlignment parseTextVerticalAlignment
       (final String alignment)
   {
-    ElementAlignment elementAlignment = null;
     if (alignment != null)
     {
       if (alignment.equals("top"))
       {
-        elementAlignment = ElementAlignment.TOP;
+        return ElementAlignment.TOP;
       }
-      if ((alignment.equals("center")) || (alignment.equals("middle")))
+      if (alignment.equals("center") || alignment.equals("middle"))
       {
-        elementAlignment = ElementAlignment.MIDDLE;
+        return ElementAlignment.MIDDLE;
       }
       if (alignment.equals("bottom"))
       {
-        elementAlignment = ElementAlignment.BOTTOM;
+        return ElementAlignment.BOTTOM;
       }
     }
-    return elementAlignment;
+    return null;
   }
 
   /**

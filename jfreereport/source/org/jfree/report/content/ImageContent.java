@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContent.java,v 1.5 2003/09/13 15:14:40 taqua Exp $
+ * $Id: ImageContent.java,v 1.9 2005/01/24 23:58:16 taqua Exp $
  *
  * Changes
  * -------
@@ -39,14 +39,9 @@
 package org.jfree.report.content;
 
 import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.awt.Image;
 
 import org.jfree.report.ImageContainer;
-import org.jfree.report.DefaultImageReference;
 import org.jfree.util.ShapeUtilities;
-import org.jfree.util.Log;
-import org.jfree.base.BaseBoot;
 
 /**
  * Image content.
@@ -197,23 +192,23 @@ public strictfp class ImageContent implements Content
   {
     return getBounds();
   }
-
-  public static void main (final String[] args)
-  {
-    BaseBoot.getInstance().start();
-
-    final Image img = new BufferedImage
-            (400, 400, BufferedImage.TYPE_3BYTE_BGR);
-    final Rectangle2D.Float rec = new Rectangle2D.Float(0, 0, 100, 100);
-    final ImageContent ic = new ImageContent
-            (new DefaultImageReference(img), rec);
-
-    final Rectangle2D.Float rec2 = new Rectangle2D.Float(50, 50, 50, 50);
-    final ImageContent ic2 = (ImageContent) ic.getContentForBounds(rec2);
-    Log.debug (ic2.imageArea);
-
-    final Rectangle2D.Float rec3 = new Rectangle2D.Float(75, 75, 25, 25);
-    final ImageContent ic3 = (ImageContent) ic2.getContentForBounds(rec3);
-    Log.debug (ic3.imageArea);
-  }
+//
+//  public static void main (final String[] args)
+//  {
+//    BaseBoot.getInstance().start();
+//
+//    final Image img = new BufferedImage
+//            (400, 400, BufferedImage.TYPE_3BYTE_BGR);
+//    final Rectangle2D.Float rec = new Rectangle2D.Float(0, 0, 100, 100);
+//    final ImageContent ic = new ImageContent
+//            (new DefaultImageReference(img), rec);
+//
+//    final Rectangle2D.Float rec2 = new Rectangle2D.Float(50, 50, 50, 50);
+//    final ImageContent ic2 = (ImageContent) ic.getContentForBounds(rec2);
+//    Log.debug (ic2.imageArea);
+//
+//    final Rectangle2D.Float rec3 = new Rectangle2D.Float(75, 75, 25, 25);
+//    final ImageContent ic3 = (ImageContent) ic2.getContentForBounds(rec3);
+//    Log.debug (ic3.imageArea);
+//  }
 }

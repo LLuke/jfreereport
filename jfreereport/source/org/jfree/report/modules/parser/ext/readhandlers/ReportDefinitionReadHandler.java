@@ -5,6 +5,7 @@ import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactoryColle
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
 import org.jfree.report.modules.parser.ext.factory.elements.ElementFactoryCollector;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.parser.AbstractXmlReadHandler;
 import org.jfree.xml.parser.XmlReadHandler;
@@ -15,7 +16,7 @@ import org.xml.sax.SAXException;
 
 public class ReportDefinitionReadHandler extends AbstractXmlReadHandler
 {
-  public static final String REPORT_KEY = "report";
+  public static final String REPORT_KEY = ReportParser.HELPER_OBJ_REPORT_NAME;
   public static final String ELEMENT_FACTORY_KEY = "::element-factory";
   public static final String STYLE_FACTORY_KEY = "::stylekey-factory";
   public static final String CLASS_FACTORY_KEY = "::class-factory";

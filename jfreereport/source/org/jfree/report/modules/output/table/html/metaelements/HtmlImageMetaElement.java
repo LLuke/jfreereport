@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlImageMetaElement.java,v 1.2.2.1 2004/12/13 19:27:09 taqua Exp $
+ * $Id: HtmlImageMetaElement.java,v 1.3 2005/01/25 00:13:47 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,6 +46,7 @@ import org.jfree.report.content.ImageContent;
 import org.jfree.report.modules.output.table.html.HtmlFilesystem;
 import org.jfree.report.modules.output.table.html.ref.HtmlReference;
 import org.jfree.report.modules.output.table.html.util.HtmlCharacterEntities;
+import org.jfree.report.modules.output.table.html.util.HtmlEncoderUtil;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.Log;
 
@@ -60,6 +61,13 @@ public class HtmlImageMetaElement extends HtmlMetaElement
 
   public void write (final PrintWriter pout, final HtmlFilesystem filesystem)
   {
+    final String hrefTarget = (String) getProperty(ElementStyleSheet.HREF_TARGET);
+    if (hrefTarget != null)
+    {
+      pout.print("<a href=\"");
+      pout.print(HtmlEncoderUtil.encodeUTF(hrefTarget));
+      pout.print(">");
+    }
     final ImageContent content = (ImageContent) getContent();
     try
     {
@@ -98,6 +106,10 @@ public class HtmlImageMetaElement extends HtmlMetaElement
     catch (IOException ioe)
     {
       Log.warn("Writing the image failed", ioe);
+    }
+    if (hrefTarget != null)
+    {
+      pout.print("</a>");
     }
   }
 }

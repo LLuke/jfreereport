@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelMetaBandProducer.java,v 1.3 2005/01/25 00:16:32 taqua Exp $
+ * $Id: ExcelMetaBandProducer.java,v 1.4 2005/01/30 23:37:23 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -156,8 +156,8 @@ public class ExcelMetaBandProducer
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
     final ElementStyleSheet styleSheet =
             createStyleForTextElement(e, x, y);
-    styleSheet.setStyleProperty(ExcelProcessor.DATA_FORMAT_STRING,
-            e.getStyle().getStyleProperty (ExcelProcessor.DATA_FORMAT_STRING,
+    styleSheet.setStyleProperty(ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
+            e.getStyle().getStyleProperty (ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
                     nft.getFormat()));
 
     return new ExcelNumberMetaElement(new RawContent(rect, number), styleSheet);
@@ -174,8 +174,8 @@ public class ExcelMetaBandProducer
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
     final ElementStyleSheet styleSheet =
             createStyleForTextElement(e, x, y);
-    styleSheet.setStyleProperty(ExcelProcessor.DATA_FORMAT_STRING,
-            e.getStyle().getStyleProperty (ExcelProcessor.DATA_FORMAT_STRING,
+    styleSheet.setStyleProperty(ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
+            e.getStyle().getStyleProperty (ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
                     dft.getFormat()));
 
     return new ExcelDateMetaElement(new RawContent(rect, date), styleSheet);

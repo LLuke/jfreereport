@@ -120,6 +120,7 @@ What changed:
   As soon as JFreeReport-Ext is on the classpath, the resource factory will start
   to use these new image loaders.
 * Anchors for the PDF- and HTML-Targets.
+* Hyperlinks have been added for the HTML and PDF targets.
 * The ElementStyleSheets have a cleaner semantic now. There are two classes
   of stylesheets, the ones assigned directly to the elements and bands and the
   global ones, which were created and managed by the StyleSheetCollection.
@@ -129,16 +130,18 @@ What changed:
   the root level band to the last child, allowing the same inheritance as found in HTML.
   The BandDefaults have been removed.
 * BarCode stuff ..
-  
+* Simple XML parser: Support for the new features has been added
+  Support for Include-files added to allow to reuse common parts of the report
+  definitions (like report header/footer, page header/footer, or everything else)
+
 To be implemented before the release is ready:
-* XML parsers: Support for the new features must be added (Rewrite complete, verify ext-parser)
+* Redesign the dialogs to follow the common usability guides
 * Bug: ProgressBar in the RepaginationProgressDialog is not working as expected.
 * Implement a ResourceNumberField, ResourceDateField and ResourceMessageField
   for completly localizable reports.
-* Include-files to allow to reuse common parts of the report definitions (like
-  report header/footer, page header/footer, or everything else)
-* Redesign the dialogs to follow the common usability guides
-* Hyperlinks. It should not be that hard to integrate it ...
+* Verify the page-spanning printing
+* Add support for rotated text
+* Verify the PlainText-Output target
 
 What will be impossible:
 * The 'keep-together' feature is not implementable with the old engine.
@@ -146,3 +149,9 @@ What will be impossible:
   in the 'libLayout' subproject.
 * Subreports - once again the old engine would die while trying to solve that 
   problem 
+
+Known bugs:
+* Non-Area shapes, which are not instances of Line2D cannot be
+  drawn right now. The clipping fails for these shapes. [Not fixable yet]
+
+* Simple-XML: Lines with Width=100% are not displayed correctly. Why?

@@ -25,13 +25,14 @@ public class AnchorFieldReadHandler extends AbstractElementReadHandler
   protected void startParsing (final Attributes atts)
           throws SAXException, XmlReaderException
   {
-    super.startParsing(atts);
     final String fieldName = atts.getValue("fieldname");
     if (fieldName == null)
     {
       throw new ElementDefinitionException ("Required attribute 'fieldname' is missing.");
     }
     elementFactory.setFieldname(fieldName);
+    elementFactory.setName(atts.getValue(NAME_ATT));
+    elementFactory.setAbsolutePosition(getElementPosition(atts));
   }
 
   protected ElementFactory getElementFactory ()

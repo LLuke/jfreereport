@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.17 2005/01/30 23:37:25 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.18 2005/02/04 19:22:58 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,6 @@ import java.util.Iterator;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.util.InstanceID;
 import org.jfree.report.util.SerializerHelper;
-import org.jfree.util.Log;
 
 /**
  * An element style-sheet contains zero, one or many attributes that affect the appearance
@@ -240,6 +239,21 @@ public abstract class ElementStyleSheet implements Serializable, StyleChangeList
    */
   public static final StyleKey TRIM_TEXT_CONTENT = StyleKey.getStyleKey("trim-text-content",
           Boolean.class);
+
+  public static final StyleKey HREF_TARGET = StyleKey.getStyleKey("href-target",
+          String.class);
+
+  public static final StyleKey HREF_INHERITED = StyleKey.getStyleKey("href-inherited",
+          Boolean.class, true, false);
+
+  /** The StyleKey for the user defined cell data format. */
+  public static final StyleKey EXCEL_WRAP_TEXT =
+      StyleKey.getStyleKey("Excel.WrapText", Boolean.class);
+
+  /** The StyleKey for the user defined cell data format. */
+  public static final StyleKey EXCEL_DATA_FORMAT_STRING =
+      StyleKey.getStyleKey("Excel.CellDataFormat", String.class);
+
 
   /**
    * The instance id of this ElementStyleSheet. This id is shared among all clones.

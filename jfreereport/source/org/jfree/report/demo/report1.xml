@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple"
-                        "http://jfreereport.sourceforge.net/report.dtd">
+                        "http://jfreereport.sourceforge.net/report-085.dtd">
 
 <report name="Sample Report 1" orientation="portrait" pageformat="LETTER" topmargin="10" leftmargin="10" bottommargin="10" rightmargin="10">
 
@@ -25,7 +25,7 @@
   </configuration>
 
   <reportheader height="90" fontname="Arial Unicode MS" fontstyle="bold" fontsize="18">
-    <label name="RH0" x="0" y="0" width="100%" height="18" fsunderline="true" vertical-alignment="top" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
+    <label name="RH0" x="0" y="0" width="100%" height="18" fsunderline="true" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
     <label name="RH1" x="0" y="18" width="100%" height="30" vertical-alignment="bottom" alignment="center">Sample Thai chars: &#3648;&#3614;&#3636;&#3656;&#3617;, &#3621;&#3641;&#3585;&#3588;&#3657;&#3634;</label>
   </reportheader>
 
@@ -35,7 +35,7 @@
 
   <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="10" onfirstpage="true">
     <rectangle name="PH0" x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0"/>
-    <line name="PH2" x1="0" y1="18" x2="0" y2="18" color="#CFCFCF" weight="2.0"/>
+    <line name="PH2" x1="0" y1="18" x2="100%" y2="18" color="#CFCFCF" weight="2.0"/>
     <date-field name="PH1" x="0" y="0" width="100%" height="14" alignment="right" format="d-MMM-yyyy" fieldname="report.date"/>
   </pageheader>
 
@@ -57,11 +57,12 @@
 
   <groups>
     <group name="Continent Group">
-      <groupheader height="18" fontname="Monospaced" fontstyle="bold" fontsize="9" vertical-alignment="middle" pagebreak="false">
+      <groupheader height="18" fontname="Monospaced" fontstyle="bold" fontsize="9" vertical-alignment="middle">
+        <anchor-field fieldname="Continent" x="0" y="0" />
         <label name="Continent-H0" x="0" y="1" width="100" height="9" alignment="left">CONTINENT:</label>
         <string-field name="Continent-H1" x="100" y="1" width="250" height="9" alignment="left" fieldname="Continent"/>
         <number-field name="Continent-H3" x="350" y="0" width="116" height="9" alignment="right" format="#0" fieldname="count"/>
-        <line name="Continent-H2" x1="0" y1="10" x2="0" y2="10" weight="0.5"/>
+        <line name="Continent-H2" x1="0" y1="10" x2="100%" y2="10" weight="0.5"/>
       </groupheader>
       <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
         <label name="Continent-F0" x="0" y="0" width="220" height="12" alignment="left" fontname="SansSerif" fsunderline="true">Population:</label>
@@ -75,7 +76,7 @@
 
   <items height="10" fontname="Monospaced" fontstyle="plain" fontsize="8" vertical-alignment="middle">
     <rectangle name="background" x="0" y="0" width="100%" height="100%" color="#DFDFDF" weight="0"/>
-    <line name="IB-0" x1="0" y1="10" x2="0" y2="10" color="#0FDFDF" weight="0.1"/>
+    <line name="IB-0" x1="0" y1="10" x2="100%" y2="10" color="#0FDFDF" weight="0.1"/>
     <line name="IB-1" x1="0" y1="0" x2="0" y2="0" color="#FF0FFF" weight="0.1"/>
     <string-field name="IB-2" x="0" y="0" width="176" height="10" alignment="left" fieldname="Country"/>
     <string-field name="IB-3" x="180" y="0" width="50" height="10" alignment="left" fieldname="ISO Code"/>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: IncludeParser.java,v 1.6 2005/01/25 00:17:38 taqua Exp $
+ * $Id: IncludeParser.java,v 1.7 2005/02/04 19:07:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -58,7 +58,7 @@ public class IncludeParser extends RootXmlReadHandler
   public static final String INCLUDE_PARSING_KEY = "include-parsing";
 
   /** The parser backend that supplies the configuration. */
-  private final FrontendDefaultHandler backend;
+  private final RootXmlReadHandler backend;
 
   private SimpleObjectFactory objectFactory;
 
@@ -67,11 +67,14 @@ public class IncludeParser extends RootXmlReadHandler
    *
    * @param backend the backend parser that provides the configuration.
    */
-  public IncludeParser(final FrontendDefaultHandler backend)
+  public IncludeParser(final RootXmlReadHandler backend)
   {
     this.objectFactory = new SimpleObjectFactory();
     this.backend = backend;
-    setConfigProperty(IncludeParser.INCLUDE_PARSING_KEY, "true");
+    this.setConfigProperty(IncludeParser.INCLUDE_PARSING_KEY, "true");
+    this.setRootHandler(new InitialReportHandler());
+    this.setHelperObject(ReportParser.HELPER_OBJ_REPORT_NAME,
+            backend.getHelperObject(ReportParser.HELPER_OBJ_REPORT_NAME));
   }
 
   /**
@@ -138,6 +141,4 @@ public class IncludeParser extends RootXmlReadHandler
   {
     return super.getConfigProperty(key, backend.getConfigProperty(key, defaultValue));
   }
-
-
 }

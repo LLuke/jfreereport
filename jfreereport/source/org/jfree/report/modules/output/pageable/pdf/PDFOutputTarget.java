@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.20 2005/01/25 21:40:32 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.21 2005/01/30 23:37:21 taqua Exp $
  *
  * Changes
  * -------
@@ -75,6 +75,7 @@ import com.lowagie.text.Anchor;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.PdfAction;
 import org.jfree.report.ImageContainer;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.LocalImageContainer;
@@ -95,6 +96,7 @@ import org.jfree.report.modules.output.support.itext.BaseFontRecord;
 import org.jfree.report.modules.output.support.itext.BaseFontSupport;
 import org.jfree.report.style.ElementDefaultStyleSheet;
 import org.jfree.report.style.FontDefinition;
+import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.KeyedQueue;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
@@ -944,6 +946,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     cb.beginText();
     cb.setFontAndSize(this.baseFont, fontSize);
 
+    cb.setAction(null, 0,0,0,0);
     final float y2 = (float) (bounds.getY() +
         baseFont.getFontDescriptor(BaseFont.ASCENT, fontSize));
     cb.showTextAligned(
@@ -1241,8 +1244,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     super.setOperationBounds(bounds);
     final Rectangle2D pageBounds = getPageBounds();
     internalOperationBounds.setRect
-           ((float) (pageBounds.getX() + bounds.getX() + currentPageFormat.getImageableX()),
-            (float) (pageBounds.getY() + bounds.getY() + currentPageFormat.getImageableY()),
+           ((float) (-pageBounds.getX() + bounds.getX() + currentPageFormat.getImageableX()),
+            (float) (-pageBounds.getY() + bounds.getY() + currentPageFormat.getImageableY()),
             (float) bounds.getWidth(), (float) bounds.getHeight());
   }
 
@@ -1348,5 +1351,33 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     {
       throw new OutputTargetException("Failed to add anchor", e);
     }
+  }
+
+  protected void printHRefTarget (final MetaElement element,
+                                  final String target)
+  {
+    if (element.getBooleanProperty(ElementStyleSheet.HREF_INHERITED) == false)
+    {
+      return;
+    }
+    final PdfAction action = new PdfAction(target);
+    final Rectangle2D bounds = element.getBounds();
+    final PdfContentByte cb = this.writer.getDirectContent();
+
+    final Rectangle2D pageBounds = getPageBounds();
+    final float lowerLeftX =
+       (float) (-pageBounds.getX() + bounds.getX() +
+                currentPageFormat.getImageableX());
+    final float upperRightX =
+        (float) (lowerLeftX + bounds.getWidth());
+
+    final float lowerLeftY =
+        (float) (getPageHeight() - (bounds.getY() +
+            currentPageFormat.getImageableY() +
+            bounds.getHeight() - pageBounds.getY()));
+    final float upperRightY =
+            (float) (getPageHeight() - (bounds.getY() +
+                currentPageFormat.getImageableY() - pageBounds.getY()));
+    cb.setAction(action, lowerLeftX, lowerLeftY, upperRightX, upperRightY);
   }
 }

@@ -35,6 +35,7 @@ public class IncludeReadHandler extends AbstractXmlReadHandler
       final URL target = new URL(getRootHandler().getContentBase(), file);
       final IncludeParserFrontend parserFrontend =
               new IncludeParserFrontend(getRootHandler());
+      
       parserFrontend.parse(target);
     }
     catch (IOException e)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ShapeContent.java,v 1.4 2004/03/27 20:21:14 taqua Exp $
+ * $Id: ShapeContent.java,v 1.5 2004/05/07 08:02:48 mungady Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,9 @@ import java.awt.geom.Rectangle2D;
 
 /**
  * A report content item that encapsulates a <code>Shape</code> object.
+ * The shape contained in the Content is not modified - and does not
+ * necessarily fit the given bounds. If clipping is needed, it is up
+ * to the output target to transform the given shape to fit the bounds. 
  *
  * @author Thomas Morgner.
  */
@@ -53,16 +56,6 @@ public strictfp class ShapeContent implements Content
 
   /** The bounds. */
   private Rectangle2D bounds;
-
-  /**
-   * Creates a new shape content.
-   *
-   * @param s  the shape.
-   */
-  public ShapeContent(final Shape s)
-  {
-    this(s, s.getBounds2D());
-  }
 
   /**
    * Creates a new shape content.

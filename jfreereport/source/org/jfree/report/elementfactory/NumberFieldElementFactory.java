@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFieldElementFactory.java,v 1.5.4.1 2004/10/06 19:46:14 taqua Exp $
+ * $Id: NumberFieldElementFactory.java,v 1.7 2005/01/24 23:59:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -52,6 +52,7 @@ import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.NumberFormatFilter;
 import org.jfree.report.filter.templates.NumberFieldTemplate;
 import org.jfree.report.style.FontDefinition;
+import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
 
 /**
@@ -67,12 +68,23 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
 {
   /** The number format instance used to format numeric values in the text element. */
   private NumberFormat format;
+  private String excelCellFormat;
 
   /**
    * Creates a new number field element factory.
    */
   public NumberFieldElementFactory()
   {
+  }
+
+  public String getExcelCellFormat ()
+  {
+    return excelCellFormat;
+  }
+
+  public void setExcelCellFormat (final String excelCellFormat)
+  {
+    this.excelCellFormat = excelCellFormat;
   }
 
   /**
@@ -161,7 +173,8 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
     applyElementName(element);
     element.setDataSource(dataSource);
     applyStyle(element.getStyle());
-
+    element.getStyle().setStyleProperty
+            (ElementStyleSheet.EXCEL_DATA_FORMAT_STRING, getExcelCellFormat());
     return element;
   }
 

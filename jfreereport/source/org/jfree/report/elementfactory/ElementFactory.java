@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementFactory.java,v 1.9 2004/05/07 08:24:41 mungady Exp $
+ * $Id: ElementFactory.java,v 1.10 2005/02/04 19:22:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -72,12 +72,23 @@ public abstract class ElementFactory
   private Boolean layoutCachable;
   /** The elements visible flag. */
   private Boolean visible;
+  private String hRefTarget;
 
   /**
    * Default Constructor.
    */
   public ElementFactory()
   {
+  }
+
+  public String getHRefTarget ()
+  {
+    return hRefTarget;
+  }
+
+  public void setHRefTarget (final String hRefTarget)
+  {
+    this.hRefTarget = hRefTarget;
   }
 
   /**
@@ -258,6 +269,7 @@ public abstract class ElementFactory
     style.setStyleProperty(ElementStyleSheet.PREFERREDSIZE, getPreferredSize());
     style.setStyleProperty(ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, getLayoutCachable());
     style.setStyleProperty(ElementStyleSheet.VISIBLE, getVisible());
+    style.setStyleProperty(ElementStyleSheet.HREF_TARGET, getHRefTarget());
   }
 
   /**

@@ -1,5 +1,5 @@
 <!--
-  Report DTD for JFreeReport version 0.8.4-8.
+  Report DTD for JFreeReport version 0.8.5.
 
 	ChangeLog:
 
@@ -84,6 +84,7 @@
   trim-text-content    (%boolean;)   #IMPLIED
   visible              (%boolean;)   #IMPLIED
   layout-cachable      (%boolean;)   #IMPLIED
+  href                 CDATA         #IMPLIED
   reserved-literal     CDATA         #IMPLIED"
  >
 
@@ -511,6 +512,7 @@
   layout-cachable      (%boolean;)   #IMPLIED
   scale                (%boolean;)   #IMPLIED
   keepAspectRatio      (%boolean;)   #IMPLIED
+  href                 CDATA         #IMPLIED
 >
 <!--
 
@@ -528,6 +530,7 @@
   layout-cachable      (%boolean;)   #IMPLIED
   scale                (%boolean;)   #IMPLIED
   keepAspectRatio      (%boolean;)   #IMPLIED
+  href                 CDATA         #IMPLIED
 >
 
 <!--
@@ -546,6 +549,7 @@
   layout-cachable      (%boolean;)   #IMPLIED
   scale                (%boolean;)   #IMPLIED
   keepAspectRatio      (%boolean;)   #IMPLIED
+  href                 CDATA         #IMPLIED
 >
 
 <!--
@@ -564,13 +568,13 @@
 
 <!ELEMENT line      EMPTY>
 <!ATTLIST line
-  x1        CDATA       #REQUIRED
-  y1        CDATA       #REQUIRED
-  x2        CDATA       #REQUIRED
-  y2        CDATA       #REQUIRED
-	color     CDATA       #IMPLIED
-	name      CDATA       #IMPLIED
-	weight    CDATA       #IMPLIED
+  x1                   CDATA         #REQUIRED
+  y1                   CDATA         #REQUIRED
+  x2                   CDATA         #REQUIRED
+  y2                   CDATA         #REQUIRED
+	color                CDATA         #IMPLIED
+	name                 CDATA         #IMPLIED
+	weight               CDATA         #IMPLIED
 >
 
 
@@ -579,25 +583,28 @@
 <!ELEMENT drawable-field   EMPTY>
 <!ATTLIST drawable-field
   %position;
-  height      CDATA #REQUIRED
-  fieldname   CDATA #REQUIRED
-  name        CDATA #IMPLIED
+  height               CDATA         #REQUIRED
+  fieldname            CDATA         #REQUIRED
+  name                 CDATA         #IMPLIED
+  href                 CDATA         #IMPLIED
 >
 
 <!ELEMENT drawable-url-field   EMPTY>
 <!ATTLIST drawable-url-field
   %position;
-  height      CDATA #REQUIRED
-  fieldname   CDATA #REQUIRED
-  name        CDATA #IMPLIED
+  height               CDATA         #REQUIRED
+  fieldname            CDATA         #REQUIRED
+  name                 CDATA         #IMPLIED
+  href                 CDATA         #IMPLIED
 >
 
 <!ELEMENT drawableref   EMPTY>
 <!ATTLIST drawableref
   %position;
-  height      CDATA #REQUIRED
-  src         CDATA #REQUIRED
-  name        CDATA #IMPLIED
+  height               CDATA         #REQUIRED
+  href                 CDATA         #IMPLIED
+  src                  CDATA         #REQUIRED
+  name                 CDATA         #IMPLIED
 >
 
 
@@ -610,20 +617,32 @@
 <!ATTLIST shape-field
   %position;
   %basicform;
-  fieldname      CDATA   #REQUIRED
-  draw     (%boolean;)   #IMPLIED
-  fill     (%boolean;)   #IMPLIED
-  weight    CDATA        #IMPLIED
+  fieldname            CDATA         #REQUIRED
+  href                 CDATA         #IMPLIED
+  draw                 (%boolean;)   #IMPLIED
+  fill                 (%boolean;)   #IMPLIED
+  weight               CDATA         #IMPLIED
 >
 
-<!ELEMENT message-field  (#PCDATA)>
+<!ELEMENT message-field  EMPTY>
 <!ATTLIST message-field
   %basicform;
   %position;
   %fontdef;
-  fieldname   CDATA    #REQUIRED
-  nullstring  CDATA    #IMPLIED
-  format      CDATA    #REQUIRED
+  fieldname            CDATA        #REQUIRED
+  nullstring           CDATA        #IMPLIED
+  format               CDATA        #REQUIRED
+>
+
+<!--
+  Anchors are not visible, so it makes no sense to define visual parameters.
+ -->
+<!ELEMENT anchor-field  EMPTY>
+<!ATTLIST anchor-field
+  x                    CDATA        #REQUIRED
+  y                    CDATA        #REQUIRED
+  name                 CDATA        #IMPLIED
+  fieldname            CDATA        #REQUIRED
 >
 
 
@@ -634,31 +653,7 @@
   library in order to be loaded and executed correctly.
 
   -->
-<!ELEMENT functions  (function | expression | data-ref | property-ref)*>
-
-<!--
-
-  A data reference is used to validate the table model against
-  the declared format of the datasource. It simply checks that
-  all fields declared are present and are assignable from the
-  given type.
-
-  The attribute class is used to validate the data models objects.
-  This function uses TableModel.getColumnClass() to query the
-  table models data types. If the tablemodel returns java.lang.Object
-  no check is done, java.lang.Object is considered as an indicator
-  that the table model does not know about it's internal data
-  structure.
-
-  The data-reference was never implemented and will not be implemented
-  in future releases.
-
--->
-<!ELEMENT data-ref  EMPTY>
-<!ATTLIST data-ref
-  name    CDATA   #REQUIRED
-	class   CDATA   #IMPLIED
->
+<!ELEMENT functions  (function | expression | property-ref)*>
 
 <!--
 
@@ -692,9 +687,9 @@
   -->
 <!ELEMENT function   (properties?)>
 <!ATTLIST function
- class      CDATA    #REQUIRED
+  class      CDATA    #REQUIRED
 	name       CDATA    #REQUIRED
- deplevel   CDATA    #IMPLIED
+  deplevel   CDATA    #IMPLIED
 >
 
 
@@ -715,7 +710,7 @@
 <!ATTLIST expression
   class      CDATA    #REQUIRED
 	name       CDATA    #REQUIRED
- deplevel   CDATA    #IMPLIED
+  deplevel   CDATA    #IMPLIED
 >
 
 <!--
@@ -733,6 +728,6 @@
 <!ELEMENT property    (#PCDATA)>
 <!ATTLIST property
   name       CDATA    #REQUIRED
-  encoding   CDATA    #IMPLIED
+  class      CDATA    #IMPLIED
 >
 

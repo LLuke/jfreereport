@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DateFieldElementFactory.java,v 1.6 2003/10/05 21:52:32 taqua Exp $
+ * $Id: DateFieldElementFactory.java,v 1.7 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -52,6 +52,7 @@ import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.DateFormatFilter;
 import org.jfree.report.filter.templates.DateFieldTemplate;
 import org.jfree.report.style.FontDefinition;
+import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
 
 /**
@@ -68,11 +69,23 @@ public class DateFieldElementFactory extends TextFieldElementFactory
   /** The date format instance used to format date values in the text element. */
   private DateFormat format;
 
+  private String excelCellFormat;
+
   /**
    * Creates a new date field element factory.
    */
   public DateFieldElementFactory()
   {
+  }
+
+  public String getExcelCellFormat ()
+  {
+    return excelCellFormat;
+  }
+
+  public void setExcelCellFormat (final String excelCellFormat)
+  {
+    this.excelCellFormat = excelCellFormat;
   }
 
   /**
@@ -169,6 +182,8 @@ public class DateFieldElementFactory extends TextFieldElementFactory
     element.setDataSource(dataSource);
     applyElementName(element);
     applyStyle(element.getStyle());
+    element.getStyle().setStyleProperty
+            (ElementStyleSheet.EXCEL_DATA_FORMAT_STRING, getExcelCellFormat());
 
     return element;
   }
