@@ -21,54 +21,50 @@
  * Boston, MA 02111-1307, USA.
  *
  * ----------------
- * Log4JLogTarget.java
+ * Java14LogTarget.java
  * ----------------
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log4JLogTarget.java,v 1.6 2003/02/25 14:07:30 taqua Exp $
+ * $Id: Java14LogTarget.java,v 1.6 2003/02/25 14:07:30 taqua Exp $
  *
  * Changes
  * -------
- * 23-Jun-2002 : Initial version
+ * 25-Feb-2003 : Initial version
  */
 package com.jrefinery.report.ext.log;
 
 import com.jrefinery.report.util.LogTarget;
-import org.apache.log4j.Category;
-import org.apache.log4j.Priority;
 
-/**
- * The Log4J Target can be used to redirect the logging output into the
- * Log4J system. When loaded using the default constructor, the Category
- * is set the "JFreeReport".
- */
-public class Log4JLogTarget implements LogTarget
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class Java14LogTarget implements LogTarget
 {
   /** the log category receives the generated log statements. */
-  private Category cat;
+  private Logger logger;
 
   /**
-   * Creates a new Log4J log target, which logs all statements into the
+   * Creates a new Java 1.4 log target, which logs all statements into the
    * category "JFreeReport".
    */
-  public Log4JLogTarget ()
+  public Java14LogTarget ()
   {
-    this (Category.getInstance("JFreeReport"));
+    this (Logger.getLogger("JFreeReport"));
   }
 
   /**
-   * Creates a new Log4J log target, which uses the given Category to log
+   * Creates a new Java 1.4 log target, which uses the given Logger to log
    * the generated log statements.
    *
-   * @param cat the category, that should be used for logging.
+   * @param logger the logger instance, that should be used for logging.
    */
-  public Log4JLogTarget (Category cat)
+  public Java14LogTarget (Logger logger)
   {
-    if (cat == null) throw new NullPointerException("Given category is null");
-    this.cat = cat;
+    if (logger == null) throw new NullPointerException("Given category is null");
+    this.logger = logger;
   }
 
   /**
@@ -80,8 +76,7 @@ public class Log4JLogTarget implements LogTarget
    */
   public void log (int level, Object message)
   {
-    Priority priority = Priority.toPriority(level);
-    cat.log(priority, message);
+    logger.log(translateLogLevel(level), String.valueOf(message));
   }
 
   /**
@@ -94,7 +89,32 @@ public class Log4JLogTarget implements LogTarget
    */
   public void log (int level, Object message, Exception e)
   {
-    Priority priority = Priority.toPriority(level);
-    cat.log(priority, message, e);
+    logger.log(translateLogLevel(level), String.valueOf(message), e);
+  }
+
+  /**
+   * Translates the JFreeReport log level into a Java1.4 log level.
+   *
+   * @param level the JFreeReport log level.
+   * @return the Java 1.4 log level.
+   */
+  private Level translateLogLevel (int level)
+  {
+    if (level == ERROR)
+    {
+      return Level.SEVERE;
+    }
+    else if (level == WARN)
+    {
+      return Level.WARNING;
+    }
+    else if (level == INFO)
+    {
+      return Level.INFO;
+    }
+    else
+    {
+      return Level.FINE;
+    }
   }
 }

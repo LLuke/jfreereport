@@ -2,7 +2,7 @@
  * Date: Dec 12, 2002
  * Time: 4:41:23 PM
  *
- * $Id: Layouting.java,v 1.1 2002/12/12 22:29:44 taqua Exp $
+ * $Id: Layouting.java,v 1.2 2003/01/27 03:21:44 taqua Exp $
  */
 package com.jrefinery.report.ext.junit.bugs;
 
@@ -18,9 +18,9 @@ import com.jrefinery.report.DataRowConnector;
 import com.jrefinery.report.function.LevelledExpressionList;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportPropertiesList;
-import com.jrefinery.report.targets.pageable.bandlayout.StaticLayoutManager;
-import com.jrefinery.report.targets.pageable.bandlayout.BandLayoutManager;
-import com.jrefinery.report.targets.pageable.bandlayout.BandLayoutManagerUtil;
+import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
+import com.jrefinery.report.targets.base.bandlayout.BandLayoutManager;
+import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
 import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.FloatDimension;

@@ -87,11 +87,14 @@ public class JFreeReportServlet extends HttpServlet
     response.setHeader("Content-Type", "application/pdf");
 
     // display the content in the browser window (see RFC2183)
-    response.setHeader("Content-Disposition", "inline; filename=\"" + "unknown.pdf" + "\"");
+    response.setHeader("Content-Disposition", "inline; filename=\"first.pdf\"");
 
     //response.setHeader("Content-Disposition", "attachment; filename=\"" + "unknown.pdf" + "\"");
-    //above line if enabled will pop-Out the browsers "File Download" dialog
-    //with the standard options: "Open from current location"/ "Save to disk"
+
+    //if content disposition is set to "attachment", then browsers shows "File Download"
+    // dialog with the standard options: "Open from current location"/ "Save to disk"
+    // if Content-Disposition is set to inline, the any RFC compliant browser will open
+    // the content in the current window.
 
     try
     {
