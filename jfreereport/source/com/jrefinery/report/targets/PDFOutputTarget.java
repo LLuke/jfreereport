@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.32 2002/11/06 21:03:15 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.33 2002/11/06 22:15:30 taqua Exp $
  *
  * Changes
  * -------
@@ -55,8 +55,8 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ShapeElement;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.NullOutputStream;
-import com.jrefinery.report.util.StringUtil;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.report.util.StringUtil;
 import com.keypoint.PngEncoder;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.DocWriter;
@@ -67,7 +67,6 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.DefaultFontMapper;
 import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfPatternPainter;
 import com.lowagie.text.pdf.PdfWriter;
 
 import java.awt.BasicStroke;
@@ -88,8 +87,6 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * An output target for the report engine that generates a PDF file using the iText class library
@@ -464,6 +461,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       return (String) fontsByName.get(font);
     }
 
+
   }
 
   /** The font factory. */
@@ -797,89 +795,137 @@ public class PDFOutputTarget extends AbstractOutputTarget
       stringEncoding = "iso-8859-1";
     }
 
-    BaseFont f = (BaseFont) this.baseFonts.get(fontKey);
+    BaseFont f = getFromCache(fontKey, encoding, stringEncoding);
     if (f != null)
     {
-      // the encoding does not match, reset ...
-      if (f.getEncoding().equals(encoding) == false)
-      {
-        f = null;
-      }
+      this.baseFont = f;
+      return;
     }
 
+    try
+    {
+      String filename = getFontFactory().getFontfileForName(fontKey);
+      if (filename != null)
+      {
+        f = createFontFromTTF(font, filename, encoding, stringEncoding);
+      }
+      else
+      {
+        // filename is null, no ttf file registered for the fontname
+        f = BaseFont.createFont(fontKey, stringEncoding, isEmbedFonts(), false, null, null);
+        if (f != null)
+        {
+          putToCache(fontKey, f);
+        }
+      }
+    }
+    catch (Exception e)
+    {
+      Log.warn("BaseFont.createFont failed. Key = " + fontKey, e);
+    }
     if (f == null)
     {
+      // fallback .. use BaseFont.HELVETICA as default
       try
       {
-        String filename = getFontFactory().getFontfileForName(fontKey);
-        if (filename != null)
+        // todo
+        f = BaseFont.createFont(BaseFont.HELVETICA, stringEncoding, isEmbedFonts(), true, null, null);
+        if (f != null)
         {
-          if (font.isBold() && font.isItalic())
-          {
-            fontKey = filename + ",BoldItalic";
-          }
-          else if (font.isBold())
-          {
-            fontKey = filename + ",Bold";
-          }
-          else if (font.isItalic())
-          {
-            fontKey = filename + ",Italic";
-          }
-          else
-          {
-            fontKey = filename;
-          }
-        }
-        // TrueType fonts need extra handling if the font is a symbolic font.
-        if ((filename != null)
-            && (StringUtil.endsWithIgnoreCase(filename, ".ttf") || StringUtil.endsWithIgnoreCase(filename, ".ttc")))
-        {
-          try
-          {
-            f = BaseFont.createFont(fontKey, encoding, isEmbedFonts(), true, null, null);
-          }
-          catch (DocumentException de)
-          {
-            // Fallback to iso8859-1 encoding (!this is not IDENTITY-H)
-            f = BaseFont.createFont(fontKey, stringEncoding, isEmbedFonts(), true, null, null);
-          }
-        }
-        else
-        {
-          f = BaseFont.createFont(fontKey, stringEncoding, isEmbedFonts(), true, null, null);
+          putToCache(fontKey, f);
         }
       }
       catch (Exception e)
       {
-        Log.warn("BaseFont.createFont failed. Key = " + fontKey, e);
-      }
-      if (f == null)
-      {
-        // fallback .. use BaseFont.HELVETICA as default
-        try
-        {
-          f = BaseFont.createFont(BaseFont.HELVETICA, stringEncoding, isEmbedFonts(), true, null, null);
-        }
-        catch (Exception e)
-        {
-          Log.warn("BaseFont.createFont for FALLBACK failed.", e);
-        }
+        Log.warn("BaseFont.createFont for FALLBACK failed.", e);
+        throw new OutputTargetException("Null font = " + fontKey);
       }
     }
-
     if (f == null)
     {
-      throw new OutputTargetException("Null font = " + fontKey);
+      throw new OutputTargetException("BaseFont creation failed, null font: " + fontKey);
     }
-    else
-    {
-      this.baseFonts.put(fontKey, f);
-    }
-
     this.baseFont = f;
 
   }
+
+  private BaseFont createFontFromTTF (Font font, String filename, String encoding, String stringEncoding)
+    throws IOException, DocumentException
+  {
+
+    // TrueType fonts need extra handling if the font is a symbolic font.
+    if (StringUtil.endsWithIgnoreCase(filename, ".ttf") || StringUtil.endsWithIgnoreCase(filename, ".ttc"))
+    {
+      String fontKey = null;
+      BaseFont f = null;
+
+      if (font.isBold() && font.isItalic())
+      {
+        fontKey = filename + ",BoldItalic";
+      }
+      else if (font.isBold())
+      {
+        fontKey = filename + ",Bold";
+      }
+      else if (font.isItalic())
+      {
+        fontKey = filename + ",Italic";
+      }
+      else
+      {
+        fontKey = filename;
+      }
+
+      Log.warn ("TrueTypeFontKey : " + fontKey + " Font: " + font.isItalic() + " Encoding: " + encoding);
+      f = (BaseFont) this.baseFonts.get (fontKey);
+      if (f == null)
+      {
+        try
+        {
+          // todo
+          f = BaseFont.createFont(fontKey, encoding, isEmbedFonts(), false, null, null);
+        }
+        catch (DocumentException de)
+        {
+          // Fallback to iso8859-1 encoding (!this is not IDENTITY-H)
+          f = BaseFont.createFont(fontKey, stringEncoding, isEmbedFonts(), false, null, null);
+        }
+        if (f != null)
+        {
+          putToCache(fontKey, f);
+        }
+      }
+      return f;
+    }
+    return null;
+  }
+
+  private void putToCache (String fontKey, BaseFont font)
+  {
+    if (baseFonts.containsKey(fontKey) == false)
+    {
+      System.out.println ("___> FONT : " + fontKey + " added to internal cache");
+      baseFonts.put (fontKey, font);
+    }
+  }
+
+  private BaseFont getFromCache (String fontKey, String encoding, String stringEncoding)
+  {
+    BaseFont f = (BaseFont) baseFonts.get (fontKey);
+    if (f != null)
+    {
+      // the encoding does not match either encoding or stringEncoding, reset ...
+      // todo better caching structure which takes encoding into account
+      if (f.getEncoding().equals(encoding) == false && f.getEncoding().equals(stringEncoding) == false)
+      {
+        System.out.println ("___> FONT : " + fontKey + " Wrong Encoding: " + f.getEncoding() + " vs. " + encoding);
+
+        f = null;
+      }
+    }
+    return f;
+  }
+
 
   /**
    * Draws an Image from this imageReference. The image is directly embedded into the
@@ -1342,7 +1388,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   protected float getStringBounds(String text, int lineStartPos, int endPos)
   {
-    return (float) baseFont.getWidthPoint(text.substring(lineStartPos, endPos), getFontSize());
+    return baseFont.getWidthPoint(text.substring(lineStartPos, endPos), getFontSize());
   }
 
   /**
@@ -1425,7 +1471,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     this.awtPaint = paint;
     PdfContentByte cb = this.writer.getDirectContent();
-    PdfPatternPainter painter = null;
 
     cb.setColorStroke((Color) paint);
     cb.setColorFill((Color) paint);
@@ -1564,8 +1609,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
     updateBooleanProperty(SECURITY_ALLOW_MODIFY_CONTENTS, config);
     updateBooleanProperty(SECURITY_ALLOW_PRINTING, config);
     updateBooleanProperty(SECURITY_ALLOW_SCREENREADERS, config);
-    updateBooleanProperty(SECURITY_OWNERPASSWORD, config);
-    updateBooleanProperty(SECURITY_USERPASSWORD, config);
+    updateProperty(SECURITY_OWNERPASSWORD, config);
+    updateProperty(SECURITY_USERPASSWORD, config);
 
     // encryption needs more info: <undefined> <none> <40> <128>.
   }
