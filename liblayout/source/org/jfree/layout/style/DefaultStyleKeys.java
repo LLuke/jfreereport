@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Boot.java,v 1.6 2003/11/23 16:50:45 taqua Exp $
+ * $Id: DefaultStyleKeys.java,v 1.1 2004/08/21 18:58:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,6 +40,10 @@ package org.jfree.layout.style;
 
 public class DefaultStyleKeys
 {
+  private DefaultStyleKeys()
+  {
+  }
+
   /** A key for an element's 'visible' flag. */
   public static final StyleKey VISIBLE = StyleKey.getStyleKey("visible", Boolean.class);
 
@@ -47,10 +51,10 @@ public class DefaultStyleKeys
   public static final StyleKey FONT = StyleKey.getStyleKey("font", String.class);
 
   /** A key for the 'font size' used to draw element text. */
-  public static final StyleKey FONTSIZE = StyleKey.getStyleKey("font-size", Integer.class);
+  public static final StyleKey FONTSIZE = StyleKey.getStyleKey("font-size", Number.class);
 
   /** A key for the 'font size' used to draw element text. */
-  public static final StyleKey LINEHEIGHT = StyleKey.getStyleKey("line-height", Float.class);
+  public static final StyleKey LINEHEIGHT = StyleKey.getStyleKey("line-height", Number.class);
 
   /** A key for an element's 'bold' flag. */
   public static final StyleKey BOLD = StyleKey.getStyleKey("font-bold", Boolean.class);
@@ -86,15 +90,15 @@ public class DefaultStyleKeys
   public static final StyleKey TEXT_INDENT = StyleKey.getStyleKey("text-indent",
       Float.class);
 
-  public static final StyleKey MARGIN_TOP = StyleKey.getStyleKey("margin-top", Float.class);
-  public static final StyleKey MARGIN_LEFT = StyleKey.getStyleKey("margin-left", Float.class);
-  public static final StyleKey MARGIN_BOTTOM = StyleKey.getStyleKey("margin-bottom", Float.class);
-  public static final StyleKey MARGIN_RIGHT = StyleKey.getStyleKey("margin-right", Float.class);
+  public static final StyleKey MARGIN_TOP = StyleKey.getStyleKey("margin-top", Number.class);
+  public static final StyleKey MARGIN_LEFT = StyleKey.getStyleKey("margin-left", Number.class);
+  public static final StyleKey MARGIN_BOTTOM = StyleKey.getStyleKey("margin-bottom", Number.class);
+  public static final StyleKey MARGIN_RIGHT = StyleKey.getStyleKey("margin-right", Number.class);
 
-  public static final StyleKey PADDING_TOP = StyleKey.getStyleKey("padding-top", Float.class);
-  public static final StyleKey PADDING_LEFT = StyleKey.getStyleKey("padding-left", Float.class);
-  public static final StyleKey PADDING_BOTTOM = StyleKey.getStyleKey("padding-bottom", Float.class);
-  public static final StyleKey PADDING_RIGHT = StyleKey.getStyleKey("padding-right", Float.class);
+  public static final StyleKey PADDING_TOP = StyleKey.getStyleKey("padding-top", Number.class);
+  public static final StyleKey PADDING_LEFT = StyleKey.getStyleKey("padding-left", Number.class);
+  public static final StyleKey PADDING_BOTTOM = StyleKey.getStyleKey("padding-bottom", Number.class);
+  public static final StyleKey PADDING_RIGHT = StyleKey.getStyleKey("padding-right", Number.class);
 
   public static final StyleKey POSITION =
           StyleKey.getStyleKey("position", ElementPosition.class);
@@ -115,6 +119,6 @@ public class DefaultStyleKeys
   public static final StyleKey PAGEBREAK_INSIDE =
           StyleKey.getStyleKey("pagebreak-after", PageBreakRule.class);
 
-  public static final StyleKey ORPHANS = StyleKey.getStyleKey("orphans", Integer.class);
-  public static final StyleKey WIDOWS = StyleKey.getStyleKey("widows", Integer.class);
+  public static final StyleKey ORPHANS = StyleKey.getStyleKey("orphans", Number.class);
+  public static final StyleKey WIDOWS = StyleKey.getStyleKey("widows", Number.class);
 }
