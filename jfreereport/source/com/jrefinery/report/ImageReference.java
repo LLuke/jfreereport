@@ -28,17 +28,17 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageReference.java,v 1.3 2002/05/15 21:02:07 taqua Exp $
+ * $Id: ImageReference.java,v 1.4 2002/05/16 10:49:33 mungady Exp $
  *
  * Changes:
  * --------
  * 25-Apr-2002 : Version 1 (TM);
  * 16-May-2002 : Updated Javadoc comments (DG);
+ * 16-May-2002 : Line Delimiters adjusted and imports organized (JS);
  *
  */
-package com.jrefinery.report;
 
-import gnu.bhresearch.pixie.wmf.WmfImageProducer;
+package com.jrefinery.report;
 
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -46,6 +46,8 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+
+import gnu.bhresearch.pixie.wmf.WmfImageProducer;
 
 /**
  * An image reference encapsulates the source of an image together with an
@@ -55,8 +57,10 @@ import java.net.URL;
  * <p>
  * An ImageReference is always used in conjunction with an ImageElement.
  */
+
 public class ImageReference
 {
+
   /** The image. */
   private Image image;
 
@@ -76,10 +80,11 @@ public class ImageReference
    *
    * @throws IOException if the url could not be read.
    */
-  public ImageReference (URL url, float width, float height)
-          throws IOException
+
+  public ImageReference(URL url, float width, float height) throws IOException
   {
-    this (url, new Rectangle2D.Float (0, 0, width, height));
+
+    this(url, new Rectangle2D.Float(0, 0, width, height));
   }
 
   /**
@@ -92,39 +97,43 @@ public class ImageReference
    *
    * @throws IOException if the url could not be read.
    */
-  public ImageReference (URL url, Rectangle2D bounds)
-          throws IOException
+
+  public ImageReference(URL url, Rectangle2D bounds) throws IOException
   {
-    if (bounds.getWidth () < 1 || bounds.getHeight () < 1)
-      throw new IllegalArgumentException ("Width and height have to be > 0");
+
+    if (bounds.getWidth() < 1 || bounds.getHeight() < 1)
+      throw new IllegalArgumentException("Width and height have to be > 0");
+
     InputStream is = null;
-    setBounds (bounds);
+    setBounds(bounds);
     setSourceURL(url);
+
     try
     {
-      is = url.openStream ();
-      int c1 = is.read ();
-      int c2 = is.read ();
-      is.close ();
-
+      is = url.openStream();
+      int c1 = is.read();
+      int c2 = is.read();
+      is.close();
       is = null;
+
       if (c1 == 0xD7 && c2 == 0xCD)
       {
-        image = Toolkit.getDefaultToolkit ().createImage (new WmfImageProducer (url));
+        image = Toolkit.getDefaultToolkit().createImage(new WmfImageProducer(url));
       }
       else
       {
         this.url = url;
-        image = Toolkit.getDefaultToolkit ().getImage (url);
-        WaitingImageObserver obs = new WaitingImageObserver (image);
-        obs.run ();
+        image = Toolkit.getDefaultToolkit().getImage(url);
+        WaitingImageObserver obs = new WaitingImageObserver(image);
+
+        obs.run();
       }
     }
     finally
     {
       if (is != null)
       {
-        is.close ();
+        is.close();
       }
     }
   }
@@ -136,8 +145,10 @@ public class ImageReference
    *
    * @returns The current image instance.
    */
-  public Image getImage ()
+
+  public Image getImage()
   {
+
     return image;
   }
 
@@ -146,8 +157,10 @@ public class ImageReference
    *
    * @returns The URL.
    */
-  public URL getSourceURL ()
+
+  public URL getSourceURL()
   {
+
     return url;
   }
 
@@ -156,9 +169,13 @@ public class ImageReference
    *
    * @param surl The URL.
    */
-  protected void setSourceURL (URL surl)
+
+  protected void setSourceURL(URL surl)
   {
-    if (surl == null) throw new NullPointerException();
+
+    if (surl == null)
+      throw new NullPointerException();
+
     this.url = surl;
   }
 
@@ -167,9 +184,13 @@ public class ImageReference
    *
    * @param bounds The size.
    */
-  protected void setBounds (Rectangle2D bounds)
+
+  protected void setBounds(Rectangle2D bounds)
   {
-    if (bounds == null) throw new NullPointerException();
+
+    if (bounds == null)
+      throw new NullPointerException();
+
     this.bounds = bounds;
   }
 
@@ -178,9 +199,11 @@ public class ImageReference
    *
    * @returns The width.
    */
-  public float getWidth ()
+
+  public float getWidth()
   {
-    return (float) bounds.getWidth ();
+
+    return (float) bounds.getWidth();
   }
 
   /**
@@ -188,9 +211,11 @@ public class ImageReference
    *
    * @returns the desired height of the image.
    */
-  public float getHeight ()
+
+  public float getHeight()
   {
-    return (float) bounds.getHeight ();
+
+    return (float) bounds.getHeight();
   }
 
   /**
@@ -198,9 +223,11 @@ public class ImageReference
    *
    * @returns The left origin.
    */
-  public float getX ()
+
+  public float getX()
   {
-    return (float) bounds.getX ();
+
+    return (float) bounds.getX();
   }
 
   /**
@@ -208,9 +235,11 @@ public class ImageReference
    *
    * @returns The upper origin.
    */
-  public float getY ()
+
+  public float getY()
   {
-    return (float) bounds.getY ();
+
+    return (float) bounds.getY();
   }
 
   /**
@@ -221,12 +250,15 @@ public class ImageReference
    *
    * @returns The size.
    */
-  public Rectangle2D getBounds (Rectangle2D carrier)
-  {
-    if (carrier == null)
-      carrier = new Rectangle2D.Float ();
 
-    carrier.setRect (bounds);
+  public Rectangle2D getBounds(Rectangle2D carrier)
+  {
+
+    if (carrier == null)
+      carrier = new Rectangle2D.Float();
+
+    carrier.setRect(bounds);
+
     return carrier;
   }
 
@@ -238,9 +270,11 @@ public class ImageReference
    *
    * @return The size.
    */
-  public Rectangle2D getBounds ()
+
+  public Rectangle2D getBounds()
   {
-    return getBounds (null);
+
+    return getBounds(null);
   }
 
   /**
@@ -248,15 +282,19 @@ public class ImageReference
    *
    * @returns The string.
    */
-  public String toString ()
-  {
-    StringBuffer buf = new StringBuffer ();
-    buf.append ("ImageReference={ URL=");
-    buf.append (getSourceURL ());
-    buf.append (" bounds=");
-    buf.append (getBounds ());
-    buf.append ("}");
-    return buf.toString ();
-  }
 
+  public String toString()
+  {
+
+    StringBuffer buf = new StringBuffer();
+
+    buf.append("ImageReference={ URL=");
+    buf.append(getSourceURL());
+    buf.append(" bounds=");
+    buf.append(getBounds());
+    buf.append("}");
+
+    return buf.toString();
+
+  }
 }
