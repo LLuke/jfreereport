@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPage.java,v 1.2 2002/12/03 16:30:49 mungady Exp $
+ * $Id: BoundsAlignment.java,v 1.2 2002/12/05 12:05:09 mungady Exp $
  *
  * Changes
  * -------
@@ -41,32 +41,34 @@ package com.jrefinery.report.targets.pageable.operations;
 import java.awt.geom.Rectangle2D;
 
 /**
- * An abstract base class for performing alignment.
+ * An abstract base class for performing alignment of one <code>Rectangle2D</code> to another.
  *
  * @author Thomas Morgner
  */
 public abstract class BoundsAlignment
 {
   /** The bounds against which the alignment is performed. */
-  protected Rectangle2D outerBounds;
+  protected Rectangle2D referenceBounds;
 
   /**
    * Creates a new alignment object.
    *
-   * @param bounds  the alignment bounds.
+   * @param bounds  the reference bounds (alignment will be performed relative to this rectangle).
    */
   protected BoundsAlignment (Rectangle2D bounds)
   {
-    this.outerBounds = bounds;
+    this.referenceBounds = bounds;
   }
 
   /**
-   * Aligns a rectangle with this object's bounds.  Subclasses determine the exact
-   * alignment behaviour.
+   * Aligns a rectangle with this object's reference bounds.
+   * <P>
+   * Subclasses determine the exact alignment behaviour (for example, the {@link TopAlignment}
+   * class will align a rectangle to the top of the reference bounds).
    *
-   * @param inner  the rectangle to be aligned with this object's bounds.
+   * @param r  the rectangle to be aligned with this object's reference bounds.
    *
    * @return the aligned rectangle.
    */
-  public abstract Rectangle2D align (Rectangle2D inner);
+  public abstract Rectangle2D align (Rectangle2D r);
 }

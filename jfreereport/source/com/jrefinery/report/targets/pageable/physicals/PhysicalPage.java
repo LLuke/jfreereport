@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalPage.java,v 1.5 2002/12/08 20:30:32 taqua Exp $
+ * $Id: PhysicalPage.java,v 1.6 2002/12/11 01:10:42 mungady Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,7 @@ import java.util.ArrayList;
 /**
  * Represents a physical page.
  * <p>
- * Here comes the last step of production, the bands are transfered from the Logical page
+ * Here comes the last step of production, the bands are transfered from the logical page
  * to the physical page.  That page does not know anything specific about bandtypes and how to
  * handle them, is just able to print all that is fed into the page and that's it.
  *
@@ -113,7 +113,7 @@ public class PhysicalPage
   }
 
   /**
-   * Clears the logical page.
+   * Clears the list of operations maintained by the page.
    */
   public void flush()
   {
@@ -121,7 +121,7 @@ public class PhysicalPage
   }
 
   /**
-   * Return the bounds of this Physical Page. These bounds are defined by the
+   * Return the bounds of this physical Page. These bounds are defined by the
    * logical page, and the physical page should use these bounds to correct the
    * placement of the given elements.
    *
@@ -133,9 +133,9 @@ public class PhysicalPage
   }
 
   /**
-   * Get the pageformat for this Physical Page.
+   * Get the page format for this physical page.
    *
-   * @return a copy of this physical pages PageFormat
+   * @return a clone of the page format.
    */
   public PageFormat getPageFormat ()
   {
@@ -143,7 +143,9 @@ public class PhysicalPage
   }
 
   /**
-   * Test whether this Page is empty.
+   * Returns <code>true</code> if the page is empty, and <code>false</code> otherwise.  A page is
+   * empty if no operations have been added since the last call to <code>flush()</code>.
+   *
    * @return true, if no operations were performed on this page since the last
    * flush, false otherwise.
    */

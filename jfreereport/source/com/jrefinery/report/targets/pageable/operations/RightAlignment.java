@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RightAlignment.java,v 1.3 2002/12/11 01:10:41 mungady Exp $
+ * $Id: RightAlignment.java,v 1.4 2002/12/12 12:26:57 mungady Exp $
  *
  * Changes
  * -------
@@ -71,8 +71,8 @@ public class RightAlignment extends HorizontalBoundsAlignment
     {
       throw new NullPointerException("Rect must not be null");
     }
-    rect = outerBounds.createIntersection(rect);
-    double x = outerBounds.getX() + outerBounds.getWidth() - rect.getWidth();
+    rect = referenceBounds.createIntersection(rect);
+    double x = referenceBounds.getX() + referenceBounds.getWidth() - rect.getWidth();
     double y = rect.getY();
     double w = rect.getWidth();
     double h = rect.getHeight();

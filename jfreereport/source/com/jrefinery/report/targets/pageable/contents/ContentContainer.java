@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentContainer.java,v 1.3 2002/12/07 20:53:13 taqua Exp $
+ * $Id: ContentContainer.java,v 1.4 2002/12/12 20:24:03 taqua Exp $
  *
  * Changes
  * -------
@@ -44,9 +44,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 /**
- * A container that contains generic content for a report.
- * <p>
- * Classes that implement this interface include:  TextParagraph.
+ * A report content item that contains other report content items.
  *
  * @author Thomas Morgner
  */
@@ -54,7 +52,7 @@ public class ContentContainer implements Content
 {
   /** Storage for the content items. */
   private ArrayList content;
-  
+
   /** The content bounds. */
   private Rectangle2D bounds;
 
@@ -71,40 +69,18 @@ public class ContentContainer implements Content
   }
 
   /**
-   * Adds content to the container.
+   * Returns the content type, in this case {@link ContentType#CONTAINER}.
    *
-   * @param cp  the content to add.
+   * @return the content type.
    */
-  public void addContentPart (Content cp)
+  public ContentType getContentType()
   {
-    content.add (cp);
-  }
-
-  /**
-   * Returns a content item from the container.
-   *
-   * @param part  the content index (zero-based).
-   *
-   * @return the content.
-   */
-  public Content getContentPart(int part)
-  {
-    return (Content) content.get(part);
-  }
-
-  /**
-   * Returns the number of content items in the container.
-   *
-   * @return the item count.
-   */
-  public int getContentPartCount()
-  {
-    return content.size();
+    return ContentType.CONTAINER;
   }
 
   /**
    * Returns the bounds for the content.
-   * 
+   *
    * @return the bounds.
    */
   public Rectangle2D getBounds()
@@ -123,13 +99,35 @@ public class ContentContainer implements Content
   }
 
   /**
-   * Returns the content type, in this case ContentType.CONTAINER.
+   * Adds content to the container.
    *
-   * @return the content type.
+   * @param cp  the content to add.
    */
-  public ContentType getContentType()
+  public void addContentPart (Content cp)
   {
-    return ContentType.CONTAINER;
+    content.add (cp);
+  }
+
+  /**
+   * Returns the number of content items in the container.
+   *
+   * @return the item count.
+   */
+  public int getContentPartCount()
+  {
+    return content.size();
+  }
+
+  /**
+   * Returns a content item from the container.
+   *
+   * @param part  the content index (zero-based).
+   *
+   * @return the content.
+   */
+  public Content getContentPart(int part)
+  {
+    return (Content) content.get(part);
   }
 
   /**

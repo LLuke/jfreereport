@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ------------------------
  * TextOperationModule.java
- * -----------------------
+ * ------------------------
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.1 2002/12/12 20:20:28 taqua Exp $
+ * $Id: TextOperationModule.java,v 1.2 2002/12/13 01:26:11 taqua Exp $
  *
  * Changes
  * -------

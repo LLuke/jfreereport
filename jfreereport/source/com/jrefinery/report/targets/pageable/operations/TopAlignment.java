@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPage.java,v 1.2 2002/12/03 16:30:49 mungady Exp $
+ * $Id: TopAlignment.java,v 1.2 2002/12/05 12:05:10 mungady Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,7 @@ package com.jrefinery.report.targets.pageable.operations;
 import java.awt.geom.Rectangle2D;
 
 /**
- * A utility class that can align a rectangle to the top edge of the current
- * bounds.
+ * A utility class that can align a rectangle to the top edge of the reference bounds.
  *
  * @author Thomas Morgner
  */
@@ -51,7 +50,7 @@ public class TopAlignment extends VerticalBoundsAlignment
   /**
    * Creates a new alignment object.
    *
-   * @param bounds  the bounds.
+   * @param bounds  the reference bounds.
    */
   public TopAlignment(Rectangle2D bounds)
   {
@@ -61,21 +60,21 @@ public class TopAlignment extends VerticalBoundsAlignment
   /**
    * Aligns a rectangle to the top of the current bounds.
    *
-   * @param inner  the region to align (null not permitted).
+   * @param r  the region to align (<code>null</code> not permitted).
    *
    * @return the aligned rectangle.
    */
-  public Rectangle2D align(Rectangle2D inner)
+  public Rectangle2D align(Rectangle2D r)
   {
-    if (inner == null) 
+    if (r == null)
     {
-      throw new NullPointerException("Inner Bound must not be null");
+      throw new NullPointerException("TopAlignment.align(...) : null not permitted.");
     }
-    inner = outerBounds.createIntersection(inner);
-    double x = inner.getX();
-    double y = outerBounds.getY();
-    double w = Math.min (inner.getWidth(), outerBounds.getWidth());
-    double h = Math.min (inner.getHeight(), outerBounds.getHeight());
+    r = referenceBounds.createIntersection(r);
+    double x = r.getX();
+    double y = referenceBounds.getY();
+    double w = Math.min (r.getWidth(), referenceBounds.getWidth());
+    double h = Math.min (r.getHeight(), referenceBounds.getHeight());
 
     return new Rectangle2D.Double(x, y, w, h);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationModule.java,v 1.3 2002/12/07 20:53:13 taqua Exp $
+ * $Id: OperationModule.java,v 1.1 2002/12/12 20:20:28 taqua Exp $
  *
  * Changes
  * -------
@@ -46,21 +46,21 @@ import java.util.List;
 /**
  * The base class for an operation module. Operation modules can be either
  * specific modules for a certain specialized type of content ("text/plain", for instance)
- * or a modul can be a generic handler for a certain group of content ("text/*").
+ * or a module can be a generic handler for a certain group of content ("text/*").
  * <p>
  * While a generic handler may not be as performant as a specialized handler,
- * that handler may be usefull for displaying at least some of the content.
+ * that handler may be useful for displaying at least some of the content.
  * <p>
- * todo: add support for generic handlers to the operation factory. 
+ * todo: add support for generic handlers to the operation factory.
  *
  * @author Thomas Morgner
  */
 public abstract class OperationModule
 {
-  /** The module type. */
+  /** The module content type. */
   private String moduleContentType;
-  
-  /** A flag that defines that the operation modul is a generic content handler */
+
+  /** A flag that defines that the operation module is a generic content handler. */
   private boolean generic;
 
   /**
@@ -70,7 +70,7 @@ public abstract class OperationModule
    */
   public OperationModule (String content)
   {
-    if (content == null) 
+    if (content == null)
     {
       throw new NullPointerException();
     }
@@ -85,7 +85,7 @@ public abstract class OperationModule
   }
 
   /**
-   * Returns the module content type. 
+   * Returns the module content type.
    *
    * @return the type.
    */
@@ -95,9 +95,9 @@ public abstract class OperationModule
   }
 
   /**
-   * Returns the 'generic' flag.
+   * Returns <code>true</code> if this is a 'generic' module, and <code>false</code> otherwise.
    *
-   * @return true or false.
+   * @return <code>true</code> or <code>false</code>.
    */
   public boolean isGeneric()
   {
@@ -105,12 +105,12 @@ public abstract class OperationModule
   }
 
   /**
-   * Returns true if the module can handle the specified content type, and false 
-   * otherwise.
+   * Returns <code>true</code> if the module can handle the specified content type, and
+   * <code>false</code> otherwise.
    *
    * @param contentType  the content type.
    *
-   * @return true or false.
+   * @return <code>true</code> or <code>false</code>.
    */
   public boolean canHandleContent (String contentType)
   {
@@ -137,7 +137,7 @@ public abstract class OperationModule
 
   /**
    * Creates content for an element.
-   * 
+   *
    * @param e  the element.
    * @param bounds  the bounds.
    * @param ot  the output target.

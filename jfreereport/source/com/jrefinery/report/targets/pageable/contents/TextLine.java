@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextLine.java,v 1.4 2002/12/06 20:34:13 taqua Exp $
+ * $Id: TextLine.java,v 1.5 2002/12/12 20:24:03 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ import com.jrefinery.report.targets.pageable.SizeCalculator;
 import java.awt.geom.Rectangle2D;
 
 /**
- * Represents a line of text. 
+ * Represents a line of text.
  *
  * @author Thomas Morgner
  */
@@ -51,15 +51,15 @@ public class TextLine implements Content
 {
   /** The size calculator. */
   private SizeCalculator sizeCalc;
-  
+
   /** The string. */
   private String content;
-  
+
   /** The content bounds. */
   private Rectangle2D bounds;
 
   /**
-   * Creates a new line of text. 
+   * Creates a new line of text.
    *
    * @param sizeCalc  the size calculator.
    */
@@ -84,6 +84,16 @@ public class TextLine implements Content
   }
 
   /**
+   * Returns the content type, in this case {@link ContentType#TEXT}.
+   *
+   * @return the content type.
+   */
+  public ContentType getContentType()
+  {
+    return ContentType.TEXT;
+  }
+
+  /**
    * Sets the content for the line of text.
    *
    * @param content  the new string.
@@ -91,26 +101,26 @@ public class TextLine implements Content
    */
   public void setContent (String content, Rectangle2D maxBounds)
   {
-    if (maxBounds.getX () < 0) 
+    if (maxBounds.getX () < 0)
     {
       throw new IllegalArgumentException();
     }
-    if (maxBounds.getY () < 0) 
+    if (maxBounds.getY () < 0)
     {
       throw new IllegalArgumentException();
     }
-    if (maxBounds.getWidth () < 0) 
+    if (maxBounds.getWidth () < 0)
     {
       throw new IllegalArgumentException();
     }
-    if (maxBounds.getHeight () < 0) 
+    if (maxBounds.getHeight () < 0)
     {
       throw new IllegalArgumentException();
     }
 
     this.content = content;
     Rectangle2D bounds = new Rectangle2D.Float();
-    double width = Math.min (maxBounds.getWidth(), 
+    double width = Math.min (maxBounds.getWidth(),
                              getSizeCalculator().getStringWidth(content, 0, content.length()));
     double height = Math.min(maxBounds.getHeight(), getSizeCalculator().getLineHeight());
     bounds.setRect(maxBounds.getX(), maxBounds.getY(), width, height);
@@ -128,25 +138,25 @@ public class TextLine implements Content
   }
 
   /**
-   * This class does not store subcontent items, so this method always returns null.
-   *
-   * @param part  ignored.
-   *
-   * @return null.
-   */
-  public Content getContentPart(int part)
-  {
-    return null;
-  }
-
-  /**
-   * This class does not store subcontent items, so this method always returns zero.
+   * This class does not store sub-content items, so this method always returns zero.
    *
    * @return zero.
    */
   public int getContentPartCount()
   {
     return 0;
+  }
+
+  /**
+   * This class does not store sub-content items, so this method always returns <code>null</code>.
+   *
+   * @param part  ignored.
+   *
+   * @return <code>null</code>.
+   */
+  public Content getContentPart(int part)
+  {
+    return null;
   }
 
   /**
@@ -170,19 +180,9 @@ public class TextLine implements Content
   }
 
   /**
-   * Returns the content type, in this case ContentType.TEXT.
-   *
-   * @return the content type.
-   */
-  public ContentType getContentType()
-  {
-    return ContentType.TEXT;
-  }
-
-  /**
    * Returns the content that fits in the specified bounds.
    * <p>
-   * This is a single line, so either the content does fit the height, or it doesn't (in that 
+   * This is a single line, so either the content does fit the height, or it doesn't (in that
    * case, return nothing at all).
    *
    * @param bounds  the bounds.
@@ -269,11 +269,11 @@ public class TextLine implements Content
     }
 
     int delta = ((endPos - startPos) / 2) + startPos;
-    if (delta == startPos) 
+    if (delta == startPos)
     {
       return startPos;
     }
-    if (delta == endPos) 
+    if (delta == endPos)
     {
       return endPos;
     }
@@ -302,6 +302,6 @@ public class TextLine implements Content
 
   public String toString ()
   {
-    return (getClass().getName() + "={ content=\"" + getContent() + "\", bounds=" + getBounds()); 
+    return (getClass().getName() + "={ content=\"" + getContent() + "\", bounds=" + getBounds());
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Content.java,v 1.1 2002/12/02 17:56:54 taqua Exp $
+ * $Id: ShapeContent.java,v 1.2 2002/12/03 16:29:22 mungady Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
 /**
- * Shape content.
+ * A report content item that encapsulates a <code>Shape</code> object.
  *
  * @author Thomas Morgner.
  */
@@ -51,7 +51,7 @@ public class ShapeContent implements Content
 {
   /** The shape. */
   private Shape shape;
-  
+
   /** The bounds. */
   private Rectangle2D bounds;
 
@@ -70,7 +70,7 @@ public class ShapeContent implements Content
    *
    * @param s  the shape.
    * @param bounds  the bounds.
-   */  
+   */
   public ShapeContent(Shape s, Rectangle2D bounds)
   {
     this.shape = s;
@@ -78,25 +78,13 @@ public class ShapeContent implements Content
   }
 
   /**
-   * This class does not store subcontent items, so this method always returns null.
+   * Returns the content type, in this case {@link ContentType#SHAPE}.
    *
-   * @param part  ignored.
-   *
-   * @return null.
+   * @return the content type.
    */
-  public Content getContentPart(int part)
+  public ContentType getContentType()
   {
-    return null;
-  }
-
-  /**
-   * This class does not store subcontent items, so this method always returns zero.
-   *
-   * @return zero.
-   */
-  public int getContentPartCount()
-  {
-    return 0;
+    return ContentType.SHAPE;
   }
 
   /**
@@ -107,6 +95,48 @@ public class ShapeContent implements Content
   public Shape getShape ()
   {
     return shape;
+  }
+
+  /**
+   * Returns the bounds for the content.
+   *
+   * @return the bounds.
+   */
+  public Rectangle2D getBounds()
+  {
+    return bounds.getBounds2D();
+  }
+
+  /**
+   * Returns the minimum content size.
+   *
+   * @return the minimum content size.
+   */
+  public Rectangle2D getMinimumContentSize()
+  {
+    return getBounds();
+  }
+
+  /**
+   * This class does not store sub-content items, so this method always returns zero.
+   *
+   * @return zero.
+   */
+  public int getContentPartCount()
+  {
+    return 0;
+  }
+
+  /**
+   * This class does not store sub-content items, so this method always returns <code>null</code>.
+   *
+   * @param part  ignored.
+   *
+   * @return <code>null</code>.
+   */
+  public Content getContentPart(int part)
+  {
+    return null;
   }
 
   /**
@@ -122,28 +152,8 @@ public class ShapeContent implements Content
   }
 
   /**
-   * Returns the bounds for the content.
-   *
-   * @return the bounds.
-   */
-  public Rectangle2D getBounds()
-  {
-    return bounds.getBounds2D();
-  }
-
-  /**
-   * Returns the content type, in this case ContentType.SHAPE.
-   *
-   * @return the content type.
-   */  
-  public ContentType getContentType()
-  {
-    return ContentType.SHAPE;
-  }
-
-  /**
    * Returns content that falls within the specified bounds.
-   * 
+   *
    * @param bounds  the bounds.
    *
    * @return the content.
@@ -154,15 +164,5 @@ public class ShapeContent implements Content
     return new ShapeContent(getShape(), newBounds);
   }
 
-  /**
-   * Returns the minimum content size.
-   *
-   * @return the minimum content size.
-   */
-  public Rectangle2D getMinimumContentSize()
-  {
-    return getBounds();
-  }
-  
 }
 

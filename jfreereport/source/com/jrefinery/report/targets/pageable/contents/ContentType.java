@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentType.java,v 1.2 2002/12/03 16:29:21 mungady Exp $
+ * $Id: ContentType.java,v 1.3 2002/12/12 12:26:57 mungady Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,14 @@
 package com.jrefinery.report.targets.pageable.contents;
 
 /**
- * A class for representing a type of content.
+ * A class for representing a content type.  The four predefined content types are:
+ *
+ * <ul>
+ * <li><code>TEXT</code>;</li>
+ * <li><code>SHAPE</code>;</li>
+ * <li><code>IMAGE</code>;</li>
+ * <li><code>CONTAINER</code>;</li>
+ * </ul>
  *
  * @see Content
  *

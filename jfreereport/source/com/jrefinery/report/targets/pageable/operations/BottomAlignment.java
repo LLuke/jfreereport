@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPage.java,v 1.2 2002/12/03 16:30:49 mungady Exp $
+ * $Id: BottomAlignment.java,v 1.2 2002/12/05 12:05:08 mungady Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@ package com.jrefinery.report.targets.pageable.operations;
 import java.awt.geom.Rectangle2D;
 
 /**
- * A utility class that can align a rectangle to the bottom edge of the current
+ * A utility class that can align a <code>Rectangle2D</code> to the bottom edge of its reference
  * bounds.
  *
  * @author Thomas Morgner
@@ -51,7 +51,7 @@ public class BottomAlignment extends VerticalBoundsAlignment
   /**
    * Creates a new alignment object.
    *
-   * @param bounds  the bounds.
+   * @param bounds  the reference bounds.
    */
   public BottomAlignment(Rectangle2D bounds)
   {
@@ -59,23 +59,23 @@ public class BottomAlignment extends VerticalBoundsAlignment
   }
 
   /**
-   * Aligns a rectangle to the bottom of the current bounds.
+   * Aligns a rectangle to the bottom of the current reference bounds.
    *
-   * @param inner  the region to align.
+   * @param r  the rectangle to align.
    *
-   * @return the aligned rectangle.
+   * @return a new rectangle resulting from the alignment operation.
    */
-  public Rectangle2D align(Rectangle2D inner)
+  public Rectangle2D align(Rectangle2D r)
   {
-    if (inner == null) 
+    if (r == null)
     {
-      throw new NullPointerException("Inner Bound must not be null");
+      throw new NullPointerException("BottomAlignment.align(...): null not permitted.");
     }
-    inner = outerBounds.createIntersection(inner);
-    double x = inner.getX();
-    double y = outerBounds.getY() + outerBounds.getHeight() - inner.getHeight();
-    double w = inner.getWidth();
-    double h = inner.getHeight();
+    r = referenceBounds.createIntersection(r);
+    double x = r.getX();
+    double y = referenceBounds.getY() + referenceBounds.getHeight() - r.getHeight();
+    double w = r.getWidth();
+    double h = r.getHeight();
     return new Rectangle2D.Double(x, y, w, h);
   }
 }

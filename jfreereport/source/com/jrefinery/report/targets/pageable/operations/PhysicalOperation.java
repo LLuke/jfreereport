@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalOperation.java,v 1.3 2002/12/05 12:05:10 mungady Exp $
+ * $Id: PhysicalOperation.java,v 1.4 2002/12/06 20:34:14 taqua Exp $
  *
  * Changes
  * -------
@@ -49,18 +49,24 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
 
+import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;  // for Javadoc link
+import com.jrefinery.report.targets.pageable.Spool;  // for Javadoc link
+
 /**
- * The base class for an operation that can be applied to an OutputTarget.  Refer to the subclasses
- * for some examples.
+ * The base class for an operation that can be applied to an {@link OutputTarget}.
+ * These operations are typically added to a {@link PhysicalPage} in the process of being sent
+ * to the output target.
+ * <P>
+ * Refer to the subclasses for some examples.
  * <p>
- * A sequence of operations can be stored in a Spool and replayed at any time.
+ * A sequence of operations can be stored in a {@link Spool} and replayed at any time.
  *
  * @author Thomas Morgner
  */
 public abstract class PhysicalOperation
 {
   /**
-   * An operation that sets the font for an OutputTarget.
+   * An operation that sets the font for an {@link OutputTarget}.
    */
   public static class SetFontOperation extends PhysicalOperation
   {
@@ -74,7 +80,7 @@ public abstract class PhysicalOperation
      */
     public SetFontOperation(Font font)
     {
-      if (font == null) 
+      if (font == null)
       {
         throw new NullPointerException();
       }
@@ -84,7 +90,7 @@ public abstract class PhysicalOperation
     /**
      * Performs the operation, in this case setting the font for the output target.
      *
-     * @param ot  the output target. 
+     * @param ot  the output target.
      *
      * @throws OutputTargetException if there is a problem performing the operation on the target.
      */
@@ -98,9 +104,7 @@ public abstract class PhysicalOperation
   }
 
   /**
-   * An operation that adds a comment to an OutputTarget.  
-   * <p>
-   * NOTE: THE CURRENT IMPLEMENTATION DOES NOTHING.
+   * An operation that adds a comment to the debug log.
    */
   public static class AddComment extends PhysicalOperation
   {
@@ -114,7 +118,7 @@ public abstract class PhysicalOperation
      */
     public AddComment(Object comment)
     {
-      if (comment == null) 
+      if (comment == null)
       {
         throw new NullPointerException();
       }
@@ -135,7 +139,7 @@ public abstract class PhysicalOperation
   }
 
   /**
-   * Sets the Paint for an OutputTarget.
+   * An operation that sets the paint for an {@link OutputTarget}.
    */
   public static class SetPaintOperation extends PhysicalOperation
   {
@@ -149,7 +153,7 @@ public abstract class PhysicalOperation
      */
     public SetPaintOperation(Paint paint)
     {
-      if (paint == null) 
+      if (paint == null)
       {
         throw new NullPointerException();
       }
@@ -173,21 +177,21 @@ public abstract class PhysicalOperation
   }
 
   /**
-   * An operation that sets the Stroke for an OutputTarget.
+   * An operation that sets the stroke for an {@link OutputTarget}.
    */
   public static class SetStrokeOperation extends PhysicalOperation
   {
     /** The stroke. */
     private Stroke stroke;
 
-    /** 
+    /**
      * Creates a new 'set stroke' operation.
      *
      * @param stroke  the stroke.
      */
     public SetStrokeOperation(Stroke stroke)
     {
-      if (stroke == null) 
+      if (stroke == null)
       {
         throw new NullPointerException();
       }
@@ -211,7 +215,7 @@ public abstract class PhysicalOperation
   }
 
   /**
-   * An operation that sets the bounds for an OutputTarget.
+   * An operation that sets the bounds for an {@link OutputTarget}.
    */
   public static class SetBoundsOperation extends PhysicalOperation
   {
@@ -225,7 +229,7 @@ public abstract class PhysicalOperation
      */
     public SetBoundsOperation(Rectangle2D bounds)
     {
-      if (bounds == null) 
+      if (bounds == null)
       {
         throw new NullPointerException();
       }
@@ -257,7 +261,7 @@ public abstract class PhysicalOperation
   }
 
   /**
-   * An operation that draws text on an OutputTarget.
+   * An operation that draws text on an {@link OutputTarget}.
    */
   public static class PrintTextOperation extends PhysicalOperation
   {
@@ -271,7 +275,7 @@ public abstract class PhysicalOperation
      */
     public PrintTextOperation(String text)
     {
-      if (text == null) 
+      if (text == null)
       {
         throw new NullPointerException();
       }
@@ -292,7 +296,7 @@ public abstract class PhysicalOperation
 
     /**
      * Returns a String representation of the operation, which can be useful for debugging.
-     * 
+     *
      * @return a string.
      */
     public String toString ()
@@ -302,7 +306,7 @@ public abstract class PhysicalOperation
   }
 
   /**
-   * An operation that prints an Image on an OutputTarget.
+   * An operation that prints an Image on an {@link OutputTarget}.
    */
   public static class PrintImageOperation extends PhysicalOperation
   {
@@ -316,7 +320,7 @@ public abstract class PhysicalOperation
      */
     public PrintImageOperation(ImageReference image)
     {
-      if (image == null) 
+      if (image == null)
       {
         throw new NullPointerException();
       }
@@ -337,7 +341,7 @@ public abstract class PhysicalOperation
   }
 
   /**
-   * An operation that draws a Shape on an OutputTarget.
+   * An operation that draws a shape on an {@link OutputTarget}.
    */
   public static class PrintShapeOperation extends PhysicalOperation
   {
@@ -351,7 +355,7 @@ public abstract class PhysicalOperation
      */
     public PrintShapeOperation(Shape shape)
     {
-      if (shape == null) 
+      if (shape == null)
       {
         throw new NullPointerException();
       }
@@ -372,7 +376,7 @@ public abstract class PhysicalOperation
   }
 
   /**
-   * An operation that draws a filled shape on an OutputTarget.
+   * An operation that draws a filled shape on an {@link OutputTarget}.
    */
   public static class PrintFilledShapeOperation extends PhysicalOperation
   {
@@ -386,7 +390,7 @@ public abstract class PhysicalOperation
      */
     public PrintFilledShapeOperation(Shape shape)
     {
-      if (shape == null) 
+      if (shape == null)
       {
         throw new NullPointerException();
       }
@@ -407,7 +411,7 @@ public abstract class PhysicalOperation
   }
 
   /**
-   * Performs an operation on an OutputTarget.
+   * Performs an operation on an {@link OutputTarget}.
    *
    * @param ot  the output target.
    *

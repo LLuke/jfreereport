@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationFactory.java,v 1.3 2002/12/07 20:53:13 taqua Exp $
+ * $Id: OperationFactory.java,v 1.4 2002/12/12 20:20:28 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@ package com.jrefinery.report.targets.pageable.operations;
 import java.util.ArrayList;
 
 /**
- * A collection of modules.
+ * A collection of operation modules.
  *
  * @author Thomas Morgner
  */
@@ -46,7 +46,7 @@ public class OperationFactory
 {
   /** The factory instance. */
   protected static OperationFactory factory;
-  
+
   /** Storage for the modules. */
   private ArrayList modules;
 
@@ -78,21 +78,21 @@ public class OperationFactory
   /**
    * Registered a module with the factory.
    *
-   * @param modul  the module.
+   * @param module  the module.
    */
-  public void registerModule (OperationModule modul)
+  public void registerModule (OperationModule module)
   {
-    modules.add (0, modul);
+    modules.add (0, module);
   }
 
   /**
    * Deregisters a module with the factory.
    *
-   * @param modul  the module.
+   * @param module  the module.
    */
-  public void unregisterModule (OperationModule modul)
+  public void unregisterModule (OperationModule module)
   {
-    modules.remove(modul);
+    modules.remove(module);
   }
 
   /**

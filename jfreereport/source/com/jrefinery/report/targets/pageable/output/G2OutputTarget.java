@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.6 2002/12/12 15:36:05 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.7 2002/12/13 01:26:11 taqua Exp $
  *
  * Changes
  * -------
@@ -630,7 +630,7 @@ public class G2OutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * A size calculator.
+   * A size calculator used internally by the <code>G2OutputTarget</code> class.
    */
   private static class G2SizeCalculator implements SizeCalculator
   {

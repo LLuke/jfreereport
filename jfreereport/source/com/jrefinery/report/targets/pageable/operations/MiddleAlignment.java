@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPage.java,v 1.2 2002/12/03 16:30:49 mungady Exp $
+ * $Id: MiddleAlignment.java,v 1.2 2002/12/05 12:05:09 mungady Exp $
  *
  * Changes
  * -------
@@ -61,21 +61,21 @@ public class MiddleAlignment extends VerticalBoundsAlignment
   /**
    * Aligns a rectangle with the current bounds.
    *
-   * @param inner  the rectangle to align (null not permitted).
+   * @param r  the rectangle to align (<code>null</code> not permitted).
    *
    * @return the aligned rectangle.
    */
-  public Rectangle2D align(Rectangle2D inner)
+  public Rectangle2D align(Rectangle2D r)
   {
-    if (inner == null) 
+    if (r == null)
     {
-      throw new NullPointerException("Inner Boud must not be null");
+      throw new NullPointerException("MiddleAlignment.align(...): null not permitted.");
     }
-    inner = outerBounds.createIntersection(inner);
-    double x = inner.getX();
-    double y = outerBounds.getY() + ((outerBounds.getHeight() - inner.getHeight()) / 2);
-    double w = inner.getWidth();
-    double h = inner.getHeight();
+    r = referenceBounds.createIntersection(r);
+    double x = r.getX();
+    double y = referenceBounds.getY() + ((referenceBounds.getHeight() - r.getHeight()) / 2);
+    double w = r.getWidth();
+    double h = r.getHeight();
     return new Rectangle2D.Double(x, y, w, h);
   }
 }

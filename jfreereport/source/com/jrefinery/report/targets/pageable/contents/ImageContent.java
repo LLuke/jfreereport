@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id:$
+ * $Id: ImageContent.java,v 1.2 2002/12/03 16:29:21 mungady Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ public class ImageContent implements Content
 {
   /** The image reference. */
   private ImageReference reference;
-  
+
   /** The bounds. */
   private Rectangle2D bounds;
 
@@ -67,25 +67,35 @@ public class ImageContent implements Content
   }
 
   /**
-   * This class does not store subcontent items, so this method always returns null.
+   * Returns the content type, in this case {@link ContentType#IMAGE}.
    *
-   * @param part  ignored.
-   *
-   * @return null.
+   * @return the content type.
    */
-  public Content getContentPart(int part)
+  public ContentType getContentType()
   {
-    return null;
+    return ContentType.IMAGE;
   }
 
   /**
-   * This class does not store subcontent items, so this method always returns zero.
+   * This class does not store sub-content items, so this method always returns zero.
    *
    * @return zero.
    */
   public int getContentPartCount()
   {
     return 0;
+  }
+
+  /**
+   * This class does not store sub-content items, so this method always returns <code>null</code>.
+   *
+   * @param part  ignored.
+   *
+   * @return <code>null</code>.
+   */
+  public Content getContentPart(int part)
+  {
+    return null;
   }
 
   /**
@@ -99,18 +109,8 @@ public class ImageContent implements Content
   }
 
   /**
-   * Returns the content type, in this case ContentType.IMAGE.
-   *
-   * @return the content type.
-   */
-  public ContentType getContentType()
-  {
-    return ContentType.IMAGE;
-  }
-
-  /**
    * Returns content that falls within the specified bounds.
-   * 
+   *
    * @param bounds  the bounds.
    *
    * @return the content.
@@ -159,5 +159,5 @@ public class ImageContent implements Content
   {
     return getBounds();
   }
-  
+
 }

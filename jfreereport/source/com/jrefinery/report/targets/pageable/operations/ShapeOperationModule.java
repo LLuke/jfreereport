@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeOperationModule.java,v 1.2 2002/12/05 16:51:47 mungady Exp $
+ * $Id: ShapeOperationModule.java,v 1.1 2002/12/12 20:20:28 taqua Exp $
  *
  * Changes
  * -------
@@ -69,7 +69,7 @@ public class ShapeOperationModule extends OperationModule
   }
 
   /**
-   * Creates a list of operations.
+   * Creates a list of operations that will render report content within the specified bounds.
    *
    * @param e  the element.
    * @param value  the content.
@@ -79,22 +79,18 @@ public class ShapeOperationModule extends OperationModule
    */
   public List createOperations (Element e, Content value, Rectangle2D bounds)
   {
-    // Stroke
     Stroke stroke = (Stroke) e.getStyle().getStyleProperty(ElementStyleSheet.STROKE);
-
-    // Paint
     Paint paint = (Paint) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
-
-    ShapeContent sc = (ShapeContent) value.getContentForBounds(bounds);
 
     boolean shouldDraw = e.getStyle().getBooleanStyleProperty(ShapeElement.DRAW_SHAPE);
     boolean shouldFill = e.getStyle().getBooleanStyleProperty(ShapeElement.FILL_SHAPE);
 
-    if (shouldFill == false && shouldDraw == false) 
+    if (shouldFill == false && shouldDraw == false)
     {
       return null;
     }
 
+    ShapeContent sc = (ShapeContent) value.getContentForBounds(bounds);
     Shape s = sc.getNormalizedShape();
     ArrayList array = new ArrayList ();
     array.add (new PhysicalOperation.SetBoundsOperation (bounds));
@@ -105,7 +101,7 @@ public class ShapeOperationModule extends OperationModule
       array.add (new PhysicalOperation.PrintShapeOperation(s));
     }
 
-    if (shouldFill == true) 
+    if (shouldFill == true)
     {
       array.add (new PhysicalOperation.PrintFilledShapeOperation(s));
     }
@@ -114,7 +110,7 @@ public class ShapeOperationModule extends OperationModule
   }
 
   /**
-   * ??.
+   * Creates a {@link ShapeContent} item for a report element.
    *
    * @param e  the element.
    * @param bounds  the bounds.

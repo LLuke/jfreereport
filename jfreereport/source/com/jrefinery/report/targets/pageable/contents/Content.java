@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Content.java,v 1.3 2002/12/07 20:53:13 taqua Exp $
+ * $Id: Content.java,v 1.4 2002/12/12 12:26:57 mungady Exp $
  *
  * Changes
  * -------
@@ -42,28 +42,18 @@ import java.awt.geom.Rectangle2D;
 
 /**
  * An interface for report content.
- * <p>
- * Classes that implement this interface include:  ContentContainer, TextLine, ImageContent.
  *
  * @author Thomas Morgner.
  */
 public interface Content
 {
   /**
-   * Returns a subcontent item.
+   * Returns the content type (the types include <code>TEXT</code>, <code>IMAGE</code>,
+   * <code>SHAPE</code> and <code>CONTAINER</code>).
    *
-   * @param part  the subcontent index (zero-based).
-   *
-   * @return the subcontent (possibly null).
+   * @return the content type.
    */
-  public Content getContentPart (int part);
-
-  /**
-   * Returns the number of items of "subcontent" for this content item.
-   *
-   * @return the count.
-   */
-  public int getContentPartCount ();
+  public ContentType getContentType();
 
   /**
    * Returns the bounds for the content.
@@ -73,30 +63,41 @@ public interface Content
   public Rectangle2D getBounds();
 
   /**
-   * Returns the content type.
-   *
-   * @return the content type.
-   */
-  public ContentType getContentType();
-
-  /**
-   * Returns the content for the given bounds. The extracted content is the content
-   * that would be displayed in the specific bounds if the content would be printed
-   * with clipping enabled at the given boundry.
-   * <p>
-   * This method returns null if there is no content in these bounds.
-   *
-   * @param bounds  the bounds.
-   *
-   * @return the content (possibly null).
-   */
-  public Content getContentForBounds (Rectangle2D bounds);
-
-  /**
    * Returns the minimum content size.
    *
    * @return the minimum size.
    */
   public Rectangle2D getMinimumContentSize();
+
+  /**
+   * Returns the content for the given bounds. The extracted content is the content
+   * that would be displayed in the specific bounds if the content would be printed
+   * with clipping enabled at the given boundary.
+   * <p>
+   * This method returns <code>null</code> if there is no content in these bounds.
+   *
+   * @param bounds  the bounds.
+   *
+   * @return the content (possibly <code>null</code>).
+   */
+  public Content getContentForBounds (Rectangle2D bounds);
+
+  /**
+   * Returns the number of sub-content items for this item.
+   * <P>
+   * Only subclasses of {@link ContentContainer} will return non-zero results.
+   *
+   * @return the number of sub-content items.
+   */
+  public int getContentPartCount ();
+
+  /**
+   * Returns a sub-content item.
+   *
+   * @param part  the sub-content index (zero-based).
+   *
+   * @return the subcontent (possibly null).
+   */
+  public Content getContentPart (int part);
 
 }

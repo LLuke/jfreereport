@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: SizeCalculator.java,v 1.2 2002/12/03 16:31:02 mungady Exp $
  *
  * Changes
  * -------
@@ -38,17 +38,22 @@
 
 package com.jrefinery.report.targets.pageable;
 
+import com.jrefinery.report.targets.pageable.OutputTarget;  // required for Javadoc links
+
 /**
- * The interface for an object that can calculate the width of a given string, and the 
+ * The interface for an object that can calculate the width of a given string, and the
  * height of a line of text.  The calculations rely on state information (e.g. font size,
  * graphics device, etc) maintained by the calculator.
+ * <p>
+ * Every {@link OutputTarget} can create an instance of a class that implements this interface,
+ * via the {@link OutputTarget#createTextSizeCalculator} method.
  *
  * @author Thomas Morgner
  */
 public interface SizeCalculator
 {
   /**
-   * Calculates the width of a String in the current Graphics context.
+   * Calculates the width of a <code>String<code> in the current <code>Graphics</code> context.
    *
    * @param text the text.
    * @param lineStartPos the start position of the substring to be measured.
