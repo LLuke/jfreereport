@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,10 +26,10 @@
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.12 2004/04/15 15:14:21 taqua Exp $
+ * $Id: ReportFactory.java,v 1.13 2004/04/19 17:03:24 taqua Exp $
  *
  * Changes
  * -------

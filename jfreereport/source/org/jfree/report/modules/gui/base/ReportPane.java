@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ---------------
  * ReportPane.java
  * ---------------
- * (C)opyright 2000-2003, by Simba Management Limited.
+ * (C)opyright 2000-2003, by Object Refinery Limited.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
+ * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.15 2004/04/15 15:14:19 taqua Exp $
+ * $Id: ReportPane.java,v 1.16 2004/04/19 17:03:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------

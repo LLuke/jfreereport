@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -27,10 +27,10 @@
  *
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG), based on ideas and code from
  *                   JRXlsExporter.java of JasperReports
- * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
  *
- * $Id: ExcelDataCellStyle.java,v 1.4 2003/09/09 15:52:53 taqua Exp $
+ * $Id: ExcelDataCellStyle.java,v 1.5 2003/11/07 15:31:40 taqua Exp $
  *
  * Changes
  * -------

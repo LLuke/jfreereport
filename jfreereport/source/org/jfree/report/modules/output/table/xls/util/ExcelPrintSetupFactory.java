@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: ExcelPrintSetupFactory.java,v 1.6 2003/09/09 15:52:53 taqua Exp $
+ * $Id: ExcelPrintSetupFactory.java,v 1.1 2004/03/16 16:00:20 taqua Exp $
  *
  * Changes
  * -------

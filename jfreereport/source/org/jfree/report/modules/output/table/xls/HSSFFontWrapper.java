@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -26,9 +26,9 @@
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Heiko Evermann
- * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner; David Gilbert (for Object Refinery Limited);
  *
- * $Id: HSSFFontWrapper.java,v 1.4 2003/08/31 19:27:58 taqua Exp $
+ * $Id: HSSFFontWrapper.java,v 1.5 2004/03/16 15:09:54 taqua Exp $
  *
  * Changes
  * -------

@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2002, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,13 +23,13 @@
  * --------------------
  * FirstPageAction.java
  * --------------------
- * (C)opyright 2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2002, by Object Refinery Limited and Contributors.
  *
  * Original Author:  Joerg Schoemer;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *                   Thomas Morgner;
  *
- * $Id: FirstPageAction.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
+ * $Id: FirstPageAction.java,v 1.3 2004/03/16 15:09:23 taqua Exp $
  *
  * Changes
  * -------

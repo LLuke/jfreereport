@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -27,9 +27,9 @@
  *
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner;
- *                   David Gilbert (for Simba Management Limited);
+ *                   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelToolLibrary.java,v 1.3 2003/08/24 15:06:10 taqua Exp $
+ * $Id: ExcelColorSupport.java,v 1.1 2004/03/16 16:00:20 taqua Exp $
  *
  * Changes
  * -------
