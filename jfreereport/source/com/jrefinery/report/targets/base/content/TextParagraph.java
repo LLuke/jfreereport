@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.16 2003/04/23 16:26:49 taqua Exp $
+ * $Id: TextParagraph.java,v 1.17 2003/05/02 16:35:03 taqua Exp $
  *
  * Changes
  * -------
@@ -130,6 +130,12 @@ public class TextParagraph extends ContentContainer
     if (maxLines > 0)
     {
       List l = breakLines(content, width, maxLines);
+      /*
+      if (l.size() > maxLines)
+      {
+        throw new IllegalStateException("MaxLines not working anymore");
+      }
+      */
       for (int i = 0; i < l.size(); i++)
       {
         // create Lines
@@ -143,7 +149,7 @@ public class TextParagraph extends ContentContainer
         {
           throw new IllegalStateException("LineBreak failed!:" + width + " -> " + tt);
         }
-        */
+*/
         line.setContent(lineText, x, y + usedHeight, width, height - usedHeight);
 
         usedHeight += line.getHeight();
@@ -212,7 +218,7 @@ public class TextParagraph extends ContentContainer
         lineStartPos++;
       }
 
-      boolean forceEnd = ((returnLines.size() - 1) == maxLines);
+      boolean forceEnd = ((returnLines.size() + 1) == maxLines);
       int nextPos = findNextBreak(mytext, lineStartPos, width, forceEnd, breakit);
 
       // the complete text is finished, noting more to do here.

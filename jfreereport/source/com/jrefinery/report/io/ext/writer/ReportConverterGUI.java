@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.7 2003/04/28 22:21:44 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.8 2003/05/02 12:40:16 taqua Exp $
  *
  * Changes
  * -------
@@ -60,6 +60,7 @@ import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.FilesystemFilter;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.StringUtil;
+import com.jrefinery.report.util.ExceptionDialog;
 
 /**
  * A utility application for converting XML report files from the old format to the 
@@ -427,23 +428,33 @@ public class ReportConverterGUI extends JFrame
    */
   public boolean convert ()
   {
-    if (performSourceValidate(getSourceFile()) 
-        && performTargetValidate(getTargetFile()))
+
+    if (performSourceValidate(getSourceFile()) == false)
     {
-      ReportConverter converter = new ReportConverter();
-      try
-      {
-        Log.debug ("Converting report ...");
-        converter.convertReport(getSourceFile(), getTargetFile());
-        return true;
-      }
-      catch (Exception e)
-      {
-        Log.error ("Failed to convert.", e);
-        return false;
-      }
+      JOptionPane.showMessageDialog(this, "Validating the source file input failed",
+                                    "Check the source file", JOptionPane.WARNING_MESSAGE);
+      return false;
     }
-    return false;
+    if (performTargetValidate(getTargetFile()) == false)
+    {
+      JOptionPane.showMessageDialog(this, "Validating the source file input failed",
+                                    "Check the source file", JOptionPane.WARNING_MESSAGE);
+      return false;
+    }
+
+    ReportConverter converter = new ReportConverter();
+    try
+    {
+      Log.debug ("Converting report ...");
+      converter.convertReport(getSourceFile(), getTargetFile());
+      return true;
+    }
+    catch (Exception e)
+    {
+      Log.error ("Failed to convert.", e);
+      ExceptionDialog.showExceptionDialog("Failed to convert.", "Error while converting the reports.", e);
+      return false;
+    }
   }
 
   /**
