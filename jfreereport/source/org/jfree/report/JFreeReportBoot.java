@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportBoot.java,v 1.2 2005/02/23 21:04:29 taqua Exp $
+ * $Id: JFreeReportBoot.java,v 1.3 2005/03/16 21:06:38 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -121,9 +121,6 @@ public class JFreeReportBoot extends AbstractBoot
    */
   protected void performBoot ()
   {
-    final JFreeReportInfo info = new JFreeReportInfo();
-    Log.info(info.getName() + " " + info.getVersion());
-
     if (isStrictFP() == false)
     {
       Log.warn("The used VM seems to use a non-strict floating point arithmetics");

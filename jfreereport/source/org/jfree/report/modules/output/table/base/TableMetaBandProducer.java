@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableMetaBandProducer.java,v 1.5 2005/02/19 13:30:01 taqua Exp $
+ * $Id: TableMetaBandProducer.java,v 1.6 2005/02/23 21:05:33 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -171,6 +171,11 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
 
       if (shape instanceof Line2D)
       {
+        // invisible lines get removed as early as possible.
+        if (strokeWidth == 0)
+        {
+          return null;
+        }
         if ((shapeBounds.getWidth() == 0) && (shapeBounds.getHeight() == 0))
         {
           // this shape has no convertable content ...
@@ -199,10 +204,13 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
         {
           bg = new TableCellBackground(shapeContent, backgroundStyle, null);
         }
-        bg.setBorderLeft(color, strokeWidth);
-        bg.setBorderTop(color, strokeWidth);
-        bg.setBorderBottom(color, strokeWidth);
-        bg.setBorderRight(color, strokeWidth);
+        if (strokeWidth > 0)
+        {
+          bg.setBorderLeft(color, strokeWidth);
+          bg.setBorderTop(color, strokeWidth);
+          bg.setBorderBottom(color, strokeWidth);
+          bg.setBorderRight(color, strokeWidth);
+        }
       }
     }
     else if (backgroundStyle.getBooleanStyleProperty(ShapeElement.FILL_SHAPE))

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableCellBackground.java,v 1.18 2005/02/22 20:18:52 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.19 2005/02/23 21:05:33 taqua Exp $
  *
  * Changes
  * -------
@@ -138,8 +138,16 @@ public strictfp class TableCellBackground
    */
   public void setBorderTop (final Color color, final float size)
   {
-    colorTop = color;
-    borderSizeTop = size;
+    if (size == 0)
+    {
+      colorTop = null;
+      borderSizeTop = 0;
+    }
+    else
+    {
+      colorTop = color;
+      borderSizeTop = size;
+    }
   }
 
   /**
@@ -151,8 +159,16 @@ public strictfp class TableCellBackground
    */
   public void setBorderLeft (final Color color, final float size)
   {
-    colorLeft = color;
-    borderSizeLeft = size;
+    if (size == 0)
+    {
+      colorLeft = null;
+      borderSizeLeft = 0;
+    }
+    else
+    {
+      colorLeft = color;
+      borderSizeLeft = size;
+    }
   }
 
   /**
@@ -164,8 +180,16 @@ public strictfp class TableCellBackground
    */
   public void setBorderBottom (final Color color, final float size)
   {
-    colorBottom = color;
-    borderSizeBottom = size;
+    if (size == 0)
+    {
+      colorBottom = null;
+      borderSizeBottom = 0;
+    }
+    else
+    {
+      colorBottom = color;
+      borderSizeBottom = size;
+    }
   }
 
   /**
@@ -177,8 +201,16 @@ public strictfp class TableCellBackground
    */
   public void setBorderRight (final Color color, final float size)
   {
-    colorRight = color;
-    borderSizeRight = size;
+    if (size == 0)
+    {
+      colorRight = null;
+      borderSizeRight = 0;
+    }
+    else
+    {
+      colorRight = color;
+      borderSizeRight = size;
+    }
   }
 
   /**
