@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ---------------
  * StartState.java
  * ---------------
- * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.10 2003/02/25 18:46:48 taqua Exp $
+ * $Id: StartState.java,v 1.11 2003/03/31 20:49:53 taqua Exp $
  *
  * Changes
  * -------
@@ -38,12 +38,12 @@
 
 package com.jrefinery.report.states;
 
+import java.util.Date;
+import java.util.Iterator;
+
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.ReportInitialisationException;
-
-import java.util.Date;
-import java.util.Iterator;
 
 /**
  * The first state in the JFreeReport state transition diagram.
@@ -53,7 +53,11 @@ import java.util.Iterator;
 public final class StartState extends ReportState
 {
   /**
-   * Creates a new <code>START</code> state for a given report.
+   * Creates a start state for a given report.
+   * <p>
+   * The report is cloned, and an internal reference to the clone is maintained.  Changing
+   * the original report after report processing has begun will have no effect on the
+   * report output for this run.
    * <p>
    * This is the only state constructor to create a state without cloning another.
    *

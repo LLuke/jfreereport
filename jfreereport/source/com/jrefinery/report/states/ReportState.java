@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.31 2003/04/06 18:11:29 taqua Exp $
+ * $Id: ReportState.java,v 1.32 2003/04/06 20:42:58 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -125,7 +125,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   private int ancestorHashcode;
 
   /**
-   * Constructs a ReportState for the specified report.
+   * Constructs a new state for the specified report.  The report (which encapsulates a reference
+   * to the data, plus definitions for the required layout) is cloned to isolate the reporting
+   * engine from changes to the report that occur after report processing begins.
    * <p>
    * This constructor is protected, it is intended to be used by subclasses only.
    *
