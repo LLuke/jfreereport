@@ -3,7 +3,6 @@
  This DOCType declaration is valid, uncomment it to validate the report
  -->
 <!--
-
 <!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
 -->
 <!--

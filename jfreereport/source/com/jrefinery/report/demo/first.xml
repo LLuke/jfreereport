@@ -1,3 +1,11 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!--
+ This DOCType declaration is valid, uncomment it to validate the report
+ -->
+<!--
+<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
+-->
+
 <report name="First Report" width="612" height="792">
   <!-- REPORT HEADER -->
   <!-- This band appears once at the beginning of the report.  In this example, -->
@@ -38,9 +46,6 @@
   <groups>
     <!-- Category Group -->
     <group name="Category">
-      <fields>
-        <field>Category</field>
-      </fields>
       <groupheader height="30" fontname="SansSerif" fontstyle="bold" fontsize="12" pagebreak="false">
         <rectangle x="0" y="0" width="100%" height="100%" color="#CCCCFF" weight="0" />
         <line x1="0" y1="0" x2="0" y2="0" weight="0.5" />
@@ -56,6 +61,9 @@
         <number-field fieldname="GroupCount" format="0" x="240" y="5" width="64" height="9" alignment="center" />
         <number-field fieldname="GroupSum" format="#,##0" x="0" y="5" width="100%" height="9" alignment="right" />
       </groupfooter>
+      <fields>
+        <field>Category</field>
+      </fields>
     </group>
   </groups>
   <!-- THE ITEM BAND -->

@@ -93,7 +93,7 @@
   -->
 <!ENTITY % itemelements
   "(label | string-field | number-field | date-field |
-	imageref | image-field | image-url-field | rectangle | line)*">
+	imageref | image-field | imageurl-field | rectangle | line)*">
 
 
 <!--
@@ -165,7 +165,7 @@
       SUPERB | TABLOID | TABLOIDEXTRA )"
 >
 
-<!ELEMENT report   (configuation?, reportheader?, reportfooter?, pageheader?, pagefooter?, groups?, items?, functions?)>
+<!ELEMENT report   (configuration?, reportheader?, reportfooter?, pageheader?, pagefooter?, groups?, items?, functions?)>
 
 <!ATTLIST report
   width          CDATA           #IMPLIED
@@ -248,13 +248,16 @@
 <!--
 
   The tag encapsulates all groups. This tag helps to keep parsing
-  simple. If no groups are defined, a default group has to be created
-  containing all elements of the report data
+  simple. If no groups are defined, a default group is created and
+  contains all elements of the report datarow
 
   -->
-<!ELEMENT groups (group+)>
+<!ELEMENT groups (group*)>
 
-<!ELEMENT group  (groupheader?, groupfooter?, fields+)>
+<!--
+  The fields are required
+  -->
+<!ELEMENT group  (groupheader?, groupfooter?, fields)>
 <!ATTLIST group
   name           CDATA         #IMPLIED
 >
@@ -443,7 +446,7 @@
   library in order to be loaded and executed correctly.
 
   -->
-<!ELEMENT functions  (function | data-ref | property-ref)*>
+<!ELEMENT functions  (function | expression | data-ref | property-ref)*>
 
 <!--
 
@@ -476,7 +479,7 @@
   as value for the property.
 
 -->
-<!ELEMENT property-ref  #PCDATA>
+<!ELEMENT property-ref  (#PCDATA)>
 <!ATTLIST property-ref
   name       CDATA   #REQUIRED
 	encoding   CDATA   #IMPLIED

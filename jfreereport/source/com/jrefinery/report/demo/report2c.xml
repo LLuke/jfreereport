@@ -3,7 +3,6 @@
  This DOCType declaration is valid, uncomment it to validate the report
  -->
 <!--
-
 <!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
 -->
 <report name="Sample Report 2"  pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">

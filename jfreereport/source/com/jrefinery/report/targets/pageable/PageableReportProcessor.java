@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.9 2002/12/10 15:52:51 mungady Exp $
+ * $Id: PageableReportProcessor.java,v 1.10 2002/12/10 21:04:38 taqua Exp $
  *
  * Changes
  * -------
@@ -206,7 +206,7 @@ public class PageableReportProcessor
       // all prepare runs have this property set, test details with getLevel()
       state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
       PageFormat p = outputTarget.getLogicalPage().getPhysicalPageFormat();
-      state.setProperty(JFreeReportConstants.REPORT_PAGEFORMAT_PROPERTY, p);
+      state.setProperty(JFreeReportConstants.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
       // the levels are defined from +inf to 0
       // we don't draw and we do not collect states in a StateList yet

@@ -3,9 +3,8 @@
  This DOCType declaration is valid, uncomment it to validate the report
  -->
 <!--
-
--->
 <!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
+-->
 <report name="Open Source Java Projects" pageformat="A4">
 
     <!-- REPORT HEADER -->
