@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: FontDefinitionObjectDescription.java,v 1.5 2003/03/07 16:55:57 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -164,7 +164,8 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
   {
     if ((o instanceof FontDefinition) == false)
     {
-      throw new ObjectFactoryException("The given object is no com.jrefinery.report.targets.FontDefinition.");
+      throw new ObjectFactoryException(
+          "The given object is no com.jrefinery.report.targets.FontDefinition.");
     }
     
     FontDefinition fdef = (FontDefinition) o;

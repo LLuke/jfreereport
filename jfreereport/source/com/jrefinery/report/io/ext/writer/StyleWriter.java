@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.6 2003/03/07 16:56:00 taqua Exp $
+ * $Id: StyleWriter.java,v 1.7 2003/03/18 17:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,13 @@
  *
  */
 package com.jrefinery.report.io.ext.writer;
+
+import java.io.IOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
 
 import com.jrefinery.report.ShapeElement;
 import com.jrefinery.report.io.ext.StyleSheetHandler;
@@ -46,14 +53,6 @@ import com.jrefinery.report.targets.style.BandDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.style.StyleKey;
-
-import java.io.IOException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
 
 /**
  * A style writer.
@@ -147,7 +146,8 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     }
     catch (ObjectFactoryException e)
     {
-      throw new ReportWriterException ("Unable to fill the parameters for key: " + key.getName(), e);
+      throw new ReportWriterException ("Unable to fill the parameters for key: " 
+                                       + key.getName(), e);
     }
 
     Properties p = new Properties();

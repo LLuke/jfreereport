@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PercentageDemo.java,v 1.1 2003/04/04 10:41:07 mungady Exp $
+ * $Id: PercentageDemo.java,v 1.2 2003/04/09 00:12:29 mungady Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
@@ -233,8 +232,8 @@ public class PercentageDemo extends ApplicationFrame implements ActionListener
    * 
    * @return A <code>TableModel</code>.
    */
-  private TableModel createData() {
-      
+  private TableModel createData() 
+  {
       DefaultTableModel data = new DefaultTableModel();
       data.addColumn("A");
       data.addColumn("B");
@@ -244,7 +243,6 @@ public class PercentageDemo extends ApplicationFrame implements ActionListener
       data.addRow(new Object[] { new Double(86.0), new Double(164.0) });    
       data.addRow(new Object[] { new Double(12.0), new Double(103.2) });    
       return data;
-      
   }
   
   /**

@@ -1,9 +1,41 @@
 /**
- * Date: Mar 9, 2003
- * Time: 6:19:34 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: DemoDrawable.java,v 1.1 2003/03/09 17:19:28 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -----------------
+ * DemoDrawable.java
+ * -----------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: AboutAction.java,v 1.13 2003/02/02 23:43:48 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 07-Mar-2003 : Version 1 (DG);
+ * 
  */
+
 package com.jrefinery.report.demo;
 
 import java.awt.Color;
@@ -12,17 +44,31 @@ import java.awt.geom.Rectangle2D;
 
 import com.jrefinery.ui.Drawable;
 
+/**
+ * A simple implementation of the Drawable interface, used for a report demonstration.
+ * 
+ * @author Thomas Morgner.
+ */
 public class DemoDrawable implements Drawable
 {
+  /**
+   * Default constructor.
+   */
   public DemoDrawable()
   {
   }
 
+  /**
+   * Draws the item.
+   * 
+   * @param graphics  the graphics implementation.
+   * @param bounds  the bounds.
+   */
   public void draw(Graphics2D graphics, Rectangle2D bounds)
   {
     graphics.setColor(Color.black);
     graphics.drawString(bounds.toString(), 10, 10);
-    graphics.draw(new Rectangle2D.Double(0,0,452,29));
+    graphics.draw(new Rectangle2D.Double(0, 0, 452, 29));
     graphics.draw(bounds);
   }
 }

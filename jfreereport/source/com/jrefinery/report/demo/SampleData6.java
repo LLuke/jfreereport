@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------------
  * SampleData6.java
  * ----------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2003, by Simba Management Limited.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData6.java,v 1.6 2003/01/07 15:10:12 taqua Exp $
+ * $Id: SampleData6.java,v 1.7 2003/04/05 18:57:09 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -39,8 +39,6 @@
 package com.jrefinery.report.demo;
 
 import javax.swing.table.AbstractTableModel;
-
-import com.jrefinery.report.util.Log;
 
 /**
  * A sample data source for the JFreeReport Demo Application.

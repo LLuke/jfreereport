@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.18 2003/04/02 21:14:32 taqua Exp $
+ * $Id: ElementFactory.java,v 1.19 2003/04/08 14:29:27 mungady Exp $
  *
  * Changes
  * -------
@@ -463,6 +463,13 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
 
   }
 
+  /**
+   * Starts a drawable field.
+   * 
+   * @param atts  the attributes.
+   * 
+   * @throws SAXException if there is a SAX error.
+   */
   protected void startDrawableField(Attributes atts) throws SAXException
   {
     String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
@@ -479,7 +486,6 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     getCurrentBand().addElement(element);
 
   }
-
 
   /**
    * Create a ImageElement with an static ImageDataSource. The ImageData is read from

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: BeanObjectDescription.java,v 1.9 2003/03/07 16:55:57 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -285,7 +285,8 @@ public class BeanObjectDescription extends AbstractObjectDescription
     Class c = getObjectClass();
     if (c.isInstance(o) == false)
     {
-      throw new ObjectFactoryException("Object is no instance of " + c + "(is " + o.getClass() + ")");
+      throw new ObjectFactoryException("Object is no instance of " + c + "(is " 
+                                       + o.getClass() + ")");
     }
 
     Iterator it = getParameterNames();

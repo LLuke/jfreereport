@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ------------------------
  * HugeJFreeReportDemo.java
  * ------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   -;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HugeJFreeReportDemo.java,v 1.24 2003/03/08 17:20:45 taqua Exp $
+ * $Id: HugeJFreeReportDemo.java,v 1.25 2003/03/20 18:28:33 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -42,6 +42,7 @@ package com.jrefinery.report.demo;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.UIManager;
 
 import com.jrefinery.ui.RefineryUtilities;
@@ -64,15 +65,39 @@ public class HugeJFreeReportDemo extends JFreeReportDemo
   {
   }
 
+  /**
+   * Creates and returns a list of the available demos.
+   * 
+   * @return The list.
+   */
   protected List createAvailableDemos()
   {
     ArrayList list = new ArrayList();
-    list.add(new DemoDefinition(createExampleName(1), new SampleData1(), new URLDemoHandler("/com/jrefinery/report/demo/report1.xml")));
-    list.add(new DemoDefinition(createExampleName(2), new SampleData2(), new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
-    list.add(new DemoDefinition(createExampleName(3), new SampleData3(), new URLDemoHandler("/com/jrefinery/report/demo/report3.xml")));
-    list.add(new DemoDefinition(createExampleName(4), new SampleData4(), new URLDemoHandler("/com/jrefinery/report/demo/report4.xml")));
-    list.add(new DemoDefinition(createExampleName(5) + " (HUGE)", new SampleData5(), new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
-    list.add(new DemoDefinition(createExampleName(6) + " (HUGE)", new SampleData6(), new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
+    
+    list.add(new DemoDefinition(createExampleName(1), 
+             new SampleData1(), 
+             new URLDemoHandler("/com/jrefinery/report/demo/report1.xml")));
+             
+    list.add(new DemoDefinition(createExampleName(2), 
+             new SampleData2(), 
+             new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
+             
+    list.add(new DemoDefinition(createExampleName(3), 
+             new SampleData3(), 
+             new URLDemoHandler("/com/jrefinery/report/demo/report3.xml")));
+             
+    list.add(new DemoDefinition(createExampleName(4), 
+             new SampleData4(), 
+             new URLDemoHandler("/com/jrefinery/report/demo/report4.xml")));
+             
+    list.add(new DemoDefinition(createExampleName(5) + " (HUGE)", 
+             new SampleData5(), 
+             new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
+             
+    list.add(new DemoDefinition(createExampleName(6) + " (HUGE)", 
+             new SampleData6(), 
+             new URLDemoHandler("/com/jrefinery/report/demo/report2.xml")));
+             
     return list;
   }
 

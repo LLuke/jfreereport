@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,21 +20,29 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
- * SampleReport2.java
- * ----------------
+ * ------------------
+ * SampleReport3.java
+ * ------------------
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport2.java,v 1.7 2003/02/28 12:02:38 taqua Exp $
+ * $Id: SampleReport2.java,v 1.8 2003/03/18 17:14:18 taqua Exp $
  *
  * Changes:
  * --------
  * 31-Jan-2003 : Initial version
  */
 package com.jrefinery.report.demo;
+
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Rectangle;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
+
+import javax.swing.JPanel;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.ItemFactory;
@@ -51,13 +59,6 @@ import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.Log;
 
-import javax.swing.JPanel;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Rectangle;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
 /**
  * A sample to show the band in band capabilities of JFreeReport ...
  * 
@@ -70,8 +71,14 @@ public class SampleReport2
    */
   private class ComplexComponentExpression extends AbstractExpression
   {
+    /** A component. */
     private Component pif;
 
+    /**
+     * Creates an expression.
+     * 
+     * @param name  the name.
+     */
     public ComplexComponentExpression(String name)
     {
       setName(name);
@@ -163,6 +170,8 @@ public class SampleReport2
    * sub bands.
    *
    * @return the created report.
+   * 
+   * @throws FunctionInitializeException if there is a problem initialising the function.
    */
   public JFreeReport createReport () throws FunctionInitializeException
   {
@@ -194,7 +203,7 @@ public class SampleReport2
 
     ReportFooter footer = new ReportFooter();
     footer.addElement(ItemFactory.createImageDataRowElement("element",
-                                                            new Rectangle2D.Float (0,0,400, 400),
+                                                            new Rectangle2D.Float (0, 0, 400, 400),
                                                             Color.white, "PaintComponent"));
 
     JFreeReport report = new JFreeReport();
