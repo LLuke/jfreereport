@@ -346,7 +346,9 @@
 <!ELEMENT band ( %itemelements; )>
 <!ATTLIST band
   height         CDATA          #IMPLIED
-  %position;
+  width          CDATA          #IMPLIED
+  x              CDATA          #REQUIRED
+  y              CDATA          #REQUIRED
   %basicform;
   %fontdef;
 >

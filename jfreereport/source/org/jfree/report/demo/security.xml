@@ -16,9 +16,9 @@
     <!-- These properties make sure that the pdf file is encoded by default. -->
     <!-- We dont allow anything else. For a complete description of the available PDF -->
     <!-- Properties have a look at hte PDF-Output Module -->
-    <property name="org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.Encryption">128bit</property>
-    <property name="org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.userpassword">Darkwing</property>
-    <property name="org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.ownerpassword">Duck</property>
+    <property name="org.jfree.report.modules.output.pageable.pdf.Encryption">128bit</property>
+    <property name="org.jfree.report.modules.output.pageable.pdf.userpassword">Darkwing</property>
+    <property name="org.jfree.report.modules.output.pageable.pdf.ownerpassword">Duck</property>
     <!--
       Enabling the following lines would limit the size of the PreviewDialog.
       This does not affect the report itself, just the dialog's behaviour.

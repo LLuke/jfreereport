@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.8 2003/09/13 15:14:40 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.9 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes
  * -------
@@ -360,6 +360,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     // for this elements.
 
     // maxSize defines the bounds of the parent and the maximum size we defined.
+    // whatever is smaller gets used ...
     maxSize.setSize(maxW, maxH);
     // minSize is our defined Size (we use at least regardless whether there is
     // some more content ...

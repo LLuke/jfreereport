@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.7 2003/09/13 15:14:40 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.8 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,7 @@ import org.jfree.report.Element;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.StyleKey;
 import org.jfree.report.util.ElementLayoutInformation;
+import org.jfree.report.util.Log;
 import org.jfree.ui.FloatDimension;
 
 /**
@@ -207,6 +208,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
       Dimension2D cretval = cache.getMinSize(cacheKey);
       if (cretval != null)
       {
+        Log.debug ("+" + cretval);
         return cretval;
       }
     }
@@ -281,6 +283,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
     {
       cache.setPrefSize(cacheKey, e, retval);
     }
+    Log.debug ("+" + retval);
     return retval;
   }
 
@@ -301,13 +304,17 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
   {
     synchronized (b.getTreeLock())
     {
-      final ElementLayoutInformation eli = 
+      Log.debug(">" + containerDims + " vs - " + b.getName());
+      final ElementLayoutInformation eli =
         createLayoutInformationForPreferredSize(b, containerDims);
       final Dimension2D maxSize = eli.getMaximumSize();
       final Dimension2D minSize = eli.getMinimumSize();
 
+      final FloatDimension base = new FloatDimension
+          ((float) maxSize.getWidth(), (float) maxSize.getHeight());
+
       float height = (float) minSize.getHeight();
-      float width = (float) maxSize.getWidth();
+      float width = (float) minSize.getWidth();
 
       // Now adjust the defined sizes by using the elements stored in the band.
       final Element[] elements = b.getElementArray();
@@ -335,7 +342,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
             // dont display, as this element is larger than the container ...
             continue;
           }
-          final Dimension2D absDim = computePreferredSize(e, maxSize, tmpResult);
+          final Dimension2D absDim = computePreferredSize(e, base, tmpResult);
 
           if (staticWidth)
           {
@@ -358,8 +365,11 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
       height = (float)Math.min(height, maxSize.getHeight());
       width = (float) Math.min(width, maxSize.getWidth());
 
-      //Log.debug ("Dimension after static correction [PREF]: " + width + " -> " + height);
-      final FloatDimension base = new FloatDimension(width, height);
+      Log.debug ("Mid Stream; " + width + ", " + height);
+      // Log.debug ("Dimension after static correction [PREF]: " + width + " -> " + height);
+      // final FloatDimension base = new FloatDimension(width, height);
+      base.setHeight(height);
+
       Point2D absPos = null;
       Dimension2D absDim = null;
 
@@ -412,6 +422,8 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
       // now align the calculated data ...
       base.setSize(align(width, getLayoutSupport().getHorizontalAlignmentBorder()),
           align(height, getLayoutSupport().getVerticalAlignmentBorder()));
+
+      Log.debug("<" + base + " vs - " + b.getName());
       return base;
     }
   }
@@ -579,7 +591,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
       final Dimension2D parentDim = new FloatDimension((float) parentBounds.getWidth(),
           (float) parentBounds.getHeight());
 
-      //Log.debug ("My LayoutSize: " + b.getName() + " " + parentDim);
+      Log.debug ("My LayoutSize: " + b.getName() + " " + parentDim);
 
       Dimension2D absDim = null;
       Point2D absPos = null;
@@ -617,7 +629,7 @@ public strictfp class StaticLayoutManager extends AbstractBandLayoutManager
             align((float) absDim.getWidth(), layoutSupport.getHorizontalAlignmentBorder()),
             align((float) absDim.getHeight(), layoutSupport.getVerticalAlignmentBorder()));
         BandLayoutManagerUtil.setBounds(e, bounds);
-        //Log.debug ("Bounds: Element: " + e.getName() + " Bounds: " + bounds);
+        Log.debug ("Bounds: Element: " + e.getName() + " Bounds: " + bounds);
         if (e instanceof Band)
         {
           final BandLayoutManager lm = 

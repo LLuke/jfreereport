@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.5 2003/09/09 02:29:13 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.6 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -165,8 +165,11 @@ public strictfp final class BandLayoutManagerUtil
 
     // the height is redefined by the band's requirements to support
     // the dynamic elements.
-    final Rectangle2D bounds = new Rectangle2D.Float(0, 0,
-        (float) fdim.getWidth(), (float) fdim.getHeight());
+    // todo Changed the layout to be always the given width.
+    // This should always be the default, the width is given, and the height is
+    // computed. We can't compute both, as this is impossible - but we can make
+    // the given computation as reliable as possible.
+    final Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, (float) fdim.getHeight());
     band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
     lm.doLayout(band);
     lm.setLayoutSupport(null);

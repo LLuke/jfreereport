@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.8 2003/08/31 19:27:58 taqua Exp $
+ * $Id: ElementFactory.java,v 1.9 2003/09/09 15:52:53 taqua Exp $
  *
  * Changes
  * -------
@@ -96,6 +96,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   /** The current band, where created elements are added to. */
   private final Band currentBand;
 
+  private boolean subbandActive;
+
   /** The current text element factory used to produce the next element. */
   private TextElementFactory textElementFactory;
 
@@ -113,7 +115,8 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    *
    * @throws NullPointerException if the finishTag or the parser are null.
    */
-  public ElementFactory(final ReportParser parser, final String finishTag, final Band band)
+  public ElementFactory(final ReportParser parser,
+                        final String finishTag, final Band band)
   {
     super(parser, finishTag);
     this.currentBand = band;
@@ -258,11 +261,6 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   {
     final String elementName = qName.toLowerCase().trim();
 
-    if (elementName.equals(getFinishTag()))
-    {
-      getParser().popFactory().endElement(qName);
-      return;
-    }
     // *** LABEL ***
     if (elementName.equals(LABEL_TAG))
     {
@@ -302,6 +300,11 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     {
       endBand();
     }
+    else if (elementName.equals(getFinishTag()))
+    {
+      getParser().popFactory().endElement(qName);
+      return;
+    }
     else
     {
       throw new ParseException("Invalid tag: " + qName, getLocator());
@@ -318,10 +321,29 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     // create the report header...
     final Band band = new Band();
 
+    String name = attr.getValue(NAME_ATT);
+    if (name != null)
+    {
+      band.setName(name);
+    }
     band.getStyle().setStyleProperty
         (StaticLayoutManager.ABSOLUTE_POS, getElementPosition(attr));
+
+    String widthValue = attr.getValue("width");
+    if (widthValue == null)
+    {
+      widthValue = "0";
+    }
+    String heightValue = attr.getValue("height");
+    if (heightValue == null)
+    {
+      heightValue = "0";
+    }
+    final float w = ParserUtil.parseRelativeFloat(widthValue, "Element width not specified");
+    final float h = ParserUtil.parseRelativeFloat(heightValue, "Element height not specified");
+    Dimension2D minSize = new FloatDimension(w, h);
     band.getStyle().setStyleProperty
-        (ElementStyleSheet.MINIMUMSIZE, getElementDimension(attr));
+        (ElementStyleSheet.MINIMUMSIZE, minSize);
 
     final FontFactory.FontInformation fi = FontFactory.createFont(attr);
     FontFactory.applyFontInformation(band.getBandDefaults(), fi);
@@ -339,7 +361,9 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
           ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
+    currentBand.addElement(band);
     getParser().pushFactory(new ElementFactory(getReportParser(), BAND_TAG, band));
+    subbandActive = true;
   }
 
   /**
@@ -964,6 +988,13 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   private void endBand() throws SAXException
   {
-    getParser().popFactory().endElement(REPORT_FOOTER_TAG);
+    if (subbandActive == false)
+    {
+      getParser().popFactory().endElement(BAND_TAG);
+    }
+    else
+    {
+      subbandActive = false;
+    }
   }
 }

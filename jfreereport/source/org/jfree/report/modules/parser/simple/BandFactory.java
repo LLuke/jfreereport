@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandFactory.java,v 1.5 2003/08/24 15:08:21 taqua Exp $
+ * $Id: BandFactory.java,v 1.6 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -69,7 +69,8 @@ import org.xml.sax.SAXException;
  *
  * @author Thomas Morgner
  */
-public class BandFactory extends AbstractReportDefinitionHandler implements ReportDefinitionTags
+public class BandFactory extends AbstractReportDefinitionHandler
+    implements ReportDefinitionTags
 {
   /**
    * Initializes this BandFactory based on the data contained in the ReportFactory.
@@ -172,7 +173,7 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
     else
     {
       throw new SAXException("Expected one of: reportheader, reportfooter, pageheader, "
-          + "pagefooter or items");
+          + "pagefooter or items, but found " + qName);
     }
   }
 
