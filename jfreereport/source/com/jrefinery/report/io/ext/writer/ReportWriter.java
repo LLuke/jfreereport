@@ -2,7 +2,7 @@
  * Date: Jan 13, 2003
  * Time: 12:39:06 PM
  *
- * $Id$
+ * $Id: ReportWriter.java,v 1.1 2003/01/13 21:39:20 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -95,7 +95,7 @@ public class ReportWriter
     return report;
   }
 
-  public void write (Writer w) throws IOException
+  public void write (Writer w) throws IOException, ReportWriterException
   {
     ReportDefinitionWriter writer = new ReportDefinitionWriter(this);
     writer.write(w);

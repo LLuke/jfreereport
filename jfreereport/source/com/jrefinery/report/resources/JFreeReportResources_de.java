@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_de.java,v 1.17 2002/11/13 10:48:56 taqua Exp $
+ * $Id: JFreeReportResources_de.java,v 1.18 2002/11/21 13:03:12 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -59,6 +59,10 @@ public class JFreeReportResources_de extends JFreeReportResources
             {"action.page-setup.name", "Seite einrichten"},
             {"action.page-setup.description", "Seite einrichten"},
             {"action.page-setup.mnemonic", new Integer (KeyEvent.VK_E)},
+
+            {"action.export-to-excel.name", "Export nach Excel..."},
+            {"action.export-to-excel.description", "Speichert den Bericht im MS-Excel format"},
+            {"action.export-to-excel.mnemonic", new Integer (KeyEvent.VK_E)},
 
             {"action.print.name", "Drucken..."},
             {"action.print.description", "Druckt den Bericht"},
@@ -165,5 +169,26 @@ public class JFreeReportResources_de extends JFreeReportResources
             {"pdfsavedialog.cancel", "Abbrechen"},
             {"pdfsavedialog.confirm", "OK"},
 
+
+            {"excelexportdialog.dialogtitle", "Bericht als eine Excel-Datei speichern ..."},
+            {"excelexportdialog.filename", "Dateiname"},
+            {"excelexportdialog.author", "Autor"},
+            {"excelexportdialog.title", "Titel"},
+            {"excelexportdialog.selectFile", "Auswählen"},
+
+            {"excelexportdialog.warningTitle", "Warnung"},
+            {"excelexportdialog.errorTitle", "Fehler"},
+            {"excelexportdialog.targetIsEmpty",
+                "Bitte geben Sie einen Dateinamen für die PDF-Datei an."},
+            {"excelexportdialog.targetIsNoFile", "Der Dateiname zeigt auf keine gewöhnliche Datei."},
+            {"excelexportdialog.targetIsNotWritable",
+                "Sie besitzen keine ausreichenden Rechte um die ausgewählte Datei zu "
+              + "überschreiben."},
+            {"excelexportdialog.targetOverwriteConfirmation",
+                "Die Datei ''{0}'' existiert bereits. Soll diese Datei überschrieben werden?"},
+            {"excelexportdialog.targetOverwriteTitle", "Datei überschreiben?"},
+
+            {"excelexportdialog.cancel", "Abbrechen"},
+            {"excelexportdialog.confirm", "OK"},
           };
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Spool.java,v 1.2 2002/12/03 16:31:02 mungady Exp $
+ * $Id: Spool.java,v 1.3 2002/12/04 16:27:30 mungady Exp $
  *
  * Changes
  * -------
@@ -59,6 +59,11 @@ public class Spool implements Cloneable
   public Spool ()
   {
     this.operations = new ArrayList();
+  }
+
+  public boolean isEmpty ()
+  {
+    return operations.isEmpty();
   }
 
   /**

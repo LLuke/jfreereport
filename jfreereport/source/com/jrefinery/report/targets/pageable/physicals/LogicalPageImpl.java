@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.12 2002/12/16 17:31:05 mungady Exp $
+ * $Id: LogicalPageImpl.java,v 1.13 2002/12/18 20:31:47 taqua Exp $
  *
  * Changes
  * -------
  * 04-Dec-2002 : Added Javadocs (DG);
- *
+ * 14-Jan-2003 : BugFix: SubBands were not spooled ...
  */
 
 package com.jrefinery.report.targets.pageable.physicals;
@@ -276,15 +276,27 @@ public class LogicalPageImpl implements LogicalPage
       throw new IllegalStateException("Band already closed");
     }
 
+    Spool spool = new Spool();
+    spoolBand(bounds, band, spool);
+    if (spool.isEmpty())
+    {
+      return null;
+    }
+    return spool;
+  }
+
+  protected void spoolBand (Rectangle2D bounds, Band band, Spool spool)
+    throws OutputTargetException
+  {
     // do nothing if the band is invisble
     if (band.isVisible() == false)
     {
-      return null;
+      return;
     }
     // do nothing if the band has a height of 0 (also invisible)
     if (bounds.getHeight() == 0)
     {
-      return null;
+      return;
     }
 
     PageFormat pf = getPageFormat();
@@ -292,10 +304,9 @@ public class LogicalPageImpl implements LogicalPage
                                                            pf.getImageableHeight());
     Rectangle2D ibounds = logicalPageBounds.createIntersection(bounds);
 
-    Spool operations = new Spool();
     if (addOperationComments)
     {
-      operations.addOperation(new PhysicalOperation.AddComment (
+      spool.addOperation(new PhysicalOperation.AddComment (
           new Log.SimpleMessage("Begin Band: ", band.getClass(), " -> ", band.getName())));
     }
 
@@ -307,14 +318,13 @@ public class LogicalPageImpl implements LogicalPage
       if (e instanceof Band)
       {
         Rectangle2D bbounds = (Rectangle2D) e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
-        addBand(translateSubRect(bbounds, bounds), (Band) e);
+        spoolBand(translateSubRect(bbounds, bounds), (Band) e, spool);
       }
       else
       {
-        addElement(ibounds, e, operations);
+        addElement(ibounds, e, spool);
       }
     }
-    return operations;
   }
 
   /**

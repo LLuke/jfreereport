@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.16 2002/12/18 20:31:47 taqua Exp $
+ * $Id: ReportState.java,v 1.17 2003/01/07 17:34:26 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -540,13 +540,16 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     // a state proceeds if it is an other class than the old state
     if (this.getClass().equals(oldstate.getClass()) == false)
     {
+      /*
       Log.debug (new StateProceedMessage(this, oldstate,
                                          "State did proceed: In Group: "));
+                                         */
       return true;
     }
-
+/*
     Log.debug (new StateProceedMessage(this, oldstate,
                                        "State did not proceed: In Group: "));
+*/                                       
     return false;
   }
 

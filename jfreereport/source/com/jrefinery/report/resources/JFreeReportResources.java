@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.33 2002/12/18 20:31:47 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.34 2002/12/19 17:43:59 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -147,7 +147,7 @@ public class JFreeReportResources extends ListResourceBundle
   private static final Object[][] CONTENTS =
           {
             {"project.name", "JFreeReport"},
-            {"project.version", "0.8.0-2"},
+            {"project.version", "0.8.1"},
             {"project.info", "http://www.object-refinery.com/jfreereport/index.html"},
             {"project.copyright",
                 "(C)opyright 2000-2002, by Simba Management Limited and Contributors"},
@@ -158,6 +158,14 @@ public class JFreeReportResources extends ListResourceBundle
             {"action.save-as.accelerator", KeyStroke.getKeyStroke ("control S")},
             {"action.save-as.small-icon", getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
             {"action.save-as.icon", getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
+
+            {"action.export-to-excel.name", "Export to Excel..."},
+            {"action.export-to-excel.description", "Save to MS-Excel format"},
+            {"action.export-to-excel.mnemonic", new Integer (KeyEvent.VK_E)},
+            {"action.export-to-excel.accelerator", KeyStroke.getKeyStroke ("control E")},
+            // temporarily using the same icon as "Save to PDF", till we have a better one
+            {"action.export-to-excel.small-icon", getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
+            {"action.export-to-excel.icon", getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
 
             {"action.page-setup.name", "Page Setup"},
             {"action.page-setup.description", "Page Setup"},
@@ -309,6 +317,23 @@ public class JFreeReportResources extends ListResourceBundle
             {"pdfsavedialog.cancel", "Cancel"},
             {"pdfsavedialog.confirm", "Confirm"},
 
+            {"excelexportdialog.dialogtitle", "Export Report into an Excel-File ..."},
+            {"excelexportdialog.filename", "Filename"},
+            {"excelexportdialog.author", "Author"},
+            {"excelexportdialog.title", "Title"},
+            {"excelexportdialog.selectFile", "Select File"},
+
+            {"excelexportdialog.warningTitle", "Warning"},
+            {"excelexportdialog.errorTitle", "Error"},
+            {"excelexportdialog.targetIsEmpty", "Please specify a filename for the Excel file."},
+            {"excelexportdialog.targetIsNoFile", "The selected target is no ordinary file."},
+            {"excelexportdialog.targetIsNotWritable", "The selected file is not writable."},
+            {"excelexportdialog.targetOverwriteConfirmation",
+                "The file ''{0}'' exists. Overwrite it?"},
+            {"excelexportdialog.targetOverwriteTitle", "Overwrite file?"},
+
+            {"excelexportdialog.cancel", "Cancel"},
+            {"excelexportdialog.confirm", "Confirm"},
           };
 
 }
