@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TotalCalculationFunction.java,v 1.5 2003/11/01 19:52:27 taqua Exp $
+ * $Id: TotalCalculationFunction.java,v 1.6 2003/11/07 18:33:49 taqua Exp $
  *
  * Changes
  * -------
@@ -61,8 +61,12 @@ import org.jfree.report.event.ReportEvent;
  *
  * @author Thomas Morgner
  */
-public class TotalCalculationFunction extends AbstractFunction implements Serializable
+public class TotalCalculationFunction
+    extends AbstractFunction implements Serializable
 {
+  /** Literal text for the 'field' property. */
+  public static final String FIELD_PROPERTY = "field";
+
   /** Literal text for the 'group' property. */
   public static final String GROUP_PROPERTY = "group";
 
@@ -97,6 +101,13 @@ public class TotalCalculationFunction extends AbstractFunction implements Serial
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
     {
       storedResults.clear();
+    }
+    else
+    {
+      if (getGroup() == null)
+      {
+        storedResults.get (0);
+      }
     }
   }
 
@@ -148,6 +159,19 @@ public class TotalCalculationFunction extends AbstractFunction implements Serial
   }
 
   /**
+   * Receives notification that the report has finished.
+   *
+   * @param event  the event.
+   */
+  public void reportFinished(ReportEvent event)
+  {
+    if (getGroup() == null)
+    {
+      storedResults.add (currentObject);
+    }
+  }
+
+  /**
    * Returns the name of the group to be totalled.
    *
    * @return the group name.
@@ -166,6 +190,27 @@ public class TotalCalculationFunction extends AbstractFunction implements Serial
   public void setGroup(final String group)
   {
     setProperty(GROUP_PROPERTY, group);
+  }
+
+  /**
+   * Returns the name of the group to be totalled.
+   *
+   * @return the group name.
+   */
+  public String getField()
+  {
+    return getProperty(FIELD_PROPERTY);
+  }
+
+  /**
+   * Defines the name of the group to be totalled.
+   * If the name is null, all groups are totalled.
+   *
+   * @param field the field name.
+   */
+  public void setField(final String field)
+  {
+    setProperty(FIELD_PROPERTY, field);
   }
 
   /**
@@ -193,6 +238,23 @@ public class TotalCalculationFunction extends AbstractFunction implements Serial
   {
     in.defaultReadObject();
     storedResults = new ArrayList();
+  }
+
+
+  /**
+   * Checks that the function has been correctly initialized.
+   * <p>
+   * The only check performed at present is to make sure the name is not <code>null</code>.
+   *
+   * @throws FunctionInitializeException in case the function is not initialized properly.
+   */
+  public void initialize() throws FunctionInitializeException
+  {
+    super.initialize();
+    if (getField() == null)
+    {
+      throw new FunctionInitializeException("Field must be defined.");
+    }
   }
 
 }

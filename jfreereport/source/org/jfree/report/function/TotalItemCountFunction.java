@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalItemCountFunction.java,v 1.7 2003/11/07 18:33:49 taqua Exp $
+ * $Id: TotalItemCountFunction.java,v 1.8 2003/11/07 20:37:35 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -121,7 +121,20 @@ public class TotalItemCountFunction extends AbstractFunction implements Serializ
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
     {
       results.clear();
-      groupResult = null;
+      groupResult = new ItemCountStorage();
+      // if no group is defined, then handle the default ...
+      if (getGroup() == null)
+      {
+        results.add(groupResult);
+      }
+    }
+    else
+    {
+      // Activate the current group, which was filled in the prepare run.
+      if (getGroup() == null)
+      {
+        groupResult = (ItemCountStorage) results.get(0);
+      }
     }
   }
 
@@ -139,18 +152,6 @@ public class TotalItemCountFunction extends AbstractFunction implements Serializ
     return groupResult.getGroupCount();
   }
 
-  private boolean isGroupStart(ReportEvent event)
-  {
-    if (getGroup() == null)
-    {
-      return (event.getState().getCurrentGroupIndex() == 0);
-    }
-    else
-    {
-      return FunctionUtilities.isDefinedGroup(getGroup(), event);
-    }
-  }
-
   /**
    * Receives notification that a new group is about to start.
    * Increases the count if all groups are counted or the name defines the current group.
@@ -159,7 +160,8 @@ public class TotalItemCountFunction extends AbstractFunction implements Serializ
    */
   public void groupStarted(final ReportEvent event)
   {
-    if (isGroupStart(event))
+    // enter defined group ...?
+    if (FunctionUtilities.isDefinedGroup(getGroup(), event))
     {
       if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
       {
@@ -248,5 +250,4 @@ public class TotalItemCountFunction extends AbstractFunction implements Serializ
     function.results = new ArrayList();
     return function;
   }
-
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupCountFunction.java,v 1.3 2003/10/18 19:32:12 taqua Exp $
+ * $Id: TotalGroupCountFunction.java,v 1.4 2003/11/07 20:37:35 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,7 +42,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import org.jfree.report.event.ReportEvent;
-import org.jfree.report.util.Log;
 
 /**
  * A report function that counts the total of groups in a report.
@@ -115,27 +114,24 @@ public class TotalGroupCountFunction extends GroupCountFunction
    */
   public void reportInitialized(final ReportEvent event)
   {
-    storage = null;
     currentIndex = -1;
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
     {
+      storage = null;
       results.clear();
+      if (getParentGroup() == null)
+      {
+        storage = new GroupCountStorage();
+        results.add(storage);
+      }
     }
     else
     {
-      Log.debug(results);
-    }
-  }
-
-  private boolean isParentGroupStart(ReportEvent event)
-  {
-    if (getParentGroup() == null)
-    {
-      return (event.getState().getCurrentGroupIndex() == 0);
-    }
-    else
-    {
-      return FunctionUtilities.isDefinedGroup(getParentGroup(), event);
+      // Activate the current group, which was filled in the prepare run.
+      if (getParentGroup() == null)
+      {
+        storage = (GroupCountStorage) results.get(0);
+      }
     }
   }
 
@@ -147,7 +143,7 @@ public class TotalGroupCountFunction extends GroupCountFunction
    */
   public void groupStarted(ReportEvent event)
   {
-    if (isParentGroupStart(event))
+    if (FunctionUtilities.isDefinedGroup(getParentGroup(), event))
     {
       // reset ...
       if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.7 2003/09/13 15:14:40 taqua Exp $
+ * $Id: PageLayouter.java,v 1.8 2003/11/01 19:52:28 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package org.jfree.report.modules.output.pageable.base.pagelayout;
 
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.util.Log;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
@@ -325,7 +326,8 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   {
     if (currentEvent == null)
     {
-      throw new IllegalStateException("Failed!");
+      Log.error ("Failed to clear current event; we don't have an event set!",
+          new IllegalStateException("stacktrace generated:"));
     }
     this.currentEvent = null;
   }
