@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources_fr.java,v 1.10 2003/06/29 16:59:27 taqua Exp $
+ * $Id: JFreeReportResources_fr.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -106,7 +106,7 @@ public class JFreeReportResources_fr extends JFreeReportResources
 
         {"statusline.pages", "Page {0} de {1}"},
         {"statusline.error", "Reportgeneration à produit une erreur: {0}"},
-        {"statusline.repaginate", "Calcule de la coupure des pages, veuillez patienter."},
+        {"statusline.repaginate", "Calcule des sauts de page, veuillez patienter."},
 
       };
 

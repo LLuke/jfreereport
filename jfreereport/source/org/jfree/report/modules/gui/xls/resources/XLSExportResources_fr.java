@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: XLSExportResources_fr.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -65,6 +65,11 @@ public class XLSExportResources_fr extends JFreeReportResources
         {"action.export-to-excel.name", "Exporter en Excel..."},
         {"action.export-to-excel.description", "Enregistrer au format MS-Excel"},
         {"action.export-to-excel.mnemonic", new Integer(KeyEvent.VK_E)},
+        
+        {"error.processingfailed.title", "Echec du traitement du Report"},
+        {"error.processingfailed.message", "Erreur lors du traitement de ce rapport: {0}"},
+        {"error.savefailed.message", "Erreur durant l'enregistrement en PDF : {0}"},
+        {"error.savefailed.title", "Erreur durant l'enregistrement"},
 
         {"excelexportdialog.dialogtitle", "Exporter le rapport vers un fichier Excel..."},
         {"excelexportdialog.filename", "Nom de fichier"},
@@ -76,7 +81,7 @@ public class XLSExportResources_fr extends JFreeReportResources
         {"excelexportdialog.errorTitle", "Erreur"},
         {"excelexportdialog.targetIsEmpty",
          "Veuillez spécifier un nom de fichier pour le fichier Excel."},
-        {"excelexportdialog.targetIsNoFile", "Le chemin spécifié est incorrect."},
+        {"excelexportdialog.targetIsNoFile", "Le fichier cible spécifié n'est pas un fichier ordinaire."},
         {"excelexportdialog.targetIsNotWritable",
          "Le fichier sélectionner est en lecture seule."},
         {"excelexportdialog.targetOverwriteConfirmation",
@@ -87,11 +92,6 @@ public class XLSExportResources_fr extends JFreeReportResources
         {"excelexportdialog.confirm", "Confirmer"},
         {"excelexportdialog.strict-layout",
          "Effectuer une disposition stricte pendant l'export."},
-
-        {"error.processingfailed.title", "Echec du traitement du Report"},
-        {"error.processingfailed.message", "Erreur lors du traitement de ce rapport: {0}"},
-        {"error.savefailed.message", "Erreur durant l'enregistrement en PDF : {0}"},
-        {"error.savefailed.title", "Erreur durant la sauvegarde"},
         
       };
 

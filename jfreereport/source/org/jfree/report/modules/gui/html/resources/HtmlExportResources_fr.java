@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: HtmlExportResources_fr.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -70,7 +70,7 @@ public class HtmlExportResources_fr extends JFreeReportResources
         {"htmlexportdialog.dialogtitle", "Exporter le rapport vers un fichier Html ..."},
 
         {"htmlexportdialog.filename", "Nom de fichier"},
-        {"htmlexportdialog.datafilename", "Répertoire des données"},
+        {"htmlexportdialog.datafilename", "Répertoire de données"},
         {"htmlexportdialog.copy-external-references", "Copier des références externes"},
 
         {"htmlexportdialog.author", "Auteur"},
@@ -87,10 +87,10 @@ public class HtmlExportResources_fr extends JFreeReportResources
 
         {"htmlexportdialog.warningTitle", "Attention"},
         {"htmlexportdialog.errorTitle", "Erreur"},
-        {"htmlexportdialog.targetIsEmpty", "Caractére de séparationHtml."},
+        {"htmlexportdialog.targetIsEmpty", "Le fichier source n'est pas spécifié."},
         {"htmlexportdialog.targetIsNoFile", "Le chemin spécifié est incorrect."},
         {"htmlexportdialog.targetIsNotWritable",
-         "Le fichier sélectionner est en lecture seule."},
+         "Le fichier sélectionné est en lecture seule."},
         {"htmlexportdialog.targetOverwriteConfirmation",
          "Le fichier ''{0}'' existe. Voulez vous l'écraser?"},
         {"htmlexportdialog.targetOverwriteTitle", "Ecraser le fichier?"},
@@ -107,6 +107,13 @@ public class HtmlExportResources_fr extends JFreeReportResources
       + "Les sous-répertoires absents doivent-ils être créés?"},
         {"htmlexportdialog.targetCreateDataDirTitle", "Créer le répertoire?"},
 
+        {"htmlexportdialog.html-documents", "Documents HTML"},
+        {"htmlexportdialog.zip-archives", "Archives ZIP"},
+
+        {"htmlexportdialog.stream-export", "Exportation File stream"},
+        {"htmlexportdialog.directory-export", "Exportation répertoire"},
+        {"htmlexportdialog.zip-export", "Exportation fichier ZIP"},
+        
         {"error.processingfailed.title", "Echec du traitement du Report"},
         {"error.processingfailed.message", "Erreur lors du traitement de ce rapport: {0}"},
         {"error.savefailed.message", "Erreur durant l'enregistrement en PDF : {0}"},

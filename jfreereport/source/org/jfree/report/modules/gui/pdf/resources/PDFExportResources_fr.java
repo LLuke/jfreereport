@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PDFExportResources_fr.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -72,6 +72,8 @@ public class PDFExportResources_fr extends JFreeReportResources
         {"error.processingfailed.message", "Erreur lors du traitement de ce rapport: {0}"},
         {"error.savefailed.message", "Erreur durant l'enregistrement en PDF : {0}"},
         {"error.savefailed.title", "Erreur durant la sauvegarde"},
+        
+        {"file.save.pdfdescription", "Documents PDF"},
 
         {"pdfsavedialog.dialogtitle", "Enregistrement du rapport en PDF ..."},
         {"pdfsavedialog.filename", "Nom du fichier"},
@@ -98,8 +100,8 @@ public class PDFExportResources_fr extends JFreeReportResources
         {"pdfsavedialog.warningTitle", "Attention"},
         {"pdfsavedialog.errorTitle", "Erreur"},
         {"pdfsavedialog.targetIsEmpty", "Veuillez spécifier un chemin pour le PDF."},
-        {"pdfsavedialog.targetIsNoFile", "Le chemin spécifié est incorrect."},
-        {"pdfsavedialog.targetIsNotWritable", "Le fichier sélectionner est en lecture seule."},
+        {"pdfsavedialog.targetIsNoFile", "Le fichier cible spécifié n'est pas un fichier ordinaire."},
+        {"pdfsavedialog.targetIsNotWritable", "Le fichier sélectionné est en lecture seule."},
         {"pdfsavedialog.targetOverwriteConfirmation",
          "Le fichier ''{0}'' existe. Voulez vous l'écraser?"},
         {"pdfsavedialog.targetOverwriteTitle", "Ecraser le fichier?"},

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PlainTextExportResources_fr.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -69,7 +69,7 @@ public class PlainTextExportResources_fr extends JFreeReportResources
         {"error.processingfailed.title", "Echec du traitement du Report"},
         {"error.processingfailed.message", "Erreur lors du traitement de ce rapport: {0}"},
         {"error.savefailed.message", "Erreur durant l'enregistrement en PDF : {0}"},
-        {"error.savefailed.title", "Erreur durant la sauvegarde"},
+        {"error.savefailed.title", "Erreur durant l'enregistrement"},
 
         {"plain-text-exportdialog.dialogtitle",
          "Exporter le rapport vers un fichier Text (Plain-Text)..."},
@@ -85,9 +85,9 @@ public class PlainTextExportResources_fr extends JFreeReportResources
         {"plain-text-exportdialog.errorTitle", "Erreur"},
         {"plain-text-exportdialog.targetIsEmpty",
          "Veuillez spécifier un nom de fichier pour le fichier CSV."},
-        {"plain-text-exportdialog.targetIsNoFile", "Le chemin spécifié est incorrect."},
+        {"plain-text-exportdialog.targetIsNoFile", "Le fichier cible spécifié n'est pas un fichier ordinaire."},
         {"plain-text-exportdialog.targetIsNotWritable",
-         "Le fichier sélectionner est en lecture seule."},
+         "Le fichier sélectionné est en lecture seule."},
         {"plain-text-exportdialog.targetOverwriteConfirmation",
          "Le fichier ''{0}'' existe. Voulez vous l'écraser?"},
         {"plain-text-exportdialog.targetOverwriteTitle", "Ecraser le fichier?"},
@@ -95,8 +95,8 @@ public class PlainTextExportResources_fr extends JFreeReportResources
         {"plain-text-exportdialog.cancel", "Annuler"},
         {"plain-text-exportdialog.confirm", "Confirmer"},
 
-        {"plain-text-exportdialog.chars-per-inch", "cpi (Characters per inch)"},
-        {"plain-text-exportdialog.lines-per-inch", "lpi (Lines per inch)"},
+        {"plain-text-exportdialog.chars-per-inch", "cpi (Caractères par inch)"},
+        {"plain-text-exportdialog.lines-per-inch", "lpi (Lignes par inch)"},
         {"plain-text-exportdialog.font-settings", "Paramètres de la police"},
 
       };

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: CSVExportResources_fr.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -65,11 +65,6 @@ public class CSVExportResources_fr
         {"action.export-to-csv.description", "Enregistrer au format CSV"},
         {"action.export-to-csv.mnemonic", new Integer(KeyEvent.VK_C)},
 
-        {"error.processingfailed.title", "Echec du traitement du Report"},
-        {"error.processingfailed.message", "Erreur lors du traitement de ce rapport: {0}"},
-        {"error.savefailed.message", "Erreur durant l'enregistrement en PDF : {0}"},
-        {"error.savefailed.title", "Erreur durant la sauvegarde"},
-
         {"csvexportdialog.dialogtitle", "Exporter le rapport vers un fichier CSV..."},
         {"csvexportdialog.filename", "Nom de fichier"},
         {"csvexportdialog.encoding", "Encodage"},
@@ -80,7 +75,7 @@ public class CSVExportResources_fr
         {"csvexportdialog.errorTitle", "Erreur"},
         {"csvexportdialog.targetIsEmpty",
          "Veuillez spécifier un nom de fichier pour le fichier CSV."},
-        {"csvexportdialog.targetIsNoFile", "Le chemin spécifié est incorrect."},
+        {"csvexportdialog.targetIsNoFile", "Le fichier cible spécifié n'est pas un fichier ordinaire."},
         {"csvexportdialog.targetIsNotWritable",
          "Le fichier sélectionner est en lecture seule."},
         {"csvexportdialog.targetOverwriteConfirmation",
@@ -100,6 +95,13 @@ public class CSVExportResources_fr
         {"csvexportdialog.export.printed_elements", "Eléments imprimés  (Layouted Data)"},
         {"csvexportdialog.strict-layout",
          "Effectuer une disposition stricte pendant l'export."},
+         
+        {"error.processingfailed.title", "Echec du traitement du Report"},
+        {"error.processingfailed.message", "Erreur lors du traitement de ce rapport: {0}"},
+        {"error.savefailed.message", "Erreur durant l'enregistrement en PDF : {0}"},
+        {"error.savefailed.title", "Erreur durant l'enregistrement"},
+        
+        {"csvexportdialog.csv-file-description", "Fichiers séparés par une virgule."},
 
       };
 
