@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,9 +23,12 @@
  * -------------------
  * ElementFactory.java
  * -------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: ElementFactory.java,v 1.24 2002/11/29 11:36:16 mungady Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: ElementFactory.java,v 1.25 2002/12/02 17:30:40 taqua Exp $
  *
  * Changes
  * -------
@@ -68,10 +71,9 @@ import java.net.URL;
  * for new features and as soon as the discrepancy between implemented and possible features
  * gets too huge, this parser will be discontinued.
  *
- * @author TM
+ * @author Thomas Morgner
  */
-public class ElementFactory extends DefaultHandler
-    implements ReportDefinitionTags
+public class ElementFactory extends DefaultHandler implements ReportDefinitionTags
 {
   /** Storage for the current CDATA */
   private StringBuffer currentText;
@@ -570,7 +572,7 @@ public class ElementFactory extends DefaultHandler
   }
 
   /**
-   * Creates a number element. number elements are text elements.
+   * Creates a number element (a text element that displays a numerical value).
    *
    * @param atts  the attributes.
    *
@@ -583,7 +585,7 @@ public class ElementFactory extends DefaultHandler
   }
 
   /**
-   * Creates a date element. date elements are text elements.
+   * Creates a date element (a text element that displays a date value).
    *
    * @param atts  the attributes.
    *
@@ -596,7 +598,7 @@ public class ElementFactory extends DefaultHandler
   }
 
   /**
-   * Creates a number function. number functions are text elements.
+   * Begins processing a number function element (which is a text element).
    *
    * @param atts  the attributes.
    *
@@ -609,7 +611,7 @@ public class ElementFactory extends DefaultHandler
   }
 
   /**
-   * Creates a date function. date functions are text elements.
+   * Begins processing a date function element (which is a text element).
    *
    * @param atts  the attributes.
    *
@@ -622,7 +624,7 @@ public class ElementFactory extends DefaultHandler
   }
 
   /**
-   * Creates a string function. string functions are text elements.
+   * Begins processing a string function element (which is a text element).
    *
    * @param atts  the attributes.
    *
@@ -650,7 +652,8 @@ public class ElementFactory extends DefaultHandler
         textElementFont,
         getCurrentText());
 
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean (textElementDynamic));
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+                                   new Boolean (textElementDynamic));
     clearCurrentText();
     getCurrentBand().addElement(te);
   }
@@ -733,7 +736,8 @@ public class ElementFactory extends DefaultHandler
         textElementFont,
         textElementNullString,
         textElementSourceName);
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean (textElementDynamic));
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+                                   new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
 
@@ -752,7 +756,8 @@ public class ElementFactory extends DefaultHandler
         textElementFont,
         textElementNullString,
         textElementSourceName);
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean (textElementDynamic));
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+                                   new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
 
@@ -772,7 +777,8 @@ public class ElementFactory extends DefaultHandler
         textElementFont,
         textElementNullString,
         textElementSourceName);
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean (textElementDynamic));
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+                                   new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
 
@@ -792,7 +798,8 @@ public class ElementFactory extends DefaultHandler
         textElementNullString,
         textElementFormatString,
         textElementSourceName);
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean (textElementDynamic));
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+                                   new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
 
@@ -812,7 +819,8 @@ public class ElementFactory extends DefaultHandler
         textElementNullString,
         textElementFormatString,
         textElementSourceName);
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean (textElementDynamic));
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+                                   new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
 
@@ -832,7 +840,8 @@ public class ElementFactory extends DefaultHandler
         textElementNullString,
         textElementFormatString,
         textElementSourceName);
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean (textElementDynamic));
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+                                   new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
 
@@ -851,7 +860,8 @@ public class ElementFactory extends DefaultHandler
         textElementFont,
         textElementNullString,
         textElementSourceName);
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean (textElementDynamic));
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+                                   new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
 
@@ -871,7 +881,8 @@ public class ElementFactory extends DefaultHandler
         textElementNullString,
         textElementFormatString,
         textElementSourceName);
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean (textElementDynamic));
+    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
+                                   new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
   }
 

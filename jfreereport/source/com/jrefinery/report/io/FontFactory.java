@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -25,7 +25,7 @@
  * ----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FontFactory.java,v 1.7 2002/11/07 21:45:27 taqua Exp $
+ * $Id: FontFactory.java,v 1.8 2002/12/02 17:30:43 taqua Exp $
  *
  * Changes
  * -------
@@ -42,10 +42,11 @@ import java.awt.Font;
 /**
  * Parses the font specifications for bands and text elements.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class FontFactory implements ReportDefinitionTags
 {
+  /** The default font. */
   public static final Font DEFAULT_FONT = new Font ("Serif", Font.PLAIN, 10);
 
   /** The default font name. */

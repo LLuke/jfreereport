@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,9 +23,12 @@
  * --------------------
  * FunctionFactory.java
  * --------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: FunctionFactory.java,v 1.13 2002/11/07 21:45:28 taqua Exp $
+ * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: FunctionFactory.java,v 1.14 2002/12/02 17:30:45 taqua Exp $
  *
  * Changes
  * -------
@@ -33,7 +36,10 @@
  * 23-May-2002 : Rewrite and better structured, divided into several start* & end* methods
  * 08-Jun-2002 : Documentation
  * 19-Aug-2002 : Added support for expressions
+ * 10-Dec-2002 : Fixed issues reported by Checkstyle (DG);
+ *
  */
+
 package com.jrefinery.report.io;
 
 import com.jrefinery.report.JFreeReport;
@@ -50,7 +56,7 @@ import java.util.Properties;
  * The functionFactory creates functions and adds these functions to the FunctionCollection
  * of the current report.
  *
- * @author DG
+ * @author Thomas Morgner
  */
 public class FunctionFactory extends DefaultHandler implements ReportDefinitionTags
 {
@@ -68,6 +74,8 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
 
   /** The current property. */
   private String currentProperty;
+
+  /** The current encoding. */
   private String currentEncoding;
 
   /** The SAX handler for reading the report template file. */
@@ -235,7 +243,9 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     currentProperty = atts.getValue (NAME_ATT);
     currentEncoding = atts.getValue (PROPERTY_ENCODING_ATT);
     if (currentEncoding == null)
+    {
       currentEncoding = PROPERTY_ENCODING_TEXT;
+    }
     currentText = new StringBuffer ();
   }
 
@@ -321,7 +331,9 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     currentProperty = handler.generateName (attr.getValue ("name"));
     currentEncoding = attr.getValue (PROPERTY_ENCODING_ATT);
     if (currentEncoding == null)
+    {
       currentEncoding = PROPERTY_ENCODING_TEXT;
+    }
     currentText = new StringBuffer ();
   }
 

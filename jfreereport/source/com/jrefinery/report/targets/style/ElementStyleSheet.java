@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.4 2002/12/07 20:53:13 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.5 2002/12/08 20:30:32 taqua Exp $
  *
  * Changes
  * -------
@@ -52,14 +52,14 @@ import java.util.Hashtable;
 import java.util.List;
 
 /**
- * An element style-sheet contains zero, one or many attributes that affect the appearance of 
- * report elements.  For each attribute, there is a predefined key that can be used to access 
+ * An element style-sheet contains zero, one or many attributes that affect the appearance of
+ * report elements.  For each attribute, there is a predefined key that can be used to access
  * that attribute in the style sheet.
  * <p>
  * Every report element has an associated style-sheet.
  * <p>
  * A style-sheet maintains a list of parent style-sheets.  If an attribute is not defined in a
- * style-sheet, the code refers to the parent style-sheets to see if the attribute is defined 
+ * style-sheet, the code refers to the parent style-sheets to see if the attribute is defined
  * there.
  * <p>
  * All StyleSheet entries are checked against the StyleKeyDefinition for validity.
@@ -73,9 +73,9 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
 
   /** A key for the 'maximum size' of an element. */
   public static final StyleKey MAXIMUMSIZE   = StyleKey.getStyleKey("max-size", Dimension2D.class);
-  
+
   /** A key for the 'preferred size' of an element. */
-  public static final StyleKey PREFERREDSIZE = StyleKey.getStyleKey("preferred-size", 
+  public static final StyleKey PREFERREDSIZE = StyleKey.getStyleKey("preferred-size",
                                                                     Dimension2D.class);
 
   /** A key for the 'bounds' of an element. */
@@ -83,45 +83,45 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
 
   /** A key for an element's 'visible' flag. */
   public static final StyleKey VISIBLE       = StyleKey.getStyleKey("visible", Boolean.class);
-  
+
   /** A key for the 'paint' used to color an element. */
   public static final StyleKey PAINT         = StyleKey.getStyleKey("paint", Paint.class);
-  
+
   /** A key for the 'stroke' used to draw an element. */
-  public static final StyleKey STROKE        = StyleKey.getStyleKey("stroke", Stroke.class);     
+  public static final StyleKey STROKE        = StyleKey.getStyleKey("stroke", Stroke.class);
 
   /** A key for the 'font name' used to draw element text. */
   public static final StyleKey FONT          = StyleKey.getStyleKey("font", String.class);
-  
+
   /** A key for the 'font size' used to draw element text. */
-  public static final StyleKey FONTSIZE      = StyleKey.getStyleKey("font-size", Integer.class); 
-  
+  public static final StyleKey FONTSIZE      = StyleKey.getStyleKey("font-size", Integer.class);
+
   /** A key for an element's 'bold' flag. */
-  public static final StyleKey BOLD          = StyleKey.getStyleKey("font-bold", Boolean.class); 
+  public static final StyleKey BOLD          = StyleKey.getStyleKey("font-bold", Boolean.class);
 
   /** A key for an element's 'italic' flag. */
-  public static final StyleKey ITALIC        = StyleKey.getStyleKey("font-italic", Boolean.class); 
-  
+  public static final StyleKey ITALIC        = StyleKey.getStyleKey("font-italic", Boolean.class);
+
   /** A key for an element's 'underlined' flag. */
-  public static final StyleKey UNDERLINED    = StyleKey.getStyleKey("font-underline", 
+  public static final StyleKey UNDERLINED    = StyleKey.getStyleKey("font-underline",
                                                                     Boolean.class);
-  
+
   /** A key for an element's 'strikethrough' flag. */
   public static final StyleKey STRIKETHROUGH = StyleKey.getStyleKey("font-strike", Boolean.class);
 
   /** A key for the horizontal alignment of an element. */
-  public static final StyleKey ALIGNMENT     = StyleKey.getStyleKey("alignment", 
+  public static final StyleKey ALIGNMENT     = StyleKey.getStyleKey("alignment",
                                                                     ElementAlignment.class);
-  
+
   /** A key for the vertical alignment of an element. */
-  public static final StyleKey VALIGNMENT     = StyleKey.getStyleKey("valignment", 
-                                                                     ElementAlignment.class); 
+  public static final StyleKey VALIGNMENT     = StyleKey.getStyleKey("valignment",
+                                                                     ElementAlignment.class);
 
   /** A key for an element's 'scale' flag. */
   public static final StyleKey SCALE = StyleKey.getStyleKey("scale", Boolean.class);
-  
+
   /** A key for an element's 'keep aspect ratio' flag. */
-  public static final StyleKey KEEP_ASPECT_RATIO = StyleKey.getStyleKey("keepAspectRatio", 
+  public static final StyleKey KEEP_ASPECT_RATIO = StyleKey.getStyleKey("keepAspectRatio",
                                                                         Boolean.class);
 
   /** The style-sheet name. */
@@ -129,10 +129,10 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
 
   /** The style-sheet properties. */
   private Hashtable properties;
-  
+
   /** Storage for the parent style sheets (if any). */
   private ArrayList parents;
-  
+
   /**
    * Creates a new element style-sheet with the given name.  The style-sheet initially contains
    * no attributes, and has no parent style-sheets.
@@ -141,7 +141,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
    */
   public ElementStyleSheet (String name)
   {
-    if (name == null) 
+    if (name == null)
     {
       throw new NullPointerException("ElementStyleSheet constructor: name is null.");
     }
@@ -179,7 +179,8 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
    * @param position the position where to insert the parent style sheet
    *
    * @throws NullPointerException if the given parent is null
-   * @throws IndexOutOfBoundsException if the position is invalid (pos &lt; 0 or pos &gt;= numberOfParents)
+   * @throws IndexOutOfBoundsException if the position is invalid (pos &lt; 0 or pos &gt;=
+   *         numberOfParents)
    */
   public void addParent (int position, ElementStyleSheet parent)
   {
@@ -197,7 +198,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
    */
   public void removeParent(ElementStyleSheet parent)
   {
-    if (parent == null) 
+    if (parent == null)
     {
       throw new NullPointerException("ElementStyleSheet.removeParent(...): parent is null.");
     }
@@ -206,7 +207,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
 
   /**
    * Returns the number of parents currently added to the stylesheet.
-   * 
+   *
    * @return the number of parents
    */
   public int getParentCount ()
@@ -257,7 +258,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
       {
         ElementStyleSheet st = (ElementStyleSheet) parents.get (i);
         value = st.getStyleProperty(key, null);
-        if (value != null) 
+        if (value != null)
         {
           return value;
         }
@@ -275,7 +276,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
    */
   public void setStyleProperty (StyleKey key, Object value)
   {
-    if (key == null) 
+    if (key == null)
     {
       throw new NullPointerException("ElementStyleSheet.setStyleProperty: key is null.");
     }
@@ -288,7 +289,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
       if (key.getValueType().isAssignableFrom(value.getClass()) == false)
       {
         new Exception().printStackTrace();
-        throw new ClassCastException ("Value is not assignable: " + value.getClass() 
+        throw new ClassCastException ("Value is not assignable: " + value.getClass()
                                       + " is not assignable from " + key.getValueType());
       }
       properties.put (key, value);
@@ -299,7 +300,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
    * Clones the style-sheet.
    *
    * @return the clone.
-   * 
+   *
    * @throws CloneNotSupportedException should never happen.
    */
   public Object clone () throws CloneNotSupportedException
@@ -362,11 +363,11 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
     boolean bold = getBooleanStyleProperty(BOLD);
     boolean italic = getBooleanStyleProperty(ITALIC);
     int style = Font.PLAIN;
-    if (bold) 
+    if (bold)
     {
       style += Font.BOLD;
     }
-    if (italic) 
+    if (italic)
     {
       style += Font.ITALIC;
     }

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,14 +23,20 @@
  * -----------------
  * GroupFactory.java
  * -----------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: GroupFactory.java,v 1.9 2002/11/07 21:45:28 taqua Exp $
+ * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: GroupFactory.java,v 1.10 2002/12/02 17:30:47 taqua Exp $
  *
  * Changes
  * -------
  * 10-May-2002 : Initial version
+ * 10-Dec-2002 : Fixed errors reported by Checkstyle (DG);
+ *
  */
+
 package com.jrefinery.report.io;
 
 import com.jrefinery.report.Group;
@@ -47,7 +53,7 @@ import org.xml.sax.helpers.DefaultHandler;
 /**
  * This class is a SAX handler for reading groups from a report template file.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
 {
@@ -191,21 +197,23 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
     boolean repeat = ParserUtil.parseBoolean (atts.getValue (REPEAT_HEADER), false);
     // create the group header...
     GroupHeader groupHeader = new GroupHeader ();
-    groupHeader.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
-    groupHeader.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, new Boolean (pageBreak));
+    groupHeader.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
+                                            new FloatDimension(0, height));
+    groupHeader.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE,
+                                            new Boolean (pageBreak));
     groupHeader.getStyle().setStyleProperty(BandStyleSheet.REPEAT_HEADER, new Boolean (repeat));
     groupHeader.getBandDefaults().setFontStyleProperty(fontFactory.createDefaultFont (atts));
     String valign = atts.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
       groupHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
-                                                     ParserUtil.parseVerticalElementAlignment(valign));
+          ParserUtil.parseVerticalElementAlignment(valign));
     }
     String halign = atts.getValue(ALIGNMENT_ATT);
     if (halign != null)
     {
       groupHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
-                                                     ParserUtil.parseHorizontalElementAlignment(halign));
+          ParserUtil.parseHorizontalElementAlignment(halign));
     }
 
     currentGroup.setHeader (groupHeader);
@@ -232,20 +240,22 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
     // get the default font...
     // create the group footer...
     GroupFooter groupFooter = new GroupFooter ();
-    groupFooter.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
-    groupFooter.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE, new Boolean (pageBreak));
+    groupFooter.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
+                                            new FloatDimension(0, height));
+    groupFooter.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE,
+                                            new Boolean (pageBreak));
     groupFooter.getBandDefaults().setFontStyleProperty(fontFactory.createDefaultFont (atts));
     String valign = atts.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
       groupFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
-                                                     ParserUtil.parseVerticalElementAlignment(valign));
+          ParserUtil.parseVerticalElementAlignment(valign));
     }
     String halign = atts.getValue(ALIGNMENT_ATT);
     if (halign != null)
     {
       groupFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
-                                                     ParserUtil.parseHorizontalElementAlignment(halign));
+          ParserUtil.parseHorizontalElementAlignment(halign));
     }
 
     currentGroup.setFooter (groupFooter);

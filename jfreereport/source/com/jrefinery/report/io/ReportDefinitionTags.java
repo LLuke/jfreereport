@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -25,24 +25,24 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportDefinitionTags.java,v 1.19 2002/12/02 17:30:54 taqua Exp $
+ * $Id: ReportDefinitionTags.java,v 1.20 2002/12/08 23:29:48 taqua Exp $
  *
  * Changes
  * -------
- * 10-May-2002: Extracted from ReportDefinitionContentHandler
- * 10-Jul-2002: Added Image-field and image-function tags
- * 31-Aug-2002: Added many tags in the meanwhile ...
+ * 10-May-2002 : Extracted from ReportDefinitionContentHandler
+ * 10-Jul-2002 : Added Image-field and image-function tags
+ * 31-Aug-2002 : Added many tags in the meanwhile
+ * 10-Dec-2002 : Fixed issues reported by Checkstyle (DG);
  */
 package com.jrefinery.report.io;
 
 /**
  * Defines the tags used in the parsing process.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public interface ReportDefinitionTags
 {
-
   /** Literal text for an XML report element. */
   public static final String REPORT_TAG = "report";
 
@@ -228,7 +228,6 @@ public interface ReportDefinitionTags
   /** Literal text for an XML attribute. */
   public static final String HEIGHT_ATT = "height";
 
-
   /** Literal text for an XML attribute. */
   public static final String ORIENTATION_ATT = "orientation";
 
@@ -241,12 +240,21 @@ public interface ReportDefinitionTags
   /** Literal text for an XML attribute. */
   public static final String ORIENTATION_REVERSE_LANDSCAPE_VAL = "reverselandscape";
 
+  /** The dependency level attribute. */
   public static final String DEPENCY_LEVEL_ATT = "deplevel";
 
+  /** The property reference tag. */
   public static final String PROPERTY_REFERENCE_TAG = "property-ref";
+
+  /** The property encoding attribute. */
   public static final String PROPERTY_ENCODING_ATT = "encoding";
+
+  /** The property encoding text. */
   public static final String PROPERTY_ENCODING_TEXT = "text";
 
+  /** The repeat header value. */
   public static final String REPEAT_HEADER = "repeat";
+
+  /** The configuration tag. */
   public static final String CONFIGURATION_TAG = "configuration";
 }

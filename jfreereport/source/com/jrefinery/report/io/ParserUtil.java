@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,13 +23,18 @@
  * ---------------
  * ParserUtil.java
  * ---------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: ParserUtil.java,v 1.12 2002/12/02 17:30:49 taqua Exp $
+ * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: ParserUtil.java,v 1.13 2002/12/06 19:27:54 taqua Exp $
  *
  * Changes
  * -------
- * 2002-05-21: Contains utility functions to make parsing easier.
+ * 21-May-2002 : Contains utility functions to make parsing easier.
+ * 10-Dec-2002 : Fixed issues reported by Checkstyle (DG);
+ *
  */
 package com.jrefinery.report.io;
 
@@ -48,7 +53,7 @@ import java.lang.reflect.Field;
 /**
  * Basic helper functions to ease up the process of parsing.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ParserUtil
 {
@@ -81,6 +86,14 @@ public class ParserUtil
     }
   }
 
+  /**
+   * Parses an integer.
+   *
+   * @param text  the text to parse.
+   * @param defaultVal  the default value.
+   *
+   * @return the integer.
+   */
   public static int parseInt (String text, int defaultVal)
   {
     if (text == null)
@@ -285,7 +298,15 @@ public class ParserUtil
     return retval;
   }
 
-
+  /**
+   * Parses a vertical alignment value.
+   *
+   * @param value  the text to parse.
+   *
+   * @return the element alignment.
+   *
+   * @throws a SAX exception if the alignment value is not recognised.
+   */
   public static ElementAlignment parseVerticalElementAlignment (String value) throws SAXException
   {
     if (value.equals("top"))
@@ -303,6 +324,15 @@ public class ParserUtil
     throw new SAXException("Invalid vertical alignment");
   }
 
+  /**
+   * Parses a horizontal alignment value.
+   *
+   * @param value  the text to parse.
+   *
+   * @return the element alignment.
+   *
+   * @throws a SAX exception if the alignment value is not recognised.
+   */
   public static ElementAlignment parseHorizontalElementAlignment (String value) throws SAXException
   {
     if (value.equals("left"))

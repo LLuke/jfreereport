@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.17 2002/12/06 19:27:55 taqua Exp $
+ * $Id: ReportFactory.java,v 1.18 2002/12/08 23:29:48 taqua Exp $
  *
  * Changes
  * -------
@@ -78,6 +78,8 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
 
   /** The current property. */
   private String currentProperty;
+
+  /** The encoding. */
   private String currentEncoding;
 
   /**
@@ -156,7 +158,10 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
   {
     currentProperty = atts.getValue (NAME_ATT);
     currentEncoding = atts.getValue (PROPERTY_ENCODING_ATT);
-    if (currentEncoding == null) currentEncoding = PROPERTY_ENCODING_TEXT;
+    if (currentEncoding == null)
+    {
+      currentEncoding = PROPERTY_ENCODING_TEXT;
+    }
     currentText = new StringBuffer ();
   }
 
@@ -217,6 +222,9 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     }
   }
 
+  /**
+   * Processes the end of the configuration element.
+   */
   private void endConfiguration()
   {
   }
@@ -229,7 +237,8 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
   protected void endProperty ()
           throws SAXException
   {
-    getReport().getReportConfiguration().setConfigProperty(currentProperty, currentText.toString ());
+    getReport().getReportConfiguration().setConfigProperty(currentProperty,
+                                                           currentText.toString ());
     currentText = null;
     currentProperty = null;
   }
@@ -274,10 +283,12 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
         break;
       case PageFormat.LANDSCAPE:
         // right, top, left, bottom
-        PageFormatFactory.getInstance().setBorders(p, defRightMargin ,defTopMargin, defLeftMargin, defBottomMargin);
+        PageFormatFactory.getInstance().setBorders(p, defRightMargin ,defTopMargin,
+                                                   defLeftMargin, defBottomMargin);
         break;
       case PageFormat.REVERSE_LANDSCAPE:
-        PageFormatFactory.getInstance().setBorders(p, defLeftMargin, defBottomMargin, defRightMargin, defTopMargin);
+        PageFormatFactory.getInstance().setBorders(p, defLeftMargin, defBottomMargin,
+                                                   defRightMargin, defTopMargin);
         break;
     }
 
@@ -372,7 +383,8 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
       Paper p = PageFormatFactory.getInstance().createPaper(pageformatData);
       if (p == null)
       {
-        Log.warn ("Unable to create the requested Paper. Paper={" + pageformatData[0] + ", " + pageformatData[1] + "}");
+        Log.warn ("Unable to create the requested Paper. Paper={" + pageformatData[0] + ", "
+                  + pageformatData[1] + "}");
         return format;
       }
       return PageFormatFactory.getInstance().createPageFormat(p, orientationVal);
