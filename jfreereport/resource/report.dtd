@@ -9,6 +9,7 @@
   2002-06-09: Added the rectangle shape element
   2002-06-30: ImageField, ImageFunction
   2002-07-10: ImageURLField, ImageURLFunction
+  2002-07-17: Updated missing attributes in Image* tags
  -->
 
 <!ENTITY % boolean
@@ -406,6 +407,7 @@
 <!ATTLIST imageref
   %position;
   src         CDATA #REQUIRED
+  height      CDATA #REQUIRED
   name        CDATA #REQUIRED
 >
 <!--
@@ -418,6 +420,7 @@
 <!ATTLIST image-field
   %position;
   field       CDATA #REQUIRED
+  height      CDATA #REQUIRED
   name        CDATA #REQUIRED
 >
 <!--
@@ -429,6 +432,7 @@
 <!ELEMENT image-function   EMPTY>
 <!ATTLIST image-function
   %position;
+  height      CDATA #REQUIRED
   function    CDATA #REQUIRED
   name        CDATA #REQUIRED
 >
@@ -441,6 +445,7 @@
 <!ELEMENT imageurl-field   EMPTY>
 <!ATTLIST imageurl-field
   %position;
+  height      CDATA #REQUIRED
   field       CDATA #REQUIRED
   name        CDATA #REQUIRED
 >
@@ -453,6 +458,7 @@
 <!ELEMENT imageurl-function   EMPTY>
 <!ATTLIST imageurl-function
   %position;
+  height      CDATA #REQUIRED
   function    CDATA #REQUIRED
   name        CDATA #REQUIRED
 >
