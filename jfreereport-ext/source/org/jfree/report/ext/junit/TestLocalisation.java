@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: TestLocalisation.java,v 1.1 2003/09/12 17:51:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,9 +46,9 @@ public class TestLocalisation
 {
   public static void main(String[] args)
   {
-    Locale locale = new Locale("es");
+    Locale locale = new Locale("es", "ES");
     DecimalFormatSymbols syms = new DecimalFormatSymbols(locale);
-    System.out.println(syms.getCurrency());
+    //System.out.println(syms.getCurrency());
     System.out.println(syms.getCurrencySymbol());
     System.out.println(syms.getDecimalSeparator());
     System.out.println(syms.getDigit());

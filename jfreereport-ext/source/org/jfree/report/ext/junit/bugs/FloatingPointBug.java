@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FloatingPointBug.java,v 1.1 2003/09/12 17:51:05 taqua Exp $
+ * $Id: FloatingPointBug.java,v 1.2 2003/09/14 16:16:59 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,7 +42,7 @@ public class FloatingPointBug
 {
   private static float getValue(int mant, int exp)
   {
-    double retval = (mant * StrictMath.pow(10, exp));
+    double retval = (mant * Math.pow(10, exp));
     System.out.println(retval);
     return (float) retval;
   }
