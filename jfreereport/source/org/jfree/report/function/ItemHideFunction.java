@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemHideFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ItemHideFunction.java,v 1.3 2003/08/31 19:27:56 taqua Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,7 @@ public class ItemHideFunction extends AbstractFunction implements Serializable
   public static final String FIELD_PROPERTY = "field";
 
   /** The last object. */
-  private Object lastObject;
+  private transient Object lastObject;
 
   /** The 'visible' flag. */
   private boolean visible;

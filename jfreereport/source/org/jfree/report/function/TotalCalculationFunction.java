@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TotalCalculationFunction.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: TotalCalculationFunction.java,v 1.3 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,11 @@
 package org.jfree.report.function;
 
 import java.io.Serializable;
+import java.io.ObjectInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.awt.Frame;
+import java.awt.BorderLayout;
 
 import org.jfree.report.event.ReportEvent;
 
@@ -65,7 +69,7 @@ public class TotalCalculationFunction extends AbstractFunction implements Serial
   public static final String GROUP_PROPERTY = "group";
 
   /** A list of results. */
-  private final ArrayList storedResults;
+  private transient ArrayList storedResults;
 
   /** The current index. */
   private int currentIndex;
@@ -177,4 +181,20 @@ public class TotalCalculationFunction extends AbstractFunction implements Serial
   {
     return currentObject;
   }
+
+  /**
+   * Helper method for serialization.
+   *
+   * @param in the input stream from where to read the serialized object.
+   * @throws java.io.IOException when reading the stream fails.
+   * @throws ClassNotFoundException if a class definition for a serialized object
+   * could not be found.
+   */
+  private void readObject(final ObjectInputStream in)
+      throws IOException, ClassNotFoundException
+  {
+    in.defaultReadObject();
+    storedResults = new ArrayList();
+  }
+
 }

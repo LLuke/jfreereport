@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupCountFunction.java,v 1.1 2003/08/26 17:37:27 taqua Exp $
+ * $Id: TotalGroupCountFunction.java,v 1.2 2003/09/08 18:11:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -37,6 +37,8 @@
  */
 
 package org.jfree.report.function;
+
+import java.io.Serializable;
 
 import org.jfree.report.event.ReportEvent;
 
@@ -55,7 +57,7 @@ public class TotalGroupCountFunction extends GroupCountFunction
    * An internal storage to collect the total value instead of the 
    * current value. Values in this storage are not affected by cloning. 
    */
-  private static class GroupCountStorage
+  private static class GroupCountStorage implements Serializable
   {
     /** The current group count.*/ 
     private int groupCount;

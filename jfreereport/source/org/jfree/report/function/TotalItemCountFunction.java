@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalItemCountFunction.java,v 1.1 2003/10/17 17:39:33 taqua Exp $
+ * $Id: TotalItemCountFunction.java,v 1.2 2003/10/17 17:51:04 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,6 +39,7 @@
 package org.jfree.report.function;
 
 import java.util.ArrayList;
+import java.io.Serializable;
 
 import org.jfree.report.event.ReportEvent;
 
@@ -57,7 +58,7 @@ public class TotalItemCountFunction extends AbstractFunction
    * An internal storage to collect the total value instead of the 
    * current value. Values in this storage are not affected by cloning. 
    */
-  private static class ItemCountStorage
+  private static class ItemCountStorage implements Serializable
   {
     /** The current group count.*/ 
     private int groupCount;

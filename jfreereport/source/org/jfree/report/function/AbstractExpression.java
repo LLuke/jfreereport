@@ -49,7 +49,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExpression.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: AbstractExpression.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,7 @@ public abstract class AbstractExpression implements Expression
   private Properties properties;
 
   /** The data row. */
-  private DataRow dataRow;
+  private transient DataRow dataRow;
 
   /**
    * Creates an unnamed expression. Make sure the name of the expression is set using

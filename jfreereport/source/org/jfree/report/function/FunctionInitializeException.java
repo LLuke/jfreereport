@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -
  *
- * $Id: FunctionInitializeException.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: FunctionInitializeException.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------
@@ -51,8 +51,6 @@ import org.jfree.report.ReportInitialisationException;
  */
 public class FunctionInitializeException extends ReportInitialisationException
 {
-
-
   /** The parent exception. */
   private Exception parent;
 
