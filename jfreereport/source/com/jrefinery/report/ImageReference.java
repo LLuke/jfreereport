@@ -26,16 +26,16 @@
  * (C)opyright 2002, by Thomas Morgner.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.9 2002/06/30 16:31:41 taqua Exp $
+ * $Id: ImageReference.java,v 1.10 2002/07/03 18:49:45 taqua Exp $
  *
  * Changes:
  * --------
  * 25-Apr-2002 : Version 1 (TM);
  * 16-May-2002 : Updated Javadoc comments (DG);
  * 16-May-2002 : Line Delimiters adjusted and imports organized (JS);
- *
+ * 14-Jul-2002 : BugFixed: WaitingImageObserver dead-locked (bugfix by Stefan Prange)
  */
 
 package com.jrefinery.report;
@@ -101,7 +101,7 @@ public class ImageReference implements Serializable, Cloneable
         image = Toolkit.getDefaultToolkit().getImage(url);
         WaitingImageObserver obs = new WaitingImageObserver(image);
 
-        obs.run();
+        obs.waitImageLoaded();
       }
     }
     finally

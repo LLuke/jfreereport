@@ -26,15 +26,16 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * Original Author:  Thomas Morger
- * Contributor(s):   -;
+ * Contributor(s):   Stefan Prange;
  *
- * $Id: WaitingImageObserver.java,v 1.5 2002/06/04 21:44:34 taqua Exp $
+ * $Id: WaitingImageObserver.java,v 1.6 2002/07/03 18:49:46 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 15-Apr-2002 : first version used by ImageElement.
  * 16-May-2002 : Line delimiters adjusted
  * 04-Jun-2002 : Documentation and added a NullPointerCheck for the constructor.
+ * 14-Jul-2002 : BugFixed: WaitingImageObserver dead-locked (bugfix by Stefan Prange)
  */
 package com.jrefinery.report;
 
@@ -52,7 +53,7 @@ import java.io.Serializable;
  * was completely loaded, so this observer forces the loading of the image
  * until a final state (either ALLBITS, ABORT or ERROR) is reached.
  */
-public class WaitingImageObserver implements ImageObserver, Runnable, Serializable, Cloneable
+public class WaitingImageObserver implements ImageObserver, Serializable, Cloneable
 {
   private boolean lock;
   private Image image;
@@ -95,14 +96,15 @@ public class WaitingImageObserver implements ImageObserver, Runnable, Serializab
    * The workerthread. Simply draws the image to an BufferedImage's Graphics-Object
    * and waits for the AWT to load the image.
    */
-  public void run ()
+  public void waitImageLoaded ()
   {
     BufferedImage img = new BufferedImage (1, 1, BufferedImage.TYPE_INT_RGB);
     Graphics g = img.getGraphics ();
 
     while (lock)
     {
-      g.drawImage (image, 0, 0, img.getWidth (this), img.getHeight (this), this);
+      if (g.drawImage (image, 0, 0, img.getWidth (this), img.getHeight (this), this))
+        return;
       try
       {
         Thread.currentThread ().sleep (200);
