@@ -106,20 +106,38 @@ public class ExpressionCollection implements Cloneable
    *
    * @throws ClassCastException if the collection does not contain Expressions
    */
-  public ExpressionCollection (Collection Expressions)
+  public ExpressionCollection (Collection expressions)
           throws FunctionInitializeException
   {
     this ();
-    if (Expressions != null)
+    addAll(expressions);
+  }
+
+  public void addAll (Collection expressions)
+      throws FunctionInitializeException
+  {
+    if (expressions != null)
     {
-      Iterator iterator = Expressions.iterator ();
+      Iterator iterator = expressions.iterator ();
       while (iterator.hasNext ())
       {
         Expression f = (Expression) iterator.next ();
         add (f);
       }
     }
+  }
 
+  private void privateAddAll (Collection expressions)
+  {
+    if (expressions != null)
+    {
+      Iterator iterator = expressions.iterator ();
+      while (iterator.hasNext ())
+      {
+        Expression f = (Expression) iterator.next ();
+        privateAdd(f);
+      }
+    }
   }
 
   /**
@@ -207,8 +225,7 @@ public class ExpressionCollection implements Cloneable
   public Object clone () throws CloneNotSupportedException
   {
     ExpressionCollection col = (ExpressionCollection) super.clone ();
-    col.expressionList = (ArrayList) expressionList.clone ();
-    col.expressionPositions = (Hashtable) expressionPositions.clone ();
+    col.privateAddAll(expressionList);
     return col;
   }
 

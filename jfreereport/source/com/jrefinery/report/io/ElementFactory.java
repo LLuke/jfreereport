@@ -467,8 +467,8 @@ public class ElementFactory
     String name = handler.generateName (atts.getValue (NAME_ATT));
     Paint c = ParserUtil.parseColor (atts.getValue (COLOR_ATT));
     Rectangle2D bounds = ParserUtil.getElementPosition (atts);
-    boolean shouldDraw = ParserUtil.parseBoolean ("draw", false);
-    boolean shouldFill = ParserUtil.parseBoolean ("fill", true);
+    boolean shouldDraw = ParserUtil.parseBoolean (atts.getValue("draw"), false);
+    boolean shouldFill = ParserUtil.parseBoolean (atts.getValue("fill"), true);
 
     RectangleShapeElement element = ItemFactory.createRectangleShapeElement (
             name,

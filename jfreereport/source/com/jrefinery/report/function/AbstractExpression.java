@@ -120,4 +120,12 @@ public abstract class AbstractExpression implements Expression
   {
     this.dataRow = dataRow;
   }
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    AbstractExpression function = (AbstractExpression) super.clone ();
+    function.properties = (Properties) properties.clone();
+    return function;
+  }
+
 }

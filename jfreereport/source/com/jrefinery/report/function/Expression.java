@@ -62,4 +62,15 @@ public interface Expression
   public DataRow getDataRow ();
 
   public void setDataRow (DataRow theDataRow);
+
+  /**
+   * Clones the function in its current state.
+   * <P>
+   * This is used for recording the report state at page boundaries.
+   *
+   * @return A clone of this function.
+   */
+  public Object clone () throws CloneNotSupportedException;
+
+
 }

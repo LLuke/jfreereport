@@ -31,6 +31,9 @@
  */
 package com.jrefinery.report;
 
+import com.jrefinery.report.function.Function;
+import com.jrefinery.report.function.Expression;
+
 import javax.swing.table.TableModel;
 import java.util.Hashtable;
 
@@ -116,6 +119,8 @@ public class DataRowBackend implements Cloneable
   private Hashtable colcache;
   private DataRowBackend preview;
 
+  // the expressions are extracted by the JFreeReport.class
+  private ExpressionCollection expressions;
   // set by the report state
   private FunctionCollection functions;
   // set by the report state
@@ -164,7 +169,7 @@ public class DataRowBackend implements Cloneable
     if (col > getColumnCount ())
       throw new IndexOutOfBoundsException ("requested " + col + " , have " + getColumnCount ());
 
-    if (col < getTablemodel ().getColumnCount ())
+    if (col < getTableEndIndex())
     {
       // Handle Pos == BEFORE_FIRST_ROW
 
@@ -178,14 +183,20 @@ public class DataRowBackend implements Cloneable
         return getTablemodel ().getValueAt (getCurrentRow (), col);
       }
     }
-
-    col -= getTablemodel ().getColumnCount ();
-    if (isPreviewMode ())
+    else if (col < getFunctionEndIndex())
     {
-      System.out.println ("Is Preview Mode => null");
-      return null;
+      col -= getTablemodel ().getColumnCount ();
+      if (isPreviewMode ())
+      {
+        System.out.println ("Is Preview Mode => null");
+        return null;
+      }
+      return getFunctions ().getFunction (col).getValue ();
     }
-    return getFunctions ().getFunction (col).getValue ();
+    else
+    {
+      return getExpressions().getFunction (col).getValue ();
+    }
   }
 
   public boolean isPreviewMode ()
@@ -236,13 +247,27 @@ public class DataRowBackend implements Cloneable
   {
     if (col > getColumnCount ())
       throw new IndexOutOfBoundsException ("requested " + col + " , have " + getColumnCount ());
-    if (col < getTablemodel ().getColumnCount ())
+
+
+    if (col < getTableEndIndex())
     {
       return getTablemodel ().getColumnName (col);
     }
-
-    col -= getTablemodel ().getColumnCount ();
-    return getFunctions ().getFunction (col).getName ();
+    else if (col < getFunctionEndIndex())
+    {
+      col -= getTableEndIndex();
+      Function f =getFunctions ().getFunction (col);
+      if (f == null)
+        return null;
+      return f.getName ();
+    }
+    else
+    {
+      col -= getFunctionEndIndex();
+      Expression ex =getExpressions().getFunction(col);
+      if (ex == null) return null;
+      return ex.getName();
+    }
   }
 
 
@@ -274,5 +299,26 @@ public class DataRowBackend implements Cloneable
       preview = new DataRowPreview (this);
     }
     return preview;
+  }
+
+  private int getTableEndIndex ()
+  {
+    return getTablemodel().getColumnCount();
+  }
+
+  private int getFunctionEndIndex ()
+  {
+    return getTableEndIndex() + getFunctions().size();
+  }
+
+  public ExpressionCollection getExpressions()
+  {
+    return expressions;
+  }
+
+  public void setExpressions(ExpressionCollection expressions)
+  {
+    if (expressions == null) throw new NullPointerException();
+    this.expressions = expressions;
   }
 }

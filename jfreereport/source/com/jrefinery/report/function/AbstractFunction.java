@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.10 2002/08/08 15:28:43 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.11 2002/08/12 19:30:33 taqua Exp $
  *
  * Changes
  * -------
@@ -296,7 +296,9 @@ public abstract class AbstractFunction implements Function
    */
   public Object clone () throws CloneNotSupportedException
   {
-    return super.clone ();
+    AbstractFunction function = (AbstractFunction) super.clone ();
+    function.properties = (Properties) properties.clone();
+    return function;
   }
 
   /**

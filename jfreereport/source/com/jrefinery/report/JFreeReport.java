@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.22 2002/08/08 15:28:38 taqua Exp $
+ * $Id: JFreeReport.java,v 1.23 2002/08/14 21:14:04 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -110,6 +110,8 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /** Storage for the functions in the report. */
   private FunctionCollection _functions;
 
+  private ExpressionCollection expressions;
+
   /** The report header band (if not null, printed once at the start of the report). */
   private ReportHeader reportHeader;
 
@@ -149,6 +151,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     setItemBand (new ItemBand ());
     setGroups (new GroupList ());
     setFunctions (new FunctionCollection ());
+    setExpressions(new ExpressionCollection());
   }
 
   /**
@@ -194,6 +197,40 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
 
     setFunctions (new FunctionCollection (functions));
   }
+
+  /**
+   * Constructs a report with the specified attributes.
+   *
+   * @param name The name of the report.
+   * @param reportHeader The report header <i>not null</i>.
+   * @param reportFooter The report footer <i>not null</i>.
+   * @param pageHeader The page header <i>not null</i>.
+   * @param pageFooter The page footer <i>not null</i>.
+   * @param itemBand The item band <i>not null</i>.
+   * @param groups The report groups <i>not null</i>.
+   * @param data The data for the report <i>not null</i>.
+   * @param defaultPageFormat The default page format.
+   * @throws NullPointerException if one of the <i>not null</i>-parameters is null.
+   */
+  public JFreeReport (
+          String name,
+          ReportHeader reportHeader,
+          ReportFooter reportFooter,
+          PageHeader pageHeader,
+          PageFooter pageFooter,
+          ItemBand itemBand,
+          GroupList groups,
+          Collection functions,
+          TableModel data,
+          PageFormat defaultPageFormat,
+          ExpressionCollection expressions)
+          throws FunctionInitializeException
+  {
+    this (name, reportHeader, reportFooter, pageHeader, pageFooter, itemBand,
+          groups, functions, data, defaultPageFormat);
+    setExpressions(expressions);
+  }
+
 
   /**
    * Sets the item band for the report. If the ItemBand is null, an
@@ -721,6 +758,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     report.properties = (ReportProperties) properties.clone ();
     report.reportFooter = (ReportFooter) reportFooter.clone ();
     report.reportHeader = (ReportHeader) reportHeader.clone ();
+    report.expressions = (ExpressionCollection) expressions.clone();
     return report;
   }
 
@@ -737,5 +775,16 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
       INFO = new JFreeReportInfo ();
     }
     return INFO;
+  }
+
+  public ExpressionCollection getExpressions()
+  {
+    return expressions;
+  }
+
+  public void setExpressions(ExpressionCollection expressions)
+  {
+    if (expressions == null) throw new NullPointerException();
+    this.expressions = expressions;
   }
 }

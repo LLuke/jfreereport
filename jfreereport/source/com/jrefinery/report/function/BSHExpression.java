@@ -71,6 +71,21 @@ public class BSHExpression extends AbstractExpression
     }
   }
 
+  public Object clone () throws CloneNotSupportedException
+  {
+    BSHExpression expression = (BSHExpression) super.clone();
+    try
+    {
+      expression.interpreter = new Interpreter();
+      expression.initialize();
+    }
+    catch (FunctionInitializeException fe)
+    {
+      throw new CloneNotSupportedException ();
+    }
+    return expression;
+  }
+
   public static void main (String [] args) throws Exception
   {
     BSHExpression expr = new BSHExpression();
