@@ -52,11 +52,28 @@ public class JFreeReportResources extends ListResourceBundle
     return contents;
   }
 
+  /**
+   * Attempts to load an image from classpath. If this failes, an empty
+   * image icon is returned.
+   */
+  public static ImageIcon getIcon(String filename)
+  {
+
+    URL in = ClassLoader.getSystemResource(filename);
+    if (in == null)
+    {
+      Log.debug ("Unable to load file: " + filename);
+      return new ImageIcon(new BufferedImage (BufferedImage.TYPE_INT_RGB, 1, 1));
+    }
+    Image img = Toolkit.getDefaultToolkit().getImage(in);
+    return new ImageIcon(img);
+  }
+
   /** The resources to be localised. */
   private static final Object[][] contents = 
     {
       { "project.name", "JFreeReport"},
-      { "project.version", "0.7.2"},
+      { "project.version", "0.7.3"},
       { "project.info", "http://www.object-refinery.com/jfreereport/index.html"},
       { "project.copyright", "(C)opyright 2000-2002, by Simba Management Limited and Contributors"},
   
@@ -104,8 +121,8 @@ public class JFreeReportResources extends ListResourceBundle
       { "action.firstpage.accelerator", KeyStroke.getKeyStroke(KeyEvent.VK_HOME, 0) },
 
       { "action.back.name", "Back"},
-      { "action.back.mnemonic", new Integer (KeyEvent.VK_PAGE_UP)},
       { "action.back.description", "Switch to the previous page"},
+      { "action.back.mnemonic", new Integer (KeyEvent.VK_PAGE_UP)},
       { "action.back.small-icon", getIcon("com/jrefinery/report/resources/Back16.gif") },
       { "action.back.icon", getIcon("com/jrefinery/report/resources/Back24.gif") },
       { "action.back.accelerator", KeyStroke.getKeyStroke("PAGE_UP") },
@@ -118,8 +135,8 @@ public class JFreeReportResources extends ListResourceBundle
       { "action.forward.accelerator", KeyStroke.getKeyStroke("PAGE_DOWN") },
 
       { "action.lastpage.name", "End"},
-      { "action.lastpage.mnemonic", new Integer (KeyEvent.VK_END)},
       { "action.lastpage.description", "Switch to the last page"},
+      { "action.lastpage.mnemonic", new Integer (KeyEvent.VK_END)},
       { "action.lastpage.small-icon", getIcon("com/jrefinery/report/resources/LastPage16.gif") },
       { "action.lastpage.icon", getIcon("com/jrefinery/report/resources/LastPage24.gif") },
       { "action.lastpage.accelerator", KeyStroke.getKeyStroke(KeyEvent.VK_END, 0) },
@@ -149,20 +166,4 @@ public class JFreeReportResources extends ListResourceBundle
       { "menu.help.mnemonic", new Character ('H')},
     };
   
-  /**
-   * Attempts to load an image from classpath. If this failes, an empty
-   * image icon is returned.
-   */
-  public static ImageIcon getIcon(String filename)
-  {
-
-    URL in = ClassLoader.getSystemResource(filename);
-    if (in == null)
-    {
-      Log.debug ("Unable to load file: " + filename);
-      return new ImageIcon(new BufferedImage (BufferedImage.TYPE_INT_RGB, 1, 1));
-    }
-    Image img = Toolkit.getDefaultToolkit().getImage(in);
-    return new ImageIcon(img);
-  }
 }

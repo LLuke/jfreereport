@@ -19,7 +19,7 @@ public class JFreeReportResources_de extends JFreeReportResources
   /** The resources to be localised. */
   private static final Object[][] contents =
     { 
-      { "action.save-as.name", "Speichern unter..." },
+      { "action.save-as.name", "Speichern als..." },
       { "action.save-as.description", "Speichert den Bericht als PDF-Datei" }, 
       { "action.save-as.mnemonic", new Integer(KeyEvent.VK_S) }, 
 
@@ -35,15 +35,30 @@ public class JFreeReportResources_de extends JFreeReportResources
       { "action.close.description", "Beendet die Seitenansicht" },
       { "action.close.mnemonic", new Integer(KeyEvent.VK_B) },
 
-      { "action.about.name", "Über..." }, 
+      { "action.gotopage.name", "Gehe zu ..."},
+      { "action.gotopage.description", "Wechselt zu einer bestimmten Seite im Bericht."},
+
+      { "action.about.name", "Über..." },
       { "action.about.description", "Informationen über JFreeReport" }, 
       { "action.about.mnemonic", new Integer(KeyEvent.VK_A) },
 
-      { "action.firstpage.name", "Pos1"},
-      { "action.firstpage.description", "gehe zum Start"},
+      { "action.firstpage.name", "Anfang"},
+      { "action.firstpage.description", "Gehe zum Start"},
 
       { "action.lastpage.name", "Ende"},
-      { "action.lastpage.description", "gehe zum Ende"},
+      { "action.lastpage.description", "Gehe zum Ende"},
+
+      { "action.back.name", "Zurück"},
+      { "action.back.description", "Wechselt zur vorherigen Seite"},
+
+      { "action.forward.name", "Nächste"},
+      { "action.forward.description", "Wechselt zur nächsten Seite"},
+
+      { "action.zoomIn.name", "Vergrössern"},
+      { "action.zoomIn.description", "Zeigt die aktuelle Seite in einem grösseren Masstab an"},
+
+      { "action.zoomOut.name", "Verkleinern"},
+      { "action.zoomOut.description", "Zeigt die aktuelle Seite in einem kleineren Masstab an"},
 
       { "preview-frame.title", "Seitenansicht" },
 
