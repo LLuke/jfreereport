@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.12 2005/03/29 18:32:00 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.13 2005/03/30 17:26:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -205,6 +205,9 @@ public class HtmlContentCreator extends TableContentCreator
     pout.print("<table cellspacing=\"0\" cellpadding=\"0\" style=\"");
     pout.print(style);
     pout.println("\">");
+    pout.print("<colgroup span=\"");
+    pout.print(noc);
+    pout.print("\">");
     for (int i = 1; i < noc; i++)
     {
       final int width = (int)
@@ -221,6 +224,7 @@ public class HtmlContentCreator extends TableContentCreator
         pout.println("pt\">");
       }
     }
+    pout.println("</colgroup>");
   }
 
   protected void handleEndTable ()
