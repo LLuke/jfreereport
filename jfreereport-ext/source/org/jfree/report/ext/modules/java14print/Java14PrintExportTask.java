@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: Java14PrintExportTask.java,v 1.1 2003/09/21 10:50:42 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -69,23 +69,25 @@ public class Java14PrintExportTask extends ExportTask
   /**
    * Performs the export to the java1.4 print system.
    */
-  public void run()
+  protected void performExport()
   {
     try
     {
+      progressDialog.setModal(false);
+      progressDialog.setVisible(true);
       DocPrintJob job = service.createPrintJob();
       SimpleDoc document = new SimpleDoc
         (pageable, DocFlavor.SERVICE_FORMATTED.PAGEABLE, null);
       job.print(document, attributes);
-      setReturnValue(ExportTask.RETURN_SUCCESS);
-      setTaskDone(true);
+      setTaskDone();
     }
     catch (PrintException pe)
     {
-      setException(pe);
-      setReturnValue(ExportTask.RETURN_FAILED);
+      setTaskFailed(pe);
     }
-    setTaskDone(true);
-    progressDialog.setVisible(false);
+    finally
+    {
+      progressDialog.setVisible(false);
+    }
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14PrintingPlugin.java,v 1.5 2003/10/05 21:53:53 taqua Exp $
+ * $Id: Java14PrintingPlugin.java,v 1.6 2003/10/11 21:34:10 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,7 +38,6 @@
 
 package org.jfree.report.ext.modules.java14print;
 
-import java.util.ResourceBundle;
 import javax.print.DocFlavor;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
@@ -49,7 +48,6 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.gui.print.PrintingPlugin;
-import org.jfree.ui.RefineryUtilities;
 
 /**
  * A replacement to use the JDK 1.4 printing API. This class does
@@ -59,12 +57,6 @@ import org.jfree.ui.RefineryUtilities;
  */
 public class Java14PrintingPlugin extends PrintingPlugin
 {
-  /** Localised resources. */
-  private final ResourceBundle resources;
-
-  /** The progress dialog that is used to monitor the printing progress. */
-  private final ReportProgressDialog progressDialog;
-
   /** A clear text failure description for the error message of the dialog. */
   private String failureDescription;
 
@@ -73,13 +65,6 @@ public class Java14PrintingPlugin extends PrintingPlugin
    */
   public Java14PrintingPlugin()
   {
-    resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
-    progressDialog = new ReportProgressDialog();
-    progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
-    progressDialog.setTitle(resources.getString("printing-export.progressdialog.title"));
-    progressDialog.setMessage(resources.getString("printing-export.progressdialog.message"));
-    progressDialog.pack();
-    RefineryUtilities.positionFrameRandomly(progressDialog);
   }
 
   /**
@@ -137,19 +122,12 @@ public class Java14PrintingPlugin extends PrintingPlugin
 //          attributes.get (MediaPrintableArea.class);
 //      OrientationRequested oReq = (OrientationRequested)
 //          attributes.get (OrientationRequested.class);
-
+      ReportProgressDialog progressDialog = createProgressDialog();
       getBase().addRepaginationListener(progressDialog);
       Java14PrintExportTask task = new Java14PrintExportTask
           (progressDialog, service, getBase().getPageable(), attributes);
+      task.addExportTaskListener(new PrintTaskListener(progressDialog));
       delegateTask(task);
-      synchronized (task)
-      {
-        if (task.isTaskDone() == false)
-        {
-          progressDialog.setVisible(true);
-        }
-      }
-      getBase().removeRepaginationListener(progressDialog);
       return handleExportResult(task);
     }
   }
