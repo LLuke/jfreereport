@@ -28,13 +28,15 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.3 2002/05/14 21:35:05 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.4 2002/05/15 21:02:07 taqua Exp $
  *
  * Changes
  * -------
  * 21-Feb-2002 : Version 1 (DG);
  * 24-Apr-2002 : Support for Images and MultiLineElements.
  * 07-May-2002 : Small change for source of JFreeReport info to set creator of PDF document (DG);
+ * 16-May-2002 : Interface of drawShape changhed so we can draw different line width (JS)
+ * 
  */
 
 package com.jrefinery.report.pdf;
@@ -43,6 +45,7 @@ import com.jrefinery.report.Element;
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.OutputTarget;
+import com.jrefinery.report.ShapeElement;
 import com.jrefinery.report.util.Log;
 import com.lowagie.text.Document;
 import com.lowagie.text.Rectangle;
@@ -50,9 +53,11 @@ import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
 
+import java.awt.BasicStroke;
 import java.awt.Font;
 import java.awt.Paint;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.Line2D;
 import java.awt.print.PageFormat;
 import java.io.OutputStream;
@@ -99,20 +104,20 @@ public class PDFOutputTarget implements OutputTarget
    * @param pageFormat The page format.
    * @param embedFonts Embed fonts?
    */
-  public PDFOutputTarget (OutputStream out, PageFormat pageFormat, boolean embedFonts)
+  public PDFOutputTarget(OutputStream out, PageFormat pageFormat, boolean embedFonts)
   {
 
     this.out = out;
-    setPageFormat (pageFormat);
+    setPageFormat(pageFormat);
     this.embedFonts = embedFonts;
-    this.baseFonts = new TreeMap ();
+    this.baseFonts = new TreeMap();
 
   }
 
   /**
    * Returns the page format.
    */
-  public PageFormat getPageFormat ()
+  public PageFormat getPageFormat()
   {
     return this.pageFormat;
   }
@@ -122,7 +127,7 @@ public class PDFOutputTarget implements OutputTarget
    *
    * @param pageFormat The page format.
    */
-  public void setPageFormat (PageFormat pageFormat)
+  public void setPageFormat(PageFormat pageFormat)
   {
     this.pageFormat = pageFormat;
   }
@@ -130,9 +135,9 @@ public class PDFOutputTarget implements OutputTarget
   /**
    * Returns the coordinate of the left edge of the page.
    */
-  public float getPageX ()
+  public float getPageX()
   {
-    return this.document.getPageSize ().left ();
+    return this.document.getPageSize().left();
   }
 
   /**
@@ -142,114 +147,126 @@ public class PDFOutputTarget implements OutputTarget
    * works with y values increasing as you move up the page - this method translates the
    * iText value to match JFreeReport.
    */
-  public float getPageY ()
+  public float getPageY()
   {
-    return this.document.getPageSize ().bottom ();
+    return this.document.getPageSize().bottom();
   }
 
   /**
    * Returns the total width of the page.
    */
-  public float getPageWidth ()
+  public float getPageWidth()
   {
-    return this.document.getPageSize ().width ();
+    return this.document.getPageSize().width();
   }
 
   /**
    * Returns the total height of the page.
    */
-  public float getPageHeight ()
+  public float getPageHeight()
   {
-    return this.document.getPageSize ().height ();
+    return this.document.getPageSize().height();
   }
 
   /**
    * Returns the coordinate of the left hand edge of the usable area on the page (after taking
    * into account the left margin).
    */
-  public float getUsableX ()
+  public float getUsableX()
   {
-    return this.document.getPageSize ().left () + this.document.leftMargin ();
+    return this.document.getPageSize().left() + this.document.leftMargin();
   }
 
   /**
    * Returns the coordinate of the top edge of the usable area on the page (after taking
    * into account the top margin and translating to JFreeReport's orientation).
    */
-  public float getUsableY ()
+  public float getUsableY()
   {
-    return this.document.getPageSize ().bottom () + this.document.topMargin ();
+    return this.document.getPageSize().bottom() + this.document.topMargin();
   }
 
   /**
    * Returns the width of the usable area on the page (after taking into account margins).
    */
-  public float getUsableWidth ()
+  public float getUsableWidth()
   {
-    return this.document.getPageSize ().width () - this.document.leftMargin ()
-            - this.document.rightMargin ();
+    return this.document.getPageSize().width()
+      - this.document.leftMargin()
+      - this.document.rightMargin();
   }
 
   /**
    * Returns the height of the usable area on the page (after taking into account margins).
    */
-  public float getUsableHeight ()
+  public float getUsableHeight()
   {
-    return this.document.getPageSize ().height () - this.document.topMargin ()
-            - this.document.bottomMargin ();
+    return this.document.getPageSize().height()
+      - this.document.topMargin()
+      - this.document.bottomMargin();
   }
 
   /**
    * Draws a string within a rectangular area.
    */
-  public void drawString (String text,
-                          float x1, float y1, float x2, float y2, int alignment)
+  public void drawString(
+    String text,
+    float x1,
+    float y1,
+    float x2,
+    float y2,
+    int alignment)
   {
 
-    PdfContentByte cb = this.writer.getDirectContent ();
-    cb.beginText ();
-    cb.setFontAndSize (this.baseFont, this.fontSize);
+    PdfContentByte cb = this.writer.getDirectContent();
+    cb.beginText();
+    cb.setFontAndSize(this.baseFont, this.fontSize);
 
     if (alignment == Element.LEFT)
     {
-      cb.showTextAligned (PdfContentByte.ALIGN_LEFT, text,
-              x1, this.getPageHeight () - y2, 0);
+      cb.showTextAligned(PdfContentByte.ALIGN_LEFT, text, x1, this.getPageHeight() - y2, 0);
     }
     else if (alignment == Element.CENTER)
     {
-      cb.showTextAligned (PdfContentByte.ALIGN_CENTER, text,
-              (x1 + x2) / 2, this.getPageHeight () - y2, 0);
+      cb.showTextAligned(
+        PdfContentByte.ALIGN_CENTER,
+        text,
+        (x1 + x2) / 2,
+        this.getPageHeight() - y2,
+        0);
     }
     else if (alignment == Element.RIGHT)
     {
-      float w = this.baseFont.getWidthPoint (text, this.fontSize);
+      float w = this.baseFont.getWidthPoint(text, this.fontSize);
+
       // use ALIGN_LEFT here because we are calculating the x position ourselves...
-      cb.showTextAligned (PdfContentByte.ALIGN_LEFT, text,
-              x2 - w, this.getPageHeight () - y2, 0);
+
+      cb.showTextAligned(PdfContentByte.ALIGN_LEFT, text, x2 - w, this.getPageHeight() - y2, 0);
     }
 
-    cb.endText ();
+    cb.endText();
 
   }
 
   /**
    * Sets the current font.
    */
-  public void setFont (Font font)
+  public void setFont(Font font)
   {
 
-    this.fontSize = font.getSize ();
+    this.fontSize = font.getSize();
 
     // use the Java logical font name to map to a predefined iText font.
-    String fontKey = null;
-    String logicalName = font.getName ();
 
-    if (logicalName.equals ("DialogInput") || (logicalName.equals ("Monospaced")))
+    String fontKey = null;
+    String logicalName = font.getName();
+
+    if (logicalName.equals("DialogInput") || (logicalName.equals("Monospaced")))
     {
 
-      if (font.isItalic ())
+      if (font.isItalic())
       {
-        if (font.isBold ())
+        if (font.isBold())
         {
           fontKey = BaseFont.COURIER_BOLDOBLIQUE;
         }
@@ -260,7 +277,7 @@ public class PDFOutputTarget implements OutputTarget
       }
       else
       {
-        if (font.isBold ())
+        if (font.isBold())
         {
           fontKey = BaseFont.COURIER_BOLD;
         }
@@ -271,12 +288,12 @@ public class PDFOutputTarget implements OutputTarget
       }
     }
 
-    else if (logicalName.equals ("Serif"))
+    else if (logicalName.equals("Serif"))
     {
 
-      if (font.isItalic ())
+      if (font.isItalic())
       {
-        if (font.isBold ())
+        if (font.isBold())
         {
           fontKey = BaseFont.TIMES_BOLDITALIC;
         }
@@ -287,7 +304,7 @@ public class PDFOutputTarget implements OutputTarget
       }
       else
       {
-        if (font.isBold ())
+        if (font.isBold())
         {
           fontKey = BaseFont.TIMES_BOLD;
         }
@@ -300,11 +317,11 @@ public class PDFOutputTarget implements OutputTarget
     }
 
     else
-    {  // default, this catches Dialog and SansSerif
+    { // default, this catches Dialog and SansSerif
 
-      if (font.isItalic ())
+      if (font.isItalic())
       {
-        if (font.isBold ())
+        if (font.isBold())
         {
           fontKey = BaseFont.HELVETICA_BOLDOBLIQUE;
         }
@@ -315,7 +332,7 @@ public class PDFOutputTarget implements OutputTarget
       }
       else
       {
-        if (font.isBold ())
+        if (font.isBold())
         {
           fontKey = BaseFont.HELVETICA_BOLD;
         }
@@ -327,23 +344,23 @@ public class PDFOutputTarget implements OutputTarget
 
     }
 
-    BaseFont f = (BaseFont) this.baseFonts.get (fontKey);
+    BaseFont f = (BaseFont) this.baseFonts.get(fontKey);
 
     if (f == null)
     {
       try
       {
-        f = BaseFont.createFont (fontKey, BaseFont.CP1252, this.embedFonts);
+        f = BaseFont.createFont(fontKey, BaseFont.CP1252, this.embedFonts);
       }
       catch (Exception e)
       {
-        Log.warn ("BaseFont.createFont failed.", e);
+        Log.warn("BaseFont.createFont failed.", e);
       }
     }
 
     if (f == null)
     {
-      Log.warn ("Null font = " + fontKey);
+      Log.warn("Null font = " + fontKey);
     }
 
     this.baseFont = f;
@@ -353,24 +370,27 @@ public class PDFOutputTarget implements OutputTarget
   /**
    * Sets the paint.
    */
-  public void setPaint (Paint paint)
+  public void setPaint(Paint paint)
   {
     // haven't looked into how to do this with iText yet...
   }
 
-  public void drawImage (ImageReference imageRef, float x, float y)
+  public void drawImage(ImageReference imageRef, float x, float y)
   {
     try
     {
-      System.out.println (imageRef.getSourceURL ());
-      com.lowagie.text.Image image = com.lowagie.text.Image.getInstance (imageRef.getSourceURL ());
-      image.setAbsolutePosition (x + imageRef.getX (), getPageHeight () - y - imageRef.getY () - imageRef.getHeight ());
-      image.scaleAbsolute (imageRef.getWidth (), imageRef.getHeight ());
-      document.add (image);
+      System.out.println(imageRef.getSourceURL());
+      com.lowagie.text.Image image =
+        com.lowagie.text.Image.getInstance(imageRef.getSourceURL());
+      image.setAbsolutePosition(
+        x + imageRef.getX(),
+        getPageHeight() - y - imageRef.getY() - imageRef.getHeight());
+      image.scaleAbsolute(imageRef.getWidth(), imageRef.getHeight());
+      document.add(image);
     }
     catch (Exception be)
     {
-      be.printStackTrace ();
+      be.printStackTrace();
     }
   }
 
@@ -378,45 +398,50 @@ public class PDFOutputTarget implements OutputTarget
    * Draws a shape at the specified location.  At the moment, this method only supports drawing
    * lines (instances of Line2D).
    */
-  public void drawShape (Shape shape, float x, float y)
+  public void drawShape(ShapeElement shape, float x, float y)
   {
+    Shape s = shape.getShape();
 
-    if (shape instanceof Line2D)
+    if (s instanceof Line2D)
     {
 
-      Line2D line = (Line2D) shape;
+      Line2D line = (Line2D) s;
       try
       {
-        PdfContentByte cb = this.writer.getDirectContent ();
-        float x1 = (float) line.getX1 () + x;
-        float y1 = this.getPageHeight () - ((float) line.getY1 () + y);
-        float x2 = (float) line.getX2 () + x;
-        float y2 = this.getPageHeight () - ((float) line.getY2 () + y);
-        cb.moveTo (x1, y1);
-        cb.lineTo (x2, y2);
-        cb.stroke ();
+        Stroke stroke = shape.getStroke();
+        PdfContentByte cb = this.writer.getDirectContent();
+        float x1 = (float) line.getX1() + x;
+        float y1 = this.getPageHeight() - ((float) line.getY1() + y);
+        float x2 = (float) line.getX2() + x;
+        float y2 = this.getPageHeight() - ((float) line.getY2() + y);
+        cb.moveTo(x1, y1);
+        cb.lineTo(x2, y2);
+        if (stroke instanceof BasicStroke)
+        {
+          BasicStroke bstroke = (BasicStroke) stroke;
+          cb.setLineWidth(bstroke.getLineWidth());
+        }
+        cb.stroke();
       }
       catch (Exception e)
       {
-        Log.error ("Drawing line failed." , e);
+        Log.error("Drawing line failed.", e);
       }
-
     }
-
   }
 
   /**
    * This method is called when the page is ended.
    */
-  public void endPage ()
+  public void endPage()
   {
     try
     {
-      this.document.newPage ();
+      this.document.newPage();
     }
     catch (Exception e)
     {
-      Log.error ("Failed to end page", e);
+      Log.error("Failed to end page", e);
     }
   }
 
@@ -426,45 +451,47 @@ public class PDFOutputTarget implements OutputTarget
    * @param title The report title.
    * @param author The report author.
    */
-  public void open (String title, String author)
+  public void open(String title, String author)
   {
 
-    float urx = (float) this.pageFormat.getWidth ();
-    float ury = (float) this.pageFormat.getHeight ();
+    float urx = (float) this.pageFormat.getWidth();
+    float ury = (float) this.pageFormat.getHeight();
 
-    float marginLeft = (float) this.pageFormat.getImageableX ();
-    float marginRight = (float) (this.pageFormat.getWidth ()
-            - this.pageFormat.getImageableWidth ()
-            - this.pageFormat.getImageableX ());
-    float marginTop = (float) this.pageFormat.getImageableY ();
-    float marginBottom = (float) (this.pageFormat.getHeight ()
-            - this.pageFormat.getImageableHeight ()
-            - this.pageFormat.getImageableY ());
-    Rectangle pageSize = new Rectangle (urx, ury);
+    float marginLeft = (float) this.pageFormat.getImageableX();
+    float marginRight =
+      (float) (this.pageFormat.getWidth()
+        - this.pageFormat.getImageableWidth()
+        - this.pageFormat.getImageableX());
+    float marginTop = (float) this.pageFormat.getImageableY();
+    float marginBottom =
+      (float) (this.pageFormat.getHeight()
+        - this.pageFormat.getImageableHeight()
+        - this.pageFormat.getImageableY());
+    Rectangle pageSize = new Rectangle(urx, ury);
 
     try
     {
-      if (pageFormat.getOrientation () != PageFormat.PORTRAIT)
+      if (pageFormat.getOrientation() != PageFormat.PORTRAIT)
       {
-        pageSize.rotate ();
+        pageSize.rotate();
       }
-      else if (pageFormat.getOrientation () == PageFormat.PORTRAIT)
+      else if (pageFormat.getOrientation() == PageFormat.PORTRAIT)
       {
-        pageSize.rotate ();
+        pageSize.rotate();
       }
-      this.document = new Document (pageSize, marginLeft, marginRight,
-              marginTop, marginBottom);
-      document.addTitle (title);
-      document.addAuthor (author);
-      document.addCreator (JFreeReport.INFO.getName () + " version " + JFreeReport.INFO.getVersion ());
-      document.addCreationDate ();
+      this.document = new Document(pageSize, marginLeft, marginRight, marginTop, marginBottom);
+      document.addTitle(title);
+      document.addAuthor(author);
+      document.addCreator(
+        JFreeReport.INFO.getName() + " version " + JFreeReport.INFO.getVersion());
+      document.addCreationDate();
 
-      writer = PdfWriter.getInstance (document, out);
-      this.document.open ();
+      writer = PdfWriter.getInstance(document, out);
+      this.document.open();
     }
     catch (Exception e)
     {
-      Log.error ("Opening Document failed.", e);
+      Log.error("Opening Document failed.", e);
     }
 
   }
@@ -472,9 +499,9 @@ public class PDFOutputTarget implements OutputTarget
   /**
    * Closes the document.
    */
-  public void close ()
+  public void close()
   {
-    this.document.close ();
+    this.document.close();
   }
 
   /**
@@ -483,15 +510,21 @@ public class PDFOutputTarget implements OutputTarget
    * @param x The x-coordinate for the band.
    * @param y The y-coordinate for the band.
    */
-  public void drawMultiLineText (String mytext, float x1, float y1, float x2, float y2, int align)
+  public void drawMultiLineText(
+    String mytext,
+    float x1,
+    float y1,
+    float x2,
+    float y2,
+    int align)
   {
-    Vector lines = breakLines (mytext, x2 - x1);
+    Vector lines = breakLines(mytext, x2 - x1);
     int fontheight = fontSize;
 
-    for (int i = 0; i < lines.size (); i++)
+    for (int i = 0; i < lines.size(); i++)
     {
-      String line = (String) lines.elementAt (i);
-      drawString (line, x1, y1 + i * fontheight, x2, y2, align);
+      String line = (String) lines.elementAt(i);
+      drawString(line, x1, y1 + i * fontheight, x2, y2, align);
     }
 
   }
@@ -499,36 +532,36 @@ public class PDFOutputTarget implements OutputTarget
   /**
    * Breaks the text into multiple lines
    */
-  private Vector breakLines (String mytext, float w)
+  private Vector breakLines(String mytext, float w)
   {
-    BreakIterator breakit = BreakIterator.getWordInstance ();
-    breakit.setText (mytext);
+    BreakIterator breakit = BreakIterator.getWordInstance();
+    breakit.setText(mytext);
 
     //Font font = g2.getFont ();
 
-    Vector lines = new Vector ();
+    Vector lines = new Vector();
     int pos = 0;
-    int len = mytext.length ();
+    int len = mytext.length();
 
     while (pos < len)
     {
-      int last = breakit.next ();
+      int last = breakit.next();
       float x = 0;
 
       while (x < w && last != BreakIterator.DONE)
       {
-        x = (float) baseFont.getWidthPoint (mytext, fontSize);
-        last = breakit.next ();
+        x = (float) baseFont.getWidthPoint(mytext, fontSize);
+        last = breakit.next();
       }
 
       if (last == BreakIterator.DONE)
       {
-        lines.add (mytext.substring (pos));
+        lines.add(mytext.substring(pos));
         pos = len;
       }
       else
       {
-        lines.add (mytext.substring (pos, last));
+        lines.add(mytext.substring(pos, last));
         pos = last;
       }
     }
