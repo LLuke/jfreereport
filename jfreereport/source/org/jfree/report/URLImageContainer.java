@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: URLImageContainer.java,v 1.3 2005/01/24 23:57:48 taqua Exp $
+ * $Id: URLImageContainer.java,v 1.4 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,6 +43,6 @@ import java.net.URL;
 public interface URLImageContainer extends ImageContainer
 {
   public URL getSourceURL ();
-
+  public String getSourceURLString ();
   public boolean isLoadable ();
 }

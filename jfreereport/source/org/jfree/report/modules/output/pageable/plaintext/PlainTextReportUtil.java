@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PlainTextReportUtil.java,v 1.7 2005/01/25 00:11:21 taqua Exp $
+ * $Id: PlainTextReportUtil.java,v 1.8 2005/02/23 21:05:31 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -73,12 +73,63 @@ public final class PlainTextReportUtil
    *                                   report.
    * @throws OutputTargetException     if there is a problem with the output target.
    */
-  public static void createPlainText (final JFreeReport report, final String filename)
+  public static void createTextFile (final JFreeReport report,
+                                     final String filename,
+                                     final float charsPerInch,
+                                     final float linesPerInch)
           throws IOException, ReportProcessingException, OutputTargetException
   {
     final PageableReportProcessor pr = new PageableReportProcessor(report);
     final OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
-    final TextFilePrinterDriver pc = new TextFilePrinterDriver(fout, 6, 10);
+    final TextFilePrinterDriver pc =
+            new TextFilePrinterDriver(fout, charsPerInch, linesPerInch);
+    final String lineSeparator =
+            report.getReportConfiguration().getConfigProperty("line.separator", "\n");
+    pc.setEndOfLine(lineSeparator.toCharArray());
+    pc.setEndOfPage(lineSeparator.toCharArray());
+
+    final PlainTextOutputTarget target =
+            new PlainTextOutputTarget(pc);
+    pr.setOutputTarget(target);
+    target.open();
+    pr.processReport();
+    target.close();
+    fout.close();
+  }
+
+  public static void createTextFile (final JFreeReport report, final String filename)
+          throws IOException, ReportProcessingException, OutputTargetException
+  {
+    createTextFile(report, filename, 10, 6);
+  }
+
+  public static void createPlainText (final JFreeReport report,
+                                      final String filename)
+          throws IOException, ReportProcessingException, OutputTargetException
+  {
+    createPlainText(report, filename, 10, 6);
+  }
+  
+  /**
+   * Saves a report to plain text format.
+   *
+   * @param report   the report.
+   * @param filename target file name.
+   * @throws ReportProcessingException if the report processing failed.
+   * @throws IOException               if there was an IOerror while processing the
+   *                                   report.
+   * @throws OutputTargetException     if there is a problem with the output target.
+   */
+  public static void createPlainText (final JFreeReport report, 
+                                      final String filename,
+                                      final float charsPerInch,
+                                      final float linesPerInch)
+          throws IOException, ReportProcessingException, OutputTargetException
+  {
+    final PageableReportProcessor pr = new PageableReportProcessor(report);
+    final OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
+    final TextFilePrinterDriver pc =
+            new TextFilePrinterDriver(fout, charsPerInch, linesPerInch);
     final PlainTextOutputTarget target =
             new PlainTextOutputTarget(pc);
     pr.setOutputTarget(target);

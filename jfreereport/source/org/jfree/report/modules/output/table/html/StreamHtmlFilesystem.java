@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StreamHtmlFilesystem.java,v 1.8 2005/02/22 20:19:03 taqua Exp $
+ * $Id: StreamHtmlFilesystem.java,v 1.9 2005/02/23 21:05:34 taqua Exp $
  *
  * Changes
  * -------
@@ -139,17 +139,24 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
       return new EmptyContentReference();
     }
     final URL src = urlImageContainer.getSourceURL();
-    if (src != null && isValidSource(src))
+    if (src != null)
     {
-      if (baseURL != null)
+      if (isValidSource(src))
       {
-        return new HtmlImageReference
-                (IOUtils.getInstance().createRelativeURL(src, baseURL));
+        if (baseURL != null)
+        {
+          return new HtmlImageReference
+                  (IOUtils.getInstance().createRelativeURL(src, baseURL));
+        }
+        else
+        {
+          return new HtmlImageReference(src.toExternalForm());
+        }
       }
-      else
-      {
-        return new HtmlImageReference(src.toExternalForm());
-      }
+    }
+    else if (urlImageContainer.getSourceURLString() != null)
+    {
+      return new HtmlImageReference(urlImageContainer.getSourceURLString());
     }
     return new EmptyContentReference();
   }

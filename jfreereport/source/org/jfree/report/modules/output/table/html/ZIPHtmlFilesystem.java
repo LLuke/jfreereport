@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.11 2005/02/23 21:05:34 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.12 2005/03/03 23:00:02 taqua Exp $
  *
  * Changes
  * -------
@@ -366,6 +366,10 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
           usedImages.put(url, entryName);
           return new HtmlImageReference(entryName);
         }
+      }
+      else if (urlImage.getSourceURLString() != null)
+      {
+        return new HtmlImageReference(urlImage.getSourceURLString());
       }
     }
 

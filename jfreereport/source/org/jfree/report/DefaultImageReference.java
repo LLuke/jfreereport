@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);Stefan Prange
  *
- * $Id: DefaultImageReference.java,v 1.6 2005/02/23 21:04:29 taqua Exp $
+ * $Id: DefaultImageReference.java,v 1.7 2005/03/03 22:59:19 taqua Exp $
  *
  * Changes:
  * --------
@@ -174,6 +174,15 @@ public class DefaultImageReference
   public URL getSourceURL ()
   {
     return url;
+  }
+
+  public String getSourceURLString ()
+  {
+    if (url == null)
+    {
+      return null;
+    }
+    return url.toExternalForm();
   }
 
   /**

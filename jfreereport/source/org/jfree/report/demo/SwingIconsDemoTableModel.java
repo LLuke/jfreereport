@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SwingIconsDemoTableModel.java,v 1.4 2005/01/24 23:58:42 taqua Exp $
+ * $Id: SwingIconsDemoTableModel.java,v 1.5 2005/02/23 21:04:40 taqua Exp $
  *
  * Changes
  * -------
@@ -116,7 +116,6 @@ public class SwingIconsDemoTableModel extends IconTableModel
     try
     {
       final ZipInputStream iconJar = new ZipInputStream(in);
-
       ZipEntry ze = iconJar.getNextEntry();
       while (ze != null)
       {

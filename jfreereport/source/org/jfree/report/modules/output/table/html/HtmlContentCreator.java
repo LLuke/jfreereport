@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.5 2005/02/23 21:05:34 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.6 2005/03/03 17:07:58 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -208,12 +208,12 @@ public class HtmlContentCreator extends TableContentCreator
             (HtmlProcessor.CONFIGURATION_PREFIX + "." +
             HtmlProcessor.TITLE);
 
-    if (createBodyFragment == false)
+    try
     {
-      try
+      this.pout = new PrintWriter(new OutputStreamWriter
+            (filesystem.getRootStream(), encoding), false);
+      if (createBodyFragment == false)
       {
-        this.pout = new PrintWriter(new OutputStreamWriter
-                (filesystem.getRootStream(), encoding), false);
         // write the standard headers
         if (isUseXHTML())
         {
@@ -285,11 +285,11 @@ public class HtmlContentCreator extends TableContentCreator
         pout.println("</head>");
         pout.println("<body>");
       }
-      catch (IOException ioe)
-      {
-        throw new FunctionProcessingException
-                ("Failed to create the writer or write the header.", ioe);
-      }
+    }
+    catch (IOException ioe)
+    {
+      throw new FunctionProcessingException
+              ("Failed to create the writer or write the header.", ioe);
     }
   }
 
@@ -385,8 +385,7 @@ public class HtmlContentCreator extends TableContentCreator
           pout.print("\">");
         }
 
-        // todo Move Link declaration outside ..
-        if (cellStyleName != null || isCreateBodyFragment())
+        if (cellStyleName != null && (isCreateBodyFragment() == false))
         {
           pout.print("<div class=\"");
           pout.print(cellStyleName);
@@ -475,7 +474,7 @@ public class HtmlContentCreator extends TableContentCreator
 
     final String cellStyleName =
             layout.getStyleCollection().getPublicName(style);
-    if (cellStyleName != null || isCreateBodyFragment())
+    if (cellStyleName != null && (isCreateBodyFragment() == false))
     {
       pout.print("class=\"");
       pout.print(cellStyleName);
@@ -523,7 +522,7 @@ public class HtmlContentCreator extends TableContentCreator
     final HtmlTableRowStyle rowStyle = new HtmlTableRowStyle(lastRowHeight);
 
     final String trStyleClass = styleCollection.getPublicName(rowStyle);
-    if (trStyleClass != null || isCreateBodyFragment())
+    if (trStyleClass != null && (isCreateBodyFragment() == false))
     {
       pout.print("<tr class=\"");
       pout.print(trStyleClass);
@@ -571,7 +570,7 @@ public class HtmlContentCreator extends TableContentCreator
     }
 
     final int width = (int) StrictGeomUtility.toExternalValue(layout.getCellWidth(x, x + 1));
-    if (cellStyleName != null || isCreateBodyFragment())
+    if (cellStyleName != null && (isCreateBodyFragment() == false))
     {
       pout.print("<td class=\"");
       pout.print(cellStyleName);

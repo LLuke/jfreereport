@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: AbstractEpsonPrinterDriver.java,v 1.6 2005/03/03 23:00:01 taqua Exp $
  *
  * Changes
  * -------
@@ -49,6 +49,8 @@ import org.jfree.report.util.PageFormatFactory;
 
 public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
 {
+  public static final String OP_NO_ASSIGN_CHAR_TABLE = "no.assign.character.table";
+
   protected static class DriverState
   {
     private boolean bold;
@@ -144,6 +146,8 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
   private float linesPerInch;
   private EncodingUtilities encodingUtilities;
   private boolean firstPage;
+
+  private byte fallBackCharset;
 
   private int borderTop;
   //private int borderBottom;
@@ -334,6 +338,7 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
   public void printEmptyChunk (final int count)
           throws IOException
   {
+    sendFontStyle(false, false ,false ,false);
     for (int i = 0; i < count; i++)
     {
       out.write(PrinterDriver.SPACE);
@@ -360,6 +365,7 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
   public void startLine ()
           throws IOException
   {
+    sendFontStyle(false, false ,false ,false);
     final int manualLeftBorder = getDriverState().getManualLeftBorder();
     for (int i = 0; i < manualLeftBorder; i++)
     {
@@ -515,14 +521,23 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
   protected void sendDefineCodepage (final String encoding, final int characterTable)
           throws IOException
   {
-    final byte[] cp = getPrinterSpecification().getEncoding(encoding).getCode();
-    out.write(0x1b); // ESC
-    out.write(0x28); // (
-    out.write(0x74); // t
-    out.write(0x03); // const: 3
-    out.write(0x00); // const: 0
-    out.write(characterTable); // Define charset; (0 works on all printers)
-    out.write(cp);   // the codepage
+    if (getPrinterSpecification().isFeatureAvailable(OP_NO_ASSIGN_CHAR_TABLE))
+    {
+      out.write(0x1b); // ESC
+      out.write(0x52); // R
+      out.write(getFallBackCharset());
+    }
+    else
+    {
+      final byte[] cp = getPrinterSpecification().getEncoding(encoding).getCode();
+      out.write(0x1b); // ESC
+      out.write(0x28); // (
+      out.write(0x74); // t
+      out.write(0x03); // const: 3
+      out.write(0x00); // const: 0
+      out.write(characterTable); // Define charset; (0 works on all printers)
+      out.write(cp);   // the codepage
+    }
     out.write(0x1b); // ESC
     out.write(0x74); // t
     out.write(0x00); // Select charset 0 (works on all printers)
@@ -571,5 +586,13 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
     return printerModel;
   }
 
+  public byte getFallBackCharset ()
+  {
+    return fallBackCharset;
+  }
 
+  public void setFallBackCharset (final byte fallBackCharset)
+  {
+    this.fallBackCharset = fallBackCharset;
+  }
 }

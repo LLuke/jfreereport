@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTask.java,v 1.14 2005/03/01 10:09:39 taqua Exp $
+ * $Id: PlainTextExportTask.java,v 1.15 2005/03/03 14:42:35 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -56,6 +56,7 @@ import org.jfree.report.modules.output.pageable.plaintext.PlainTextReportUtil;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterDriver;
 import org.jfree.report.modules.output.pageable.plaintext.TextFilePrinterDriver;
 import org.jfree.report.modules.output.pageable.plaintext.Epson9PinPrinterDriver;
+import org.jfree.report.modules.output.pageable.plaintext.AbstractEpsonPrinterDriver;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.StringUtil;
 
@@ -130,12 +131,9 @@ public class PlainTextExportTask extends ExportTask
    * Returns the printer command set for the given report and export type.
    *
    * @param out    the output stream.
-   * @param report the report.
    * @return The printer command set.
    */
-  protected PrinterDriver getPrinterCommandSet (final OutputStream out,
-                                                final JFreeReport report,
-                                                final String printer)
+  protected PrinterDriver getPrinterCommandSet (final OutputStream out)
   {
     switch (exportType)
     {
@@ -151,17 +149,36 @@ public class PlainTextExportTask extends ExportTask
         }
       case PlainTextExportDialog.TYPE_EPSON9_OUTPUT:
         {
-          return new Epson9PinPrinterDriver(out,
+          final Epson9PinPrinterDriver driver = new Epson9PinPrinterDriver(out,
                   charPerInch, linesPerInch, printer);
+          applyFallbackEncoding(driver);
+          return driver;
         }
       case PlainTextExportDialog.TYPE_EPSON24_OUTPUT:
         {
-          return new Epson24PinPrinterDriver(out,
+          final Epson24PinPrinterDriver driver = new Epson24PinPrinterDriver(out,
                   charPerInch, linesPerInch, printer);
+          applyFallbackEncoding(driver);
+          return driver;
         }
       default:
         throw new IllegalArgumentException();
     }
+  }
+
+  /**
+   * Epson targets need special care, sadly the old printers used their own
+   * code page schema, which is totally incompatible with the modern ones.
+   * All epson printers that were manufactured before 1991/1992 suffer form this
+   * weakness.
+   *
+   * @param driver the driver, which should be configured.
+   */
+  private void applyFallbackEncoding (final AbstractEpsonPrinterDriver driver)
+  {
+    final String encoding = report.getReportConfiguration().getConfigProperty
+            ("org.jfree.report.modules.gui.plaintext.FallbackEncoding");
+    driver.setFallBackCharset((byte) StringUtil.parseInt(encoding, 0));
   }
 
   /**
@@ -174,7 +191,7 @@ public class PlainTextExportTask extends ExportTask
     try
     {
       out = new BufferedOutputStream(new FileOutputStream(file));
-      final PrinterDriver pc = getPrinterCommandSet(out, report, printer);
+      final PrinterDriver pc = getPrinterCommandSet(out);
       final PlainTextOutputTarget target = new PlainTextOutputTarget(pc);
       target.configure(report.getReportConfiguration());
 

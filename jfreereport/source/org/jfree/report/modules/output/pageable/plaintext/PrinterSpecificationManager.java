@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: PrinterSpecificationManager.java,v 1.5 2005/03/03 23:00:01 taqua Exp $
  *
  * Changes
  * -------
@@ -152,6 +152,13 @@ public class PrinterSpecificationManager
     final PrinterEncoding[] encodings = loadEncodings(encodingConfig);
     final PrinterSpecification[] printers = loadPrinters(encodingConfig, encodings);
 
+    // if there is a valid printer definition available, we do not
+    // need a generic "Generic" printer. If one is required, it will
+    // be defined by the specification file.
+    if (printers.length > 0)
+    {
+      printerModels.remove(generic.getName());
+    }
     for (int i = 0; i < printers.length; i++)
     {
       addPrinter(printers[i]);

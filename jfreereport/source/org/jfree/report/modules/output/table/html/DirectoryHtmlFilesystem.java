@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.13 2005/02/23 21:05:34 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.14 2005/03/03 23:00:02 taqua Exp $
  *
  * Changes
  * -------
@@ -340,6 +340,10 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
           usedImages.put(url, entryName);
           return new HtmlImageReference(entryName);
         }
+      }
+      else if (urlImage.getSourceURLString() != null)
+      {
+        return new HtmlImageReference(urlImage.getSourceURLString());
       }
     }
 

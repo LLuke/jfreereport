@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFContentCreator.java,v 1.3 2005/01/25 00:15:14 taqua Exp $
+ * $Id: RTFContentCreator.java,v 1.4 2005/02/23 21:05:36 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,15 +41,11 @@ package org.jfree.report.modules.output.table.rtf;
 import java.awt.Color;
 import java.awt.print.PageFormat;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.Cell;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
-import com.lowagie.text.ElementTags;
-import com.lowagie.text.Meta;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.Table;
 import com.lowagie.text.rtf.RtfWriter2;
@@ -274,9 +270,10 @@ public class RTFContentCreator extends TableContentCreator
 
     try
     {
-      final SimpleDateFormat sdf =
-              new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-      document.add(new Meta(ElementTags.CREATIONDATE, sdf.format(new Date())));
+//      final SimpleDateFormat sdf =
+//              new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+//      document.add(new Meta(ElementTags.CREATIONDATE, sdf.format(new Date())));
+      document.addCreationDate();
     }
     catch (Exception e)
     {

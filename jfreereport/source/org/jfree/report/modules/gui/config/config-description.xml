@@ -971,4 +971,43 @@ This option defaults to &apos;false&apos;.</description>
             <text>false</text>
         </enum>
     </key>
+
+  <key name="org.jfree.report.modules.gui.plaintext.FallbackEncoding" global="false" hidden="false">
+      <description>The fallback endcoding for old epson printers.
+
+Valid values are:
+
+ 0 = USA
+ 1 = France
+ 2 = Germany
+ 3 = UK
+ 4 = Denmark I
+ 5 = Sweden
+ 6 = Italy
+ 7 = Spain I
+ 8 = Japan
+ 9 = Norway
+ 10 = Denmark II
+ 11 = Spain II
+ 12 = Latin America
+
+For details on the supported characters, please refer to your printer reference manual.
+      </description>
+      <enum>
+        <text>0</text>
+        <text>1</text>
+        <text>2</text>
+        <text>3</text>
+        <text>4</text>
+        <text>5</text>
+        <text>6</text>
+        <text>7</text>
+        <text>8</text>
+        <text>9</text>
+        <text>10</text>
+        <text>11</text>
+        <text>12</text>
+      </enum>
+  </key>
+
 </config-description>

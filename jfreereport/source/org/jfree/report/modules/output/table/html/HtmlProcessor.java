@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlProcessor.java,v 1.11 2005/01/25 00:13:28 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.12 2005/02/23 21:05:34 taqua Exp $
  *
  * Changes
  * -------
@@ -149,6 +149,41 @@ public class HtmlProcessor extends TableProcessor
   {
     getReport().getReportConfiguration().setConfigProperty
             (getReportConfigurationPrefix() + "." + GENERATE_XHTML, String.valueOf(useXHTML));
+  }
+
+  /**
+   * Gets the 'generateBodyFragment' flag.
+   *
+   * @return true, if a HTML-body fragment should be generated, false for a complete document.
+   */
+  public boolean isGenerateBodyFragment ()
+  {
+    return getReport().getReportConfiguration().getConfigProperty
+            (getReportConfigurationPrefix() + "." + BODY_FRAGMENT, "false").equals("true");
+  }
+
+  /**
+   * Defines the generate Body Fragment flag. If enabled, then all style information
+   * will be inlined into the document and no header or HTML-Body tag will be generated.
+   *
+   * @param generateBodyFragment the generate BodyFragment flag.
+   */
+  public void setGenerateBodyFragment (final boolean generateBodyFragment)
+  {
+    getReport().getReportConfiguration().setConfigProperty
+            (getReportConfigurationPrefix() + "." + BODY_FRAGMENT, String.valueOf(generateBodyFragment));
+  }
+
+  public String getEncoding()
+  {
+    return getReport().getReportConfiguration().getConfigProperty
+            (getReportConfigurationPrefix() + "." + ENCODING, ENCODING_DEFAULT);
+  }
+
+  public void setEncoding (final String encoding)
+  {
+    getReport().getReportConfiguration().setConfigProperty
+            (getReportConfigurationPrefix() + "." + ENCODING, encoding);
   }
 
   /**
