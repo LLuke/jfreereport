@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.30 2002/12/04 19:49:14 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.31 2002/12/11 01:10:41 mungady Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -100,10 +100,18 @@ public class JFreeReportResources extends ListResourceBundle
     return CONTENTS;
   }
 
+  /**
+   * Creates a transparent image.  These can be used for aligning menu items.
+   *
+   * @param width  the width.
+   * @param height  the height.
+   *
+   * @return the image.
+   */
   public static BufferedImage createTransparentImage (int width, int height)
   {
     BufferedImage img = new BufferedImage (width, height, BufferedImage.TYPE_INT_ARGB);
-    int[] data = img.getRGB(0,0, width, height, null, 0, width);
+    int[] data = img.getRGB(0, 0, width, height, null, 0, width);
     Arrays.fill(data, 0xff000000);
     img.setRGB(0, 0, width, height, data, 0, width);
     return img;
@@ -124,13 +132,13 @@ public class JFreeReportResources extends ListResourceBundle
     if (in == null)
     {
       Log.debug ("Unable to load file: " + filename);
-      return new ImageIcon (createTransparentImage(1,1));
+      return new ImageIcon (createTransparentImage(1, 1));
     }
     Image img = Toolkit.getDefaultToolkit ().createImage (in);
     if (img == null)
     {
       Log.warn ("Unable to instantiate the image " + filename);
-      return new ImageIcon (createTransparentImage(1,1));
+      return new ImageIcon (createTransparentImage(1, 1));
     }
     return new ImageIcon (img);
   }
@@ -272,8 +280,8 @@ public class JFreeReportResources extends ListResourceBundle
             {"pdfsavedialog.ownerpassword", "Owner Password"},
             {"pdfsavedialog.ownerpasswordconfirm", "Confirm"},
             {"pdfsavedialog.ownerpasswordNoMatch", "The owner-passwords do not match."},
-            {"pdfsavedialog.ownerpasswordEmpty", "The owner-password is empty. Users may be " +
-              "able to change security constraints. Continue anyway?" },
+            {"pdfsavedialog.ownerpasswordEmpty", "The owner-password is empty. Users may be "
+             + "able to change security constraints. Continue anyway?" },
 
             {"pdfsavedialog.warningTitle", "Warning"},
             {"pdfsavedialog.errorTitle", "Error"},

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -24,13 +24,16 @@
  * Expression.java
  * ---------------
  *
- * $Id: Expression.java,v 1.10 2002/11/07 21:45:27 taqua Exp $
+ * $Id: Expression.java,v 1.11 2002/12/02 17:29:09 taqua Exp $
  *
  * ChangeLog
  * ------------
  * 26-Jul-2002 : Initial version
  * 28-Aug-2002 : Documentation
+ * 12-Dec-2002 : Fixed issues reported by Checkstyle (DG);
+ *
  */
+
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.DataRow;
@@ -42,7 +45,7 @@ import java.util.Properties;
  * to calculate values within a single row of a report. Expressions can use a dataRow to access
  * other fields, expressions or functions within the current row in the report.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public interface Expression extends Cloneable
 {
@@ -55,7 +58,7 @@ public interface Expression extends Cloneable
    * Every expression, function and column in the datamodel within a report is required to have a
    * unique name.
    *
-   * @return The function name.
+   * @return the function name.
    */
   public String getName();
 
@@ -73,7 +76,7 @@ public interface Expression extends Cloneable
    * <P>
    * The value depends (obviously) on the expression implementation.
    *
-   * @return The value of the function.
+   * @return the value of the function.
    */
   public Object getValue();
 
@@ -82,7 +85,7 @@ public interface Expression extends Cloneable
    * <P>
    * expression parameters are recorded as properties.
    *
-   * @param p The properties.
+   * @param p  the properties.
    */
   public void setProperties(Properties p);
 
@@ -140,11 +143,18 @@ public interface Expression extends Cloneable
   public Object clone() throws CloneNotSupportedException;
 
   /**
-   * The depency level defines the level of execution for this function. Higher depency functions are
-   * executed before lower depency functions. The range for depencies is defined to start from 0 (lowest
-   * depency possible) to 2^31 (upper limit of int).
+   * The depency level defines the level of execution for this function. Higher depency functions
+   * are executed before lower depency functions. The range for depencies is defined to start
+   * from 0 (lowest depency possible) to 2^31 (upper limit of int).
+   *
+   * @return the level.
    */
   public int getDepencyLevel();
 
-  public void setDepencyLevel(int deplevel);
+  /**
+   * Sets the dependency level for the expression.
+   *
+   * @param level  the level.
+   */
+  public void setDepencyLevel(int level);
 }

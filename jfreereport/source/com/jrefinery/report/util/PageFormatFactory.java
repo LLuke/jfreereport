@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageFormatFactory.java,v 1.11 2002/11/29 12:07:29 mungady Exp $
+ * $Id: PageFormatFactory.java,v 1.12 2002/12/06 20:34:19 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ import java.lang.reflect.Field;
  * PageFormat format = PageFormatFactory.createPageFormat (paper, PageFormat.PORTRAIT);
  * </code>
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class PageFormatFactory
 {

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: HugeJFreeReportDemo.java,v 1.19 2002/12/02 17:16:51 taqua Exp $
+ * $Id: HugeJFreeReportDemo.java,v 1.20 2002/12/09 03:56:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -85,7 +85,7 @@ import java.util.ResourceBundle;
  * If the system property "com.jrefinery.report.demo.DEBUG" is set to "true", debugging
  * messages to System.out stream are enabled.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class HugeJFreeReportDemo extends JFrame
 {

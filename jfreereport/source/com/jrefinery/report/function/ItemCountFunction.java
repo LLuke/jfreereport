@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.12 2002/10/15 20:37:23 taqua Exp $
+ * $Id: ItemCountFunction.java,v 1.13 2002/12/02 17:29:13 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ import com.jrefinery.report.states.ReportState;
  * A report function that counts items in a report.  If the "group" property is set, the item
  * count is reset to zero whenever the group changes.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ItemCountFunction extends AbstractFunction implements Cloneable
 {

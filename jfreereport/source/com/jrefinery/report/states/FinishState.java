@@ -1,8 +1,8 @@
 /**
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -24,19 +24,19 @@
  * --------------------
  * ReportGenerator.java
  * --------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
- * $Id: FinishState.java,v 1.3 2002/12/02 17:43:44 taqua Exp $
+ * Original Author:  David Gilbert (for Simba Management Limited);
+ * Contributor(s):   Thomas Morgner;
+ *
+ * $Id: FinishState.java,v 1.4 2002/12/06 19:27:59 taqua Exp $
  *
  * Changes
  * -------
- * ----------------------
- * FinishState.java
- * ----------------------
+ * 12-Dec-2002 : Fixed issues reported by Checkstyle (DG);
  *
- * ChangeLog
- * ---------
  */
+
 package com.jrefinery.report.states;
 
 import com.jrefinery.report.ReportProcessingException;
@@ -44,6 +44,8 @@ import com.jrefinery.report.ReportProcessingException;
 /**
  * The report is done. No advance will be done, every call to advance will throw an
  * ReportProcessingException.
+ *
+ * @author David Gilbert
  */
 public class FinishState extends ReportState
 {
@@ -58,10 +60,14 @@ public class FinishState extends ReportState
   }
 
   /**
-   * Advances from this state to the next.  Since this is the 'finish' state, this method just
-   * returns itself.
+   * Normally, this method would perform a transition to the next state, but since this is the
+   * final state there is nowhere to go, so a <code>ReportProcessingException</code> is thrown.
    *
-   * @return this state.
+   * @return nothing, since a <code>ReportProcessingException</code> is thrown before the
+   *         method returns.
+   *
+   * @throws ReportProcessingException to indicate that it is not possible to advance to another
+   *         state from the finish state.
    */
   public ReportState advance () throws ReportProcessingException
   {

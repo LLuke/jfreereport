@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,14 +23,20 @@
  * --------------------
  * ReportGenerator.java
  * --------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: ReportGenerator.java,v 1.16 2002/11/07 21:45:28 taqua Exp $
+ * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: ReportGenerator.java,v 1.17 2002/12/09 03:56:34 taqua Exp $
  *
  * Changes
  * -------
  * 10-May-2002 : Initial version
+ * 12-Dec-2002 : Fixed issues reported by Checkstyle (DG);
+ *
  */
+
 package com.jrefinery.report.io;
 
 import com.jrefinery.report.JFreeReport;
@@ -55,7 +61,7 @@ import java.net.URL;
  * ReportGenerator.getInstance().parseReport (URL myURl, URL contentBase);
  * </code>
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ReportGenerator
 {
@@ -109,7 +115,8 @@ public class ReportGenerator
    */
   public void initFromSystem ()
   {
-    String reportDtd = ReportConfiguration.getGlobalConfig().getConfigProperty(ReportConfiguration.PARSER_DTD);
+    String reportDtd
+        = ReportConfiguration.getGlobalConfig().getConfigProperty(ReportConfiguration.PARSER_DTD);
     if (reportDtd == null)
     {
       return;

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataTarget.java,v 1.5 2002/08/28 15:27:39 taqua Exp $
+ * $Id: DataTarget.java,v 1.6 2002/09/13 15:38:07 mungady Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import java.io.Serializable;
  * A DataTarget is a consumer in the DataProcessing chain. All Elements are DataTargets.
  * Targets query their data from assigned DataSources.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public interface DataTarget extends Serializable, Cloneable
 {

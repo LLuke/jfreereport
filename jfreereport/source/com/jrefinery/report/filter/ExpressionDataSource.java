@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
- * $Id$
+ * $Id: ExpressionDataSource.java,v 1.5 2002/11/07 21:45:27 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ import com.jrefinery.report.DataRow;
  * <p>
  * @see com.jrefinery.report.function.Expression
  *
- * @author TM
+ * @author Thomas Morgner
  *
  * @deprecated use DataRowDataSource as unified access class instead
  */

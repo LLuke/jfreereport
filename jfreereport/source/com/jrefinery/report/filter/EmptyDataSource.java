@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EmptyDataSource.java,v 1.5 2002/08/28 15:27:39 taqua Exp $
+ * $Id: EmptyDataSource.java,v 1.6 2002/09/13 15:38:07 mungady Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ package com.jrefinery.report.filter;
 /**
  * A data source that always returns null.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class EmptyDataSource implements DataSource
 {

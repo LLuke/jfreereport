@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.6 2002/10/16 18:33:41 taqua Exp $
+ * $Id: PageFunction.java,v 1.8 2002/12/02 17:29:19 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,8 @@
  *               AbstractFunction
  * 10-May-2002 : Applied the ReportEvent interface
  * 05-Jun-2002 : Updated Javadoc comments (DG);
+ * 12-Dec-2002 : Fixed issues reported by Checkstyle (DG);
+ *
  */
 
 package com.jrefinery.report.function;
@@ -49,13 +51,15 @@ import com.jrefinery.report.states.ReportState;
 /**
  * A report function that counts pages.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class PageFunction extends AbstractFunction
 {
 
   /** The page. */
   private int page;
+
+  /** The 'group-started' flag. */
   private boolean isGroupStarted;
 
   /**
@@ -81,7 +85,7 @@ public class PageFunction extends AbstractFunction
    * Receives notification from the report engine that a new page is starting.  Grabs the page
    * number from the report state and stores it.
    *
-   * @param event Information about the event.
+   * @param event  the event.
    */
   public void pageStarted(ReportEvent event)
   {
@@ -98,14 +102,15 @@ public class PageFunction extends AbstractFunction
 
   /**
    * Receives notification that a group has started.
-   * <P>
-   * Maps the groupStarted-method to the legacy function startGroup (int).
    *
-   * @param event Information about the event.
+   * @param event  the event.
    */
   public void groupStarted(ReportEvent event)
   {
-    if (getGroup() == null) return;
+    if (getGroup() == null)
+    {
+      return;
+    }
 
     JFreeReport report = event.getReport();
     ReportState state = event.getState();
@@ -118,10 +123,8 @@ public class PageFunction extends AbstractFunction
 
   /**
    * Receives notification that the report has started.
-   * <P>
-   * Maps the reportStarted-method to the legacy function startReport ().
    *
-   * @param event Information about the event.
+   * @param event  the event.
    */
   public void reportStarted(ReportEvent event)
   {
@@ -162,21 +165,41 @@ public class PageFunction extends AbstractFunction
     }
   }
 
+  /**
+   * Returns the group name.
+   *
+   * @return the group name.
+   */
   public String getGroup()
   {
     return getProperty("group");
   }
 
+  /**
+   * Returns the start page.
+   *
+   * @return the start page.
+   */
   public int getStartPage()
   {
     return Integer.parseInt(getProperty("start", "1"));
   }
 
+  /**
+   * Returns the current page.
+   *
+   * @return the current page.
+   */
   public int getPage()
   {
     return page;
   }
 
+  /**
+   * Sets the current page.
+   *
+   * @param page  the page.
+   */
   public void setPage(int page)
   {
     this.page = page;

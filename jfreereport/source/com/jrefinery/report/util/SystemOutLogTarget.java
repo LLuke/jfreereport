@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: SystemOutLogTarget.java,v 1.8 2002/12/06 18:22:09 taqua Exp $
+ * $Id: SystemOutLogTarget.java,v 1.9 2002/12/09 03:56:34 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@ import java.io.Serializable;
 /**
  * Prints all log-messages to System.out stream.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class SystemOutLogTarget implements LogTarget, Serializable
 {

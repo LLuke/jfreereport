@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.7 2002/09/13 15:38:08 mungady Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.8 2002/12/02 17:29:04 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -49,7 +49,7 @@ import com.jrefinery.report.event.ReportEvent;
  * Use the property <code>element</code> to name an element contained in the ItemBand whose
  * visiblity should be affected by this function.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ElementVisibilitySwitchFunction extends AbstractFunction
 {

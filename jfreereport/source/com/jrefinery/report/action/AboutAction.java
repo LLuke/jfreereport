@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AboutAction.java,v 1.10 2002/12/02 17:12:52 taqua Exp $
+ * $Id: AboutAction.java,v 1.11 2002/12/04 16:19:55 mungady Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ import java.util.ResourceBundle;
  * <p>
  * This abstract class handles the locales specific initialisation.
  *
- * @author DG
+ * @author David Gilbert
  */
 
 public abstract class AboutAction extends AbstractActionDowngrade
@@ -69,7 +69,7 @@ public abstract class AboutAction extends AbstractActionDowngrade
   {
     putValue (NAME, resources.getString ("action.about.name"));
     putValue (SHORT_DESCRIPTION, resources.getString ("action.about.description"));
-    putValue (ActionDowngrade.MNEMONIC_KEY, 
+    putValue (ActionDowngrade.MNEMONIC_KEY,
               resources.getObject ("action.about.mnemonic"));
     putValue (SMALL_ICON, resources.getObject ("action.about.small-icon"));
     putValue ("ICON24", resources.getObject ("action.about.icon"));

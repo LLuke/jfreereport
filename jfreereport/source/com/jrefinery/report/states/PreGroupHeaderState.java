@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreGroupHeaderState.java,v 1.9 2002/12/05 12:18:46 mungady Exp $
+ * $Id: PreGroupHeaderState.java,v 1.10 2002/12/06 19:28:01 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@ package com.jrefinery.report.states;
 /**
  * Processes an groupheader. Activates the next group and fires the GroupStartEvent
  * for that group. then the PostGroupHeaderState-State gets activated.
+ *
+ * @author David Gilbert
  */
 public class PreGroupHeaderState extends ReportState
 {

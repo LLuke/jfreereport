@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ReportEvent.java,v 1.10 2002/11/07 21:45:27 taqua Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -52,7 +52,7 @@ import java.util.EventObject;
  * <P>
  * Includes information regarding which ReportState generated the event.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ReportEvent extends EventObject
 {

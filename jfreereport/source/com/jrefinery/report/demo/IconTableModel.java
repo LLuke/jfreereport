@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: IconTableModel.java,v 1.4 2002/09/16 14:13:46 mungady Exp $
+ * $Id: IconTableModel.java,v 1.5 2002/09/17 09:49:09 mungady Exp $
  *
  * Changes
  * -------
@@ -43,9 +43,9 @@ import java.awt.Image;
 import java.util.List;
 
 /**
- * A simple TableModel implementation used for demonstration purposes.
+ * A simple <code>TableModel</code> implementation used for demonstration purposes.
  *
- * @author DG
+ * @author David Gilbert
  */
 public class IconTableModel extends AbstractTableModel
 {

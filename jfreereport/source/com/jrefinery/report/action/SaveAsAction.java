@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SaveAsAction.java,v 1.11 2002/12/02 17:13:10 taqua Exp $
+ * $Id: SaveAsAction.java,v 1.12 2002/12/04 16:19:55 mungady Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ import java.util.ResourceBundle;
 /**
  * Save (to PDF) action for a print preview frame.
  *
- * @author DG
+ * @author David Gilbert
  */
 public abstract class SaveAsAction extends AbstractActionDowngrade
 {
@@ -65,9 +65,9 @@ public abstract class SaveAsAction extends AbstractActionDowngrade
   {
     this.putValue (NAME, resources.getString ("action.save-as.name"));
     this.putValue (SHORT_DESCRIPTION, resources.getString ("action.save-as.description"));
-    this.putValue (ActionDowngrade.MNEMONIC_KEY, 
+    this.putValue (ActionDowngrade.MNEMONIC_KEY,
                    resources.getObject ("action.save-as.mnemonic"));
-    this.putValue (ActionDowngrade.ACCELERATOR_KEY, 
+    this.putValue (ActionDowngrade.ACCELERATOR_KEY,
                    resources.getObject ("action.save-as.accelerator"));
     this.putValue (SMALL_ICON, resources.getObject ("action.save-as.small-icon"));
     this.putValue ("ICON24", resources.getObject ("action.save-as.icon"));

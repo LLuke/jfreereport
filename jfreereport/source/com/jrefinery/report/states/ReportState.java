@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.12 2002/12/09 03:56:34 taqua Exp $
+ * $Id: ReportState.java,v 1.13 2002/12/11 01:10:41 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -175,7 +175,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   /**
    * Constructs a ReportState from an existing ReportState.
    *
-   * @param clone The existing state.
+   * @param clone  the existing state.
    */
   protected ReportState (ReportState clone)
   {
@@ -759,9 +759,12 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
-   * Returns true if a state is an ancestor of this state, and false otherwise.
+   * Returns <code>true</code> if a state is an ancestor of this state, and <code>false</code>
+   * otherwise.
    *
-   * @return true or false.
+   * @param state  the state.
+   *
+   * @return <code>true</code> or <code>false</code>.
    */
   public boolean isAncestor (ReportState state)
   {

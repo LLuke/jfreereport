@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPropertyFunction.java,v 1.13 2002/10/15 20:37:24 taqua Exp $
+ * $Id: ReportPropertyFunction.java,v 1.14 2002/12/02 17:29:21 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ import com.jrefinery.report.states.ReportState;
  * <P>
  * ReportProperties are now retrieved from the report state.
  *
- * @author DG
+ * @author David Gilbert
  */
 public class ReportPropertyFunction extends AbstractFunction
 {

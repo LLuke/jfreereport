@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.16 2002/12/10 23:02:56 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.17 2002/12/11 00:41:42 mungady Exp $
  *
  * Changes
  * -------
@@ -244,9 +244,18 @@ import java.util.Properties;
  */
 public class ReportConfiguration
 {
-  public static final String PREVIEW_PREFERRED_WIDTH = "com.jrefinery.report.preview.PreferredWidth";
-  public static final String PREVIEW_PREFERRED_HEIGHT = "com.jrefinery.report.preview.PreferredHeight";
+  /** The preferred width key. */
+  public static final String PREVIEW_PREFERRED_WIDTH
+                             = "com.jrefinery.report.preview.PreferredWidth";
+
+  /** The preferred height key. */
+  public static final String PREVIEW_PREFERRED_HEIGHT
+                             = "com.jrefinery.report.preview.PreferredHeight";
+
+  /** The maximum width key. */
   public static final String PREVIEW_MAXIMUM_WIDTH = "com.jrefinery.report.preview.MaximumWidth";
+
+  /** The maximum height key. */
   public static final String PREVIEW_MAXIMUM_HEIGHT = "com.jrefinery.report.preview.MaximumHeight";
 
   /** The 'disable logging' property key. */

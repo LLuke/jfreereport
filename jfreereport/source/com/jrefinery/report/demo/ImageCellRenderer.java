@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ImageCellRenderer.java,v 1.4 2002/09/16 14:13:46 mungady Exp $
+ * $Id: ImageCellRenderer.java,v 1.5 2002/09/17 09:49:09 mungady Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,7 @@ import java.awt.Image;
  * <P>
  * This class will be moved to the JCommon class library.
  *
- * @author DG
+ * @author David Gilbert
  */
 public class ImageCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer
 {

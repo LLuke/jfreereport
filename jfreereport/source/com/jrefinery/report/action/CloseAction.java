@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: CloseAction.java,v 1.12 2002/09/13 15:38:06 mungady Exp $
+ * $Id: CloseAction.java,v 1.13 2002/12/04 16:19:55 mungady Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import java.util.ResourceBundle;
 /**
  * An action for closing the print preview frame.
  *
- * @author DG
+ * @author David Gilbert
  */
 public abstract class CloseAction extends AbstractActionDowngrade
 {
@@ -65,9 +65,9 @@ public abstract class CloseAction extends AbstractActionDowngrade
   {
     this.putValue (NAME, resources.getString ("action.close.name"));
     this.putValue (SHORT_DESCRIPTION, resources.getString ("action.close.description"));
-    this.putValue (ActionDowngrade.MNEMONIC_KEY, 
+    this.putValue (ActionDowngrade.MNEMONIC_KEY,
                    resources.getObject ("action.close.mnemonic"));
-    this.putValue (ActionDowngrade.ACCELERATOR_KEY, 
+    this.putValue (ActionDowngrade.ACCELERATOR_KEY,
                    resources.getObject ("action.close.accelerator"));
   }
 }

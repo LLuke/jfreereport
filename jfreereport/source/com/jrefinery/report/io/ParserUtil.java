@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserUtil.java,v 1.13 2002/12/06 19:27:54 taqua Exp $
+ * $Id: ParserUtil.java,v 1.14 2002/12/11 00:51:20 mungady Exp $
  *
  * Changes
  * -------
@@ -305,7 +305,7 @@ public class ParserUtil
    *
    * @return the element alignment.
    *
-   * @throws a SAX exception if the alignment value is not recognised.
+   * @throws SAXException if the alignment value is not recognised.
    */
   public static ElementAlignment parseVerticalElementAlignment (String value) throws SAXException
   {
@@ -331,7 +331,7 @@ public class ParserUtil
    *
    * @return the element alignment.
    *
-   * @throws a SAX exception if the alignment value is not recognised.
+   * @throws  SAXException if the alignment value is not recognised.
    */
   public static ElementAlignment parseHorizontalElementAlignment (String value) throws SAXException
   {

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -25,7 +25,7 @@
  * ----------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ScrollableResultSetTableModel.java,v 1.11 2002/11/07 21:45:29 taqua Exp $
+ * $Id: ScrollableResultSetTableModel.java,v 1.12 2002/12/09 03:56:34 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import java.sql.SQLException;
  * <p>
  * Use the close() function to close the ResultSet contained in this model.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ScrollableResultSetTableModel extends AbstractTableModel implements CloseableTableModel
 {

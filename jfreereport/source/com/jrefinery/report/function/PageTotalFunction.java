@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.8 2002/12/06 19:27:53 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.9 2002/12/11 01:10:41 mungady Exp $
  *
  * ChangeLog
  * ---------
@@ -68,6 +68,8 @@ import java.util.Hashtable;
  *    fireGroupStarted
  *    firePageFinish // manual pagebreak
  *   -> groupHeader is printed
+ *
+ * @author Thomas Morgner
  */
 public class PageTotalFunction extends PageFunction
 {
@@ -156,10 +158,12 @@ public class PageTotalFunction extends PageFunction
       if (event.getState().isPrepareRun() == false)
       {
         // restore the saved state
-        this.pageStorage = (PageStorage) groupPages.get(new Integer(event.getState().getCurrentDisplayItem()));
+        this.pageStorage = (PageStorage)
+            groupPages.get(new Integer(event.getState().getCurrentDisplayItem()));
         if (pageStorage == null)
         {
-          throw new IllegalStateException("No page-storage for the current state: " + event.getState().getCurrentDataItem());
+          throw new IllegalStateException("No page-storage for the current state: "
+                                          + event.getState().getCurrentDataItem());
         }
       }
     }
@@ -227,7 +231,9 @@ public class PageTotalFunction extends PageFunction
   public void setPage(int page)
   {
     if (this.pageStorage != null)
+    {
       this.pageStorage.setPage(page);
+    }
   }
 
   /**

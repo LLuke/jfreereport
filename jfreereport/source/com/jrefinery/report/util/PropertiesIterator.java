@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -24,7 +24,7 @@
  * PropertiesIterator.java
  * -----------------------
  *
- * $Id$
+ * $Id: PropertiesIterator.java,v 1.6 2002/11/07 21:45:29 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import java.util.Properties;
  * The iterator iterates over all subsequent numbered proprties until the number-sequence is
  * finished.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class PropertiesIterator implements Iterator
 {

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -25,7 +25,7 @@
  * --------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: URLFilter.java,v 1.7 2002/11/07 21:45:27 taqua Exp $
+ * $Id: URLFilter.java,v 1.8 2002/12/02 17:19:52 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ import java.net.URL;
  * The URLFilter forms URLs from Strings ,Files and URLs. If an URL is relative, the
  * missing contents can be obtained by a default url, called the baseURL.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class URLFilter implements DataFilter
 {

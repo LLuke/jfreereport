@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.25 2002/12/02 17:30:40 taqua Exp $
+ * $Id: ElementFactory.java,v 1.26 2002/12/11 00:51:19 mungady Exp $
  *
  * Changes
  * -------
@@ -114,6 +114,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
   /** The text element format string. */
   private String textElementFormatString;
 
+  /** Dynamic flag. */
   private boolean textElementDynamic;
 
   /**
@@ -982,7 +983,9 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
     textElementNullString = ParserUtil.parseString(atts.getValue(NULLSTRING_ATT), "-");
     textElementSourceName = atts.getValue(FIELDNAME_ATT);
     if (textElementSourceName == null)
+    {
       throw new SAXException("The fieldname-attribute is required");
+    }
   }
 
   /**
@@ -998,7 +1001,9 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
     textElementNullString = ParserUtil.parseString(atts.getValue(NULLSTRING_ATT), "-");
     textElementSourceName = atts.getValue(FUNCTIONNAME_ATT);
     if (textElementSourceName == null)
+    {
       throw new SAXException("The fieldname-attribute is required");
+    }
   }
 
 }

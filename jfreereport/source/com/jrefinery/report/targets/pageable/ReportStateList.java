@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.4 2002/12/07 20:53:13 taqua Exp $
+ * $Id: ReportStateList.java,v 1.5 2002/12/09 03:56:34 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ import java.util.ArrayList;
  * in 4-element ReferenceLists, so if a reference is lost, only 4 states have to be
  * reprocessed. All other states are stored in 10-element lists.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ReportStateList
 {
@@ -64,14 +64,17 @@ public class ReportStateList
    * not-freeable memory used by the list, but restoring a single page will require more
    * time.
    */
-  // the maxmimum masterposition size
+
+  /** The maxmimum masterposition size. */
   private static final int MASTERPOSITIONS_MAX = 10;
-  // the medium masterposition size
+
+  /** The medium masterposition size. */
   private static final int MASTERPOSITIONS_MED = 4;
 
-  // the max index that will be stored in the primary list
+  /** The max index that will be stored in the primary list. */
   private static final int PRIMARY_MAX = 20;
-  // the max index that will be stored in the master4 list
+
+  /** The max index that will be stored in the master4 list. */
   private static final int MASTER4_MAX = 120;
 
   /**
@@ -87,6 +90,7 @@ public class ReportStateList
      * Creates a new master list.
      *
      * @param list  the list.
+     * @param masterPositions  ??.
      */
     public MasterList (ReportStateList list, int masterPositions)
     {
@@ -183,7 +187,7 @@ public class ReportStateList
 
   /** The report processor that the state list relates to. */
   private PageableReportProcessor proc;
-  
+
   /** The dummy output target. */
   private OutputTarget dummyWriter;
 
@@ -191,6 +195,7 @@ public class ReportStateList
    * Returns the index of the WeakReferenceList in the master list.
    *
    * @param pos  the position.
+   * @param maxListSize  the maximum list size.
    *
    * @return the position within the masterStateList.
    */
@@ -337,13 +342,15 @@ public class ReportStateList
     else if (index < MASTER4_MAX)
     {
       index -= PRIMARY_MAX;
-      MasterList master = (MasterList) masterStates4.get (getMasterPos (index, MASTERPOSITIONS_MED));
+      MasterList master
+          = (MasterList) masterStates4.get (getMasterPos (index, MASTERPOSITIONS_MED));
       return (ReportState) master.get (index);
     }
     else
     {
       index -= MASTER4_MAX;
-      MasterList master = (MasterList) masterStates10.get (getMasterPos (index, MASTERPOSITIONS_MAX));
+      MasterList master
+          = (MasterList) masterStates10.get (getMasterPos (index, MASTERPOSITIONS_MAX));
       return (ReportState) master.get (index);
     }
 

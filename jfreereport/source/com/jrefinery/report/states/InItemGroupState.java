@@ -1,6 +1,6 @@
 /**
  * ========================================
- * JFreeReport : a free Java report library 
+ * JFreeReport : a free Java report library
  * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: InItemGroupState.java,v 1.4 2002/12/05 12:18:46 mungady Exp $
+ * $Id: InItemGroupState.java,v 1.5 2002/12/06 19:28:00 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,8 @@ import com.jrefinery.report.ReportProcessingException;
  * <p>
  * If the activated Item is the last item in its group, the next state will be an
  * PostItemGroupHeader.  In the other case, the current state remains this ItemsAdvanced state.
+ *
+ * @author David Gilbert
  */
 public class InItemGroupState extends ReportState
 {

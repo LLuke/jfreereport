@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Content.java,v 1.1 2002/12/02 17:56:54 taqua Exp $
+ * $Id: ContentType.java,v 1.2 2002/12/03 16:29:21 mungady Exp $
  *
  * Changes
  * -------
@@ -49,13 +49,13 @@ public class ContentType
 {
   /** Text content type. */
   public static final ContentType TEXT = new ContentType("Text");
-  
+
   /** Shape content type. */
   public static final ContentType SHAPE = new ContentType("Shape");
-  
+
   /** Image content type. */
   public static final ContentType IMAGE = new ContentType("Image");
-  
+
   /** Container content type. */
   public static final ContentType CONTAINER = new ContentType("Container");
 
@@ -66,6 +66,8 @@ public class ContentType
    * Creates a new content type.
    * <p>
    * This constructor is private, so you can't use it directly.
+   *
+   * @param name  the name.
    */
   private ContentType(String name)
   {
@@ -81,5 +83,5 @@ public class ContentType
   {
     return myName;
   }
-  
+
 }

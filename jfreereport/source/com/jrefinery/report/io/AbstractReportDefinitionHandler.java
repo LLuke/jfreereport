@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: AbstractReportDefinitionHandler.java,v 1.10 2002/11/07 21:45:27 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import java.net.URL;
 /**
  * Extends the SAX-DefaultHandler with ContentBase capabilities.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public abstract class AbstractReportDefinitionHandler extends DefaultHandler
 {

@@ -68,6 +68,7 @@ public class ReportInitialisationException extends StackableException
    * Constructs an <code>Exception</code> with the specified detail message.
    *
    * @param s  the detail message.
+   * @param e  the parent exception.
    */
   public ReportInitialisationException(String s, Exception e)
   {

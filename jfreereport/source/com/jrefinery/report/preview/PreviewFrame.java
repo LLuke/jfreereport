@@ -23,12 +23,12 @@
  * -----------------
  * PreviewFrame.java
  * -----------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewFrame.java,v 1.45 2002/12/10 22:27:42 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.46 2002/12/10 23:02:45 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -813,7 +813,10 @@ public class PreviewFrame extends JFrame implements JFreeReportConstants
   /** A dialog for specifying PDF file properties. */
   private PDFSaveDialog pdfSaveDialog;
 
+  /** The maximum size. */
   private Dimension maximumSize;
+
+  /** The preferred size. */
   private Dimension preferredSize;
 
   /**
@@ -892,8 +895,10 @@ public class PreviewFrame extends JFrame implements JFreeReportConstants
    */
   private void applyDefinedDimension (JFreeReport report)
   {
-    String width = report.getReportConfiguration().getConfigProperty(ReportConfiguration.PREVIEW_PREFERRED_WIDTH);
-    String height = report.getReportConfiguration().getConfigProperty(ReportConfiguration.PREVIEW_PREFERRED_HEIGHT);
+    String width = report.getReportConfiguration().getConfigProperty(
+                   ReportConfiguration.PREVIEW_PREFERRED_WIDTH);
+    String height = report.getReportConfiguration().getConfigProperty(
+                    ReportConfiguration.PREVIEW_PREFERRED_HEIGHT);
 
     // only apply if both values are set.
     if (width != null && height != null)
@@ -910,16 +915,20 @@ public class PreviewFrame extends JFrame implements JFreeReportConstants
       }
     }
 
-    width = report.getReportConfiguration().getConfigProperty(ReportConfiguration.PREVIEW_MAXIMUM_WIDTH);
-    height = report.getReportConfiguration().getConfigProperty(ReportConfiguration.PREVIEW_MAXIMUM_HEIGHT);
+    width = report.getReportConfiguration().getConfigProperty(
+            ReportConfiguration.PREVIEW_MAXIMUM_WIDTH);
+    height = report.getReportConfiguration().getConfigProperty(
+             ReportConfiguration.PREVIEW_MAXIMUM_HEIGHT);
 
     // only apply if at least one value is set.
     if (width != null || height != null)
     {
       try
       {
-        int iWidth = (width == null) ? Short.MAX_VALUE : (int) ParserUtil.parseRelativeFloat(width, "");
-        int iHeight = (height == null) ? Short.MAX_VALUE : (int) ParserUtil.parseRelativeFloat(height, "");
+        int iWidth = (width == null)
+            ? Short.MAX_VALUE : (int) ParserUtil.parseRelativeFloat(width, "");
+        int iHeight = (height == null)
+            ? Short.MAX_VALUE : (int) ParserUtil.parseRelativeFloat(height, "");
         Dimension pref = createCorrectedDimensions(iWidth, iHeight);
         setMaximumSize(pref);
         addComponentListener(new WindowSizeLimiter());
@@ -973,8 +982,9 @@ public class PreviewFrame extends JFrame implements JFreeReportConstants
   public Dimension getMaximumSize()
   {
     if (maximumSize == null)
+    {
       return super.getMaximumSize();
-
+    }
     return maximumSize;
   }
 
@@ -1001,8 +1011,9 @@ public class PreviewFrame extends JFrame implements JFreeReportConstants
   public Dimension getPreferredSize()
   {
     if (preferredSize == null)
+    {
       return super.getPreferredSize();
-
+    }
     return preferredSize;
   }
 

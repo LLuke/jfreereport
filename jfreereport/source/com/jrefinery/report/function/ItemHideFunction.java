@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemHideFunction.java,v 1.3 2002/09/13 15:38:08 mungady Exp $
+ * $Id: ItemHideFunction.java,v 1.4 2002/12/02 17:29:14 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import com.jrefinery.report.event.ReportEvent;
  * The property <code>field</code> defines the field in the datasource or the expression which
  * should be used to determine the visibility.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ItemHideFunction extends AbstractFunction
 {

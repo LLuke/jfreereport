@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData6.java,v 1.3 2002/09/13 15:38:07 mungady Exp $
+ * $Id: SampleData6.java,v 1.4 2002/09/16 14:13:47 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -43,7 +43,7 @@ import javax.swing.table.AbstractTableModel;
 /**
  * A sample data source for the JFreeReport Demo Application.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class SampleData6 extends AbstractTableModel
 {

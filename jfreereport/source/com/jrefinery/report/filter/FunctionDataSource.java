@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionDataSource.java,v 1.12 2002/09/05 17:25:38 taqua Exp $
+ * $Id: FunctionDataSource.java,v 1.13 2002/09/13 15:38:07 mungady Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ import com.jrefinery.report.DataRow;
  * If the function name is invalid (no function registered by that name), null is
  * returned.
  *
- * @author TM
+ * @author Thomas Morgner
  *
  * @deprecated use DataRowDataSource as unified access class instead
  */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExpression.java,v 1.13 2002/12/02 17:28:59 taqua Exp $
+ * $Id: AbstractExpression.java,v 1.14 2002/12/11 01:10:40 mungady Exp $
  *
  * Changes
  * -------
@@ -267,6 +267,8 @@ public abstract class AbstractExpression implements Expression
    * The depency level defines the level of execution for this function. Higher depency functions
    * are executed before lower depency functions. The range for depencies is defined to start
    * from 0 (lowest depency possible) to 2^31 (upper limit of int).
+   *
+   * @return the level.
    */
   public int getDepencyLevel()
   {

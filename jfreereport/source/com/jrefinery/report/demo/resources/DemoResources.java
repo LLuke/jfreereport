@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DemoResources.java,v 1.10 2002/08/08 15:28:43 taqua Exp $
+ * $Id: DemoResources.java,v 1.11 2002/09/13 15:38:07 mungady Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import java.awt.event.KeyEvent;
  * User interface items for the JFreeReport demonstration application.  These have been put into
  * a ResourceBundle to ease localisation of the application.
  *
- * @author DG
+ * @author David Gilbert
  */
 public class DemoResources extends JFreeReportResources
 {

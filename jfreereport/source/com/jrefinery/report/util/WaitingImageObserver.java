@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morger
  * Contributor(s):   Stefan Prange;
  *
- * $Id: WaitingImageObserver.java,v 1.1 2002/12/02 17:46:06 taqua Exp $
+ * $Id: WaitingImageObserver.java,v 1.2 2002/12/09 03:56:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -53,7 +53,7 @@ import java.io.Serializable;
  * was completely loaded, so this observer forces the loading of the image
  * until a final state (either ALLBITS, ABORT or ERROR) is reached.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class WaitingImageObserver implements ImageObserver, Serializable, Cloneable
 {

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -25,7 +25,7 @@
  * ---------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: DateFormatParser.java,v 1.8 2002/11/07 21:45:27 taqua Exp $
+ * $Id: DateFormatParser.java,v 1.9 2002/12/02 17:19:45 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -43,7 +43,7 @@ import java.util.Date;
  * Parses a String into a java.util.Date. The string is read from the given datasource
  * and then parsed by the dateformat contained in this FormatParser.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class DateFormatParser extends FormatParser
 {

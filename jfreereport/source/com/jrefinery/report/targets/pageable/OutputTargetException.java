@@ -25,7 +25,7 @@
  * --------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: OutputTargetException.java,v 1.2 2002/12/03 16:30:53 mungady Exp $
+ * $Id: OutputTargetException.java,v 1.3 2002/12/06 19:28:03 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,7 @@ import com.jrefinery.report.util.StackableException;
  * An OutputTargetException is thrown if a element could not be printed in the target or
  * an TargetInternalError occurred, that made proceeding impossible.
  *
- * @author DG
+ * @author David Gilbert
  */
 public class OutputTargetException extends StackableException
 {

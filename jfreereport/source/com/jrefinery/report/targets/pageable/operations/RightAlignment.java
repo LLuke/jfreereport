@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LeftAlignment.java,v 1.4 2002/12/06 20:34:13 taqua Exp $
+ * $Id: RightAlignment.java,v 1.3 2002/12/11 01:10:41 mungady Exp $
  *
  * Changes
  * -------
@@ -62,6 +62,8 @@ public class RightAlignment extends HorizontalBoundsAlignment
    * Aligns a rectangle to the right of the reference bounds.
    *
    * @param rect  the rectangle.
+   *
+   * @return the aligned rectangle.
    */
   public Rectangle2D align(Rectangle2D rect)
   {

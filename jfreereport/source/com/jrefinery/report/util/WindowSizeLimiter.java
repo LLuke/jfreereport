@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,15 +23,21 @@
  * ----------------------
  * WindowSizeLimiter.java
  * ----------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: WindowSizeLimiter.java,v 1.1 2002/12/10 22:27:43 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: WindowSizeLimiter.java,v 1.2 2002/12/10 23:02:56 taqua Exp $
  *
  *
  * Changes
  * -------
  * 10-Dec-2002 : Initial version
+ * 12-Dec-2002 : Fixed issues reported by Checkstyle (DG);
  *
  */
+
 package com.jrefinery.report.util;
 
 import java.awt.Component;
@@ -43,17 +49,25 @@ import java.awt.event.ComponentEvent;
  * A small helper class to limit the maximum size of an element to the elements
  * maximum size. If the element is resized, the defined maximum size is enforced
  * on the element.
+ *
+ * @author Thomas Morgner
  */
 public class WindowSizeLimiter extends ComponentAdapter
 {
+  /** The current source. */
   private Object currentSource;
 
   /**
    * Invoked when the component's size changes.
+   *
+   * @param e  the event.
    */
   public void componentResized(ComponentEvent e)
   {
-    if (e.getSource() == currentSource) return;
+    if (e.getSource() == currentSource)
+    {
+      return;
+    }
 
     if (e.getSource() instanceof Component)
     {
@@ -61,8 +75,14 @@ public class WindowSizeLimiter extends ComponentAdapter
       Component c = (Component) e.getSource();
       Dimension d = c.getMaximumSize();
       Dimension s = c.getSize();
-      if (s.width > d.width) s.width = d.width;
-      if (s.height > d.height) s.height = d.height;
+      if (s.width > d.width)
+      {
+        s.width = d.width;
+      }
+      if (s.height > d.height)
+      {
+        s.height = d.height;
+      }
       c.setSize(s);
       currentSource = null;
     }

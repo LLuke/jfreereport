@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFormatFilter.java,v 1.8 2002/10/16 18:33:40 taqua Exp $
+ * $Id: NumberFormatFilter.java,v 1.9 2002/12/02 17:19:48 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ import java.text.NumberFormat;
  *
  * @see java.text.NumberFormat
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class NumberFormatFilter extends FormatFilter
 {

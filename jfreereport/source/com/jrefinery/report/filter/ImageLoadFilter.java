@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: ImageLoadFilter.java,v 1.10 2002/11/07 21:45:27 taqua Exp $
  *
  * ChangeLog
  * --------------------------------------
@@ -59,7 +59,7 @@ import java.net.URL;
  * This filter will return null, if something else than an URL was retrieved from the
  * assigned datasource
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ImageLoadFilter implements DataFilter
 {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PrintAction.java,v 1.12 2002/12/02 17:13:10 taqua Exp $
+ * $Id: PrintAction.java,v 1.13 2002/12/04 16:19:55 mungady Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import java.util.ResourceBundle;
 /**
  * Print action for a print preview frame.
  *
- * @author DG
+ * @author David Gilbert
  */
 public abstract class PrintAction extends AbstractActionDowngrade implements Runnable
 {
@@ -66,9 +66,9 @@ public abstract class PrintAction extends AbstractActionDowngrade implements Run
   {
     this.putValue (NAME, resources.getString ("action.print.name"));
     this.putValue (SHORT_DESCRIPTION, resources.getString ("action.print.description"));
-    this.putValue (ActionDowngrade.MNEMONIC_KEY, 
+    this.putValue (ActionDowngrade.MNEMONIC_KEY,
                    resources.getObject ("action.print.mnemonic"));
-    this.putValue (ActionDowngrade.ACCELERATOR_KEY, 
+    this.putValue (ActionDowngrade.ACCELERATOR_KEY,
                    resources.getObject ("action.print.accelerator"));
     this.putValue (SMALL_ICON, resources.getObject ("action.print.small-icon"));
     this.putValue ("ICON24", resources.getObject ("action.print.icon"));

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -26,9 +26,9 @@
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
- * Contributor(s):   -
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionProcessingException.java,v 1.1 2002/12/02 17:29:12 taqua Exp $
+ * $Id: FunctionProcessingException.java,v 1.2 2002/12/06 19:27:53 taqua Exp $
  *
  * Changes
  * -------
@@ -44,10 +44,13 @@ import com.jrefinery.report.util.StackableRuntimeException;
 /**
  * An exception that indicates that a function has not been correctly initialised.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class FunctionProcessingException extends StackableRuntimeException
 {
+  /**
+   * Default constructor.
+   */
   public FunctionProcessingException()
   {
   }

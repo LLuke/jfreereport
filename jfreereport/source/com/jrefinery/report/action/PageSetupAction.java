@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PageSetupAction.java,v 1.12 2002/12/02 17:13:03 taqua Exp $
+ * $Id: PageSetupAction.java,v 1.13 2002/12/04 16:19:55 mungady Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import java.util.ResourceBundle;
 /**
  * Page setup action for a print preview frame.
  *
- * @author DG
+ * @author David Gilbert
  */
 public abstract class PageSetupAction extends AbstractActionDowngrade implements Runnable
 {
@@ -66,7 +66,7 @@ public abstract class PageSetupAction extends AbstractActionDowngrade implements
   {
     this.putValue (NAME, resources.getString ("action.page-setup.name"));
     this.putValue (SHORT_DESCRIPTION, resources.getString ("action.page-setup.description"));
-    this.putValue (ActionDowngrade.MNEMONIC_KEY, 
+    this.putValue (ActionDowngrade.MNEMONIC_KEY,
                    resources.getObject ("action.page-setup.mnemonic"));
     this.putValue (SMALL_ICON, resources.getObject ("action.page-setup.small-icon"));
     this.putValue ("ICON24", resources.getObject ("action.page-setup.icon"));

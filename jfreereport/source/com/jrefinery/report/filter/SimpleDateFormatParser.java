@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -25,7 +25,7 @@
  * ---------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: SimpleDateFormatParser.java,v 1.6 2002/11/07 21:45:27 taqua Exp $
+ * $Id: SimpleDateFormatParser.java,v 1.7 2002/12/02 17:19:51 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ import java.text.SimpleDateFormat;
  *
  * @see java.text.SimpleDateFormat
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class SimpleDateFormatParser extends DateFormatParser
 {

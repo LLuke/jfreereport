@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringUtil.java,v 1.4 2002/12/09 03:56:34 taqua Exp $
+ * $Id: StringUtil.java,v 1.5 2002/12/11 00:41:42 mungady Exp $
  *
  * Changes
  * -------
@@ -66,7 +66,7 @@ public class StringUtil
    * Helper functions to query a strings end portion. The comparison is case insensitive.
    *
    * @param base  the base string.
-   * @param start  the starting text.
+   * @param end  the ending text.
    *
    * @return true, if the string ends with the given ending text.
    */

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -
  *
- * $Id: FunctionInitializeException.java,v 1.4 2002/11/07 21:45:27 taqua Exp $
+ * $Id: FunctionInitializeException.java,v 1.5 2002/12/02 17:29:11 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import java.io.PrintWriter;
 /**
  * An exception that indicates that a function has not been correctly initialised.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class FunctionInitializeException extends Exception
 {

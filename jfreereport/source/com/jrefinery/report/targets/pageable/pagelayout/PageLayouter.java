@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.6 2002/12/07 13:06:46 taqua Exp $
+ * $Id: PageLayouter.java,v 1.7 2002/12/11 01:10:41 mungady Exp $
  *
  * Changes
  * -------
@@ -411,6 +411,8 @@ public abstract class PageLayouter extends AbstractFunction
    * <p>
    * PageLayouter functions override the default behaviour an place them self at depency level -1,
    * an so before any userdefined function.
+   *
+   * @return the level.
    */
   public int getDepencyLevel()
   {

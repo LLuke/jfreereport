@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Function.java,v 1.11 2002/09/16 16:59:12 mungady Exp $
+ * $Id: Function.java,v 1.12 2002/12/02 17:29:11 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ import com.jrefinery.report.event.ReportListener;
  * <p>
  * Todo: Give a better overview how functions are integrated into JFreeReport.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public interface Function extends ReportListener, Expression, Cloneable
 {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandFactory.java,v 1.9 2002/12/02 17:30:36 taqua Exp $
+ * $Id: BandFactory.java,v 1.10 2002/12/11 00:51:19 mungady Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,6 @@ import com.jrefinery.report.PageFooter;
 import com.jrefinery.report.PageHeader;
 import com.jrefinery.report.ReportFooter;
 import com.jrefinery.report.ReportHeader;
-import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;

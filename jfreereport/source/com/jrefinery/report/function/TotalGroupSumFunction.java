@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -23,9 +23,12 @@
  * ---------------------------
  * TotalGroupSumFunction.java
  * ---------------------------
- * (C)opyright 2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: TotalGroupSumFunction.java,v 1.13 2002/11/07 21:45:27 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: TotalGroupSumFunction.java,v 1.14 2002/12/02 17:29:23 taqua Exp $
  *
  * Changes
  * -------
@@ -33,7 +36,10 @@
  * 17-Jul-2002 : Handle empty data source without a crashing
  * 18-Jul-2002 : Handle out-of-bounds dataquery to the tablemodel
  * 21-Jul-2002 : Corrected the out-of-bounds constraint
+ * 12-Dec-2002 : Fixed issues reported by Checkstyle (DG);
+ *
  */
+
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.Group;
@@ -68,7 +74,7 @@ import java.util.ArrayList;
  * The parameter <code>group</code> denotes the name of a group. When this group is started,
  * the counter gets reseted to null.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class TotalGroupSumFunction extends AbstractFunction
 {
@@ -150,10 +156,8 @@ public class TotalGroupSumFunction extends AbstractFunction
 
   /**
    * Receives notification that the report has started.
-   * <P>
-   * Maps the reportStarted-method to the legacy function startReport ().
    *
-   * @param event Information about the event.
+   * @param event  the event.
    */
   public void reportStarted(ReportEvent event)
   {
@@ -172,10 +176,8 @@ public class TotalGroupSumFunction extends AbstractFunction
 
   /**
    * Receives notification that a group has started.
-   * <P>
-   * Maps the groupStarted-method to the legacy function startGroup (int).
    *
-   * @param event Information about the event.
+   * @param event  the event.
    */
   public void groupStarted(ReportEvent event)
   {
@@ -205,10 +207,8 @@ public class TotalGroupSumFunction extends AbstractFunction
 
   /**
    * Receives notification that a row of data is being processed.
-   * <P>
-   * Maps the itemsAdvanced-method to the legacy function advanceItems (int).
    *
-   * @param event Information about the event.
+   * @param event  the event.
    */
   public void itemsAdvanced(ReportEvent event)
   {

@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: ImageRenderFunction.java,v 1.6 2002/11/07 21:45:27 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -51,7 +51,7 @@ import java.awt.image.BufferedImage;
  * The ImageRenderFunction creates a simple Image using a BufferedImage within a function to show
  * the use of the ImageFunctionElement.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ImageRenderFunction extends AbstractFunction
 {

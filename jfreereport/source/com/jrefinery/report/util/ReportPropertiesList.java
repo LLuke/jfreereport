@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportPropertiesList.java,v 1.3 2002/11/29 12:07:29 mungady Exp $
+ * $Id: ReportPropertiesList.java,v 1.4 2002/12/09 03:56:34 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,10 @@ import java.util.Enumeration;
  *
  * @see ReportProperties#setMarked
  * @see ReportProperties#isMarked
- * @author TM
+ *
+ * @author Thomas Morgner
  */
+
 public class ReportPropertiesList
 {
   /** The base report properties. */
@@ -55,7 +57,7 @@ public class ReportPropertiesList
    * Creates a list of report properties. Searches all marked properties
    * and adds them to the ReportPropertyList. The property-values remain
    * in the original ReportProperties-collection, all queries to this
-   * list are forwarded to that base-object. 
+   * list are forwarded to that base-object.
    *
    * @param base  the underlying properties.
    */

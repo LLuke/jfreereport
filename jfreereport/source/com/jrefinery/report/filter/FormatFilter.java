@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FormatFilter.java,v 1.10 2002/09/13 15:38:07 mungady Exp $
+ * $Id: FormatFilter.java,v 1.11 2002/10/15 20:37:21 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ import java.text.Format;
  * <p>
  * The nullValue is set to "-" by default.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class FormatFilter implements DataFilter
 {

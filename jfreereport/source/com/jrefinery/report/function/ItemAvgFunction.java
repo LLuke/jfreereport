@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemAvgFunction.java,v 1.4 2002/09/13 15:38:08 mungady Exp $
+ * $Id: ItemAvgFunction.java,v 1.5 2002/09/17 09:49:10 mungady Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,7 @@ import java.math.BigDecimal;
  * The parameter <code>group</code> denotes the name of a group. When this group is started,
  * the counter gets reseted to null.
  *
- * @author TM
+ * @author Thomas Morgner
  */
 public class ItemAvgFunction extends AbstractFunction
 {

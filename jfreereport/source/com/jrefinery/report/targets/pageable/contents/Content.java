@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Content.java,v 1.2 2002/12/03 16:29:17 mungady Exp $
+ * $Id: Content.java,v 1.3 2002/12/07 20:53:13 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ public interface Content
    * @return the subcontent (possibly null).
    */
   public Content getContentPart (int part);
-  
+
   /**
    * Returns the number of items of "subcontent" for this content item.
    *
@@ -78,13 +78,15 @@ public interface Content
    * @return the content type.
    */
   public ContentType getContentType();
-  
+
   /**
    * Returns the content for the given bounds. The extracted content is the content
    * that would be displayed in the specific bounds if the content would be printed
    * with clipping enabled at the given boundry.
    * <p>
-   * This method returns null if there is no content in these bounds. 
+   * This method returns null if there is no content in these bounds.
+   *
+   * @param bounds  the bounds.
    *
    * @return the content (possibly null).
    */

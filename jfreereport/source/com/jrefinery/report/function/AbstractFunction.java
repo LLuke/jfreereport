@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.21 2002/12/02 17:29:00 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.22 2002/12/11 01:10:41 mungady Exp $
  *
  * Changes
  * -------
@@ -133,10 +133,8 @@ public abstract class AbstractFunction implements Function
 
   /**
    * Receives notification that the report has started.
-   * <P>
-   * Maps the reportStarted-method to the legacy function startReport ().
    *
-   * @param event Information about the event.
+   * @param event  the event.
    */
   public void reportStarted(ReportEvent event)
   {
@@ -144,10 +142,8 @@ public abstract class AbstractFunction implements Function
 
   /**
    * Receives notification that the report has finished.
-   * <P>
-   * Maps the reportFinished-method to the legacy function endReport ().
    *
-   * @param event Information about the event.
+   * @param event  the event.
    */
   public void reportFinished(ReportEvent event)
   {
@@ -155,10 +151,8 @@ public abstract class AbstractFunction implements Function
 
   /**
    * Receives notification that a page has started.
-   * <P>
-   * Maps the pageStarted-method to the legacy function startPage (int).
    *
-   * @param event Information about the event.
+   * @param event  the event.
    */
   public void pageStarted(ReportEvent event)
   {
@@ -166,10 +160,8 @@ public abstract class AbstractFunction implements Function
 
   /**
    * Receives notification that a page has ended.
-   * <P>
-   * Maps the pageFinished-method to the legacy function endPage (int).
    *
-   * @param event Information about the event.
+   * @param event  the event.
    */
   public void pageFinished(ReportEvent event)
   {
@@ -177,10 +169,8 @@ public abstract class AbstractFunction implements Function
 
   /**
    * Receives notification that a group has started.
-   * <P>
-   * Maps the groupStarted-method to the legacy function startGroup (int).
    *
-   * @param event Information about the event.
+   * @param event  the event.
    */
   public void groupStarted(ReportEvent event)
   {
@@ -188,10 +178,8 @@ public abstract class AbstractFunction implements Function
 
   /**
    * Receives notification that a group has finished.
-   * <P>
-   * Maps the groupFinished-method to the legacy function endGroup (int).
    *
-   * @param event Information about the event.
+   * @param event  the event.
    */
   public void groupFinished(ReportEvent event)
   {
@@ -200,10 +188,8 @@ public abstract class AbstractFunction implements Function
 
   /**
    * Receives notification that a row of data is being processed.
-   * <P>
-   * Maps the itemsAdvanced-method to the legacy function advanceItems (int).
    *
-   * @param event Information about the event.
+   * @param event  the event.
    */
   public void itemsAdvanced(ReportEvent event)
   {
@@ -369,6 +355,8 @@ public abstract class AbstractFunction implements Function
    * The depency level defines the level of execution for this function. Higher depency functions
    * are executed before lower depency functions. The range for depencies is defined to start
    * from 0 (lowest depency possible) to 2^31 (upper limit of int).
+   *
+   * @return the level.
    */
   public int getDepencyLevel()
   {
