@@ -13,7 +13,9 @@
   2002-09-16: Removed BASELINE attribute from font definition, fixed Orientation-attribute declaration,
               Bands can have a default font declaration
   2002-10-16: All textelements have now a "dynamic" attribute which defaults to false
-
+  2002-12-01: Removed deprecated General and multiline-field and *-function tags
+              GroupHeader has "repeat" attribute
+  2002-12-02: Band-heights are no longer required. If they are set, they act as minimum-height.            
  -->
 
 <!ENTITY % boolean
@@ -26,6 +28,10 @@
 
 <!ENTITY % alignmentEnum
    "left | center | right"
+>
+
+<!ENTITY % valignmentEnum
+   "top | middle | bottom"
 >
 
 <!ENTITY % orientations
@@ -49,8 +55,6 @@
 <!ENTITY % position
  "x           CDATA          #IMPLIED
   y           CDATA          #IMPLIED
-	x-rel       CDATA          #IMPLIED
-	y-rel       CDATA          #IMPLIED
   width       CDATA          #REQUIRED"
 >
 
@@ -66,8 +70,7 @@
 
   -->
 <!ENTITY % basicform
-" height         CDATA          #REQUIRED
-  color          CDATA          #IMPLIED
+" color          CDATA          #IMPLIED
 	name           CDATA          #IMPLIED"
  >
 
@@ -79,7 +82,8 @@
   fsitalic       (%boolean;)        #IMPLIED
   fsunderline    (%boolean;)        #IMPLIED
   fsstrikethr    (%boolean;)        #IMPLIED
-  alignment      (%alignmentEnum;)  #IMPLIED"
+  alignment      (%alignmentEnum;)  #IMPLIED
+  vertical-alignment     (%valignmentEnum;) #IMPLIED"
  >
 
 <!--
@@ -87,9 +91,8 @@
   support linebreaks.
   -->
 <!ENTITY % itemelements
-  "(label | general-field | string-field | string-function |
-  number-field | number-function | date-field | date-function |
-	multiline-field | imageref | image-field | image-function | rectangle | line)*">
+  "(label | string-field | number-field | date-field |
+	imageref | image-field | image-url-field | rectangle | line)*">
 
 
 <!--
@@ -179,24 +182,29 @@
 <!--
 
   The reportheader can contain any band-element.
-  The height of the report header is ignored, if the header is
+  The height of the report header is ignored, if the header and footer is
   printed on an own page.
 
   As with every element container you may define default font settings
   for sub elements without an own font definition.
 
+  In an header the ownpage is translated as pagebreak_after_print,
+  on an footer that attribute is translated to pagebreak_before_print.
+
   -->
 <!ELEMENT reportheader ( %itemelements; )>
 <!ATTLIST reportheader
-  ownpage        (%boolean;)    #IMPLIED
-  %basicform;
+  ownpage         (%boolean;)    #IMPLIED
+  height         CDATA           #IMPLIED
+   %basicform;
   %fontdef;
 >
 
 <!ELEMENT reportfooter ( %itemelements; )>
 <!ATTLIST reportfooter
   ownpage        (%boolean;)    #IMPLIED
-  %basicform;
+  height         CDATA          #IMPLIED
+   %basicform;
   %fontdef;
 >
 
@@ -213,15 +221,16 @@
 <!ELEMENT pageheader ( %itemelements; )>
 <!ATTLIST pageheader
   onfirstpage    (%boolean;)   #IMPLIED
+  height         CDATA         #IMPLIED
   %basicform;
   %fontdef;
 >
-
 
 <!ELEMENT pagefooter ( %itemelements; )>
 <!ATTLIST pagefooter
   onfirstpage    (%boolean;)   #IMPLIED
   onlastpage     (%boolean;)   #IMPLIED
+  height         CDATA         #IMPLIED
   %basicform;
   %fontdef;
 >
@@ -249,16 +258,26 @@
   If pagebreak is set to true, a page break will be forced before
   the group header is printed.
 
+  If repeat is set to true, this header is repeated after an pagebreak
+  if this group is still active and no other groupheader in an subgroup
+  has the repeat flag set.
   -->
 <!ELEMENT groupheader ( %itemelements; )>
 <!ATTLIST groupheader
   pagebreak     (%boolean;)   #IMPLIED
+  repeat        (%boolean;)   #IMPLIED
+  height         CDATA        #IMPLIED
   %basicform;
   %fontdef;
 >
 
+<!--
+  This pagebreak is a pagebreak before print ...
+  -->
 <!ELEMENT groupfooter ( %itemelements; )>
 <!ATTLIST groupfooter
+  pagebreak     (%boolean;)   #IMPLIED
+  height         CDATA        #IMPLIED
   %basicform;
   %fontdef;
 >
@@ -279,6 +298,7 @@
 
 <!ELEMENT items   ( %itemelements; )>
 <!ATTLIST items
+  height         CDATA          #IMPLIED
   %basicform;
   %fontdef;
 >
@@ -288,24 +308,12 @@
   -->
 <!ELEMENT label   (#PCDATA)>
 <!ATTLIST label
+  height         CDATA          #REQUIRED
   %basicform;
   %position;
   %fontdef;
-  nullstring  CDATA    #IMPLIED
-  dynamic     (%boolean;)   #IMPLIED
->
-
-<!--
-  A generic field, currently this prints a string representation
-  of the given object.
-  -->
-<!ELEMENT general-field EMPTY>
-<!ATTLIST general-field
-  %basicform;
-  %position;
-  %fontdef;
-  fieldname   CDATA    #REQUIRED
-  dynamic     (%boolean;)   #IMPLIED
+  nullstring     CDATA          #IMPLIED
+  dynamic        (%boolean;)    #IMPLIED
 >
 
 <!--
@@ -313,6 +321,7 @@
   -->
 <!ELEMENT string-field   EMPTY>
 <!ATTLIST string-field
+  height         CDATA          #REQUIRED
   %basicform;
   %position;
   %fontdef;
@@ -321,21 +330,10 @@
   dynamic     (%boolean;)   #IMPLIED
 >
 
-<!--
-  A simple text field with line break capability
-  -->
-<!ELEMENT multiline-field   EMPTY>
-<!ATTLIST multiline-field
-  %basicform;
-  %position;
-  %fontdef;
-  fieldname   CDATA    #REQUIRED
-  nullstring  CDATA    #IMPLIED
-  dynamic     (%boolean;)   #IMPLIED
->
 
 <!ELEMENT number-field   EMPTY>
 <!ATTLIST number-field
+  height         CDATA          #REQUIRED
   %basicform;
   %position;
   %fontdef;
@@ -347,6 +345,7 @@
 
 <!ELEMENT date-field   EMPTY>
 <!ATTLIST date-field
+  height         CDATA          #REQUIRED
   %basicform;
   %position;
   %fontdef;
@@ -358,77 +357,6 @@
 
 <!--
 
-  Function definition part 1. This defines a function reference,
-  which is used to display the results of a certain function. If
-  you want to reuse function results, then this feature is usefull,
-  especially when calculating the results is expensive.
-
-  -->
-<!ELEMENT string-function   EMPTY>
-<!ATTLIST string-function
-  %basicform;
-  %position;
-  %fontdef;
-  function    CDATA    #REQUIRED
-  nullstring  CDATA    #IMPLIED
-  dynamic     (%boolean;)   #IMPLIED
->
-
-<!--
-
-  DEPRECATED - use the String-function instead
-   ->    Removed, all TextElements support LineBreaks, there no need for a special function
-         anymore
-
-<!ELEMENT multiline-function   EMPTY>
-<!ATTLIST multiline-function
-  %basicform;
-  %position;
-  %fontdef;
-  function    CDATA    #REQUIRED
-  nullstring  CDATA    #IMPLIED
-  dynamic     (%boolean;)   #IMPLIED
->
-  -->
-
-<!ELEMENT number-function   EMPTY>
-<!ATTLIST number-function
-  %basicform;
-  %position;
-  %fontdef;
-  function    CDATA    #REQUIRED
-  format		  CDATA    #IMPLIED
-  nullstring  CDATA    #IMPLIED
-  dynamic     (%boolean;)   #IMPLIED
->
-
-<!ELEMENT date-function   EMPTY>
-<!ATTLIST date-function
-  %basicform;
-  %position;
-  %fontdef;
-  function    CDATA    #REQUIRED
-  format		  CDATA    #IMPLIED
-  nullstring  CDATA    #IMPLIED
-  dynamic     (%boolean;)   #IMPLIED
->
-
-<!--
-
- This one was never implemented. Use a generic text function to display objects. The textfunction
- uses toString() to display the string representation, as this element was intended to do.
-
-<!ELEMENT general-function   EMPTY>
-<!ATTLIST general-function
-  %basicform;
-  %position;
-  %fontdef;
-  function    CDATA #REQUIRED
-  dynamic     (%boolean;)   #IMPLIED
->
--->
-<!--
-
    The image reference links an external image into the report.
 
   -->
@@ -437,7 +365,7 @@
   %position;
   src         CDATA #REQUIRED
   height      CDATA #REQUIRED
-  name        CDATA #REQUIRED
+  name        CDATA #IMPLIED
 >
 <!--
 
@@ -448,22 +376,9 @@
 <!ELEMENT image-field   EMPTY>
 <!ATTLIST image-field
   %position;
-  field       CDATA #REQUIRED
+  fieldname   CDATA #REQUIRED
   height      CDATA #REQUIRED
-  name        CDATA #REQUIRED
->
-<!--
-
-   The image reference links an external image into the report. This element expects an
-   Graphics2D-Object in the datasource.
-
-  -->
-<!ELEMENT image-function   EMPTY>
-<!ATTLIST image-function
-  %position;
-  height      CDATA #REQUIRED
-  function    CDATA #REQUIRED
-  name        CDATA #REQUIRED
+  name        CDATA #IMPLIED
 >
 <!--
 
@@ -475,23 +390,41 @@
 <!ATTLIST imageurl-field
   %position;
   height      CDATA #REQUIRED
-  field       CDATA #REQUIRED
-  name        CDATA #REQUIRED
+  fieldname   CDATA #REQUIRED
+  name        CDATA #IMPLIED
 >
+
+
 <!--
 
-   The image reference links an external image into the report. This element expects an
-   URL or URL-String in the datasource.
+  Shapes
 
   -->
-<!ELEMENT imageurl-function   EMPTY>
-<!ATTLIST imageurl-function
-  %position;
-  height      CDATA #REQUIRED
-  function    CDATA #REQUIRED
-  name        CDATA #REQUIRED
+<!ELEMENT line      EMPTY>
+<!ATTLIST line
+  x1        CDATA       #REQUIRED
+  y1        CDATA       #REQUIRED
+  x2        CDATA       #REQUIRED
+  y2        CDATA       #REQUIRED
+	color     CDATA       #IMPLIED
+	name      CDATA       #IMPLIED
+	weight    CDATA       #IMPLIED
 >
 
+<!--
+
+  The rectangle is a filled rectangular area. No outline is drawn.
+
+  -->
+<!ELEMENT rectangle EMPTY>
+<!ATTLIST rectangle
+  %position;
+  %basicform;
+  height         CDATA   #REQUIRED
+  draw     (%boolean;)   #IMPLIED
+  fill     (%boolean;)   #IMPLIED
+  weight    CDATA        #IMPLIED
+>
 
 <!--
 
@@ -591,32 +524,3 @@
   encoding   CDATA    #IMPLIED
 >
 
-
-<!--
-
-  Shapes
-
-  -->
-<!ELEMENT line      EMPTY>
-<!ATTLIST line
-  x1        CDATA       #REQUIRED
-  y1        CDATA       #REQUIRED
-  x2        CDATA       #REQUIRED
-  y2        CDATA       #REQUIRED
-	color     CDATA       #IMPLIED
-	name      CDATA       #IMPLIED
-	weight    CDATA       #IMPLIED
->
-
-<!--
-
-  The rectangle is a filled rectangular area. No outline is drawn.
-
-  -->
-<!ELEMENT rectangle EMPTY>
-<!ATTLIST rectangle
-  %position;
-  %basicform;
-  draw     (%boolean;)   #IMPLIED
-  fill     (%boolean;)   #IMPLIED
->
