@@ -83,6 +83,9 @@
   fsitalic       (%boolean;)        #IMPLIED
   fsunderline    (%boolean;)        #IMPLIED
   fsstrikethr    (%boolean;)        #IMPLIED
+  font-embedded  (%boolean;)        #IMPLIED
+  font-encoding  CDATA              #IMPLIED
+
   alignment      (%alignmentEnum;)  #IMPLIED
   vertical-alignment     (%valignmentEnum;) #IMPLIED"
  >
