@@ -90,8 +90,8 @@
     </groups>
 
     <!-- ITEMS -->
-    <items height="10" fontname="Monospaced" fontstyle="plain" fontsize="8">
-        <string-field x="0" y="0" width="140" height="8" alignment="left" fieldname="Name"/>
+    <items height="20" fontname="Monospaced" fontstyle="plain" fontsize="8">
+        <image-field name="nameField" x="0" y="0" width="140" height="20" fieldname="NameButton"/>
         <number-field x="110" y="0" width="40" height="8" alignment="right" format="0" fieldname="Count1"/>
         <string-field x="210" y="0" width="60" height="8" alignment="left" fieldname="Letter"/>
         <string-field x="280" y="0" width="76" height="8" alignment="left" fieldname="Color"/>
@@ -125,5 +125,33 @@
           <property name="group">Letter Group</property>
         </properties>
       </function>
+      <function name="NameButton" class="com.jrefinery.report.function.PaintComponentFunction">
+        <properties>
+          <property name="field">CreateButton</property>
+          <property name="element">nameField</property>
+          <property name="scale">5</property>
+        </properties>
+      </function>
+      <expression name="CreateButton" class="com.jrefinery.report.function.BSHExpression">
+        <properties>
+          <property name="expression">
+<![CDATA[
+import javax.swing.JButton;
+
+/**
+ * Creates a SwingButton using the text of column "Name" as ButtonText
+ */
+Object getValue()
+{
+  // the dataRow is null during the initialization.
+  if (dataRow == null) return null;
+
+  return new JButton (String.valueOf(dataRow.get("Name")));
+}
+]]>
+          </property>
+        </properties>
+      </expression>
     </functions>
+
 </report>

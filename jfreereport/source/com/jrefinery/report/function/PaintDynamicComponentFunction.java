@@ -6,99 +6,35 @@
  */
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.Band;
-import com.jrefinery.report.Element;
-import com.jrefinery.report.Group;
 import com.jrefinery.report.ImageReference;
-import com.jrefinery.report.event.LayoutListener;
 import com.jrefinery.report.event.ReportEvent;
-import com.jrefinery.report.targets.base.bandlayout.BandLayoutManagerUtil;
 
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 /**
  * Paints a AWT or Swing Component. The component must be contained in the
  * dataRow.
  */
-public class PaintComponentFunction extends AbstractFunction implements LayoutListener
+public class PaintDynamicComponentFunction extends AbstractFunction
 {
   /** Literal text for the 'field' property. */
   public static final String FIELD_PROPERTY = "field";
-  /** Literal text for the 'field' property. */
-  public static final String ELEMENT_PROPERTY = "element";
   /** Literal text for the 'scale' property. */
   public static final String SCALE_PROPERTY = "scale";
 
   /** the created image, cached for getValue() */
   private Image image;
-  /** the last element found */
-  private Element element;
 
   /**
    * DefaultConstructor
    */
-  public PaintComponentFunction()
+  public PaintDynamicComponentFunction()
   {
-  }
-
-  /**
-   * Try to find the element in the last active root-band.
-   *
-   * @param band
-   * @return
-   */
-  public Element findElement (Band band)
-  {
-    Element[] elements = band.getElementArray();
-    for (int i = 0; i < elements.length; i++)
-    {
-      Element e = elements[i];
-      if (e instanceof Band)
-      {
-        return findElement((Band) e);
-      }
-      else if (e.getName().equals(getElement()))
-      {
-        return e;
-      }
-    }
-    return null;
-  }
-
-  /**
-   * Returns the element used by the function.
-   * <P>
-   * The element name corresponds to a element in the report. The element name must
-   * be unique, as the first occurence of the element is used.
-   *
-   * @return The field name.
-   */
-  public String getElement()
-  {
-    return getProperty(ELEMENT_PROPERTY);
-  }
-
-  /**
-   * Sets the element name for the function.
-   * <P>
-   * The element name corresponds to a element in the report. The element name must
-   * be unique, as the first occurence of the element is used.
-   *
-   * @param field  the field name (null not permitted).
-   */
-  public void setElement(String field)
-  {
-    if (field == null)
-    {
-      throw new NullPointerException();
-    }
-    setProperty(ELEMENT_PROPERTY, field);
   }
 
   /**
@@ -136,7 +72,7 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
    */
   public void reportStarted(ReportEvent event)
   {
-    element = findElement(event.getReport().getReportHeader());
+    image = null;
   }
 
   /**
@@ -146,7 +82,7 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
    */
   public void reportFinished(ReportEvent event)
   {
-    element = findElement(event.getReport().getReportFooter());
+    image = null;
   }
 
   /**
@@ -156,7 +92,7 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
    */
   public void pageStarted(ReportEvent event)
   {
-    element = findElement(event.getReport().getPageHeader());
+    image = null;
   }
 
   /**
@@ -166,7 +102,7 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
    */
   public void pageFinished(ReportEvent event)
   {
-    element = findElement(event.getReport().getPageFooter());
+    image = null;
   }
 
   /**
@@ -176,8 +112,7 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
    */
   public void groupStarted(ReportEvent event)
   {
-    Group g = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
-    element = findElement(g.getHeader());
+    image = null;
   }
 
   /**
@@ -187,8 +122,7 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
    */
   public void groupFinished(ReportEvent event)
   {
-    Group g = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
-    element = findElement(g.getFooter());
+    image = null;
   }
 
   /**
@@ -198,38 +132,25 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
    */
   public void itemsAdvanced(ReportEvent event)
   {
-    element = findElement(event.getReport().getItemBand());
+    image = null;
   }
 
   /**
-   * Receives notification that the band layouting has completed.
-   * <P>
-   * The event carries the current report state.
-   *
-   * @param event The event.
+   * Creates the component.
    */
-  public void layoutComplete(ReportEvent event)
+  private Image createComponentImage()
   {
     Object o = getDataRow().get(getField());
     if ((o instanceof Component) == false)
     {
-      image = null;
-      return;
-    }
-
-    if (element == null)
-    {
-      image = null;
-      return;
+      return null;
     }
 
     float scale = getScale();
 
-    Rectangle2D bounds = BandLayoutManagerUtil.getBounds(element,null);
     Component comp = (Component) o;
-    Dimension dim = new Dimension((int) (bounds.getWidth()), (int) (bounds.getHeight()));
-    comp.setSize(dim);
-    comp.validate();
+    Dimension dim = comp.getSize();
+    comp.validate(); // validating is never wrong :)
     BufferedImage bi = new BufferedImage((int)(scale * dim.width),
                                          (int)(scale * dim.height),
                                          BufferedImage.TYPE_INT_ARGB);
@@ -237,7 +158,7 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
     graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
     comp.paint(graph);
     graph.dispose();
-    image = bi;
+    return bi;
   }
 
   /**
@@ -249,7 +170,11 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
    */
   public Object getValue()
   {
-    if (image == null) return null;
+    if (image == null)
+    {
+      image = createComponentImage();
+    }
+
     ImageReference ref = new ImageReference(image);
     ref.setScaleX(1f/getScale());
     ref.setScaleY(1f/getScale());
@@ -304,11 +229,6 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
     if (fieldProp == null)
     {
       throw new FunctionInitializeException("No Such Property : field");
-    }
-    String elementProp = getProperty(ELEMENT_PROPERTY);
-    if (elementProp == null)
-    {
-      throw new FunctionInitializeException("No Such Property : element");
     }
   }
 }

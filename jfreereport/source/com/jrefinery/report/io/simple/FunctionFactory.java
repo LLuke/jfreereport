@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.4 2003/02/04 17:56:14 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.5 2003/02/09 18:42:49 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,7 @@ import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.util.CharacterEntityParser;
+import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -449,6 +450,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
     }
     catch (FunctionInitializeException fie)
     {
+      Log.warn ("Function initialization failed", fie);
       throw new SAXException (fie);
     }
   }

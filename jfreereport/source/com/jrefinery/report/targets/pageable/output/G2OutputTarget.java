@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.19 2003/02/10 19:33:51 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.20 2003/02/18 19:37:32 taqua Exp $
  *
  * Changes
  * -------
@@ -441,6 +441,11 @@ public class G2OutputTarget extends AbstractOutputTarget
   {
     Rectangle2D myBounds = image.getBoundsScaled();
     Rectangle2D bounds = getOperationBounds();
+
+    Log.debug ("DrawImage: " + myBounds);
+    Log.debug ("DrawImage: " + image.getBounds());
+    Log.debug ("DrawImage: " + image.getScaleX());
+    Log.debug ("DrawImage: " + image.getScaleY());
 
     if (image.getImage() != null)
     {
