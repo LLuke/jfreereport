@@ -2,7 +2,7 @@
  * Date: Jan 21, 2003
  * Time: 4:45:33 PM
  *
- * $Id$
+ * $Id: CSVCellData.java,v 1.1 2003/01/21 17:11:41 taqua Exp $
  */
 package com.jrefinery.report.targets.table.csv;
 
@@ -23,5 +23,10 @@ public class CSVCellData extends TableCellData
   public String getValue()
   {
     return value;
+  }
+
+  public boolean isBackground()
+  {
+    return false;
   }
 }

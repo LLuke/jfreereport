@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.3 2003/01/15 16:54:10 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.1 2003/01/18 20:47:36 taqua Exp $
  *
  * Changes
  * -------
@@ -39,21 +39,20 @@
 package com.jrefinery.report.targets.table.excel;
 
 import com.jrefinery.report.targets.table.TableCellDataFactory;
+import com.jrefinery.report.targets.table.TableGridLayout;
 import com.jrefinery.report.targets.table.TableGridPosition;
 import com.jrefinery.report.targets.table.TableProducer;
-import com.jrefinery.report.targets.table.excel.ExcelCellData;
-import com.jrefinery.report.targets.table.excel.ExcelCellDataFactory;
-import com.jrefinery.report.targets.table.excel.ExcelCellStyleFactory;
 import com.jrefinery.report.util.Log;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.util.Region;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An output target for the report engine that generates an Excel file using the hffs class library
@@ -92,8 +91,9 @@ public class ExcelProducer extends TableProducer
    *
    * @param out  the output stream.
    */
-  public ExcelProducer(OutputStream out)
+  public ExcelProducer(OutputStream out, boolean strict)
   {
+    super(strict);
     this.out = out;
     cellDataFactory = null;
   }
@@ -167,38 +167,39 @@ public class ExcelProducer extends TableProducer
    *
    * The empty cell stuff was never referenced and did nothing usefull, removed it.
    */
-  private void writeSheet(TableProducer.TableProducerLayout layout)
+  private void writeSheet(TableGridLayout layout)
   {
-    ArrayList xCuts = layout.getxCuts();
-    TableGridPosition[][] grid = layout.getGrid();
-
-    long width = 0;
-    for (int i = 1; i < xCuts.size(); i++)
+    for (int i = 0; i < layout.getWidth(); i++)
     {
-      width = ((Long) xCuts.get(i)).longValue() - ((Long) xCuts.get(i - 1)).longValue();
-      sheet.setColumnWidth((short) (i - 1), (short) (width * XFACTOR));
+      double width = (layout.getColumnEnd(i) - layout.getColumnStart(i));
+      sheet.setColumnWidth((short) (i), (short) (width * XFACTOR));
     }
 
-    for (int y = 0; y < grid.length; y++)
+    for (int y = 0; y < layout.getHeight(); y++)
     {
       HSSFRow row = sheet.createRow((short) y);
 
-      long lastRowHeight = grid[y][0].getHeight();
-
+      double lastRowHeight = (layout.getRowEnd(y) - layout.getRowStart(y));
       row.setHeight((short) (lastRowHeight * YFACTOR));
 
-      int x = 0;
-      for (x = 0; x < grid[y].length; x++)
+      for (int x = 0; x < layout.getWidth(); x++)
       {
-        TableGridPosition gridPosition = grid[y][x];
-        if (gridPosition.getElement() != null)
+        HSSFCell cell = null;
+        TableGridLayout.Element gridPosition = layout.getData(x,y);
+        if (gridPosition != null)
         {
-          ExcelCellData cellData = (ExcelCellData) gridPosition.getElement();
+          // background stuff ...
 
-          exportCell(row, cellData, gridPosition, x, y);
-
-          x += gridPosition.getColSpan() - 1;
+          TableGridPosition root = gridPosition.getRoot();
+          if (root != null)
+          {
+            if (root.isOrigin(x,y))
+            {
+              cell = exportCell(row, gridPosition, (short) x, y);
+            }
+          }
         }
+// todo style implementieren ...
       }
     }
   }
@@ -206,27 +207,51 @@ public class ExcelProducer extends TableProducer
   /**
    *
    * @param row
-   * @param cellData
    * @param gridCell
    * @param x
    * @param y
    */
-  private void exportCell(HSSFRow row, ExcelCellData cellData, TableGridPosition gridCell, int x, int y)
+  private HSSFCell exportCell(HSSFRow row, TableGridLayout.Element gridCell, short x, int y)
   {
+    TableGridPosition content = gridCell.getRoot();
 
-    if (gridCell.getColSpan() > 1 || gridCell.getRowSpan() > 1)
+    ExcelBackgroundCellStyle background = null;
+    List backgroundCells = gridCell.getBackground();
+    for (int i = 0; i < backgroundCells.size(); i++)
     {
-
-      sheet.addMergedRegion(new Region(y, (short) x, (y + gridCell.getRowSpan() - 1), (short) (x + gridCell.getColSpan() - 1)));
+      TableGridPosition pos = (TableGridPosition) backgroundCells.get(i);
+      if (pos.getElement() instanceof BackgroundExcelCellData)
+      {
+        BackgroundExcelCellData bgData = (BackgroundExcelCellData) pos.getElement();
+        if (pos.contains(content))
+        {
+          ExcelBackgroundCellStyle bgStyle = bgData.getStyle();
+          bgStyle.setParent(background);
+          background = bgStyle;
+        }
+      }
     }
 
-    if (cellData.isEmpty() == false)
+    if (content.getColSpan() > 1 || content.getRowSpan() > 1)
     {
-      HSSFCell cell = row.createCell((short) x);
+      sheet.addMergedRegion(new Region(y, x,
+                                       (y + content.getRowSpan() - 1),
+                                       (short)(x + content.getColSpan() - 1)));
+    }
+
+    HSSFCell cell = row.createCell(x);
+    ExcelContentCellData contentCell = (ExcelContentCellData) content.getElement();
+    contentCell.getExcelCellStyle().setBackgroundStyleDefinition(background);
+
+    HSSFCellStyle style = cellDataFactory.getStyleFactory().createCellStyle(contentCell.getExcelCellStyle());
+    cell.setCellStyle(style);
+
+    if (contentCell.isEmpty() == false)
+    {
       cell.setEncoding(HSSFCell.ENCODING_UTF_16);
-      cellData.applyCell(cell);
-
+      contentCell.applyContent(cell);
     }
+    return cell;
   }
 
   /**

@@ -2,22 +2,17 @@
  * Date: Jan 14, 2003
  * Time: 4:14:39 PM
  *
- * $Id: HSSFFontWrapper.java,v 1.1 2003/01/18 20:47:36 taqua Exp $
+ * $Id: HSSFFontWrapper.java,v 1.2 2003/01/25 02:47:10 taqua Exp $
  */
 package com.jrefinery.report.targets.table.excel;
 
+import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.util.StringUtil;
+import com.jrefinery.report.util.Log;
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
 
-import java.awt.Font;
 import java.awt.Color;
-import java.util.Map;
-import java.util.Collection;
-import java.util.Iterator;
-
-import com.jrefinery.report.util.StringUtil;
-import com.jrefinery.report.targets.FontDefinition;
 
 public class HSSFFontWrapper
 {
@@ -35,6 +30,7 @@ public class HSSFFontWrapper
 
   public HSSFFontWrapper(FontDefinition font, Color color)
   {
+    Log.debug ("Added Font: " + font);
     String fName = font.getFontName();
     if (isSansSerif(fName))
     {
@@ -53,7 +49,7 @@ public class HSSFFontWrapper
       fontName = fName;
     }
     
-    colorIndex = getNearestColor(color).getIndex();
+    colorIndex = ExcelToolLibrary.getNearestColor(color).getIndex();
     fontHeight = (short) (font.getFontSize());
     bold = font.isBold();
     italic = font.isItalic();
@@ -79,7 +75,14 @@ public class HSSFFontWrapper
     if (font == null)
     {
       font = workbook.createFont();
-      font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+      if (bold)
+      {
+        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+      }
+      else
+      {
+        font.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
+      }
       font.setColor(colorIndex);
       font.setFontName(fontName);
       font.setFontHeightInPoints((short) fontHeight);
@@ -125,47 +128,6 @@ public class HSSFFontWrapper
     result = 29 * result + (italic ? 1 : 0);
     return result;
   }
-
-  /**
-   * Find a suitable color for the cell
-   */
-  private static HSSFColor getNearestColor(Color awtColor)
-  {
-    HSSFColor color = null;
-
-    Map triplets = HSSFColor.getTripletHash();
-    if (triplets != null)
-    {
-      Collection keys = triplets.keySet();
-      if (keys != null && keys.size() > 0)
-      {
-        Object key = null;
-        HSSFColor crtColor = null;
-        short[] rgb = null;
-        int diff = 0;
-        int minDiff = 999;
-        for(Iterator it = keys.iterator(); it.hasNext();)
-        {
-          key = it.next();
-
-          crtColor = (HSSFColor)triplets.get(key);
-          rgb = crtColor.getTriplet();
-
-          diff = Math.abs(rgb[0] - awtColor.getRed()) +
-            Math.abs(rgb[1] - awtColor.getGreen()) +
-            Math.abs(rgb[2] - awtColor.getBlue());
-
-          if (diff < minDiff)
-          {
-            minDiff = diff;
-            color = crtColor;
-          }
-        }
-      }
-    }
-    return color;
-  }
-
 
   /**
    * Returns true if the logical font name is equivalent to 'Courier', and false otherwise.

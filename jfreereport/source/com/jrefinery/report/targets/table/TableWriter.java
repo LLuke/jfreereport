@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 2:32:12 PM
  *
- * $Id: TableWriter.java,v 1.2 2003/01/14 23:48:12 taqua Exp $
+ * $Id: TableWriter.java,v 1.1 2003/01/18 20:47:36 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -267,7 +267,7 @@ public class TableWriter extends AbstractFunction
     }
     catch (Exception e)
     {
-      throw new FunctionProcessingException();
+      throw new FunctionProcessingException("ReportHeader Failed", e);
     }
   }
 
@@ -288,7 +288,7 @@ public class TableWriter extends AbstractFunction
     }
     catch (Exception e)
     {
-      throw new FunctionProcessingException();
+      throw new FunctionProcessingException("ReportFooter Failed", e);
     }
   }
 

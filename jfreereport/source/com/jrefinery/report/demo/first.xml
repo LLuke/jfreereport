@@ -14,7 +14,6 @@
     <property name="com.jrefinery.report.preview.PreferredWidth">640</property>
     <property name="com.jrefinery.report.preview.PreferredHeight">480</property>
   </configuration>
-
   <!-- REPORT HEADER -->
   <!-- This band appears once at the beginning of the report.  In this example, -->
   <!-- the header contains five labels. -->
@@ -31,7 +30,7 @@
     <rectangle x="0" y="0" width="100%" height="100%" color="#CCFFCC" weight="0" />
     <line x1="0" y1="0" x2="0" y2="0" weight="0.5" />
     <line x1="0" y1="30" x2="0" y2="30" weight="0.5" />
-    <label x="0" y="10" width="100%" height="12" alignment="left">REPORT TOTAL:</label>
+    <label x="0" y="10" width="50%" height="12" alignment="left">REPORT TOTAL:</label>
     <number-field fieldname="OverallCount" format="0" x="50%" y="10" width="30%" height="9" alignment="center" />
     <number-field fieldname="OverallSum" format="#,##0" x="80%" y="10" width="20%" height="9" alignment="right" />
   </reportfooter>

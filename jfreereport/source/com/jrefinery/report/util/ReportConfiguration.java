@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.27 2003/01/24 16:39:10 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.28 2003/01/25 02:47:10 taqua Exp $
  *
  * Changes
  * -------
@@ -41,10 +41,8 @@ package com.jrefinery.report.util;
 
 import com.lowagie.text.pdf.BaseFont;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
 import java.util.Enumeration;
+import java.util.Properties;
 
 /**
  * Global and local configurations for JFreeReport.
@@ -362,6 +360,9 @@ public class ReportConfiguration
   public static final String PARSER_VALIDATE_DEFAULT = "false";
 
   public static final String REPORT_RESOURCE_BUNDLE = "com.jrefinery.report.ResourceBundle";
+
+  public static final String STRICT_TABLE_LAYOUT = "com.jrefinery.report.targets.table.StrictLayout";
+  public static final String STRICT_TABLE_LAYOUT_DEFAULT = "false";
 
   /** Storage for the configuration properties. */
   private Properties configuration;
@@ -782,5 +783,15 @@ public class ReportConfiguration
   public static void main (String [] args)
   {
     Log.debug (ReportConfiguration.getGlobalConfig().getPdfTargetEncoding());
+  }
+
+  public boolean isStrictTableLayout()
+  {
+    return getConfigProperty(STRICT_TABLE_LAYOUT, STRICT_TABLE_LAYOUT_DEFAULT).equalsIgnoreCase("true");
+  }
+
+  public void setStrictTableLayout (boolean strict)
+  {
+    setConfigProperty(STRICT_TABLE_LAYOUT, String.valueOf(strict));
   }
 }

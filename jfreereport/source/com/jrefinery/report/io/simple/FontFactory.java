@@ -25,7 +25,7 @@
  * ----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FontFactory.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: FontFactory.java,v 1.2 2003/01/24 16:39:03 taqua Exp $
  *
  * Changes
  * -------
@@ -227,6 +227,11 @@ public class FontFactory implements ReportDefinitionTags
       {
         target.setBold(Boolean.TRUE);
         target.setItalic(Boolean.TRUE);
+      }
+      else if (fontStyle.equals ("plain"))
+      {
+        target.setBold(Boolean.FALSE);
+        target.setItalic(Boolean.FALSE);
       }
     }
 

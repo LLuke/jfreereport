@@ -2,23 +2,22 @@
  * Date: Jan 15, 2003
  * Time: 5:09:51 PM
  *
- * $Id: DateExcelCellData.java,v 1.1 2003/01/15 16:54:52 taqua Exp $
+ * $Id: DateExcelCellData.java,v 1.1 2003/01/18 20:47:36 taqua Exp $
  */
 package com.jrefinery.report.targets.table.excel;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 
 import java.awt.geom.Rectangle2D;
 import java.util.Date;
 
-public class DateExcelCellData extends ExcelCellData
+public class DateExcelCellData extends ExcelContentCellData
 {
   private Date date;
   private String format;
 
   public DateExcelCellData(Rectangle2D elementBounds,
-                           HSSFCellStyle style,
+                           ExcelDataCellStyle style,
                            Date value, String format)
   {
     super(elementBounds, style);
@@ -26,9 +25,8 @@ public class DateExcelCellData extends ExcelCellData
     this.format = format;
   }
 
-  public void applyCell(HSSFCell cell)
+  public void applyContent(HSSFCell cell)
   {
-    cell.setCellStyle(getStyle());
     cell.setCellValue(date);
   }
 

@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 7:47:41 PM
  *
- * $Id$
+ * $Id: TableProcessor.java,v 1.1 2003/01/18 20:47:36 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -23,6 +23,7 @@ public abstract class TableProcessor
   private static final String TABLE_WRITER = "table-writer";
 
   private JFreeReport report;
+  private boolean strictLayout;
 
   public TableProcessor (JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
@@ -40,6 +41,19 @@ public abstract class TableProcessor
     TableWriter lm = new TableWriter();
     lm.setName(TABLE_WRITER);
     this.report.addFunction(lm);
+
+    // initialize with the report default.
+    strictLayout = report.getReportConfiguration().isStrictTableLayout();
+  }
+
+  public boolean isStrictLayout()
+  {
+    return strictLayout;
+  }
+
+  public void setStrictLayout(boolean strictLayout)
+  {
+    this.strictLayout = strictLayout;
   }
 
   public JFreeReport getReport()

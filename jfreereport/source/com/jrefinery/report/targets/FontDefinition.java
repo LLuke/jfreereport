@@ -2,7 +2,7 @@
  * Date: Jan 24, 2003
  * Time: 4:08:26 PM
  *
- * $Id$
+ * $Id: FontDefinition.java,v 1.1 2003/01/24 16:39:05 taqua Exp $
  */
 package com.jrefinery.report.targets;
 
@@ -143,5 +143,20 @@ public class FontDefinition implements Serializable, Cloneable
     result = 29 * result + (isStrikeThrough ? 1 : 0);
     result = 29 * result + (embeddedFont ? 1 : 0);
     return result;
+  }
+
+  public String toString ()
+  {
+    StringBuffer buffer = new StringBuffer();
+    buffer.append("FontDefinition='fontname=\"");
+    buffer.append(fontName);
+    buffer.append("; fontSize=" + fontSize);
+    buffer.append("; bold=" + isBold);
+    buffer.append("; italic=" + isItalic);
+    buffer.append("; underline=" + isUnderline);
+    buffer.append("; strike=" + isStrikeThrough);
+    buffer.append("; embedded=" + embeddedFont);
+    buffer.append ("'");
+    return buffer.toString();
   }
 }

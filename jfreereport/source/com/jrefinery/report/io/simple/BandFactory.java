@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandFactory.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: BandFactory.java,v 1.2 2003/01/17 14:47:42 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import com.jrefinery.report.PageFooter;
 import com.jrefinery.report.PageHeader;
 import com.jrefinery.report.ReportFooter;
 import com.jrefinery.report.ReportHeader;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.targets.FloatDimension;
@@ -376,6 +377,9 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
     FontFactory.FontInformation fi = fontFactory.createFont(attr);
     FontFactory.applyFontInformation(items.getStyle(), fi);
     FontFactory.applyFontInformation(items.getBandDefaults(), fi);
+
+    Log.debug ("FontInformation: " + fi.getBold());
+    
     String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {

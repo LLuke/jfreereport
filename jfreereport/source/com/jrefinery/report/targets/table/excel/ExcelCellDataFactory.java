@@ -2,7 +2,7 @@
  * Date: Jan 15, 2003
  * Time: 5:01:29 PM
  *
- * $Id: ExcelCellDataFactory.java,v 1.1 2003/01/18 20:47:36 taqua Exp $
+ * $Id: ExcelCellDataFactory.java,v 1.2 2003/01/25 02:47:10 taqua Exp $
  */
 package com.jrefinery.report.targets.table.excel;
 
@@ -14,7 +14,6 @@ import com.jrefinery.report.filter.templates.Template;
 import com.jrefinery.report.targets.table.TableCellData;
 import com.jrefinery.report.targets.table.TableCellDataFactory;
 import com.jrefinery.report.util.Log;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 
 import java.awt.geom.Rectangle2D;
 import java.text.ParseException;
@@ -29,8 +28,22 @@ public class ExcelCellDataFactory implements TableCellDataFactory
     this.styleFactory = styleFactory;
   }
 
+  public ExcelCellStyleFactory getStyleFactory()
+  {
+    return styleFactory;
+  }
+
+  public TableCellData createEmptyData ()
+  {
+    return new EmptyExcelCellData(new Rectangle2D.Float(), new ExcelDataCellStyle());
+  }
+
   public TableCellData createCellData (Element element, Rectangle2D bounds)
   {
+    /**
+     * POI 1.9 has support for more formats ...
+     */
+    /*
     DataSource ds = element.getDataSource();
     if (ds instanceof Template)
     {
@@ -38,7 +51,7 @@ public class ExcelCellDataFactory implements TableCellDataFactory
       if (retval != null)
         return retval;
     }
-
+    */
     // fallback, no template or unknown template
     return handleFormats (element ,bounds);
   }
@@ -51,22 +64,26 @@ public class ExcelCellDataFactory implements TableCellDataFactory
    */
   private ExcelCellData handleFormats (Element e, Rectangle2D bounds)
   {
-    HSSFCellStyle style = styleFactory.getExcelCellStyle(e);
+    ExcelCellData retval = null;
+
     Object value = e.getValue();
     if ((value != null) && (value instanceof String))
     {
+      ExcelDataCellStyle style = styleFactory.getExcelDataCellStyle(e);
       String svalue = String.valueOf(e.getValue());
-      return new DefaultExcelCellData (bounds, style, svalue);
+      retval = new DefaultExcelCellData (bounds, style, svalue);
     }
     else
     {
-      return new DefaultExcelCellData (bounds, style, "");
+      ExcelBackgroundCellStyle style = styleFactory.getExcelBackgroundCellStyle(e);
+      retval = new BackgroundExcelCellData(bounds, style);
     }
+    return retval;
   }
 
   private ExcelCellData handleTemplate (Template template, Element e, Rectangle2D bounds)
   {
-    HSSFCellStyle style = styleFactory.getExcelCellStyle(e);
+    ExcelDataCellStyle style = styleFactory.getExcelDataCellStyle(e);
     /**
      * DataFormats will need at least POI 1.9, we are currently using the
      * latest stable version 1.5.1, so we have to wait ...
