@@ -6,34 +6,44 @@
 
 <web-app>
 
-    <servlet>
-        <servlet-name>pdfreport</servlet-name>
-        <servlet-class>com.jrefinery.report.ext.demo.JFreeReportServlet</servlet-class>
-    </servlet>
+  <servlet>
+    <servlet-name>pdfreport</servlet-name>
+    <servlet-class>org.jfree.report.ext.servletdemo.JFreeReportServlet</servlet-class>
+  </servlet>
 
-    <servlet>
-        <servlet-name>pngreport</servlet-name>
-        <servlet-class>com.jrefinery.report.ext.demo.JFreeReportPngServlet</servlet-class>
-    </servlet>
+  <servlet>
+    <servlet-name>pngreport</servlet-name>
+    <servlet-class>org.jfree.report.ext.servletdemo.JFreeReportPngServlet</servlet-class>
+  </servlet>
 
-    <servlet>
-        <servlet-name>htmlreport</servlet-name>
-        <servlet-class>com.jrefinery.report.ext.demo.JFreeReportHtmlServlet</servlet-class>
-    </servlet>
+  <servlet>
+    <servlet-name>htmlreport</servlet-name>
+    <servlet-class>org.jfree.report.ext.servletdemo.JFreeReportHtmlServlet</servlet-class>
+  </servlet>
 
-    <servlet-mapping>
-	<servlet-name>pdfreport</servlet-name>
-	<url-pattern>/pdfreport</url-pattern>
-    </servlet-mapping>
+  <servlet>
+    <servlet-name>xlsreport</servlet-name>
+    <servlet-class>org.jfree.report.ext.servletdemo.JFreeReportExcelServlet</servlet-class>
+  </servlet>
 
-    <servlet-mapping>
-	<servlet-name>htmlreport</servlet-name>
-	<url-pattern>/htmlreport</url-pattern>
-    </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>pdfreport</servlet-name>
+    <url-pattern>/pdfreport</url-pattern>
+  </servlet-mapping>
 
-    <servlet-mapping>
-	<servlet-name>pngreport</servlet-name>
-	<url-pattern>/pngreport</url-pattern>
-    </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>htmlreport</servlet-name>
+    <url-pattern>/htmlreport</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>pngreport</servlet-name>
+    <url-pattern>/pngreport</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>xlsreport</servlet-name>
+    <url-pattern>/xlsreport</url-pattern>
+  </servlet-mapping>
 
 </web-app>
