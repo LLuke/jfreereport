@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextLine.java,v 1.6 2003/02/25 18:46:58 taqua Exp $
+ * $Id: TextLine.java,v 1.7 2003/02/27 10:35:38 mungady Exp $
  *
  * Changes
  * -------
@@ -125,7 +125,6 @@ public class TextLine implements Content
     }
 
     this.content = content;
-    Rectangle2D bounds = new Rectangle2D.Float();
     float width = Math.min ((float) maxBounds.getWidth(),
                              getSizeCalculator().getStringWidth(content, 0, content.length()));
     float height = Math.min((float) maxBounds.getHeight(),
@@ -133,7 +132,6 @@ public class TextLine implements Content
     // apply custom lineheight if greater than the current height ...
     height = Math.max (height, lineHeight);
     bounds.setRect(maxBounds.getX(), maxBounds.getY(), width, height);
-    setBounds(bounds);
   }
 
   /**

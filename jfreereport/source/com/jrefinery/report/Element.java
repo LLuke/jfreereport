@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.25 2003/02/26 16:41:42 mungady Exp $
+ * $Id: Element.java,v 1.26 2003/03/30 21:22:57 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -154,6 +154,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     setName("anonymousElement@" + hashCode());
     datasource = NULL_DATASOURCE;
     style = new ElementStyleSheet(getName());
+    style.setAllowCaching(true);
     style.addDefaultParent(ElementDefaultStyleSheet.getDefaultStyle());
   }
 
@@ -260,7 +261,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    */
   public void setVisible(boolean b)
   {
-    getStyle().setStyleProperty(ElementStyleSheet.VISIBLE, new Boolean(b));
+    getStyle().setStyleProperty(ElementStyleSheet.VISIBLE, b ? Boolean.TRUE : Boolean.FALSE);
   }
 
   /**

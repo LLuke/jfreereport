@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentContainer.java,v 1.3 2003/02/27 10:35:38 mungady Exp $
+ * $Id: ContentContainer.java,v 1.4 2003/03/18 22:35:21 taqua Exp $
  *
  * Changes
  * -------
@@ -138,21 +138,29 @@ public class ContentContainer implements Content
    */
   public Content getContentForBounds(Rectangle2D bounds)
   {
-    ContentContainer cc = new ContentContainer(bounds);
+    ContentContainer cc = null;
     for (int i = 0; i < getContentPartCount(); i++)
     {
       Content contentPart = getContentPart (i);
-      if (contentPart.getBounds().intersects(bounds))
+      if (contentPart.getBounds().intersects(bounds) == false)
       {
-        Content retval = contentPart.getContentForBounds(bounds);
-        if (retval != null)
+        continue;
+      }
+
+      Content retval = contentPart.getContentForBounds(bounds);
+      if (retval == null)
+      {
+        continue;
+      }
+
+      Rectangle2D cbounds = retval.getBounds();
+      if (cbounds.getHeight() != 0 && cbounds.getWidth() != 0)
+      {
+        if (cc == null)
         {
-          Rectangle2D cbounds = retval.getBounds();
-          if (cbounds.getHeight() != 0 && cbounds.getWidth() != 0)
-          {
-            cc.addContentPart (retval);
-          }
+          cc = new ContentContainer(bounds);
         }
+        cc.addContentPart (retval);
       }
     }
     return cc;

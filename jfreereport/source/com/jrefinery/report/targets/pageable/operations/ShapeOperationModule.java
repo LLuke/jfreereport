@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeOperationModule.java,v 1.10 2003/03/26 23:32:23 taqua Exp $
+ * $Id: ShapeOperationModule.java,v 1.11 2003/03/29 20:17:26 taqua Exp $
  *
  * Changes
  * -------
@@ -39,18 +39,16 @@
 
 package com.jrefinery.report.targets.pageable.operations;
 
+import java.awt.Color;
+import java.awt.Shape;
+import java.awt.Stroke;
+import java.awt.geom.Rectangle2D;
+
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ShapeElement;
 import com.jrefinery.report.targets.base.content.Content;
 import com.jrefinery.report.targets.base.content.ShapeContent;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-
-import java.awt.Color;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Creates the required operations to display/print shape content in the output target.
@@ -75,9 +73,8 @@ public class ShapeOperationModule extends OperationModule
    * @param value  the content.
    * @param bounds  the bounds.
    *
-   * @return a list of operations, never null.
    */
-  public List createOperations (Element e, Content value, Rectangle2D bounds)
+  public void createOperations (PhysicalOperationsCollector col, Element e, Content value, Rectangle2D bounds)
   {
     Stroke stroke = (Stroke) e.getStyle().getStyleProperty(ElementStyleSheet.STROKE);
     Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
@@ -87,30 +84,27 @@ public class ShapeOperationModule extends OperationModule
 
     if (shouldFill == false && shouldDraw == false)
     {
-      return new ArrayList();
+      return;
     }
 
     ShapeContent sc = (ShapeContent) value.getContentForBounds(bounds);
     if (sc == null)
     {
-      return new ArrayList();
+      return;
     }
 
     Shape s = sc.getShape();
-    ArrayList array = new ArrayList ();
-    array.add (new PhysicalOperation.SetBoundsOperation (bounds));
-    array.add (new PhysicalOperation.SetStrokeOperation (stroke));
-    array.add (new PhysicalOperation.SetPaintOperation(paint));
+    col.addOperation (new PhysicalOperation.SetBoundsOperation (bounds));
+    col.addOperation (new PhysicalOperation.SetStrokeOperation (stroke));
+    col.addOperation (new PhysicalOperation.SetPaintOperation(paint));
     if (shouldDraw == true)
     {
-      array.add (new PhysicalOperation.PrintShapeOperation(s));
+      col.addOperation (new PhysicalOperation.PrintShapeOperation(s));
     }
 
     if (shouldFill == true)
     {
-      array.add (new PhysicalOperation.PrintFilledShapeOperation(s));
+      col.addOperation (new PhysicalOperation.PrintFilledShapeOperation(s));
     }
-
-    return array;
   }
 }

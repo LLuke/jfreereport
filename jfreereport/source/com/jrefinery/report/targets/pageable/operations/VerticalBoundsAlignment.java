@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: VerticalBoundsAlignment.java,v 1.6 2003/02/18 19:37:31 taqua Exp $
+ * $Id: VerticalBoundsAlignment.java,v 1.7 2003/02/27 10:35:39 mungady Exp $
  *
  * Changes
  * -------
@@ -77,12 +77,13 @@ public abstract class VerticalBoundsAlignment extends BoundsAlignment
    */
   public void calculateShift (Rectangle2D bounds)
   {
-    Rectangle2D alignBounds = align(bounds);
+    Rectangle2D alignBounds = align(bounds.getBounds2D());
     this.horizontalShift = (float) (alignBounds.getY() - bounds.getY());
   }
 
   /**
-   * Applies a shift.
+   * Applies a vertical shift to the given rectangle. The <code>bounds</code>
+   * object is modified during this operation.
    *
    * @param bounds  the bounds.
    *
@@ -90,11 +91,11 @@ public abstract class VerticalBoundsAlignment extends BoundsAlignment
    */
   public Rectangle2D applyShift (Rectangle2D bounds)
   {
-    Rectangle2D retval = bounds.getBounds2D();
-    retval.setRect(bounds.getX(),
+    //Rectangle2D retval = bounds.getBounds2D();
+    bounds.setRect(bounds.getX(),
                    bounds.getY() + getHorizontalShift(),
                    bounds.getWidth(),
                    bounds.getHeight());
-    return retval;
+    return bounds;
   }
 }

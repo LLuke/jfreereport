@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportEvent.java,v 1.13 2003/01/03 16:11:26 mungady Exp $
+ * $Id: ReportEvent.java,v 1.14 2003/02/27 10:35:35 mungady Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -44,11 +44,11 @@
 
 package com.jrefinery.report.event;
 
-import com.jrefinery.report.DataRow;
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.states.ReportState;
-
 import java.util.EventObject;
+
+import com.jrefinery.report.DataRow;
+import com.jrefinery.report.ReportDefinition;
+import com.jrefinery.report.states.ReportState;
 
 /**
  * Represents a report event.
@@ -90,7 +90,7 @@ public class ReportEvent extends EventObject
    *
    * @return the report.
    */
-  public JFreeReport getReport ()
+  public ReportDefinition getReport ()
   {
     return getState ().getReport ();
   }

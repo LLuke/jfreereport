@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.10 2003/02/27 10:35:39 mungady Exp $
+ * $Id: TextOperationModule.java,v 1.11 2003/03/26 23:32:23 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,6 @@ package com.jrefinery.report.targets.pageable.operations;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ElementAlignment;
@@ -75,10 +73,8 @@ public class TextOperationModule extends OperationModule
    * @param e  the element.
    * @param value  the content.
    * @param bounds  the bounds.
-   *
-   * @return a list of operations.
    */
-  public List createOperations(Element e, Content value, Rectangle2D bounds)
+  public void createOperations(PhysicalOperationsCollector col, Element e, Content value, Rectangle2D bounds)
   {
     if (bounds == null)
     {
@@ -95,7 +91,7 @@ public class TextOperationModule extends OperationModule
     Content c = value.getContentForBounds(bounds);
     if (c == null)
     {
-      return new ArrayList();
+      return;
     }
     // Font
     FontDefinition font = e.getStyle().getFontDefinitionProperty();
@@ -103,14 +99,13 @@ public class TextOperationModule extends OperationModule
     // Paint
     Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
 
-    ArrayList list = new ArrayList();
-    list.add (new PhysicalOperation.SetFontOperation (font));
-    list.add (new PhysicalOperation.SetPaintOperation(paint));
+    col.addOperation (new PhysicalOperation.SetFontOperation (font));
+    col.addOperation (new PhysicalOperation.SetPaintOperation(paint));
     Rectangle2D cbounds = c.getMinimumContentSize();
     if (cbounds == null)
     {
       // if the content could not determine its minimum bounds, then skip ...
-      cbounds = bounds;
+      cbounds = bounds.getBounds2D();
     }
 
     ElementAlignment va
@@ -135,18 +130,16 @@ public class TextOperationModule extends OperationModule
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
     if (ha.equals(ElementAlignment.CENTER))
     {
-      addContent(c, list, new CenterAlignment(bounds), vba);
+      addContent(c, col, new CenterAlignment(bounds), vba);
     }
     else if (ha.equals(ElementAlignment.RIGHT))
     {
-      addContent(c, list, new RightAlignment(bounds), vba);
+      addContent(c, col, new RightAlignment(bounds), vba);
     }
     else
     {
-      addContent(c, list, new LeftAlignment(bounds), vba);
+      addContent(c, col, new LeftAlignment(bounds), vba);
     }
-
-    return list;
   }
 
   /**
@@ -154,25 +147,25 @@ public class TextOperationModule extends OperationModule
    * the list of PhysicalOperations. This method is called recursivly for all contentparts.
    *
    * @param c  the content.
-   * @param list  the list where to collect the generated content
+   * @param col  the list where to collect the generated content
    * @param bounds  the bounds.
    * @param vba  the vertical bounds alignment.
    */
-  private void addContent (Content c, List list, HorizontalBoundsAlignment bounds,
+  private void addContent (Content c, PhysicalOperationsCollector col, HorizontalBoundsAlignment bounds,
                            VerticalBoundsAlignment vba)
   {
     if (c instanceof TextLine)
     {
       String value = ((TextLine) c).getContent();
       Rectangle2D abounds = vba.applyShift (bounds.align(c.getBounds()));
-      list.add (new PhysicalOperation.SetBoundsOperation (abounds));
-      list.add (new PhysicalOperation.PrintTextOperation(value));
+      col.addOperation (new PhysicalOperation.SetBoundsOperation (abounds));
+      col.addOperation (new PhysicalOperation.PrintTextOperation(value));
     }
     else
     {
       for (int i = 0; i < c.getContentPartCount(); i++)
       {
-        addContent(c.getContentPart(i), list, bounds, vba);
+        addContent(c.getContentPart(i), col, bounds, vba);
       }
     }
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CenterAlignment.java,v 1.7 2003/02/18 19:37:31 taqua Exp $
+ * $Id: CenterAlignment.java,v 1.8 2003/02/27 10:35:39 mungady Exp $
  *
  * Changes
  * -------
@@ -77,6 +77,7 @@ public class CenterAlignment extends HorizontalBoundsAlignment
     float y = (float) inner.getY();
     float w = (float) inner.getWidth();
     float h = (float) inner.getHeight();
-    return new Rectangle2D.Float(x, y, w, h);
+    inner.setRect(x, y, w, h);
+    return inner;
   }
 }

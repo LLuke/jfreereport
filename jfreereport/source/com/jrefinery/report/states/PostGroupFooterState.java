@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostGroupFooterState.java,v 1.5 2003/02/04 17:56:20 taqua Exp $
+ * $Id: PostGroupFooterState.java,v 1.6 2003/02/25 18:46:46 taqua Exp $
  *
  * Changes
  * -------
@@ -74,7 +74,7 @@ public final class PostGroupFooterState extends ReportState
    */
   private boolean hasMoreData ()
   {
-    return (this.getCurrentDataItem () < this.getReport ().getData ().getRowCount () - 1);
+    return (this.getCurrentDataItem () < this.getNumberOfRows() - 1);
   }
 
   /**

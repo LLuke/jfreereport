@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.16 2003/03/07 18:07:47 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.17 2003/03/26 10:49:21 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -41,8 +41,6 @@ package com.jrefinery.report.function;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.event.ReportEvent;
-import com.jrefinery.report.event.LayoutListener;
-import com.jrefinery.report.event.LayoutEvent;
 import com.jrefinery.report.util.Log;
 
 /**
@@ -55,7 +53,7 @@ import com.jrefinery.report.util.Log;
  *
  * @author Thomas Morgner
  */
-public class ElementVisibilitySwitchFunction extends AbstractFunction implements LayoutListener
+public class ElementVisibilitySwitchFunction extends AbstractFunction
 {
   /** the Property key for the name of the ItemBand element. */
   public static final String ELEMENT_PROPERTY = "element";
@@ -84,7 +82,6 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction implements
   public void itemsStarted(ReportEvent event)
   {
     trigger = (getInitialTriggerValue() == false);
-    Log.debug ("Initial Trigger Value: " + trigger);
   }
 
   /**
@@ -107,7 +104,10 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction implements
     {
       Log.warn ("Element not defined in the item band");
     }
-    Log.debug ("Trigger set to           : " + trigger + " in row " + event.getState().getCurrentDataItem());
+    if (event.getState().getCurrentDataItem() % 100 == 0)
+    {
+      Log.debug ("CheckPoint: " + event.getState().getCurrentDataItem());
+    }
   }
 
   /**
@@ -173,27 +173,6 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction implements
     else
     {
       return Boolean.FALSE;
-    }
-  }
-
-  /**
-   * Receives notification that the band layouting has completed.
-   * <P>
-   * The event carries the current report state.
-   *
-   * @param event  the event.
-   */
-  public void layoutComplete(LayoutEvent event)
-  {
-    if (event.getLayoutedBand() != event.getReport().getItemBand())
-    {
-      return;
-    }
-
-    Element e = FunctionUtilities.findElement(event.getReport().getItemBand(), getElement());
-    if (e != null)
-    {
-      Log.debug ("LayoutComplete: Visisble: " + e.isVisible()+ " evt: " + event.getState().getCurrentDataItem());
     }
   }
 }

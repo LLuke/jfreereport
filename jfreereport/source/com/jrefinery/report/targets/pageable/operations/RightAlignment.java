@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RightAlignment.java,v 1.8 2003/02/18 19:37:31 taqua Exp $
+ * $Id: RightAlignment.java,v 1.9 2003/02/27 10:35:39 mungady Exp $
  *
  * Changes
  * -------
@@ -76,6 +76,7 @@ public class RightAlignment extends HorizontalBoundsAlignment
     float y = (float) rect.getY();
     float w = (float) rect.getWidth();
     float h = (float) rect.getHeight();
-    return new Rectangle2D.Float(x, y, w, h);
+    rect.setRect(x, y, w, h);
+    return rect;
   }
 }

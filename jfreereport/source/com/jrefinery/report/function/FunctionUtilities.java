@@ -2,7 +2,7 @@
  * Date: Mar 7, 2003
  * Time: 6:22:53 PM
  *
- * $Id$
+ * $Id: FunctionUtilities.java,v 1.1 2003/03/07 18:59:39 taqua Exp $
  */
 package com.jrefinery.report.function;
 
@@ -60,6 +60,14 @@ public class FunctionUtilities
     }
   }
 
+  /**
+   * Returns true, if the current run level is defined for the given function and
+   * this is a prepare run.
+   *  
+   * @param f
+   * @param event
+   * @return
+   */
   public static boolean isDefinedPrepareRunLevel (Function f, ReportEvent event)
   {
     if (f == null)
@@ -77,5 +85,14 @@ public class FunctionUtilities
       return false;
     }
     return (event.getState().getLevel() == f.getDependencyLevel());
+  }
+
+  public static boolean isLayoutLevel(ReportEvent event)
+  {
+    if (event == null)
+    {
+      throw new NullPointerException("ReportEvent is null");
+    }
+    return (event.getState().getLevel() < 0);
   }
 }

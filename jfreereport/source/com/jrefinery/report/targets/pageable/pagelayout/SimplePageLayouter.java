@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.39 2003/03/29 20:17:26 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.40 2003/04/01 20:24:58 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,6 @@ import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.PrepareEventListener;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.Expression;
@@ -226,6 +225,9 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     }
     isInItemGroup = false;
     setCurrentEvent(event);
+    if (getCurrentEvent() == null)
+      throw new NullPointerException("asdlkasdl");
+
     try
     {
       printBand(getReport().getReportHeader());
@@ -237,6 +239,10 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     catch (Exception e)
     {
       throw new FunctionProcessingException("ReportStarted failed", e);
+    }
+    finally
+    {
+      clearCurrentEvent();
     }
   }
 
@@ -254,7 +260,6 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     {
       throw new IllegalStateException();
     }
-    setCurrentEvent(event);
     isInItemGroup = false;
   }
 
@@ -274,6 +279,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     try
     {
       setCurrentEvent(event);
+      isInItemGroup = false;
       restartPage();
       createSaveState(null);
       saveCurrentState();
@@ -284,8 +290,10 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     {
       throw new FunctionProcessingException("ReportDone", e);
     }
-
-    isInItemGroup = false;
+    finally
+    {
+      clearCurrentEvent();
+    }
   }
 
   /**
@@ -302,9 +310,6 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     {
       throw new IllegalStateException();
     }
-
-    setCurrentEvent(event);
-
     isInItemGroup = true;
   }
 
@@ -409,6 +414,10 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     {
       throw new FunctionProcessingException("PageStarted failed", e);
     }
+    finally
+    {
+      clearCurrentEvent();
+    }
   }
 
   /**
@@ -457,6 +466,10 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     {
       throw new FunctionProcessingException("PageFinished failed", e);
     }
+    finally
+    {
+      clearCurrentEvent();
+    }
   }
 
   /**
@@ -499,6 +512,10 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     {
       throw new FunctionProcessingException("ReportFinished failed", e);
     }
+    finally
+    {
+      clearCurrentEvent();
+    }
   }
 
   /**
@@ -531,6 +548,10 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     catch (Exception e)
     {
       throw new FunctionProcessingException("GroupStarted failed", e);
+    }
+    finally
+    {
+      clearCurrentEvent();
     }
   }
 
@@ -565,6 +586,10 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     {
       throw new FunctionProcessingException("GroupFinished failed", e);
     }
+    finally
+    {
+      clearCurrentEvent();
+    }
   }
 
   /**
@@ -595,6 +620,10 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     catch (Exception e)
     {
       throw new FunctionProcessingException("ItemsAdvanced failed", e);
+    }
+    finally
+    {
+      clearCurrentEvent();
     }
   }
 
@@ -699,7 +728,10 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
                                           height);
     if (fireEvent == true)
     {
-      getCurrentEvent().getState().fireLayoutCompleteEvent(band);
+      ReportEvent event = getCurrentEvent();
+      clearCurrentEvent();
+      event.getState().fireLayoutCompleteEvent(band);
+      setCurrentEvent(event);
     }
     return bounds;
   }
@@ -1024,6 +1056,10 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     catch (Exception e)
     {
       throw new FunctionProcessingException("ItemsStarted", e);
+    }
+    finally
+    {
+      clearCurrentEvent();
     }
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.14 2002/12/12 12:26:56 mungady Exp $
+ * $Id: ItemCountFunction.java,v 1.15 2002/12/13 10:42:15 mungady Exp $
  *
  * Changes
  * -------
@@ -131,9 +131,8 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
       return;
     }
 
-    JFreeReport report = event.getReport();
     ReportState state = event.getState();
-    Group group = report.getGroup(state.getCurrentGroupIndex());
+    Group group = event.getReport().getGroup(state.getCurrentGroupIndex());
     if (getGroup().equals(group.getName()))
     {
       this.count = 0;

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.13 2003/02/26 16:41:45 mungady Exp $
+ * $Id: JFreeReportInfo.java,v 1.14 2003/02/28 04:16:57 taqua Exp $
  *
  * Changes:
  * --------
@@ -79,11 +79,12 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
             new Contributor[]
             {
               new Contributor ("David Gilbert", "david.gilbert@object-refinery.com"),
-              new Contributor ("Thomas Morgner", "-"),
+              new Contributor ("Thomas Morgner", "taqua@users.sourceforge.net"),
               new Contributor ("J\u00d6rg Sch\u00d6mer", "joerg.schoemer@nikocity.de"),
               new Contributor ("Heiko Evermann", "-"),
               new Contributor ("Piotr Bzdyl", "-"),
-              new Contributor ("Patrice Rolland", "-")
+              new Contributor ("Patrice Rolland", "-"),
+              new Contributor ("Cedric Pronzato", "-")
             }
     ));
 

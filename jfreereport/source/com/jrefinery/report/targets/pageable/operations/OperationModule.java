@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationModule.java,v 1.5 2003/02/07 22:40:42 taqua Exp $
+ * $Id: OperationModule.java,v 1.6 2003/02/09 23:09:15 taqua Exp $
  *
  * Changes
  * -------
@@ -130,9 +130,8 @@ public abstract class OperationModule
    * @param e  the element.
    * @param value  the value.
    * @param bounds  the bounds.
-   *
-   * @return the list of operations.
+   * @param col the operations collector.
    */
-  public abstract List createOperations(Element e, Content value, Rectangle2D bounds);
+  public abstract void createOperations(PhysicalOperationsCollector col, Element e, Content value, Rectangle2D bounds);
 
 }

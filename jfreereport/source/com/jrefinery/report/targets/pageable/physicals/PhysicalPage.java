@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalPage.java,v 1.11 2003/02/07 22:40:44 taqua Exp $
+ * $Id: PhysicalPage.java,v 1.12 2003/02/09 22:49:40 taqua Exp $
  *
  * Changes
  * -------
@@ -88,7 +88,7 @@ public class PhysicalPage
    *
    * @param op  the operation.
    */
-  public void addOperation(com.jrefinery.report.targets.pageable.operations.PhysicalOperation op)
+  public void addOperation(PhysicalOperation op)
   {
     bandOperations.add(op);
   }

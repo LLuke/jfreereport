@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EmptyDataSource.java,v 1.7 2002/12/12 12:26:55 mungady Exp $
+ * $Id: EmptyDataSource.java,v 1.8 2003/02/25 14:07:19 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ package com.jrefinery.report.filter;
  *
  * @author Thomas Morgner
  */
-public class EmptyDataSource implements DataSource
+public final class EmptyDataSource implements DataSource
 {
 
   /**
@@ -66,7 +66,7 @@ public class EmptyDataSource implements DataSource
    */
   public Object clone () throws CloneNotSupportedException
   {
-    return super.clone ();
+    return this;
   }
 
 }

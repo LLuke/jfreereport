@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FontChangeFunction.java,v 1.11 2003/02/25 15:41:56 taqua Exp $
+ * $Id: FontChangeFunction.java,v 1.12 2003/02/26 13:57:37 mungady Exp $
  *
  * Changes
  * -------
@@ -35,15 +35,14 @@
  */
 package com.jrefinery.report.demo;
 
+import java.awt.Font;
+
 import com.jrefinery.report.Element;
 import com.jrefinery.report.TextElement;
-import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.function.FunctionInitializeException;
-
-import javax.swing.table.TableModel;
-import java.awt.Font;
+import com.jrefinery.report.targets.FontDefinition;
 
 /**
  * This is a function used in report4-demo. The function demonstrates how to alter an
@@ -85,12 +84,9 @@ public class FontChangeFunction extends AbstractFunction
       return;
     }
 
-    TableModel data = event.getReport ().getData ();
-    int row = event.getState ().getCurrentDataItem ();
-
     // Try to get the name of the font to be set.
     // If the name is null, return without an excpetion, just do nothing.
-    String fontname = (String) data.getValueAt (row, 1);
+    String fontname = (String) event.getDataRow().get (1);
     if (fontname == null)
     {
       return;

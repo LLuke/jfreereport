@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.31 2003/03/18 22:35:25 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.32 2003/04/01 20:25:38 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@ package com.jrefinery.report.targets.pageable.physicals;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
-import java.util.List;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
@@ -56,12 +55,12 @@ import com.jrefinery.report.targets.pageable.LogicalPage;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.Spool;
+import com.jrefinery.report.targets.pageable.operations.DrawableOperationModule;
 import com.jrefinery.report.targets.pageable.operations.ImageOperationModule;
 import com.jrefinery.report.targets.pageable.operations.OperationFactory;
 import com.jrefinery.report.targets.pageable.operations.PhysicalOperation;
 import com.jrefinery.report.targets.pageable.operations.ShapeOperationModule;
 import com.jrefinery.report.targets.pageable.operations.TextOperationModule;
-import com.jrefinery.report.targets.pageable.operations.DrawableOperationModule;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
@@ -458,13 +457,7 @@ public class LogicalPageImpl implements LogicalPage
         return;
       }
       // split the elements contents, then write ..
-      List opsList = getOperationFactory().createOperations(e, content, drawBounds);
-      PhysicalOperation[] ops = new PhysicalOperation[opsList.size()];
-      ops = (PhysicalOperation[]) opsList.toArray(ops);
-      for (int i = 0; i < ops.length; i++)
-      {
-        operations.addOperation(ops[i]);
-      }
+      getOperationFactory().createOperations(operations, e, content, drawBounds);
     }
     catch (ContentCreationException ce)
     {

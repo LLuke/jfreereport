@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreItemGroupState.java,v 1.5 2003/02/04 17:56:22 taqua Exp $
+ * $Id: PreItemGroupState.java,v 1.6 2003/02/25 18:46:47 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,7 @@ public final class PreItemGroupState extends ReportState
     fireItemsStartedEvent ();
 
     // if the report has no data, proceed to PostItemGroup ...
-    if (getReport().getData().getRowCount() == 0)
+    if (getNumberOfRows() == 0)
     {
       return new PostItemGroupState(this);
     }

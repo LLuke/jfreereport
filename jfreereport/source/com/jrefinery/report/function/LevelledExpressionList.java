@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.6 2003/03/04 20:28:46 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.7 2003/03/26 10:49:22 taqua Exp $
  *
  * Changes
  * -------
@@ -579,7 +579,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
   public void layoutComplete(LayoutEvent event)
   {
     clearError();
-    firePrepareEvent(event);
+    firePrepareEventLayoutListener(event);
 
     Iterator it = expressionList.getLevelsDescending();
     while (it.hasNext())
@@ -936,6 +936,36 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
       {
         Expression e = (Expression) itLevel.next();
         if (e instanceof Function && e instanceof PrepareEventListener)
+        {
+          PrepareEventListener f = (PrepareEventListener) e;
+          try
+          {
+            f.prepareEvent(event);
+          }
+          catch (Exception ex)
+          {
+            addError(ex);
+          }
+        }
+      }
+    }
+  }
+
+  protected void firePrepareEventLayoutListener (ReportEvent event)
+  {
+    Iterator it = expressionList.getLevelsDescending();
+    while (it.hasNext())
+    {
+      Integer level = (Integer) it.next();
+      if (level.intValue() < getLevel())
+      {
+        break;
+      }
+      Iterator itLevel = expressionList.getElementsForLevel(level.intValue());
+      while (itLevel.hasNext())
+      {
+        Expression e = (Expression) itLevel.next();
+        if (e instanceof Function && e instanceof PrepareEventListener && e instanceof LayoutListener)
         {
           PrepareEventListener f = (PrepareEventListener) e;
           try

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowConnector.java,v 1.14 2003/02/26 16:41:40 mungady Exp $
+ * $Id: DataRowConnector.java,v 1.15 2003/03/18 22:34:26 taqua Exp $
  *
  * Changes
  * -------
@@ -188,7 +188,7 @@ public class DataRowConnector implements DataRow
    * @param report the report which will be connected
    * @param con  the data row connector.
    */
-  public static void connectDataSources (JFreeReport report, DataRowConnector con)
+  public static void connectDataSources (ReportDefinition report, DataRowConnector con)
   {
     connectDataSources (report.getPageFooter (), con);
     connectDataSources (report.getPageHeader (), con);
@@ -240,7 +240,7 @@ public class DataRowConnector implements DataRow
    * @param report  the report which will be disconnected from this DataRow.
    * @param con  the connector.
    */
-  public static void disconnectDataSources (JFreeReport report, DataRowConnector con)
+  public static void disconnectDataSources (ReportDefinition report, DataRowConnector con)
   {
     disconnectDataSources (report.getPageFooter (), con);
     disconnectDataSources (report.getPageHeader (), con);

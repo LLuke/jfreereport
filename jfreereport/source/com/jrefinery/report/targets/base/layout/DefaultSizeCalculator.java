@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.5 2003/02/26 13:57:59 mungady Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.6 2003/02/27 10:35:39 mungady Exp $
  *
  * Changes
  * -------
@@ -76,6 +76,9 @@ public class DefaultSizeCalculator implements SizeCalculator
 
     /** a flag that checks whether aliasing is used to draw the contents on Graphics objects. */
     private boolean isAliased;
+
+    /** Cache the created FontRenderContext. FRC is read only. */
+    private FontRenderContext fontRenderContext;
 
     /**
      * creates a new BuggyFontRendererDetector.
@@ -150,15 +153,22 @@ public class DefaultSizeCalculator implements SizeCalculator
      */
     public FontRenderContext createFontRenderContext ()
     {
-      if (isAliased())
+      if (fontRenderContext == null)
       {
-        return new FontRenderContext(null, isAliased(), true);
-      }
-      // buggy is only important on non-aliased environments ...
-      // dont use fractional metrics on buggy versions
+        if (isAliased())
+        {
+          fontRenderContext = new FontRenderContext(null, isAliased(), true);
+        }
+        else
+        {
+          // buggy is only important on non-aliased environments ...
+          // dont use fractional metrics on buggy versions
 
-      // use int_metrics wenn buggy ...
-      return new FontRenderContext(null, isAliased(), isBuggyVersion() == false);
+          // use int_metrics wenn buggy ...
+          fontRenderContext = new FontRenderContext(null, isAliased(), isBuggyVersion() == false);
+        }
+      }
+      return fontRenderContext;
     }
 
     /**

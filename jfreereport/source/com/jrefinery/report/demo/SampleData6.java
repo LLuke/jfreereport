@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData6.java,v 1.5 2002/12/12 12:26:55 mungady Exp $
+ * $Id: SampleData6.java,v 1.6 2003/01/07 15:10:12 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -39,6 +39,8 @@
 package com.jrefinery.report.demo;
 
 import javax.swing.table.AbstractTableModel;
+
+import com.jrefinery.report.util.Log;
 
 /**
  * A sample data source for the JFreeReport Demo Application.
@@ -143,10 +145,15 @@ public class SampleData6 extends AbstractTableModel
    */
   public Object getValueAt (int row, int column)
   {
-    Integer number = new Integer (row);
-    Object[] rowdata = new Object[]{"One" + number.toString (), "Red" + number.toString (),
-                                    "A" + number.toString (), new Integer (1), new Double (1.1)};
-    return rowdata[column];
+    switch (column)
+    {
+      case 0: return "Name_One" + row;
+      case 1: return "Color_Red" + (row / 1000);
+      case 2: return "Letter_A" + (row / 100);
+      case 3: return new Integer (1);
+      case 4: return new Double (1.1);
+    }
+    return null;
   }
 
 }

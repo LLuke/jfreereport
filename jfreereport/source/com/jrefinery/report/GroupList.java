@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.18 2003/02/26 16:41:43 mungady Exp $
+ * $Id: GroupList.java,v 1.19 2003/02/28 12:02:10 taqua Exp $
  *
  * Changes:
  * --------
@@ -43,12 +43,14 @@
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.util.Log;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.TreeSet;
+
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReadOnlyIterator;
 
 /**
  * The group list is used to store groups in a ordered way. The less specific groups are
@@ -62,10 +64,11 @@ import java.util.TreeSet;
  *
  * @author Thomas Morgner
  */
-public class GroupList extends TreeSet implements Cloneable, Serializable
+public class GroupList implements Cloneable, Serializable
 {
   /** Cache (this is a set, we need list functionality, but creating Iterators is expensive). */
   private Object[] cache;
+  private TreeSet backend;
 
   /**
    * A comparator that orders Group objects.
@@ -169,7 +172,13 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
    */
   public GroupList()
   {
-    super(new GroupComparator());
+    backend = new TreeSet (new GroupComparator());
+  }
+
+  public GroupList(GroupList list)
+  {
+    backend = new TreeSet(new GroupComparator());
+    backend.addAll(list.backend);
   }
 
   /**
@@ -183,7 +192,7 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
   {
     if (cache == null)
     {
-      cache = toArray();
+      cache = backend.toArray();
     }
     return (Group) cache[i];
   }
@@ -198,7 +207,7 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
   public boolean remove(Object o)
   {
     cache = null;
-    return super.remove(o);
+    return backend.remove(o);
   }
 
   /**
@@ -206,7 +215,7 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
    */
   public void clear()
   {
-    super.clear();
+    backend.clear();
     cache = null;
   }
 
@@ -227,10 +236,10 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
     if (o instanceof Group)
     {
       cache = null;
-      if (super.add(o) == false)
+      if (backend.add(o) == false)
       {
-        super.remove(o);
-        return super.add(o);
+        backend.remove(o);
+        return backend.add(o);
       }
       return true;
     }
@@ -250,21 +259,32 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
    */
   public Object clone()
   {
-    GroupList l = new GroupList();
-    l.clear();
-    for (int i = 0; i < size(); i++)
+    GroupList l = null;
+    try
     {
-      try
+      l = (GroupList) super.clone();
+      l.backend = new TreeSet(new GroupComparator());
+      l.clear();
+      for (int i = 0; i < backend.size(); i++)
       {
-        l.add(get(i).clone());
-      }
-      catch (CloneNotSupportedException ce)
-      {
-        Log.warn("GroupList clone error ", ce);
-        return null;
+        l.backend.add(get(i).clone());
       }
     }
+    catch (CloneNotSupportedException cne)
+    {
+      Log.error ("GroupsList was not cloned.");
+      throw new IllegalStateException("GroupList was not cloneable.");
+    }
     return l;
+  }
+
+  /**
+   *
+   * @return
+   */
+  public Iterator iterator ()
+  {
+    return new ReadOnlyIterator (backend.iterator());
   }
 
   /**
@@ -276,13 +296,13 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
    */
   public boolean isValid()
   {
-    if (size() == 0)
+    if (backend.size() == 0)
     {
       return true;
     }
 
     Group parent = get(0);
-    for (int i = 1; i < size(); i++)
+    for (int i = 1; i < backend.size(); i++)
     {
       Group sub = get(i);
       if (sub.getFields().containsAll(parent.getFields()) == false)
@@ -297,4 +317,11 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
     }
     return true;
   }
+
+  public int size()
+  {
+    return backend.size();
+  }
+
+
 }

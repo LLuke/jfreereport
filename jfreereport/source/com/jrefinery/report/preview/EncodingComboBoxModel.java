@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.11 2003/03/13 17:41:52 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.12 2003/03/13 18:38:58 taqua Exp $
  *
  * Changes
  * --------
@@ -121,6 +121,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
     /** The encoding description. */
     private String description;
 
+    private String displayName;
     /**
      * Creates a new encoding.
      *
@@ -135,6 +136,12 @@ public class EncodingComboBoxModel implements ComboBoxModel
       }
       this.name = name;
       this.description = description;
+      StringBuffer dName = new StringBuffer();
+      dName.append(name);
+      dName.append(" (");
+      dName.append(description);
+      dName.append(")");
+      this.displayName = dName.toString();
     }
 
     /**
@@ -164,7 +171,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
      */
     public String getDisplayName ()
     {
-      return name + " (" + description + ")";
+      return displayName;
     }
 
     /**
@@ -224,7 +231,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
   public EncodingComboBoxModel()
   {
     encodings = new ArrayList();
-    listDataListeners = new ArrayList();
+    listDataListeners = null;
     selectedIndex = -1;
   }
 
@@ -278,6 +285,10 @@ public class EncodingComboBoxModel implements ComboBoxModel
    */
   protected void fireContentsChanged ()
   {
+    if (listDataListeners == null)
+    {
+      return;
+    }
     ListDataEvent evt = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, 0, getSize());
     for (int i = 0; i < listDataListeners.size(); i++)
     {
@@ -369,6 +380,10 @@ public class EncodingComboBoxModel implements ComboBoxModel
    */
   public void addListDataListener(ListDataListener l)
   {
+    if (listDataListeners == null)
+    {
+      listDataListeners = new ArrayList(5);
+    }
     listDataListeners.add (l);
   }
 
@@ -380,6 +395,10 @@ public class EncodingComboBoxModel implements ComboBoxModel
    */
   public void removeListDataListener(ListDataListener l)
   {
+    if (listDataListeners == null)
+    {
+      return;
+    }
     listDataListeners.remove(l);
   }
 

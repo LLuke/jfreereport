@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LeftAlignment.java,v 1.9 2003/02/18 19:37:31 taqua Exp $
+ * $Id: LeftAlignment.java,v 1.10 2003/02/27 10:35:39 mungady Exp $
  *
  * Changes
  * -------
@@ -77,6 +77,7 @@ public class LeftAlignment extends HorizontalBoundsAlignment
     float w = (float) Math.min (inner.getWidth(), referenceBounds.getWidth());
     float h = (float) Math.min (inner.getHeight(), referenceBounds.getHeight());
 
-    return new Rectangle2D.Float(x, y, w, h);
+    inner.setRect(x, y, w, h);
+    return inner;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupCountFunction.java,v 1.10 2002/12/02 17:29:13 taqua Exp $
+ * $Id: GroupCountFunction.java,v 1.11 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,6 @@
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.Group;
-import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.states.ReportState;
 
@@ -126,9 +125,8 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
       return;
     }
 
-    JFreeReport report = event.getReport();
     ReportState state = event.getState();
-    Group group = report.getGroup(state.getCurrentGroupIndex());
+    Group group = event.getReport().getGroup(state.getCurrentGroupIndex());
     if (getGroup().equals(group.getName()))
     {
       this.count++;

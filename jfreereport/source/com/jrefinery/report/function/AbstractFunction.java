@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.27 2003/02/17 16:07:17 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.28 2003/02/25 14:07:23 taqua Exp $
  *
  * Changes
  * -------
@@ -66,7 +66,6 @@ import java.util.Properties;
  */
 public abstract class AbstractFunction implements Function
 {
-
   /** The function name. */
   private String name;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLProcessor.java,v 1.9 2003/02/26 13:58:04 mungady Exp $
+ * $Id: XMLProcessor.java,v 1.10 2003/03/04 20:29:03 taqua Exp $
  *
  * Changes
  * -------
@@ -147,7 +147,6 @@ public class XMLProcessor
     StartState startState = new StartState(getReport());
     ReportState state = startState;
     ReportState retval = null;
-    JFreeReport report = state.getReport();
 
     // the report processing can be splitted into 2 separate processes.
     // The first is the ReportPreparation; all function values are resolved and

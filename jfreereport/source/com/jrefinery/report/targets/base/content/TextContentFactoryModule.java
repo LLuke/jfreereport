@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentFactoryModule.java,v 1.4 2003/02/25 18:46:58 taqua Exp $
+ * $Id: TextContentFactoryModule.java,v 1.5 2003/02/27 10:35:38 mungady Exp $
  *
  * Changes
  * -------
@@ -97,11 +97,15 @@ public class TextContentFactoryModule implements ContentFactoryModule
     // TextElement has a defined width (Max(MinSize, PrefSize).
     // and a maximum height (Min(MaxSize, PrefSize).
 
-    Dimension2D wDim = ElementLayoutInformation.unionMax(bounds.getMinimumSize(),
-                                                           bounds.getPreferredSize());
-    Dimension2D hDim = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
-                                                           bounds.getPreferredSize());
-    Dimension2D dim = new FloatDimension((float) wDim.getWidth(), (float) hDim.getHeight());
+    Dimension2D prefSize = bounds.getPreferredSize();
+    double width = bounds.getMinimumSize().getWidth();
+    double height = bounds.getMaximumSize().getHeight();
+    if (prefSize != null)
+    {
+      width = Math.max(prefSize.getWidth(), width);
+      height = Math.min (prefSize.getHeight(), height);
+    }
+    Dimension2D dim = new FloatDimension((float) width, (float) height);
 
     String text = (String) e.getValue();
     FontDefinition f = e.getStyle().getFontDefinitionProperty();

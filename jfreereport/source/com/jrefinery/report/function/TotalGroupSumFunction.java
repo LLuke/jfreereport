@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupSumFunction.java,v 1.17 2003/02/25 14:07:28 taqua Exp $
+ * $Id: TotalGroupSumFunction.java,v 1.18 2003/03/07 18:07:48 taqua Exp $
  *
  * Changes
  * -------
@@ -46,9 +46,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import com.jrefinery.report.event.ReportEvent;
-import com.jrefinery.report.filter.DecimalFormatParser;
-import com.jrefinery.report.filter.NumberFormatParser;
-import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.util.Log;
 
 /**
@@ -104,6 +101,11 @@ public class TotalGroupSumFunction extends AbstractFunction
      */
     public void add(Number n)
     {
+      if (n == null)
+      {
+        throw new NullPointerException("Number is null");
+      }
+
       result = result.add(new BigDecimal(n.toString()));
     }
 
@@ -117,15 +119,6 @@ public class TotalGroupSumFunction extends AbstractFunction
       return result;
     }
   }
-
-  /** A useful constant representing zero. */
-  private static final BigDecimal ZERO = new BigDecimal(0.0);
-
-  /** The parser for performing data conversion. */
-  private NumberFormatParser parser;
-
-  /** The datasource of the parser. */
-  private StaticDataSource datasource;
 
   /** The group sum. */
   private GroupSum groupResult;
@@ -144,10 +137,6 @@ public class TotalGroupSumFunction extends AbstractFunction
   public TotalGroupSumFunction()
   {
     groupResult = new GroupSum();
-    datasource = new StaticDataSource();
-    parser = new DecimalFormatParser();
-    parser.setNullValue(ZERO);
-    parser.setDataSource(datasource);
     results = new ArrayList();
   }
 
@@ -185,9 +174,12 @@ public class TotalGroupSumFunction extends AbstractFunction
     }
     else
     {
-      // Activate the current group, which was filled in the prepare run.
-      currentIndex += 1;
-      groupResult = (GroupSum) results.get(currentIndex);
+      if (FunctionUtilities.isLayoutLevel(event))
+      {
+        // Activate the current group, which was filled in the prepare run.
+        currentIndex += 1;
+        groupResult = (GroupSum) results.get(currentIndex);
+      }
     }
   }
 
@@ -205,20 +197,19 @@ public class TotalGroupSumFunction extends AbstractFunction
     }
 
     Object fieldValue = event.getDataRow().get(getField());
-    if (fieldValue == null)
+    if (fieldValue instanceof Number == false)
     {
       // No add, field is null
       return;
     }
     try
     {
-      datasource.setValue(fieldValue);
-      Number n = (Number) parser.getValue();
+      Number n = (Number) fieldValue;
       groupResult.add(n);
     }
     catch (Exception e)
     {
-      Log.error("ItemSumFunction.advanceItems(): problem adding number.");
+      Log.error("TotalItemSumFunction.advanceItems(): problem adding number." + fieldValue, e);
     }
   }
 
@@ -313,10 +304,6 @@ public class TotalGroupSumFunction extends AbstractFunction
   {
     TotalGroupSumFunction function = (TotalGroupSumFunction) super.getInstance();
     function.groupResult = new GroupSum();
-    function.datasource = new StaticDataSource();
-    function.parser = new DecimalFormatParser();
-    function.parser.setNullValue(ZERO);
-    function.parser.setDataSource(function.datasource);
     function.results = new ArrayList();
     return function;
   }

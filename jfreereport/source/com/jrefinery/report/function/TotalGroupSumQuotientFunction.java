@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner, David Gilbert (for Simba Management Limited)
  *                   for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotientFunction.java,v 1.5 2003/02/26 13:57:57 mungady Exp $
+ * $Id: TotalGroupSumQuotientFunction.java,v 1.6 2003/03/07 18:07:49 taqua Exp $
  *
  * Changes
  * -------
@@ -201,10 +201,13 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
     }
     else
     {
-      // Activate the current group, which was filled in the prepare run.
-      currentIndex += 1;
-      groupDividend = (GroupSum) dividendResults.get(currentIndex);
-      groupDivisor  = (GroupSum) divisorResults.get(currentIndex);
+      if (event.getState().isPrepareRun() == false)
+      {
+        // Activate the current group, which was filled in the prepare run.
+        currentIndex += 1;
+        groupDividend = (GroupSum) dividendResults.get(currentIndex);
+        groupDivisor  = (GroupSum) divisorResults.get(currentIndex);
+      }
     }
   }
 

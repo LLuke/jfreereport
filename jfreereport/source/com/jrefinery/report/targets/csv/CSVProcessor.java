@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.9 2003/03/04 20:28:57 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.10 2003/03/31 20:49:54 taqua Exp $
  *
  * Changes
  * -------
@@ -49,9 +49,8 @@ import java.util.Iterator;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
-import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.ReportEventException;
-import com.jrefinery.report.ReportInitialisationException;
+import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
@@ -213,7 +212,6 @@ public class CSVProcessor
     StartState startState = new StartState(getReport());
     ReportState state = startState;
     ReportState retval = null;
-    JFreeReport report = state.getReport();
 
     // the report processing can be splitted into 2 separate processes.
     // The first is the ReportPreparation; all function values are resolved and
@@ -232,7 +230,7 @@ public class CSVProcessor
     // The pageformat will cause trouble in later versions, when printing over
     // multiple pages gets implemented. This property will be replaced by a more
     // suitable alternative.
-    PageFormat p = report.getDefaultPageFormat();
+    PageFormat p = getReport().getDefaultPageFormat();
     state.setProperty(JFreeReportConstants.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
     // now change the writer function to be a dummy writer. We don't want any

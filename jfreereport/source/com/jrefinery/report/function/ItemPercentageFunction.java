@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemPercentageFunction.java,v 1.14 2003/01/14 21:06:53 taqua Exp $
+ * $Id: ItemPercentageFunction.java,v 1.15 2003/02/25 14:07:26 taqua Exp $
  *
  * Changes
  * -------
@@ -42,14 +42,13 @@
 
 package com.jrefinery.report.function;
 
+import java.math.BigDecimal;
+
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.filter.DecimalFormatParser;
 import com.jrefinery.report.filter.NumberFormatParser;
 import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.util.Log;
-
-import javax.swing.table.TableModel;
-import java.math.BigDecimal;
 
 /**
  * Calculates the percentage value of a numeric field. The total sum is taken and divided by
@@ -145,24 +144,8 @@ public class ItemPercentageFunction extends AbstractFunction
   public void itemsAdvanced(ReportEvent event)
   {
     totalSumFunction.itemsAdvanced(event);
-    TableModel data = event.getReport().getData();
-    int row = event.getState().getCurrentDisplayItem();
 
-    // Handle the case when the tablemodel contains no rows
-    if (data.getRowCount() == 0)
-    {
-      return;
-    }
-
-    Object fieldValue = null;
-    for (int c = 0; c < data.getColumnCount(); c++)
-    {
-      if (getField().equals(data.getColumnName(c)))
-      {
-        fieldValue = data.getValueAt(row, c);
-      }
-    }
-
+    Object fieldValue = event.getDataRow().get (getField());
     if (fieldValue == null)
     {
       // No add, field is null

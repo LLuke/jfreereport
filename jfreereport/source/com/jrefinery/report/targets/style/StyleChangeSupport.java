@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleChangeSupport.java,v 1.1 2003/03/18 22:36:13 taqua Exp $
+ * $Id: StyleChangeSupport.java,v 1.2 2003/03/30 21:23:38 taqua Exp $
  *
  * Changes
  * -------
@@ -36,11 +36,11 @@
  */
 package com.jrefinery.report.targets.style;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
-public class StyleChangeSupport implements Cloneable
+public class StyleChangeSupport
 {
-  private StyleChangeListener[] listeners_cached;
   private ArrayList listeners;
   private ElementStyleSheet source;
 
@@ -57,10 +57,9 @@ public class StyleChangeSupport implements Cloneable
     }
     if (listeners == null)
     {
-      listeners = new ArrayList();
+      listeners = new ArrayList(5);
     }
-    listeners.add(l);
-    listeners_cached = null;
+    listeners.add(new WeakReference (l));
   }
 
   public void removeListener (StyleChangeListener l)
@@ -73,42 +72,65 @@ public class StyleChangeSupport implements Cloneable
       return;
 
     listeners.remove(l);
-    listeners_cached = null;
   }
 
-  public void styleChanged (StyleKey key, Object value)
+  public void fireStyleChanged (StyleKey key, Object value)
   {
     if (listeners == null)
       return;
 
-    if (listeners_cached == null)
-    {
-      listeners_cached = (StyleChangeListener[])
-          listeners.toArray(new StyleChangeListener[listeners.size()]);
-    }
+    ArrayList removeList = null;
 
-    for (int i = 0; i < listeners_cached.length; i++)
+    for (int i = 0; i < listeners.size(); i++)
     {
-      StyleChangeListener l = listeners_cached[i];
-      l.styleChanged(source, key, value);
+      WeakReference ref = (WeakReference) listeners.get(i);
+      StyleChangeListener l = (StyleChangeListener) ref.get();
+      if (l != null)
+      {
+        l.styleChanged(source, key, value);
+      }
+      else
+      {
+        if (removeList == null)
+        {
+          removeList = new ArrayList(5);
+        }
+        removeList.add (ref);
+      }
+    }
+    if (removeList != null)
+    {
+      listeners.removeAll(removeList);
     }
   }
 
-  public void styleRemoved (StyleKey key)
+  public void fireStyleRemoved (StyleKey key)
   {
     if (listeners == null)
       return;
 
-    if (listeners_cached == null)
-    {
-      listeners_cached = (StyleChangeListener[])
-          listeners.toArray(new StyleChangeListener[listeners.size()]);
-    }
+    ArrayList removeList = null;
 
-    for (int i = 0; i < listeners_cached.length; i++)
+    for (int i = 0; i < listeners.size(); i++)
     {
-      StyleChangeListener l = listeners_cached[i];
-      l.styleRemoved(source, key);
+      WeakReference ref = (WeakReference) listeners.get(i);
+      StyleChangeListener l = (StyleChangeListener) ref.get();
+      if (l != null)
+      {
+        l.styleRemoved(source, key);
+      }
+      else
+      {
+        if (removeList == null)
+        {
+          removeList = new ArrayList(5);
+        }
+        removeList.add (ref);
+      }
+    }
+    if (removeList != null)
+    {
+      listeners.removeAll(removeList);
     }
   }
 }

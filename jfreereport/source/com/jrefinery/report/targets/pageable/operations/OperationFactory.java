@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationFactory.java,v 1.9 2003/02/18 19:37:31 taqua Exp $
+ * $Id: OperationFactory.java,v 1.10 2003/02/25 18:47:02 taqua Exp $
  *
  * Changes
  * -------
@@ -137,10 +137,10 @@ public class OperationFactory
    * @param e the element that contained the raw data for the content.
    * @param value the content that should be printed.
    * @param bounds the content bounds.
-   * @return the created operations, never null.
+   * @param col the operations collector for the ops.
    * @throws OutputTargetException if this factory is not able to handle that content.
    */
-  public List createOperations (Element e, Content value, Rectangle2D bounds)
+  public void createOperations (PhysicalOperationsCollector col, Element e, Content value, Rectangle2D bounds)
     throws OutputTargetException
   {
     String contentType = e.getContentType();
@@ -150,7 +150,8 @@ public class OperationFactory
       if (mod.canHandleContent(contentType))
       {
         // todo element alignment !
-        return mod.createOperations(e, value, bounds);
+        mod.createOperations(col, e, value, bounds);
+        return;
       }
     }
     throw new OutputTargetException ("No operation module for " + contentType);

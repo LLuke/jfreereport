@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelList.java,v 1.6 2003/02/25 15:42:49 taqua Exp $
+ * $Id: LevelList.java,v 1.7 2003/02/26 13:58:04 mungady Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@ package com.jrefinery.report.util;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.TreeSet;
@@ -55,6 +56,15 @@ public class LevelList implements Cloneable
 {
   /** Constant for level zero. */
   private static final Integer ZERO = new Integer (0);
+
+  /** A treeset to build the iterator. */
+  private transient TreeSet iteratorSetAsc;
+
+  /** A treeset to build the iterator. */
+  private transient TreeSet iteratorSetDesc;
+
+  /** A treeset to cache the level iterator. */
+  private HashMap iteratorCache;
 
   /**
    * A comparator for levels in descending order.
@@ -97,22 +107,13 @@ public class LevelList implements Cloneable
   }
 
   /**
-   * An iterator.
+   * An list that caches all elements for a certain level.
    */
-  private static class ElementLevelIterator implements Iterator
+  private static class ElementLevelList
   {
     /** The level list. */
-    private LevelList list;
+    private ArrayList datalist;
     
-    /** The level. */
-    private int level;
-    
-    /** The next object. */
-    private Object next;
-    
-    /** The current index. */
-    private int currentIndex;
-
     /**
      * Creates an iterator that provides access to all the elements in a list at the specified
      * level.
@@ -120,88 +121,28 @@ public class LevelList implements Cloneable
      * @param list  the list (null not permitted).
      * @param level  the level.
      */
-    public ElementLevelIterator(LevelList list, int level)
+    public ElementLevelList(LevelList list, int level)
     {
       if (list == null) 
       {
         throw new NullPointerException();
       }
 
-      this.list = list;
-      this.level = level;
-      this.currentIndex = 0;
-      searchNext();
-    }
-
-    /**
-     * Advances to the next element at the level required.  If no more elements are available
-     * at the current level, the method exits with <code>this.next == null</code>.
-     */
-    private void searchNext ()
-    {
-      next = null;
-      while ((currentIndex < list.size()) && next == null)
+      this.datalist = new ArrayList();
+      for (int i = 0; i < list.size(); i++)
       {
-        Object iNext = list.elements.get(currentIndex);
-        Integer iLevel = (Integer) list.levels.get(currentIndex);
+        Object iNext = list.elements.get(i);
+        Integer iLevel = (Integer) list.levels.get(i);
         if (iLevel.intValue() == level)
         {
-          next = iNext;
+          datalist.add(iNext);
         }
-        currentIndex++;
       }
     }
 
-    /**
-     * Returns <tt>true</tt> if the iteration has more elements (in other
-     * words, returns <tt>true</tt> if <tt>next</tt> would return an element
-     * rather than throwing an exception.)
-     *
-     * @return <tt>true</tt> if the iterator has more elements.
-     */
-    public boolean hasNext()
+    public Iterator createIterator ()
     {
-      return (next != null);
-    }
-
-    /**
-     * Returns the next element in the iteration.
-     *
-     * @return the next element in the iteration.
-     *
-     * @exception java.util.NoSuchElementException iteration has no more elements.
-     */
-    public Object next()
-    {
-      Object cnext = next;
-      if (cnext == null) 
-      {  
-        throw new NoSuchElementException ();
-      }
-
-      searchNext();
-
-      return cnext;
-    }
-
-    /**
-     * Removes from the underlying collection the last element returned by the
-     * iterator (optional operation).  This method can be called only once per
-     * call to <tt>next</tt>.  The behavior of an iterator is unspecified if
-     * the underlying collection is modified while the iteration is in
-     * progress in any way other than by calling this method.
-     *
-     * @throws UnsupportedOperationException if the <tt>remove</tt>
-     *         operation is not supported by this Iterator.
-
-     * @throws IllegalStateException if the <tt>next</tt> method has not
-     *         yet been called, or the <tt>remove</tt> method has already
-     *         been called after the last call to the <tt>next</tt>
-     *         method.
-     */
-    public void remove()
-    {
-      throw new UnsupportedOperationException();
+      return new ReadOnlyIterator(datalist.iterator());
     }
   }
 
@@ -218,6 +159,7 @@ public class LevelList implements Cloneable
   {
     this.elements = new ArrayList();
     this.levels = new ArrayList();
+    this.iteratorCache = new HashMap();
   }
 
   /**
@@ -237,16 +179,19 @@ public class LevelList implements Cloneable
    */
   public synchronized Iterator getLevelsAscending()
   {
-    TreeSet ts = new TreeSet ();
-    Integer[] ilevels = (Integer[]) levels.toArray(new Integer[levels.size()]);
-    for (int i = 0; i < ilevels.length; i++)
+    if (iteratorSetAsc == null)
     {
-      if (ts.contains(ilevels[i]) == false)
+      iteratorSetAsc = new TreeSet ();
+      Integer[] ilevels = (Integer[]) levels.toArray(new Integer[levels.size()]);
+      for (int i = 0; i < ilevels.length; i++)
       {
-        ts.add(ilevels[i]);
+        if (iteratorSetAsc.contains(ilevels[i]) == false)
+        {
+          iteratorSetAsc.add(ilevels[i]);
+        }
       }
     }
-    return ts.iterator();
+    return iteratorSetAsc.iterator();
   }
 
   /**
@@ -256,16 +201,19 @@ public class LevelList implements Cloneable
    */
   public synchronized Iterator getLevelsDescending ()
   {
-    TreeSet ts = new TreeSet (new DescendingComparator());
-    Integer[] ilevels = (Integer[]) levels.toArray(new Integer[levels.size()]);
-    for (int i = 0; i < ilevels.length; i++)
+    if (iteratorSetDesc == null)
     {
-      if (ts.contains(ilevels[i]) == false)
+      iteratorSetDesc = new TreeSet (new DescendingComparator());
+      Integer[] ilevels = (Integer[]) levels.toArray(new Integer[levels.size()]);
+      for (int i = 0; i < ilevels.length; i++)
       {
-        ts.add(ilevels[i]);
+        if (iteratorSetDesc.contains(ilevels[i]) == false)
+        {
+          iteratorSetDesc.add(ilevels[i]);
+        }
       }
     }
-    return ts.iterator();
+    return iteratorSetDesc.iterator();
   }
 
   /**
@@ -287,7 +235,13 @@ public class LevelList implements Cloneable
    */
   public Iterator getElementsForLevel (int level)
   {
-    return new ElementLevelIterator(this, level);
+    ElementLevelList it = (ElementLevelList) iteratorCache.get(new Integer (level));
+    if (it == null)
+    {
+      it = new ElementLevelList(this, level);
+      iteratorCache.put(new Integer(level), it);
+    }
+    return it.createIterator();
   }
 
   /**
@@ -311,6 +265,9 @@ public class LevelList implements Cloneable
   {
     elements.add(o);
     levels.add(ZERO);
+    iteratorSetAsc = null;
+    iteratorSetDesc = null;
+    iteratorCache.remove(ZERO);
   }
 
   /**
@@ -322,7 +279,11 @@ public class LevelList implements Cloneable
   public synchronized void add (Object o, int level)
   {
     elements.add(o);
-    levels.add(new Integer (level));
+    Integer i = new Integer (level);
+    levels.add(i);
+    iteratorCache.remove(i);
+    iteratorSetAsc = null;
+    iteratorSetDesc = null;
   }
 
   /**
@@ -395,6 +356,7 @@ public class LevelList implements Cloneable
     LevelList l = (LevelList) super.clone();
     l.elements = (ArrayList) elements.clone();
     l.levels = (ArrayList) levels.clone();
+    l.iteratorCache = (HashMap) iteratorCache.clone();
     return l;
   }
 
@@ -405,6 +367,9 @@ public class LevelList implements Cloneable
   {
     elements.clear();
     levels.clear();
+    iteratorCache.clear();
+    iteratorSetAsc = null;
+    iteratorSetDesc = null;
   }
 
 }

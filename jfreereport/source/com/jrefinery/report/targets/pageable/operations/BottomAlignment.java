@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BottomAlignment.java,v 1.5 2003/02/07 22:40:41 taqua Exp $
+ * $Id: BottomAlignment.java,v 1.6 2003/02/18 19:37:31 taqua Exp $
  *
  * Changes
  * -------
@@ -76,6 +76,7 @@ public class BottomAlignment extends VerticalBoundsAlignment
     float y = (float) (referenceBounds.getY() + referenceBounds.getHeight() - r.getHeight());
     float w = (float) r.getWidth();
     float h = (float) r.getHeight();
-    return new Rectangle2D.Float(x, y, w, h);
+    r.setRect(x, y, w, h);
+    return r;
   }
 }

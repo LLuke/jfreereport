@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.10 2003/03/26 10:49:22 taqua Exp $
+ * $Id: PageFunction.java,v 1.11 2003/04/02 21:14:30 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,6 @@
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.Group;
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.states.ReportState;
 
@@ -113,9 +111,8 @@ public class PageFunction extends AbstractFunction
       return;
     }
 
-    JFreeReport report = event.getReport();
     ReportState state = event.getState();
-    Group group = report.getGroup(state.getCurrentGroupIndex());
+    Group group = event.getReport().getGroup(state.getCurrentGroupIndex());
     if (getGroup().equals(group.getName()))
     {
       isGroupStarted = true;

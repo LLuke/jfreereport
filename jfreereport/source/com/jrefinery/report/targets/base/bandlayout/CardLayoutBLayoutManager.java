@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: CardLayoutBLayoutManager.java,v 1.1 2003/03/29 20:18:49 taqua Exp $
  *
  * Changes
  * -------
@@ -154,8 +154,8 @@ public class CardLayoutBLayoutManager extends AbstractBandLayoutManager
       BandLayoutManagerUtil.setBounds(e, bounds);
       if (e instanceof Band)
       {
-        Band band = (Band) e;
-        doLayout(band);
+        BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e, getLayoutSupport());
+        lm.doLayout((Band) e);
       }
     }
   }

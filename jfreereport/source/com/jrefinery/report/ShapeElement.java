@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ShapeElement.java,v 1.21 2003/02/23 20:39:11 taqua Exp $
+ * $Id: ShapeElement.java,v 1.22 2003/03/30 21:22:57 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -165,7 +165,7 @@ public class ShapeElement extends Element
    */
   public void setShouldDraw (boolean shouldDraw)
   {
-    getStyle().setStyleProperty(DRAW_SHAPE, new Boolean(shouldDraw));
+    getStyle().setStyleProperty(DRAW_SHAPE, shouldDraw ? Boolean.TRUE : Boolean.FALSE);
   }
 
   /**
@@ -175,7 +175,7 @@ public class ShapeElement extends Element
    */
   public void setShouldFill (boolean shouldFill)
   {
-    getStyle().setStyleProperty(FILL_SHAPE, new Boolean(shouldFill));
+    getStyle().setStyleProperty(FILL_SHAPE, shouldFill ? Boolean.TRUE : Boolean.FALSE);
   }
 
   /**
@@ -197,7 +197,7 @@ public class ShapeElement extends Element
    */
   public void setScale(boolean scale)
   {
-    getStyle().setStyleProperty(ElementStyleSheet.SCALE, new Boolean(scale));
+    getStyle().setStyleProperty(ElementStyleSheet.SCALE, scale ? Boolean.TRUE : Boolean.FALSE);
   }
 
   /**
@@ -219,7 +219,7 @@ public class ShapeElement extends Element
    */
   public void setKeepAspectRatio(boolean kar)
   {
-    getStyle().setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, new Boolean(kar));
+    getStyle().setStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, kar ? Boolean.TRUE : Boolean.FALSE);
   }
 
   /** A string for the content type. */

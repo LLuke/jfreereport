@@ -2,7 +2,7 @@
  * Date: Mar 7, 2003
  * Time: 6:36:32 PM
  *
- * $Id$
+ * $Id: TotalCalculationFunction.java,v 1.1 2003/03/07 18:59:41 taqua Exp $
  */
 package com.jrefinery.report.function;
 
@@ -60,7 +60,6 @@ public class TotalCalculationFunction extends AbstractFunction
   public void reportStarted(ReportEvent event)
   {
     currentIndex = -1;
-
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
     {
       storedResults.clear();
@@ -87,8 +86,11 @@ public class TotalCalculationFunction extends AbstractFunction
     else
     {
       // Activate the current group, which was filled in the prepare run.
-      currentIndex += 1;
-      currentObject = storedResults.get(currentIndex);
+      if (event.getState().isPrepareRun() == false)
+      {
+        currentIndex += 1;
+        currentObject = storedResults.get(currentIndex);
+      }
     }
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.47 2003/03/29 20:16:30 taqua Exp $
+ * $Id: Band.java,v 1.48 2003/03/30 21:22:56 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -136,6 +136,7 @@ public class Band extends Element implements Serializable, Cloneable
     // band style sheets are not accessed by names. Names are important
     // for the xml-parser when stacking the stylesheets together.
     bandDefaults = new BandStyleSheet("default");
+    bandDefaults.setAllowCaching(true);
   }
 
   public BandLayoutManager getLayout ()
@@ -390,8 +391,7 @@ public class Band extends Element implements Serializable, Cloneable
   {
     Band b = (Band) super.clone();
     b.bandDefaults = (ElementStyleSheet) bandDefaults.clone();
-    b.allElements = (ArrayList) allElements.clone();
-    b.allElements.clear();
+    b.allElements = new ArrayList(allElements.size());
     b.allElements_cached = null;
     
     for (int i = 0; i < allElements.size(); i++)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementLayoutInformation.java,v 1.7 2003/02/26 16:42:23 mungady Exp $
+ * $Id: ElementLayoutInformation.java,v 1.8 2003/03/19 16:04:14 taqua Exp $
  *
  * Changes
  * -------
@@ -80,9 +80,10 @@ public class ElementLayoutInformation
       throw new NullPointerException();
     }
     absolutePosition = new Point2D.Float((float) rect.getX(), (float) rect.getY());
-    maximumSize = new FloatDimension((float) rect.getWidth(), (float) rect.getHeight());
-    minimumSize = new FloatDimension((float) rect.getWidth(), (float) rect.getHeight());
-    preferredSize = new FloatDimension((float) rect.getWidth(), (float) rect.getHeight());
+    FloatDimension fdim = new FloatDimension((float) rect.getWidth(), (float) rect.getHeight());
+    maximumSize = fdim;
+    minimumSize = fdim;
+    preferredSize = fdim;
   }
   
   /**
@@ -203,25 +204,6 @@ public class ElementLayoutInformation
     }
     return new FloatDimension((float) Math.min(pref.getWidth(), max.getWidth()),
                               (float) Math.min(pref.getHeight(), max.getHeight()));
-  }
-
-  /**
-   * Create a maximum dimension of the given 2 dimension objects. If pref is
-   * not given, the min parameter is returned.
-   *
-   * @param min  ??.
-   * @param pref  ??.
-   * 
-   * @return The maximum dimension.
-   */
-  public static Dimension2D unionMax (Dimension2D min, Dimension2D pref)
-  {
-    if (pref == null)
-    {
-      return min;
-    }
-    return new FloatDimension((float) Math.max(pref.getWidth(), min.getWidth()),
-                              (float) Math.max(pref.getHeight(), min.getHeight()));
   }
 
   public String toString ()

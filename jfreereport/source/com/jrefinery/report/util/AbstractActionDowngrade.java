@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractActionDowngrade.java,v 1.7 2002/12/05 16:48:12 mungady Exp $
+ * $Id: AbstractActionDowngrade.java,v 1.8 2002/12/11 00:41:42 mungady Exp $
  *
  * Changes
  * -------
@@ -66,6 +66,12 @@ public abstract class AbstractActionDowngrade extends AbstractAction implements 
    */
   public static final String MNEMONIC_KEY = ActionDowngrade.MNEMONIC_KEY;
 
+  private static final ImageIcon TRANSPARENT_EMPTY_ICON_16 =
+      new ImageIcon (createTransparentImage(16, 16));
+
+  private static final ImageIcon TRANSPARENT_EMPTY_ICON_24 =
+      new ImageIcon (createTransparentImage(24, 24));
+
   /**
    * Creates a transparent image, which can be used for aligning menu items.
    *
@@ -88,7 +94,7 @@ public abstract class AbstractActionDowngrade extends AbstractAction implements 
    */
   public AbstractActionDowngrade()
   {
-    putValue (SMALL_ICON, new ImageIcon (createTransparentImage(16, 16)));
-    putValue ("ICON24", new ImageIcon (createTransparentImage(16, 16)));
+    putValue (SMALL_ICON, TRANSPARENT_EMPTY_ICON_16);
+    putValue ("ICON24", TRANSPARENT_EMPTY_ICON_24);
   }
 }

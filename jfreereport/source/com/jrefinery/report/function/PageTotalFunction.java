@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.16 2003/03/31 20:49:50 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.17 2003/04/02 21:14:31 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -44,6 +44,7 @@ import java.util.HashMap;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.ReportDefinition;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.util.Log;
 
@@ -193,7 +194,7 @@ public class PageTotalFunction extends PageFunction
       return;
     }
 
-    JFreeReport report = event.getReport();
+    ReportDefinition report = event.getReport();
     Group group = report.getGroup(event.getState().getCurrentGroupIndex());
     if (getGroup().equals(group.getName()) == false)
     {

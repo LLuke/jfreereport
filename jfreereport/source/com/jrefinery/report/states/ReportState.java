@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.28 2003/03/13 17:41:54 taqua Exp $
+ * $Id: ReportState.java,v 1.29 2003/03/31 20:49:52 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -64,6 +64,7 @@ import com.jrefinery.report.DataRowConnector;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.ReportDefinition;
 import com.jrefinery.report.event.LayoutEvent;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.LevelledExpressionList;
@@ -85,7 +86,10 @@ import com.jrefinery.report.util.ReportPropertiesList;
 public abstract class ReportState implements JFreeReportConstants, Cloneable
 {
   /** The report that the state belongs to. */
-  private JFreeReport report;
+  private ReportDefinition report;
+
+  /** The number of rows in the tablemodel. */
+  private int numberOfRows;
 
   /** The current item (row in the TableModel). */
   private int currentItem;
@@ -130,21 +134,21 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   protected ReportState (JFreeReport reportPar) throws CloneNotSupportedException
   {
-    setReport((JFreeReport) reportPar.clone());
-
+    setReport(new ReportDefinition(reportPar));
+    numberOfRows = reportPar.getData().getRowCount();
     reportProperties = getReport().getProperties ();
 
     DataRowConnector dc = new DataRowConnector ();
     DataRowConnector.connectDataSources (getReport (), dc);
     setDataRowConnector(dc);
 
-    LevelledExpressionList functions = new LevelledExpressionList(getReport().getExpressions(),
-                                                                getReport().getFunctions());
+    LevelledExpressionList functions = new LevelledExpressionList(reportPar.getExpressions(),
+                                                                  reportPar.getFunctions());
     setFunctions (functions);
     functions.connectDataRow(dc);
 
     DataRowBackend dr = new DataRowBackend ();
-    dr.setTablemodel (getReport ().getData ());
+    dr.setTablemodel (reportPar.getData ());
     dr.setFunctions (getFunctions ());
     dr.setCurrentRow (getCurrentDisplayItem ());
     dr.setReportProperties(new ReportPropertiesList(reportProperties));
@@ -178,6 +182,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   {
     setReport (clone.getReport ());
     reportProperties = clone.reportProperties;
+    numberOfRows = clone.getNumberOfRows();
     setCurrentItem (clone.getCurrentDataItem ());
     setCurrentPage (clone.getCurrentPage ());
     setCurrentGroupIndex (clone.getCurrentGroupIndex ());
@@ -188,6 +193,11 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     getDataRowBackend ().setCurrentRow (getCurrentDisplayItem ());
     // we have no clone-ancestor, so forget everything
     setAncestorHashcode(this.hashCode());
+  }
+
+  protected int getNumberOfRows()
+  {
+    return numberOfRows;
   }
 
   /**
@@ -247,7 +257,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return the report.
    */
-  public JFreeReport getReport ()
+  public ReportDefinition getReport ()
   {
     return report;
   }
@@ -269,7 +279,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @throws NullPointerException if the given report is null
    */
-  private void setReport (JFreeReport report)
+  private void setReport (ReportDefinition report)
   {
     if (report == null)
     {
@@ -468,10 +478,14 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
-   * Creates a shallow clone. Handle with care.
+   * Creates a shallow clone. Handle with care. This is a relativly cheap operation,
+   * so we have a copy to check whether some progress was made, without having to
+   * pay for the complete (deep) cloning.
+   * <p>
+   * Don't use that function to store/copy a report state for a longer storage time.
+   * The next few advances may render the reportstate copy invalid.
    *
    * @return a shallow clone of this state.
-   * 
    * @throws CloneNotSupportedException this should never happen.
    */
   public ReportState copyState () throws CloneNotSupportedException
@@ -483,31 +497,29 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * Clones the report state.
    *
    * @return a clone.
+   * @throws CloneNotSupportedException
    */
-  public Object clone ()
+  public Object clone ()  throws CloneNotSupportedException
   {
-    try
-    {
-      ReportState result = (ReportState) super.clone ();
-      LevelledExpressionList functions = (LevelledExpressionList) getFunctions ().clone();
-      result.setFunctions (functions);
-      result.report = (JFreeReport) report.clone();
-      result.dataRow = (DataRowBackend) dataRow.clone ();
-      result.dataRow.setFunctions (functions);
-      result.dataRowConnector = new DataRowConnector();
-      // disconnect the old datarow from all clones
-      DataRowConnector.disconnectDataSources(result.report, dataRowConnector);
-      functions.disconnectDataRow(dataRowConnector);
-      // and connect connect the new datarow to them
-      DataRowConnector.connectDataSources(result.report, result.dataRowConnector);
-      functions.connectDataRow(result.dataRowConnector);
-      result.dataRowConnector.setDataRowBackend(result.getDataRowBackend());
-      return result;
-    }
-    catch (CloneNotSupportedException cne)
-    {
-      return null;
-    }
+    ReportState result = (ReportState) super.clone ();
+    LevelledExpressionList functions = (LevelledExpressionList) getFunctions ().clone();
+    result.setFunctions (functions);
+
+    // todo remove the cloning of the report definition by moving the
+    // datarowConnector into the report itself
+    // then we have a single point to connect our DataRow to ..
+    result.report = (ReportDefinition) report.clone();
+    result.dataRow = (DataRowBackend) dataRow.clone ();
+    result.dataRow.setFunctions (functions);
+    result.dataRowConnector = new DataRowConnector();
+    // disconnect the old datarow from all clones
+    DataRowConnector.disconnectDataSources(result.report, dataRowConnector);
+    functions.disconnectDataRow(dataRowConnector);
+    // and connect connect the new datarow to them
+    DataRowConnector.connectDataSources(result.report, result.dataRowConnector);
+    functions.connectDataRow(result.dataRowConnector);
+    result.dataRowConnector.setDataRowBackend(result.getDataRowBackend());
+    return result;
   }
 
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackend.java,v 1.31 2003/02/26 16:41:38 mungady Exp $
+ * $Id: DataRowBackend.java,v 1.32 2003/03/18 22:34:26 taqua Exp $
  *
  * Changes
  * -------
@@ -85,6 +85,7 @@ public class DataRowBackend implements Cloneable
      */
     public DataRowPreview(DataRowBackend db)
     {
+      super (db.colcache, db.warnInvalidColumns);
       this.db = db;
       DataRowPreview.this.revalidateColumnLock();
     }
@@ -244,14 +245,26 @@ public class DataRowBackend implements Cloneable
   /** if true, invalid columns get printed to the logs. */
   private boolean warnInvalidColumns;
 
+  private static final boolean[] EMPTY_BOOLS = new boolean[0];
+
   /**
    * Creates a new DataRowBackend.
    */
   public DataRowBackend()
   {
-    columnlocks = new boolean[0];
+    columnlocks = EMPTY_BOOLS;
     colcache = new HashMap();
     warnInvalidColumns = ReportConfiguration.getGlobalConfig().isWarnInvalidColumns();
+  }
+
+  /**
+   * Creates a new DataRowBackend.
+   */
+  protected DataRowBackend(HashMap colcache, boolean warn)
+  {
+    columnlocks = EMPTY_BOOLS;
+    this.colcache = colcache;
+    this.warnInvalidColumns = warn;
   }
 
   /**
@@ -551,6 +564,7 @@ public class DataRowBackend implements Cloneable
   {
     DataRowBackend db = (DataRowBackend) super.clone();
     db.preview = null;
+    db.columnlocks = new boolean[getColumnCount()];
     return db;
   }
 

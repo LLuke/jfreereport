@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Spool.java,v 1.8 2003/02/07 22:40:40 taqua Exp $
+ * $Id: Spool.java,v 1.9 2003/02/09 18:43:05 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 package com.jrefinery.report.targets.pageable;
 
 import com.jrefinery.report.targets.pageable.operations.PhysicalOperation;
+import com.jrefinery.report.targets.pageable.operations.PhysicalOperationsCollector;
 
 import java.util.ArrayList;
 
@@ -48,7 +49,7 @@ import java.util.ArrayList;
  *
  * @author Thomas Morgner.
  */
-public class Spool implements Cloneable
+public class Spool implements Cloneable, PhysicalOperationsCollector
 {
   /** Storage for the operations. */
   private ArrayList operations;

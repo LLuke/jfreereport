@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TopAlignment.java,v 1.6 2003/02/18 19:37:31 taqua Exp $
+ * $Id: TopAlignment.java,v 1.7 2003/02/27 10:35:39 mungady Exp $
  *
  * Changes
  * -------
@@ -76,6 +76,7 @@ public class TopAlignment extends VerticalBoundsAlignment
     float w = (float) Math.min (r.getWidth(), referenceBounds.getWidth());
     float h = (float) Math.min (r.getHeight(), referenceBounds.getHeight());
 
-    return new Rectangle2D.Float(x, y, w, h);
+    r.setRect(x, y, w, h);
+    return r;
   }
 }

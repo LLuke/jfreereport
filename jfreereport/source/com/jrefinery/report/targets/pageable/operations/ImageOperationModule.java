@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageOperationModule.java,v 1.7 2003/03/26 10:49:23 taqua Exp $
+ * $Id: ImageOperationModule.java,v 1.8 2003/03/26 23:32:23 taqua Exp $
  *
  * Changes
  * -------
@@ -38,16 +38,13 @@
  */
 package com.jrefinery.report.targets.pageable.operations;
 
+import java.awt.Color;
+import java.awt.geom.Rectangle2D;
+
 import com.jrefinery.report.Element;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.base.content.Content;
 import com.jrefinery.report.targets.base.content.ImageContent;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-
-import java.awt.Color;
-import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Creates the required operations to display/print image content in the output target.
@@ -71,23 +68,19 @@ public class ImageOperationModule extends OperationModule
    * @param e  the element.
    * @param value  the content.
    * @param bounds  the bounds.
-   *
-   * @return a list of operations.
    */
-  public List createOperations(Element e, Content value, Rectangle2D bounds)
+  public void createOperations(PhysicalOperationsCollector col, Element e, Content value, Rectangle2D bounds)
   {
     Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
     ImageContent ic = (ImageContent) value.getContentForBounds(bounds);
 
     if (ic == null)
     {
-      return new ArrayList();
+      return;
     }
     
-    ArrayList ops = new ArrayList();
-    ops.add(new PhysicalOperation.SetBoundsOperation(bounds));
-    ops.add(new PhysicalOperation.SetPaintOperation(paint));
-    ops.add(new PhysicalOperation.PrintImageOperation(ic.getContent()));
-    return ops;
+    col.addOperation(new PhysicalOperation.SetBoundsOperation(bounds));
+    col.addOperation(new PhysicalOperation.SetPaintOperation(paint));
+    col.addOperation(new PhysicalOperation.PrintImageOperation(ic.getContent()));
   }
 }

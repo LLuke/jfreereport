@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.9 2003/03/04 20:28:58 taqua Exp $
+ * $Id: TableProcessor.java,v 1.10 2003/03/18 18:28:45 taqua Exp $
  *
  * Changes
  * -------
@@ -157,7 +157,6 @@ public abstract class TableProcessor
   {
     StartState startState = new StartState(getReport());
     ReportState state = startState;
-    JFreeReport report = state.getReport();
     ReportState retval = null;
 
     // the report processing can be splitted into 2 separate processes.

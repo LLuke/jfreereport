@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.20 2003/02/26 13:58:00 mungady Exp $
+ * $Id: PageLayouter.java,v 1.21 2003/02/28 12:02:39 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package com.jrefinery.report.targets.pageable.pagelayout;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.ReportDefinition;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.states.ReportState;
@@ -87,31 +88,17 @@ public abstract class PageLayouter extends AbstractFunction
   }
 
   /**
-   * A clone carrier. DefaultCloning does clone reference to an object, and
-   * not the the object-content, so the content in that carrier is shared
-   * among all cloned instances.
-   */
-  private class CloneCarrier
-  {
-    /** The report. */              // don't clone these
-    public JFreeReport report;
-
-    /** The logical page. */
-    private LogicalPage logicalPage;
-  }
-
-  /**
    * The current layoutmanager state. This is used to reconstruct the state of
    * the last print operation whenever an pagebreak occured. The contents depend
    * on the specific implementation of the PageLayouter.
    */
   private LayoutManagerState layoutManagerState;
 
+  /** The logical page used to output the generated content. */
+  private LogicalPage logicalPage;
+
   /** The latest report event. */
   private ReportEvent currentEvent;
-
-  /** A clone carrier. */
-  private CloneCarrier cloneCarrier;
 
   /**
    * The depency level. Should be set to -1 or lower to ensure that this function
@@ -151,7 +138,6 @@ public abstract class PageLayouter extends AbstractFunction
   public PageLayouter()
   {
     setDependencyLevel(-1);
-    cloneCarrier = new CloneCarrier();
   }
 
   /**
@@ -215,17 +201,26 @@ public abstract class PageLayouter extends AbstractFunction
     {
       throw new NullPointerException("PageLayouter.setLogicalPage: logicalPage is null.");
     }
-    this.cloneCarrier.logicalPage = logicalPage;
+    this.logicalPage = logicalPage;
   }
 
   /**
-   * Returns the logical page.
+   * Clears the logical page reference. This method must be called after
+   * the page has been processed.
+   */
+  public void clearLogicalPage ()
+  {
+    this.logicalPage = null;
+  }
+
+  /**
+   * Returns the logical page. 
    *
    * @return the logical page.
    */
   public LogicalPage getLogicalPage ()
   {
-    return cloneCarrier.logicalPage;
+    return logicalPage;
   }
 
   /**
@@ -289,24 +284,13 @@ public abstract class PageLayouter extends AbstractFunction
    *
    * @return the report.
    */
-  public JFreeReport getReport()
+  public ReportDefinition getReport()
   {
-    return cloneCarrier.report;
-  }
-
-  /**
-   * Sets the report.
-   *
-   * @param report  the report (null not permitted).
-   * @throws NullPointerException if the given report is null.
-   */
-  private void setReport(JFreeReport report)
-  {
-    if (report == null)
+    if (getCurrentEvent() == null)
     {
-      throw new NullPointerException("PageLayouter.setReport: report is null.");
+      throw new IllegalStateException("No Current Event available.");
     }
-    this.cloneCarrier.report = report;
+    return getCurrentEvent().getReport();
   }
 
   /**
@@ -326,13 +310,21 @@ public abstract class PageLayouter extends AbstractFunction
    */
   protected void setCurrentEvent(ReportEvent currentEvent)
   {
-    this.currentEvent = currentEvent;
-    if (currentEvent != null)
+    if (currentEvent == null)
     {
-      setReport(currentEvent.getReport());
+      throw new NullPointerException();
     }
+    this.currentEvent = currentEvent;
   }
 
+  protected void clearCurrentEvent ()
+  {
+    if (currentEvent == null)
+    {
+      throw new IllegalStateException("Failed!");
+    }
+    this.currentEvent = null;
+  }
   /**
    * Ends a page. During the process, an PageFinished event is generated and
    * the state advances to the next page. The Layoutmanager-State is saved and
@@ -361,9 +353,13 @@ public abstract class PageLayouter extends AbstractFunction
     }
     setFinishingPage(true);
 
-    ReportState cEventState = getCurrentEvent().getState();
-    cEventState.firePageFinishedEvent();
-    cEventState.nextPage();
+    ReportEvent cEvent = getCurrentEvent();
+    clearCurrentEvent();
+
+    cEvent.getState().firePageFinishedEvent();
+    cEvent.getState().nextPage();
+
+    setCurrentEvent(cEvent);
     setFinishingPage(false);
 
     // save the state after the PageFinished event is fired to
@@ -386,14 +382,19 @@ public abstract class PageLayouter extends AbstractFunction
     {
       throw new IllegalStateException("Page already started");
     }
-    ReportState state = getCurrentEvent().getState();
-    if (state == null)
+    ReportEvent event = getCurrentEvent();
+    if (event == null)
     {
       throw new NullPointerException("PageLayouter.startPage(...): state is null.");
     }
+    // remove the old event binding ....
+    clearCurrentEvent();
 
     setRestartingPage(true);
-    state.firePageStartedEvent();
+    event.getState().firePageStartedEvent();
+
+    // restore the saved original event ...
+    setCurrentEvent(event);
     setRestartingPage(false);
     setPageRestartDone(true);
   }
@@ -510,7 +511,9 @@ public abstract class PageLayouter extends AbstractFunction
    */
   public Object clone() throws CloneNotSupportedException
   {
-    return super.clone();
+    PageLayouter l = (PageLayouter) super.clone();
+    l.currentEvent = null;
+    return l;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.15 2003/03/30 16:32:00 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.16 2003/03/30 21:23:37 taqua Exp $
  *
  * Changes
  * -------
@@ -143,6 +143,7 @@ public class BandLayoutManagerUtil
     Rectangle2D bounds = new Rectangle2D.Float(0, 0, (float) fdim.getWidth(), (float) fdim.getHeight());
     band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
     lm.doLayout(band);
+    lm.setLayoutSupport(null);
     return bounds;
   }
 

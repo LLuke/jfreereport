@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.20 2003/03/26 10:49:24 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.21 2003/03/30 21:23:38 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.jrefinery.report.ElementAlignment;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.FontDefinition;
 
 /**
@@ -157,9 +156,10 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
 
   private ElementStyleSheet[] parents_cached;
   private ElementStyleSheet[] default_cached;
+  private HashMap styleCache;
 
   private StyleChangeSupport styleChangeSupport;
-  private HashMap styleCache;
+  private boolean allowCaching;
 
   /**
    * Creates a new element style-sheet with the given name.  The style-sheet initially contains
@@ -178,7 +178,16 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
     this.parents = new ArrayList(5);
     this.defaultSheets = new ArrayList(5);
     this.styleChangeSupport = new StyleChangeSupport(this);
-    this.styleCache = new HashMap();
+  }
+
+  public boolean isAllowCaching()
+  {
+    return allowCaching;
+  }
+
+  public void setAllowCaching(boolean allowCaching)
+  {
+    this.allowCaching = allowCaching;
   }
 
   /**
@@ -402,10 +411,13 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
       return value;
     }
 
-    value = styleCache.get(key);
-    if (value != null)
+    if (styleCache != null)
     {
-      return value;
+      value = styleCache.get(key);
+      if (value != null)
+      {
+        return value;
+      }
     }
 
     if (parents_cached == null)
@@ -418,11 +430,19 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
     {
       ElementStyleSheet st = parents_cached[i];
       value = st.getStyleProperty(key, null);
-      if (value != null)
+      if (value == null)
       {
-        styleCache.put(key, value);
-        return value;
+        continue;
       }
+      if (isAllowCaching())
+      {
+        if (styleCache == null)
+        {
+          styleCache = new HashMap();
+        }
+        styleCache.put(key, value);
+      }
+      return value;
     }
 
     if (default_cached == null)
@@ -435,13 +455,41 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
     {
       ElementStyleSheet st = default_cached[i];
       value = st.getStyleProperty(key, null);
-      if (value != null)
+      if (value == null)
       {
-        styleCache.put(key, value);
-        return value;
+        continue;
       }
+      if (isAllowCaching())
+      {
+        if (styleCache == null)
+        {
+          styleCache = new HashMap();
+        }
+        styleCache.put(key, value);
+      }
+      return value;
     }
     return defaultValue;
+  }
+
+  /**
+   * Sets a boolean style property.
+   *
+   * @param key  the style key (<code>null</code> not permitted).
+   * @param value  the value.
+   * @throws NullPointerException if the given key is null.
+   * @throws ClassCastException if the value cannot be assigned with the given key.
+   */
+  public void setBooleanStyleProperty (StyleKey key, boolean value)
+  {
+    if (value)
+    {
+      setStyleProperty(key, Boolean.TRUE);
+    }
+    else
+    {
+      setStyleProperty(key, Boolean.FALSE);
+    }
   }
 
   /**
@@ -461,7 +509,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
     if (value == null)
     {
       properties.remove (key);
-      styleChangeSupport.styleRemoved(key);
+      styleChangeSupport.fireStyleRemoved(key);
     }
     else
     {
@@ -472,7 +520,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
                                       + " is not assignable from " + key.getValueType());
       }
       properties.put (key, value);
-      styleChangeSupport.styleChanged(key, value);
+      styleChangeSupport.fireStyleChanged(key, value);
     }
   }
 
@@ -489,7 +537,10 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
     sc.parents = (ArrayList) parents.clone();
     sc.defaultSheets = (ArrayList) defaultSheets.clone();
     sc.properties = (HashMap) properties.clone();
-    sc.styleCache = (HashMap) styleCache.clone();
+    if (styleCache != null)
+    {
+      sc.styleCache = (HashMap) styleCache.clone();
+    }
     sc.styleChangeSupport = new StyleChangeSupport(sc);
     return sc;
   }
@@ -575,8 +626,8 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
       throw new NullPointerException("ElementStyleSheet.setFontStyleProperty: font is null.");
     }
     setStyleProperty(FONT, font.getName());
-    setStyleProperty(BOLD, new Boolean(font.isBold()));
-    setStyleProperty(ITALIC, new Boolean(font.isItalic()));
+    setBooleanStyleProperty(BOLD, font.isBold());
+    setBooleanStyleProperty(ITALIC, font.isItalic());
     setStyleProperty(FONTSIZE, new Integer(font.getSize()));
   }
 
@@ -614,12 +665,12 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
     }
     setStyleProperty(FONT, font.getFontName());
     setStyleProperty(FONTSIZE, new Integer(font.getFontSize()));
-    setStyleProperty(BOLD, new Boolean(font.isBold()));
-    setStyleProperty(ITALIC, new Boolean(font.isItalic()));
-    setStyleProperty(UNDERLINED, new Boolean(font.isUnderline()));
-    setStyleProperty(STRIKETHROUGH, new Boolean(font.isStrikeThrough()));
+    setBooleanStyleProperty(BOLD, font.isBold());
+    setBooleanStyleProperty(ITALIC, font.isItalic());
+    setBooleanStyleProperty(UNDERLINED, font.isUnderline());
+    setBooleanStyleProperty(STRIKETHROUGH, font.isStrikeThrough());
+    setBooleanStyleProperty(EMBEDDED_FONT, font.isEmbeddedFont());
     setStyleProperty(FONTENCODING, font.getFontEncoding(null));
-    setStyleProperty(EMBEDDED_FONT, new Boolean(font.isEmbeddedFont()));
   }
 
   /**
@@ -644,11 +695,19 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
 
   public void styleChanged(ElementStyleSheet source, StyleKey key, Object value)
   {
-    styleCache.remove(key);
+    if (styleCache != null)
+    {
+      styleCache.remove(key);
+    }
+    styleChangeSupport.fireStyleChanged(key, value);
   }
 
   public void styleRemoved(ElementStyleSheet source, StyleKey key)
   {
-    styleCache.remove(key);
+    if (styleCache != null)
+    {
+      styleCache.remove(key);
+    }
+    styleChangeSupport.fireStyleRemoved(key);
   }
 }
