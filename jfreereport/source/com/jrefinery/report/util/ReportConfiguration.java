@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.22 2002/12/18 10:13:16 mungady Exp $
+ * $Id: ReportConfiguration.java,v 1.23 2003/01/03 16:19:12 mungady Exp $
  *
  * Changes
  * -------
@@ -377,10 +377,18 @@ public class ReportConfiguration
       this.getConfiguration().put (PDFTARGET_ENCODING, PDFTARGET_ENCODING_DEFAULT);
 
       InputStream in = this.getClass().getResourceAsStream("/jfreereport.properties");
-      if (in == null)
+      if (in != null)
       {
-        in = this.getClass().getResourceAsStream("/com/jrefinery/report/jfreereport.properties");
+        try
+        {
+          this.getConfiguration().load(in);
+        }
+        catch (IOException ioe)
+        {
+          Log.warn ("Unable to read global configuration", ioe);
+        }
       }
+      in = this.getClass().getResourceAsStream("/com/jrefinery/report/jfreereport.properties");
       if (in != null)
       {
         try
@@ -537,7 +545,7 @@ public class ReportConfiguration
    * Notes:
    * <ul>
    * <li>the setting is not case sensitive.</li>
-   * <li>changing the log level after the {@Log} class has been loaded will have no effect.</li>
+   * <li>changing the log level after the {@link Log} class has been loaded will have no effect.</li>
    * <li>to turn of logging altogether, use the {@link #setDisableLogging} method.</li>
    * </ul>
    *

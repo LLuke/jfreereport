@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandFactory.java,v 1.10 2002/12/11 00:51:19 mungady Exp $
+ * $Id: BandFactory.java,v 1.11 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -39,21 +39,20 @@
  *
  */
 
-package com.jrefinery.report.io;
+package com.jrefinery.report.io.simple;
 
-import com.jrefinery.report.Band;
 import com.jrefinery.report.ItemBand;
-import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.PageFooter;
 import com.jrefinery.report.PageHeader;
 import com.jrefinery.report.ReportFooter;
 import com.jrefinery.report.ReportHeader;
+import com.jrefinery.report.io.Parser;
+import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * This class handles the SAX events generated for report bands:
@@ -67,14 +66,8 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * @author Thomas Morgner
  */
-public class BandFactory extends DefaultHandler implements ReportDefinitionTags
+public class BandFactory extends AbstractReportDefinitionHandler implements ReportDefinitionTags
 {
-  /**
-   * The ReportDefinitionContentHandler that is used to parse the report. This is
-   * a general coordination object for all parsers subfactories.
-   */
-  private ReportDefinitionContentHandler handler;
-
   /**
    * The FontFactory is used to create java.awt.Font instances based on the data given
    * in the Band and Element definition.
@@ -82,50 +75,13 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
   private FontFactory fontFactory;
 
   /**
-   * The report that is currently build.
-   */
-  private JFreeReport report;
-
-  /**
    * Initializes this BandFactory based on the data contained in the ReportFactory.
    *
-   * @param base  the report handler.
    */
-  public BandFactory (ReportFactory base)
+  public BandFactory (Parser parser, String finishTag)
   {
-    this.handler = base.getHandler ();
-    this.report = base.getReport ();
-    this.fontFactory = handler.getFontFactory ();
-  }
-
-  /**
-   * Returns the current report.
-   *
-   * @return the report.
-   */
-  protected JFreeReport getReport ()
-  {
-    return report;
-  }
-
-  /**
-   * Returns the current band, that is being build.
-   *
-   * @return the current band.
-   */
-  public Band getCurrentBand ()
-  {
-    return handler.getReportFactory ().getCurrentBand ();
-  }
-
-  /**
-   * Defines the current band that gets currently build.
-   *
-   * @param band  the band.
-   */
-  protected void setCurrentBand (Band band)
-  {
-    handler.getReportFactory ().setCurrentBand (band);
+    super(parser, finishTag);
+    fontFactory = new FontFactory();
   }
 
   /**
@@ -134,16 +90,12 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
    * the itemBand are handled. If an unknown element is encountered, a SAXException is
    * thrown.
    *
-   * @param namespaceURI  the namespace URI.
-   * @param localName  the local name.
    * @param qName  the element name.
    * @param atts  the element attributes.
    *
-   * @throws SAXException if an unknown tag is encountered.
+   * @throws org.xml.sax.SAXException if an unknown tag is encountered.
    */
-  public void startElement (String namespaceURI,
-                            String localName,
-                            String qName,
+  public void startElement (String qName,
                             Attributes atts) throws SAXException
   {
     String elementName = qName.toLowerCase ().trim ();
@@ -173,7 +125,7 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
     else
     {
       throw new SAXException ("Expected one of: reportheader, reportfooter, pageheader, "
-                            + "pagefooter or items");
+                            + "pagefooter or items. " + qName + " - " + getFinishTag());
     }
   }
 
@@ -184,15 +136,11 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
    * the itemBand are handled. If an unknown element is encountered, a SAXException is
    * thrown.
    *
-   * @param namespaceURI  the namespace URI.
-   * @param localName  the local name.
    * @param qName  the element name.
    *
-   * @throws SAXException if an unknown tag is encountered.
+   * @throws org.xml.sax.SAXException if an unknown tag is encountered.
    */
-  public void endElement (String namespaceURI,
-                          String localName,
-                          String qName) throws SAXException
+  public void endElement (String qName) throws SAXException
   {
     String elementName = qName.toLowerCase ().trim ();
     if (elementName.equals (REPORT_HEADER_TAG))
@@ -218,6 +166,10 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
     {
       endItems ();
     }
+    else if (elementName.equals(getFinishTag()))
+    {
+      getParser().popFactory().endElement(qName);
+    }
     else
     {
       throw new SAXException ("Expected one of: reportheader, reportfooter, pageheader, "
@@ -230,9 +182,9 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
    *
    * @param attr  the element attributes.
    *
-   * @throws SAXException if there is a parsing problem.
+   * @throws org.xml.sax.SAXException if there is a parsing problem.
    *
-   * @see ReportHeader
+   * @see com.jrefinery.report.ReportHeader
    */
   public void startReportHeader (Attributes attr)
           throws SAXException
@@ -246,7 +198,9 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
     reportHeader.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
                                              new FloatDimension(0, height));
     reportHeader.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_AFTER, new Boolean (ownPage));
-    reportHeader.getBandDefaults().setFontStyleProperty(fontFactory.createDefaultFont (attr));
+
+    fontFactory.createFont(attr, reportHeader.getStyle());
+
     String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
@@ -261,8 +215,7 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
     }
 
     getReport ().setReportHeader (reportHeader);
-    setCurrentBand (reportHeader);
-    handler.setExpectedHandler (handler.createElementFactory ());
+    getParser().pushFactory(new ElementFactory(getParser(), REPORT_HEADER_TAG, reportHeader));
   }
 
   /**
@@ -270,9 +223,9 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
    *
    * @param attr  the element attributes.
    *
-   * @throws SAXException if there is a parsing problem.
+   * @throws org.xml.sax.SAXException if there is a parsing problem.
    *
-   * @see ReportFooter
+   * @see com.jrefinery.report.ReportFooter
    */
   public void startReportFooter (Attributes attr)
           throws SAXException
@@ -288,7 +241,7 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
                                              new FloatDimension(0, height));
     reportFooter.getStyle().setStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE,
                                              new Boolean (ownPage));
-    reportFooter.getBandDefaults().setFontStyleProperty(fontFactory.createDefaultFont (attr));
+    fontFactory.createFont(attr, reportFooter.getStyle());
     String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
@@ -303,8 +256,7 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
     }
 
     getReport ().setReportFooter (reportFooter);
-    setCurrentBand (reportFooter);
-    handler.setExpectedHandler (handler.createElementFactory ());
+    getParser().pushFactory(new ElementFactory(getParser(), REPORT_FOOTER_TAG, reportFooter));
   }
 
   /**
@@ -312,9 +264,9 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
    *
    * @param attr  the element attributes.
    *
-   * @throws SAXException if there is a parsing problem.
+   * @throws org.xml.sax.SAXException if there is a parsing problem.
    *
-   * @see PageHeader
+   * @see com.jrefinery.report.PageHeader
    */
   public void startPageHeader (Attributes attr)
           throws SAXException
@@ -331,7 +283,7 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
                                            new FloatDimension(0, height));
     pageHeader.setDisplayOnFirstPage (firstPage);
     pageHeader.setDisplayOnLastPage (lastPage);
-    pageHeader.getBandDefaults().setFontStyleProperty(fontFactory.createDefaultFont (attr));
+    fontFactory.createFont(attr, pageHeader.getStyle());
     String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
@@ -345,9 +297,8 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
           ParserUtil.parseHorizontalElementAlignment(halign));
     }
 
-    setCurrentBand (pageHeader);
     getReport ().setPageHeader (pageHeader);
-    handler.setExpectedHandler (handler.createElementFactory ());
+    getParser().pushFactory(new ElementFactory(getParser(), PAGE_HEADER_TAG, pageHeader));
   }
 
   /**
@@ -355,9 +306,9 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
    *
    * @param attr  the element attributes.
    *
-   * @throws SAXException if there is a parsing problem.
+   * @throws org.xml.sax.SAXException if there is a parsing problem.
    *
-   * @see PageFooter
+   * @see com.jrefinery.report.PageFooter
    */
   public void startPageFooter (Attributes attr)
           throws SAXException
@@ -374,7 +325,7 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
                                            new FloatDimension(0, height));
     pageFooter.setDisplayOnFirstPage (firstPage);
     pageFooter.setDisplayOnLastPage (lastPage);
-    pageFooter.getBandDefaults().setFontStyleProperty(fontFactory.createDefaultFont (attr));
+    fontFactory.createFont(attr, pageFooter.getStyle());
     String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
@@ -388,9 +339,8 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
           ParserUtil.parseHorizontalElementAlignment(halign));
     }
 
-    setCurrentBand (pageFooter);
     getReport ().setPageFooter (pageFooter);
-    handler.setExpectedHandler (handler.createElementFactory ());
+    getParser().pushFactory(new ElementFactory(getParser(), PAGE_FOOTER_TAG, pageFooter));
   }
 
   /**
@@ -398,9 +348,9 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
    *
    * @param attr  the element attributes.
    *
-   * @throws SAXException if there is a parsing problem.
+   * @throws org.xml.sax.SAXException if there is a parsing problem.
    *
-   * @see ItemBand
+   * @see com.jrefinery.report.ItemBand
    */
   public void startItems (Attributes attr)
           throws SAXException
@@ -410,7 +360,7 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
                                           "Element height not specified");
     ItemBand items = new ItemBand ();
     items.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, height));
-    items.getBandDefaults().setFontStyleProperty(fontFactory.createDefaultFont (attr));
+    fontFactory.createFont(attr, items.getStyle());
     String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
@@ -424,58 +374,57 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
                                                ParserUtil.parseHorizontalElementAlignment(halign));
     }
 
-    setCurrentBand (items);
     getReport ().setItemBand (items);
-    handler.setExpectedHandler (handler.createElementFactory ());
+    getParser().pushFactory(new ElementFactory(getParser(), ITEMS_TAG, items));
   }
 
   /**
    * Handles the end of an ItemBand definition.
    *
-   * @see ItemBand
+   * @see com.jrefinery.report.ItemBand
    */
-  public void endItems ()
+  public void endItems () throws SAXException
   {
-    handler.finishedHandler ();
+    getParser().popFactory().endElement(ITEMS_TAG);
   }
 
   /**
    * Handles the end of a PageHeader definition.
    *
-   * @see PageHeader
+   * @see com.jrefinery.report.PageHeader
    */
-  public void endPageHeader ()
+  public void endPageHeader () throws SAXException
   {
-    handler.finishedHandler ();
+    getParser().popFactory().endElement(PAGE_HEADER_TAG);
   }
 
   /**
    * Handles the end of a PageFooter definition.
    *
-   * @see PageFooter
+   * @see com.jrefinery.report.PageFooter
    */
-  public void endPageFooter ()
+  private void endPageFooter () throws SAXException
   {
-    handler.finishedHandler ();
+    getParser().popFactory().endElement(PAGE_FOOTER_TAG);
   }
 
   /**
    * Handles the end of a ReportHeader definition.
    *
-   * @see ReportHeader
+   * @see com.jrefinery.report.ReportHeader
    */
-  public void endReportHeader ()
+  private void endReportHeader () throws SAXException
   {
-    handler.finishedHandler ();
+    getParser().popFactory().endElement(REPORT_HEADER_TAG);
   }
 
   /**
    * Handles the end of a ReportFooter definition.
    *
-   * @see ReportFooter
+   * @see com.jrefinery.report.ReportFooter
    */
-  public void endReportFooter ()
+  private void endReportFooter () throws SAXException
   {
-    handler.finishedHandler ();
+    getParser().popFactory().endElement(REPORT_FOOTER_TAG);
   }
 }

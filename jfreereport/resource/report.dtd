@@ -462,7 +462,8 @@
 	that the table model does not know about it's internal data
 	structure.
 
-	0.7.0 - This function will be implemented in the next release
+	The data-reference was never implemented and will not be implemented
+  in future releases.
 
 -->
 <!ELEMENT data-ref  EMPTY>

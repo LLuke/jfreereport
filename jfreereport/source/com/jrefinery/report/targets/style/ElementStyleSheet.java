@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.8 2002/12/12 20:24:03 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.9 2003/01/03 16:18:41 mungady Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@
 package com.jrefinery.report.targets.style;
 
 import com.jrefinery.report.ElementAlignment;
-import com.jrefinery.report.util.Log;
 
 import java.awt.Font;
 import java.awt.Paint;
@@ -278,6 +277,8 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
    *
    * @param key  the style key (<code>null</code> not permitted).
    * @param value  the value.
+   * @throws NullPointerException if the given key is null.
+   * @throws ClassCastException if the value cannot be assigned with the given key.
    */
   public void setStyleProperty (StyleKey key, Object value)
   {
@@ -293,8 +294,8 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
     {
       if (key.getValueType().isAssignableFrom(value.getClass()) == false)
       {
-        new Exception().printStackTrace();
-        throw new ClassCastException ("Value is not assignable: " + value.getClass()
+        throw new ClassCastException ("Value for key " + key.getName() +
+                                      " is not assignable: " + value.getClass()
                                       + " is not assignable from " + key.getValueType());
       }
       properties.put (key, value);

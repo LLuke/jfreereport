@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportDefinitionTags.java,v 1.20 2002/12/08 23:29:48 taqua Exp $
+ * $Id: ReportDefinitionTags.java,v 1.21 2002/12/11 00:51:20 mungady Exp $
  *
  * Changes
  * -------
@@ -34,7 +34,7 @@
  * 31-Aug-2002 : Added many tags in the meanwhile
  * 10-Dec-2002 : Fixed issues reported by Checkstyle (DG);
  */
-package com.jrefinery.report.io;
+package com.jrefinery.report.io.simple;
 
 /**
  * Defines the tags used in the parsing process.

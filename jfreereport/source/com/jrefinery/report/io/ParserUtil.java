@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserUtil.java,v 1.14 2002/12/11 00:51:20 mungady Exp $
+ * $Id: ParserUtil.java,v 1.15 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -83,6 +83,32 @@ public class ParserUtil
     catch (NumberFormatException nfe)
     {
       throw new SAXException("NumberFormatError: " + message);
+    }
+  }
+
+
+  /**
+   * Parses an String into an double value. If the parsing failed, the given default value is
+   * returned.
+   *
+   * @param value  the text.
+   * @param defaultVal  the default value.
+   *
+   * @return the double value.
+   */
+  public static double parseDouble(String value, double defaultVal)
+  {
+    if (value == null)
+    {
+      return defaultVal;
+    }
+    try
+    {
+      return Double.parseDouble(value);
+    }
+    catch (Exception e)
+    {
+      return defaultVal;
     }
   }
 

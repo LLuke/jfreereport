@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.20 2002/12/12 12:26:56 mungady Exp $
+ * $Id: ReportFactory.java,v 1.21 2002/12/18 10:13:16 mungady Exp $
  *
  * Changes
  * -------
@@ -38,15 +38,16 @@
  * 30-Aug-2002 : PageFormat definition added (thanks "leonlyong")
  */
 
-package com.jrefinery.report.io;
+package com.jrefinery.report.io.simple;
 
-import com.jrefinery.report.Band;
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.io.InitialReportHandler;
+import com.jrefinery.report.io.Parser;
+import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.PageFormatFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
@@ -57,22 +58,8 @@ import java.awt.print.Paper;
  *
  * @author Thomas Morgner
  */
-public class ReportFactory extends DefaultHandler implements ReportDefinitionTags
+public class ReportFactory extends AbstractReportDefinitionHandler implements ReportDefinitionTags
 {
-
-  /** The report under construction. */
-  private JFreeReport report;
-
-  /**
-   * the base handler used as general coordination instance. This is the DefaultHandler used
-   * by sax. This base handler distributes the sax events to the different factories depending on
-   * the current state
-   */
-  private ReportDefinitionContentHandler handler;
-
-  /** the current band */
-  private Band currentBand;
-
   /** The current text. */
   private StringBuffer currentText;
 
@@ -84,60 +71,57 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
 
   /**
    * Constructs a new handler.
-   *
-   * @param handler the base handler for this report factory
    */
-  public ReportFactory(ReportDefinitionContentHandler handler)
+  public ReportFactory(Parser parser, String finishTag)
   {
-    this.handler = handler;
+    super(parser,finishTag);
   }
 
   /**
    * A SAX event indicating that an element start tag has been read.
    *
-   * @param namespaceURI  the namespace URI.
-   * @param localName  the local name.
-   * @param qName  the element name.
+   * @param tagName  the element name.
    * @param atts  the element attributes.
    *
-   * @throws SAXException if there is a parsing exception.
+   * @throws org.xml.sax.SAXException if there is a parsing exception.
    */
-  public void startElement(String namespaceURI,
-                           String localName,
-                           String qName,
+  public void startElement(String tagName,
                            Attributes atts) throws SAXException
   {
-    String elementName = qName.toLowerCase().trim();
-    if (elementName.equals(REPORT_TAG))
+    if (tagName.equals(REPORT_TAG))
     {
       startReport(atts);
     }
-    else if (elementName.equals(REPORT_HEADER_TAG)
-        || elementName.equals(REPORT_FOOTER_TAG)
-        || elementName.equals(PAGE_HEADER_TAG)
-        || elementName.equals(PAGE_FOOTER_TAG)
-        || elementName.equals(ITEMS_TAG))
+    else if (tagName.equals(REPORT_HEADER_TAG)
+        || tagName.equals(REPORT_FOOTER_TAG)
+        || tagName.equals(PAGE_HEADER_TAG)
+        || tagName.equals(PAGE_FOOTER_TAG)
+        || tagName.equals(ITEMS_TAG))
     {
       // Forward the event to the newly created
-      BandFactory bandFactory = handler.createBandFactory();
-      handler.setExpectedHandler(bandFactory);
-      bandFactory.startElement(namespaceURI, localName, qName, atts);
+      BandFactory bandFactory = new BandFactory(getParser(), tagName);
+      getParser().pushFactory(bandFactory);
+      bandFactory.startElement(tagName, atts);
     }
-    else if (elementName.equals(GROUPS_TAG))
+    else if (tagName.equals(GROUPS_TAG))
     {
       startGroups(atts);
     }
-    else if (elementName.equals(CONFIGURATION_TAG))
+    else if (tagName.equals(CONFIGURATION_TAG))
     {
       startConfiguration(atts);
     }
-    else if (elementName.equals(FUNCTIONS_TAG))
+    else if (tagName.equals(FUNCTIONS_TAG))
     {
       startFunctions(atts);
     }
-    else if (elementName.equals (PROPERTY_TAG))
+    else if (tagName.equals (PROPERTY_TAG))
     {
       startProperty (atts);
+    }
+    else if (tagName.equals (getFinishTag()))
+    {
+      getParser().popFactory().endElement(tagName);
     }
     else
     {
@@ -151,7 +135,7 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
    *
    * @param atts  the element attributes.
    *
-   * @throws SAXException if there is an error parsing the XML.
+   * @throws org.xml.sax.SAXException if there is an error parsing the XML.
    */
   protected void startProperty (Attributes atts)
           throws SAXException
@@ -194,13 +178,11 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
   /**
    * A SAX event indicating that an element end tag has been read.
    *
-   * @param namespaceURI  the namespace URI.
-   * @param localName  the local name.
    * @param qName  the element name.
    *
-   * @throws SAXException if there is a parsing problem.
+   * @throws org.xml.sax.SAXException if there is a parsing problem.
    */
-  public void endElement(String namespaceURI, String localName, String qName) throws SAXException
+  public void endElement(String qName) throws SAXException
   {
     String elementName = qName.toLowerCase().trim();
     if (elementName.equals(REPORT_TAG))
@@ -214,6 +196,16 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     else if (elementName.equals (PROPERTY_TAG))
     {
       endProperty ();
+    }
+    else if (elementName.equals(REPORT_HEADER_TAG)
+        || elementName.equals(REPORT_FOOTER_TAG)
+        || elementName.equals(PAGE_HEADER_TAG)
+        || elementName.equals(PAGE_FOOTER_TAG)
+        || elementName.equals(FUNCTIONS_TAG)
+        || elementName.equals(GROUPS_TAG)
+        || elementName.equals(ITEMS_TAG))
+    {
+      // ignore ...
     }
     else
     {
@@ -232,7 +224,7 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
   /**
    * Ends the definition of a single property entry.
    *
-   * @throws SAXException if there is a problem parsing the element.
+   * @throws org.xml.sax.SAXException if there is a problem parsing the element.
    */
   protected void endProperty ()
           throws SAXException
@@ -248,12 +240,12 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
    *
    * @param atts  the element attributes.
    *
-   * @throws SAXException if there is any problem parsing the XML.
+   * @throws org.xml.sax.SAXException if there is any problem parsing the XML.
    */
   public void startReport(Attributes atts)
       throws SAXException
   {
-    String name = getHandler().generateName(atts.getValue(NAME_ATT));
+    String name = getNameGenerator().generateName(atts.getValue(NAME_ATT));
 
 
     JFreeReport report = new JFreeReport();
@@ -269,10 +261,10 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
 
     format = createPageFormat(format, atts);
 
-    defTopMargin = parseDouble(atts.getValue(TOPMARGIN_ATT), defTopMargin);
-    defBottomMargin = parseDouble(atts.getValue(BOTTOMMARGIN_ATT), defBottomMargin);
-    defLeftMargin = parseDouble(atts.getValue(LEFTMARGIN_ATT), defLeftMargin);
-    defRightMargin = parseDouble(atts.getValue(RIGHTMARGIN_ATT), defRightMargin);
+    defTopMargin = ParserUtil.parseDouble(atts.getValue(TOPMARGIN_ATT), defTopMargin);
+    defBottomMargin = ParserUtil.parseDouble(atts.getValue(BOTTOMMARGIN_ATT), defBottomMargin);
+    defLeftMargin = ParserUtil.parseDouble(atts.getValue(LEFTMARGIN_ATT), defLeftMargin);
+    defRightMargin = ParserUtil.parseDouble(atts.getValue(RIGHTMARGIN_ATT), defRightMargin);
 
     Paper p = format.getPaper();
     switch (format.getOrientation())
@@ -296,32 +288,7 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     report.setDefaultPageFormat(format);
 
     //PageFormatFactory.logPageFormat(format);
-    setReport(report);
-  }
-
-  /**
-   * Parses an String into an double value. If the parsing failed, the given default value is
-   * returned.
-   *
-   * @param value  the text.
-   * @param defaultVal  the default value.
-   *
-   * @return the double value.
-   */
-  private double parseDouble(String value, double defaultVal)
-  {
-    if (value == null)
-    {
-      return defaultVal;
-    }
-    try
-    {
-      return Double.parseDouble(value);
-    }
-    catch (Exception e)
-    {
-      return defaultVal;
-    }
+    getParser().setConfigurationValue(InitialReportHandler.REPORT_DEFINITION_TAG, report);
   }
 
   /**
@@ -336,7 +303,7 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
    *
    * @return the page format.
    *
-   * @throws SAXException if there is an error parsing the report.
+   * @throws org.xml.sax.SAXException if there is an error parsing the report.
    */
   private PageFormat createPageFormat(PageFormat format, Attributes atts) throws SAXException
   {
@@ -401,13 +368,12 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
    *
    * @param atts  the element attributes.
    *
-   * @throws SAXException if there is a parsing problem.
+   * @throws org.xml.sax.SAXException if there is a parsing problem.
    */
   public void startGroups(Attributes atts)
       throws SAXException
   {
-    GroupFactory groupFactory = handler.createGroupFactory();
-    getHandler().setExpectedHandler(groupFactory);
+    getParser().pushFactory(new GroupFactory(getParser(), GROUPS_TAG));
   }
 
   /**
@@ -416,74 +382,21 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
    *
    * @param atts  the element attributes.
    *
-   * @throws SAXException if there is a parsing problem.
+   * @throws org.xml.sax.SAXException if there is a parsing problem.
    */
   public void startFunctions(Attributes atts)
       throws SAXException
   {
-    FunctionFactory functionFactory = handler.createFunctionFactory();
-    getHandler().setExpectedHandler(functionFactory);
+    getParser().pushFactory(new FunctionFactory(getParser(), FUNCTIONS_TAG));
   }
 
   /**
    * Finishes the report generation.
    *
-   * @throws SAXException if there is a parsing problem.
+   * @throws org.xml.sax.SAXException if there is a parsing problem.
    */
   public void endReport()
       throws SAXException
   {
-    getHandler().setReport(report);
   }
-
-  /**
-   * Returns the report under construction.
-   *
-   * @return the report.
-   */
-  public JFreeReport getReport()
-  {
-    return report;
-  }
-
-  /**
-   * Returns the current ReportDefinitionContentHandler.
-   *
-   * @return the report handler.
-   */
-  public ReportDefinitionContentHandler getHandler()
-  {
-    return handler;
-  }
-
-  /**
-   * Returns the current band.
-   *
-   * @return the current band.
-   */
-  public Band getCurrentBand()
-  {
-    return currentBand;
-  }
-
-  /**
-   * Sets the current band.
-   *
-   * @param band  the current band.
-   */
-  public void setCurrentBand(Band band)
-  {
-    this.currentBand = band;
-  }
-
-  /**
-   * Sets the current report.
-   *
-   * @param report the report.
-   */
-  private void setReport(JFreeReport report)
-  {
-    this.report = report;
-  }
-
 }

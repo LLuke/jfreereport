@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractReportDefinitionHandler.java,v 1.10 2002/11/07 21:45:27 taqua Exp $
+ * $Id: AbstractReportDefinitionHandler.java,v 1.11 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -37,35 +37,42 @@
  * 05-Jun-2002 : Updated Javadoc comments (DG);
  */
 
-package com.jrefinery.report.io;
+package com.jrefinery.report.io.simple;
 
 import com.jrefinery.report.JFreeReport;
-import org.xml.sax.helpers.DefaultHandler;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.io.ReportDefinitionHandler;
+import com.jrefinery.report.io.Parser;
+import com.jrefinery.report.io.InitialReportHandler;
 
 import java.net.URL;
+
+import org.xml.sax.SAXException;
 
 /**
  * Extends the SAX-DefaultHandler with ContentBase capabilities.
  *
  * @author Thomas Morgner
  */
-public abstract class AbstractReportDefinitionHandler extends DefaultHandler
+public abstract class AbstractReportDefinitionHandler implements ReportDefinitionHandler
 {
+  private static final String NAME_GENERATOR = "name-generator";
 
-  /** Base URL for loading resources. */
-  private URL contentBase;
-
-  /**
-   * the namecounter is used to create unique element names. After a name has been
-   * created, the counter is increased by one.
-   */
-  private int nameCounter;
+  private Parser parser;
+  private String finishTag;
 
   /**
    * Default constructor.
    */
-  public AbstractReportDefinitionHandler ()
+  public AbstractReportDefinitionHandler (Parser parser, String finishTag)
   {
+    this.parser = parser;
+    this.finishTag = finishTag;
+  }
+
+  public String getFinishTag()
+  {
+    return finishTag;
   }
 
   /**
@@ -75,53 +82,36 @@ public abstract class AbstractReportDefinitionHandler extends DefaultHandler
    *
    * @return The parsed report.
    */
-  public abstract JFreeReport getReport ();
+  public JFreeReport getReport ()
+  {
+    return (JFreeReport) getParser().getConfigurationValue(InitialReportHandler.REPORT_DEFINITION_TAG);
+  }
 
   /**
    * @return the current contentbase, or null if no contentBase is set.
    */
   public URL getContentBase ()
   {
-    return contentBase;
+    return (URL) getParser().getConfigurationValue(Parser.CONTENTBASE_KEY);
   }
 
-  /**
-   * Sets the contentBase for this report.
-   * <P>
-   * The contentBase is used to resolve relative URLs and to reload the DTD and external resources
-   * if needed. If no contentBase is set, no resources will be loaded and the results may be not
-   * defined.
-   *
-   * @param url The base URL.
-   */
-  public void setContentBase (URL url)
+  public NameGenerator getNameGenerator ()
   {
-    this.contentBase = url;
-  }
-
-  /**
-   * If a name is supplied, then this method simply returns it.  Otherwise, if name is null, then
-   * a unique name is generating by appending a number to the prefix '@anonymous'.
-   *
-   * @param name The name.
-   *
-   * @return a non-null name.
-   */
-  protected String generateName (String name)
-  {
-    if (name == null)
+    NameGenerator ng = (NameGenerator) getParser().getConfigurationValue(NAME_GENERATOR);
+    if (ng == null)
     {
-      nameCounter += 1;
-      return "@anonymous" + Integer.toHexString (nameCounter);
+      ng = new NameGenerator();
+      getParser().setConfigurationValue(NAME_GENERATOR, ng);
     }
-    return name;
+    return ng;
   }
 
-  /**
-   * Returns an initialized version of the definition handler.
-   *
-   * @return a report definition handler.
-   */
-  public abstract AbstractReportDefinitionHandler getInstance ();
+  public Parser getParser()
+  {
+    return parser;
+  }
 
+  public void characters(char ch[], int start, int length) throws SAXException
+  {
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.26 2002/12/11 00:51:19 mungady Exp $
+ * $Id: ElementFactory.java,v 1.27 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,7 @@
  * 31-Aug-2002 : Element-creation uses the ItemFactory, removed references to deprecated
  *               Element-types
  */
-package com.jrefinery.report.io;
+package com.jrefinery.report.io.simple;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
@@ -48,14 +48,14 @@ import com.jrefinery.report.ImageElement;
 import com.jrefinery.report.ItemFactory;
 import com.jrefinery.report.ShapeElement;
 import com.jrefinery.report.TextElement;
+import com.jrefinery.report.io.Parser;
+import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.targets.pageable.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Paint;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
@@ -73,7 +73,7 @@ import java.net.URL;
  *
  * @author Thomas Morgner
  */
-public class ElementFactory extends DefaultHandler implements ReportDefinitionTags
+public class ElementFactory extends AbstractReportDefinitionHandler implements ReportDefinitionTags
 {
   /** Storage for the current CDATA */
   private StringBuffer currentText;
@@ -84,17 +84,11 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
   /** the fontfactory used to fill TextElements font definitions */
   private FontFactory fontFactory;
 
-  /** The base handler */
-  private ReportDefinitionContentHandler handler;
-
   /** The text element name. */
   private String textElementName;
 
   /** The text element bounds. */
   private Rectangle2D textElementBounds;
-
-  /** The text element font. */
-  private Font textElementFont;
 
   /** The text element alignment. */
   private int textElementAlignment;
@@ -117,19 +111,20 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
   /** Dynamic flag. */
   private boolean textElementDynamic;
 
+  private FontFactory.FontInformation textElementFont;
+
   /**
    * Creates a new ElementFactory. The factory queries the current Band of the ReportFactory
    * and will add created element to this band. If unknown end-Tags are encountered, the
    * parsing for elements will stop and the previous handler will be activated.
    *
-   * @param base  the report handler.
    */
-  public ElementFactory(ReportFactory base)
+  public ElementFactory(Parser parser, String finishTag, Band band)
   {
-    currentBand = base.getCurrentBand();
-    this.handler = base.getHandler();
+    super (parser, finishTag);
+    this.currentBand = band;
     this.currentText = new StringBuffer();
-    fontFactory = handler.getFontFactory();
+    fontFactory = new FontFactory();
   }
 
   /**
@@ -140,16 +135,14 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    * The elements parsed in this factory denote common usecases. Element creation is
    * delegated to the ItemFactory
    *
-   * @param namespaceURI  the namespace URI.
-   * @param localName  the local name.
    * @param qName  the element name.
    * @param atts  the element attributes.
    *
-   * @throws SAXException if an unknown tag is encountered.
+   * @throws org.xml.sax.SAXException if an unknown tag is encountered.
    *
    * @see com.jrefinery.report.ItemFactory
    */
-  public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
+  public void startElement(String qName, Attributes atts)
       throws SAXException
   {
     String elementName = qName.toLowerCase().trim();
@@ -268,13 +261,11 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    * SAX handler function that is forwarded from the ReportDefinitionContentHandler.
    * If an unknown element is encountered, the previous handler gets activated.
    *
-   * @param namespaceURI  the namespace.
-   * @param localName  the local name.
    * @param qName  the element name.
    *
-   * @throws SAXException if an unknown tag is encountered.
+   * @throws org.xml.sax.SAXException if an unknown tag is encountered.
    */
-  public void endElement(String namespaceURI, String localName, String qName)
+  public void endElement(String qName)
       throws SAXException
   {
     String elementName = qName.toLowerCase().trim();
@@ -344,11 +335,13 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
     {
       endRectangle();
     }
+    else if (elementName.equals(getFinishTag()))
+    {
+      getParser().popFactory().endElement(qName);
+    }
     else
     {
-      // Dont know who handles this, back to last handler
-      handler.finishedHandler();
-      handler.endElement(namespaceURI, localName, qName);
+      throw new SAXException("Invalid tag: " + qName);
     }
   }
 
@@ -359,25 +352,25 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    *
    * @param atts  the attributes.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void startImageRef(Attributes atts) throws SAXException
   {
-    String elementName = handler.generateName(atts.getValue("name"));
+    String elementName = getNameGenerator().generateName(atts.getValue("name"));
     String elementSource = atts.getValue("src");
-    Log.debug("Loading: " + handler.getContentBase() + " " + elementSource + " as image");
+    Log.debug("Loading: " + getContentBase() + " " + elementSource + " as image");
     try
     {
       ImageElement element = ItemFactory.createImageElement(
           elementName,
           ParserUtil.getElementPosition(atts),
           Color.white,
-          new URL(handler.getContentBase(), elementSource));
+          new URL(getContentBase(), elementSource));
       getCurrentBand().addElement(element);
     }
     catch (IOException mfule)
     {
-      throw new SAXException(mfule.toString());
+      throw new SAXException("Unable to create/load image", mfule);
     }
 
   }
@@ -389,11 +382,11 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    *
    * @param atts  the attributes.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void startImageField(Attributes atts) throws SAXException
   {
-    String elementName = handler.generateName(atts.getValue(NAME_ATT));
+    String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
     String elementSource = atts.getValue(FIELDNAME_ATT);
 
     ImageElement element = ItemFactory.createImageDataRowElement(
@@ -411,11 +404,11 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    *
    * @param atts  the attributes.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void startImageURLField(Attributes atts) throws SAXException
   {
-    String elementName = handler.generateName(atts.getValue(NAME_ATT));
+    String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
     String elementSource = atts.getValue(FIELDNAME_ATT);
 
     ImageElement element = ItemFactory.createImageURLElement(
@@ -433,11 +426,11 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    *
    * @param atts  the attributes.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void startImageFunction(Attributes atts) throws SAXException
   {
-    String elementName = handler.generateName(atts.getValue(NAME_ATT));
+    String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
     String elementSource = atts.getValue(FUNCTIONNAME_ATT);
 
     ImageElement element = ItemFactory.createImageDataRowElement(
@@ -456,11 +449,11 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    *
    * @param atts  the attributes.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void startImageURLFunction(Attributes atts) throws SAXException
   {
-    String elementName = handler.generateName(atts.getValue(NAME_ATT));
+    String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
     String elementSource = atts.getValue(FUNCTIONNAME_ATT);
 
     ImageElement element = ItemFactory.createImageURLElement(
@@ -476,11 +469,11 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    *
    * @param atts  the attributes.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void startLine(Attributes atts) throws SAXException
   {
-    String name = handler.generateName(atts.getValue(NAME_ATT));
+    String name = getNameGenerator().generateName(atts.getValue(NAME_ATT));
     Paint c = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
     float x1 = ParserUtil.parseFloat(atts.getValue("x1"), "Element x1 not specified");
     float y1 = ParserUtil.parseFloat(atts.getValue("y1"), "Element y1 not specified");
@@ -501,11 +494,11 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    *
    * @param atts  the attributes.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void startRectangle(Attributes atts) throws SAXException
   {
-    String name = handler.generateName(atts.getValue(NAME_ATT));
+    String name = getNameGenerator().generateName(atts.getValue(NAME_ATT));
     Paint c = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
     Rectangle2D bounds = ParserUtil.getElementPosition(atts);
     boolean shouldDraw = ParserUtil.parseBoolean(atts.getValue("draw"), false);
@@ -524,7 +517,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    *
    * @param atts  the attributes.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void startLabel(Attributes atts) throws SAXException
   {
@@ -539,7 +532,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    *
    * @param atts  the attributes.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void startMultilineField(Attributes atts) throws SAXException
   {
@@ -553,7 +546,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    *
    * @param atts  the attributes.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void startStringField(Attributes atts) throws SAXException
   {
@@ -565,7 +558,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    *
    * @param atts  the attributes.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void startGeneralField(Attributes atts) throws SAXException
   {
@@ -577,7 +570,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    *
    * @param atts  the attributes.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void startNumberField(Attributes atts) throws SAXException
   {
@@ -590,7 +583,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    *
    * @param atts  the attributes.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void startDateField(Attributes atts) throws SAXException
   {
@@ -603,7 +596,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    *
    * @param atts  the attributes.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void startNumberFunction(Attributes atts) throws SAXException
   {
@@ -616,7 +609,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    *
    * @param atts  the attributes.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void startDateFunction(Attributes atts) throws SAXException
   {
@@ -629,7 +622,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    *
    * @param atts  the attributes.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void startStringFunction(Attributes atts) throws SAXException
   {
@@ -640,7 +633,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    * Ends a label tag, sets the static text for the label which was build during the
    * parsing. The label is added to the current band.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void endLabel() throws SAXException
   {
@@ -650,7 +643,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
         textElementColor,
         textElementAlignment,
         textElementVerticalAlignment,
-        textElementFont,
+        null,
         getCurrentText());
 
     te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
@@ -662,7 +655,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
   /**
    * Ends the line element and adds it to the current band.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void endLine() throws SAXException
   {
@@ -671,7 +664,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
   /**
    * Ends the rectangle shape element and adds it to the current band.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void endRectangle() throws SAXException
   {
@@ -680,7 +673,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
   /**
    * Ends the image element and adds it to the current band.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void endImageField() throws SAXException
   {
@@ -689,7 +682,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
   /**
    * Ends the image element and adds it to the current band.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void endImageFunction() throws SAXException
   {
@@ -698,7 +691,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
   /**
    * Ends the image element and adds it to the current band.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void endImageURLField() throws SAXException
   {
@@ -707,7 +700,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
   /**
    * Ends the image element and adds it to the current band.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void endImageURLFunction() throws SAXException
   {
@@ -716,7 +709,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
   /**
    * Ends the image element and adds it to the current band.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void endImageRef() throws SAXException
   {
@@ -725,7 +718,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
   /**
    * Ends the multiline text element and adds it to the current band.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void endMultilineField() throws SAXException
   {
@@ -734,9 +727,10 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
         textElementColor,
         textElementAlignment,
         textElementVerticalAlignment,
-        textElementFont,
+        null,
         textElementNullString,
         textElementSourceName);
+    FontFactory.applyFontInformation(te.getStyle(), textElementFont);
     te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
                                    new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
@@ -745,7 +739,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
   /**
    * Ends the String field and adds it to the current band.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void endStringField() throws SAXException
   {
@@ -754,9 +748,10 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
         textElementColor,
         textElementAlignment,
         textElementVerticalAlignment,
-        textElementFont,
+        null,
         textElementNullString,
         textElementSourceName);
+    FontFactory.applyFontInformation(te.getStyle(), textElementFont);
     te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
                                    new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
@@ -765,7 +760,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
   /**
    * Ends the general element and adds it to the current band.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void endGeneralField() throws SAXException
   {
@@ -775,9 +770,10 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
         textElementBounds,
         textElementColor,
         textElementAlignment,
-        textElementFont,
+        null,
         textElementNullString,
         textElementSourceName);
+    FontFactory.applyFontInformation(te.getStyle(), textElementFont);
     te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
                                    new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
@@ -786,7 +782,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
   /**
    * Ends the number field and adds it to the current band.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void endNumberField() throws SAXException
   {
@@ -795,10 +791,11 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
         textElementColor,
         textElementAlignment,
         textElementVerticalAlignment,
-        textElementFont,
+        null,
         textElementNullString,
         textElementFormatString,
         textElementSourceName);
+    FontFactory.applyFontInformation(te.getStyle(), textElementFont);
     te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
                                    new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
@@ -807,7 +804,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
   /**
    * Ends the date field and adds it to the current band.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void endDateField() throws SAXException
   {
@@ -816,10 +813,11 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
         textElementColor,
         textElementAlignment,
         textElementVerticalAlignment,
-        textElementFont,
+        null,
         textElementNullString,
         textElementFormatString,
         textElementSourceName);
+    FontFactory.applyFontInformation(te.getStyle(), textElementFont);
     te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
                                    new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
@@ -828,7 +826,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
   /**
    * Ends the number function and adds it to the current band.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void endNumberFunction() throws SAXException
   {
@@ -837,10 +835,11 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
         textElementColor,
         textElementAlignment,
         textElementVerticalAlignment,
-        textElementFont,
+        null,
         textElementNullString,
         textElementFormatString,
         textElementSourceName);
+    FontFactory.applyFontInformation(te.getStyle(), textElementFont);
     te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
                                    new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
@@ -849,7 +848,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
   /**
    * Ends the string function and adds it to the current band.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void endStringFunction() throws SAXException
   {
@@ -858,9 +857,10 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
         textElementColor,
         textElementAlignment,
         textElementVerticalAlignment,
-        textElementFont,
+        null,
         textElementNullString,
         textElementSourceName);
+    FontFactory.applyFontInformation(te.getStyle(), textElementFont);
     te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
                                    new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
@@ -869,7 +869,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
   /**
    * Ends the date function and adds it to the current band.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void endDateFunction() throws SAXException
   {
@@ -878,10 +878,11 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
         textElementColor,
         textElementAlignment,
         textElementVerticalAlignment,
-        textElementFont,
+        null,
         textElementNullString,
         textElementFormatString,
         textElementSourceName);
+    FontFactory.applyFontInformation(te.getStyle(), textElementFont);
     te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
                                    new Boolean (textElementDynamic));
     getCurrentBand().addElement(te);
@@ -893,11 +894,11 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    *
    * @param atts  the attributes.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void getTextElementAttributes(Attributes atts) throws SAXException
   {
-    this.textElementName = handler.generateName(atts.getValue(NAME_ATT));
+    this.textElementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
     this.textElementBounds = ParserUtil.getElementPosition(atts);
     this.textElementFont = fontFactory.createFont(atts);
     this.textElementAlignment = parseTextAlignment(atts.getValue(ALIGNMENT_ATT), TextElement.LEFT);
@@ -975,7 +976,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    *
    * @param atts  the attributes.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void getDataElementAttributes(Attributes atts) throws SAXException
   {
@@ -993,7 +994,7 @@ public class ElementFactory extends DefaultHandler implements ReportDefinitionTa
    *
    * @param atts  the attributes.
    *
-   * @throws SAXException if there is a SAX problem.
+   * @throws org.xml.sax.SAXException if there is a SAX problem.
    */
   protected void getFunctionElementAttributes(Attributes atts) throws SAXException
   {

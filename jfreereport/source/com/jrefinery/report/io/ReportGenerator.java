@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.19 2002/12/12 20:24:03 taqua Exp $
+ * $Id: ReportGenerator.java,v 1.20 2003/01/07 15:10:32 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLClassLoader;
 
 /**
  * The reportgenerator initializes the parser and provides an interface
@@ -70,7 +71,7 @@ public class ReportGenerator
   private static ReportGenerator generator;
 
   /** The report handler. */
-  private AbstractReportDefinitionHandler defaulthandler;
+  private Parser defaulthandler;
 
   /** The parser factory. */
   private SAXParserFactory factory;
@@ -84,7 +85,7 @@ public class ReportGenerator
    */
   protected ReportGenerator ()
   {
-    defaulthandler = new ReportDefinitionContentHandler ();
+    defaulthandler = new Parser();
     initFromSystem ();
   }
 
@@ -153,8 +154,8 @@ public class ReportGenerator
    *
    * @return the report.
    *
-   * @throws IOException if an I/O error occurs.
-   * @throws ReportDefinitionException if there is a problem parsing the report template.
+   * @throws java.io.IOException if an I/O error occurs.
+   * @throws com.jrefinery.report.io.ReportDefinitionException if there is a problem parsing the report template.
    */
   public JFreeReport parseReport (String file) throws IOException, ReportDefinitionException
   {
@@ -175,8 +176,8 @@ public class ReportGenerator
    *
    * @return the report.
    *
-   * @throws IOException if an I/O error occurs.
-   * @throws ReportDefinitionException if there is a problem parsing the report template.
+   * @throws java.io.IOException if an I/O error occurs.
+   * @throws com.jrefinery.report.io.ReportDefinitionException if there is a problem parsing the report template.
    */
   public JFreeReport parseReport (URL file)
           throws ReportDefinitionException, IOException
@@ -197,8 +198,8 @@ public class ReportGenerator
    *
    * @return the parsed report.
    *
-   * @throws IOException if an I/O error occurs.
-   * @throws ReportDefinitionException if there is a problem parsing the report template.
+   * @throws java.io.IOException if an I/O error occurs.
+   * @throws com.jrefinery.report.io.ReportDefinitionException if there is a problem parsing the report template.
    */
   public JFreeReport parseReport (URL file, URL contentBase)
           throws ReportDefinitionException, IOException
@@ -217,6 +218,10 @@ public class ReportGenerator
     {
       report.setProperty(JFreeReport.REPORT_DEFINITION_CONTENTBASE, contentBase.toString());
     }
+    else
+    {
+      report.setProperty(JFreeReport.REPORT_DEFINITION_CONTENTBASE, file.toString());
+    }
     bin.close ();
     return report;
   }
@@ -230,8 +235,8 @@ public class ReportGenerator
    *
    * @return the parsed report.
    *
-   * @throws IOException if an I/O error occurs.
-   * @throws ReportDefinitionException if there is a problem parsing the report template.
+   * @throws java.io.IOException if an I/O error occurs.
+   * @throws com.jrefinery.report.io.ReportDefinitionException if there is a problem parsing the report template.
    */
   public JFreeReport parseReport (File file) throws IOException, ReportDefinitionException
   {
@@ -249,8 +254,8 @@ public class ReportGenerator
    *
    * @return a SAXParser.
    *
-   * @throws ParserConfigurationException if there is a problem configuring the parser.
-   * @throws SAXException if there is a problem with the parser initialisation
+   * @throws javax.xml.parsers.ParserConfigurationException if there is a problem configuring the parser.
+   * @throws org.xml.sax.SAXException if there is a problem with the parser initialisation
    */
   protected SAXParser getParser () throws ParserConfigurationException, SAXException
   {
@@ -267,7 +272,7 @@ public class ReportGenerator
    *
    * @param handler  the handler.
    */
-  public void setDefaultHandler (AbstractReportDefinitionHandler handler)
+  public void setDefaultHandler (Parser handler)
   {
     if (handler == null)
     {
@@ -281,7 +286,7 @@ public class ReportGenerator
    *
    * @return the report handler.
    */
-  public AbstractReportDefinitionHandler getDefaultHandler ()
+  public Parser getDefaultHandler ()
   {
     return defaulthandler;
   }
@@ -294,10 +299,11 @@ public class ReportGenerator
    *
    * @return the report handler.
    */
-  protected AbstractReportDefinitionHandler createDefaultHandler (URL contentBase)
+  protected Parser createDefaultHandler (URL contentBase)
   {
-    AbstractReportDefinitionHandler handler = getDefaultHandler ().getInstance ();
-    handler.setContentBase (contentBase);
+    Parser handler = getDefaultHandler ().getInstance ();
+    handler.setConfigurationValue (Parser.CONTENTBASE_KEY, contentBase);
+    Log.debug ("ContentBase: " + handler.getConfigurationValue (Parser.CONTENTBASE_KEY));
     return handler;
   }
 
@@ -309,7 +315,7 @@ public class ReportGenerator
    *
    * @return the report.
    *
-   * @throws ReportDefinitionException if an error occurred.
+   * @throws com.jrefinery.report.io.ReportDefinitionException if an error occurred.
    */
   public JFreeReport parseReport (InputSource input, URL contentBase)
           throws ReportDefinitionException
@@ -317,9 +323,10 @@ public class ReportGenerator
     try
     {
       SAXParser parser = getParser ();
-      AbstractReportDefinitionHandler handler = createDefaultHandler (contentBase);
+      Parser handler = createDefaultHandler (contentBase);
       try
       {
+        Log.debug ("ContentBase: " + handler.getConfigurationValue (Parser.CONTENTBASE_KEY));
         parser.parse (input, handler);
         return handler.getReport ();
       }
@@ -350,5 +357,14 @@ public class ReportGenerator
       generator = new ReportGenerator ();
     }
     return generator;
+  }
+
+  public static void main (String [] args)
+    throws Exception
+  {
+    ClassLoader cl = new URLClassLoader(new URL[0]);
+    if (cl == null) throw new NullPointerException("NoclassLoader");
+    URL url = new File("../jfreereport/jfreereport/resource/newreport/report2.xml").toURL();
+    JFreeReport report = ReportGenerator.getInstance().parseReport(url);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_de.java,v 1.8 2002/09/13 15:38:07 mungady Exp $
+ * $Id: DemoResources_de.java,v 1.9 2002/09/17 09:49:10 mungady Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,7 @@ public class DemoResources_de extends JFreeReportResources
     {"exitdialog.message", "Möchten Sie das Programm beenden?"},
 
     {"report.definitionnotfound", "ReportDefinition {0} wurde nicht im ClassPath gefunden."},
-    {"report.definitionfailure.message", "Reportdefinition {0} konnte nicht geladen werden."},
+    {"report.definitionfailure.message", "Reportdefinition konnte nicht geladen werden. {0} "},
     {"report.definitionfailure.title", "Das Laden der Berichtdefinition schlug fehl."},
     {"report.definitionnull", "Es wurde keine Reportdefinition erzeugt"},
     {"error", "Fehler"},
