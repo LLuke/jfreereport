@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.10 2002/07/03 18:49:45 taqua Exp $
+ * $Id: ImageReference.java,v 1.11 2002/07/14 21:59:34 taqua Exp $
  *
  * Changes:
  * --------
@@ -115,8 +115,8 @@ public class ImageReference implements Serializable, Cloneable
 
   public ImageReference (Image img)
   {
-    if (image == null) throw new NullPointerException();
-    this.image = image;
+    if (img == null) throw new NullPointerException();
+    this.image = img;
   }
 
   /**
