@@ -2,19 +2,21 @@
  * Date: Jan 18, 2003
  * Time: 8:06:54 PM
  *
- * $Id: HtmlProducer.java,v 1.6 2003/01/25 20:34:12 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.7 2003/01/27 03:17:43 taqua Exp $
  *
  * This file now produces valid HTML4
  */
 package com.jrefinery.report.targets.table.html;
 
 import com.jrefinery.report.function.FunctionProcessingException;
+import com.jrefinery.report.targets.table.TableCellBackground;
 import com.jrefinery.report.targets.table.TableCellDataFactory;
 import com.jrefinery.report.targets.table.TableGridLayout;
 import com.jrefinery.report.targets.table.TableGridPosition;
 import com.jrefinery.report.targets.table.TableProducer;
 import com.jrefinery.report.util.CharacterEntityParser;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.IOUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -25,6 +27,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
@@ -180,14 +183,7 @@ public class HtmlProducer extends TableProducer
       InflaterInputStream infIn = new InflaterInputStream(new BufferedInputStream(new ByteArrayInputStream(data)));
       InputStreamReader inReader = new InputStreamReader(infIn);
 
-      char[] buffer = new char[4096];
-
-      int bytesRead = inReader.read(buffer);
-      while (bytesRead > 0)
-      {
-        writer.write(buffer, 0, bytesRead);
-        bytesRead = inReader.read(buffer);
-      }
+      IOUtils.getInstance().copyWriter(inReader, writer);
 
       inReader.close();
       writer.flush();
@@ -211,7 +207,7 @@ public class HtmlProducer extends TableProducer
   public void beginPage(String name)
   {
     // border=\"2\"
-    pout.println("<table width=\"100%\">");
+    pout.println("<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
   }
 
   public TableCellDataFactory getCellDataFactory()
@@ -222,6 +218,42 @@ public class HtmlProducer extends TableProducer
   public boolean isOpen()
   {
     return isOpen;
+  }
+
+  private String createTableCellStyle (List background)
+  {
+    if (background == null)
+    {
+      return null;
+    }
+
+    Log.debug ("Background: " + background.size());
+    
+    TableCellBackground bg = null;
+    for (int i = 0; i < background.size(); i++)
+    {
+      TableGridPosition listBgPos = (TableGridPosition) background.get(i);
+      TableCellBackground listBg = (TableCellBackground) listBgPos.getElement();
+
+      if (bg == null)
+      {
+        bg =  listBg;
+      }
+      else
+      {
+        Log.debug ("Merge       : " + bg);
+        Log.debug ("Merge with  : " + listBg);
+        bg = bg.merge(listBg);
+        Log.debug ("Merge result: " + bg);
+      }
+    }
+
+    if (bg == null)
+    {
+      return null;
+    }
+
+    return styleCollection.getBackgroundStyle(bg);
   }
 
   private void generatePage (TableGridLayout layout)
@@ -248,7 +280,17 @@ public class HtmlProducer extends TableProducer
         if (gridPosition == null)
         {
           int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
-          pout.println("<td   style=\"width:" + width + "pt\">&nbsp;</td>");
+          pout.print("<td   style=\"width:");
+          pout.print(width);
+          pout.print("pt");
+
+          String style = createTableCellStyle(gridElement.getBackground());
+          if (style != null)
+          {
+            pout.print("; ");
+            pout.print(style);
+          }
+          pout.print ("\">&nbsp;</td>");
           continue;
         }
 
@@ -265,7 +307,14 @@ public class HtmlProducer extends TableProducer
         pout.print("pt");
         pout.print("; height:");
         pout.print((int) gridPosition.getBounds().getHeight());
-        pout.print("pt\"");
+        pout.print("pt");
+        String style = createTableCellStyle(gridElement.getBackground());
+        if (style != null)
+        {
+          pout.print("; ");
+          pout.print(style);
+        }
+        pout.print("\" ");
 
         if (gridPosition.getRowSpan() > 1)
         {

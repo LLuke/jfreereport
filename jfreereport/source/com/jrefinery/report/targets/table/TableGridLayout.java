@@ -2,7 +2,7 @@
  * Date: Jan 25, 2003
  * Time: 9:40:17 AM
  *
- * $Id: TableGridLayout.java,v 1.1 2003/01/25 20:38:30 taqua Exp $
+ * $Id: TableGridLayout.java,v 1.2 2003/01/27 03:17:43 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -12,6 +12,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Arrays;
 
 public class TableGridLayout
 {
@@ -32,6 +33,7 @@ public class TableGridLayout
         if (pos.getElement().isBackground())
         {
           backGrounds.add (0, pos);
+          Log.debug ("backGrounds -> added " + backGrounds.size());
         }
         else
         {
@@ -43,8 +45,10 @@ public class TableGridLayout
             if (gpos.contains(root) == false)
             {
               it.remove();
+              Log.debug ("backGrounds !!removed " + backGrounds.size());
             }
           }
+          Log.debug ("backGrounds -> removed " + backGrounds.size());
         }
       }
       else
@@ -54,15 +58,19 @@ public class TableGridLayout
           if (pos.contains(root))
           {
             backGrounds.add(0, pos);
+            Log.debug ("backGrounds -> added " + backGrounds.size());
+          }
+          else
+          {
+//            Log.debug ("The background was not fully contained in this element");
           }
         }
         else
         {
-
-          Log.debug (new Log.SimpleMessage("Root already added: " , pos.getElement().getBounds()));
-          Log.debug (new Log.SimpleMessage("+            added: " , root.getElement().getBounds()));
-          Log.debug (new Log.SimpleMessage("+            added: " , pos.getElement().debugChunk));
-          Log.debug (new Log.SimpleMessage("+            added: Col=" , new Integer(root.getCol()) , "  Row=" , new Integer(root.getRow())));
+          Log.warn (new Log.SimpleMessage("Root already added: " , pos.getElement().getBounds()));
+          Log.warn (new Log.SimpleMessage("+            added: " , root.getElement().getBounds()));
+          Log.warn (new Log.SimpleMessage("+            added: " , pos.getElement().debugChunk));
+          Log.warn (new Log.SimpleMessage("+            added: Col=" , new Integer(root.getCol()) , "  Row=" , new Integer(root.getRow())));
         }
       }
     }
@@ -84,37 +92,80 @@ public class TableGridLayout
   private int maxX;
   private int maxY;
 
-  public TableGridLayout(int[] xCuts, int[] yCuts)
+  public TableGridLayout(int[] pxCuts, int[] pyCuts, TableCellData[] positions)
   {
+    this.xCuts = new int[pxCuts.length];
+    this.yCuts = new int[pyCuts.length];
+
+    System.arraycopy(pxCuts, 0, xCuts, 0, pxCuts.length);
+    System.arraycopy(pyCuts, 0, yCuts, 0, pyCuts.length);
+
+    Arrays.sort(xCuts);
+    Arrays.sort(yCuts);
+
     // +1 for outer boundry ...
-    data = new Object[xCuts.length + 1][yCuts.length + 1];
-    this.xCuts = xCuts;
-    this.yCuts = yCuts;
     Log.debug ("Created GridLayout with " + xCuts.length + ", " + yCuts.length);
+    data = new Object[xCuts.length][yCuts.length];
+
+    for (int i = 0; i < positions.length; i++)
+    {
+      TableCellData pos = positions[i];
+      add(pos);
+    }
   }
 
-  public void add (int x, int y, TableGridPosition pos)
+  protected void add (TableCellData pos)
   {
-    if (x < 0 || y < 0) throw new IllegalArgumentException("Parameter must be > 0");
-    if (x > xCuts.length || y > yCuts.length)
-      throw new IllegalArgumentException("Parameter must be < ?Cut size");
 
-    Object o = data[x][y];
+    Rectangle2D bounds = pos.getBounds();
+    int maxBoundsX = (int) (bounds.getX() + bounds.getWidth());
+    int maxBoundsY = (int) (bounds.getY() + bounds.getHeight());
+
+    TableGridPosition gPos = new TableGridPosition(pos);
+    gPos.setCol(findDouble(xCuts, (int) bounds.getX(), false));
+    gPos.setRow(findDouble(yCuts, (int) bounds.getY(), false));
+    gPos.setColSpan(findDouble(xCuts, maxBoundsX, true) - gPos.getCol());
+    gPos.setRowSpan(findDouble(yCuts, maxBoundsY, true) - gPos.getRow());
+
+    /*
+    Log.debug ("DebugChunk: " + pos.debugChunk);
+    Log.debug ("gPos.getCol: " + gPos.getCol() + " -> " + getColumnStart(gPos.getCol()));
+    Log.debug ("gPos.getRow: " + gPos.getRow() + " -> " + getRowStart(gPos.getRow()));
+    Log.debug ("gPos.getColSpan: " + gPos.getColSpan() + " -> " + getColumnEnd(gPos.getColSpan() + gPos.getCol() - 1));
+    Log.debug ("gPos.getRowSpan: " + gPos.getRowSpan() + " -> " + getRowEnd(gPos.getRowSpan() + gPos.getRow() - 1));
+    */
+
+    int startY = gPos.getRow();
+    int endY = gPos.getRow() + gPos.getRowSpan();
+    for (int posY = startY; posY < endY; posY ++)
+    {
+      int startX = gPos.getCol();
+      int endX = gPos.getCol() + gPos.getColSpan();
+      for (int posX = startX; posX < endX; posX ++)
+      {
+        addToGrid(posX, posY, gPos);
+      }
+    }
+
+    this.maxX = Math.max(this.maxX, maxBoundsX);
+    this.maxY = Math.max(this.maxY, maxBoundsY);
+  }
+
+  protected void addToGrid (int posX, int posY, TableGridPosition gPos)
+  {
+    Object o = data[posX][posY];
     if (o == null)
     {
       Element e = new Element();
-      e.add(pos);
-      data[x][y] = e;
+      e.add(gPos);
+      data[posX][posY] = e;
 
     }
     else
     {
-      Element e = (Element) data[x][y];
-      e.add(pos);
+      Element e = (Element) o;
+      e.add(gPos);
     }
-    Rectangle2D bounds = pos.getBounds();
-    maxX = (int) Math.max(bounds.getX() + bounds.getWidth(), maxX);
-    maxY = (int) Math.max(bounds.getY() + bounds.getHeight(), maxY);
   }
 
   public Element getData (int x, int y)
@@ -165,4 +216,36 @@ public class TableGridLayout
       return getRowStart(row + 1);
     }
   }
+
+  private int findDouble (int[] data, int d, boolean upperBounds)
+  {
+    for (int i = 0; i < data.length; i++)
+    {
+      int dV = data[i];
+      if (dV == d)
+      {
+        return i;
+      }
+      else
+      {
+        if (dV > d)
+        {
+          if (upperBounds)
+          {
+            return i;
+          }
+          else
+          {
+            if (i == 0)
+              return 0;
+            else
+              return i - 1;
+          }
+        }
+      }
+    }
+    return data.length;
+  }
+
+
 }

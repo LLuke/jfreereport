@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeOperationModule.java,v 1.3 2003/01/21 17:11:39 taqua Exp $
+ * $Id: ShapeOperationModule.java,v 1.4 2003/01/22 19:38:30 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package com.jrefinery.report.targets.pageable.operations;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ShapeElement;
+import com.jrefinery.report.targets.ShapeTransform;
 import com.jrefinery.report.targets.pageable.ElementLayoutInformation;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
@@ -50,7 +51,6 @@ import com.jrefinery.report.targets.style.ElementStyleSheet;
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -131,42 +131,11 @@ public class ShapeOperationModule extends OperationModule
     Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
                                                             bounds.getPreferredSize());
 
-    AffineTransform af = AffineTransform.getTranslateInstance(point.getX(), point.getY());
-    Shape s = (Shape) e.getValue();
-
-    /**
-     * Always scale to the maximum bounds ...
-     */
-    if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE))
-    {
-      Rectangle2D boundsShape = s.getBounds2D();
-      double w = boundsShape.getWidth();
-      double h = boundsShape.getHeight();
-      double scaleX = 1;
-      double scaleY = 1;
-
-      if (w != 0)
-      {
-        scaleX = iBounds.getWidth() / w;
-      }
-      if (h != 0)
-      {
-        scaleY = iBounds.getHeight() / h;
-      }
-      if (scaleX != 1 || scaleY != 1)
-      {
-        if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO))
-        {
-          double scale = Math.min (scaleX, scaleY);
-          af.concatenate(AffineTransform.getScaleInstance(scale, scale));
-        }
-        else
-        {
-          af.concatenate(AffineTransform.getScaleInstance(scaleX, scaleY));
-        }
-      }
-    }
-    Shape retval =  af.createTransformedShape(s);
-    return new ShapeContent (retval);
+    Shape s = ShapeTransform.transformShape((Shape) e.getValue(),
+                                  e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE),
+                                  e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO),
+                                  point,
+                                  iBounds);
+    return new ShapeContent (s);
   }
 }

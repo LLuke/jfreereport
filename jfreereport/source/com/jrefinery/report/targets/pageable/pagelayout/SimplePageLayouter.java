@@ -28,13 +28,14 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.14 2003/01/08 19:33:24 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.15 2003/01/16 15:35:35 taqua Exp $
  *
  * Changes
  * -------
  * 05-Dec-2002 : Updated Javadocs (DG);
  * 07-Dec-2002 : Removed manual-pagebreak flag, was a left-over. PageFinished
  *               did not query the DISPLAY_ON_FIRSTPAGE flag.
+ * 27-Jan-2003 : BugFix: printing empty bands caused a commit spooled operations
  */
 
 package com.jrefinery.report.targets.pageable.pagelayout;
@@ -279,6 +280,11 @@ public class SimplePageLayouter extends PageLayouter
 
       // mark the current position to calculate the maxBand-Height
       getCursor().setPageTop(getCursor().getY());
+
+      if (getLogicalPage().isEmpty() == false)
+      {
+        throw new IllegalStateException("Not empty after pagestart");
+      }
     }
     catch (FunctionProcessingException fe)
     {
@@ -471,12 +477,17 @@ public class SimplePageLayouter extends PageLayouter
     if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
     {
       createSaveState(b);
+
+      Log.debug ("Logical-Page: " + getLogicalPage().isEmpty());
+
       if (endPage(ENDPAGE_REQUESTED) == false)
       {
+        Log.debug ("Page is empty, printing anyway");
         // no pagebreak was done, the band was printed to an already empty page
         return print(b, false);
       }
       // a pagebreak was requested, printing is delayed
+      Log.debug ("Page has content, printing on next page");
       setStartNewPage(true);
       return false;
     }
@@ -568,17 +579,17 @@ public class SimplePageLayouter extends PageLayouter
   protected boolean doPrint(Rectangle2D bounds, Band band, boolean spool)
     throws ReportProcessingException
   {
-    if ((spooledBand != null) && (spool == false))
-    {
-      getLogicalPage().replaySpool (spooledBand);
-      spooledBand = null;
-    }
     try
     {
       float height = (float) bounds.getHeight();
       // handle the end of the page
       if (isFinishingPage())
       {
+        if (spooledBand != null)
+        {
+          getLogicalPage().replaySpool (spooledBand);
+          spooledBand = null;
+        }
         getLogicalPage().addBand(bounds, band);
         cursor.advance(height);
         return true;
@@ -586,11 +597,17 @@ public class SimplePageLayouter extends PageLayouter
       // handle a automatic pagebreak in case there is not enough space here ...
       else if ((isSpaceFor(height) == false) && (isPageEnded() == false))
       {
+        if ((spooledBand != null) && (spool == false))
+        {
+          getLogicalPage().replaySpool (spooledBand);
+          spooledBand = null;
+        }
+
         createSaveState(band);
         endPage(ENDPAGE_FORCED);
         return false;
       }
-      else if (isPageEnded()) // page has ended before, but that band should be printed
+      else if (isPageEnded()) // page has ended before, that band should be printed on the next page
       {
         createSaveState(band);
         return false;
@@ -606,7 +623,6 @@ public class SimplePageLayouter extends PageLayouter
           }
           else
           {
-            Log.debug ("There is a band already spooled");
             spooledBand.merge (newSpool);
           }
 
@@ -615,7 +631,18 @@ public class SimplePageLayouter extends PageLayouter
         }
         else
         {
-          getLogicalPage().addBand(bounds, band);
+          Spool newSpool = getLogicalPage().spoolBand(bounds, band);
+          if (newSpool.isEmpty() == false)
+          {
+            if ((spooledBand != null) && (spool == false))
+            {
+              getLogicalPage().replaySpool (spooledBand);
+              spooledBand = null;
+            }
+
+            getLogicalPage().replaySpool(newSpool);
+          }
+
           cursor.advance(height);
           if (band.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER) == true)
           {

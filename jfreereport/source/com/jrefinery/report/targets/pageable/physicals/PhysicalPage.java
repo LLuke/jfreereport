@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalPage.java,v 1.6 2002/12/11 01:10:42 mungady Exp $
+ * $Id: PhysicalPage.java,v 1.7 2002/12/16 17:31:06 mungady Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,7 @@ package com.jrefinery.report.targets.pageable.physicals;
 import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.operations.PhysicalOperation;
+import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;

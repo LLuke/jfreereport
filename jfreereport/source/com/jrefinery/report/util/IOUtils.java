@@ -2,7 +2,7 @@
  * Date: Jan 26, 2003
  * Time: 6:19:12 PM
  *
- * $Id$
+ * $Id: IOUtils.java,v 1.1 2003/01/27 03:20:01 taqua Exp $
  */
 package com.jrefinery.report.util;
 
@@ -15,6 +15,8 @@ import java.io.OutputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.File;
+import java.io.Reader;
+import java.io.Writer;
 
 public class IOUtils
 {
@@ -176,6 +178,28 @@ public class IOUtils
         // no more data...
         break;
       }
+    }
+  }
+
+  public void copyWriter (Reader in, Writer out)
+    throws IOException
+  {
+    copyWriter(in, out, 4096);
+  }
+
+  public void copyWriter (Reader in, Writer out, int buffersize)
+    throws IOException
+  {
+    // create a 4kbyte buffer to read the file
+    char[] bytes = new char[buffersize];
+
+    // the input stream does not supply accurate available() data
+    // the zip entry does not know the size of the data
+    int bytesRead = in.read(bytes);
+    while (bytesRead > -1)
+    {
+      out.write(bytes, 0, bytesRead);
+      bytesRead = in.read(bytes);
     }
   }
 

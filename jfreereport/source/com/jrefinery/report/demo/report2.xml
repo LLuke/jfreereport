@@ -8,18 +8,19 @@
 <report name="Sample Report 2" pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
 
     <!-- REPORT HEADER -->
-
+<!--
     <reportheader height="144" fontname="SansSerif" fontstyle="bold" fontsize="18">
         <label x="0" y="0" width="100%" height="20" alignment="center">Sample Report Two</label>
         <label x="0" y="24" width="100%" height="10" fontsize="10" alignment="center">Generated using JFreeReport.</label>
     </reportheader>
+    -->
     <!-- REPORT FOOTER -->
     <reportfooter height="24" fontname="SansSerif" fontstyle="bold" fontsize="10" ownpage="true">
         <label x="0" y="0" width="100%" height="20" alignment="center">END OF REPORT</label>
     </reportfooter>
 
     <!-- PAGE HEADER -->
-    <pageheader height="32" onfirstpage="false" fontname="Serif" fontstyle="bold" fontsize="10">
+    <pageheader height="32" onfirstpage="true" fontname="Serif" fontstyle="bold" fontsize="10">
         <line x1="0" y1="30" x2="0" y2="30" weight="0.5"/>
         <label x="0" y="12" width="100%" height="20" alignment="center">PAGE HEADER</label>
       <string-field name="_name" x="0" y="0" width="140" height="8" alignment="left" fieldname="Name"/>

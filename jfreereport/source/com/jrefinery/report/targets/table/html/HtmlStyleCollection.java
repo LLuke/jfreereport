@@ -2,27 +2,28 @@
  * Date: Jan 25, 2003
  * Time: 6:17:21 AM
  *
- * $Id: HtmlStyleCollection.java,v 1.1 2003/01/25 20:38:34 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.2 2003/01/27 03:17:43 taqua Exp $
  */
 package com.jrefinery.report.targets.table.html;
 
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.io.ext.factory.objects.ColorObjectDescription;
 import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.targets.table.TableCellBackground;
 import com.jrefinery.report.util.Log;
 
 import java.awt.Color;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class HtmlStyleCollection
 {
   private ColorObjectDescription colorObjectDescription;
   private Hashtable table;
-  private boolean compressed;
   private int nameCounter;
 
-  private boolean useXHTML = false;
 
   public HtmlStyleCollection()
   {
@@ -30,10 +31,6 @@ public class HtmlStyleCollection
     this.table = new Hashtable();
   }
 
-  public boolean isCompressed()
-  {
-    return compressed;
-  }
 
   private String createName ()
   {
@@ -181,8 +178,69 @@ public class HtmlStyleCollection
     return null;
   }
 
-  public void compactNames ()
+  public String getBackgroundStyle (TableCellBackground bg)
   {
+    ArrayList style = new ArrayList();
+    Color c = bg.getColor();
+    if (c != null)
+    {
+      StringBuffer b = new StringBuffer();
+      b.append ("background-color:");
+      b.append (getColorString(c));
+      style.add (b.toString());
+    }
 
+    if (bg.getColorTop() != null)
+    {
+      StringBuffer b = new StringBuffer();
+      b.append ("border-top: ");
+      b.append (bg.getBorderSizeTop());
+      b.append ("pt solid ");
+      b.append (getColorString(bg.getColorTop()));
+      style.add (b.toString());
+    }
+
+    if (bg.getColorBottom() != null)
+    {
+      StringBuffer b = new StringBuffer();
+      b.append ("border-bottom: ");
+      b.append (bg.getBorderSizeBottom());
+      b.append ("pt solid ");
+      b.append (getColorString(bg.getColorBottom()));
+      style.add (b.toString());
+    }
+
+    if (bg.getColorLeft() != null)
+    {
+      StringBuffer b = new StringBuffer();
+      b.append ("border-left: ");
+      b.append (bg.getBorderSizeLeft());
+      b.append ("pt solid ");
+      b.append (getColorString(bg.getColorLeft()));
+      style.add (b.toString());
+    }
+
+    if (bg.getColorRight() != null)
+    {
+      StringBuffer b = new StringBuffer();
+      b.append ("border-right: ");
+      b.append (bg.getBorderSizeRight());
+      b.append ("pt solid ");
+      b.append (getColorString(bg.getColorRight()));
+      style.add (b.toString());
+    }
+
+    StringBuffer b = new StringBuffer();
+    Iterator styles = style.iterator();
+    while (styles.hasNext())
+    {
+      b.append (styles.next());
+      if (styles.hasNext())
+      {
+        b.append("; ");
+      }
+    }
+
+    return b.toString();
   }
 }
