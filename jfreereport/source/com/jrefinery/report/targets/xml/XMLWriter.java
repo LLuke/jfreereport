@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLWriter.java,v 1.6 2003/02/12 23:05:58 taqua Exp $
+ * $Id: XMLWriter.java,v 1.7 2003/02/26 13:58:04 mungady Exp $
  *
  * Changes
  * -------
@@ -110,11 +110,10 @@ public class XMLWriter extends AbstractFunction
   private void writeBand (Band b)
     throws IOException
   {
-
-    List l = b.getElements();
-    for (int i = 0; i < l.size(); i++)
+    Element[] elements = b.getElementArray();
+    for (int i = 0; i < elements.length; i++)
     {
-      Element e = (Element) l.get(i);
+      Element e = elements[i];
       if (e.getContentType().startsWith("text"))
       {
         w.write ("<element name=\"");

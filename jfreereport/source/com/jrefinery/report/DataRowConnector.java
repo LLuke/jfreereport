@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowConnector.java,v 1.13 2003/02/05 15:38:12 taqua Exp $
+ * $Id: DataRowConnector.java,v 1.14 2003/02/26 16:41:40 mungady Exp $
  *
  * Changes
  * -------
@@ -213,10 +213,10 @@ public class DataRowConnector implements DataRow
    */
   public static void connectDataSources (Band band, DataRowConnector con)
   {
-    List l = band.getElements ();
-    for (int i = 0; i < l.size (); i++)
+    Element[] elements = band.getElementArray();
+    for (int i = 0; i < elements.length; i++)
     {
-      Element e = (Element) l.get (i);
+      Element e = elements[i];
       if (e instanceof Band)
       {
         connectDataSources((Band) e, con);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.12 2003/02/25 20:15:40 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.13 2003/02/28 12:02:38 taqua Exp $
  *
  * Changes
  * -------
@@ -689,6 +689,7 @@ public class PreviewProxyBase extends JComponent
     {
       paginationWorker = new Worker();
       paginationWorker.setPriority(Thread.MIN_PRIORITY);
+      paginationWorker.setName("Repagination-Worker");
     }
     return paginationWorker;
   }

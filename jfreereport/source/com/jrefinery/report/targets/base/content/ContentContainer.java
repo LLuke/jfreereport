@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentContainer.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
+ * $Id: ContentContainer.java,v 1.3 2003/02/27 10:35:38 mungady Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,7 @@ public class ContentContainer implements Content
   {
     this.bounds = new Rectangle2D.Float();
     this.bounds.setRect(bounds);
-    content = new ArrayList();
+    content = new ArrayList(5);
   }
 
   /**

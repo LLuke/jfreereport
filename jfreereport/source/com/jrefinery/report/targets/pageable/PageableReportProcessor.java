@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.29 2003/03/04 20:28:58 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.30 2003/03/07 16:56:02 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package com.jrefinery.report.targets.pageable;
 
 import java.awt.print.PageFormat;
 import java.util.Iterator;
+import java.util.ArrayList;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
@@ -55,6 +56,8 @@ import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.StartState;
 import com.jrefinery.report.targets.pageable.pagelayout.PageLayouter;
 import com.jrefinery.report.targets.pageable.pagelayout.SimplePageLayouter;
+import com.jrefinery.report.targets.base.event.RepaginationListener;
+import com.jrefinery.report.targets.base.event.RepaginationState;
 import com.jrefinery.report.util.Log;
 
 /**
@@ -77,6 +80,8 @@ public class PageableReportProcessor
 
   /** A flag defining whether to check for Thread-Interrupts. */
   private boolean handleInterruptedState;
+
+  private ArrayList listeners;
 
   /**
    * Creates a new ReportProcessor.
@@ -101,6 +106,43 @@ public class PageableReportProcessor
     String layouter = (String) this.report.getProperty(LAYOUTMANAGER_NAME);
     PageLayouter lm = getLayoutManager(layouter);
     this.report.addFunction(lm);
+  }
+
+  public void addRepaginationListener (RepaginationListener l)
+  {
+    if (l == null)
+    {
+      throw new NullPointerException("Listener == null");
+    }
+    if (listeners == null)
+    {
+      listeners = new ArrayList(5);
+    }
+    listeners.add (l);
+  }
+
+  public void removeRepaginationListener (RepaginationListener l)
+  {
+    if (l == null)
+    {
+      throw new NullPointerException("Listener == null");
+    }
+    if (listeners == null)
+      return;
+
+    listeners.remove(l);
+  }
+
+  protected void fireStateUpdate (RepaginationState state)
+  {
+    if (listeners == null)
+      return;
+
+    for (int i = 0; i < listeners.size(); i++)
+    {
+      RepaginationListener l = (RepaginationListener) listeners.get(i);
+      l.repaginationUpdate(state);
+    }
   }
 
   /**
@@ -239,6 +281,7 @@ public class PageableReportProcessor
       StartState startState = new StartState(getReport());
       ReportState state = startState;
       JFreeReport report = state.getReport();
+      int maxRows = report.getData().getRowCount();
       ReportStateList pageStates = null;
 
       // the report processing can be splitted into 2 separate processes.
@@ -299,6 +342,9 @@ public class PageableReportProcessor
 
         while (!state.isFinish())
         {
+          fireStateUpdate(new RepaginationState(level, state.getCurrentPage(),
+                                                state.getCurrentDataItem(), maxRows));
+
           ReportState oldstate = state;
           state = processPage(state, dummyOutput, failOnError);
           if (!state.isFinish())
@@ -498,7 +544,7 @@ public class PageableReportProcessor
    * @param state the state which should be checked
    * @return true, if the page is empty, false otherwise.
    */
-  public boolean isEmptyPageGenerated (ReportState state)
+  protected boolean isEmptyPageGenerated (ReportState state)
   {
     PageLayouter org = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
     return org.isGeneratedPageEmpty();

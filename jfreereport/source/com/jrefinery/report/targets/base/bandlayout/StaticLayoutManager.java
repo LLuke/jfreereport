@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.18 2003/02/26 16:42:25 mungady Exp $
+ * $Id: StaticLayoutManager.java,v 1.19 2003/02/27 10:35:37 mungady Exp $
  *
  * Changes
  * -------
@@ -592,13 +592,6 @@ public class StaticLayoutManager implements BandLayoutManager
   public void doLayout(Band b)
   {
     //elementCache.setCurrentBand(b);
-    /*
-    if (b.isVisible() == false)
-    {
-      b.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, null);
-      return;
-    }
-*/
 
     Element[] elements = b.getElementArray();
     Rectangle2D parentBounds = BandLayoutManagerUtil.getBounds(b, null);
@@ -606,11 +599,9 @@ public class StaticLayoutManager implements BandLayoutManager
     {
       throw new NullPointerException("Need the parent's bound set");
     }
- //   Log.warn("ParentBounds: " + parentBounds + " > " + b.getName());
 
     Dimension2D parentDim = new FloatDimension((float) parentBounds.getWidth(),
                                                (float) parentBounds.getHeight());
-    //Point2D parentPoint = new Point2D.Double (parentBounds.getX(), parentBounds.getY());
 
     for (int i = 0; i < elements.length; i++)
     {
@@ -625,7 +616,6 @@ public class StaticLayoutManager implements BandLayoutManager
 
       Point2D absPos
           = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS), parentDim);
-      //absPos.setLocation(absPos.getX() + parentPoint.getX(), absPos.getY() + parentPoint.getY());
 
       // here apply the maximum bounds ...
       Rectangle2D bounds = new Rectangle2D.Float(
@@ -634,8 +624,6 @@ public class StaticLayoutManager implements BandLayoutManager
           align((float) size.getWidth(), layoutSupport.getHorizontalAlignmentBorder()),
           align((float) size.getHeight(), layoutSupport.getVerticalAlignmentBorder()));
       BandLayoutManagerUtil.setBounds(e, bounds);
-//      Log.debug ("Bounds Defined: " + e.getName() + " > " + bounds);
-//      Log.debug ("       Points : " + e.getName() + " > " + absPos + " -> "+ parentPoint);
       if (e instanceof Band)
       {
         Band band = (Band) e;

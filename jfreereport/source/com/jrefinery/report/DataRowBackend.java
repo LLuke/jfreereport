@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackend.java,v 1.30 2003/02/05 15:38:12 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.31 2003/02/26 16:41:38 mungady Exp $
  *
  * Changes
  * -------
@@ -46,15 +46,15 @@
 
 package com.jrefinery.report;
 
+import java.util.HashMap;
+import javax.swing.table.TableModel;
+
 import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.LevelledExpressionList;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.ReportPropertiesList;
-
-import javax.swing.table.TableModel;
-import java.util.Hashtable;
 
 /**
  * The DataRow-Backend maintains the state of a datarow. Whenever the  report state changes
@@ -221,7 +221,7 @@ public class DataRowBackend implements Cloneable
   }
 
   /** The item cache. */
-  private Hashtable colcache;
+  private HashMap colcache;
 
   /** The preview DataRowBackend. */
   private DataRowBackend preview;
@@ -250,7 +250,7 @@ public class DataRowBackend implements Cloneable
   public DataRowBackend()
   {
     columnlocks = new boolean[0];
-    colcache = new Hashtable();
+    colcache = new HashMap();
     warnInvalidColumns = ReportConfiguration.getGlobalConfig().isWarnInvalidColumns();
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.17 2003/02/26 13:58:00 mungady Exp $
+ * $Id: ElementStyleSheet.java,v 1.18 2003/03/18 17:14:44 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,9 @@
 
 package com.jrefinery.report.targets.style;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Stroke;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
@@ -69,7 +71,7 @@ import com.jrefinery.report.targets.FontDefinition;
  *
  * @author Thomas Morgner
  */
-public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
+public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, StyleChangeListener
 {
   /** A key for the 'minimum size' of an element. */
   public static final StyleKey MINIMUMSIZE   = StyleKey.getStyleKey("min-size", Dimension2D.class);
@@ -146,6 +148,11 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
   /** Storage for the parent style sheets (if any). */
   private ArrayList parents;
 
+  private ElementStyleSheet[] parents_cached;
+
+  private StyleChangeSupport styleChangeSupport;
+  private HashMap styleCache;
+
   /**
    * Creates a new element style-sheet with the given name.  The style-sheet initially contains
    * no attributes, and has no parent style-sheets.
@@ -160,7 +167,9 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
     }
     this.name = name;
     this.properties = new HashMap();
-    this.parents = new ArrayList();
+    this.parents = new ArrayList(5);
+    this.styleChangeSupport = new StyleChangeSupport(this);
+    this.styleCache = new HashMap();
   }
 
   /**
@@ -203,6 +212,8 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
     if (parent.isSubStyleSheet(this) == false)
     {
       parents.add (position, parent);
+      parents_cached = null;
+      parent.addListener(this);
     }
     else
     {
@@ -248,16 +259,8 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
       throw new NullPointerException("ElementStyleSheet.removeParent(...): parent is null.");
     }
     parents.remove (parent);
-  }
-
-  /**
-   * Returns the number of parents currently added to the stylesheet.
-   *
-   * @return the number of parents
-   */
-  public int getParentCount ()
-  {
-    return parents.size();
+    parent.removeListener(this);
+    parents_cached = null;
   }
 
   /**
@@ -299,23 +302,30 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
   public Object getStyleProperty(StyleKey key, Object defaultValue)
   {
     Object value = properties.get (key);
-    if (value == null)
-    {
-      ElementStyleSheet[] sheets = (ElementStyleSheet[])
-          parents.toArray(new ElementStyleSheet[parents.size()]);
+    if (value != null)
+      return value;
 
-      for (int i = 0; i < sheets.length; i++)
-      {
-        ElementStyleSheet st = sheets[i];
-        value = st.getStyleProperty(key, null);
-        if (value != null)
-        {
-          return value;
-        }
-      }
-      return defaultValue;
+    value = styleCache.get(key);
+    if (value != null)
+      return value;
+
+    if (parents_cached == null)
+    {
+      parents_cached = (ElementStyleSheet[])
+          parents.toArray(new ElementStyleSheet[parents.size()]);
     }
-    return value;
+
+    for (int i = 0; i < parents_cached.length; i++)
+    {
+      ElementStyleSheet st = parents_cached[i];
+      value = st.getStyleProperty(key, null);
+      if (value != null)
+      {
+        styleCache.put(key, value);
+        return value;
+      }
+    }
+    return defaultValue;
   }
 
   /**
@@ -335,6 +345,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
     if (value == null)
     {
       properties.remove (key);
+      styleChangeSupport.styleRemoved(key);
     }
     else
     {
@@ -345,6 +356,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
                                       + " is not assignable from " + key.getValueType());
       }
       properties.put (key, value);
+      styleChangeSupport.styleChanged(key, value);
     }
   }
 
@@ -385,7 +397,10 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
    */
   public boolean getBooleanStyleProperty (StyleKey key, boolean defaultValue)
   {
-    Boolean b = (Boolean) getStyleProperty(key, new Boolean(defaultValue));
+    Boolean b = (Boolean) getStyleProperty(key, null);
+    if (b == null)
+      return defaultValue;
+
     return b.booleanValue();
   }
 
@@ -496,5 +511,25 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
   public Iterator getDefinedPropertyNames ()
   {
     return properties.keySet().iterator();
+  }
+
+  public void addListener (StyleChangeListener l)
+  {
+    styleChangeSupport.addListener(l);
+  }
+
+  public void removeListener (StyleChangeListener l)
+  {
+    styleChangeSupport.removeListener(l);
+  }
+
+  public void styleChanged(ElementStyleSheet source, StyleKey key, Object value)
+  {
+    styleCache.remove(key);
+  }
+
+  public void styleRemoved(ElementStyleSheet source, StyleKey key)
+  {
+    styleCache.remove(key);
   }
 }
