@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.2 2002/05/07 14:21:46 mungady Exp $
+ * $Id: JFreeReport.java,v 1.3 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -68,7 +68,7 @@ import java.util.TreeMap;
  */
 public class JFreeReport implements JFreeReportConstants
 {
-  public static final ProjectInfo INFO = new JFreeReportInfo ();
+  public static final ProjectInfo INFO = new JFreeReportInfo();
 
   /** The report name. */
   private String name;
@@ -100,8 +100,9 @@ public class JFreeReport implements JFreeReportConstants
   /** The table model containing the data for the report. */
   private TableModel data;
 
-  /** The page format used for the report (determines the page size, and therefore the report
-   width). */
+  /** 
+   * The page format used for the report (determines the page size, and therefore the report
+   * width). */
   private PageFormat defaultPageFormat;
 
   private Group defaultGroup;
@@ -109,21 +110,21 @@ public class JFreeReport implements JFreeReportConstants
   /**
    * The default constructor. Creates an empty but fully initialized report.
    */
-  public JFreeReport ()
+  public JFreeReport()
   {
-    this.properties = new TreeMap ();
-    this.groups = new GroupList ();
+    this.properties = new TreeMap();
+    this.groups = new GroupList();
 
-    setName (null);
-    setReportHeader (new ReportHeader ());
-    setReportFooter (new ReportFooter ());
-    setPageHeader (new PageHeader ());
-    setPageFooter (new PageFooter ());
-    setData (new DefaultTableModel ());
-    setDefaultPageFormat (null);
-    setItemBand (new ItemBand ());
-    setGroups (new GroupList ());
-    setFunctions (new FunctionCollection ());
+    setName(null);
+    setReportHeader(new ReportHeader());
+    setReportFooter(new ReportFooter());
+    setPageHeader(new PageHeader());
+    setPageFooter(new PageFooter());
+    setData(new DefaultTableModel());
+    setDefaultPageFormat(null);
+    setItemBand(new ItemBand());
+    setGroups(new GroupList());
+    setFunctions(new FunctionCollection());
   }
 
   /**
@@ -139,32 +140,34 @@ public class JFreeReport implements JFreeReportConstants
    * @param defaultPageFormat The default page format.
    * @throws NullPointerException if one of the <i>not null</i>-parameters is null.
    */
-  public JFreeReport (String name,
-                      ReportHeader reportHeader,
-                      ReportFooter reportFooter,
-                      PageHeader pageHeader,
-                      PageFooter pageFooter,
-                      ItemBand itemBand,
-                      GroupList groups,
-                      Collection functions,
-                      TableModel data,
-                      PageFormat defaultPageFormat)
-          throws FunctionInitializeException
+  public JFreeReport(
+    String name,
+    ReportHeader reportHeader,
+    ReportFooter reportFooter,
+    PageHeader pageHeader,
+    PageFooter pageFooter,
+    ItemBand itemBand,
+    GroupList groups,
+    Collection functions,
+    TableModel data,
+    PageFormat defaultPageFormat)
+    throws FunctionInitializeException
   {
-    this ();
-    setName (name);
-    setReportHeader (reportHeader);
-    setReportFooter (reportFooter);
-    setPageHeader (pageHeader);
-    setPageFooter (pageFooter);
-    setData (data);
-    setDefaultPageFormat (defaultPageFormat);
+    this();
+    setName(name);
+    setReportHeader(reportHeader);
+    setReportFooter(reportFooter);
+    setPageHeader(pageHeader);
+    setPageFooter(pageFooter);
+    setData(data);
+    setDefaultPageFormat(defaultPageFormat);
 
-    setItemBand (itemBand);
-    setGroups (groups);
+    setItemBand(itemBand);
+    setGroups(groups);
 
     // store the functions in a Map using the function name as the key.
-    setFunctions (new FunctionCollection (functions));
+
+    setFunctions(new FunctionCollection(functions));
   }
 
   /**
@@ -173,11 +176,11 @@ public class JFreeReport implements JFreeReportConstants
    *
    * @param band The new item band.
    */
-  public void setItemBand (ItemBand band)
+  public void setItemBand(ItemBand band)
   {
     if (band == null)
     {
-      throw new NullPointerException ("An Itemband must not be null");
+      throw new NullPointerException("An Itemband must not be null");
     }
     this.itemBand = band;
   }
@@ -185,10 +188,10 @@ public class JFreeReport implements JFreeReportConstants
   /**
    * @returns the name of the report.
    */
-  public String getName ()
+  public String getName()
   {
-    Object name = getProperty (NAME_PROPERTY);
-    return String.valueOf (name);
+    Object name = getProperty(NAME_PROPERTY);
+    return String.valueOf(name);
   }
 
   /**
@@ -196,9 +199,9 @@ public class JFreeReport implements JFreeReportConstants
    *
    * @param name the name of the report. If name is null, the property will be removed.
    */
-  public void setName (String name)
+  public void setName(String name)
   {
-    setProperty (NAME_PROPERTY, name);
+    setProperty(NAME_PROPERTY, name);
   }
 
   /**
@@ -212,15 +215,15 @@ public class JFreeReport implements JFreeReportConstants
    * @param key The key.
    * @param value The value.
    */
-  public void setProperty (String key, Object value)
+  public void setProperty(String key, Object value)
   {
     if (value == null)
     {
-      this.properties.remove (key);
+      this.properties.remove(key);
     }
     else
     {
-      this.properties.put (key, value);
+      this.properties.put(key, value);
     }
   }
 
@@ -230,11 +233,11 @@ public class JFreeReport implements JFreeReportConstants
    * @param key The key.
    * @result The property value.
    */
-  public Object getProperty (String key)
+  public Object getProperty(String key)
   {
     if (key == null)
-      throw new NullPointerException ();
-    return this.properties.get (key);
+      throw new NullPointerException();
+    return this.properties.get(key);
   }
 
   /**
@@ -242,10 +245,10 @@ public class JFreeReport implements JFreeReportConstants
    *
    * @param header The report header.
    */
-  public void setReportHeader (ReportHeader header)
+  public void setReportHeader(ReportHeader header)
   {
     if (header == null)
-      throw new NullPointerException ("ReportHeader must not be null");
+      throw new NullPointerException("ReportHeader must not be null");
 
     this.reportHeader = header;
   }
@@ -253,7 +256,7 @@ public class JFreeReport implements JFreeReportConstants
   /**
    * @returns the report footer or null, if no report footer is defined.
    */
-  public ReportHeader getReportHeader ()
+  public ReportHeader getReportHeader()
   {
     return reportHeader;
   }
@@ -263,10 +266,10 @@ public class JFreeReport implements JFreeReportConstants
    *
    * @param footer The report footer.
    */
-  public void setReportFooter (ReportFooter footer)
+  public void setReportFooter(ReportFooter footer)
   {
     if (footer == null)
-      throw new NullPointerException ("ReportFooter must not be null");
+      throw new NullPointerException("ReportFooter must not be null");
 
     this.reportFooter = footer;
   }
@@ -274,7 +277,7 @@ public class JFreeReport implements JFreeReportConstants
   /**
    * @returns the report footer or null, if no report footer is defined.
    */
-  public ReportFooter getReportFooter ()
+  public ReportFooter getReportFooter()
   {
     return reportFooter;
   }
@@ -284,10 +287,10 @@ public class JFreeReport implements JFreeReportConstants
    *
    * @param header The page header.
    */
-  public void setPageHeader (PageHeader header)
+  public void setPageHeader(PageHeader header)
   {
     if (header == null)
-      throw new NullPointerException ("PageHeader must not be null");
+      throw new NullPointerException("PageHeader must not be null");
 
     this.pageHeader = header;
   }
@@ -295,7 +298,7 @@ public class JFreeReport implements JFreeReportConstants
   /**
    * @returns the page header or null, if no page header is defined.
    */
-  public PageHeader getPageHeader ()
+  public PageHeader getPageHeader()
   {
     return pageHeader;
   }
@@ -305,10 +308,10 @@ public class JFreeReport implements JFreeReportConstants
    *
    * @param footer The page footer.
    */
-  public void setPageFooter (PageFooter footer)
+  public void setPageFooter(PageFooter footer)
   {
     if (footer == null)
-      throw new NullPointerException ("PageFooter must not be null");
+      throw new NullPointerException("PageFooter must not be null");
 
     this.pageFooter = footer;
   }
@@ -316,7 +319,7 @@ public class JFreeReport implements JFreeReportConstants
   /**
    * @returns the page footer or null, if no page footer is defined.
    */
-  public PageFooter getPageFooter ()
+  public PageFooter getPageFooter()
   {
     return pageFooter;
   }
@@ -324,7 +327,7 @@ public class JFreeReport implements JFreeReportConstants
   /**
    * @returns the item band for the report.
    */
-  public ItemBand getItemBand ()
+  public ItemBand getItemBand()
   {
     return this.itemBand;
   }
@@ -334,9 +337,9 @@ public class JFreeReport implements JFreeReportConstants
    *
    * @param group The group.
    */
-  public void addGroup (Group group)
+  public void addGroup(Group group)
   {
-    groups.add (group);
+    groups.add(group);
   }
 
   /**
@@ -345,26 +348,26 @@ public class JFreeReport implements JFreeReportConstants
    * group contains no elements and starts at the first record of the
    * data and ends on the last record.
    */
-  public void setGroups (GroupList groupList)
+  public void setGroups(GroupList groupList)
   {
     if (groupList == null)
     {
-      throw new NullPointerException ("GroupList must not be null");
+      throw new NullPointerException("GroupList must not be null");
     }
 
-    this.groups.clear ();
-    Iterator it = groupList.iterator ();
-    while (it.hasNext ())
+    this.groups.clear();
+    Iterator it = groupList.iterator();
+    while (it.hasNext())
     {
-      addGroup ((Group) it.next ());
+      addGroup((Group) it.next());
     }
 
     // if this was an empty group, fix it by adding an default group
-    if (groups.size () == 0)
+    if (groups.size() == 0)
     {
-      Group defaultGroup = new Group ();
-      defaultGroup.setName ("default");
-      addGroup (defaultGroup);
+      Group defaultGroup = new Group();
+      defaultGroup.setName("default");
+      addGroup(defaultGroup);
     }
   }
 
@@ -372,7 +375,7 @@ public class JFreeReport implements JFreeReportConstants
    * Returns the list of groups for the report.
    * @return The list of groups for the report.
    */
-  public GroupList getGroups ()
+  public GroupList getGroups()
   {
     return this.groups;
   }
@@ -383,9 +386,9 @@ public class JFreeReport implements JFreeReportConstants
    *
    * @returns the number of groups in the report.
    */
-  public int getGroupCount ()
+  public int getGroupCount()
   {
-    return groups.size ();
+    return groups.size();
   }
 
   /**
@@ -395,15 +398,16 @@ public class JFreeReport implements JFreeReportConstants
    * @throws IndexOutOfBoundsException if the count is greater than the number of defined groups.
    * @returns the requested group.
    */
-  public Group getGroup (int count)
+  public Group getGroup(int count)
   {
     if (count < 0)
-      throw new IllegalArgumentException ("GroupCount must not be negative");
+      throw new IllegalArgumentException("GroupCount must not be negative");
 
-    if (count >= groups.size ())
-      throw new IndexOutOfBoundsException ("No such group defined. " + count + " vs. " + groups.size ());
+    if (count >= groups.size())
+      throw new IndexOutOfBoundsException(
+        "No such group defined. " + count + " vs. " + groups.size());
 
-    return (Group) groups.get (count);
+    return (Group) groups.get(count);
   }
 
   /**
@@ -411,10 +415,9 @@ public class JFreeReport implements JFreeReportConstants
    *
    * @param function The function.
    */
-  public void addFunction (Function function)
-          throws FunctionInitializeException
+  public void addFunction(Function function) throws FunctionInitializeException
   {
-    _functions.add (function);
+    _functions.add(function);
   }
 
   /**
@@ -422,7 +425,7 @@ public class JFreeReport implements JFreeReportConstants
    *
    * @return The function collection.
    */
-  public FunctionCollection getFunctions ()
+  public FunctionCollection getFunctions()
   {
     return _functions;
   }
@@ -432,11 +435,11 @@ public class JFreeReport implements JFreeReportConstants
    *
    * @param functions The collection of functions.
    */
-  public void setFunctions (FunctionCollection functions)
+  public void setFunctions(FunctionCollection functions)
   {
     if (functions == null)
     {
-      throw new NullPointerException ("Null-Function collection is not allowed!");
+      throw new NullPointerException("Null-Function collection is not allowed!");
     }
     else
     {
@@ -449,7 +452,7 @@ public class JFreeReport implements JFreeReportConstants
    *
    * @return The current page format.
    */
-  public PageFormat getDefaultPageFormat ()
+  public PageFormat getDefaultPageFormat()
   {
     return defaultPageFormat;
   }
@@ -460,7 +463,7 @@ public class JFreeReport implements JFreeReportConstants
    *
    * @returns the default format or null, if no such format has been specified.
    */
-  public void setDefaultPageFormat (PageFormat format)
+  public void setDefaultPageFormat(PageFormat format)
   {
     defaultPageFormat = format;
   }
@@ -472,10 +475,10 @@ public class JFreeReport implements JFreeReportConstants
    * @param data The data for the report.
    * @throws NullPointerException if the given data is null.
    */
-  public void setData (TableModel data)
+  public void setData(TableModel data)
   {
     if (data == null)
-      throw new NullPointerException ("Data must not be null");
+      throw new NullPointerException("Data must not be null");
 
     this.data = data;
   }
@@ -485,7 +488,7 @@ public class JFreeReport implements JFreeReportConstants
    *
    * @return the data in form of a table model.
    */
-  public TableModel getData ()
+  public TableModel getData()
   {
     return data;
   }
@@ -497,20 +500,20 @@ public class JFreeReport implements JFreeReportConstants
    * @returns The last state of the report, usually ReportState.Finish
    * @throws ReportProcessingException if the report did not proceed and got stuck.
    */
-  public ReportState processReport (OutputTarget target, boolean draw)
-          throws ReportProcessingException
+  public ReportState processReport(OutputTarget target, boolean draw)
+    throws ReportProcessingException
   {
 
     int page = 1;
-    ReportState rs = new ReportState.Start (this);
+    ReportState rs = new ReportState.Start(this);
 
-    rs = processPage (target, rs, draw);
-    target.endPage ();
+    rs = processPage(target, rs, draw);
+    target.endPage();
 
     while (!(rs instanceof ReportState.Finish))
     {
-      rs = processPage (target, rs, draw);
-      target.endPage ();
+      rs = processPage(target, rs, draw);
+      target.endPage();
     }
     return rs;
   }
@@ -529,62 +532,66 @@ public class JFreeReport implements JFreeReportConstants
    *             device.
    * @return The report state suitable for the next page or ReportState.Finish.
    */
-  public ReportState processPage (OutputTarget target, final ReportState currPage, boolean draw)
+  public ReportState processPage(
+    OutputTarget target,
+    final ReportState currPage,
+    boolean draw)
   {
-    ReportState state = (ReportState) currPage.clone ();
-    int page = state.getCurrentPage ();
+    ReportState state = (ReportState) currPage.clone();
+    int page = state.getCurrentPage();
     boolean pageDone = false;
-    ReportProcessor prc = new ReportProcessor (target, draw, pageFooter);
+    ReportProcessor prc = new ReportProcessor(target, draw, pageFooter);
 
-    FunctionCollection functions = state.getFunctions ();
-    ReportEvent event = new ReportEvent (this, state);
-    state.firePageStartedEvent (event);
+    FunctionCollection functions = state.getFunctions();
+    ReportEvent event = new ReportEvent(this, state);
+    state.firePageStartedEvent(event);
 
     // print the page header (if there is one) and measure the page footer (if there is one)...
-
     // on reportheader start
-    pageHeader.populateElements (state);
+
+    pageHeader.populateElements(state);
     if (page == 1)
     {
-      if (pageHeader.isDisplayOnFirstPage ())
+      if (pageHeader.isDisplayOnFirstPage())
       {
-        prc.printPageHeader (pageHeader);
+        prc.printPageHeader(pageHeader);
       }
     }
     else
     {
-      prc.printPageHeader (pageHeader);
+      prc.printPageHeader(pageHeader);
     }
 
     // Do some real work.  The report header and footer, and the page headers and footers are
     // just decorations, as far as the report state is concerned.  The state only changes in
     // the following code...
-    while (prc.isPageDone () == false)
+
+    while (prc.isPageDone() == false)
     {
-      state = state.advance (prc);
+      state = state.advance(prc);
     }
 
     // All work is done for this page. Just print the pageFooter and then return.
-    event = new ReportEvent (this, state);
-    state.firePageFinishedEvent (event);
+    event = new ReportEvent(this, state);
+    state.firePageFinishedEvent(event);
 
-    pageFooter.populateElements (state);
+    pageFooter.populateElements(state);
     if (page == 1)
     {
-      if (pageFooter.isDisplayOnFirstPage ())
+      if (pageFooter.isDisplayOnFirstPage())
       {
-        prc.printPageFooter (pageFooter);
+        prc.printPageFooter(pageFooter);
       }
     }
     else
     {
-      prc.printPageFooter (pageFooter);
+      prc.printPageFooter(pageFooter);
     }
 
     // return the state at the end of the page...
-    state.nextPage ();
-    return state;
 
+    state.nextPage();
+    return state;
   }
 
   /**
@@ -593,16 +600,16 @@ public class JFreeReport implements JFreeReportConstants
    * To work as expected, this method assumes that a lower group
    * includes all fields from an higher group.
    */
-  public boolean isLastItemInHigherGroups (int row, int groupIndex)
+  public boolean isLastItemInHigherGroups(int row, int groupIndex)
   {
-    if (row == data.getRowCount () - 1)
+    if (row == data.getRowCount() - 1)
       return true;
 
     boolean result = false;
     for (int g = groupIndex; g > ReportState.BEFORE_FIRST_GROUP; g--)
     {
-      Group group = getGroup (g);
-      if (group.isLastItemInGroup (getData (), row))
+      Group group = getGroup(g);
+      if (group.isLastItemInGroup(getData(), row))
       {
         return true;
       }
@@ -610,4 +617,3 @@ public class JFreeReport implements JFreeReportConstants
     return false;
   }
 }
-
