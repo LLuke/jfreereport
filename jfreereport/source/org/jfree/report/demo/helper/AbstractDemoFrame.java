@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractDemoFrame.java,v 1.3 2003/08/25 14:29:28 taqua Exp $
+ * $Id: AbstractDemoFrame.java,v 1.4 2004/03/16 15:09:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,7 +49,6 @@ import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 
 import org.jfree.report.demo.PreviewAction;
-import org.jfree.report.demo.resources.DemoResources;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.ResourceBundleUtils;
 

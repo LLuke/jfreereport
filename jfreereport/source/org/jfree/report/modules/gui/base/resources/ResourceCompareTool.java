@@ -24,7 +24,7 @@
  * ResourceCompareTool.java
  * ------------------------
  *
- * $Id: ResourceCompareTool.java,v 1.3 2003/08/24 15:08:18 taqua Exp $
+ * $Id: ResourceCompareTool.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.ResourceBundle;
 
 /**
  * The ResourceCompareTool provides simple reporting capabilities to compare a
@@ -66,7 +67,7 @@ public final class ResourceCompareTool
    * @param base the base name of the resource bundle.
    * @return the loaded resources or null, if there is no such translation.
    */
-  private static JFreeReportResources loadLocale(final String base, final String s)
+  private static ResourceBundle loadLocale(final String base, final String s)
   {
     try
     {
@@ -80,7 +81,7 @@ public final class ResourceCompareTool
         className = base;
       }
       final Class c = Thread.currentThread().getContextClassLoader().loadClass(className);
-      return (JFreeReportResources) c.newInstance();
+      return (ResourceBundle) c.newInstance();
     }
     catch (Exception e)
     {
@@ -99,8 +100,8 @@ public final class ResourceCompareTool
    */
   public static void executeTest(final String base, final String locale)
   {
-    final JFreeReportResources resources = loadLocale(base, null);
-    final JFreeReportResources compare = loadLocale(base, locale);
+    final ResourceBundle resources = loadLocale(base, null);
+    final ResourceBundle compare = loadLocale(base, locale);
 
     if (compare == null)
     {
@@ -108,25 +109,22 @@ public final class ResourceCompareTool
       System.exit(1);
     }
 
-    final Object[][] contentsRes = resources.getContents();
-    final Object[][] contentsComp = compare.getContents();
-    if (compare.getContents() == null)
-    {
-      throw new IllegalArgumentException("The given localisation is not a valid implementation");
-    }
+    final Enumeration baseKeys = resources.getKeys();
+    final Enumeration contentKeys = compare.getKeys();
+
     final Hashtable baseContentTable = new Hashtable();
     final Hashtable compContentTable = new Hashtable();
 
-    for (int i = 0; i < contentsRes.length; i++)
+    while (baseKeys.hasMoreElements())
     {
-      final String name = (String) contentsRes[i][0];
-      final Object value = contentsRes[i][1];
+      final String name = (String) baseKeys.nextElement();
+      final Object value = resources.getObject(name);
       baseContentTable.put(name, value);
     }
-    for (int i = 0; i < contentsComp.length; i++)
+    while (contentKeys.hasMoreElements())
     {
-      final String name = (String) contentsComp[i][0];
-      final Object value = contentsComp[i][1];
+      final String name = (String) contentKeys.nextElement();
+      final Object value = compare.getObject(name);
       compContentTable.put(name, value);
     }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.15 2003/11/07 18:33:54 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.16 2004/03/16 15:09:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,7 +49,6 @@ import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.gui.base.ResourceBundleUtils;
-import org.jfree.report.modules.gui.xls.resources.XLSExportResources;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
 

@@ -1,3 +1,5 @@
+Label printing (as seen in the card-demo)
+
 0.8.5:
   * Implement function sets (see #note-1030630)
   * pluggable input support (WMF, SVG etc)

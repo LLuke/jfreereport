@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HSSFCellStyleProducer.java,v 1.5 2003/08/25 14:29:32 taqua Exp $
+ * $Id: HSSFCellStyleProducer.java,v 1.6 2004/03/16 15:09:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -61,6 +61,52 @@ import org.jfree.report.style.ElementStyleSheet;
  */
 public class HSSFCellStyleProducer
 {
+  private static class HSSFCellStyleKey
+  {
+    private TableCellBackground background;
+    private ExcelDataCellStyle cellStyle;
+
+    public HSSFCellStyleKey (final TableCellBackground background,
+                             final ExcelDataCellStyle cellStyle)
+    {
+      this.background = background;
+      this.cellStyle = cellStyle;
+    }
+
+    public boolean equals (final Object o)
+    {
+      if (this == o)
+      {
+        return true;
+      }
+      if (!(o instanceof HSSFCellStyleKey))
+      {
+        return false;
+      }
+
+      final HSSFCellStyleKey hssfCellStyleKey = (HSSFCellStyleKey) o;
+
+      if (background != null ? !background.equals(hssfCellStyleKey.background) : hssfCellStyleKey.background != null)
+      {
+        return false;
+      }
+      if (cellStyle != null ? !cellStyle.equals(hssfCellStyleKey.cellStyle) : hssfCellStyleKey.cellStyle != null)
+      {
+        return false;
+      }
+
+      return true;
+    }
+
+    public int hashCode ()
+    {
+      int result;
+      result = (background != null ? background.hashCode() : 0);
+      result = 29 * result + (cellStyle != null ? cellStyle.hashCode() : 0);
+      return result;
+    }
+  }
+
   /** The workbook wide singleton instance of an empty cell. */
   private HSSFCellStyle emptyCellStyle;
 
@@ -112,30 +158,22 @@ public class HSSFCellStyleProducer
     return emptyCellStyle;
   }
 
-  private ExcelCellStyle createCachedStyle
-          (final MetaElement element, final TableCellBackground bg)
+  private ExcelDataCellStyle createCachedStyle(final MetaElement element)
   {
+    final Color textColor = (Color) element.getProperty(ElementStyleSheet.PAINT);
+    final ElementAlignment horizontal =
+            (ElementAlignment) element.getProperty(ElementStyleSheet.ALIGNMENT);
+    final ElementAlignment vertical =
+            (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT);
+    final String dataStyle =
+            (String) element.getProperty(ExcelProcessor.DATA_FORMAT_STRING);
+    final boolean wrapText =
+            element.getProperty(ExcelProcessor.WRAP_TEXT, "true").equals("true");
 
-    if (element != null)
-    {
-      final Color textColor = (Color) element.getProperty(ElementStyleSheet.PAINT);
-      final HSSFFontWrapper fontDefinition =
-              new HSSFFontWrapper(element.getFontDefinitionProperty(), textColor);
-      final ElementAlignment horizontal =
-              (ElementAlignment) element.getProperty(ElementStyleSheet.ALIGNMENT);
-      final ElementAlignment vertical =
-              (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT);
-      final String dataStyle =
-              (String) element.getProperty(ExcelProcessor.DATA_FORMAT_STRING);
-      final boolean wrapText =
-              element.getProperty(ExcelProcessor.WRAP_TEXT, "true").equals("true");
-
-      final ExcelCellStyle style = new ExcelCellStyle
-              (fontDefinition, textColor, horizontal, vertical,
-                      dataStyle, wrapText, bg);
-      return style;
-    }
-    return new ExcelCellStyle(bg);
+    final ExcelDataCellStyle style = new ExcelDataCellStyle
+            (element.getFontDefinitionProperty(), textColor, horizontal,
+                    vertical, dataStyle, wrapText);
+    return style;
   }
 
   /**
@@ -149,8 +187,10 @@ public class HSSFCellStyleProducer
    */
   public HSSFCellStyle createCellStyle(final MetaElement element, final TableCellBackground bg)
   {
-    final ExcelCellStyle styleKey = createCachedStyle(element, bg);
-    if (styleCache.containsKey(styleKey))
+    final ExcelDataCellStyle style = createCachedStyle(element);
+    // check, whether that style is already created
+    final HSSFCellStyleKey styleKey = new HSSFCellStyleKey(bg, style);
+    if (styleCache.containsKey(style))
     {
       return (HSSFCellStyle) styleCache.get (styleKey);
     }
@@ -160,12 +200,14 @@ public class HSSFCellStyleProducer
     hssfCellStyle.setFillForegroundColor(WHITE_INDEX);
     hssfCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 
-    if (element != null)
+    if (style != null)
     {
-      hssfCellStyle.setAlignment(convertAlignment(styleKey.getHorizontalAlignment()));
-      hssfCellStyle.setVerticalAlignment(convertAlignment(styleKey.getVerticalAlignment()));
-      hssfCellStyle.setFont(fontFactory.getExcelFont(styleKey.getFontDefinition()));
-      hssfCellStyle.setDataFormat(dataFormat.getFormat(styleKey.getDataStyle()));
+      final HSSFFontWrapper wrapper = new HSSFFontWrapper
+              (style.getFontDefinition(), style.getTextColor());
+      hssfCellStyle.setAlignment(convertAlignment(style.getHorizontalAlignment()));
+      hssfCellStyle.setVerticalAlignment(convertAlignment(style.getVerticalAlignment()));
+      hssfCellStyle.setFont(fontFactory.getExcelFont(wrapper));
+      hssfCellStyle.setDataFormat(dataFormat.getFormat(style.getDataStyle()));
     }
     if (bg != null)
     {
@@ -194,7 +236,6 @@ public class HSSFCellStyleProducer
         hssfCellStyle.setFillForegroundColor(ExcelColorSupport.getNearestColor(bg.getColor()));
       }
     }
-
     styleCache.put(styleKey, hssfCellStyle);
     return hssfCellStyle;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintingPlugin.java,v 1.12 2003/11/15 18:22:47 taqua Exp $
+ * $Id: PrintingPlugin.java,v 1.13 2004/03/16 15:09:45 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,7 +46,6 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.modules.gui.base.ResourceBundleUtils;
-import org.jfree.report.modules.gui.print.resources.PrintExportResources;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
 

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelProcessor.java,v 1.7 2003/09/09 15:52:53 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.8 2004/03/16 15:09:54 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import org.jfree.report.ReportProcessingException;
 import org.jfree.report.modules.output.meta.MetaBandProducer;
 import org.jfree.report.modules.output.table.base.TableCreator;
 import org.jfree.report.modules.output.table.base.TableProcessor;
+import org.jfree.report.modules.output.table.base.LayoutCreator;
 import org.jfree.report.style.StyleKey;
 
 /**
@@ -126,8 +127,8 @@ public class ExcelProcessor extends TableProcessor
 
   protected TableCreator createContentCreator ()
   {
-    // todo implement me
-    return null;
+    final LayoutCreator lc = getLayoutCreator();
+    return new ExcelContentCreator(lc.getSheetLayoutCollection(), getOutputStream());
   }
 
   protected MetaBandProducer createMetaBandProducer ()

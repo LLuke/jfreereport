@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ReportProgressBar.java,v 1.2 2004/03/16 15:32:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,7 +45,6 @@ import javax.swing.SwingUtilities;
 
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
-import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 
 public class ReportProgressBar extends JProgressBar implements RepaginationListener
 {
@@ -101,7 +100,7 @@ public class ReportProgressBar extends JProgressBar implements RepaginationListe
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
-      JFreeReportResources.class.getName();
+          "org.jfree.report.modules.gui.base.resources.jfreereport-resources";
 
   /**
    * Creates a horizontal progress bar
