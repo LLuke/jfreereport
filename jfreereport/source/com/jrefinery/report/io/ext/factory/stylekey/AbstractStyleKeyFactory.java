@@ -53,7 +53,7 @@ import java.util.Iterator;
  */
 public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
 {
-  /** ?? */
+  /** the parser configuration property name for this factory. */
   public static final String OBJECT_FACTORY_TAG = "object-factory";
 
   /** Storage for the keys. */  

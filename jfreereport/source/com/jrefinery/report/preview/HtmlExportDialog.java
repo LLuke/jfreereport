@@ -30,7 +30,7 @@
                      based on PDFSaveDialog by Thomas Morgner, David Gilbert (for Simba Management Limited) and contributors
  * Contributor(s):
  *
- * $Id: HtmlExportDialog.java,v 1.8 2003/02/03 19:33:02 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.9 2003/02/04 17:56:17 taqua Exp $
  *
  * Changes
  * --------
@@ -1176,7 +1176,6 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
     }
 
     File dataDir = new File (f.getParentFile(), getDirDataFilename());
-    Log.debug ("Validate DataDirectory: " + dataDir);
     if (dataDir.exists())
     {
       // dataDirectory does exist ... if no directory : fail

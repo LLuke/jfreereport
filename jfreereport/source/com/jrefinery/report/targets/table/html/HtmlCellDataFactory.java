@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellDataFactory.java,v 1.8 2003/02/20 00:39:37 taqua Exp $
+ * $Id: HtmlCellDataFactory.java,v 1.9 2003/02/21 18:12:49 taqua Exp $
  *
  * Changes
  * -------
@@ -130,7 +130,7 @@ public class HtmlCellDataFactory extends AbstractTableCellDataFactory
       return createBackground(e, (Shape) value, rect);
     }
 
-    Log.debug ("Element " + e + " ignored");
+    //Log.debug ("Element " + e + " ignored");
     return null;
   }
 

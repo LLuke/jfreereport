@@ -102,7 +102,8 @@ public class ColorObjectDescription extends AbstractObjectDescription
    * 
    * @param o  the object (should be an instance of <code>Color</code>).
    * 
-   * @throws ObjectFactoryException ??
+   * @throws ObjectFactoryException if there is a problem while reading the
+   * properties of the given object.
    */
   public void setParameterFromObject(Object o) throws ObjectFactoryException
   {

@@ -83,7 +83,8 @@ public class DecimalFormatObjectDescription extends BeanObjectDescription
    * 
    * @param o  the object (should be an instance of <code>DecimalFormat</code>).
    * 
-   * @throws ObjectFactoryException ??
+   * @throws ObjectFactoryException if there is a problem while reading the
+   * properties of the given object.
    */
   public void setParameterFromObject(Object o)
       throws ObjectFactoryException

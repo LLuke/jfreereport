@@ -2,7 +2,7 @@
  * Date: Feb 12, 2003
  * Time: 10:32:57 AM
  *
- * $Id: PaintComponentFunction.java,v 1.1 2003/02/12 10:00:01 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.2 2003/02/22 18:14:08 taqua Exp $
  */
 package com.jrefinery.report.function;
 
@@ -53,7 +53,7 @@ public class PaintComponentFunction extends AbstractFunction implements LayoutLi
    * @param band
    * @return
    */
-  public Element findElement (Band band)
+  private Element findElement (Band band)
   {
     Element[] elements = band.getElementArray();
     for (int i = 0; i < elements.length; i++)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ParserConfigWriter.java,v 1.4 2003/02/21 11:31:13 mungady Exp $
  *
  * Changes
  * -------
@@ -96,8 +96,9 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
    * 
    * @param w  the writer.
    * @param tagName  the tag name.
-   * @param it  ??
-   * 
+   * @param it  an iterator over a collection of factories, which should be defined
+   * for the target report.
+   *
    * @throws IOException if there is an I/O problem.
    */
   public void writeFactory (Writer w, String tagName, Iterator it)

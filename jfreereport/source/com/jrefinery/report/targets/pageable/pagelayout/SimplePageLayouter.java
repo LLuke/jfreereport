@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.31 2003/02/20 21:05:01 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.32 2003/02/21 16:31:30 taqua Exp $
  *
  * Changes
  * -------
@@ -636,7 +636,6 @@ public class SimplePageLayouter extends PageLayouter
     {
       createSaveState(b);
       setStartNewPage(true);
-      Log.debug ("Page Ended");
       return false;
     }
     if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
@@ -925,7 +924,6 @@ public class SimplePageLayouter extends PageLayouter
     // if there was a pagebreak_after_print, there is no band to print for now
     if (state.getBand() != null)
     {
-      Log.debug ("Printing band on Restart: " + state.getBand());
       print(state.getBand(), false);
     }
     clearSaveState();

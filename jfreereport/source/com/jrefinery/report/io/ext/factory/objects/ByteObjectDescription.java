@@ -69,14 +69,15 @@ public class ByteObjectDescription extends AbstractObjectDescription
    * Sets the parameters of this description object to match the supplied object.
    * 
    * @param o  the object (should be an instance of <code>Byte</code>.
-   * 
-   * @throws ObjectFactoryException ??
+   * @throws ObjectFactoryException if there is a problem while reading the
+   * properties of the given object.
    */
   public void setParameterFromObject(Object o) throws ObjectFactoryException
   {
     if (o instanceof Byte)
     {
-      setParameter("value", String.valueOf(o));
+      throw new ObjectFactoryException("The given object is no java.lang.Byte.");
     }
+    setParameter("value", String.valueOf(o));
   }
 }

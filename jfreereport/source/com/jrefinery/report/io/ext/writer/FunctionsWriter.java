@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.5 2003/02/21 11:31:13 mungady Exp $
+ * $Id: FunctionsWriter.java,v 1.6 2003/02/21 18:12:15 taqua Exp $
  *
  * Changes
  * -------
@@ -81,7 +81,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    * @param writer  the writer.
    * 
    * @throws IOException if there is an I/O problem.
-   * @throws ReportWriterException ??
+   * @throws ReportWriterException if the report function definition could not be written.
    */
   public void write(Writer writer)
       throws IOException, ReportWriterException
@@ -149,7 +149,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    * @param writer  the writer.
    * 
    * @throws IOException if there is an I/O problem.
-   * @throws ReportWriterException ??
+   * @throws ReportWriterException if the report definition could not be written.
    */
   private void writePropertyRefs (Writer writer)
       throws IOException, ReportWriterException
@@ -195,7 +195,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    * @param o  the object.
    * 
    * @throws IOException if there is an I/O problem.
-   * @throws ReportWriterException ??
+   * @throws ReportWriterException if the report definition could not be written.
    */
   private void writeObjectDescription (Writer writer, ObjectDescription od, Object o)
     throws IOException, ReportWriterException

@@ -70,14 +70,15 @@ public class BooleanObjectDescription extends AbstractObjectDescription
    * instance of <code>Boolean</code>.
    * 
    * @param o  the object.
-   * 
-   * @throws ObjectFactoryException ??.
+   * @throws ObjectFactoryException if there is a problem while reading the
+   * properties of the given object.
    */
   public void setParameterFromObject(Object o) throws ObjectFactoryException
   {
     if (o instanceof Boolean)
     {
-      setParameter("value", String.valueOf(o));
+      throw new ObjectFactoryException("The given object is no java.lang.Boolean.");
     }
+    setParameter("value", String.valueOf(o));
   }
 }

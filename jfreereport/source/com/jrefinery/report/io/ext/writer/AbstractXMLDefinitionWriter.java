@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.7 2003/02/21 11:31:13 mungady Exp $
  *
  * Changes
  * -------
@@ -368,12 +368,15 @@ public abstract class AbstractXMLDefinitionWriter
   }
 
   /**
-   * ??
+   * Writes the report definition portion. Every DefinitionWriter handles one
+   * or more elements of the JFreeReport object tree, DefinitionWriter traverse
+   * the object tree and write the known objects or forward objects to other
+   * definition writers.
    *  
    * @param writer  the writer.
    * 
    * @throws IOException if there is an I/O problem.
-   * @throws ReportWriterException ??
+   * @throws ReportWriterException if the report serialisation failed.
    */
   public abstract void write (Writer writer) throws IOException, ReportWriterException;
 

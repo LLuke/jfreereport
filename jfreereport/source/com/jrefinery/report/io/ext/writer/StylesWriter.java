@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: StylesWriter.java,v 1.4 2003/02/21 11:31:13 mungady Exp $
  *
  * Changes
  * -------
@@ -167,7 +167,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
     for (int i = 0; i < parents.size(); i++)
     {
       ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
-      collectStyleSheet(es);
+      addCollectableStyleSheet(es);
     }
     collectStylesFromElement(band);
   }
@@ -185,16 +185,17 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
     for (int i = 0; i < parents.size(); i++)
     {
       ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
-      collectStyleSheet(es);
+      addCollectableStyleSheet(es);
     }
   }
 
   /**
-   * ??
+   * Adds a defined stylesheet to the styles collection. If the stylesheet
+   * is one of the default stylesheets, then it is not collected.
    * 
    * @param es  the element style sheet.
    */
-  private void collectStyleSheet (ElementStyleSheet es)
+  private void addCollectableStyleSheet (ElementStyleSheet es)
   {
     if (es == BandDefaultStyleSheet.getBandDefaultStyle())
     {  

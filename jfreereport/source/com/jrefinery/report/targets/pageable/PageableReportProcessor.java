@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.25 2003/02/17 16:14:16 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.26 2003/02/20 21:05:00 taqua Exp $
  *
  * Changes
  * -------
@@ -436,7 +436,6 @@ public class PageableReportProcessor
         }
       }
     }
-    Log.debug ("Returning State: " + state + " -> " + state.getCurrentPage());
     return state;
   }
 

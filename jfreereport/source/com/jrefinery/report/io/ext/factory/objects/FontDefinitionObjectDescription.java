@@ -112,7 +112,8 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
    * 
    * @return The parameter value.
    * 
-   * @throws ObjectFactoryException ??
+   * @throws ObjectFactoryException if there is a problem while reading the
+   * properties of the given object.
    */
   private int getIntegerParameter (String name)
     throws ObjectFactoryException

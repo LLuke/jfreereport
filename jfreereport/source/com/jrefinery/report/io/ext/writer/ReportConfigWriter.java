@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ReportConfigWriter.java,v 1.5 2003/02/21 11:31:13 mungady Exp $
  *
  * Changes
  * -------
@@ -224,7 +224,7 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
     }
     catch (Exception e)
     {
-      Log.debug ("Unable to translate the page size");
+      Log.info ("Unable to translate the page size", e);
     }
     return null;
   }

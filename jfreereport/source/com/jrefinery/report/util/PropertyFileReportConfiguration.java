@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyFileReportConfiguration.java,v 1.2 2003/02/02 23:43:53 taqua Exp $
+ * $Id: PropertyFileReportConfiguration.java,v 1.3 2003/02/05 17:56:03 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ public class PropertyFileReportConfiguration extends ReportConfiguration
     }
     else
     {
-      Log.debug ("File: " + fileName);
+      Log.debug ("Report configuration file not found: " + fileName);
     }
 
   }

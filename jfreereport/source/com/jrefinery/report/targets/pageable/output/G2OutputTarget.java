@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.20 2003/02/18 19:37:32 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.21 2003/02/22 18:14:08 taqua Exp $
  *
  * Changes
  * -------
@@ -442,11 +442,6 @@ public class G2OutputTarget extends AbstractOutputTarget
     Rectangle2D myBounds = image.getBoundsScaled();
     Rectangle2D bounds = getOperationBounds();
 
-    Log.debug ("DrawImage: " + myBounds);
-    Log.debug ("DrawImage: " + image.getBounds());
-    Log.debug ("DrawImage: " + image.getScaleX());
-    Log.debug ("DrawImage: " + image.getScaleY());
-
     if (image.getImage() != null)
     {
       Shape s = g2.getClip();
@@ -462,8 +457,8 @@ public class G2OutputTarget extends AbstractOutputTarget
       catch (Throwable th)
       {
         // just in case the image drawing caused trouble ..
-        Log.debug (new Log.MemoryUsageMessage ("Failure at drawImage"));
-        Log.debug (th);
+        Log.warn (new Log.MemoryUsageMessage ("Failure at drawImage"));
+        Log.warn (th);
       }
       g2.setTransform(transform);
       g2.setClip(s);

@@ -38,6 +38,9 @@
 
 package com.jrefinery.report.io.ext.factory.objects;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
+
 /**
  * An object-description for a class loader.
  * 
@@ -77,10 +80,24 @@ public class ClassLoaderObjectDescription extends AbstractObjectDescription
    * 
    * @param o  the object.
    * 
-   * @throws ObjectFactoryException ??
+   * @throws ObjectFactoryException if there is a problem while reading the
+   * properties of the given object.
    */
   public void setParameterFromObject(Object o) throws ObjectFactoryException
   {
-    setParameter("value", o.getClass().getName());
+    if (o == null) throw new ObjectFactoryException("The Object is invalid");
+    try
+    {
+      Constructor c = o.getClass().getConstructor(new Class[0]);
+      if (Modifier.isPublic(c.getModifiers()) == false)
+      {
+        throw new ObjectFactoryException("The given object has no public default constructor.");
+      }
+      setParameter("value", o.getClass().getName());
+    }
+    catch (Exception e)
+    {
+      throw new ObjectFactoryException("The given object has no default constructor.");
+    }
   }
 }

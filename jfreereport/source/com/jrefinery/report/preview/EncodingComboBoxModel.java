@@ -2,7 +2,7 @@
  * Date: Jan 21, 2003
  * Time: 7:54:06 PM
  *
- * $Id: EncodingComboBoxModel.java,v 1.6 2003/02/08 19:32:06 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.7 2003/02/19 17:16:35 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -445,7 +445,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
     catch (UnsupportedEncodingException ue)
     {
       knownEncodings.put (encoding, Boolean.FALSE);
-      Log.debug (new Log.SimpleMessage ("Encoding ", encoding, " is not supported."));
+      Log.info (new Log.SimpleMessage ("Encoding ", encoding, " is not supported."));
       return false;
     }
   }

@@ -2,7 +2,7 @@
  * Date: Jan 26, 2003
  * Time: 6:19:12 PM
  *
- * $Id: IOUtils.java,v 1.5 2003/02/02 23:43:53 taqua Exp $
+ * $Id: IOUtils.java,v 1.6 2003/02/03 18:52:47 taqua Exp $
  */
 package com.jrefinery.report.util;
 
@@ -115,7 +115,6 @@ public class IOUtils
       List urlName = parseName(url.getFile());
       List baseName = parseName(baseURL.getFile());
       int commonIndex = startsWithUntil(urlName, baseName);
-      Log.debug ("CommonIndex: " + commonIndex);
       if (commonIndex == 0)
       {
         return url.toExternalForm();
@@ -143,9 +142,6 @@ public class IOUtils
         }
       }
 
-      Log.debug ("BaseName= " + baseName);
-      Log.debug ("URLName= " + urlName);
-      Log.debug ("CommonIndex = " + commonIndex);
       retval.addAll (urlName.subList(commonIndex, urlName.size()));
       return formatName(retval);
     }

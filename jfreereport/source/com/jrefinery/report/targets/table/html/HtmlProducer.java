@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.15 2003/02/04 17:56:32 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.16 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -396,7 +396,7 @@ public class HtmlProducer extends TableProducer
 
       if (!printed)
       {
-        Log.debug ("The Row at " + y + " was not printed");
+        //Log.debug ("The Row at " + y + " was not printed");
       }
       pout.println("</tr>");
     }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PlainTextOutputTarget.java,v 1.12 2003/02/21 12:17:30 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.13 2003/02/21 16:31:30 taqua Exp $
  *
  * Changes
  * -------
@@ -290,8 +290,6 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
       // 1 inch = 72 point
       characterWidth = (72f / (float)commandSet.getDefaultCPI());
       characterHeight = (72f / (float) commandSet.getDefaultLPI());
-      Log.debug ("CharacterWidth:  " + characterWidth);
-      Log.debug ("CharacterHeight: " + characterHeight);
     }
     catch (Exception e)
     {

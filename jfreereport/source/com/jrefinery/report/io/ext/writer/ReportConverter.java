@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ReportConverter.java,v 1.6 2003/02/21 11:31:13 mungady Exp $
  *
  * Changes
  * -------
@@ -77,7 +77,8 @@ public class ReportConverter
    * @param w  a character stream writer.
    * 
    * @throws IOException if there is an I/O problem.
-   * @throws ReportWriterException ??.
+   * @throws ReportWriterException if there were problems while serializing
+   * the report definition.
    */
   public void write (JFreeReport report, Writer w)
     throws IOException, ReportWriterException
@@ -90,8 +91,6 @@ public class ReportConverter
     writer.addTemplateCollection(new DefaultTemplateCollection());
     writer.addElementFactory(new DefaultElementFactory());
     writer.addDataSourceFactory(new DefaultDataSourceFactory());
-
-    Log.debug ("Now Writing:");
     writer.write(w);
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.9 2003/02/02 23:43:50 taqua Exp $
+ * $Id: ElementFactory.java,v 1.10 2003/02/04 17:56:12 taqua Exp $
  *
  * Changes
  * -------
@@ -380,7 +380,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   {
     String elementName = getNameGenerator().generateName(atts.getValue("name"));
     String elementSource = atts.getValue("src");
-    Log.debug("Loading: " + getContentBase() + " " + elementSource + " as image");
+    //Log.debug("Loading: " + getContentBase() + " " + elementSource + " as image");
     try
     {
       boolean elementScale = ParserUtil.parseBoolean(atts.getValue("scale"), true);

@@ -84,7 +84,8 @@ public class SimpleDateFormatObjectDescription extends BeanObjectDescription
    * 
    * @param o  the object.
    * 
-   * @throws ObjectFactoryException ??.
+   * @throws ObjectFactoryException if there is a problem while reading the
+   * properties of the given object.
    */
   public void setParameterFromObject(Object o)
       throws ObjectFactoryException

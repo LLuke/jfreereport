@@ -106,11 +106,9 @@ public class ImageFieldTemplate extends AbstractTemplate implements DataRowConne
    */
   public Object clone() throws CloneNotSupportedException
   {
-    Log.debug ("PreClone: dataRow = " + dataRowDataSource.getDataRow());
     ImageFieldTemplate template = (ImageFieldTemplate) super.clone();
     template.imageRefFilter = (ImageRefFilter) imageRefFilter.clone();
     template.dataRowDataSource = (DataRowDataSource) template.imageRefFilter.getDataSource();
-    Log.debug ("PostClone: dataRow = " + template.dataRowDataSource.getDataRow());
     return template;
   }
 
@@ -123,7 +121,6 @@ public class ImageFieldTemplate extends AbstractTemplate implements DataRowConne
    */
   public void connectDataRow(DataRow row) throws IllegalStateException
   {
-    Log.debug ("Connect dataRow");
     dataRowDataSource.connectDataRow(row);
   }
 
@@ -139,7 +136,6 @@ public class ImageFieldTemplate extends AbstractTemplate implements DataRowConne
    */
   public void disconnectDataRow(DataRow row) throws IllegalStateException
   {
-    Log.debug ("Disconnect dataRow");
     dataRowDataSource.disconnectDataRow(row);
   }
   

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFProducer.java,v 1.2 2003/02/02 23:43:53 taqua Exp $
+ * $Id: RTFProducer.java,v 1.3 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -131,7 +131,6 @@ public class RTFProducer extends TableProducer
     throws DocumentException
   {
     Table table = new Table(layout.getWidth(), layout.getHeight());
-    Log.debug ("Create table with: " + layout.getWidth() + " -> " + layout.getHeight());
     table.setAutoFillEmptyCells(false);
 
     for (int y = 0; y < layout.getHeight(); y++)
@@ -184,7 +183,6 @@ public class RTFProducer extends TableProducer
           cell.setColspan(gridPosition.getColSpan());
         }
 
-        Log.debug ("Will Add cell on : " + x + " , "  +  y);
         table.addCell(cell, y, x);
         x += gridPosition.getColSpan() - 1;
         printed = true;
@@ -192,7 +190,7 @@ public class RTFProducer extends TableProducer
 
       if (!printed)
       {
-        Log.debug ("The Row at " + y + " was not printed");
+//        Log.debug ("The Row at " + y + " was not printed");
       }
     }
 

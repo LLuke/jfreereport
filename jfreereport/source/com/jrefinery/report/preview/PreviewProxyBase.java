@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 6:50:48 PM
  *
- * $Id: PreviewProxyBase.java,v 1.8 2003/02/18 19:37:27 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.9 2003/02/20 21:04:58 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -841,7 +841,7 @@ public class PreviewProxyBase extends JComponent
       }
       catch (SAXException nfe)
       {
-        Log.debug ("Invalid values for preferred viewport size");
+        Log.warn ("Preferred viewport size is defined, but the specified values are invalid.");
       }
     }
 
@@ -865,7 +865,7 @@ public class PreviewProxyBase extends JComponent
       }
       catch (SAXException nfe)
       {
-        Log.debug ("Invalid values for maximum viewport size");
+        Log.warn ("Maximum viewport size is defined, but the specified values are invalid.");
       }
     }
   }

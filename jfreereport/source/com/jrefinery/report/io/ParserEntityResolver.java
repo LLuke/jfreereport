@@ -2,7 +2,7 @@
  * Date: Feb 1, 2003
  * Time: 5:56:29 PM
  *
- * $Id: ParserEntityResolver.java,v 1.2 2003/02/04 17:56:09 taqua Exp $
+ * $Id: ParserEntityResolver.java,v 1.3 2003/02/12 17:36:06 taqua Exp $
  */
 package com.jrefinery.report.io;
 
@@ -43,7 +43,7 @@ public class ParserEntityResolver implements EntityResolver
     }
     else
     {
-      Log.debug ("Could not validate location: " + location);
+      Log.warn ("Validate location failed for location: " + location);
       return false;
     }
   }
@@ -94,7 +94,7 @@ public class ParserEntityResolver implements EntityResolver
         URL location = getDTDLocation(publicID);
         if (location == null)
         {
-          Log.debug ("PublicID " + publicID + " is not registered");
+          //Log.debug ("PublicID " + publicID + " is not registered");
           return null;
         }
         return new InputSource(location.openStream());
@@ -115,12 +115,11 @@ public class ParserEntityResolver implements EntityResolver
       // cannot validate without public id ...
       if (publicId == null)
       {
-        Log.debug ("No PUBLIC ID, cannot continue");
+        //Log.debug ("No PUBLIC ID, cannot continue");
         return null;
       }
 
       URL location = getDTDLocation(publicId);
-      Log.debug ("PUBLIC ID ok, " + location);
       return new InputSource(location.openStream());
     }
     catch (IOException ioe)

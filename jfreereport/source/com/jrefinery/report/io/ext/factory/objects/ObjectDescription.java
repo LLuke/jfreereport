@@ -106,7 +106,8 @@ public interface ObjectDescription
    * 
    * @param o  the object.
    * 
-   * @throws ObjectFactoryException if there is a problem.
+   * @throws ObjectFactoryException if there is a problem while reading the
+   * properties of the given object.
    */
   public void setParameterFromObject (Object o) throws ObjectFactoryException;
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: StyleWriter.java,v 1.4 2003/02/21 11:31:13 mungady Exp $
  *
  * Changes
  * -------
@@ -117,7 +117,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
   }
 
   /**
-   * ??
+   * Writes a stylekey.
    * 
    * @param w  the character stream writer.
    * @param key  the key.

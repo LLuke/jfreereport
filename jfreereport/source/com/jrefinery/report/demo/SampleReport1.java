@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.14 2003/01/16 15:35:35 taqua Exp $
+ * $Id: SampleReport1.java,v 1.15 2003/01/29 03:13:00 taqua Exp $
  *
  * Changes:
  * --------
@@ -473,7 +473,6 @@ public class SampleReport1
     report.setItemBand(createItemBand());
     report.setFunctions(createFunctions());
     report.setPropertyMarked("report.date", true);
-    Log.debug ("Is Marked: " + report.isPropertyMarked("report.date"));
     return report;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellDataFactory.java,v 1.1 2003/02/01 22:10:37 taqua Exp $
+ * $Id: RTFCellDataFactory.java,v 1.2 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -93,7 +93,6 @@ public class RTFCellDataFactory extends AbstractTableCellDataFactory
       return createBackground(e, (Shape) value, rect);
     }
 
-    Log.debug ("Element " + e + " ignored");
     return null;
   }
 }

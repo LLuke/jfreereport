@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.15 2003/02/17 16:07:21 taqua Exp $
+ * $Id: PageLayouter.java,v 1.16 2003/02/20 21:05:01 taqua Exp $
  *
  * Changes
  * -------
@@ -501,9 +501,6 @@ public abstract class PageLayouter extends AbstractFunction
     {
       if (anchestor.getCurrentPage() != 1)
       {
-        Log.debug ("Anchestor: "+ anchestor);
-        Log.debug ("Anchestor: "+ anchestor.getCurrentDataItem());
-        Log.debug ("Anchestor: "+ anchestor.getCurrentGroupIndex());
         throw new IllegalStateException("State is null, but this is not the first page." + anchestor.getCurrentPage());
       }
     }

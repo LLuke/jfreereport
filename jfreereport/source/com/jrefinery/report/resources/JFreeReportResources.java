@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.43 2003/02/16 19:02:38 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.44 2003/02/19 22:14:01 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -143,13 +143,13 @@ public class JFreeReportResources extends ListResourceBundle
     URL in = res.getClass ().getClassLoader ().getResource (filename);
     if (in == null)
     {
-      Log.debug ("Unable to load file: " + filename);
+      Log.warn ("Unable to find file in the class path: " + filename);
       return new ImageIcon (createTransparentImage(1, 1));
     }
     Image img = Toolkit.getDefaultToolkit ().createImage (in);
     if (img == null)
     {
-      Log.warn ("Unable to instantiate the image " + filename);
+      Log.warn ("Unable to instantiate the image: " + filename);
       return new ImageIcon (createTransparentImage(1, 1));
     }
     return new ImageIcon (img);

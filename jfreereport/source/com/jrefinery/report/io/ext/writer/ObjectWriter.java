@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ObjectWriter.java,v 1.5 2003/02/21 11:31:13 mungady Exp $
  *
  * Changes
  * -------
@@ -128,7 +128,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
    * @param writer  the writer.
    * 
    * @throws IOException if there is an I/O problem.
-   * @throws ReportWriterException ??.
+   * @throws ReportWriterException if the object could not be written.
    */
   public void write(Writer writer) throws IOException, ReportWriterException
   {
@@ -175,7 +175,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
       parameterDescription = cc.getDescriptionForClass(o.getClass());
       if (parameterDescription == null)
       {
-        Log.debug ("Unable to get parameter description for class: " + o.getClass());
+        Log.info ("Unable to get parameter description for class: " + o.getClass());
       }
     }
     return parameterDescription;
@@ -188,7 +188,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
    * @param parameterName  the parameter name.
    * 
    * @throws IOException if there is an I/O problem.
-   * @throws ReportWriterException ??.
+   * @throws ReportWriterException if transforming the report into a stream failed.
    */
   protected void writeParameter (Writer writer, String parameterName)
     throws IOException, ReportWriterException
@@ -196,7 +196,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     Object parameterValue = getObjectDescription().getParameter(parameterName);
     if (parameterValue == null)
     {
-      Log.debug ("Parameter " + parameterName + " is null. The Parameter will not be defined.");
+      Log.info ("Parameter " + parameterName + " is null. The Parameter will not be defined.");
       return;
     }
 
@@ -204,9 +204,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     ObjectDescription parameterDescription = getParameterDescription(parameterName);
     if (parameterDescription == null)
     {
-      Log.debug("Parameter:" + parameterName + " Value: " 
-                + objectDescription.getParameter(parameterName));
-      throw new ReportWriterException("Unable to get Parameter description for " 
+      throw new ReportWriterException("Unable to get Parameter description for "
                                       + getBaseObject() + " Parameter: " + parameterName);
     }
 
@@ -230,10 +228,6 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     if (isBasicObject(parameterNames, parameterDescription))
     {
       writeTag(writer, CompoundObjectHandler.BASIC_OBJECT_TAG, p, OPEN);
-      Log.debug ("Write BasicObject: " + parameterName + " -> " 
-                 + parameterDescription.getParameter("value"));
-      Log.debug ("Write BasicObject: " + parameterName + " -> " 
-                 + parameterDescription.getObjectClass());
       writer.write(normalize((String) parameterDescription.getParameter("value")));
       writeCloseTag(writer, CompoundObjectHandler.BASIC_OBJECT_TAG);
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.5 2003/02/02 23:43:52 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.6 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -202,7 +202,7 @@ public class HtmlStyleCollection
     }
     catch (Exception ofe)
     {
-      Log.debug ("Failed to compute the color value");
+      //Log.debug ("Failed to compute the color value");
     }
     return null;
   }

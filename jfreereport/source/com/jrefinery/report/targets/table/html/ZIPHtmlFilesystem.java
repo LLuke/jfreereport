@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.6 2003/02/03 18:52:47 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.7 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -165,7 +165,6 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
         // encode the picture ...
         String entryName = dataDirectory + createName("picture") + ".png";
         ZipEntry ze = new ZipEntry(entryName);
-        Log.debug ("Added: " + entryName);
         zipOut.putNextEntry(ze);
 
         //File dataFile = new File (dataDirectory, createName("picture") + ".png");
@@ -191,7 +190,6 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
             createName(iou.stripFileExtension(iou.getFileName(url))) +
             ".png";
         ZipEntry ze = new ZipEntry(entryName);
-        Log.debug ("Added: " + entryName);
         zipOut.putNextEntry(ze);
 
         //File dataFile = new File (dataDirectory, createName("picture") + ".png");
@@ -215,7 +213,6 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
         String entryName = dataDirectory +
             createName(iou.getFileName(url));
         ZipEntry ze = new ZipEntry(entryName);
-        Log.debug ("Added: " + entryName);
         zipOut.putNextEntry(ze);
 
         //File dataFile = new File (dataDirectory, createName("picture") + ".png");
@@ -258,7 +255,6 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
   {
     String entryName = dataDirectory + createName("style") + ".css";
     ZipEntry ze = new ZipEntry(entryName);
-    Log.debug ("Added: " + entryName);
     zipOut.putNextEntry(ze);
 
     //File dataFile = new File (dataDirectory, createName("picture") + ".png");
@@ -274,7 +270,6 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
   {
     String entryName = createName("report") + ".html";
     ZipEntry ze = new ZipEntry(entryName);
-    Log.debug ("Added: " + entryName);
     zipOut.putNextEntry(ze);
 
     rootStream.flush();

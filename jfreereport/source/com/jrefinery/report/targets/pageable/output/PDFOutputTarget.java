@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.25 2003/02/21 12:17:30 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.26 2003/02/22 01:04:30 taqua Exp $
  *
  * Changes
  * -------
@@ -297,7 +297,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     // do nothing if this font is already set
     if (baseFont != null && fontDefinition != null && fontDefinition.equals(font))
     {
-      Log.debug ("The Fonts are equal, request ignored.");
+      //Log.debug ("The Fonts are equal, request ignored.");
       return; // no need to do anything ...
     }
     this.fontDefinition = font;
@@ -589,7 +589,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public void open() throws OutputTargetException
   {
-    Log.debug ("Opening PDFTarget: Encoding: " + getFontEncoding() + " DefaultEncoding: " + getDefaultFontEncoding());
+//    Log.debug ("Opening PDFTarget: Encoding: " + getFontEncoding() + " DefaultEncoding: " + getDefaultFontEncoding());
 
     PageFormat pageFormat = getLogicalPage().getPhysicalPageFormat();
     float urx = (float) pageFormat.getWidth();
