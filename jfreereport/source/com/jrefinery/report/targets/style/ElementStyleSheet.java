@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.16 2003/02/25 15:42:27 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.17 2003/02/26 13:58:00 mungady Exp $
  *
  * Changes
  * -------
@@ -41,20 +41,18 @@
 
 package com.jrefinery.report.targets.style;
 
-import com.jrefinery.report.ElementAlignment;
-import com.jrefinery.report.targets.FontDefinition;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Stroke;
+import java.awt.*;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+
+import com.jrefinery.report.ElementAlignment;
+import com.jrefinery.report.targets.FontDefinition;
 
 /**
  * An element style-sheet contains zero, one or many attributes that affect the appearance of
@@ -143,7 +141,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
   private String name;
 
   /** The style-sheet properties. */
-  private Hashtable properties;
+  private HashMap properties;
 
   /** Storage for the parent style sheets (if any). */
   private ArrayList parents;
@@ -161,7 +159,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
       throw new NullPointerException("ElementStyleSheet constructor: name is null.");
     }
     this.name = name;
-    this.properties = new Hashtable();
+    this.properties = new HashMap();
     this.parents = new ArrayList();
   }
 
@@ -303,9 +301,12 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
     Object value = properties.get (key);
     if (value == null)
     {
-      for (int i = 0; i < parents.size(); i++)
+      ElementStyleSheet[] sheets = (ElementStyleSheet[])
+          parents.toArray(new ElementStyleSheet[parents.size()]);
+
+      for (int i = 0; i < sheets.length; i++)
       {
-        ElementStyleSheet st = (ElementStyleSheet) parents.get (i);
+        ElementStyleSheet st = sheets[i];
         value = st.getStyleProperty(key, null);
         if (value != null)
         {
@@ -358,7 +359,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
   {
     ElementStyleSheet sc = (ElementStyleSheet) super.clone();
     sc.parents = (ArrayList) parents.clone();
-    sc.properties = (Hashtable) properties.clone();
+    sc.properties = (HashMap) properties.clone();
     return sc;
   }
 
@@ -492,8 +493,8 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
    *
    * @return an enumeration of all localy defined style property keys.
    */
-  public Enumeration getDefinedPropertyNames ()
+  public Iterator getDefinedPropertyNames ()
   {
-    return properties.keys();
+    return properties.keySet().iterator();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.5 2003/02/06 17:38:01 taqua Exp $
+ * $Id: StraightToPDF.java,v 1.6 2003/02/26 16:42:13 mungady Exp $
  *
  * Changes
  * -------
@@ -93,7 +93,7 @@ public class StraightToPDF
     }
     catch (Exception e)
     {
-      Log.debug ("Failed to parse", e);
+      Log.error ("Failed to parse", e);
     }
     return result;
   }

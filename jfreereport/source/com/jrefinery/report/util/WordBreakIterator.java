@@ -28,91 +28,57 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineBreakIterator.java,v 1.1 2003/03/13 17:43:11 taqua Exp $
+ * $Id $
  *
  * Changes
  * -------
- * 13-03-2003 : Initial version
+ * 18-03-2003 : Initial version
  */
 package com.jrefinery.report.util;
 
+import java.text.BreakIterator;
+
 /**
- * Same as BreakIterator.getLineInstance().
+ * Behaves similiar to BreakIterator.getWordInstance() but handles line break
+ * delimeters as simple whitespaces.
  */
-public class LineBreakIterator
+public class WordBreakIterator
 {
   public static final int DONE = -1;
-
-  private char[] text;
   private int position;
   private int lastFound;
+  private char[] text;
 
-  // ignore the next lf that may be encountered ...
-  private boolean skipLF;
-
-  public LineBreakIterator()
-  {
-    setText("");
-  }
-
-  public LineBreakIterator(String text)
+  public WordBreakIterator(String text)
   {
     setText(text);
   }
 
   public synchronized int next()
   {
-    if (text == null) return DONE;
     if (position == DONE) return DONE;
+    if (text == null) return DONE;
+    if (position == text.length) return DONE;
 
-    // recognize \n, \n\r, \r\n
-    boolean omitLF = skipLF;
-
-    int nChars = text.length;
-    int nextChar = position;
     lastFound = position;
 
-    for (; ;)
+    if (Character.isWhitespace(text[position]))
     {
-      if (nextChar >= nChars)
+      // search the first non whitespace character ..., this is the beginning of the word
+      while ((position < text.length) && (Character.isWhitespace(text[position])))
       {
-        /* End of text reached */
-        position = DONE;
-        return DONE;
+        position++;
       }
-
-      boolean eol = false;
-      char c = 0;
-      int i;
-
-      /* Skip a leftover '\n', if necessary */
-      if (omitLF && (text[nextChar] == '\n'))
-        nextChar++;
-      skipLF = false;
-      omitLF = false;
-
-      // search the next line break, either \n or \r
-      for (i = nextChar; i < nChars; i++)
+      return position;
+    }
+    else
+    {
+      // now search the first whitespace character ..., this is the end of the word
+      while ((position < text.length) && (Character.isWhitespace(text[position]) == false))
       {
-        c = text[i];
-        if ((c == '\n') || (c == '\r'))
-        {
-          eol = true;
-          break;
-        }
+        position++;
       }
-
-      nextChar = i;
-      if (eol)
-      {
-        nextChar++;
-        if (c == '\r')
-        {
-          skipLF = true;
-        }
-        position = nextChar;
-        return position;
-      }
+      return position;
     }
   }
 
@@ -136,6 +102,11 @@ public class LineBreakIterator
     return retval;
   }
 
+  public int previous()
+  {
+    return lastFound;
+  }
+
   public String getText()
   {
     return new String(text);
@@ -144,27 +115,39 @@ public class LineBreakIterator
   public void setText(String text)
   {
     position = 0;
-    skipLF = false;
     this.text = text.toCharArray();
-  }
-
-  public int previous()
-  {
-    return lastFound;
   }
 
   public static void main (String[] args)
   {
     String test = "The lazy \n fox \r\n jumps \nover the funny tree\n";
-    LineBreakIterator lbi = new LineBreakIterator(test);
-    int pos = lbi.next();
-    int oldPos = 0;
-    for (int i = 0; (i < pos) && (pos != DONE); i++)
+
     {
-      System.out.println ("Text: " + test.substring(oldPos, pos));
-      oldPos = pos;
-      pos = lbi.next();
+      WordBreakIterator lbi = new WordBreakIterator(test);
+      int pos = lbi.next();
+      int oldPos = 0;
+      for (int i = 0; (i < pos) && (pos != DONE); i++)
+      {
+        System.out.println ("Text: " + test.substring(oldPos, pos));
+        oldPos = pos;
+        pos = lbi.next();
+      }
+    }
+
+    {
+      BreakIterator bi = BreakIterator.getWordInstance();
+      bi.setText(test);
+
+      int pos = bi.next();
+      int oldPos = 0;
+      for (int i = 0; (i < pos) && (pos != DONE); i++)
+      {
+        System.out.println ("Text: " + test.substring(oldPos, pos));
+        oldPos = pos;
+        pos = bi.next();
+      }
     }
 
   }
+
 }

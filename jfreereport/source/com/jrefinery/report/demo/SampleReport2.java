@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport2.java,v 1.6 2003/02/27 18:30:41 taqua Exp $
+ * $Id: SampleReport2.java,v 1.7 2003/02/28 12:02:38 taqua Exp $
  *
  * Changes:
  * --------
@@ -138,7 +138,6 @@ public class SampleReport2
   {
     Band band = new Band ();
     band.setName("Band-" + name);
-//    Log.debug ("Create Band : " + name + " width = " + width + " height = " + height);
     band.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, 
                                      new FloatDimension(width, height));
     band.getStyle().setStyleProperty(ElementStyleSheet.MAXIMUMSIZE, 

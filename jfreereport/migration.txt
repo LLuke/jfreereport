@@ -80,6 +80,10 @@ Changes from 0.8.0 to 0.8.1
   The "first" demo has been renamed to "swing-icons-demo" to better fit is purpose
   in the documentation, as it is no longer the simplest demo available.
 
+  The layouting now handles the element font defintion correctly. If an element's
+  height is smaller than the defined font size, then no line will be printed. So
+  if your elements disappear after upgrading, then check your element definitions. 
+
 ----------------------------------------------------------------------------------
 Changes from 0.8.1 to 0.8.2
 

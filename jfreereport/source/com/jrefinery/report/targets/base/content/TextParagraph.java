@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.9 2003/02/27 10:35:38 mungady Exp $
+ * $Id: TextParagraph.java,v 1.10 2003/03/13 17:41:58 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import java.util.List;
 
 import com.jrefinery.report.targets.base.layout.SizeCalculator;
 import com.jrefinery.report.util.LineBreakIterator;
+import com.jrefinery.report.util.WordBreakIterator;
 
 /**
  * A paragraph of an given text content. A paragraph consists of one or more
@@ -188,14 +189,13 @@ public class TextParagraph extends ContentContainer
     // Reserve some space for the last line if there is more than one line to display.
     // If there is only one line, don't cut the line yet. Perhaps we intruduce the strict
     // mode later, but without any visual editing it would be cruel to any report designer.
-    LineBreakIterator breakit = new LineBreakIterator(mytext);
+    WordBreakIterator breakit = new WordBreakIterator(mytext);
     ArrayList returnLines = new ArrayList();
 
     int lineStartPos = 0;
     int lineLength = mytext.length();
     if (lineLength == 0)
     {
-      returnLines.add("");
       return returnLines;
     }
 
