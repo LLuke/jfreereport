@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewBaseModule.java,v 1.9 2003/09/09 15:52:52 taqua Exp $
+ * $Id: PreviewBaseModule.java,v 1.10 2003/11/07 18:33:50 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,7 +46,6 @@ import javax.swing.UIManager;
 
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
-import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
@@ -62,6 +61,9 @@ public class PreviewBaseModule extends AbstractModule
   /** A configuration key defining whether to translate the swing components. */
   public static final String SWING_TRANSLATE_KEY =
       "org.jfree.report.modules.gui.base.SwingDialogTranslation";
+
+  public static final String RESOURCES_BASE_NAME = 
+      "org.jfree.report.modules.gui.base.resources.jfreereport-resources";
 
   /**
    * Default Constructor. Loads the module definition.
@@ -85,7 +87,7 @@ public class PreviewBaseModule extends AbstractModule
     if (isTranslateSwingDialogs())
     {
       final ResourceBundle bundle = ResourceBundle.getBundle
-          (JFreeReportResources.class.getName());
+          (RESOURCES_BASE_NAME);
 
       final UIDefaults defaults = UIManager.getDefaults();
       final Enumeration enum = bundle.getKeys();

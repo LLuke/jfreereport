@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   -;
  *
- * $Id: PDFExportResources_fr.java,v 1.7 2003/09/14 19:33:25 taqua Exp $
+ * $Id: PDFExportResources_fr.java,v 1.8 2003/11/01 19:52:28 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -145,6 +145,7 @@ public class PDFExportResources_fr extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{PDFExportResources.class.getName(), "fr"});
+    new PDFExportResources_fr().generateResourceProperties("french");
+    System.exit(0);
   }
 }

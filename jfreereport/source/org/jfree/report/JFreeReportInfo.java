@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.12 2003/11/21 14:48:17 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.13 2003/12/06 16:47:10 taqua Exp $
  *
  * Changes:
  * --------
@@ -87,7 +87,7 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
         new Library[]
         {
           new Library(JCommon.INFO),
-          new Library("Pixie", "0.8.0", "LGPL",
+          new Library("Pixie", "0.8.1", "LGPL",
               "http://sourceforge.net/projects/jfreereport/"),
         }
     ));

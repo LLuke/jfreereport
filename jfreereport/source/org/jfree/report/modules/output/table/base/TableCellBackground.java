@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellBackground.java,v 1.10 2003/11/01 19:52:29 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.11 2003/11/07 18:33:56 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,10 @@ import java.awt.Graphics;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+import org.jfree.report.content.Content;
+import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.modules.output.meta.MetaElement;
+
 /**
  * Encapsulates all TableCellBackground informations, such as borders and background color.
  * <p>
@@ -52,7 +56,8 @@ import java.awt.image.BufferedImage;
  *
  * @author Thomas Morgner
  */
-public strictfp class TableCellBackground extends TableCellData implements Cloneable
+public strictfp class TableCellBackground
+    extends MetaElement implements Cloneable
 {
   /** The top border's size. */
   private float borderSizeTop;
@@ -81,31 +86,12 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
   /** The cell background color. */
   private Color color;
 
-  /**
-   * Creates a table cell background with the given bounds, no borders and the specified
-   * color as background. If the color is <code>null</code>, no background is set.
-   *
-   * @param outerBounds  the background cell size
-   * @param color  the background color, <code>null</code> for no background.
-   */
-  public TableCellBackground(final Rectangle2D outerBounds, final Color color)
+  public TableCellBackground(Content elementContent, ElementStyleSheet style, Color color)
   {
-    super(outerBounds);
+    super(elementContent, style);
     this.color = color;
   }
-
-  /**
-   * Returns <code>true</code>, as this is a cell background definition.
-   *
-   * @return always true, this is a data cell.
-   *
-   * @see TableCellData#isBackground
-   */
-  public boolean isBackground()
-  {
-    return true;
-  }
-
+ 
   /**
    * Gets the background color for this cell, or <code>null</code> if this cell has no background.
    *
@@ -252,13 +238,16 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
    * Merges this background with the given background and returns the
    * result. The given background is considered to be overlayed by this
    * background.
+   * <p>
+   * This function returns a <code>this</code> reference if the background
+   * was not merged.
+   * <p>
+   * todo: This method is inaccurate ..
    *
    * @param background the other background cell
-   * @param cellBounds the bounds of the cell for which to form the background.
    * @return a union of the background informations.
    */
-  public TableCellBackground merge(final TableCellBackground background,
-                                   final Rectangle2D cellBounds)
+  public TableCellBackground merge(final TableCellBackground background)
   {
     Color color = getColor();
     if (color == null)
@@ -273,12 +262,14 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
       }
     }
 
+    final Rectangle2D cellBounds = background.getBounds();
+
 //    Log.debug ("This: " + this);
 //    Log.debug ("  BG: " + background);
 //    Log.debug ("    CellBounds: " + cellBounds);
     if (isBottomBorderDefinition(cellBounds, this))
     {
-      final TableCellBackground merged = background.createMergedInstance(cellBounds);
+      final TableCellBackground merged = background.createMergedInstance();
       merged.color = color;
       merged.mergeBottomBorder(this);
 //      Log.debug ("Bottom:This: " + merged);
@@ -286,7 +277,7 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
     }
     if (isBottomBorderDefinition(cellBounds, background))
     {
-      final TableCellBackground merged = createMergedInstance(cellBounds);
+      final TableCellBackground merged = createMergedInstance();
       merged.color = color;
       merged.mergeBottomBorder(background);
 //      Log.debug ("Bottom:Bg: " + merged);
@@ -294,7 +285,7 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
     }
     if (isRightBorderDefinition(cellBounds, this))
     {
-      final TableCellBackground merged = background.createMergedInstance(cellBounds);
+      final TableCellBackground merged = background.createMergedInstance();
       merged.color = color;
       merged.mergeRightBorder(this);
 //      Log.debug ("Right:This: " + merged);
@@ -302,7 +293,7 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
     }
     if (isRightBorderDefinition(cellBounds, background))
     {
-      final TableCellBackground merged = createMergedInstance(cellBounds);
+      final TableCellBackground merged = createMergedInstance();
       merged.color = color;
       merged.mergeRightBorder(background);
 //      Log.debug ("Right:Bg: " + merged);
@@ -312,7 +303,7 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
     // the merged area is dominated by the background ...
     if (cellBounds.equals(getBounds()))
     {
-      final TableCellBackground merged = createMergedInstance(cellBounds);
+      final TableCellBackground merged = createMergedInstance();
       merged.color = color;
       merged.mergeAllBorders(background);
 //      Log.debug ("Bounds:Equal:This: " + merged);
@@ -322,7 +313,7 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
     // the merged area is dominated by the background ...
     if (cellBounds.equals(background.getBounds()))
     {
-      final TableCellBackground merged = background.createMergedInstance(cellBounds);
+      final TableCellBackground merged = background.createMergedInstance();
       merged.color = color;
       merged.mergeAllBorders(this);
 //      Log.debug ("Bottom:Equal:Bg: " + merged);
@@ -334,20 +325,21 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
     // our background should define the cells background ...
     if (getBounds().contains(cellBounds))
     {
-      final TableCellBackground merged = createMergedInstance(cellBounds);
+      final TableCellBackground merged = createMergedInstance();
       merged.color = color;
 //      Log.debug ("None:This: " + merged);
       return merged;
     }
-    else
+    else if (cellBounds.contains(getBounds()))
     {
-      final TableCellBackground merged = background.createMergedInstance(cellBounds);
+      final TableCellBackground merged = background.createMergedInstance();
       merged.color = color;
 //      Log.debug ("None:Bg: " + merged);
       return merged;
     }
     // create an unmerged instance in any other case, as the bounds are not releated
     // in a useable way.
+    return this;
   }
 
   /**
@@ -445,15 +437,13 @@ public strictfp class TableCellBackground extends TableCellData implements Clone
   /**
    * Creates an merged instance of this background for the given bounds.
    * 
-   * @param bounds the new bounds of the merged background
    * @return a copy of this background with new bounds.
    */
-  protected TableCellBackground createMergedInstance (final Rectangle2D bounds)
+  protected TableCellBackground createMergedInstance ()
   {
     try
     {
       final TableCellBackground bg = (TableCellBackground) clone();
-      bg.setBounds(bounds);
       return bg;
     }
     catch (CloneNotSupportedException cne)

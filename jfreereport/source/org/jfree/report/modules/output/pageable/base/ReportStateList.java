@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.5 2003/08/24 15:03:52 taqua Exp $
+ * $Id: ReportStateList.java,v 1.6 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -155,7 +155,7 @@ public class ReportStateList
       for (int i = 0; i <= count; i++)
       {
         progress = state.createStateProgress(progress);
-        state = master.getReportProcessor().processPage(state, master.getDummyWriter());
+        state = master.getReportProcessor().processDummyPage(state, true);
         set(state, i + 1);
         if (state.isFinish())
         {
@@ -228,7 +228,7 @@ public class ReportStateList
     }
     // this.report = report;
     this.proc = proc;
-    dummyWriter = proc.getOutputTarget().createDummyWriter();
+    dummyWriter = proc.getOutputTarget();
     dummyWriter.open();
 
     primaryStates = new ArrayList();

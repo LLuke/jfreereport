@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FileConfigStoreModuleInitializer.java,v 1.5 2003/08/25 14:29:30 taqua Exp $
+ * $Id: FileConfigStoreModuleInitializer.java,v 1.6 2003/11/07 18:33:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -98,7 +98,7 @@ public class FileConfigStoreModuleInitializer implements ModuleInitializer
 
     final ConfigFactory factory = ConfigFactory.getInstance();
     factory.defineUserStorage(new FileConfigStorage(getStoragePath(userBaseDirectory)));
-    factory.defineUserStorage(new FileConfigStorage(getStoragePath(systemBaseDirectory)));
+    factory.defineSystemStorage(new FileConfigStorage(getStoragePath(systemBaseDirectory)));
   }
 
   /**

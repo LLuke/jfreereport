@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageRefFilter.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ImageRefFilter.java,v 1.3 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,8 @@ package org.jfree.report.filter;
 import java.awt.Image;
 import java.io.Serializable;
 
-import org.jfree.report.ImageReference;
+import org.jfree.report.DefaultImageReference;
+import org.jfree.report.ImageContainer;
 
 /**
  * A filter that converts an Image to an ImageReference. The DataSource is expected to contain an
@@ -99,7 +100,7 @@ public class ImageRefFilter implements DataFilter, Serializable
       return null;
     }
     final Object o = ds.getValue();
-    if (o instanceof ImageReference)
+    if (o instanceof ImageContainer)
     {
       return o;
     }
@@ -108,7 +109,7 @@ public class ImageRefFilter implements DataFilter, Serializable
       return null;
     }
 
-    return new ImageReference((Image) o);
+    return new DefaultImageReference((Image) o);
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   -;
  *
- * $Id: PrintExportResources_fr.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
+ * $Id: PrintExportResources_fr.java,v 1.6 2003/09/14 19:33:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -93,6 +93,7 @@ public class PrintExportResources_fr extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{PrintExportResources.class.getName(), "fr"});
+    new PrintExportResources_fr().generateResourceProperties("french");
+    System.exit(0);
   }
 }

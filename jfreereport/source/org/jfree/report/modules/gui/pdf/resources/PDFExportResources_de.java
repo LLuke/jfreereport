@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFExportResources_de.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
+ * $Id: PDFExportResources_de.java,v 1.5 2003/08/27 20:19:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -145,6 +145,7 @@ public class PDFExportResources_de extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{PDFExportResources.class.getName(), "de"});
+    new PDFExportResources_de().generateResourceProperties("german");
+    System.exit(0);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: XLSExportResources_sv.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
+ * $Id: XLSExportResources_sv.java,v 1.5 2003/08/31 19:27:58 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -112,6 +112,7 @@ public class XLSExportResources_sv extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{XLSExportResources.class.getName(), "sv"});
+    new XLSExportResources_sv().generateResourceProperties("swedish");
+    System.exit(0);
   }
 }

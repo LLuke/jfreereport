@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionImpl.java,v 1.5 2003/12/06 16:47:25 taqua Exp $
+ * $Id: ReportDefinitionImpl.java,v 1.6 2003/12/21 20:51:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,6 +51,7 @@ import org.jfree.report.Band;
 import org.jfree.report.DataRow;
 import org.jfree.report.Element;
 import org.jfree.report.Watermark;
+import org.jfree.report.PageDefinition;
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.ReportConnectable;
 import org.jfree.report.filter.DataTarget;
@@ -102,6 +103,8 @@ public class ReportDefinitionImpl implements ReportDefinition
   /** The datarow connector used to feed all elements. */
   private DataRowConnector dataRowConnector;
 
+  private PageDefinition pageDefinition;
+
   /**
    * Creates a report definition from a report object.
    *
@@ -120,6 +123,7 @@ public class ReportDefinitionImpl implements ReportDefinition
     itemBand = (ItemBand) report.getItemBand().clone();
     watermark = (Watermark) report.getWatermark().clone();
     reportConfiguration = report.getReportConfiguration();
+    pageDefinition = (PageDefinition) report.getPageDefinition().clone();
     styleSheetCollection = (StyleSheetCollection) report.getStyleSheetCollection().clone();
     groups.updateStyleSheetCollection(styleSheetCollection);
     itemBand.updateStyleSheetCollection(styleSheetCollection);
@@ -362,6 +366,8 @@ public class ReportDefinitionImpl implements ReportDefinition
     report.reportFooter = (ReportFooter) reportFooter.clone();
     report.reportHeader = (ReportHeader) reportHeader.clone();
     report.watermark = (Watermark) watermark.clone();
+    // pagedefinition is not! cloned ...
+    report.pageDefinition = pageDefinition;
     report.styleSheetCollection = (StyleSheetCollection) styleSheetCollection.clone();
     report.groups.updateStyleSheetCollection(report.styleSheetCollection);
     report.itemBand.updateStyleSheetCollection(report.styleSheetCollection);
@@ -408,5 +414,10 @@ public class ReportDefinitionImpl implements ReportDefinition
   public DataRow getDataRow()
   {
     return dataRowConnector;
+  }
+
+  public PageDefinition getPageDefinition()
+  {
+    return pageDefinition;
   }
 }

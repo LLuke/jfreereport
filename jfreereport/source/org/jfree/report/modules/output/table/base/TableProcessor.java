@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.11 2003/11/07 18:33:56 taqua Exp $
+ * $Id: TableProcessor.java,v 1.12 2003/12/06 17:15:21 taqua Exp $
  *
  * Changes
  * -------
@@ -38,11 +38,8 @@
  */
 package org.jfree.report.modules.output.table.base;
 
-import java.awt.print.PageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Properties;
-
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportInterruptedException;
@@ -50,11 +47,11 @@ import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
 import org.jfree.report.function.FunctionInitializeException;
+import org.jfree.report.modules.output.meta.MetaBandProducer;
 import org.jfree.report.states.FinishState;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.states.ReportStateProgress;
 import org.jfree.report.states.StartState;
-import org.jfree.report.util.ReportConfiguration;
 
 /**
  * The TableProcessor is the abstract base class for all table based output targets.
@@ -73,10 +70,6 @@ public abstract class TableProcessor
   /** A compile time constant to define how many events should be fired during the processing. */
   private static final int MAX_EVENTS_PER_RUN = 400;
 
-  /** Enable stricter table layouting for all TableProcessors. */
-  public static final String STRICT_TABLE_LAYOUT
-      = "org.jfree.report.modules.output.table.base.StrictLayout";
-
   /** Disable strict layout by default. */
   public static final String STRICT_TABLE_LAYOUT_DEFAULT = "false";
 
@@ -86,11 +79,15 @@ public abstract class TableProcessor
   /** the function name used for the created tablewriter. */
   private static final String TABLE_WRITER = TableProcessor.class.getName() + "$table-writer";
 
+  /** Literal text for the 'title' property name. */
+  public static final String TITLE = "Title";
+
+  /** Literal text for the 'author' property name. */
+  public static final String AUTHOR = "Author";
+
+
   /** the report that should be processed. */
   private JFreeReport report;
-
-  /** Storage for the output target properties. */
-  private Properties properties;
 
   /** The tablewriter function. */
   private TableWriter tableWriter;
@@ -104,6 +101,8 @@ public abstract class TableProcessor
   private ArrayList listeners;
   /** The listeners as object array for faster access. */
   private Object[] listenersCache;
+
+  private transient LayoutCreator layoutCreator;
 
   /**
    * Creates a new TableProcessor. The TableProcessor creates a private copy
@@ -129,14 +128,14 @@ public abstract class TableProcessor
     {
       throw new ReportProcessingException("Initial Clone of Report failed");
     }
-    properties = new Properties();
-
-    tableWriter = new TableWriter();
+    tableWriter = new TableWriter(createMetaBandProducer());
     tableWriter.setName(TABLE_WRITER);
     this.report.addExpression(tableWriter);
 
     // initialize with the report default.
   }
+
+  protected abstract MetaBandProducer createMetaBandProducer();
 
   /**
    * returns true, if the TableWriter should perform a stricter layout translation.
@@ -149,7 +148,8 @@ public abstract class TableProcessor
    */
   public boolean isStrictLayout()
   {
-    return getProperty(STRICT_LAYOUT, "false").equals("true");
+    return report.getReportConfiguration().getConfigProperty
+            (getReportConfigurationPrefix() + "." + STRICT_LAYOUT, "false").equals("true");
   }
 
   /**
@@ -161,7 +161,9 @@ public abstract class TableProcessor
    */
   public void setStrictLayout(final boolean strictLayout)
   {
-    setProperty(STRICT_LAYOUT, String.valueOf(strictLayout));
+    report.getReportConfiguration().setConfigProperty
+            (getReportConfigurationPrefix() + "." + STRICT_LAYOUT,
+                    String.valueOf(strictLayout));
   }
 
   /**
@@ -221,14 +223,14 @@ public abstract class TableProcessor
       // The pageformat will cause trouble in later versions, when printing over
       // multiple pages gets implemented. This property will be replaced by a more
       // suitable alternative.
-      final PageFormat p = report.getDefaultPageFormat();
-      state.setProperty(JFreeReport.REPORT_PAGEFORMAT_PROPERTY, p.clone());
+//      final PageFormat p = report.getDefaultPageFormat();
+//      state.setProperty(JFreeReport.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
       // now change the writer function to be a dummy writer. We don't want any
       // output in the prepare runs.
       final TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
-      w.setProducer(createDummyProducer());
-      w.getProducer().configure(getProperties());
+      layoutCreator = createLayoutCreator();
+      w.setTableCreator(layoutCreator);
 
       // now process all function levels.
       // there is at least one level defined, as we added the CSVWriter
@@ -352,20 +354,48 @@ public abstract class TableProcessor
   }
 
   /**
+   * Creates the LayoutProcessor for the current report export. This default
+   * implementation simply returns a LayoutCreator instance.
+   *
+   * @return
+   */
+  protected LayoutCreator createLayoutCreator()
+  {
+    return new DefaultLayoutCreator (getReportConfigurationPrefix());
+  }
+
+  protected abstract TableCreator createContentCreator();
+
+  /**
+   * Returns the previously created LayoutCreator. Calling this method
+   * is only valid during the report processing.
+   *
+   * @return the layout creator
+   * @throws IllegalStateException if there is no layout creator.
+   */
+  protected LayoutCreator getLayoutCreator()
+  {
+    if (layoutCreator == null)
+    {
+      throw new IllegalStateException("No layout created detected.");
+    }
+    return layoutCreator;
+  }
+
+  /**
    * Processes the report. The generated output is written using the defined
    * writer, the report is repaginated before the final writing.
    *
    * @throws ReportProcessingException if the report processing failed.
    */
-  public void processReport() throws ReportProcessingException
+  public synchronized void processReport() throws ReportProcessingException
   {
     ReportState state = repaginate();
 
     final TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
-    w.setProducer(createProducer(w.getProducer().getGridBoundsCollection()));
-    w.getProducer().configure(getProperties());
+    w.setTableCreator(createContentCreator());
 
-    w.setMaxWidth((float) getReport().getDefaultPageFormat().getImageableWidth());
+    w.setMaxWidth(getReport().getPageDefinition().getWidth());
     final RepaginationState stateEvent = new RepaginationState(this, 0, 0, 0, 0, false);
 
     final int maxRows = state.getNumberOfRows();
@@ -420,107 +450,6 @@ public abstract class TableProcessor
   }
 
   /**
-   * Creates a TableProducer. The TableProducer is responsible to create the table.
-   *
-   * @param gridLayoutBounds the grid layout that contain the bounds from the pagination run.
-   * @return the created table producer, never null.
-   */
-  protected abstract TableProducer createProducer(TableLayoutInfo gridLayoutBounds);
-
-  /**
-   * Creates a dummy TableProducer. The TableProducer is responsible to compute the layout.
-   *
-   * @return the created table producer, never null.
-   */
-  protected abstract TableProducer createDummyProducer();
-
-  /**
-   * Defines a property for this output target. Properties are the standard way of configuring
-   * an output target.
-   *
-   * @param property  the name of the property to set (<code>null</code> not permitted).
-   * @param value  the value of the property.  If the value is <code>null</code>, the property is
-   * removed from the output target.
-   */
-  public void setProperty(final String property, final Object value)
-  {
-    if (property == null)
-    {
-      throw new NullPointerException();
-    }
-
-    if (value == null)
-    {
-      properties.remove(property);
-    }
-    else
-    {
-      properties.put(property, value);
-    }
-  }
-
-  /**
-   * Queries the property named with <code>property</code>. If the property is not found, <code>
-   * null</code> is returned.
-   *
-   * @param property the name of the property to be queried
-   *
-   * @return the value stored under the given property name
-   *
-   * @throws java.lang.NullPointerException if <code>property</code> is null
-   */
-  public Object getProperty(final String property)
-  {
-    return getProperty(property, null);
-  }
-
-  /**
-   * Queries the property named with <code>property</code>. If the property is not found, the
-   * default value is returned.
-   *
-   * @param property the name of the property to be queried
-   * @param defaultValue the defaultvalue returned if there is no such property
-   *
-   * @return the value stored under the given property name
-   *
-   * @throws NullPointerException if <code>property</code> is null
-   */
-  public Object getProperty(final String property, final Object defaultValue)
-  {
-    if (property == null)
-    {
-      throw new NullPointerException();
-    }
-
-    final Object retval = properties.get(property);
-    if (retval == null)
-    {
-      return defaultValue;
-    }
-    return retval;
-  }
-
-  /**
-   * Returns an enumeration of the property names.
-   *
-   * @return the enumeration.
-   */
-  protected Iterator getPropertyNames()
-  {
-    return properties.keySet().iterator();
-  }
-
-  /**
-   * Gets the internal properties storage.
-   *
-   * @return the internal properties storage.
-   */
-  protected Properties getProperties()
-  {
-    return properties;
-  }
-
-  /**
    * Gets the report configuration prefix for that processor. This prefix defines
    * how to map the property names into the global report configuration.
    *
@@ -534,23 +463,7 @@ public abstract class TableProcessor
    */
   protected void configure()
   {
-    final ReportConfiguration rc = getReport().getReportConfiguration();
-    final Iterator enum = rc.findPropertyKeys(getReportConfigurationPrefix());
-
-    final int prefixLength = getReportConfigurationPrefix().length();
-    while (enum.hasNext())
-    {
-      final String key = (String) enum.next();
-      final String propKey = key.substring(prefixLength);
-      if (getProperties().containsKey(propKey))
-      {
-        continue;
-      }
-      final Object value = rc.getConfigProperty(key);
-      setProperty(propKey, value);
-    }
-
-    getTableWriter().setMaxWidth((float) getReport().getDefaultPageFormat().getImageableWidth());
+    getTableWriter().setMaxWidth(getReport().getPageDefinition().getWidth());
   }
 
   /**

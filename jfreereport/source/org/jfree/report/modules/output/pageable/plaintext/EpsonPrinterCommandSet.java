@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EpsonPrinterCommandSet.java,v 1.7 2003/09/13 15:14:41 taqua Exp $
+ * $Id: EpsonPrinterCommandSet.java,v 1.8 2003/09/14 15:43:07 taqua Exp $
  *
  * Changes
  * -------
@@ -37,7 +37,6 @@
  */
 package org.jfree.report.modules.output.pageable.plaintext;
 
-import java.awt.print.PageFormat;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -65,14 +64,13 @@ public strictfp class EpsonPrinterCommandSet extends PrinterCommandSet
    * Creates a new EpsonPrinterCommandSet.
    *
    * @param out the target output stream
-   * @param format the pageformat of the used report
    * @param defaultCPI the characters-per-inch for the output.
    * @param defaultLPI the lines-per-inch for the output.
    */
-  public EpsonPrinterCommandSet(final OutputStream out, final PageFormat format,
+  public EpsonPrinterCommandSet(final OutputStream out,
                                 final int defaultCPI, final int defaultLPI)
   {
-    super(out, format, defaultCPI, defaultLPI);
+    super(out, defaultCPI, defaultLPI);
   }
 
   /**

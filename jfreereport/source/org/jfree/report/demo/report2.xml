@@ -18,8 +18,6 @@
   <pageheader height="32" onfirstpage="true" fontname="Serif" fontstyle="bold" fontsize="10">
     <line x1="0" y1="30" x2="0" y2="30" weight="0.5"/>
     <label x="0" y="12" width="100%" height="20" alignment="center">PAGE HEADER</label>
-    <string-field x="0" y="0" width="140" height="8" alignment="left" fieldname="Name"/>
-    <number-field x="110" y="0" width="40" height="8" alignment="right" format="0" fieldname="Count1"/>
   </pageheader>
 
   <!-- PAGE FOOTER -->

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.12 2003/10/18 19:22:32 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.13 2003/11/07 16:26:17 taqua Exp $
  *
  * Changes
  * --------
@@ -55,6 +55,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.text.MessageFormat;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -79,10 +80,13 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.FilesystemFilter;
-import org.jfree.report.modules.gui.pdf.resources.PDFExportResources;
+import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
+import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
+import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.StringUtil;
 
 /**
  * A dialog that is used to perform the printing of a report into a PDF file. It is primarily
@@ -296,7 +300,7 @@ public class PDFSaveDialog extends JDialog
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
-      PDFExportResources.class.getName();
+      "org.jfree.report.modules.gui.pdf.resources.pdf-export-resources";
 
   /**
    * Creates a new PDF save dialog.
@@ -1344,21 +1348,92 @@ public class PDFSaveDialog extends JDialog
   /**
    * Opens the dialog to query all necessary input from the user.
    * This will not start the processing, as this is done elsewhere.
-   * 
+   *
    * @param report the report that should be processed.
    * @return true, if the processing should continue, false otherwise.
    */
   public boolean performQueryForExport(final JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
+    ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
+    try
+    {
+      setDialogContents(storage.loadProperties
+          (ConfigFactory.encodePath(report.getName() + "_pdfexport"),
+              new Properties()));
+    }
+    catch (Exception cse)
+    {
+      Log.debug ("Unable to load the defaults in PDF export dialog.");
+    }
+
     setModal(true);
     setVisible(true);
     if (isConfirmed() == false)
     {
       return false;
     }
+
     storeToConfiguration(report.getReportConfiguration());
+    try
+    {
+      storage.storeProperties
+          (ConfigFactory.encodePath(report.getName() + "_pdfexport"),
+              getDialogContents());
+    }
+    catch (ConfigStoreException cse)
+    {
+      Log.debug ("Unable to store the defaults in PDF export dialog.");
+    }
     return true;
+  }
+
+  /**
+   * Returns the user input of this dialog as properties collection.
+   *
+   * @return the user input.
+   */
+  public Properties getDialogContents ()
+  {
+    Properties p = new Properties();
+    p.setProperty("author", getAuthor());
+    p.setProperty("filename", getFilename());
+    p.setProperty("encoding", getEncoding());
+    p.setProperty("title", getPDFTitle());
+    p.setProperty("encryption", getEncryptionValue());
+
+    p.setProperty("allow-assembly", String.valueOf(isAllowAssembly()));
+    p.setProperty("allow-copy", String.valueOf(isAllowCopy()));
+    p.setProperty("allow-degraded-printing", String.valueOf(isAllowDegradedPrinting()));
+    p.setProperty("allow-fill-in", String.valueOf(isAllowFillIn()));
+    p.setProperty("allow-modify-annotations", String.valueOf(isAllowModifyAnnotations()));
+    p.setProperty("allow-modify-contents", String.valueOf(isAllowModifyContents()));
+    p.setProperty("allow-printing", String.valueOf(isAllowPrinting()));
+    p.setProperty("allow-screenreaders", String.valueOf(isAllowScreenreaders()));
+    return p;
+  }
+
+  /**
+   * Restores the user input from a properties collection.
+   *
+   * @param p the user input.
+   */
+  public void setDialogContents (Properties p)
+  {
+    setAuthor(p.getProperty("author", getAuthor()));
+    setEncoding(p.getProperty("encoding", getEncoding()));
+    setFilename(p.getProperty("filename", getFilename()));
+    setPDFTitle(p.getProperty("title", getPDFTitle()));
+    setEncryptionValue(p.getProperty("encryption", getEncryptionValue()));
+
+    setAllowAssembly(StringUtil.parseBoolean(p.getProperty("allow-assembly"), isAllowAssembly()));
+    setAllowCopy(StringUtil.parseBoolean(p.getProperty("allow-copy"), isAllowCopy()));
+    setAllowFillIn(StringUtil.parseBoolean(p.getProperty("allow-fill-in"), isAllowFillIn()));
+    setAllowModifyAnnotations(StringUtil.parseBoolean(p.getProperty("allow-modify-annotations"), isAllowModifyAnnotations()));
+    setAllowModifyContents(StringUtil.parseBoolean(p.getProperty("allow-modify-contents"), isAllowModifyContents()));
+    setPrintLevel(StringUtil.parseBoolean(p.getProperty("allow-printing"), isAllowPrinting()),
+        StringUtil.parseBoolean(p.getProperty("allow-degraded-printing"), isAllowDegradedPrinting()));
+    setAllowScreenreaders(StringUtil.parseBoolean(p.getProperty("allow-screenreaders"), isAllowScreenreaders()));
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.11 2003/11/01 19:52:29 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.12 2003/11/07 18:33:55 taqua Exp $
  *
  * Changes
  * -------
@@ -45,17 +45,14 @@ import java.awt.print.PageFormat;
 import java.io.IOException;
 
 import org.jfree.report.DrawableContainer;
-import org.jfree.report.ImageReference;
+import org.jfree.report.PageDefinition;
+import org.jfree.report.ImageContainer;
 import org.jfree.report.content.ContentFactory;
 import org.jfree.report.content.DefaultContentFactory;
 import org.jfree.report.content.TextContentFactoryModule;
 import org.jfree.report.layout.SizeCalculator;
-import org.jfree.report.modules.output.pageable.base.LogicalPage;
-import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.output.AbstractOutputTarget;
-import org.jfree.report.modules.output.pageable.base.output.DummyOutputTarget;
-import org.jfree.report.modules.output.pageable.base.physicals.PhysicalPage;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.ReportConfiguration;
 
@@ -132,7 +129,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
      *
      * @param source the source outputtarget.
      */
-    private PlainTextState(final OutputTarget source)
+    private PlainTextState(final PlainTextOutputTarget source)
     {
       save(source);
     }
@@ -142,7 +139,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
      *
      * @param source  the OutputTarget.
      */
-    protected void save(final OutputTarget source)
+    protected void save(final PlainTextOutputTarget source)
     {
       mypaint = source.getPaint();
       myfont = source.getFont();
@@ -155,7 +152,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
      * @param target  the OutputTarget.
      * @throws OutputTargetException if restoring the output target state failed.
      */
-    protected void restore(final OutputTarget target)
+    protected void restore(final PlainTextOutputTarget target)
         throws OutputTargetException
     {
       target.setStroke(mystroke);
@@ -184,6 +181,10 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
      */
     private PlainTextSizeCalculator(final float characterWidth, final float characterHeight)
     {
+      if (characterHeight <= 0)
+      {
+        throw new IllegalArgumentException("The font size is invalid.");
+      }
       this.characterWidth = characterWidth;
       this.characterHeight = characterHeight;
     }
@@ -238,12 +239,6 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
   /** the current stroke, is not used. */
   private Stroke stroke;
 
-  /** the current page width in CPI. */
-  private int currentPageWidth;
-
-  /** the current page height in LPI. */
-  private int currentPageHeight;
-
   /** the character width in points. */
   private float characterWidth;
 
@@ -263,51 +258,11 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    * Creates a new PlainTextOutputTarget which uses the given command set to write
    * the generated content.
    *
-   * @param format  the page format.
    * @param commandSet the printer commandset used to write the generated content.
    * @throws java.lang.NullPointerException if the printer command set is null
    */
-  public PlainTextOutputTarget(final PageFormat format, final PrinterCommandSet commandSet)
+  public PlainTextOutputTarget(final PrinterCommandSet commandSet)
   {
-    super(format);
-    if (commandSet == null)
-    {
-      throw new NullPointerException();
-    }
-    this.commandSet = commandSet;
-  }
-
-  /**
-   * Creates a new PlainTextOutputTarget which uses the given command set to write
-   * the generated content.
-   *
-   * @param commandSet the printer commandset used to write the generated content.
-   * @param logical  the page format used by this target for layouting.
-   * @param physical  the page format used by this target for printing.
-   * @throws java.lang.NullPointerException if the printer command set is null
-   */
-  public PlainTextOutputTarget(final PageFormat logical, final PageFormat physical,
-                               final PrinterCommandSet commandSet)
-  {
-    super(logical, physical);
-    if (commandSet == null)
-    {
-      throw new NullPointerException();
-    }
-    this.commandSet = commandSet;
-  }
-
-  /**
-   * Creates a new PlainTextOutputTarget which uses the given command set to write
-   * the generated content.
-   *
-   * @param commandSet the printer commandset used to write the generated content.
-   * @param logicalPage  the page format used by this target for layouting.
-   * @throws java.lang.NullPointerException if the printer command set is null
-   */
-  public PlainTextOutputTarget(final LogicalPage logicalPage, final PrinterCommandSet commandSet)
-  {
-    super(logicalPage);
     if (commandSet == null)
     {
       throw new NullPointerException();
@@ -368,25 +323,18 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param page  the physical page.
    */
-  public void beginPage(final PhysicalPage page)
+  public void beginPage(final PageDefinition page, int index)
   {
-    final PageFormat pf = page.getPageFormat();
+    final PageFormat pf = page.getPageFormat(index);
     // the page must contain the space for the border, or it is invalid
     // the left and top border is always included when performing the layout
-    currentPageHeight = correctedDivisionFloor
-        ((float) (pf.getImageableHeight() + pf.getImageableY()), characterHeight);
-    currentPageWidth = correctedDivisionFloor
+    final int currentPageHeight = correctedDivisionFloor
+        ((float) (pf.getImageableHeight()), characterHeight);
+    final int currentPageWidth = correctedDivisionFloor
         ((float) (pf.getImageableWidth()), characterWidth);
-    final int currentPageLeft = correctedDivisionFloor
-        ((float) (pf.getImageableX()), characterWidth);
 
-//    Log.debug ("Character Height: " + characterHeight + ", " + 
-//                "Character Width: " + characterWidth);
-//    Log.debug ("PF-ImgX: " + pf.getImageableX() + ", " + "PF-ImgY: " + pf.getImageableY());
-//    Log.debug ("PF-ImgW: " + pf.getImageableWidth() + ", " + 
-//                "PF-ImgH: " + pf.getImageableHeight());
-    this.pageBuffer = new PlainTextPage(currentPageLeft, currentPageWidth, currentPageHeight,
-        getCommandSet(), getDocumentEncoding());
+    this.pageBuffer = new PlainTextPage(currentPageWidth, currentPageHeight,
+        pf.getPaper(), getCommandSet(), getDocumentEncoding());
     savedState = new PlainTextState(this);
   }
 
@@ -414,7 +362,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if the argument is not an instance of G2State.
    */
-  public void restoreState() throws OutputTargetException
+  protected void restoreState() throws OutputTargetException
   {
     savedState.restore(this);
   }
@@ -424,7 +372,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @return the current font.
    */
-  public FontDefinition getFont()
+  protected FontDefinition getFont()
   {
     return font;
   }
@@ -436,7 +384,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem setting the font.
    */
-  public void setFont(final FontDefinition font) throws OutputTargetException
+  protected void setFont(final FontDefinition font) throws OutputTargetException
   {
     this.font = font;
   }
@@ -446,7 +394,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @return the stroke.
    */
-  public Stroke getStroke()
+  protected Stroke getStroke()
   {
     return stroke;
   }
@@ -458,7 +406,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem setting the stroke.
    */
-  public void setStroke(final Stroke stroke) throws OutputTargetException
+  protected void setStroke(final Stroke stroke) throws OutputTargetException
   {
     this.stroke = stroke;
   }
@@ -468,7 +416,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @return the paint.
    */
-  public Paint getPaint()
+  protected Paint getPaint()
   {
     return paint;
   }
@@ -477,12 +425,15 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    * Sets the paint.  This has no influence on the generated output.
    *
    * @param paint The paint.
-   *
-   * @throws OutputTargetException if there is a problem setting the paint.
    */
-  public void setPaint(final Paint paint) throws OutputTargetException
+  protected void setPaint(final Paint paint)
   {
     this.paint = paint;
+  }
+
+  protected boolean isPaintSupported(Paint p)
+  {
+    return false;
   }
 
   /**
@@ -490,7 +441,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param text  the text.
    */
-  public void drawString(final String text)
+  protected void printText(final String text)
   {
     final Rectangle2D bounds = getOperationBounds();
 
@@ -525,7 +476,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param shape  the shape to draw.
    */
-  public void drawShape(final Shape shape)
+  protected void drawShape(final Shape shape)
   {
     // this is not supported, does nothing ...
   }
@@ -536,7 +487,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param shape  the shape to draw.
    */
-  public void fillShape(final Shape shape)
+  protected void fillShape(final Shape shape)
   {
     // this is not supported, does nothing ...
   }
@@ -549,20 +500,8 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem setting the paint.
    */
-  public void drawImage(final ImageReference image) throws OutputTargetException
+  protected void drawImage(final ImageContainer image) throws OutputTargetException
   {
-  }
-
-  /**
-   * Creates an output target that mimics a real output target, but produces no output.
-   * This is used by the reporting engine when it makes its first pass through the report,
-   * calculating page boundaries etc.  The second pass will use a real output target.
-   *
-   * @return a dummy output target.
-   */
-  public OutputTarget createDummyWriter()
-  {
-    return new DummyOutputTarget(this);
   }
 
   /**
@@ -654,7 +593,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @param drawable the drawable to draw.
    */
-  public void drawDrawable(final DrawableContainer drawable)
+  protected void drawDrawable(final DrawableContainer drawable)
   {
   }
 

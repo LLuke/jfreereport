@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_nl.java,v 1.9 2003/09/06 18:09:16 taqua Exp $
+ * $Id: JFreeReportResources_nl.java,v 1.10 2003/09/08 18:11:48 taqua Exp $
  */
 package org.jfree.report.modules.gui.base.resources;
 
@@ -221,7 +221,9 @@ public class JFreeReportResources_nl extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{JFreeReportResources.class.getName(), "nl"});
+    new JFreeReportResources_nl().generateResourceProperties("dutch");
+    System.exit(0);
+//    ResourceCompareTool.main(new String[]{JFreeReportResources.class.getName(), "nl"});
   }
 
 

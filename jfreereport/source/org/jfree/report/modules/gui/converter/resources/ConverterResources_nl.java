@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: ConverterResources_nl.java,v 1.6 2003/09/06 18:09:16 taqua Exp $
+ * $Id: ConverterResources_nl.java,v 1.7 2003/09/08 18:39:24 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -95,7 +95,8 @@ public class ConverterResources_nl extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{ConverterResources.class.getName(), "nl"});
+    new ConverterResources_nl().generateResourceProperties("dutch");
+    System.exit(0);
   }
 
 }

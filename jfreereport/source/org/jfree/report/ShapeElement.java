@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ShapeElement.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: ShapeElement.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -93,14 +93,14 @@ public class ShapeElement extends Element
   }
 
   /** A shared default style sheet for shape elements. */
-  private static ShapeElementDefaultStyleSheet defaultShapeStyle;
+  private static ElementDefaultStyleSheet defaultShapeStyle;
 
   /**
    * Returns the default style-sheet for shape elements.
    *
    * @return a default style sheet that can be shared among shape elements.
    */
-  public static ShapeElementDefaultStyleSheet getDefaultStyle()
+  public static ElementDefaultStyleSheet getDefaultStyle()
   {
     if (defaultShapeStyle == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportPlugin.java,v 1.11 2003/11/07 16:26:17 taqua Exp $
+ * $Id: HtmlExportPlugin.java,v 1.12 2003/11/07 18:33:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,7 +49,7 @@ import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
-import org.jfree.report.modules.gui.html.resources.HtmlExportResources;
+import org.jfree.report.modules.gui.base.ResourceBundleUtils;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
 
@@ -68,7 +68,9 @@ public class HtmlExportPlugin extends AbstractExportPlugin
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
-      HtmlExportResources.class.getName();
+      "org.jfree.report.modules.gui.html.resources.html-export-resources";
+  public static final String PROGRESS_DIALOG_ENABLE_KEY =
+      "org.jfree.report.modules.gui.html.ProgressDialogEnabled";
 
   /**
    * DefaultConstructor.
@@ -134,7 +136,18 @@ public class HtmlExportPlugin extends AbstractExportPlugin
       return handleExportResult(true);
     }
 
-    final ReportProgressDialog progressDialog = createProgressDialog();
+    final ReportProgressDialog progressDialog;
+    if (report.getReportConfiguration().getConfigProperty
+        (PROGRESS_DIALOG_ENABLE_KEY,
+            "false").equals("true"))
+    {
+      progressDialog = createProgressDialog();
+    }
+    else
+    {
+      progressDialog = null;
+    }
+
     final ExportTask task;
     switch (exportDialog.getSelectedExportMethod())
     {
@@ -193,7 +206,7 @@ public class HtmlExportPlugin extends AbstractExportPlugin
    */
   public Icon getSmallIcon()
   {
-    return (Icon) resources.getObject("action.export-to-html.small-icon");
+    return ResourceBundleUtils.getIcon(getResources().getString("action.export-to-html.small-icon"));
   }
 
   /**
@@ -203,7 +216,7 @@ public class HtmlExportPlugin extends AbstractExportPlugin
    */
   public Icon getLargeIcon()
   {
-    return (Icon) resources.getObject("action.export-to-html.icon");
+    return ResourceBundleUtils.getIcon(getResources().getString("action.export-to-html.icon"));
   }
 
   /**
@@ -213,7 +226,7 @@ public class HtmlExportPlugin extends AbstractExportPlugin
    */
   public KeyStroke getAcceleratorKey()
   {
-    return (KeyStroke) resources.getObject("action.export-to-html.accelerator");
+    return ResourceBundleUtils.createMenuKeystroke(getResources().getString("action.export-to-html.accelerator"));
   }
 
   /**
@@ -223,7 +236,7 @@ public class HtmlExportPlugin extends AbstractExportPlugin
    */
   public Integer getMnemonicKey()
   {
-    return (Integer) resources.getObject("action.export-to-html.mnemonic");
+    return ResourceBundleUtils.createMnemonic(getResources().getString("action.export-to-html.mnemonic"));
   }
 
 

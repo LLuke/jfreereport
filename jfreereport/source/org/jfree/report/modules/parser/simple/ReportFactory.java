@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.9 2003/12/06 15:24:02 taqua Exp $
+ * $Id: ReportFactory.java,v 1.10 2003/12/21 20:51:44 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.SimplePageDefinition;
 import org.jfree.report.modules.parser.base.IncludeParser;
 import org.jfree.report.modules.parser.base.IncludeParserFrontend;
 import org.jfree.report.modules.parser.base.ReportParser;
@@ -187,11 +188,8 @@ public class ReportFactory extends AbstractReportDefinitionHandler
    * Starts a new property entry within the report configuration section.
    *
    * @param atts  the element attributes.
-   *
-   * @throws SAXException if there is an error parsing the XML.
    */
   private void startProperty(final Attributes atts)
-      throws SAXException
   {
     currentProperty = atts.getValue(NAME_ATT);
     currentEncoding = atts.getValue(PROPERTY_ENCODING_ATT);
@@ -265,11 +263,8 @@ public class ReportFactory extends AbstractReportDefinitionHandler
 
   /**
    * Ends the definition of a single property entry.
-   *
-   * @throws SAXException if there is a problem parsing the element.
    */
   private void endProperty()
-      throws SAXException
   {
     getReport().getReportConfiguration()
         .setConfigProperty(currentProperty, entityParser.decodeEntities(currentText.toString()));
@@ -302,7 +297,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
       report.setName(name);
     }
 
-    PageFormat format = report.getDefaultPageFormat();
+    PageFormat format = new PageFormat();//report.getDefaultPageFormat();
     float defTopMargin = (float) format.getImageableY();
     float defBottomMargin = (float) (format.getHeight() - format.getImageableHeight()
         - format.getImageableY());
@@ -338,7 +333,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
     }
 
     format.setPaper(p);
-    report.setDefaultPageFormat(format);
+    report.setPageDefinition(new SimplePageDefinition (format));
 
     //PageFormatFactory.logPageFormat(format);
     getParser().setHelperObject(ReportParser.HELPER_OBJ_REPORT_NAME, report);
@@ -357,6 +352,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
    * @return the page format.
    *
    * @throws SAXException if there is an error parsing the report.
+   * @deprecated Create PageDefinitions instead
    */
   private PageFormat createPageFormat(final PageFormat format, final Attributes atts)
       throws SAXException
@@ -431,11 +427,8 @@ public class ReportFactory extends AbstractReportDefinitionHandler
    * default handler for SAX Events
    *
    * @param atts  the element attributes.
-   *
-   * @throws SAXException if there is a parsing problem.
    */
   private void startFunctions(final Attributes atts)
-      throws SAXException
   {
     getParser().pushFactory(new FunctionFactory(getReportParser(), FUNCTIONS_TAG));
   }

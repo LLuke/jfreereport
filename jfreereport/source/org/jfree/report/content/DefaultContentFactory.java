@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultContentFactory.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: DefaultContentFactory.java,v 1.3 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------
@@ -112,6 +112,18 @@ public class DefaultContentFactory implements ContentFactory
                                          final LayoutSupport ot)
       throws ContentCreationException
   {
+    if (bounds == null)
+    {
+      throw new NullPointerException("Bounds is null.");
+    }
+    if (ot == null)
+    {
+      throw new NullPointerException("LayoutSupport is null.");
+    }
+    if (e == null)
+    {
+      throw new NullPointerException("Element is null.");
+    }
     final String contentType = e.getContentType();
     for (int i = 0; i < modules.size(); i++)
     {

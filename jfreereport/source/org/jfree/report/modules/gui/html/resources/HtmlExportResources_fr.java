@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   -;
  *
- * $Id: HtmlExportResources_fr.java,v 1.8 2003/09/14 19:33:25 taqua Exp $
+ * $Id: HtmlExportResources_fr.java,v 1.9 2003/11/01 19:52:28 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -141,6 +141,7 @@ public class HtmlExportResources_fr extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{HtmlExportResources.class.getName(), "fr"});
+    new HtmlExportResources_fr().generateResourceProperties("french");
+    System.exit(0);
   }
 }

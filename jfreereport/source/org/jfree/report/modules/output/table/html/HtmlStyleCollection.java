@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.5 2003/09/09 15:52:53 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.6 2003/10/27 20:40:05 taqua Exp $
  *
  * Changes
  * -------
@@ -37,13 +37,8 @@
 package org.jfree.report.modules.output.table.html;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-
-import org.jfree.report.ElementAlignment;
-import org.jfree.report.modules.output.table.base.TableCellBackground;
-import org.jfree.report.style.FontDefinition;
 import org.jfree.xml.factory.objects.ColorObjectDescription;
 
 /**
@@ -52,7 +47,9 @@ import org.jfree.xml.factory.objects.ColorObjectDescription;
  * <p>
  * The collection reuses previously generated styles to create optimized code.
  * <p>
- * Todo: the table cell styles should also be defined here ... 
+ * Created StyleSheets are stored in the collection and can be used as keys
+ * to lookup the name of that style in the global style sheet.
+ *
  * @author Thomas Morgner
  */
 public class HtmlStyleCollection
@@ -61,16 +58,17 @@ public class HtmlStyleCollection
    * the ObjectDescription for color objects is used to translate colors into names or
    * RGB-values.
    */
-  private final ColorObjectDescription colorObjectDescription;
+  private static final ColorObjectDescription colorObjectDescription =
+          new ColorObjectDescription();
 
   /** contains all generated style sheets. */
   private final HashMap table;
-//  /** contains all cell styles (not yet used). */
-//  private final HashMap cellStyleTable;
-//  /** the name counter helps to create unique names for the tablerow-styles. */
-//  private int rowCounter;
-//  /** the name counter helps to create unique names for the tabledata-styles. */
-//  private int cellCounter;
+  private final HashMap reverseTable;
+
+  /** the name counter helps to create unique names for the tablerow-styles. */
+  private int rowCounter;
+  /** the name counter helps to create unique names for the tabledata-styles. */
+  private int cellCounter;
 
   /** the name counter helps to create unique names for the styles. */
   private int nameCounter;
@@ -80,9 +78,8 @@ public class HtmlStyleCollection
    */
   public HtmlStyleCollection()
   {
-    this.colorObjectDescription = new ColorObjectDescription();
     this.table = new HashMap();
-//    this.cellStyleTable = new HashMap();
+    this.reverseTable = new HashMap();
   }
 
   /**
@@ -104,7 +101,7 @@ public class HtmlStyleCollection
    * @param style the generated style, that should be added to the style cache.
    * @return the registered name for the stylesheet.
    */
-  public String addStyle(final HtmlCellStyle style)
+  public String addContentStyle(final HtmlContentStyle style)
   {
     String name = lookupName(style);
     if (name == null)
@@ -112,6 +109,7 @@ public class HtmlStyleCollection
       // Style did not change during the report processing, add it
       name = createName();
       table.put(style, name);
+      reverseTable.put(name, style);
     }
     return name;
   }
@@ -122,7 +120,7 @@ public class HtmlStyleCollection
    * @param style the style, that should be checked.
    * @return true, if the style is registered, false otherwise.
    */
-  public boolean isRegistered(final HtmlCellStyle style)
+  public boolean isRegistered(final HtmlStyle style)
   {
     final String name = lookupName(style);
 
@@ -148,11 +146,24 @@ public class HtmlStyleCollection
    * Try to find the registered name of the given style. Returns null,
    * if the style is not registered.
    *
+   * @param name the name of the style, that should be looked up.
+   * @return the style, or null, if the name is not registed.
+   * @see HtmlStyleCollection#isRegistered
+   */
+  public HtmlStyle lookupStyle(final String name)
+  {
+    return (HtmlStyle) reverseTable.get(name);
+  }
+
+  /**
+   * Try to find the registered name of the given style. Returns null,
+   * if the style is not registered.
+   *
    * @param style the style, which should be looked up.
    * @return the registered name for this style, or null, if the style is not registed.
    * @see HtmlStyleCollection#isRegistered
    */
-  public String lookupName(final HtmlCellStyle style)
+  public String lookupName(final HtmlStyle style)
   {
     return (String) table.get(style);
   }
@@ -163,123 +174,9 @@ public class HtmlStyleCollection
   public void clear()
   {
     table.clear();
+    reverseTable.clear();
   }
 
-  /**
-   * Translates the font name of the FontDefinition into the HTML-Font name.
-   * If the fontdefinition describes a logical font, then the html font name
-   * for that logical font is returned.
-   *
-   * @param font the font definition.
-   * @return the translated html font name.
-   */
-  private String translateFontName(final FontDefinition font)
-  {
-    if (font.isCourier())
-    {
-      return "monospaced";
-    }
-    if (font.isSerif())
-    {
-      return "serif";
-    }
-    if (font.isSansSerif())
-    {
-      return "sans-serif";
-    }
-    return "'" + font.getFontName() + "'";
-  }
-
-  /**
-   * Transforms the given HtmlCellStyle into a Cascading StyleSheet definition.
-   *
-   * @param style the HtmlCellStyle, that should be translated.
-   * @return the generated stylesheet definition.
-   */
-  public String createStyleSheetDefinition(final HtmlCellStyle style)
-  {
-    final FontDefinition font = style.getFont();
-    final String colorValue = getColorString(style.getFontColor());
-
-    final StringBuffer b = new StringBuffer();
-    b.append("font-family:");
-    b.append(translateFontName(font));
-    b.append("; font-size:");
-    b.append(font.getFontSize());
-    b.append("pt");
-    if (font.isBold())
-    {
-      b.append("; font-weight:bold");
-    }
-    if (font.isItalic())
-    {
-      b.append("; font-style:italic");
-    }
-    if (font.isUnderline() && font.isStrikeThrough())
-    {
-      b.append("; text-decoration:underline,line-through");
-    }
-    else if (font.isUnderline())
-    {
-      b.append("; text-decoration:underline");
-    }
-    else if (font.isStrikeThrough())
-    {
-      b.append("; text-decoration:line-through");
-    }
-    if (colorValue != null)
-    {
-      b.append("; color:");
-      b.append(colorValue);
-    }
-
-    b.append("; vertical-align:");
-    b.append(translateVerticalAlignment(style.getVerticalAlignment()));
-    b.append("; text-align:");
-    b.append(translateHorizontalAlignment(style.getHorizontalAlignment()));
-    b.append(";");
-    return b.toString();
-  };
-
-  /**
-   * Translates the JFreeReport horizontal element alignment into a
-   * HTML alignment constant.
-   *
-   * @param ea the element alignment
-   * @return the translated alignment name.
-   */
-  private String translateHorizontalAlignment(final ElementAlignment ea)
-  {
-    if (ea == ElementAlignment.RIGHT)
-    {
-      return "right";
-    }
-    if (ea == ElementAlignment.CENTER)
-    {
-      return "center";
-    }
-    return "left";
-  }
-
-  /**
-   * Translates the JFreeReport vertical element alignment into a
-   * HTML alignment constant.
-   *
-   * @param ea the element alignment
-   * @return the translated alignment name.
-   */
-  private String translateVerticalAlignment(final ElementAlignment ea)
-  {
-    if (ea == ElementAlignment.BOTTOM)
-    {
-      return "bottom";
-    }
-    if (ea == ElementAlignment.MIDDLE)
-    {
-      return "middle";
-    }
-    return "top";
-  }
 
   /**
    * Creates the color string for the given AWT color. If the color is one of
@@ -289,7 +186,7 @@ public class HtmlStyleCollection
    * @param color the AWTColor that should be translated.
    * @return the translated html color definition
    */
-  private String getColorString(final Color color)
+  public static String getColorString(final Color color)
   {
     try
     {
@@ -303,100 +200,32 @@ public class HtmlStyleCollection
     return null;
   }
 
-  /**
-   * Transforms the given TableCellBackground into a Cascading StyleSheet definition.
-   *
-   * @param bg the background definition, that should be translated.
-   * @return the generated stylesheet definition.
-   */
-  public String getBackgroundStyle(final TableCellBackground bg)
+
+  public String addRowStyle (final HtmlTableRowStyle style)
   {
-    // todo: remove the use of the array list and append directly
-    final ArrayList style = new ArrayList();
-    final Color c = bg.getColor();
-    if (c != null)
+    String name = (String) table.get(style);
+    if (name == null)
     {
-      final StringBuffer b = new StringBuffer();
-      b.append("background-color:");
-      b.append(getColorString(c));
-      style.add(b.toString());
+      name = "tr.report-style-" + rowCounter;
+      style.setName(name);
+      table.put(style, name);
+      reverseTable.put(name, style);
+      rowCounter++;
     }
-
-    if (bg.getColorTop() != null)
-    {
-      final StringBuffer b = new StringBuffer();
-      b.append("border-top: ");
-      b.append(bg.getBorderSizeTop());
-      b.append("pt; border-top-style: solid; border-top-color: ");
-      b.append(getColorString(bg.getColorTop()));
-      style.add(b.toString());
-    }
-
-    if (bg.getColorBottom() != null)
-    {
-      final StringBuffer b = new StringBuffer();
-      b.append("border-bottom: ");
-      b.append(bg.getBorderSizeBottom());
-      b.append("pt; border-bottom-style: solid; border-bottom-color: ");
-      b.append(getColorString(bg.getColorBottom()));
-      style.add(b.toString());
-    }
-
-    if (bg.getColorLeft() != null)
-    {
-      final StringBuffer b = new StringBuffer();
-      b.append("border-left: ");
-      b.append(bg.getBorderSizeLeft());
-      b.append("pt; border-left-style: solid; border-left-color: ");
-      b.append(getColorString(bg.getColorLeft()));
-      style.add(b.toString());
-    }
-
-    if (bg.getColorRight() != null)
-    {
-      final StringBuffer b = new StringBuffer();
-      b.append("border-right: ");
-      b.append(bg.getBorderSizeRight());
-      b.append("pt; border-right-style: solid; border-right-color: ");
-      b.append(getColorString(bg.getColorRight()));
-      style.add(b.toString());
-    }
-
-    final StringBuffer b = new StringBuffer();
-    final Iterator styles = style.iterator();
-    while (styles.hasNext())
-    {
-      b.append(styles.next());
-      if (styles.hasNext())
-      {
-        b.append("; ");
-      }
-    }
-
-    return b.toString();
+    return name;
   }
 
-//  public void registerTableStyle (String style, boolean isRowStyle)
-//  {
-//    if (isRowStyle)
-//    {
-//      cellStyleTable.put(style, "tr.report-style-" + rowCounter);
-//      rowCounter++;
-//    }
-//    else
-//    {
-//      cellStyleTable.put(style, "td.report-style-" + cellCounter);
-//      cellCounter++;
-//    }
-//  }
-//
-//  public String getTableStyleClass (String style)
-//  {
-//    return (String) cellStyleTable.get(style);
-//  }
-//
-//  public Iterator getRegisteredTableStyles ()
-//  {
-//    return cellStyleTable.keySet().iterator();
-//  }
+  public String addCellStyle (final HtmlTableCellStyle style)
+  {
+    String name = (String) table.get(style);
+    if (name == null)
+    {
+      name = "td.report-style-" + cellCounter;
+      style.setName(name);
+      table.put(style, name);
+      reverseTable.put(name, style);
+      cellCounter++;
+    }
+    return name;
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: PlainTextExportResources_nl.java,v 1.6 2003/09/08 18:39:33 taqua Exp $
+ * $Id: PlainTextExportResources_nl.java,v 1.7 2003/09/12 18:46:18 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -114,6 +114,7 @@ public class PlainTextExportResources_nl extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{PlainTextExportResources.class.getName(), "nl"});
+    new PlainTextExportResources_nl().generateResourceProperties("dutch");
+    System.exit(0);
   }
 }

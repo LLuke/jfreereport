@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTask.java,v 1.8 2003/10/18 19:22:32 taqua Exp $
+ * $Id: PlainTextExportTask.java,v 1.9 2003/11/07 18:33:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -92,10 +92,6 @@ public class PlainTextExportTask extends ExportTask
     {
       throw new NullPointerException("File name is null.");
     }
-    if (dialog == null)
-    {
-      throw new NullPointerException("Progress dialog is null.");
-    }
     if (report == null)
     {
       throw new NullPointerException("Report is null.");
@@ -125,18 +121,15 @@ public class PlainTextExportTask extends ExportTask
     {
       case PlainTextExportDialog.TYPE_PLAIN_OUTPUT:
         {
-          return new PrinterCommandSet(out, report.getDefaultPageFormat(),
-              charPerInch, linesPerInch);
+          return new PrinterCommandSet(out, charPerInch, linesPerInch);
         }
       case PlainTextExportDialog.TYPE_IBM_OUTPUT:
         {
-          return new IBMPrinterCommandSet(out, report.getDefaultPageFormat(),
-              charPerInch, linesPerInch);
+          return new IBMPrinterCommandSet(out, charPerInch, linesPerInch);
         }
       case PlainTextExportDialog.TYPE_EPSON_OUTPUT:
         {
-          return new EpsonPrinterCommandSet(out, report.getDefaultPageFormat(),
-              charPerInch, linesPerInch);
+          return new EpsonPrinterCommandSet(out, charPerInch, linesPerInch);
         }
       default:
         throw new IllegalArgumentException();
@@ -156,20 +149,26 @@ public class PlainTextExportTask extends ExportTask
           new FileOutputStream(file));
       final PrinterCommandSet pc = getPrinterCommandSet(out, report);
       final PlainTextOutputTarget target =
-        new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
+        new PlainTextOutputTarget(pc);
       target.configure(report.getReportConfiguration());
 
       final PageableReportProcessor proc = new PageableReportProcessor(report);
       proc.setHandleInterruptedState(false);
-      progressDialog.setModal(false);
-      progressDialog.setVisible(true);
-      proc.addRepaginationListener(progressDialog);
+      if (progressDialog != null)
+      {
+        progressDialog.setModal(false);
+        progressDialog.setVisible(true);
+        proc.addRepaginationListener(progressDialog);
+      }
       proc.setOutputTarget(target);
 
       target.open();
       proc.processReport();
       target.close();
-      proc.removeRepaginationListener(progressDialog);
+      if (progressDialog != null)
+      {
+        proc.removeRepaginationListener(progressDialog);
+      }
       setTaskDone();
     }
     catch (ReportInterruptedException re)
@@ -215,7 +214,10 @@ public class PlainTextExportTask extends ExportTask
         // just a minor obstactle. Something big crashed before ...
       }
     }
-    progressDialog.setVisible(false);
+    if (progressDialog != null)
+    {
+      progressDialog.setVisible(false);
+    }
   }
 
   /**
@@ -224,6 +226,9 @@ public class PlainTextExportTask extends ExportTask
   protected void dispose()
   {
     super.dispose();
-    progressDialog.dispose();
+    if (progressDialog != null)
+    {
+      progressDialog.dispose();
+    }
   }
 }

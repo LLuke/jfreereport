@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFProcessor.java,v 1.5 2003/08/24 15:06:10 taqua Exp $
+ * $Id: RTFProcessor.java,v 1.6 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -40,10 +40,10 @@ import java.io.OutputStream;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.function.FunctionInitializeException;
-import org.jfree.report.modules.output.table.base.TableLayoutInfo;
 import org.jfree.report.modules.output.table.base.TableProcessor;
-import org.jfree.report.modules.output.table.base.TableProducer;
+import org.jfree.report.modules.output.table.base.TableCreator;
+import org.jfree.report.modules.output.table.base.LayoutCreator;
+import org.jfree.report.modules.output.meta.MetaBandProducer;
 
 /**
  * The ExcelProcessor coordinates the output process for generating
@@ -61,10 +61,9 @@ public class RTFProcessor extends TableProcessor
    *
    * @param report the report that should be written as RTF.
    * @throws ReportProcessingException if the report initialization failed
-   * @throws FunctionInitializeException if the table writer initialization failed.
    */
   public RTFProcessor(final JFreeReport report)
-      throws ReportProcessingException, FunctionInitializeException
+      throws ReportProcessingException
   {
     super(report);
   }
@@ -90,28 +89,6 @@ public class RTFProcessor extends TableProcessor
   }
 
   /**
-   * Creates a TableProducer. The TableProducer is responsible to create the table.
-   *
-   * @param gridLayoutBounds the grid layout that contain the bounds from the pagination run.
-   * @return the created table producer, never null.
-   */
-  protected TableProducer createProducer(final TableLayoutInfo gridLayoutBounds)
-  {
-    return new RTFProducer((RTFLayoutInfo) gridLayoutBounds, getOutputStream());
-  }
-
-  /**
-   * Creates a dummy TableProducer. The TableProducer is responsible to compute the layout.
-   *
-   * @return the created table producer, never null.
-   */
-  protected TableProducer createDummyProducer()
-  {
-    return new RTFProducer
-        (new RTFLayoutInfo(false, getReport().getDefaultPageFormat()), isStrictLayout());
-  }
-
-  /**
    * Gets the report configuration prefix for that processor. This prefix defines
    * how to map the property names into the global report configuration.
    *
@@ -120,5 +97,17 @@ public class RTFProcessor extends TableProcessor
   protected String getReportConfigurationPrefix()
   {
     return "org.jfree.report.targets.table.rtf.";
+  }
+
+  protected TableCreator createContentCreator ()
+  {
+    final LayoutCreator layoutCreator = getLayoutCreator();
+    return new RTFContentCreator(layoutCreator.getSheetLayoutCollection(),
+            getOutputStream());
+  }
+
+  protected MetaBandProducer createMetaBandProducer ()
+  {
+    return new RTFMetaBandProducer();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.5 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -250,6 +250,10 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
     if (font == null)
     {
       throw new NullPointerException("Given FontDefinition is null");
+    }
+    if (font.getFontSize() <= 0)
+    {
+      throw new IllegalArgumentException("The given FontSize is <= 0");
     }
     this.font = font;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentType.java,v 1.2 2003/08/18 18:27:58 taqua Exp $
+ * $Id: ContentType.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -68,6 +68,12 @@ public final class ContentType
 
   /** Container content type. */
   public static final ContentType CONTAINER = new ContentType("Container");
+
+  /**
+   * Raw content type. This denotes a user defined content type, usually
+   * a intermediate product while producing the physical content.
+   */
+  public static final ContentType RAW = new ContentType("Raw");
 
   /** The content name (for debug purposes). */
   private final String myName;

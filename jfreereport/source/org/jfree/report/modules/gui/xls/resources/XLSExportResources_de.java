@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XLSExportResources_de.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
+ * $Id: XLSExportResources_de.java,v 1.5 2003/08/27 20:19:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -116,6 +116,7 @@ public class XLSExportResources_de extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{XLSExportResources.class.getName(), "de"});
+    new XLSExportResources_de().generateResourceProperties("german");
+    System.exit(0);
   }
 }

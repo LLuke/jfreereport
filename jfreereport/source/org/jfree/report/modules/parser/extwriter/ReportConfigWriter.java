@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigWriter.java,v 1.5 2003/11/07 15:31:40 taqua Exp $
+ * $Id: ReportConfigWriter.java,v 1.6 2003/12/04 18:04:07 taqua Exp $
  *
  * Changes
  * -------
@@ -146,7 +146,8 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
   private AttributeList buildPageFormatProperties()
   {
     final AttributeList retval = new AttributeList();
-    final PageFormat fmt = getReport().getDefaultPageFormat();
+    // todo PageFormat changed
+    final PageFormat fmt = new PageFormat();//getReport().getDefaultPageFormat();
     final int[] borders = getBorders(fmt.getPaper());
 
     if (fmt.getOrientation() == PageFormat.LANDSCAPE)

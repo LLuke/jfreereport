@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.4 2003/09/30 19:47:29 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.5 2003/11/07 18:33:49 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 
-import org.jfree.report.ImageReference;
+import org.jfree.report.DefaultImageReference;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.util.ImageUtils;
@@ -258,9 +258,8 @@ public class PaintDynamicComponentFunction extends AbstractFunction
       image = createComponentImage();
     }
 
-    final ImageReference ref = new ImageReference(image);
-    ref.setScaleX(1f / getScale());
-    ref.setScaleY(1f / getScale());
+    final DefaultImageReference ref = new DefaultImageReference(image);
+    ref.setScale(1f / getScale(), 1f / getScale());
     return ref;
   }
 

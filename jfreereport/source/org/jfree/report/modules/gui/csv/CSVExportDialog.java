@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.6 2003/09/09 21:31:48 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.7 2003/11/07 16:26:17 taqua Exp $
  *
  * Changes
  * --------
@@ -49,6 +49,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.text.MessageFormat;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -72,10 +73,13 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.LengthLimitingDocument;
-import org.jfree.report.modules.gui.csv.resources.CSVExportResources;
+import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
+import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
+import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
 import org.jfree.report.modules.output.csv.CSVProcessor;
 import org.jfree.report.modules.output.table.base.TableProcessor;
 import org.jfree.report.modules.output.table.csv.CSVTableProcessor;
+import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 import org.jfree.ui.ExtensionFileFilter;
@@ -239,7 +243,12 @@ public class CSVExportDialog extends JDialog
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
-      CSVExportResources.class.getName();
+      "org.jfree.report.modules.gui.csv.resources.csv-export-resources";
+
+  private static final String COMMA_SEPARATOR = ",";
+  private static final String SEMICOLON_SEPARATOR = ";";
+  private static final String TAB_SEPARATOR = "\t";
+  private static final String CSV_FILE_EXTENSION = ".csv";
 
   /**
    * Creates a new CSV export dialog.
@@ -620,15 +629,15 @@ public class CSVExportDialog extends JDialog
   {
     if (rbSeparatorColon.isSelected())
     {
-      return ",";
+      return COMMA_SEPARATOR;
     }
     if (rbSeparatorSemicolon.isSelected())
     {
-      return ";";
+      return SEMICOLON_SEPARATOR;
     }
     if (rbSeparatorTab.isSelected())
     {
-      return "\t";
+      return TAB_SEPARATOR;
     }
     if (rbSeparatorOther.isSelected())
     {
@@ -649,15 +658,15 @@ public class CSVExportDialog extends JDialog
       rbSeparatorOther.setSelected(true);
       txSeparatorOther.setText("");
     }
-    else if (s.equals(","))
+    else if (s.equals(COMMA_SEPARATOR))
     {
       rbSeparatorColon.setSelected(true);
     }
-    else if (s.equals(";"))
+    else if (s.equals(SEMICOLON_SEPARATOR))
     {
       rbSeparatorSemicolon.setSelected(true);
     }
-    else if (s.equals("\t"))
+    else if (s.equals(TAB_SEPARATOR))
     {
       rbSeparatorTab.setSelected(true);
     }
@@ -734,7 +743,7 @@ public class CSVExportDialog extends JDialog
       fileChooser = new JFileChooser();
       fileChooser.addChoosableFileFilter(
           new ExtensionFileFilter
-              (getResources().getString("csvexportdialog.csv-file-description"), ".csv"));
+              (getResources().getString("csvexportdialog.csv-file-description"), CSV_FILE_EXTENSION));
       fileChooser.setMultiSelectionEnabled(false);
     }
 
@@ -746,9 +755,9 @@ public class CSVExportDialog extends JDialog
       String selFileName = selFile.getAbsolutePath();
 
       // Test if ends on csv
-      if (StringUtil.endsWithIgnoreCase(selFileName, ".csv") == false)
+      if (StringUtil.endsWithIgnoreCase(selFileName, CSV_FILE_EXTENSION) == false)
       {
-        selFileName = selFileName + ".csv";
+        selFileName = selFileName + CSV_FILE_EXTENSION;
       }
       setFilename(selFileName);
     }
@@ -818,6 +827,18 @@ public class CSVExportDialog extends JDialog
   public boolean performQueryForExport(final JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
+    final ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
+    try
+    {
+      setDialogContents(storage.loadProperties
+          (ConfigFactory.encodePath(report.getName() + "_csvexport"),
+              new Properties()));
+    }
+    catch (Exception cse)
+    {
+      Log.debug ("Unable to load the defaults in CSV export dialog.");
+    }
+
     setModal(true);
     setVisible(true);
     if (isConfirmed() == false)
@@ -826,7 +847,47 @@ public class CSVExportDialog extends JDialog
     }
 
     storeToConfiguration(report.getReportConfiguration());
+    try
+    {
+      storage.storeProperties
+          (ConfigFactory.encodePath(report.getName() + "_csvexport"),
+              getDialogContents());
+    }
+    catch (ConfigStoreException cse)
+    {
+      Log.debug ("Unable to store the defaults in CSV export dialog.");
+    }
     return true;
+  }
+
+  /**
+   * Returns the user input of this dialog as properties collection.
+   *
+   * @return the user input.
+   */
+  public Properties getDialogContents ()
+  {
+    final Properties p = new Properties();
+    p.setProperty("filename", getFilename());
+    p.setProperty("encoding", getEncoding());
+    p.setProperty("separator-string", getSeparatorString());
+    p.setProperty("strict-layout", String.valueOf(isStrictLayout()));
+    p.setProperty("export-raw-data", String.valueOf(isExportRawData()));
+    return p;
+  }
+
+  /**
+   * Restores the user input from a properties collection.
+   *
+   * @param p the user input.
+   */
+  public void setDialogContents (final Properties p)
+  {
+    setFilename(p.getProperty("filename", getFilename()));
+    setEncoding(p.getProperty("encoding", getEncoding()));
+    setSeparatorString(p.getProperty("separator-string", getSeparatorString()));
+    setStrictLayout(StringUtil.parseBoolean(p.getProperty("strict-layout"), isStrictLayout()));
+    setExportRawData(StringUtil.parseBoolean(p.getProperty("export-raw-data"), isExportRawData()));
   }
 
   /**
@@ -836,12 +897,12 @@ public class CSVExportDialog extends JDialog
    */
   public void initFromConfiguration(final ReportConfiguration config)
   {
-    setSeparatorString(config.getConfigProperty(CSVProcessor.CSV_SEPARATOR, ","));
+    setSeparatorString(config.getConfigProperty(CSVProcessor.CSV_SEPARATOR, COMMA_SEPARATOR));
 
     final String strict = config.getConfigProperty
         (CSVTableProcessor.CONFIGURATION_PREFIX +
         CSVTableProcessor.STRICT_LAYOUT,
-            config.getConfigProperty(TableProcessor.STRICT_TABLE_LAYOUT,
+            config.getConfigProperty(TableProcessor.STRICT_LAYOUT,
                 TableProcessor.STRICT_TABLE_LAYOUT_DEFAULT));
     setStrictLayout(strict.equals("true"));
     final String encoding = getCSVTargetEncoding(config);
@@ -898,29 +959,6 @@ public class CSVExportDialog extends JDialog
   public void setStrictLayout(final boolean strictLayout)
   {
     cbxStrictLayout.setSelected(strictLayout);
-  }
-
-  /**
-   * This method exists for debugging purposes.
-   *
-   * @param args  ignored.
-   */
-  public static void main(final String[] args)
-  {
-    final JDialog d = new CSVExportDialog();
-    d.pack();
-    d.addWindowListener(new WindowAdapter()
-    {
-      /**
-       * Invoked when a window is in the process of being closed.
-       * The close operation can be overridden at this point.
-       */
-      public void windowClosing(final WindowEvent e)
-      {
-        System.exit(0);
-      }
-    });
-    d.setVisible(true);
   }
 
   /**

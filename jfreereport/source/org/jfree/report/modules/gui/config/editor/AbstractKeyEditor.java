@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractKeyEditor.java,v 1.4 2003/09/15 18:26:50 taqua Exp $
+ * $Id: AbstractKeyEditor.java,v 1.5 2003/11/07 18:33:51 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,8 +45,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import org.jfree.report.modules.gui.base.ResourceBundleUtils;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
-import org.jfree.report.modules.gui.config.resources.ConfigResources;
 import org.jfree.report.util.ImageUtils;
 import org.jfree.report.util.ReportConfiguration;
 
@@ -60,7 +60,7 @@ public abstract class AbstractKeyEditor extends JComponent implements KeyEditor
 {
   /** The name of the resource bundle implementation used to translate texts. */
   private static final String RESOURCE_BUNDLE =
-      ConfigResources.class.getName();
+      "org.jfree.report.modules.gui.config.resources.config-resources";
   /** A constant for the "validInput" property name. */
   public static final String VALID_INPUT_PROPERTY = "validInput";
 
@@ -122,7 +122,8 @@ public abstract class AbstractKeyEditor extends JComponent implements KeyEditor
   {
     if (errorIcon == null)
     {
-      errorIcon = (Icon) resources.getObject("default-editor.error-icon");
+      errorIcon = ResourceBundleUtils.getIcon
+          (resources.getString("default-editor.error-icon"));
     }
     return errorIcon;
   }

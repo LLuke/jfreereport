@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigFactory.java,v 1.5 2003/08/24 15:08:20 taqua Exp $
+ * $Id: ConfigFactory.java,v 1.6 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -122,7 +122,7 @@ public final class ConfigFactory
    */
   public ConfigStorage getUserStorage()
   {
-    return systemStorage;
+    return userStorage;
   }
 
   /**
@@ -132,7 +132,7 @@ public final class ConfigFactory
    */
   public ConfigStorage getSystemStorage()
   {
-    return userStorage;
+    return systemStorage;
   }
 
   /**
@@ -154,4 +154,36 @@ public final class ConfigFactory
     }
     return true;
   }
+
+  public static String encodePath(final String path)
+  {
+    final char[] data = path.toCharArray();
+    StringBuffer encoded = new StringBuffer();
+    for (int i = 0; i < data.length; i++)
+    {
+      if (data[i] == '$')
+      {
+        // double quote
+        encoded.append('$');
+        encoded.append('$');
+      }
+      else if (Character.isJavaIdentifierPart(data[i]) == false)
+      {
+        // padded hex string
+        encoded.append('$');
+        String hex = Integer.toHexString(data[i]);
+        for (int x = hex.length(); x < 4; x++)
+        {
+          encoded.append('0');
+        }
+        encoded.append(hex);
+      }
+      else
+      {
+        encoded.append(data[i]);
+      }
+    }
+    return encoded.toString();
+  }
+  
 }

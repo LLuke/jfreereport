@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: CSVExportResources_nl.java,v 1.5 2003/09/06 18:09:16 taqua Exp $
+ * $Id: CSVExportResources_nl.java,v 1.6 2003/09/08 18:39:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -125,7 +125,8 @@ public class CSVExportResources_nl extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{CSVExportResources.class.getName(), "nl"});
+    new CSVExportResources_nl().generateResourceProperties("dutch");
+    System.exit(0);
   }
 
 }

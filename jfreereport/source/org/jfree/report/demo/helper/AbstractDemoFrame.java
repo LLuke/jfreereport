@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractDemoFrame.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: AbstractDemoFrame.java,v 1.3 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,6 +51,7 @@ import javax.swing.JOptionPane;
 import org.jfree.report.demo.PreviewAction;
 import org.jfree.report.demo.resources.DemoResources;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
+import org.jfree.report.modules.gui.base.ResourceBundleUtils;
 
 /**
  * The AbstractDemoFrame provides some basic functionality shared among all demos.
@@ -126,7 +127,8 @@ public abstract class AbstractDemoFrame extends JFrame
   }
 
   /** The base resource class. */
-  public static final String RESOURCE_BASE = DemoResources.class.getName();
+  public static final String RESOURCE_BASE =
+      "org.jfree.report.demo.resources.demo-resources";
 
   /** Localised resources. */
   private final ResourceBundle resources;
@@ -221,12 +223,13 @@ public abstract class AbstractDemoFrame extends JFrame
   protected JMenu createJMenuItem(final String base)
   {
     final String label = getResources().getString(base + ".name");
-    final Character mnemonic = (Character) getResources().getObject(base + ".mnemonic");
+    final Integer mnemonic = ResourceBundleUtils.createMnemonic
+        (resources.getString(base + ".mnemonic"));
 
     final JMenu menu = new JMenu(label);
     if (mnemonic != null)
     {
-      menu.setMnemonic(mnemonic.charValue());
+      menu.setMnemonic(mnemonic.intValue());
     }
     return menu;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Sergey M Mozgovoi;
  * Contributor(s):   -;
  *
- * $Id: HtmlExportResources_ru.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
+ * $Id: HtmlExportResources_ru.java,v 1.5 2003/09/08 18:39:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -188,6 +188,7 @@ public class HtmlExportResources_ru extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{HtmlExportResources.class.getName(), "ru"});
+    new HtmlExportResources_ru().generateResourceProperties("russian");
+    System.exit(0);
   }
 }

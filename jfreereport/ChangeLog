@@ -2,6 +2,19 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+        * Currently: Rewrite of all Output targets
+        
+          The OutputTargets are not useable right now.
+          Pageable Targets need support for Meta->Physical Translation
+          Pageable OutputTarget internal structure will be changed as next
+            step
+
+          TableTargets need tests ...
+
+        * Output targets are now configured solely by the ReportConfiguration
+          There is _no_ separate set of properties for the output targets
+          anymore   
+
         * Support for watermark-bands was added.
 
 0.8.4-6 (25-Nov-2003):

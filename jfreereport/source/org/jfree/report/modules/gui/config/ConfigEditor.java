@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigEditor.java,v 1.8 2003/11/01 19:52:27 taqua Exp $
+ * $Id: ConfigEditor.java,v 1.9 2003/11/07 18:33:51 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -78,6 +78,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 
 import org.jfree.report.Boot;
+import org.jfree.report.modules.gui.base.ResourceBundleUtils;
 import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.FilesystemFilter;
@@ -86,7 +87,6 @@ import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.ConfigTreeModel;
 import org.jfree.report.modules.gui.config.model.ConfigTreeModelException;
 import org.jfree.report.modules.gui.config.model.ConfigTreeModuleNode;
-import org.jfree.report.modules.gui.config.resources.ConfigResources;
 import org.jfree.report.util.LineBreakIterator;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
@@ -136,7 +136,7 @@ public class ConfigEditor extends JFrame
     public SaveAction()
     {
       putValue(NAME, getResources().getString("action.save.name"));
-      putValue(SMALL_ICON, getResources().getObject("action.save.small-icon"));
+      putValue(SMALL_ICON, ResourceBundleUtils.getIcon(getResources().getString("action.save.small-icon")));
     }
 
     /**
@@ -160,7 +160,7 @@ public class ConfigEditor extends JFrame
     public LoadAction()
     {
       putValue(NAME, getResources().getString("action.load.name"));
-      putValue(SMALL_ICON, getResources().getObject("action.load.small-icon"));
+      putValue(SMALL_ICON, ResourceBundleUtils.getIcon(getResources().getString("action.load.small-icon")));
     }
 
     /**
@@ -184,7 +184,7 @@ public class ConfigEditor extends JFrame
     public NewAction()
     {
       putValue(NAME, getResources().getString("action.new.name"));
-      putValue(SMALL_ICON, getResources().getObject("action.new.small-icon"));
+      putValue(SMALL_ICON, ResourceBundleUtils.getIcon(getResources().getString("action.new.small-icon")));
     }
 
     /**
@@ -247,7 +247,8 @@ public class ConfigEditor extends JFrame
 
   /** The name of the resource bundle implementation used in this dialog. */
   private static final String RESOURCE_BUNDLE =
-      ConfigResources.class.getName();
+      "org.jfree.report.modules.gui.config.resources.config-resources";
+
   /** A label that serves as status bar. */
   private JLabel statusHolder;
   /** The resource bundle instance of this dialog. */

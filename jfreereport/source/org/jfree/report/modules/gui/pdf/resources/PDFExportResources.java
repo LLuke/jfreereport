@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFExportResources.java,v 1.5 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PDFExportResources.java,v 1.6 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,7 @@ import java.awt.event.KeyEvent;
 
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
+import org.jfree.report.modules.gui.html.resources.HtmlExportResources;
 
 /**
  * English language resource for the PDF export GUI.
@@ -145,7 +146,8 @@ public class PDFExportResources extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{PDFExportResources.class.getName(), null});
+    new PDFExportResources().generateResourceProperties("<default>");
+    System.exit(0);
   }
 
 }

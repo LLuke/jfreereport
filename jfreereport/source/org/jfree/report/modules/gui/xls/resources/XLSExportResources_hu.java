@@ -28,7 +28,7 @@
  * Original Author:  Demeter F. Tamás;
  * Contributor(s):   -;
  *
- * $Id: XLSExportResources_hu.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: XLSExportResources_hu.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -107,6 +107,7 @@ public class XLSExportResources_hu extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{XLSExportResources.class.getName(), "hu"});
+    new XLSExportResources_hu().generateResourceProperties("hungarian");
+    System.exit(0);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowConnectable.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: DataRowConnectable.java,v 1.3 2003/12/06 16:47:25 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import org.jfree.report.DataRow;
  * Marks data sources that can be connected to the data row (for example, the DataRowDataSource).
  *
  * @see DataRowDataSource
- * @deprecated this is no longer filled or maintained.
+ * @deprecated this is no longer filled or maintained, and was replaced by "ReportConnectable"
  * @author Thomas Morgner
  */
 public interface DataRowConnectable

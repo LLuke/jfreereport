@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   Helmut Leininger;
  *
- * $Id: JFreeReportResources_de.java,v 1.7 2003/08/25 14:29:29 taqua Exp $
+ * $Id: JFreeReportResources_de.java,v 1.8 2003/08/28 17:45:43 taqua Exp $
  *
  * Changes
  * -------
@@ -221,7 +221,9 @@ public class JFreeReportResources_de extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{JFreeReportResources.class.getName(), "de"});
+    new JFreeReportResources_de().generateResourceProperties("german");
+    System.exit(0);
+//    ResourceCompareTool.main(new String[]{JFreeReportResources.class.getName(), "de"});
   }
 
 }

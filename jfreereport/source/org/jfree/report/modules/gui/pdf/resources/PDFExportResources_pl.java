@@ -28,7 +28,7 @@
  * Original Author:  PB;
  * Contributor(s):   -;
  *
- * $Id: PDFExportResources_pl.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PDFExportResources_pl.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -142,6 +142,7 @@ public class PDFExportResources_pl extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{PDFExportResources.class.getName(), "pl"});
+    new PDFExportResources_pl().generateResourceProperties("polish");
+    System.exit(0);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AboutAction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: AboutAction.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * -------
@@ -70,8 +70,10 @@ public abstract class AboutAction extends AbstractActionDowngrade
     putValue(NAME, resources.getString("action.about.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.about.description"));
     putValue(ActionDowngrade.MNEMONIC_KEY,
-        resources.getObject("action.about.mnemonic"));
-    putValue(SMALL_ICON, resources.getObject("action.about.small-icon"));
-    putValue("ICON24", resources.getObject("action.about.icon"));
+        ResourceBundleUtils.createMnemonic(resources.getString("action.about.mnemonic")));
+    putValue(SMALL_ICON,
+        ResourceBundleUtils.getIcon(resources.getString("action.about.small-icon")));
+    putValue("ICON24",
+        ResourceBundleUtils.getIcon(resources.getString("action.about.icon")));
   }
 }

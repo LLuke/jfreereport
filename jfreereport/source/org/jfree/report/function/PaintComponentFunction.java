@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.7 2003/09/24 15:27:35 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.8 2003/11/07 18:33:49 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 import org.jfree.report.Element;
-import org.jfree.report.ImageReference;
+import org.jfree.report.DefaultImageReference;
 import org.jfree.report.event.LayoutEvent;
 import org.jfree.report.event.LayoutListener;
 import org.jfree.report.layout.BandLayoutManagerUtil;
@@ -250,9 +250,8 @@ public class PaintComponentFunction extends AbstractFunction
     {
       return null;
     }
-    final ImageReference ref = new ImageReference(image);
-    ref.setScaleX(1f / getScale());
-    ref.setScaleY(1f / getScale());
+    final DefaultImageReference ref = new DefaultImageReference(image);
+    ref.setScale(1f / getScale(), 1f / getScale());
     return ref;
   }
 

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportDialog.java,v 1.7 2003/08/25 14:29:29 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.8 2003/09/09 21:31:48 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.text.MessageFormat;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -77,10 +78,12 @@ import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.components.FilesystemFilter;
-import org.jfree.report.modules.gui.html.resources.HtmlExportResources;
+import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
+import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
+import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
 import org.jfree.report.modules.output.table.base.TableProcessor;
 import org.jfree.report.modules.output.table.html.HtmlProcessor;
-import org.jfree.report.modules.output.table.html.HtmlProducer;
+import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 
@@ -352,7 +355,7 @@ public class HtmlExportDialog extends JDialog
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
-      HtmlExportResources.class.getName();
+      "org.jfree.report.modules.gui.html.resources.html-export-resources";
 
   /**
    * Creates a new HTML save dialog.
@@ -1266,15 +1269,82 @@ public class HtmlExportDialog extends JDialog
    */
   public boolean performQueryForExport(final JFreeReport report)
   {
-    setModal(true);
     initFromConfiguration(report.getReportConfiguration());
+    final ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
+    try
+    {
+      setDialogContents(storage.loadProperties
+          (ConfigFactory.encodePath(report.getName() + "_htmlexport"),
+              new Properties()));
+    }
+    catch (Exception cse)
+    {
+      Log.debug ("Unable to load the defaults in HTML export dialog.");
+    }
+
+    setModal(true);
     setVisible(true);
     if (isConfirmed() == false)
     {
       return false;
     }
+
     storeToConfiguration(report.getReportConfiguration());
+    try
+    {
+      storage.storeProperties
+          (ConfigFactory.encodePath(report.getName() + "_htmlexport"),
+              getDialogContents());
+    }
+    catch (ConfigStoreException cse)
+    {
+      Log.debug ("Unable to store the defaults in HTML export dialog.");
+    }
     return true;
+  }
+
+  /**
+   * Returns the user input of this dialog as properties collection.
+   *
+   * @return the user input.
+   */
+  public Properties getDialogContents ()
+  {
+    final Properties p = new Properties();
+    p.setProperty("author", getAuthor());
+    p.setProperty("dir.data-file", getDirDataFilename());
+    p.setProperty("dir.filename", getDirFilename());
+    p.setProperty("encoding", getEncoding());
+    p.setProperty("html.title", getHTMLTitle());
+    p.setProperty("stream.filename", getStreamFilename());
+    p.setProperty("zip.data-file", getZipDataFilename());
+    p.setProperty("zip.filename", getZipFilename());
+
+    p.setProperty("selected-exportmethod", String.valueOf(getSelectedExportMethod()));
+    p.setProperty("strict-layout", String.valueOf(isStrictLayout()));
+    p.setProperty("generate-xhtml", String.valueOf(isGenerateXHTML()));
+    return p;
+  }
+
+  /**
+   * Restores the user input from a properties collection.
+   *
+   * @param p the user input.
+   */
+  public void setDialogContents (final Properties p)
+  {
+    setAuthor(p.getProperty("author", getAuthor()));
+    setDirDataFilename(p.getProperty("dir.data-file", getDirDataFilename()));
+    setDirFilename(p.getProperty("dir.filename", getDirFilename()));
+    setEncoding(p.getProperty("encoding", getEncoding()));
+    setHTMLTitle(p.getProperty("html.title", getHTMLTitle()));
+    setStreamFilename(p.getProperty("stream.filename", getStreamFilename()));
+    setZipDataFilename(p.getProperty("zip.data-file", getZipDataFilename()));
+    setZipFilename(p.getProperty("zip.filename", getZipFilename()));
+
+    setSelectedExportMethod(StringUtil.parseInt(p.getProperty("selected-exportmethod"), getSelectedExportMethod()));
+    setStrictLayout(StringUtil.parseBoolean(p.getProperty("strict-layout"), isStrictLayout()));
+    setGenerateXHTML(StringUtil.parseBoolean(p.getProperty("generate-xhtml"), isGenerateXHTML()));
   }
 
   /**
@@ -1415,18 +1485,18 @@ public class HtmlExportDialog extends JDialog
     final String strict = config.getConfigProperty
         (HtmlProcessor.CONFIGURATION_PREFIX +
         HtmlProcessor.STRICT_LAYOUT,
-            config.getConfigProperty(TableProcessor.STRICT_TABLE_LAYOUT,
+            config.getConfigProperty(TableProcessor.STRICT_LAYOUT,
                 TableProcessor.STRICT_TABLE_LAYOUT_DEFAULT));
     setStrictLayout(strict.equals("true"));
     final String encoding = config.getConfigProperty
         (HtmlProcessor.CONFIGURATION_PREFIX +
-        HtmlProducer.ENCODING, HtmlProducer.ENCODING_DEFAULT);
+        HtmlProcessor.ENCODING, HtmlProcessor.ENCODING_DEFAULT);
     setAuthor
         (config.getConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
-        HtmlProducer.AUTHOR, getAuthor()));
+        HtmlProcessor.AUTHOR, getAuthor()));
     setHTMLTitle
         (config.getConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
-        HtmlProducer.TITLE, getHTMLTitle()));
+        HtmlProcessor.TITLE, getHTMLTitle()));
     encodingModel.ensureEncodingAvailable(encoding);
     setEncoding(encoding);
   }
@@ -1441,35 +1511,12 @@ public class HtmlExportDialog extends JDialog
   public void storeToConfiguration(final ReportConfiguration config)
   {
     config.setConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
-        HtmlProducer.ENCODING, getEncoding());
+        HtmlProcessor.ENCODING, getEncoding());
     config.setConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
-        HtmlProducer.AUTHOR, getAuthor());
+        HtmlProcessor.AUTHOR, getAuthor());
     config.setConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
-        HtmlProducer.TITLE, getHTMLTitle());
+        HtmlProcessor.TITLE, getHTMLTitle());
     config.setConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
         HtmlProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));
-  }
-
-  /**
-   * For debugging.
-   *
-   * @param args  ignored.
-   */
-  public static void main(final String[] args)
-  {
-    final HtmlExportDialog dialog = new HtmlExportDialog();
-    dialog.addWindowListener(new WindowAdapter()
-    {
-      /**
-       * Invoked when a window is in the process of being closed.
-       * The close operation can be overridden at this point.
-       */
-      public void windowClosing(final WindowEvent e)
-      {
-        System.exit(0);
-      }
-    });
-    dialog.pack();
-    dialog.setVisible(true);
   }
 }

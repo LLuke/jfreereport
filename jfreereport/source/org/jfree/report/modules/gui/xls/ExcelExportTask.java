@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportTask.java,v 1.6 2003/10/18 19:22:33 taqua Exp $
+ * $Id: ExcelExportTask.java,v 1.7 2003/11/07 18:33:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -81,10 +81,6 @@ public class ExcelExportTask extends ExportTask
     {
       throw new NullPointerException("File name is null.");
     }
-    if (dialog == null)
-    {
-      throw new NullPointerException("Progress dialog is null.");
-    }
     if (report == null)
     {
       throw new NullPointerException("Report is null.");
@@ -105,13 +101,19 @@ public class ExcelExportTask extends ExportTask
     {
       out = new BufferedOutputStream(new FileOutputStream(file));
       final ExcelProcessor target = new ExcelProcessor(report);
-      progressDialog.setModal(false);
-      progressDialog.setVisible(true);
-      target.addRepaginationListener(progressDialog);
+      if (progressDialog != null)
+      {
+        progressDialog.setModal(false);
+        progressDialog.setVisible(true);
+        target.addRepaginationListener(progressDialog);
+      }
       target.setOutputStream(out);
       target.processReport();
       out.close();
-      target.removeRepaginationListener(progressDialog);
+      if (progressDialog != null)
+      {
+        target.removeRepaginationListener(progressDialog);
+      }
       setTaskDone();
     }
     catch (ReportInterruptedException re)
@@ -157,7 +159,10 @@ public class ExcelExportTask extends ExportTask
         // just a minor obstactle. Something big crashed before ...
       }
     }
-    progressDialog.setVisible(false);
+    if (progressDialog != null)
+    {
+      progressDialog.setVisible(false);
+    }
   }
 
   /**
@@ -166,6 +171,9 @@ public class ExcelExportTask extends ExportTask
   protected void dispose()
   {
     super.dispose();
-    progressDialog.dispose();
+    if (progressDialog != null)
+    {
+      progressDialog.dispose();
+    }
   }
 }

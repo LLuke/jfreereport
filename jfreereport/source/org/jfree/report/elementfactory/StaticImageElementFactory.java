@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticImageElementFactory.java,v 1.5 2003/10/05 21:52:32 taqua Exp $
+ * $Id: StaticImageElementFactory.java,v 1.6 2003/10/18 22:05:11 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,7 +42,9 @@ import java.awt.Image;
 
 import org.jfree.report.Element;
 import org.jfree.report.ImageElement;
-import org.jfree.report.ImageReference;
+import org.jfree.report.DefaultImageReference;
+import org.jfree.report.ImageContainer;
+import org.jfree.report.LocalImageContainer;
 import org.jfree.report.filter.StaticDataSource;
 
 /**
@@ -54,11 +56,10 @@ import org.jfree.report.filter.StaticDataSource;
 public class StaticImageElementFactory extends ImageElementFactory
 {
   /** The image reference is the static content of the new element. */
-  private ImageReference imageReference;
+  private ImageContainer imageReference;
 
   /**
    * Default Constructor.
-   *
    */
   public StaticImageElementFactory()
   {
@@ -69,7 +70,7 @@ public class StaticImageElementFactory extends ImageElementFactory
    *
    * @return the image reference containing the image data.
    */
-  public ImageReference getImageReference()
+  public ImageContainer getImageReference()
   {
     return imageReference;
   }
@@ -79,7 +80,7 @@ public class StaticImageElementFactory extends ImageElementFactory
    *
    * @param imageReference the image reference containing the image data.
    */
-  public void setImageReference(final ImageReference imageReference)
+  public void setImageReference(final ImageContainer imageReference)
   {
     this.imageReference = imageReference;
   }
@@ -95,7 +96,12 @@ public class StaticImageElementFactory extends ImageElementFactory
     {
       return null;
     }
-    return getImageReference().getImage();
+    if (getImageReference() instanceof LocalImageContainer)
+    {
+      final LocalImageContainer li = (LocalImageContainer) getImageReference();
+      return li.getImage();
+    }
+    return null;
   }
 
   /**
@@ -105,7 +111,7 @@ public class StaticImageElementFactory extends ImageElementFactory
    */
   public void setImage(final Image image)
   {
-    setImageReference(new ImageReference(image));
+    setImageReference(new DefaultImageReference(image));
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Demeter F. Tamás;
  * Contributor(s):   -;
  *
- * $Id: PlainTextExportResources_hu.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
+ * $Id: PlainTextExportResources_hu.java,v 1.5 2003/09/08 18:39:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -115,6 +115,7 @@ public class PlainTextExportResources_hu extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{PlainTextExportResources.class.getName(), "hu"});
+    new PlainTextExportResources_hu().generateResourceProperties("hungarian");
+    System.exit(0);
   }
 }

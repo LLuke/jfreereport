@@ -28,7 +28,7 @@
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_sv.java,v 1.2 2003/08/31 19:27:56 taqua Exp $
+ * $Id: DemoResources_sv.java,v 1.3 2003/09/08 18:11:48 taqua Exp $
  *
  * Changes
  * -------
@@ -100,5 +100,12 @@ public class DemoResources_sv extends JFreeReportResources
     {"report.previewfailure.title", "Förhandgranskningsfel"},
 
   };
+
+  public static void main(String[] args)
+  {
+    new DemoResources_sv().generateResourceProperties("swedish");
+    System.exit(0);
+
+  }
 
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.10 2003/11/15 20:51:15 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.11 2003/12/06 17:15:20 taqua Exp $
  *
  * Changes
  * -------
@@ -41,18 +41,19 @@
 
 package org.jfree.report.modules.output.pageable.base;
 
-import java.awt.print.PageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jfree.report.EmptyReportException;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.PageDefinition;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
 import org.jfree.report.function.FunctionInitializeException;
+import org.jfree.report.modules.output.meta.MetaPage;
 import org.jfree.report.modules.output.pageable.base.pagelayout.PageLayouter;
 import org.jfree.report.modules.output.pageable.base.pagelayout.SimplePageLayouter;
 import org.jfree.report.states.FinishState;
@@ -70,9 +71,147 @@ import org.jfree.report.util.Log;
  */
 public class PageableReportProcessor
 {
-  /** 
-   * A compile time constant that defines how many events should be generated 
-   * during the report processing. 
+  protected class PageProcess
+  {
+    public PageProcess()
+    {
+    }
+
+    public ReportState processPage(final ReportState currPage, final boolean failOnError)
+        throws ReportProcessingException
+    {
+      if (currPage == null)
+      {
+        throw new NullPointerException("State != null");
+      }
+      // if a finish state is set to be processed, crash to make sure that FinishStates
+      // are caught outside, we won't handle them here
+      if (currPage.isFinish())
+      {
+        throw new IllegalArgumentException("No finish state for processpage allowed: ");
+      }
+
+      ReportState state = null;
+      PageLayouter lm = null;
+      try
+      {
+        checkInterrupted();
+
+        try
+        {
+          state = (ReportState) currPage.clone();
+        }
+        catch (CloneNotSupportedException cne)
+        {
+          throw new ReportProcessingException("Clone not supported by ReportState?!");
+        }
+        lm = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
+        // todo from where to get the logical page?
+        lm.setLogicalPage(new AlignedLogicalPage(outputTarget, report.getPageDefinition()));
+        lm.restoreSaveState(state);
+
+        // docmark: page spanning bands will affect this badly designed code.
+        // this code will definitly be affected by the Band-intenal-pagebreak code
+        // to this is non-fatal. the next redesign is planed here :)
+
+        // The state restoration must not finish the current page, except the whole
+        // report processing will be finished.
+        if (lm.isPageEnded())
+        {
+          state = state.advance();
+          if (state.isFinish() == false)
+          {
+            throw new ReportProcessingException("State finished page during restore");
+          }
+        }
+        else
+        {
+          // Do some real work.  The report header and footer, and the page headers and footers are
+          // just decorations, as far as the report state is concerned.  The state only changes in
+          // the following code...
+
+          // this loop advances the report state until the next page gets started or
+          // the end of the reporting is reached.
+          // note: Dont test the end of the page, this gives no hint whether there will
+          // be a next page ...
+          while ((lm.isPageEnded() == false) && (state.isFinish() == false))
+          {
+            final PageLayouter org = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
+            state = state.advance();
+            if (failOnError)
+            {
+              if (state.isErrorOccured() == true)
+              {
+                throw new ReportEventException("Failed to dispatch an event.", state.getErrors());
+              }
+            }
+            else
+            {
+              if (state.isErrorOccured() == true)
+              {
+                Log.error("Failed to dispatch an event.",
+                    new ReportEventException("Failed to dispatch an event.", state.getErrors()));
+              }
+            }
+            lm = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
+            if (org != lm)
+            {
+              // assertation check, the pagelayouter must not change during the processing.
+              throw new IllegalStateException("Lost the layout manager");
+            }
+
+            // here: Create metapage...
+            checkInterrupted();
+          }
+        }
+
+        // now process the output if necessary ...
+        performGenerate(lm);
+      }
+      finally
+      {
+        // clear the logical page reference, so that no memleak is created...
+        if (lm != null)
+        {
+          lm.clearLogicalPage();
+        }
+      }
+      return state;
+    }
+
+    protected void performGenerate (PageLayouter layouter)
+        throws ReportProcessingException
+    {
+    }
+  }
+
+  protected class PageGenerateProcess extends PageProcess
+  {
+    private OutputTarget outputTarget;
+
+    public PageGenerateProcess(OutputTarget outputTarget)
+    {
+      this.outputTarget = outputTarget;
+    }
+
+    protected void performGenerate(PageLayouter layouter)
+        throws ReportProcessingException
+    {
+      MetaPage mp = layouter.getMetaPage();
+      try
+      {
+        commitMetaPage(mp, report.getPageDefinition(), outputTarget);
+      }
+      catch (OutputTargetException e)
+      {
+        throw new ReportProcessingException("Failed to commit page", e);
+      }
+    }
+  }
+
+  /**
+   * A compile time constant that defines how many events should be generated
+   * during the report processing.
    */
   private static final int MAX_EVENTS_PER_RUN = 400;
 
@@ -306,7 +445,7 @@ public class PageableReportProcessor
           rs.getCurrentPage(), rs.getCurrentDataItem(), rs.getNumberOfRows(), false);
       fireStateUpdate(repaginationState);
 
-      processPage(rs, getOutputTarget(), failOnError);
+      processPage(rs, failOnError);
     }
   }
 
@@ -347,15 +486,10 @@ public class PageableReportProcessor
       // The pageformat will cause trouble in later versions, when printing over
       // multiple pages gets implemented. This property will be replaced by a more
       // suitable alternative.
-      final PageFormat p = getOutputTarget().getLogicalPage().getPhysicalPageFormat();
-      state.setProperty(JFreeReport.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
-
-      // now change the writer function to be a dummy writer. We don't want any
-      // output in the prepare runs.
-      final OutputTarget dummyOutput = getOutputTarget().createDummyWriter();
-      dummyOutput.configure(report.getReportConfiguration());
-      dummyOutput.open();
+      //todo find a output target independent page representation
+      //final PageFormat p = getOutputTarget().getLogicalPage().getPhysicalPageFormat();
+      //state.setProperty(JFreeReport.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
       // now process all function levels.
       // there is at least one level defined, as we added the PageLayouter
@@ -378,7 +512,7 @@ public class PageableReportProcessor
         if (level == PRINT_FUNCTION_LEVEL)
         {
           pageStates = new ReportStateList(this);
-          state = processPrintedPages(state, pageStates, dummyOutput, maxRows);
+          state = processPrintedPages(state, pageStates, maxRows);
         }
         else
         {
@@ -395,6 +529,7 @@ public class PageableReportProcessor
           if (state instanceof FinishState)
           {
             state = new StartState((FinishState) state, level);
+            // this is a paranoid check ...
             if (state.getCurrentPage() != ReportState.BEFORE_FIRST_PAGE)
             {
               throw new IllegalStateException("State was not set up properly");
@@ -408,7 +543,7 @@ public class PageableReportProcessor
       }
       while (hasNext == true);
 
-      dummyOutput.close();
+      //dummyOutput.close();
       state.setProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
 
       // finally return the saved page states.
@@ -434,13 +569,12 @@ public class PageableReportProcessor
    *
    * @param state the start state for the print level.
    * @param pageStates the list of report states that should receive the created page states.
-   * @param dummyOutput a dummy output target which performs the layout calculations.
    * @param maxRows the number of rows in the report (used to estaminate the current progress).
    * @return the finish state for the report.
    * @throws ReportProcessingException if there was a problem processing the report.
    */
   private ReportState processPrintedPages(ReportState state, final ReportStateList pageStates,
-                                          final OutputTarget dummyOutput, final int maxRows)
+                                          final int maxRows)
       throws ReportProcessingException
   {
     final boolean failOnError = getReport().getReportConfiguration().isStrictErrorHandling();
@@ -450,6 +584,8 @@ public class PageableReportProcessor
     // inner loop: process the complete report, calculate the function values
     // for the current level. Higher level functions are not available in the
     // dataRow.
+
+    PageProcess process = new PageProcess();
 
     while (!state.isFinish())
     {
@@ -461,7 +597,7 @@ public class PageableReportProcessor
 
       final ReportState oldstate = state;
       progress = state.createStateProgress(progress);
-      state = processPage(state, dummyOutput, failOnError);
+      state = process.processPage(state, failOnError);
       if (!state.isFinish())
       {
         // if the report processing is stalled, throw an exception; an infinite
@@ -573,7 +709,6 @@ public class PageableReportProcessor
    * <p>
    * To check the progress, use ReportState.isProceeding(oldstate).
    *
-   * @param out The output target.
    * @param currPage The report state at the beginning of the current page.
    *
    * @return The report state suitable for the next page or ReportState.FinishState.
@@ -582,10 +717,10 @@ public class PageableReportProcessor
    * @throws ReportProcessingException if there is a problem processing the report or the
    *                                   current thread has been interrupted.
    */
-  public ReportState processPage(final ReportState currPage, final OutputTarget out)
+  public ReportState processPage(final ReportState currPage)
       throws ReportProcessingException
   {
-    return processPage(currPage, out, getReport().getReportConfiguration().isStrictErrorHandling());
+    return processPage(currPage, getReport().getReportConfiguration().isStrictErrorHandling());
   }
 
   /**
@@ -594,7 +729,7 @@ public class PageableReportProcessor
    * @throws ReportInterruptedException if the thread is interrupted to
    * abort the report processing.
    */
-  private void checkInterrupted () throws ReportInterruptedException
+  private void checkInterrupted() throws ReportInterruptedException
   {
     if (isHandleInterruptedState() && Thread.interrupted())
     {
@@ -610,7 +745,6 @@ public class PageableReportProcessor
    * <p>
    * To check the progress, use ReportState.isProceeding(oldstate).
    *
-   * @param out The output target.
    * @param currPage The report state at the beginning of the current page.
    * @param failOnError if set to true, then errors in the report event handling will cause the
    *                    reporting to fail.
@@ -621,108 +755,19 @@ public class PageableReportProcessor
    * @throws ReportProcessingException if there is a problem processing the report or the
    *                                   current thread has been interrupted.
    */
-  public ReportState processPage(final ReportState currPage, final OutputTarget out,
-                                 final boolean failOnError)
+  public ReportState processPage(final ReportState currPage, final boolean failOnError)
       throws ReportProcessingException
   {
-    if (out == null)
-    {
-      throw new NullPointerException("OutputTarget != null");
-    }
-    if (out.isOpen() == false)
-    {
-      throw new IllegalStateException("OutputTarget is not open!");
-    }
-    if (currPage == null)
-    {
-      throw new NullPointerException("State != null");
-    }
-    // if a finish state is set to be processed, crash to make sure that FinishStates
-    // are caught outside, we won't handle them here
-    if (currPage.isFinish())
-    {
-      throw new IllegalArgumentException("No finish state for processpage allowed: ");
-    }
+    PageGenerateProcess pageProcess = new PageGenerateProcess(outputTarget);
+    ReportState state = pageProcess.processPage(currPage, failOnError);
+    return state;
+  }
 
-    ReportState state = null;
-    PageLayouter lm = null;
-    try
-    {
-      checkInterrupted();
-
-      try
-      {
-        state = (ReportState) currPage.clone();
-      }
-      catch (CloneNotSupportedException cne)
-      {
-        throw new ReportProcessingException("Clone not supported by ReportState?!");
-      }
-      lm = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
-      lm.setLogicalPage(out.getLogicalPage());
-      lm.restoreSaveState(state);
-
-      // docmark: page spanning bands will affect this badly designed code.
-      // this code will definitly be affected by the Band-intenal-pagebreak code
-      // to this is non-fatal. the next redesign is planed here :)
-
-      // The state restoration must not finish the current page, except the whole
-      // report processing will be finished.
-      if (lm.isPageEnded())
-      {
-        state = state.advance();
-        if (state.isFinish() == false)
-        {
-          throw new ReportProcessingException("State finished page during restore");
-        }
-      }
-      else
-      {
-        // Do some real work.  The report header and footer, and the page headers and footers are
-        // just decorations, as far as the report state is concerned.  The state only changes in
-        // the following code...
-
-        // this loop advances the report state until the next page gets started or
-        // the end of the reporting is reached.
-        // note: Dont test the end of the page, this gives no hint whether there will
-        // be a next page ...
-        while ((lm.isPageEnded() == false) && (state.isFinish() == false))
-        {
-          final PageLayouter org = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
-          state = state.advance();
-          if (failOnError)
-          {
-            if (state.isErrorOccured() == true)
-            {
-              throw new ReportEventException("Failed to dispatch an event.", state.getErrors());
-            }
-          }
-          else
-          {
-            if (state.isErrorOccured() == true)
-            {
-              Log.error("Failed to dispatch an event.",
-                  new ReportEventException("Failed to dispatch an event.", state.getErrors()));
-            }
-          }
-          lm = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
-          if (org != lm)
-          {
-            // assertation check, the pagelayouter must not change during the processing.
-            throw new IllegalStateException("Lost the layout manager");
-          }
-          checkInterrupted();
-        }
-      }
-    }
-    finally
-    {
-      // clear the logical page reference, so that no memleak is created...
-      if (lm != null)
-      {
-        lm.clearLogicalPage();
-      }
-    }
+  public ReportState processDummyPage(final ReportState currPage, final boolean failOnError)
+      throws ReportProcessingException
+  {
+    PageProcess pageProcess = new PageProcess();
+    ReportState state = pageProcess.processPage(currPage, failOnError);
     return state;
   }
 
@@ -737,5 +782,23 @@ public class PageableReportProcessor
   {
     final PageLayouter org = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
     return org.isGeneratedPageEmpty();
+  }
+
+  /**
+   * Converts the meta page into operations for the output target.
+   * This method will only return the operations for the given physical page.
+   *
+   * @param page the meta page containing all content for the logical
+   * page
+   * @param physPage the physical page which we print ...
+   */
+  protected void commitMetaPage(MetaPage page, PageDefinition physPage, OutputTarget output)
+    throws OutputTargetException
+  {
+    System.out.println(page);
+    for (int i = 0; i < physPage.getPageCount(); i++)
+    {
+      output.printPage(page, physPage, i);
+    }
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableBandArea.java,v 1.5 2003/11/01 19:52:29 taqua Exp $
+ * $Id: TableBandArea.java,v 1.6 2003/11/07 18:33:56 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,9 @@
 package org.jfree.report.modules.output.table.base;
 
 import java.awt.Color;
-import java.awt.geom.Rectangle2D;
+
+import org.jfree.report.content.Content;
+import org.jfree.report.style.ElementStyleSheet;
 
 /**
  * A band representation. Bands should create their own x- y- cuts so
@@ -49,25 +51,10 @@ import java.awt.geom.Rectangle2D;
  */
 public class TableBandArea extends TableCellBackground
 {
-  /**
-   * Creates a new TableBandArea with the given bounds.
-   *
-   * @param outerBounds the band bounds in the table,
-   */
-  public TableBandArea(final Rectangle2D outerBounds)
+  public TableBandArea
+      (Content elementContent, ElementStyleSheet style, Color color)
   {
-    this(outerBounds, null);
-  }
-
-  /**
-   * Creates a new TableBandArea with the given bounds.
-   *
-   * @param outerBounds the band bounds in the table
-   * @param color the color of the band area (can be null).
-   */
-  protected TableBandArea(final Rectangle2D outerBounds, final Color color)
-  {
-    super(outerBounds, color);
+    super(elementContent, style, color);
   }
 
   /**

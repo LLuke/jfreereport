@@ -28,7 +28,7 @@
  * Original Author:  Sergey M Mozgovoi;
  * Contributor(s):   -;
  *
- * $Id: CSVExportResources_ru.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
+ * $Id: CSVExportResources_ru.java,v 1.5 2003/09/08 18:39:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -159,7 +159,8 @@ public class CSVExportResources_ru extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{CSVExportResources.class.getName(), "ru"});
+    new CSVExportResources_ru().generateResourceProperties("russian");
+    System.exit(0);
   }
 
 }

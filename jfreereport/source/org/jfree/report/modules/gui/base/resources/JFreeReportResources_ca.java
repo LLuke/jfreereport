@@ -28,7 +28,7 @@
  * Original Author:  Marc Casas;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_ca.java,v 1.1 2003/09/08 18:41:45 taqua Exp $
+ * $Id: JFreeReportResources_ca.java,v 1.2 2003/09/14 19:33:24 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -223,7 +223,10 @@ public class JFreeReportResources_ca extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{JFreeReportResources.class.getName(), "ca"});
+    new JFreeReportResources_ca().generateResourceProperties("catalan");
+    System.exit(0);
+
+    //ResourceCompareTool.main(new String[]{JFreeReportResources.class.getName(), "ca"});
   }
 
 

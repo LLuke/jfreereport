@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.8 2003/10/30 22:14:59 taqua Exp $
+ * $Id: TextContent.java,v 1.9 2003/11/01 19:52:26 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,8 @@ import java.util.List;
 
 import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.util.LineBreakIterator;
+import org.jfree.report.util.Log;
+import org.jfree.report.util.ReportConfiguration;
 
 /**
  * A container for text content. The content will be split into paragraphs.
@@ -54,6 +56,9 @@ import org.jfree.report.util.LineBreakIterator;
  */
 public strictfp class TextContent extends ContentContainer
 {
+  public static final String DEBUG_TEXTCONTENT_KEY =
+      "org.jfree.report.content.DebugTextContent";
+
   /** A size calculator. */
   private final SizeCalculator sizeCalculator;
 
@@ -93,6 +98,13 @@ public strictfp class TextContent extends ContentContainer
         p.setContent((String) paragraphs.get(i), x, y + usedHeight, w, h - usedHeight);
         usedHeight += p.getBounds().getHeight();
         addContentPart(p);
+      }
+
+      if (usedHeight == 0 &&
+          ReportConfiguration.getGlobalConfig().getConfigProperty
+          (DEBUG_TEXTCONTENT_KEY, "false").equals("true"))
+      {
+        Log.warn ("Empty TextContent created. This might indicate an invalid font size definition.");
       }
     }
   }

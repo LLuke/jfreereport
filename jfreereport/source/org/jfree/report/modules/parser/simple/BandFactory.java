@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandFactory.java,v 1.9 2003/12/21 20:51:44 taqua Exp $
+ * $Id: BandFactory.java,v 1.10 2003/12/21 23:45:41 taqua Exp $
  *
  * Changes
  * -------
@@ -41,12 +41,12 @@
 
 package org.jfree.report.modules.parser.simple;
 
+import org.jfree.report.Band;
 import org.jfree.report.ItemBand;
 import org.jfree.report.PageFooter;
 import org.jfree.report.PageHeader;
 import org.jfree.report.ReportFooter;
 import org.jfree.report.ReportHeader;
-import org.jfree.report.Band;
 import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.modules.parser.base.ReportParserUtil;
 import org.jfree.report.style.BandStyleSheet;
@@ -265,9 +265,9 @@ public class BandFactory extends AbstractReportDefinitionHandler
     if (ownPageAttr != null)
     {
       final boolean ownPage = ParserUtil.parseBoolean(ownPageAttr, false);
-
       reportFooter.getStyle().setBooleanStyleProperty
-          (BandStyleSheet.PAGEBREAK_AFTER, ownPage);
+          (BandStyleSheet.PAGEBREAK_BEFORE, ownPage);
+
     }
 
     final FontFactory.FontInformation fi = FontFactory.createFont(attr);

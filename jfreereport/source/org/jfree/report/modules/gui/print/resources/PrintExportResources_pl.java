@@ -28,7 +28,7 @@
  * Original Author:  PB;
  * Contributor(s):   -;
  *
- * $Id: PrintExportResources_pl.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
+ * $Id: PrintExportResources_pl.java,v 1.5 2003/09/08 18:39:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -91,6 +91,7 @@ public class PrintExportResources_pl extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{PrintExportResources.class.getName(), "pl"});
+    new PrintExportResources_pl().generateResourceProperties("polish");
+    System.exit(0);
   }
 }

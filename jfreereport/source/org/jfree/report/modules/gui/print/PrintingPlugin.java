@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintingPlugin.java,v 1.11 2003/11/07 18:33:53 taqua Exp $
+ * $Id: PrintingPlugin.java,v 1.12 2003/11/15 18:22:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,6 +45,7 @@ import javax.swing.KeyStroke;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
+import org.jfree.report.modules.gui.base.ResourceBundleUtils;
 import org.jfree.report.modules.gui.print.resources.PrintExportResources;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
@@ -61,7 +62,9 @@ public class PrintingPlugin extends AbstractExportPlugin
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
-      PrintExportResources.class.getName();
+      "org.jfree.report.modules.gui.print.resources.print-export-resources";
+  public static final String PROGRESS_DIALOG_ENABLE_KEY =
+      "org.jfree.report.modules.gui.print.ProgressDialogEnabled";
 
   /**
    * DefaultConstructor.
@@ -106,8 +109,18 @@ public class PrintingPlugin extends AbstractExportPlugin
   public boolean performExport(final JFreeReport report)
   {
     // need to connect to the report pane to receive state updates ...
-    final ReportProgressDialog progressDialog = createProgressDialog();
-    getBase().addRepaginationListener(progressDialog);
+    final ReportProgressDialog progressDialog;
+    if (report.getReportConfiguration().getConfigProperty
+        (PROGRESS_DIALOG_ENABLE_KEY,
+            "false").equals("true"))
+    {
+      progressDialog = createProgressDialog();
+    }
+    else
+    {
+      progressDialog = null;
+    }
+
     final PrintExportTask task = new PrintExportTask
         (getBase().getReportPane(), progressDialog,
          report.getReportConfiguration().getConfigProperty
@@ -144,7 +157,7 @@ public class PrintingPlugin extends AbstractExportPlugin
    */
   public Icon getSmallIcon()
   {
-    return (Icon) (resources.getObject("action.print.small-icon"));
+    return ResourceBundleUtils.getIcon(getResources().getString("action.print.small-icon"));
   }
 
   /**
@@ -154,7 +167,7 @@ public class PrintingPlugin extends AbstractExportPlugin
    */
   public Icon getLargeIcon()
   {
-    return (Icon) (resources.getObject("action.print.icon"));
+    return ResourceBundleUtils.getIcon(getResources().getString("action.print.icon"));
   }
 
   /**
@@ -164,7 +177,7 @@ public class PrintingPlugin extends AbstractExportPlugin
    */
   public KeyStroke getAcceleratorKey()
   {
-    return (KeyStroke) (resources.getObject("action.print.accelerator"));
+    return ResourceBundleUtils.createMenuKeystroke(getResources().getString("action.print.accelerator"));
   }
 
   /**
@@ -174,7 +187,7 @@ public class PrintingPlugin extends AbstractExportPlugin
    */
   public Integer getMnemonicKey()
   {
-    return (Integer) (resources.getObject("action.print.mnemonic"));
+    return ResourceBundleUtils.createMnemonic(getResources().getString("action.print.mnemonic"));
   }
 
 

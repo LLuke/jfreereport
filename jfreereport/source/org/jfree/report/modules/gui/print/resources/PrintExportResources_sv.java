@@ -28,7 +28,7 @@
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: PrintExportResources_sv.java,v 1.5 2003/08/31 19:27:58 taqua Exp $
+ * $Id: PrintExportResources_sv.java,v 1.6 2003/09/08 18:39:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -95,6 +95,7 @@ public class PrintExportResources_sv extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{PrintExportResources.class.getName(), "sv"});
+    new PrintExportResources_sv().generateResourceProperties("swedish");
+    System.exit(0);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: OutputTarget.java,v 1.2 2003/07/20 19:31:15 taqua Exp $
+ * $Id: OutputTarget.java,v 1.3 2003/08/24 15:03:52 taqua Exp $
  *
  * Changes
  * -------
@@ -46,16 +46,9 @@
 
 package org.jfree.report.modules.output.pageable.base;
 
-import java.awt.Paint;
-import java.awt.Shape;
-import java.awt.Stroke;
-import java.awt.geom.Rectangle2D;
-
-import org.jfree.report.DrawableContainer;
-import org.jfree.report.ImageReference;
+import org.jfree.report.PageDefinition;
 import org.jfree.report.layout.LayoutSupport;
-import org.jfree.report.modules.output.pageable.base.physicals.PhysicalPage;
-import org.jfree.report.style.FontDefinition;
+import org.jfree.report.modules.output.meta.MetaPage;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
@@ -87,6 +80,18 @@ public interface OutputTarget extends LayoutSupport
   public String getProperty(String property, String defaultValue);
 
   /**
+   * Returns the value of the specified property.  If the property is not found, <code>null</code>
+   * is returned.
+   *
+   * @param property  the property name (or key).
+   *
+   * @return the property value.
+   *
+   * @throws java.lang.NullPointerException if <code>property</code> is null.
+   */
+  public String getProperty(String property);
+
+  /**
    * Defines a property for this target.
    * <P>
    * Properties provide a mechanism for configuring a target.  For example, you can add title and
@@ -116,144 +121,8 @@ public interface OutputTarget extends LayoutSupport
    */
   public void close();
 
-  /**
-   * Signals that a page is being started.  Stores the state of the target to
-   * make it possible to restore the complete output target.
-   *
-   * @param page  the physical page.
-   */
-  public void beginPage(PhysicalPage page);
-
-  /**
-   * Signals that the current page is ended.  Some targets need to know when a page is finished,
-   * others can simply ignore this message.
-   *
-   * @throws OutputTargetException if there is some problem with the target.
-   */
-  public void endPage() throws OutputTargetException;
-
-  /**
-   * Returns the value of the specified property.  If the property is not found, <code>null</code>
-   * is returned.
-   *
-   * @param property  the property name (or key).
-   *
-   * @return the property value.
-   *
-   * @throws java.lang.NullPointerException if <code>property</code> is null.
-   */
-  public String getProperty(String property);
-
-
-  /**
-   * Returns the current font.
-   *
-   * @return the current font.
-   */
-  public FontDefinition getFont();
-
-  /**
-   * Sets the font.
-   *
-   * @param font  the font.
-   *
-   * @throws OutputTargetException if there is a problem setting the font.
-   */
-  public void setFont(FontDefinition font) throws OutputTargetException;
-
-  /**
-   * Returns the current stroke.
-   *
-   * @return the stroke.
-   */
-  public Stroke getStroke();
-
-  /**
-   * Defines the current stroke for the target.
-   * <P>
-   * The stroke is used to draw the outlines of shapes.
-   *
-   * @param stroke  the stroke.
-   *
-   * @throws OutputTargetException if there is a problem setting the stroke.
-   */
-  public void setStroke(Stroke stroke) throws OutputTargetException;
-
-  /**
-   * Returns the current paint.
-   *
-   * @return the paint.
-   */
-  public Paint getPaint();
-
-  /**
-   * Sets the paint.
-   *
-   * @param paint The paint.
-   *
-   * @throws OutputTargetException if there is a problem setting the paint.
-   */
-  public void setPaint(Paint paint) throws OutputTargetException;
-
-  /**
-   * Defines the bounds for the next set of operations.
-   *
-   * @param bounds  the bounds.
-   */
-  public void setOperationBounds(Rectangle2D bounds);
-
-  /**
-   * Returns the operation bounds.
-   *
-   * @return  the bounds.
-   */
-  public Rectangle2D getOperationBounds();
-
-  /**
-   * Draws a string at the current cursor position.
-   *
-   * @param text  the text.
-   */
-  public void drawString(String text);
-
-  /**
-   * Draws a shape relative to the current position.
-   *
-   * @param shape  the shape to draw.
-   */
-  public void drawShape(Shape shape);
-
-  /**
-   * Fills the shape relative to the current position.
-   *
-   * @param shape  the shape to draw.
-   */
-  public void fillShape(Shape shape);
-
-  /**
-   * Draws a drawable relative to the current position.
-   *
-   * @param drawable the drawable to draw.
-   */
-  public void drawDrawable(DrawableContainer drawable);
-
-  /**
-   * Draws a image relative to the specified coordinates.
-   *
-   * @param image The image to draw (as ImageReference for possible embedding of raw data).
-   *
-   * @throws OutputTargetException if there is a problem setting the paint.
-   */
-  public void drawImage(ImageReference image) throws OutputTargetException;
-
-  /**
-   * Creates an output target that mimics a real output target, but produces no output.
-   * This is used by the reporting engine when it makes its first pass through the report,
-   * calculating page boundaries etc.  The second pass will use a real output target.
-   *
-   * @return a dummy output target.
-   */
-  public OutputTarget createDummyWriter();
+  public void printPage (MetaPage content, PageDefinition page, int index)
+   throws OutputTargetException;
 
   /**
    * Configures the output target.
@@ -261,11 +130,4 @@ public interface OutputTarget extends LayoutSupport
    * @param config  the configuration.
    */
   public void configure(ReportConfiguration config);
-
-  /**
-   * Returns the logical page.
-   *
-   * @return the logical page.
-   */
-  public LogicalPage getLogicalPage();
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: PlainTextExportResources_sv.java,v 1.5 2003/08/31 19:27:58 taqua Exp $
+ * $Id: PlainTextExportResources_sv.java,v 1.6 2003/09/08 18:39:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -119,6 +119,7 @@ public class PlainTextExportResources_sv extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{PlainTextExportResources.class.getName(), "sv"});
+    new PlainTextExportResources_sv().generateResourceProperties("swedish");
+    System.exit(0);
   }
 }

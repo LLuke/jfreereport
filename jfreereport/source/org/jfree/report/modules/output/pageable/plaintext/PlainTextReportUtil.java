@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextReportUtil.java,v 1.3 2003/08/24 15:05:18 taqua Exp $
+ * $Id: PlainTextReportUtil.java,v 1.4 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -83,9 +83,9 @@ public final class PlainTextReportUtil
   {
     final PageableReportProcessor pr = new PageableReportProcessor(report);
     final OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
-    final PrinterCommandSet pc = new PrinterCommandSet(fout, report.getDefaultPageFormat(), 6, 10);
+    final PrinterCommandSet pc = new PrinterCommandSet(fout, 6, 10);
     final PlainTextOutputTarget target =
-        new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
+        new PlainTextOutputTarget(pc);
     pr.setOutputTarget(target);
     target.open();
     pr.processReport();

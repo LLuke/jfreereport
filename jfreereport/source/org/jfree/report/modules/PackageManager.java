@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageManager.java,v 1.17 2003/11/07 18:33:50 taqua Exp $
+ * $Id: PackageManager.java,v 1.18 2003/11/25 17:26:23 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -394,10 +394,15 @@ public final class PackageManager
     }
     else
     {
-      if (acceptVersion(moduleRequirement.getMajorVersion(),
-          module.getMajorVersion()) == false)
+      int compare = acceptVersion(moduleRequirement.getMajorVersion(),
+          module.getMajorVersion());
+      if (compare > 0)
       {
         return false;
+      }
+      else if (compare < 0)
+      {
+        return true;
       }
     }
 
@@ -411,10 +416,15 @@ public final class PackageManager
     }
     else
     {
-      if (acceptVersion(moduleRequirement.getMinorVersion(),
-          module.getMinorVersion()) == false)
+      int compare = acceptVersion(moduleRequirement.getMinorVersion(),
+          module.getMinorVersion());
+      if (compare > 0)
       {
         return false;
+      }
+      else if (compare < 0)
+      {
+        return true;
       }
     }
 
@@ -429,7 +439,7 @@ public final class PackageManager
     else
     {
       if (acceptVersion(moduleRequirement.getPatchLevel(),
-          module.getPatchLevel()) == false)
+          module.getPatchLevel()) > 0)
       {
         Log.debug ("Did not accept patchlevel: " + moduleRequirement.getPatchLevel() + " - " +
           module.getPatchLevel());
@@ -446,10 +456,11 @@ public final class PackageManager
    *
    * @param modVer the version string of the module
    * @param depModVer the version string of the dependent or optional module
-   * @return true, if the dependent module version is greater or equal than
-   * the modules required version.
+   * @return 0, if the dependent module version is equal tothe module's required
+   * version, a negative number if the dependent module is newer or a positive
+   * number if the dependent module is older and does not fit.
    */
-  private boolean acceptVersion(final String modVer, final String depModVer)
+  private int acceptVersion(final String modVer, final String depModVer)
   {
     final int mLength = Math.max(modVer.length(), depModVer.length());
     char[] modVerArray;
@@ -476,7 +487,7 @@ public final class PackageManager
       depVerArray = depModVer.toCharArray();
       modVerArray = modVer.toCharArray();
     }
-    return new String(modVerArray).compareTo(new String (depVerArray)) <= 0;
+    return new String(modVerArray).compareTo(new String (depVerArray));
   }
 
   /**

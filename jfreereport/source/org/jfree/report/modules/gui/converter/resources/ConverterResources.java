@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ConverterResources.java,v 1.5 2003/08/25 14:29:29 taqua Exp $
+ * $Id: ConverterResources.java,v 1.6 2003/08/26 17:35:51 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,6 +39,7 @@ package org.jfree.report.modules.gui.converter.resources;
 
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
+import org.jfree.report.modules.gui.config.resources.ConfigResources;
 
 /**
  * English language resource for the report converter GUI.
@@ -97,7 +98,8 @@ public class ConverterResources extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{ConverterResources.class.getName(), null});
+    new ConverterResources().generateResourceProperties("<default>");
+    System.exit(0);
   }
 
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ZoomInAction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: ZoomInAction.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * -------
@@ -64,11 +64,13 @@ public abstract class ZoomInAction extends AbstractActionDowngrade
     putValue(NAME, resources.getString("action.zoomIn.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.zoomIn.description"));
     putValue(ActionDowngrade.MNEMONIC_KEY,
-        resources.getObject("action.zoomIn.mnemonic"));
+        ResourceBundleUtils.createMnemonic(resources.getString("action.zoomIn.mnemonic")));
     putValue(ActionDowngrade.ACCELERATOR_KEY,
-        resources.getObject("action.zoomIn.accelerator"));
-    putValue(SMALL_ICON, resources.getObject("action.zoomIn.small-icon"));
-    putValue("ICON24", resources.getObject("action.zoomIn.icon"));
+        ResourceBundleUtils.createMenuKeystroke(resources.getString("action.zoomIn.accelerator")));
+    putValue(SMALL_ICON,
+        ResourceBundleUtils.getIcon(resources.getString("action.zoomIn.small-icon")));
+    putValue("ICON24",
+        ResourceBundleUtils.getIcon(resources.getString("action.zoomIn.icon")));
   }
 
 }

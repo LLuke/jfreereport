@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewFrame.java,v 1.8 2003/10/08 19:32:27 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.9 2003/11/15 20:51:14 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -180,7 +180,7 @@ public class PreviewFrame extends JFrame implements PreviewProxy
   {
     if (resources == null)
     {
-      resources = ResourceBundle.getBundle(PreviewProxyBase.BASE_RESOURCE_CLASS);
+      resources = ResourceBundle.getBundle(PreviewProxyBase.RESOURCES_BASE_NAME);
     }
     return resources;
   }

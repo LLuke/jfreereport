@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.14 2003/11/07 16:26:18 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.15 2003/11/07 18:33:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,6 +48,7 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
+import org.jfree.report.modules.gui.base.ResourceBundleUtils;
 import org.jfree.report.modules.gui.xls.resources.XLSExportResources;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
@@ -67,7 +68,9 @@ public class ExcelExportPlugin extends AbstractExportPlugin
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
-      XLSExportResources.class.getName();
+      "org.jfree.report.modules.gui.xls.resources.xls-export-resources";
+  public static final String PROGRESS_DIALOG_ENABLE_KEY =
+      "org.jfree.report.modules.gui.xls.ProgressDialogEnabled";
 
   /**
    * DefaultConstructor.
@@ -133,7 +136,18 @@ public class ExcelExportPlugin extends AbstractExportPlugin
       return handleExportResult(true);
     }
 
-    final ReportProgressDialog progressDialog = createProgressDialog();
+    final ReportProgressDialog progressDialog;
+    if (report.getReportConfiguration().getConfigProperty
+        (PROGRESS_DIALOG_ENABLE_KEY,
+            "false").equals("true"))
+    {
+      progressDialog = createProgressDialog();
+    }
+    else
+    {
+      progressDialog = null;
+    }
+
     final ExcelExportTask task =
       new ExcelExportTask(exportDialog.getFilename(), progressDialog, report);
     task.addExportTaskListener(new DefaultExportTaskListener ());
@@ -158,7 +172,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public Icon getSmallIcon()
   {
-    return (Icon) resources.getObject("action.export-to-excel.small-icon");
+    return ResourceBundleUtils.getIcon(getResources().getString("action.export-to-excel.small-icon"));
   }
 
   /**
@@ -168,7 +182,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public Icon getLargeIcon()
   {
-    return (Icon) resources.getObject("action.export-to-excel.icon");
+    return ResourceBundleUtils.getIcon(getResources().getString("action.export-to-excel.icon"));
   }
 
   /**
@@ -178,7 +192,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public KeyStroke getAcceleratorKey()
   {
-    return (KeyStroke) resources.getObject("action.export-to-excel.accelerator");
+    return ResourceBundleUtils.createMenuKeystroke(getResources().getString("action.export-to-excel.accelerator"));
   }
 
   /**
@@ -188,7 +202,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public Integer getMnemonicKey()
   {
-    return (Integer) resources.getObject("action.export-to-excel.mnemonic");
+    return ResourceBundleUtils.createMnemonic(getResources().getString("action.export-to-excel.mnemonic"));
   }
 
   /**

@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  *
  *
- * $Id: JFreeReportResources_hu.java,v 1.3 2003/08/19 13:37:23 taqua Exp $
+ * $Id: JFreeReportResources_hu.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
  *
  *
  */
@@ -131,7 +131,9 @@ public class JFreeReportResources_hu extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{JFreeReportResources.class.getName(), "hu"});
+    new JFreeReportResources_hu().generateResourceProperties("hungarian");
+    System.exit(0);
+//    ResourceCompareTool.main(new String[]{JFreeReportResources.class.getName(), "hu"});
   }
 
 }

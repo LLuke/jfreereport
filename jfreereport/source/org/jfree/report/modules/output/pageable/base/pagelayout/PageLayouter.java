@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.9 2003/11/10 20:02:56 taqua Exp $
+ * $Id: PageLayouter.java,v 1.10 2003/12/21 20:51:42 taqua Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,8 @@
 
 package org.jfree.report.modules.output.pageable.base.pagelayout;
 
+import java.util.ArrayList;
+
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.util.Log;
@@ -45,6 +47,9 @@ import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
 import org.jfree.report.modules.output.pageable.base.LogicalPage;
+import org.jfree.report.modules.output.meta.MetaBand;
+import org.jfree.report.modules.output.meta.MetaPage;
+import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.states.ReportState;
 
 /**
@@ -127,9 +132,6 @@ public abstract strictfp class PageLayouter extends AbstractFunction
    */
   private boolean restartingPage;
 
-  /** A flag indicating whether some content was created. */
-  private boolean generatedPageEmpty;
-
   /** A flag indicating whether the process of restarting the page is completed. */
   private boolean pageRestartDone;
 
@@ -177,18 +179,10 @@ public abstract strictfp class PageLayouter extends AbstractFunction
    */
   public boolean isGeneratedPageEmpty()
   {
-    return generatedPageEmpty;
-  }
+    MetaElement[] elements = (MetaElement[]) bands.toArray
+        (new MetaElement[bands.size()]);
 
-  /**
-   * Defines a flag, whether the generated page was completly empty.
-   *
-   * @param generatedPageEmpty true, if the page was empty when the logical page was closed,
-   * false otherwise.
-   */
-  protected void setGeneratedPageEmpty(final boolean generatedPageEmpty)
-  {
-    this.generatedPageEmpty = generatedPageEmpty;
+    return MetaPage.computeEmpty(elements);
   }
 
   /**
@@ -374,8 +368,9 @@ public abstract strictfp class PageLayouter extends AbstractFunction
     // log // no cloning save the orignal state
     layoutManagerState = saveCurrentState();
 
-    setGeneratedPageEmpty(getLogicalPage().isEmpty());
-    getLogicalPage().close();
+    //setGeneratedPageEmpty(getLogicalPage().isEmpty());
+    //getLogicalPage().close();
+    pageEnded = true;
   }
 
   /**
@@ -414,8 +409,10 @@ public abstract strictfp class PageLayouter extends AbstractFunction
    */
   public boolean isPageEnded()
   {
-    return getLogicalPage().isOpen() == false;
+    return pageEnded;//getLogicalPage().isOpen() == false;
   }
+
+  private boolean pageEnded;
 
   /**
    * Returns true, if the PageLayouter has successfully started a new page. The
@@ -538,8 +535,9 @@ public abstract strictfp class PageLayouter extends AbstractFunction
     final Object state = getLayoutManagerState();
     // reset the report finished flag...
     //setStartNewPage(false);
-    setGeneratedPageEmpty(true);
+    //setGeneratedPageEmpty(true);
     setPageRestartDone(false);
+    bands.clear();
 
     if (state == null)
     {
@@ -550,7 +548,7 @@ public abstract strictfp class PageLayouter extends AbstractFunction
       }
     }
     // open the logical page ...
-    getLogicalPage().open();
+    // getLogicalPage().open();
   }
 
   /**
@@ -563,5 +561,19 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   public void pageCanceled(final ReportEvent event)
   {
     // does nothing, we dont care about canceled pages by default..
+  }
+
+  private ArrayList bands = new ArrayList();
+
+  protected void addRootMetaBand (MetaBand band)
+  {
+    bands.add (band);
+  }
+
+  public MetaPage getMetaPage ()
+  {
+    MetaBand[] bandArray = (MetaBand[]) bands.toArray(new MetaBand[bands.size()]);
+    MetaPage p = new MetaPage(bandArray);
+    return p;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageSetupPlugin.java,v 1.7 2003/11/15 18:22:47 taqua Exp $
+ * $Id: PageSetupPlugin.java,v 1.8 2003/11/15 20:51:15 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,22 +40,23 @@ package org.jfree.report.modules.gui.print;
 
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
-import java.util.ResourceBundle;
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ResourceBundle;
 import javax.swing.Icon;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.modules.gui.base.AbstractExportPlugin;
-import org.jfree.report.modules.gui.base.ReportPane;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.PreviewProxyBase;
-import org.jfree.report.modules.gui.print.resources.PrintExportResources;
+import org.jfree.report.modules.gui.base.ReportPane;
+import org.jfree.report.modules.gui.base.ResourceBundleUtils;
+import org.jfree.report.util.Log;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.report.util.ReportConfiguration;
-import org.jfree.report.util.Log;
 
 /**
  * An export control plugin that handles the setup of page format objects for
@@ -87,11 +88,11 @@ public class PageSetupPlugin extends AbstractExportPlugin
   }
 
   /** Localised resources. */
-  private final ResourceBundle resources;
+  private ResourceBundle resources;
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
-      PrintExportResources.class.getName();
+      "org.jfree.report.modules.gui.print.resources.print-export-resources";
 
   private ReportPane reportPane;
   private RepaginationListener repaginationListener;
@@ -131,33 +132,39 @@ public class PageSetupPlugin extends AbstractExportPlugin
   }
 
   /**
-   * Exports a report.
+   * Performs the pagesetup for a report. This method has to be called from
+   * the EventDispatcher thread, or funny side effects may happen.
    *
-   * @param report  the report.
+   * @param report  the report to be set up.
    *
-   * @return A boolean.
+   * @return true, if the user confirmed the page setup, false otherwise.
    */
   public boolean performExport(final JFreeReport report)
   {
+    if (SwingUtilities.isEventDispatchThread() == false)
+    {
+      Log.debug ("PageSetupPlugin was not called from the EventDispatcher.");
+    }
+    // todo page format stuff
     final PrinterJob pj = PrinterJob.getPrinterJob();
-    final PageFormat pf = pj.pageDialog(report.getDefaultPageFormat());
-    if (PageFormatFactory.isEqual(pf, report.getDefaultPageFormat()))
+//    final PageFormat pf = pj.pageDialog(report.getDefaultPageFormat());
+//    if (PageFormatFactory.isEqual(pf, report.getDefaultPageFormat()))
     {
       return false;
     }
-    else
-    {
-      try
-      {
-        getBase().updatePageFormat(pf);
-      }
-      catch (ReportProcessingException rpe)
-      {
-        Log.warn ("Invalid pageformat update");
-        return false;
-      }
-      return true;
-    }
+//    else
+//    {
+//      try
+//      {
+//        getBase().updatePageFormat(pf);
+//      }
+//      catch (ReportProcessingException rpe)
+//      {
+//        Log.warn ("Invalid pageformat update");
+//        return false;
+//      }
+//      return true;
+//    }
   }
 
   /**
@@ -187,7 +194,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
    */
   public Icon getSmallIcon()
   {
-    return (Icon) resources.getObject("action.page-setup.small-icon");
+    return ResourceBundleUtils.getIcon(getResources().getString("action.page-setup.small-icon"));
   }
 
   /**
@@ -197,7 +204,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
    */
   public Icon getLargeIcon()
   {
-    return (Icon) resources.getObject("action.page-setup.icon");
+    return ResourceBundleUtils.getIcon(getResources().getString("action.page-setup.icon"));
   }
 
   /**
@@ -217,7 +224,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
    */
   public Integer getMnemonicKey()
   {
-    return (Integer) resources.getObject("action.page-setup.mnemonic");
+    return ResourceBundleUtils.createMnemonic(getResources().getString("action.page-setup.mnemonic"));
   }
 
 

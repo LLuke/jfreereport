@@ -28,7 +28,7 @@
  * Original Author:  Marc Casas;
  * Contributor(s):   -;
  *
- * $Id: ConverterResources_ca.java,v 1.1 2003/09/08 18:41:45 taqua Exp $
+ * $Id: ConverterResources_ca.java,v 1.2 2003/09/10 18:20:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -103,7 +103,8 @@ public class ConverterResources_ca extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{ConverterResources.class.getName(), "ca"});
+    new ConverterResources_ca().generateResourceProperties("Catalan");
+    System.exit(0);
   }
 
 

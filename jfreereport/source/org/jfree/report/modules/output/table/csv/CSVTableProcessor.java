@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProcessor.java,v 1.5 2003/08/24 15:06:10 taqua Exp $
+ * $Id: CSVTableProcessor.java,v 1.6 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -40,14 +40,14 @@
 package org.jfree.report.modules.output.table.csv;
 
 import java.io.Writer;
-
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.function.FunctionInitializeException;
+import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.modules.output.csv.CSVProcessor;
-import org.jfree.report.modules.output.table.base.TableLayoutInfo;
+import org.jfree.report.modules.output.meta.MetaBandProducer;
+import org.jfree.report.modules.output.table.base.LayoutCreator;
+import org.jfree.report.modules.output.table.base.TableCreator;
 import org.jfree.report.modules.output.table.base.TableProcessor;
-import org.jfree.report.modules.output.table.base.TableProducer;
 
 /**
  * The <code>CSVTableProcessor</code> coordinates the output for the layouted CSV output.
@@ -72,7 +72,7 @@ public class CSVTableProcessor extends TableProcessor
 
   /** the configuration prefix for the csv table producer. */
   public static final String CONFIGURATION_PREFIX =
-      "org.jfree.report.modules.output.table.csv.";
+      "org.jfree.report.modules.output.table.csv";
 
   /** the key for the separator string. */
   public static final String SEPARATOR_KEY = "Separator";
@@ -81,49 +81,18 @@ public class CSVTableProcessor extends TableProcessor
   public static final String SEPARATOR_DEFAULT = ",";
 
   /**
-   * Creates a new CSV table processor for the given report.
-   * <p>
-   * The default separator is a comma (","), but this can be overridden in the
-   * report configuration (key: <code>org.jfree.report.targets.csv.separator</code>).
-   *
-   * @param report  the report to process.
-   *
-   * @throws ReportProcessingException if the report initialization failed
-   * @throws FunctionInitializeException if the table writer initialization failed.
-   */
-  public CSVTableProcessor(final JFreeReport report)
-      throws ReportProcessingException, FunctionInitializeException
-  {
-    // query the report configuration for the new separator property
-    // on fail: query for the old separator property
-    // on fail: set ","
-    this(report,
-        report.getReportConfiguration().getConfigProperty(
-            CONFIGURATION_PREFIX + SEPARATOR_KEY,
-            report.getReportConfiguration().getConfigProperty(
-                CSVProcessor.CSV_SEPARATOR, ",")));
-  }
-
-  /**
    * Creates a new CSV table processor for the given report and uses the given
    * separator string.
    *
    * @param report  the report to process.
-   * @param separator  the value separator (<code>null</code> not permitted).
    *
    * @throws ReportProcessingException if the report initialization failed
-   * @throws FunctionInitializeException if the table writer initialization failed.
    * @throws NullPointerException if the given separator is <code>null</code>.
    */
-  public CSVTableProcessor(final JFreeReport report, final String separator)
-      throws ReportProcessingException, FunctionInitializeException
+  public CSVTableProcessor(final JFreeReport report)
+      throws ReportProcessingException
   {
     super(report);
-    if (separator == null)
-    {
-      throw new NullPointerException("Separator is null");
-    }
-    setSeparator(separator);
   }
 
   /**
@@ -133,7 +102,8 @@ public class CSVTableProcessor extends TableProcessor
    */
   public String getSeparator()
   {
-    return String.valueOf(getProperty(SEPARATOR_KEY, ","));
+    return getReport().getReportConfiguration().getConfigProperty
+            (getReportConfigurationPrefix() + "." + SEPARATOR_KEY, ",");
   }
 
   /**
@@ -149,7 +119,8 @@ public class CSVTableProcessor extends TableProcessor
     {
       throw new NullPointerException("Separator is null");
     }
-    setProperty(SEPARATOR_KEY, separator);
+    getReport().getReportConfiguration().setConfigProperty
+            (getReportConfigurationPrefix() + "." + SEPARATOR_KEY, separator);
   }
 
   /**
@@ -174,26 +145,18 @@ public class CSVTableProcessor extends TableProcessor
 
   /**
    * Creates the CSVTableProducer. The TableProducer is responsible to create the table.
-   *
-   * @param layoutBounds the grid layout that contain the bounds from the pagination run.
    * @return the created table producer, never null.
+   * @throws IllegalStateException if the writer is not defined or no layout creator was
+   * found.
    */
-  protected TableProducer createProducer(final TableLayoutInfo layoutBounds)
+  protected TableCreator createContentCreator()
   {
-    return new CSVTableProducer(layoutBounds, getWriter());
-  }
-
-  /**
-   * Creates a dummy TableProducer. The TableProducer is responsible to compute the layout.
-   *
-   * @return the created table producer, never null.
-   */
-  protected TableProducer createDummyProducer()
-  {
-    // csv always uses the global layout. We dont support pages, so why introduce
-    // artifical boundaries ...
-    return new CSVTableProducer
-        (new TableLayoutInfo(true, getReport().getDefaultPageFormat()), isStrictLayout());
+    if (writer == null)
+    {
+      throw new IllegalStateException("There is no writer defined for the export.");
+    }
+    final LayoutCreator lc = getLayoutCreator();
+    return new CSVTableCreator(lc.getSheetLayoutCollection(), getWriter());
   }
 
   /**
@@ -205,5 +168,10 @@ public class CSVTableProcessor extends TableProcessor
   protected String getReportConfigurationPrefix()
   {
     return CONFIGURATION_PREFIX;
+  }
+
+  protected MetaBandProducer createMetaBandProducer()
+  {
+    return new CSVMetaBandProducer(new DefaultLayoutSupport());
   }
 }

@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   Thomas Morgner;
  *
- * $Id: FirstPageAction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: FirstPageAction.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
  *
  * Changes
  * -------
@@ -67,10 +67,12 @@ public abstract class FirstPageAction extends AbstractActionDowngrade
     putValue(NAME, resources.getString("action.firstpage.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.firstpage.description"));
     putValue(ActionDowngrade.MNEMONIC_KEY,
-        resources.getObject("action.firstpage.mnemonic"));
+        ResourceBundleUtils.createMnemonic(resources.getString("action.firstpage.mnemonic")));
     putValue(ActionDowngrade.ACCELERATOR_KEY,
-        resources.getObject("action.firstpage.accelerator"));
-    putValue(SMALL_ICON, resources.getObject("action.firstpage.small-icon"));
-    putValue("ICON24", resources.getObject("action.firstpage.icon"));
+        ResourceBundleUtils.createMenuKeystroke(resources.getString("action.firstpage.accelerator")));
+    putValue(SMALL_ICON,
+        ResourceBundleUtils.getIcon(resources.getString("action.firstpage.small-icon")));
+    putValue("ICON24",
+        ResourceBundleUtils.getIcon(resources.getString("action.firstpage.icon")));
   }
 }

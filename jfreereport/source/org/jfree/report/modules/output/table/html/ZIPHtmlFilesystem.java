@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.5 2003/08/25 14:29:32 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.6 2003/11/07 18:33:56 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,8 @@
  */
 package org.jfree.report.modules.output.table.html;
 
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -53,7 +55,14 @@ import java.util.zip.ZipOutputStream;
 
 import com.keypoint.PngEncoder;
 import org.jfree.io.IOUtils;
-import org.jfree.report.ImageReference;
+import org.jfree.report.ImageContainer;
+import org.jfree.report.LocalImageContainer;
+import org.jfree.report.URLImageContainer;
+import org.jfree.report.modules.output.table.html.ref.EmptyContentReference;
+import org.jfree.report.modules.output.table.html.ref.ExternalStyleSheetReference;
+import org.jfree.report.modules.output.table.html.ref.HtmlReference;
+import org.jfree.report.modules.output.table.html.ref.ImageReference;
+import org.jfree.report.modules.output.table.html.util.CounterReference;
 import org.jfree.report.util.ImageComparator;
 import org.jfree.report.util.NoCloseOutputStream;
 import org.jfree.report.util.StringUtil;
@@ -89,7 +98,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
   private HashMap usedNames;
 
   /** A collection of all referenced external content. */
-  private HashMap usedURLs;
+  private HashMap usedImages;
 
   /** A collection of all previously encoded images. */
   private HashMap encodedImages;
@@ -153,7 +162,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
       }
     }
     this.usedNames = new HashMap();
-    this.usedURLs = new HashMap();
+    this.usedImages = new HashMap();
     this.comparator = new ImageComparator();
     this.encodedImages = new HashMap();
   }
@@ -253,94 +262,175 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
    *
    * @see ZIPHtmlFilesystem#isSupportedImageFormat
    */
-  public HtmlReferenceData createImageReference(final ImageReference reference)
+  public HtmlReference createImageReference(final ImageContainer reference)
       throws IOException
   {
-    if (reference.getSourceURL() == null)
+
+    final Image image;
+    // The image has an assigned URL ...
+    if (reference instanceof URLImageContainer)
     {
-      final WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
-      obs.waitImageLoaded();
+      final URLImageContainer urlImage = (URLImageContainer) reference;
 
-      final PngEncoder encoder = new PngEncoder(reference.getImage(),
-          PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 5);
-      final byte[] data = encoder.pngEncode();
-
-      final Object object = comparator.createCompareData(data, isDigestImageCompare() == false);
-      String name = (String) encodedImages.get(object);
-      if (name == null)
+      // first we check for cached instances ...
+      final URL url = urlImage.getSourceURL();
+      final String name = (String) usedImages.get(url);
+      if (name != null)
       {
-        // encode the picture ...
-        final String entryName = dataDirectory + createName("picture") + ".png";
-        final ZipEntry ze = new ZipEntry(entryName);
-        zipOut.putNextEntry(ze);
-
-        //File dataFile = new File (dataDirectory, createName("picture") + ".png");
-        // a png encoder is included in JCommon ...
-        zipOut.write(data);
-
-        name = entryName;
-        encodedImages.put(object, name);
+        return new ImageReference(name);
       }
-      return new ImageReferenceData(name);
+
+      // sadly this one seems to be new, not yet cached ...
+      // so we have to create something new ...
+
+      // it is one of the supported image formats ...
+      // we we can embedd it directly ...
+      if (isSupportedImageFormat(urlImage.getSourceURL()))
+      {
+        // check, whether we should copy the contents into the local
+        // data directory ...
+        if (isCopyExternalImages() && urlImage.isLoadable())
+        {
+          final IOUtils iou = IOUtils.getInstance();
+          final String entryName =
+                  dataDirectory + createName(iou.getFileName(url));
+          final ZipEntry ze = new ZipEntry(entryName);
+          zipOut.putNextEntry(ze);
+
+          final InputStream urlIn = new BufferedInputStream(urlImage.getSourceURL().openStream());
+          IOUtils.getInstance().copyStreams(urlIn, zipOut);
+          urlIn.close();
+          usedImages.put(url, entryName);
+          return new ImageReference(entryName);
+        }
+        else
+        {
+          final String baseName = urlImage.getSourceURL().toExternalForm();
+          usedImages.put(url, baseName);
+          return new ImageReference(baseName);
+        }
+        // done: Remote image with supported format
+      }
+
+      // The image is not directly embeddable, so we have to convert it
+      // into a supported format (PNG in this case)
+
+      // if the image is not loadable, we can't do anything ...
+      // print the default empty content instead ...
+      if (urlImage.isLoadable() == false)
+      {
+        return new EmptyContentReference();
+      }
+      // todo BUG: what if the user gives us a valid picture*.png file?
+
+      // Check, whether the imagereference contains an AWT image.
+
+      // The image is not directly embeddable, so we have to convert it
+      // into a supported format (PNG in this case)
+      if (reference instanceof LocalImageContainer)
+      {
+        // if so, then we can use that image instance for the recoding
+        final LocalImageContainer li = (LocalImageContainer) reference;
+        image = li.getImage();
+      }
+      else
+      {
+        image = Toolkit.getDefaultToolkit().createImage(url);
+      }
+
+      // now encode the image. We don't need to create digest data
+      // for the image contents, as the image is perfectly identifyable
+      // by its URL
+      final String entryName = encodeImage(image, false);
+      usedImages.put(url, entryName);
+      return new ImageReference(entryName);
     }
-    else if (isSupportedImageFormat(reference.getSourceURL()) == false)
+    // check, whether the image is a locally created image
+    // such an image has no assigned URL, so we have to find an
+    // artificial name
+    else if (reference instanceof LocalImageContainer)
     {
-      final URL url = reference.getSourceURL();
-      String name = (String) usedURLs.get(url);
-      if (name == null)
+      // that image has no useable URL, but contains local image
+      // data, so we can start to encode it. We will create a
+      // fingerprint of the image contents to cache the image.
+      //
+      // This will not save any time (we,, it even costs more time), but
+      // will help to reduce the space used by the output.
+      //
+      // LocalImageContainer instances are free to supply more
+      // suitable comparator information
+      final LocalImageContainer li = (LocalImageContainer) reference;
+      image = li.getImage();
+      if (li.isIdentifiable())
       {
-        final WaitingImageObserver obs = new WaitingImageObserver(reference.getImage());
-        obs.waitImageLoaded();
-
-        final PngEncoder encoder = new PngEncoder(reference.getImage(),
-            PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 5);
-        final byte[] data = encoder.pngEncode();
-
-        final IOUtils iou = IOUtils.getInstance();
-        final String entryName = dataDirectory
-            + createName(iou.stripFileExtension(iou.getFileName(url))) + ".png";
-        final ZipEntry ze = new ZipEntry(entryName);
-        zipOut.putNextEntry(ze);
-
-        //File dataFile = new File (dataDirectory, createName("picture") + ".png");
-        // a png encoder is included in JCommon ...
-        zipOut.write(data);
-
-        name = entryName;
-        // encode the picture ...
-        // a png encoder is included in JCommon ...
-        usedURLs.put(url, name);
+        final Object identity = li.getIdentity();
+        String name = (String) usedImages.get(identity);
+        if (name == null)
+        {
+          name = encodeImage(image, false);
+          usedImages.put (identity, name);
+        }
+        return new ImageReference(name);
       }
-      return new ImageReferenceData(name);
-    }
-    else if (isCopyExternalImages())
-    {
-      final URL url = reference.getSourceURL();
-      String name = (String) usedURLs.get(url);
-      if (name == null)
-      {
-        final IOUtils iou = IOUtils.getInstance();
-        final String entryName = dataDirectory + createName(iou.getFileName(url));
-        final ZipEntry ze = new ZipEntry(entryName);
-        zipOut.putNextEntry(ze);
-
-        //File dataFile = new File (dataDirectory, createName("picture") + ".png");
-        // a png encoder is included in JCommon ...
-
-        final InputStream urlIn = new BufferedInputStream(reference.getSourceURL().openStream());
-        IOUtils.getInstance().copyStreams(urlIn, zipOut);
-        urlIn.close();
-
-        name = entryName;
-        usedURLs.put(url, name);
-      }
-      return new ImageReferenceData(name);
+      return new ImageReference(encodeImage(image, true));
     }
     else
     {
-      final String baseName = reference.getSourceURL().toExternalForm();
-      return new ImageReferenceData(baseName);
+      // it is neither a local nor a URL image container, we don't handle
+      // that..
+      return new EmptyContentReference();
     }
+  }
+
+  /**
+   * Encodes the given image as PNG, stores the image in the generated
+   * file and returns the name of the new image file.
+   *
+   * @param image the image to be encoded
+   * @param createComparator true, if the image creation should be cached to
+   * avoid duplicate images
+   * @return the name of the image, never null.
+   * @throws IOException if an IO erro occured.
+   */
+  private String encodeImage (final Image image, final boolean createComparator)
+    throws IOException
+  {
+    // quick caching ... use a weak list ...
+    final WaitingImageObserver obs = new WaitingImageObserver(image);
+    obs.waitImageLoaded();
+
+    final PngEncoder encoder = new PngEncoder(image,
+            PngEncoder.ENCODE_ALPHA, PngEncoder.FILTER_NONE, 5);
+    final byte[] data = encoder.pngEncode();
+
+    final Object object;
+    if (createComparator)
+    {
+      object = comparator.createCompareData(data, isDigestImageCompare() == false);
+      final String name = (String) encodedImages.get(object);
+      if (name != null)
+      {
+        return name;
+      }
+    }
+    else
+    {
+      object = null;
+    }
+
+    // write the encoded picture ...
+    final String entryName =
+            dataDirectory + createName("picture") + ".png";
+
+    final ZipEntry ze = new ZipEntry(entryName);
+    zipOut.putNextEntry(ze);
+    zipOut.write(data);
+
+    if (createComparator)
+    {
+      encodedImages.put(object, entryName);
+    }
+    return entryName;
   }
 
   /**
@@ -373,7 +463,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
    * @return the generated HtmlReference, never null.
    * @throws IOException if IO errors occured while creating the reference.
    */
-  public HtmlReferenceData createCSSReference(final String styleSheet)
+  public HtmlReference createCSSReference(final String styleSheet)
       throws IOException
   {
     final String entryName = dataDirectory + createName("style") + ".css";
@@ -386,7 +476,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
     zipOut.write(styleSheet.getBytes());
 
     final String baseName = entryName;
-    return new HRefReferenceData(baseName);
+    return new ExternalStyleSheetReference(baseName);
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: HtmlExportResources_sv.java,v 1.5 2003/08/31 19:27:57 taqua Exp $
+ * $Id: HtmlExportResources_sv.java,v 1.6 2003/09/08 18:39:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -140,7 +140,8 @@ public class HtmlExportResources_sv extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{HtmlExportResources.class.getName(), "sv"});
+    new HtmlExportResources_sv().generateResourceProperties("swedish");
+    System.exit(0);
   }
   
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.11 2003/11/10 18:01:35 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.12 2003/11/12 22:40:03 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package org.jfree.report.style;
 
 import java.awt.Color;
 import java.awt.Stroke;
+import java.awt.Paint;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
@@ -146,13 +147,23 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       Dimension2D.class);
 
   /** A key for the 'bounds' of an element. */
-  public static final StyleKey BOUNDS = StyleKey.getStyleKey("bounds", Rectangle2D.class);
+  public static final StyleKey BOUNDS = StyleKey.getStyleKey("bounds", Rectangle2D.class, true);
 
   /** A key for an element's 'visible' flag. */
   public static final StyleKey VISIBLE = StyleKey.getStyleKey("visible", Boolean.class);
 
-  /** A key for the 'paint' used to color an element. */
+  /**
+   * A key for the 'paint' used to color an element. For historical reasons,
+   * this key requires a color value.
+   */
   public static final StyleKey PAINT = StyleKey.getStyleKey("paint", Color.class);
+
+  /**
+   * A key for the 'ext-paint' used to fill or draw an element. If the specified paint
+   * is not supported by the output target, the color given with the 'paint' key is used
+   * instead.
+   */
+  public static final StyleKey EXTPAINT = StyleKey.getStyleKey("ext-paint", Paint.class);
 
   /** A key for the 'stroke' used to draw an element. */
   public static final StyleKey STROKE = StyleKey.getStyleKey("stroke", Stroke.class);

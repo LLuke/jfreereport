@@ -28,21 +28,18 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.9 2003/08/28 17:45:43 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.10 2003/08/31 19:27:57 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
 
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
-import java.net.URL;
-import java.util.Hashtable;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ListResourceBundle;
-import javax.swing.ImageIcon;
+import java.util.Properties;
 import javax.swing.KeyStroke;
 
-import org.jfree.report.util.ImageUtils;
 import org.jfree.report.util.Log;
 
 /**
@@ -66,24 +63,50 @@ public class JFreeReportResources extends ListResourceBundle
    */
   public static void main(final String[] args)
   {
+    new JFreeReportResources().generateResourceProperties("<default>");
+    System.exit(0);
+  }
+
+  public void generateResourceProperties (String lang)
+  {
     Object lastKey = null;
     try
     {
-      final Hashtable elements = new Hashtable();
+      Object[][] CONTENTS = getContents();
+      final Properties elements = new Properties();
       for (int i = 0; i < CONTENTS.length; i++)
       {
         final Object[] row = CONTENTS[i];
         lastKey = row[0];
-        elements.put(row[0], row[1]);
+        if (row[1] instanceof Integer)
+        {
+          Integer in = (Integer) row[1];
+          elements.setProperty((String) row[0], createMenuKeystroke(in.intValue()));
+        }
+        else if (row[1] instanceof Character)
+        {
+          Character in = (Character) row[1];
+          elements.setProperty((String) row[0], createMenuKeystroke(in.charValue()));
+        }
+        else if (row[1] instanceof KeyStroke)
+        {
+          KeyStroke in = (KeyStroke) row[1];
+          elements.setProperty((String) row[0], createMenuKeystroke(in.getKeyCode()));
+        }
+        else
+        {
+          elements.setProperty((String) row[0], (String) row[1]);
+        }
       }
-      getIcon("org/jfree/report/modules/gui/base/resources/SaveAs16.gif");
+
+
+      elements.store(System.out, "JFreeReport resource bundle. Language " + lang);
     }
     catch (Exception e)
     {
       e.printStackTrace();
       Log.debug("LastKey read: " + lastKey);
     }
-    System.exit(0);
   }
 
   /**
@@ -120,9 +143,9 @@ public class JFreeReportResources extends ListResourceBundle
    *
    * @return the image icon.
    */
-  protected static ImageIcon getIcon(final String filename)
+  protected static Object getIcon(final String filename)
   {
-
+/*
     final URL in = Thread.currentThread().getContextClassLoader().getResource(filename);
     if (in == null)
     {
@@ -136,6 +159,8 @@ public class JFreeReportResources extends ListResourceBundle
       return new ImageIcon(ImageUtils.createTransparentImage(1, 1));
     }
     return new ImageIcon(img);
+    */
+    return filename;
   }
 
   /**
@@ -144,19 +169,32 @@ public class JFreeReportResources extends ListResourceBundle
    * @param character the keystroke character
    * @return the generated keystroke object.
    */
-  protected static final KeyStroke createMenuKeystroke(final int character)
+  protected static final String createMenuKeystroke(final int character)
   {
     try
     {
-      return KeyStroke.getKeyStroke
-          (character, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+      Field[] fs = KeyEvent.class.getFields();
+      for (int i = 0; i < fs.length; i++)
+      {
+        Field f = fs[i];
+        if (Modifier.isStatic(f.getModifiers()) && Modifier.isFinal(f.getModifiers()))
+        {
+          if (f.getType().equals(Integer.TYPE))
+          {
+            if (f.getInt(null) == character)
+            {
+              return f.getName();
+            }
+          }
+        }
+      }
     }
-    catch (UnsupportedOperationException he)
+    catch (Exception nsfe)
     {
-      // headless exception extends UnsupportedOperation exception,
-      // but the HeadlessException is not defined in older JDKs...
-      return KeyStroke.getKeyStroke(character, KeyEvent.CTRL_MASK);
+      // ignore the exception ...
+
     }
+    return "" + (char) character;
   }
 
   /** The resources to be localised. */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.10 2003/11/07 18:33:57 taqua Exp $
+ * $Id: Worker.java,v 1.11 2003/11/15 20:51:15 taqua Exp $
  *
  *
  * Changes
@@ -53,7 +53,7 @@ public class Worker extends Thread
   private Runnable workload = null;
 
   /** a flag whether the worker should exit after the processing. */
-  private boolean finish = false;
+  private volatile boolean finish = false;
 
   /** the time in milliseconds beween 2 checks for exit or work requests. */
   private final int sleeptime;

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.15 2003/11/07 18:33:55 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.16 2003/12/21 20:51:43 taqua Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,7 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
+import java.awt.GradientPaint;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
@@ -74,17 +75,15 @@ import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
 import org.jfree.report.DrawableContainer;
-import org.jfree.report.ImageReference;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.PageDefinition;
 import org.jfree.report.ShapeElement;
+import org.jfree.report.ImageContainer;
+import org.jfree.report.URLImageContainer;
+import org.jfree.report.LocalImageContainer;
 import org.jfree.report.layout.SizeCalculator;
-import org.jfree.report.modules.output.pageable.base.LogicalPage;
-import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.output.AbstractOutputTarget;
-import org.jfree.report.modules.output.pageable.base.output.DummyOutputTarget;
-import org.jfree.report.modules.output.pageable.base.physicals.LogicalPageImpl;
-import org.jfree.report.modules.output.pageable.base.physicals.PhysicalPage;
 import org.jfree.report.modules.output.support.itext.BaseFontCreateException;
 import org.jfree.report.modules.output.support.itext.BaseFontFactory;
 import org.jfree.report.modules.output.support.itext.BaseFontRecord;
@@ -133,6 +132,14 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
      */
     private PDFSizeCalculator(final BaseFont font, final float fontSize)
     {
+      if (font == null)
+      {
+        throw new NullPointerException("BaseFont must not be null");
+      }
+      if (fontSize <= 0)
+      {
+        throw new IllegalArgumentException("FontSize must be greater than 0");
+      }
       this.baseFont = font;
       this.fontSize = fontSize;
     }
@@ -280,56 +287,14 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     (byte) 0x69, (byte) 0x7A};
 
   /**
-   * Constructs a PDFOutputTarget.
-   *
-   * @param out  the output stream.
-   * @param pageFormat  the page format.
-   * @param embedFonts  embed fonts?
-   */
-  public PDFOutputTarget(final OutputStream out, final PageFormat pageFormat,
-                         final boolean embedFonts)
-  {
-    this(out, pageFormat, pageFormat, embedFonts);
-  }
-
-  /**
    * Creates a new PDFOutputTarget.
    *
    * @param out  the output stream.
-   * @param logPage  the logical page.
-   * @param embedFonts  embed the fonts?
    */
-  public PDFOutputTarget(final OutputStream out, final LogicalPage logPage,
-                         final boolean embedFonts)
+  public PDFOutputTarget(final OutputStream out)
   {
-    super(logPage);
     this.out = out;
     this.fontSupport = new BaseFontSupport();
-    setEmbedFonts(embedFonts);
-  }
-
-  /**
-   * Creates a new PDFOutputTarget.
-   *
-   * @param out  the output stream.
-   * @param logPageFormat  the logical page format.
-   * @param physPageFormat  the physical page format.
-   * @param embedFonts  embed the fonts?
-   */
-  public PDFOutputTarget(final OutputStream out, final PageFormat logPageFormat,
-                         final PageFormat physPageFormat, final boolean embedFonts)
-  {
-    this(out, new LogicalPageImpl(logPageFormat, physPageFormat), embedFonts);
-  }
-
-  /**
-   * Returns the default font encoding.
-   *
-   * @return the default font encoding.
-   */
-  private static final String getDefaultFontEncoding()
-  {
-    return BaseFontFactory.getDefaultFontEncoding();
   }
 
   /**
@@ -347,7 +312,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the current font.
    */
-  public FontDefinition getFont()
+  protected FontDefinition getFont()
   {
     return fontDefinition;
   }
@@ -357,7 +322,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the iText BaseFont.
    */
-  public BaseFont getBaseFont()
+  protected BaseFont getBaseFont()
   {
     return baseFont;
   }
@@ -370,7 +335,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there was a problem setting the font for the target.
    */
-  public void setFont(final FontDefinition font) throws OutputTargetException
+  protected void setFont(final FontDefinition font) throws OutputTargetException
   {
     if (font == null)
     {
@@ -400,14 +365,14 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Draws an image from this {@link ImageReference}. The image is directly embedded into the
-   * pdf file to provide the best scaling support.
+   * Draws an image from this {@link ImageContainer}. The image is directly
+   * embedded into the pdf file to provide the best scaling support.
    *
    * @param imageRef  the image reference.
    *
    * @throws OutputTargetException if there was a problem drawing the image to the target.
    */
-  public void drawImage(final ImageReference imageRef) throws OutputTargetException
+  protected void drawImage(final ImageContainer imageRef) throws OutputTargetException
   {
     try
     {
@@ -465,39 +430,49 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *                           ImageReference.
    * @throws IOException if the image could not be read.
    */
-  private Image getImage(final ImageReference imageRef) throws DocumentException, IOException
+  private Image getImage(final ImageContainer imageRef) throws DocumentException, IOException
   {
     final Rectangle2D bounds = getInternalOperationBounds();
     final Rectangle2D imageBounds = imageRef.getBoundsScaled();
 
-    try
+    if (imageRef instanceof URLImageContainer)
     {
-      final Rectangle2D drawArea = new Rectangle2D.Float(0, 0, (float) bounds.getWidth(),
-          (float) bounds.getHeight());
-      if ((imageRef.getSourceURL() != null) && (drawArea.contains(imageBounds)))
+      final URLImageContainer urlImageContainer = (URLImageContainer) imageRef;
+
+      try
       {
-        return Image.getInstance(imageRef.getSourceURL());
+        final Rectangle2D drawArea = new Rectangle2D.Float(0, 0, (float) bounds.getWidth(),
+            (float) bounds.getHeight());
+        if ((urlImageContainer.getSourceURL() != null) && (drawArea.contains(imageBounds)))
+        {
+          return Image.getInstance(urlImageContainer.getSourceURL());
+        }
+      }
+      catch (BadElementException be)
+      {
+        Log.info("Caught illegal Image, will recode to PNG instead", be);
+      }
+      catch (IOException ioe)
+      {
+        Log.info("Unable to read the raw-data, will try to recode image-data.", ioe);
       }
     }
-    catch (BadElementException be)
+    if (imageRef instanceof LocalImageContainer)
     {
-      Log.info("Caught illegal Image, will recode to PNG instead", be);
-    }
-    catch (IOException ioe)
-    {
-      Log.info("Unable to read the raw-data, will try to recode image-data.", ioe);
-    }
+      final LocalImageContainer localImageContainer =
+              (LocalImageContainer) imageRef;
 
-    if (imageRef.getImage() != null)
-    {
-      // since version 0.99 iText supports Alpha-PNGs
-      final WaitingImageObserver obs = new WaitingImageObserver(imageRef.getImage());
-      obs.waitImageLoaded();
+      if (localImageContainer.getImage() != null)
+      {
+        // since version 0.99 iText supports Alpha-PNGs
+        final WaitingImageObserver obs = new WaitingImageObserver(localImageContainer.getImage());
+        obs.waitImageLoaded();
 
-      final PngEncoder encoder = new PngEncoder(imageRef.getImage(), PngEncoder.ENCODE_ALPHA,
-          PngEncoder.FILTER_NONE, 5);
-      final byte[] data = encoder.pngEncode();
-      return Image.getInstance(data);
+        final PngEncoder encoder = new PngEncoder(localImageContainer.getImage(), PngEncoder.ENCODE_ALPHA,
+            PngEncoder.FILTER_NONE, 5);
+        final byte[] data = encoder.pngEncode();
+        return Image.getInstance(data);
+      }
     }
 
     throw new DocumentException("Neither an URL nor an Image was given to paint the graphics");
@@ -521,7 +496,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param shape  the shape to draw.
    */
-  public void drawShape(final Shape shape)
+  protected void drawShape(final Shape shape)
   {
     final Rectangle2D bounds = getInternalOperationBounds();
 
@@ -594,7 +569,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param shape  the shape to fill.
    */
-  public void fillShape(final Shape shape)
+  protected void fillShape(final Shape shape)
   {
     final Rectangle2D bounds = getInternalOperationBounds();
 
@@ -722,37 +697,10 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    */
   public void open() throws OutputTargetException
   {
-
-    final PageFormat pageFormat = getLogicalPage().getPhysicalPageFormat();
-    final float urx = (float) pageFormat.getWidth();
-    final float ury = (float) pageFormat.getHeight();
-
-    final float marginLeft = (float) pageFormat.getImageableX();
-    final float marginRight =
-        (float) (pageFormat.getWidth()
-        - pageFormat.getImageableWidth()
-        - pageFormat.getImageableX());
-    final float marginTop = (float) pageFormat.getImageableY();
-    final float marginBottom =
-        (float) (pageFormat.getHeight()
-        - pageFormat.getImageableHeight()
-        - pageFormat.getImageableY());
-    final Rectangle pageSize = new Rectangle(urx, ury);
-
     try
     {
-//      if (pageFormat.getOrientation() == PageFormat.LANDSCAPE)
-//      {
-//        pageSize.rotate();
-//      }
-//      else if (pageFormat.getOrientation() == PageFormat.REVERSE_LANDSCAPE)
-//      {
-//        pageSize.rotate();
-//        pageSize.rotate();
-//        pageSize.rotate();
-//      }
-//
-      setDocument(new Document(pageSize, marginLeft, marginRight, marginTop, marginBottom));
+      setDocument(new Document());
+      //pageSize, marginLeft, marginRight, marginTop, marginBottom));
 
       writer = PdfWriter.getInstance(getDocument(), out);
       writer.setLinearPageMode();
@@ -815,12 +763,31 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param format  the physical page.
    */
-  public void beginPage(final PhysicalPage format)
+  public void beginPage(final PageDefinition format, final int i)
   {
     if (isOpen() == false)
     {
       throw new IllegalStateException("Target " + hashCode() + " is not open");
     }
+
+    final PageFormat pageFormat = format.getPageFormat(i);
+    final float urx = (float) pageFormat.getWidth();
+    final float ury = (float) pageFormat.getHeight();
+
+    final float marginLeft = (float) pageFormat.getImageableX();
+    final float marginRight =
+        (float) (pageFormat.getWidth()
+        - pageFormat.getImageableWidth()
+        - pageFormat.getImageableX());
+    final float marginTop = (float) pageFormat.getImageableY();
+    final float marginBottom =
+        (float) (pageFormat.getHeight()
+        - pageFormat.getImageableHeight()
+        - pageFormat.getImageableY());
+    final Rectangle pageSize = new Rectangle(urx, ury);
+
+    getDocument().setPageSize(pageSize);
+    getDocument().setMargins(marginLeft, marginRight, marginTop, marginBottom);
 
     try
     {
@@ -834,7 +801,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     }
 
     this.writer.getDirectContent().saveState();
-    this.currentPageFormat = format.getPageFormat();
+    this.currentPageFormat = format.getPageFormat(i);
   }
 
   /**
@@ -932,7 +899,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param text The text to be printed.
    */
-  public void drawString(final String text)
+  protected void printText(final String text)
   {
     final Rectangle2D bounds = getInternalOperationBounds();
     final int fontSize = getFont().getFontSize();
@@ -957,10 +924,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    * OutputTargetException is thrown. Currently only BasicStroke is supported.
    *
    * @param stroke  the stroke.
-   *
-   * @throws OutputTargetException if there is a problem with the target.
    */
-  public void setStroke(final Stroke stroke) throws OutputTargetException
+  protected void setStroke(final Stroke stroke)
   {
     if (stroke == null)
     {
@@ -968,7 +933,9 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     }
     if (stroke instanceof BasicStroke == false)
     {
-      throw new OutputTargetException("Unable to handle this stroke type");
+      //throw new OutputTargetException("Unable to handle this stroke type");
+      Log.warn ("Unable to handle stroke type: " + stroke.getClass() + " will be ignored.");
+      return;
     }
 
     // If this stroke is already set, do nothing
@@ -988,7 +955,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the current stroke.
    */
-  public Stroke getStroke()
+  protected Stroke getStroke()
   {
     return awtStroke;
   }
@@ -998,10 +965,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    * is thrown. This implementation currently supports java.awt.Color as the only valid paint.
    *
    * @param paint  the paint.
-   *
-   * @throws OutputTargetException if the paint is invalid.
    */
-  public void setPaint(final Paint paint) throws OutputTargetException
+  protected void setPaint(final Paint paint)
   {
     if (paint == null)
     {
@@ -1010,7 +975,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
 
     if (paint instanceof Color == false)
     {
-      throw new OutputTargetException("Unsupported paint type, currently only color is supported");
+      Log.warn ("Unable to handle paint type: " + paint.getClass() + " will be ignored.");
+      return;
     }
 
     // If this paint is already set, do nothing
@@ -1031,9 +997,15 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the paint.
    */
-  public Paint getPaint()
+  protected Paint getPaint()
   {
     return awtPaint;
+  }
+
+  protected boolean isPaintSupported(final Paint p)
+  {
+    // todo add support for gradient paint
+    return (p instanceof Color || p instanceof GradientPaint);
   }
 
   /**
@@ -1043,7 +1015,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    */
   private String getFontEncoding()
   {
-    return getProperty(ENCODING, getDefaultFontEncoding());
+    return getProperty(ENCODING, BaseFontFactory.getDefaultFontEncoding());
   }
 
   /**
@@ -1074,7 +1046,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the 'embed fonts' flag.
    */
-  private boolean isEmbedFonts()
+  public boolean isEmbedFonts()
   {
     return getProperty(EMBED_FONTS, "false").equals("true");
   }
@@ -1084,21 +1056,9 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param embedFonts  the new flag value.
    */
-  private void setEmbedFonts(final boolean embedFonts)
+  public void setEmbedFonts(final boolean embedFonts)
   {
     setProperty(EMBED_FONTS, String.valueOf(embedFonts));
-  }
-
-  /**
-   * Creates an output target that mimics a real output target, but produces no output.
-   * This is used by the reporting engine when it makes its first pass through the report,
-   * calculating page boundaries etc.  The second pass will use a real output target.
-   *
-   * @return a dummy output target.
-   */
-  public OutputTarget createDummyWriter()
-  {
-    return new DummyOutputTarget(this);
   }
 
   /**
@@ -1247,7 +1207,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param bounds  the bounds.
    */
-  public void setOperationBounds(final Rectangle2D bounds)
+  protected void setOperationBounds(final Rectangle2D bounds)
   {
     super.setOperationBounds(bounds);
     internalOperationBounds
@@ -1271,37 +1231,13 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param drawable the drawable to draw.
    */
-  public void drawDrawable(final DrawableContainer drawable)
+  protected void drawDrawable(final DrawableContainer drawable)
   {
-    // cant be done using Wmf, as Wmf does not support Unicode and Bitmaps... damn
-
-    // not yet implemented, needs WMF Converter ...
     // only the drawable clippingbounds region will be drawn.
     // the clipping is set to the clipping bounds of the drawable
 
     // the clipping bounds are relative to the drawable dimension,
     // they are not influenced by the drawables position on the page
-
-    // todo: Whats going on here?
-//    final Rectangle2D operationBounds = getOperationBounds();
-//    final Rectangle2D clipBounds = drawable.getClippingBounds();
-//
-//    final Graphics2D target =
-//        writer.getDirectContent().createGraphics
-//        ((float) clipBounds.getWidth(), (float) clipBounds.getHeight());
-//    target.translate
-//        (operationBounds.getX() + clipBounds.getX(),
-//         operationBounds.getY() + clipBounds.getY());
-//    target.clip(new Rectangle2D.Float(0, 0,
-//        (float) clipBounds.getWidth(),
-//        (float) clipBounds.getHeight()));
-//
-//    final Dimension2D drawableSize = drawable.getDrawableSize();
-//    final Rectangle2D drawBounds = new Rectangle2D.Float(0, 0,
-//        (float) drawableSize.getWidth(),
-//        (float) drawableSize.getHeight());
-//    drawable.getDrawable().draw(target, drawBounds);
-//    target.dispose();
 
     final Rectangle2D bounds = getInternalOperationBounds();
     final float x = (float) (bounds.getX());
@@ -1309,8 +1245,8 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
 
     final Rectangle2D clipBounds = drawable.getClippingBounds();
 
-    final Graphics2D target = writer.getDirectContent().createGraphics(
-        (float) clipBounds.getWidth() + x, (getPageHeight() - y));
+    final Graphics2D target = writer.getDirectContent().createGraphics
+        ((float) clipBounds.getWidth() + x, (getPageHeight() - y), fontSupport);
 
     target.translate(x, 0);
 

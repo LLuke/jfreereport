@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FileConfigStorage.java,v 1.7 2003/08/28 17:45:44 taqua Exp $
+ * $Id: FileConfigStorage.java,v 1.8 2003/09/02 15:05:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -162,5 +162,10 @@ public class FileConfigStorage implements ConfigStorage
 
     final File target = new File(baseDirectory, configPath);
     return target.exists() && target.canRead();
+  }
+
+  public String toString ()
+  {
+    return "FileConfigStorage={baseDir=" + baseDirectory + "}";
   }
 }

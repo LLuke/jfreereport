@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);;
  *
- * $Id: PrinterCommandSet.java,v 1.9 2003/11/01 19:52:29 taqua Exp $
+ * $Id: PrinterCommandSet.java,v 1.10 2003/11/07 18:33:55 taqua Exp $
  *
  * Changes
  * -------
@@ -37,12 +37,12 @@
  */
 package org.jfree.report.modules.output.pageable.plaintext;
 
-import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.io.IOException;
 import java.io.OutputStream;
 
 import org.jfree.report.style.FontDefinition;
+import org.jfree.report.util.EncodingSupport;
 import org.jfree.report.util.PageFormatFactory;
 
 /**
@@ -156,11 +156,7 @@ public strictfp class PrinterCommandSet
   /** the characters per inch for this page. */
   private final int defaultCPI;
 
-  /** the pageformat used in this page. */
-  private final PageFormat pageFormat;
-
-//  /** the emptyCellCounter is used to optimize the printing. */
-//  private int emptyCellCounter;
+  private Paper paper;
 
   /** the encoding header, if any. */
   private byte[] encodingHeader;
@@ -178,28 +174,16 @@ public strictfp class PrinterCommandSet
    * Creates a new PrinterCommandSet.
    *
    * @param out the target output stream
-   * @param format the pageformat of the used report
    * @param defaultCPI the characters-per-inch for the output.
    * @param defaultLPI the lines-per-inch for the output.
    */
-  public PrinterCommandSet(final OutputStream out, final PageFormat format,
+  public PrinterCommandSet(final OutputStream out,
                            final int defaultCPI, final int defaultLPI)
   {
     this.out = out;
     this.defaultLPI = defaultLPI;
     this.defaultCPI = defaultCPI;
-    this.pageFormat = format;
     this.firstPage = true;
-    //setVerticalBorder();
-  }
-
-  /**
-   * Gets the pageformat used in this command set.
-   * @return the pageformat.
-   */
-  public PageFormat getPageFormat()
-  {
-    return pageFormat;
   }
 
   /**
@@ -257,8 +241,8 @@ public strictfp class PrinterCommandSet
    * Characters-per-inch. Valid values are 10, 12, 15, 17 and 20 cpi.
    *
    * @param charWidth the character width in CPI.
-   * @throws java.io.IOException if there was an IOError while writing the command or if the
-   *   character width is not supported by the printer.
+   * @throws java.io.IOException if there was an IOError while writing
+   * the command or if the character width is not supported by the printer.
    */
   public void setCharacterWidth(final byte charWidth) throws IOException
   {
@@ -282,7 +266,8 @@ public strictfp class PrinterCommandSet
    * @param italic true, if the text should be italic, false otherwise
    * @param underline true, if the text should be underlined, false otherwise
    * @param strike true, if the text should be strikethrough, false otherwise
-   * @throws java.io.IOException if there was an IOError while writing the command
+   * @throws java.io.IOException if there was an IOError while writing
+   * the command
    */
   public void setFontStyle(final boolean bold, final boolean italic,
                            final boolean underline, final boolean strike)
@@ -338,7 +323,8 @@ public strictfp class PrinterCommandSet
    * Defines the papersize in lines.
    *
    * @param lines the number of lines that could be printed on a single page.
-   * @throws java.io.IOException if there was an IOError while writing the command
+   * @throws java.io.IOException if there was an IOError while writing
+   * the command
    */
   public void setPaperSize(final int lines) throws IOException
   {
@@ -360,9 +346,11 @@ public strictfp class PrinterCommandSet
    *
    * @param left the number of spaces printed on the start of a line.
    * @param right the number of spaces left free on the right paper border.
-   * @throws java.io.IOException if an IOException occured while updating the printer state.
+   * @throws java.io.IOException if an IOException occured while
+   * updating the printer state.
    */
-  public void setHorizontalBorder(final int left, final int right) throws IOException
+  public void setHorizontalBorder(final int left, final int right)
+      throws IOException
   {
     this.borderLeft = left;
     this.borderRight = right;
@@ -374,9 +362,11 @@ public strictfp class PrinterCommandSet
    *
    * @param top the space on top of the page in 1/1440th of an inch.
    * @param bottom the space at the bottom of the page in 1/1440th of an inch
-   * @throws IOException if an IOException occured while updating the printer state.
+   * @throws IOException if an IOException occured while updating the
+   * printer state.
    */
-  public void setVerticalBorder(final int top, final int bottom) throws IOException
+  public void setVerticalBorder(final int top, final int bottom)
+      throws IOException
   {
     this.borderTop = top;
     this.borderBottom = bottom;
@@ -423,7 +413,8 @@ public strictfp class PrinterCommandSet
    * 1/1440 inches.
    *
    * @param spaceInInch the linespacing in 1/1440 inches.
-   * @throws java.io.IOException if an IOException occured while updating the printer state.
+   * @throws IOException if an IOException occured while updating the
+   * printer state.
    */
   public void setLineSpacing(final int spaceInInch) throws IOException
   {
@@ -541,7 +532,7 @@ public strictfp class PrinterCommandSet
     setPrintQuality(false);
 
     final PageFormatFactory fact = PageFormatFactory.getInstance();
-    final Paper paper = pageFormat.getPaper();
+//    final Paper paper = pageFormat.getPaper();
     final int cWidthPoints = 72 / getCharacterWidth();
     final int left = (int) (fact.getLeftBorder(paper) / cWidthPoints);
     final int right = (int) (fact.getRightBorder(paper) / cWidthPoints);
@@ -555,13 +546,34 @@ public strictfp class PrinterCommandSet
     setPaperSize(lines);
   }
 
+  public Paper getPaper()
+  {
+    return paper;
+  }
+
+  /**
+   * Defines the paper used for printing the current page.
+   *
+   * @param paper the paper
+   */
+  public void setPaper(Paper paper)
+  {
+    this.paper = paper;
+  }
+
   /**
    * Starts the current page. Prints empty lines.
    *
    * @throws java.io.IOException if there was an IOError while writing the command
    */
-  public void startPage() throws IOException
+  public void startPage(Paper paper) throws IOException
   {
+    if (paper == null)
+    {
+      throw new NullPointerException("Paper must not be null.");
+    }
+    setPaper(paper);
+    
     if (firstPage)
     {
       final int spaceUsage = encodingHeader.length - space.length;
@@ -580,16 +592,18 @@ public strictfp class PrinterCommandSet
   /**
    * Ends the current page. Prints empty lines.
    *
-   * @throws java.io.IOException if there was an IOError while writing the command
+   * @throws java.io.IOException if there was an IOError while
+   * writing the command
    */
   public void endPage() throws IOException
   {
-    final int bottomBorderLines = ((getBorderBottom() / 1440) / getLineSpacing());
-    for (int i = 0; i < bottomBorderLines; i++)
-    {
-      startLine();
-      endLine();
-    }
+//    It is stupid to print empty lines at the end of the page, just do the formfeed.
+//    final int bottomBorderLines = ((getBorderBottom() / 1440) / getLineSpacing());
+//    for (int i = 0; i < bottomBorderLines; i++)
+//    {
+//      startLine();
+//      endLine();
+//    }
     writeControlChar(FORM_FEED);
   }
 
@@ -644,7 +658,8 @@ public strictfp class PrinterCommandSet
    * @param x the column where to start to print the chunk
    * @throws java.io.IOException if an IO error occured.
    */
-  public void printChunk(final PlainTextPage.TextDataChunk chunk, final int x) throws IOException
+  public void printChunk(final PlainTextPage.TextDataChunk chunk, final int x)
+      throws IOException
   {
     if (chunk.getX() != x)
     {
@@ -653,9 +668,11 @@ public strictfp class PrinterCommandSet
     }
 
     final FontDefinition fd = chunk.getFont();
-    setFontStyle(fd.isBold(), fd.isItalic(), fd.isUnderline(), fd.isStrikeThrough());
+    setFontStyle(fd.isBold(), fd.isItalic(), fd.isUnderline(),
+        fd.isStrikeThrough());
 
-    final StringBuffer buffer = new StringBuffer(chunk.getText()); // this space is removed later ..
+    // this space is removed later ..
+    final StringBuffer buffer = new StringBuffer(chunk.getText());
     for (int i = buffer.length(); i < chunk.getWidth(); i++)
     {
       buffer.append(' ');
@@ -704,7 +721,7 @@ public strictfp class PrinterCommandSet
    */
   public boolean isEncodingSupported(final String encoding)
   {
-    if (org.jfree.report.util.EncodingSupport.isSupportedEncoding(encoding))
+    if (EncodingSupport.isSupportedEncoding(encoding))
     {
       // if already checked there, then use it ...
       return true;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintExportResources_de.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
+ * $Id: PrintExportResources_de.java,v 1.5 2003/09/08 18:39:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -93,6 +93,7 @@ public class PrintExportResources_de extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{PrintExportResources.class.getName(), "de"});
+    new PrintExportResources_de().generateResourceProperties("german");
+    System.exit(0);
   }
 }

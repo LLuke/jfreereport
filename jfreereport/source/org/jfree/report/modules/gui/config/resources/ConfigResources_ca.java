@@ -28,7 +28,7 @@
  * Original Author:  Marc Casas;
  * Contributor(s):   -;
  *
- * $Id: $
+ * $Id: ConfigResources_ca.java,v 1.1 2003/09/08 18:42:55 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -79,4 +79,11 @@ public class ConfigResources_ca extends JFreeReportResources
         {"action.save.name", "Desar"},
 
       };
+
+  public static void main(final String[] args)
+   {
+     new ConfigResources_ca().generateResourceProperties("catalan");
+     System.exit(0);
+   }
+
 }

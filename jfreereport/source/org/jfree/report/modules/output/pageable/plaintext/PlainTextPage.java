@@ -28,16 +28,17 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextPage.java,v 1.5 2003/10/22 14:44:51 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.6 2003/11/01 19:52:29 taqua Exp $
  *
  * Changes
  * -------
  * 29-Jan-2003 : Initial version
- *
+ * 31-Jan-2004 : Removed leftBorder attribute as it is not used.
  */
 package org.jfree.report.modules.output.pageable.plaintext;
 
 import java.io.IOException;
+import java.awt.print.Paper;
 
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.Log;
@@ -171,23 +172,22 @@ public class PlainTextPage
 
   /** the height of the page in lines. */
   private int height;
-  /** Defines the left border in chars. */
-  private int leftBorder;
 
   /** The encoding of the printed text. */
   private String pageEncoding;
+
+  private Paper paper;
 
   /**
    * Creates a new PlainTextPage with the given dimensions and the specified
    * PrinterCommandSet.
    *
-   * @param leftBorder the left border
    * @param w the number of columns on the page
    * @param h the number of rows on the page
    * @param encoding the document encoding for this page.
    * @param commandSet the commandset for printing and formating the text.
    */
-  public PlainTextPage(final int leftBorder, final int w, final int h,
+  public PlainTextPage(final int w, final int h, final Paper paper,
                        final PrinterCommandSet commandSet, final String encoding)
   {
     if (w <= 0)
@@ -198,6 +198,14 @@ public class PlainTextPage
     {
       throw new IllegalArgumentException("Height <= 0");
     }
+    if (commandSet == null)
+    {
+      throw new NullPointerException("PrinterCommandSet must be defined.");
+    }
+    if (paper == null)
+    {
+      throw new NullPointerException("Paper must be defined.");
+    }
     if (encoding == null)
     {
       throw new NullPointerException("Encoding must be defined.");
@@ -206,9 +214,9 @@ public class PlainTextPage
     pageBuffer = new TextDataChunk[w][h];
     width = w;
     height = h;
-    this.leftBorder = leftBorder;
     this.commandSet = commandSet;
     pageEncoding = encoding;
+    this.paper = paper;
   }
 
   /**
@@ -227,15 +235,6 @@ public class PlainTextPage
   public int getHeight()
   {
     return height;
-  }
-
-  /**
-   * Returns the width of the left border in characters. 
-   * @return the left border.
-   */
-  public int getLeftBorder()
-  {
-    return leftBorder;
   }
 
   /**
@@ -304,7 +303,7 @@ public class PlainTextPage
   {
     commandSet.resetPrinter();
     commandSet.setCodePage(getPageEncoding());
-    commandSet.startPage();
+    commandSet.startPage(paper);
     for (int y = 0; y < height; y++)
     {
       commandSet.startLine();

@@ -28,7 +28,7 @@
  * Original Author:  Demeter F. Tamás;
  * Contributor(s):   -;
  *
- * $Id: HtmlExportResources_hu.java,v 1.5 2003/08/25 14:29:30 taqua Exp $
+ * $Id: HtmlExportResources_hu.java,v 1.6 2003/09/08 18:39:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -129,7 +129,8 @@ public class HtmlExportResources_hu extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{HtmlExportResources.class.getName(), "hu"});
+    new HtmlExportResources_hu().generateResourceProperties("hungarian");
+    System.exit(0);
   }
 
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportResources.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
+ * $Id: HtmlExportResources.java,v 1.5 2003/09/08 18:39:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,7 @@ import java.awt.event.KeyEvent;
 
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
+import org.jfree.report.modules.gui.csv.resources.CSVExportResources;
 
 /**
  * English language resource for the Html export GUI.
@@ -145,7 +146,8 @@ public class HtmlExportResources extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{HtmlExportResources.class.getName(), null});
+    new HtmlExportResources().generateResourceProperties("<default>");
+    System.exit(0);
   }
 
 }

@@ -28,7 +28,7 @@
  * Original Author:  Sergey M Mozgovoi;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_ru.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
+ * $Id: JFreeReportResources_ru.java,v 1.5 2003/08/25 14:29:29 taqua Exp $
  *
  *
  */
@@ -156,7 +156,9 @@ public class JFreeReportResources_ru extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{JFreeReportResources.class.getName(), "ru"});
+    new JFreeReportResources_ru().generateResourceProperties("russian");
+    System.exit(0);
+//    ResourceCompareTool.main(new String[]{JFreeReportResources.class.getName(), "ru"});
   }
 
 

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportDialog.java,v 1.7 2003/09/09 21:31:48 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.8 2003/11/07 16:26:18 taqua Exp $
  *
  * Changes
  * --------
@@ -51,6 +51,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.text.MessageFormat;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -69,9 +70,12 @@ import javax.swing.KeyStroke;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.FilesystemFilter;
-import org.jfree.report.modules.gui.xls.resources.XLSExportResources;
+import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
+import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
+import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
 import org.jfree.report.modules.output.table.base.TableProcessor;
 import org.jfree.report.modules.output.table.xls.ExcelProcessor;
+import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 
@@ -196,7 +200,7 @@ public class ExcelExportDialog extends JDialog
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
-      XLSExportResources.class.getName();
+      "org.jfree.report.modules.gui.xls.resources.xls-export-resources";
 
   /**
    * Creates a new Excel save dialog.
@@ -531,21 +535,68 @@ public class ExcelExportDialog extends JDialog
   /**
    * Opens the dialog to query all necessary input from the user.
    * This will not start the processing, as this is done elsewhere.
-   * 
+   *
    * @param report the report that should be processed.
    * @return true, if the processing should continue, false otherwise.
    */
   public boolean performQueryForExport(final JFreeReport report)
   {
-    setModal(true);
     initFromConfiguration(report.getReportConfiguration());
+    ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
+    try
+    {
+      setDialogContents(storage.loadProperties
+          (ConfigFactory.encodePath(report.getName() + "_xlsexport"),
+              new Properties()));
+    }
+    catch (Exception cse)
+    {
+      Log.debug ("Unable to load the defaults in XLS export dialog.");
+    }
+
+    setModal(true);
     setVisible(true);
     if (isConfirmed() == false)
     {
       return false;
     }
+
     storeToConfiguration(report.getReportConfiguration());
+    try
+    {
+      storage.storeProperties
+          (ConfigFactory.encodePath(report.getName() + "_xlsexport"),
+              getDialogContents());
+    }
+    catch (ConfigStoreException cse)
+    {
+      Log.debug ("Unable to store the defaults in XLS export dialog.");
+    }
     return true;
+  }
+
+  /**
+   * Returns the user input of this dialog as properties collection.
+   *
+   * @return the user input.
+   */
+  public Properties getDialogContents ()
+  {
+    Properties p = new Properties();
+    p.setProperty("filename", getFilename());
+    p.setProperty("strict-layout", String.valueOf(isStrictLayout()));
+    return p;
+  }
+
+  /**
+   * Restores the user input from a properties collection.
+   *
+   * @param p the user input.
+   */
+  public void setDialogContents (Properties p)
+  {
+    setFilename(p.getProperty("filename", getFilename()));
+    setStrictLayout(StringUtil.parseBoolean(p.getProperty("strict-layout"), isStrictLayout()));
   }
 
   /**
@@ -558,7 +609,7 @@ public class ExcelExportDialog extends JDialog
     final String strict = config.getConfigProperty
         (ExcelProcessor.CONFIGURATION_PREFIX +
         ExcelProcessor.STRICT_LAYOUT,
-            config.getConfigProperty(TableProcessor.STRICT_TABLE_LAYOUT,
+            config.getConfigProperty(TableProcessor.STRICT_LAYOUT,
                 TableProcessor.STRICT_TABLE_LAYOUT_DEFAULT));
     setStrictLayout(strict.equals("true"));
   }
@@ -575,29 +626,4 @@ public class ExcelExportDialog extends JDialog
     config.setConfigProperty(ExcelProcessor.CONFIGURATION_PREFIX +
         ExcelProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));
   }
-
-
-  /**
-   * For debugging.
-   *
-   * @param args  ignored.
-   */
-  public static void main(final String[] args)
-  {
-    final JDialog d = new ExcelExportDialog();
-    d.pack();
-    d.addWindowListener(new WindowAdapter()
-    {
-      /**
-       * Invoked when a window is in the process of being closed.
-       * The close operation can be overridden at this point.
-       */
-      public void windowClosing(final WindowEvent e)
-      {
-        System.exit(0);
-      }
-    });
-    d.setVisible(true);
-  }
-
 }

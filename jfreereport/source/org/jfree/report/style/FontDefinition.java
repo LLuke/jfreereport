@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FontDefinition.java,v 1.5 2003/08/31 19:27:59 taqua Exp $
+ * $Id: FontDefinition.java,v 1.6 2003/09/09 15:52:53 taqua Exp $
  *
  * Changes
  * -------
@@ -119,11 +119,11 @@ public class FontDefinition implements Serializable, Cloneable
   {
     if (fontName == null)
     {
-      throw new NullPointerException();
+      throw new NullPointerException("FontName must not be null");
     }
-    if (fontSize < 0)
+    if (fontSize <= 0)
     {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("FontSize must be greater than 0");
     }
     this.fontName = fontName;
     this.fontSize = fontSize;

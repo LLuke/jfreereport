@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageComparator.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
+ * $Id: ImageComparator.java,v 1.4 2003/08/25 14:29:34 taqua Exp $
  *
  * Changes
  * -------
@@ -225,7 +225,7 @@ public class ImageComparator
    * huge reports or images.
    * @return the prepared image data.
    */
-  public ImageCompareData createCompareData(final byte[] image, final boolean fast)
+  public Object createCompareData(final byte[] image, final boolean fast)
   {
     if (fast == false && (digestMD5 != null && digestSHA != null))
     {

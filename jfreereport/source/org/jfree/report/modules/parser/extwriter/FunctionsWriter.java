@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.6 2003/11/07 15:31:40 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.7 2003/12/04 18:04:06 taqua Exp $
  *
  * Changes
  * -------
@@ -104,7 +104,6 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
 
       writePropertyRefs(writer);
       writeExpressions(writer, getReport().getExpressions());
-      writeExpressions(writer, getReport().getFunctions());
 
       writeComment(writer, FUNCTIONS_PATH, CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(writer, ExtReportHandler.FUNCTIONS_TAG);
@@ -120,10 +119,6 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
   private boolean shouldWriteFunctions()
   {
     if (getReport().getProperties().containsMarkedProperties())
-    {
-      return true;
-    }
-    if (getReport().getFunctions().size() != 0)
     {
       return true;
     }

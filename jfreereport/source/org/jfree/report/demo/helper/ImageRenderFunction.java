@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageRenderFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ImageRenderFunction.java,v 1.3 2003/08/25 14:29:28 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -44,7 +44,7 @@ import java.io.Serializable;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 
-import org.jfree.report.ImageReference;
+import org.jfree.report.DefaultImageReference;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
@@ -59,7 +59,7 @@ public class ImageRenderFunction extends AbstractFunction
     implements Serializable, PageEventListener
 {
   /** The function value. */
-  private transient ImageReference functionValue;
+  private transient DefaultImageReference functionValue;
 
   /**
    * Create a image according to the current state, simple and silly ...
@@ -86,7 +86,7 @@ public class ImageRenderFunction extends AbstractFunction
     g2.drawString("You are viewing a graphics of JFreeReport on index "
         + event.getState().getCurrentDisplayItem(), 10, 10);
 
-    functionValue = new ImageReference(image);
+    functionValue = new DefaultImageReference(image);
   }
 
   /**

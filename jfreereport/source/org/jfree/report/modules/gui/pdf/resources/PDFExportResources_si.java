@@ -28,7 +28,7 @@
  * Original Author:  Sergey M Mozgovoi;
  * Contributor(s):   -;
  *
- * $Id: PDFExportResources_si.java,v 1.3 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PDFExportResources_si.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -133,6 +133,7 @@ public class PDFExportResources_si extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{PDFExportResources.class.getName(), "si"});
+    new PDFExportResources_si().generateResourceProperties("slovenian");
+    System.exit(0);
   }
 }

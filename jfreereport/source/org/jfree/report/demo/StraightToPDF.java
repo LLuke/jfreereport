@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.6 2003/08/24 15:13:21 taqua Exp $
+ * $Id: StraightToPDF.java,v 1.7 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------
@@ -113,8 +113,7 @@ public class StraightToPDF
     try
     {
       out = new BufferedOutputStream(new FileOutputStream(new File(fileName)));
-      final PageFormat pf = report.getDefaultPageFormat();
-      final PDFOutputTarget target = new PDFOutputTarget(out, pf, true);
+      final PDFOutputTarget target = new PDFOutputTarget(out);
       target.configure(report.getReportConfiguration());
       target.open();
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: CloseAction.java,v 1.3 2003/08/27 20:19:52 taqua Exp $
+ * $Id: CloseAction.java,v 1.4 2003/08/31 19:27:56 taqua Exp $
  *
  * Changes
  * -------
@@ -67,10 +67,12 @@ public abstract class CloseAction extends AbstractActionDowngrade
     this.putValue(NAME, resources.getString("action.close.name"));
     this.putValue(SHORT_DESCRIPTION, resources.getString("action.close.description"));
     this.putValue(ActionDowngrade.MNEMONIC_KEY,
-        resources.getObject("action.close.mnemonic"));
+        ResourceBundleUtils.createMnemonic(resources.getString("action.close.mnemonic")));
     this.putValue(ActionDowngrade.ACCELERATOR_KEY,
-        resources.getObject("action.close.accelerator"));
-    this.putValue(SMALL_ICON, ImageUtils.createTransparentIcon(16, 16));
-    this.putValue("ICON24", ImageUtils.createTransparentIcon(24, 24));
+        ResourceBundleUtils.createMenuKeystroke(resources.getString("action.close.accelerator")));
+    this.putValue(SMALL_ICON,
+        ImageUtils.createTransparentIcon(16, 16));
+    this.putValue("ICON24",
+        ImageUtils.createTransparentIcon(24, 24));
   }
 }

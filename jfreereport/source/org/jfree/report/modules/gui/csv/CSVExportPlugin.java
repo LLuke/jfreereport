@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportPlugin.java,v 1.11 2003/11/07 16:26:17 taqua Exp $
+ * $Id: CSVExportPlugin.java,v 1.12 2003/11/07 18:33:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,7 +49,7 @@ import org.jfree.report.modules.gui.base.AbstractExportPlugin;
 import org.jfree.report.modules.gui.base.ExportTask;
 import org.jfree.report.modules.gui.base.PreviewProxy;
 import org.jfree.report.modules.gui.base.ReportProgressDialog;
-import org.jfree.report.modules.gui.csv.resources.CSVExportResources;
+import org.jfree.report.modules.gui.base.ResourceBundleUtils;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
 
@@ -68,9 +68,9 @@ public class CSVExportPlugin extends AbstractExportPlugin
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
-      CSVExportResources.class.getName();
-
-  /** The progress dialog that will monitor the export process. */ 
+      "org.jfree.report.modules.gui.csv.resources.csv-export-resources";
+  public static final String PROGRESS_DIALOG_ENABLE_KEY =
+      "org.jfree.report.modules.gui.csv.ProgressDialogEnabled";
 
   /**
    * DefaultConstructor.
@@ -119,8 +119,17 @@ public class CSVExportPlugin extends AbstractExportPlugin
     }
     else
     {
+      ReportProgressDialog progressDialog = null;
+      if (report.getReportConfiguration().getConfigProperty
+          (PROGRESS_DIALOG_ENABLE_KEY,
+              "false").equals("true"))
+      {
+        progressDialog = createProgressDialog();
+      }
+
       task = new CSVTableExportTask
-          (exportDialog.getFilename(), exportDialog.getEncoding(), createProgressDialog(), report);
+          (exportDialog.getFilename(), exportDialog.getEncoding(),
+              progressDialog, report);
     }
     task.addExportTaskListener(new DefaultExportTaskListener());
     delegateTask(task);
@@ -174,7 +183,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
    */
   public Icon getSmallIcon()
   {
-    return (Icon) resources.getObject("action.export-to-csv.small-icon");
+    return ResourceBundleUtils.getIcon(getResources().getString("action.export-to-csv.small-icon"));
   }
 
   /**
@@ -184,7 +193,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
    */
   public Icon getLargeIcon()
   {
-    return (Icon) resources.getObject("action.export-to-csv.icon");
+    return ResourceBundleUtils.getIcon(getResources().getString("action.export-to-csv.icon"));
   }
 
   /**
@@ -194,7 +203,8 @@ public class CSVExportPlugin extends AbstractExportPlugin
    */
   public KeyStroke getAcceleratorKey()
   {
-    return (KeyStroke) resources.getObject("action.export-to-csv.accelerator");
+    return ResourceBundleUtils.createMenuKeystroke
+        (getResources().getString(("action.export-to-csv.accelerator")));
   }
 
   /**
@@ -204,7 +214,8 @@ public class CSVExportPlugin extends AbstractExportPlugin
    */
   public Integer getMnemonicKey()
   {
-    return (Integer) resources.getObject("action.export-to-csv.mnemonic");
+    return ResourceBundleUtils.createMnemonic
+        (getResources().getString(("action.export-to-csv.mnemonic")));
   }
 
   /**
@@ -254,6 +265,4 @@ public class CSVExportPlugin extends AbstractExportPlugin
     return ReportConfiguration.getGlobalConfig().getConfigProperty
         ("org.jfree.report.modules.gui.csv.Separated", "false").equals("true");
   }
-
-
 }

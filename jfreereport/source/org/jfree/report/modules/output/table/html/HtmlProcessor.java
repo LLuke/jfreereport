@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProcessor.java,v 1.7 2003/08/28 17:45:44 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.8 2003/09/09 15:52:53 taqua Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,10 @@ package org.jfree.report.modules.output.table.html;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.function.FunctionInitializeException;
-import org.jfree.report.modules.output.table.base.TableLayoutInfo;
+import org.jfree.report.modules.output.meta.MetaBandProducer;
+import org.jfree.report.modules.output.table.base.LayoutCreator;
+import org.jfree.report.modules.output.table.base.TableCreator;
 import org.jfree.report.modules.output.table.base.TableProcessor;
-import org.jfree.report.modules.output.table.base.TableProducer;
 
 /**
  * The HtmlProcessor handles the initialisation of the report writer and starts and
@@ -77,7 +77,19 @@ public class HtmlProcessor extends TableProcessor
    * from the report configuration.
    */
   public static final String CONFIGURATION_PREFIX = 
-    "org.jfree.report.modules.output.table.html.";
+    "org.jfree.report.modules.output.table.html";
+
+  /** The configuration key that defines whether to generate XHTML code. */
+  public static final String GENERATE_XHTML = "GenerateXHTML";
+
+  /** the fileencoding for the main html file. */
+  public static final String ENCODING = "Encoding";
+  /** a default value for the fileencoding of the main html file. */
+  public static final String ENCODING_DEFAULT = "UTF-8";
+
+  /** The property key to define whether to build a html body fragment. */
+  public static final String BODY_FRAGMENT = "BodyFragment";
+
 
   /**
    * Creates a new HtmlProcessor, which generates HTML4 output and uses the
@@ -85,10 +97,9 @@ public class HtmlProcessor extends TableProcessor
    *
    * @param report the report that should be processed.
    * @throws ReportProcessingException if the report initialization failed
-   * @throws FunctionInitializeException if the table writer initialization failed.
    */
   public HtmlProcessor(final JFreeReport report)
-      throws ReportProcessingException, FunctionInitializeException
+      throws ReportProcessingException
   {
     super(report);
   }
@@ -100,10 +111,9 @@ public class HtmlProcessor extends TableProcessor
    * @param useXHTML  true, if XML output should be generated, false for HTML4 compatible output.
    *
    * @throws ReportProcessingException if the report initialization failed
-   * @throws FunctionInitializeException if the table writer initialization failed.
    */
   public HtmlProcessor(final JFreeReport report, final boolean useXHTML)
-      throws ReportProcessingException, FunctionInitializeException
+      throws ReportProcessingException
   {
     super(report);
     setGenerateXHTML(useXHTML);
@@ -116,7 +126,8 @@ public class HtmlProcessor extends TableProcessor
    */
   public boolean isGenerateXHTML()
   {
-    return getProperty(HtmlProducer.GENERATE_XHTML, "false").equals("true");
+    return getReport().getReportConfiguration().getConfigProperty
+            (getReportConfigurationPrefix() + "." + GENERATE_XHTML, "false").equals("true");
   }
 
   /**
@@ -127,7 +138,8 @@ public class HtmlProcessor extends TableProcessor
    */
   public void setGenerateXHTML(final boolean useXHTML)
   {
-    setProperty(HtmlProducer.GENERATE_XHTML, String.valueOf(useXHTML));
+    getReport().getReportConfiguration().setConfigProperty
+            (getReportConfigurationPrefix() + "." + GENERATE_XHTML, String.valueOf(useXHTML));
   }
 
   /**
@@ -152,28 +164,6 @@ public class HtmlProcessor extends TableProcessor
   }
 
   /**
-   * Creates a dummy TableProducer. The TableProducer is responsible to compute the layout.
-   *
-   * @return the created table producer, never null.
-   */
-  protected TableProducer createDummyProducer()
-  {
-    return new HtmlProducer
-        (new HtmlLayoutInfo(false, getReport().getDefaultPageFormat()), isStrictLayout());
-  }
-
-  /**
-   * Creates a TableProducer. The TableProducer is responsible to create the table.
-   *
-   * @param gridLayoutBounds the grid layout that contain the bounds from the pagination run.
-   * @return the created table producer, never null.
-   */
-  protected TableProducer createProducer(final TableLayoutInfo gridLayoutBounds)
-  {
-    return new HtmlProducer(getFilesystem(), (HtmlLayoutInfo) gridLayoutBounds);
-  }
-
-  /**
    * Gets the report configuration prefix for that processor. This prefix defines
    * how to map the property names into the global report configuration.
    *
@@ -182,5 +172,29 @@ public class HtmlProcessor extends TableProcessor
   protected String getReportConfigurationPrefix()
   {
     return CONFIGURATION_PREFIX;
+  }
+
+  /**
+   * Creates the LayoutProcessor for the current report export. This default
+   * implementation simply returns a LayoutCreator instance.
+   *
+   * @return a html layout creator
+   */
+  protected LayoutCreator createLayoutCreator ()
+  {
+    return new HtmlLayoutCreator(getReportConfigurationPrefix());
+  }
+
+  protected TableCreator createContentCreator ()
+  {
+    final HtmlLayoutCreator layoutCreator =
+            (HtmlLayoutCreator) getLayoutCreator();
+    return new HtmlTableCreator(getFilesystem(), isGenerateXHTML(),
+            layoutCreator.getStyleCollection(), layoutCreator.getSheetLayoutCollection());
+  }
+
+  protected MetaBandProducer createMetaBandProducer ()
+  {
+    return new HtmlMetaBandProducer(isGenerateXHTML());
   }
 }

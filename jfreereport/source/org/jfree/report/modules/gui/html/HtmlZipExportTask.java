@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlZipExportTask.java,v 1.6 2003/10/18 19:22:32 taqua Exp $
+ * $Id: HtmlZipExportTask.java,v 1.7 2003/11/07 18:33:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -84,10 +84,6 @@ public class HtmlZipExportTask extends ExportTask
     {
       throw new NullPointerException("File name is null.");
     }
-    if (dialog == null)
-    {
-      throw new NullPointerException("Progress dialog is null.");
-    }
     if (report == null)
     {
       throw new NullPointerException("Report is null.");
@@ -113,14 +109,20 @@ public class HtmlZipExportTask extends ExportTask
     {
       out = new BufferedOutputStream(new FileOutputStream(file));
       final HtmlProcessor target = new HtmlProcessor(report);
-      progressDialog.setModal(false);
-      progressDialog.setVisible(true);
-      target.addRepaginationListener(progressDialog);
+      if (progressDialog != null)
+      {
+        progressDialog.setModal(false);
+        progressDialog.setVisible(true);
+        target.addRepaginationListener(progressDialog);
+      }
       target.setFilesystem(new ZIPHtmlFilesystem(out, dataDirectory));
       target.processReport();
       out.close();
       out = null;
-      target.removeRepaginationListener(progressDialog);
+      if (progressDialog != null)
+      {
+        target.removeRepaginationListener(progressDialog);
+      }
       setTaskDone();
     }
     catch (ReportInterruptedException re)
@@ -164,7 +166,10 @@ public class HtmlZipExportTask extends ExportTask
         setTaskFailed(e);
       }
     }
-    progressDialog.setVisible(false);
+    if (progressDialog != null)
+    {
+      progressDialog.setVisible(false);
+    }
   }
 
   /**
@@ -173,6 +178,9 @@ public class HtmlZipExportTask extends ExportTask
   protected void dispose()
   {
     super.dispose();
-    progressDialog.dispose();
+    if (progressDialog != null)
+    {
+      progressDialog.dispose();
+    }
   }
 }

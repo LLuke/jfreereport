@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StreamHtmlFilesystem.java,v 1.3 2003/08/25 14:29:32 taqua Exp $
+ * $Id: StreamHtmlFilesystem.java,v 1.4 2003/11/21 14:48:17 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,12 @@ import java.io.OutputStream;
 import java.net.URL;
 
 import org.jfree.io.IOUtils;
-import org.jfree.report.ImageReference;
+import org.jfree.report.modules.output.table.html.ref.EmptyContentReference;
+import org.jfree.report.modules.output.table.html.ref.HtmlReference;
+import org.jfree.report.modules.output.table.html.ref.ImageReference;
+import org.jfree.report.modules.output.table.html.ref.InternalStyleSheetReference;
+import org.jfree.report.ImageContainer;
+import org.jfree.report.URLImageContainer;
 
 /**
  * The StreamHtmlFilesystem is an Implementation for streamed HTML output.
@@ -60,6 +65,7 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
 
   private final boolean allowFileSources;
   private final URL baseURL;
+
   /**
    * Creates a new StreamHtmlFilesystem for the given output stream.
    *
@@ -75,8 +81,11 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
    * which allows URLs to be located on the local filesystem.
    *
    * @param root the output stream for the main file.
+   * @param allowFiles true, if "file://" URLs should also be valid as local
+   * image.
+   * @param baseURL the base URL for all URLs in the output.
    */
-  public StreamHtmlFilesystem(final OutputStream root, boolean allowFiles,
+  public StreamHtmlFilesystem(final OutputStream root, final boolean allowFiles,
                               final URL baseURL)
   {
     if (root == null)
@@ -114,32 +123,35 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
    *
    * @throws IOException if there is an I/O problem.
    */
-  public HtmlReferenceData createImageReference(final ImageReference reference)
+
+  public HtmlReference createImageReference (final ImageContainer reference)
       throws IOException
   {
-    final URL src = reference.getSourceURL();
-    if (src == null)
+    if (reference instanceof URLImageContainer == false)
     {
-      return new EmptyContentHtmlReferenceData();
+      return new EmptyContentReference();
     }
     else
     {
-      if (src.getProtocol().equals("http") || src.getProtocol().equals("https")
-          || src.getProtocol().equals("ftp") ||
+      final URLImageContainer urlImageContainer = (URLImageContainer) reference;
+      final URL src = urlImageContainer.getSourceURL();
+      if (src.getProtocol().equals("http") ||
+              src.getProtocol().equals("https") ||
+              src.getProtocol().equals("ftp") ||
          (isAllowFileSources() && src.getProtocol().equals("file")))
       {
         if (baseURL != null)
         {
-          return new ImageReferenceData
+          return new ImageReference
               (IOUtils.getInstance().createRelativeURL(src, baseURL));
         }
         else
         {
-          return new ImageReferenceData(src.toExternalForm());
+          return new ImageReference(src.toExternalForm());
         }
       }
     }
-    return new EmptyContentHtmlReferenceData();
+    return new EmptyContentReference();
   }
 
   /**
@@ -150,10 +162,10 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
    *
    * @throws IOException if there is an I/O problem.
    */
-  public HtmlReferenceData createCSSReference(final String styleSheet)
+  public HtmlReference createCSSReference(final String styleSheet)
       throws IOException
   {
-    return new InternalCSSReferenceData(styleSheet);
+    return new InternalStyleSheetReference(styleSheet);
   }
 
   /**

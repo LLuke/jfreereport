@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.8 2003/10/22 14:44:34 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.9 2003/10/22 14:49:36 taqua Exp $
  *
  * Changes
  * -------
@@ -140,8 +140,7 @@ public class StraightToEverything
     try
     {
       out = new BufferedOutputStream(new FileOutputStream(new File(fileName)));
-      final PageFormat pf = report.getDefaultPageFormat();
-      final PDFOutputTarget target = new PDFOutputTarget(out, pf, true);
+      final PDFOutputTarget target = new PDFOutputTarget(out);
       target.configure(report.getReportConfiguration());
       target.open();
 
@@ -186,9 +185,9 @@ public class StraightToEverything
     final PageableReportProcessor pr = new PageableReportProcessor(report);
     final OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
     // cpi = 10, lpi = 6
-    final PrinterCommandSet pc = new PrinterCommandSet(fout, report.getDefaultPageFormat(), 10, 6);
+    final PrinterCommandSet pc = new PrinterCommandSet(fout, 10, 6);
     final PlainTextOutputTarget target =
-        new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
+        new PlainTextOutputTarget(pc);
     pr.setOutputTarget(target);
     target.open();
     pr.processReport();

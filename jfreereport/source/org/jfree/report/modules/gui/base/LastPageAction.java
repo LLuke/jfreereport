@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   Thomas Morgner;
  *
- * $Id: LastPageAction.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: LastPageAction.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
  *
  * 29-May-2002 : Initial version
  * 05-Jun-2002 : Documentation update.
@@ -64,10 +64,12 @@ public abstract class LastPageAction extends AbstractActionDowngrade
     putValue(NAME, resources.getString("action.lastpage.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.lastpage.description"));
     putValue(ActionDowngrade.MNEMONIC_KEY,
-        resources.getObject("action.lastpage.mnemonic"));
+        ResourceBundleUtils.createMnemonic(resources.getString("action.lastpage.mnemonic")));
     putValue(ActionDowngrade.ACCELERATOR_KEY,
-        resources.getObject("action.lastpage.accelerator"));
-    putValue(SMALL_ICON, resources.getObject("action.lastpage.small-icon"));
-    putValue("ICON24", resources.getObject("action.lastpage.icon"));
+        ResourceBundleUtils.createMenuKeystroke(resources.getString("action.lastpage.accelerator")));
+    putValue(SMALL_ICON,
+        ResourceBundleUtils.getIcon(resources.getString("action.lastpage.small-icon")));
+    putValue("ICON24",
+        ResourceBundleUtils.getIcon(resources.getString("action.lastpage.icon")));
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: HtmlExportResources_nl.java,v 1.5 2003/09/06 18:09:17 taqua Exp $
+ * $Id: HtmlExportResources_nl.java,v 1.6 2003/09/08 18:39:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -140,6 +140,7 @@ public class HtmlExportResources_nl extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{HtmlExportResources.class.getName(), "nl"});
+    new HtmlExportResources_nl().generateResourceProperties("dutch");
+    System.exit(0);
   }
 }

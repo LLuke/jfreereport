@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: HSSFFontWrapper.java,v 1.3 2003/08/25 14:29:32 taqua Exp $
+ * $Id: HSSFFontWrapper.java,v 1.4 2003/08/31 19:27:58 taqua Exp $
  *
  * Changes
  * -------
@@ -38,8 +38,7 @@ package org.jfree.report.modules.output.table.xls;
 
 import java.awt.Color;
 
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.jfree.report.modules.output.table.xls.util.ExcelColorSupport;
 import org.jfree.report.style.FontDefinition;
 
 /**
@@ -72,9 +71,6 @@ public final class HSSFFontWrapper
 
   /** the font's strikethrough flag. */
   private final boolean strikethrough;
-
-  /** the excel font. */
-  private HSSFFont font;
 
   /** the cached hashcode. */
   private int hashCode;
@@ -114,71 +110,33 @@ public final class HSSFFontWrapper
       fontName = fName;
     }
 
-    colorIndex = ExcelToolLibrary.getNearestColor(color);
+    colorIndex = ExcelColorSupport.getNearestColor(color);
     fontHeight = (short) (font.getFontSize());
     bold = font.isBold();
     italic = font.isItalic();
     underline = font.isUnderline();
     strikethrough = font.isStrikeThrough();
-    this.font = null;
   }
-
-  /**
-   * Creates a HSSFFontWrapper for the excel font.
-   *
-   * @param font the font.
-   */
-  public HSSFFontWrapper(final HSSFFont font)
-  {
-    if (font == null)
-    {
-      throw new NullPointerException("Font is null");
-    }
-    fontName = font.getFontName();
-    colorIndex = font.getColor();
-    fontHeight = font.getFontHeightInPoints();
-    italic = font.getItalic();
-    bold = (font.getBoldweight() == HSSFFont.BOLDWEIGHT_BOLD);
-    underline = (font.getUnderline() != HSSFFont.U_NONE);
-    strikethrough = font.getStrikeout();
-    this.font = font;
-  }
-
-  /**
-   * Returns the excel font stored in this wrapper.
-   *
-   * @param workbook the workbook, that will be used to create the font.
-   * @return the created font.
-   */
-  public HSSFFont getFont(final HSSFWorkbook workbook)
-  {
-    if (font == null)
-    {
-      font = workbook.createFont();
-      if (bold)
-      {
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-      }
-      else
-      {
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_NORMAL);
-      }
-      font.setColor(colorIndex);
-      font.setFontName(fontName);
-      font.setFontHeightInPoints((short) fontHeight);
-      font.setItalic(italic);
-      font.setStrikeout(strikethrough);
-      if (underline)
-      {
-        font.setUnderline(HSSFFont.U_SINGLE);
-      }
-      else
-      {
-        font.setUnderline(HSSFFont.U_NONE);
-      }
-    }
-    return font;
-  }
+//
+//  /**
+//   * Creates a HSSFFontWrapper for the excel font.
+//   *
+//   * @param font the font.
+//   */
+//  public HSSFFontWrapper(final HSSFFont font)
+//  {
+//    if (font == null)
+//    {
+//      throw new NullPointerException("Font is null");
+//    }
+//    fontName = font.getFontName();
+//    colorIndex = font.getColor();
+//    fontHeight = font.getFontHeightInPoints();
+//    italic = font.getItalic();
+//    bold = (font.getBoldweight() == HSSFFont.BOLDWEIGHT_BOLD);
+//    underline = (font.getUnderline() != HSSFFont.U_NONE);
+//    strikethrough = font.getStrikeout();
+//  }
 
   /**
    * Indicates whether some other object is "equal to" this one.
@@ -251,5 +209,45 @@ public final class HSSFFontWrapper
       hashCode = result;
     }
     return hashCode;
+  }
+
+  public boolean isBold ()
+  {
+    return bold;
+  }
+
+  public short getColorIndex ()
+  {
+    return colorIndex;
+  }
+
+  public int getFontHeight ()
+  {
+    return fontHeight;
+  }
+
+  public String getFontName ()
+  {
+    return fontName;
+  }
+
+  public int getHashCode ()
+  {
+    return hashCode;
+  }
+
+  public boolean isItalic ()
+  {
+    return italic;
+  }
+
+  public boolean isStrikethrough ()
+  {
+    return strikethrough;
+  }
+
+  public boolean isUnderline ()
+  {
+    return underline;
   }
 }

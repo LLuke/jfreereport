@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.11 2003/12/06 17:15:20 taqua Exp $
+ * $Id: ReportPane.java,v 1.12 2003/12/21 20:51:42 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -70,11 +70,9 @@ import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.base.ReportStateList;
-import org.jfree.report.modules.output.pageable.base.output.DummyOutputTarget;
 import org.jfree.report.modules.output.pageable.graphics.G2OutputTarget;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.util.Log;
-import org.jfree.report.util.PageFormatFactory;
 
 /**
  * A panel used to display one page of a report. Works in tandem with a ReportPreviewFrame
@@ -225,6 +223,18 @@ public class ReportPane extends JComponent
   }
 
   /**
+   * Returns true if this component is completely opaque. This component
+   * is not opaque while the report is repaginated.
+   *
+   * @return always false, as this component may refuse to draw anything
+   * if the report is currently being paginated.
+   */
+  public boolean isOpaque()
+  {
+    return false;
+  }
+
+  /**
    * Returns whether the processor should check the threads interrupted state.
    * If this is set to true and the thread was interrupted, then the report processing
    * is aborted.
@@ -278,17 +288,18 @@ public class ReportPane extends JComponent
    */
   protected void setPageStateList(final ReportStateList list)
   {
+    final ReportStateList oldList;
     synchronized (paginateLock)
     {
-      final ReportStateList oldList = pageStateList;
+      oldList = pageStateList;
       if (oldList != null)
       {
         oldList.clear();
       }
 
       this.pageStateList = list;
-      firePropertyChange(PAGINATED_PROPERTY, oldList == null, list == null);
     }
+    firePropertyChange(PAGINATED_PROPERTY, oldList == null, list == null);
   }
 
   /**
@@ -298,7 +309,7 @@ public class ReportPane extends JComponent
    */
   public PageFormat getPageFormat()
   {
-    return report.getDefaultPageFormat();
+    return new PageFormat();//report.getDefaultPageFormat();
   }
 
   /**
@@ -334,36 +345,6 @@ public class ReportPane extends JComponent
   protected boolean isPaginated()
   {
     return (pageStateList != null);
-  }
-
-  /**
-   * Sets the page format.
-   *
-   * @param pageFormat The new page format;
-   * @deprecated changing the page format should no longer be done this
-   * way, update the report definition instead and create a new ReportPane
-   * for that changed report definition. This method will be removed with
-   * version 0.8.5
-   */
-  public void setPageFormat(final PageFormat pageFormat)
-  {
-    if (pageFormat == null)
-    {
-      throw new NullPointerException("PageFormat must not be null");
-    }
-
-    if (PageFormatFactory.isEqual(pageFormat, this.report.getDefaultPageFormat()))
-    {
-      // do nothing if the pageformat is equal, no pagination needed
-      return;
-    }
-    this.report.setDefaultPageFormat(pageFormat);
-    setPageStateList(null);
-    graphCache = null;
-
-    final int w = (int) ((pageFormat.getWidth() + PAPERBORDER_PIXEL) * zoomFactor);
-    final int h = (int) ((pageFormat.getHeight() + PAPERBORDER_PIXEL) * zoomFactor);
-    super.setSize(w, h);
   }
 
   /**
@@ -527,6 +508,8 @@ public class ReportPane extends JComponent
   {
     if (paginateLock.isPaginating())
     {
+      // we do nothing if the report is currently paginated.
+      // try again once the pagination is complete.
       return;
     }
     try
@@ -671,10 +654,6 @@ public class ReportPane extends JComponent
   private void performGeneratePage(final Graphics2D g2)
       throws OutputTargetException
   {
-    final G2OutputTarget target = new G2OutputTarget(g2, getPageFormat());
-    target.open();
-    getProcessor().setOutputTarget(target);
-
     try
     {
       if (!isPaginated())
@@ -687,28 +666,33 @@ public class ReportPane extends JComponent
       Log.error("Repaginate failed: ", rpe);
       setError(rpe);
     }
-
-    final int pageNumber = getPageNumber();
-    if (pageNumber > 0)
+    synchronized (paginateLock)
     {
-      final ReportState state = getPageStateList().get(pageNumber - 1);
-      try
-      {
-        getProcessor().processPage(state, target);
-      }
-      catch (ReportProcessingException rpe)
-      {
-        Log.error("Repaginate failed: ", rpe);
-        setError(rpe);
-      }
-    }
-    else
-    {
-      Log.error("PageNumber is invalid after repaginating: " + pageNumber);
-    }
+      final G2OutputTarget target = new G2OutputTarget(g2);
+      target.open();
+      getProcessor().setOutputTarget(target);
 
-    getProcessor().setOutputTarget(null);
-    target.close();
+      final int pageNumber = getPageNumber();
+      if (pageNumber > 0)
+      {
+        final ReportState state = getPageStateList().get(pageNumber - 1);
+        try
+        {
+          getProcessor().processPage(state);
+        }
+        catch (ReportProcessingException rpe)
+        {
+          Log.error("Repaginate failed: ", rpe);
+          setError(rpe);
+        }
+      }
+      else
+      {
+        Log.error("PageNumber is invalid after repaginating: " + pageNumber);
+      }
+      target.close();
+      getProcessor().setOutputTarget(null);
+    }
   }
 
   /**
@@ -727,7 +711,7 @@ public class ReportPane extends JComponent
 
     try
     {
-      final G2OutputTarget target = new G2OutputTarget(g2, pf);
+      final G2OutputTarget target = new G2OutputTarget(g2);
       getProcessor().setOutputTarget(target);
       target.open();
       if (!isPaginated())
@@ -741,7 +725,7 @@ public class ReportPane extends JComponent
       }
 
       final ReportState state = getPageStateList().get(pageIndex);
-      getProcessor().processPage(state, target);
+      getProcessor().processPage(state);
       getProcessor().setOutputTarget(null);
       target.close();
     }
@@ -786,13 +770,12 @@ public class ReportPane extends JComponent
     }
     if (isPaginating() || isPrinting())
     {
-      throw new IllegalStateException("Already paginating");
+      throw new IllegalStateException("Already paginating or printing.");
     }
 
     synchronized (paginateLock)
     {
       setPageStateList(null);
-      //paginateLock.setPaginateState(PAGINATE_PAGINATING);
       setPaginating(true);
 
       boolean addedOutputTarget = false;
@@ -800,8 +783,7 @@ public class ReportPane extends JComponent
       {
         try
         {
-          final OutputTarget target = new DummyOutputTarget(
-              new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), getPageFormat()));
+          final OutputTarget target = new G2OutputTarget(G2OutputTarget.createEmptyGraphics());
           target.open();
           getProcessor().setOutputTarget(target);
         }
@@ -835,7 +817,6 @@ public class ReportPane extends JComponent
         {
           getProcessor().setOutputTarget(null);
         }
-        //paginateLock.setPaginateState(PAGINATE_IDLE);
         setPaginating(false);
       }
     }
@@ -844,6 +825,10 @@ public class ReportPane extends JComponent
   public void setPrinting(boolean printing)
   {
     boolean oldPrinting = isPrinting();
+    if (isPaginating())
+    {
+      throw new IllegalStateException("Is currently paginating.");
+    }
     synchronized (paginateLock)
     {
       if (printing)

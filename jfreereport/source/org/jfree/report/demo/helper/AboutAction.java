@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: AboutAction.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: AboutAction.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import java.util.ResourceBundle;
 
 import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
 import org.jfree.report.modules.gui.base.components.ActionDowngrade;
+import org.jfree.report.modules.gui.base.ResourceBundleUtils;
 
 /**
  * The About action is used to show some information about the demo programm of JFreeReport.
@@ -63,8 +64,10 @@ public abstract class AboutAction extends AbstractActionDowngrade
     this.putValue(NAME, resources.getString("action.about.name"));
     this.putValue(SHORT_DESCRIPTION, resources.getString("action.about.description"));
     this.putValue(ActionDowngrade.MNEMONIC_KEY,
-        resources.getObject("action.about.mnemonic"));
-    this.putValue(SMALL_ICON, resources.getObject("action.about.small-icon"));
-    this.putValue("ICON24", resources.getObject("action.about.icon"));
+        ResourceBundleUtils.createMnemonic(resources.getString("action.about.mnemonic")));
+    this.putValue(SMALL_ICON,
+        ResourceBundleUtils.getIcon(resources.getString("action.about.small-icon")));
+    this.putValue("ICON24",
+        ResourceBundleUtils.getIcon(resources.getString("action.about.icon")));
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContent.java,v 1.4 2003/09/09 02:29:00 taqua Exp $
+ * $Id: ImageContent.java,v 1.5 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,7 @@ package org.jfree.report.content;
 
 import java.awt.geom.Rectangle2D;
 
-import org.jfree.report.ImageReference;
+import org.jfree.report.ImageContainer;
 
 /**
  * Image content.
@@ -50,7 +50,7 @@ import org.jfree.report.ImageReference;
 public strictfp class ImageContent implements Content
 {
   /** The image reference. */
-  private final ImageReference reference;
+  private final ImageContainer reference;
 
   /** The bounds. */
   private final Rectangle2D bounds;
@@ -61,8 +61,16 @@ public strictfp class ImageContent implements Content
    * @param ref  the image reference.
    * @param bounds  the content bounds.
    */
-  public ImageContent(final ImageReference ref, final Rectangle2D bounds)
+  public ImageContent(final ImageContainer ref, final Rectangle2D bounds)
   {
+    if (ref == null)
+    {
+      throw new NullPointerException("Reference is null.");
+    }
+    if (bounds == null)
+    {
+      throw new NullPointerException("Bounds are null.");
+    }
     this.reference = ref;
     this.bounds = bounds;
   }
@@ -125,21 +133,15 @@ public strictfp class ImageContent implements Content
     }
 
     final Rectangle2D myBounds = bounds.createIntersection(this.bounds);
-    try
-    {
-      final ImageReference ref = (ImageReference) reference.clone();
-      final float x = (float) (bounds.getX() - this.bounds.getX());
-      final float y = (float) (bounds.getY() - this.bounds.getY());
-      final float w = (float) myBounds.getWidth();
-      final float h = (float) myBounds.getHeight();
-      final Rectangle2D imageArea = new Rectangle2D.Float(x, y, w, h);
-      ref.setBoundsScaled(imageArea.createIntersection(ref.getBoundsScaled()));
-      return new ImageContent(ref, myBounds);
-    }
-    catch (CloneNotSupportedException cne)
-    {
-      return null;
-    }
+//      final ImageReference ref = (ImageReference) reference.clone();
+    final float x = (float) (bounds.getX() - this.bounds.getX());
+    final float y = (float) (bounds.getY() - this.bounds.getY());
+    final float w = (float) myBounds.getWidth();
+    final float h = (float) myBounds.getHeight();
+    final Rectangle2D imageArea = new Rectangle2D.Float(x, y, w, h);
+    final ImageContainer ref = reference.getPartialInstance
+            (imageArea.createIntersection(reference.getBoundsScaled()));
+    return new ImageContent(ref, myBounds);
   }
 
   /**
@@ -147,7 +149,7 @@ public strictfp class ImageContent implements Content
    *
    * @return the image.
    */
-  public ImageReference getContent()
+  public ImageContainer getContent()
   {
     return reference;
   }

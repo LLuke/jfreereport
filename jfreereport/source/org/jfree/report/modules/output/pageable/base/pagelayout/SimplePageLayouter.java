@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.14 2003/12/06 16:47:25 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.15 2003/12/21 20:51:42 taqua Exp $
  *
  * Changes
  * -------
@@ -52,14 +52,15 @@ import org.jfree.report.Band;
 import org.jfree.report.Group;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.event.PrepareEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.layout.BandLayoutManagerUtil;
+import org.jfree.report.modules.output.meta.MetaBandProducer;
+import org.jfree.report.modules.output.meta.MetaBand;
 import org.jfree.report.modules.output.pageable.base.LogicalPage;
-import org.jfree.report.modules.output.pageable.base.OutputTargetException;
-import org.jfree.report.modules.output.pageable.base.Spool;
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutDelegate;
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker;
 import org.jfree.report.states.ReportState;
@@ -162,9 +163,6 @@ public strictfp class SimplePageLayouter extends PageLayouter
   /** The delegate which is used to perform the layouting. */
   private SimplePageLayoutDelegate delegate;
 
-  /** The spool. */
-  private Spool spooledBand;
-
   /**
    * Creates a new page layouter.
    */
@@ -258,12 +256,12 @@ public strictfp class SimplePageLayouter extends PageLayouter
 
   /**
    * Checks, whether the current page is empty. 
-   * 
+   * todo reimplement it with the new metabands
    * @return true, if the current page is empty, false otherwise.
    */
   public boolean isPageEmpty()
   {
-    return getLogicalPage().isEmpty();
+    return false;//getLogicalPage().isEmpty();
   }
 
   /**
@@ -642,7 +640,8 @@ public strictfp class SimplePageLayouter extends PageLayouter
     // do not influence the reporting state
 
     // if there is nothing printed, then ignore everything ...
-    final boolean spool = getLogicalPage().isEmpty();
+    // the spooling is now slightly different ... 
+    final boolean spool = true;
     final Rectangle2D bounds = doLayout(b, true);
     bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(),
         bounds.getWidth(), bounds.getHeight());
@@ -663,9 +662,8 @@ public strictfp class SimplePageLayouter extends PageLayouter
     final float width = getLogicalPage().getWidth();
     final float height = getCursor().getPageBottomReserved() - getCursor().getPageTop();
     final Rectangle2D bounds = BandLayoutManagerUtil.doLayout(band,
-        getLogicalPage().getOutputTarget(),
-        width,
-        height);
+        getLogicalPage().getLayoutSupport(), width,height);
+
     if (fireEvent == true)
     {
       final ReportEvent event = getCurrentEvent();
@@ -686,7 +684,6 @@ public strictfp class SimplePageLayouter extends PageLayouter
    * or to cache the printing operation for later usage.
    * @return true, if the band was printed, and false if the printing is delayed
    * until a new page gets started.
-   * @see LogicalPage#spoolBand
    *
    * @throws ReportProcessingException if the printing caused an detectable error
    * while printing the band
@@ -701,38 +698,11 @@ public strictfp class SimplePageLayouter extends PageLayouter
         // handle the end of the page
         if (isFinishingPage())
         {
-          if (spool)
+          final MetaBandProducer producer = new MetaBandProducer(getLogicalPage().getLayoutSupport());
+          final MetaBand rootBand = producer.createBand(band, spool);
+          if (rootBand != null)
           {
-            final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
-            if (spooledBand == null)
-            {
-              spooledBand = newSpool;
-            }
-            else
-            {
-              spooledBand.merge(newSpool);
-            }
-          }
-          else
-          {
-            final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
-            if (newSpool.isEmpty() == false)
-            {
-              if (spooledBand != null)
-              {
-                getLogicalPage().replaySpool(spooledBand);
-                spooledBand = null;
-              }
-  /*
-              PhysicalOperation [] pop = newSpool.getOperations();
-              Log.debug ("--->" + band.getClass());
-              for (int i = 0; i < pop.length; i++)
-              {
-                Log.debug (pop[i]);
-              }
-  */
-              getLogicalPage().replaySpool(newSpool);
-            }
+            addRootMetaBand(rootBand);
           }
           cursor.advance(height);
           return true;
@@ -740,12 +710,6 @@ public strictfp class SimplePageLayouter extends PageLayouter
         // handle a automatic pagebreak in case there is not enough space here ...
         else if ((watermark == false) && (isPageEnded() == false) && (isSpaceFor(height) == false))
         {
-          if ((spooledBand != null) && (spool == false))
-          {
-            getLogicalPage().replaySpool(spooledBand);
-            spooledBand = null;
-          }
-
           createSaveState(band);
           endPage(ENDPAGE_FORCED);
           return false;
@@ -753,62 +717,32 @@ public strictfp class SimplePageLayouter extends PageLayouter
         else if (isPageEnded())
         {
           // page has ended before, that band should be printed on the next page
+          // todo make sure that this can never happen ..
           createSaveState(band);
           return false;
         }
         else
         {
-          if (spool)
+          final MetaBandProducer producer = new MetaBandProducer(getLogicalPage().getLayoutSupport());
+          final MetaBand metaBand = producer.createBand(band, spool);
+          if (metaBand != null)
           {
-            final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
-            if (spooledBand == null)
-            {
-              spooledBand = newSpool;
-            }
-            else
-            {
-              spooledBand.merge(newSpool);
-            }
-
-            cursor.advance(height);
-            return true;
+            addRootMetaBand(metaBand);
           }
-          else
+          cursor.advance(height);
+          if (band.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER) == true)
           {
-            final Spool newSpool = getLogicalPage().spoolBand(bounds, band);
-            if (newSpool.isEmpty() == false)
-            {
-              if (spooledBand != null)
-              {
-                getLogicalPage().replaySpool(spooledBand);
-                spooledBand = null;
-              }
-  /*
-              PhysicalOperation [] pop = newSpool.getOperations();
-              Log.debug ("--->" + band.getClass());
-              for (int i = 0; i < pop.length; i++)
-              {
-                Log.debug (pop[i]);
-              }
-  */
-              getLogicalPage().replaySpool(newSpool);
-            }
-
-            cursor.advance(height);
-            if (band.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER) == true)
-            {
-              createSaveState(null);
-              endPage(ENDPAGE_REQUESTED);
-            }
-            return true;
+            createSaveState(null);
+            endPage(ENDPAGE_REQUESTED);
           }
+          return true;
         }
       }
       catch (ReportProcessingException rpe)
       {
         throw rpe;
       }
-      catch (OutputTargetException ote)
+      catch (ContentCreationException ote)
       {
         throw new FunctionProcessingException("Failed to print", ote);
       }
@@ -1020,14 +954,15 @@ public strictfp class SimplePageLayouter extends PageLayouter
    */
   protected boolean endPage(final boolean force) throws ReportProcessingException
   {
-    if (getLogicalPage().isEmpty() == false || force)
+    if (isGeneratedPageEmpty() == false || force)
     {
-      if (spooledBand != null)
-      {
-        // getLogicalPage().replaySpool(spooledBand);
-        // Log.warn ("Spool contained data, this data is lost now ...!");
-        spooledBand = null;
-      }
+// Todo Spooling ...
+//      if (spooledBand != null)
+//      {
+//        // getLogicalPage().replaySpool(spooledBand);
+//        // Log.warn ("Spool contained data, this data is lost now ...!");
+//        spooledBand = null;
+//      }
       super.endPage();
       return true;
     }
@@ -1069,7 +1004,6 @@ public strictfp class SimplePageLayouter extends PageLayouter
   public Expression getInstance()
   {
     final SimplePageLayouter sl = (SimplePageLayouter) super.getInstance();
-    sl.spooledBand = null;
     sl.delegate = new SimplePageLayoutDelegate(sl);
     sl.cursor = null;
     sl.isLastPageBreak = false;
@@ -1087,10 +1021,11 @@ public strictfp class SimplePageLayouter extends PageLayouter
   public Object clone() throws CloneNotSupportedException
   {
     final SimplePageLayouter sl = (SimplePageLayouter) super.clone();
-    if (spooledBand != null)
-    {
-      sl.spooledBand = (Spool) spooledBand.clone();
-    }
+// Todo spooling     
+//    if (spooledBand != null)
+//    {
+//      sl.spooledBand = (Spool) spooledBand.clone();
+//    }
     sl.delegate = (SimplePageLayoutDelegate) delegate.clone();
     sl.delegate.setWorker(sl);
     return sl;
@@ -1127,8 +1062,9 @@ public strictfp class SimplePageLayouter extends PageLayouter
   {
     final LogicalPage logPage = getLogicalPage();
     final Rectangle2D bounds  = BandLayoutManagerUtil.doFixedLayout
-        (watermark, logPage.getOutputTarget(), logPage.getWidth(), logPage.getHeight());
+        (watermark, logPage.getLayoutSupport(), logPage.getWidth(), logPage.getHeight());
     final boolean retval = doPrint(bounds, watermark, true, true);
     return retval;
   }
+
 }

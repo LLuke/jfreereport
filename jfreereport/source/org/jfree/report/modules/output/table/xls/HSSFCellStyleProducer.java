@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HSSFCellStyleProducer.java,v 1.4 2003/08/24 15:06:10 taqua Exp $
+ * $Id: HSSFCellStyleProducer.java,v 1.5 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,6 +38,7 @@
 
 package org.jfree.report.modules.output.table.xls;
 
+import java.awt.Color;
 import java.util.HashMap;
 
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -45,7 +46,11 @@ import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.jfree.report.ElementAlignment;
+import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.TableCellBackground;
+import org.jfree.report.modules.output.table.xls.util.ExcelColorSupport;
+import org.jfree.report.modules.output.table.xls.util.ExcelFontFactory;
+import org.jfree.report.style.ElementStyleSheet;
 
 /**
  * The cellstyle producer converts the JFreeReport content into excel
@@ -107,21 +112,47 @@ public class HSSFCellStyleProducer
     return emptyCellStyle;
   }
 
+  private ExcelCellStyle createCachedStyle
+          (final MetaElement element, final TableCellBackground bg)
+  {
+
+    if (element != null)
+    {
+      final Color textColor = (Color) element.getProperty(ElementStyleSheet.PAINT);
+      final HSSFFontWrapper fontDefinition =
+              new HSSFFontWrapper(element.getFontDefinitionProperty(), textColor);
+      final ElementAlignment horizontal =
+              (ElementAlignment) element.getProperty(ElementStyleSheet.ALIGNMENT);
+      final ElementAlignment vertical =
+              (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT);
+      final String dataStyle =
+              (String) element.getProperty(ExcelProcessor.DATA_FORMAT_STRING);
+      final boolean wrapText =
+              element.getProperty(ExcelProcessor.WRAP_TEXT, "true").equals("true");
+
+      final ExcelCellStyle style = new ExcelCellStyle
+              (fontDefinition, textColor, horizontal, vertical,
+                      dataStyle, wrapText, bg);
+      return style;
+    }
+    return new ExcelCellStyle(bg);
+  }
+
   /**
    * Creates a HSSFCellStyle based on the given ExcelDataCellStyle.
    * If a similiar cell style was previously generated, then reuse that
    * cached result.
    *
-   * @param style the excel style that was used to collect the foreground cellstyle information.
+   * @param element
    * @param bg the background style for the table cell.
    * @return the generated or cached HSSFCellStyle.
    */
-  public HSSFCellStyle createCellStyle(final ExcelDataCellStyle style, final TableCellBackground bg)
+  public HSSFCellStyle createCellStyle(final MetaElement element, final TableCellBackground bg)
   {
-    final ExcelStyleCarrier carrier = new ExcelStyleCarrier(style, bg);
-    if (styleCache.containsKey(carrier))
+    final ExcelCellStyle styleKey = createCachedStyle(element, bg);
+    if (styleCache.containsKey(styleKey))
     {
-      return (HSSFCellStyle) styleCache.get(carrier);
+      return (HSSFCellStyle) styleCache.get (styleKey);
     }
 
     final HSSFCellStyle hssfCellStyle = workbook.createCellStyle();
@@ -129,44 +160,42 @@ public class HSSFCellStyleProducer
     hssfCellStyle.setFillForegroundColor(WHITE_INDEX);
     hssfCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
 
-    if (style != null)
+    if (element != null)
     {
-      hssfCellStyle.setAlignment(convertAlignment(style.getHorizontalAlignment()));
-      hssfCellStyle.setVerticalAlignment(convertAlignment(style.getVerticalAlignment()));
-      hssfCellStyle.setFont(fontFactory.getExcelFont(style.getFontDefinition(),
-          style.getTextColor()));
-      hssfCellStyle.setDataFormat(dataFormat.getFormat(style.getDataStyle()));
+      hssfCellStyle.setAlignment(convertAlignment(styleKey.getHorizontalAlignment()));
+      hssfCellStyle.setVerticalAlignment(convertAlignment(styleKey.getVerticalAlignment()));
+      hssfCellStyle.setFont(fontFactory.getExcelFont(styleKey.getFontDefinition()));
+      hssfCellStyle.setDataFormat(dataFormat.getFormat(styleKey.getDataStyle()));
     }
-
     if (bg != null)
     {
       if (bg.getColorBottom() != null)
       {
         hssfCellStyle.setBorderBottom(translateStroke(bg.getBorderSizeBottom()));
-        hssfCellStyle.setBottomBorderColor(ExcelToolLibrary.getNearestColor(bg.getColorBottom()));
+        hssfCellStyle.setBottomBorderColor(ExcelColorSupport.getNearestColor(bg.getColorBottom()));
       }
       if (bg.getColorTop() != null)
       {
         hssfCellStyle.setBorderTop(translateStroke(bg.getBorderSizeTop()));
-        hssfCellStyle.setTopBorderColor(ExcelToolLibrary.getNearestColor(bg.getColorTop()));
+        hssfCellStyle.setTopBorderColor(ExcelColorSupport.getNearestColor(bg.getColorTop()));
       }
       if (bg.getColorLeft() != null)
       {
         hssfCellStyle.setBorderLeft(translateStroke(bg.getBorderSizeLeft()));
-        hssfCellStyle.setLeftBorderColor(ExcelToolLibrary.getNearestColor(bg.getColorLeft()));
+        hssfCellStyle.setLeftBorderColor(ExcelColorSupport.getNearestColor(bg.getColorLeft()));
       }
       if (bg.getColorRight() != null)
       {
         hssfCellStyle.setBorderRight(translateStroke(bg.getBorderSizeRight()));
-        hssfCellStyle.setRightBorderColor(ExcelToolLibrary.getNearestColor(bg.getColorRight()));
+        hssfCellStyle.setRightBorderColor(ExcelColorSupport.getNearestColor(bg.getColorRight()));
       }
       if (bg.getColor() != null)
       {
-        hssfCellStyle.setFillForegroundColor(ExcelToolLibrary.getNearestColor(bg.getColor()));
+        hssfCellStyle.setFillForegroundColor(ExcelColorSupport.getNearestColor(bg.getColor()));
       }
     }
 
-    styleCache.put(carrier, hssfCellStyle);
+    styleCache.put(styleKey, hssfCellStyle);
     return hssfCellStyle;
   }
 
@@ -177,7 +206,7 @@ public class HSSFCellStyleProducer
    * @return the HSSFCellStyle-Alignment.
    * @throws IllegalArgumentException if an Unknown JFreeReport alignment is given.
    */
-  protected short convertAlignment(final ElementAlignment e)
+  private short convertAlignment(final ElementAlignment e)
   {
     if (e == ElementAlignment.LEFT)
     {
@@ -214,7 +243,7 @@ public class HSSFCellStyleProducer
    * @param width the AWT-Stroke-Width.
    * @return the translated excel border width.
    */
-  protected short translateStroke(final float width)
+  private short translateStroke(final float width)
   {
     if (width == 0)
     {

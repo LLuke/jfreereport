@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: InItemGroupState.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: InItemGroupState.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -98,4 +98,14 @@ public final class InItemGroupState extends ReportState
       return this;
     }
   }
+
+  /**
+   * Advances the active data row to the next line.
+   */
+  private void advanceItem()
+  {
+    setCurrentItem(getCurrentDataItem() + 1);
+    getDataRowBackend().setCurrentRow(getCurrentDisplayItem());
+  }
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: XLSExportResources_nl.java,v 1.6 2003/09/08 18:39:34 taqua Exp $
+ * $Id: XLSExportResources_nl.java,v 1.7 2003/09/12 18:46:18 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -112,6 +112,7 @@ public class XLSExportResources_nl extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{XLSExportResources.class.getName(), "nl"});
+    new XLSExportResources_nl().generateResourceProperties("dutch");
+    System.exit(0);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: CSVExportResources_sv.java,v 1.5 2003/08/31 19:27:57 taqua Exp $
+ * $Id: CSVExportResources_sv.java,v 1.6 2003/09/08 18:39:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -121,7 +121,8 @@ public class CSVExportResources_sv extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{CSVExportResources.class.getName(), "sv"});
+    new CSVExportResources_sv().generateResourceProperties("swedish");
+    System.exit(0);
   }
 
 }

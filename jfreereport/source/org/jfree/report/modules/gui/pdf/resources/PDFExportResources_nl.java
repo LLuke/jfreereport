@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: PDFExportResources_nl.java,v 1.6 2003/09/06 18:09:17 taqua Exp $
+ * $Id: PDFExportResources_nl.java,v 1.7 2003/09/08 18:39:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -141,6 +141,7 @@ public class PDFExportResources_nl extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{PDFExportResources.class.getName(), "nl"});
+    new PDFExportResources_nl().generateResourceProperties("dutch");
+    System.exit(0);
   }
 }

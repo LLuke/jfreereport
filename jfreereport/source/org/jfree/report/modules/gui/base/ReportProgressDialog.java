@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProgressDialog.java,v 1.4 2003/11/01 19:52:27 taqua Exp $
+ * $Id: ReportProgressDialog.java,v 1.5 2003/11/07 18:33:51 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,11 +51,11 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
-import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 
 /**
  * A progress monitor dialog component that visualizes the report processing
@@ -71,6 +71,37 @@ import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 public class ReportProgressDialog extends JDialog
     implements RepaginationListener
 {
+  private class ScreenUpdateRunnable implements Runnable
+  {
+    private int pass;
+    private int page;
+    private boolean prepare;
+    private int maxRow;
+    private int currentRow;
+
+    public ScreenUpdateRunnable(final int currentRow, final int maxRow,
+                                final int page, final int pass, final boolean prepare)
+    {
+      this.currentRow = currentRow;
+      this.maxRow = maxRow;
+      this.page = page;
+      this.pass = pass;
+      this.prepare = prepare;
+    }
+
+    public void run ()
+    {
+      updatePageMessage(page);
+      updatePassMessage(pass, prepare);
+      updateRowsMessage(currentRow, maxRow);
+      final boolean maxRowChanged = lastMaxRow != maxRow;
+      if (maxRowChanged)
+      {
+        progressBar.setMaximum(maxRow);
+      }
+      progressBar.setValue(currentRow);
+    }
+  }
   /** A label that carries the global message that describes the current task. */
   private JLabel messageCarrier;
   /** A label containing the report processing pass count. */
@@ -106,8 +137,8 @@ public class ReportProgressDialog extends JDialog
   private final ResourceBundle resources;
 
   /** The base resource class. */
-  public static final String BASE_RESOURCE_CLASS =
-      JFreeReportResources.class.getName();
+  public static final String RESOURCES_BASE_NAME =
+      "org.jfree.report.modules.gui.base.resources.jfreereport-resources";
 
   /**
    * Creates a non-modal dialog without a title and with the
@@ -118,7 +149,7 @@ public class ReportProgressDialog extends JDialog
   public ReportProgressDialog(final Dialog dialog)
   {
     super (dialog);
-    resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    resources = ResourceBundle.getBundle(RESOURCES_BASE_NAME);
     initConstructor();
   }
 
@@ -131,7 +162,7 @@ public class ReportProgressDialog extends JDialog
   public ReportProgressDialog(final Frame frame)
   {
     super (frame);
-    resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    resources = ResourceBundle.getBundle(RESOURCES_BASE_NAME);
     initConstructor();
   }
 
@@ -142,7 +173,7 @@ public class ReportProgressDialog extends JDialog
    */
   public ReportProgressDialog()
   {
-    resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    resources = ResourceBundle.getBundle(RESOURCES_BASE_NAME);
     initConstructor();
   }
 
@@ -266,15 +297,17 @@ public class ReportProgressDialog extends JDialog
    */
   public void repaginationUpdate(final RepaginationState state)
   {
-    final boolean maxRowChanged = lastMaxRow != state.getMaxRow();
-    updatePageMessage(state.getPage());
-    updatePassMessage(state.getPass(), state.isPrepare());
-    updateRowsMessage(state.getCurrentRow(), state.getMaxRow());
-    if (maxRowChanged)
+    ScreenUpdateRunnable runnable = new ScreenUpdateRunnable
+        (state.getCurrentRow(), state.getMaxRow(), state.getPage(),
+            state.getPass(), state.isPrepare());
+    if (SwingUtilities.isEventDispatchThread())
     {
-      progressBar.setMaximum(state.getMaxRow());
+      runnable.run();
     }
-    progressBar.setValue(state.getCurrentRow());
+    else
+    {
+      SwingUtilities.invokeLater(runnable);
+    }
   }
 
   /**
@@ -342,8 +375,6 @@ public class ReportProgressDialog extends JDialog
           message = getOutputText();
         }
         passCountMessage.setText(message);
-        lastPass = pass;
-
       }
     }
   }

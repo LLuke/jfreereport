@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.6 2003/11/07 15:31:40 taqua Exp $
+ * $Id: StyleWriter.java,v 1.7 2003/12/04 18:04:07 taqua Exp $
  *
  * Changes
  * -------
@@ -133,10 +133,13 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     while (keys.hasNext())
     {
       final StyleKey key = (StyleKey) keys.next();
-      final Object value = elementStyleSheet.getStyleProperty(key);
-      if (value != null)
+      if (key.isTransient() == false)
       {
-        writeKeyValue(writer, key, value);
+        final Object value = elementStyleSheet.getStyleProperty(key);
+        if (value != null)
+        {
+          writeKeyValue(writer, key, value);
+        }
       }
     }
   }

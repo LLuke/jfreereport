@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.11 2003/12/06 17:14:48 taqua Exp $
+ * $Id: JFreeReport.java,v 1.12 2003/12/21 20:51:41 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -64,9 +64,6 @@ package org.jfree.report;
 
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Iterator;
 import javax.swing.table.DefaultTableModel;
@@ -78,7 +75,6 @@ import org.jfree.report.function.Function;
 import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.ReportProperties;
-import org.jfree.report.util.SerializerHelper;
 
 /**
  * This class co-ordinates the process of generating a report from a <code>TableModel</code>.
@@ -138,8 +134,7 @@ public class JFreeReport implements Cloneable, Serializable
   /** The table model containing the data for the report. */
   private TableModel data;
 
-  /** The page format for the report (determines the page size, and therefore the report width). */
-  private transient PageFormat defaultPageFormat;
+  private PageDefinition pageDefinition;
 
   /** Storage for arbitrary properties that a user can assign to the report. */
   private ReportProperties properties;
@@ -210,7 +205,7 @@ public class JFreeReport implements Cloneable, Serializable
 
     this.data = new DefaultTableModel();
     this.expressions = new ExpressionCollection();
-    setDefaultPageFormat(null);
+    setPageDefinition(null);
   }
 
   /**
@@ -573,58 +568,17 @@ public class JFreeReport implements Cloneable, Serializable
     addExpression(function);
   }
 
-  /**
-   * Returns the report's collection of functions.
-   *
-   * @return the function collection.
-   */
-  public ExpressionCollection getFunctions()
+  private PageFormat createSystemDefaultPageFormat ()
   {
-    throw new UnsupportedOperationException("Use getExpressions() instead.");
-  }
-
-  /**
-   * Sets the function collection.
-   *
-   * @param functions  the collection of functions.
-   */
-  public void setFunctions(final ExpressionCollection functions)
-  {
-    throw new UnsupportedOperationException("Use setExpressions(..) instead.");
-  }
-
-  /**
-   * Returns the default page format.
-   *
-   * @return the page format.
-   */
-  public PageFormat getDefaultPageFormat()
-  {
-    return defaultPageFormat;
-  }
-
-  /**
-   * Defines the default page format for this report. The default is a hint
-   * to define at least one suitable format. If no format is defined the system's default
-   * page format is used.
-   *
-   * @param format  the default format (<code>null</code> permitted).
-   */
-  public void setDefaultPageFormat(PageFormat format)
-  {
-    if (format == null)
+    if (ReportConfiguration.getGlobalConfig().getConfigProperty
+        (ReportConfiguration.NO_PRINTER_AVAILABLE, "false").equals("true"))
     {
-      if (ReportConfiguration.getGlobalConfig().getConfigProperty
-          (ReportConfiguration.NO_PRINTER_AVAILABLE, "false").equals("true"))
-      {
-        format = new PageFormat();
-      }
-      else
-      {
-        format = PrinterJob.getPrinterJob().defaultPage();
-      }
+      return new PageFormat();
     }
-    defaultPageFormat = format;
+    else
+    {
+      return PrinterJob.getPrinterJob().defaultPage();
+    }
   }
 
   /**
@@ -666,7 +620,7 @@ public class JFreeReport implements Cloneable, Serializable
   {
     final JFreeReport report = (JFreeReport) super.clone();
     report.data = data; // data is defined to be immutable, so don't clone the thing
-    report.defaultPageFormat = (PageFormat) defaultPageFormat.clone();
+    report.pageDefinition = (PageDefinition) pageDefinition.clone();
     report.groups = (GroupList) groups.clone();
     report.itemBand = (ItemBand) itemBand.clone();
     report.pageFooter = (PageFooter) pageFooter.clone();
@@ -740,34 +694,6 @@ public class JFreeReport implements Cloneable, Serializable
   }
 
   /**
-   * deserizalize the report and restore the pageformat.
-   *
-   * @param out the objectoutput stream
-   * @throws IOException if errors occur
-   */
-  private void writeObject(final ObjectOutputStream out)
-      throws IOException
-  {
-    out.defaultWriteObject();
-    SerializerHelper.getInstance().writeObject(defaultPageFormat, out);
-  }
-
-  /**
-   * resolve the pageformat, as PageFormat is not serializable.
-   *
-   * @param in  the input stream.
-   *
-   * @throws IOException if there is an IO problem.
-   * @throws ClassNotFoundException if there is a class problem.
-   */
-  private void readObject(final ObjectInputStream in)
-      throws IOException, ClassNotFoundException
-  {
-    in.defaultReadObject();
-    defaultPageFormat = (PageFormat) SerializerHelper.getInstance().readObject(in);
-  }
-
-  /**
    * Returns the stylesheet collection of this report. The stylesheet collection
    * is fixed for the report and all elements of the report. When a band or
    * group is added to the report it will get registered with this stylesheet
@@ -808,5 +734,19 @@ public class JFreeReport implements Cloneable, Serializable
     this.watermark.unregisterStyleSheetCollection(getStyleSheetCollection());
     this.watermark = watermark;
     this.watermark.registerStyleSheetCollection(getStyleSheetCollection());
+  }
+
+  public PageDefinition getPageDefinition()
+  {
+    return pageDefinition;
+  }
+
+  public void setPageDefinition(PageDefinition pageDefinition)
+  {
+    if (pageDefinition == null)
+    {
+      pageDefinition = new SimplePageDefinition(createSystemDefaultPageFormat());
+    }
+    this.pageDefinition = pageDefinition;
   }
 }

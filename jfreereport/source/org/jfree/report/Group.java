@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.5 2003/08/24 15:13:21 taqua Exp $
+ * $Id: Group.java,v 1.6 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -69,6 +69,10 @@ import org.jfree.report.style.StyleSheetCollectionHelper;
  * <p>
  * The group's field list should not be modified after the group was added
  * to the group list, or the results are undefined.
+ * <p>
+ * Groups of the same GroupList must have a subgroup relation. The designated
+ * child group must contain all fields of the direct parent plus at least one
+ * new field.
  *
  * @see GroupList
  *
@@ -358,8 +362,11 @@ public class Group implements Serializable, Cloneable, Comparable
       else
       {
         // groups with the same number of -, but different fields, are not compareable.
-        throw new IllegalArgumentException("These groups are not comparable, they don't have any "
-            + "subgroup relation");
+        throw new IllegalArgumentException
+            ("These groups are not comparable, as they don't have any subgroup relation. " +
+             " Groups of the same GroupList must have a subgroup relation. The designated " +
+             " child group must contain all fields of the direct parent plus at least one " +
+             " new field.");
       }
     }
 
@@ -375,8 +382,11 @@ public class Group implements Serializable, Cloneable, Comparable
     }
     // not compareable, invalid groups
     // return 0;
-    throw new IllegalArgumentException("These groups are not comparable, they don't have any "
-        + "subgroup relation");
+    throw new IllegalArgumentException
+        ("These groups are not comparable, as they don't have any subgroup relation. " +
+         " Groups of the same GroupList must have a subgroup relation. The designated " +
+         " child group must contain all fields of the direct parent plus at least one " +
+         " new field.");
   }
 
   /**

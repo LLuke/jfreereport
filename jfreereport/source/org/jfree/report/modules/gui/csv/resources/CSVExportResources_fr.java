@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportResources_fr.java,v 1.10 2003/09/14 19:33:25 taqua Exp $
+ * $Id: CSVExportResources_fr.java,v 1.11 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -127,7 +127,8 @@ public class CSVExportResources_fr extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{CSVExportResources.class.getName(), "fr"});
+    new CSVExportResources_fr().generateResourceProperties("french");
+    System.exit(0);
   }
 
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportResources.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
+ * $Id: CSVExportResources.java,v 1.5 2003/09/08 18:39:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,7 @@ import java.awt.event.KeyEvent;
 
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
+import org.jfree.report.modules.gui.converter.resources.ConverterResources_ru;
 
 /**
  * English language resource for the CSV export GUI.
@@ -126,7 +127,8 @@ public class CSVExportResources extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{CSVExportResources.class.getName(), null});
+    new CSVExportResources().generateResourceProperties("<default>");
+    System.exit(0);
   }
 
 }

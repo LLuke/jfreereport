@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Content.java,v 1.1 2003/07/07 22:44:03 taqua Exp $
+ * $Id: Content.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,8 @@ public interface Content
   public ContentType getContentType();
 
   /**
-   * Returns the bounds for the content.
+   * Returns the bounds for the content. ContentBounds are always relative
+   * to the element bounds.
    *
    * @return the bounds.
    */

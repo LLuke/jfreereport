@@ -28,7 +28,7 @@
  * Original Author:  Sergey M Mozgovoi;
  * Contributor(s):   -;
  *
- * $Id: ConverterResources_ru.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
+ * $Id: ConverterResources_ru.java,v 1.5 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -128,7 +128,8 @@ public class ConverterResources_ru extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{ConverterResources.class.getName(), "ru"});
+    new ConverterResources_ru().generateResourceProperties("russian");
+    System.exit(0);
   }
 
 }

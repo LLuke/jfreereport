@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentFactoryModule.java,v 1.4 2003/09/13 15:14:40 taqua Exp $
+ * $Id: ImageContentFactoryModule.java,v 1.5 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.Element;
-import org.jfree.report.ImageReference;
+import org.jfree.report.ImageContainer;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.ElementLayoutInformation;
@@ -87,7 +87,7 @@ public strictfp class ImageContentFactoryModule implements ContentFactoryModule
   public Content createContentForElement(final Element e, final ElementLayoutInformation bounds,
                                          final LayoutSupport ot)
   {
-    final ImageReference ir = (ImageReference) e.getValue();
+    final ImageContainer ir = (ImageContainer) e.getValue();
     // there is no content?
     if (ir == null)
     {
@@ -123,13 +123,11 @@ public strictfp class ImageContentFactoryModule implements ContentFactoryModule
         if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO))
         {
           final float scale = (float) Math.min(scaleX, scaleY);
-          ir.setScaleX(scale);
-          ir.setScaleY(scale);
+          ir.setScale(scale, scale);
         }
         else
         {
-          ir.setScaleX((float) scaleX);
-          ir.setScaleY((float) scaleY);
+          ir.setScale((float) scaleX, (float) scaleY);
         }
       }
     }

@@ -28,24 +28,26 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontSupport.java,v 1.9 2003/10/08 19:32:33 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.10 2003/11/07 18:33:55 taqua Exp $
  *
  * Changes
  * -------
  * 05-Dec-2002 : Added Javadocs (DG);
  * 29-Jan-2003 : moved from pageable.output to support.itext package.
  * 07-Feb-2003 : Documentation updated
- * 08-Oct-2003 : Not embeddable fonts are now used non-embedded. 
+ * 08-Oct-2003 : Not embeddable fonts are now used non-embedded.
  */
 
 package org.jfree.report.modules.output.support.itext;
 
+import java.awt.Font;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.FontMapper;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.StringUtil;
@@ -55,7 +57,7 @@ import org.jfree.report.util.StringUtil;
  *
  * @author Thomas Morgner
  */
-public class BaseFontSupport
+public class BaseFontSupport implements FontMapper
 {
   /** Storage for BaseFont objects created. */
   private final Map baseFonts;
@@ -168,7 +170,7 @@ public class BaseFontSupport
         boolean embeddedOverride = embedded;
         if (embedded == true && factory.isEmbeddable(filename) == false)
         {
-          Log.warn ("License of font forbids embedded usage for font: " + fontKey);
+          Log.warn("License of font forbids embedded usage for font: " + fontKey);
           // strict mode here?
           embeddedOverride = false;
         }
@@ -196,7 +198,7 @@ public class BaseFontSupport
     catch (Exception e)
     {
       Log.warn(new Log.SimpleMessage
-        ("BaseFont.createFont failed. Key = ", fontKey, e.getMessage()));
+          ("BaseFont.createFont failed. Key = ", fontKey, e.getMessage()));
     }
     // fallback .. use BaseFont.HELVETICA as default
     try
@@ -398,4 +400,95 @@ public class BaseFontSupport
     }
   }
 
+  /**
+   * Returns a BaseFont which can be used to represent the given AWT Font
+   *
+   * @param	font		the font to be converted
+   * @return	a BaseFont which has similar properties to the provided Font
+   */
+
+  public BaseFont awtToPdf(Font font)
+  {
+    // this has to be defined in the element, an has to set as a default...
+    boolean embed = false;
+    String encoding = null;
+    FontDefinition fdef = new FontDefinition
+        (font.getName(), font.getSize(), font.isBold(), font.isItalic(),
+            false, false, encoding, embed);
+    try
+    {
+      BaseFontRecord record = createBaseFont(fdef, encoding, embed);
+      return record.getBaseFont();
+    }
+    catch (Exception e)
+    {
+      // unable to handle font creation exceptions properly, all we can
+      // do is throw a runtime exception and hope the best ..
+      throw new BaseFontCreateException("Unable to create font: " + font);
+    }
+  }
+
+  /**
+   * Returns an AWT Font which can be used to represent the given BaseFont
+   *
+   * @param	font		the font to be converted
+   * @param	size		the desired point size of the resulting font
+   * @return	a Font which has similar properties to the provided BaseFont
+   */
+
+  public Font pdfToAwt(BaseFont font, int size)
+  {
+    String logicalName = getFontName(font);
+    boolean bold = false;
+    boolean italic = false;
+
+    if (StringUtil.endsWithIgnoreCase(logicalName, "bolditalic"))
+    {
+      bold = true;
+      italic = true;
+    }
+    else if (StringUtil.endsWithIgnoreCase(logicalName, "bold"))
+    {
+      bold = true;
+    }
+    else if (StringUtil.endsWithIgnoreCase(logicalName, "italic"))
+    {
+      italic = true;
+    }
+
+    FontDefinition fdef = new FontDefinition
+        (logicalName, size, bold, italic,false, false, font.getEncoding(), font.isEmbedded());
+
+    return fdef.getFont();
+  }
+
+  private String getFontName(BaseFont font)
+  {
+    String names[][] = font.getFullFontName();
+    if (names.length == 1)
+    {
+      return names[0][3];
+    }
+
+    String nameExtr = null;
+    for (int k = 0; k < names.length; ++k)
+    {
+      String name[] = names[k];
+      if (name[0].equals("1") && name[1].equals("0"))
+      {
+        nameExtr = name[3];
+      }
+      else if (name[2].equals("1033"))
+      {
+        nameExtr = name[3];
+        break;
+      }
+    }
+
+    if (nameExtr == null)
+    {
+      return nameExtr;
+    }
+    return names[0][3];
+  }
 }

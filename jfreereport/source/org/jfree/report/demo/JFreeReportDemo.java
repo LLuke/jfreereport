@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.5 2003/09/15 15:31:58 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.6 2003/11/07 18:33:48 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -60,13 +60,11 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -77,7 +75,6 @@ import org.jfree.report.demo.helper.AboutAction;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
 import org.jfree.report.modules.gui.base.PreviewFrame;
 import org.jfree.report.modules.gui.base.components.ActionButton;
-import org.jfree.report.modules.gui.base.components.ActionDowngrade;
 import org.jfree.report.modules.gui.base.components.ActionMenuItem;
 import org.jfree.report.modules.gui.base.components.FloatingButtonEnabler;
 import org.jfree.report.modules.parser.base.ReportGenerator;
@@ -345,7 +342,8 @@ public class JFreeReportDemo extends AbstractDemoFrame
     list.add(new DemoDefinition("Dynamic-Demo", data2,
         new URLDemoHandler("/org/jfree/report/demo/report2c.xml")));
 
-    list.add(new DemoDefinition("Band in Band Stacking", data2, new DemoHandler()
+    list.add(new DemoDefinition("Band in Band Stacking",
+        new DefaultTableModel(), new DemoHandler()
     {
       public void performPreview(final DemoDefinition def)
       {
@@ -544,25 +542,13 @@ public class JFreeReportDemo extends AbstractDemoFrame
     // first the file menu
     final JMenu fileMenu = createJMenuItem("menu.file");
 
-    final JMenuItem printItem = new ActionMenuItem(getPreviewAction());
-    final KeyStroke accelerator = (KeyStroke)
-        getPreviewAction().getValue(ActionDowngrade.ACCELERATOR_KEY);
-    if (accelerator != null)
-    {
-      printItem.setAccelerator(accelerator);
-    }
-    fileMenu.add(printItem);
-
+    fileMenu.add(new ActionMenuItem(getPreviewAction()));
     fileMenu.add(new JSeparator());
-
-    final JMenuItem exitItem = new ActionMenuItem(getCloseAction());
-    fileMenu.add(exitItem);
+    fileMenu.add(new ActionMenuItem(getCloseAction()));
 
     // then the help menu
     final JMenu helpMenu = createJMenuItem("menu.help");
-
-    final JMenuItem aboutItem = new ActionMenuItem(aboutAction);
-    helpMenu.add(aboutItem);
+    helpMenu.add(new ActionMenuItem(aboutAction));
 
     // finally, glue together the menu and return it
     menuBar.add(fileMenu);

@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   -;
  *
- * $Id: ConverterResources_fr.java,v 1.7 2003/08/25 14:29:29 taqua Exp $
+ * $Id: ConverterResources_fr.java,v 1.8 2003/09/14 19:33:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -99,7 +99,8 @@ public class ConverterResources_fr extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{ConverterResources.class.getName(), "fr"});
+    new ConverterResources_fr().generateResourceProperties("french");
+    System.exit(0);
   }
 
 }

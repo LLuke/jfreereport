@@ -28,7 +28,7 @@
  * Original Author:  Sergey M Mozgovoi;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_si.java,v 1.3 2003/08/19 13:37:23 taqua Exp $
+ * $Id: JFreeReportResources_si.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -114,6 +114,8 @@ public class JFreeReportResources_si extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
+    new JFreeReportResources_si().generateResourceProperties("slovenian");
+    System.exit(0);
     ResourceCompareTool.main(new String[]{JFreeReportResources.class.getName(), "si"});
   }
 

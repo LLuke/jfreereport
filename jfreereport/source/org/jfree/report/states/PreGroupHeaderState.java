@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreGroupHeaderState.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: PreGroupHeaderState.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -70,6 +70,15 @@ public final class PreGroupHeaderState extends ReportState
     // enough space, fire the events and proceed to PostGroupHeaderState
     fireGroupStartedEvent();
     return new PostGroupHeaderState(this);
+  }
+
+  /**
+   * Activates the next group by incrementing the current group index.  The outer-most group is
+   * given an index of zero, and this increases for each subgroup that is defined.
+   */
+  private void enterGroup()
+  {
+    setCurrentGroupIndex(getCurrentGroupIndex() + 1);
   }
 
   /**

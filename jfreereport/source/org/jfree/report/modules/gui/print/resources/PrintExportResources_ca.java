@@ -28,7 +28,7 @@
  * Original Author:  Marc Casas
  * Contributor(s):   -
  *
- * $Id: $
+ * $Id: PrintExportResources_ca.java,v 1.1 2003/09/08 18:41:45 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -95,7 +95,8 @@ public class PrintExportResources_ca extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{PrintExportResources.class.getName(), "ca"});
+    new PrintExportResources_ca().generateResourceProperties("catalan");
+    System.exit(0);
   }
 
 }

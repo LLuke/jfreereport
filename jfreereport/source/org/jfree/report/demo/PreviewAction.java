@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewAction.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: PreviewAction.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import java.util.ResourceBundle;
 
 import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
 import org.jfree.report.modules.gui.base.components.ActionDowngrade;
+import org.jfree.report.modules.gui.base.ResourceBundleUtils;
 
 /**
  * The preview action invokes the parsing and processing of the currently selected sample
@@ -63,10 +64,12 @@ public abstract class PreviewAction extends AbstractActionDowngrade
     this.putValue(NAME, resources.getString("action.print-preview.name"));
     this.putValue(SHORT_DESCRIPTION, resources.getString("action.print-preview.description"));
     this.putValue(ActionDowngrade.MNEMONIC_KEY,
-        resources.getObject("action.print-preview.mnemonic"));
+        ResourceBundleUtils.createMnemonic(resources.getString("action.print-preview.mnemonic")));
     this.putValue(ActionDowngrade.ACCELERATOR_KEY,
-        resources.getObject("action.print-preview.accelerator"));
-    this.putValue(SMALL_ICON, resources.getObject("action.print-preview.small-icon"));
-    this.putValue("ICON24", resources.getObject("action.print-preview.icon"));
+        ResourceBundleUtils.createMenuKeystroke(resources.getString("action.print-preview.accelerator")));
+    this.putValue(SMALL_ICON,
+        ResourceBundleUtils.getIcon(resources.getString("action.print-preview.small-icon")));
+    this.putValue("ICON24",
+        ResourceBundleUtils.getIcon(resources.getString("action.print-preview.icon")));
   }
 }

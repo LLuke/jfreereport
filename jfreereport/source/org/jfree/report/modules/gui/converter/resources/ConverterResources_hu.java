@@ -28,7 +28,7 @@
  * Original Author:  Demeter F. Tamás;
  * Contributor(s):   -;
  *
- * $Id: ConverterResources_hu.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
+ * $Id: ConverterResources_hu.java,v 1.5 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -93,7 +93,8 @@ public class ConverterResources_hu extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{ConverterResources.class.getName(), "hu"});
+    new ConverterResources_hu().generateResourceProperties("hungarian");
+    System.exit(0);
   }
 
 }

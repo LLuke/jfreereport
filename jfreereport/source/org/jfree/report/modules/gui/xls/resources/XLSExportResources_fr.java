@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   -;
  *
- * $Id: XLSExportResources_fr.java,v 1.8 2003/09/14 19:33:25 taqua Exp $
+ * $Id: XLSExportResources_fr.java,v 1.9 2003/11/01 19:52:28 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -115,6 +115,7 @@ public class XLSExportResources_fr extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{XLSExportResources.class.getName(), "fr"});
+    new XLSExportResources_fr().generateResourceProperties("french");
+    System.exit(0);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Demeter F. Tamás;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_hu.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: DemoResources_hu.java,v 1.3 2003/08/28 17:45:42 taqua Exp $
  *
  *
  */
@@ -99,7 +99,8 @@ public class DemoResources_hu extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{DemoResources.class.getName(), "hu"});
+    new DemoResources_hu().generateResourceProperties("hungarian");
+    System.exit(0);
   }
 
 }

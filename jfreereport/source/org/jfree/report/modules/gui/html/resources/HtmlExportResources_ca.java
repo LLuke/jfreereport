@@ -28,7 +28,7 @@
  * Original Author:  Marc Casas;
  * Contributor(s):   -
  *
- * $Id: $
+ * $Id: HtmlExportResources_ca.java,v 1.1 2003/09/08 18:41:45 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -141,7 +141,8 @@ public class HtmlExportResources_ca extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{HtmlExportResources.class.getName(), "ca"});
+    new HtmlExportResources_ca().generateResourceProperties("catalan");
+    System.exit(0);
   }
 
 }

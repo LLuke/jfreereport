@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableExportTask.java,v 1.7 2003/10/18 19:22:32 taqua Exp $
+ * $Id: CSVTableExportTask.java,v 1.8 2003/11/07 18:33:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -86,10 +86,6 @@ public class CSVTableExportTask extends ExportTask
     {
       throw new NullPointerException("File name is null.");
     }
-    if (dialog == null)
-    {
-      throw new NullPointerException("Progress dialog is null.");
-    }
     if (report == null)
     {
       throw new NullPointerException("Report is null.");
@@ -116,14 +112,20 @@ public class CSVTableExportTask extends ExportTask
       out = new BufferedWriter
           (new OutputStreamWriter(new FileOutputStream(file), encoding));
       final CSVTableProcessor target = new CSVTableProcessor(report);
-      progressDialog.setModal(false);
-      progressDialog.setVisible(true);
-      target.addRepaginationListener(progressDialog);
+      if (progressDialog != null)
+      {
+        progressDialog.setModal(false);
+        progressDialog.setVisible(true);
+        target.addRepaginationListener(progressDialog);
+      }
       target.setWriter(out);
       target.processReport();
       out.close();
       out = null;
-      target.removeRepaginationListener(progressDialog);
+      if (progressDialog != null)
+      {
+        target.removeRepaginationListener(progressDialog);
+      }
       setTaskDone();
     }
     catch (ReportInterruptedException re)
@@ -168,7 +170,10 @@ public class CSVTableExportTask extends ExportTask
         // just a minor obstactle. Something big crashed before ...
       }
     }
-    progressDialog.setVisible(false);
+    if (progressDialog != null)
+    {
+      progressDialog.setVisible(false);
+    }
   }
 
   /**
@@ -177,6 +182,9 @@ public class CSVTableExportTask extends ExportTask
   protected void dispose()
   {
     super.dispose();
-    progressDialog.dispose();
+    if (progressDialog != null)
+    {
+      progressDialog.dispose();
+    }
   }
 }

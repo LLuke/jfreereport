@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_de.java,v 1.3 2003/08/28 17:45:42 taqua Exp $
+ * $Id: DemoResources_de.java,v 1.4 2003/09/08 18:11:48 taqua Exp $
  *
  * Changes
  * -------
@@ -106,7 +106,8 @@ public class DemoResources_de extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{DemoResources.class.getName(), "de"});
+    new DemoResources_de().generateResourceProperties("german");
+    System.exit(0);
   }
 
 }

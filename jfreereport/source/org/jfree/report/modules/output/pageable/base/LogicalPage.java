@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPage.java,v 1.2 2003/07/20 19:31:15 taqua Exp $
+ * $Id: LogicalPage.java,v 1.3 2003/08/24 15:03:52 taqua Exp $
  *
  * Changes
  * -------
@@ -37,17 +37,12 @@
  */
 package org.jfree.report.modules.output.pageable.base;
 
-import java.awt.geom.Rectangle2D;
-import java.awt.print.PageFormat;
-
-import org.jfree.report.Band;
+import org.jfree.report.layout.LayoutSupport;
 
 /**
- * An interface that defines a logical page. A logical page is responsible for
- * distributing the received bands so that they can be printed. Don't make any
- * assumptions how the content gets distributed.
+ * An interface that defines a logical page. A logical page defines the
+ * metrics of an output target.
  *
- * @see org.jfree.report.modules.output.pageable.base.physicals.LogicalPageImpl
  * @author Thomas Morgner.
  */
 public interface LogicalPage
@@ -67,91 +62,10 @@ public interface LogicalPage
   public float getHeight();
 
   /**
-   * Returns true if the page is open, and false otherwise.
+   * Gets the output target metrics.
    *
-   * @return true or false.
+   * @return the output target metrics.
    */
-  public boolean isOpen();
-
-  /**
-   * Returns true if the page is empty, and false otherwise.
-   *
-   * @return true or false.
-   */
-  public boolean isEmpty();
-
-  /**
-   * Closes the page.
-   */
-  public void close();
-
-  /**
-   * Opens the page.
-   */
-  public void open();
-
-  /**
-   * Replays a spool.A spool is a collection of previously prepared content which
-   * should be printed later.
-   *
-   * @param operations the spool that should be replayed.
-   */
-  public void replaySpool(Spool operations);
-
-  /**
-   * Generate a spool. A spool is a collection (or macro) of lowlevel processing instruction
-   * on how to distribute a band and its contents. When a spool is recorded, all operations
-   * needed to replay the spool later are created and stored within the spool object.
-   * <p>
-   * The spool can be saved, cloned and replayed at a later time.
-   *
-   * @param bounds  the bounds.
-   * @param band  the band.
-   *
-   * @throws OutputTargetException if there is a problem with the output target.
-   *
-   * @return a spool.
-   */
-  public Spool spoolBand(Rectangle2D bounds, Band band) throws OutputTargetException;
-
-  /**
-   * Adds a band to the logical page.
-   *
-   * @param bounds  the bounds.
-   * @param band  the band.
-   *
-   * @throws OutputTargetException if there is a problem with the output target.
-   */
-  public void addBand(Rectangle2D bounds, Band band) throws OutputTargetException;
-
-  /**
-   * Returns the physical page format.
-   * todo: Find a better way of handling this. Support different pageformats in one
-   * logical Page (BookStyle).
-   *
-   * @return the physical page format.
-   */
-  public PageFormat getPhysicalPageFormat();
-
-  /**
-   * Gets the output target.
-   *
-   * @return the output target.
-   */
-  public OutputTarget getOutputTarget();
-
-  /**
-   * Sets the output target for the page.
-   *
-   * @param target  the output target.
-   */
-  public void setOutputTarget(OutputTarget target);
-
-  /**
-   * Creates a new instance of a logical page.
-   *
-   * @return a logical page.
-   */
-  public LogicalPage newInstance();
+  public LayoutSupport getLayoutSupport();
 
 }

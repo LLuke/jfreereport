@@ -28,7 +28,7 @@
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_sv.java,v 1.5 2003/08/30 15:03:04 taqua Exp $
+ * $Id: JFreeReportResources_sv.java,v 1.6 2003/08/31 19:27:57 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -233,6 +233,8 @@ public class JFreeReportResources_sv extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{JFreeReportResources.class.getName(), "sv"});
+    new JFreeReportResources_sv().generateResourceProperties("swedish");
+    System.exit(0);
+//    ResourceCompareTool.main(new String[]{JFreeReportResources.class.getName(), "sv"});
   }
 }

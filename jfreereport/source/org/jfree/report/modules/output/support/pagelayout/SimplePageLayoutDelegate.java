@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayoutDelegate.java,v 1.7 2003/12/06 15:24:02 taqua Exp $
+ * $Id: SimplePageLayoutDelegate.java,v 1.8 2003/12/21 20:51:43 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,7 +44,6 @@ import org.jfree.report.Band;
 import org.jfree.report.Group;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDefinition;
-import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.event.ReportListener;
@@ -421,7 +420,7 @@ public class SimplePageLayoutDelegate implements
     {
       setCurrentEffectiveGroupIndex(-1);
       worker.print(event.getReport().getReportHeader(), 
-        SimplePageLayoutWorker.BAND_PRINTED, SimplePageLayoutWorker.PAGEBREAK_BEFORE_HANDLED);
+        SimplePageLayoutWorker.BAND_PRINTED, SimplePageLayoutWorker.PAGEBREAK_BEFORE_IGNORED);
     }
     catch (FunctionProcessingException fe)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportResources_de.java,v 1.5 2003/08/25 14:29:30 taqua Exp $
+ * $Id: HtmlExportResources_de.java,v 1.6 2003/08/27 20:19:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -144,7 +144,8 @@ public class HtmlExportResources_de extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{HtmlExportResources.class.getName(), "de"});
+    new HtmlExportResources_de().generateResourceProperties("german");
+    System.exit(0);
   }
 
 }

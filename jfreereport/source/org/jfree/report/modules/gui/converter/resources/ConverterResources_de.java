@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: ConverterResources_de.java,v 1.5 2003/08/25 14:29:29 taqua Exp $
+ * $Id: ConverterResources_de.java,v 1.6 2003/08/28 17:45:43 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -102,7 +102,8 @@ public class ConverterResources_de extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{ConverterResources.class.getName(), "de"});
+    new ConverterResources_de().generateResourceProperties("German");
+    System.exit(0);
   }
 
 

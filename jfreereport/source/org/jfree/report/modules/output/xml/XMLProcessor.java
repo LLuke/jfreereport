@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLProcessor.java,v 1.5 2003/12/06 17:15:21 taqua Exp $
+ * $Id: XMLProcessor.java,v 1.6 2003/12/21 20:51:43 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,6 @@ import org.jfree.report.states.FinishState;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.states.ReportStateProgress;
 import org.jfree.report.states.StartState;
-import org.jfree.report.transaction.TransactionProcessor;
 import org.jfree.report.util.NullOutputStream;
 
 /**
@@ -167,8 +166,8 @@ public class XMLProcessor
       // The pageformat will cause trouble in later versions, when printing over
       // multiple pages gets implemented. This property will be replaced by a more
       // suitable alternative.
-      final PageFormat p = report.getDefaultPageFormat();
-      state.setProperty(JFreeReport.REPORT_PAGEFORMAT_PROPERTY, p.clone());
+//      final PageFormat p = report.getDefaultPageFormat();
+//      state.setProperty(JFreeReport.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
       // now change the writer function to be a dummy writer. We don't want any
       // output in the prepare runs.
@@ -184,7 +183,7 @@ public class XMLProcessor
         throw new IllegalStateException("No functions defined, invalid implementation.");
       }
 
-      TransactionProcessor processor = new TransactionProcessor();
+//      TransactionProcessor processor = new TransactionProcessor();
 
       boolean hasNext;
       int level = ((Integer) it.next()).intValue();
@@ -203,8 +202,8 @@ public class XMLProcessor
         // dataRow.
         final boolean failOnError = (level == -1)
             && getReport().getReportConfiguration().isStrictErrorHandling();
-        processor.setFailOnError(failOnError);
-        state = processor.process(state);
+  //      processor.setFailOnError(failOnError);
+        //state = processor.process(state);
 
         // if there is an other level to process, then use the finish state to
         // create a new start state, which will continue the report processing on

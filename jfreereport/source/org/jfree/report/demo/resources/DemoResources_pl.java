@@ -28,7 +28,7 @@
  * Original Author:  Piotr Bzdyl;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_pl.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: DemoResources_pl.java,v 1.3 2003/08/28 17:45:42 taqua Exp $
  *
  * Changes
  * -------
@@ -103,7 +103,8 @@ public class DemoResources_pl extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{DemoResources.class.getName(), "pl"});
+    new DemoResources_pl().generateResourceProperties("polish");
+    System.exit(0);
   }
 
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceReferenceGenerator.java,v 1.2 2003/07/25 19:24:20 taqua Exp $
+ * $Id: DataSourceReferenceGenerator.java,v 1.3 2003/08/24 15:08:20 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -43,7 +43,7 @@ import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.output.pageable.pdf.PDFReportUtil;
-import org.jfree.report.modules.output.table.html.HTMLReportUtil;
+import org.jfree.report.modules.output.table.html.HtmlReportUtil;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
 import org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceFactory;
@@ -112,7 +112,7 @@ public final class DataSourceReferenceGenerator
     report.setData(createData());
     try
     {
-      HTMLReportUtil.createStreamHTML(report, System.getProperty("user.home")
+      HtmlReportUtil.createStreamHTML(report, System.getProperty("user.home")
           + "/datasource-reference.html");
       PDFReportUtil.createPDF(report, System.getProperty("user.home")
           + "/datasource-reference.pdf");

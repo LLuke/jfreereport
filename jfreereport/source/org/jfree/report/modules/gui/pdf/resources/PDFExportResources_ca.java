@@ -28,7 +28,7 @@
  * Original Author:  Marc Casas
  * Contributor(s):   -
  *
- * $Id: $
+ * $Id: PDFExportResources_ca.java,v 1.1 2003/09/08 18:41:45 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,7 @@ import java.awt.event.KeyEvent;
 
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
+import org.jfree.report.modules.gui.html.resources.HtmlExportResources;
 
 /**
  * Catalan language resource for the PDF export GUI.
@@ -142,7 +143,8 @@ public class PDFExportResources_ca extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{PDFExportResources.class.getName(), "ca"});
+    new PDFExportResources_ca().generateResourceProperties("catalan");
+    System.exit(0);
   }
 
 }

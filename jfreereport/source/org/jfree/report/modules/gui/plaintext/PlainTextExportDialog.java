@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.7 2003/08/31 19:27:57 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.8 2003/09/09 21:31:48 taqua Exp $
  *
  * Changes
  * --------
@@ -51,6 +51,7 @@ import java.awt.event.WindowEvent;
 import java.awt.print.PageFormat;
 import java.io.File;
 import java.text.MessageFormat;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -73,11 +74,14 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.ActionRadioButton;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
-import org.jfree.report.modules.gui.plaintext.resources.PlainTextExportResources;
+import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
+import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
+import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
 import org.jfree.report.modules.output.pageable.plaintext.EpsonPrinterCommandSet;
 import org.jfree.report.modules.output.pageable.plaintext.IBMPrinterCommandSet;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterCommandSet;
+import org.jfree.report.util.Log;
 import org.jfree.report.util.NullOutputStream;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
@@ -324,7 +328,7 @@ public class PlainTextExportDialog extends JDialog
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
-      PlainTextExportResources.class.getName();
+      "org.jfree.report.modules.gui.plaintext.resources.plaintext-export-resources";
 
   /**
    * Creates a non-modal dialog without a title and without
@@ -369,16 +373,13 @@ public class PlainTextExportDialog extends JDialog
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     setTitle(getResources().getString("plain-text-exportdialog.dialogtitle"));
 
-    plainTextCommandSet = new PrinterCommandSet(new NullOutputStream(),
-        new PageFormat(), 10, 6);
+    plainTextCommandSet = new PrinterCommandSet(new NullOutputStream(), 10, 6);
     plainTextEncodingModel = createEncodingModel(plainTextCommandSet);
 
-    epsonPrinterCommandSet = new EpsonPrinterCommandSet(new NullOutputStream(),
-        new PageFormat(), 10, 6);
+    epsonPrinterCommandSet = new EpsonPrinterCommandSet(new NullOutputStream(),10, 6);
     epsonPrinterEncodingModel = createEncodingModel(epsonPrinterCommandSet);
 
-    ibmPrinterCommandSet = new IBMPrinterCommandSet(new NullOutputStream(),
-        new PageFormat(), 10, 6);
+    ibmPrinterCommandSet = new IBMPrinterCommandSet(new NullOutputStream(),10, 6);
     ibmPrinterEncodingModel = createEncodingModel(ibmPrinterCommandSet);
 
     selectedEncodingModel = plainTextEncodingModel;
@@ -924,14 +925,71 @@ public class PlainTextExportDialog extends JDialog
   public boolean performQueryForExport(final JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
+    ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
+    try
+    {
+      setDialogContents(storage.loadProperties
+          (ConfigFactory.encodePath(report.getName() + "_plaintextexport"),
+              new Properties()));
+    }
+    catch (Exception cse)
+    {
+      Log.debug ("Unable to load the defaults in PlainText export dialog.");
+    }
+
     setModal(true);
     setVisible(true);
     if (isConfirmed() == false)
     {
+      Log.debug ("Is not confirmed...");
       return false;
     }
     storeToConfiguration(report.getReportConfiguration());
+    try
+    {
+      Log.debug ("About to store:  "+ storage);
+      storage.storeProperties
+          (ConfigFactory.encodePath(report.getName() + "_plaintextexport"),
+              getDialogContents());
+    }
+    catch (ConfigStoreException cse)
+    {
+      Log.debug ("Unable to store the defaults in PlainText export dialog.");
+    }
+
     return true;
+  }
+
+  /**
+   * Returns the user input of this dialog as properties collection.
+   *
+   * @return the user input.
+   */
+  public Properties getDialogContents ()
+  {
+    Properties p = new Properties();
+    p.setProperty("filename", getFilename());
+    p.setProperty("encoding", getEncoding());
+
+    p.setProperty("chars-per-inch", String.valueOf(getCharsPerInch()));
+    p.setProperty("lines-per-inch", String.valueOf(getLinesPerInch()));
+    p.setProperty("selected-printer", String.valueOf(getSelectedPrinter()));
+    return p;
+  }
+
+  /**
+   * Restores the user input from a properties collection.
+   *
+   * @param p the user input.
+   */
+  public void setDialogContents (Properties p)
+  {
+    setEncoding(p.getProperty("encoding", getEncoding()));
+    setFilename(p.getProperty("filename", getFilename()));
+
+    setCharsPerInch(StringUtil.parseInt(p.getProperty("chars-per-inch"), getCharsPerInch()));
+    setLinesPerInch(StringUtil.parseInt(p.getProperty("lines-per-inch"), getLinesPerInch()));
+    setSelectedPrinter(StringUtil.parseInt(p.getProperty("selected-printer"), getSelectedPrinter()));
   }
 
   /**

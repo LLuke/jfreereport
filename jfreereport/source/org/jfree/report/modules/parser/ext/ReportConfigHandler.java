@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigHandler.java,v 1.8 2003/08/25 14:29:32 taqua Exp $
+ * $Id: ReportConfigHandler.java,v 1.9 2003/12/04 18:04:06 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.SimplePageDefinition;
 import org.jfree.xml.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.ReportParser;
@@ -61,8 +62,6 @@ import org.xml.sax.SAXException;
  *
  * @author Thomas Morgner.
  * @see ReportConfiguration
- * @see JFreeReport#setDefaultPageFormat
- * @see JFreeReport#getDefaultPageFormat
  */
 public class ReportConfigHandler extends AbstractExtReportParserHandler
 {
@@ -241,7 +240,8 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
   {
     final JFreeReport report = getReport();
 
-    PageFormat format = report.getDefaultPageFormat();
+    // todo page format changed
+    PageFormat format = new PageFormat();//report.getDefaultPageFormat();
     float defTopMargin = (float) format.getImageableY();
     float defBottomMargin = (float) (format.getHeight() - format.getImageableHeight()
         - format.getImageableY());
@@ -278,7 +278,7 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
     }
 
     format.setPaper(p);
-    report.setDefaultPageFormat(format);
+    report.setPageDefinition(new SimplePageDefinition (format));
   }
 
   /**

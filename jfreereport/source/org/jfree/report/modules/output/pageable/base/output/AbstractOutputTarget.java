@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.4 2003/08/24 15:03:59 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.5 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -45,28 +45,50 @@
  * 26-Aug-2002 : Corrected Fontheight calculations.
  * 02-Oct-2002 : Bug: breakLines() got a corrected word breaking (Aleksandr Gekht)
  * 06-Nov-2002 : Bug: LineBreaking again: Handled multiple linebreaks and empty lines
+ * 15-Feb-2004 : Complete Rewrite; Handles MetaPage mapping now.
  */
 package org.jfree.report.modules.output.pageable.base.output;
 
+import java.awt.Color;
+import java.awt.Paint;
+import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.Rectangle2D;
-import java.awt.print.PageFormat;
 import java.util.Iterator;
 import java.util.Properties;
 
+import org.jfree.report.DrawableContainer;
+import org.jfree.report.ElementAlignment;
+import org.jfree.report.ImageContainer;
+import org.jfree.report.PageDefinition;
+import org.jfree.report.ShapeElement;
+import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentFactory;
+import org.jfree.report.content.ContentType;
 import org.jfree.report.content.DefaultContentFactory;
+import org.jfree.report.content.DrawableContent;
 import org.jfree.report.content.DrawableContentFactoryModule;
+import org.jfree.report.content.ImageContent;
 import org.jfree.report.content.ImageContentFactoryModule;
+import org.jfree.report.content.ShapeContent;
 import org.jfree.report.content.ShapeContentFactoryModule;
 import org.jfree.report.content.TextContentFactoryModule;
-import org.jfree.report.modules.output.pageable.base.AlignedLogicalPageWrapper;
-import org.jfree.report.modules.output.pageable.base.LogicalPage;
+import org.jfree.report.content.TextLine;
+import org.jfree.report.modules.output.meta.MetaBand;
+import org.jfree.report.modules.output.meta.MetaElement;
+import org.jfree.report.modules.output.meta.MetaPage;
 import org.jfree.report.modules.output.pageable.base.OutputTarget;
-import org.jfree.report.modules.output.pageable.base.physicals.LogicalPageImpl;
+import org.jfree.report.modules.output.pageable.base.OutputTargetException;
+import org.jfree.report.modules.output.pageable.base.operations.AlignmentTools;
+import org.jfree.report.modules.output.pageable.base.operations.HorizontalBoundsAlignment;
+import org.jfree.report.modules.output.pageable.base.operations.VerticalBoundsAlignment;
+import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.style.FontDefinition;
 
 /**
- * The abstract OutputTarget implements base code for all OutputTargets. It contains
- * functions to manage the cursor, the pageformat and the line breaking of strings.
+ * The abstract OutputTarget implements base code for all pageable OutputTargets.
+ * This implementation contains base functions to process the MetaPage objects
+ * to create the real output.
  *
  * @author David Gilbert
  * @author Thomas Morgner
@@ -76,49 +98,15 @@ public abstract class AbstractOutputTarget implements OutputTarget
   /** Storage for the output target properties. */
   private final Properties properties;
 
-  /** The logical page. */
-  private final LogicalPage logicalPage;
-
-  /** The operation bounds. */
-  private final Rectangle2D operationBounds;
-
   /** The content factory used to create content for this output-target. */
   private final ContentFactory contentFactory;
 
-  /**
-   * Creates a new output target.  Both the logical page size and the physical page size will be
-   * the same.
-   *
-   * @param format  the page format.
-   */
-  protected AbstractOutputTarget(final PageFormat format)
-  {
-    this(format, format);
-  }
+  private Rectangle2D operationBounds;
+  private Rectangle2D pageBounds;
 
-  /**
-   * Creates a new output target with the specified logical and physical page sizes.
-   *
-   * @param logical  the page format used by this target for layouting.
-   * @param physical  the page format used by this target for printing.
-   */
-  protected AbstractOutputTarget(final PageFormat logical, final PageFormat physical)
-  {
-    this(new LogicalPageImpl(logical, physical));
-  }
-
-  /**
-   * Creates a new output target.
-   *
-   * @param logicalPage  the logical page.
-   */
-  protected AbstractOutputTarget(final LogicalPage logicalPage)
+  protected AbstractOutputTarget ()
   {
     properties = new Properties();
-    this.logicalPage = new AlignedLogicalPageWrapper(logicalPage.newInstance(), this);
-    this.logicalPage.setOutputTarget(this);
-    operationBounds = new Rectangle2D.Float();
-
     contentFactory = createContentFactory();
   }
 
@@ -199,36 +187,6 @@ public abstract class AbstractOutputTarget implements OutputTarget
   }
 
   /**
-   * Returns the logical page.
-   *
-   * @return the logical page.
-   */
-  public LogicalPage getLogicalPage()
-  {
-    return logicalPage;
-  }
-
-  /**
-   * Sets the operation bounds.
-   *
-   * @param bounds  the bounds.
-   */
-  public void setOperationBounds(final Rectangle2D bounds)
-  {
-    operationBounds.setRect(bounds);
-  }
-
-  /**
-   * Returns the operation bounds.
-   *
-   * @return the operation bounds.
-   */
-  public Rectangle2D getOperationBounds()
-  {
-    return operationBounds.getBounds2D();
-  }
-
-  /**
    * Returns the element alignment. Elements will be layouted aligned to this
    * border, so that <code>mod(X, horizontalAlignment) == 0</code> and
    * <code>mod(Y, verticalAlignment) == 0</code>
@@ -278,4 +236,327 @@ public abstract class AbstractOutputTarget implements OutputTarget
     return contentFactory;
   }
 
+  protected abstract void beginPage (PageDefinition page, int index) throws OutputTargetException;
+
+  protected abstract void endPage () throws OutputTargetException;
+
+  public void printPage(final MetaPage content, final PageDefinition page, final int index)
+   throws OutputTargetException
+  {
+    beginPage(page, index);
+    setPageBounds(page.getPagePosition(index));
+
+    // for all stored bands
+    final MetaBand[] bands = content.getBands();
+    for (int i = 0; i < bands.length; i++)
+    {
+      final MetaBand b = bands[i];
+      final Rectangle2D bounds = b.getBounds();
+      // check if bounds are within the specified page bounds
+      if (pageBounds.intersects(bounds))
+      {
+        // if so, then print
+        printBand(b, pageBounds.createIntersection(bounds));
+      }
+      // else ignore
+    }
+    endPage();
+  }
+
+
+  /**
+   * Prints all elements of the band, which are within the given bounds.
+   * The bounds are global bounds, so they define a position on the meta
+   * page, not the physical page.
+   *
+   * @param band the band that should be printed
+   * @param bounds the bounds for that band.
+   */
+  protected void printBand (final MetaBand band, final Rectangle2D bounds)
+    throws OutputTargetException
+  {
+    printElement(band, bounds);
+    final MetaElement[] elements = band.toArray();
+    for (int i = 0; i < elements.length; i++)
+    {
+      final MetaElement e = elements[i];
+      final Rectangle2D elementBounds = e.getBounds();
+      // check if bounds are within the specified page bounds
+      if (bounds.intersects(elementBounds))
+      {
+        if (e instanceof MetaBand)
+        {
+          printBand((MetaBand) e, bounds.createIntersection(elementBounds));
+        }
+        else
+        {
+          printElement(e, bounds.createIntersection(elementBounds));
+        }
+      }
+    }
+  }
+
+  protected void printElement (final MetaElement element, final Rectangle2D bounds)
+    throws OutputTargetException
+  {
+    if (element.getContent().getContentType().equals(ContentType.TEXT))
+    {
+      printTextElement(element, bounds);
+    }
+    else if (element.getContent().getContentType().equals(ContentType.SHAPE))
+    {
+      printShapeElement(element, bounds);
+    }
+    else if (element.getContent().getContentType().equals(ContentType.IMAGE))
+    {
+      printImageElement(element, bounds);
+    }
+    else if (element.getContent().getContentType().equals(ContentType.DRAWABLE))
+    {
+      printDrawableElement(element, bounds);
+    }
+    else if (element.getContent().getContentType().equals(ContentType.CONTAINER))
+    {
+      printContainerElement(element, bounds);
+    }
+  }
+
+  protected void printTextElement (final MetaElement element, final Rectangle2D bounds)
+    throws OutputTargetException
+  {
+    if (element == null)
+    {
+      throw new NullPointerException("element is null");
+    }
+    // todo
+    // we assume here, that the content bounds are also defined for the global
+    // range, or we have to 'adjust' them now.
+    //final Rectangle2D bounds = element.getBounds();
+    final Content c = element.getContent().getContentForBounds(bounds);
+    if (c == null)
+    {
+      return;
+    }
+    // Font
+    final FontDefinition font = element.getFontDefinitionProperty();
+    updateFont(font);
+
+    // Paint
+    final Paint extpaint = (Paint) element.getProperty(ElementStyleSheet.EXTPAINT);
+    if (isPaintSupported(extpaint))
+    {
+      updatePaint(extpaint);
+    }
+    else
+    {
+      final Color paint = (Color) element.getProperty(ElementStyleSheet.PAINT);
+      updatePaint(paint);
+    }
+
+    final ElementAlignment va
+        = (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT);
+    final VerticalBoundsAlignment vba = AlignmentTools.getVerticalLayout(va, bounds);
+    // calculate the horizontal shift ... is applied later
+
+    final Rectangle2D cBounds = c.getMinimumContentSize();
+    float vbaShift = (float) cBounds.getY();
+    vbaShift = (float) vba.align(c.getMinimumContentSize()).getY() - vbaShift;
+
+    final ElementAlignment ha
+        = (ElementAlignment) element.getProperty(ElementStyleSheet.ALIGNMENT);
+
+    final HorizontalBoundsAlignment hba = AlignmentTools.getHorizontalLayout(ha, bounds);
+    printTextContent(c, hba, vbaShift);
+  }
+
+  protected void printShapeElement (final MetaElement element, final Rectangle2D bounds)
+      throws OutputTargetException
+  {
+    final Content value = element.getContent();
+    //final Rectangle2D bounds = element.getBounds();
+
+    final boolean shouldDraw = element.getBooleanProperty(ShapeElement.DRAW_SHAPE);
+    final boolean shouldFill = element.getBooleanProperty(ShapeElement.FILL_SHAPE);
+
+    if (shouldFill == false && shouldDraw == false)
+    {
+      return;
+    }
+
+    final ShapeContent sc = (ShapeContent) value.getContentForBounds(bounds);
+    if (sc == null)
+    {
+      return;
+    }
+
+    setOperationBounds(AlignmentTools.computeAlignmentBounds(element));
+
+    final Stroke stroke = (Stroke) element.getProperty(ElementStyleSheet.STROKE);
+    updateStroke(stroke);
+    // Paint
+    final Paint extpaint = (Paint) element.getProperty(ElementStyleSheet.EXTPAINT);
+    if (isPaintSupported(extpaint))
+    {
+      updatePaint(extpaint);
+    }
+    else
+    {
+      final Color paint = (Color) element.getProperty(ElementStyleSheet.PAINT);
+      updatePaint(paint);
+    }
+
+    final Shape s = sc.getShape();
+    if (shouldDraw == true)
+    {
+      drawShape(s);
+    }
+
+    if (shouldFill == true)
+    {
+      fillShape(s);
+    }
+  }
+
+  protected void printImageElement (final MetaElement element, final Rectangle2D bounds)
+      throws OutputTargetException
+  {
+    final Content value = element.getContent();
+    final ImageContent ic = (ImageContent) value.getContentForBounds(bounds);
+
+    if (ic == null)
+    {
+      return;
+    }
+    setOperationBounds(AlignmentTools.computeAlignmentBounds(element));
+    drawImage(ic.getContent());
+  }
+
+
+  protected void printDrawableElement (final MetaElement element, final Rectangle2D bounds)
+      throws OutputTargetException
+  {
+    final Content value = element.getContent();
+    final DrawableContent content = (DrawableContent) value.getContentForBounds(bounds);
+    if (content == null)
+    {
+      return;
+    }
+    setOperationBounds(bounds);
+    drawDrawable (content.getContent());
+  }
+
+  protected void printContainerElement (final MetaElement element, final Rectangle2D bounds)
+  {
+  }
+
+  protected Rectangle2D getOperationBounds()
+  {
+    return operationBounds;
+  }
+
+  /**
+   * Correct the given bounds to fit on the page. The operation bounds
+   * are valid within the global context, we have to adjust them to the
+   * page local context.
+   *
+   * @param operationBounds the operation bounds
+   */
+  protected void setOperationBounds(final Rectangle2D operationBounds)
+  {
+    this.operationBounds = operationBounds;
+  }
+
+  protected void setPageBounds(final Rectangle2D pageBounds)
+  {
+    this.pageBounds = pageBounds;
+  }
+
+  protected Rectangle2D getPageBounds()
+  {
+    return pageBounds;
+  }
+
+  /**
+   * Add a single content junk (in most cases a single line or a line fragment) to
+   * the list of PhysicalOperations. This method is called recursivly for all contentparts.
+   *
+   * @param c  the content.
+   * @param hba  the bounds.
+   * @param vbaShift  the vertical bounds alignment shifting.
+   */
+  protected void printTextContent(final Content c, final HorizontalBoundsAlignment hba,
+                                  final float vbaShift)
+  {
+    if (c instanceof TextLine)
+    {
+      final String value = ((TextLine) c).getContent();
+      final Rectangle2D abounds = hba.align(c.getBounds());
+      abounds.setRect(abounds.getX(), abounds.getY() + vbaShift,
+          abounds.getWidth(), abounds.getHeight());
+      setOperationBounds(abounds);
+      printText(value);
+    }
+    else
+    {
+      for (int i = 0; i < c.getContentPartCount(); i++)
+      {
+        printTextContent(c.getContentPart(i), hba, vbaShift);
+      }
+    }
+  }
+
+  protected abstract void printText (String text);
+
+  protected void updateFont (final FontDefinition f)
+    throws OutputTargetException
+  {
+    if (f == null)
+    {
+      throw new NullPointerException("Font must not be null.");
+    }
+    if (f.equals(getFont()) == false)
+    {
+      setFont(f);
+    }
+  }
+
+  protected abstract void setFont (FontDefinition f) throws OutputTargetException;
+  protected abstract FontDefinition getFont ();
+
+  protected void updatePaint (final Paint paint)
+  {
+    if (paint.equals(getPaint()) == false)
+    {
+      setPaint(paint);
+    }
+  }
+
+  protected abstract void setPaint (Paint p);
+  protected abstract Paint getPaint ();
+  protected abstract boolean isPaintSupported (Paint p);
+
+
+  protected void updateStroke(final Stroke stroke)
+      throws OutputTargetException
+  {
+    if (stroke == null)
+    {
+      throw new NullPointerException("Stroke must not be null.");
+    }
+    if (stroke.equals(getStroke()) == false)
+    {
+      setStroke(stroke);
+    }
+  }
+
+  protected abstract void setStroke (Stroke s)
+      throws OutputTargetException;
+  protected abstract Stroke getStroke ();
+  protected abstract void drawShape (Shape s);
+  protected abstract void fillShape (Shape s);
+
+  protected abstract void drawDrawable (DrawableContainer d)
+      throws OutputTargetException;
+  protected abstract void drawImage(ImageContainer content)
+      throws OutputTargetException;
 }

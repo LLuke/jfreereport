@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources_fr.java,v 1.6 2003/09/14 19:33:24 taqua Exp $
+ * $Id: JFreeReportResources_fr.java,v 1.7 2003/11/01 19:52:27 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -229,7 +229,9 @@ public class JFreeReportResources_fr extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{JFreeReportResources.class.getName(), "fr"});
+    new JFreeReportResources_fr().generateResourceProperties("french");
+    System.exit(0);
+//    ResourceCompareTool.main(new String[]{JFreeReportResources.class.getName(), "fr"});
   }
 
 

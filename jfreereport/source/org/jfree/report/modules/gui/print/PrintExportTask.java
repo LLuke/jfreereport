@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintExportTask.java,v 1.7 2003/10/18 19:22:33 taqua Exp $
+ * $Id: PrintExportTask.java,v 1.8 2003/11/15 18:22:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -63,7 +63,7 @@ public class PrintExportTask extends ExportTask
 
   /**
    * Creates a new print export task.
-   * 
+   *
    * @param pageable the pageable that should be printed.
    * @param progressDialog the progress dialog that will monitor the progress.
    * @param jobname the desired jobname (or null, if undefined)
@@ -72,10 +72,6 @@ public class PrintExportTask extends ExportTask
                          final ReportProgressDialog progressDialog,
                          final String jobname)
   {
-    if (progressDialog == null)
-    {
-      throw new NullPointerException("Progress dialog is null.");
-    }
     if (pageable == null)
     {
       throw new NullPointerException("Pageable is null.");
@@ -86,7 +82,7 @@ public class PrintExportTask extends ExportTask
   }
 
   /**
-   * Displays the print dialog and executes the printing in a spearate thread. 
+   * Displays the print dialog and executes the printing in a spearate thread.
    * This is a workaround for an java bug.
    */
   protected void performExport()
@@ -101,8 +97,12 @@ public class PrintExportTask extends ExportTask
     if (pj.printDialog())
     {
       // progress dialog must not be modal, or everything here will be blocked!
-      progressDialog.setModal(false);
-      progressDialog.setVisible(true);
+      if (progressDialog != null)
+      {
+        pageable.addRepaginationListener(progressDialog);
+        progressDialog.setModal(false);
+        progressDialog.setVisible(true);
+      }
       try
       {
         synchronized (pageable.getReportLock())
@@ -123,7 +123,11 @@ public class PrintExportTask extends ExportTask
     {
       setTaskAborted();
     }
-    progressDialog.setVisible(false);
+    if (progressDialog != null)
+    {
+      progressDialog.setVisible(false);
+      pageable.removeRepaginationListener(progressDialog);
+    }
   }
 
 
@@ -133,8 +137,13 @@ public class PrintExportTask extends ExportTask
   protected void dispose()
   {
     super.dispose();
-    progressDialog.dispose();
+    if (progressDialog != null)
+    {
+      pageable.removeRepaginationListener(progressDialog);
+      progressDialog.dispose();
+    }
   }
+
   
 }
 

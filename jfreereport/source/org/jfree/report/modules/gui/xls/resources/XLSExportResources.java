@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XLSExportResources.java,v 1.6 2003/08/27 20:19:54 taqua Exp $
+ * $Id: XLSExportResources.java,v 1.7 2003/09/06 18:09:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,7 @@ import java.awt.event.KeyEvent;
 
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
+import org.jfree.report.modules.gui.print.resources.PrintExportResources;
 
 /**
  * English language resource for the Html export GUI.
@@ -117,6 +118,7 @@ public class XLSExportResources extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{XLSExportResources.class.getName(), null});
+    new XLSExportResources().generateResourceProperties("<default>");
+    System.exit(0);
   }
 }

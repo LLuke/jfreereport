@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextLine.java,v 1.5 2003/09/13 15:14:40 taqua Exp $
+ * $Id: TextLine.java,v 1.6 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes
  * -------
@@ -72,9 +72,9 @@ public strictfp class TextLine implements Content
     bounds = new Rectangle2D.Float();
     this.lineHeight = lineheight;
     this.sizeCalc = sizeCalc;
-    if (sizeCalc.getLineHeight() == 0)
+    if (sizeCalc.getLineHeight() <= 0)
     {
-      throw new IllegalStateException("This size calculator is not valid");
+      throw new IllegalStateException("This size calculator is not valid, LineHeight is <= 0");
     }
   }
 

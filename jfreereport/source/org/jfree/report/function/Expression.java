@@ -21,18 +21,19 @@
  * Boston, MA 02111-1307, USA.
  *
  * As a special exception, the copyright holders of JFreeReport give you
- * permission to extend JFreeReport with independent modules that communicate with
- * JFreeReport solely through the "Expression" or the "Function" interface, regardless
- * of the license terms of these independent modules, and to copy and distribute the
+ * permission to extend JFreeReport with modules that implement the
+ * "org.jfree.report.function.Expression" or the
+ * "org.jfree.report.function.Function" interface, regardless
+ * of the license terms of these implementations, and to copy and distribute the
  * resulting combined work under terms of your choice, provided that
  * every copy of the combined work is accompanied by a complete copy of
  * the source code of JFreeReport (the version of JFreeReport used to produce the
  * combined work), being distributed under the terms of the GNU Lesser
- * General Public License plus this exception.  An independent module is a module
- * which is not derived from or based on JFreeReport.
+ * General Public License plus this exception.
  *
  * This exception applies to the Java interfaces "Expression" and "Function"
- * and the classes "AbstractExpression" and "AbstractFunction".
+ * and the classes "AbstractExpression" and "AbstractFunction" of the package
+ * "org.jfree.report.function".
  *
  * Note that people who make modified versions of JFreeReport are not obligated
  * to grant this special exception for their modified versions; it is
@@ -45,7 +46,7 @@
  * Expression.java
  * ---------------
  *
- * $Id: Expression.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: Expression.java,v 1.3 2003/09/08 18:11:48 taqua Exp $
  *
  * ChangeLog
  * ------------

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelProcessor.java,v 1.6 2003/08/25 14:29:32 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.7 2003/09/09 15:52:53 taqua Exp $
  *
  * Changes
  * -------
@@ -42,10 +42,9 @@ import java.io.OutputStream;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.function.FunctionInitializeException;
-import org.jfree.report.modules.output.table.base.TableLayoutInfo;
+import org.jfree.report.modules.output.meta.MetaBandProducer;
+import org.jfree.report.modules.output.table.base.TableCreator;
 import org.jfree.report.modules.output.table.base.TableProcessor;
-import org.jfree.report.modules.output.table.base.TableProducer;
 import org.jfree.report.style.StyleKey;
 
 /**
@@ -65,6 +64,10 @@ public class ExcelProcessor extends TableProcessor
   public static final String ENHANCED_DATA_FORMAT_PROPERTY = "EnhancedDataFormat";
 
   /** The StyleKey for the user defined cell data format. */
+  public static final StyleKey WRAP_TEXT =
+      StyleKey.getStyleKey("Excel.WrapText", Boolean.class);
+
+  /** The StyleKey for the user defined cell data format. */
   public static final StyleKey DATA_FORMAT_STRING =
       StyleKey.getStyleKey("Excel.CellDataFormat", String.class);
 
@@ -76,17 +79,16 @@ public class ExcelProcessor extends TableProcessor
    * from the report configuration.
    */
   public static final String CONFIGURATION_PREFIX =
-      "org.jfree.report.modules.output.table.xls.";
+      "org.jfree.report.modules.output.table.xls";
 
   /**
    * Creates a new ExcelProcessor for the given report.
    *
    * @param report the report that should be processed.
    * @throws ReportProcessingException if the report initialization failed
-   * @throws FunctionInitializeException if the table writer initialization failed.
    */
   public ExcelProcessor(final JFreeReport report)
-      throws ReportProcessingException, FunctionInitializeException
+      throws ReportProcessingException
   {
     super(report);
   }
@@ -112,28 +114,6 @@ public class ExcelProcessor extends TableProcessor
   }
 
   /**
-   * Creates a TableProducer. The TableProducer is responsible to create the table.
-   *
-   * @param gridLayoutBounds the grid layout that contain the bounds from the pagination run.
-   * @return the created table producer, never null.
-   */
-  protected TableProducer createProducer(final TableLayoutInfo gridLayoutBounds)
-  {
-    return new ExcelProducer(gridLayoutBounds, getOutputStream());
-  }
-
-  /**
-   * Creates a dummy TableProducer. The TableProducer is responsible to compute the layout.
-   *
-   * @return the created table producer, never null.
-   */
-  protected TableProducer createDummyProducer()
-  {
-    return new ExcelProducer
-        (new TableLayoutInfo(false, getReport().getDefaultPageFormat()), isStrictLayout());
-  }
-
-  /**
    * Gets the report configuration prefix for that processor. This prefix defines
    * how to map the property names into the global report configuration.
    *
@@ -143,4 +123,56 @@ public class ExcelProcessor extends TableProcessor
   {
     return CONFIGURATION_PREFIX;
   }
+
+  protected TableCreator createContentCreator ()
+  {
+    // todo implement me
+    return null;
+  }
+
+  protected MetaBandProducer createMetaBandProducer ()
+  {
+    return new ExcelMetaBandProducer(isDefineDataFormats());
+  }
+
+  /**
+   * Defines whether to map java objects into excel extended cell formats. This feature
+   * can be used to create numeric and date cells in the excel sheet, but the mapping may
+   * contain errors.
+   * <p/>
+   * We try to directly map the java.text.SimpleDateFormat and java.text.DecimalFormat
+   * into their excel counter parts and hope that everything works fine. If not, you will
+   * have to adjust the format afterwards.
+   *
+   * @return true if cells should contain a custom data format for numeric or date cells
+   *         or false when all cells should contain strings.
+   */
+  public boolean isDefineDataFormats ()
+  {
+    return getReport().getReportConfiguration().getConfigProperty
+            (CONFIGURATION_PREFIX + "." + ENHANCED_DATA_FORMAT_PROPERTY,
+                    "true").equals("true");
+  }
+
+  /**
+   * Defines whether to map java objects into excel extended cell formats. This feature
+   * can be used to create numeric and date cells in the excel sheet, but the mapping may
+   * contain errors.
+   * <p/>
+   * We try to directly map the java.text.SimpleDateFormat and java.text.DecimalFormat
+   * into their excel counter parts and hope that everything works fine. If not, you will
+   * have to adjust the format afterwards.
+   *
+   * @param defineDataFormats set to true if cells should contain a custom data format for
+   *                          numeric or date cells or false when all cells should contain
+   *                          strings.
+   */
+  public void setDefineDataFormats (final boolean defineDataFormats)
+  {
+    getReport().getReportConfiguration().setConfigProperty
+            (CONFIGURATION_PREFIX + "." + ENHANCED_DATA_FORMAT_PROPERTY,
+                    String.valueOf(defineDataFormats));
+  }
+
+
 }

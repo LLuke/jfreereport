@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlFilesystem.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: HtmlFilesystem.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,8 @@ package org.jfree.report.modules.output.table.html;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.jfree.report.ImageReference;
+import org.jfree.report.modules.output.table.html.ref.HtmlReference;
+import org.jfree.report.ImageContainer;
 
 /**
  * The HtmlFilesystem provides an abstraction layer for the various storage methods
@@ -81,7 +82,7 @@ public interface HtmlFilesystem
    * @return the generated HtmlReference, never null.
    * @throws IOException if IO errors occured while creating the reference.
    */
-  public HtmlReferenceData createImageReference(ImageReference reference) throws IOException;
+  public HtmlReference createImageReference(ImageContainer reference) throws IOException;
 
   /**
    * Creates a HtmlReference for StyleSheetData. If the target filesystem does not
@@ -91,7 +92,7 @@ public interface HtmlFilesystem
    * @return the generated HtmlReference, never null.
    * @throws IOException if IO errors occured while creating the reference.
    */
-  public HtmlReferenceData createCSSReference(String styleSheet) throws IOException;
+  public HtmlReference createCSSReference(String styleSheet) throws IOException;
 
   /**
    * Close the Filesystem and write any buffered content. The filesystem will not

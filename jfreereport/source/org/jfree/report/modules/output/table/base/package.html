@@ -1,3 +1,51 @@
 <html><body>
+<p>
 Common base classes for the table style output targets.
+</p>
+<h3>Limitations</h3>
+<p>
+The TableExports add several restrictions to the report layouts.
+</p>
+<p>
+Report elements must not overlay each other. It is ok for bands,
+but the actual data must never overlap. Once a cell is occupied,
+it cannot be redefined to contain data from other elements.
+CellData cannot be combined.
+</p>
+<p>
+Backgrounds can only be defined for the complete cell.
+</p>
+<h3>How does the table export work?</h3>
+<p>
+All table targets use a two step process to create the output. In
+the first step, the layout is computed and styles information is collected.
+The style information will later be reused to form cascading stylesheets
+or to fill the Excel style tables.
+</p>
+<p>
+The public interface to perform a table export is contained in the
+class TableProcessor and their derived classes. Users will not have to
+worry about the internal details of the export process itself.
+</p>
+<p>
+The usual report event sequence will trigger events on the TableWriter
+implementation. This implementation will perform the necessary global layout
+and generates the MetaElements, which represent an output target dependent
+layout result.
+</p>
+<p>
+These MetaElements get forwared to an attached TableCreator, which either
+collects the table grid information or which uses previously collected
+grid data to finally build the output. The TableProcessor implementation
+is free to allow more than two process levels.
+</p>
+<p>
+To define cell background, implementations must use the class TableCellBackground
+as base class.
+</p>
+<h2>How to implement table targets</h2>
+<p>
+TableTarget implementors have to provide at least a suitable MetaBandProducer
+and a tablecontent creator.
+</p>
 </body></html>

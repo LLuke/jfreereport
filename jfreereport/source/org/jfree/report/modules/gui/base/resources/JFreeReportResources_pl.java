@@ -28,7 +28,7 @@
  * Original Author:  PB;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_pl.java,v 1.3 2003/08/19 13:37:23 taqua Exp $
+ * $Id: JFreeReportResources_pl.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -116,7 +116,9 @@ public class JFreeReportResources_pl extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{JFreeReportResources.class.getName(), "pl"});
+    new JFreeReportResources_pl().generateResourceProperties("polish");
+    System.exit(0);
+//    ResourceCompareTool.main(new String[]{JFreeReportResources.class.getName(), "pl"});
   }
 
 

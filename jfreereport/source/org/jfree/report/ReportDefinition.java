@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportDefinition.java,v 1.6 2003/12/06 16:47:10 taqua Exp $
+ * $Id: ReportDefinition.java,v 1.7 2003/12/21 20:51:41 taqua Exp $
  *
  * Changes
  * -------
@@ -147,4 +147,6 @@ public interface ReportDefinition extends Cloneable
   public StyleSheetCollection getStyleSheetCollection();
 
   public DataRow getDataRow ();
+
+  public PageDefinition getPageDefinition();
 }

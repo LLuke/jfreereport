@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionEditor.java,v 1.8 2003/09/15 18:26:50 taqua Exp $
+ * $Id: ConfigDescriptionEditor.java,v 1.9 2003/11/07 18:33:51 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -80,6 +80,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.jfree.report.modules.gui.base.ResourceBundleUtils;
 import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.ActionRadioButton;
@@ -88,7 +89,6 @@ import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.ConfigDescriptionModel;
 import org.jfree.report.modules.gui.config.model.EnumConfigDescriptionEntry;
 import org.jfree.report.modules.gui.config.model.TextConfigDescriptionEntry;
-import org.jfree.report.modules.gui.config.resources.ConfigResources;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
@@ -145,7 +145,8 @@ public class ConfigDescriptionEditor extends JFrame
     public SaveAction()
     {
       putValue(NAME, getResources().getString("action.save.name"));
-      putValue(SMALL_ICON, getResources().getObject("action.save.small-icon"));
+      putValue(SMALL_ICON,
+          ResourceBundleUtils.getIcon(getResources().getString("action.save.small-icon")));
     }
 
     /**
@@ -171,7 +172,8 @@ public class ConfigDescriptionEditor extends JFrame
     public ImportAction()
     {
       putValue(NAME, getResources().getString("action.import.name"));
-      putValue(SMALL_ICON, getResources().getObject("action.import.small-icon"));
+      putValue(SMALL_ICON,
+          ResourceBundleUtils.getIcon(getResources().getString("action.import.small-icon")));
 
     }
 
@@ -200,7 +202,8 @@ public class ConfigDescriptionEditor extends JFrame
     public AddEntryAction()
     {
       putValue(NAME, getResources().getString("action.add-entry.name"));
-      putValue(SMALL_ICON, getResources().getObject("action.add-entry.small-icon"));
+      putValue(SMALL_ICON,
+          ResourceBundleUtils.getIcon(getResources().getString("action.add-entry.small-icon")));
     }
 
     /**
@@ -230,7 +233,8 @@ public class ConfigDescriptionEditor extends JFrame
     public RemoveEntryAction()
     {
       putValue(NAME, getResources().getString("action.remove-entry.name"));
-      putValue(SMALL_ICON, getResources().getObject("action.remove-entry.small-icon"));
+      putValue(SMALL_ICON,
+          ResourceBundleUtils.getIcon(getResources().getString("action.remove-entry.small-icon")));
     }
 
     /**
@@ -261,7 +265,8 @@ public class ConfigDescriptionEditor extends JFrame
     public LoadAction()
     {
       putValue(NAME, getResources().getString("action.load.name"));
-      putValue(SMALL_ICON, getResources().getObject("action.load.small-icon"));
+      putValue(SMALL_ICON,
+          ResourceBundleUtils.getIcon(getResources().getString("action.load.small-icon")));
     }
 
     /**
@@ -548,7 +553,7 @@ public class ConfigDescriptionEditor extends JFrame
    * dialogs.
    */
   private static final String RESOURCE_BUNDLE =
-      ConfigResources.class.getName();
+      "org.jfree.report.modules.gui.config.resources.config-resources";
 
   /** A radio button to select the text editor type for the current key. */ 
   private ActionRadioButton rbText;

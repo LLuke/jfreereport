@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostGroupFooterState.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: PostGroupFooterState.java,v 1.3 2003/09/21 10:49:08 taqua Exp $
  *
  * Changes
  * -------
@@ -138,4 +138,14 @@ public final class PostGroupFooterState extends ReportState
       }
     }
   }
+
+
+  /**
+   * Deactivates the current group by decrementing the current group index.
+   */
+  private void leaveGroup()
+  {
+    setCurrentGroupIndex(getCurrentGroupIndex() - 1);
+  }
+
 }

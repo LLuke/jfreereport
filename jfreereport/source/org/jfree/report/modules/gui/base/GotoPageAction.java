@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GotoPageAction.java,v 1.3 2003/08/27 20:19:52 taqua Exp $
+ * $Id: GotoPageAction.java,v 1.4 2003/08/31 19:27:56 taqua Exp $
  *
  * Changes
  * -------
@@ -66,9 +66,9 @@ public abstract class GotoPageAction extends AbstractActionDowngrade
     this.putValue(NAME, resources.getString("action.gotopage.name"));
     this.putValue(SHORT_DESCRIPTION, resources.getString("action.gotopage.description"));
     this.putValue(ActionDowngrade.MNEMONIC_KEY,
-        resources.getObject("action.gotopage.mnemonic"));
+        ResourceBundleUtils.createMnemonic(resources.getString("action.gotopage.mnemonic")));
     this.putValue(ActionDowngrade.ACCELERATOR_KEY,
-        resources.getObject("action.gotopage.accelerator"));
+        ResourceBundleUtils.createMenuKeystroke(resources.getString("action.gotopage.accelerator")));
     this.putValue(SMALL_ICON, ImageUtils.createTransparentIcon(16, 16));
     this.putValue("ICON24", ImageUtils.createTransparentIcon(24, 24));
   }

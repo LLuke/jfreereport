@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.7 2003/11/07 18:33:54 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.8 2003/12/06 17:15:20 taqua Exp $
  *
  * Changes
  * -------
@@ -250,8 +250,8 @@ public class CSVProcessor
     // The pageformat will cause trouble in later versions, when printing over
     // multiple pages gets implemented. This property will be replaced by a more
     // suitable alternative.
-    final PageFormat p = getReport().getDefaultPageFormat();
-    state.setProperty(JFreeReport.REPORT_PAGEFORMAT_PROPERTY, p.clone());
+//    final PageFormat p = getReport().getDefaultPageFormat();
+//    state.setProperty(JFreeReport.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
     // now change the writer function to be a dummy writer. We don't want any
     // output in the prepare runs.

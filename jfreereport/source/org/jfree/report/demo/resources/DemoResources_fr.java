@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DemoResources_fr.java,v 1.1 2003/09/14 19:33:15 taqua Exp $
+ * $Id: DemoResources_fr.java,v 1.2 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------
@@ -108,4 +108,10 @@ public class DemoResources_fr extends JFreeReportResources
 
   };
 
+  public static void main(String[] args)
+  {
+    new DemoResources_fr().generateResourceProperties("french");
+    System.exit(0);
+
+  }
 }

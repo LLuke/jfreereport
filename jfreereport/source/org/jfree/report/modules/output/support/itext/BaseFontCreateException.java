@@ -28,17 +28,17 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontCreateException.java,v 1.3 2003/08/24 15:06:42 taqua Exp $
+ * $Id: BaseFontCreateException.java,v 1.4 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------------------------
  * 14-Jul-2003 : Initial version
- *
+ * 25-Jan-2004 : BaseClass is now RuntimeException instead of Exception.
  */
 
 package org.jfree.report.modules.output.support.itext;
 
-import org.jfree.util.StackableException;
+import org.jfree.util.StackableRuntimeException;
 
 /**
  * The BaseFontCreateException is thrown if there are problemns while
@@ -46,7 +46,7 @@ import org.jfree.util.StackableException;
  *
  * @author Thomas Morgner
  */
-public class BaseFontCreateException extends StackableException
+public class BaseFontCreateException extends StackableRuntimeException
 {
   /**
    * Creates a new BaseFontCreateException with no message.

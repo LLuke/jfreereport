@@ -28,7 +28,7 @@
  * Original Author:  Thomas Dilts;
  * Contributor(s):   -;
  *
- * $Id: ConverterResources_sv.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
+ * $Id: ConverterResources_sv.java,v 1.5 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -84,6 +84,10 @@ public class ConverterResources_sv extends JFreeReportResources
 
         {"convertdialog.title", "Rapport konverterare"},
 
+        {"ResultTableModel.Severity", "Allvarlighet"},
+        {"ResultTableModel.Message", "Meddelande"},
+        {"ResultTableModel.Line", "Rad"},
+        {"ResultTableModel.Column", "Kolumn"},
       };
 
   /**
@@ -93,7 +97,9 @@ public class ConverterResources_sv extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{ConverterResources.class.getName(), "sv"});
+    new ConverterResources_sv().generateResourceProperties("swedish");
+    System.exit(0);
   }
 
+  
 }

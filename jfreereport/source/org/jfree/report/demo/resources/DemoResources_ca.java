@@ -28,7 +28,7 @@
  * Original Author:  Marc Casas
  * Contributor(s):   -;
  *
- * $Id: $
+ * $Id: DemoResources_ca.java,v 1.1 2003/09/08 18:41:40 taqua Exp $
  *
  * Changes
  * -------
@@ -110,7 +110,8 @@ public class DemoResources_ca extends JFreeReportResources
     {"example", "Exemple {0}"},
 
     {"report.previewfailure.message", 
-      "Ha ocorregut un error mentre s'inicialitzava la finestra de " +      "previsualització."},
+      "Ha ocorregut un error mentre s'inicialitzava la finestra de " +
+      "previsualització."},
     {"report.previewfailure.title", "Error de visualització de l'informe"},
 
   };
@@ -123,7 +124,8 @@ public class DemoResources_ca extends JFreeReportResources
    */
   public static void main(final String[] args)
   {
-    ResourceCompareTool.main(new String[]{DemoResources.class.getName(), "ca"});
+    new DemoResources_ca().generateResourceProperties("catalan");
+    System.exit(0);
   }
 
 }

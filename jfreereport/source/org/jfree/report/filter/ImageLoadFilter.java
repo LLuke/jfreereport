@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageLoadFilter.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: ImageLoadFilter.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * ChangeLog
  * --------------------------------------
@@ -40,7 +40,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 
-import org.jfree.report.ImageReference;
+import org.jfree.report.DefaultImageReference;
 import org.jfree.report.util.KeyedQueue;
 import org.jfree.report.util.Log;
 
@@ -127,7 +127,7 @@ public class ImageLoadFilter implements DataFilter, Serializable
     {
       try
       {
-        retval = new ImageReference(url);
+        retval = new DefaultImageReference(url);
       }
       catch (IOException ioe)
       {

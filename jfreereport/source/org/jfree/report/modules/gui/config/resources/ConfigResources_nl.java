@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigResources.java,v 1.7 2003/09/15 15:31:59 taqua Exp $
+ * $Id: ConfigResources_nl.java,v 1.1 2003/11/05 17:33:16 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -128,4 +128,11 @@ public class ConfigResources_nl extends JFreeReportResources
         {"config-description-editor.load-failed", "Laden mislukt: {0}"},
         {"config-description-editor.update-complete", "Bijwerken van het item gedaan."},
       };
+
+  public static void main(final String[] args)
+   {
+     new ConfigResources_nl().generateResourceProperties("dutch");
+     System.exit(0);
+   }
+
 }

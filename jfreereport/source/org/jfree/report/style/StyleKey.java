@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKey.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
+ * $Id: StyleKey.java,v 1.5 2003/08/31 19:27:59 taqua Exp $
  *
  * Changes
  * -------
@@ -68,16 +68,20 @@ public final class StyleKey implements Serializable, Cloneable
   /** The cached hashcode for the stylekey. */
   private int hashCode;
 
+  /** Whether this stylekey is transient. */
+  private boolean trans;
+
   /**
    * Creates a new style key.
    *
    * @param name  the name (never null).
    * @param valueType  the class of the value for this key (never null).
    */
-  private StyleKey(final String name, final Class valueType)
+  private StyleKey(final String name, final Class valueType, final boolean trans)
   {
     setName(name);
     setValueType(valueType);
+    setTransient(trans);
   }
 
   /**
@@ -141,6 +145,21 @@ public final class StyleKey implements Serializable, Cloneable
    */
   public static StyleKey getStyleKey(final String name, final Class valueType)
   {
+    return getStyleKey(name, valueType, false);
+  }
+
+  /**
+   * Returns the key with the specified name. The given type is not
+   * checked against a possibly alredy defined definition, it is
+   * assumed that the type is only given for a new key definition.
+   *
+   * @param name  the name.
+   * @param valueType  the class.
+   *
+   * @return the style key.
+   */
+  public static StyleKey getStyleKey(final String name, final Class valueType, final boolean trans)
+  {
     if (definedKeys == null)
     {
       definedKeys = new Hashtable();
@@ -148,7 +167,7 @@ public final class StyleKey implements Serializable, Cloneable
     StyleKey key = (StyleKey) definedKeys.get(name);
     if (key == null)
     {
-      key = new StyleKey(name, valueType);
+      key = new StyleKey(name, valueType, trans);
       definedKeys.put(name, key);
     }
     return key;
@@ -234,6 +253,16 @@ public final class StyleKey implements Serializable, Cloneable
       return key;
     }
     return getStyleKey(name, valueType);
+  }
+
+  public boolean isTransient()
+  {
+    return trans;
+  }
+
+  private void setTransient(boolean trans)
+  {
+    this.trans = trans;
   }
 
   /**
