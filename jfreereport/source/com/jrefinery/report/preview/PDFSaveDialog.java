@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.23 2003/02/03 18:52:45 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.24 2003/02/04 17:56:18 taqua Exp $
  *
  * Changes
  * --------
@@ -466,6 +466,8 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
     txFilename = new JTextField();
     txTitle = new JTextField();
     encodingModel = EncodingComboBoxModel.createDefaultModel();
+    encodingModel.addEncodingUnchecked("Identity-H", "PDF-Unicode encoding");
+    encodingModel.addEncodingUnchecked("Identity-V", "PDF-Unicode encoding");
     encodingModel.sort();
     cbEncoding = new JComboBox(encodingModel);
 

@@ -2,7 +2,7 @@
  * Date: Jan 21, 2003
  * Time: 7:54:06 PM
  *
- * $Id: EncodingComboBoxModel.java,v 1.5 2003/02/04 17:56:15 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.6 2003/02/08 19:32:06 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -151,6 +151,12 @@ public class EncodingComboBoxModel implements ComboBoxModel
     return true;
   }
 
+  public void addEncodingUnchecked (String name, String description)
+  {
+    encodings.add (new EncodingCarrier(name, description));
+    fireContentsChanged();
+  }
+
   public void sort ()
   {
     Collections.sort(encodings, new EncodingCarrierComparator());
@@ -284,6 +290,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
     ecb.addEncoding("MS936", "Windows Simplified Chinese");
     ecb.addEncoding("GB18030", "Simplified Chinese, PRC standard");
     ecb.addEncoding("EUC_CN", "GB2312, EUC encoding, Simplified Chinese");
+    ecb.addEncoding("GB2312", "GB2312, EUC encoding, Simplified Chinese");
     ecb.addEncoding("GBK", "GBK, Simplified Chinese");
     ecb.addEncoding("ISCII91", "ISCII encoding of Indic scripts");
     ecb.addEncoding("ISO-2022-CN-GB", "GB2312 in ISO 2022 CN form, Simplified Chinese");
