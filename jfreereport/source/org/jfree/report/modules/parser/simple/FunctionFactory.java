@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.7 2003/11/05 17:31:53 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.8 2003/11/07 18:33:57 taqua Exp $
  *
  * Changes
  * -------
@@ -46,10 +46,8 @@ import java.util.Properties;
 
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.Function;
-import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.util.CharacterEntityParser;
-import org.jfree.report.util.Log;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.ParserUtil;
 import org.xml.sax.Attributes;
@@ -421,14 +419,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   protected void endFunction()
       throws SAXException
   {
-    try
-    {
-      getReport().addFunction(getCurrentFunction());
-    }
-    catch (FunctionInitializeException fie)
-    {
-      throw new SAXException(fie);
-    }
+    getReport().addExpression(getCurrentFunction());
   }
 
   /**
@@ -440,15 +431,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   protected void endExpression()
       throws SAXException
   {
-    try
-    {
-      getReport().addExpression(getCurrentExpression());
-    }
-    catch (FunctionInitializeException fie)
-    {
-      Log.warn("Function initialization failed", fie);
-      throw new ParseException(fie);
-    }
+    getReport().addExpression(getCurrentExpression());
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.9 2003/12/06 15:24:02 taqua Exp $
+ * $Id: JFreeReport.java,v 1.10 2003/12/06 16:47:10 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -145,9 +145,6 @@ public class JFreeReport implements Cloneable, Serializable
   /** Storage for arbitrary properties that a user can assign to the report. */
   private ReportProperties properties;
 
-  /** Storage for the functions in the report. */
-  private ExpressionCollection functions;
-
   /** Storage for the expressions in the report. */
   private ExpressionCollection expressions;
 
@@ -213,7 +210,6 @@ public class JFreeReport implements Cloneable, Serializable
     this.watermark.registerStyleSheetCollection(this.styleSheetCollection);
 
     this.data = new DefaultTableModel();
-    this.functions = new ExpressionCollection();
     this.expressions = new ExpressionCollection();
     setDefaultPageFormat(null);
   }
@@ -561,10 +557,8 @@ public class JFreeReport implements Cloneable, Serializable
    * Adds a function to the report's collection of functions.
    *
    * @param function  the function.
-   *
-   * @throws FunctionInitializeException if any of the functions cannot be initialized.
    */
-  public void addExpression(final Expression function) throws FunctionInitializeException
+  public void addExpression(final Expression function)
   {
     expressions.add(function);
   }
@@ -573,12 +567,11 @@ public class JFreeReport implements Cloneable, Serializable
    * Adds a function to the report's collection of functions.
    *
    * @param function  the function.
-   *
-   * @throws FunctionInitializeException if any of the functions cannot be initialized.
+   * @deprecated use addException(..) instead.
    */
-  public void addFunction(final Function function) throws FunctionInitializeException
+  public void addFunction(final Function function)
   {
-    this.functions.add(function);
+    addExpression(function);
   }
 
   /**
@@ -588,7 +581,7 @@ public class JFreeReport implements Cloneable, Serializable
    */
   public ExpressionCollection getFunctions()
   {
-    return this.functions;
+    throw new UnsupportedOperationException("Use getExpressions() instead.");
   }
 
   /**
@@ -598,14 +591,7 @@ public class JFreeReport implements Cloneable, Serializable
    */
   public void setFunctions(final ExpressionCollection functions)
   {
-    if (functions == null)
-    {
-      throw new NullPointerException("JFreeReport.setFunctions(...) : null not permitted.");
-    }
-    else
-    {
-      this.functions = functions;
-    }
+    throw new UnsupportedOperationException("Use setExpressions(..) instead.");
   }
 
   /**
@@ -690,7 +676,6 @@ public class JFreeReport implements Cloneable, Serializable
     report.reportFooter = (ReportFooter) reportFooter.clone();
     report.reportHeader = (ReportHeader) reportHeader.clone();
     report.watermark = (Band) watermark.clone();
-    report.functions = (ExpressionCollection) functions.clone();
     report.expressions = (ExpressionCollection) expressions.clone();
     report.styleSheetCollection = (StyleSheetCollection) styleSheetCollection.clone();
     report.groups.updateStyleSheetCollection(report.styleSheetCollection);

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: StartState.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import java.util.Iterator;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.function.FunctionInitializeException;
 
 /**
  * The first state in the JFreeReport state transition diagram.
@@ -64,7 +65,7 @@ public final class StartState extends ReportState
    * @throws CloneNotSupportedException if the initial cloning of the report definition fails.
    */
   public StartState(final JFreeReport report)
-      throws CloneNotSupportedException
+      throws CloneNotSupportedException, FunctionInitializeException
   {
     super(report);
     final Iterator it = getLevels();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport2.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
+ * $Id: SampleReport2.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes:
  * --------
@@ -218,7 +218,7 @@ public class SampleReport2
     pc.setProperty("field", "CreateComponent");
     pc.setProperty("element", "element");
     pc.setProperty("scale", "5");
-    report.addFunction(pc);
+    report.addExpression(pc);
 
     return report;
   }

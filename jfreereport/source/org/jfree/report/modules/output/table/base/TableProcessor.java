@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.10 2003/09/09 15:52:53 taqua Exp $
+ * $Id: TableProcessor.java,v 1.11 2003/11/07 18:33:56 taqua Exp $
  *
  * Changes
  * -------
@@ -112,10 +112,9 @@ public abstract class TableProcessor
    * @param report the report that should be processed.
    *
    * @throws ReportProcessingException if the report initialization failed
-   * @throws FunctionInitializeException if the table writer initialization failed.
    */
   public TableProcessor(final JFreeReport report)
-      throws ReportProcessingException, FunctionInitializeException
+      throws ReportProcessingException
   {
     if (report == null)
     {
@@ -134,7 +133,7 @@ public abstract class TableProcessor
 
     tableWriter = new TableWriter();
     tableWriter.setName(TABLE_WRITER);
-    this.report.addFunction(tableWriter);
+    this.report.addExpression(tableWriter);
 
     // initialize with the report default.
   }
@@ -192,153 +191,164 @@ public abstract class TableProcessor
    * @return a list of report states (one for the beginning of each page in the report).
    *
    * @throws ReportProcessingException if there was a problem processing the report.
-   * @throws CloneNotSupportedException if there is a cloning problem.
    */
-  private ReportState repaginate() throws ReportProcessingException, CloneNotSupportedException
+  private ReportState repaginate()
+      throws ReportProcessingException
   {
     // apply the configuration ...
     configure();
 
-    final StartState startState = new StartState(getReport());
-    ReportState state = startState;
-    ReportState retval = null;
-
-    // the report processing can be splitted into 2 separate processes.
-    // The first is the ReportPreparation; all function values are resolved and
-    // a dummy run is done to calculate the final layout. This dummy run is
-    // also necessary to resolve functions which use or depend on the PageCount.
-
-    // the second process is the printing of the report, this is done in the
-    // processReport() method.
-
-    // during a prepare run the REPORT_PREPARERUN_PROPERTY is set to true.
-    state.setProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
-
-    // the pageformat is added to the report properties, PageFormat is not serializable,
-    // so a repaginated report is no longer serializable.
-    //
-    // The pageformat will cause trouble in later versions, when printing over
-    // multiple pages gets implemented. This property will be replaced by a more
-    // suitable alternative.
-    final PageFormat p = report.getDefaultPageFormat();
-    state.setProperty(JFreeReport.REPORT_PAGEFORMAT_PROPERTY, p.clone());
-
-    // now change the writer function to be a dummy writer. We don't want any
-    // output in the prepare runs.
-    final TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
-    w.setProducer(createDummyProducer());
-    w.getProducer().configure(getProperties());
-
-    // now process all function levels.
-    // there is at least one level defined, as we added the CSVWriter
-    // to the report.
-    final Iterator it = startState.getLevels();
-    if (it.hasNext() == false)
+    try
     {
-      throw new IllegalStateException("No functions defined, invalid implementation.");
-    }
+      final StartState startState = new StartState(getReport());
+      ReportState state = startState;
+      ReportState retval = null;
 
-    final int eventTrigger = state.getNumberOfRows() / MAX_EVENTS_PER_RUN;
+      // the report processing can be splitted into 2 separate processes.
+      // The first is the ReportPreparation; all function values are resolved and
+      // a dummy run is done to calculate the final layout. This dummy run is
+      // also necessary to resolve functions which use or depend on the PageCount.
 
-    boolean hasNext;
-    final RepaginationState stateEvent = new RepaginationState(this, 0, 0, 0, 0, false);
-    ReportStateProgress progress = null;
-    int level = ((Integer) it.next()).intValue();
-    // outer loop: process all function levels
-    do
-    {
-      // if the current level is the output-level, then save the report state.
-      // The state is used later to restart the report processing.
-      if (level == -1)
+      // the second process is the printing of the report, this is done in the
+      // processReport() method.
+
+      // during a prepare run the REPORT_PREPARERUN_PROPERTY is set to true.
+      state.setProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
+
+      // the pageformat is added to the report properties, PageFormat is not serializable,
+      // so a repaginated report is no longer serializable.
+      //
+      // The pageformat will cause trouble in later versions, when printing over
+      // multiple pages gets implemented. This property will be replaced by a more
+      // suitable alternative.
+      final PageFormat p = report.getDefaultPageFormat();
+      state.setProperty(JFreeReport.REPORT_PAGEFORMAT_PROPERTY, p.clone());
+
+      // now change the writer function to be a dummy writer. We don't want any
+      // output in the prepare runs.
+      final TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
+      w.setProducer(createDummyProducer());
+      w.getProducer().configure(getProperties());
+
+      // now process all function levels.
+      // there is at least one level defined, as we added the CSVWriter
+      // to the report.
+      final Iterator it = startState.getLevels();
+      if (it.hasNext() == false)
       {
-        retval = (ReportState) state.clone();
+        throw new IllegalStateException("No functions defined, invalid implementation.");
       }
 
-      // inner loop: process the complete report, calculate the function values
-      // for the current level. Higher level functions are not available in the
-      // dataRow.
-      int lastRow = -1;
-      int eventCount = 0;
-      final boolean failOnError
-          = (level == -1) && getReport().getReportConfiguration().isStrictErrorHandling();
-      while (!state.isFinish())
-      {
-        checkInterrupted();
+      final int eventTrigger = state.getNumberOfRows() / MAX_EVENTS_PER_RUN;
 
-        if (lastRow != state.getCurrentDisplayItem())
+      boolean hasNext;
+      final RepaginationState stateEvent = new RepaginationState(this, 0, 0, 0, 0, false);
+      ReportStateProgress progress = null;
+      int level = ((Integer) it.next()).intValue();
+      // outer loop: process all function levels
+      do
+      {
+        // if the current level is the output-level, then save the report state.
+        // The state is used later to restart the report processing.
+        if (level == -1)
         {
-          lastRow = state.getCurrentDisplayItem();
-          if (eventCount == 0)
+          retval = (ReportState) state.clone();
+        }
+
+        // inner loop: process the complete report, calculate the function values
+        // for the current level. Higher level functions are not available in the
+        // dataRow.
+        int lastRow = -1;
+        int eventCount = 0;
+        final boolean failOnError
+            = (level == -1) && getReport().getReportConfiguration().isStrictErrorHandling();
+        while (!state.isFinish())
+        {
+          checkInterrupted();
+
+          if (lastRow != state.getCurrentDisplayItem())
           {
-            stateEvent.reuse(level, state.getCurrentPage(), state.getCurrentDataItem(),
-                state.getNumberOfRows(), true);
-            fireStateUpdate(stateEvent);
-            eventCount += 1;
-          }
-          else
-          {
-            if (eventCount == eventTrigger)
+            lastRow = state.getCurrentDisplayItem();
+            if (eventCount == 0)
             {
-              eventCount = 0;
+              stateEvent.reuse(level, state.getCurrentPage(), state.getCurrentDataItem(),
+                  state.getNumberOfRows(), true);
+              fireStateUpdate(stateEvent);
+              eventCount += 1;
             }
             else
             {
-              eventCount += 1;
+              if (eventCount == eventTrigger)
+              {
+                eventCount = 0;
+              }
+              else
+              {
+                eventCount += 1;
+              }
+            }
+          }
+
+          progress = state.createStateProgress(progress);
+          state = state.advance();
+          if (failOnError)
+          {
+            if (state.isErrorOccured() == true)
+            {
+              throw new ReportEventException("Failed to dispatch an event.", state.getErrors());
+            }
+          }
+
+          if (!state.isFinish())
+          {
+            // if the report processing is stalled, throw an exception; an infinite
+            // loop would be caused.
+            if (!state.isProceeding(progress))
+            {
+              throw new ReportProcessingException("State did not proceed, bailing out!");
             }
           }
         }
 
-        progress = state.createStateProgress(progress);
-        state = state.advance();
-        if (failOnError)
+        // if there is an other level to process, then use the finish state to
+        // create a new start state, which will continue the report processing on
+        // the next higher level.
+        hasNext = it.hasNext();
+        if (hasNext)
         {
-          if (state.isErrorOccured() == true)
+          level = ((Integer) it.next()).intValue();
+          if (state instanceof FinishState)
           {
-            throw new ReportEventException("Failed to dispatch an event.", state.getErrors());
+            state = new StartState((FinishState) state, level);
           }
-        }
-
-        if (!state.isFinish())
-        {
-          // if the report processing is stalled, throw an exception; an infinite
-          // loop would be caused.
-          if (!state.isProceeding(progress))
+          else
           {
-            throw new ReportProcessingException("State did not proceed, bailing out!");
+            throw new IllegalStateException("Repaginate did not produce an finish state");
           }
         }
       }
+      while (hasNext == true);
 
-      // if there is an other level to process, then use the finish state to
-      // create a new start state, which will continue the report processing on
-      // the next higher level.
-      hasNext = it.hasNext();
-      if (hasNext)
+      state.setProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
+
+      // finally prepeare the returned start state.
+      final StartState sretval = (StartState) retval;
+      if (sretval == null)
       {
-        level = ((Integer) it.next()).intValue();
-        if (state instanceof FinishState)
-        {
-          state = new StartState((FinishState) state, level);
-        }
-        else
-        {
-          throw new IllegalStateException("Repaginate did not produce an finish state");
-        }
+        throw new IllegalStateException("There was no valid pagination done.");
       }
+      // reset the state, so that the datarow points to the first row of the tablemodel.
+      sretval.resetState();
+      return sretval;
     }
-    while (hasNext == true);
-
-    state.setProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
-
-    // finally prepeare the returned start state.
-    final StartState sretval = (StartState) retval;
-    if (sretval == null)
+    catch (FunctionInitializeException fne)
     {
-      throw new IllegalStateException("There was no valid pagination done.");
+      throw new ReportProcessingException("Unable to initialize the functions/expressions.", fne);
     }
-    // reset the state, so that the datarow points to the first row of the tablemodel.
-    sretval.resetState();
-    return sretval;
+    catch (CloneNotSupportedException cne)
+    {
+      throw new ReportProcessingException("Unable to initialize the report, clone error", cne);
+    }
   }
 
   /**
@@ -349,70 +359,63 @@ public abstract class TableProcessor
    */
   public void processReport() throws ReportProcessingException
   {
-    try
+    ReportState state = repaginate();
+
+    final TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
+    w.setProducer(createProducer(w.getProducer().getGridBoundsCollection()));
+    w.getProducer().configure(getProperties());
+
+    w.setMaxWidth((float) getReport().getDefaultPageFormat().getImageableWidth());
+    final RepaginationState stateEvent = new RepaginationState(this, 0, 0, 0, 0, false);
+
+    final int maxRows = state.getNumberOfRows();
+    int lastRow = -1;
+    int eventCount = 0;
+    final int eventTrigger = maxRows / MAX_EVENTS_PER_RUN;
+
+    final boolean failOnError =
+        getReport().getReportConfiguration().isStrictErrorHandling();
+    ReportStateProgress progress = null;
+    while (!state.isFinish())
     {
-      ReportState state = repaginate();
+      checkInterrupted();
 
-      final TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
-      w.setProducer(createProducer(w.getProducer().getGridBoundsCollection()));
-      w.getProducer().configure(getProperties());
-
-      w.setMaxWidth((float) getReport().getDefaultPageFormat().getImageableWidth());
-      final RepaginationState stateEvent = new RepaginationState(this, 0, 0, 0, 0, false);
-
-      final int maxRows = state.getNumberOfRows();
-      int lastRow = -1;
-      int eventCount = 0;
-      final int eventTrigger = maxRows / MAX_EVENTS_PER_RUN;
-
-      final boolean failOnError =
-          getReport().getReportConfiguration().isStrictErrorHandling();
-      ReportStateProgress progress = null;
-      while (!state.isFinish())
+      if (lastRow != state.getCurrentDisplayItem())
       {
-        checkInterrupted();
-        
-        if (lastRow != state.getCurrentDisplayItem())
+        lastRow = state.getCurrentDisplayItem();
+        if (eventCount == 0)
         {
-          lastRow = state.getCurrentDisplayItem();
-          if (eventCount == 0)
+          stateEvent.reuse(TableWriter.OUTPUT_LEVEL, state.getCurrentPage(),
+              state.getCurrentDataItem(), state.getNumberOfRows(), true);
+          fireStateUpdate(stateEvent);
+          eventCount += 1;
+        }
+        else
+        {
+          if (eventCount == eventTrigger)
           {
-            stateEvent.reuse(TableWriter.OUTPUT_LEVEL, state.getCurrentPage(),
-                state.getCurrentDataItem(), state.getNumberOfRows(), true);
-            fireStateUpdate(stateEvent);
-            eventCount += 1;
+            eventCount = 0;
           }
           else
           {
-            if (eventCount == eventTrigger)
-            {
-              eventCount = 0;
-            }
-            else
-            {
-              eventCount += 1;
-            }
-          }
-        }
-
-        progress = state.createStateProgress(progress);
-        state = state.advance();
-        if (failOnError && state.isErrorOccured() == true)
-        {
-          throw new ReportEventException("Failed to dispatch an event.", state.getErrors());
-        }
-        if (!state.isFinish())
-        {
-          if (!state.isProceeding(progress))
-          {
-            throw new ReportProcessingException("State did not proceed, bailing out!");
+            eventCount += 1;
           }
         }
       }
-    }
-    catch (CloneNotSupportedException cne)
-    {
-      throw new ReportProcessingException("StateCopy was not supported");
+
+      progress = state.createStateProgress(progress);
+      state = state.advance();
+      if (failOnError && state.isErrorOccured() == true)
+      {
+        throw new ReportEventException("Failed to dispatch an event.", state.getErrors());
+      }
+      if (!state.isFinish())
+      {
+        if (!state.isProceeding(progress))
+        {
+          throw new ReportProcessingException("State did not proceed, bailing out!");
+        }
+      }
     }
   }
 

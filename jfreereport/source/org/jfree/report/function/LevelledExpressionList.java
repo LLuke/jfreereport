@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.7 2003/09/12 18:46:18 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.8 2003/11/07 18:33:48 taqua Exp $
  *
  * Changes
  * -------
@@ -96,11 +96,26 @@ public final class LevelledExpressionList implements ReportListener,
    *
    * @param ec  the expressions from the report definition.
    * @param fc  the functions from the report definition.
+   * @deprecated use the single parameter call instead.
+   * @throws FunctionInitializeException if one of the functions
+   * could not be initialized
    */
   public LevelledExpressionList(final ExpressionCollection ec, final ExpressionCollection fc)
+    throws FunctionInitializeException
   {
     this();
-    initialize(ec, fc);
+    if (ec != fc)
+    {
+      throw new UnsupportedOperationException("Only one unified expression list is expected.");
+    }
+    initialize(ec);
+  }
+
+  public LevelledExpressionList(final ExpressionCollection ec)
+      throws FunctionInitializeException
+  {
+    this();
+    initialize(ec);
   }
 
   /**
@@ -836,10 +851,10 @@ public final class LevelledExpressionList implements ReportListener,
    * Initialises the expressions.
    *
    * @param expressionCollection  the expression collection.
-   * @param functionCollection the function collection.
+   * @throws FunctionInitializeException if one of the functions could not be initialized.
    */
-  private void initialize(final ExpressionCollection expressionCollection,
-                          final ExpressionCollection functionCollection)
+  private void initialize(final ExpressionCollection expressionCollection)
+    throws FunctionInitializeException
   {
     final LevelList expressionList = new LevelList();
 
@@ -852,24 +867,7 @@ public final class LevelledExpressionList implements ReportListener,
         f = f.getInstance();
         expressionList.add(f);
         expressionList.setLevel(f, f.getDependencyLevel());
-      }
-    }
-    if (functionCollection != null)
-    {
-      size = functionCollection.size();
-      for (int i = 0; i < size; i++)
-      {
-        // Explicit cast to Function to test all contained elements to be Functions!
-        // this may be just paranoid.
-        // todo 090 next redesign should unify functions and expressions in the
-        // report object.
-        Function f = (Function) functionCollection.getExpression(i);
-        if (f != null)
-        {
-          f = (Function) f.getInstance();
-          expressionList.add(f);
-          expressionList.setLevel(f, f.getDependencyLevel());
-        }
+        f.initialize();
       }
     }
     initializeFromLevelList(expressionList);

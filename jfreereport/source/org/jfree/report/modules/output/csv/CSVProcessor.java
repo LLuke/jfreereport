@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.6 2003/08/31 19:27:58 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.7 2003/11/07 18:33:54 taqua Exp $
  *
  * Changes
  * -------
@@ -124,10 +124,9 @@ public class CSVProcessor
    * @param separator the separator string to mark column boundaries.
    *
    * @throws ReportProcessingException if the report initialisation failed.
-   * @throws FunctionInitializeException if the writer initialisation failed.
    */
   public CSVProcessor(final JFreeReport report, final String separator)
-      throws ReportProcessingException, FunctionInitializeException
+      throws ReportProcessingException
   {
     this(report, separator,
         report.getReportConfiguration().getConfigProperty
@@ -146,11 +145,10 @@ public class CSVProcessor
    * @param writeDataRowNames  controls whether or not the data row names are output.
    *
    * @throws ReportProcessingException if the report initialisation failed.
-   * @throws FunctionInitializeException if the writer initialization failed.
    */
   public CSVProcessor(final JFreeReport report, final String separator,
                       final boolean writeDataRowNames)
-      throws ReportProcessingException, FunctionInitializeException
+      throws ReportProcessingException
   {
     if (report == null)
     {
@@ -172,7 +170,7 @@ public class CSVProcessor
     lm.setName(CSV_WRITER);
     lm.setSeparator(separator);
     lm.setWriteDataRowNames(writeDataRowNames);
-    this.report.addFunction(lm);
+    this.report.addExpression(lm);
   }
 
   /**
@@ -215,10 +213,23 @@ public class CSVProcessor
    * @throws ReportProcessingException if there was a problem processing the report.
    * @throws CloneNotSupportedException if there is a problem cloning.
    */
-  private ReportState repaginate() throws ReportProcessingException, CloneNotSupportedException
+  private ReportState repaginate()
+      throws ReportProcessingException, CloneNotSupportedException
   {
     // every report processing starts with an StartState.
-    final StartState startState = new StartState(getReport());
+    final StartState startState;
+    try
+    {
+      startState = new StartState(getReport());
+    }
+    catch (CloneNotSupportedException e)
+    {
+      throw new ReportProcessingException("Unable to clone the start state.", e);
+    }
+    catch (FunctionInitializeException e)
+    {
+      throw new ReportProcessingException("Unable to initialize the expressions/functions.", e);
+    }
     ReportState state = startState;
     ReportState retval = null;
 

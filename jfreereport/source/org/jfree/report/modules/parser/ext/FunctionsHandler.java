@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsHandler.java,v 1.9 2003/08/25 14:29:32 taqua Exp $
+ * $Id: FunctionsHandler.java,v 1.10 2003/12/04 18:04:06 taqua Exp $
  *
  * Changes
  * -------
@@ -254,33 +254,17 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
   {
     if (tagName.equals(EXPRESSION_TAG))
     {
-      try
-      {
-        final Expression expression = expressionHandler.getExpression();
-        getReport().addExpression(expression);
-        addComment(createPath(expression), CommentHandler.CLOSE_TAG_COMMENT);
-        expressionHandler = null;
-      }
-      catch (FunctionInitializeException fe)
-      {
-        expressionHandler = null;
-        throw new ParseException("Unable to initialize function.", fe, getParser().getLocator());
-      }
+      final Expression expression = expressionHandler.getExpression();
+      getReport().addExpression(expression);
+      addComment(createPath(expression), CommentHandler.CLOSE_TAG_COMMENT);
+      expressionHandler = null;
     }
     else if (tagName.equals(FUNCTION_TAG))
     {
-      try
-      {
-        final Function expression = (Function) expressionHandler.getExpression();
-        getReport().addFunction(expression);
-        addComment(createPath(expression.getName()), CommentHandler.CLOSE_TAG_COMMENT);
-        expressionHandler = null;
-      }
-      catch (FunctionInitializeException fe)
-      {
-        expressionHandler = null;
-        throw new ParseException("Unable to initialize function.", fe, getParser().getLocator());
-      }
+      final Function expression = (Function) expressionHandler.getExpression();
+      getReport().addExpression(expression);
+      addComment(createPath(expression.getName()), CommentHandler.CLOSE_TAG_COMMENT);
+      expressionHandler = null;
     }
     else if (tagName.equals(PROPERTY_REF_TAG))
     {

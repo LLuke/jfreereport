@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.9 2003/11/07 18:33:54 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.10 2003/11/15 20:51:15 taqua Exp $
  *
  * Changes
  * -------
@@ -102,10 +102,9 @@ public class PageableReportProcessor
    * @param report  the report.
    *
    * @throws ReportProcessingException if the report cannot be cloned.
-   * @throws FunctionInitializeException if a function cannot be initialised.
    */
   public PageableReportProcessor(final JFreeReport report)
-      throws ReportProcessingException, FunctionInitializeException
+      throws ReportProcessingException
   {
     try
     {
@@ -123,7 +122,7 @@ public class PageableReportProcessor
 
     final String layouter = (String) this.report.getProperty(LAYOUTMANAGER_NAME);
     final PageLayouter lm = getLayoutManager(layouter);
-    this.report.addFunction(lm);
+    this.report.addExpression(lm);
   }
 
   /**
@@ -418,6 +417,10 @@ public class PageableReportProcessor
     catch (OutputTargetException ote)
     {
       throw new ReportProcessingException("Unable to repaginate Report", ote);
+    }
+    catch (FunctionInitializeException fne)
+    {
+      throw new ReportProcessingException("Unable to initialize the functions/expressions.", fne);
     }
     catch (CloneNotSupportedException cne)
     {

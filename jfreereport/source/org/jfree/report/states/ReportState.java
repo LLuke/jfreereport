@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.6 2003/11/07 15:31:40 taqua Exp $
+ * $Id: ReportState.java,v 1.7 2003/11/15 20:51:15 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -66,6 +66,7 @@ import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.LayoutEvent;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.LevelledExpressionList;
+import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.util.ReportProperties;
 import org.jfree.report.util.ReportPropertiesList;
 import org.jfree.util.ObjectUtils;
@@ -130,14 +131,14 @@ public abstract class ReportState implements Cloneable
    * @param reportPar  the report.
    * @throws CloneNotSupportedException if the initial cloning of the report definition fails.
    */
-  protected ReportState(final JFreeReport reportPar) throws CloneNotSupportedException
+  protected ReportState(final JFreeReport reportPar)
+      throws CloneNotSupportedException, FunctionInitializeException
   {
     setReportDefinition(new ReportDefinitionImpl(reportPar));
     numberOfRows = reportPar.getData().getRowCount();
     reportProperties = getReport().getProperties();
 
-    final LevelledExpressionList functions = new LevelledExpressionList(reportPar.getExpressions(),
-        reportPar.getFunctions());
+    final LevelledExpressionList functions = new LevelledExpressionList(reportPar.getExpressions());
 
     final DataRowBackend dr = new DataRowBackend();
     dr.setTablemodel(reportPar.getData());

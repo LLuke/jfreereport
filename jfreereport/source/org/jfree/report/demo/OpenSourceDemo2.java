@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo2.java,v 1.6 2003/09/15 15:31:58 taqua Exp $
+ * $Id: OpenSourceDemo2.java,v 1.7 2003/11/07 18:33:48 taqua Exp $
  *
  * Changes
  * -------
@@ -168,7 +168,7 @@ public class OpenSourceDemo2 extends AbstractDemoFrame
     final PageFunction f1 = new PageFunction("page_number");
     try
     {
-      result.addFunction(f1);
+      result.addExpression(f1);
     }
     catch (Exception e)
     {

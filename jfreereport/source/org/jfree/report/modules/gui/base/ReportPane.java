@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.9 2003/11/15 18:22:28 taqua Exp $
+ * $Id: ReportPane.java,v 1.10 2003/11/15 20:51:14 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -66,7 +66,6 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
-import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.modules.output.pageable.base.OutputTarget;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
@@ -217,15 +216,7 @@ public class ReportPane extends JComponent
     this.repaginationListeners = new ArrayList();
     this.report = report;
     setDoubleBuffered(true);
-    try
-    {
-      processor = new PageableReportProcessor(report);
-    }
-    catch (FunctionInitializeException fe)
-    {
-      throw new ReportProcessingException("Unable to create the PageableReportProcessor", fe);
-    }
-
+    processor = new PageableReportProcessor(report);
     processor.addRepaginationListener(this);
 
     borderPainted = false;
