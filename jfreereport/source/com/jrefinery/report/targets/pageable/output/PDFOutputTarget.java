@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.3 2002/12/06 20:34:16 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.4 2002/12/07 14:58:33 taqua Exp $
  *
  * Changes
  * -------
@@ -102,7 +102,9 @@ import java.util.StringTokenizer;
  * <p>
  * When using Unicode characters, you will have to adjust the encoding of this target to
  * "Identity-H", to enable horizontal unicode printing. This will result in larger files.
- *
+ * <p>
+ * The Encoding property is now a string with one of the values of "none" "40bit" or "128bit".
+ * 
  * @author David Gilbert
  */
 public class PDFOutputTarget extends AbstractOutputTarget
@@ -139,10 +141,13 @@ public class PDFOutputTarget extends AbstractOutputTarget
   public static final String SECURITY_ENCRYPTION = "Encryption";
 
   /** A constant for the encryption type (40 bit). */
-  public static final Boolean SECURITY_ENCRYPTION_40BIT = Boolean.FALSE;
+  public static final String SECURITY_ENCRYPTION_NONE = "none";
+
+  /** A constant for the encryption type (40 bit). */
+  public static final String SECURITY_ENCRYPTION_40BIT = "40bit";
 
   /** A constant for the encryption type (128 bit). */
-  public static final Boolean SECURITY_ENCRYPTION_128BIT = Boolean.TRUE;
+  public static final String SECURITY_ENCRYPTION_128BIT = "128bit";
 
   /** Literal text for the 'userpassword' property name. */
   public static final String SECURITY_USERPASSWORD = "userpassword";
@@ -886,7 +891,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
         pageSize.rotate();
       }
 
-      this.setDocument(new Document(pageSize, marginLeft, marginRight, marginTop, marginBottom));
+      setDocument(new Document(pageSize, marginLeft, marginRight, marginTop, marginBottom));
 
       String title = (String) getProperty(TITLE);
       String author = (String) getProperty(AUTHOR);
@@ -904,28 +909,28 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
       writer = PdfWriter.getInstance(getDocument(), out);
 
-      Boolean encrypt = (Boolean) getProperty(SECURITY_ENCRYPTION);
+      String encrypt = (String) getProperty(SECURITY_ENCRYPTION);
+
       if (encrypt != null)
       {
-        if (encrypt.equals(SECURITY_ENCRYPTION_128BIT) == false
-            && encrypt.equals(SECURITY_ENCRYPTION_40BIT) == false)
+        if (encrypt.equals(SECURITY_ENCRYPTION_128BIT) == true
+            || encrypt.equals(SECURITY_ENCRYPTION_40BIT) == true)
         {
-          throw new OutputTargetException("Invalid Encryption entered");
+          String userpassword = (String) getProperty(SECURITY_USERPASSWORD);
+          String ownerpassword = (String) getProperty(SECURITY_OWNERPASSWORD);
+          //Log.debug ("UserPassword: " + userpassword + " - OwnerPassword: " + ownerpassword);
+          byte[] userpasswordbytes = DocWriter.getISOBytes(userpassword);
+          byte[] ownerpasswordbytes = DocWriter.getISOBytes(ownerpassword);
+          if (ownerpasswordbytes == null)
+          {
+            ownerpasswordbytes = PDF_PASSWORD_PAD;
+          }
+          writer.setEncryption(userpasswordbytes, ownerpasswordbytes, getPermissions(),
+                               encrypt.equals(SECURITY_ENCRYPTION_128BIT));
         }
-        String userpassword = (String) getProperty(SECURITY_USERPASSWORD);
-        String ownerpassword = (String) getProperty(SECURITY_OWNERPASSWORD);
-        //Log.debug ("UserPassword: " + userpassword + " - OwnerPassword: " + ownerpassword);
-        byte[] userpasswordbytes = DocWriter.getISOBytes(userpassword);
-        byte[] ownerpasswordbytes = DocWriter.getISOBytes(ownerpassword);
-        if (ownerpasswordbytes == null)
-        {
-          ownerpasswordbytes = PDF_PASSWORD_PAD;
-        }
-        writer.setEncryption(userpasswordbytes, ownerpasswordbytes, getPermissions(),
-                             encrypt.booleanValue());
       }
 
-      this.getDocument().open();
+      getDocument().open();
 
       try
       {
@@ -937,7 +942,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       {
         Log.error("Should not happen", oe);
       }
-      this.writer.getDirectContent().saveState();
+      writer.getDirectContent().saveState();
     }
     catch (Exception e)
     {
@@ -961,7 +966,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       throw new IllegalStateException("Target " + hashCode() + " is not open");
     }
     this.writer.getDirectContent().saveState();
-    this.currentPageFormat = (PageFormat) format.getPageFormat();
+    this.currentPageFormat = format.getPageFormat();
   }
 
   /**

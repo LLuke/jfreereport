@@ -24,7 +24,7 @@
  * PDFSaveDialog.java
  * ------------------
  *
- * $Id: PDFSaveDialog.java,v 1.13 2002/11/27 12:20:33 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.14 2002/12/02 17:40:53 taqua Exp $
  *
  * Changes
  * --------
@@ -1012,7 +1012,7 @@ public class PDFSaveDialog extends JDialog
    * null, if 40-bit encryption is set, the method returns Boolean.FALSE and on 128-Bit-encryption,
    * Boolean.TRUE is returned.
    */
-  public Boolean getEncryptionValue()
+  public String getEncryptionValue()
   {
     if (rbSecurity40Bit.isSelected())
     {
@@ -1022,7 +1022,7 @@ public class PDFSaveDialog extends JDialog
     {
       return PDFOutputTarget.SECURITY_ENCRYPTION_128BIT;
     }
-    return null;
+    return PDFOutputTarget.SECURITY_ENCRYPTION_NONE;
   }
 
   /**
@@ -1030,20 +1030,20 @@ public class PDFSaveDialog extends JDialog
    *
    * @param b the new encryption state, one of null, Boolean.TRUE or Boolean.FALSE
    */
-  public void setEncryptionValue(Boolean b)
+  public void setEncryptionValue(String b)
   {
-    if (b == null)
+    if (b != null)
     {
-      rbSecurityNone.setSelected(true);
+      if (b.equals(PDFOutputTarget.SECURITY_ENCRYPTION_128BIT))
+      {
+        rbSecurity128Bit.setSelected(true);
+      }
+      else
+      {
+        rbSecurity40Bit.setSelected(false);
+      }
     }
-    if (b.booleanValue())
-    {
-      rbSecurity128Bit.setSelected(true);
-    }
-    else
-    {
-      rbSecurity40Bit.setSelected(false);
-    }
+    rbSecurityNone.setSelected(true);
   }
 
   /**
