@@ -263,11 +263,12 @@ public class ItemFactory
           throws IOException
   {
     ImageReference reference = new ImageReference (source);
+    StaticDataSource sds = new StaticDataSource(reference);
     ImageElement element = new ImageElement ();
     element.setName (name);
     element.setPaint (paint);
     element.setBounds (bounds);
-    element.setImageReference (reference);
+    element.setDataSource(sds);
     return element;
   }
 
@@ -281,13 +282,37 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ImageFunctionElement createImageFunctionElement (String name,
+  public static ImageElement createImageFieldElement (String name,
+                                                 Rectangle2D bounds,
+                                                 Paint paint,
+                                                 String field)
+          throws IOException
+  {
+    ImageElement element = new ImageElement();
+    element.setName (name);
+    element.setPaint (paint);
+    element.setBounds (bounds);
+    element.setDataSource(new ReportDataSource(field));
+    return element;
+  }
+
+  /**
+   * Creates a new ImageElement.
+   *
+   * @param name the name of the new element
+   * @param bounds the bounds of the new element
+   * @param paint the color of this element (currently not used)
+   * @param source the source url from where to load the image
+   * @throws NullPointerException if bounds, name or source are null
+   * @throws IllegalArgumentException if the given alignment is invalid
+   */
+  public static ImageElement createImageFunctionElement (String name,
                                                  Rectangle2D bounds,
                                                  Paint paint,
                                                  String function)
           throws IOException
   {
-    ImageFunctionElement element = new ImageFunctionElement();
+    ImageElement element = new ImageElement();
     element.setName (name);
     element.setPaint (paint);
     element.setBounds (bounds);

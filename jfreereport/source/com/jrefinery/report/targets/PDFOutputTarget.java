@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.10 2002/06/09 17:29:30 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.11 2002/06/10 17:17:15 taqua Exp $
  *
  * Changes
  * -------
@@ -59,6 +59,7 @@ import com.lowagie.text.pdf.BaseFont;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfPatternPainter;
 import com.lowagie.text.pdf.PdfWriter;
+import com.keypoint.PngEncoder;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -731,6 +732,21 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
   }
 
+
+  private Image getImage (ImageReference imageRef) throws DocumentException, IOException
+  {
+    if (imageRef.getSourceURL() != null)
+      return Image.getInstance(imageRef.getSourceURL());
+
+    if (imageRef.getImage() != null)
+    {
+      PngEncoder encoder = new PngEncoder(imageRef.getImage());
+      byte[] data = encoder.pngEncode();
+      return Image.getInstance(data);
+    }
+
+    throw new DocumentException ("Neither an URL nor an Image was given to paint the graphics");
+  }
 
   /**
    * Draws a shape at the specified location. The shape is drawn using a PathIterator. All

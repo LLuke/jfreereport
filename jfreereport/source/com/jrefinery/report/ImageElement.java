@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElement.java,v 1.8 2002/06/09 14:46:04 taqua Exp $
+ * $Id: ImageElement.java,v 1.9 2002/06/26 21:06:48 taqua Exp $
  *
  * Changes:
  * --------
@@ -38,6 +38,7 @@
  * 16-May-2002 : Added Javadoc comments (DG);
  * 16-May-2002 : using protected member m_paint instead of getter methode (JS)
  * 09-Jun-2002 : documentation
+ * 27-Jun-2002 : ImageRefence is set using a DataSource
  */
 
 package com.jrefinery.report;
@@ -55,42 +56,11 @@ import com.jrefinery.report.targets.OutputTargetException;
  */
 public class ImageElement extends Element
 {
-
-  /** The image to draw. */
-  private ImageReference image;
-
   /**
    * Constructs a image element.
    */
   public ImageElement ()
   {
-  }
-
-  /**
-   * Sets the ImageReference for this element. The bounds of this element are adjusted according
-   * to the given ImageReference.
-   *
-   * @param reference The image reference for this element.
-   *
-   * @throws NullPointerException if the reference is null.
-   */
-  public void setImageReference (ImageReference reference)
-  {
-
-    if (reference == null)
-      throw new NullPointerException ("ImageElement.setImageReference: null not allowed.");
-
-    this.image = reference;
-  }
-
-  /**
-   * Returns the image reference for this element.
-   *
-   * @return The image reference.
-   */
-  public ImageReference getImageReference ()
-  {
-    return image;
   }
 
   /**
@@ -103,7 +73,7 @@ public class ImageElement extends Element
   {
     // set the paint...
     target.setPaint (getPaint (band));
-    target.drawImage (getImageReference ());
+    target.drawImage ((ImageReference) getValue());
   }
 
 

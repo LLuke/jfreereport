@@ -79,7 +79,7 @@
 <!ENTITY % itemelements
   "(label | general-field | string-field | string-function |
   number-field | number-function | date-field | date-function |
-	multiline-field | imageref | line)*">
+	multiline-field | imageref | image-field | image-function | rectangle | line)*">
 
 <!--
 
@@ -404,6 +404,28 @@
 <!ATTLIST imageref
   %position;
   src         CDATA #REQUIRED
+  name        CDATA #REQUIRED
+>
+<!--
+
+   The image reference links an external image into the report.
+
+  -->
+<!ELEMENT image-field   EMPTY>
+<!ATTLIST image-field
+  %position;
+  field       CDATA #REQUIRED
+  name        CDATA #REQUIRED
+>
+<!--
+
+   The image reference links an external image into the report.
+
+  -->
+<!ELEMENT image-function   EMPTY>
+<!ATTLIST image-function
+  %position;
+  function    CDATA #REQUIRED
   name        CDATA #REQUIRED
 >
 

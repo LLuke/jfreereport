@@ -133,6 +133,10 @@ public class ElementFactory
     {
       startImageRef (atts);
     }
+    else if (elementName.equals (IMAGEFIELD_TAG))
+    {
+      startImageField (atts);
+    }
     else if (elementName.equals (IMAGEFUNCTION_TAG))
     {
       startImageFunction (atts);
@@ -242,6 +246,10 @@ public class ElementFactory
     {
       endImageFunction ();
     }
+    else if (elementName.equals (IMAGEFIELD_TAG))
+    {
+      endImageField ();
+    }
     else if (elementName.equals (LINE_TAG))
     {
       endLine ();
@@ -321,13 +329,13 @@ public class ElementFactory
    * the supplied URL (attribute "src") in conjunction with the contentbase defined in the
    * ReportDefintionContentHandler
    */
-  protected void startImageFunction (Attributes atts) throws SAXException
+  protected void startImageField (Attributes atts) throws SAXException
   {
-    String elementName = handler.generateName (atts.getValue ("name"));
-    String elementSource = atts.getValue ("function");
+    String elementName = handler.generateName (atts.getValue (NAME_ATT));
+    String elementSource = atts.getValue (FIELDNAME_ATT);
     try
     {
-      ImageFunctionElement element = ItemFactory.createImageFunctionElement (
+      ImageElement element = ItemFactory.createImageFunctionElement (
               elementName,
               ParserUtil.getElementPosition (atts),
               Color.white,
@@ -338,8 +346,32 @@ public class ElementFactory
     {
       throw new SAXException (mfule.toString ());
     }
-
   }
+
+  /**
+   * Create a ImageElement with an static ImageDataSource. The ImageData is read from
+   * the supplied URL (attribute "src") in conjunction with the contentbase defined in the
+   * ReportDefintionContentHandler
+   */
+  protected void startImageFunction (Attributes atts) throws SAXException
+  {
+    String elementName = handler.generateName (atts.getValue (NAME_ATT));
+    String elementSource = atts.getValue (FUNCTIONNAME_ATT);
+    try
+    {
+      ImageElement element = ItemFactory.createImageFunctionElement (
+              elementName,
+              ParserUtil.getElementPosition (atts),
+              Color.white,
+              elementSource);
+      setCurrentElement (element);
+    }
+    catch (IOException mfule)
+    {
+      throw new SAXException (mfule.toString ());
+    }
+  }
+
   /**
    * Creates a LineShapeElement.
    */
@@ -506,6 +538,15 @@ public class ElementFactory
    * ends the rectangle shape element and adds it to the current band.
    */
   protected void endRectangle ()
+          throws SAXException
+  {
+    getCurrentBand ().addElement (getCurrentElement ());
+  }
+
+  /**
+   * ends the image element and adds it to the current band.
+   */
+  protected void endImageField ()
           throws SAXException
   {
     getCurrentBand ().addElement (getCurrentElement ());
