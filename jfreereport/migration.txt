@@ -53,7 +53,8 @@ Code Changes
   you could use com.jrefinery.report.targets.FloatDimension
   ABS_POSITION is of type Point2D.
 
-- StyleKey BOUNDS is used internaly during the layouting.
+- StyleKey BOUNDS is used internaly during the layouting, this key should never
+  be modified by an function or set within a report definition.
 
 - the class JFreeReport is no longer used to repaginate the report or to
   start processing of an report, use the PageableReportProcessor instead.
@@ -104,4 +105,7 @@ Shapes:
   or adjust your element to start at 0,0 and extend its dimension to
   (old_x + old_width, old_y + old_height).
 
-
+LineElements:
+  Shape coordinates for the ItemFactory.createLineShapeElement() method must not contain
+  negative values. If you want to create scaling lines, you will have to use one of the
+  createShapeElement methods, which are able to separate bounds from shapes.

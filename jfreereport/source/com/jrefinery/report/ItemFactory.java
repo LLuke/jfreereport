@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.39 2003/03/19 22:11:59 taqua Exp $
+ * $Id: ItemFactory.java,v 1.40 2003/03/20 18:28:09 taqua Exp $
  *
  * Changes
  * -------
@@ -822,7 +822,9 @@ public class ItemFactory
   }
 
   /**
-   * Creates a new LineShapeElement.
+   * Creates a new LineShapeElement. The line must not contain negative coordinates,
+   * or an IllegalArgumentException will be thrown. If you want to define scaling
+   * lines, you will have use one of the createShape methods.
    *
    * @param name the name of the new element
    * @param paint the line color of this element
@@ -848,10 +850,19 @@ public class ItemFactory
     else
     {
       Rectangle2D bounds = shape.getBounds2D();
-      shape.setLine(-bounds.getX() - shape.getX1(),
-                    -bounds.getY() - shape.getY1(),
-                    -bounds.getX() - shape.getX2(),
-                    -bounds.getY() - shape.getY2());
+      if (bounds.getX() < 0)
+      {
+        throw new IllegalArgumentException("Line coordinates must not be negative.");
+      }
+      if (bounds.getY() < 0)
+      {
+        throw new IllegalArgumentException("Line coordinates must not be negative.");
+      }
+
+      shape.setLine(shape.getX1() - bounds.getX(),
+                    shape.getY1() - bounds.getY(),
+                    shape.getX2() - bounds.getX(),
+                    shape.getY2() - bounds.getY());
       return createShapeElement(name, bounds, paint, stroke, shape, true, false, true);
     }
   }
