@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: CountDistinctFunction.java,v 1.1 2003/05/16 19:29:50 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,12 @@ import java.util.HashSet;
 
 import com.jrefinery.report.event.ReportEvent;
 
+/**
+ * Counts the distinct occurences of an certain value of an column.
+ * This functionality is similiar to the SQL distinct() function.
+ *
+ * @author Thomas Morgner
+ */
 public class CountDistinctFunction extends AbstractFunction
 {
   /** Literal text for the 'group' property. */
@@ -50,8 +56,12 @@ public class CountDistinctFunction extends AbstractFunction
   /** Literal text for the 'field' property. */
   public static final String FIELD_PROPERTY = "field";
 
+  /** The collected values for the current group. */
   private HashSet values;
 
+  /**
+   * DefaultConstructor.
+   */
   public CountDistinctFunction()
   {
     values = new HashSet();
@@ -160,9 +170,7 @@ public class CountDistinctFunction extends AbstractFunction
   }
 
   /**
-   * Return the current expression value.
-   * <P>
-   * The value depends (obviously) on the expression implementation.
+   * Return the number of distint values for the given column.
    *
    * @return the value of the function.
    */

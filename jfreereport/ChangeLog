@@ -2,8 +2,12 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
-0.8.3    : (not completed yet)
-        * Drawable elements are supported now.
+0.8.3    : (26-May-2003)
+        * DTD updated.
+
+        * Drawable elements are officially supported now. There are no
+          drawable implementations yet (except JFreeChart :)), more support
+          is included in later versions ...
 
 0.8.2    : (12-Apr-2003):
         * Important: There were fixes in the shape handling and the order of the

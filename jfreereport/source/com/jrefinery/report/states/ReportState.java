@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.37 2003/05/14 22:26:38 taqua Exp $
+ * $Id: ReportState.java,v 1.38 2003/05/16 17:26:46 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -696,6 +696,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
   /**
    * Fires a 'prepare' event.
+   *
+   * @param type the event type of the event that should be prepared.
    */
   public void firePrepareEvent (int type)
   {
@@ -723,6 +725,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
   /**
    * Fires a 'page-started' event.
+   *
+   * @param baseEvent the type of the base event which caused the page start to be
+   * triggered.
    */
   public void firePageStartedEvent (int baseEvent)
   {
@@ -790,6 +795,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * Fires an 'layout-complete' event.
    *
    * @param band the band, that completed layouting.
+   * @param type the type of the base event fireing the laout complete event.
    */
   public void fireLayoutCompleteEvent(Band band, int type)
   {

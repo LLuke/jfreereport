@@ -85,6 +85,9 @@ Changes from 0.8.0 to 0.8.1
   height is smaller than the defined font size, then no line will be printed. So
   if your elements disappear after upgrading, then check your element definitions. 
 
+  Some methods of the PreviewFrame (f.i. setLargeIconsEnabled(boolean)) moved into
+  the common backend class PreviewProxyBase.
+  
 ----------------------------------------------------------------------------------
 Changes from 0.8.1 to 0.8.2
 

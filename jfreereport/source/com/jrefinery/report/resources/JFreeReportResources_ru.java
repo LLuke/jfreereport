@@ -23,13 +23,19 @@
  * ----------------------------
  * JFreeReportResources_ru.java
  * ----------------------------
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * Original Author:  Sergey M Mozgovoi;
+ * Contributor(s):   -;
+ *
+ * $Id: JFreeReportResources_fr.java,v 1.6 2003/05/16 13:24:41 taqua Exp $
  *
  *
  */
 package com.jrefinery.report.resources;
 
 /**
- * Russian Language Resources
+ * Russian Language Resources.
  *
  * @author Sergey M Mozgovoi
  */

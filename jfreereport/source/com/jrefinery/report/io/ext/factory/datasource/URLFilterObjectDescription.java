@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: URLFilterObjectDescription.java,v 1.1 2003/05/16 15:28:22 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 16.05.2003 : Initial version
+ * 16-05-2003 : Initial version
  *  
  */
 
@@ -45,6 +45,10 @@ import org.jfree.util.Configuration;
 import org.jfree.util.Log;
 import org.jfree.xml.factory.objects.BeanObjectDescription;
 
+/**
+ * An ObjectDescription for the URLFilterClass. This class uses either
+ * an given or an preconfigured base url to construct the URL.
+ */
 public class URLFilterObjectDescription extends BeanObjectDescription
 {
   /**
