@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -----------------
  * PreviewFrame.java
  * -----------------
- * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewFrame.java,v 1.47 2002/12/12 12:26:56 mungady Exp $
+ * $Id: PreviewFrame.java,v 1.48 2003/01/14 21:10:40 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -55,16 +55,17 @@
 
 package com.jrefinery.report.preview;
 
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.action.CloseAction;
-
-import javax.swing.Action;
-import javax.swing.JFrame;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ResourceBundle;
+
+import javax.swing.Action;
+import javax.swing.JFrame;
+
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.action.CloseAction;
 
 /**
  * A standard print preview frame for any JFreeReport.  Allows the user to page back and forward
@@ -112,7 +113,10 @@ public class PreviewFrame extends JFrame implements PreviewProxy
     }
   }
 
+  /** A preview proxy. */
   private PreviewProxyBase base;
+  
+  /** Localised resources. */
   private ResourceBundle resources;
 
   /**
@@ -127,6 +131,13 @@ public class PreviewFrame extends JFrame implements PreviewProxy
     init(report);
   }
 
+  /**
+   * Initialise.
+   * 
+   * @param report  the report.
+   * 
+   * @throws ReportProcessingException if there is a problem processing the report.
+   */
   private void init(JFreeReport report) throws ReportProcessingException
   {
     base = new PreviewProxyBase(report, this);
@@ -134,17 +145,28 @@ public class PreviewFrame extends JFrame implements PreviewProxy
     setContentPane(base);
   }
 
+  /**
+   * Returns the default close action.
+   * 
+   * @return The action.
+   */
   public Action createDefaultCloseAction()
   {
     return new DefaultCloseAction();
   }
 
+  /**
+   * Disposes the frame.
+   */
   public void dispose()
   {
     base.dispose();
     super.dispose();
   }
 
+  /**
+   * Registers close actions. 
+   */
   protected void registerCloseActions()
   {
     addWindowListener(new WindowAdapter()
@@ -177,6 +199,11 @@ public class PreviewFrame extends JFrame implements PreviewProxy
     return resources;
   }
 
+  /**
+   * Returns the preview proxy.
+   * 
+   * @return The proxy.
+   */
   public PreviewProxyBase getBase()
   {
     return base;

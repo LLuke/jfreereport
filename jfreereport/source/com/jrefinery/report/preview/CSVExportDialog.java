@@ -1,8 +1,39 @@
 /**
- * Date: Jan 21, 2003
- * Time: 7:48:58 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: CSVExportDialog.java,v 1.4 2003/02/03 18:52:43 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * --------------------
+ * CSVExportDialog.java
+ * --------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: $
+ *
+ * Changes
+ * --------
+ * 25-Feb-2003 : Added standard header and Javadocs (DG);
+ *
  */
 package com.jrefinery.report.preview;
 
@@ -52,6 +83,11 @@ import java.io.Writer;
 import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
+/**
+ * A dialog for exporting a report to CSV format.
+ * 
+ * @author Thomas Morgner.
+ */
 public class CSVExportDialog extends JDialog implements ExportPlugin
 {
   /**
@@ -157,19 +193,37 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   /** Filename text field. */
   private JTextField txFilename;
 
+  /** The encoding combo-box. */
   private JComboBox cbEncoding;
+  
+  /** The encoding model. */
   private EncodingComboBoxModel encodingModel;
+  
+  /** The strict layout check-box. */
   private JCheckBox cbxStrictLayout;
 
+  /** A radio button for tab separators. */
   private JRadioButton rbSeparatorTab;
+  
+  /** A radio button for colon separators. */
   private JRadioButton rbSeparatorColon;
+  
+  /** A radio button for semi-colon separators. */
   private JRadioButton rbSeparatorSemicolon;
+
+  /** A radio button for other separators. */
   private JRadioButton rbSeparatorOther;
+  
+  /** A text field for the 'other' separator. */
   private JTextField txSeparatorOther;
 
+  /** A radio button for exporting data only. */
   private JRadioButton rbExportData;
+  
+  /** A radio button for exporting all printed elements. */
   private JRadioButton rbExportPrintedElements;
 
+  /** A file chooser. */
   private JFileChooser fileChooser;
 
   /** Confirmed flag. */
@@ -182,9 +236,8 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   public static final String BASE_RESOURCE_CLASS =
       "com.jrefinery.report.resources.JFreeReportResources";
 
-
   /**
-   * Creates a new Excel save dialog.
+   * Creates a new CSV export dialog.
    *
    * @param owner  the dialog owner.
    */
@@ -195,7 +248,7 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * Creates a new PDF Excel dialog.
+   * Creates a new CSV export dialog.
    *
    * @param owner  the dialog owner.
    */
@@ -206,7 +259,7 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * Creates a new Excel save dialog.  The created dialog is modal.
+   * Creates a new CSV export dialog.  The created dialog is modal.
    */
   public CSVExportDialog()
   {
@@ -235,7 +288,7 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * Retrieves the resources for this PreviewFrame. If the resources are not initialized,
+   * Retrieves the resources for this dialog. If the resources are not initialized,
    * they get loaded on the first call to this method.
    *
    * @return this frames ResourceBundle.
@@ -255,7 +308,8 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   private void initialize()
   {
     fileChooser = new JFileChooser();
-    fileChooser.addChoosableFileFilter(new ExtensionFileFilter("Comma Separated Value files", ".csv"));
+    fileChooser.addChoosableFileFilter(
+        new ExtensionFileFilter("Comma Separated Value files", ".csv"));
     fileChooser.setMultiSelectionEnabled(false);
 
     JPanel contentPane = new JPanel();
@@ -343,7 +397,8 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
     buttonPanel.add(btnConfirm);
     buttonPanel.add(btnCancel);
     btnConfirm.setDefaultCapable(true);
-    buttonPanel.registerKeyboardAction(new ActionConfirm(), KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,0),
+    buttonPanel.registerKeyboardAction(new ActionConfirm(), 
+                                       KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
                                        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.NONE;
@@ -356,6 +411,11 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
     setContentPane(contentPane);
   }
 
+  /**
+   * Creates a panel for the export type. 
+   * 
+   * @return The panel.
+   */
   private JPanel createExportTypePanel ()
   {
     // separator panel
@@ -366,7 +426,8 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
     exportTypePanel.setBorder(tb);
 
     rbExportData = new JRadioButton(getResources().getString("csvexportdialog.export.data"));
-    rbExportPrintedElements = new JRadioButton(getResources().getString("csvexportdialog.export.printed_elements"));
+    rbExportPrintedElements = new JRadioButton(
+        getResources().getString("csvexportdialog.export.printed_elements"));
 
     ButtonGroup btg = new ButtonGroup();
     btg.add (rbExportData);
@@ -393,6 +454,11 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
     return exportTypePanel;
   }
 
+  /**
+   * Creates a separator panel.
+   * 
+   * @return The panel.
+   */
   private JPanel createSeparatorPanel ()
   {
     // separator panel
@@ -403,9 +469,12 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
     separatorPanel.setBorder(tb);
 
     rbSeparatorTab = new JRadioButton(getResources().getString("csvexportdialog.separator.tab"));
-    rbSeparatorColon = new JRadioButton(getResources().getString("csvexportdialog.separator.colon"));
-    rbSeparatorSemicolon = new JRadioButton(getResources().getString("csvexportdialog.separator.semicolon"));
-    rbSeparatorOther = new JRadioButton(getResources().getString("csvexportdialog.separator.other"));
+    rbSeparatorColon = new JRadioButton(
+        getResources().getString("csvexportdialog.separator.colon"));
+    rbSeparatorSemicolon = new JRadioButton(
+        getResources().getString("csvexportdialog.separator.semicolon"));
+    rbSeparatorOther = new JRadioButton(
+        getResources().getString("csvexportdialog.separator.other"));
 
     ButtonGroup btg = new ButtonGroup();
     btg.add (rbSeparatorTab);
@@ -485,9 +554,9 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * Returns the filename of the exceö file.
+   * Returns the export file name.
    *
-   * @return the name of the file where to save the excel file.
+   * @return The file name.
    */
   public String getFilename()
   {
@@ -495,9 +564,9 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * Defines the filename of the excel file.
+   * Sets the export file name.
    *
-   * @param filename the filename of the excel file
+   * @param filename  the file name.
    */
   public void setFilename(String filename)
   {
@@ -505,7 +574,10 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * @return true, if the dialog has been confirmed and the excel file should be saved, false otherwise.
+   * Returns <code>true</code> if the user confirmed the selection, and <code>false</code> 
+   * otherwise.  The file should only be saved if the result is <code>true</code>.
+   *
+   * @return  A boolean.
    */
   public boolean isConfirmed()
   {
@@ -515,7 +587,7 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   /**
    * Defines whether this dialog has been finished using the 'OK' or the 'Cancel' option.
    *
-   * @param confirmed set to true, if OK was pressed, false otherwise
+   * @param confirmed set to <code>true</code>, if OK was pressed, <code>false</code> otherwise
    */
   protected void setConfirmed(boolean confirmed)
   {
@@ -523,18 +595,24 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * clears all selections, input fields and set the selected encryption level to none.
+   * Clears all selections, input fields and sets the selected encryption level to none.
    */
   public void clear()
   {
     txFilename.setText("");
-    cbEncoding.setSelectedIndex(encodingModel.indexOf(System.getProperty ("file.encoding", "Cp1251")));
+    cbEncoding.setSelectedIndex(
+        encodingModel.indexOf(System.getProperty ("file.encoding", "Cp1251")));
     rbExportPrintedElements.setSelected(true);
     rbSeparatorColon.setSelected(true);
     cbxStrictLayout.setSelected(false);
     performSeparatorSelection();
   }
 
+  /**
+   * Returns the separator string, which is controlled by the selection of radio buttons.
+   * 
+   * @return The separator string.
+   */
   public String getSeparatorString ()
   {
     if (rbSeparatorColon.isSelected())
@@ -556,6 +634,11 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
     return "";
   }
 
+  /**
+   * Sets the separator string.
+   * 
+   * @param s  the separator.
+   */
   public void setSeparatorString (String s)
   {
     if (s == null)
@@ -583,6 +666,11 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
     performSeparatorSelection();
   }
 
+  /**
+   * Returns the encoding.
+   * 
+   * @return The encoding.
+   */
   public String getEncoding ()
   {
     if (cbEncoding.getSelectedIndex() == -1)
@@ -595,16 +683,32 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
     }
   }
 
+  /**
+   * Sets the encoding.
+   * 
+   * @param encoding  the encoding.
+   */
   public void setEncoding (String encoding)
   {
     cbEncoding.setSelectedIndex(encodingModel.indexOf(encoding));
   }
 
+  /**
+   * Returns <code>true</code> if the user selected to export raw data only, and <code>false</code>
+   * otherwise.
+   * 
+   * @return A boolean.
+   */
   public boolean isExportRawData ()
   {
     return rbExportData.isSelected();
   }
 
+  /**
+   * Sets a flag that controls whether raw data is exported.
+   * 
+   * @param b  the new flag value.
+   */
   public void setExportRawData (boolean b)
   {
     if (b == true)
@@ -618,7 +722,7 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * selects a file to use as target for the report processing.
+   * Selects a file to use as target for the report processing.
    */
   protected void performSelectFile()
   {
@@ -639,10 +743,10 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * Validates the contents of the dialogs input fields. If the selected file exists, it is also
+   * Validates the contents of the dialog's input fields. If the selected file exists, it is also
    * checked for validity.
    *
-   * @return true, if the input is valid, false otherwise
+   * @return <code>true</code> if the input is valid, <code>false</code> otherwise
    */
   public boolean performValidate()
   {
@@ -669,7 +773,8 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
       if (f.canWrite() == false)
       {
         JOptionPane.showMessageDialog(this,
-                                      getResources().getString("csvexportdialog.targetIsNotWritable"),
+                                      getResources().getString(
+                                          "csvexportdialog.targetIsNotWritable"),
                                       getResources().getString("csvexportdialog.errorTitle"),
                                       JOptionPane.ERROR_MESSAGE);
         return false;
@@ -692,7 +797,7 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * Shows this dialog and (if the dialog is confirmed) saves the complete report into a PDF-File.
+   * Shows this dialog and (if the dialog is confirmed) saves the complete report into a CSV file.
    *
    * @param report  the report being processed.
    *
@@ -749,7 +854,9 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
       try
       {
         if (out != null)
+        {
           out.close();
+        }
       }
       catch (Exception e)
       {
@@ -791,7 +898,9 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
       try
       {
         if (out != null)
+        {
           out.close();
+        }
       }
       catch (Exception e)
       {
@@ -820,16 +929,135 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * Initialises the Excel export dialog from the settings in the report configuration.
+   * Initialises the CSV export dialog from the settings in the report configuration.
    *
    * @param config  the report configuration.
    */
   public void initFromConfiguration(ReportConfiguration config)
   {
-  	// nothing to initialize so far. We have much less options than in "save to PDF"
     setSeparatorString(config.getConfigProperty(CSVProcessor.CSV_SEPARATOR, ","));
   }
 
+  /**
+   * Enables or disables the 'other' separator text field.
+   */
+  private void performSeparatorSelection()
+  {
+    if (rbSeparatorOther.isSelected())
+    {
+      txSeparatorOther.setEnabled(true);
+    }
+    else
+    {
+      txSeparatorOther.setEnabled(false);
+    }
+  }
+
+  /**
+   * Returns the display name for the CSV dialog.
+   * 
+   * @return The name.
+   */
+  public String getDisplayName()
+  {
+    return resources.getString ("action.export-to-csv.name");
+  }
+
+  /**
+   * Returns a short description for the CSV dialog.
+   * 
+   * @return The description.
+   */
+  public String getShortDescription()
+  {
+    return resources.getString ("action.export-to-csv.description");
+  }
+
+  /**
+   * Returns the small icon for the dialog.
+   * 
+   * @return The icon.
+   */
+  public Icon getSmallIcon()
+  {
+    return (Icon) resources.getObject ("action.export-to-csv.small-icon");
+  }
+
+  /**
+   * Returns the large icon for the dialog.
+   * 
+   * @return The icon.
+   */
+  public Icon getLargeIcon()
+  {
+    return (Icon) resources.getObject ("action.export-to-csv.icon");
+  }
+
+  /**
+   * Returns the accelerator key for the action associated with the dialog.
+   * 
+   * @return The key stroke.
+   */
+  public KeyStroke getAcceleratorKey()
+  {
+    return (KeyStroke) resources.getObject ("action.export-to-csv.accelerator");
+  }
+
+  /**
+   * Returns the mnemonic key code for the action associated with the dialog.
+   * 
+   * @return The key code.
+   */
+  public Integer getMnemonicKey()
+  {
+    return (Integer) resources.getObject ("action.export-to-csv.mnemonic");
+  }
+
+  /**
+   * Returns a flag that...
+   * 
+   * @return <code>false</code> always.
+   */
+  public boolean isSeparated()
+  {
+    return false;
+  }
+
+  /**
+   * Returns a flag that...
+   * 
+   * @return <code>false</code> always.
+   */
+  public boolean isAddToToolbar()
+  {
+    return false;
+  }
+
+  /**
+   * Returns the current setting of the 'strict layout' combo-box.
+   * 
+   * @return A boolean.
+   */
+  public boolean isStrictLayout()
+  {
+    return cbxStrictLayout.isSelected();
+  }
+
+  /**
+   * Sets the 'strict layout' combo-box setting.
+   * 
+   * @param strictLayout  the new setting.
+   */
+  public void setStrictLayout(boolean strictLayout)
+  {
+    cbxStrictLayout.setSelected(strictLayout);
+  }
+  
+  /**
+   * This method exists for debugging purposes.
+   * 
+   * @param args  ignored.
+   */
   public static void main (String [] args)
   {
     JDialog d = new CSVExportDialog();
@@ -846,68 +1074,5 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
     });
     d.setVisible(true);
   }
-
-  private void performSeparatorSelection()
-  {
-    if (rbSeparatorOther.isSelected())
-    {
-      txSeparatorOther.setEnabled(true);
-    }
-    else
-    {
-      txSeparatorOther.setEnabled(false);
-    }
-  }
-
-  public String getDisplayName()
-  {
-    return resources.getString ("action.export-to-csv.name");
-  }
-
-  public String getShortDescription()
-  {
-    return resources.getString ("action.export-to-csv.description");
-  }
-
-  public Icon getSmallIcon()
-  {
-    return (Icon) resources.getObject ("action.export-to-csv.small-icon");
-  }
-
-  public Icon getLargeIcon()
-  {
-    return (Icon) resources.getObject ("action.export-to-csv.icon");
-  }
-
-  public KeyStroke getAcceleratorKey()
-  {
-    return (KeyStroke) resources.getObject ("action.export-to-csv.accelerator");
-  }
-
-  public Integer getMnemonicKey()
-  {
-    return (Integer) resources.getObject ("action.export-to-csv.mnemonic");
-  }
-
-  public boolean isSeparated()
-  {
-    return false;
-  }
-
-  public boolean isAddToToolbar()
-  {
-    return false;
-  }
-
-  public boolean isStrictLayout()
-  {
-    return cbxStrictLayout.isSelected();
-  }
-
-  public void setStrictLayout(boolean strictLayout)
-  {
-    cbxStrictLayout.setSelected(strictLayout);
-  }
-
 
 }

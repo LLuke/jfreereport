@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ------------------
  * PDFSaveDialog.java
  * ------------------
- * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.25 2003/02/19 17:16:35 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.26 2003/02/19 22:13:22 taqua Exp $
  *
  * Changes
  * --------
@@ -43,13 +43,23 @@
 
 package com.jrefinery.report.preview;
 
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.targets.pageable.PageableReportProcessor;
-import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
-import com.jrefinery.report.util.ActionButton;
-import com.jrefinery.report.util.ExceptionDialog;
-import com.jrefinery.report.util.FilesystemFilter;
-import com.jrefinery.report.util.ReportConfiguration;
+import java.awt.Dialog;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.print.PageFormat;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -70,28 +80,19 @@ import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
-import java.awt.Dialog;
-import java.awt.Frame;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.KeyEvent;
-import java.awt.print.PageFormat;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.text.MessageFormat;
-import java.util.ResourceBundle;
+
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.targets.pageable.PageableReportProcessor;
+import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
+import com.jrefinery.report.util.ActionButton;
+import com.jrefinery.report.util.ExceptionDialog;
+import com.jrefinery.report.util.FilesystemFilter;
+import com.jrefinery.report.util.ReportConfiguration;
 
 /**
- * The PDFSaveDialog is used to perform the printing of a report into a PDF file. It is primarily
- * used to edit the properties of the PDFOutputTarget before the target is used to print the
- * report.
+ * A dialog that is used to perform the printing of a report into a PDF file. It is primarily
+ * used to edit the properties of the {@link PDFOutputTarget} before the target is used to print 
+ * the report.
  * <p>
  * The main method to call the dialog is PDFSaveDialog.savePDF(). Given a report and a pageformat,
  * the dialog is shown and if the user approved the dialog, the pdf is saved using the settings
@@ -288,7 +289,10 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
   /** Combo box for selecting the printing model. */
   private DefaultComboBoxModel printingModel;
 
+  /** A combo-box for selecting the encoding. */
   private JComboBox cbEncoding;
+  
+  /** A model for the available encodings. */
   private EncodingComboBoxModel encodingModel;
 
   /** Confirmed flag. */
@@ -303,6 +307,7 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
   /** Localised resources. */
   private ResourceBundle resources;
 
+  /** A file chooser. */
   private JFileChooser fileChooser;
 
   /** The base resource class. */
@@ -561,7 +566,8 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
     buttonPanel.add(btnConfirm);
     buttonPanel.add(btnCancel);
     btnConfirm.setDefaultCapable(true);
-    buttonPanel.registerKeyboardAction(getActionConfirm(), KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+    buttonPanel.registerKeyboardAction(getActionConfirm(), 
+                                       KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
                                        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
     gbc = new GridBagConstraints();
@@ -582,6 +588,11 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
 
   }
 
+  /**
+   * Creates a panel for the security settings.
+   * 
+   * @return The panel.
+   */
   private JPanel createSecurityPanel ()
   {
     JPanel securityPanel = new JPanel();
@@ -827,6 +838,11 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
     txConfOwnerPassword.setText(ownerPassword);
   }
 
+  /**
+   * Returns the selected encoding.
+   * 
+   * @return The encoding.
+   */
   public String getEncoding ()
   {
     if (cbEncoding.getSelectedIndex() == -1)
@@ -839,6 +855,11 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
     }
   }
 
+  /**
+   * Sets the encoding.
+   * 
+   * @param encoding  the encoding (name).
+   */
   public void setEncoding (String encoding)
   {
     cbEncoding.setSelectedIndex(encodingModel.indexOf(encoding));
@@ -1138,7 +1159,7 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * clears all selections, input fields and set the selected encryption level to none.
+   * Clears all selections, input fields and set the selected encryption level to none.
    */
   public void clear()
   {
@@ -1161,7 +1182,8 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
     rbSecurityNone.setSelected(true);
     getActionSecuritySelection().actionPerformed(null);
 
-    cbEncoding.setSelectedIndex(encodingModel.indexOf(System.getProperty ("file.encoding", "Cp1251")));
+    cbEncoding.setSelectedIndex(
+        encodingModel.indexOf(System.getProperty ("file.encoding", "Cp1251")));
   }
 
   /**
@@ -1346,7 +1368,9 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
       try
       {
         if (out != null)
+        {
           out.close();
+        }
       }
       catch (Exception e)
       {
@@ -1427,46 +1451,91 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
     return (val.equalsIgnoreCase("true"));
   }
 
+  /**
+   * Returns the display name.
+   * 
+   * @return The display name.
+   */
   public String getDisplayName()
   {
     return resources.getString ("action.save-as.name");
   }
 
+  /**
+   * Returns the short description for the action.
+   * 
+   * @return The short description.
+   */
   public String getShortDescription()
   {
     return resources.getString ("action.save-as.description");
   }
 
+  /**
+   * Returns the small icon for the action.
+   * 
+   * @return The icon.
+   */
   public Icon getSmallIcon()
   {
     return (Icon) resources.getObject ("action.save-as.small-icon");
   }
 
+  /**
+   * Returns the large icon for the action.
+   * 
+   * @return The icon.
+   */
   public Icon getLargeIcon()
   {
     return (Icon) resources.getObject ("action.save-as.icon");
   }
 
+  /**
+   * Returns the accelerator key for the action.
+   * 
+   * @return The accelerator key.
+   */
   public KeyStroke getAcceleratorKey()
   {
     return (KeyStroke) resources.getObject ("action.save-as.accelerator");
   }
 
+  /**
+   * Returns the mnemonic key code.
+   * 
+   * @return The key code.
+   */
   public Integer getMnemonicKey()
   {
     return (Integer) resources.getObject ("action.save-as.mnemonic");
   }
 
+  /**
+   * Returns <code>true</code>.
+   * 
+   * @return <code>true</code>.
+   */
   public boolean isSeparated()
   {
     return true;
   }
 
+  /**
+   * Returns <code>true</code>.
+   * 
+   * @return <code>true</code>.
+   */
   public boolean isAddToToolbar()
   {
     return true;
   }
 
+  /**
+   * For debugging.
+   * 
+   * @param args  ignored.
+   */
   public static void main (String [] args)
   {
     JDialog d = new PDFSaveDialog();
@@ -1483,6 +1552,5 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
     });
     d.setVisible(true);
   }
-
 
 }

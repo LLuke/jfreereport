@@ -1,4 +1,3 @@
-
 /**
  * ========================================
  * JFreeReport : a free Java report library
@@ -7,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -21,20 +20,22 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ------------------
+ * ----------------------
  * ExcelExportDialog.java
- * ------------------
+ * ----------------------
  * (C)opyright 2003, by Heiko Evermann and Contributors.
  *
- * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
-                     based on PDFSaveDialog by Thomas Morgner, David Gilbert (for Simba Management Limited) and contributors
- * Contributor(s):
- *
- * $Id: ExcelExportDialog.java,v 1.6 2003/02/03 18:52:44 taqua Exp $
+ * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG, based on PDFSaveDialog);
+ * Contributor(s):   Thomas Morgner;
+ *                   David Gilbert (for Simba Management Limited);
+ * 
+ * $Id: ExcelExportDialog.java,v 1.7 2003/02/04 17:56:15 taqua Exp $
  *
  * Changes
  * --------
- * 02-Jan-2002 : Initial version
+ * 02-Jan-2003 : Initial version
+ * 25-Feb-2003 : Added missing Javadocs (DG);
+ * 
  */
 
 package com.jrefinery.report.preview;
@@ -78,12 +79,11 @@ import java.text.MessageFormat;
 import java.util.ResourceBundle;
 
 /**
- * The ExcelExportDialog is used to perform the printing of a report into an Excel file.
- * report.
+ * A dialog that is used to perform the printing of a report into an Excel file.
  * <p>
- * The main method to call the dialog is ExcelExportDialog.exportToExcel(). Given a report and a pageformat,
- * the dialog is shown and if the user approved the dialog, the excel file  is saved using the settings
- * made in the dialog.
+ * The main method to call the dialog is {@link ExcelExportDialog#exportToExcel}. Given a report 
+ * and a pageformat, the dialog is shown and if the user approved the dialog, the excel file 
+ * is saved using the settings made in the dialog.
  *
  * @author Heiko Evermann
  */
@@ -178,6 +178,7 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
   /** Filename text field. */
   private JTextField txFilename;
 
+  /** The strict layout check-box. */
   private JCheckBox cbStrictLayout;
 
   /** Confirmed flag. */
@@ -192,12 +193,12 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
   /** Localised resources. */
   private ResourceBundle resources;
 
+  /** A file chooser. */
   private JFileChooser fileChooser;
 
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
       "com.jrefinery.report.resources.JFreeReportResources";
-
 
   /**
    * Creates a new Excel save dialog.
@@ -211,7 +212,7 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * Creates a new PDF Excel dialog.
+   * Creates a new Excel dialog.
    *
    * @param owner  the dialog owner.
    */
@@ -251,10 +252,10 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * Retrieves the resources for this PreviewFrame. If the resources are not initialized,
+   * Retrieves the resources for the dialog. If the resources are not initialized,
    * they get loaded on the first call to this method.
    *
-   * @return this frames ResourceBundle.
+   * @return The resource bundle.
    */
   private ResourceBundle getResources()
   {
@@ -317,8 +318,6 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
     contentPane.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 
     JLabel lblFileName = new JLabel(getResources().getString("excelexportdialog.filename"));
-//    JLabel lblAuthor = new JLabel(getResources().getString("excelexportdialog.author"));
-//    JLabel lblTitel = new JLabel(getResources().getString("excelexportdialog.title"));
     JButton btnSelect = new ActionButton(getActionSelectFile());
 
     txFilename = new JTextField();
@@ -331,21 +330,6 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
     gbc.insets = new Insets(3, 1, 1, 1);
     contentPane.add(lblFileName, gbc);
 
-/*
-    gbc = new GridBagConstraints();
-    gbc.anchor = GridBagConstraints.WEST;
-    gbc.gridx = 0;
-    gbc.gridy = 1;
-    gbc.insets = new Insets(1, 1, 1, 1);
-    contentPane.add(lblTitel, gbc);
-
-    gbc = new GridBagConstraints();
-    gbc.anchor = GridBagConstraints.WEST;
-    gbc.gridx = 0;
-    gbc.gridy = 2;
-    gbc.insets = new Insets(1, 1, 1, 1);
-    contentPane.add(lblAuthor, gbc);
-*/
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.weightx = 1;
@@ -363,23 +347,13 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
     gbc.ipadx = 120;
     gbc.insets = new Insets(1, 1, 1, 1);
     contentPane.add(cbStrictLayout, gbc);
-/*
-    gbc = new GridBagConstraints();
-    gbc.fill = GridBagConstraints.HORIZONTAL;
-    gbc.weightx = 1;
-    gbc.gridx = 1;
-    gbc.gridy = 2;
-    gbc.ipadx = 120;
-    gbc.insets = new Insets(1, 1, 1, 1);
-    contentPane.add(txAuthor, gbc);
-*/
+
     gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.NORTHWEST;
     gbc.gridx = 2;
     gbc.gridy = 0;
     gbc.gridheight = 2;
     contentPane.add(btnSelect, gbc);
-
 
     btnCancel = new ActionButton(getActionCancel());
     btnConfirm = new ActionButton(getActionConfirm());
@@ -407,12 +381,8 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
     fileChooser.setMultiSelectionEnabled(false);
   }
 
-
-
-
-
   /**
-   * Returns the filename of the exceö file.
+   * Returns the filename of the excel file.
    *
    * @return the name of the file where to save the excel file.
    */
@@ -432,7 +402,8 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * @return true, if the dialog has been confirmed and the excel file should be saved, false otherwise.
+   * @return true, if the dialog has been confirmed and the excel file should be saved, 
+   * false otherwise.
    */
   public boolean isConfirmed()
   {
@@ -449,18 +420,28 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
     this.confirmed = confirmed;
   }
 
+  /**
+   * Returns the setting of the 'strict layout' check-box.
+   * 
+   * @return A boolean.
+   */
   public boolean isStrictLayout()
   {
     return cbStrictLayout.isSelected();
   }
 
+  /**
+   * Sets the 'strict-layout' check-box. 
+   * 
+   * @param strictLayout  the new setting.
+   */
   public void setStrictLayout(boolean strictLayout)
   {
     cbStrictLayout.setSelected(strictLayout);
   }
 
   /**
-   * clears all selections, input fields and set the selected encryption level to none.
+   * Clears all selections and input fields.
    */
   public void clear()
   {
@@ -469,7 +450,7 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * selects a file to use as target for the report processing.
+   * Selects a file to use as target for the report processing.
    */
   protected void performSelectFile()
   {
@@ -492,7 +473,7 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * Validates the contents of the dialogs input fields. If the selected file exists, it is also
+   * Validates the contents of the dialog's input fields. If the selected file exists, it is also
    * checked for validity.
    *
    * @return true, if the input is valid, false otherwise
@@ -522,7 +503,8 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
       if (f.canWrite() == false)
       {
         JOptionPane.showMessageDialog(this,
-                                      getResources().getString("excelexportdialog.targetIsNotWritable"),
+                                      getResources().getString(
+                                          "excelexportdialog.targetIsNotWritable"),
                                       getResources().getString("excelexportdialog.errorTitle"),
                                       JOptionPane.ERROR_MESSAGE);
         return false;
@@ -545,7 +527,8 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * Shows this dialog and (if the dialog is confirmed) saves the complete report into a PDF-File.
+   * Shows this dialog and (if the dialog is confirmed) saves the complete report into an
+   * Excel file.
    *
    * @param report  the report being processed.
    *
@@ -593,7 +576,9 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
       try
       {
         if (out != null)
+        {
           out.close();
+        }
       }
       catch (Exception e)
       {
@@ -629,49 +614,94 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
    */
   public void initFromConfiguration(ReportConfiguration config)
   {
-  	// nothing to initialize so far. We have much less options than in "save to PDF"
+    // nothing to initialize so far. We have much less options than in "save to PDF"
   }
 
+  /**
+   * Returns a short description for the Excel dialog.
+   * 
+   * @return The description.
+   */
   public String getShortDescription()
   {
     return resources.getString ("action.export-to-excel.description");
   }
 
+  /**
+   * Returns the small icon for the dialog.
+   * 
+   * @return The icon.
+   */
   public Icon getSmallIcon()
   {
     return (Icon) resources.getObject ("action.export-to-excel.small-icon");
   }
 
+  /**
+   * Returns the large icon for the dialog.
+   * 
+   * @return The icon.
+   */
   public Icon getLargeIcon()
   {
     return (Icon) resources.getObject ("action.export-to-excel.icon");
   }
 
+  /**
+   * Returns the accelerator key for the action associated with the dialog.
+   * 
+   * @return The key stroke.
+   */
   public KeyStroke getAcceleratorKey()
   {
     return (KeyStroke) resources.getObject ("action.export-to-excel.accelerator");
   }
 
+  /**
+   * Returns the mnemonic key code for the action associated with the dialog.
+   * 
+   * @return The key code.
+   */
   public Integer getMnemonicKey()
   {
     return (Integer) resources.getObject ("action.export-to-excel.mnemonic");
   }
 
+  /**
+   * Returns the display name.
+   * 
+   * @return The display name.
+   */
   public String getDisplayName()
   {
     return resources.getString ("action.export-to-excel.name");
   }
 
+  /**
+   * Returns <code>false</code>.
+   * 
+   * @return A boolean.
+   */
   public boolean isSeparated()
   {
     return false;
   }
 
+  /**
+   * Returns <code>false</code>.
+   * 
+   * @return A boolean.
+   */
   public boolean isAddToToolbar()
   {
     return false;
   }
 
+  /**
+   * For debugging.
+   * 
+   * @param args  ignored.
+   */
   public static void main (String [] args)
   {
     JDialog d = new ExcelExportDialog();
@@ -688,6 +718,5 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
     });
     d.setVisible(true);
   }
-
 
 }

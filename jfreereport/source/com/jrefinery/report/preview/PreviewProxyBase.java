@@ -1,10 +1,88 @@
 /**
- * Date: Jan 14, 2003
- * Time: 6:50:48 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: PreviewProxyBase.java,v 1.9 2003/02/20 21:04:58 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ---------------------
+ * PreviewProxyBase.java
+ * ---------------------
+ * (C)opyright 2003, by Simba Management Limited and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: PreviewFrame.java,v 1.48 2003/01/14 21:10:40 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 25-Feb-2003 : Added standard header and Javadocs (DG);
+ * 
  */
+
 package com.jrefinery.report.preview;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.print.PageFormat;
+import java.awt.print.Pageable;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ResourceBundle;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.Icon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.JToolBar;
+import javax.swing.KeyStroke;
+import javax.swing.RepaintManager;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+
+import org.xml.sax.SAXException;
 
 import com.jrefinery.layout.CenterLayout;
 import com.jrefinery.report.JFreeReport;
@@ -30,53 +108,15 @@ import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.WindowSizeLimiter;
 import com.jrefinery.report.util.Worker;
-import org.xml.sax.SAXException;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JToolBar;
-import javax.swing.KeyStroke;
-import javax.swing.RepaintManager;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Insets;
-import java.awt.Toolkit;
-import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.print.PageFormat;
-import java.awt.print.Pageable;
-import java.awt.print.Printable;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.ResourceBundle;
-
+/**
+ * A preview proxy.
+ * 
+ * @author Thomas Morgner.
+ */
 public class PreviewProxyBase extends JComponent
 {
+  /** ??. */
   private Worker paginationWorker;
 
   /** The default width of the report pane. */
@@ -637,6 +677,11 @@ public class PreviewProxyBase extends JComponent
     }
   }
 
+  /**
+   * Returns the worker.
+   * 
+   * @return The worker.
+   */
   protected Worker getWorker ()
   {
     if (paginationWorker == null)
@@ -685,7 +730,8 @@ public class PreviewProxyBase extends JComponent
   private WrapperAction gotoAction;
 
   /** The available zoom factors. */
-  private static final float[] ZOOM_FACTORS = {0.25f, 0.5f, 0.75f, 1.0f, 1.25f, 1.5f, 2.0f, 3.0f, 4.0f};
+  private static final float[] 
+      ZOOM_FACTORS = {0.25f, 0.5f, 0.75f, 1.0f, 1.25f, 1.5f, 2.0f, 3.0f, 4.0f};
 
   /** The default zoom index (corresponds to a zoomFactor of 1.0. */
   private static final int DEFAULT_ZOOM_INDEX = 3;
@@ -717,16 +763,19 @@ public class PreviewProxyBase extends JComponent
   /** The preferred size. */
   private Dimension preferredSize;
 
+  /** A preview proxy. */
   private PreviewProxy proxy;
 
+  /** The export plug-ins. */
   private ArrayList exportPlugIns;
 
   /**
-   * Creates a preview dialog.
+   * Creates a preview proxy.
    *
    * @param report  the report to preview.
+   * @param proxy  the proxy.
    *
-   * @throws com.jrefinery.report.ReportProcessingException if there is a problem processing the report.
+   * @throws ReportProcessingException if there is a problem processing the report.
    */
   public PreviewProxyBase(JFreeReport report, PreviewProxy proxy) throws ReportProcessingException
   {
@@ -739,7 +788,7 @@ public class PreviewProxyBase extends JComponent
    *
    * @param report  the report.
    *
-   * @throws com.jrefinery.report.ReportProcessingException if there is a problem processing the report.
+   * @throws ReportProcessingException if there is a problem processing the report.
    */
   private void init (JFreeReport report) throws ReportProcessingException
   {
@@ -965,7 +1014,7 @@ public class PreviewProxyBase extends JComponent
    *
    * @return the report pane.
    *
-   * @throws com.jrefinery.report.ReportProcessingException if there is a problem processing the report.
+   * @throws ReportProcessingException if there is a problem processing the report.
    */
   protected ReportPane createReportPane(JFreeReport report) throws ReportProcessingException
   {
@@ -1178,8 +1227,10 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
-   * creates all actions by calling the createXXXAction functions and assigning them to
+   * Creates all actions by calling the createXXXAction functions and assigning them to
    * the local variables.
+   * 
+   * @param defaultCloseAction  the default close action.
    */
   private void createDefaultActions(Action defaultCloseAction)
   {
@@ -1340,7 +1391,8 @@ public class PreviewProxyBase extends JComponent
   /**
    * Creates and returns a menu-bar for the frame.
    *
-   * @param resources A resource bundle containing localised resources for the menu.
+   * @param resources  a resource bundle containing localised resources for the menu.
+   * @param report  the report.
    *
    * @return A ready-made JMenuBar.
    */
@@ -1468,6 +1520,8 @@ public class PreviewProxyBase extends JComponent
   /**
    * Creates and returns a toolbar containing controls for print, page forward and backward, zoom
    * in and out, and an about box.
+   * 
+   * @param report  the report.
    *
    * @return A completely initialized JToolBar.
    */
@@ -1481,8 +1535,9 @@ public class PreviewProxyBase extends JComponent
     {
       ExportPlugin plugIn = (ExportPlugin) it.next();
       if (plugIn.isAddToToolbar() == false)
+      {
         continue;
-
+      }
       ExportAction action = new ExportAction(plugIn);
       action.setReport(report);
       toolbar.add(createButton(action));
@@ -1587,6 +1642,9 @@ public class PreviewProxyBase extends JComponent
     getZoomInAction().setEnabled(zoomSelect.getSelectedIndex() != (ZOOM_FACTORS.length - 1));
   }
 
+  /**
+   * Disables the buttons.
+   */
   protected void disableButtons ()
   {
     getLastPageAction().setEnabled(false);
@@ -1852,6 +1910,9 @@ public class PreviewProxyBase extends JComponent
     this.gotoAction.setParent(gotoAction);
   }
 
+  /**
+   * Paginates the report.
+   */
   public void performPagination ()
   {
     disableButtons();
@@ -1860,8 +1921,10 @@ public class PreviewProxyBase extends JComponent
     Worker worker = getWorker();
     synchronized (worker)
     {
-      // waint until the worker is done with his current job
-      while (worker.isAvailable() == false);
+      while (worker.isAvailable() == false) 
+      {
+        // wait until the worker is done with his current job
+      }
     }
     getWorker().setWorkload(new Runnable ()
     {

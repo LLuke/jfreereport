@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ---------------
  * ReportPane.java
  * ---------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2000-2003, by Simba Management Limited.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.41 2003/02/18 19:37:27 taqua Exp $
+ * $Id: ReportPane.java,v 1.42 2003/02/22 18:52:28 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -192,11 +192,21 @@ public class ReportPane extends JComponent implements Printable, Pageable
     setZoomFactor (1.0f);
   }
 
+  /**
+   * Returns ??.
+   * 
+   * @return A boolean.
+   */
   public boolean isHandleInterruptedState()
   {
     return processor.isHandleInterruptedState();
   }
 
+  /**
+   * Sets the...
+   * 
+   * @param handleInterruptedState  the new flag value.
+   */
   public void setHandleInterruptedState(boolean handleInterruptedState)
   {
     processor.setHandleInterruptedState (handleInterruptedState);
@@ -734,8 +744,8 @@ public class ReportPane extends JComponent implements Printable, Pageable
       {
         try
         {
-          OutputTarget target = new DummyOutputTarget(new G2OutputTarget(G2OutputTarget.createEmptyGraphics(),
-                                                                         getPageFormat()));
+          OutputTarget target = new DummyOutputTarget(
+              new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), getPageFormat()));
           target.open();
           getProcessor().setOutputTarget(target);
         }

@@ -1,26 +1,80 @@
 /**
- * Date: Feb 2, 2003
- * Time: 6:52:56 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: ExportPluginFactory.java,v 1.4 2003/02/04 17:56:17 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ------------------------
+ * ExportPluginFactory.java
+ * ------------------------
+ * (C)opyright 2003, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: $
+ *
+ * Changes
+ * --------
+ * 25-Feb-2003 : Added standard header and Javadocs (DG);
+ *
  */
 package com.jrefinery.report.preview;
-
-import com.jrefinery.report.util.ReportConfiguration;
 
 import java.awt.Dialog;
 import java.awt.Frame;
 import java.util.ArrayList;
 
+import com.jrefinery.report.util.ReportConfiguration;
+
+/**
+ * An export plug-in factory.
+ * 
+ * @author Thomas Morgner.
+ */
 public class ExportPluginFactory
 {
+  /** The plug-in enable prefix. */
   public static final String PLUGIN_ENABLE_PREFIX = "com.jrefinery.report.preview.plugin.";
+
+  /** The PDF plug-in key. */
   public static final String PLUGIN_PDF = "pdf";
+
+  /** The CSV plug-in key. */
   public static final String PLUGIN_CSV = "csv";
+
+  /** The HTML plug-in key. */
   public static final String PLUGIN_HTML = "html";
+
+  /** The EXCEL plug-in key. */
   public static final String PLUGIN_EXCEL = "excel";
+
+  /** The PLAIN plug-in key. */
   public static final String PLUGIN_PLAIN = "plain";
 
+  /**
+   * Creates an Excel plug-in.
+   * 
+   * @param proxy  the preview proxy.
+   * 
+   * @return The plug-in.
+   */
   protected ExportPlugin createExcelPlugIn (PreviewProxy proxy)
   {
     ExcelExportDialog excelExportDialog;
@@ -41,6 +95,13 @@ public class ExportPluginFactory
     return excelExportDialog;
   }
 
+  /**
+   * Creates an HTML plug-in.
+   * 
+   * @param proxy  the preview proxy.
+   * 
+   * @return The plug-in.
+   */
   protected ExportPlugin createHTMLPlugin (PreviewProxy proxy)
   {
     HtmlExportDialog htmlExportDialog;
@@ -61,6 +122,13 @@ public class ExportPluginFactory
     return htmlExportDialog;
   }
 
+  /**
+   * Creates a plain text plug-in.
+   * 
+   * @param proxy  the preview proxy.
+   * 
+   * @return The plug-in.
+   */
   protected ExportPlugin createPlainTextPlugin (PreviewProxy proxy)
   {
     PlainTextExportDialog plainTextExportDialog;
@@ -81,6 +149,13 @@ public class ExportPluginFactory
     return plainTextExportDialog;
   }
 
+  /**
+   * Creates a CSV plug-in.
+   * 
+   * @param proxy  the preview proxy.
+   * 
+   * @return The plug-in.
+   */
   protected ExportPlugin createCSVPlugin (PreviewProxy proxy)
   {
     CSVExportDialog csvExportDialog;
@@ -101,6 +176,13 @@ public class ExportPluginFactory
     return csvExportDialog;
   }
 
+  /**
+   * Creates a PDF plug-in.
+   * 
+   * @param proxy  the preview proxy.
+   * 
+   * @return The plug-in.
+   */
   protected ExportPlugin createPDFPlugin (PreviewProxy proxy)
   {
     PDFSaveDialog pdfSaveDialog;
@@ -120,15 +202,26 @@ public class ExportPluginFactory
     return pdfSaveDialog;
   }
 
+  /**
+   * Returns true if the plug-in is enabled for a given report configuration, and false otherwise.
+   *
+   * @param config  the report configuration.
+   * @param plugin  the plug-in key.
+   * 
+   * @return A boolean.
+   */
   protected boolean isPluginEnabled (ReportConfiguration config, String plugin)
   {
     return config.getConfigProperty(PLUGIN_ENABLE_PREFIX + plugin, "false").equals("true");
   }
 
   /**
-   * creates all available export plugins.
-   * @param proxy
-   * @return
+   * Creates a list containing all available export plugins.
+   * 
+   * @param proxy  the preview proxy.
+   * @param config  the report configuration.
+   * 
+   * @return  The list of export plugins.
    */
   public ArrayList createExportPlugIns (PreviewProxy proxy, ReportConfiguration config)
   {

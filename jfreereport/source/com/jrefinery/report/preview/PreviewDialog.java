@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ------------------
  * PreviewDialog.java
  * ------------------
- * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewDialog.java,v 1.6 2002/12/12 12:26:56 mungady Exp $
+ * $Id: PreviewDialog.java,v 1.7 2003/01/14 21:10:25 taqua Exp $
  *
  * Changes (from 4-Dec-2002)
  * -------------------------
@@ -39,12 +39,6 @@
 
 package com.jrefinery.report.preview;
 
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.action.CloseAction;
-
-import javax.swing.Action;
-import javax.swing.JDialog;
 import java.awt.Dialog;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
@@ -52,13 +46,20 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ResourceBundle;
 
+import javax.swing.Action;
+import javax.swing.JDialog;
+
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.action.CloseAction;
+
 /**
  * A standard print preview dialog for any JFreeReport.  Allows the user to page back and forward
  * through the report, zoom in and out, and send the output to the printer.
  * <P>
  * You can also save the report in PDF format (thanks to the iText library).
  * <p>
- * When including this PreviewDialog in yuor own programs, you should override the provided
+ * When including this PreviewDialog in your own programs, you should override the provided
  * createXXXAction methods to include your customized actions.
  *
  * @author David Gilbert
@@ -98,13 +99,18 @@ public class PreviewDialog extends JDialog implements PreviewProxy
     }
   }
 
+  /** A preview proxy. */
   private PreviewProxyBase base;
+  
+  /** Localised resources. */
   private ResourceBundle resources;
 
   /**
-   * Creates a non-modal dialog without a title and without
-   * a specified Frame owner.  A shared, hidden frame will be
-   * set as the owner of the Dialog.
+   * Creates a new preview dialog for a report.
+   * 
+   * @param report  the report.
+   * 
+   * @throws ReportProcessingException if there is a problem processing the report.
    */
   public PreviewDialog(JFreeReport report)
       throws ReportProcessingException
@@ -113,10 +119,12 @@ public class PreviewDialog extends JDialog implements PreviewProxy
   }
 
   /**
-   * Creates a non-modal dialog without a title with the
-   * specifed Frame as its owner.
-   *
-   * @param owner the Frame from which the dialog is displayed
+   * Creates a new preview dialog for a report.
+   * 
+   * @param report  the report.
+   * @param owner  the owner frame.
+   * 
+   * @throws ReportProcessingException if there is a problem processing the report.
    */
   public PreviewDialog(JFreeReport report, Frame owner)
       throws ReportProcessingException
@@ -126,12 +134,13 @@ public class PreviewDialog extends JDialog implements PreviewProxy
   }
 
   /**
-   * Creates a modal or non-modal dialog without a title and
-   * with the specified owner frame.
-   *
-   * @param owner the Frame from which the dialog is displayed
-   * @param modal  true for a modal dialog, false for one that allows
-   *               others windows to be active at the same time
+   * Creates a new preview dialog for a report.
+   * 
+   * @param report  the report.
+   * @param owner  the owner frame.
+   * @param modal  modal or non-modal?
+   * 
+   * @throws ReportProcessingException if there is a problem processing the report.
    */
   public PreviewDialog(JFreeReport report, Frame owner, boolean modal)
       throws ReportProcessingException
@@ -141,10 +150,12 @@ public class PreviewDialog extends JDialog implements PreviewProxy
   }
 
   /**
-   * Creates a non-modal dialog without a title with the
-   * specifed Dialog as its owner.
-   *
-   * @param owner the Dialog from which the dialog is displayed
+   * Creates a new preview dialog for a report.
+   * 
+   * @param report  the report.
+   * @param owner  the owner dialog.
+   * 
+   * @throws ReportProcessingException if there is a problem processing the report.
    */
   public PreviewDialog(JFreeReport report, Dialog owner)
       throws ReportProcessingException
@@ -154,13 +165,13 @@ public class PreviewDialog extends JDialog implements PreviewProxy
   }
 
   /**
-   * Creates a modal or non-modal dialog without a title and
-   * with the specified owner dialog.
-   * <p>
-   *
-   * @param owner the Dialog from which the dialog is displayed
-   * @param modal  true for a modal dialog, false for one that allows
-   *               others windows to be active at the same time
+   * Creates a new preview dialog for a report.
+   * 
+   * @param report  the report.
+   * @param owner  the owner dialog.
+   * @param modal  modal or non-modal?
+   * 
+   * @throws ReportProcessingException if there is a problem processing the report.
    */
   public PreviewDialog(JFreeReport report, Dialog owner, boolean modal)
     throws ReportProcessingException
@@ -169,6 +180,13 @@ public class PreviewDialog extends JDialog implements PreviewProxy
     init (report);
   }
 
+  /**
+   * Initialise.
+   * 
+   * @param report  the report
+   * 
+   * @throws ReportProcessingException if there is a problem processing the report.
+   */
   private void init(JFreeReport report) throws ReportProcessingException
   {
     base = new PreviewProxyBase(report, this);
@@ -176,17 +194,28 @@ public class PreviewDialog extends JDialog implements PreviewProxy
     setContentPane(base);
   }
 
+  /**
+   * Creates the default close action.
+   * 
+   * @return The action.
+   */
   public Action createDefaultCloseAction()
   {
     return new DefaultCloseAction();
   }
 
+  /**
+   * Disposes the dialog.
+   */
   public void dispose()
   {
     base.dispose();
     super.dispose();
   }
 
+  /**
+   * Registers the close actions.
+   */
   protected void registerCloseActions()
   {
     addWindowListener(new WindowAdapter()
@@ -219,6 +248,11 @@ public class PreviewDialog extends JDialog implements PreviewProxy
     return resources;
   }
 
+  /**
+   * Returns the preview proxy.
+   * 
+   * @return The proxy.
+   */
   public PreviewProxyBase getBase()
   {
     return base;
