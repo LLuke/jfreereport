@@ -34,14 +34,15 @@
  * -------
  * 05-Dec-2002 : Updated Javadocs (DG);
  * 05-Feb-2002 : Implemented the serializable interface.
+ * 23-Feb-2003 : Added compatibility methods for the old int element alignment.
  */
 
 package com.jrefinery.report;
 
 import com.jrefinery.report.util.ObjectStreamResolveException;
 
-import java.io.Serializable;
 import java.io.ObjectStreamException;
+import java.io.Serializable;
 
 /**
  * Represents the alignment of an element.
@@ -51,22 +52,22 @@ import java.io.ObjectStreamException;
 public class ElementAlignment implements Serializable
 {
   /** A constant for left alignment. */
-  public static final ElementAlignment LEFT = new ElementAlignment("LEFT", Element.LEFT);
+  public static final ElementAlignment LEFT = new ElementAlignment("LEFT", 1);
   
   /** A constant for center alignment (horizontal). */
-  public static final ElementAlignment CENTER = new ElementAlignment("CENTER", Element.CENTER);
+  public static final ElementAlignment CENTER = new ElementAlignment("CENTER", 3);
   
   /** A constant for right alignment. */
-  public static final ElementAlignment RIGHT = new ElementAlignment("RIGHT", Element.RIGHT);
+  public static final ElementAlignment RIGHT = new ElementAlignment("RIGHT", 2);
   
   /** A constant for top alignment. */
-  public static final ElementAlignment TOP = new ElementAlignment("TOP", Element.TOP);
+  public static final ElementAlignment TOP = new ElementAlignment("TOP", 14);
   
   /** A constant for middle alignment (vertical). */
-  public static final ElementAlignment MIDDLE = new ElementAlignment("MIDDLE", Element.MIDDLE);
+  public static final ElementAlignment MIDDLE = new ElementAlignment("MIDDLE", 15);
   
   /** A constant for bottom alignment. */
-  public static final ElementAlignment BOTTOM = new ElementAlignment("BOTTOM", Element.BOTTOM);
+  public static final ElementAlignment BOTTOM = new ElementAlignment("BOTTOM", 16);
 
   /** The alignment name. */
   private final String myName; // for debug only
@@ -150,6 +151,68 @@ public class ElementAlignment implements Serializable
       return ElementAlignment.MIDDLE;
     // unknown element alignment...
     throw new ObjectStreamResolveException();
+  }
+
+  /**
+   * Translates the old int contant into the new ElementAlignment objects.
+   * <p>
+   * This is one of <code>Element.LEFT</code>, <code>Element.CENTER</code> or
+   * <code>Element.RIGHT</code>.
+   *
+   * @param alignment  the alignment for this element.
+   * @return the translated alignment.
+   * @throws IllegalArgumentException if the given int value does not match one
+   * of the predefined constant values.
+   */
+  public static ElementAlignment translateHorizontalAlignment(int alignment)
+  {
+    if (alignment == LEFT.getOldAlignment())
+    {
+      return ElementAlignment.LEFT;
+    }
+    else if (alignment == RIGHT.getOldAlignment())
+    {
+      return ElementAlignment.RIGHT;
+    }
+    else if (alignment == CENTER.getOldAlignment())
+    {
+      return ElementAlignment.CENTER;
+    }
+    else
+    {
+      throw new IllegalArgumentException("The alignment must be one of LEFT, RIGHT or CENTER.");
+    }
+  }
+
+  /**
+   * Translates the old int contant into the new ElementAlignment objects.
+   * <p>
+   * This is one of the constants defined in the <code>Element</code> class: <code>TOP</code>,
+   * <code>MIDDLE</code> or <code>RIGHT</code>.
+   *
+   * @param alignment the alignment.
+   * @return the translated alignment.
+   * @throws IllegalArgumentException if the given int value does not match one
+   * of the predefined constant values.
+   */
+  public static ElementAlignment translateVerticalAlignment(int alignment)
+  {
+    if (alignment == TOP.getOldAlignment())
+    {
+      return ElementAlignment.TOP;
+    }
+    else if (alignment == BOTTOM.getOldAlignment())
+    {
+      return ElementAlignment.BOTTOM;
+    }
+    else if (alignment == MIDDLE.getOldAlignment())
+    {
+      return ElementAlignment.MIDDLE;
+    }
+    else
+    {
+      throw new IllegalArgumentException("The alignment must be one of TOP, BOTTOM or MIDDLE.");
+    }
   }
 
 }

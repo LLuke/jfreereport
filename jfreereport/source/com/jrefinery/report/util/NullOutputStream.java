@@ -25,14 +25,13 @@
  * ---------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: NullOutputStream.java,v 1.5 2002/12/12 12:26:57 mungady Exp $
+ * $Id: NullOutputStream.java,v 1.6 2003/02/10 19:33:52 taqua Exp $
  *
  * Changes
  * -------
  * 12-Nov-2002 : Fixed errors reported by Checkstyle 2.4 (DG).
  *
  */
-
 package com.jrefinery.report.util;
 
 import java.io.IOException;

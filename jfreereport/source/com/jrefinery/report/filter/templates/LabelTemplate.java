@@ -42,7 +42,7 @@ import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.filter.StringFilter;
 
 /**
- * A label template.
+ * A label template can be used to describe static text content.
  * 
  * @author Thomas Morgner
  */

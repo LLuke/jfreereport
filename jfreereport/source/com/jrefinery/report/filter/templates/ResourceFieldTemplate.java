@@ -48,7 +48,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
- * A resource field template.
+ * A resource field template, which reads a String value from a ResourceBundle.
  * 
  * @author Thomas Morgner
  */

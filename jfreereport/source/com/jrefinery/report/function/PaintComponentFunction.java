@@ -2,7 +2,7 @@
  * Date: Feb 12, 2003
  * Time: 10:32:57 AM
  *
- * $Id: PaintComponentFunction.java,v 1.2 2003/02/22 18:14:08 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.3 2003/02/22 18:52:25 taqua Exp $
  */
 package com.jrefinery.report.function;
 
@@ -23,8 +23,8 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 /**
- * Paints a AWT or Swing Component. The component must be contained in the
- * dataRow.
+ * Paints a AWT or Swing Component, fitting the component into the element bounds.
+ * The component must be contained in the dataRow.
  */
 public class PaintComponentFunction extends AbstractFunction implements LayoutListener
 {

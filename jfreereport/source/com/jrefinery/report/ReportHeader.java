@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportHeader.java,v 1.8 2002/12/02 18:24:12 taqua Exp $
+ * $Id: ReportHeader.java,v 1.9 2002/12/06 17:18:36 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -45,8 +45,7 @@ package com.jrefinery.report;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 
 /**
- * A report band that is printed once only at the beginning of the report.  A report header is
- * optional.
+ * A report band that is printed once only at the beginning of the report.
  * <p>
  * A flag can be set forcing the report generator to start a new page after printing the report
  * header.
@@ -69,7 +68,8 @@ public class ReportHeader extends Band
   }
 
   /**
-   * Defines whether the report header appears on its own page.
+   * Defines whether the report header appears on its own page. The pagebreak
+   * is forced after the report header was printed.
    *
    * @param b  the new flag indicating whether to force a pagebreak.
    */

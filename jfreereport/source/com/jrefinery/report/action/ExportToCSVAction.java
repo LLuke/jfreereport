@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
  * Contributor(s):
 *
- * $Id: ExportToHtmlAction.java,v 1.1 2003/01/18 20:47:34 taqua Exp $
+ * $Id: ExportToCSVAction.java,v 1.1 2003/01/22 19:45:13 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,9 @@ import com.jrefinery.report.util.ActionDowngrade;
 import java.util.ResourceBundle;
 
 /**
- * Save (to PDF) action for a print preview frame.
+ * Export to CSV action for a print preview frame.
  *
+ * @deprecated Export modules are now defined by plugin-interfaces.
  * @author David Gilbert
  */
 public abstract class ExportToCSVAction extends AbstractActionDowngrade

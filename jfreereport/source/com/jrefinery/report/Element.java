@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.22 2003/02/04 17:56:06 taqua Exp $
+ * $Id: Element.java,v 1.23 2003/02/05 15:38:12 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -96,34 +96,46 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   /**
    * ElementStyle constant for horizontal left alignment.
    * For StyleSheet definition use the ElementAlignment-Objects.
+   *
+   * @deprecated use ElementAlignment objects instead.
    */
-  public static final int LEFT = 1;
+  public static final int LEFT = ElementAlignment.LEFT.getOldAlignment();
   /**
    * ElementStyle constant for horizontal right alignment.
    * For StyleSheet definition use the ElementAlignment-Objects.
+   *
+   * @deprecated use ElementAlignment objects instead.
    */
-  public static final int RIGHT = 2;
+  public static final int RIGHT = ElementAlignment.RIGHT.getOldAlignment();
   /**
    * ElementStyle constant for horizontal center alignment.
    * For StyleSheet definition use the ElementAlignment-Objects.
+   *
+   * @deprecated use ElementAlignment objects instead.
    */
-  public static final int CENTER = 3;
+  public static final int CENTER = ElementAlignment.CENTER.getOldAlignment();
 
   /**
    * ElementStyle constant for vertical top alignment.
    * For StyleSheet definition use the ElementAlignment-Objects.
+   *
+   * @deprecated use ElementAlignment objects instead.
    */
-  public static final int TOP = 14;
+  public static final int TOP = ElementAlignment.TOP.getOldAlignment();
   /**
    * ElementStyle constant for vertical middle alignment.
    * For StyleSheet definition use the ElementAlignment-Objects.
+   *
+   * @deprecated use ElementAlignment objects instead.
    */
-  public static final int MIDDLE = 15;
+  public static final int MIDDLE = ElementAlignment.MIDDLE.getOldAlignment();
   /**
    * ElementStyle constant for vertical bottom alignment.
    * For StyleSheet definition use the ElementAlignment-Objects.
+   *
+   * @deprecated use ElementAlignment objects instead.
    */
-  public static final int BOTTOM = 16;
+  public static final int BOTTOM = ElementAlignment.BOTTOM.getOldAlignment();
 
   /** the parent for the element (the band where the element is contained in). */
   private Band parent;

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextElement.java,v 1.28 2003/02/05 15:38:13 taqua Exp $
+ * $Id: TextElement.java,v 1.29 2003/02/20 21:04:31 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -71,87 +71,25 @@ import java.awt.Font;
  * <p>
  * For more information on filters have a look at the filter package
  * {@link com.jrefinery.report.filter}
- * <p>
- * The font style flags isUnderlined and isStriketrough are not yet implemented
- * in version 0.8.0.
  *
  * @author David Gilbert
  * @author Thomas Morgner
  */
 public class TextElement extends Element
 {
+  /** The content type string. */
+  public static final String CONTENT_TYPE = "text/plain";
+
   /** The filter used to convert values (Objects) to strings. */
   private StringFilter stringfilter;
 
   /**
-   * Creates a new text element.
+   * Creates a new empty text element.
    */
   public TextElement()
   {
     stringfilter = new StringFilter();
     setNullString(null);
-  }
-
-  /**
-   * Returns true, if the text should be underlined, and false otherwise.
-   *
-   * @return true or false.
-   */
-  public boolean isUnderlined()
-  {
-    return getStyle().getBooleanStyleProperty(ElementStyleSheet.UNDERLINED);
-  }
-
-  /**
-   * Defines whether the text should be printed in underline style.
-   *
-   * @param b  the flag.
-   */
-  public void setUnderlined(boolean b)
-  {
-    getStyle().setStyleProperty(ElementStyleSheet.UNDERLINED, new Boolean(b));
-  }
-
-  /**
-   * Returns true, if the text should be strike-through style, and false otherwise.
-   *
-   * @return true or false.
-   */
-  public boolean isStrikethrough()
-  {
-    return getStyle().getBooleanStyleProperty(ElementStyleSheet.STRIKETHROUGH);
-  }
-
-  /**
-   * Defines whether the text should be printed in strike-through style.
-   *
-   * @param b  the flag.
-   */
-  public void setStrikethrough(boolean b)
-  {
-    getStyle().setStyleProperty(ElementStyleSheet.STRIKETHROUGH, new Boolean(b));
-  }
-
-  /**
-   * Defines the font for this element. If no font is defined, on drawing time the band's font
-   * is used.
-   *
-   * @param f  the font.
-   */
-  public void setFont(Font f)
-  {
-    getStyle().setFontDefinitionProperty(new FontDefinition (f));
-  }
-
-  /**
-   * Returns the font defined for this element.
-   *
-   * @return the font or null if no font has been defined for this element.
-   * @deprecated use the stylesheet to access the font if needed.
-   */
-  public Font getFont()
-  {
-    return getStyle().getFontDefinitionProperty().getFont();
   }
 
   /**
@@ -177,106 +115,6 @@ public class TextElement extends Element
   {
     String nstring = (s == null) ? "-" : s;
     stringfilter.setNullValue(nstring);
-  }
-
-  /**
-   * Returns the text alignment for this element's text.
-   * <p>
-   * This is one of <code>ElementConstants.LEFT</code>, <code>ElementConstants.CENTER</code> or
-   * <code>ElementConstants.RIGHT</code>.
-   *
-   * @return the alignment for this element.
-   */
-  public int getAlignment()
-  {
-    ElementAlignment al = (ElementAlignment)
-        getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.LEFT);
-    return al.getOldAlignment();
-  }
-
-  /**
-   * Defines the text alignment for this element's text.
-   * <p>
-   * This is one of <code>Element.LEFT</code>, <code>Element.CENTER</code> or
-   * <code>Element.RIGHT</code>.
-   *
-   * @param alignment  the alignment for this element.
-   */
-  public void setAlignment(int alignment)
-  {
-    if (alignment == LEFT)
-    {
-      getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.LEFT);
-    }
-    else if (alignment == RIGHT)
-    {
-      getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.RIGHT);
-    }
-    else if (alignment == CENTER)
-    {
-      getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.CENTER);
-    }
-    else
-    {
-      throw new IllegalArgumentException("The alignment must be one of LEFT, RIGHT or CENTER.");
-    }
-  }
-
-  /**
-   * Returns the vertical alignment for this element's text.
-   * <p>
-   * This is one of <code>Element.TOP</code>, <code>Element.MIDDLE</code> or
-   * <code>Element.BOTTOM</code>.
-   *
-   * @return the alignment.
-   */
-  public int getVerticalAlignment()
-  {
-    ElementAlignment al = (ElementAlignment)
-        getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.TOP);
-    return al.getOldAlignment();
-  }
-
-  /**
-   * Defines the vertical alignment for this element's text.
-   * <p>
-   * This is one of the constants defined in the <code>Element</code> class: <code>TOP</code>,
-   * <code>MIDDLE</code> or <code>RIGHT</code>.
-   *
-   * @param alignment the alignment.
-   */
-  public void setVerticalAlignment(int alignment)
-  {
-    if (alignment == TOP)
-    {
-      getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.TOP);
-    }
-    else if (alignment == BOTTOM)
-    {
-      getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.BOTTOM);
-    }
-    else if (alignment == MIDDLE)
-    {
-      getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.MIDDLE);
-    }
-    else
-    {
-      throw new IllegalArgumentException("The alignment must be one of TOP, BOTTOM or MIDDLE.");
-    }
-  }
-
-  /**
-   * Returns a formatted version of the data element.  Typically used for numbers and dates which
-   * can be formatted in various ways.
-   *
-   * @return  a formatted version of the data value.
-   *
-   * @deprecated this method is replaced by Element.getValue(), filters are used for any
-   *             formatting that is required.
-   */
-  public String getFormattedText()
-  {
-    return String.valueOf(getValue());
   }
 
   /**
@@ -324,9 +162,6 @@ public class TextElement extends Element
     return te;
   }
 
-  /** The content type string. */
-  public static final String CONTENT_TYPE = "text/plain";
-
   /**
    * Returns the content type, in this case '<code>text/plain</code>'.
    *
@@ -335,5 +170,150 @@ public class TextElement extends Element
   public String getContentType()
   {
     return CONTENT_TYPE;
+  }
+
+  //////////// DEPRECATED METHODS //////////////////////////////////////////
+
+  /**
+   * Returns true, if the text should be strike-through style, and false otherwise.
+   *
+   * @return true or false.
+   * @deprecated this information is contained in the FontDefinition object.
+   */
+  public boolean isStrikethrough()
+  {
+    return getStyle().getBooleanStyleProperty(ElementStyleSheet.STRIKETHROUGH);
+  }
+
+  /**
+   * Defines whether the text should be printed in strike-through style.
+   *
+   * @param b  the flag.
+   * @deprecated this information is contained in the FontDefinition object.
+   */
+  public void setStrikethrough(boolean b)
+  {
+    getStyle().setStyleProperty(ElementStyleSheet.STRIKETHROUGH, new Boolean(b));
+  }
+
+  /**
+   * Defines the font for this element. If no font is defined, on drawing time the band's font
+   * is used.
+   *
+   * @param f  the font.
+   * @deprecated the FontDefinition object should be used to define the font and
+   * font-related properties.
+   */
+  public void setFont(Font f)
+  {
+    getStyle().setFontDefinitionProperty(new FontDefinition (f));
+  }
+
+  /**
+   * Returns the font defined for this element.
+   *
+   * @return the font or null if no font has been defined for this element.
+   * @deprecated the FontDefinition object should be used to define the font and
+   * font-related properties.
+   */
+  public Font getFont()
+  {
+    return getStyle().getFontDefinitionProperty().getFont();
+  }
+
+  /**
+   * Returns true, if the text should be underlined, and false otherwise.
+   *
+   * @return true or false.
+   * @deprecated this information is contained in the FontDefinition object.
+   */
+  public boolean isUnderlined()
+  {
+    return getStyle().getBooleanStyleProperty(ElementStyleSheet.UNDERLINED);
+  }
+
+  /**
+   * Defines whether the text should be printed in underline style.
+   *
+   * @deprecated this information is contained in the FontDefinition object.
+   * @param b  the flag.
+   */
+  public void setUnderlined(boolean b)
+  {
+    getStyle().setStyleProperty(ElementStyleSheet.UNDERLINED, new Boolean(b));
+  }
+
+  /**
+   * Returns a formatted version of the data element.  Typically used for numbers and dates which
+   * can be formatted in various ways.
+   *
+   * @return  a formatted version of the data value.
+   *
+   * @deprecated this method is replaced by Element.getValue(), filters are used for any
+   *             formatting that is required.
+   */
+  public String getFormattedText()
+  {
+    return String.valueOf(getValue());
+  }
+
+  /**
+   * Returns the text alignment for this element's text.
+   * <p>
+   * This is one of <code>ElementConstants.LEFT</code>, <code>ElementConstants.CENTER</code> or
+   * <code>ElementConstants.RIGHT</code>.
+   *
+   * @return the alignment for this element.
+   * @deprecated the text alignment should be defined using the style sheet interfaces.
+   */
+  public int getAlignment()
+  {
+    ElementAlignment al = (ElementAlignment)
+        getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.LEFT);
+    return al.getOldAlignment();
+  }
+
+  /**
+   * Defines the text alignment for this element's text.
+   * <p>
+   * This is one of <code>Element.LEFT</code>, <code>Element.CENTER</code> or
+   * <code>Element.RIGHT</code>.
+   *
+   * @param alignment  the alignment for this element.
+   * @deprecated the text alignment should be defined using the style sheet interfaces.
+   */
+  public void setAlignment(int alignment)
+  {
+    getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.translateHorizontalAlignment(alignment));
+  }
+
+  /**
+   * Returns the vertical alignment for this element's text.
+   * <p>
+   * This is one of <code>Element.TOP</code>, <code>Element.MIDDLE</code> or
+   * <code>Element.BOTTOM</code>.
+   *
+   * @return the alignment.
+   * @deprecated the text alignment should be defined using the style sheet interfaces.
+   */
+  public int getVerticalAlignment()
+  {
+    ElementAlignment al = (ElementAlignment)
+        getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.TOP);
+    return al.getOldAlignment();
+  }
+
+  /**
+   * Defines the vertical alignment for this element's text.
+   * <p>
+   * This is one of the constants defined in the <code>Element</code> class: <code>TOP</code>,
+   * <code>MIDDLE</code> or <code>RIGHT</code>.
+   *
+   * @param alignment the alignment.
+   * @deprecated the text alignment should be defined using the style sheet interfaces.
+   */
+  public void setVerticalAlignment(int alignment)
+  {
+    getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.translateVerticalAlignment(alignment));
   }
 }

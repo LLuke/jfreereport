@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.24 2003/02/05 15:38:12 taqua Exp $
+ * $Id: ImageReference.java,v 1.25 2003/02/18 19:36:59 taqua Exp $
  *
  * Changes:
  * --------
@@ -388,7 +388,7 @@ public class ImageReference implements Serializable, Cloneable
   }
 
   /**
-   * Returns the image width.
+   * Returns the (unscaled) image width.
    *
    * @return the image width.
    */
@@ -398,7 +398,7 @@ public class ImageReference implements Serializable, Cloneable
   }
 
   /**
-   * Returns the image height.
+   * Returns the (unscaled) image height.
    *
    * @return the image height.
    */

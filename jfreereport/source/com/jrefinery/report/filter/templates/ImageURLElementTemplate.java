@@ -45,7 +45,7 @@ import com.jrefinery.report.filter.URLFilter;
 import java.net.URL;
 
 /**
- * An image URL element template.
+ * An image URL element template, which reads the image from a static URL.
  * 
  * @author Thomas Morgner
  */

@@ -3,11 +3,17 @@
 <body bgcolor="white">
 Main classes in the JFreeReport class library.
 <p>
-Functions cannot be added to the report once the report generation has
-started. Do not modify the report structure after the report
-generation is started, unless you know exactly what you are doing. It
-is safe to modify the report definition <b>before</b> the report is
+Some rules when working with the report definition objects:
+<ul>
+<li>Functions cannot be added to the report once the report generation has
 started.
+<li>Do not modify the report structure after the report
+generation is started, unless you know exactly what you are doing.
+<li>It is safe to modify the report definition <b>before</b> the report is
+started.
+<li>Once the report processing has started, the report from the report
+processor must not be reused for other purposes.
+</ul>  
 </p>
 </body>
 </html>

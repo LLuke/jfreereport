@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
  * Contributor(s):
 *
- * $Id: SaveAsAction.java,v 1.13 2002/12/12 12:26:55 mungady Exp $
+ * $Id: ExportToExcelAction.java,v 1.1 2003/01/14 21:03:22 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,9 @@ import com.jrefinery.report.util.ActionDowngrade;
 import java.util.ResourceBundle;
 
 /**
- * Save (to PDF) action for a print preview frame.
+ * Export to Excel action for a print preview frame.
  *
+ * @deprecated Export modules are now defined by plugin-interfaces.
  * @author David Gilbert
  */
 public abstract class ExportToExcelAction extends AbstractActionDowngrade

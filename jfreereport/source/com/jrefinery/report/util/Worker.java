@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: Worker.java,v 1.2 2003/02/05 17:56:03 taqua Exp $
  *
  *
  * Changes
@@ -45,12 +45,15 @@ package com.jrefinery.report.util;
  */
 public class Worker extends Thread
 {
+  /** the workers task. */
   private Runnable workload = null;
+  /** a flag whether the worker should exit after the procssing. */
   private boolean finish = false;
-  private int sleeptime = 0;
+  /** the time in milliseconds beween 2 checks for exit or work requests. */
+  private int sleeptime;
 
   /**
-   * creates a new worker.
+   * Creates a new worker.
    *
    * @param sleeptime the time this worker sleeps until he checks for new work.
    */
@@ -61,7 +64,7 @@ public class Worker extends Thread
   }
 
   /**
-   * creates a new worker with an default idle timeout of 2 minutes.
+   * Creates a new worker with an default idle timeout of 2 minutes.
    */
   public Worker()
   {
@@ -69,7 +72,7 @@ public class Worker extends Thread
   }
 
   /**
-   * set the next workload for this worker.
+   * Set the next workload for this worker.
    */
   public void setWorkload(Runnable r)
   {
@@ -98,7 +101,7 @@ public class Worker extends Thread
   }
 
   /**
-   * checks, whether this worker has some work to do.
+   * Checks, whether this worker has some work to do.
    *
    * @return true, if this worker has no more work and is currently sleeping.
    */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.13 2003/01/24 16:39:09 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.14 2003/02/05 13:25:29 taqua Exp $
  *
  * Changes
  * -------
@@ -335,7 +335,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
   }
 
   /**
-   * Clones the style-sheet.
+   * Clones the style-sheet. The assigned parent style sheets are not cloned.
    *
    * @return the clone.
    *

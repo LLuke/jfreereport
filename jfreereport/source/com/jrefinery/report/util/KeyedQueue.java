@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: KeyedQueue.java,v 1.11 2003/02/06 17:38:19 taqua Exp $
+ * $Id: KeyedQueue.java,v 1.12 2003/02/10 19:33:52 taqua Exp $
  *
  * Changes
  * -------
@@ -36,7 +36,6 @@
  * 10-Dec-2002 : Minor Javadoc updates (DG);
  *
  */
-
 package com.jrefinery.report.util;
 
 import java.io.Serializable;

@@ -41,14 +41,15 @@ package com.jrefinery.report.filter.templates;
 import com.jrefinery.report.filter.DataSource;
 
 /**
- * A template.
+ * A template defines a common use case for a DataSource and one or more
+ * predefined Filters.
  * 
  * @author Thomas Morgner
  */
 public interface Template extends DataSource
 {
   /**
-   * Sets the name.
+   * Sets the name of this template.
    * 
    * @param name  the name.
    */

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ShapeElement.java,v 1.19 2002/12/06 17:18:50 mungady Exp $
+ * $Id: ShapeElement.java,v 1.20 2002/12/10 21:04:20 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -49,6 +49,7 @@ package com.jrefinery.report;
 
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.style.StyleKey;
+import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
 
 import java.awt.BasicStroke;
 import java.awt.Stroke;
@@ -76,15 +77,18 @@ public class ShapeElement extends Element
    * A default style sheet for shape elements. This defined a default stroke for
    * all shapes.
    */
-  private static class ShapeElementDefaultStyleSheet extends ElementStyleSheet
+  private static class ShapeElementDefaultStyleSheet extends ElementDefaultStyleSheet
   {
     /**
-     * Creates a new style-sheet.
+     * Creates a new style-sheet. The stylesheet is not modifiable
      */
     public ShapeElementDefaultStyleSheet()
     {
-      super("Shape-default");
+      // unlock the write protection
+      setLocked(false);
       setStyleProperty(ElementStyleSheet.STROKE, DEFAULT_STROKE);
+      // and lock the stylesheet again...
+      setLocked(true);
     }
   }
 

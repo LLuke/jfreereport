@@ -1,8 +1,39 @@
 /**
- * Date: Jan 26, 2003
- * Time: 6:19:12 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: IOUtils.java,v 1.6 2003/02/03 18:52:47 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ---------------
+ * IOUtils.java
+ * ---------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: IOUtils.java,v 1.7 2003/02/22 18:52:31 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 26-Jan-2003 : Initial version
+ * 23-Feb-2003 : Documentation
  */
 package com.jrefinery.report.util;
 
@@ -18,10 +49,26 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.StringTokenizer;
 
+/**
+ * The IOUtils provide some IO related helper methods.
+ */
 public class IOUtils
 {
+  /** the singleton instance of the utility package. */
   private static IOUtils instance;
 
+  /**
+   * DefaultConstructor.
+   */
+  protected IOUtils()
+  {
+  }
+
+  /**
+   * Gets the singleton instance of the utility package.
+   *
+   * @return the singleton instance.
+   */
   public static IOUtils getInstance()
   {
     if (instance == null)
@@ -31,6 +78,12 @@ public class IOUtils
     return instance;
   }
 
+  /**
+   * Checks, whether the URL uses a file based protocol.
+   *
+   * @param url the url.
+   * @return true, if the url is file based.
+   */
   private boolean isFileStyleProtocol (URL url)
   {
     if (url.getProtocol().equals("http")) return true;
@@ -42,6 +95,12 @@ public class IOUtils
     return false;
   }
 
+  /**
+   * Parses the given name and returns the name elements as List of Strings.
+   *
+   * @param name the name, that should be parsed.
+   * @return the parsed name.
+   */
   private List parseName (String name)
   {
     ArrayList list = new ArrayList();
@@ -55,6 +114,13 @@ public class IOUtils
     return list;
   }
 
+  /**
+   * Transforms the name list back into a single string, separated with
+   * "/".
+   *
+   * @param name the name list.
+   * @return the constructed name.
+   */
   private String formatName (List name)
   {
     StringBuffer b = new StringBuffer();
@@ -70,6 +136,12 @@ public class IOUtils
     return b.toString();
   }
 
+  /**
+   *
+   * @param baseName
+   * @param urlName
+   * @return
+   */
   private int startsWithUntil (List baseName, List urlName)
   {
     int minIdx = Math.min (urlName.size(), baseName.size());
@@ -85,15 +157,15 @@ public class IOUtils
     return minIdx;
   }
 
-  public static void main (String [] args) throws Exception
-  {
-
-    File dataDir = new File ("").getCanonicalFile();
-    File baseDir = new File ("").getCanonicalFile();
-
-    Log.debug (""  + getInstance().isSubDirectory(baseDir, dataDir));
-  }
-
+  /**
+   * Checks, whether the URL points to the same service. A service is equal
+   * if the protocol, host and port are equal.
+   *
+   * @param url a url
+   * @param baseUrl an other url, that should be compared.
+   * @return true, if the urls point to the same host and port and use the same protocol,
+   * false otherwise.
+   */
   private boolean isSameService (URL url, URL baseUrl)
   {
     if (url.getProtocol().equals(baseUrl.getProtocol()) == false)
@@ -106,6 +178,14 @@ public class IOUtils
     return true;
   }
 
+  /**
+   * Creates a relative url by stripping the common parts of the the url.
+   *
+   * @param url the to be stripped url
+   * @param baseURL the base url, to which the <code>url</code> is relative to.
+   * @return the relative url, or the url unchanged, if there is no relation
+   * beween both URLs.
+   */
   public String createRelativeURL (URL url, URL baseURL)
   {
     if (isFileStyleProtocol(url) && isSameService(url, baseURL))
@@ -148,12 +228,29 @@ public class IOUtils
     return url.toExternalForm();
   }
 
+  /**
+   * Copies the InputStream into the OutputStream, until the end of the stream
+   * has been reached. This method uses a buffer of 4096 kbyte.
+   *
+   * @param in the inputstream from which to read.
+   * @param out the outputstream where the data is written to.
+   * @throws IOException if a IOError occurs.
+   */
   public void copyStreams (InputStream in, OutputStream out)
     throws IOException
   {
     copyStreams(in, out, 4096);
   }
 
+  /**
+   * Copies the InputStream into the OutputStream, until the end of the stream
+   * has been reached.
+   *
+   * @param in the inputstream from which to read.
+   * @param out the outputstream where the data is written to.
+   * @param buffersize the buffer size.
+   * @throws IOException if a IOError occurs.
+   */
   public void copyStreams (InputStream in, OutputStream out, int buffersize)
     throws IOException
   {
@@ -177,12 +274,28 @@ public class IOUtils
     }
   }
 
+  /**
+   * Copies the contents of the Reader into the Writer, until the end of the stream
+   * has been reached. This method uses a buffer of 4096 kbyte.
+   *
+   * @param in the reader from which to read.
+   * @param out the writer where the data is written to.
+   * @throws IOException if a IOError occurs.
+   */
   public void copyWriter (Reader in, Writer out)
     throws IOException
   {
     copyWriter(in, out, 4096);
   }
 
+  /**
+   * Copies the contents of the Reader into the Writer, until the end of the stream
+   * has been reached.
+   *
+   * @param in the reader from which to read.
+   * @param out the writer where the data is written to.
+   * @throws IOException if a IOError occurs.
+   */
   public void copyWriter (Reader in, Writer out, int buffersize)
     throws IOException
   {
@@ -199,6 +312,12 @@ public class IOUtils
     }
   }
 
+  /**
+   * Extracts the file name from the URL.
+   *
+   * @param url the url.
+   * @return the extracted filename.
+   */
   public String getFileName (URL url)
   {
     String file = url.getFile();
@@ -209,6 +328,12 @@ public class IOUtils
     return file.substring(last);
   }
 
+  /**
+   * Removes the file extension from the given file name.
+   *
+   * @param file the file name.
+   * @return the file name without the file extension.
+   */
   public String stripFileExtension (String file)
   {
     int idx = file.lastIndexOf(".");
@@ -217,6 +342,14 @@ public class IOUtils
     return file.substring(0, idx);
   }
 
+  /**
+   * Checks, whether the child directory is a subdirectory of the base directory.
+   *
+   * @param base the base directory.
+   * @param child the suspected child directory.
+   * @return true, if the child is a subdirectory of the base directory.
+   * @throws IOException if an IOError occured during the test.
+   */
   public boolean isSubDirectory (File base, File child)
       throws IOException
   {

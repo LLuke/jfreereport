@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.46 2003/01/14 21:02:45 taqua Exp $
+ * $Id: JFreeReport.java,v 1.47 2003/02/05 15:38:13 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -97,10 +97,10 @@ import java.util.Iterator;
  * <li>the item band is reachable with <code>getItemBand()</code>
  * </ul>
  *
- * Groups can be queried using <code>getGroup(String groupName)</code>.  The group header and
+ * Groups can be queried using <code>getGroup(int groupLevel)</code>.  The group header and
  * footer are accessible through the group object, so use
- * <code>getGroup(String groupName).getGroupHeader()<code> and
- * <code>getGroup(String groupName).getGroupFooter()<code>.
+ * <code>getGroup(int groupLevel).getGroupHeader()<code> and
+ * <code>getGroup(int groupLevel).getGroupFooter()<code>.
  * <p>
  * Elements on a band can be reached by using <code>Band.getElement (String elementName)</code> 
  * or by retrieving all elements using <code>Band.getElements()</code> and performing a search on 
@@ -119,6 +119,8 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
 
   /** The page format for the report (determines the page size, and therefore the report width). */
   private transient PageFormat defaultPageFormat;
+  
+  /** a private serialization object that carries the serialized page format values. */
   private Object[] pageFormatResolve;
 
   /** Storage for arbitrary properties that a user can assign to the report. */
