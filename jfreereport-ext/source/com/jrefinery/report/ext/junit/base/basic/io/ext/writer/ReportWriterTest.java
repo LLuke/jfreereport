@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriterTest.java,v 1.1 2003/06/01 20:43:37 taqua Exp $
+ * $Id: ReportWriterTest.java,v 1.2 2003/06/10 18:17:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -68,7 +68,7 @@ public class ReportWriterTest extends TestCase
 
   private ReportWriter createWriter()
   {
-    ReportWriter writer = new ReportWriter(new JFreeReport());
+    ReportWriter writer = new ReportWriter(new JFreeReport(), "UTF-16");
     writer.addClassFactoryFactory(new URLClassFactory());
     writer.addClassFactoryFactory(new DefaultClassFactory());
     writer.addClassFactoryFactory(new BandLayoutClassFactory());
@@ -98,7 +98,7 @@ public class ReportWriterTest extends TestCase
     ClassFactory cc = writer.getClassFactoryCollector();
     DataSourceWriter dsW = new DataSourceWriter(writer,
         ds, cc.getDescriptionForClass(ds.getClass()), 0);
-    Writer w = new OutputStreamWriter(System.out);
+    Writer w = new OutputStreamWriter(System.out, "UTF-16");
     dsW.write(w);
     w.flush();
   }

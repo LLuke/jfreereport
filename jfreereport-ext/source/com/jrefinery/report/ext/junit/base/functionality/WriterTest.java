@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WriterTest.java,v 1.1 2003/06/01 20:43:38 taqua Exp $
+ * $Id: WriterTest.java,v 1.2 2003/06/10 18:17:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -68,13 +68,15 @@ public class WriterTest extends TestCase
       ByteArrayOutputStream bo = new ByteArrayOutputStream();
       try
       {
-        rc.convertReport(url, url, new OutputStreamWriter(bo));
+        rc.convertReport(url, url,
+            new OutputStreamWriter (bo, "UTF-16"), "UTF-16");
         ByteArrayInputStream bin = new ByteArrayInputStream(bo.toByteArray());
         ReportGenerator.getInstance().parseReport(new InputSource(bin), url);
       }
       catch (Exception e)
       {
         Log.debug("Failed to write or parse " + url, e);
+        Log.debug (bo.toString("UTF-16"));
         fail();
       }
     }
