@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentFactoryModule.java,v 1.11 2005/03/04 16:00:38 taqua Exp $
+ * $Id: ImageContentFactoryModule.java,v 1.12 2005/03/16 21:06:39 taqua Exp $
  *
  * Changes
  * -------
@@ -96,7 +96,7 @@ public strictfp class ImageContentFactoryModule implements ContentFactoryModule
     final StrictDimension iBounds = ElementLayoutInformation.unionMin
             (bounds.getMaximumSize(), bounds.getPreferredSize());
 
-    if (iBounds.getWidth() == 0 && iBounds.getHeight() == 0)
+    if (iBounds.getWidth() == 0 || iBounds.getHeight() == 0)
     {
       return EmptyContent.getDefaultEmptyContent();
     }
@@ -105,18 +105,15 @@ public strictfp class ImageContentFactoryModule implements ContentFactoryModule
     double scaleY = ir.getScaleY();
     final long w = StrictGeomUtility.toInternalValue(ir.getImageWidth());
     final long h = StrictGeomUtility.toInternalValue(ir.getImageHeight());
+    if (w == 0 || h == 0)
+    {
+      return EmptyContent.getDefaultEmptyContent();
+    }
 
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE))
     {
-
-      if (w != 0)
-      {
-        scaleX = iBounds.getWidth() / w;
-      }
-      if (h != 0)
-      {
-        scaleY = iBounds.getHeight() / h;
-      }
+      scaleX = (double) iBounds.getWidth() / (double) w;
+      scaleY = (double) iBounds.getHeight() / (double) h;
       if (scaleX != 1 || scaleY != 1)
       {
         if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO))
@@ -128,16 +125,16 @@ public strictfp class ImageContentFactoryModule implements ContentFactoryModule
       }
     }
 
-    final StrictBounds contentBounds = new StrictBounds
+    final StrictBounds imageBounds = new StrictBounds
             (point.getX(), point.getY(), (long) (scaleX * w), (long) (scaleY * h));
 
-    if (contentBounds.getWidth() == 0 || contentBounds.getHeight() == 0)
+    if (imageBounds.getWidth() == 0 || imageBounds.getHeight() == 0)
     {
       // remove empty images.
       return  EmptyContent.getDefaultEmptyContent();
     }
 
-    final ImageContent ic = new ImageContent(ir, contentBounds);
+    final ImageContent ic = new ImageContent(ir, imageBounds);
     return ic;
   }
 }

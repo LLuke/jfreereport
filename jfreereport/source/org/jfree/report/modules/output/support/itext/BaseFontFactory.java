@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.17 2005/02/23 21:05:32 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.18 2005/03/01 10:09:41 taqua Exp $
  *
  * Changes
  * -------
@@ -260,9 +260,22 @@ public final class BaseFontFactory extends DefaultFontMapper
     }
     if (store.existsProperties(KNOWN_FONTS_PATH))
     {
+
       try
       {
-        seenFiles = store.loadProperties(KNOWN_FONTS_PATH, null);
+        final Properties loadedSeenFiles = store.loadProperties(KNOWN_FONTS_PATH, null);
+        seenFiles = new Properties();
+        final Iterator seenFilesIt = loadedSeenFiles.keySet().iterator();
+        while (seenFilesIt.hasNext())
+        {
+          final Object key = seenFilesIt.next();
+          if (knownFonts.containsKey(key))
+          {
+            seenFiles.put(key, loadedSeenFiles.get(key));
+            seenFilesIt.remove();
+          }
+        }
+        Log.debug ("Lost files: " + loadedSeenFiles);
       }
       catch (ConfigStoreException cse)
       {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserEntityResolver.java,v 1.8 2005/01/25 00:17:47 taqua Exp $
+ * $Id: ParserEntityResolver.java,v 1.9 2005/02/23 21:05:37 taqua Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,10 @@ import org.xml.sax.SAXException;
 public final class ParserEntityResolver implements EntityResolver
 {
   /**
+   * The hashtable for the known entities (deprecated DTDs).
+   */
+  private final Hashtable deprecatedDTDs;
+  /**
    * The hashtable for the known entities.
    */
   private final Hashtable dtds;
@@ -69,6 +73,7 @@ public final class ParserEntityResolver implements EntityResolver
   private ParserEntityResolver ()
   {
     dtds = new Hashtable();
+    deprecatedDTDs = new Hashtable();
   }
 
   /**
@@ -158,7 +163,16 @@ public final class ParserEntityResolver implements EntityResolver
       final URL location = getDTDLocation(publicId);
       if (location == null)
       {
-        Log.info("A public ID was given for the document, but it was unknown or invalid.");
+        final String message = getDeprecatedDTDMessage(publicId);
+        if (message != null)
+        {
+          Log.info(message);
+        }
+        else
+        {
+          Log.info("A public ID was given for the document, " +
+                  "but it was unknown or invalid.");
+        }
         return null;
       }
       return new InputSource(location.openStream());
@@ -183,5 +197,16 @@ public final class ParserEntityResolver implements EntityResolver
       singleton = new ParserEntityResolver();
     }
     return singleton;
+  }
+
+  public void setDeprecatedDTDMessage (final String publicID, final String message)
+  {
+    deprecatedDTDs.put (publicID, message);
+  }
+
+
+  public String getDeprecatedDTDMessage (final String publicID)
+  {
+    return (String) deprecatedDTDs.get(publicID);
   }
 }

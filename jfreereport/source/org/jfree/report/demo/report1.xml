@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple/version 0.8.5"
-                        "http://jfreereport.sourceforge.net/report-085.dtd">
+<!DOCTYPE report PUBLIC 
+      "-//JFreeReport//DTD report definition//EN//simple/version 0.8.5"
+      "http://jfreereport.sourceforge.net/report-085.dtd">
 
 <report name="Sample Report 1" orientation="portrait" pageformat="LETTER" topmargin="10" leftmargin="10" bottommargin="10" rightmargin="10">
   

@@ -130,7 +130,7 @@
  * Original Author: &lt;name and email of the initial author of the class&gt;
  * Contributor(s): &lt;list of all contributors&gt;
  *
- * $Id: chapter1-styleguide.xml,v 1.3 2005/03/09 18:48:23 taqua Exp $
+ * $Id: chapter1-styleguide.xml,v 1.4 2005/03/10 19:03:19 taqua Exp $
  *
  * Changes (from &lt;date of the first appearance in the project&gt;)
  * -------------------------
@@ -153,7 +153,7 @@
             </listitem>
 
             <listitem>
-              <para><code>org.jfree.report</code>.ext for the JFreeReport
+              <para><code>org.jfree.report.ext</code> for the JFreeReport
               extension project</para>
             </listitem>
 
@@ -233,7 +233,11 @@ import org.jfree.report.style.ElementDefaultStyleSheet; </programlisting></para>
               <para>Only immutable classes should be used as constant values.
               As only the reference to the object is declared to be final,
               object contents can always be modified, no matter whether an
-              object h</para>
+              object h..</para>
+
+              <para>
+                Explain what immutable classes are.
+              </para>
             </listitem>
 
             <listitem>
@@ -322,7 +326,8 @@ import org.jfree.report.style.ElementDefaultStyleSheet; </programlisting></para>
         code.</para>
 
         <para>To increase the readability of the code, a blank line should be
-        inserted after each structural element.</para>
+        inserted after each structural element, like method, constructor or
+        class or member variables.</para>
       </section>
 
       <section>

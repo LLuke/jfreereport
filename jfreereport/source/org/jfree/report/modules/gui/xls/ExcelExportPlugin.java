@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.19 2005/01/25 00:07:32 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.20 2005/02/23 21:05:03 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -101,29 +101,6 @@ public class ExcelExportPlugin extends AbstractExportPlugin
   }
 
   /**
-   * Initializes the plugin to work with the given PreviewProxy.
-   *
-   * @param proxy the preview proxy that created this plugin.
-   */
-  public void init (final PreviewProxy proxy)
-  {
-    super.init(proxy);
-    if (proxy instanceof Frame)
-    {
-      exportDialog = new ExcelExportDialog((Frame) proxy);
-    }
-    else if (proxy instanceof Dialog)
-    {
-      exportDialog = new ExcelExportDialog((Dialog) proxy);
-    }
-    else
-    {
-      exportDialog = new ExcelExportDialog();
-    }
-    exportDialog.pack();
-  }
-
-  /**
    * Shows this dialog and (if the dialog is confirmed) saves the complete report into an
    * Excel file.
    *
@@ -132,6 +109,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   public boolean performExport (final JFreeReport report)
   {
+    final ExcelExportDialog exportDialog = getExportDialog();
     final boolean result = exportDialog.performQueryForExport(report);
     if (result == false)
     {
@@ -252,6 +230,23 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    */
   protected ExcelExportDialog getExportDialog ()
   {
+    if (exportDialog == null)
+    {
+      final PreviewProxy proxy = super.getProxy();
+      if (proxy instanceof Frame)
+      {
+        exportDialog = new ExcelExportDialog((Frame) proxy);
+      }
+      else if (proxy instanceof Dialog)
+      {
+        exportDialog = new ExcelExportDialog((Dialog) proxy);
+      }
+      else
+      {
+        exportDialog = new ExcelExportDialog();
+      }
+      exportDialog.pack();
+    }
     return exportDialog;
   }
 

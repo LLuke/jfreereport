@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportPlugin.java,v 1.16 2005/02/23 21:05:02 taqua Exp $
+ * $Id: PlainTextExportPlugin.java,v 1.17 2005/03/01 10:09:39 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -102,29 +102,6 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
   }
 
   /**
-   * Initializes the plugin to work with the given PreviewProxy.
-   *
-   * @param proxy the preview proxy that created this plugin.
-   */
-  public void init (final PreviewProxy proxy)
-  {
-    super.init(proxy);
-    if (proxy instanceof Frame)
-    {
-      exportDialog = new PlainTextExportDialog((Frame) proxy);
-    }
-    else if (proxy instanceof Dialog)
-    {
-      exportDialog = new PlainTextExportDialog((Dialog) proxy);
-    }
-    else
-    {
-      exportDialog = new PlainTextExportDialog();
-    }
-    exportDialog.pack();
-  }
-
-  /**
    * Shows this dialog and (if the dialog is confirmed) saves the complete report into an
    * Excel file.
    *
@@ -133,6 +110,7 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
    */
   public boolean performExport (final JFreeReport report)
   {
+    final PlainTextExportDialog exportDialog = getExportDialog();
     final boolean result = exportDialog.performQueryForExport(report);
     if (result == false)
     {
@@ -266,6 +244,23 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
    */
   protected PlainTextExportDialog getExportDialog ()
   {
+    if (exportDialog == null)
+    {
+      final PreviewProxy proxy = super.getProxy();
+      if (proxy instanceof Frame)
+      {
+        exportDialog = new PlainTextExportDialog((Frame) proxy);
+      }
+      else if (proxy instanceof Dialog)
+      {
+        exportDialog = new PlainTextExportDialog((Dialog) proxy);
+      }
+      else
+      {
+        exportDialog = new PlainTextExportDialog();
+      }
+      exportDialog.pack();
+    }
     return exportDialog;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BaseFontSupport.java,v 1.16 2005/02/22 20:18:23 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.17 2005/02/23 21:05:32 taqua Exp $
  *
  * Changes
  * -------
@@ -212,11 +212,11 @@ public class BaseFontSupport implements FontMapper
       }
       else
       {
+        // Log.debug ("The font with name " + fontKey + " was not recognized.");
         // filename is null, so no ttf file registered for the fontname, maybe this is
         // one of the internal fonts ...
         final BaseFont f = BaseFont.createFont(fontKey, stringEncoding, embedded,
                 false, null, null);
-
         if (f != null)
         {
           fontRecord = new BaseFontRecord(fontKey, embedded, f);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContent.java,v 1.12 2005/02/23 21:04:37 taqua Exp $
+ * $Id: ImageContent.java,v 1.13 2005/03/16 21:06:39 taqua Exp $
  *
  * Changes
  * -------
@@ -93,9 +93,17 @@ public strictfp class ImageContent implements Content
     }
     if (bounds.getWidth() == 0)
     {
-      throw new IllegalArgumentException("An image width of zero is not allowed");
+      throw new IllegalArgumentException("A bounds width of zero is not allowed");
     }
     if (bounds.getHeight() == 0)
+    {
+      throw new IllegalArgumentException("A bounds height of zero is not allowed");
+    }
+    if (imageArea.getWidth() == 0)
+    {
+      throw new IllegalArgumentException("An image width of zero is not allowed");
+    }
+    if (imageArea.getHeight() == 0)
     {
       throw new IllegalArgumentException("An image height of zero is not allowed");
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimpleParserModuleInit.java,v 1.11 2005/02/19 13:30:04 taqua Exp $
+ * $Id: SimpleParserModuleInit.java,v 1.12 2005/02/23 21:05:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -66,6 +66,9 @@ public class SimpleParserModuleInit implements ModuleInitializer
   public static final String PUBLIC_ID_SIMPLE =
           "-//JFreeReport//DTD report definition//EN//simple/version 0.8.5";
 
+  private static final String PUBLIC_ID_SIMPLE_084 =
+          "-//JFreeReport//DTD report definition//EN//simple";
+
   /**
    * DefaultConstructor. Does nothing.
    */
@@ -88,6 +91,12 @@ public class SimpleParserModuleInit implements ModuleInitializer
             ("/org/jfree/report/modules/parser/simple/resources/report-085.dtd");
     res.setDTDLocation(PUBLIC_ID_SIMPLE, urlReportDTD);
 
+    res.setDeprecatedDTDMessage(PUBLIC_ID_SIMPLE_084,
+            "The given public identifier for the XML document is deprecated. " +
+            "Please use the current document type declaration instead: \n" +
+            "  <!DOCTYPE report PUBLIC \n" +
+            "      \"-//JFreeReport//DTD report definition//EN//simple/version 0.8.5\"\n" +
+            "      \"http://jfreereport.sourceforge.net/report-085.dtd\">");
     InitialReportHandler.registerHandler
             (SIMPLE_REPORT_TAG, JFreeReportReadHandler.class.getName());
   }

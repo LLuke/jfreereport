@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportPlugin.java,v 1.15 2005/01/25 00:05:42 taqua Exp $
+ * $Id: CSVExportPlugin.java,v 1.16 2005/02/23 21:04:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -110,6 +110,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
    */
   public boolean performExport (final JFreeReport report)
   {
+    final CSVExportDialog exportDialog = getExportDialog();
     final boolean result = exportDialog.performQueryForExport(report);
     if (result == false)
     {
@@ -147,8 +148,25 @@ public class CSVExportPlugin extends AbstractExportPlugin
    *
    * @return the export dialog.
    */
-  protected CSVExportDialog getExportDialog ()
+  protected synchronized CSVExportDialog getExportDialog ()
   {
+    if (exportDialog == null)
+    {
+      final PreviewProxy proxy = super.getProxy();
+      if (proxy instanceof Frame)
+      {
+        exportDialog = new CSVExportDialog((Frame) proxy);
+      }
+      else if (proxy instanceof Dialog)
+      {
+        exportDialog = new CSVExportDialog((Dialog) proxy);
+      }
+      else
+      {
+        exportDialog = new CSVExportDialog();
+      }
+      exportDialog.pack();
+    }
     return exportDialog;
   }
 
@@ -222,28 +240,6 @@ public class CSVExportPlugin extends AbstractExportPlugin
     return resources.getMnemonic("action.export-to-csv.mnemonic");
   }
 
-  /**
-   * Initializes the plugin to work with the given PreviewProxy.
-   *
-   * @param proxy the preview proxy that is used to display the preview component.
-   */
-  public void init (final PreviewProxy proxy)
-  {
-    super.init(proxy);
-    if (proxy instanceof Frame)
-    {
-      exportDialog = new CSVExportDialog((Frame) proxy);
-    }
-    else if (proxy instanceof Dialog)
-    {
-      exportDialog = new CSVExportDialog((Dialog) proxy);
-    }
-    else
-    {
-      exportDialog = new CSVExportDialog();
-    }
-    exportDialog.pack();
-  }
 
   /**
    * Returns true if the action should be added to the toolbar, and false otherwise.

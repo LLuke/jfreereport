@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.18 2005/03/03 21:50:43 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.19 2005/03/10 19:05:34 taqua Exp $
  *
  * Changes
  * --------
@@ -102,7 +102,7 @@ public class PlainTextExportDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ActionConfirm (ResourceBundle resources)
+    public ActionConfirm (final ResourceBundle resources)
     {
       putValue(Action.NAME, resources.getString("plain-text-exportdialog.confirm"));
     }
@@ -116,7 +116,7 @@ public class PlainTextExportDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ActionCancel (ResourceBundle resources)
+    public ActionCancel (final ResourceBundle resources)
     {
       putValue(Action.NAME, resources.getString("plain-text-exportdialog.cancel"));
     }
@@ -133,7 +133,7 @@ public class PlainTextExportDialog extends AbstractExportDialog
      * Defines an <code>Action</code> object with a default description string and default
      * icon.
      */
-    public ActionSelectFile (ResourceBundle resources)
+    public ActionSelectFile (final ResourceBundle resources)
     {
       super(PlainTextExportDialog.this);
       this.resources = resources;

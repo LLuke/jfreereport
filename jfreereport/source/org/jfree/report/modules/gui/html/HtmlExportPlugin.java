@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportPlugin.java,v 1.16 2005/02/23 21:04:55 taqua Exp $
+ * $Id: HtmlExportPlugin.java,v 1.17 2005/02/25 00:12:52 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -102,29 +102,6 @@ public class HtmlExportPlugin extends AbstractExportPlugin
   }
 
   /**
-   * Initializes the plugin to work with the given PreviewProxy.
-   *
-   * @param proxy the preview proxy that is used to display the preview component.
-   */
-  public void init (final PreviewProxy proxy)
-  {
-    super.init(proxy);
-    if (proxy instanceof Frame)
-    {
-      exportDialog = new HtmlExportDialog((Frame) proxy);
-    }
-    else if (proxy instanceof Dialog)
-    {
-      exportDialog = new HtmlExportDialog((Dialog) proxy);
-    }
-    else
-    {
-      exportDialog = new HtmlExportDialog();
-    }
-    exportDialog.pack();
-  }
-
-  /**
    * Shows this dialog and (if the dialog is confirmed) saves the complete report into an
    * Excel file.
    *
@@ -133,6 +110,7 @@ public class HtmlExportPlugin extends AbstractExportPlugin
    */
   public boolean performExport (final JFreeReport report)
   {
+    final HtmlExportDialog exportDialog = getExportDialog();
     final boolean result = exportDialog.performQueryForExport(report);
     if (result == false)
     {
@@ -276,6 +254,23 @@ public class HtmlExportPlugin extends AbstractExportPlugin
    */
   protected HtmlExportDialog getExportDialog ()
   {
+    if (exportDialog == null)
+    {
+      final PreviewProxy proxy = super.getProxy();
+      if (proxy instanceof Frame)
+      {
+        exportDialog = new HtmlExportDialog((Frame) proxy);
+      }
+      else if (proxy instanceof Dialog)
+      {
+        exportDialog = new HtmlExportDialog((Dialog) proxy);
+      }
+      else
+      {
+        exportDialog = new HtmlExportDialog();
+      }
+      exportDialog.pack();
+    }
     return exportDialog;
   }
 

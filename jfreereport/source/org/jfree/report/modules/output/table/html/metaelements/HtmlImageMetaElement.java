@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlImageMetaElement.java,v 1.6 2005/02/23 21:05:34 taqua Exp $
+ * $Id: HtmlImageMetaElement.java,v 1.7 2005/03/03 17:07:59 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -69,7 +69,7 @@ public class HtmlImageMetaElement extends HtmlMetaElement
       final HtmlReference href = filesystem.createImageReference(image);
       if (href.isExternal())
       {
-        final StrictBounds imageArea = content.getImageArea();
+        final StrictBounds imageArea = content.getBounds();
         final int imageWidth = (int) StrictGeomUtility.toExternalValue(imageArea.getWidth());
         final int imageHeight = (int) StrictGeomUtility.toExternalValue(imageArea.getHeight());
 

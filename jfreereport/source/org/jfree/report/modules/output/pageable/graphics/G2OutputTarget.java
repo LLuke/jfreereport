@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.21 2005/03/04 16:02:29 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.22 2005/03/10 19:05:47 taqua Exp $
  *
  * Changes
  * -------
@@ -488,7 +488,8 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
               new Rectangle2D.Double(0, 0, imageWidth, imageHeight);
       g2.clip(newClipArea);
       // normalize the image to 72 DPI
-      g2.scale(imageContainer.getScaleX(), imageContainer.getScaleY());
+      // This scale must not be done, it is already included in the bounds/imageArea ratio.
+//      g2.scale(imageContainer.getScaleX(), imageContainer.getScaleY());
 
       final double scaleX = bounds.getWidth() / (double) imageArea.getWidth();
       final double scaleY = bounds.getHeight() / (double) imageArea.getHeight();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtParserModuleInit.java,v 1.11 2005/02/19 13:30:03 taqua Exp $
+ * $Id: ExtParserModuleInit.java,v 1.12 2005/02/23 21:05:38 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -58,6 +58,8 @@ public class ExtParserModuleInit implements ModuleInitializer
    */
   public static final String PUBLIC_ID_EXTENDED =
           "-//JFreeReport//DTD report definition//EN//extended/version 0.8.5";
+  public static final String PUBLIC_ID_EXTENDED_084 =
+          "-//JFreeReport//DTD report definition//EN//extended";
 
   /**
    * Default Constructor.
@@ -78,6 +80,12 @@ public class ExtParserModuleInit implements ModuleInitializer
 
     final URL urlExtReportDTD = res.getClass().getResource("/org/jfree/report/modules/parser/ext/resources/extreport-085.dtd");
     res.setDTDLocation(PUBLIC_ID_EXTENDED, urlExtReportDTD);
+    res.setDeprecatedDTDMessage(PUBLIC_ID_EXTENDED_084,
+            "The given public identifier for the XML document is deprecated. " +
+            "Please use the current document type declaration instead: \n" +
+            "  <!DOCTYPE report PUBLIC \n" +
+            "      \"-//JFreeReport//DTD report definition//EN//extended/version 0.8.5\"\n" +
+            "      \"http://jfreereport.sourceforge.net/extreport-085.dtd\">");
 
     InitialReportHandler.registerHandler
             ("report-definition", ReportDefinitionReadHandler.class.getName());

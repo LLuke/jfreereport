@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.12 2005/01/30 23:37:18 taqua Exp $
+ * $Id: SampleReport1.java,v 1.13 2005/02/23 21:04:39 taqua Exp $
  *
  * Changes:
  * --------
@@ -415,6 +415,8 @@ public class SampleReport1
     report.setItemBand(createItemBand());
     report.setExpressions(createFunctions());
     report.setPropertyMarked("report.date", true);
+    report.getReportConfiguration().setConfigProperty
+            ("org.jfree.report.modules.output.pageable.pdf.Encoding", "Identity-H");
     return report;
   }
 

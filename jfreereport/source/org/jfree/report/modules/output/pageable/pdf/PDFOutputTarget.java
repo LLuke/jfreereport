@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.28 2005/03/04 16:02:30 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.29 2005/03/10 19:05:49 taqua Exp $
  *
  * Changes
  * -------
@@ -489,8 +489,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
       final float scaleX = bounds.getWidth() / (float) imageArea.getWidth();
       final float scaleY = bounds.getHeight() / (float) imageArea.getHeight();
       // and apply the layouters scaling ..
-      image.scalePercent(100 * scaleX * imageContent.getScaleX(),
-                         100 * scaleY * imageContent.getScaleY());
+      image.scalePercent(100 * scaleX, 100 * scaleY);
 
       final PdfContentByte cb = this.writer.getDirectContent();
       cb.saveState();

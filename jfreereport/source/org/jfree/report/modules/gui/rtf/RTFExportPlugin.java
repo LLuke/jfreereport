@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.20 2005/02/23 21:05:03 taqua Exp $
+ * $Id: RTFExportPlugin.java,v 1.1 2005/03/04 13:17:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -102,29 +102,6 @@ public class RTFExportPlugin extends AbstractExportPlugin
   }
 
   /**
-   * Initializes the plugin to work with the given PreviewProxy.
-   *
-   * @param proxy the preview proxy that created this plugin.
-   */
-  public void init (final PreviewProxy proxy)
-  {
-    super.init(proxy);
-    if (proxy instanceof Frame)
-    {
-      exportDialog = new RTFExportDialog((Frame) proxy);
-    }
-    else if (proxy instanceof Dialog)
-    {
-      exportDialog = new RTFExportDialog((Dialog) proxy);
-    }
-    else
-    {
-      exportDialog = new RTFExportDialog();
-    }
-    exportDialog.pack();
-  }
-
-  /**
    * Shows this dialog and (if the dialog is confirmed) saves the complete report into an
    * Excel file.
    *
@@ -133,6 +110,7 @@ public class RTFExportPlugin extends AbstractExportPlugin
    */
   public boolean performExport (final JFreeReport report)
   {
+    final RTFExportDialog exportDialog = getExportDialog();
     final boolean result = exportDialog.performQueryForExport(report);
     if (result == false)
     {
@@ -253,6 +231,23 @@ public class RTFExportPlugin extends AbstractExportPlugin
    */
   protected RTFExportDialog getExportDialog ()
   {
+    if (exportDialog == null)
+    {
+      final PreviewProxy proxy = super.getProxy();
+      if (proxy instanceof Frame)
+      {
+        exportDialog = new RTFExportDialog((Frame) proxy);
+      }
+      else if (proxy instanceof Dialog)
+      {
+        exportDialog = new RTFExportDialog((Dialog) proxy);
+      }
+      else
+      {
+        exportDialog = new RTFExportDialog();
+      }
+      exportDialog.pack();
+    }
     return exportDialog;
   }
 

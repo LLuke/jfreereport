@@ -2,12 +2,31 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+        * [BUG] FontPath caching did not validate the cache integrety. This way,
+          some fonts might be left unregistered.
+
         * [BUG] The image content class did not refuse bounds with a
           width or height of zero. Such content would never be displayable
           and should therefore be removed as early as possible.
 
-        * [BUG] PageHeader/Footer did not parse the onfirst/lastpage attribute.
-          ReportHeader/Footer did not parse the (deprecated) ownpage attribute. 
+          In the same class, the image scaling code tried to use an integer
+          division to compute the scale factor. That resulted in a scale factor
+          of zero in all down-scale operations.
+
+        * [BUG] Drawing scaled image content was wrong in PDF and Graphics2D
+          targets. The HTML target did use the unscaled image size instead of
+          the computed (scaled) bounds for the <img> tag.
+
+        * [BUG] PageHeader/Footer handler of the SimpleXML parser did not
+          parse the onfirst/lastpage attribute. The ReportHeader/Footer handler
+          did not parse the (deprecated) ownpage attribute.
+
+        * Added verbose warning messages if image loading failed.
+
+        * Added deprecation warnings for the old report DTDs.
+
+        * All Export Dialogs use lazy initializations now, wherever possible.
+          This way, the preview dialogs show up a lot faster than before.     
 
 0.8.5-1: (10-Mar-2005)
         * [BUG] The PDF did not setup the first page correctly.
