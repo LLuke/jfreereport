@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyReferenceGenerator.java,v 1.4.4.1 2004/12/13 19:27:01 taqua Exp $
+ * $Id: StyleKeyReferenceGenerator.java,v 1.7 2005/01/25 00:09:23 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -56,13 +56,15 @@ import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactoryColle
  */
 public final class StyleKeyReferenceGenerator
 {
-  /** The report definition file. */
+  /**
+   * The report definition file.
+   */
   private static final String REFERENCE_REPORT = "StyleKeyReferenceReport.xml";
 
   /**
    * DefaultConstructor.
    */
-  private StyleKeyReferenceGenerator()
+  private StyleKeyReferenceGenerator ()
   {
   }
 
@@ -71,7 +73,7 @@ public final class StyleKeyReferenceGenerator
    *
    * @return the tablemodel for the stylekey reference generator.
    */
-  public static TableModel createData()
+  public static TableModel createData ()
   {
     final StyleKeyFactoryCollector cc = new StyleKeyFactoryCollector();
     cc.addFactory(new DefaultStyleKeyFactory());
@@ -84,9 +86,9 @@ public final class StyleKeyReferenceGenerator
   /**
    * The starting point for the application.
    *
-   * @param args  ignored.
+   * @param args ignored.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
 
     final ReportGenerator gen = ReportGenerator.getInstance();
@@ -116,9 +118,9 @@ public final class StyleKeyReferenceGenerator
     try
     {
       HtmlReportUtil.createStreamHTML(report, System.getProperty("user.home")
-          + "/stylekey-reference.html");
+              + "/stylekey-reference.html");
       PDFReportUtil.createPDF(report, System.getProperty("user.home")
-          + "/stylekey-reference.pdf");
+              + "/stylekey-reference.pdf");
     }
     catch (Exception e)
     {

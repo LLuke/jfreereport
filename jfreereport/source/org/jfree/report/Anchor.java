@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Anchor.java,v 1.14 2005/02/19 13:29:51 taqua Exp $
+ * $Id: Anchor.java,v 1.2 2005/02/23 19:31:19 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,16 +40,18 @@ import java.io.Serializable;
 
 /**
  * An anchor is a possible target for external hyperlinks.
- * <p>
- * In HTML anchors would be produced by using &lt;a name=&quot;anchorname&quot;&gt;.
- * This class is immutable.
+ * <p/>
+ * In HTML anchors would be produced by using &lt;a name=&quot;anchorname&quot;&gt;. This
+ * class is immutable.
  *
- * @see AnchorElement
  * @author Thomas Morgner
+ * @see AnchorElement
  */
 public class Anchor implements Serializable
 {
-  /** The name of the anchor. Should be unique. */
+  /**
+   * The name of the anchor. Should be unique.
+   */
   private String name;
 
   /**
@@ -78,8 +80,7 @@ public class Anchor implements Serializable
   }
 
   /**
-   * Checks, whether the given object is an anchor with the same name as
-   * this one.
+   * Checks, whether the given object is an anchor with the same name as this one.
    *
    * @param o the other object.
    * @return true, if the object is equal to this one, false otherwise.

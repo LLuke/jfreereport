@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ResourceBundleUtils.java,v 1.2 2004/05/07 14:29:21 mungady Exp $
+ * $Id: ResourceBundleUtils.java,v 1.3 2005/01/25 00:01:38 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -53,14 +53,13 @@ public class ResourceBundleUtils
 {
 
   /**
-   * Attempts to load an image from classpath. If this fails, an empty
-   * image icon is returned.
+   * Attempts to load an image from classpath. If this fails, an empty image icon is
+   * returned.
    *
-   * @param filename  the file name.
-   *
+   * @param filename the file name.
    * @return the image icon.
    */
-  public static ImageIcon getIcon(final String filename)
+  public static ImageIcon getIcon (final String filename)
   {
 
     final URL in = Thread.currentThread().getContextClassLoader().getResource(filename);
@@ -81,11 +80,11 @@ public class ResourceBundleUtils
   /**
    * Creates a platform independed menu keystroke for the given character.
    *
-   * @param key the keystroke string, either a "VK_*" sequence (as defined
-   * in the KeyEvent class) or a single character.
+   * @param key the keystroke string, either a "VK_*" sequence (as defined in the KeyEvent
+   *            class) or a single character.
    * @return the generated keystroke object.
    */
-  public static final KeyStroke createMenuKeystroke(final String key)
+  public static final KeyStroke createMenuKeystroke (final String key)
   {
     return KeyStroke.getKeyStroke(createMnemonic(key).intValue(), getMenuKeyMask());
   }
@@ -117,7 +116,7 @@ public class ResourceBundleUtils
     return new Integer(character);
   }
 
-  private static int getMenuKeyMask()
+  private static int getMenuKeyMask ()
   {
     try
     {

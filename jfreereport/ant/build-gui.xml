@@ -289,6 +289,15 @@
   <!--                                                                -->
   <!-- ************************************************************** -->
 
+  <target name="check-module-misc-configstore-base" depends="init">
+    <available file="${compile-module-misc-configstore-base-file}" property="compile-module-misc-configstore-base-present"/>
+  </target>
+
+  <target name="rebuild-module-misc-configstore-base" unless="module-module-misc-configstore-base-present" depends="check-module-misc-configstore-base">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-misc.xml" target="compile-module-misc-configstore-base"/>
+  </target>
+
   <target name="check-module-output-table-base" depends="init">
     <available file="${module-output-table-base-file}" property="module-output-table-base-file-present"/>
   </target>
@@ -320,7 +329,8 @@
     depends="compile-module-gui-base,
     rebuild-module-output-table-base,
     rebuild-module-output-csv,
-    rebuild-module-output-table-csv">
+    rebuild-module-output-table-csv,
+    rebuild-module-misc-configstore-base">
 
     <description>
       Compiles the CSV Export GUI. This export handles both the raw and the table
@@ -344,6 +354,7 @@
         <pathelement location="${module-output-csv-file}"/>
         <pathelement location="${module-output-table-base-file}"/>
         <pathelement location="${module-output-table-csv-file}"/>
+        <pathelement location="${module-misc-configstore-base-file}"/>
       </classpath>
     </javac>
 
@@ -353,7 +364,7 @@
     <jar jarfile="${module-gui-csv-file}"
          basedir="build">
       <manifest>
-        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file} ${module-output-csv-file} ${module-output-table-csv-file}"/>
+        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file} ${module-output-csv-file} ${module-output-table-csv-file} ${module-misc-configstore-base-file}"/>
       </manifest>
     </jar>
 
@@ -393,7 +404,8 @@
   <target name="compile-module-gui-html"
     depends="compile-module-gui-base,
     rebuild-module-output-table-base,
-    rebuild-module-output-table-html">
+    rebuild-module-output-table-html,
+    rebuild-module-misc-configstore-base">
 
     <description>
       Compiles the HTML Export GUI.
@@ -415,6 +427,7 @@
         <pathelement location="${module-gui-base-file}"/>
         <pathelement location="${module-output-table-base-file}"/>
         <pathelement location="${module-output-table-html-file}"/>
+        <pathelement location="${module-misc-configstore-base-file}"/>
       </classpath>
     </javac>
 
@@ -424,7 +437,7 @@
     <jar jarfile="${module-gui-html-file}"
          basedir="build">
       <manifest>
-        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file} ${module-output-table-html-file}"/>
+        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file} ${module-output-table-html-file} ${module-misc-configstore-base-file}"/>
       </manifest>
     </jar>
 
@@ -465,7 +478,8 @@
   <target name="compile-module-gui-xls"
     depends="compile-module-gui-base,
     rebuild-module-output-table-base,
-    rebuild-module-output-table-xls">
+    rebuild-module-output-table-xls,
+    rebuild-module-misc-configstore-base">
 
     <description>
       Compiles the xls Export GUI.
@@ -487,6 +501,7 @@
         <pathelement location="${module-gui-base-file}"/>
         <pathelement location="${module-output-table-base-file}"/>
         <pathelement location="${module-output-table-xls-file}"/>
+        <pathelement location="${module-misc-configstore-base-file}"/>
       </classpath>
     </javac>
 
@@ -496,7 +511,7 @@
     <jar jarfile="${module-gui-xls-file}"
          basedir="build">
       <manifest>
-        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file} ${module-output-table-xls-file}"/>
+        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file} ${module-output-table-xls-file} ${module-misc-configstore-base-file}"/>
       </manifest>
     </jar>
 
@@ -537,7 +552,8 @@
   <target name="compile-module-gui-pdf"
     depends="compile-module-gui-base,
     rebuild-module-output-pageable-base,
-    rebuild-module-output-pageable-pdf">
+    rebuild-module-output-pageable-pdf,
+    rebuild-module-misc-configstore-base">
 
     <description>
       Compiles the PDF Export GUI.
@@ -559,6 +575,7 @@
         <pathelement location="${module-gui-base-file}"/>
         <pathelement location="${module-output-pageable-base-file}"/>
         <pathelement location="${module-output-pageable-pdf-file}"/>
+        <pathelement location="${module-misc-configstore-base-file}"/>
       </classpath>
     </javac>
 
@@ -568,7 +585,7 @@
     <jar jarfile="${module-gui-pdf-file}"
          basedir="build">
       <manifest>
-        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file} ${module-output-pageable-pdf-file}"/>
+        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file} ${module-output-pageable-pdf-file} ${module-misc-configstore-base-file}"/>
       </manifest>
     </jar>
 
@@ -609,7 +626,8 @@
   <target name="compile-module-gui-plaintext"
     depends="compile-module-gui-base,
     rebuild-module-output-pageable-base,
-    rebuild-module-output-pageable-plaintext">
+    rebuild-module-output-pageable-plaintext,
+    rebuild-module-misc-configstore-base">
 
     <description>
       Compiles the plaintext Export GUI.
@@ -631,6 +649,7 @@
         <pathelement location="${module-gui-base-file}"/>
         <pathelement location="${module-output-pageable-base-file}"/>
         <pathelement location="${module-output-pageable-plaintext-file}"/>
+        <pathelement location="${module-misc-configstore-base-file}"/>
       </classpath>
     </javac>
 
@@ -640,7 +659,7 @@
     <jar jarfile="${module-gui-plaintext-file}"
          basedir="build">
       <manifest>
-        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file} ${module-output-pageable-plaintext-file}"/>
+        <attribute name="Class-Path" value="${core-jar-file} ${module-gui-base-file} ${module-output-pageable-plaintext-file} ${module-misc-configstore-base-file}"/>
       </manifest>
     </jar>
 

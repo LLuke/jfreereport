@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DOMUtilities.java,v 1.4 2003/11/07 18:33:52 taqua Exp $
+ * $Id: DOMUtilities.java,v 1.5 2004/05/07 14:29:54 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -55,34 +55,37 @@ import org.xml.sax.SAXException;
 
 /**
  * Some utility methods to help parsing when using a DOM parser.
- * 
+ *
  * @author Thomas Morgner
  */
 public final class DOMUtilities
 {
-  /** An instance of the XML character entity parser. */
+  /**
+   * An instance of the XML character entity parser.
+   */
   private static final CharacterEntityParser XML_ENTITIES =
-    CharacterEntityParser.createXMLEntityParser();
-  
+          CharacterEntityParser.createXMLEntityParser();
+
   /**
    * Hidden default constructor.
    */
-  private DOMUtilities()
+  private DOMUtilities ()
   {
   }
-  
+
   /**
    * Parses the given input stream to form a document.
    *
    * @param instream the input stream that should be parsed.
    * @return the parsed document or <code>null</code>, when an error occured
+   *
    * @throws ParserConfigurationException if the parser could not be initalized.
-   * @throws SAXException if the parsing failed due to errors in the xml document
-   * @throws IOException if reading from the input stream failed. 
-   * 
+   * @throws SAXException                 if the parsing failed due to errors in the xml
+   *                                      document
+   * @throws IOException                  if reading from the input stream failed.
    */
   public static Document parseInputStream (final InputStream instream)
-    throws ParserConfigurationException, SAXException, IOException
+          throws ParserConfigurationException, SAXException, IOException
   {
     final DocumentBuilder db;
     final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -91,16 +94,15 @@ public final class DOMUtilities
   }
 
   /**
-   * extracts all text-elements of a particular element and returns
-   * an single string containing the contents of all textelements and
-   * all character entity nodes. If a node is not known to the parser,
-   * its string value will be delivered as <code>&entityname;</code>.
+   * extracts all text-elements of a particular element and returns an single string
+   * containing the contents of all textelements and all character entity nodes. If a node
+   * is not known to the parser, its string value will be delivered as
+   * <code>&entityname;</code>.
    *
-   * @param e the element which is direct parent of all to be extracted
-   * textnodes.
+   * @param e the element which is direct parent of all to be extracted textnodes.
    * @return the extracted String
    */
-  public static String getText(final Element e)
+  public static String getText (final Element e)
   {
     final NodeList nl = e.getChildNodes();
     final StringBuffer result = new StringBuffer();

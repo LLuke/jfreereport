@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelExportGUIModule.java,v 1.7 2004/05/07 14:29:43 mungady Exp $
+ * $Id: ExcelExportGUIModule.java,v 1.8 2005/01/25 00:07:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,11 +38,11 @@
 
 package org.jfree.report.modules.gui.xls;
 
-import org.jfree.report.modules.gui.base.ExportPluginFactory;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
+import org.jfree.report.modules.gui.base.ExportPluginFactory;
+import org.jfree.report.util.ReportConfiguration;
 
 /**
  * The module definition for the excel export gui module.
@@ -51,16 +51,22 @@ import org.jfree.base.modules.SubSystem;
  */
 public class ExcelExportGUIModule extends AbstractModule
 {
-  /** The export plugin preference key. */
+  /**
+   * The export plugin preference key.
+   */
   private static final String ORDER_KEY = "org.jfree.report.modules.gui.xls.Order";
-  /** The export plugin enable key. */
+  /**
+   * The export plugin enable key.
+   */
   private static final String ENABLE_KEY = "org.jfree.report.modules.gui.xls.Enable";
 
   /**
    * DefaultConstructor. Loads the module specification.
+   *
    * @throws ModuleInitializeException if an error occured.
-     */
-  public ExcelExportGUIModule() throws ModuleInitializeException
+   */
+  public ExcelExportGUIModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }
@@ -79,7 +85,7 @@ public class ExcelExportGUIModule extends AbstractModule
           throws ModuleInitializeException
   {
     final String order = ReportConfiguration.getGlobalConfig().getConfigProperty
-        (ORDER_KEY, "0");
+            (ORDER_KEY, "0");
 
     ExportPluginFactory.getInstance().registerPlugin(ExcelExportPlugin.class, order, ENABLE_KEY);
   }

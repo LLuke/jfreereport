@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: FontDefinitionObjectDescription.java,v 1.3 2003/08/25 14:29:33 taqua Exp $
+ * $Id: FontDefinitionObjectDescription.java,v 1.4 2004/05/07 14:29:08 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -50,34 +50,50 @@ import org.jfree.xml.factory.objects.ObjectFactoryException;
  */
 public class FontDefinitionObjectDescription extends AbstractObjectDescription
 {
-  /** The font encoding parameter name. */
+  /**
+   * The font encoding parameter name.
+   */
   public static final String FONT_ENCODING = "fontEncoding";
 
-  /** The font name parameter name. */
+  /**
+   * The font name parameter name.
+   */
   public static final String FONT_NAME = "fontName";
 
-  /** The font size parameter name. */
+  /**
+   * The font size parameter name.
+   */
   public static final String FONT_SIZE = "fontSize";
 
-  /** The bold attribute text. */
+  /**
+   * The bold attribute text.
+   */
   public static final String BOLD = "bold";
 
-  /** The embedded font attribute text. */
+  /**
+   * The embedded font attribute text.
+   */
   public static final String EMBEDDED_FONT = "embeddedFont";
 
-  /** The italic attribute text. */
+  /**
+   * The italic attribute text.
+   */
   public static final String ITALIC = "italic";
 
-  /** The strikethrough attribute text. */
+  /**
+   * The strikethrough attribute text.
+   */
   public static final String STRIKETHROUGH = "strikethrough";
 
-  /** The underline attribute text. */
+  /**
+   * The underline attribute text.
+   */
   public static final String UNDERLINE = "underline";
 
   /**
    * Creates a new object description.
    */
-  public FontDefinitionObjectDescription()
+  public FontDefinitionObjectDescription ()
   {
     super(FontDefinition.class);
     setParameterDefinition(FONT_ENCODING, String.class);
@@ -93,11 +109,10 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
   /**
    * Returns a parameter value as a boolean.
    *
-   * @param name  the parameter name.
-   *
+   * @param name the parameter name.
    * @return A boolean.
    */
-  private boolean getBooleanParameter(final String name)
+  private boolean getBooleanParameter (final String name)
   {
     final Boolean bool = (Boolean) getParameter(name);
     if (bool == null)
@@ -110,15 +125,14 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
   /**
    * Returns a parameter as an int.
    *
-   * @param name  the parameter name.
-   *
+   * @param name the parameter name.
    * @return The parameter value.
    *
-   * @throws ObjectFactoryException if there is a problem while reading the
-   * properties of the given object.
+   * @throws ObjectFactoryException if there is a problem while reading the properties of
+   *                                the given object.
    */
-  private int getIntegerParameter(final String name)
-      throws ObjectFactoryException
+  private int getIntegerParameter (final String name)
+          throws ObjectFactoryException
   {
     final Integer i = (Integer) getParameter(name);
     if (i == null)
@@ -133,7 +147,7 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
    *
    * @return The object.
    */
-  public Object createObject()
+  public Object createObject ()
   {
     try
     {
@@ -146,7 +160,7 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
       final boolean strike = getBooleanParameter(STRIKETHROUGH);
       final boolean underline = getBooleanParameter(UNDERLINE);
       return new FontDefinition(fontName, fontSize, bold, italic, underline, strike,
-          fontEncoding, embedded);
+              fontEncoding, embedded);
     }
     catch (Exception e)
     {
@@ -158,16 +172,15 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
   /**
    * Sets the parameters of this description object to match the supplied object.
    *
-   * @param o  the object (should be an instance of <code>FontDefinition</code>).
-   *
+   * @param o the object (should be an instance of <code>FontDefinition</code>).
    * @throws ObjectFactoryException if the object is not an instance of <code>Float</code>.
    */
-  public void setParameterFromObject(final Object o) throws ObjectFactoryException
+  public void setParameterFromObject (final Object o)
+          throws ObjectFactoryException
   {
     if ((o instanceof FontDefinition) == false)
     {
-      throw new ObjectFactoryException(
-          "The given object is no FontDefinition.");
+      throw new ObjectFactoryException("The given object is no FontDefinition.");
     }
 
     final FontDefinition fdef = (FontDefinition) o;
@@ -187,7 +200,7 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
    * @param bool the primitive boolean.
    * @return the Boolean object.
    */
-  private Boolean getBoolean(final boolean bool)
+  private Boolean getBoolean (final boolean bool)
   {
     if (bool == true)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SizeCalculator.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: SizeCalculator.java,v 1.3 2004/05/07 08:03:40 mungady Exp $
  *
  * Changes
  * -------
@@ -40,13 +40,12 @@
 package org.jfree.report.layout;
 
 /**
- * The interface for an class that is able to calculate the width of a given string, and the
- * height of a line of text.  The calculations rely on state information (e.g. font size,
- * graphics device, etc) maintained by the calculator.
- * <p>
- * Every {@link org.jfree.report.layout.LayoutSupport} can create an instance of
- * a class that implements this interface,
- * via the {@link org.jfree.report.layout.LayoutSupport#createTextSizeCalculator}
+ * The interface for an class that is able to calculate the width of a given string, and
+ * the height of a line of text.  The calculations rely on state information (e.g. font
+ * size, graphics device, etc) maintained by the calculator.
+ * <p/>
+ * Every {@link org.jfree.report.layout.LayoutSupport} can create an instance of a class
+ * that implements this interface, via the {@link org.jfree.report.layout.LayoutSupport#createTextSizeCalculator}
  * method.
  *
  * @author Thomas Morgner
@@ -54,21 +53,21 @@ package org.jfree.report.layout;
 public interface SizeCalculator
 {
   /**
-   * Calculates the width of a <code>String<code> in the current <code>Graphics</code> context.
+   * Calculates the width of a <code>String<code> in the current <code>Graphics</code>
+   * context.
    *
-   * @param text the text.
+   * @param text         the text.
    * @param lineStartPos the start position of the substring to be measured.
-   * @param endPos the position of the last character to be measured.
-   *
+   * @param endPos       the position of the last character to be measured.
    * @return the width of the string in Java2D units.
    */
-  public float getStringWidth(String text, int lineStartPos, int endPos);
+  public float getStringWidth (String text, int lineStartPos, int endPos);
 
   /**
    * Returns the line height.  This includes the font's ascent, descent and leading.
    *
    * @return the line height.
    */
-  public float getLineHeight();
+  public float getLineHeight ();
 
 }

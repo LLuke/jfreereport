@@ -25,7 +25,7 @@ public final class PrinterEncoding
 
   public byte[] getCode ()
   {
-    final byte[] retval  = new byte[code.length];
+    final byte[] retval = new byte[code.length];
     System.arraycopy(code, 0, retval, 0, code.length);
     return retval;
   }

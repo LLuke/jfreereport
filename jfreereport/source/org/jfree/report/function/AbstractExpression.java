@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExpression.java,v 1.7 2005/01/24 23:59:50 taqua Exp $
+ * $Id: AbstractExpression.java,v 1.8 2005/02/04 19:22:53 taqua Exp $
  *
  * Changes
  * -------
@@ -47,32 +47,40 @@ import org.jfree.report.DataRow;
 
 /**
  * An abstract base class for implementing new report expressions.
- * <p>
- * Expressions are stateless functions which have access to the report's {@link DataRow}. All
- * expressions are named and the defined names have to be unique within the report's expressions,
- * functions and fields of the datasource. Expressions are configured using properties.
- * <p>
+ * <p/>
+ * Expressions are stateless functions which have access to the report's {@link DataRow}.
+ * All expressions are named and the defined names have to be unique within the report's
+ * expressions, functions and fields of the datasource. Expressions are configured using
+ * properties.
+ * <p/>
  *
  * @author Thomas Morgner
  */
 public abstract class AbstractExpression implements Expression, Serializable
 {
-  /** The expression name. */
+  /**
+   * The expression name.
+   */
   private String name;
 
-  /** The dependency level. */
+  /**
+   * The dependency level.
+   */
   private int dependency;
 
-  /** The data row. */
+  /**
+   * The data row.
+   */
   private transient DataRow dataRow;
 
   private boolean active;
 
   /**
    * Creates an unnamed expression. Make sure the name of the expression is set using
-   * {@link #setName} before the expression is added to the report's expression collection.
+   * {@link #setName} before the expression is added to the report's expression
+   * collection.
    */
-  protected AbstractExpression()
+  protected AbstractExpression ()
   {
     name = super.toString();
   }
@@ -82,27 +90,23 @@ public abstract class AbstractExpression implements Expression, Serializable
    *
    * @return the name.
    */
-  public String getName()
+  public String getName ()
   {
     return name;
   }
 
   /**
-   * Sets the name of the expression.
-   * <P>
-   * The name should be unique among:
-   * <ul>
-   *   <li>the functions and expressions for the report;
-   *   <li>the columns in the report's <code>TableModel</code>;
-   * </ul>
-   * This allows the expression to be referenced by name from any report element.
-   * <p>
-   * You should not change the name of an expression once it has been added to the report's
-   * expression collection.
+   * Sets the name of the expression. <P> The name should be unique among: <ul> <li>the
+   * functions and expressions for the report; <li>the columns in the report's
+   * <code>TableModel</code>; </ul> This allows the expression to be referenced by name
+   * from any report element.
+   * <p/>
+   * You should not change the name of an expression once it has been added to the
+   * report's expression collection.
    *
-   * @param name  the name (<code>null</code> not permitted).
+   * @param name the name (<code>null</code> not permitted).
    */
-  public void setName(final String name)
+  public void setName (final String name)
   {
     if (name == null)
     {
@@ -112,49 +116,49 @@ public abstract class AbstractExpression implements Expression, Serializable
   }
 
   /**
-   * Returns <code>true</code> if this expression contains "auto-active" content and should be
-   * called by the system regardless of whether this expression is referenced in the
-   * {@link DataRow}.
+   * Returns <code>true</code> if this expression contains "auto-active" content and
+   * should be called by the system regardless of whether this expression is referenced in
+   * the {@link DataRow}.
    *
    * @return true, if the expression is activated automaticly, false otherwise.
    */
-  public final boolean isActive()
+  public final boolean isActive ()
   {
     return active;
   }
 
-  public final void setActive(final boolean active)
+  public final void setActive (final boolean active)
   {
     this.active = active;
   }
 
   /**
-   * Returns the dependency level for the expression (controls evaluation order for expressions
-   * and functions).
+   * Returns the dependency level for the expression (controls evaluation order for
+   * expressions and functions).
    *
    * @return the level.
    */
-  public int getDependencyLevel()
+  public int getDependencyLevel ()
   {
     return dependency;
   }
 
   /**
    * Sets the dependency level for the expression.
-   * <p>
-   * The dependency level controls the order of evaluation for expressions and functions.  Higher
-   * level expressions are evaluated before lower level expressions.  Any level in the range
-   * 0 to Integer.MAX_VALUE is allowed.  Negative values are reserved for system functions
-   * (printing and layouting).
+   * <p/>
+   * The dependency level controls the order of evaluation for expressions and functions.
+   * Higher level expressions are evaluated before lower level expressions.  Any level in
+   * the range 0 to Integer.MAX_VALUE is allowed.  Negative values are reserved for system
+   * functions (printing and layouting).
    *
-   * @param level  the level (must be greater than or equal to 0).
+   * @param level the level (must be greater than or equal to 0).
    */
-  public void setDependencyLevel(final int level)
+  public void setDependencyLevel (final int level)
   {
     if (level < 0)
     {
       throw new IllegalArgumentException("AbstractExpression.setDependencyLevel(...) : negative "
-          + "dependency not allowed for user-defined expressions.");
+              + "dependency not allowed for user-defined expressions.");
     }
     this.dependency = level;
   }
@@ -164,49 +168,49 @@ public abstract class AbstractExpression implements Expression, Serializable
    *
    * @return the data row.
    */
-  public DataRow getDataRow()
+  public DataRow getDataRow ()
   {
     return dataRow;
   }
 
   /**
-   * Sets the current {@link DataRow} for the expression.  The data row is set when the report
-   * processing starts and can be used to access the values of other expressions, functions, and
-   * the report's <code>TableModel</code>.
-   * <p>
-   * This method is used by the report processing engine, you shouldn't need to call it yourself.
+   * Sets the current {@link DataRow} for the expression.  The data row is set when the
+   * report processing starts and can be used to access the values of other expressions,
+   * functions, and the report's <code>TableModel</code>.
+   * <p/>
+   * This method is used by the report processing engine, you shouldn't need to call it
+   * yourself.
    *
    * @param row the data row.
    */
-  public void setDataRow(final DataRow row)
+  public void setDataRow (final DataRow row)
   {
     this.dataRow = row;
   }
 
   /**
-   * Clones the expression.  The expression should be reinitialized after the cloning.
-   * <P>
-   * Expressions maintain no state, cloning is done at the beginning of the report processing to
-   * disconnect the expression from any other object space.
+   * Clones the expression.  The expression should be reinitialized after the cloning. <P>
+   * Expressions maintain no state, cloning is done at the beginning of the report
+   * processing to disconnect the expression from any other object space.
    *
    * @return a clone of this expression.
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final AbstractExpression function = (AbstractExpression) super.clone();
     return function;
   }
 
   /**
-   * Return a completly separated copy of this function. The copy does no
-   * longer share any changeable objects with the original function. Only
-   * the datarow may be shared.
+   * Return a completly separated copy of this function. The copy does no longer share any
+   * changeable objects with the original function. Only the datarow may be shared.
    *
    * @return a copy of this function.
    */
-  public Expression getInstance()
+  public Expression getInstance ()
   {
     try
     {

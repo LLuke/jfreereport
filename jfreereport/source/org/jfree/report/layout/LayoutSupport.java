@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LayoutSupport.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: LayoutSupport.java,v 1.3 2004/05/07 08:03:41 mungady Exp $
  *
  * Changes
  * -------
@@ -44,9 +44,8 @@ import org.jfree.report.style.FontDefinition;
  * The LayoutSupport contains all methods required to estaminate sizes for the
  * content-creation.
  *
- * @see org.jfree.report.content.Content
- *
  * @author Thomas Morgner
+ * @see org.jfree.report.content.Content
  */
 public interface LayoutSupport
 {
@@ -55,39 +54,36 @@ public interface LayoutSupport
    * Creates a size calculator for the current state of the output target.  The calculator
    * is used to calculate the string width and line height and later maybe more...
    *
-   * @param font  the font.
-   *
+   * @param font the font.
    * @return the size calculator.
    *
    * @throws SizeCalculatorException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(FontDefinition font)
-      throws SizeCalculatorException;
+  public SizeCalculator createTextSizeCalculator (FontDefinition font)
+          throws SizeCalculatorException;
 
   /**
-   * Returns the element alignment. Elements will be layouted aligned to this
-   * border, so that <code>mod(X, horizontalAlignment) == 0</code> and
-   * <code>mod(Y, verticalAlignment) == 0</code>. Returning 0 will disable
-   * the alignment.
+   * Returns the element alignment. Elements will be layouted aligned to this border, so
+   * that <code>mod(X, horizontalAlignment) == 0</code> and <code>mod(Y,
+   * verticalAlignment) == 0</code>. Returning 0 will disable the alignment.
    *
    * @return the vertical alignment grid boundry
    */
-  public float getVerticalAlignmentBorder();
+  public float getVerticalAlignmentBorder ();
 
   /**
-   * Returns the element alignment. Elements will be layouted aligned to this
-   * border, so that <code>mod(X, horizontalAlignment) == 0</code> and
-   * <code>mod(Y, verticalAlignment) == 0</code>. Returning 0 will disable
-   * the alignment.
+   * Returns the element alignment. Elements will be layouted aligned to this border, so
+   * that <code>mod(X, horizontalAlignment) == 0</code> and <code>mod(Y,
+   * verticalAlignment) == 0</code>. Returning 0 will disable the alignment.
    *
    * @return the vertical alignment grid boundry
    */
-  public float getHorizontalAlignmentBorder();
+  public float getHorizontalAlignmentBorder ();
 
   /**
    * Returns the assigned content factory for the target.
    *
    * @return the content factory.
    */
-  public ContentFactory getContentFactory();
+  public ContentFactory getContentFactory ();
 }

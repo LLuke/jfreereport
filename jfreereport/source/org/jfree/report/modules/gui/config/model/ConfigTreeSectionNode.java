@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigTreeSectionNode.java,v 1.4 2003/11/07 18:33:52 taqua Exp $
+ * $Id: ConfigTreeSectionNode.java,v 1.5 2004/05/07 14:29:24 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -39,20 +39,20 @@
 package org.jfree.report.modules.gui.config.model;
 
 /**
- * The section node contains the modules for the given section. There
- * are only two known sections, the global section, which contains all
- * boot-time keys and the local section, which contains all report-local
- * configuration keys.
- * 
+ * The section node contains the modules for the given section. There are only two known
+ * sections, the global section, which contains all boot-time keys and the local section,
+ * which contains all report-local configuration keys.
+ *
  * @author Thomas Morgner
  */
 public class ConfigTreeSectionNode extends AbstractConfigTreeNode
 {
   /**
    * Creates a new section node with the specified name.
+   *
    * @param name the name of the node.
    */
-  public ConfigTreeSectionNode(final String name)
+  public ConfigTreeSectionNode (final String name)
   {
     super(name);
   }
@@ -60,7 +60,7 @@ public class ConfigTreeSectionNode extends AbstractConfigTreeNode
   /**
    * Removes all childs from this node.
    */
-  public void reset()
+  public void reset ()
   {
     super.reset();
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConditionalGroupTableModel.java,v 1.1.2.1 2004/04/27 15:02:06 taqua Exp $
+ * $Id: ConditionalGroupTableModel.java,v 1.2 2005/01/25 01:13:41 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -61,7 +61,7 @@ public class ConditionalGroupTableModel extends AbstractTableModel
   public void addRecord (final String type, final String levelOne,
                          final String levelTwo, final Number balance)
   {
-    entries.add (new Object[] {type, levelOne, levelTwo, balance});
+    entries.add(new Object[]{type, levelOne, levelTwo, balance});
   }
 
   /**
@@ -128,7 +128,7 @@ public class ConditionalGroupTableModel extends AbstractTableModel
    */
   public Object getValueAt (final int rowIndex, final int columnIndex)
   {
-    final Object[] entry = (Object[]) entries.get (rowIndex);
+    final Object[] entry = (Object[]) entries.get(rowIndex);
     return entry[columnIndex];
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AbstractTemplateDescription.java,v 1.6 2003/08/25 14:29:33 taqua Exp $
+ * $Id: AbstractTemplateDescription.java,v 1.7 2004/05/07 14:29:23 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -47,19 +47,22 @@ import org.jfree.xml.factory.objects.BeanObjectDescription;
  * @author Thomas Morgner
  */
 public abstract class AbstractTemplateDescription
-    extends BeanObjectDescription implements TemplateDescription
+        extends BeanObjectDescription implements TemplateDescription
 {
-  /** The name. */
+  /**
+   * The name.
+   */
   private String name;
 
   /**
    * Creates a new description.
    *
-   * @param name  the name.
-   * @param template  the template class.
-   * @param init  initialise?
+   * @param name     the name.
+   * @param template the template class.
+   * @param init     initialise?
    */
-  public AbstractTemplateDescription(final String name, final Class template, final boolean init)
+  public AbstractTemplateDescription (final String name, final Class template,
+                                      final boolean init)
   {
     super(template, init);
     this.name = name;
@@ -70,7 +73,7 @@ public abstract class AbstractTemplateDescription
    *
    * @return The name.
    */
-  public String getName()
+  public String getName ()
   {
     return name;
   }
@@ -78,9 +81,9 @@ public abstract class AbstractTemplateDescription
   /**
    * Sets the name.
    *
-   * @param name  the name (<code>null</code> not allowed).
+   * @param name the name (<code>null</code> not allowed).
    */
-  public void setName(final String name)
+  public void setName (final String name)
   {
     if (name == null)
     {
@@ -94,19 +97,20 @@ public abstract class AbstractTemplateDescription
    *
    * @return The template.
    */
-  public Template createTemplate()
+  public Template createTemplate ()
   {
     return (Template) createObject();
   }
 
   /**
    * Indicated whether an other object is equal to this one.
-   * @see java.lang.Object#equals(java.lang.Object)
    *
    * @param o the other object.
    * @return true, if the object is equal, false otherwise.
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
    */
-  public boolean equals(final Object o)
+  public boolean equals (final Object o)
   {
     if (this == o)
     {
@@ -143,11 +147,12 @@ public abstract class AbstractTemplateDescription
 
   /**
    * Computes an hashcode for this factory.
-   * @see java.lang.Object#hashCode()
    *
    * @return the hashcode.
+   *
+   * @see java.lang.Object#hashCode()
    */
-  public int hashCode()
+  public int hashCode ()
   {
     int result = super.hashCode();
     result = 29 * result + (name != null ? name.hashCode() : 0);

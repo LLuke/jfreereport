@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVReportUtil.java,v 1.5.4.1 2004/12/13 19:27:07 taqua Exp $
+ * $Id: CSVReportUtil.java,v 1.7 2005/01/25 00:13:05 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,8 +47,7 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 
 /**
- * Utility class to provide an easy to use default implementation of
- * CSV table exports.
+ * Utility class to provide an easy to use default implementation of CSV table exports.
  *
  * @author Thomas Morgner
  */
@@ -56,23 +55,22 @@ public final class CSVReportUtil
 {
   /**
    * DefaultConstructor.
-   *
    */
-  private CSVReportUtil()
+  private CSVReportUtil ()
   {
   }
 
   /**
    * Saves a report to CSV format.
    *
-   * @param report  the report.
+   * @param report   the report.
    * @param filename target file name.
-   *
    * @throws ReportProcessingException if the report processing failed.
-   * @throws IOException if there was an IOerror while processing the report.
+   * @throws IOException               if there was an IOerror while processing the
+   *                                   report.
    */
-  public static void createCSV(final JFreeReport report, final String filename)
-      throws ReportProcessingException, IOException
+  public static void createCSV (final JFreeReport report, final String filename)
+          throws ReportProcessingException, IOException
   {
     final CSVTableProcessor pr = new CSVTableProcessor(report);
     pr.setStrictLayout(false);

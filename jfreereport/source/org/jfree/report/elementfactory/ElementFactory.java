@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementFactory.java,v 1.10 2005/02/04 19:22:53 taqua Exp $
+ * $Id: ElementFactory.java,v 1.11 2005/02/05 18:35:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,38 +46,53 @@ import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.style.ElementStyleSheet;
 
 /**
- * The class element factory is the base class for all Element Factories.
- * Element factories can be used to create predefined element types. The
- * properties allow null values, if a property is null, it will not be
- * defined. Undefined properties can inherit their values from the element's
- * parent bands.
+ * The class element factory is the base class for all Element Factories. Element
+ * factories can be used to create predefined element types. The properties allow null
+ * values, if a property is null, it will not be defined. Undefined properties can inherit
+ * their values from the element's parent bands.
  *
  * @author Thomas Morgner
  */
 public abstract class ElementFactory
 {
-  /** The name of the new element. */
+  /**
+   * The name of the new element.
+   */
   private String name;
-  /** The elements minimum size. */
+  /**
+   * The elements minimum size.
+   */
   private Dimension2D minimumSize;
-  /** The elements maximum size. */
+  /**
+   * The elements maximum size.
+   */
   private Dimension2D maximumSize;
-  /** The elements preferred size. */
+  /**
+   * The elements preferred size.
+   */
   private Dimension2D preferredSize;
-  /** The elements absolute position. */
+  /**
+   * The elements absolute position.
+   */
   private Point2D absolutePosition;
-  /** The elements dynamic content height flag. */
+  /**
+   * The elements dynamic content height flag.
+   */
   private Boolean dynamicHeight;
-  /** The elements layout cachable flag. */
+  /**
+   * The elements layout cachable flag.
+   */
   private Boolean layoutCachable;
-  /** The elements visible flag. */
+  /**
+   * The elements visible flag.
+   */
   private Boolean visible;
   private String hRefTarget;
 
   /**
    * Default Constructor.
    */
-  public ElementFactory()
+  public ElementFactory ()
   {
   }
 
@@ -96,18 +111,18 @@ public abstract class ElementFactory
    *
    * @return the name of the element.
    */
-  public String getName()
+  public String getName ()
   {
     return name;
   }
 
   /**
-   * Defines the name of the element. If the name is null, the default (anonymous)
-   * name will be used.
+   * Defines the name of the element. If the name is null, the default (anonymous) name
+   * will be used.
    *
    * @param name the element name.
    */
-  public void setName(final String name)
+  public void setName (final String name)
   {
     this.name = name;
   }
@@ -118,7 +133,7 @@ public abstract class ElementFactory
    *
    * @return the element's minimum size.
    */
-  public Dimension2D getMinimumSize()
+  public Dimension2D getMinimumSize ()
   {
     return minimumSize;
   }
@@ -129,7 +144,7 @@ public abstract class ElementFactory
    *
    * @param minimumSize the element's minimum size.
    */
-  public void setMinimumSize(final Dimension2D minimumSize)
+  public void setMinimumSize (final Dimension2D minimumSize)
   {
     this.minimumSize = minimumSize;
   }
@@ -140,7 +155,7 @@ public abstract class ElementFactory
    *
    * @return the element's maximum size.
    */
-  public Dimension2D getMaximumSize()
+  public Dimension2D getMaximumSize ()
   {
     return maximumSize;
   }
@@ -151,7 +166,7 @@ public abstract class ElementFactory
    *
    * @param maximumSize the element's maximum size.
    */
-  public void setMaximumSize(final Dimension2D maximumSize)
+  public void setMaximumSize (final Dimension2D maximumSize)
   {
     this.maximumSize = maximumSize;
   }
@@ -162,7 +177,7 @@ public abstract class ElementFactory
    *
    * @return the element's preferred size.
    */
-  public Dimension2D getPreferredSize()
+  public Dimension2D getPreferredSize ()
   {
     return preferredSize;
   }
@@ -173,7 +188,7 @@ public abstract class ElementFactory
    *
    * @param preferredSize the element's preferred size.
    */
-  public void setPreferredSize(final Dimension2D preferredSize)
+  public void setPreferredSize (final Dimension2D preferredSize)
   {
     this.preferredSize = preferredSize;
   }
@@ -184,7 +199,7 @@ public abstract class ElementFactory
    *
    * @return the element's absolute position.
    */
-  public Point2D getAbsolutePosition()
+  public Point2D getAbsolutePosition ()
   {
     return absolutePosition;
   }
@@ -195,19 +210,19 @@ public abstract class ElementFactory
    *
    * @param absolutePosition the element's absolute position.
    */
-  public void setAbsolutePosition(final Point2D absolutePosition)
+  public void setAbsolutePosition (final Point2D absolutePosition)
   {
     this.absolutePosition = absolutePosition;
   }
 
   /**
-   * Defines whether the element's height should be adjusted automaticly. This feature
-   * is expensive and be used with care. Set the value to null, to declare that the
-   * dynamic feature is undefined.
+   * Defines whether the element's height should be adjusted automaticly. This feature is
+   * expensive and be used with care. Set the value to null, to declare that the dynamic
+   * feature is undefined.
    *
    * @return the state of the dynamic feature or null, if the feature is undefined.
    */
-  public Boolean getDynamicHeight()
+  public Boolean getDynamicHeight ()
   {
     return dynamicHeight;
   }
@@ -217,7 +232,7 @@ public abstract class ElementFactory
    *
    * @param dynamicHeight the new value of the elements dynamic height feature.
    */
-  public void setDynamicHeight(final Boolean dynamicHeight)
+  public void setDynamicHeight (final Boolean dynamicHeight)
   {
     this.dynamicHeight = dynamicHeight;
   }
@@ -244,7 +259,7 @@ public abstract class ElementFactory
 
   /**
    * Applies the defined name to the created element.
-   * 
+   *
    * @param e the element which was created.
    */
   protected void applyElementName (final Element e)
@@ -257,7 +272,7 @@ public abstract class ElementFactory
 
   /**
    * Applies the style definition to the elements stylesheet.
-   *  
+   *
    * @param style the element stylesheet which should receive the style definition.
    */
   protected void applyStyle (final ElementStyleSheet style)
@@ -277,5 +292,5 @@ public abstract class ElementFactory
    *
    * @return the newly generated instance of the element.
    */
-  public abstract Element createElement();
+  public abstract Element createElement ();
 }

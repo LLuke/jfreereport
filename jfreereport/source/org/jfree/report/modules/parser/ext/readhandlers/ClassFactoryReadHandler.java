@@ -1,8 +1,8 @@
 package org.jfree.report.modules.parser.ext.readhandlers;
 
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
-import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.factory.objects.ClassFactory;
@@ -30,10 +30,11 @@ public class ClassFactoryReadHandler extends AbstractPropertyXmlReadHandler
     className = attrs.getValue("class");
     if (className == null)
     {
-      throw new ParseException("Attribute 'class' is missing.", getRootHandler().getLocator());
+      throw new ParseException("Attribute 'class' is missing.", getRootHandler()
+              .getLocator());
     }
     final ClassFactoryCollector fc =
-        (ClassFactoryCollector) getRootHandler().getHelperObject
+            (ClassFactoryCollector) getRootHandler().getHelperObject
             (ReportDefinitionReadHandler.CLASS_FACTORY_KEY);
 
     final ClassFactory factory = (ClassFactory)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultDataSourceFactory.java,v 1.7 2005/01/25 21:40:34 taqua Exp $
+ * $Id: DefaultDataSourceFactory.java,v 1.8 2005/02/22 20:19:35 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -38,6 +38,7 @@
 
 package org.jfree.report.modules.parser.ext.factory.datasource;
 
+import org.jfree.report.filter.AnchorFilter;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.DateFormatFilter;
 import org.jfree.report.filter.DateFormatParser;
@@ -49,6 +50,7 @@ import org.jfree.report.filter.FormatFilter;
 import org.jfree.report.filter.FormatParser;
 import org.jfree.report.filter.ImageLoadFilter;
 import org.jfree.report.filter.ImageRefFilter;
+import org.jfree.report.filter.MessageFormatFilter;
 import org.jfree.report.filter.NumberFormatFilter;
 import org.jfree.report.filter.NumberFormatParser;
 import org.jfree.report.filter.ResourceFileFilter;
@@ -58,8 +60,6 @@ import org.jfree.report.filter.SimpleDateFormatParser;
 import org.jfree.report.filter.StaticDataSource;
 import org.jfree.report.filter.StringFilter;
 import org.jfree.report.filter.URLFilter;
-import org.jfree.report.filter.AnchorFilter;
-import org.jfree.report.filter.MessageFormatFilter;
 import org.jfree.report.modules.parser.ext.factory.templates.DefaultTemplateCollection;
 import org.jfree.xml.factory.objects.BeanObjectDescription;
 
@@ -73,18 +73,18 @@ public class DefaultDataSourceFactory extends AbstractDataSourceFactory
   /**
    * Creates a new factory.
    */
-  public DefaultDataSourceFactory()
+  public DefaultDataSourceFactory ()
   {
     registerDataSources("AnchorFilter", new BeanObjectDescription(AnchorFilter.class));
     registerDataSources("DataRowDataSource", new BeanObjectDescription(DataRowDataSource.class));
     registerDataSources("DateFormatFilter", new BeanObjectDescription(DateFormatFilter.class));
     registerDataSources("DateFormatParser", new BeanObjectDescription(DateFormatParser.class));
     registerDataSources("DecimalFormatFilter",
-        new BeanObjectDescription(DecimalFormatFilter.class));
+            new BeanObjectDescription(DecimalFormatFilter.class));
     registerDataSources("DecimalFormatParser",
-        new BeanObjectDescription(DecimalFormatParser.class));
+            new BeanObjectDescription(DecimalFormatParser.class));
     registerDataSources("DrawableLoadFilter",
-        new BeanObjectDescription(DrawableLoadFilter.class));
+            new BeanObjectDescription(DrawableLoadFilter.class));
     registerDataSources("EmptyDataSource", new BeanObjectDescription(EmptyDataSource.class));
     registerDataSources("FormatFilter", new BeanObjectDescription(FormatFilter.class));
     registerDataSources("FormatParser", new BeanObjectDescription(FormatParser.class));
@@ -96,9 +96,9 @@ public class DefaultDataSourceFactory extends AbstractDataSourceFactory
     registerDataSources("ResourceFileFilter", new BeanObjectDescription(ResourceFileFilter.class));
     registerDataSources("ShapeFilter", new BeanObjectDescription(ShapeFilter.class));
     registerDataSources("SimpleDateFormatFilter",
-        new BeanObjectDescription(SimpleDateFormatFilter.class));
+            new BeanObjectDescription(SimpleDateFormatFilter.class));
     registerDataSources("SimpleDateFormatParser",
-        new BeanObjectDescription(SimpleDateFormatParser.class));
+            new BeanObjectDescription(SimpleDateFormatParser.class));
     registerDataSources("StaticDataSource", new BeanObjectDescription(StaticDataSource.class));
     registerDataSources("StringFilter", new BeanObjectDescription(StringFilter.class));
     registerDataSources("URLFilter", new URLFilterObjectDescription(URLFilter.class));

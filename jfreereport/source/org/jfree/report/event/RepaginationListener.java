@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RepaginationListener.java,v 1.1 2003/08/24 15:17:25 taqua Exp $
+ * $Id: RepaginationListener.java,v 1.2 2004/05/07 08:03:37 mungady Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,8 @@ package org.jfree.report.event;
 import java.util.EventListener;
 
 /**
- * An interface that should be supported by objects interested in receiving notification of
- * repagination events.
+ * An interface that should be supported by objects interested in receiving notification
+ * of repagination events.
  *
  * @author Thomas Morgner.
  */
@@ -49,7 +49,7 @@ public interface RepaginationListener extends EventListener
   /**
    * Receives notification of a repagination update.
    *
-   * @param state  the state.
+   * @param state the state.
    */
-  public void repaginationUpdate(RepaginationState state);
+  public void repaginationUpdate (RepaginationState state);
 }

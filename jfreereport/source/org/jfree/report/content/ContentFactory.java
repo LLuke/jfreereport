@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ContentFactory.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: ContentFactory.java,v 1.3 2004/05/07 08:02:48 mungady Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@ import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.util.ElementLayoutInformation;
 
 /**
- * The content factory is resopnsible for creating content from a given element
- * and the rawdata contained in the element's datasource.
+ * The content factory is resopnsible for creating content from a given element and the
+ * rawdata contained in the element's datasource.
  *
  * @author Thomas Morgner
  */
@@ -52,25 +52,23 @@ public interface ContentFactory
    * Returns <code>true</code> if the module can handle the specified content type, and
    * <code>false</code> otherwise.
    *
-   * @param contentType  the content type.
-   *
+   * @param contentType the content type.
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean canHandleContent(String contentType);
+  public boolean canHandleContent (String contentType);
 
   /**
    * Creates content for an element.
    *
-   * @param e  the element.
-   * @param bounds  the bounds.
-   * @param ot  the output target.
-   *
+   * @param e      the element.
+   * @param bounds the bounds.
+   * @param ot     the output target.
    * @return the content.
    *
    * @throws ContentCreationException if there is a problem with the Content creation.
    */
-  public Content createContentForElement(Element e, ElementLayoutInformation bounds,
-                                         LayoutSupport ot)
-      throws ContentCreationException;
+  public Content createContentForElement (Element e, ElementLayoutInformation bounds,
+                                          LayoutSupport ot)
+          throws ContentCreationException;
 
 }

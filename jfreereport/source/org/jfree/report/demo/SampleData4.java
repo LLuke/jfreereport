@@ -26,7 +26,7 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  *
- * $Id: SampleData4.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: SampleData4.java,v 1.4 2005/01/24 23:58:41 taqua Exp $
  *
  */
 package org.jfree.report.demo;
@@ -53,11 +53,10 @@ public class SampleData4 extends AbstractTableModel
      * Compares two fonts.
      *
      * @param o  font 1.
-     * @param o1  font 2.
-     *
+     * @param o1 font 2.
      * @return an integer representing the relative order of the two fonts.
      */
-    public int compare(final Object o, final Object o1)
+    public int compare (final Object o, final Object o1)
     {
       final Font f1 = (Font) o;
       final Font f2 = (Font) o1;
@@ -70,13 +69,15 @@ public class SampleData4 extends AbstractTableModel
     }
   }
 
-  /** Storage for the fonts. */
+  /**
+   * Storage for the fonts.
+   */
   private Font[] fonts = null;
 
   /**
    * Sample dataset.
    */
-  public SampleData4()
+  public SampleData4 ()
   {
     fonts = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
     Arrays.sort(fonts, new FontComparator());
@@ -87,7 +88,7 @@ public class SampleData4 extends AbstractTableModel
    *
    * @return the row count.
    */
-  public int getRowCount()
+  public int getRowCount ()
   {
     return fonts.length;
   }
@@ -97,7 +98,7 @@ public class SampleData4 extends AbstractTableModel
    *
    * @return the column count.
    */
-  public int getColumnCount()
+  public int getColumnCount ()
   {
     return 3;
   }
@@ -105,11 +106,10 @@ public class SampleData4 extends AbstractTableModel
   /**
    * Returns the class of the data in the specified column.
    *
-   * @param column  the column (zero-based index).
-   *
+   * @param column the column (zero-based index).
    * @return the column class.
    */
-  public Class getColumnClass(final int column)
+  public Class getColumnClass (final int column)
   {
     return String.class;
   }
@@ -117,11 +117,10 @@ public class SampleData4 extends AbstractTableModel
   /**
    * Returns the name of the specified column.
    *
-   * @param column  the column (zero-based index).
-   *
+   * @param column the column (zero-based index).
    * @return the column name.
    */
-  public String getColumnName(final int column)
+  public String getColumnName (final int column)
   {
     if (column == 0)
     {
@@ -140,12 +139,11 @@ public class SampleData4 extends AbstractTableModel
   /**
    * Returns the data value at the specified row and column.
    *
-   * @param row  the row index (zero based).
-   * @param column  the column index (zero based).
-   *
+   * @param row    the row index (zero based).
+   * @param column the column index (zero based).
    * @return the value.
    */
-  public Object getValueAt(final int row, final int column)
+  public Object getValueAt (final int row, final int column)
   {
     if (column == 0)
     {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: AboutAction.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: AboutAction.java,v 1.5 2005/01/24 23:59:02 taqua Exp $
  *
  * Changes
  * -------
@@ -39,13 +39,14 @@
 
 package org.jfree.report.demo.helper;
 
-import org.jfree.util.ResourceBundleSupport;
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionDowngrade;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
- * The About action is used to show some information about the demo programm of JFreeReport.
- * <p>
+ * The About action is used to show some information about the demo programm of
+ * JFreeReport.
+ * <p/>
  * This abstract class handles the locales specific initialisation.
  *
  * @author David Gilbert
@@ -55,14 +56,14 @@ public abstract class AboutAction extends AbstractActionDowngrade
   /**
    * Constructs a new action.
    *
-   * @param resources  localised resources.
+   * @param resources localised resources.
    */
-  protected AboutAction(final ResourceBundleSupport resources)
+  protected AboutAction (final ResourceBundleSupport resources)
   {
     this.putValue(NAME, resources.getString("action.about.name"));
     this.putValue(SHORT_DESCRIPTION, resources.getString("action.about.description"));
     this.putValue(ActionDowngrade.MNEMONIC_KEY,
-        resources.getMnemonic("action.about.mnemonic"));
+            resources.getMnemonic("action.about.mnemonic"));
     this.putValue(SMALL_ICON, resources.getIcon("action.about.small-icon", false));
     this.putValue("ICON24", resources.getIcon("action.about.icon", true));
   }

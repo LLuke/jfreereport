@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PatientTableModel.java,v 1.1.2.1 2004/04/05 16:48:50 taqua Exp $
+ * $Id: PatientTableModel.java,v 1.2 2005/01/25 01:13:55 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,23 +45,23 @@ import javax.swing.table.AbstractTableModel;
 public class PatientTableModel extends AbstractTableModel
 {
   private static Class[] COLUMN_TYPES =
-    {
-      Patient.class,
-      String.class, String.class, String.class,
-      String.class, String.class, String.class,
-      String.class, String.class,
-      Date.class, String.class, String.class, String.class
-    };
+          {
+            Patient.class,
+            String.class, String.class, String.class,
+            String.class, String.class, String.class,
+            String.class, String.class,
+            Date.class, String.class, String.class, String.class
+          };
 
   private static String[] COLUMN_NAMES =
-    {
-      "patient",
-      "patient.name", "patient.address", "patient.town",
-      "patient.ssn", "patient.insurance", "patient.symptoms",
-      "patient.allergy", "patient.level",
-      "treatment.date", "treatment.description", "treatment.medication",
-      "treatment.success"
-    };
+          {
+            "patient",
+            "patient.name", "patient.address", "patient.town",
+            "patient.ssn", "patient.insurance", "patient.symptoms",
+            "patient.allergy", "patient.level",
+            "treatment.date", "treatment.description", "treatment.medication",
+            "treatment.success"
+          };
 
   private ArrayList patients;
   private int totalSize;
@@ -76,24 +76,24 @@ public class PatientTableModel extends AbstractTableModel
 
   public void addPatient (final Patient patient)
   {
-    patients.add (patient);
+    patients.add(patient);
     invalidateCaches();
     fireTableDataChanged();
   }
 
   public void removePatient (final Patient patient)
   {
-    patients.remove (patient);
+    patients.remove(patient);
     invalidateCaches();
     fireTableDataChanged();
   }
 
   public Patient getPatient (final int patient)
   {
-    return (Patient) patients.get (patient);
+    return (Patient) patients.get(patient);
   }
 
-  public void invalidateCaches()
+  public void invalidateCaches ()
   {
     int size = 0;
     for (int i = 0; i < patients.size(); i++)
@@ -133,7 +133,7 @@ public class PatientTableModel extends AbstractTableModel
     return totalSize;
   }
 
-  private void fillCache()
+  private void fillCache ()
   {
     if (treatmentPerRow != null && patientPerRow != null)
     {
@@ -149,7 +149,7 @@ public class PatientTableModel extends AbstractTableModel
     final int patientSize = patients.size();
     for (int i = 0; i < patientSize; i++)
     {
-      final Patient pat = (Patient) patients.get (i);
+      final Patient pat = (Patient) patients.get(i);
       final int treatmentCount = pat.getTreatmentCount();
       for (int tc = 0; tc < treatmentCount; tc++)
       {
@@ -199,20 +199,33 @@ public class PatientTableModel extends AbstractTableModel
 
     switch (columnIndex)
     {
-      case 0: return pat;
-      case 1: return pat.getName();
-      case 2: return pat.getAddress();
-      case 3: return pat.getTown();
-      case 4: return pat.getSsn();
-      case 5: return pat.getInsurance();
-      case 6: return pat.getSymptoms();
-      case 7: return pat.getAllergy();
-      case 8: return pat.getLevel();
+      case 0:
+        return pat;
+      case 1:
+        return pat.getName();
+      case 2:
+        return pat.getAddress();
+      case 3:
+        return pat.getTown();
+      case 4:
+        return pat.getSsn();
+      case 5:
+        return pat.getInsurance();
+      case 6:
+        return pat.getSymptoms();
+      case 7:
+        return pat.getAllergy();
+      case 8:
+        return pat.getLevel();
 
-      case 9: return trm.getDate();
-      case 10: return trm.getDescription();
-      case 11: return trm.getMedication();
-      case 12: return trm.getSuccess();
+      case 9:
+        return trm.getDate();
+      case 10:
+        return trm.getDescription();
+      case 11:
+        return trm.getMedication();
+      case 12:
+        return trm.getSuccess();
     }
 
     throw new IndexOutOfBoundsException();

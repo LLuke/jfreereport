@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontModule.java,v 1.9 2005/01/25 00:11:49 taqua Exp $
+ * $Id: BaseFontModule.java,v 1.10 2005/02/19 13:30:00 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -52,30 +52,33 @@ public class BaseFontModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public BaseFontModule() throws ModuleInitializeException
+  public BaseFontModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
   /**
-   * Initialialize the font factory when this class is loaded and the system property
-   * of  <code>"org.jfree.report.modules.output.pageable.itext.PDFOutputTarget.AutoInit"</code> is
-   * set to <code>true</code>.
+   * Initialialize the font factory when this class is loaded and the system property of
+   * <code>"org.jfree.report.modules.output.pageable.itext.PDFOutputTarget.AutoInit"</code>
+   * is set to <code>true</code>.
    *
    * @throws ModuleInitializeException if an error occured.
    */
-  public void initialize(final SubSystem subSystem) throws ModuleInitializeException
+  public void initialize (final SubSystem subSystem)
+          throws ModuleInitializeException
   {
     if (isClassLoadable("com.lowagie.text.Document") == false)
     {
       throw new ModuleInitializeException("Unable to load iText classes. " +
-          "Check your classpath configuration.");
+              "Check your classpath configuration.");
     }
 
     if (BaseFontFactory.getFontFactory().getPDFTargetAutoInit().equals
-        (BaseFontFactory.ITEXT_FONT_AUTOINIT_ONINIT))
+            (BaseFontFactory.ITEXT_FONT_AUTOINIT_ONINIT))
     {
       BaseFontFactory.getFontFactory().registerDefaultFontPath();
     }

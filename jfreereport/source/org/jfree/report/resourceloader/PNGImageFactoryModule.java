@@ -16,6 +16,7 @@ public class PNGImageFactoryModule implements ImageFactoryModule
             "application/png",
             "application/x-png"
           };
+
   public PNGImageFactoryModule ()
   {
   }

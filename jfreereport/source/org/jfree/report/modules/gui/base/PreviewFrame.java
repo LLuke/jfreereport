@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewFrame.java,v 1.12 2005/01/25 00:01:17 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.13 2005/01/30 23:37:20 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -65,11 +65,10 @@ import org.jfree.report.ReportProcessingException;
 import org.jfree.util.ResourceBundleSupport;
 
 /**
- * A standard print preview frame for any JFreeReport.  Allows the user to page back and forward
- * through the report, zoom in and out, and send the output to the printer.
- * <P>
+ * A standard print preview frame for any JFreeReport.  Allows the user to page back and
+ * forward through the report, zoom in and out, and send the output to the printer. <P>
  * You can also save the report in PDF format (thanks to the iText library).
- * <p>
+ * <p/>
  * When including this PreviewFrame in your own programs, you should override the provided
  * createXXXAction methods to include your customized actions.
  *
@@ -86,18 +85,18 @@ public class PreviewFrame extends JFrame implements PreviewProxy
     /**
      * Creates a 'close' action.
      */
-    public DefaultCloseAction()
+    public DefaultCloseAction ()
     {
       super(getResources());
     }
 
     /**
-     * Closes the preview frame if the default close operation is set to dispose
-     * so this frame is reusable.
+     * Closes the preview frame if the default close operation is set to dispose so this
+     * frame is reusable.
      *
      * @param e The action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       if (getDefaultCloseOperation() == DISPOSE_ON_CLOSE)
       {
@@ -110,20 +109,25 @@ public class PreviewFrame extends JFrame implements PreviewProxy
     }
   }
 
-  /** A preview proxy. */
+  /**
+   * A preview proxy.
+   */
   private PreviewProxyBase base;
 
-  /** Localised resources. */
+  /**
+   * Localised resources.
+   */
   private ResourceBundleSupport resources;
 
   /**
    * Constructs a PreviewFrame that displays the specified report.
    *
-   * @param report  the report to be displayed.
-   *
-   * @throws org.jfree.report.ReportProcessingException if there is a problem processing the report.
+   * @param report the report to be displayed.
+   * @throws org.jfree.report.ReportProcessingException
+   *          if there is a problem processing the report.
    */
-  public PreviewFrame(final JFreeReport report) throws ReportProcessingException
+  public PreviewFrame (final JFreeReport report)
+          throws ReportProcessingException
   {
     init(report);
   }
@@ -131,11 +135,12 @@ public class PreviewFrame extends JFrame implements PreviewProxy
   /**
    * Initialise.
    *
-   * @param report  the report.
-   *
-   * @throws org.jfree.report.ReportProcessingException if there is a problem processing the report.
+   * @param report the report.
+   * @throws org.jfree.report.ReportProcessingException
+   *          if there is a problem processing the report.
    */
-  private void init(final JFreeReport report) throws ReportProcessingException
+  private void init (final JFreeReport report)
+          throws ReportProcessingException
   {
     base = createPreviewProxyBase();
     base.setReport(report);
@@ -148,13 +153,12 @@ public class PreviewFrame extends JFrame implements PreviewProxy
   }
 
 
-
   /**
    * Returns the default close action.
    *
    * @return The action.
    */
-  public Action createDefaultCloseAction()
+  public Action createDefaultCloseAction ()
   {
     return new DefaultCloseAction();
   }
@@ -162,17 +166,17 @@ public class PreviewFrame extends JFrame implements PreviewProxy
   /**
    * Disposes the frame.
    */
-  public void dispose()
+  public void dispose ()
   {
     base.dispose();
     super.dispose();
   }
 
   /**
-   * Shuts down the preview component. Once the component is closed, it
-   * cannot be reactivated anymore.
+   * Shuts down the preview component. Once the component is closed, it cannot be
+   * reactivated anymore.
    */
-  public void close()
+  public void close ()
   {
     base.close();
   }
@@ -183,7 +187,7 @@ public class PreviewFrame extends JFrame implements PreviewProxy
    *
    * @return this frames ResourceBundle.
    */
-  public ResourceBundleSupport getResources()
+  public ResourceBundleSupport getResources ()
   {
     if (resources == null)
     {
@@ -197,7 +201,7 @@ public class PreviewFrame extends JFrame implements PreviewProxy
    *
    * @return The proxy.
    */
-  public PreviewProxyBase getBase()
+  public PreviewProxyBase getBase ()
   {
     return base;
   }

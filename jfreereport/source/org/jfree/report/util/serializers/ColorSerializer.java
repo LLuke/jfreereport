@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ColorSerializer.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: ColorSerializer.java,v 1.3 2004/05/07 12:43:00 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -57,19 +57,20 @@ public class ColorSerializer implements SerializeMethod
   /**
    * Default Constructor.
    */
-  public ColorSerializer()
+  public ColorSerializer ()
   {
   }
 
   /**
-   * Writes a serializable object description to the given object output stream.
-   * This writes the color components, the alpha channel and the color space.
+   * Writes a serializable object description to the given object output stream. This
+   * writes the color components, the alpha channel and the color space.
    *
-   * @param o the to be serialized object.
+   * @param o   the to be serialized object.
    * @param out the outputstream that should receive the object.
    * @throws IOException if an I/O error occured.
    */
-  public void writeObject(final Object o, final ObjectOutputStream out) throws IOException
+  public void writeObject (final Object o, final ObjectOutputStream out)
+          throws IOException
   {
     final Color c = (Color) o;
     final float[] components = c.getColorComponents(null);
@@ -80,15 +81,17 @@ public class ColorSerializer implements SerializeMethod
   }
 
   /**
-   * Reads the object from the object input stream. This reads the color components,
-   * the alpha channel and the color space and constructs a new java.awt.Color instance.
+   * Reads the object from the object input stream. This reads the color components, the
+   * alpha channel and the color space and constructs a new java.awt.Color instance.
    *
    * @param in the object input stream from where to read the serialized data.
    * @return the generated object.
-   * @throws IOException if reading the stream failed.
+   *
+   * @throws IOException            if reading the stream failed.
    * @throws ClassNotFoundException if serialized object class cannot be found.
    */
-  public Object readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException
+  public Object readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
     final ColorSpace csp = (ColorSpace) in.readObject();
     final float[] components = (float[]) in.readObject();
@@ -101,7 +104,7 @@ public class ColorSerializer implements SerializeMethod
    *
    * @return the class of java.awt.Color.
    */
-  public Class getObjectClass()
+  public Class getObjectClass ()
   {
     return Color.class;
   }

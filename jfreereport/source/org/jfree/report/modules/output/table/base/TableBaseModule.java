@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableBaseModule.java,v 1.4.4.1 2004/12/13 19:27:05 taqua Exp $
+ * $Id: TableBaseModule.java,v 1.6 2005/01/25 00:12:36 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,8 +43,8 @@ import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
 
 /**
- * The module definition for the table export modules. This module
- * provides the base classes for all table output targets.
+ * The module definition for the table export modules. This module provides the base
+ * classes for all table output targets.
  *
  * @author Thomas Morgner
  */
@@ -52,9 +52,12 @@ public class TableBaseModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
-   * @throws org.jfree.base.modules.ModuleInitializeException if an error occured.
+   *
+   * @throws org.jfree.base.modules.ModuleInitializeException
+   *          if an error occured.
    */
-  public TableBaseModule() throws ModuleInitializeException
+  public TableBaseModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: WindowSizeLimiter.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
+ * $Id: WindowSizeLimiter.java,v 1.3 2004/05/07 14:29:24 mungady Exp $
  *
  *
  * Changes
@@ -46,23 +46,24 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 /**
- * A small helper class to limit the maximum size of an element to the elements
- * maximum size. If the element is resized, the defined maximum size is enforced
- * on the element.
+ * A small helper class to limit the maximum size of an element to the elements maximum
+ * size. If the element is resized, the defined maximum size is enforced on the element.
  *
  * @author Thomas Morgner
  */
 public class WindowSizeLimiter extends ComponentAdapter
 {
-  /** The current source. */
+  /**
+   * The current source.
+   */
   private Object currentSource;
 
   /**
    * Invoked when the component's size changes.
    *
-   * @param e  the event.
+   * @param e the event.
    */
-  public void componentResized(final ComponentEvent e)
+  public void componentResized (final ComponentEvent e)
   {
     if (e.getSource() == currentSource)
     {

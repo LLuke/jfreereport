@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AbstractTableCreator.java,v 1.3 2005/01/25 00:12:21 taqua Exp $
+ * $Id: AbstractTableCreator.java,v 1.4 2005/02/19 13:30:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,7 +46,7 @@ public abstract class AbstractTableCreator implements TableCreator
 {
   private boolean empty;
 
-  public AbstractTableCreator()
+  public AbstractTableCreator ()
   {
     empty = true;
   }
@@ -57,12 +57,12 @@ public abstract class AbstractTableCreator implements TableCreator
   }
 
   /**
-   * Checks, whether the current table contains content. Returns true,
-   * if there is no current table open.
+   * Checks, whether the current table contains content. Returns true, if there is no
+   * current table open.
    *
    * @return true, if the table does not contain content, false otherwise.
    */
-  public boolean isEmpty()
+  public boolean isEmpty ()
   {
     return empty;
   }
@@ -71,34 +71,35 @@ public abstract class AbstractTableCreator implements TableCreator
    * Add the specified element to the logical page. Create content from the values
    * contained in the element and format the content by using the element's attributes.
    *
-   * @param e  the element.
+   * @param e the element.
    * @throws NullPointerException if the element has no valid layout (no BOUNDS defined).
-   * Bounds are usually defined by the BandLayoutManager.
+   *                              Bounds are usually defined by the BandLayoutManager.
    */
-  protected abstract void processElement(MetaElement e);
+  protected abstract void processElement (MetaElement e);
 
   /**
    * Add the specified band definition to the table sheet. By default, Band definitions
-   * are not used to create content, but they might be important for the layout. it is
-   * up to the implementor to decide whether to use the supplied content of the band
-   * (if any).
+   * are not used to create content, but they might be important for the layout. it is up
+   * to the implementor to decide whether to use the supplied content of the band (if
+   * any).
    *
-   * @param e  the element.
-   * @throws NullPointerException if the element has no valid layout (no BOUNDS defined).
-   * Bounds are usually defined by the BandLayoutManager.
+   * @param e the element.
    * @return true, if the band is fully processed and the children should be ignored,
-   * false to indicate that we need the children to complete the process.
+   *         false to indicate that we need the children to complete the process.
+   *
+   * @throws NullPointerException if the element has no valid layout (no BOUNDS defined).
+   *                              Bounds are usually defined by the BandLayoutManager.
    */
-  protected abstract boolean processBandDefinition(MetaBand e);
+  protected abstract boolean processBandDefinition (MetaBand e);
 
   /**
-   * Processes the given metaband. The MetaBandProducer has already collected
-   * all necessary data to allow the content creation. Table implementors
-   * should provide their own MetaBandProducer if they need additional properties.
+   * Processes the given metaband. The MetaBandProducer has already collected all
+   * necessary data to allow the content creation. Table implementors should provide their
+   * own MetaBandProducer if they need additional properties.
    *
    * @param band the metaband that is processed.
    */
-  public void processBand(final MetaBand band)
+  public void processBand (final MetaBand band)
   {
     if (isOpen() == false)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.14.4.3 2004/10/13 17:18:57 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.16 2005/01/25 00:11:44 taqua Exp $
  *
  * Changes
  * -------
@@ -66,61 +66,72 @@ import org.jfree.report.util.StringUtil;
  */
 public final class BaseFontFactory extends DefaultFontMapper
 {
-  /** The 'PDF auto init' property key. */
+  /**
+   * The 'PDF auto init' property key.
+   */
   public static final String ITEXT_FONT_AUTOINIT
-      = "org.jfree.report.modules.output.support.itext.AutoInit";
+          = "org.jfree.report.modules.output.support.itext.AutoInit";
 
-  /** The default 'PDF auto init' property value. */
+  /**
+   * The default 'PDF auto init' property value.
+   */
   public static final String ITEXT_FONT_AUTOINIT_ONINIT = "onInit";
 
-  /** The default 'PDF auto init' property value. */
+  /**
+   * The default 'PDF auto init' property value.
+   */
   public static final String ITEXT_FONT_AUTOINIT_LAZY = "lazy";
 
-  /** The default 'PDF auto init' property value. */
+  /**
+   * The default 'PDF auto init' property value.
+   */
   public static final String ITEXT_FONT_AUTOINIT_NEVER = "never";
 
-  /** The default 'PDF auto init' property value. */
+  /**
+   * The default 'PDF auto init' property value.
+   */
   public static final String ITEXT_FONT_AUTOINIT_DEFAULT = ITEXT_FONT_AUTOINIT_LAZY;
 
   /**
-   * The iText font encoding specifies how to encode the text of iText documents
-   * for the given font.
+   * The iText font encoding specifies how to encode the text of iText documents for the
+   * given font.
    */
   public static final String ITEXT_FONT_ENCODING
-      = "org.jfree.report.modules.output.support.itext.Encoding";
+          = "org.jfree.report.modules.output.support.itext.Encoding";
 
-  /** The default 'PDF encoding' property value. */
-  public static final String ITEXT_FONT_ENCODING_DEFAULT
-      = ReportConfiguration.getPlatformDefaultEncoding();
   /**
-   * The name of the report property, which defines, whether the
-   * GarbageCollector should be run after the font registration.
+   * The default 'PDF encoding' property value.
+   */
+  public static final String ITEXT_FONT_ENCODING_DEFAULT
+          = ReportConfiguration.getPlatformDefaultEncoding();
+  /**
+   * The name of the report property, which defines, whether the GarbageCollector should
+   * be run after the font registration.
    */
   public static final String GC_AFTER_REGISTER =
-    "org.jfree.report.modules.output.support.itext.GCAfterRegister";
+          "org.jfree.report.modules.output.support.itext.GCAfterRegister";
 
   /**
-   * The font path filter is used to collect font files and directories
-   * during the font path registration.
+   * The font path filter is used to collect font files and directories during the font
+   * path registration.
    */
   private static class FontPathFilter implements FileFilter
   {
     /**
      * Default Constructor.
      */
-    public FontPathFilter()
+    public FontPathFilter ()
     {
     }
 
     /**
-     * Tests whether or not the specified abstract pathname should be
-     * included in a pathname list.
+     * Tests whether or not the specified abstract pathname should be included in a
+     * pathname list.
      *
-     * @param  pathname  The abstract pathname to be tested
-     * @return  <code>true</code> if and only if <code>pathname</code>
-     *          should be included
+     * @param pathname The abstract pathname to be tested
+     * @return <code>true</code> if and only if <code>pathname</code> should be included
      */
-    public boolean accept(final File pathname)
+    public boolean accept (final File pathname)
     {
       if (pathname.canRead() == false)
       {
@@ -152,49 +163,58 @@ public final class BaseFontFactory extends DefaultFontMapper
 
   }
 
-  /** The singleton instance of the font path filter. */
+  /**
+   * The singleton instance of the font path filter.
+   */
   private static final FontPathFilter FONTPATHFILTER = new FontPathFilter();
 
   /**
-   * The storage path for the config storage provider to cache the registered
-   * font names.
+   * The storage path for the config storage provider to cache the registered font names.
    */
   private static final String FONTS_STORAGE_PATH = "registered_itext_fonts";
 
   /**
-   * The storage path for the config storage provider to cache the registered
-   * font files. This is used to detect changes in the font setup.
+   * The storage path for the config storage provider to cache the registered font files.
+   * This is used to detect changes in the font setup.
    */
   private static final String KNOWN_FONTS_PATH = "known_itext_font_files";
 
   /**
-   * The storage path for the config storage provider to cache the registered
-   * font files. This is used to detect changes in the font setup.
+   * The storage path for the config storage provider to cache the registered font files.
+   * This is used to detect changes in the font setup.
    */
   private static final String NO_EMBEDDING_FONTS_PATH = "noEmbedding_itext_font_files";
 
 
-  /** Singleton instance of the BaseFontFactory. */
+  /**
+   * Singleton instance of the BaseFontFactory.
+   */
   private static BaseFontFactory fontFactory;
 
   /**
-   * A set of fonts which have licence restrictions and may not be embedded.
-   * This map is keyed by the font file name. We prefer unrestricted fonts.
+   * A set of fonts which have licence restrictions and may not be embedded. This map is
+   * keyed by the font file name. We prefer unrestricted fonts.
    */
   private final Properties notEmbeddedFonts;
 
-  /** Fonts stored by name. */
+  /**
+   * Fonts stored by name.
+   */
   private final Properties fontsByName;
 
-  /** A flag to check whether this factory is initialized. */
+  /**
+   * A flag to check whether this factory is initialized.
+   */
   private boolean initialized;
-  /** A map of all confirmed (existent or seen) files. */
+  /**
+   * A map of all confirmed (existent or seen) files.
+   */
   private Properties confirmedFiles;
 
   /**
    * Creates a new factory.
    */
-  private BaseFontFactory()
+  private BaseFontFactory ()
   {
     fontsByName = new Properties();
     notEmbeddedFonts = new Properties();
@@ -205,7 +225,7 @@ public final class BaseFontFactory extends DefaultFontMapper
    * systems, X11 is searched in /usr/X11R6 and the default truetype fontpath is added.
    * For windows the system font path is added (%windir%/fonts)
    */
-  public synchronized void registerDefaultFontPath()
+  public synchronized void registerDefaultFontPath ()
   {
     final ConfigStorage store = ConfigFactory.getInstance().getSystemStorage();
     final HashNMap knownFonts = new HashNMap();
@@ -227,7 +247,7 @@ public final class BaseFontFactory extends DefaultFontMapper
 
         final Properties propEmbedded = store.loadProperties(NO_EMBEDDING_FONTS_PATH, null);
         notEmbeddedFonts.putAll(propEmbedded);
-        Log.info ("Registering fonts for the iText library; using a cached font registry.");
+        Log.info("Registering fonts for the iText library; using a cached font registry.");
       }
       catch (ConfigStoreException cse)
       {
@@ -236,7 +256,7 @@ public final class BaseFontFactory extends DefaultFontMapper
     }
     else
     {
-      Log.info ("Registering fonts for the iText library.");
+      Log.info("Registering fonts for the iText library.");
     }
     if (store.existsProperties(KNOWN_FONTS_PATH))
     {
@@ -297,24 +317,24 @@ public final class BaseFontFactory extends DefaultFontMapper
     catch (ConfigStoreException cse)
     {
       Log.info("Failed to store font configuration. This error is non-fatal, " +
-          "the font configuration will be rebuild from scratch, if necessary.");
+              "the font configuration will be rebuild from scratch, if necessary.");
     }
     Log.info("Completed font registration.");
     initialized = true;
   }
 
   /**
-   * Registers the default windows font path. Once a font was found in the
-   * old seenFiles map and confirmed, that this font still exists, it gets
-   * copied into the confirmedFiles map.
+   * Registers the default windows font path. Once a font was found in the old seenFiles
+   * map and confirmed, that this font still exists, it gets copied into the
+   * confirmedFiles map.
    *
-   * @param encoding the default font encoding.
+   * @param encoding   the default font encoding.
    * @param knownFonts a map containing all known fonts
-   * @param seenFiles a map containing all known font files.
+   * @param seenFiles  a map containing all known font files.
    */
-  private void registerWindowsFontPath(final String encoding,
-                                       final HashNMap knownFonts,
-                                       final Properties seenFiles)
+  private void registerWindowsFontPath (final String encoding,
+                                        final HashNMap knownFonts,
+                                        final Properties seenFiles)
   {
     Log.debug("Found windows in os name, assuming DOS/Win32 structures");
     // Assume windows
@@ -328,7 +348,7 @@ public final class BaseFontFactory extends DefaultFontMapper
     if (windirs != null)
     {
       final StringTokenizer strtok
-          = new StringTokenizer(windirs, System.getProperty("path.separator"));
+              = new StringTokenizer(windirs, System.getProperty("path.separator"));
       while (strtok.hasMoreTokens())
       {
         final String token = strtok.nextToken();
@@ -354,11 +374,11 @@ public final class BaseFontFactory extends DefaultFontMapper
   /**
    * Register all fonts (*.ttf files) in the given path.
    *
-   * @param file  the directory that contains the font files.
-   * @param encoding  the encoding for the given font.
+   * @param file     the directory that contains the font files.
+   * @param encoding the encoding for the given font.
    */
   public synchronized void registerFontPath
-      (final File file, final String encoding)
+          (final File file, final String encoding)
   {
     registerFontPath(file, encoding, new HashNMap(), new Properties());
   }
@@ -366,14 +386,14 @@ public final class BaseFontFactory extends DefaultFontMapper
   /**
    * Register all fonts (*.ttf files) in the given path.
    *
-   * @param file  the directory that contains the font files.
-   * @param encoding  the encoding for the given font.
+   * @param file       the directory that contains the font files.
+   * @param encoding   the encoding for the given font.
    * @param knownFonts a map containing all known fonts
-   * @param seenFiles a map containing all known font files.
+   * @param seenFiles  a map containing all known font files.
    */
   private synchronized void registerFontPath
-      (final File file, final String encoding,
-       final HashNMap knownFonts, final Properties seenFiles)
+          (final File file, final String encoding,
+           final HashNMap knownFonts, final Properties seenFiles)
   {
     if (file.exists() && file.isDirectory() && file.canRead())
     {
@@ -390,13 +410,13 @@ public final class BaseFontFactory extends DefaultFontMapper
           final String fileName = currentFile.toString();
           final String cachedAccessTime = seenFiles.getProperty(fileName);
           final String newAccessTime =
-              String.valueOf (currentFile.lastModified() + "," + currentFile.length());
+                  String.valueOf(currentFile.lastModified() + "," + currentFile.length());
 
           // the font file is not known ... or has changed.
           // or is not contained in the list of embedable fonts
           // then register the font
           if (newAccessTime.equals(cachedAccessTime) == false ||
-              notEmbeddedFonts.containsKey(fileName) == false)
+                  notEmbeddedFonts.containsKey(fileName) == false)
           {
             registerFontFile(fileName, encoding);
           }
@@ -414,7 +434,7 @@ public final class BaseFontFactory extends DefaultFontMapper
       }
     }
     if (ReportConfiguration.getGlobalConfig().getConfigProperty
-        (GC_AFTER_REGISTER, "true").equals("true"))
+            (GC_AFTER_REGISTER, "true").equals("true"))
     {
       // clean up after the registering ...
       System.gc();
@@ -424,15 +444,16 @@ public final class BaseFontFactory extends DefaultFontMapper
   /**
    * Register the font (must end this *.ttf) to the FontFactory.
    *
-   * @param filename  the filename.
-   * @param encoding  the encoding.
+   * @param filename the filename.
+   * @param encoding the encoding.
    */
-  public synchronized void registerFontFile(final String filename, final String encoding)
+  public synchronized void registerFontFile (final String filename,
+                                             final String encoding)
   {
     if (!filename.toLowerCase().endsWith(".ttf") &&
-        !filename.toLowerCase().endsWith(".ttc") &&
-        !filename.toLowerCase().endsWith(".afm") &&
-        !filename.toLowerCase().endsWith(".otf"))
+            !filename.toLowerCase().endsWith(".ttc") &&
+            !filename.toLowerCase().endsWith(".afm") &&
+            !filename.toLowerCase().endsWith(".otf"))
     {
       return;
     }
@@ -440,7 +461,7 @@ public final class BaseFontFactory extends DefaultFontMapper
     if (file.exists() && file.isFile() && file.canRead())
     {
       final String newAccessTime =
-          String.valueOf (file.lastModified() + "," + file.length());
+              String.valueOf(file.lastModified() + "," + file.length());
       confirmedFiles.put(filename, newAccessTime);
       try
       {
@@ -460,24 +481,23 @@ public final class BaseFontFactory extends DefaultFontMapper
       catch (Exception e)
       {
         Log.warn(new Log.SimpleMessage("Font ", filename, " is invalid. Message:", e.getMessage()));
-        notEmbeddedFonts.setProperty (filename, "false");
+        notEmbeddedFonts.setProperty(filename, "false");
       }
     }
   }
 
   /**
-   * Adds the fontname by creating the basefont object. This method tries to
-   * load the fonts as embeddable fonts, if this fails, it repeats the loading
-   * with the embedded-flag set to false.
+   * Adds the fontname by creating the basefont object. This method tries to load the
+   * fonts as embeddable fonts, if this fails, it repeats the loading with the
+   * embedded-flag set to false.
    *
-   * @param font  the font file name.
-   * @param encoding  the encoding.
-   *
+   * @param font     the font file name.
+   * @param encoding the encoding.
    * @throws DocumentException if the base font could not be created
-   * @throws IOException if the base font file could not be read.
+   * @throws IOException       if the base font file could not be read.
    */
-  private void addFont(final String font, final String encoding)
-      throws DocumentException, IOException
+  private void addFont (final String font, final String encoding)
+          throws DocumentException, IOException
   {
     if (fontsByName.containsValue(font))
     {
@@ -495,9 +515,9 @@ public final class BaseFontFactory extends DefaultFontMapper
     {
       // failed to load the font as embedded font, try not-embedded.
       bfont = BaseFont.createFont(font, encoding, false, false, null, null);
-      Log.info (new Log.SimpleMessage
-        ("Font ", font, "  cannot be used as embedded font " +
-          "due to licensing restrictions."));
+      Log.info(new Log.SimpleMessage
+              ("Font ", font, "  cannot be used as embedded font " +
+              "due to licensing restrictions."));
     }
 
     final String[][] fi = bfont.getFullFontName();
@@ -509,15 +529,15 @@ public final class BaseFontFactory extends DefaultFontMapper
       // if unknown or the known font is a restricted version and this one is none,
       // then register the new font
       final String logicalFontname = ffi[3];
-      notEmbeddedFonts.setProperty (font, embedded);
+      notEmbeddedFonts.setProperty(font, embedded);
       if ((fontsByName.containsKey(logicalFontname) == false) ||
-          ((knownFontEmbeddedState.equals("true") == false) &&
-           embedded.equals(knownFontEmbeddedState) == false))
+              ((knownFontEmbeddedState.equals("true") == false) &&
+              embedded.equals(knownFontEmbeddedState) == false))
       {
         fontsByName.setProperty(logicalFontname, font);
         Log.debug(new Log.SimpleMessage
-          ("Registered truetype font ", logicalFontname, "; Embedded=",
-            embedded, new Log.SimpleMessage("File=", font)));
+                ("Registered truetype font ", logicalFontname, "; Embedded=",
+                        embedded, new Log.SimpleMessage("File=", font)));
       }
     }
   }
@@ -527,7 +547,7 @@ public final class BaseFontFactory extends DefaultFontMapper
    *
    * @return an enumeration of the registered fonts.
    */
-  public Iterator getRegisteredFonts()
+  public Iterator getRegisteredFonts ()
   {
     return fontsByName.keySet().iterator();
   }
@@ -535,11 +555,10 @@ public final class BaseFontFactory extends DefaultFontMapper
   /**
    * Returns the name of the font file by looking up the name.
    *
-   * @param font  the font name
-   *
+   * @param font the font name
    * @return the font file name.
    */
-  public String getFontfileForName(final String font)
+  public String getFontfileForName (final String font)
   {
     if (isInitialized() == false)
     {
@@ -552,8 +571,8 @@ public final class BaseFontFactory extends DefaultFontMapper
   }
 
   /**
-   * Checks, whether the font has known license restrictions.
-   * Returns true, if the font can be embedded, and false otherwise.
+   * Checks, whether the font has known license restrictions. Returns true, if the font
+   * can be embedded, and false otherwise.
    *
    * @param fontFileName the filename of the font (not the logical name!)
    * @return true, if the font can be embedded, false otherwise.
@@ -575,7 +594,7 @@ public final class BaseFontFactory extends DefaultFontMapper
    *
    * @return true, if the factory is initalized, false otherwise.
    */
-  public boolean isInitialized()
+  public boolean isInitialized ()
   {
     return initialized;
   }
@@ -585,10 +604,10 @@ public final class BaseFontFactory extends DefaultFontMapper
    *
    * @return the BaseFont encoding property value.
    */
-  public static final String getDefaultFontEncoding()
+  public static final String getDefaultFontEncoding ()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        (ITEXT_FONT_ENCODING, ITEXT_FONT_ENCODING_DEFAULT);
+            (ITEXT_FONT_ENCODING, ITEXT_FONT_ENCODING_DEFAULT);
   }
 
   /**
@@ -596,10 +615,10 @@ public final class BaseFontFactory extends DefaultFontMapper
    *
    * @param encoding the new encoding.
    */
-  public static final void setDefaultFontEncoding(final String encoding)
+  public static final void setDefaultFontEncoding (final String encoding)
   {
     ReportConfiguration.getGlobalConfig().setConfigProperty
-        (ITEXT_FONT_ENCODING, encoding);
+            (ITEXT_FONT_ENCODING, encoding);
   }
 
 
@@ -608,30 +627,30 @@ public final class BaseFontFactory extends DefaultFontMapper
    *
    * @return the PDFOutputTarget autoinitialisation value.
    */
-  public String getPDFTargetAutoInit()
+  public String getPDFTargetAutoInit ()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        (ITEXT_FONT_AUTOINIT, ITEXT_FONT_AUTOINIT_DEFAULT);
+            (ITEXT_FONT_AUTOINIT, ITEXT_FONT_AUTOINIT_DEFAULT);
   }
 
   /**
    * Sets the PDF target auto init status.
    *
-   * @param autoInit  the new status.
+   * @param autoInit the new status.
    */
-  public void setPDFTargetAutoInit(final String autoInit)
+  public void setPDFTargetAutoInit (final String autoInit)
   {
     if (autoInit != null)
     {
       if ((autoInit.equals(ITEXT_FONT_AUTOINIT_LAZY) == false) &&
-          (autoInit.equals(ITEXT_FONT_AUTOINIT_NEVER) == false) &&
-          (autoInit.equals(ITEXT_FONT_AUTOINIT_ONINIT) == false))
+              (autoInit.equals(ITEXT_FONT_AUTOINIT_NEVER) == false) &&
+              (autoInit.equals(ITEXT_FONT_AUTOINIT_ONINIT) == false))
       {
         throw new IllegalArgumentException("Invalid autoinit value.");
       }
     }
     ReportConfiguration.getGlobalConfig().setConfigProperty
-        (ITEXT_FONT_AUTOINIT, String.valueOf(autoInit));
+            (ITEXT_FONT_AUTOINIT, String.valueOf(autoInit));
   }
 
   /**
@@ -639,7 +658,7 @@ public final class BaseFontFactory extends DefaultFontMapper
    *
    * @return the font factory.
    */
-  public synchronized static BaseFontFactory getFontFactory()
+  public synchronized static BaseFontFactory getFontFactory ()
   {
     if (fontFactory == null)
     {

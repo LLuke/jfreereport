@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtWriterModule.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
+ * $Id: ExtWriterModule.java,v 1.6 2005/01/25 00:20:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -52,9 +52,11 @@ public class ExtWriterModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public ExtWriterModule() throws ModuleInitializeException
+  public ExtWriterModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }

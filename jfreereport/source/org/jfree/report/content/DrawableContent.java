@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableContent.java,v 1.8 2005/01/25 21:40:08 taqua Exp $
+ * $Id: DrawableContent.java,v 1.9 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -41,48 +41,52 @@ import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.ui.Drawable;
 
 /**
- * A simple wrapper around the DrawableContainer. The ContentImplementation
- * is able to adjust the Clipping Bounds of the DrawableContainer.
+ * A simple wrapper around the DrawableContainer. The ContentImplementation is able to
+ * adjust the Clipping Bounds of the DrawableContainer.
  *
  * @author Thomas Morgner
  */
 public strictfp class DrawableContent implements Content
 {
   /**
-   * The drawable content. The content will be drawn using the drawable bounds,
-   * but only the rectangle contentBounds will be visible.
+   * The drawable content. The content will be drawn using the drawable bounds, but only
+   * the rectangle contentBounds will be visible.
    */
   private Drawable drawable;
 
 
-  /** The bounds. */
+  /**
+   * The bounds.
+   */
   private final StrictBounds bounds;
 
-  /** The bounds of the displayed area of the image (unscaled). */
+  /**
+   * The bounds of the displayed area of the image (unscaled).
+   */
   private final StrictBounds imageArea;
 
   /**
    * Creates a new image content.
    *
-   * @param ref  the image reference.
-   * @param bounds  the content bounds.
+   * @param ref    the image reference.
+   * @param bounds the content bounds.
    */
-  public DrawableContent(final Drawable ref,
-                         final StrictBounds bounds)
+  public DrawableContent (final Drawable ref,
+                          final StrictBounds bounds)
   {
-    this (ref, bounds, new StrictBounds
+    this(ref, bounds, new StrictBounds
             (0, 0, bounds.getWidth(), bounds.getHeight()));
   }
 
   /**
    * Creates a new image content.
    *
-   * @param ref  the image reference.
-   * @param bounds  the content bounds.
+   * @param ref    the image reference.
+   * @param bounds the content bounds.
    */
-  protected DrawableContent(final Drawable ref,
-                         final StrictBounds bounds,
-                         final StrictBounds imageArea)
+  protected DrawableContent (final Drawable ref,
+                             final StrictBounds bounds,
+                             final StrictBounds imageArea)
   {
     if (ref == null)
     {
@@ -101,7 +105,7 @@ public strictfp class DrawableContent implements Content
    *
    * @return the content type.
    */
-  public ContentType getContentType()
+  public ContentType getContentType ()
   {
     return ContentType.DRAWABLE;
   }
@@ -111,7 +115,7 @@ public strictfp class DrawableContent implements Content
    *
    * @return the content bounds.
    */
-  public StrictBounds getBounds()
+  public StrictBounds getBounds ()
   {
     return (StrictBounds) bounds.clone();
   }
@@ -119,11 +123,10 @@ public strictfp class DrawableContent implements Content
   /**
    * Returns content that falls within the specified bounds.
    *
-   * @param bounds  the bounds.
-   *
+   * @param bounds the bounds.
    * @return the content.
    */
-  public Content getContentForBounds(final StrictBounds bounds)
+  public Content getContentForBounds (final StrictBounds bounds)
   {
     if (StrictBounds.intersects(bounds, this.bounds) == false)
     {
@@ -134,9 +137,9 @@ public strictfp class DrawableContent implements Content
     return new DrawableContent(drawable, myBounds,
             new StrictBounds
                     (mapHorizontalPointToImage(myBounds.getX() - this.bounds.getX()),
-                     mapVerticalPointToImage(myBounds.getY() - this.bounds.getY()),
-                     mapHorizontalPointToImage(myBounds.getWidth()),
-                     mapVerticalPointToImage(myBounds.getHeight())));
+                            mapVerticalPointToImage(myBounds.getY() - this.bounds.getY()),
+                            mapHorizontalPointToImage(myBounds.getWidth()),
+                            mapVerticalPointToImage(myBounds.getHeight())));
   }
 
   private long mapHorizontalPointToImage (final long px)
@@ -159,7 +162,7 @@ public strictfp class DrawableContent implements Content
    *
    * @return the minimum size.
    */
-  public StrictBounds getMinimumContentSize()
+  public StrictBounds getMinimumContentSize ()
   {
     return getBounds();
   }
@@ -169,7 +172,7 @@ public strictfp class DrawableContent implements Content
    *
    * @return The content.
    */
-  public Drawable getContent()
+  public Drawable getContent ()
   {
     return drawable;
   }

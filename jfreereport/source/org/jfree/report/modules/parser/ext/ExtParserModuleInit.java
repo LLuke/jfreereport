@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtParserModuleInit.java,v 1.10 2005/02/04 19:08:51 taqua Exp $
+ * $Id: ExtParserModuleInit.java,v 1.11 2005/02/19 13:30:03 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,11 +40,11 @@ package org.jfree.report.modules.parser.ext;
 
 import java.net.URL;
 
+import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.ModuleInitializer;
 import org.jfree.report.modules.parser.base.InitialReportHandler;
 import org.jfree.report.modules.parser.base.ParserEntityResolver;
 import org.jfree.report.modules.parser.ext.readhandlers.ReportDefinitionReadHandler;
-import org.jfree.base.modules.ModuleInitializer;
-import org.jfree.base.modules.ModuleInitializeException;
 
 /**
  * Performs the module initialization for the extended parser.
@@ -53,14 +53,16 @@ import org.jfree.base.modules.ModuleInitializeException;
  */
 public class ExtParserModuleInit implements ModuleInitializer
 {
-  /** the Public ID for the extensible version of JFreeReport XML definitions. */
+  /**
+   * the Public ID for the extensible version of JFreeReport XML definitions.
+   */
   public static final String PUBLIC_ID_EXTENDED =
-      "-//JFreeReport//DTD report definition//EN//extended/version 0.8.5";
+          "-//JFreeReport//DTD report definition//EN//extended/version 0.8.5";
 
   /**
    * Default Constructor.
    */
-  public ExtParserModuleInit()
+  public ExtParserModuleInit ()
   {
   }
 
@@ -69,12 +71,12 @@ public class ExtParserModuleInit implements ModuleInitializer
    *
    * @throws ModuleInitializeException if an error ocurres.
    */
-  public void performInit() throws ModuleInitializeException
+  public void performInit ()
+          throws ModuleInitializeException
   {
     final ParserEntityResolver res = ParserEntityResolver.getDefaultResolver();
 
-    final URL urlExtReportDTD = res.getClass().getResource(
-        "/org/jfree/report/modules/parser/ext/resources/extreport-085.dtd");
+    final URL urlExtReportDTD = res.getClass().getResource("/org/jfree/report/modules/parser/ext/resources/extreport-085.dtd");
     res.setDTDLocation(PUBLIC_ID_EXTENDED, urlExtReportDTD);
 
     InitialReportHandler.registerHandler

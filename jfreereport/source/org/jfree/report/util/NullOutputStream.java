@@ -25,7 +25,7 @@
  * ---------------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: NullOutputStream.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: NullOutputStream.java,v 1.3 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes
  * -------
@@ -47,30 +47,18 @@ public class NullOutputStream extends OutputStream
   /**
    * Default constructor.
    */
-  public NullOutputStream()
+  public NullOutputStream ()
   {
   }
 
   /**
    * Writes to the stream (in this case, does nothing).
    *
-   * @param i  the value.
-   *
+   * @param i the value.
    * @throws IOException if there is an I/O problem.
    */
-  public void write(final int i) throws IOException
-  {
-    // no i wont do anything here ...
-  }
-
-  /**
-   * Writes to the stream (in this case, does nothing).
-   *
-   * @param bytes  the bytes.
-   *
-   * @throws IOException if there is an I/O problem.
-   */
-  public void write(final byte[] bytes) throws IOException
+  public void write (final int i)
+          throws IOException
   {
     // no i wont do anything here ...
   }
@@ -78,13 +66,25 @@ public class NullOutputStream extends OutputStream
   /**
    * Writes to the stream (in this case, does nothing).
    *
-   * @param bytes  the bytes.
-   * @param      off   the start offset in the data.
-   * @param      len   the number of bytes to write.
-   *
+   * @param bytes the bytes.
    * @throws IOException if there is an I/O problem.
    */
-  public void write(final byte[] bytes, final int off, final int len) throws IOException
+  public void write (final byte[] bytes)
+          throws IOException
+  {
+    // no i wont do anything here ...
+  }
+
+  /**
+   * Writes to the stream (in this case, does nothing).
+   *
+   * @param bytes the bytes.
+   * @param off   the start offset in the data.
+   * @param len   the number of bytes to write.
+   * @throws IOException if there is an I/O problem.
+   */
+  public void write (final byte[] bytes, final int off, final int len)
+          throws IOException
   {
     // no i wont do anything here ...
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ContentFactoryModule.java,v 1.3 2004/05/07 08:02:48 mungady Exp $
+ * $Id: ContentFactoryModule.java,v 1.4 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -41,12 +41,11 @@ import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.util.ElementLayoutInformation;
 
 /**
- * The ContentFactoryModule is a delegator for the DefaultContentFactory. This module
- * is able to create a certain content type from the given element's data.
- *
- * @see DefaultContentFactory
+ * The ContentFactoryModule is a delegator for the DefaultContentFactory. This module is
+ * able to create a certain content type from the given element's data.
  *
  * @author Thomas Morgner
+ * @see DefaultContentFactory
  */
 public interface ContentFactoryModule
 {
@@ -54,26 +53,24 @@ public interface ContentFactoryModule
    * Returns <code>true</code> if the module can handle the specified content type, and
    * <code>false</code> otherwise.
    *
-   * @param contentType  the content type.
-   *
+   * @param contentType the content type.
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean canHandleContent(String contentType);
+  public boolean canHandleContent (String contentType);
 
   /**
    * Creates content for an element.
    *
-   * @param e  the element.
-   * @param bounds  the bounds.
-   * @param ot  the output target.
-   *
+   * @param e      the element.
+   * @param bounds the bounds.
+   * @param ot     the output target.
    * @return the content.
    *
    * @throws ContentCreationException if there is a problem with the Content creation.
    */
-  public Content createContentForElement(Element e,
-                                         ElementLayoutInformation bounds,
-                                         LayoutSupport ot)
-      throws ContentCreationException;
+  public Content createContentForElement (Element e,
+                                          ElementLayoutInformation bounds,
+                                          LayoutSupport ot)
+          throws ContentCreationException;
 
 }

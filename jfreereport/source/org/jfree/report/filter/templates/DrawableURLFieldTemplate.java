@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageURLFieldTemplate.java,v 1.5 2005/01/24 23:59:48 taqua Exp $
+ * $Id: DrawableURLFieldTemplate.java,v 1.1 2005/01/25 22:55:38 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -47,27 +47,33 @@ import org.jfree.report.filter.ReportConnectable;
 import org.jfree.report.filter.URLFilter;
 
 /**
- * An image URL field template, which reads the image from an URL supplied from
- * a column in the DataRow.
+ * An image URL field template, which reads the image from an URL supplied from a column
+ * in the DataRow.
  *
  * @author Thomas Morgner
  */
 public class DrawableURLFieldTemplate extends AbstractTemplate
-    implements ReportConnectable
+        implements ReportConnectable
 {
-  /** An image load filter. */
+  /**
+   * An image load filter.
+   */
   private DrawableLoadFilter imageLoadFilter;
 
-  /** A data row accessor. */
+  /**
+   * A data row accessor.
+   */
   private DataRowDataSource dataRowDataSource;
 
-  /** A URL filter. */
+  /**
+   * A URL filter.
+   */
   private URLFilter urlFilter;
 
   /**
    * Creates a new template.
    */
-  public DrawableURLFieldTemplate()
+  public DrawableURLFieldTemplate ()
   {
     dataRowDataSource = new DataRowDataSource();
     urlFilter = new URLFilter();
@@ -81,7 +87,7 @@ public class DrawableURLFieldTemplate extends AbstractTemplate
    *
    * @return The field name.
    */
-  public String getField()
+  public String getField ()
   {
     return dataRowDataSource.getDataSourceColumnName();
   }
@@ -89,9 +95,9 @@ public class DrawableURLFieldTemplate extends AbstractTemplate
   /**
    * Sets the field name.
    *
-   * @param field  the field name.
+   * @param field the field name.
    */
-  public void setField(final String field)
+  public void setField (final String field)
   {
     dataRowDataSource.setDataSourceColumnName(field);
   }
@@ -101,7 +107,7 @@ public class DrawableURLFieldTemplate extends AbstractTemplate
    *
    * @return The base URL.
    */
-  public URL getBaseURL()
+  public URL getBaseURL ()
   {
     return urlFilter.getBaseURL();
   }
@@ -109,9 +115,9 @@ public class DrawableURLFieldTemplate extends AbstractTemplate
   /**
    * Sets the base URL.
    *
-   * @param baseURL  the base URL.
+   * @param baseURL the base URL.
    */
-  public void setBaseURL(final URL baseURL)
+  public void setBaseURL (final URL baseURL)
   {
     urlFilter.setBaseURL(baseURL);
   }
@@ -121,7 +127,7 @@ public class DrawableURLFieldTemplate extends AbstractTemplate
    *
    * @return the value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return imageLoadFilter.getValue();
   }
@@ -133,7 +139,8 @@ public class DrawableURLFieldTemplate extends AbstractTemplate
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final DrawableURLFieldTemplate template = (DrawableURLFieldTemplate) super.clone();
     template.imageLoadFilter = (DrawableLoadFilter) imageLoadFilter.clone();
@@ -142,17 +149,17 @@ public class DrawableURLFieldTemplate extends AbstractTemplate
     return template;
   }
 
-  public void registerReportDefinition(final ReportDefinition reportDefinition)
+  public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().registerReportDefinition(reportDefinition);
   }
 
-  public void unregisterReportDefinition(final ReportDefinition reportDefinition)
+  public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().unregisterReportDefinition(reportDefinition);
   }
 
-  protected DataRowDataSource getDataRowDataSource()
+  protected DataRowDataSource getDataRowDataSource ()
   {
     return dataRowDataSource;
   }

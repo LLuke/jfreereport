@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: IconTableModel.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
+ * $Id: IconTableModel.java,v 1.6 2005/01/24 23:58:21 taqua Exp $
  *
  * Changes
  * -------
@@ -51,13 +51,15 @@ import javax.swing.table.AbstractTableModel;
 public class IconTableModel extends AbstractTableModel
 {
 
-  /** The table data. */
+  /**
+   * The table data.
+   */
   private final List data;
 
   /**
    * Constructs a new IconTableModel, initially empty.
    */
-  public IconTableModel()
+  public IconTableModel ()
   {
     this.data = new ArrayList();
   }
@@ -65,13 +67,13 @@ public class IconTableModel extends AbstractTableModel
   /**
    * Adds a new entry to the table model.
    *
-   * @param name The icon name.
+   * @param name     The icon name.
    * @param category The category name.
-   * @param icon The icon.
-   * @param size The size of the icon image in bytes.
+   * @param icon     The icon.
+   * @param size     The size of the icon image in bytes.
    */
-  protected void addIconEntry(final String name, final String category,
-                              final Image icon, final Long size)
+  protected void addIconEntry (final String name, final String category,
+                               final Image icon, final Long size)
   {
     final Object[] item = new Object[4];
     item[0] = name;
@@ -86,7 +88,7 @@ public class IconTableModel extends AbstractTableModel
    *
    * @return The row count.
    */
-  public int getRowCount()
+  public int getRowCount ()
   {
     return data.size();
   }
@@ -96,7 +98,7 @@ public class IconTableModel extends AbstractTableModel
    *
    * @return The column count.
    */
-  public int getColumnCount()
+  public int getColumnCount ()
   {
     return 4;
   }
@@ -104,12 +106,11 @@ public class IconTableModel extends AbstractTableModel
   /**
    * Returns the data item at the specified row and column.
    *
-   * @param row The row index.
+   * @param row    The row index.
    * @param column The column index.
-   *
    * @return The data item.
    */
-  public Object getValueAt(final int row, final int column)
+  public Object getValueAt (final int row, final int column)
   {
     final Object[] item = (Object[]) data.get(row);
     return item[column];
@@ -119,10 +120,9 @@ public class IconTableModel extends AbstractTableModel
    * Returns the class of the specified column.
    *
    * @param column The column index.
-   *
    * @return The column class.
    */
-  public Class getColumnClass(final int column)
+  public Class getColumnClass (final int column)
   {
     if (column == 2)
     {
@@ -138,10 +138,9 @@ public class IconTableModel extends AbstractTableModel
    * Returns the name of the specified column.
    *
    * @param column The column.
-   *
    * @return The column name.
    */
-  public String getColumnName(final int column)
+  public String getColumnName (final int column)
   {
     switch (column)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewDialog.java,v 1.12 2005/01/25 00:01:17 taqua Exp $
+ * $Id: PreviewDialog.java,v 1.13 2005/01/30 23:37:20 taqua Exp $
  *
  * Changes (from 4-Dec-2002)
  * -------------------------
@@ -51,13 +51,12 @@ import org.jfree.report.ReportProcessingException;
 import org.jfree.util.ResourceBundleSupport;
 
 /**
- * A standard print preview dialog for any JFreeReport.  Allows the user to page back and forward
- * through the report, zoom in and out, and send the output to the printer.
- * <P>
+ * A standard print preview dialog for any JFreeReport.  Allows the user to page back and
+ * forward through the report, zoom in and out, and send the output to the printer. <P>
  * You can also save the report in PDF format (thanks to the iText library).
- * <p>
- * When including this PreviewDialog in your own programs, you should override the provided
- * createXXXAction methods to include your customized actions.
+ * <p/>
+ * When including this PreviewDialog in your own programs, you should override the
+ * provided createXXXAction methods to include your customized actions.
  *
  * @author David Gilbert
  * @author Thomas Morgner
@@ -72,18 +71,18 @@ public class PreviewDialog extends JDialog implements PreviewProxy
     /**
      * Creates a 'close' action.
      */
-    public DefaultCloseAction()
+    public DefaultCloseAction ()
     {
       super(getResources());
     }
 
     /**
-     * Closes the preview frame if the default close operation is set to dispose
-     * so this frame is reusable.
+     * Closes the preview frame if the default close operation is set to dispose so this
+     * frame is reusable.
      *
      * @param e The action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       if (getDefaultCloseOperation() == DISPOSE_ON_CLOSE)
       {
@@ -96,21 +95,25 @@ public class PreviewDialog extends JDialog implements PreviewProxy
     }
   }
 
-  /** A preview proxy. */
+  /**
+   * A preview proxy.
+   */
   private PreviewProxyBase base;
 
-  /** Localised resources. */
+  /**
+   * Localised resources.
+   */
   private ResourceBundleSupport resources;
 
   /**
    * Creates a new preview dialog for a report.
    *
-   * @param report  the report.
-   *
-   * @throws org.jfree.report.ReportProcessingException if there is a problem processing the report.
+   * @param report the report.
+   * @throws org.jfree.report.ReportProcessingException
+   *          if there is a problem processing the report.
    */
-  public PreviewDialog(final JFreeReport report)
-      throws ReportProcessingException
+  public PreviewDialog (final JFreeReport report)
+          throws ReportProcessingException
   {
     init(report);
   }
@@ -118,13 +121,13 @@ public class PreviewDialog extends JDialog implements PreviewProxy
   /**
    * Creates a new preview dialog for a report.
    *
-   * @param report  the report.
+   * @param report the report.
    * @param owner  the owner frame.
-   *
-   * @throws org.jfree.report.ReportProcessingException if there is a problem processing the report.
+   * @throws org.jfree.report.ReportProcessingException
+   *          if there is a problem processing the report.
    */
-  public PreviewDialog(final JFreeReport report, final Frame owner)
-      throws ReportProcessingException
+  public PreviewDialog (final JFreeReport report, final Frame owner)
+          throws ReportProcessingException
   {
     super(owner);
     init(report);
@@ -133,14 +136,14 @@ public class PreviewDialog extends JDialog implements PreviewProxy
   /**
    * Creates a new preview dialog for a report.
    *
-   * @param report  the report.
+   * @param report the report.
    * @param owner  the owner frame.
    * @param modal  modal or non-modal?
-   *
-   * @throws org.jfree.report.ReportProcessingException if there is a problem processing the report.
+   * @throws org.jfree.report.ReportProcessingException
+   *          if there is a problem processing the report.
    */
-  public PreviewDialog(final JFreeReport report, final Frame owner, final boolean modal)
-      throws ReportProcessingException
+  public PreviewDialog (final JFreeReport report, final Frame owner, final boolean modal)
+          throws ReportProcessingException
   {
     super(owner, modal);
     init(report);
@@ -149,13 +152,13 @@ public class PreviewDialog extends JDialog implements PreviewProxy
   /**
    * Creates a new preview dialog for a report.
    *
-   * @param report  the report.
+   * @param report the report.
    * @param owner  the owner dialog.
-   *
-   * @throws org.jfree.report.ReportProcessingException if there is a problem processing the report.
+   * @throws org.jfree.report.ReportProcessingException
+   *          if there is a problem processing the report.
    */
-  public PreviewDialog(final JFreeReport report, final Dialog owner)
-      throws ReportProcessingException
+  public PreviewDialog (final JFreeReport report, final Dialog owner)
+          throws ReportProcessingException
   {
     super(owner);
     init(report);
@@ -164,14 +167,15 @@ public class PreviewDialog extends JDialog implements PreviewProxy
   /**
    * Creates a new preview dialog for a report.
    *
-   * @param report  the report.
+   * @param report the report.
    * @param owner  the owner dialog.
    * @param modal  modal or non-modal?
-   *
-   * @throws org.jfree.report.ReportProcessingException if there is a problem processing the report.
+   * @throws org.jfree.report.ReportProcessingException
+   *          if there is a problem processing the report.
    */
-  public PreviewDialog(final JFreeReport report, final Dialog owner, final boolean modal)
-      throws ReportProcessingException
+  public PreviewDialog (final JFreeReport report, final Dialog owner,
+                        final boolean modal)
+          throws ReportProcessingException
   {
     super(owner, modal);
     init(report);
@@ -180,11 +184,12 @@ public class PreviewDialog extends JDialog implements PreviewProxy
   /**
    * Initialise.
    *
-   * @param report  the report
-   *
-   * @throws org.jfree.report.ReportProcessingException if there is a problem processing the report.
+   * @param report the report
+   * @throws org.jfree.report.ReportProcessingException
+   *          if there is a problem processing the report.
    */
-  private void init(final JFreeReport report) throws ReportProcessingException
+  private void init (final JFreeReport report)
+          throws ReportProcessingException
   {
     base = createPreviewProxyBase();
     base.setReport(report);
@@ -201,7 +206,7 @@ public class PreviewDialog extends JDialog implements PreviewProxy
    *
    * @return The action.
    */
-  public Action createDefaultCloseAction()
+  public Action createDefaultCloseAction ()
   {
     return new DefaultCloseAction();
   }
@@ -209,17 +214,17 @@ public class PreviewDialog extends JDialog implements PreviewProxy
   /**
    * Disposes the dialog.
    */
-  public void dispose()
+  public void dispose ()
   {
     base.dispose();
     super.dispose();
   }
 
   /**
-   * Shuts down the preview component. Once the component is closed, it
-   * cannot be reactivated anymore.
+   * Shuts down the preview component. Once the component is closed, it cannot be
+   * reactivated anymore.
    */
-  public void close()
+  public void close ()
   {
     base.close();
   }
@@ -230,7 +235,7 @@ public class PreviewDialog extends JDialog implements PreviewProxy
    *
    * @return this frames ResourceBundle.
    */
-  public ResourceBundleSupport getResources()
+  public ResourceBundleSupport getResources ()
   {
     if (resources == null)
     {
@@ -244,7 +249,7 @@ public class PreviewDialog extends JDialog implements PreviewProxy
    *
    * @return The proxy.
    */
-  public PreviewProxyBase getBase()
+  public PreviewProxyBase getBase ()
   {
     return base;
   }

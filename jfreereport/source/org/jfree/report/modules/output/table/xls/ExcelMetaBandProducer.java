@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelMetaBandProducer.java,v 1.5 2005/02/05 18:35:19 taqua Exp $
+ * $Id: ExcelMetaBandProducer.java,v 1.6 2005/02/19 13:30:02 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -127,7 +127,7 @@ public class ExcelMetaBandProducer
       final DataSource template = e.getDataSource();
       if (template instanceof DateFieldTemplate)
       {
-        return createDateCell(e, x ,y);
+        return createDateCell(e, x, y);
       }
       else if (template instanceof NumberFieldTemplate)
       {
@@ -157,7 +157,7 @@ public class ExcelMetaBandProducer
     final ElementStyleSheet styleSheet =
             createStyleForTextElement(e, x, y);
     styleSheet.setStyleProperty(ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
-            e.getStyle().getStyleProperty (ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
+            e.getStyle().getStyleProperty(ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
                     nft.getFormat()));
 
     return new ExcelNumberMetaElement(new RawContent(rect, number), styleSheet);
@@ -175,7 +175,7 @@ public class ExcelMetaBandProducer
     final ElementStyleSheet styleSheet =
             createStyleForTextElement(e, x, y);
     styleSheet.setStyleProperty(ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
-            e.getStyle().getStyleProperty (ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
+            e.getStyle().getStyleProperty(ElementStyleSheet.EXCEL_DATA_FORMAT_STRING,
                     dft.getFormat()));
 
     return new ExcelDateMetaElement(new RawContent(rect, date), styleSheet);

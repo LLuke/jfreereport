@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: LayoutListener.java,v 1.2.4.1 2005/01/19 21:52:02 taqua Exp $
+ * $Id: LayoutListener.java,v 1.4 2005/01/24 23:59:36 taqua Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -40,21 +40,20 @@ package org.jfree.report.event;
 import java.util.EventListener;
 
 /**
- * Adds layout notification support for functions. Functions get informed when
- * the layouting is complete.
+ * Adds layout notification support for functions. Functions get informed when the
+ * layouting is complete.
  *
  * @author Thomas Morgner
  */
 public interface LayoutListener extends EventListener
 {
   /**
-   * Receives notification that the band layouting has completed.
-   * <P>
-   * The event carries the current report state.
+   * Receives notification that the band layouting has completed. <P> The event carries
+   * the current report state.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void layoutComplete(LayoutEvent event);
+  public void layoutComplete (LayoutEvent event);
 
-  public void outputComplete(LayoutEvent event);
+  public void outputComplete (LayoutEvent event);
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PlainTextPage.java,v 1.8 2004/05/07 12:53:09 mungady Exp $
+ * $Id: PlainTextPage.java,v 1.9 2005/01/25 00:11:20 taqua Exp $
  *
  * Changes
  * -------
@@ -45,24 +45,32 @@ import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.Log;
 
 /**
- * The plain text page is used to buffer a complete page and to write the
- * buffered data when the page is closed.
+ * The plain text page is used to buffer a complete page and to write the buffered data
+ * when the page is closed.
  *
  * @author Thomas Morgner
  */
 public class PlainTextPage
 {
 
-  /** the page buffer is used to store all TextDataChunks. */
+  /**
+   * the page buffer is used to store all TextDataChunks.
+   */
   private PlaintextDataChunk[][] pageBuffer;
 
-  /** The commandset that is used to finally print the content. */
+  /**
+   * The commandset that is used to finally print the content.
+   */
   private PrinterDriver driver;
 
-  /** The width of the page in characters. */
+  /**
+   * The width of the page in characters.
+   */
   private int width;
 
-  /** the height of the page in lines. */
+  /**
+   * the height of the page in lines.
+   */
   private int height;
 
   private Paper paper;
@@ -75,9 +83,9 @@ public class PlainTextPage
    *
    * @param driver the commandset for printing and formating the text.
    */
-  public PlainTextPage(final PageFormat pageFormat, 
-                       final PrinterDriver driver,
-                       final String defaultEncoding)
+  public PlainTextPage (final PageFormat pageFormat,
+                        final PrinterDriver driver,
+                        final String defaultEncoding)
   {
     if (driver == null)
     {
@@ -92,15 +100,15 @@ public class PlainTextPage
       throw new NullPointerException("DefaultEncoding must be defined.");
     }
 
-    final float characterWidthInPoint  = (72f / driver.getCharactersPerInch());
+    final float characterWidthInPoint = (72f / driver.getCharactersPerInch());
     final float characterHeightInPoint = (72f / driver.getLinesPerInch());
 
     final int currentPageHeight = PlainTextOutputTarget.correctedDivisionFloor
-        ((float) (pageFormat.getImageableHeight()), characterHeightInPoint);
+            ((float) (pageFormat.getImageableHeight()), characterHeightInPoint);
     final int currentPageWidth = PlainTextOutputTarget.correctedDivisionFloor
-        ((float) (pageFormat.getImageableWidth()), characterWidthInPoint);
+            ((float) (pageFormat.getImageableWidth()), characterWidthInPoint);
 
-    Log.debug ("Created page with " + currentPageWidth + ", " + currentPageHeight);
+    Log.debug("Created page with " + currentPageWidth + ", " + currentPageHeight);
     pageBuffer = new PlaintextDataChunk[currentPageWidth][currentPageHeight];
     width = currentPageWidth;
     height = currentPageHeight;
@@ -111,35 +119,37 @@ public class PlainTextPage
 
   /**
    * Returns the page width in characters.
+   *
    * @return the page width.
    */
-  public int getWidth()
+  public int getWidth ()
   {
     return width;
   }
 
   /**
    * Returns the page height in lines.
+   *
    * @return the page height.
    */
-  public int getHeight()
+  public int getHeight ()
   {
     return height;
   }
 
   /**
-   * Adds a new text chunk to this PlainTextPage. A chunk consists of
-   * a single line of text.
+   * Adds a new text chunk to this PlainTextPage. A chunk consists of a single line of
+   * text.
    *
-   * @param x the column of the first character of the text
-   * @param y the row where to print the text
-   * @param w the number of characters to print.
-   * @param text the text that should be printed.
+   * @param x      the column of the first character of the text
+   * @param y      the row where to print the text
+   * @param w      the number of characters to print.
+   * @param text   the text that should be printed.
    * @param format the fontdefinition used to format the text.
    */
-  public void addTextChunk(final int x, final int y,
-                           final int w, final String text, 
-                           final FontDefinition format)
+  public void addTextChunk (final int x, final int y,
+                            final int w, final String text,
+                            final FontDefinition format)
   {
     if (text.length() == 0)
     {
@@ -177,14 +187,14 @@ public class PlainTextPage
   }
 
   /**
-   * returns the chunk stored at the given position or null, if no chunk was
-   * stored there.
+   * returns the chunk stored at the given position or null, if no chunk was stored
+   * there.
    *
    * @param x the column
    * @param y the line
    * @return the text chunk or null.
    */
-  private PlaintextDataChunk getChunk(final int x, final int y)
+  private PlaintextDataChunk getChunk (final int x, final int y)
   {
     return pageBuffer[x][y];
   }
@@ -194,8 +204,8 @@ public class PlainTextPage
    *
    * @throws java.io.IOException if an I/O error occured while writing the page.
    */
-  public void writePage()
-      throws IOException
+  public void writePage ()
+          throws IOException
   {
     driver.startPage(paper, defaultEncoding);
     for (int y = 0; y < height; y++)

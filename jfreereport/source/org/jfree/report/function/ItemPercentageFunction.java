@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemPercentageFunction.java,v 1.5 2005/01/25 00:00:15 taqua Exp $
+ * $Id: ItemPercentageFunction.java,v 1.6 2005/02/04 19:22:54 taqua Exp $
  *
  * Changes
  * -------
@@ -49,20 +49,26 @@ import org.jfree.report.event.ReportEvent;
 import org.jfree.report.util.Log;
 
 /**
- * Calculates the percentage value of a numeric field. The total sum is taken and divided by
- * the number of items counted.
+ * Calculates the percentage value of a numeric field. The total sum is taken and divided
+ * by the number of items counted.
  *
  * @author Thomas Morgner
  */
 public class ItemPercentageFunction extends AbstractFunction implements Serializable
 {
-  /** A total group sum function. */
+  /**
+   * A total group sum function.
+   */
   private TotalGroupSumFunction totalSumFunction;
 
-  /** The current value. */
+  /**
+   * The current value.
+   */
   private transient BigDecimal currentValue;
 
-  /** A useful constant representing zero. */
+  /**
+   * A useful constant representing zero.
+   */
   private static final BigDecimal ZERO = new BigDecimal(0.0);
 
   private String group;
@@ -71,7 +77,7 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
   /**
    * Creates a new ItemPercentageFunction.
    */
-  public ItemPercentageFunction()
+  public ItemPercentageFunction ()
   {
     totalSumFunction = new TotalGroupSumFunction();
     totalSumFunction.setName("total");
@@ -80,9 +86,9 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
   /**
    * Receives notification that a group has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupStarted(final ReportEvent event)
+  public void groupStarted (final ReportEvent event)
   {
     totalSumFunction.groupStarted(event);
 
@@ -106,9 +112,9 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
   /**
    * Receives notification that a row of data is being processed.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void itemsAdvanced(final ReportEvent event)
+  public void itemsAdvanced (final ReportEvent event)
   {
     totalSumFunction.itemsAdvanced(event);
 
@@ -133,22 +139,21 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
   /**
    * Receives notification that the report has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportInitialized(final ReportEvent event)
+  public void reportInitialized (final ReportEvent event)
   {
     totalSumFunction.reportInitialized(event);
     currentValue = ZERO;
   }
 
   /**
-   * Return the current function value.
-   * <P>
-   * Don not count on the correctness of this function until the preparerun has finished.
+   * Return the current function value. <P> Don not count on the correctness of this
+   * function until the preparerun has finished.
    *
    * @return The value of the function.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     final BigDecimal total = (BigDecimal) totalSumFunction.getValue();
 
@@ -157,7 +162,7 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
       return null;
     }
     final BigDecimal retval =
-        currentValue.multiply(new BigDecimal(100)).divide(total, 4, BigDecimal.ROUND_HALF_UP);
+            currentValue.multiply(new BigDecimal(100)).divide(total, 4, BigDecimal.ROUND_HALF_UP);
     return retval;
   }
 
@@ -166,61 +171,57 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
    *
    * @return The group name.
    */
-  public String getGroup()
+  public String getGroup ()
   {
     return group;
   }
 
   /**
-   * Sets the group name.
-   * <P>
-   * If a group is defined, the minimum value is reset to zero at the start of every instance of
-   * this group.
+   * Sets the group name. <P> If a group is defined, the minimum value is reset to zero at
+   * the start of every instance of this group.
    *
-   * @param name  the group name (null permitted).
+   * @param name the group name (null permitted).
    */
-  public void setGroup(final String name)
+  public void setGroup (final String name)
   {
     this.group = name;
     this.totalSumFunction.setGroup(group);
   }
 
   /**
-   * Returns the field used by the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Returns the field used by the function. <P> The field name corresponds to a column
+   * name in the report's TableModel.
    *
    * @return The field name.
    */
-  public String getField()
+  public String getField ()
   {
     return field;
   }
 
   /**
-   * Sets the field name for the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Sets the field name for the function. <P> The field name corresponds to a column name
+   * in the report's TableModel.
    *
-   * @param field  the field name (null not permitted).
+   * @param field the field name (null not permitted).
    */
-  public void setField(final String field)
+  public void setField (final String field)
   {
     this.field = field;
     this.totalSumFunction.setField(field);
   }
 
   /**
-   * Returns a clone of the function.
-   * <P>
-   * Be aware, this does not create a deep copy. If you have complex
-   * strucures contained in objects, you have to overwrite this function.
+   * Returns a clone of the function. <P> Be aware, this does not create a deep copy. If
+   * you have complex strucures contained in objects, you have to overwrite this
+   * function.
    *
    * @return A clone of the function.
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final ItemPercentageFunction clone = (ItemPercentageFunction) super.clone();
     clone.totalSumFunction = (TotalGroupSumFunction) totalSumFunction.clone();
@@ -228,12 +229,12 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
   }
 
   /**
-   * Return a completly separated copy of this function. The copy does no
-   * longer share any changeable objects with the original function.
+   * Return a completly separated copy of this function. The copy does no longer share any
+   * changeable objects with the original function.
    *
    * @return a copy of this function.
    */
-  public Expression getInstance()
+  public Expression getInstance ()
   {
     final ItemPercentageFunction function = (ItemPercentageFunction) super.getInstance();
     function.totalSumFunction = (TotalGroupSumFunction) totalSumFunction.getInstance();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewBaseModule.java,v 1.10.4.1 2004/05/11 13:25:30 taqua Exp $
+ * $Id: PreviewBaseModule.java,v 1.13 2005/01/25 00:01:16 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,37 +50,42 @@ import org.jfree.base.modules.SubSystem;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
- * The preview base module provides the basic preview components. This package
- * contains Applet, JDialog, JFrame and JInternalFrame implementations of the
- * preview component. External export modules may plug into these components
- * to provide additional functionality.
+ * The preview base module provides the basic preview components. This package contains
+ * Applet, JDialog, JFrame and JInternalFrame implementations of the preview component.
+ * External export modules may plug into these components to provide additional
+ * functionality.
  *
  * @author Thomas Morgner
  */
 public class PreviewBaseModule extends AbstractModule
 {
-  /** A configuration key defining whether to translate the swing components. */
+  /**
+   * A configuration key defining whether to translate the swing components.
+   */
   public static final String SWING_TRANSLATE_KEY =
-      "org.jfree.report.modules.gui.base.SwingDialogTranslation";
+          "org.jfree.report.modules.gui.base.SwingDialogTranslation";
   public static final String RESOURCES_BASE_NAME = "org.jfree.report.modules.gui.base.resources.jfreereport-resources";
 
   /**
    * Default Constructor. Loads the module definition.
    *
-   * @throws org.jfree.base.modules.ModuleInitializeException if loading the module definition failed.
+   * @throws org.jfree.base.modules.ModuleInitializeException
+   *          if loading the module definition failed.
    */
-  public PreviewBaseModule() throws ModuleInitializeException
+  public PreviewBaseModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
   /**
-   * Initalizes the module. If the swing components should be translated, the
-   * resources are plugged into the Swing-ResourceManager.
+   * Initalizes the module. If the swing components should be translated, the resources
+   * are plugged into the Swing-ResourceManager.
    *
    * @throws ModuleInitializeException if an error occured.
    */
-  public void initialize(final SubSystem subSystem) throws ModuleInitializeException
+  public void initialize (final SubSystem subSystem)
+          throws ModuleInitializeException
   {
     if (isTranslateSwingDialogs())
     {
@@ -107,14 +112,14 @@ public class PreviewBaseModule extends AbstractModule
   }
 
   /**
-   * Checks, whethe to translate swing dialogs. This is a global setting and must
-   * be configured outside.
+   * Checks, whethe to translate swing dialogs. This is a global setting and must be
+   * configured outside.
    *
    * @return true, if translating is enabled, false otherwise.
    */
-  private boolean isTranslateSwingDialogs()
+  private boolean isTranslateSwingDialogs ()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        (SWING_TRANSLATE_KEY, "false").equals("true");
+            (SWING_TRANSLATE_KEY, "false").equals("true");
   }
 }

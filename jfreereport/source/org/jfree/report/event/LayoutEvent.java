@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: LayoutEvent.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: LayoutEvent.java,v 1.3 2004/05/07 08:03:37 mungady Exp $
  *
  * Changes
  * -------
@@ -40,27 +40,31 @@ import org.jfree.report.Band;
 import org.jfree.report.states.ReportState;
 
 /**
- * The LayoutEvent describes the current report state and the current band, which
- * had been laid out for printing.
+ * The LayoutEvent describes the current report state and the current band, which had been
+ * laid out for printing.
  *
  * @author Thomas Morgner
  */
 public class LayoutEvent extends ReportEvent
 {
-  /** The type constant to mark a LayoutEvent. */
+  /**
+   * The type constant to mark a LayoutEvent.
+   */
   public static final int LAYOUT_EVENT = 0x20000;
 
-  /** the current band. */
+  /**
+   * the current band.
+   */
   private Band layoutedBand;
 
   /**
    * Creates a new LayoutEvent.
    *
    * @param state the current report state.
-   * @param band the layouted band.
-   * @param type the event type.
+   * @param band  the layouted band.
+   * @param type  the event type.
    */
-  public LayoutEvent(final ReportState state, final Band band, final int type)
+  public LayoutEvent (final ReportState state, final Band band, final int type)
   {
     super(state, type);
 
@@ -76,7 +80,7 @@ public class LayoutEvent extends ReportEvent
    *
    * @return the layouted band.
    */
-  public Band getLayoutedBand()
+  public Band getLayoutedBand ()
   {
     return layoutedBand;
   }

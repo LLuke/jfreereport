@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StyleKeyReferenceTableModel.java,v 1.4 2003/08/25 14:29:31 taqua Exp $
+ * $Id: StyleKeyReferenceTableModel.java,v 1.5 2004/05/07 14:29:24 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -59,19 +59,23 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
    */
   private class StylekeyDescriptionRow
   {
-    /** The factory. */
+    /**
+     * The factory.
+     */
     private final StyleKeyFactory keyFactory;
 
-    /** The key. */
+    /**
+     * The key.
+     */
     private final StyleKey key;
 
     /**
      * Creates a new row.
      *
-     * @param keyFactory  the factory.
-     * @param key  the key.
+     * @param keyFactory the factory.
+     * @param key        the key.
      */
-    public StylekeyDescriptionRow(final StyleKeyFactory keyFactory, final StyleKey key)
+    public StylekeyDescriptionRow (final StyleKeyFactory keyFactory, final StyleKey key)
     {
       this.keyFactory = keyFactory;
       this.key = key;
@@ -82,7 +86,7 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
      *
      * @return The factory.
      */
-    public StyleKeyFactory getKeyFactory()
+    public StyleKeyFactory getKeyFactory ()
     {
       return keyFactory;
     }
@@ -92,29 +96,33 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
      *
      * @return The key.
      */
-    public StyleKey getKey()
+    public StyleKey getKey ()
     {
       return key;
     }
   }
 
-  /** The column names. */
+  /**
+   * The column names.
+   */
   private static final String[] COLUMN_NAMES =
-      {
-        "stylekey-factory",
-        "key-name",
-        "key-class"
-      };
+          {
+            "stylekey-factory",
+            "key-name",
+            "key-class"
+          };
 
-  /** Storage for the rows. */
+  /**
+   * Storage for the rows.
+   */
   private final ArrayList rows;
 
   /**
    * Creates a new table model.
    *
-   * @param cf  the factory collection.
+   * @param cf the factory collection.
    */
-  public StyleKeyReferenceTableModel(final StyleKeyFactoryCollector cf)
+  public StyleKeyReferenceTableModel (final StyleKeyFactoryCollector cf)
   {
     rows = new ArrayList();
     addStyleKeyFactoryCollector(cf);
@@ -123,9 +131,9 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
   /**
    * Adds a factory.
    *
-   * @param cf  the factory.
+   * @param cf the factory.
    */
-  private void addStyleKeyFactoryCollector(final StyleKeyFactoryCollector cf)
+  private void addStyleKeyFactoryCollector (final StyleKeyFactoryCollector cf)
   {
     final Iterator it = cf.getFactories();
     while (it.hasNext())
@@ -145,9 +153,9 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
   /**
    * Adds a factory.
    *
-   * @param cf  the factory.
+   * @param cf the factory.
    */
-  private void addStyleKeyFactory(final StyleKeyFactory cf)
+  private void addStyleKeyFactory (final StyleKeyFactory cf)
   {
     Iterator it = cf.getRegisteredKeys();
     final ArrayList factories = new ArrayList();
@@ -170,28 +178,28 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
   }
 
   /**
-   * Returns the number of rows in the model. A
-   * <code>JTable</code> uses this method to determine how many rows it
-   * should display.  This method should be quick, as it
-   * is called frequently during rendering.
+   * Returns the number of rows in the model. A <code>JTable</code> uses this method to
+   * determine how many rows it should display.  This method should be quick, as it is
+   * called frequently during rendering.
    *
    * @return the number of rows in the model
+   *
    * @see #getColumnCount
    */
-  public int getRowCount()
+  public int getRowCount ()
   {
     return rows.size();
   }
 
   /**
-   * Returns the number of columns in the model. A
-   * <code>JTable</code> uses this method to determine how many columns it
-   * should create and display by default.
+   * Returns the number of columns in the model. A <code>JTable</code> uses this method to
+   * determine how many columns it should create and display by default.
    *
    * @return the number of columns in the model
+   *
    * @see #getRowCount
    */
-  public int getColumnCount()
+  public int getColumnCount ()
   {
     return COLUMN_NAMES.length;
   }
@@ -199,21 +207,21 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
   /**
    * Returns the column name.
    *
-   * @param column  the column being queried
+   * @param column the column being queried
    * @return a string containing the default name of <code>column</code>
    */
-  public String getColumnName(final int column)
+  public String getColumnName (final int column)
   {
     return COLUMN_NAMES[column];
   }
 
   /**
-   *  Returns <code>String.class</code> regardless of <code>columnIndex</code>.
+   * Returns <code>String.class</code> regardless of <code>columnIndex</code>.
    *
-   *  @param columnIndex  the column being queried
-   *  @return the Object.class
+   * @param columnIndex the column being queried
+   * @return the Object.class
    */
-  public Class getColumnClass(final int columnIndex)
+  public Class getColumnClass (final int columnIndex)
   {
     return String.class;
   }
@@ -222,12 +230,11 @@ public class StyleKeyReferenceTableModel extends AbstractTableModel
    * Returns the value for the cell at <code>columnIndex</code> and
    * <code>rowIndex</code>.
    *
-   * @param rowIndex  the row whose value is to be queried
-   * @param columnIndex  the column whose value is to be queried
-   *
+   * @param rowIndex    the row whose value is to be queried
+   * @param columnIndex the column whose value is to be queried
    * @return the value Object at the specified cell
    */
-  public Object getValueAt(final int rowIndex, final int columnIndex)
+  public Object getValueAt (final int rowIndex, final int columnIndex)
   {
     final StylekeyDescriptionRow or = (StylekeyDescriptionRow) rows.get(rowIndex);
     switch (columnIndex)

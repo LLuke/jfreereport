@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableFieldTemplateDescription.java,v 1.3 2004/05/07 14:29:23 mungady Exp $
+ * $Id: AnchorFieldTemplateDescription.java,v 1.1 2005/02/22 20:25:35 taqua Exp $
  *
  * Changes (from 09-Apr-2003)
  * -------------------------
@@ -37,7 +37,6 @@
  */
 package org.jfree.report.modules.parser.ext.factory.templates;
 
-import org.jfree.report.filter.templates.DrawableFieldTemplate;
 import org.jfree.report.filter.templates.AnchorFieldTemplate;
 
 /**
@@ -50,9 +49,9 @@ public class AnchorFieldTemplateDescription extends AbstractTemplateDescription
   /**
    * Creates a new template description.
    *
-   * @param name  the name.
+   * @param name the name.
    */
-  public AnchorFieldTemplateDescription(final String name)
+  public AnchorFieldTemplateDescription (final String name)
   {
     super(name, AnchorFieldTemplate.class, true);
   }

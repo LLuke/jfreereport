@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CardTableModel.java,v 1.3 2003/08/25 14:29:28 taqua Exp $
+ * $Id: CardTableModel.java,v 1.4 2004/05/07 12:43:25 mungady Exp $
  *
  * Changes
  * -------
@@ -47,40 +47,58 @@ import javax.swing.table.AbstractTableModel;
  */
 public class CardTableModel extends AbstractTableModel
 {
-  /** Storage for the cards. */
+  /**
+   * Storage for the cards.
+   */
   private final ArrayList cards;
 
-  /** The type index. */
+  /**
+   * The type index.
+   */
   private static final int POS_TYPE = 0;
 
-  /** The name index. */
+  /**
+   * The name index.
+   */
   private static final int POS_NAME = 1;
 
-  /** The first name index. */
+  /**
+   * The first name index.
+   */
   private static final int POS_FIRSTNAME = 2;
 
-  /** The card number index. */
+  /**
+   * The card number index.
+   */
   private static final int POS_CARDNR = 3;
 
-  /** The login index. */
+  /**
+   * The login index.
+   */
   private static final int POS_LOGIN = 4;
 
-  /** The password index. */
+  /**
+   * The password index.
+   */
   private static final int POS_PASSWORD = 5;
 
-  /** The expiry date index. */
+  /**
+   * The expiry date index.
+   */
   private static final int POS_EXPIRES = 6;
 
-  /** The column names. */
+  /**
+   * The column names.
+   */
   private static final String[] COL_NAMES =
-      {
-        "type", "name", "firstName", "cardNr", "login", "password", "expires"
-      };
+          {
+            "type", "name", "firstName", "cardNr", "login", "password", "expires"
+          };
 
   /**
    * Default constructor.
    */
-  public CardTableModel()
+  public CardTableModel ()
   {
     cards = new ArrayList();
   }
@@ -88,9 +106,9 @@ public class CardTableModel extends AbstractTableModel
   /**
    * Adds a card.
    *
-   * @param c  the card.
+   * @param c the card.
    */
-  public void addCard(final Card c)
+  public void addCard (final Card c)
   {
     if (c == null)
     {
@@ -100,39 +118,39 @@ public class CardTableModel extends AbstractTableModel
   }
 
   /**
-   * Returns the number of rows in the model. A
-   * <code>JTable</code> uses this method to determine how many rows it
-   * should display.  This method should be quick, as it
-   * is called frequently during rendering.
+   * Returns the number of rows in the model. A <code>JTable</code> uses this method to
+   * determine how many rows it should display.  This method should be quick, as it is
+   * called frequently during rendering.
    *
    * @return the number of rows in the model
+   *
    * @see #getColumnCount
    */
-  public int getRowCount()
+  public int getRowCount ()
   {
     return cards.size();
   }
 
   /**
-   * Returns the number of columns in the model. A
-   * <code>JTable</code> uses this method to determine how many columns it
-   * should create and display by default.
+   * Returns the number of columns in the model. A <code>JTable</code> uses this method to
+   * determine how many columns it should create and display by default.
    *
    * @return the number of columns in the model
+   *
    * @see #getRowCount
    */
-  public int getColumnCount()
+  public int getColumnCount ()
   {
     return COL_NAMES.length;
   }
 
   /**
-   *  Returns <code>Object.class</code> regardless of <code>columnIndex</code>.
+   * Returns <code>Object.class</code> regardless of <code>columnIndex</code>.
    *
-   *  @param columnIndex  the column being queried
-   *  @return the Object.class
+   * @param columnIndex the column being queried
+   * @return the Object.class
    */
-  public Class getColumnClass(final int columnIndex)
+  public Class getColumnClass (final int columnIndex)
   {
     if (columnIndex == POS_TYPE)
     {
@@ -146,14 +164,13 @@ public class CardTableModel extends AbstractTableModel
   }
 
   /**
-   *  Returns a default name for the column using spreadsheet conventions:
-   *  A, B, C, ... Z, AA, AB, etc.  If <code>column</code> cannot be found,
-   *  returns an empty string.
+   * Returns a default name for the column using spreadsheet conventions: A, B, C, ... Z,
+   * AA, AB, etc.  If <code>column</code> cannot be found, returns an empty string.
    *
-   * @param column  the column being queried
+   * @param column the column being queried
    * @return a string containing the default name of <code>column</code>
    */
-  public String getColumnName(final int column)
+  public String getColumnName (final int column)
   {
     return COL_NAMES[column];
   }
@@ -162,12 +179,11 @@ public class CardTableModel extends AbstractTableModel
    * Returns the value for the cell at <code>columnIndex</code> and
    * <code>rowIndex</code>.
    *
-   * @param rowIndex  the row whose value is to be queried
-   * @param columnIndex  the column whose value is to be queried
-   *
+   * @param rowIndex    the row whose value is to be queried
+   * @param columnIndex the column whose value is to be queried
    * @return the value Object at the specified cell
    */
-  public Object getValueAt(final int rowIndex, final int columnIndex)
+  public Object getValueAt (final int rowIndex, final int columnIndex)
   {
     final Card c = (Card) cards.get(rowIndex);
     if (columnIndex == POS_TYPE)

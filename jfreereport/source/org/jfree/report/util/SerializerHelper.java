@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SerializerHelper.java,v 1.5 2005/01/25 00:23:11 taqua Exp $
+ * $Id: SerializerHelper.java,v 1.6 2005/02/23 19:32:21 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -59,24 +59,26 @@ import org.jfree.report.util.serializers.Rectangle2DSerializer;
 import org.jfree.util.ClassComparator;
 
 /**
- * The SerializeHelper is used to make implementing custom serialization
- * handlers easier. Handlers for certain object types need to be added to
- * this helper before this implementation is usable.
+ * The SerializeHelper is used to make implementing custom serialization handlers easier.
+ * Handlers for certain object types need to be added to this helper before this
+ * implementation is usable.
  *
  * @author Thomas Morgner
  */
 public class SerializerHelper
 {
-  /** The singleton instance of the serialize helper. */
+  /**
+   * The singleton instance of the serialize helper.
+   */
   private static SerializerHelper singleton;
 
   /**
-   * Returns or creates a new SerializerHelper. When a new instance is
-   * created by this method, all known SerializeMethods are registered.
+   * Returns or creates a new SerializerHelper. When a new instance is created by this
+   * method, all known SerializeMethods are registered.
    *
    * @return the SerializerHelper singleton instance.
    */
-  public synchronized static SerializerHelper getInstance()
+  public synchronized static SerializerHelper getInstance ()
   {
     if (singleton == null)
     {
@@ -100,21 +102,25 @@ public class SerializerHelper
    *
    * @param helper the new instance of the serialize helper.
    */
-  protected static void setInstance(final SerializerHelper helper)
+  protected static void setInstance (final SerializerHelper helper)
   {
     singleton = helper;
   }
 
-  /** A collection of the serializer methods. */
+  /**
+   * A collection of the serializer methods.
+   */
   private final HashMap methods;
 
-  /** A class comparator for searching the super class of an certain class. */
+  /**
+   * A class comparator for searching the super class of an certain class.
+   */
   private final ClassComparator comparator;
 
   /**
    * Creates a new SerializerHelper.
    */
-  protected SerializerHelper()
+  protected SerializerHelper ()
   {
     this.comparator = new ClassComparator();
     this.methods = new HashMap();
@@ -125,7 +131,7 @@ public class SerializerHelper
    *
    * @param method the method that should be registered.
    */
-  public void registerMethod(final SerializeMethod method)
+  public void registerMethod (final SerializeMethod method)
   {
     this.methods.put(method.getObjectClass(), method);
   }
@@ -135,7 +141,7 @@ public class SerializerHelper
    *
    * @param method the method that should be deregistered.
    */
-  public void unregisterMethod(final SerializeMethod method)
+  public void unregisterMethod (final SerializeMethod method)
   {
     this.methods.remove(method.getObjectClass());
   }
@@ -145,7 +151,7 @@ public class SerializerHelper
    *
    * @return a collection of the registered serialize methods.
    */
-  protected HashMap getMethods()
+  protected HashMap getMethods ()
   {
     return methods;
   }
@@ -155,7 +161,7 @@ public class SerializerHelper
    *
    * @return the class comparator.
    */
-  protected ClassComparator getComparator()
+  protected ClassComparator getComparator ()
   {
     return comparator;
   }
@@ -167,7 +173,7 @@ public class SerializerHelper
    * @param c the class for which we want to lookup a serialize method.
    * @return the method or null, if there is no registered method for the class.
    */
-  protected SerializeMethod getSerializer(final Class c)
+  protected SerializeMethod getSerializer (final Class c)
   {
     final SerializeMethod sm = (SerializeMethod) methods.get(c);
     if (sm != null)
@@ -181,12 +187,12 @@ public class SerializerHelper
    * Looks up the SerializeMethod for the given class or null if there is no
    * SerializeMethod for the given class. This method searches all superclasses.
    *
-   * @param d the class for which we want to lookup a serialize method.
+   * @param d               the class for which we want to lookup a serialize method.
    * @param knownSuperClass the known super class, if any or null.
    * @return the method or null, if there is no registered method for the class.
    */
   protected SerializeMethod getSuperClassObjectDescription
-      (final Class d, SerializeMethod knownSuperClass)
+          (final Class d, SerializeMethod knownSuperClass)
   {
     final Iterator keys = methods.keySet().iterator();
     while (keys.hasNext())
@@ -202,10 +208,10 @@ public class SerializerHelper
         else
         {
           if (comparator.isComparable
-              (knownSuperClass.getObjectClass(), od.getObjectClass()))
+                  (knownSuperClass.getObjectClass(), od.getObjectClass()))
           {
             if (comparator.compare
-                (knownSuperClass.getObjectClass(), od.getObjectClass()) < 0)
+                    (knownSuperClass.getObjectClass(), od.getObjectClass()) < 0)
             {
               knownSuperClass = od;
             }
@@ -218,14 +224,15 @@ public class SerializerHelper
 
 
   /**
-   * Writes a serializable object description to the given object output stream.
-   * This method selects the best serialize helper method for the given object.
+   * Writes a serializable object description to the given object output stream. This
+   * method selects the best serialize helper method for the given object.
    *
-   * @param o the to be serialized object.
+   * @param o   the to be serialized object.
    * @param out the outputstream that should receive the object.
    * @throws IOException if an I/O error occured.
    */
-  public void writeObject(final Object o, final ObjectOutputStream out) throws IOException
+  public void writeObject (final Object o, final ObjectOutputStream out)
+          throws IOException
   {
     if (o == null)
     {
@@ -252,16 +259,18 @@ public class SerializerHelper
   /**
    * Reads the object from the object input stream. This object selects the best
    * serializer to read the object.
-   * <p>
+   * <p/>
    * Make sure, that you use the same configuration (library and class versions,
    * registered methods in the SerializerHelper) for reading as you used for writing.
    *
    * @param in the object input stream from where to read the serialized data.
    * @return the generated object.
-   * @throws IOException if reading the stream failed.
+   *
+   * @throws IOException            if reading the stream failed.
    * @throws ClassNotFoundException if serialized object class cannot be found.
    */
-  public Object readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException
+  public Object readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
     final int type = in.readByte();
     if (type == 0)

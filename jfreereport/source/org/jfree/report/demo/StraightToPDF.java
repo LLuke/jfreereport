@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.10 2005/01/24 23:58:42 taqua Exp $
+ * $Id: StraightToPDF.java,v 1.11 2005/01/25 21:40:09 taqua Exp $
  *
  * Changes
  * -------
@@ -57,8 +57,8 @@ import org.jfree.report.util.WaitingImageObserver;
 import org.jfree.xml.ParseException;
 
 /**
- * A demonstration that shows how to generate a report and save it to PDF without displaying
- * the print preview or the PDF save-as dialog.
+ * A demonstration that shows how to generate a report and save it to PDF without
+ * displaying the print preview or the PDF save-as dialog.
  *
  * @author David Gilbert
  */
@@ -68,34 +68,36 @@ public class StraightToPDF
   /**
    * Creates a new demo application.
    *
-   * @param filename  the output filename.
+   * @param filename the output filename.
    * @throws ParseException if the report could not be parsed.
    */
-  public StraightToPDF(final String filename) throws ParseException
+  public StraightToPDF (final String filename)
+          throws ParseException
   {
     final URL in = getClass().getResource("/org/jfree/report/demo/OpenSourceDemo.xml");
     final JFreeReport report = parseReport(in);
     final TableModel data = new OpenSourceProjects();
     report.setData(data);
     final long startTime = System.currentTimeMillis();
-    Log.debug ("Start: " + startTime);
+    Log.debug("Start: " + startTime);
     for (int i = 0; i < 10; i++)
     {
-      Log.debug ("Start: -----------------------------------------------");
+      Log.debug("Start: -----------------------------------------------");
       savePDF(report, filename);
     }
-    Log.debug ("Start: " + (System.currentTimeMillis() - startTime));
+    Log.debug("Start: " + (System.currentTimeMillis() - startTime));
   }
 
   /**
    * Reads the report from the specified template file.
    *
-   * @param templateURL  the template location.
-   *
+   * @param templateURL the template location.
    * @return a report.
+   *
    * @throws ParseException if the report could not be parsed.
    */
-  private JFreeReport parseReport(final URL templateURL) throws ParseException
+  private JFreeReport parseReport (final URL templateURL)
+          throws ParseException
   {
     final ReportGenerator generator = ReportGenerator.getInstance();
     try
@@ -119,12 +121,11 @@ public class StraightToPDF
   /**
    * Saves a report to PDF format.
    *
-   * @param report  the report.
+   * @param report   the report.
    * @param fileName target file name.
-   *
    * @return true or false.
    */
-  public boolean savePDF(final JFreeReport report, final String fileName)
+  public boolean savePDF (final JFreeReport report, final String fileName)
   {
     OutputStream out = null;
     try
@@ -168,9 +169,9 @@ public class StraightToPDF
   /**
    * Demo starting point.
    *
-   * @param args  ignored.
+   * @param args ignored.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     ReportConfiguration.getGlobalConfig().setDisableLogging(true);
 

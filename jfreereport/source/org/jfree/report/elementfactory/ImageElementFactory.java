@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageElementFactory.java,v 1.7 2003/11/07 18:33:48 taqua Exp $
+ * $Id: ImageElementFactory.java,v 1.8 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -41,75 +41,79 @@ package org.jfree.report.elementfactory;
 import org.jfree.report.style.ElementStyleSheet;
 
 /**
- * An ElementFactory that can be used to create ImageElements. This is the base
- * class for all image element factories.
+ * An ElementFactory that can be used to create ImageElements. This is the base class for
+ * all image element factories.
  *
  * @author Thomas Morgner
  */
 public abstract class ImageElementFactory extends ElementFactory
 {
-  /** The image element scaling property. */
+  /**
+   * The image element scaling property.
+   */
   private Boolean scale;
-  /** The Keep-Aspect-Ratio property for the generated image element. */
+  /**
+   * The Keep-Aspect-Ratio property for the generated image element.
+   */
   private Boolean keepAspectRatio;
 
   /**
    * DefaultConstructor.
    */
-  public ImageElementFactory()
+  public ImageElementFactory ()
   {
   }
 
   /**
-   * Returns, whether the image content should be scaled to fit the complete image
-   * element bounds.
+   * Returns, whether the image content should be scaled to fit the complete image element
+   * bounds.
    *
    * @return the scale flag of the image element.
    */
-  public Boolean getScale()
+  public Boolean getScale ()
   {
     return scale;
   }
 
   /**
-   * Defines, whether the image content should be scaled to fit the complete image
-   * element bounds.
+   * Defines, whether the image content should be scaled to fit the complete image element
+   * bounds.
    *
    * @param scale the scale flag of the image element.
    */
-  public void setScale(final Boolean scale)
+  public void setScale (final Boolean scale)
   {
     this.scale = scale;
   }
 
   /**
-   * Returns whether the generated image element should preserve the original aspect
-   * ratio of the image content during scaling. This property has no effect if the image
-   * content is not scaled.
+   * Returns whether the generated image element should preserve the original aspect ratio
+   * of the image content during scaling. This property has no effect if the image content
+   * is not scaled.
    *
    * @return the keep aspect ratio flag.
    */
-  public Boolean getKeepAspectRatio()
+  public Boolean getKeepAspectRatio ()
   {
     return keepAspectRatio;
   }
 
   /**
-   * Defines whether the generated image element should preserve the original aspect
-   * ratio of the image content during scaling. This property has no effect if the image
-   * content is not scaled.
+   * Defines whether the generated image element should preserve the original aspect ratio
+   * of the image content during scaling. This property has no effect if the image content
+   * is not scaled.
    *
    * @param keepAspectRatio whether to keep the aspect ratio of the image content during
-   * the scaling.
+   *                        the scaling.
    */
-  public void setKeepAspectRatio(final Boolean keepAspectRatio)
+  public void setKeepAspectRatio (final Boolean keepAspectRatio)
   {
     this.keepAspectRatio = keepAspectRatio;
   }
 
   /**
    * Applies the style definition to the elements stylesheet.
-   *  
+   *
    * @param style the element stylesheet which should receive the style definition.
    */
   protected void applyStyle (final ElementStyleSheet style)

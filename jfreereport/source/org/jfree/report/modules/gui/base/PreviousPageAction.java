@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviousPageAction.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
+ * $Id: PreviousPageAction.java,v 1.5 2005/01/25 00:01:20 taqua Exp $
  *
  * Changes
  * -------
@@ -44,9 +44,9 @@ import org.jfree.ui.action.ActionDowngrade;
 import org.jfree.util.ResourceBundleSupport;
 
 /**
- * Creates a new PreviousPageAction used by the PreviewPane to directly jump to the previous
- * page of the report. This abstract class is used for initializing the default locales,
- * the actual work is done in an internal subclass in PreviewFrame.
+ * Creates a new PreviousPageAction used by the PreviewPane to directly jump to the
+ * previous page of the report. This abstract class is used for initializing the default
+ * locales, the actual work is done in an internal subclass in PreviewFrame.
  *
  * @author David Gilbert
  */
@@ -55,16 +55,16 @@ public abstract class PreviousPageAction extends AbstractActionDowngrade
   /**
    * Constructs a new action.
    *
-   * @param resources  localised resources.
+   * @param resources localised resources.
    */
-  protected PreviousPageAction(final ResourceBundleSupport resources)
+  protected PreviousPageAction (final ResourceBundleSupport resources)
   {
     putValue(NAME, resources.getString("action.back.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.back.description"));
     putValue(ActionDowngrade.MNEMONIC_KEY,
-        resources.getMnemonic("action.back.mnemonic"));
+            resources.getMnemonic("action.back.mnemonic"));
     putValue(ActionDowngrade.ACCELERATOR_KEY,
-        resources.getKeyStroke("action.back.accelerator"));
+            resources.getKeyStroke("action.back.accelerator"));
     putValue(SMALL_ICON, resources.getIcon("action.back.small-icon", false));
     putValue("ICON24", resources.getIcon("action.back.icon", true));
   }

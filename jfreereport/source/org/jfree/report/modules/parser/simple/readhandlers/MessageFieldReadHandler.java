@@ -14,7 +14,7 @@ public class MessageFieldReadHandler extends AbstractTextElementReadHandler
 
   public MessageFieldReadHandler ()
   {
-    elementFactory = new MessageFieldElementFactory ();
+    elementFactory = new MessageFieldElementFactory();
     stringReadHandler = new PropertyStringReadHandler(null);
   }
 

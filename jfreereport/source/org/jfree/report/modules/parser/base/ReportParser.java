@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.19 2005/02/05 18:35:20 taqua Exp $
+ * $Id: ReportParser.java,v 1.20 2005/02/19 13:30:03 taqua Exp $
  *
  * Changes
  * -------
@@ -36,7 +36,6 @@
  */
 package org.jfree.report.modules.parser.base;
 
-import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportBuilderHints;
 import org.jfree.xml.FrontendDefaultHandler;
 import org.jfree.xml.parser.RootXmlReadHandler;
@@ -48,27 +47,28 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 /**
- * The report parser initializes the parsing engine and coordinates the parsing
- * process. Once the parsing is complete, the generated report instance can be
- * queries with getResult();
- * <p>
+ * The report parser initializes the parsing engine and coordinates the parsing process.
+ * Once the parsing is complete, the generated report instance can be queries with
+ * getResult();
+ * <p/>
  * This parser produces JFreeReport objects.
  *
  * @author Thomas Morgner
  */
 public class ReportParser extends RootXmlReadHandler
 {
-  /** The key that stores the report defintion in the helper objects collection. */
+  /**
+   * The key that stores the report defintion in the helper objects collection.
+   */
   public static final String HELPER_OBJ_REPORT_NAME = "::report";
 
   private ObjectFactory objectFactory;
   private ReportBuilderHints builderHints;
 
   /**
-   * Default constuctor. Initalizes the parser to use the JFreeReport parser
-   * files.
+   * Default constuctor. Initalizes the parser to use the JFreeReport parser files.
    */
-  public ReportParser()
+  public ReportParser ()
   {
     objectFactory = new SimpleObjectFactory();
     setRootHandler(new InitialReportHandler());
@@ -90,31 +90,31 @@ public class ReportParser extends RootXmlReadHandler
    *
    * @return The instance.
    */
-  public FrontendDefaultHandler newInstance()
+  public FrontendDefaultHandler newInstance ()
   {
     return new ReportParser();
   }
 
   /**
-   * Returns the parsered object. This method will return the currently parsed
-   * JFreeReport object.
+   * Returns the parsered object. This method will return the currently parsed JFreeReport
+   * object.
    *
    * @return the parsed JFreeReport instance.
    */
-  public Object getResult() throws SAXException
+  public Object getResult ()
+          throws SAXException
   {
     return getHelperObject(HELPER_OBJ_REPORT_NAME);
   }
 
   /**
-   * Returns the report builder hints instance used to collect all
-   * comments and other valueable information that cannot be restored
-   * with just the parsed object model. This information is optional
-   * but may support other automated tools like the ReportWriter.
+   * Returns the report builder hints instance used to collect all comments and other
+   * valueable information that cannot be restored with just the parsed object model. This
+   * information is optional but may support other automated tools like the ReportWriter.
    *
    * @return the report builder hints used to build this report.
    */
-  public ReportBuilderHints getParserHints()
+  public ReportBuilderHints getParserHints ()
   {
     return builderHints;
   }
@@ -129,12 +129,11 @@ public class ReportParser extends RootXmlReadHandler
   }
 
   /**
-   * Checks whether this report is a included report and not the main
-   * report definition.
+   * Checks whether this report is a included report and not the main report definition.
    *
    * @return true, if the report is included, false otherwise.
    */
-  public boolean isIncluded()
+  public boolean isIncluded ()
   {
     return getConfigProperty(IncludeParser.INCLUDE_PARSING_KEY, "false").equals("true");
   }
@@ -142,17 +141,16 @@ public class ReportParser extends RootXmlReadHandler
   /**
    * Handles the end of an element.
    *
-   * @see org.xml.sax.ContentHandler#endElement
-   * (java.lang.String, java.lang.String, java.lang.String)
-   *
-   * @param tagName the tagname of the element.
+   * @param tagName   the tagname of the element.
    * @param namespace the current namespace
-   * @param qName the fully qualified name
+   * @param qName     the fully qualified name
    * @throws SAXException if an error occured.
+   * @see org.xml.sax.ContentHandler#endElement (java.lang.String, java.lang.String,
+   *      java.lang.String)
    */
   public void endElement
-    (final String tagName, final String namespace, final String qName) 
-    throws SAXException
+          (final String tagName, final String namespace, final String qName)
+          throws SAXException
   {
     super.endElement(tagName, namespace, qName);
     getCommentHandler().clearComments();
@@ -160,17 +158,18 @@ public class ReportParser extends RootXmlReadHandler
 
   /**
    * Handles the start of an element.
-   * @see org.xml.sax.ContentHandler#startElement
-   * (java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
    *
-   * @param tagName the tagname of the element.
-   * @param namespace the current namespace
-   * @param qName the fully qualified name
+   * @param tagName    the tagname of the element.
+   * @param namespace  the current namespace
+   * @param qName      the fully qualified name
    * @param attributes the elements attributes.
    * @throws SAXException if an error occured.
+   * @see org.xml.sax.ContentHandler#startElement (java.lang.String, java.lang.String,
+   *      java.lang.String, org.xml.sax.Attributes)
    */
-  public void startElement(final String tagName, final String namespace,
-                           final String qName, final Attributes attributes) throws SAXException
+  public void startElement (final String tagName, final String namespace,
+                            final String qName, final Attributes attributes)
+          throws SAXException
   {
     super.startElement(tagName, namespace, qName, attributes);
     getCommentHandler().clearComments();
@@ -178,23 +177,21 @@ public class ReportParser extends RootXmlReadHandler
 
   /**
    * Report a fatal XML parsing error.
-   *
-   * <p>The default implementation throws a SAXParseException.
-   * Application writers may override this method in a subclass if
-   * they need to take specific actions for each fatal error (such as
-   * collecting all of the errors into a single report): in any case,
-   * the application must stop all regular processing when this
-   * method is invoked, since the document is no longer reliable, and
-   * the parser may no longer report parsing events.</p>
+   * <p/>
+   * <p>The default implementation throws a SAXParseException. Application writers may
+   * override this method in a subclass if they need to take specific actions for each
+   * fatal error (such as collecting all of the errors into a single report): in any case,
+   * the application must stop all regular processing when this method is invoked, since
+   * the document is no longer reliable, and the parser may no longer report parsing
+   * events.</p>
    *
    * @param e The error information encoded as an exception.
-   * @exception SAXException Any SAX exception, possibly
-   *            wrapping another exception.
+   * @throws SAXException Any SAX exception, possibly wrapping another exception.
    * @see org.xml.sax.ErrorHandler#fatalError
    * @see SAXParseException
    */
-  public void fatalError(final SAXParseException e)
-      throws SAXException
+  public void fatalError (final SAXParseException e)
+          throws SAXException
   {
     final Locator locator = getLocator();
     int column = -1;
@@ -205,7 +202,7 @@ public class ReportParser extends RootXmlReadHandler
       line = locator.getLineNumber();
     }
     final OperationResult result = new OperationResult
-        (e.getMessage(), SeverityLevel.FATAL_ERROR, line, column);
+            (e.getMessage(), SeverityLevel.FATAL_ERROR, line, column);
     getParserHints().addHintList(ReportParser.class.getName(), "AllMessages", result);
     getParserHints().addHintList(ReportParser.class.getName(), "Error", result);
     super.fatalError(e);
@@ -213,20 +210,18 @@ public class ReportParser extends RootXmlReadHandler
 
   /**
    * Receive notification of a parser warning.
-   *
-   * <p>The default implementation does nothing.  Application writers
-   * may override this method in a subclass to take specific actions
-   * for each warning, such as inserting the message in a log file or
-   * printing it to the console.</p>
+   * <p/>
+   * <p>The default implementation does nothing.  Application writers may override this
+   * method in a subclass to take specific actions for each warning, such as inserting the
+   * message in a log file or printing it to the console.</p>
    *
    * @param e The warning information encoded as an exception.
-   * @exception SAXException Any SAX exception, possibly
-   *            wrapping another exception.
+   * @throws SAXException Any SAX exception, possibly wrapping another exception.
    * @see org.xml.sax.ErrorHandler#warning
    * @see SAXParseException
    */
-  public void warning(final SAXParseException e)
-      throws SAXException
+  public void warning (final SAXParseException e)
+          throws SAXException
   {
     final Locator locator = getLocator();
     int column = -1;
@@ -237,7 +232,7 @@ public class ReportParser extends RootXmlReadHandler
       line = locator.getLineNumber();
     }
     final OperationResult result = new OperationResult
-        (e.getMessage(), SeverityLevel.WARNING, line, column);
+            (e.getMessage(), SeverityLevel.WARNING, line, column);
     getParserHints().addHintList(ReportParser.class.getName(), "AllMessages", result);
     getParserHints().addHintList(ReportParser.class.getName(), "Warning", result);
     super.warning(e);
@@ -245,20 +240,18 @@ public class ReportParser extends RootXmlReadHandler
 
   /**
    * Receive notification of a recoverable parser error.
-   *
-   * <p>The default implementation does nothing.  Application writers
-   * may override this method in a subclass to take specific actions
-   * for each error, such as inserting the message in a log file or
-   * printing it to the console.</p>
+   * <p/>
+   * <p>The default implementation does nothing.  Application writers may override this
+   * method in a subclass to take specific actions for each error, such as inserting the
+   * message in a log file or printing it to the console.</p>
    *
    * @param e The warning information encoded as an exception.
-   * @exception SAXException Any SAX exception, possibly
-   *            wrapping another exception.
+   * @throws SAXException Any SAX exception, possibly wrapping another exception.
    * @see org.xml.sax.ErrorHandler#warning
    * @see SAXParseException
    */
-  public void error(final SAXParseException e)
-      throws SAXException
+  public void error (final SAXParseException e)
+          throws SAXException
   {
     final Locator locator = getLocator();
     int column = -1;
@@ -269,7 +262,7 @@ public class ReportParser extends RootXmlReadHandler
       line = locator.getLineNumber();
     }
     final OperationResult result = new OperationResult
-        (e.getMessage(), SeverityLevel.ERROR, line, column);
+            (e.getMessage(), SeverityLevel.ERROR, line, column);
     getParserHints().addHintList(ReportParser.class.getName(), "AllMessages", result);
     getParserHints().addHintList(ReportParser.class.getName(), "Error", result);
     super.error(e);
@@ -281,8 +274,8 @@ public class ReportParser extends RootXmlReadHandler
    * @param message the message.
    * @throws SAXException if an error occurs.
    */
-  public void info(final String message)
-      throws SAXException
+  public void info (final String message)
+          throws SAXException
   {
     final Locator locator = getLocator();
     int column = -1;
@@ -293,7 +286,7 @@ public class ReportParser extends RootXmlReadHandler
       line = locator.getLineNumber();
     }
     final OperationResult result = new OperationResult
-        (message, SeverityLevel.ERROR, line, column);
+            (message, SeverityLevel.ERROR, line, column);
     getParserHints().addHintList(ReportParser.class.getName(), "AllMessages", result);
     getParserHints().addHintList(ReportParser.class.getName(), "Info", result);
   }

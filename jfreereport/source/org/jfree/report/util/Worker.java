@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Worker.java,v 1.11.4.2 2004/11/21 18:28:41 taqua Exp $
+ * $Id: Worker.java,v 1.14 2005/01/25 00:23:11 taqua Exp $
  *
  *
  * Changes
@@ -39,33 +39,39 @@
 package org.jfree.report.util;
 
 
-
 /**
- * A simple worker implementation.
- * The worker executes a assigned workload and then sleeps until
- * another workload is set or the worker is killed.
+ * A simple worker implementation. The worker executes a assigned workload and then sleeps
+ * until another workload is set or the worker is killed.
  *
  * @author Thomas Morgner
  */
 public class Worker extends Thread
 {
-  /** the worker's task. */
+  /**
+   * the worker's task.
+   */
   private Runnable workload = null;
 
-  /** a flag whether the worker should exit after the processing. */
+  /**
+   * a flag whether the worker should exit after the processing.
+   */
   private volatile boolean finish = false;
 
-  /** the time in milliseconds beween 2 checks for exit or work requests. */
+  /**
+   * the time in milliseconds beween 2 checks for exit or work requests.
+   */
   private final int sleeptime;
-  /** The worker pool, to which this worker is assigned. May be null. */
+  /**
+   * The worker pool, to which this worker is assigned. May be null.
+   */
   private WorkerPool workerPool;
 
   /**
    * Creates a new worker.
    *
-   * @param sleeptime  the time this worker sleeps until he checks for new work.
+   * @param sleeptime the time this worker sleeps until he checks for new work.
    */
-  public Worker(final int sleeptime)
+  public Worker (final int sleeptime)
   {
     this.sleeptime = sleeptime;
     this.setDaemon(true);
@@ -75,7 +81,7 @@ public class Worker extends Thread
   /**
    * Creates a new worker with an default idle timeout of 2 minutes.
    */
-  public Worker()
+  public Worker ()
   {
     this(120000);
   }
@@ -83,11 +89,10 @@ public class Worker extends Thread
   /**
    * Set the next workload for this worker.
    *
-   * @param r  the next workload for the worker.
-   *
+   * @param r the next workload for the worker.
    * @throws IllegalStateException if the worker is not idle.
    */
-  public void setWorkload(final Runnable r)
+  public void setWorkload (final Runnable r)
   {
     if (workload != null)
     {
@@ -103,10 +108,10 @@ public class Worker extends Thread
   }
 
   /**
-   * Kills the worker after he completed his work. Awakens the worker if he's
-   * sleeping, so that the worker dies without delay.
+   * Kills the worker after he completed his work. Awakens the worker if he's sleeping, so
+   * that the worker dies without delay.
    */
-  public void finish()
+  public void finish ()
   {
     finish = true;
     // we are evil ..
@@ -129,17 +134,17 @@ public class Worker extends Thread
    *
    * @return true, if this worker has no more work and is currently sleeping.
    */
-  public boolean isAvailable()
+  public boolean isAvailable ()
   {
     return (workload == null);
   }
 
   /**
-   * If a workload is set, process it. After the workload is processed,
-   * this worker starts to sleep until a new workload is set for the worker
-   * or the worker got the finish() request.
+   * If a workload is set, process it. After the workload is processed, this worker starts
+   * to sleep until a new workload is set for the worker or the worker got the finish()
+   * request.
    */
-  public synchronized void run()
+  public synchronized void run ()
   {
     while (!finish)
     {
@@ -246,31 +251,31 @@ public class Worker extends Thread
 
   /**
    * Checks whether this worker has received the signal to finish and die.
-   * 
+   *
    * @return true, if the worker should finish the work and end the thread.
    */
-  public boolean isFinish()
+  public boolean isFinish ()
   {
     return finish;
   }
 
   /**
    * Returns the worker's assigned pool.
-   * 
+   *
    * @return the worker pool (or null, if the worker is not assigned to a pool).
    */
-  public WorkerPool getWorkerPool()
+  public WorkerPool getWorkerPool ()
   {
     return workerPool;
   }
 
   /**
    * Defines the worker's assigned pool.
-   * 
-   * @param workerPool the worker pool 
-   * (or null, if the worker is not assigned to a pool).
+   *
+   * @param workerPool the worker pool (or null, if the worker is not assigned to a
+   *                   pool).
    */
-  public void setWorkerPool(final WorkerPool workerPool)
+  public void setWorkerPool (final WorkerPool workerPool)
   {
     this.workerPool = workerPool;
   }

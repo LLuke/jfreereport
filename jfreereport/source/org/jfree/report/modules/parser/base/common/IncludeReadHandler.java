@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.IncludeParserFrontend;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
-import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.xml.parser.XmlReaderException;
 import org.xml.sax.SAXException;
 

@@ -4,8 +4,8 @@ import org.jfree.report.Group;
 import org.jfree.report.GroupList;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
-import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.common.GroupFieldsReadHandler;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
@@ -13,16 +13,24 @@ import org.xml.sax.SAXException;
 
 public class GroupReadHandler extends AbstractPropertyXmlReadHandler
 {
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String GROUP_HEADER_TAG = "groupheader";
 
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String GROUP_FOOTER_TAG = "groupfooter";
 
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String FIELDS_TAG = "fields";
 
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String FIELD_TAG = "field";
 
 

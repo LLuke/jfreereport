@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: Template.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: Template.java,v 1.3 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -41,8 +41,8 @@ package org.jfree.report.filter.templates;
 import org.jfree.report.filter.DataSource;
 
 /**
- * A template defines a common use case for a DataSource and one or more
- * predefined Filters.
+ * A template defines a common use case for a DataSource and one or more predefined
+ * Filters.
  *
  * @author Thomas Morgner
  */
@@ -51,22 +51,22 @@ public interface Template extends DataSource
   /**
    * Sets the name of this template.
    *
-   * @param name  the name.
+   * @param name the name.
    */
-  public void setName(String name);
+  public void setName (String name);
 
   /**
    * Returns the template name.
    *
    * @return The name.
    */
-  public String getName();
+  public String getName ();
 
   /**
    * Returns an instance of the template.
    *
    * @return A template instance.
    */
-  public Template getInstance();
+  public Template getInstance ();
 
 }

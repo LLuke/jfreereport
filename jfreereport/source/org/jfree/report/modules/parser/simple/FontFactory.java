@@ -25,7 +25,7 @@
  * ----------------
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
- * $Id: FontFactory.java,v 1.8 2005/01/25 00:21:57 taqua Exp $
+ * $Id: FontFactory.java,v 1.9 2005/02/04 19:08:54 taqua Exp $
  *
  * Changes
  * -------
@@ -47,74 +47,112 @@ import org.xml.sax.Attributes;
 public final class FontFactory
 {
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String FONT_NAME_ATT = "fontname";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String FONT_STYLE_ATT = "fontstyle";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String FONT_SIZE_ATT = "fontsize";
 
 
-  /** Literal text for an XML attribute value. */
+  /**
+   * Literal text for an XML attribute value.
+   */
   public static final String FS_BOLD = "fsbold";
 
-  /** Literal text for an XML attribute value. */
+  /**
+   * Literal text for an XML attribute value.
+   */
   public static final String FS_ITALIC = "fsitalic";
 
-  /** Literal text for an XML attribute value. */
+  /**
+   * Literal text for an XML attribute value.
+   */
   public static final String FS_UNDERLINE = "fsunderline";
 
-  /** Literal text for an XML attribute value. */
+  /**
+   * Literal text for an XML attribute value.
+   */
   public static final String FS_STRIKETHR = "fsstrikethr";
 
-  /** Literal text for an XML attribute value. */
+  /**
+   * Literal text for an XML attribute value.
+   */
   public static final String FS_EMBEDDED = "font-embedded";
 
-  /** Literal text for an XML attribute value. */
+  /**
+   * Literal text for an XML attribute value.
+   */
   public static final String FS_ENCODING = "font-encoding";
 
-  /** Literal text for an XML attribute value. */
-  public static final String LINEHEIGHT = "line-height";
-  
   /**
-   * The FontInformation class is used to store the font definition, until it
-   * can be applied to a stylesheet. Parameters that are not defined, are null.
+   * Literal text for an XML attribute value.
+   */
+  public static final String LINEHEIGHT = "line-height";
+
+  /**
+   * The FontInformation class is used to store the font definition, until it can be
+   * applied to a stylesheet. Parameters that are not defined, are null.
    */
   public static class FontInformation
   {
-    /** the font name. */
+    /**
+     * the font name.
+     */
     private String fontname;
 
-    /** the font size. */
+    /**
+     * the font size.
+     */
     private Integer fontSize;
 
-    /** the bold flag for the font. */
+    /**
+     * the bold flag for the font.
+     */
     private Boolean isBold;
 
-    /** the italic flag for the font. */
+    /**
+     * the italic flag for the font.
+     */
     private Boolean isItalic;
 
-    /** the strikeThrough flag for the font. */
+    /**
+     * the strikeThrough flag for the font.
+     */
     private Boolean isStrikeThrough;
 
-    /** the underlined flag for the font. */
+    /**
+     * the underlined flag for the font.
+     */
     private Boolean isUnderlined;
 
-    /** the embedded flag for the font. */
+    /**
+     * the embedded flag for the font.
+     */
     private Boolean isEmbedded;
 
-    /** the font encoding for the font. */
+    /**
+     * the font encoding for the font.
+     */
     private String fontencoding;
 
-    /** the line height for the font. */
+    /**
+     * the line height for the font.
+     */
     private Float lineHeight;
 
     /**
      * Creates a new FontInformation.
      */
-    public FontInformation()
+    public FontInformation ()
     {
     }
 
@@ -123,7 +161,7 @@ public final class FontFactory
      *
      * @return the font name or null.
      */
-    public String getFontname()
+    public String getFontname ()
     {
       return fontname;
     }
@@ -133,7 +171,7 @@ public final class FontFactory
      *
      * @param fontname the defined font name or null.
      */
-    public void setFontname(final String fontname)
+    public void setFontname (final String fontname)
     {
       this.fontname = fontname;
     }
@@ -143,7 +181,7 @@ public final class FontFactory
      *
      * @return the font size or null.
      */
-    public Integer getFontSize()
+    public Integer getFontSize ()
     {
       return fontSize;
     }
@@ -153,7 +191,7 @@ public final class FontFactory
      *
      * @param fontSize the defined font size or null.
      */
-    public void setFontSize(final Integer fontSize)
+    public void setFontSize (final Integer fontSize)
     {
       this.fontSize = fontSize;
     }
@@ -163,7 +201,7 @@ public final class FontFactory
      *
      * @return the bold flag or null.
      */
-    public Boolean getBold()
+    public Boolean getBold ()
     {
       return isBold;
     }
@@ -173,7 +211,7 @@ public final class FontFactory
      *
      * @param bold the defined bold flag or null.
      */
-    public void setBold(final Boolean bold)
+    public void setBold (final Boolean bold)
     {
       isBold = bold;
     }
@@ -183,7 +221,7 @@ public final class FontFactory
      *
      * @return the italic flag or null.
      */
-    public Boolean getItalic()
+    public Boolean getItalic ()
     {
       return isItalic;
     }
@@ -193,7 +231,7 @@ public final class FontFactory
      *
      * @param italic the defined italic flag or null.
      */
-    public void setItalic(final Boolean italic)
+    public void setItalic (final Boolean italic)
     {
       isItalic = italic;
     }
@@ -203,17 +241,18 @@ public final class FontFactory
      *
      * @return the strikeThrough flag or null.
      */
-    public Boolean getStrikeThrough()
+    public Boolean getStrikeThrough ()
     {
       return isStrikeThrough;
     }
 
     /**
-     * Defines the strikeThrough flag or set to null, to indicate that this flag is undefined.
+     * Defines the strikeThrough flag or set to null, to indicate that this flag is
+     * undefined.
      *
      * @param strikeThrough the defined strikeThrough flag or null.
      */
-    public void setStrikeThrough(final Boolean strikeThrough)
+    public void setStrikeThrough (final Boolean strikeThrough)
     {
       isStrikeThrough = strikeThrough;
     }
@@ -223,17 +262,18 @@ public final class FontFactory
      *
      * @return the underlined flag or null.
      */
-    public Boolean getUnderlined()
+    public Boolean getUnderlined ()
     {
       return isUnderlined;
     }
 
     /**
-     * Defines the underlined flag or set to null, to indicate that this flag is undefined.
+     * Defines the underlined flag or set to null, to indicate that this flag is
+     * undefined.
      *
      * @param underlined the defined underlined flag or null.
      */
-    public void setUnderlined(final Boolean underlined)
+    public void setUnderlined (final Boolean underlined)
     {
       isUnderlined = underlined;
     }
@@ -243,7 +283,7 @@ public final class FontFactory
      *
      * @return the underlined flag or null.
      */
-    public Boolean getEmbedded()
+    public Boolean getEmbedded ()
     {
       return isEmbedded;
     }
@@ -253,17 +293,18 @@ public final class FontFactory
      *
      * @param embedded the defined embedded flag or null.
      */
-    public void setEmbedded(final Boolean embedded)
+    public void setEmbedded (final Boolean embedded)
     {
       isEmbedded = embedded;
     }
 
     /**
-     * Returns the defined character encoding for this font, or null, if no encoding is defined.
+     * Returns the defined character encoding for this font, or null, if no encoding is
+     * defined.
      *
      * @return the defined character encoding or null.
      */
-    public String getFontencoding()
+    public String getFontencoding ()
     {
       return fontencoding;
     }
@@ -273,7 +314,7 @@ public final class FontFactory
      *
      * @param fontencoding the character encoding or null.
      */
-    public void setFontencoding(final String fontencoding)
+    public void setFontencoding (final String fontencoding)
     {
       this.fontencoding = fontencoding;
     }
@@ -283,7 +324,7 @@ public final class FontFactory
      *
      * @return the defined line height or null.
      */
-    public Float getLineHeight()
+    public Float getLineHeight ()
     {
       return lineHeight;
     }
@@ -293,7 +334,7 @@ public final class FontFactory
      *
      * @param lineHeight the defined line height or null.
      */
-    public void setLineHeight(final Float lineHeight)
+    public void setLineHeight (final Float lineHeight)
     {
       this.lineHeight = lineHeight;
     }
@@ -302,7 +343,7 @@ public final class FontFactory
   /**
    * Default constructor.
    */
-  private FontFactory()
+  private FontFactory ()
   {
   }
 
@@ -312,7 +353,8 @@ public final class FontFactory
    * @param es the element style sheet that should receive the font definition.
    * @param fi the previously parsed font information.
    */
-  public static void applyFontInformation(final ElementStyleSheet es, final FontInformation fi)
+  public static void applyFontInformation (final ElementStyleSheet es,
+                                           final FontInformation fi)
   {
     if (fi.getFontname() != null)
     {
@@ -357,11 +399,12 @@ public final class FontFactory
    * Reads the fontstyle for an attribute set. The font style is appended to the given
    * font style definition and the font information is also returned to the caller.
    *
-   * @param attr  the element attributes.
+   * @param attr   the element attributes.
    * @param target the font information, that should be used to store the defined values.
    * @return the read font information.
    */
-  private static FontInformation readSimpleFontStyle(final Attributes attr, FontInformation target)
+  private static FontInformation readSimpleFontStyle (final Attributes attr,
+                                                      FontInformation target)
   {
     if (target == null)
     {
@@ -406,13 +449,13 @@ public final class FontFactory
     if (attr.getValue(FS_STRIKETHR) != null)
     {
       target.setStrikeThrough(getBoolean(ParserUtil.parseBoolean(attr.getValue(FS_STRIKETHR),
-          false)));
+              false)));
     }
 
     if (attr.getValue(FS_UNDERLINE) != null)
     {
       target.setUnderlined(getBoolean(ParserUtil.parseBoolean(attr.getValue(FS_UNDERLINE),
-          false)));
+              false)));
     }
 
     if (attr.getValue(FS_EMBEDDED) != null)
@@ -434,12 +477,14 @@ public final class FontFactory
   }
 
   /**
-   * Parses an element font. Missing attributes are replaces with the default font's attributes.
+   * Parses an element font. Missing attributes are replaces with the default font's
+   * attributes.
    *
-   * @param attr  the element attributes.
-   * @param target the target element style sheet, that should receive the created font definition.
+   * @param attr   the element attributes.
+   * @param target the target element style sheet, that should receive the created font
+   *               definition.
    */
-  public static void createFont(final Attributes attr, final ElementStyleSheet target)
+  public static void createFont (final Attributes attr, final ElementStyleSheet target)
   {
     // get the font name...
     final String elementFontName = attr.getValue(FONT_NAME_ATT);
@@ -464,10 +509,9 @@ public final class FontFactory
    * Reads an attribute as int and returns <code>def</code> if that fails.
    *
    * @param val the attribute value.
-   *
    * @return the int value.
    */
-  private static Integer parseInteger(final String val)
+  private static Integer parseInteger (final String val)
   {
     if (val == null)
     {
@@ -485,12 +529,13 @@ public final class FontFactory
   }
 
   /**
-   * Parses an element font. Missing attributes are replaces with the default font's attributes.
+   * Parses an element font. Missing attributes are replaces with the default font's
+   * attributes.
    *
-   * @param attr  the element attributes.
+   * @param attr the element attributes.
    * @return the created font information.
    */
-  public static FontInformation createFont(final Attributes attr)
+  public static FontInformation createFont (final Attributes attr)
   {
     // get the font name...
     final FontInformation fi = new FontInformation();
@@ -519,7 +564,7 @@ public final class FontFactory
    * @param bool the primitive boolean.
    * @return the Boolean object.
    */
-  private static Boolean getBoolean(final boolean bool)
+  private static Boolean getBoolean (final boolean bool)
   {
     if (bool == true)
     {

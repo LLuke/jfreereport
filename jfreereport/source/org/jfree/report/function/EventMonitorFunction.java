@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventMonitorFunction.java,v 1.5 2005/01/25 00:00:10 taqua Exp $
+ * $Id: EventMonitorFunction.java,v 1.6 2005/01/28 19:26:49 taqua Exp $
  *
  * Changes
  * -------
@@ -45,21 +45,23 @@ import org.jfree.report.event.ReportEvent;
 import org.jfree.report.util.Log;
 
 /**
- * A function that logs each event that it receives.  This function can be used for debugging
- * purposes.
+ * A function that logs each event that it receives.  This function can be used for
+ * debugging purposes.
  *
  * @author Thomas Morgner
  */
 public class EventMonitorFunction extends AbstractFunction
-    implements Serializable, PageEventListener
+        implements Serializable, PageEventListener
 {
-  /** Counts the number of times the reportStarted(...) method is called. */
+  /**
+   * Counts the number of times the reportStarted(...) method is called.
+   */
   private transient int reportStartCount = 0;
 
   /**
    * Creates a new function.
    */
-  public EventMonitorFunction()
+  public EventMonitorFunction ()
   {
   }
 
@@ -68,7 +70,7 @@ public class EventMonitorFunction extends AbstractFunction
    *
    * @param name the name of the function
    */
-  public EventMonitorFunction(final String name)
+  public EventMonitorFunction (final String name)
   {
     setName(name);
   }
@@ -76,12 +78,12 @@ public class EventMonitorFunction extends AbstractFunction
   /**
    * Receives notification that the report has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportStarted(final ReportEvent event)
+  public void reportStarted (final ReportEvent event)
   {
     Log.info("Report Started: Level = " + event.getState().getLevel()
-        + " Prepare Run: " + event.getState().isPrepareRun());
+            + " Prepare Run: " + event.getState().isPrepareRun());
     reportStartCount++;
     Log.info("Report Started Count: " + reportStartCount);
   }
@@ -89,132 +91,131 @@ public class EventMonitorFunction extends AbstractFunction
   /**
    * Receives notification that the report has finished.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportFinished(final ReportEvent event)
+  public void reportFinished (final ReportEvent event)
   {
     Log.info("Report Finished: Level = " + event.getState().getLevel()
-        + " Prepare Run: " + event.getState().isPrepareRun());
+            + " Prepare Run: " + event.getState().isPrepareRun());
   }
 
   /**
-   * Receives notification that report generation has completed, the report footer was printed,
-   * no more output is done. This is a helper event to shut down the output service.
+   * Receives notification that report generation has completed, the report footer was
+   * printed, no more output is done. This is a helper event to shut down the output
+   * service.
    *
    * @param event The event.
    */
-  public void reportDone(final ReportEvent event)
+  public void reportDone (final ReportEvent event)
   {
     Log.info("Report Done: Level = " + event.getState().getLevel()
-        + " Prepare Run: " + event.getState().isPrepareRun());
+            + " Prepare Run: " + event.getState().isPrepareRun());
   }
 
   /**
    * Receives notification that a page has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void pageStarted(final ReportEvent event)
+  public void pageStarted (final ReportEvent event)
   {
     Log.info("Page Started: Level = " + event.getState().getLevel()
-        + " Prepare Run: " + event.getState().isPrepareRun());
+            + " Prepare Run: " + event.getState().isPrepareRun());
     Log.info("Page Started: " + event.getState().getCurrentPage());
   }
 
   /**
    * Receives notification that a page has ended.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void pageFinished(final ReportEvent event)
+  public void pageFinished (final ReportEvent event)
   {
     Log.info("Page Finished: Level = " + event.getState().getLevel()
-        + " Prepare Run: " + event.getState().isPrepareRun());
+            + " Prepare Run: " + event.getState().isPrepareRun());
     Log.info("Page Finished: " + event.getState().getCurrentPage());
   }
 
   /**
-   * Receives notification that a page was canceled by the ReportProcessor.
-   * This method is called, when a page was removed from the report after
-   * it was generated.
+   * Receives notification that a page was canceled by the ReportProcessor. This method is
+   * called, when a page was removed from the report after it was generated.
    *
    * @param event The event.
    */
-  public void pageCanceled(final ReportEvent event)
+  public void pageCanceled (final ReportEvent event)
   {
     Log.info("Page Canceled: Level = " + event.getState().getLevel()
-        + " Prepare Run: " + event.getState().isPrepareRun());
+            + " Prepare Run: " + event.getState().isPrepareRun());
     Log.info("Page Canceled: " + event.getState().getCurrentPage());
   }
 
   /**
    * Receives notification that a group has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupStarted(final ReportEvent event)
+  public void groupStarted (final ReportEvent event)
   {
     Log.info("Group Started: Level = " + event.getState().getLevel()
-        + " Prepare Run: " + event.getState().isPrepareRun());
+            + " Prepare Run: " + event.getState().isPrepareRun());
     Log.info("Group Started: " + event.getState().getCurrentGroupIndex());
   }
 
   /**
    * Receives notification that a group has finished.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupFinished(final ReportEvent event)
+  public void groupFinished (final ReportEvent event)
   {
     Log.info("Group Finished: Level = " + event.getState().getLevel()
-        + " Prepare Run: " + event.getState().isPrepareRun());
+            + " Prepare Run: " + event.getState().isPrepareRun());
     Log.info("Group Finished: " + event.getState().getCurrentGroupIndex());
   }
 
   /**
    * Receives notification that a row of data is being processed.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void itemsAdvanced(final ReportEvent event)
+  public void itemsAdvanced (final ReportEvent event)
   {
     Log.info("Items Advanced: Level = " + event.getState().getLevel()
-        + " Prepare Run: " + event.getState().isPrepareRun());
+            + " Prepare Run: " + event.getState().isPrepareRun());
   }
 
   /**
    * Receives notification that a group of item bands is about to be processed.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void itemsStarted(final ReportEvent event)
+  public void itemsStarted (final ReportEvent event)
   {
     Log.info("Items Started: Level = " + event.getState().getLevel()
-        + " Prepare Run: " + event.getState().isPrepareRun());
+            + " Prepare Run: " + event.getState().isPrepareRun());
   }
 
   /**
    * Receives notification that a group of item bands has been completed.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void itemsFinished(final ReportEvent event)
+  public void itemsFinished (final ReportEvent event)
   {
     Log.info("Items Finished: Level = " + event.getState().getLevel()
-        + " Prepare Run: " + event.getState().isPrepareRun());
+            + " Prepare Run: " + event.getState().isPrepareRun());
   }
 
   /**
-   * Receives notification that report generation initializes the current run.
-   * <P>
-   * The event carries a ReportState.Started state.  Use this to initialize the report.
+   * Receives notification that report generation initializes the current run. <P> The
+   * event carries a ReportState.Started state.  Use this to initialize the report.
    *
    * @param event The event.
    */
-  public void reportInitialized(final ReportEvent event)
+  public void reportInitialized (final ReportEvent event)
   {
     Log.info("Report Initialized: Level = " + event.getState().getLevel()
-        + " Prepare Run: " + event.getState().isPrepareRun());
+            + " Prepare Run: " + event.getState().isPrepareRun());
   }
 
   /**
@@ -222,7 +223,7 @@ public class EventMonitorFunction extends AbstractFunction
    *
    * @return the value of the function (<code>null</code>).
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return null;
   }
@@ -236,6 +237,6 @@ public class EventMonitorFunction extends AbstractFunction
   public void pageRolledBack (final ReportEvent event)
   {
     Log.info("Page Rolled Back: Level = " + event.getState().getLevel()
-        + " Prepare Run: " + event.getState().isPrepareRun());
+            + " Prepare Run: " + event.getState().isPrepareRun());
   }
 }

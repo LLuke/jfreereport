@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: FormatFilter.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: FormatFilter.java,v 1.3 2004/05/07 08:24:42 mungady Exp $
  *
  * Changes
  * -------
@@ -43,35 +43,41 @@ import java.io.Serializable;
 import java.text.Format;
 
 /**
- * The base class for filters that format data.  Data is received from a DataSource and formatted.
- * The data source might be a field in the TableModel or a report function, or even another
- * format filter (since filters implement the DataSource interface).
- * <p>
+ * The base class for filters that format data.  Data is received from a DataSource and
+ * formatted. The data source might be a field in the TableModel or a report function, or
+ * even another format filter (since filters implement the DataSource interface).
+ * <p/>
  * Formating is done by a java.text.Format object. This filter will always return a String
  * object on getValue().
- * <p>
- * If the formater does not understand the object returned by the defined datasource,
- * the defined null value is returned.
- * <p>
+ * <p/>
+ * If the formater does not understand the object returned by the defined datasource, the
+ * defined null value is returned.
+ * <p/>
  * The nullValue is set to "-" by default.
  *
  * @author Thomas Morgner
  */
 public class FormatFilter implements DataFilter, Serializable
 {
-  /** The format used to create the string representation of the data. */
+  /**
+   * The format used to create the string representation of the data.
+   */
   private Format format;
 
-  /** The datasource from where the data is obtained. */
+  /**
+   * The datasource from where the data is obtained.
+   */
   private DataSource datasource;
 
-  /** The string used to represent null. */
+  /**
+   * The string used to represent null.
+   */
   private String nullvalue;
 
   /**
    * Default constructor.
    */
-  public FormatFilter()
+  public FormatFilter ()
   {
     nullvalue = null;
   }
@@ -80,10 +86,9 @@ public class FormatFilter implements DataFilter, Serializable
    * Sets the format for the filter.
    *
    * @param format The format.
-   *
    * @throws NullPointerException if the given format is null
    */
-  public void setFormatter(final Format format)
+  public void setFormatter (final Format format)
   {
     if (format == null)
     {
@@ -97,21 +102,21 @@ public class FormatFilter implements DataFilter, Serializable
    *
    * @return The format.
    */
-  public Format getFormatter()
+  public Format getFormatter ()
   {
     return this.format;
   }
 
   /**
-   * Returns the formatted string. The value is read using the data source given
-   * and formated using the formatter of this object. The formating is guaranteed to
-   * completly form the object to an string or to return the defined NullValue.
-   * <p>
+   * Returns the formatted string. The value is read using the data source given and
+   * formated using the formatter of this object. The formating is guaranteed to completly
+   * form the object to an string or to return the defined NullValue.
+   * <p/>
    * If format, datasource or object are null, the NullValue is returned.
    *
    * @return The formatted value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     final Format f = getFormatter();
     if (f == null)
@@ -146,7 +151,7 @@ public class FormatFilter implements DataFilter, Serializable
    *
    * @param nullvalue The string.
    */
-  public void setNullValue(final String nullvalue)
+  public void setNullValue (final String nullvalue)
   {
     if (nullvalue == null)
     {
@@ -160,7 +165,7 @@ public class FormatFilter implements DataFilter, Serializable
    *
    * @return The string.
    */
-  public String getNullValue()
+  public String getNullValue ()
   {
     return nullvalue;
   }
@@ -170,7 +175,7 @@ public class FormatFilter implements DataFilter, Serializable
    *
    * @return The data source.
    */
-  public DataSource getDataSource()
+  public DataSource getDataSource ()
   {
     return datasource;
   }
@@ -180,7 +185,7 @@ public class FormatFilter implements DataFilter, Serializable
    *
    * @param ds The data source.
    */
-  public void setDataSource(final DataSource ds)
+  public void setDataSource (final DataSource ds)
   {
     if (ds == null)
     {
@@ -196,7 +201,8 @@ public class FormatFilter implements DataFilter, Serializable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final FormatFilter f = (FormatFilter) super.clone();
     if (datasource != null)

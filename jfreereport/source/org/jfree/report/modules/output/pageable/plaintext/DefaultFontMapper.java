@@ -9,7 +9,7 @@ public class DefaultFontMapper implements FontMapper
   private HashMap fontMapping;
   private byte defaultFont;
 
-  public DefaultFontMapper()
+  public DefaultFontMapper ()
   {
     fontMapping = new HashMap();
     defaultFont = PrinterDriver.SELECT_FONT_ROMAN;
@@ -39,7 +39,7 @@ public class DefaultFontMapper implements FontMapper
     return handleDefault(fontDefinition);
   }
 
-  protected byte handleDefault(final FontDefinition fd)
+  protected byte handleDefault (final FontDefinition fd)
   {
     if (fd.isCourier())
     {

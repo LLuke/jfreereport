@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigDescriptionEntry.java,v 1.5 2003/11/07 18:33:52 taqua Exp $
+ * $Id: ConfigDescriptionEntry.java,v 1.6 2004/05/07 14:29:24 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -39,29 +39,36 @@
 package org.jfree.report.modules.gui.config.model;
 
 /**
- * A config description entry provides a declaration of a single
- * report configuration key and speicifes rules for the values of that
- * key.
- * 
+ * A config description entry provides a declaration of a single report configuration key
+ * and speicifes rules for the values of that key.
+ *
  * @author Thomas Morgner
  */
 public abstract class ConfigDescriptionEntry
 {
-  /** A description of the given key. */
+  /**
+   * A description of the given key.
+   */
   private String description;
-  /** The fully qualified name of the key. */
+  /**
+   * The fully qualified name of the key.
+   */
   private String keyName;
-  /** a flag defining whether this is a boot time key. */
+  /**
+   * a flag defining whether this is a boot time key.
+   */
   private boolean global;
-  /** a flag defining whether this is a hidden key. */
+  /**
+   * a flag defining whether this is a hidden key.
+   */
   private boolean hidden;
 
   /**
    * Creates a new config description entry with the given name.
-   * 
+   *
    * @param keyName the name of the entry.
    */
-  public ConfigDescriptionEntry(final String keyName)
+  public ConfigDescriptionEntry (final String keyName)
   {
     if (keyName == null)
     {
@@ -72,104 +79,103 @@ public abstract class ConfigDescriptionEntry
 
   /**
    * Returns the full key name of the configuration description.
+   *
    * @return the key name.
    */
-  public String getKeyName()
+  public String getKeyName ()
   {
     return keyName;
   }
 
   /**
    * Returns the descrption of the configuration entry.
-   *  
+   *
    * @return the key description.
    */
-  public String getDescription()
+  public String getDescription ()
   {
     return description;
   }
 
   /**
    * Defines the descrption of the configuration entry.
-   *  
+   *
    * @param description the key description.
    */
-  public void setDescription(final String description)
+  public void setDescription (final String description)
   {
     this.description = description;
   }
 
   /**
-   * Returns, whether the key is a global key. Global keys are read
-   * from the global report configuration and specifying them in the
-   * report local configuration is useless.
-   *  
+   * Returns, whether the key is a global key. Global keys are read from the global report
+   * configuration and specifying them in the report local configuration is useless.
+   *
    * @return true, if the key is global, false otherwise.
    */
-  public boolean isGlobal()
+  public boolean isGlobal ()
   {
     return global;
   }
 
   /**
-   * Defines, whether the key is a global key. Global keys are read
-   * from the global report configuration and specifying them in the
-   * report local configuration is useless.
-   *  
+   * Defines, whether the key is a global key. Global keys are read from the global report
+   * configuration and specifying them in the report local configuration is useless.
+   *
    * @param global set to true, if the key is global, false otherwise.
    */
-  public void setGlobal(final boolean global)
+  public void setGlobal (final boolean global)
   {
     this.global = global;
   }
 
   /**
-   * Returns, whether the key is hidden. Hidden keys will not be visible
-   * in the configuration editor.
+   * Returns, whether the key is hidden. Hidden keys will not be visible in the
+   * configuration editor.
    *
    * @return true, if the key is hidden, false otherwise
    */
-  public boolean isHidden()
+  public boolean isHidden ()
   {
     return hidden;
   }
 
   /**
-   * Defines, whether the key is hidden. Hidden keys will not be visible
-   * in the configuration editor.
+   * Defines, whether the key is hidden. Hidden keys will not be visible in the
+   * configuration editor.
    *
-   * @param hidden set to true, if the key is hidden, false otherwise 
+   * @param hidden set to true, if the key is hidden, false otherwise
    */
-  public void setHidden(final boolean hidden)
+  public void setHidden (final boolean hidden)
   {
     this.hidden = hidden;
   }
 
   /**
-   * Checks, whether the given object is equal to this config description
-   * entry. The object will be equal, if it is also an config description
-   * entry with the same name as this entry.
-   *  
-   * @see java.lang.Object#equals(java.lang.Object)
-   * 
+   * Checks, whether the given object is equal to this config description entry. The
+   * object will be equal, if it is also an config description entry with the same name as
+   * this entry.
+   *
    * @param o the other object.
    * @return true, if the config entry is equal to the given object, false otherwise.
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
    */
-  public boolean equals(final Object o)
+  public boolean equals (final Object o)
   {
     if (this == o)
-    { 
+    {
       return true;
     }
     if (!(o instanceof ConfigDescriptionEntry))
-    { 
+    {
       return false;
     }
 
     final ConfigDescriptionEntry configDescriptionEntry = (ConfigDescriptionEntry) o;
 
     if (!keyName.equals(configDescriptionEntry.keyName))
-    { 
+    {
       return false;
     }
 
@@ -177,12 +183,13 @@ public abstract class ConfigDescriptionEntry
   }
 
   /**
-   * Computes an hashcode for this object. 
-   * @see java.lang.Object#hashCode()
-   * 
+   * Computes an hashcode for this object.
+   *
    * @return the hashcode.
+   *
+   * @see java.lang.Object#hashCode()
    */
-  public int hashCode()
+  public int hashCode ()
   {
     return keyName.hashCode();
   }

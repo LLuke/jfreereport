@@ -19,31 +19,33 @@ public final class BeanUtility
   private HashMap properties;
 
   public BeanUtility (final Object o)
-      throws IntrospectionException
+          throws IntrospectionException
   {
     beanInfo = Introspector.getBeanInfo(o.getClass());
     bean = o;
     properties = new HashMap();
 
     final PropertyDescriptor[] propertyDescriptors =
-        beanInfo.getPropertyDescriptors();
+            beanInfo.getPropertyDescriptors();
     for (int i = 0; i < propertyDescriptors.length; i++)
     {
       properties.put(propertyDescriptors[i].getName(), propertyDescriptors[i]);
     }
   }
 
-  public PropertyDescriptor[] getPropertyInfos()
+  public PropertyDescriptor[] getPropertyInfos ()
   {
     return beanInfo.getPropertyDescriptors();
   }
 
-  public Object getProperty (final String name) throws BeanException
+  public Object getProperty (final String name)
+          throws BeanException
   {
     return getProperty(new PropertySpecification(name));
   }
-  
-  private Object getProperty (final PropertySpecification name) throws BeanException
+
+  private Object getProperty (final PropertySpecification name)
+          throws BeanException
   {
     final PropertyDescriptor pd = (PropertyDescriptor) properties.get(name.getName());
     if (pd == null)
@@ -61,7 +63,7 @@ public final class BeanUtility
       }
       try
       {
-        return readMethod.invoke(bean, new Object[]{ new Integer(name.getIndex())});
+        return readMethod.invoke(bean, new Object[]{new Integer(name.getIndex())});
       }
       catch (Exception e)
       {
@@ -86,7 +88,8 @@ public final class BeanUtility
     }
   }
 
-  public String getPropertyAsString (final String name) throws BeanException
+  public String getPropertyAsString (final String name)
+          throws BeanException
   {
     final PropertySpecification ps = new PropertySpecification(name);
     final PropertyDescriptor pd = (PropertyDescriptor) properties.get(ps.getName());
@@ -101,16 +104,17 @@ public final class BeanUtility
     }
 
     final ValueConverter vc =
-        ConverterRegistry.getInstance().getValueConverter(o.getClass());
+            ConverterRegistry.getInstance().getValueConverter(o.getClass());
     if (vc == null)
     {
-      throw new BeanException("Unable to handle property of type " + o.getClass().getName());
+      throw new BeanException("Unable to handle property of type " + o.getClass()
+              .getName());
     }
     return vc.toAttributeValue(o);
   }
 
   public void setProperty (final String name, final Object o)
-      throws BeanException
+          throws BeanException
   {
     if (name == null)
     {
@@ -120,7 +124,7 @@ public final class BeanUtility
   }
 
   private void setProperty (final PropertySpecification name, final Object o)
-      throws BeanException
+          throws BeanException
   {
     final PropertyDescriptor pd = (PropertyDescriptor) properties.get(name.getName());
     if (pd == null)
@@ -137,7 +141,7 @@ public final class BeanUtility
       }
       try
       {
-        writeMethod.invoke(bean, new Object[]{ new Integer(name.getIndex()), o });
+        writeMethod.invoke(bean, new Object[]{new Integer(name.getIndex()), o});
       }
       catch (Exception e)
       {
@@ -153,7 +157,7 @@ public final class BeanUtility
       }
       try
       {
-        writeMethod.invoke(bean, new Object[]{ o });
+        writeMethod.invoke(bean, new Object[]{o});
       }
       catch (Exception e)
       {
@@ -162,7 +166,8 @@ public final class BeanUtility
     }
   }
 
-  public void setPropertyAsString (final String name, final String txt) throws BeanException
+  public void setPropertyAsString (final String name, final String txt)
+          throws BeanException
   {
     if (name == null)
     {
@@ -183,7 +188,8 @@ public final class BeanUtility
   }
 
 
-  public void setPropertyAsString (final String name, final Class type, final String txt) throws BeanException
+  public void setPropertyAsString (final String name, final Class type, final String txt)
+          throws BeanException
   {
     if (name == null)
     {
@@ -199,7 +205,7 @@ public final class BeanUtility
     }
     final PropertySpecification ps = new PropertySpecification(name);
     final ValueConverter vc =
-        ConverterRegistry.getInstance().getValueConverter(type);
+            ConverterRegistry.getInstance().getValueConverter(type);
     if (vc == null)
     {
       throw new BeanException
@@ -215,7 +221,7 @@ public final class BeanUtility
     private String name;
     private String index;
 
-    public PropertySpecification(final String raw)
+    public PropertySpecification (final String raw)
     {
       this.raw = raw;
       this.name = getNormalizedName(raw);
@@ -247,22 +253,22 @@ public final class BeanUtility
       return property.substring(idx + 1, end);
     }
 
-    public String getRaw()
+    public String getRaw ()
     {
       return raw;
     }
 
-    public String getName()
+    public String getName ()
     {
       return name;
     }
 
-    public String getIndex()
+    public String getIndex ()
     {
       return index;
     }
 
-    public String toString()
+    public String toString ()
     {
       final StringBuffer b = new StringBuffer("PropertySpecification={");
       b.append("raw=");
@@ -285,7 +291,7 @@ public final class BeanUtility
         continue;
       }
       if (property.getReadMethod() == null ||
-          property.getWriteMethod() == null)
+              property.getWriteMethod() == null)
       {
         // it will make no sense to write a property now, that
         // we can't read in later...
@@ -296,27 +302,27 @@ public final class BeanUtility
         final int max = findMaximumIndex(property);
         for (int idx = 0; idx < max; idx++)
         {
-          propertyNames.add (property.getName() + "[" + idx + "]");
+          propertyNames.add(property.getName() + "[" + idx + "]");
         }
       }
       else
       {
-        propertyNames.add (property.getName());
+        propertyNames.add(property.getName());
       }
     }
     return (String[]) propertyNames.toArray(new String[propertyNames.size()]);
   }
 
-  private int findMaximumIndex(final PropertyDescriptor id)
+  private int findMaximumIndex (final PropertyDescriptor id)
   {
     final int retval = 0;
     try
     {
       final Object o = getProperty
-          (new PropertySpecification(id.getName()));
+              (new PropertySpecification(id.getName()));
       return Array.getLength(o);
     }
-    catch(Exception e)
+    catch (Exception e)
     {
       // ignore, we run 'til we encounter an index out of bounds Ex.
     }

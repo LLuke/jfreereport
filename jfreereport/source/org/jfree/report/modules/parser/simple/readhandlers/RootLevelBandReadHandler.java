@@ -12,22 +12,34 @@ import org.xml.sax.SAXException;
 
 public class RootLevelBandReadHandler extends BandReadHandler
 {
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String FIXED_POSITION_ATTRIBUTE = "fixed-position";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String PAGEBREAK_BEFORE_ATTR = "pagebreak-before";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String HEIGHT_ATTRIBUTE = "height";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String PAGEBREAK_AFTER_ATTRIBUTE = "pagebreak-after";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String ALIGNMENT_ATT = "alignment";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String VALIGNMENT_ATT = "vertical-alignment";
 
 
@@ -62,7 +74,7 @@ public class RootLevelBandReadHandler extends BandReadHandler
 
   }
 
-  protected boolean isManualBreakAllowed()
+  protected boolean isManualBreakAllowed ()
   {
     return true;
   }
@@ -74,7 +86,7 @@ public class RootLevelBandReadHandler extends BandReadHandler
     if (halign != null)
     {
       getBand().getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT,
-          ReportParserUtil.parseHorizontalElementAlignment(halign));
+              ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
   }
 
@@ -85,7 +97,7 @@ public class RootLevelBandReadHandler extends BandReadHandler
     if (valign != null)
     {
       getBand().getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT,
-          ReportParserUtil.parseVerticalElementAlignment(valign));
+              ReportParserUtil.parseVerticalElementAlignment(valign));
     }
   }
 
@@ -98,7 +110,7 @@ public class RootLevelBandReadHandler extends BandReadHandler
       final float fixedPosValue = ParserUtil.parseFloat
               (fixedPos, "FixedPosition is invalid!");
       getBand().getStyle().setStyleProperty(BandStyleKeys.FIXED_POSITION,
-              new Float (fixedPosValue));
+              new Float(fixedPosValue));
     }
   }
 
@@ -109,7 +121,7 @@ public class RootLevelBandReadHandler extends BandReadHandler
     {
       final float heightValue = ParserUtil.parseFloat(height, 0);
       getBand().getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
-          new FloatDimension(0, heightValue));
+              new FloatDimension(0, heightValue));
     }
   }
 
@@ -120,7 +132,7 @@ public class RootLevelBandReadHandler extends BandReadHandler
     {
       final boolean breakBefore = ParserUtil.parseBoolean(breakBeforeAttr, false);
       getBand().getStyle().setBooleanStyleProperty
-          (BandStyleKeys.PAGEBREAK_BEFORE, breakBefore);
+              (BandStyleKeys.PAGEBREAK_BEFORE, breakBefore);
     }
   }
 
@@ -131,7 +143,7 @@ public class RootLevelBandReadHandler extends BandReadHandler
     {
       final boolean breakAfter = ParserUtil.parseBoolean(breakAfterAttr, false);
       getBand().getStyle().setBooleanStyleProperty
-          (BandStyleKeys.PAGEBREAK_AFTER, breakAfter);
+              (BandStyleKeys.PAGEBREAK_AFTER, breakAfter);
     }
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TranslationTable.java,v 1.5 2003/11/07 18:33:53 taqua Exp $
+ * $Id: TranslationTable.java,v 1.6 2004/05/07 14:29:46 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -41,28 +41,31 @@ package org.jfree.report.modules.gui.converter.parser;
 import java.util.Properties;
 
 /**
- * A simple attribute translator. The translator searches a set of properties
- * for a specific value and replaces the attribute value with the updated
- * value.
- * <p>
- * A translation will be valid for a given context, which is build acording
- * to the rules specified in the contextmap.properties file.
- *   
+ * A simple attribute translator. The translator searches a set of properties for a
+ * specific value and replaces the attribute value with the updated value.
+ * <p/>
+ * A translation will be valid for a given context, which is build acording to the rules
+ * specified in the contextmap.properties file.
+ *
  * @author Thomas Morgner
  */
 public class TranslationTable
 {
-  /** The translation map contains all keys and their values. */
+  /**
+   * The translation map contains all keys and their values.
+   */
   private final Properties translationMap;
-  /** the current context, where the map will be valid. */
+  /**
+   * the current context, where the map will be valid.
+   */
   private final String context;
 
   /**
-   * Creates a new translation table which will contain the given translations
-   * and will be valid within the given context.
-   * 
+   * Creates a new translation table which will contain the given translations and will be
+   * valid within the given context.
+   *
    * @param translations the translations
-   * @param context the translation context.
+   * @param context      the translation context.
    */
   public TranslationTable (final Properties translations, final String context)
   {
@@ -71,12 +74,11 @@ public class TranslationTable
   }
 
   /**
-   * Translates the value of the given attribute into a new value.
-   * If no translation for the original value is known, then the value
-   * is returned unchanged.
-   *  
+   * Translates the value of the given attribute into a new value. If no translation for
+   * the original value is known, then the value is returned unchanged.
+   *
    * @param localName the name of the attribute
-   * @param orgValue the untranslated value as read from the xml file 
+   * @param orgValue  the untranslated value as read from the xml file
    * @return the translated value if defined, else the untranslated value.
    */
   public String translateAttribute (final String localName, final String orgValue)

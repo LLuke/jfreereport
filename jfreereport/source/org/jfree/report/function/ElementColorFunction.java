@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementColorFunction.java,v 1.9 2005/01/28 19:26:49 taqua Exp $
+ * $Id: ElementColorFunction.java,v 1.10 2005/02/19 15:41:22 taqua Exp $
  *
  * Changes
  * -------
@@ -48,19 +48,23 @@ import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.SerializerHelper;
 
 /**
- * A function that alternates between true and false for each item within a group. The functions
- * value affects a defined elements color. If the function evaluates to true, the named
- * element is painted with the colorTrue, else the element is painted with colorFalse.
- * <p>
- * Use the property <code>element</code> to name an element contained in the ItemBand whose
- * color should be affected by this function. All colors have the color 'black' by default.
+ * A function that alternates between true and false for each item within a group. The
+ * functions value affects a defined elements color. If the function evaluates to true,
+ * the named element is painted with the colorTrue, else the element is painted with
+ * colorFalse.
+ * <p/>
+ * Use the property <code>element</code> to name an element contained in the ItemBand
+ * whose color should be affected by this function. All colors have the color 'black' by
+ * default.
  *
  * @author Thomas Morgner
  */
 public class ElementColorFunction
         extends AbstractElementFormatFunction implements Serializable
 {
-  /** the color if the field is TRUE. */
+  /**
+   * the color if the field is TRUE.
+   */
   private transient Color colorTrue;
   private transient Color colorFalse;
 
@@ -69,30 +73,28 @@ public class ElementColorFunction
   /**
    * Default constructor.
    */
-  public ElementColorFunction()
+  public ElementColorFunction ()
   {
   }
 
   /**
-   * Returns the field used by the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Returns the field used by the function. <P> The field name corresponds to a column
+   * name in the report's TableModel.
    *
    * @return The field name.
    */
-  public String getField()
+  public String getField ()
   {
     return field;
   }
 
   /**
-   * Sets the field name for the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Sets the field name for the function. <P> The field name corresponds to a column name
+   * in the report's TableModel.
    *
-   * @param field  the field name (null not permitted).
+   * @param field the field name (null not permitted).
    */
-  public void setField(final String field)
+  public void setField (final String field)
   {
     if (field == null)
     {
@@ -104,9 +106,9 @@ public class ElementColorFunction
   /**
    * Sets the color for true values.
    *
-   * @param colorTrue  the color.
+   * @param colorTrue the color.
    */
-  public void setColorTrue(final Color colorTrue)
+  public void setColorTrue (final Color colorTrue)
   {
     this.colorTrue = colorTrue;
   }
@@ -114,9 +116,9 @@ public class ElementColorFunction
   /**
    * Sets the color for false values.
    *
-   * @param colorFalse  the color.
+   * @param colorFalse the color.
    */
-  public void setColorFalse(final Color colorFalse)
+  public void setColorFalse (final Color colorFalse)
   {
     this.colorFalse = colorFalse;
   }
@@ -126,7 +128,7 @@ public class ElementColorFunction
    *
    * @return A color.
    */
-  public Color getColorTrue()
+  public Color getColorTrue ()
   {
     return colorTrue;
   }
@@ -136,14 +138,13 @@ public class ElementColorFunction
    *
    * @return A color.
    */
-  public Color getColorFalse()
+  public Color getColorFalse ()
   {
     return colorFalse;
   }
 
   /**
-   * Process the given band and color the named element of that band
-   * if it exists.
+   * Process the given band and color the named element of that band if it exists.
    *
    * @param b the band that should be colored.
    */
@@ -184,13 +185,12 @@ public class ElementColorFunction
 
 
   /**
-   * Return the current expression value.
-   * <P>
-   * The value depends (obviously) on the expression implementation.
+   * Return the current expression value. <P> The value depends (obviously) on the
+   * expression implementation.
    *
    * @return the value of the function.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return null;
   }
@@ -201,8 +201,8 @@ public class ElementColorFunction
    * @param out the output stream where to write the object.
    * @throws IOException if errors occur while writing the stream.
    */
-  private void writeObject(final ObjectOutputStream out)
-      throws IOException
+  private void writeObject (final ObjectOutputStream out)
+          throws IOException
   {
     out.defaultWriteObject();
     SerializerHelper.getInstance().writeObject(colorFalse, out);
@@ -213,17 +213,17 @@ public class ElementColorFunction
    * Helper method for serialization.
    *
    * @param in the input stream from where to read the serialized object.
-   * @throws IOException when reading the stream fails.
-   * @throws ClassNotFoundException if a class definition for a serialized object
-   * could not be found.
+   * @throws IOException            when reading the stream fails.
+   * @throws ClassNotFoundException if a class definition for a serialized object could
+   *                                not be found.
    */
-  private void readObject(final ObjectInputStream in)
-      throws IOException, ClassNotFoundException
+  private void readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
     colorFalse = (Color) SerializerHelper.getInstance().readObject(in);
     colorTrue = (Color) SerializerHelper.getInstance().readObject(in);
   }
 
-  
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LayoutManagerCache.java,v 1.10 2005/01/25 22:55:42 taqua Exp $
+ * $Id: LayoutManagerCache.java,v 1.11 2005/02/19 13:29:55 taqua Exp $
  *
  * Changes
  * -------
@@ -46,8 +46,7 @@ import org.jfree.report.util.Log;
 import org.jfree.report.util.geom.StrictDimension;
 
 /**
- * A cache for a band layout manager. This caches element bounds, not
- * elements.
+ * A cache for a band layout manager. This caches element bounds, not elements.
  *
  * @author Thomas Morgner
  */
@@ -58,74 +57,84 @@ public class LayoutManagerCache
    */
   private static class ElementCacheCarrier
   {
-    /** The minimum size. */
+    /**
+     * The minimum size.
+     */
     private StrictDimension minSize;
 
-    /** The preferred size. */
+    /**
+     * The preferred size.
+     */
     private StrictDimension prefSize;
 
     /**
      * Default Constructor.
      */
-    public ElementCacheCarrier()
+    public ElementCacheCarrier ()
     {
     }
 
     /**
      * Returns the minimum size stored in this carrier.
-     *  
+     *
      * @return the minimum size stored in that carrier.
      */
-    public StrictDimension getMinSize()
+    public StrictDimension getMinSize ()
     {
       return minSize;
     }
 
     /**
      * Returns the preferred size stored in this carrier.
-     *  
+     *
      * @return the preferred size stored in that carrier.
      */
-    public StrictDimension getPrefSize()
+    public StrictDimension getPrefSize ()
     {
       return prefSize;
     }
 
     /**
      * Defines the minimum size stored in this carrier.
-     *  
+     *
      * @param dimension2D the minimum size to be stored in that carrier.
      */
-    public void setMinSize(final StrictDimension dimension2D)
+    public void setMinSize (final StrictDimension dimension2D)
     {
       minSize = dimension2D;
     }
 
     /**
      * Defines the minimum size stored in this carrier.
-     *  
+     *
      * @param dimension2D the minimum size stored in that carrier.
      */
-    public void setPrefSize(final StrictDimension dimension2D)
+    public void setPrefSize (final StrictDimension dimension2D)
     {
       prefSize = dimension2D;
     }
 
   }
 
-  /** The put count. */
+  /**
+   * The put count.
+   */
   private static int putCount;
 
-  /** The get count. */
+  /**
+   * The get count.
+   */
   private static int getCount;
 
-  /** The element cache. */
+  /**
+   * The element cache.
+   */
   private final WeakHashMap elementCache;
 
   /**
    * Default constructor.
    */
-  public LayoutManagerCache()
+  public LayoutManagerCache ()
   {
     elementCache = new WeakHashMap();
   }
@@ -133,11 +142,10 @@ public class LayoutManagerCache
   /**
    * Returns the minimum size of ???.
    *
-   * @param e  the layout cache key.
-   *
+   * @param e the layout cache key.
    * @return The minimum size.
    */
-  public StrictDimension getMinSize(final Object e)
+  public StrictDimension getMinSize (final Object e)
   {
     final ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(e);
     if (ec == null)
@@ -155,11 +163,10 @@ public class LayoutManagerCache
   /**
    * Returns the preferred size of ???.
    *
-   * @param e  the layout cache key.
-   *
+   * @param e the layout cache key.
    * @return The preferred size.
    */
-  public StrictDimension getPrefSize(final Object e)
+  public StrictDimension getPrefSize (final Object e)
   {
     final ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(e);
     if (ec == null)
@@ -177,10 +184,10 @@ public class LayoutManagerCache
   /**
    * Sets the minimum size of ???.
    *
-   * @param element  the element.
-   * @param d  the minimum size.
+   * @param element the element.
+   * @param d       the minimum size.
    */
-  public void setMinSize(final Element element, final StrictDimension d)
+  public void setMinSize (final Element element, final StrictDimension d)
   {
     if (element == null)
     {
@@ -210,10 +217,10 @@ public class LayoutManagerCache
   /**
    * Sets the preferred size of ???.
    *
-   * @param element  the element.
-   * @param d  the minimum size.
+   * @param element the element.
+   * @param d       the minimum size.
    */
-  public void setPrefSize(final Element element, final StrictDimension d)
+  public void setPrefSize (final Element element, final StrictDimension d)
   {
     if (element == null)
     {
@@ -242,11 +249,10 @@ public class LayoutManagerCache
   /**
    * Returns true if the specified element is cachable, and false otherwise.
    *
-   * @param e  the element.
-   *
+   * @param e the element.
    * @return A boolean.
    */
-  public boolean isCachable(final Element e)
+  public boolean isCachable (final Element e)
   {
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE) == false)
     {
@@ -257,7 +263,7 @@ public class LayoutManagerCache
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT))
     {
       e.getStyle().setBooleanStyleProperty
-          (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, false);
+              (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, false);
       return false;
     }
 
@@ -271,7 +277,7 @@ public class LayoutManagerCache
         if (isCachable(elements[i]) == false)
         {
           e.getStyle().setBooleanStyleProperty
-              (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, false);
+                  (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, false);
           return false;
         }
       }
@@ -282,7 +288,7 @@ public class LayoutManagerCache
   /**
    * Flushes the cache.
    */
-  public void flush()
+  public void flush ()
   {
     elementCache.clear();
   }
@@ -290,10 +296,10 @@ public class LayoutManagerCache
   /**
    * Prints debugging information.
    */
-  public static void printResults()
+  public static void printResults ()
   {
-    Log.debug("CacheResults: " + 
-        getCount + ":" + putCount + " Ratio: " + 
-        (getCount / (double) putCount));
+    Log.debug("CacheResults: " +
+            getCount + ":" + putCount + " Ratio: " +
+            (getCount / (double) putCount));
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WordBreakIterator.java,v 1.2.4.1 2004/11/21 16:39:27 taqua Exp $
+ * $Id: WordBreakIterator.java,v 1.4 2005/01/25 00:23:11 taqua Exp $
  *
  * Changes
  * -------
@@ -37,30 +37,36 @@
 package org.jfree.report.util;
 
 /**
- * Behaves similiar to BreakIterator.getWordInstance() but handles line break
- * delimeters as simple whitespaces.
- * <p>
+ * Behaves similiar to BreakIterator.getWordInstance() but handles line break delimeters
+ * as simple whitespaces.
+ * <p/>
  * This class is not synchronized.
  *
  * @author Thomas Morgner.
  */
 public class WordBreakIterator
 {
-  /** A useful constant. */
+  /**
+   * A useful constant.
+   */
   public static final int DONE = -1;
 
-  /** The current position. */
+  /**
+   * The current position.
+   */
   private int position;
 
-  /** Storage for characters. */
+  /**
+   * Storage for characters.
+   */
   private char[] text;
 
   /**
    * Creates a new iterator.
    *
-   * @param text  the text to break.
+   * @param text the text to break.
    */
-  public WordBreakIterator(final String text)
+  public WordBreakIterator (final String text)
   {
     setText(text);
   }
@@ -70,7 +76,7 @@ public class WordBreakIterator
    *
    * @return The index of the next word boundary.
    */
-  public int next()
+  public int next ()
   {
     if (position == DONE)
     {
@@ -108,12 +114,12 @@ public class WordBreakIterator
   }
 
   /**
-   * Same like next(), but returns the End-Of-Text as
-   * if there was a linebreak added (Reader.readLine() compatible)
+   * Same like next(), but returns the End-Of-Text as if there was a linebreak added
+   * (Reader.readLine() compatible)
    *
-   * @return  The next position.
+   * @return The next position.
    */
-  public int nextWithEnd()
+  public int nextWithEnd ()
   {
     final int pos = position;
     if (pos == DONE || pos == text.length)
@@ -133,7 +139,7 @@ public class WordBreakIterator
    *
    * @return The index.
    */
-  public int previous()
+  public int previous ()
   {
     //return lastFound;
 
@@ -178,7 +184,7 @@ public class WordBreakIterator
    *
    * @return the text.
    */
-  public String getText()
+  public String getText ()
   {
     return new String(text);
   }
@@ -186,9 +192,9 @@ public class WordBreakIterator
   /**
    * Sets the text to be broken up.
    *
-   * @param text  the text.
+   * @param text the text.
    */
-  public void setText(final String text)
+  public void setText (final String text)
   {
     position = 0;
     //lastFound = 0;
@@ -200,18 +206,18 @@ public class WordBreakIterator
    *
    * @return returns the current parsing position of this iterator.
    */
-  public int getPosition()
+  public int getPosition ()
   {
     return position;
   }
 
   /**
-   * Defines the current parse position for the word break iterator. The position
-   * must be positive and within the range of the current text.
+   * Defines the current parse position for the word break iterator. The position must be
+   * positive and within the range of the current text.
    *
    * @param position the position.
    */
-  public void setPosition(final int position)
+  public void setPosition (final int position)
   {
     if (position < 0)
     {

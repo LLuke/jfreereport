@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DecimalFormatFilter.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: DecimalFormatFilter.java,v 1.3 2004/05/07 08:24:42 mungady Exp $
  *
  * ChangeLog
  * ---------
@@ -47,39 +47,37 @@ import java.text.Format;
 /**
  * A filter that formats the numeric value from a data source to a string representation
  * using the decimal number system as base.
- *
- * This filter will format java.lang.Number objects using a
- * java.text.DecimalFormat to create the string representation for the date obtained
- * from the datasource.
- * <p>
+ * <p/>
+ * This filter will format java.lang.Number objects using a java.text.DecimalFormat to
+ * create the string representation for the date obtained from the datasource.
+ * <p/>
  * If the object read from the datasource is no date, the NullValue defined by
  * setNullValue(Object) is returned.
  *
+ * @author Thomas Morgner
  * @see java.text.NumberFormat
  * @see java.lang.Number
- *
- * @author Thomas Morgner
  */
 public class DecimalFormatFilter extends NumberFormatFilter
 {
   /**
-   * DefaultConstructor, this object is initialized using a DecimalFormat with the
-   * default pattern for this locale.
+   * DefaultConstructor, this object is initialized using a DecimalFormat with the default
+   * pattern for this locale.
    */
-  public DecimalFormatFilter()
+  public DecimalFormatFilter ()
   {
     setFormatter(new DecimalFormat());
   }
 
   /**
-   * Returns the format for the filter. The DecimalFormatParser has only DecimalFormat objects
-   * assigned.
+   * Returns the format for the filter. The DecimalFormatParser has only DecimalFormat
+   * objects assigned.
    *
    * @return the formatter.
    *
    * @throws NullPointerException if the given format is null
    */
-  public DecimalFormat getDecimalFormat()
+  public DecimalFormat getDecimalFormat ()
   {
     return (DecimalFormat) getFormatter();
   }
@@ -87,11 +85,10 @@ public class DecimalFormatFilter extends NumberFormatFilter
   /**
    * Sets the format for the filter.
    *
-   * @param format  the format.
-   *
+   * @param format the format.
    * @throws NullPointerException if the given format is null
    */
-  public void setDecimalFormat(final DecimalFormat format)
+  public void setDecimalFormat (final DecimalFormat format)
   {
     setFormatter(format);
   }
@@ -100,24 +97,23 @@ public class DecimalFormatFilter extends NumberFormatFilter
    * Sets the format for the filter. If the given format is no Decimal format, a
    * ClassCastException is thrown
    *
-   * @param format  the format.
-   *
+   * @param format the format.
    * @throws NullPointerException if the given format is null
-   * @throws ClassCastException if the format is no decimal format
+   * @throws ClassCastException   if the format is no decimal format
    */
-  public void setFormatter(final Format format)
+  public void setFormatter (final Format format)
   {
     final DecimalFormat dfmt = (DecimalFormat) format;
     super.setFormatter(dfmt);
   }
 
   /**
-   * Synthesizes a pattern string that represents the current state
-   * of this Format object.
+   * Synthesizes a pattern string that represents the current state of this Format
+   * object.
    *
    * @return the pattern string of the format object contained in this filter.
    */
-  public String getFormatString()
+  public String getFormatString ()
   {
     return getDecimalFormat().toPattern();
   }
@@ -125,30 +121,31 @@ public class DecimalFormatFilter extends NumberFormatFilter
   /**
    * Applies a format string to the internal <code>DecimalFormat</code> instance.
    *
-   * @param format  the format string.
+   * @param format the format string.
    */
-  public void setFormatString(final String format)
+  public void setFormatString (final String format)
   {
     getDecimalFormat().applyPattern(format);
   }
 
   /**
-   * Synthesizes a localized pattern string that represents the current state
-   * of this Format object.
+   * Synthesizes a localized pattern string that represents the current state of this
+   * Format object.
    *
    * @return the localized pattern string of the format-object.
    */
-  public String getLocalizedFormatString()
+  public String getLocalizedFormatString ()
   {
     return getDecimalFormat().toLocalizedPattern();
   }
 
   /**
-   * Applies a localised format string to the internal <code>DecimalFormat</code> instance.
+   * Applies a localised format string to the internal <code>DecimalFormat</code>
+   * instance.
    *
-   * @param format  the format string.
+   * @param format the format string.
    */
-  public void setLocalizedFormatString(final String format)
+  public void setLocalizedFormatString (final String format)
   {
     getDecimalFormat().applyLocalizedPattern(format);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceWriter.java,v 1.8 2005/01/25 00:20:28 taqua Exp $
+ * $Id: DataSourceWriter.java,v 1.9 2005/02/04 19:08:53 taqua Exp $
  *
  * Changes
  * -------
@@ -54,34 +54,36 @@ import org.jfree.xml.factory.objects.ObjectDescription;
  */
 public class DataSourceWriter extends ObjectWriter
 {
-  /** The data-source. */
+  /**
+   * The data-source.
+   */
   private DataSourceCollector dataSourceCollector;
 
   /**
    * Creates a new writer.
    *
-   * @param reportWriter  the report writer.
-   * @param baseObject  the base object.
+   * @param reportWriter      the report writer.
+   * @param baseObject        the base object.
    * @param objectDescription the object description.
-   * @param indent the current indention level.
-   * @param commentHintPath the path on where to search for ext-parser comments
-   * in the report builder hints.
-   * @throws ReportWriterException if an error occured.
-   * @throws IllegalArgumentException if the object description does
-   * not describe a datasource.
+   * @param indent            the current indention level.
+   * @param commentHintPath   the path on where to search for ext-parser comments in the
+   *                          report builder hints.
+   * @throws ReportWriterException    if an error occured.
+   * @throws IllegalArgumentException if the object description does not describe a
+   *                                  datasource.
    */
-  public DataSourceWriter(final ReportWriter reportWriter,
-                          final DataSource baseObject,
-                          final ObjectDescription objectDescription,
-                          final int indent,
-                          final CommentHintPath commentHintPath)
-      throws ReportWriterException
+  public DataSourceWriter (final ReportWriter reportWriter,
+                           final DataSource baseObject,
+                           final ObjectDescription objectDescription,
+                           final int indent,
+                           final CommentHintPath commentHintPath)
+          throws ReportWriterException
   {
     super(reportWriter, baseObject, objectDescription, indent, commentHintPath);
     if (DataSource.class.isAssignableFrom(objectDescription.getObjectClass()) == false)
     {
       throw new IllegalArgumentException("Expect a datasource description, but got "
-          + objectDescription.getObjectClass());
+              + objectDescription.getObjectClass());
     }
     dataSourceCollector = getReportWriter().getDataSourceCollector();
   }
@@ -89,14 +91,13 @@ public class DataSourceWriter extends ObjectWriter
   /**
    * Writes a parameter.
    *
-   * @param writer  the writer.
-   * @param name  the name.
-   *
-   * @throws IOException if there is an I/O problem.
+   * @param writer the writer.
+   * @param name   the name.
+   * @throws IOException           if there is an I/O problem.
    * @throws ReportWriterException if the report definition could not be written.
    */
-  protected void writeParameter(final Writer writer, final String name)
-      throws IOException, ReportWriterException
+  protected void writeParameter (final Writer writer, final String name)
+          throws IOException, ReportWriterException
   {
     if (name.equals("dataSource"))
     {
@@ -107,7 +108,7 @@ public class DataSourceWriter extends ObjectWriter
       if (dsname == null)
       {
         throw new ReportWriterException("The datasource type is not registered: "
-            + ds.getClass());
+                + ds.getClass());
       }
 
       final CommentHintPath path = getCommentHintPath().getInstance();
@@ -116,7 +117,7 @@ public class DataSourceWriter extends ObjectWriter
       writeTag(writer, DATASOURCE_TAG, "type", dsname, OPEN);
 
       final DataSourceWriter dsWriter =
-          new DataSourceWriter(getReportWriter(), ds, dsDesc, getIndentLevel(), path);
+              new DataSourceWriter(getReportWriter(), ds, dsDesc, getIndentLevel(), path);
       dsWriter.write(writer);
 
       writeComment(writer, path, CommentHandler.CLOSE_TAG_COMMENT);

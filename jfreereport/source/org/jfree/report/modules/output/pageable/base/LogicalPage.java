@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LogicalPage.java,v 1.4 2004/03/16 15:09:49 taqua Exp $
+ * $Id: LogicalPage.java,v 1.5 2004/05/07 12:53:08 mungady Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@ package org.jfree.report.modules.output.pageable.base;
 import org.jfree.report.layout.LayoutSupport;
 
 /**
- * An interface that defines a logical page. A logical page defines the
- * metrics of an output target.
+ * An interface that defines a logical page. A logical page defines the metrics of an
+ * output target.
  *
  * @author Thomas Morgner.
  */
@@ -52,20 +52,20 @@ public interface LogicalPage
    *
    * @return the page width.
    */
-  public float getWidth();
+  public float getWidth ();
 
   /**
    * Returns the page height.
    *
    * @return the page height.
    */
-  public float getHeight();
+  public float getHeight ();
 
   /**
    * Gets the output target metrics.
    *
    * @return the output target metrics.
    */
-  public LayoutSupport getLayoutSupport();
+  public LayoutSupport getLayoutSupport ();
 
 }

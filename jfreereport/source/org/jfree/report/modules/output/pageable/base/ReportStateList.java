@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.8 2004/04/15 15:14:20 taqua Exp $
+ * $Id: ReportStateList.java,v 1.9 2004/05/07 12:53:08 mungady Exp $
  *
  * Changes
  * -------
@@ -49,19 +49,18 @@ import org.jfree.report.states.ReportStateProgress;
 import org.jfree.report.util.WeakReferenceList;
 
 /**
- * The ReportState list stores a report states for the beginning of every page.
- * The list is filled on repagination and read when a report or a page of the report
- * is printed.
- * <p>
- * Important: This list stores page start report states, not arbitary report states.
- * These ReportStates are special: they can be reproduced by calling processPage on the report.
- * <p>
- * Internally this list is organized as a list of WeakReferenceLists, where every WeakReferenceList
- * stores a certain number of page states. The first 20 states are stored in an ordinary
- * list with strong-references, so these states never get GarbageCollected (and so
- * they must never be restored by reprocessing them). The next 100 states are stored
- * in 4-element ReferenceLists, so if a reference is lost, only 4 states have to be
- * reprocessed. All other states are stored in 10-element lists.
+ * The ReportState list stores a report states for the beginning of every page. The list
+ * is filled on repagination and read when a report or a page of the report is printed.
+ * <p/>
+ * Important: This list stores page start report states, not arbitary report states. These
+ * ReportStates are special: they can be reproduced by calling processPage on the report.
+ * <p/>
+ * Internally this list is organized as a list of WeakReferenceLists, where every
+ * WeakReferenceList stores a certain number of page states. The first 20 states are
+ * stored in an ordinary list with strong-references, so these states never get
+ * GarbageCollected (and so they must never be restored by reprocessing them). The next
+ * 100 states are stored in 4-element ReferenceLists, so if a reference is lost, only 4
+ * states have to be reprocessed. All other states are stored in 10-element lists.
  *
  * @author Thomas Morgner
  */
@@ -73,16 +72,24 @@ public class ReportStateList
    * time.
    */
 
-  /** The maxmimum masterposition size. */
+  /**
+   * The maxmimum masterposition size.
+   */
   private static final int MASTERPOSITIONS_MAX = 10;
 
-  /** The medium masterposition size. */
+  /**
+   * The medium masterposition size.
+   */
   private static final int MASTERPOSITIONS_MED = 4;
 
-  /** The max index that will be stored in the primary list. */
+  /**
+   * The max index that will be stored in the primary list.
+   */
   private static final int PRIMARY_MAX = 20;
 
-  /** The max index that will be stored in the master4 list. */
+  /**
+   * The max index that will be stored in the master4 list.
+   */
   private static final int MASTER4_MAX = 120;
 
   /**
@@ -91,16 +98,18 @@ public class ReportStateList
    */
   private static final class MasterList extends WeakReferenceList
   {
-    /** The master list. */
+    /**
+     * The master list.
+     */
     private final ReportStateList master;
 
     /**
      * Creates a new master list.
      *
-     * @param list  the list.
+     * @param list          the list.
      * @param maxChildCount the maximum number of elements in this list.
      */
-    private MasterList(final ReportStateList list, final int maxChildCount)
+    private MasterList (final ReportStateList list, final int maxChildCount)
     {
       super(maxChildCount);
       this.master = list;
@@ -109,12 +118,11 @@ public class ReportStateList
     /**
      * Function to restore the state of a child after the child was garbage collected.
      *
-     * @param index  the index.
-     *
-     * @return the restored ReportState of the given index, or null, if the state
-     * could not be restored.
+     * @param index the index.
+     * @return the restored ReportState of the given index, or null, if the state could
+     *         not be restored.
      */
-    protected Object restoreChild(final int index)
+    protected Object restoreChild (final int index)
     {
       final ReportState master = (ReportState) getMaster();
       if (master == null)
@@ -133,18 +141,18 @@ public class ReportStateList
     }
 
     /**
-     * Internal handler function restore a state. Count denotes the number of pages required
-     * to be processed to restore the page, when the reportstate master is used as source element.
+     * Internal handler function restore a state. Count denotes the number of pages
+     * required to be processed to restore the page, when the reportstate master is used
+     * as source element.
      *
-     * @param count  the count.
-     * @param rootstate  the root state.
-     *
+     * @param count     the count.
+     * @param rootstate the root state.
      * @return the report state.
      *
      * @throws ReportProcessingException if there was a problem processing the report.
      */
-    protected ReportState restoreState(final int count, final ReportState rootstate)
-        throws ReportProcessingException
+    protected ReportState restoreState (final int count, final ReportState rootstate)
+            throws ReportProcessingException
     {
       if (rootstate == null)
       {
@@ -171,13 +179,16 @@ public class ReportStateList
 
     /**
      * Todo Change me !
+     *
      * @param currPage
      * @param failOnError
      * @return
+     *
      * @throws ReportProcessingException
      */
-    protected ReportState processDummyPage(final ReportState currPage, final boolean failOnError)
-        throws ReportProcessingException
+    protected ReportState processDummyPage (final ReportState currPage,
+                                            final boolean failOnError)
+            throws ReportProcessingException
     {
       final PageProcess pageProcess = master.getPageProcess();
       final ReportState state = pageProcess.processPage(currPage, failOnError);
@@ -188,15 +199,16 @@ public class ReportStateList
 
 
   /**
-   * The list of master states. This is a list of WeakReferenceLists. These WeakReferenceLists
-   * contain their master state as first child. The weakReferenceLists have a maxSize of 10,
-   * so every 10th state will protected from being garbageCollected.
+   * The list of master states. This is a list of WeakReferenceLists. These
+   * WeakReferenceLists contain their master state as first child. The weakReferenceLists
+   * have a maxSize of 10, so every 10th state will protected from being
+   * garbageCollected.
    */
   private ArrayList masterStates10; // all states > 120
   /**
-   * The list of master states. This is a list of WeakReferenceLists. These WeakReferenceLists
-   * contain their master state as first child. The weakReferenceLists have a maxSize of 4,
-   * so every 4th state will protected from being garbageCollected.
+   * The list of master states. This is a list of WeakReferenceLists. These
+   * WeakReferenceLists contain their master state as first child. The weakReferenceLists
+   * have a maxSize of 4, so every 4th state will protected from being garbageCollected.
    */
   private ArrayList masterStates4; // all states from 20 - 120
 
@@ -206,20 +218,21 @@ public class ReportStateList
    */
   private ArrayList primaryStates; // all states from 0 - 20
 
-  /** The number of elements in this list. */
+  /**
+   * The number of elements in this list.
+   */
   private int size;
 
   private PageProcess pageProcess;
 
   /**
-   * Creates a new reportstatelist. The list will be filled using the specified report
-   * and output target. Filling of the list is done elsewhere.
+   * Creates a new reportstatelist. The list will be filled using the specified report and
+   * output target. Filling of the list is done elsewhere.
    *
    * @param proc the reportprocessor used to restore lost states (null not permitted).
-   *
    * @throws NullPointerException if the report processor is <code>null</code>.
    */
-  public ReportStateList(final PageProcess proc)
+  public ReportStateList (final PageProcess proc)
   {
     if (proc == null)
     {
@@ -237,12 +250,11 @@ public class ReportStateList
   /**
    * Returns the index of the WeakReferenceList in the master list.
    *
-   * @param pos  the position.
-   * @param maxListSize  the maximum list size.
-   *
+   * @param pos         the position.
+   * @param maxListSize the maximum list size.
    * @return the position within the masterStateList.
    */
-  private int getMasterPos(final int pos, final int maxListSize)
+  private int getMasterPos (final int pos, final int maxListSize)
   {
     return (int) Math.floor(pos / maxListSize);
   }
@@ -257,7 +269,7 @@ public class ReportStateList
    *
    * @return the number of elements in the list.
    */
-  public int size()
+  public int size ()
   {
     return this.size;
   }
@@ -265,9 +277,9 @@ public class ReportStateList
   /**
    * Adds this report state to the end of the list.
    *
-   * @param state  the report state.
+   * @param state the report state.
    */
-  public void add(final ReportState state)
+  public void add (final ReportState state)
   {
     if (state == null)
     {
@@ -328,7 +340,7 @@ public class ReportStateList
   /**
    * Removes all elements in the list.
    */
-  public void clear()
+  public void clear ()
   {
     masterStates10.clear();
     masterStates4.clear();
@@ -339,16 +351,15 @@ public class ReportStateList
   /**
    * Retrieves the element on position <code>index</code> in this list.
    *
-   * @param index  the index.
-   *
+   * @param index the index.
    * @return the report state.
    */
-  public ReportState get(int index)
+  public ReportState get (int index)
   {
     if (index >= size() || index < 0)
     {
       throw new IndexOutOfBoundsException
-          ("Index is invalid. Index was " + index + "; size was " + size());
+              ("Index is invalid. Index was " + index + "; size was " + size());
     }
     if (index < PRIMARY_MAX)
     {
@@ -358,14 +369,14 @@ public class ReportStateList
     {
       index -= PRIMARY_MAX;
       final MasterList master
-          = (MasterList) masterStates4.get(getMasterPos(index, MASTERPOSITIONS_MED));
+              = (MasterList) masterStates4.get(getMasterPos(index, MASTERPOSITIONS_MED));
       return (ReportState) master.get(index);
     }
     else
     {
       index -= MASTER4_MAX;
       final MasterList master
-          = (MasterList) masterStates10.get(getMasterPos(index, MASTERPOSITIONS_MAX));
+              = (MasterList) masterStates10.get(getMasterPos(index, MASTERPOSITIONS_MAX));
       return (ReportState) master.get(index);
     }
   }

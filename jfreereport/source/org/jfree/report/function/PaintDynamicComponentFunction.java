@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.9 2005/01/28 19:26:49 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.10 2005/02/04 19:22:54 taqua Exp $
  *
  * Changes
  * -------
@@ -56,18 +56,21 @@ import org.jfree.report.event.ReportEvent;
 import org.jfree.report.util.ImageUtils;
 
 /**
- * Paints a AWT or Swing Component. The component must be contained in the
- * dataRow.
+ * Paints a AWT or Swing Component. The component must be contained in the dataRow.
  *
  * @author Thomas Morgner
  */
 public class PaintDynamicComponentFunction extends AbstractFunction
-    implements Serializable, PageEventListener
+        implements Serializable, PageEventListener
 {
-  /** the created image, cached for getValue(). */
+  /**
+   * the created image, cached for getValue().
+   */
   private transient Image image;
 
-  /** supplies a valid peer for the draw operation. */
+  /**
+   * supplies a valid peer for the draw operation.
+   */
   private transient Frame peerSupply;
 
   private String field;
@@ -76,10 +79,10 @@ public class PaintDynamicComponentFunction extends AbstractFunction
   /**
    * DefaultConstructor.
    *
-   * @throws IllegalStateException (HeadlessException) if no full
-   * AWT is available. This function needs a working layout manager.
+   * @throws IllegalStateException (HeadlessException) if no full AWT is available. This
+   *                               function needs a working layout manager.
    */
-  public PaintDynamicComponentFunction()
+  public PaintDynamicComponentFunction ()
   {
     peerSupply = new Frame();
     peerSupply.setLayout(new BorderLayout());
@@ -87,25 +90,23 @@ public class PaintDynamicComponentFunction extends AbstractFunction
   }
 
   /**
-   * Returns the field used by the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Returns the field used by the function. <P> The field name corresponds to a column
+   * name in the report's TableModel.
    *
    * @return The field name.
    */
-  public String getField()
+  public String getField ()
   {
     return field;
   }
 
   /**
-   * Sets the field name for the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Sets the field name for the function. <P> The field name corresponds to a column name
+   * in the report's TableModel.
    *
-   * @param field  the field name (null not permitted).
+   * @param field the field name (null not permitted).
    */
-  public void setField(final String field)
+  public void setField (final String field)
   {
     this.field = field;
   }
@@ -113,21 +114,20 @@ public class PaintDynamicComponentFunction extends AbstractFunction
   /**
    * Receives notification that the report has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportStarted(final ReportEvent event)
+  public void reportStarted (final ReportEvent event)
   {
     image = null;
   }
 
   /**
-   * Receives notification that report generation initializes the current run.
-   * <P>
-   * The event carries a ReportState.Started state.  Use this to initialize the report.
+   * Receives notification that report generation initializes the current run. <P> The
+   * event carries a ReportState.Started state.  Use this to initialize the report.
    *
    * @param event The event.
    */
-  public void reportInitialized(final ReportEvent event)
+  public void reportInitialized (final ReportEvent event)
   {
     image = null;
   }
@@ -135,9 +135,9 @@ public class PaintDynamicComponentFunction extends AbstractFunction
   /**
    * Receives notification that the report has finished.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportFinished(final ReportEvent event)
+  public void reportFinished (final ReportEvent event)
   {
     image = null;
   }
@@ -145,9 +145,9 @@ public class PaintDynamicComponentFunction extends AbstractFunction
   /**
    * Receives notification that a page has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void pageStarted(final ReportEvent event)
+  public void pageStarted (final ReportEvent event)
   {
     image = null;
   }
@@ -155,21 +155,20 @@ public class PaintDynamicComponentFunction extends AbstractFunction
   /**
    * Receives notification that a page has ended.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void pageFinished(final ReportEvent event)
+  public void pageFinished (final ReportEvent event)
   {
     image = null;
   }
 
   /**
-   * Receives notification that a page was canceled by the ReportProcessor.
-   * This method is called, when a page was removed from the report after
-   * it was generated.
+   * Receives notification that a page was canceled by the ReportProcessor. This method is
+   * called, when a page was removed from the report after it was generated.
    *
    * @param event The event.
    */
-  public void pageCanceled(final ReportEvent event)
+  public void pageCanceled (final ReportEvent event)
   {
     image = null;
   }
@@ -188,9 +187,9 @@ public class PaintDynamicComponentFunction extends AbstractFunction
   /**
    * Receives notification that a group has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupStarted(final ReportEvent event)
+  public void groupStarted (final ReportEvent event)
   {
     image = null;
   }
@@ -198,9 +197,9 @@ public class PaintDynamicComponentFunction extends AbstractFunction
   /**
    * Receives notification that a group has finished.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupFinished(final ReportEvent event)
+  public void groupFinished (final ReportEvent event)
   {
     image = null;
   }
@@ -208,9 +207,9 @@ public class PaintDynamicComponentFunction extends AbstractFunction
   /**
    * Receives notification that a row of data is being processed.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void itemsAdvanced(final ReportEvent event)
+  public void itemsAdvanced (final ReportEvent event)
   {
     image = null;
   }
@@ -220,7 +219,7 @@ public class PaintDynamicComponentFunction extends AbstractFunction
    *
    * @return the created image or null, if no image could be created.
    */
-  private Image createComponentImage()
+  private Image createComponentImage ()
   {
     final Object o = getDataRow().get(getField());
     if ((o instanceof Component) == false)
@@ -242,10 +241,10 @@ public class PaintDynamicComponentFunction extends AbstractFunction
       peerSupply.validate();
 
       final BufferedImage bi =
-          ImageUtils.createTransparentImage
-          ((int) scale * dim.width, (int) scale * dim.height);
+              ImageUtils.createTransparentImage
+              ((int) scale * dim.width, (int) scale * dim.height);
       final Graphics2D graph = bi.createGraphics();
-      graph.setBackground(new Color (0,0,0,0));
+      graph.setBackground(new Color(0, 0, 0, 0));
       graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
       comp.paint(graph);
       graph.dispose();
@@ -254,13 +253,12 @@ public class PaintDynamicComponentFunction extends AbstractFunction
   }
 
   /**
-   * Return the current expression value.
-   * <P>
-   * The value depends (obviously) on the expression implementation.
+   * Return the current expression value. <P> The value depends (obviously) on the
+   * expression implementation.
    *
    * @return the value of the function.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     if (image == null)
     {
@@ -273,37 +271,37 @@ public class PaintDynamicComponentFunction extends AbstractFunction
   }
 
   /**
-   * Define a scale factor for the created image. Using a higher scale factor
-   * will produce better results. A scale factor of 2 will double the resolution.
-   * A scale factor of 1 will create 72 dpi images.
+   * Define a scale factor for the created image. Using a higher scale factor will produce
+   * better results. A scale factor of 2 will double the resolution. A scale factor of 1
+   * will create 72 dpi images.
    *
    * @param scale the scale factor.
    */
-  public void setScale(final float scale)
+  public void setScale (final float scale)
   {
     this.scale = scale;
   }
 
 
   /**
-   * Gets the scale factor for the created image. Using a higher scale factor
-   * will produce better results. A scale factor of 2 will double the resolution.
-   * A scale factor of 1 will create 72 dpi images.
+   * Gets the scale factor for the created image. Using a higher scale factor will produce
+   * better results. A scale factor of 2 will double the resolution. A scale factor of 1
+   * will create 72 dpi images.
    *
    * @return the scale factor.
    */
-  public float getScale()
+  public float getScale ()
   {
     return scale;
   }
 
   /**
-   * Return a completly separated copy of this function. The copy does no
-   * longer share any changeable objects with the original function.
+   * Return a completly separated copy of this function. The copy does no longer share any
+   * changeable objects with the original function.
    *
    * @return a copy of this function.
    */
-  public Expression getInstance()
+  public Expression getInstance ()
   {
     final PaintDynamicComponentFunction pc = (PaintDynamicComponentFunction) super.getInstance();
     pc.peerSupply = new Frame();
@@ -316,12 +314,12 @@ public class PaintDynamicComponentFunction extends AbstractFunction
    * Helper method for serialization.
    *
    * @param in the input stream from where to read the serialized object.
-   * @throws IOException when reading the stream fails.
-   * @throws ClassNotFoundException if a class definition for a serialized object
-   * could not be found.
+   * @throws IOException            when reading the stream fails.
+   * @throws ClassNotFoundException if a class definition for a serialized object could
+   *                                not be found.
    */
-  private void readObject(final ObjectInputStream in)
-      throws IOException, ClassNotFoundException
+  private void readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
     peerSupply = new Frame();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BeanShellModule.java,v 1.7 2005/01/25 00:08:01 taqua Exp $
+ * $Id: BeanShellModule.java,v 1.8 2005/02/04 19:22:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,10 +40,10 @@ package org.jfree.report.modules.misc.beanshell;
 
 import java.io.InputStream;
 
-import org.jfree.util.ObjectUtilities;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
+import org.jfree.util.ObjectUtilities;
 
 /**
  * The module definition for the beanshell expression support module.
@@ -54,9 +54,11 @@ public class BeanShellModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public BeanShellModule() throws ModuleInitializeException
+  public BeanShellModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }
@@ -75,20 +77,20 @@ public class BeanShellModule extends AbstractModule
           throws ModuleInitializeException
   {
     final InputStream in =
-        ObjectUtilities.getClassLoader(getClass()).getResourceAsStream(BSHExpression.BSHHEADERFILE);
+            ObjectUtilities.getClassLoader(getClass()).getResourceAsStream(BSHExpression.BSHHEADERFILE);
     if (in == null)
     {
       throw new ModuleInitializeException("Unable to locate BSHHeaderFile. " +
-          "This file is required to execute the BeanShellExpressions.");
+              "This file is required to execute the BeanShellExpressions.");
     }
     try
     {
       ObjectUtilities.getClassLoader(getClass()).loadClass("bsh.Interpreter");
     }
-    catch(Exception e)
+    catch (Exception e)
     {
       throw new ModuleInitializeException("Unable to load the bean shell interpreter class. " +
-          "This class is required to execute the BeanShellExpressions.");
+              "This class is required to execute the BeanShellExpressions.");
     }
   }
 }

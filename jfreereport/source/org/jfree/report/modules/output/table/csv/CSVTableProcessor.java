@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVTableProcessor.java,v 1.6.4.1 2004/12/13 19:27:07 taqua Exp $
+ * $Id: CSVTableProcessor.java,v 1.9 2005/01/25 00:13:08 taqua Exp $
  *
  * Changes
  * -------
@@ -53,45 +53,50 @@ import org.jfree.report.modules.output.table.base.TableProcessor;
 /**
  * The <code>CSVTableProcessor</code> coordinates the output for the layouted CSV output.
  * The bands are layouted and the layouted contents are printed into the csv-file.
- * <p>
+ * <p/>
  * For data oriented csv output try the <code>org.jfree.report.targets.csv.CSVProcessor</code>.
- * The used writer is not closed after the processing, the caller is responsible to
- * close the writer.
- * <p>
- * The CellSeparator can be used to alter the separator character, f.i. to
- * create tab-separated files.
- *
- * @see CSVProcessor
+ * The used writer is not closed after the processing, the caller is responsible to close
+ * the writer.
+ * <p/>
+ * The CellSeparator can be used to alter the separator character, f.i. to create
+ * tab-separated files.
  *
  * @author Thomas Morgner
- *
+ * @see CSVProcessor
  */
 public class CSVTableProcessor extends TableProcessor
 {
-  /** The writer used for the output. */
+  /**
+   * The writer used for the output.
+   */
   private Writer writer;
 
-  /** the configuration prefix for the csv table producer. */
+  /**
+   * the configuration prefix for the csv table producer.
+   */
   public static final String CONFIGURATION_PREFIX =
-      "org.jfree.report.modules.output.table.csv";
+          "org.jfree.report.modules.output.table.csv";
 
-  /** the key for the separator string. */
+  /**
+   * the key for the separator string.
+   */
   public static final String SEPARATOR_KEY = "Separator";
 
-  /** The default value for the separator string (","). */
+  /**
+   * The default value for the separator string (",").
+   */
   public static final String SEPARATOR_DEFAULT = ",";
 
   /**
-   * Creates a new CSV table processor for the given report and uses the given
-   * separator string.
+   * Creates a new CSV table processor for the given report and uses the given separator
+   * string.
    *
-   * @param report  the report to process.
-   *
+   * @param report the report to process.
    * @throws ReportProcessingException if the report initialization failed
-   * @throws NullPointerException if the given separator is <code>null</code>.
+   * @throws NullPointerException      if the given separator is <code>null</code>.
    */
-  public CSVTableProcessor(final JFreeReport report)
-      throws ReportProcessingException
+  public CSVTableProcessor (final JFreeReport report)
+          throws ReportProcessingException
   {
     super(report);
   }
@@ -101,7 +106,7 @@ public class CSVTableProcessor extends TableProcessor
    *
    * @return The defined separator for the output.
    */
-  public String getSeparator()
+  public String getSeparator ()
   {
     return getReport().getReportConfiguration().getConfigProperty
             (getReportConfigurationPrefix() + "." + SEPARATOR_KEY, ",");
@@ -110,11 +115,11 @@ public class CSVTableProcessor extends TableProcessor
   /**
    * Defines the separator string for the generated output.
    *
-   * @param separator the defined separator for the output (<code>null</code> not permitted).
-   *
+   * @param separator the defined separator for the output (<code>null</code> not
+   *                  permitted).
    * @throws NullPointerException if the given separator is <code>null</code>.
    */
-  public void setSeparator(final String separator)
+  public void setSeparator (final String separator)
   {
     if (separator == null)
     {
@@ -129,7 +134,7 @@ public class CSVTableProcessor extends TableProcessor
    *
    * @return the writer.
    */
-  public Writer getWriter()
+  public Writer getWriter ()
   {
     return writer;
   }
@@ -139,18 +144,20 @@ public class CSVTableProcessor extends TableProcessor
    *
    * @param writer the writer.
    */
-  public void setWriter(final Writer writer)
+  public void setWriter (final Writer writer)
   {
     this.writer = writer;
   }
 
   /**
    * Creates the CSVTableProducer. The TableProducer is responsible to create the table.
+   *
    * @return the created table producer, never null.
+   *
    * @throws IllegalStateException if the writer is not defined or no layout creator was
-   * found.
+   *                               found.
    */
-  protected TableCreator createContentCreator()
+  protected TableCreator createContentCreator ()
   {
     if (writer == null)
     {
@@ -161,17 +168,17 @@ public class CSVTableProcessor extends TableProcessor
   }
 
   /**
-   * Gets the report configuration prefix for that processor. This prefix defines
-   * how to map the property names into the global report configuration.
+   * Gets the report configuration prefix for that processor. This prefix defines how to
+   * map the property names into the global report configuration.
    *
    * @return the report configuration prefix.
    */
-  protected String getReportConfigurationPrefix()
+  protected String getReportConfigurationPrefix ()
   {
     return CONFIGURATION_PREFIX;
   }
 
-  protected MetaBandProducer createMetaBandProducer()
+  protected MetaBandProducer createMetaBandProducer ()
   {
     return new CSVMetaBandProducer(new DefaultLayoutSupport());
   }

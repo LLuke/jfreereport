@@ -42,11 +42,11 @@ public class Organization
 
   public void addLeader (final LeaderRecord record)
   {
-    leaders.add (record);
+    leaders.add(record);
   }
 
   public void addSubOrganization (final SubOrganizationRecord record)
   {
-    subOrganizations.add (record);
+    subOrganizations.add(record);
   }
 }

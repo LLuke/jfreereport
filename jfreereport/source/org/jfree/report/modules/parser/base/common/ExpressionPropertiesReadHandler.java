@@ -4,9 +4,8 @@ import java.beans.IntrospectionException;
 
 import org.jfree.report.function.Expression;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
-import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.CommentHintPath;
-import org.jfree.report.modules.parser.base.common.ExpressionPropertyReadHandler;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.report.util.beans.BeanUtility;
 import org.jfree.xml.parser.XmlReadHandler;

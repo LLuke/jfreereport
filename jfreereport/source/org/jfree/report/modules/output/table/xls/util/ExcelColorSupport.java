@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelColorSupport.java,v 1.2.2.1 2004/12/13 19:27:12 taqua Exp $
+ * $Id: ExcelColorSupport.java,v 1.3 2005/01/25 00:17:02 taqua Exp $
  *
  * Changes
  * -------
@@ -56,28 +56,28 @@ public final class ExcelColorSupport
 {
   /**
    * DefaultConstructor.
-   *
    */
-  private ExcelColorSupport()
+  private ExcelColorSupport ()
   {
   }
 
-  /** the pre-defined excel color triplets. */
+  /**
+   * the pre-defined excel color triplets.
+   */
   private static Hashtable triplets;
 
   /**
    * Find a suitable color for the cell.
-   *
+   * <p/>
    * The algorithm searches all available triplets, weighted by tripletvalue and
-   * tripletdifference to the other triplets. The color wins, which has the
-   * smallest triplet difference and where all triplets are nearest to the
-   * requested color. Damn, why couldn't these guys from microsoft implement
-   * a real color system.
+   * tripletdifference to the other triplets. The color wins, which has the smallest
+   * triplet difference and where all triplets are nearest to the requested color. Damn,
+   * why couldn't these guys from microsoft implement a real color system.
    *
    * @param awtColor the awt color that should be transformed into an Excel color.
    * @return the excel color index that is nearest to the supplied color.
    */
-  public static short getNearestColor(final Color awtColor)
+  public static short getNearestColor (final Color awtColor)
   {
     short color = HSSFColor.BLACK.index;
 

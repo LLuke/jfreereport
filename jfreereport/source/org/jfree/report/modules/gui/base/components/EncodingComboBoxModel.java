@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.10.4.5 2004/11/21 18:28:19 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.12 2005/01/25 00:03:28 taqua Exp $
  *
  * Changes
  * --------
@@ -55,44 +55,53 @@ import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
- * A model for the 'encoding' combo box. This combobox model presents a selection
- * for all available string encodings.
+ * A model for the 'encoding' combo box. This combobox model presents a selection for all
+ * available string encodings.
  *
  * @author Thomas Morgner.
  */
 public class EncodingComboBoxModel implements ComboBoxModel
 {
-  /** A default description. */
+  /**
+   * A default description.
+   */
   private static final String ENCODING_DEFAULT_DESCRIPTION =
-      "[no description]";
+          "[no description]";
 
-  /** The property that defines which encodings are available in the export dialogs. */
+  /**
+   * The property that defines which encodings are available in the export dialogs.
+   */
   public static final String AVAILABLE_ENCODINGS
-      = "org.jfree.report.modules.gui.base.EncodingsAvailable";
+          = "org.jfree.report.modules.gui.base.EncodingsAvailable";
 
-  /** The encodings available properties value for all properties. */
+  /**
+   * The encodings available properties value for all properties.
+   */
   public static final String AVAILABLE_ENCODINGS_ALL = "all";
-  /** The encodings available properties value for properties defined in the properties file. */
+  /**
+   * The encodings available properties value for properties defined in the properties
+   * file.
+   */
   public static final String AVAILABLE_ENCODINGS_FILE = "file";
   /**
-   * The encodings available properties value for no properties defined. The encoding selection
-   * will be disabled.
+   * The encodings available properties value for no properties defined. The encoding
+   * selection will be disabled.
    */
   public static final String AVAILABLE_ENCODINGS_NONE = "none";
 
   /**
-   * The name of the properties file used to define the available encodings.
-   * The property points to a resources in the classpath, not to a real file!
+   * The name of the properties file used to define the available encodings. The property
+   * points to a resources in the classpath, not to a real file!
    */
   public static final String ENCODINGS_DEFINITION_FILE
-      = "org.jfree.report.modules.gui.base.EncodingsFile";
+          = "org.jfree.report.modules.gui.base.EncodingsFile";
 
   /**
    * The default name for the encoding properties file. This property defaults to
    * &quot;/org/jfree/report/jfreereport-encodings.properties&quot;.
    */
   public static final String ENCODINGS_DEFINITION_FILE_DEFAULT
-      = "/org/jfree/report/modules/gui/base/components/jfreereport-encodings.properties";
+          = "/org/jfree/report/modules/gui/base/components/jfreereport-encodings.properties";
 
 
   /**
@@ -105,21 +114,19 @@ public class EncodingComboBoxModel implements ComboBoxModel
     }
 
     /**
-     * Compares its two arguments for order.  Returns a negative integer,
-     * zero, or a positive integer as the first argument is less than, equal
-     * to, or greater than the second.
+     * Compares its two arguments for order.  Returns a negative integer, zero, or a
+     * positive integer as the first argument is less than, equal to, or greater than the
+     * second.
      *
-     * @param o1  the first object to be compared.
-     * @param o2  the second object to be compared.
-     *
-     * @return a negative integer, zero, or a positive integer as the
-     *         first argument is less than, equal to, or greater than the
-     *         second.
+     * @param o1 the first object to be compared.
+     * @param o2 the second object to be compared.
+     * @return a negative integer, zero, or a positive integer as the first argument is
+     *         less than, equal to, or greater than the second.
      *
      * @throws java.lang.ClassCastException if the arguments' types prevent them from
-     *         being compared by this Comparator.
+     *                                      being compared by this Comparator.
      */
-    public int compare(final Object o1, final Object o2)
+    public int compare (final Object o1, final Object o2)
     {
       final EncodingCarrier e1 = (EncodingCarrier) o1;
       final EncodingCarrier e2 = (EncodingCarrier) o2;
@@ -127,14 +134,13 @@ public class EncodingComboBoxModel implements ComboBoxModel
     }
 
     /**
-     * Returns <code>true</code> if this object is equal to <code>o</code>, and <code>false</code>
-     * otherwise.
+     * Returns <code>true</code> if this object is equal to <code>o</code>, and
+     * <code>false</code> otherwise.
      *
-     * @param o  the object.
-     *
+     * @param o the object.
      * @return A boolean.
      */
-    public boolean equals(final Object o)
+    public boolean equals (final Object o)
     {
       if (o == null)
       {
@@ -148,7 +154,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
      *
      * @return A hash code.
      */
-    public int hashCode()
+    public int hashCode ()
     {
       return getClass().hashCode();
     }
@@ -159,22 +165,28 @@ public class EncodingComboBoxModel implements ComboBoxModel
    */
   private static class EncodingCarrier
   {
-    /** The encoding name. */
+    /**
+     * The encoding name.
+     */
     private String name;
 
-    /** The encoding description. */
+    /**
+     * The encoding description.
+     */
     private String description;
 
-    /** The display name. */
+    /**
+     * The display name.
+     */
     private String displayName;
 
     /**
      * Creates a new encoding.
      *
-     * @param name  the name (<code>null</code> not permitted).
-     * @param description  the description.
+     * @param name        the name (<code>null</code> not permitted).
+     * @param description the description.
      */
-    public EncodingCarrier(final String name, final String description)
+    public EncodingCarrier (final String name, final String description)
     {
       if (name == null)
       {
@@ -195,7 +207,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
      *
      * @return The name.
      */
-    public String getName()
+    public String getName ()
     {
       return name;
     }
@@ -205,29 +217,30 @@ public class EncodingComboBoxModel implements ComboBoxModel
      *
      * @return The description.
      */
-    public String getDescription()
+    public String getDescription ()
     {
       return description;
     }
 
     /**
-     * Returns the display name (the regular name followed by the description in brackets).
+     * Returns the display name (the regular name followed by the description in
+     * brackets).
      *
      * @return The display name.
      */
-    public String getDisplayName()
+    public String getDisplayName ()
     {
       return displayName;
     }
 
     /**
-     * Returns <code>true</code> if the objects are equal, and <code>false</code> otherwise.
+     * Returns <code>true</code> if the objects are equal, and <code>false</code>
+     * otherwise.
      *
-     * @param o  the object.
-     *
+     * @param o the object.
      * @return A boolean.
      */
-    public boolean equals(final Object o)
+    public boolean equals (final Object o)
     {
       if (this == o)
       {
@@ -253,31 +266,41 @@ public class EncodingComboBoxModel implements ComboBoxModel
      *
      * @return The hash code.
      */
-    public int hashCode()
+    public int hashCode ()
     {
       return name.hashCode();
     }
   }
 
-  /** Contains the known default encodings. */
+  /**
+   * Contains the known default encodings.
+   */
   private static Properties defaultEncodings;
 
-  /** Storage for the encodings. */
+  /**
+   * Storage for the encodings.
+   */
   private final ArrayList encodings;
 
-  /** Storage for registered listeners. */
+  /**
+   * Storage for registered listeners.
+   */
   private ArrayList listDataListeners;
 
-  /** The selected index. */
+  /**
+   * The selected index.
+   */
   private int selectedIndex;
 
-  /** The selected object. */
+  /**
+   * The selected object.
+   */
   private Object selectedObject;
 
   /**
    * Creates a new model.
    */
-  public EncodingComboBoxModel()
+  public EncodingComboBoxModel ()
   {
     encodings = new ArrayList();
     listDataListeners = null;
@@ -287,13 +310,12 @@ public class EncodingComboBoxModel implements ComboBoxModel
   /**
    * Adds an encoding.
    *
-   * @param name  the name.
-   * @param description  the description.
-   *
-   * @return <code>true</code> if the encoding is valid and added to the model, <code>false</code>
-   *         otherwise.
+   * @param name        the name.
+   * @param description the description.
+   * @return <code>true</code> if the encoding is valid and added to the model,
+   *         <code>false</code> otherwise.
    */
-  public boolean addEncoding(final String name, final String description)
+  public boolean addEncoding (final String name, final String description)
   {
     if (EncodingSupport.isSupportedEncoding(name))
     {
@@ -311,10 +333,10 @@ public class EncodingComboBoxModel implements ComboBoxModel
   /**
    * Adds an encoding to the model without checking its validity.
    *
-   * @param name  the name.
-   * @param description  the description.
+   * @param name        the name.
+   * @param description the description.
    */
-  public void addEncodingUnchecked(final String name, final String description)
+  public void addEncodingUnchecked (final String name, final String description)
   {
     encodings.add(new EncodingCarrier(name, description));
     fireContentsChanged();
@@ -325,7 +347,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @param encoding the encoding that should be verified.
    */
-  public void ensureEncodingAvailable(final String encoding)
+  public void ensureEncodingAvailable (final String encoding)
   {
     if (encoding == null)
     {
@@ -343,7 +365,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
   /**
    * Sorts the encodings. Keep the selected object ...
    */
-  public void sort()
+  public void sort ()
   {
     final Object selectedObject = getSelectedItem();
     Collections.sort(encodings, new EncodingCarrierComparator());
@@ -354,7 +376,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
   /**
    * Notifies all registered listeners that the content of the model has changed.
    */
-  protected void fireContentsChanged()
+  protected void fireContentsChanged ()
   {
     if (listDataListeners == null)
     {
@@ -369,14 +391,12 @@ public class EncodingComboBoxModel implements ComboBoxModel
   }
 
   /**
-   * Set the selected item. The implementation of this  method should notify
-   * all registered <code>ListDataListener</code>s that the contents
-   * have changed.
+   * Set the selected item. The implementation of this  method should notify all
+   * registered <code>ListDataListener</code>s that the contents have changed.
    *
-   * @param anItem the list object to select or <code>null</code>
-   *        to clear the selection
+   * @param anItem the list object to select or <code>null</code> to clear the selection
    */
-  public void setSelectedItem(final Object anItem)
+  public void setSelectedItem (final Object anItem)
   {
     selectedObject = anItem;
     if (anItem instanceof String)
@@ -399,7 +419,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @return The index.
    */
-  public int getSelectedIndex()
+  public int getSelectedIndex ()
   {
     return selectedIndex;
   }
@@ -408,9 +428,10 @@ public class EncodingComboBoxModel implements ComboBoxModel
    * Defines the selected index for this encoding model.
    *
    * @param index the selected index or -1 to clear the selection.
-   * @throws java.lang.IllegalArgumentException if the given index is invalid.
+   * @throws java.lang.IllegalArgumentException
+   *          if the given index is invalid.
    */
-  public void setSelectedIndex(final int index)
+  public void setSelectedIndex (final int index)
   {
     if (index == -1)
     {
@@ -431,7 +452,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @return The encoding (name).
    */
-  public String getSelectedEncoding()
+  public String getSelectedEncoding ()
   {
     if (selectedIndex == -1)
     {
@@ -446,7 +467,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @return The selected item or <code>null</code> if there is no selection
    */
-  public Object getSelectedItem()
+  public Object getSelectedItem ()
   {
     return selectedObject;
   }
@@ -456,7 +477,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @return the length of the list
    */
-  public int getSize()
+  public int getSize ()
   {
     return encodings.size();
   }
@@ -465,22 +486,21 @@ public class EncodingComboBoxModel implements ComboBoxModel
    * Returns the value at the specified index.
    *
    * @param index the requested index
-   *
    * @return the value at <code>index</code>
    */
-  public Object getElementAt(final int index)
+  public Object getElementAt (final int index)
   {
     final EncodingCarrier ec = (EncodingCarrier) encodings.get(index);
     return ec.getDisplayName();
   }
 
   /**
-   * Adds a listener to the list that's notified each time a change
-   * to the data model occurs.
+   * Adds a listener to the list that's notified each time a change to the data model
+   * occurs.
    *
    * @param l the <code>ListDataListener</code> to be added
    */
-  public void addListDataListener(final ListDataListener l)
+  public void addListDataListener (final ListDataListener l)
   {
     if (listDataListeners == null)
     {
@@ -490,12 +510,12 @@ public class EncodingComboBoxModel implements ComboBoxModel
   }
 
   /**
-   * Removes a listener from the list that's notified each time a
-   * change to the data model occurs.
+   * Removes a listener from the list that's notified each time a change to the data model
+   * occurs.
    *
    * @param l the <code>ListDataListener</code> to be removed
    */
-  public void removeListDataListener(final ListDataListener l)
+  public void removeListDataListener (final ListDataListener l)
   {
     if (listDataListeners == null)
     {
@@ -505,10 +525,10 @@ public class EncodingComboBoxModel implements ComboBoxModel
   }
 
   /**
-   * Adds the basic encodings from the international JDK to the default
-   * encoding names collection.
+   * Adds the basic encodings from the international JDK to the default encoding names
+   * collection.
    */
-  private static void addBasicEncodings()
+  private static void addBasicEncodings ()
   {
     // basic encoding set, base encodings
     defaultEncodings.put("ASCII", "American Standard Code for Information Interchange");
@@ -555,7 +575,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
     defaultEncodings.put("MS950", "Windows Traditional Chinese");
     defaultEncodings.put("EUC-TW", "CNS 11643 (Plane 1-3), EUC encoding, Traditional Chinese");
     defaultEncodings.put("ISO-2022-CN-CNS",
-        "CNS 11643 in ISO 2022 CN form, Traditional Chinese");
+            "CNS 11643 in ISO 2022 CN form, Traditional Chinese");
     defaultEncodings.put("Big5", "Big5, Traditional Chinese");
     defaultEncodings.put("Big5-HKSCS", "Big5 with Hong Kong extensions, Traditional Chinese");
     defaultEncodings.put("TIS-620", "TIS 620, Thai");
@@ -563,17 +583,17 @@ public class EncodingComboBoxModel implements ComboBoxModel
   }
 
   /**
-   * Adds the extended encodings from the international JDK to the default
-   * encoding names collection.
+   * Adds the extended encodings from the international JDK to the default encoding names
+   * collection.
    */
-  private static void addExtendedEncodings()
+  private static void addExtendedEncodings ()
   {
     //extended encoding set, contained in lib/charsets.jar
     // international JDK only ...
     defaultEncodings.put("Big5_Solaris",
-        "Big5 with seven additional Hanzi ideograph character mappings");
+            "Big5 with seven additional Hanzi ideograph character mappings");
     defaultEncodings.put("Cp037",
-        "USA, Canada (Bilingual, French), Netherlands, Portugal, Brazil, Australia");
+            "USA, Canada (Bilingual, French), Netherlands, Portugal, Brazil, Australia");
     defaultEncodings.put("Cp273", "IBM Austria, Germany");
     defaultEncodings.put("Cp277", "IBM Denmark, Norway");
     defaultEncodings.put("Cp278", "IBM Finland, Sweden");
@@ -611,17 +631,17 @@ public class EncodingComboBoxModel implements ComboBoxModel
     defaultEncodings.put("Cp921", "IBM Lativa, Lithuania (AIX, DOS)");
     defaultEncodings.put("Cp922", "IBM Estonia (AIX, DOS)");
     defaultEncodings.put("Cp930",
-        "Japanese Katakana-Kanji mixed with 4370 UDC, superset of 5026");
+            "Japanese Katakana-Kanji mixed with 4370 UDC, superset of 5026");
     defaultEncodings.put("Cp933", "Korean mixed with 1880 UDC, superset of 5029");
     defaultEncodings.put("Cp935", "Simplified Chinese mixed with 1880 UDC, superset of 5031");
     defaultEncodings.put("Cp937",
-        "Traditional Chinsese Hostmixed with 6204 UDC, superset of 5033");
+            "Traditional Chinsese Hostmixed with 6204 UDC, superset of 5033");
     defaultEncodings.put("Cp939", "Japanese Latin Kanji mixed with 4370 UDC, superset of 5035");
     defaultEncodings.put("Cp942", "IBM OS/2 Japanese, superset of Cp932");
     defaultEncodings.put("Cp942C", "Variant of Cp942: IBM OS/2 Japanese, superset of Cp932");
     defaultEncodings.put("Cp943", "IBM OS/2 Japanese, superset of Cp932 and Shift-JIS");
     defaultEncodings.put("Cp943C",
-        "Variant of Cp943: IBM OS/2 Japanese, superset of Cp932 and Shift-JIS");
+            "Variant of Cp943: IBM OS/2 Japanese, superset of Cp932 and Shift-JIS");
     defaultEncodings.put("Cp948", "IBM OS/2 Chinese (Taiwan) superset of Cp938");
     defaultEncodings.put("Cp949", "PC Korean");
     defaultEncodings.put("Cp949C", "Variant of Cp949: PC Korean");
@@ -630,7 +650,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
     defaultEncodings.put("Cp970", "AIX Korean");
     defaultEncodings.put("Cp1006", "IBM AIX Parkistan (Urdu)");
     defaultEncodings.put("Cp1025",
-        "IBM Multilingual Cyrillic: Bulgaria, Bosnia, Herzegovinia, Macedonia (FYR)");
+            "IBM Multilingual Cyrillic: Bulgaria, Bosnia, Herzegovinia, Macedonia (FYR)");
     defaultEncodings.put("Cp1026", "IBM Latin-5, Turkey");
     defaultEncodings.put("Cp1046", "IBM Arabic Windows");
     defaultEncodings.put("Cp1097", "IBM Iran (Farsi)/Persian");
@@ -640,7 +660,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
     defaultEncodings.put("Cp1123", "IBM Ukraine");
     defaultEncodings.put("Cp1124", "IBM AIX Ukraine");
     defaultEncodings.put("Cp1140",
-        "USA, Canada (Bilingual, French), Netherlands, Portugal, Brazil, Australia (with Euro)");
+            "USA, Canada (Bilingual, French), Netherlands, Portugal, Brazil, Australia (with Euro)");
     defaultEncodings.put("Cp1141", "IBM Austria, Germany (Euro enabled)");
     defaultEncodings.put("Cp1142", "IBM Denmark, Norway (Euro enabled)");
     defaultEncodings.put("Cp1143", "IBM Finland, Sweden (Euro enabled)");
@@ -672,12 +692,12 @@ public class EncodingComboBoxModel implements ComboBoxModel
   }
 
   /**
-   * Initializes the known names for the default encodings. Not all encodings may
-   * be available on a specific platform, these encoding will be ignored later.
+   * Initializes the known names for the default encodings. Not all encodings may be
+   * available on a specific platform, these encoding will be ignored later.
    *
    * @return the singleton instance of the initialized default encoding names
    */
-  protected static Properties getDefaultEncodings()
+  protected static Properties getDefaultEncodings ()
   {
     if (defaultEncodings == null)
     {
@@ -694,7 +714,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @return The default model.
    */
-  public static EncodingComboBoxModel createDefaultModel()
+  public static EncodingComboBoxModel createDefaultModel ()
   {
     final EncodingComboBoxModel ecb = new EncodingComboBoxModel();
 
@@ -718,7 +738,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
       if (in == null)
       {
         Log.warn(new Log.SimpleMessage
-            ("The specified encodings definition file was not found: ", encFile));
+                ("The specified encodings definition file was not found: ", encFile));
       }
       else
       {
@@ -738,14 +758,14 @@ public class EncodingComboBoxModel implements ComboBoxModel
             {
               // if the encoding is disabled ...
               ecb.addEncoding
-                  (enc, defaultEncodings.getProperty(enc, ENCODING_DEFAULT_DESCRIPTION));
+                      (enc, defaultEncodings.getProperty(enc, ENCODING_DEFAULT_DESCRIPTION));
             }
           }
         }
         catch (IOException e)
         {
           Log.warn(new Log.SimpleMessage
-              ("There was an error while reading the encodings definition file: ", encFile), e);
+                  ("There was an error while reading the encodings definition file: ", encFile), e);
         }
       }
     }
@@ -755,11 +775,10 @@ public class EncodingComboBoxModel implements ComboBoxModel
   /**
    * Returns the index of an encoding.
    *
-   * @param encoding  the encoding (name).
-   *
+   * @param encoding the encoding (name).
    * @return The index.
    */
-  public int indexOf(final String encoding)
+  public int indexOf (final String encoding)
   {
     return encodings.indexOf(new EncodingCarrier(encoding, null));
   }
@@ -767,11 +786,10 @@ public class EncodingComboBoxModel implements ComboBoxModel
   /**
    * Returns an encoding.
    *
-   * @param index  the index.
-   *
+   * @param index the index.
    * @return The index.
    */
-  public String getEncoding(final int index)
+  public String getEncoding (final int index)
   {
     final EncodingCarrier ec = (EncodingCarrier) encodings.get(index);
     return ec.getName();
@@ -780,11 +798,10 @@ public class EncodingComboBoxModel implements ComboBoxModel
   /**
    * Returns a description.
    *
-   * @param index  the index.
-   *
+   * @param index the index.
    * @return The description.
    */
-  public String getDescription(final int index)
+  public String getDescription (final int index)
   {
     final EncodingCarrier ec = (EncodingCarrier) encodings.get(index);
     return ec.getDescription();
@@ -792,28 +809,30 @@ public class EncodingComboBoxModel implements ComboBoxModel
 
 
   /**
-   * Defines the loader settings for the available encodings shown to the user.
-   * The property defaults to AVAILABLE_ENCODINGS_ALL.
+   * Defines the loader settings for the available encodings shown to the user. The
+   * property defaults to AVAILABLE_ENCODINGS_ALL.
    *
-   * @return either AVAILABLE_ENCODINGS_ALL, AVAILABLE_ENCODINGS_FILE or AVAILABLE_ENCODINGS_NONE.
+   * @return either AVAILABLE_ENCODINGS_ALL, AVAILABLE_ENCODINGS_FILE or
+   *         AVAILABLE_ENCODINGS_NONE.
    */
-  public static String getEncodingsDefinitionFile()
+  public static String getEncodingsDefinitionFile ()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        (ENCODINGS_DEFINITION_FILE, ENCODINGS_DEFINITION_FILE_DEFAULT);
+            (ENCODINGS_DEFINITION_FILE, ENCODINGS_DEFINITION_FILE_DEFAULT);
   }
 
 
   /**
-   * Defines the loader settings for the available encodings shown to the user.
-   * The property defaults to AVAILABLE_ENCODINGS_ALL.
+   * Defines the loader settings for the available encodings shown to the user. The
+   * property defaults to AVAILABLE_ENCODINGS_ALL.
    *
-   * @return either AVAILABLE_ENCODINGS_ALL, AVAILABLE_ENCODINGS_FILE or AVAILABLE_ENCODINGS_NONE.
+   * @return either AVAILABLE_ENCODINGS_ALL, AVAILABLE_ENCODINGS_FILE or
+   *         AVAILABLE_ENCODINGS_NONE.
    */
-  public static String getAvailableEncodings()
+  public static String getAvailableEncodings ()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        (AVAILABLE_ENCODINGS, AVAILABLE_ENCODINGS_ALL);
+            (AVAILABLE_ENCODINGS, AVAILABLE_ENCODINGS_ALL);
   }
 
   public void setSelectedEncoding (final String encoding)

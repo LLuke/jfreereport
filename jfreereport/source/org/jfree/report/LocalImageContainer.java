@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LocalImageContainer.java,v 1.2 2004/05/07 07:43:53 mungady Exp $
+ * $Id: LocalImageContainer.java,v 1.3 2005/01/24 23:57:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,16 +42,15 @@ import java.awt.Image;
 
 public interface LocalImageContainer extends ImageContainer
 {
-  public Image getImage();
-  public String getName();
+  public Image getImage ();
+
+  public String getName ();
 
   /**
-   * Checks, whether this image has a assigned identity.
-   * Two identities should be equal, if the image
-   * contents are equal.
+   * Checks, whether this image has a assigned identity. Two identities should be equal,
+   * if the image contents are equal.
    *
-   * @return true, if that image contains contains identity information,
-   * false otherwise.
+   * @return true, if that image contains contains identity information, false otherwise.
    */
   public boolean isIdentifiable ();
 
@@ -60,5 +59,5 @@ public interface LocalImageContainer extends ImageContainer
    *
    * @return the image identifier.
    */
-  public Object getIdentity();
+  public Object getIdentity ();
 }

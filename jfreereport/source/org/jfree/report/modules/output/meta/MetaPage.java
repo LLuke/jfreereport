@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaPage.java,v 1.5 2005/01/25 00:09:54 taqua Exp $
+ * $Id: MetaPage.java,v 1.6 2005/01/30 23:37:20 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,7 +43,7 @@ public class MetaPage
   private MetaBand[] bands;
   private boolean empty;
 
-  public MetaPage(final MetaBand[] bands)
+  public MetaPage (final MetaBand[] bands)
   {
     this.bands = bands;
     this.empty = isEmpty(bands);
@@ -66,12 +66,12 @@ public class MetaPage
     return true;
   }
 
-  public MetaBand[] getBands()
+  public MetaBand[] getBands ()
   {
     return bands;
   }
 
-  public boolean isEmpty()
+  public boolean isEmpty ()
   {
     return empty;
   }

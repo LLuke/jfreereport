@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SwingIconsDemo.java,v 1.4.4.1 2004/04/06 13:56:13 taqua Exp $
+ * $Id: SwingIconsDemo.java,v 1.6 2005/01/24 23:58:42 taqua Exp $
  *
  * Changes
  * -------
@@ -68,26 +68,26 @@ import org.jfree.ui.action.ActionMenuItem;
 import org.jfree.xml.ElementDefinitionException;
 
 /**
- * A demonstration application.
- * <P>
- * This demo is written up in the JFreeReport PDF Documentation.  Please notify David Gilbert
- * (david.gilbert@object-refinery.com) if you need to make changes to this file.
- * <P>
- * To run this demo, you need to have the Java Look and Feel Icons jar file on your classpath.
+ * A demonstration application. <P> This demo is written up in the JFreeReport PDF
+ * Documentation.  Please notify David Gilbert (david.gilbert@object-refinery.com) if you
+ * need to make changes to this file. <P> To run this demo, you need to have the Java Look
+ * and Feel Icons jar file on your classpath.
  *
  * @author David Gilbert
  */
 public class SwingIconsDemo extends AbstractDemoFrame
 {
-  /** The data for the report. */
+  /**
+   * The data for the report.
+   */
   private TableModel data;
 
   /**
    * Constructs the demo application.
    *
-   * @param title  the frame title.
+   * @param title the frame title.
    */
-  public SwingIconsDemo(final String title)
+  public SwingIconsDemo (final String title)
   {
     setTitle(title);
     setJMenuBar(createMenuBar());
@@ -99,7 +99,7 @@ public class SwingIconsDemo extends AbstractDemoFrame
    *
    * @return the menu bar.
    */
-  public JMenuBar createMenuBar()
+  public JMenuBar createMenuBar ()
   {
     final JMenuBar mb = new JMenuBar();
     final JMenu fileMenu = createJMenu("menu.file");
@@ -119,7 +119,7 @@ public class SwingIconsDemo extends AbstractDemoFrame
    *
    * @return a panel containing the basic user interface.
    */
-  public JPanel createContent()
+  public JPanel createContent ()
   {
     final JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
@@ -137,7 +137,7 @@ public class SwingIconsDemo extends AbstractDemoFrame
    *
    * @return the report data.
    */
-  private TableModel readData()
+  private TableModel readData ()
   {
     return new SwingIconsDemoTableModel();
   }
@@ -145,15 +145,15 @@ public class SwingIconsDemo extends AbstractDemoFrame
   /**
    * Displays a print preview screen for the sample report.
    */
-  protected void attemptPreview()
+  protected void attemptPreview ()
   {
     final URL in = getClass().getResource("/org/jfree/report/demo/swing-icons.xml");
     if (in == null)
     {
       JOptionPane.showMessageDialog(this,
-          MessageFormat.format(getResources().getString("report.definitionnotfound"),
-              new Object[]{in}),
-          getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+              MessageFormat.format(getResources().getString("report.definitionnotfound"),
+                      new Object[]{in}),
+              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 
     final JFreeReport report;
@@ -189,13 +189,14 @@ public class SwingIconsDemo extends AbstractDemoFrame
    * Reads the report from the swing-icons.xml report template.
    *
    * @param templateURL The template location.
-   *
    * @return A report.
+   *
    * @throws ElementDefinitionException if the report generator encountered an error.
-   * @throws IOException if there was an IO error while reading from the URL.
+   * @throws IOException                if there was an IO error while reading from the
+   *                                    URL.
    */
-  private JFreeReport parseReport(final URL templateURL)
-      throws IOException, ElementDefinitionException
+  private JFreeReport parseReport (final URL templateURL)
+          throws IOException, ElementDefinitionException
   {
 
     final ReportGenerator generator = ReportGenerator.getInstance();
@@ -208,7 +209,7 @@ public class SwingIconsDemo extends AbstractDemoFrame
    *
    * @param args ignored.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();

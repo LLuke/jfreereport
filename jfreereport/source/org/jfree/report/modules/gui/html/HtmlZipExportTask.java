@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlZipExportTask.java,v 1.8 2004/03/16 15:09:44 taqua Exp $
+ * $Id: HtmlZipExportTask.java,v 1.9 2004/05/07 14:29:50 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -53,32 +53,40 @@ import org.jfree.report.modules.output.table.html.ZIPHtmlFilesystem;
 import org.jfree.report.util.Log;
 
 /**
- * An export task implementation that exports the report into a ZIPped
- * Html directory structure.
- * 
+ * An export task implementation that exports the report into a ZIPped Html directory
+ * structure.
+ *
  * @author Thomas Morgner
  */
 public class HtmlZipExportTask extends ExportTask
 {
-  /** The progress dialog that monitors the export process. */
+  /**
+   * The progress dialog that monitors the export process.
+   */
   private final ReportProgressDialog progressDialog;
-  /** The name of the target file. */
+  /**
+   * The name of the target file.
+   */
   private final String fileName;
-  /** The name of the data directory (within the ZIP file). */
+  /**
+   * The name of the data directory (within the ZIP file).
+   */
   private final String dataDirectory;
-  /** The report that should be exported. */
-  private final JFreeReport report;  
+  /**
+   * The report that should be exported.
+   */
+  private final JFreeReport report;
 
   /**
    * Creates a new html export task.
-   * 
-   * @param fileName the name of the target file.
+   *
+   * @param fileName      the name of the target file.
    * @param dataDirectory the name of the data directory (within the target ZIP file).
-   * @param dialog the progress monitor component.
-   * @param report the report that should be exported.
-   */  
-  public HtmlZipExportTask(final String fileName, final String dataDirectory,
-                           final ReportProgressDialog dialog, final JFreeReport report)
+   * @param dialog        the progress monitor component.
+   * @param report        the report that should be exported.
+   */
+  public HtmlZipExportTask (final String fileName, final String dataDirectory,
+                            final ReportProgressDialog dialog, final JFreeReport report)
   {
     if (fileName == null)
     {
@@ -101,7 +109,7 @@ public class HtmlZipExportTask extends ExportTask
   /**
    * Exports the report into a Html Directory Structure.
    */
-  protected void performExport()
+  protected void performExport ()
   {
     OutputStream out = null;
     final File file = new File(fileName);
@@ -148,7 +156,7 @@ public class HtmlZipExportTask extends ExportTask
     }
     catch (Exception re)
     {
-      Log.error ("Exporting failed .", re);
+      Log.error("Exporting failed .", re);
       setTaskFailed(re);
     }
     finally
@@ -162,7 +170,7 @@ public class HtmlZipExportTask extends ExportTask
       }
       catch (Exception e)
       {
-        Log.error ("Unable to close the output stream.", e);
+        Log.error("Unable to close the output stream.", e);
         setTaskFailed(e);
       }
     }
@@ -175,7 +183,7 @@ public class HtmlZipExportTask extends ExportTask
   /**
    * Remove all listeners and prepare the finalization.
    */
-  protected void dispose()
+  protected void dispose ()
   {
     super.dispose();
     if (progressDialog != null)

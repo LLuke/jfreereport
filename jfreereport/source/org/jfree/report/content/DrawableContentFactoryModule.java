@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableContentFactoryModule.java,v 1.8 2005/01/25 21:40:08 taqua Exp $
+ * $Id: DrawableContentFactoryModule.java,v 1.9 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -60,11 +60,10 @@ public strictfp class DrawableContentFactoryModule implements ContentFactoryModu
    * Returns <code>true</code> if the module can handle the specified content type, and
    * <code>false</code> otherwise.
    *
-   * @param contentType  the content type.
-   *
+   * @param contentType the content type.
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean canHandleContent(final String contentType)
+  public boolean canHandleContent (final String contentType)
   {
     return contentType.startsWith("drawable/");
   }
@@ -72,17 +71,16 @@ public strictfp class DrawableContentFactoryModule implements ContentFactoryModu
   /**
    * Creates content for an element.
    *
-   * @param e  the element.
-   * @param bounds  the bounds.
-   * @param ot  the output target.
-   *
+   * @param e      the element.
+   * @param bounds the bounds.
+   * @param ot     the output target.
    * @return the content.
    *
    * @throws ContentCreationException if there is a problem with the Content creation.
    */
-  public Content createContentForElement(final Element e, final ElementLayoutInformation bounds,
-                                         final LayoutSupport ot)
-      throws ContentCreationException
+  public Content createContentForElement (final Element e, final ElementLayoutInformation bounds,
+                                          final LayoutSupport ot)
+          throws ContentCreationException
   {
     final Drawable drawable = (Drawable) e.getValue();
     if (drawable == null)
@@ -93,7 +91,7 @@ public strictfp class DrawableContentFactoryModule implements ContentFactoryModu
     final StrictPoint point = bounds.getAbsolutePosition();
     final StrictDimension iBounds =
             ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
-            bounds.getPreferredSize());
+                    bounds.getPreferredSize());
     if (iBounds.getWidth() == 0 && iBounds.getHeight() == 0)
     {
       return EmptyContent.getDefaultEmptyContent();
@@ -105,8 +103,8 @@ public strictfp class DrawableContentFactoryModule implements ContentFactoryModu
     // the drawable stuff soon ...
 
     final StrictBounds drawableBounds = new StrictBounds
-        (point.getX(), point.getY(),
-        iBounds.getWidth(), iBounds.getHeight());
+            (point.getX(), point.getY(),
+                    iBounds.getWidth(), iBounds.getHeight());
     return new DrawableContent(drawable, drawableBounds);
   }
 }

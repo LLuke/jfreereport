@@ -2,8 +2,8 @@ package org.jfree.report.modules.parser.ext.readhandlers;
 
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.DataTarget;
-import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.factory.objects.ObjectDescription;
@@ -36,8 +36,8 @@ public class DataSourceReadHandler extends CompoundObjectReadHandler
               getRootHandler().getLocator());
     }
 
-    final DataSourceCollector fc = (DataSourceCollector) getRootHandler().getHelperObject(
-        ReportDefinitionReadHandler.DATASOURCE_FACTORY_KEY);
+    final DataSourceCollector fc = (DataSourceCollector) getRootHandler()
+            .getHelperObject(ReportDefinitionReadHandler.DATASOURCE_FACTORY_KEY);
     final ObjectDescription od = fc.getDataSourceDescription(typeName);
     if (od == null)
     {

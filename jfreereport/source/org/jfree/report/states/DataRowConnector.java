@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowConnector.java,v 1.5 2003/12/06 16:47:25 taqua Exp $
+ * $Id: DataRowConnector.java,v 1.6 2005/01/25 00:22:34 taqua Exp $
  *
  * Changes
  * -------
@@ -47,23 +47,24 @@ import org.jfree.report.filter.DataTarget;
 
 /**
  * This is the connection-proxy to the various data sources contained in the elements.
- * During report processing the report states get cloned while the elements remain uncloned.
- * The DataRowConnector connects the DataRowBackend (which contains the data) with the
- * stateless elements.
- *
- * @see DataRowBackend
+ * During report processing the report states get cloned while the elements remain
+ * uncloned. The DataRowConnector connects the DataRowBackend (which contains the data)
+ * with the stateless elements.
  *
  * @author Thomas Morgner
+ * @see DataRowBackend
  */
 public class DataRowConnector implements DataRow
 {
-  /** The data row backend. */
+  /**
+   * The data row backend.
+   */
   private DataRowBackend dataRow;
 
   /**
    * Default constructor.
    */
-  public DataRowConnector()
+  public DataRowConnector ()
   {
   }
 
@@ -72,34 +73,34 @@ public class DataRowConnector implements DataRow
    *
    * @return the currently assigned DataRowBackend for this DataRowConnector.
    */
-  public DataRowBackend getDataRowBackend()
+  public DataRowBackend getDataRowBackend ()
   {
     return dataRow;
   }
 
   /**
-   * Sets the data row backend for this DataRowConnector. The backend actually contains the data
-   * which will be queried, while this DataRowConnector is simply a proxy forwarding all requests
-   * to the backend.
+   * Sets the data row backend for this DataRowConnector. The backend actually contains
+   * the data which will be queried, while this DataRowConnector is simply a proxy
+   * forwarding all requests to the backend.
    *
    * @param dataRow the data row backend
    */
-  public void setDataRowBackend(final DataRowBackend dataRow)
+  public void setDataRowBackend (final DataRowBackend dataRow)
   {
     this.dataRow = dataRow;
   }
 
   /**
-   * Return the value of the function, expression or column in the tablemodel using the column
-   * number.
+   * Return the value of the function, expression or column in the tablemodel using the
+   * column number.
    *
-   * @param col  the column, function or expression index.
-   *
+   * @param col the column, function or expression index.
    * @return the column, function or expression value.
    *
-   * @throws java.lang.IllegalStateException if there is no backend connected.
+   * @throws java.lang.IllegalStateException
+   *          if there is no backend connected.
    */
-  public Object get(final int col)
+  public Object get (final int col)
   {
     if (dataRow == null)
     {
@@ -111,12 +112,13 @@ public class DataRowConnector implements DataRow
   /**
    * Returns the value of the column, function or expression using its name.
    *
-   * @param col  the column, function or expression index.
-   *
+   * @param col the column, function or expression index.
    * @return The column, function or expression value.
-   * @throws java.lang.IllegalStateException if there is no backend connected
+   *
+   * @throws java.lang.IllegalStateException
+   *          if there is no backend connected
    */
-  public Object get(final String col)
+  public Object get (final String col)
   {
     if (dataRow == null)
     {
@@ -128,13 +130,13 @@ public class DataRowConnector implements DataRow
   /**
    * Returns the name of the column, function or expression.
    *
-   * @param col  the column, function or expression index.
-   *
+   * @param col the column, function or expression index.
    * @return the column, function or expression name.
    *
-   * @throws java.lang.IllegalStateException if there is no backend connected.
+   * @throws java.lang.IllegalStateException
+   *          if there is no backend connected.
    */
-  public String getColumnName(final int col)
+  public String getColumnName (final int col)
   {
     if (dataRow == null)
     {
@@ -144,17 +146,17 @@ public class DataRowConnector implements DataRow
   }
 
   /**
-   * Looks up the position of the column with the name <code>name</code>.
-   * returns the position of the column or -1 if no columns could be retrieved.
+   * Looks up the position of the column with the name <code>name</code>. returns the
+   * position of the column or -1 if no columns could be retrieved.
    *
-   * @param name  the column, function or expression name.
+   * @param name the column, function or expression name.
+   * @return the column position of the column, expression or function with the given name
+   *         or -1 if the given name does not exist in this DataRow.
    *
-   * @return the column position of the column, expression or function with the given name or
-   * -1 if the given name does not exist in this DataRow.
-   *
-   * @throws java.lang.IllegalStateException if there is no backend connected.
+   * @throws java.lang.IllegalStateException
+   *          if there is no backend connected.
    */
-  public int findColumn(final String name)
+  public int findColumn (final String name)
   {
     if (dataRow == null)
     {
@@ -169,9 +171,10 @@ public class DataRowConnector implements DataRow
    *
    * @return the number of accessible columns in this datarow.
    *
-   * @throws java.lang.IllegalStateException if there is no backend connected.
+   * @throws java.lang.IllegalStateException
+   *          if there is no backend connected.
    */
-  public int getColumnCount()
+  public int getColumnCount ()
   {
     if (dataRow == null)
     {
@@ -182,16 +185,15 @@ public class DataRowConnector implements DataRow
 
   /**
    * Queries the last datasource in the chain of targets and filters.
-   * <p>
-   * The last datasource is used to feed data into the data processing chain.
-   * The result of this computation is retrieved by the element using the
-   * registered datasource to query the queue.
+   * <p/>
+   * The last datasource is used to feed data into the data processing chain. The result
+   * of this computation is retrieved by the element using the registered datasource to
+   * query the queue.
    *
-   * @param e  the data target.
-   *
+   * @param e the data target.
    * @return The last DataSource in the chain.
    */
-  public static DataSource getLastDatasource(final DataTarget e)
+  public static DataSource getLastDatasource (final DataTarget e)
   {
     if (e == null)
     {
@@ -211,7 +213,7 @@ public class DataRowConnector implements DataRow
    *
    * @return The string.
    */
-  public String toString()
+  public String toString ()
   {
     if (dataRow == null)
     {

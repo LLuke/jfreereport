@@ -26,8 +26,8 @@ public class DefaultPrinterSpecification
   }
 
   /**
-   * Returns the name of the encoding mapping. This is usually the
-   * same as the printer model name.
+   * Returns the name of the encoding mapping. This is usually the same as the printer
+   * model name.
    *
    * @return the printer model.
    */
@@ -60,6 +60,7 @@ public class DefaultPrinterSpecification
    * @param encoding the java encoding that should be mapped into a printer specific
    *                 encoding.
    * @return the printer specific encoding.
+   *
    * @throws IllegalArgumentException if the given encoding is not supported.
    */
   public synchronized PrinterEncoding getEncoding (final String encoding)
@@ -84,7 +85,7 @@ public class DefaultPrinterSpecification
     }
     if (encodings.containsKey(encoding.getEncoding()) == false)
     {
-      encodings.put (encoding.getEncoding().toLowerCase(), encoding);
+      encodings.put(encoding.getEncoding().toLowerCase(), encoding);
       encodingsCached = null;
     }
   }
@@ -95,7 +96,7 @@ public class DefaultPrinterSpecification
     {
       throw new NullPointerException();
     }
-    if (encodings.remove (encoding.getEncoding().toLowerCase()) != null)
+    if (encodings.remove(encoding.getEncoding().toLowerCase()) != null)
     {
       encodingsCached = null;
     }

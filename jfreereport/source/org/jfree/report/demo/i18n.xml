@@ -31,7 +31,7 @@
   <items height="0"
     fontname="SansSerif" fontstyle="plain" fontsize="9">
 
-    <resource-field  x="0" y="7" width="25%" height="10" alignment="left" fieldname="Data"/>
+    <resource-field x="0" y="7" width="25%" height="10" alignment="left" fieldname="Data"/>
 
     <number-field x="25%" y="2" width="25%" height="10" alignment="center"
       fieldname="A" format="0.0"/>

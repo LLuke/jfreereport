@@ -9,7 +9,7 @@
 
   <groups>
     <group name="orgGroup">
-      <groupheader >
+      <groupheader>
         <band name="logoSection" x="0" y="0" width="100%" fontname="Sans-Serif" fontsize="20">
           <rectangle x="100" y="0" width="300" height="50" fill="true" color="#8F8F8F"/>
           <label x="100" y="0" width="300" height="50" alignment="center" vertical-alignment="middle">LOGO</label>
@@ -18,9 +18,9 @@
 
         <band name="addressSection" x="0" y="110">
           <label x="0" y="0" width="100%" height="15" fontsize="15">About</label>
-          <line x1="0" y1="17" x2="100%" y2="17" color="grey" />
+          <line x1="0" y1="17" x2="100%" y2="17" color="grey"/>
 
-          <band name="addressArea" x="50" y="20" height="120" fontname="Sans-Serif" fontsize="10" >
+          <band name="addressArea" x="50" y="20" height="120" fontname="Sans-Serif" fontsize="10">
             <line x1="1" y1="0" x2="1" y2="100"/>
             <string-field x="5" y="0" width="80%" height="10" fieldname="council.orgName" fsbold="true"/>
             <string-field x="5" y="10" width="80%" height="10" fieldname="council.street1"/>
@@ -31,43 +31,43 @@
             <string-field x="65" y="50" width="80%" height="10" fieldname="council.phoneNumber"/>
             <label x="5" y="60" width="60" height="10">Fax:</label>
             <string-field x="65" y="60" width="80%" height="10" fieldname="council.faxNumber"/>
-            <string-field x="5" y="70" width="80%" height="10" fieldname="council.orgEmail" fsunderline="true" />
+            <string-field x="5" y="70" width="80%" height="10" fieldname="council.orgEmail" fsunderline="true"/>
 
             <label x="5" y="90" width="60" height="10">Website:</label>
-            <string-field x="65" y="90" width="80%" height="10" fieldname="council.internalWebsite" fsunderline="true" />
+            <string-field x="65" y="90" width="80%" height="10" fieldname="council.internalWebsite" fsunderline="true"/>
           </band>
         </band>
       </groupheader>
 
       <groupfooter>
-        <band name="eventsFooterSection" x="0" y="20" height="50" fontsize="10" fontname="Sans-Serif" >
-          <label x="0" y="0" width="100%" height="15" fontsize="15" fsbold="true" >Events</label>
-          <line x1="0" y1="17" x2="100%" y2="17" color="grey" />
+        <band name="eventsFooterSection" x="0" y="20" height="50" fontsize="10" fontname="Sans-Serif">
+          <label x="0" y="0" width="100%" height="15" fontsize="15" fsbold="true">Events</label>
+          <line x1="0" y1="17" x2="100%" y2="17" color="grey"/>
 
           <label x="0%" y="30" width="20%" height="10" fsbold="true">Events this year:</label>
           <number-field x="20%" y="30" width="4%" height="10" fieldname="council.yearEventCount"/>
-          <line x1="25%" y1="30" x2="25%" y2="40" color="black" />
+          <line x1="25%" y1="30" x2="25%" y2="40" color="black"/>
 
           <label x="26%" y="30" width="19%" height="10" fsbold="true">Events this month:</label>
           <number-field x="45%" y="30" width="4%" height="10" fieldname="council.thisMonthEventCount"/>
-          <line x1="50%" y1="30" x2="50%" y2="40" color="black" />
+          <line x1="50%" y1="30" x2="50%" y2="40" color="black"/>
 
           <label x="51%" y="30" width="19%" height="10" fsbold="true">Events last month:</label>
           <number-field x="70%" y="30" width="4%" height="10" fieldname="council.lastMonthEventCount"/>
-          <line x1="75%" y1="30" x2="75%" y2="40" color="black" />
+          <line x1="75%" y1="30" x2="75%" y2="40" color="black"/>
 
           <label x="76%" y="30" width="19%" height="10" fsbold="true">Future events:</label>
           <number-field x="95%" y="30" width="4%" height="10" fieldname="council.futureEventCount"/>
         </band>
 
-        <band name="demographicsSection" x="0" y="70" fontsize="10" fontname="Sans-Serif" >
-          <label x="0" y="0" width="100%" height="15" fontsize="15" fsbold="true" >Demographics</label>
-          <line x1="0" y1="17" x2="100%" y2="17" color="grey" />
+        <band name="demographicsSection" x="0" y="70" fontsize="10" fontname="Sans-Serif">
+          <label x="0" y="0" width="100%" height="15" fontsize="15" fsbold="true">Demographics</label>
+          <line x1="0" y1="17" x2="100%" y2="17" color="grey"/>
 
           <label x="0" y="30" width="20%" height="10" fsbold="true">Total Members:</label>
           <number-field x="20%" y="30" width="5%" height="10" fieldname="council.totalMembers-expression"/>
 
-          <line x1="25%" y1="40" x2="25%" y2="50" color="black" />
+          <line x1="25%" y1="40" x2="25%" y2="50" color="black"/>
           <label x="0" y="40" width="20%" height="10" fsbold="true" alignment="right">Men:</label>
           <number-field x="20%" y="40" width="5%" height="10" fieldname="council.totalMen-expression"/>
 
@@ -83,9 +83,9 @@
 
     <group name="detailGroup">
       <groupheader>
-        <band name="leader" x="0" y="20" height="40" fontsize="10" fsbold="true" >
+        <band name="leader" x="0" y="20" height="40" fontsize="10" fsbold="true">
           <label x="0" y="0" width="100%" height="15" fontsize="15">Leadership</label>
-          <line x1="0" y1="17" x2="100%" y2="17" color="grey" />
+          <line x1="0" y1="17" x2="100%" y2="17" color="grey"/>
 
           <label x="0" y="20" width="25%" height="10">Name</label>
           <label x="25%" y="20" width="25%" height="10">Position</label>
@@ -93,9 +93,9 @@
           <label x="75%" y="20" width="25%" height="10">E-Mail</label>
         </band>
 
-        <band name="org" x="0" y="20" height="40" fsbold="true" >
+        <band name="org" x="0" y="20" height="40" fsbold="true">
           <label x="0" y="0" width="100%" height="15" fontsize="15">Club Sports Council Organizations</label>
-          <line x1="0" y1="17" x2="100%" y2="17" color="grey" />
+          <line x1="0" y1="17" x2="100%" y2="17" color="grey"/>
 
           <label x="0" y="20" width="40%" height="10">Name</label>
           <label x="40%" y="20" width="25%" height="10">Members</label>
@@ -114,10 +114,10 @@
 
   <items>
     <band name="leader" x="0" y="0">
-      <string-field x="0" y="0" width="25%" height="10" fieldname="leader.name" />
-      <string-field x="25%" y="0" width="25%" height="10" fieldname="leader.position" />
-      <string-field x="50%" y="0" width="25%" height="10" fieldname="leader.leadershipPhoneNumber" />
-      <string-field x="75%" y="0" width="25%" height="10" fieldname="leader.email" />
+      <string-field x="0" y="0" width="25%" height="10" fieldname="leader.name"/>
+      <string-field x="25%" y="0" width="25%" height="10" fieldname="leader.position"/>
+      <string-field x="50%" y="0" width="25%" height="10" fieldname="leader.leadershipPhoneNumber"/>
+      <string-field x="75%" y="0" width="25%" height="10" fieldname="leader.email"/>
     </band>
 
     <band x="0" y="0" name="org">

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelProcessor.java,v 1.11 2005/01/25 00:16:33 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.12 2005/02/05 18:35:19 taqua Exp $
  *
  * Changes
  * -------
@@ -46,34 +46,36 @@ import org.jfree.report.modules.output.meta.MetaBandProducer;
 import org.jfree.report.modules.output.table.base.LayoutCreator;
 import org.jfree.report.modules.output.table.base.TableCreator;
 import org.jfree.report.modules.output.table.base.TableProcessor;
-import org.jfree.report.style.StyleKey;
 
 /**
- * A report processor that coordinates the output process for generating Excel files.
- * <P>
+ * A report processor that coordinates the output process for generating Excel files. <P>
  * The Jakarta POI library is used to write files in Excel format. If the property
  * "EnhancedDataFormat" is set to true, this target uses the extended Cell-Data format
  * capabilities of POI 1.10 to format the cell value as numeric or date value. An
- * excel-specific format string can be defined for every element using the element-
- * style key "Excel.CellDataFormat".
+ * excel-specific format string can be defined for every element using the element- style
+ * key "Excel.CellDataFormat".
  *
  * @author Heiko Evermann
  */
 public class ExcelProcessor extends TableProcessor
 {
-  /** The property key to enable the enhanced data formats of POI 1.10. */
+  /**
+   * The property key to enable the enhanced data formats of POI 1.10.
+   */
   public static final String ENHANCED_DATA_FORMAT_PROPERTY =
           "EnhancedDataFormat";
 
-  /** The output stream that is used to write the excel file. */
+  /**
+   * The output stream that is used to write the excel file.
+   */
   private OutputStream outputStream;
 
-  /** 
-   * The configuration prefix when reading the configuration settings 
-   * from the report configuration.
+  /**
+   * The configuration prefix when reading the configuration settings from the report
+   * configuration.
    */
   public static final String CONFIGURATION_PREFIX =
-      "org.jfree.report.modules.output.table.xls";
+          "org.jfree.report.modules.output.table.xls";
 
   /**
    * Creates a new ExcelProcessor for the given report.
@@ -81,8 +83,8 @@ public class ExcelProcessor extends TableProcessor
    * @param report the report that should be processed.
    * @throws ReportProcessingException if the report initialization failed
    */
-  public ExcelProcessor(final JFreeReport report)
-      throws ReportProcessingException
+  public ExcelProcessor (final JFreeReport report)
+          throws ReportProcessingException
   {
     super(report);
   }
@@ -92,7 +94,7 @@ public class ExcelProcessor extends TableProcessor
    *
    * @return the output stream.
    */
-  public OutputStream getOutputStream()
+  public OutputStream getOutputStream ()
   {
     return outputStream;
   }
@@ -102,18 +104,18 @@ public class ExcelProcessor extends TableProcessor
    *
    * @param outputStream the output stream.
    */
-  public void setOutputStream(final OutputStream outputStream)
+  public void setOutputStream (final OutputStream outputStream)
   {
     this.outputStream = outputStream;
   }
 
   /**
-   * Gets the report configuration prefix for that processor. This prefix defines
-   * how to map the property names into the global report configuration.
+   * Gets the report configuration prefix for that processor. This prefix defines how to
+   * map the property names into the global report configuration.
    *
    * @return the report configuration prefix.
    */
-  protected String getReportConfigurationPrefix()
+  protected String getReportConfigurationPrefix ()
   {
     return CONFIGURATION_PREFIX;
   }

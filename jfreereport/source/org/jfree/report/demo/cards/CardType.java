@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CardType.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
+ * $Id: CardType.java,v 1.4 2004/05/07 12:43:25 mungady Exp $
  *
  * Changes
  * -------
@@ -44,36 +44,50 @@ package org.jfree.report.demo.cards;
  */
 public final class CardType
 {
-  /** An 'account' card. */
+  /**
+   * An 'account' card.
+   */
   public static final CardType ACCOUNT = new CardType("Account");
 
-  /** An 'admin' card. */
+  /**
+   * An 'admin' card.
+   */
   public static final CardType ADMIN = new CardType("Admin");
 
-  /** A 'user' card. */
+  /**
+   * A 'user' card.
+   */
   public static final CardType USER = new CardType("User");
 
-  /** A 'prepaid' card. */
+  /**
+   * A 'prepaid' card.
+   */
   public static final CardType PREPAID = new CardType("Prepaid");
 
-  /** A 'free' card. */
+  /**
+   * A 'free' card.
+   */
   public static final CardType FREE = new CardType("Free");
 
-  /** A 'empty' card. */
+  /**
+   * A 'empty' card.
+   */
   public static final CardType EMPTY = new CardType("Empty");
 
-  /** The type name. */
+  /**
+   * The type name.
+   */
   private final String myName;
 
   /**
    * Creates a new card type.
-   * <p>
-   * This constructor is private to prevent new types being constructed - only the predefined
-   * types are valid.
+   * <p/>
+   * This constructor is private to prevent new types being constructed - only the
+   * predefined types are valid.
    *
-   * @param name  the type name.
+   * @param name the type name.
    */
-  private CardType(final String name)
+  private CardType (final String name)
   {
     myName = name;
   }
@@ -83,7 +97,7 @@ public final class CardType
    *
    * @return The type name.
    */
-  public String getTypeName()
+  public String getTypeName ()
   {
     return myName;
   }
@@ -93,7 +107,7 @@ public final class CardType
    *
    * @return A string.
    */
-  public String toString()
+  public String toString ()
   {
     return myName;
   }

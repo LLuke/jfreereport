@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataFilter.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: DataFilter.java,v 1.3 2004/05/07 08:24:42 mungady Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,9 @@
 package org.jfree.report.filter;
 
 /**
- * A data filter is a combined input-/out target. Use filters to perform stateless
- * data transformation. If you need to access the report state to perform a task,
- * use functions instead.
+ * A data filter is a combined input-/out target. Use filters to perform stateless data
+ * transformation. If you need to access the report state to perform a task, use functions
+ * instead.
  *
  * @author Thomas Morgner
  */

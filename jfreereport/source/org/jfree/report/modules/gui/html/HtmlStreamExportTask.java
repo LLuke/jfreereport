@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlStreamExportTask.java,v 1.9 2004/03/16 15:09:44 taqua Exp $
+ * $Id: HtmlStreamExportTask.java,v 1.10 2004/05/07 14:29:50 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -53,29 +53,35 @@ import org.jfree.report.modules.output.table.html.StreamHtmlFilesystem;
 import org.jfree.report.util.Log;
 
 /**
- * An export task implementation that exports the report into a single HTML
- * file.
- * 
+ * An export task implementation that exports the report into a single HTML file.
+ *
  * @author Thomas Morgner
  */
 public class HtmlStreamExportTask extends ExportTask
 {
-  /** The progress dialog that monitors the export process. */
+  /**
+   * The progress dialog that monitors the export process.
+   */
   private final ReportProgressDialog progressDialog;
-  /** The name of the target file. */
+  /**
+   * The name of the target file.
+   */
   private final String fileName;
-  /** The report that should be exported. */
+  /**
+   * The report that should be exported.
+   */
   private final JFreeReport report;
 
   /**
    * Creates a new html export task.
-   * 
+   *
    * @param fileName the name of the target file.
-   * @param dialog the progress monitor component.
-   * @param report the report that should be exported.
+   * @param dialog   the progress monitor component.
+   * @param report   the report that should be exported.
    */
-  public HtmlStreamExportTask(final String fileName,
-                              final ReportProgressDialog dialog, final JFreeReport report)
+  public HtmlStreamExportTask (final String fileName,
+                               final ReportProgressDialog dialog,
+                               final JFreeReport report)
   {
     if (fileName == null)
     {
@@ -93,7 +99,7 @@ public class HtmlStreamExportTask extends ExportTask
   /**
    * Exports the report into a Html Directory Structure.
    */
-  protected void performExport()
+  protected void performExport ()
   {
     OutputStream out = null;
     final File file = new File(fileName);
@@ -112,7 +118,7 @@ public class HtmlStreamExportTask extends ExportTask
       // define the report properly to not scatter the image files over the
       // whole local filesystem.
       target.setFilesystem
-          (new StreamHtmlFilesystem(out, true, file.getParentFile().toURL()));
+              (new StreamHtmlFilesystem(out, true, file.getParentFile().toURL()));
       target.processReport();
       out.close();
       out = null;
@@ -145,7 +151,7 @@ public class HtmlStreamExportTask extends ExportTask
     }
     catch (Exception re)
     {
-      Log.error ("Exporting failed .", re);
+      Log.error("Exporting failed .", re);
       setTaskFailed(re);
     }
     finally
@@ -159,7 +165,7 @@ public class HtmlStreamExportTask extends ExportTask
       }
       catch (Exception e)
       {
-        Log.error ("Unable to close the output stream.", e);
+        Log.error("Unable to close the output stream.", e);
         setTaskFailed(e);
       }
     }
@@ -172,7 +178,7 @@ public class HtmlStreamExportTask extends ExportTask
   /**
    * Remove all listeners and prepare the finalization.
    */
-  protected void dispose()
+  protected void dispose ()
   {
     super.dispose();
     if (progressDialog != null)

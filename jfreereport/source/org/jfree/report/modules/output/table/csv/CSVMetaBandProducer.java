@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVMetaBandProducer.java,v 1.4 2005/01/30 23:37:23 taqua Exp $
+ * $Id: CSVMetaBandProducer.java,v 1.5 2005/02/19 13:30:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,33 +38,31 @@
 
 package org.jfree.report.modules.output.table.csv;
 
-import java.awt.geom.Rectangle2D;
-
 import org.jfree.report.Element;
 import org.jfree.report.TextElement;
-import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.content.Content;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.RawContent;
 import org.jfree.report.modules.output.table.base.TableMetaBandProducer;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.util.geom.StrictBounds;
 
 public class CSVMetaBandProducer extends TableMetaBandProducer
 {
-  public CSVMetaBandProducer(final LayoutSupport support)
+  public CSVMetaBandProducer (final LayoutSupport support)
   {
     super(support);
   }
 
   /**
-   * Checks, whether the element contains text content and if so,
-   * creates the data element.
+   * Checks, whether the element contains text content and if so, creates the data
+   * element.
    *
    * @param e the element.
    * @return the table cell data element for the element.
    */
-  protected MetaElement createTextCell(final Element e, final long x, final long y)
+  protected MetaElement createTextCell (final Element e, final long x, final long y)
   {
     // we only handle plain text elements at the moment ...
     if (e.getContentType().equals(TextElement.CONTENT_TYPE) == false)
@@ -77,9 +75,9 @@ public class CSVMetaBandProducer extends TableMetaBandProducer
     }
 
     final StrictBounds bounds = (StrictBounds)
-        e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+            e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
 
-    final Content content = new RawContent (bounds, e.getValue());
+    final Content content = new RawContent(bounds, e.getValue());
     final ElementStyleSheet style = new MetaElementStyleSheet("meta-" + e.getName());
     style.setStyleProperty(ElementStyleSheet.BOUNDS,
             createElementBounds(e.getStyle(), x, y));

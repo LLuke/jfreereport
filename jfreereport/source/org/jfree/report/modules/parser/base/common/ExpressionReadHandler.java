@@ -4,8 +4,8 @@ import java.beans.IntrospectionException;
 
 import org.jfree.report.function.Expression;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
-import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.ElementDefinitionException;
 import org.jfree.xml.ParseException;
@@ -16,7 +16,9 @@ import org.xml.sax.SAXException;
 
 public class ExpressionReadHandler extends AbstractPropertyXmlReadHandler
 {
-  /** The dependency level attribute. */
+  /**
+   * The dependency level attribute.
+   */
   public static final String DEPENCY_LEVEL_ATT = "deplevel";
 
   private Expression expression;
@@ -72,7 +74,7 @@ public class ExpressionReadHandler extends AbstractPropertyXmlReadHandler
               "' is not valid. The specified class cannot be instantiated.",
               e, getRootHandler().getLocator());
     }
-    catch(ClassCastException e)
+    catch (ClassCastException e)
     {
       throw new ParseException("Expression '" + className +
               "' is not valid. The specified class is not an expression or function.",

@@ -30,7 +30,7 @@
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
  *
- * $Id: ExcelDataCellStyle.java,v 1.5.4.1 2004/12/13 19:27:11 taqua Exp $
+ * $Id: ExcelDataCellStyle.java,v 1.7 2005/01/25 00:16:32 taqua Exp $
  *
  * Changes
  * -------
@@ -48,47 +48,62 @@ import org.jfree.report.style.FontDefinition;
 import org.jfree.util.ObjectUtilities;
 
 /**
- * The ExcelDataCellStyle is used to collect style information for
- * an excel cell. This information is later transformed into a excel
- * HSSFCellStyle using the ExcelCellStyleFactory.
+ * The ExcelDataCellStyle is used to collect style information for an excel cell. This
+ * information is later transformed into a excel HSSFCellStyle using the
+ * ExcelCellStyleFactory.
  *
  * @author Heiko Evermann.
  */
 public final class ExcelDataCellStyle
 {
-  /** A flag indicating whether to enable excels word wrapping. */
+  /**
+   * A flag indicating whether to enable excels word wrapping.
+   */
   private boolean wrapText;
 
-  /** the horizontal text alignment. */
+  /**
+   * the horizontal text alignment.
+   */
   private ElementAlignment horizontalAlignment;
 
-  /** the vertical text alignment. */
+  /**
+   * the vertical text alignment.
+   */
   private ElementAlignment verticalAlignment;
 
-  /** the font definition for the cell. */
+  /**
+   * the font definition for the cell.
+   */
   private FontDefinition fontDefinition;
 
-  /** the text color. */
+  /**
+   * the text color.
+   */
   private Color textColor;
 
-  /** the data style. */
+  /**
+   * the data style.
+   */
   private String dataStyle;
 
-  /** A cached hashcode. */
+  /**
+   * A cached hashcode.
+   */
   private int hashCode;
 
   /**
    * Creates a new ExcelDataCellStyle object with the given attributes.
-   * 
+   *
    * @param fontDefinition the font definition used in the cell.
-   * @param textColor the text color of the cell.
-   * @param horizontal the horizontal alignment of the cell contents.
-   * @param vertical the vertical alignment of the cell contents.
+   * @param textColor      the text color of the cell.
+   * @param horizontal     the horizontal alignment of the cell contents.
+   * @param vertical       the vertical alignment of the cell contents.
    */
-  public ExcelDataCellStyle(final FontDefinition fontDefinition, final Color textColor,
-                            final ElementAlignment horizontal, final ElementAlignment vertical)
+  public ExcelDataCellStyle (final FontDefinition fontDefinition, final Color textColor,
+                             final ElementAlignment horizontal,
+                             final ElementAlignment vertical)
   {
-    this (fontDefinition, textColor, horizontal, vertical, null, false);
+    this(fontDefinition, textColor, horizontal, vertical, null, false);
   }
 
 
@@ -96,15 +111,16 @@ public final class ExcelDataCellStyle
    * Creates a new ExcelDataCellStyle definition.
    *
    * @param fontDefinition the font definition used in the cell.
-   * @param textColor the text color of the cell.
-   * @param horizontal the horizontal alignment of the cell contents.
-   * @param vertical the vertical alignment of the cell contents.
-   * @param dataStyle the data style definition or null, if the default should be used.
-   * @param wrapText defines whether to wrap text in excel.
+   * @param textColor      the text color of the cell.
+   * @param horizontal     the horizontal alignment of the cell contents.
+   * @param vertical       the vertical alignment of the cell contents.
+   * @param dataStyle      the data style definition or null, if the default should be
+   *                       used.
+   * @param wrapText       defines whether to wrap text in excel.
    */
-  public ExcelDataCellStyle(final FontDefinition fontDefinition, final Color textColor,
-                            final ElementAlignment horizontal, final ElementAlignment vertical,
-                            final String dataStyle, final boolean wrapText)
+  public ExcelDataCellStyle (final FontDefinition fontDefinition, final Color textColor,
+                             final ElementAlignment horizontal, final ElementAlignment vertical,
+                             final String dataStyle, final boolean wrapText)
   {
     if (fontDefinition == null)
     {
@@ -136,7 +152,7 @@ public final class ExcelDataCellStyle
    *
    * @return true, if wordwrapping is enabled, false otherwise.
    */
-  public boolean isWrapText()
+  public boolean isWrapText ()
   {
     return wrapText;
   }
@@ -146,7 +162,7 @@ public final class ExcelDataCellStyle
    *
    * @return the horizontal alignment for the cell content.
    */
-  public ElementAlignment getHorizontalAlignment()
+  public ElementAlignment getHorizontalAlignment ()
   {
     return horizontalAlignment;
   }
@@ -156,7 +172,7 @@ public final class ExcelDataCellStyle
    *
    * @return the vertical alignment for the cell content.
    */
-  public ElementAlignment getVerticalAlignment()
+  public ElementAlignment getVerticalAlignment ()
   {
     return verticalAlignment;
   }
@@ -166,7 +182,7 @@ public final class ExcelDataCellStyle
    *
    * @return the font definition for the text in the cell.
    */
-  public FontDefinition getFontDefinition()
+  public FontDefinition getFontDefinition ()
   {
     return fontDefinition;
   }
@@ -176,7 +192,7 @@ public final class ExcelDataCellStyle
    *
    * @return the text color.
    */
-  public Color getTextColor()
+  public Color getTextColor ()
   {
     return textColor;
   }
@@ -186,7 +202,7 @@ public final class ExcelDataCellStyle
    *
    * @return the cell data style.
    */
-  public String getDataStyle()
+  public String getDataStyle ()
   {
     return dataStyle;
   }
@@ -194,11 +210,11 @@ public final class ExcelDataCellStyle
   /**
    * Indicates whether some other object is "equal to" this one.
    *
-   * @param   o   the reference object with which to compare.
-   * @return  <code>true</code> if this object is the same as the obj
-   *          argument; <code>false</code> otherwise.
+   * @param o the reference object with which to compare.
+   * @return <code>true</code> if this object is the same as the obj argument;
+   *         <code>false</code> otherwise.
    */
-  public boolean equals(final Object o)
+  public boolean equals (final Object o)
   {
     if (this == o)
     {
@@ -240,13 +256,12 @@ public final class ExcelDataCellStyle
   }
 
   /**
-   * Returns a hash code value for the object. This method is
-   * supported for the benefit of hashtables such as those provided by
-   * <code>java.util.Hashtable</code>.
+   * Returns a hash code value for the object. This method is supported for the benefit of
+   * hashtables such as those provided by <code>java.util.Hashtable</code>.
    *
-   * @return  a hash code value for this object.
+   * @return a hash code value for this object.
    */
-  public int hashCode()
+  public int hashCode ()
   {
     if (hashCode == 0)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelExportTask.java,v 1.8 2004/03/16 15:09:47 taqua Exp $
+ * $Id: ExcelExportTask.java,v 1.9 2004/05/07 14:29:43 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -52,30 +52,35 @@ import org.jfree.report.modules.output.table.xls.ExcelProcessor;
 import org.jfree.report.util.Log;
 
 /**
- * An export task implementation, which writes a given report into an
- * Excel file.
- * 
+ * An export task implementation, which writes a given report into an Excel file.
+ *
  * @author Thomas Morgner
  */
 public class ExcelExportTask extends ExportTask
 {
-  /** The progress dialog that will be used to visualize the report progress. */
+  /**
+   * The progress dialog that will be used to visualize the report progress.
+   */
   private final ReportProgressDialog progressDialog;
-  /** The file name of the output file. */
+  /**
+   * The file name of the output file.
+   */
   private final String fileName;
-  /** The report which should be exported. */
+  /**
+   * The report which should be exported.
+   */
   private final JFreeReport report;
 
   /**
    * Creates a new export task.
-   * 
+   *
    * @param fileName the name of the target file.
-   * @param dialog the progress dialog that will monitor the report progress.
-   * @param report the report that should be exported.
+   * @param dialog   the progress dialog that will monitor the report progress.
+   * @param report   the report that should be exported.
    */
   public ExcelExportTask
-      (final String fileName, final ReportProgressDialog dialog,
-       final JFreeReport report)
+          (final String fileName, final ReportProgressDialog dialog,
+           final JFreeReport report)
   {
     if (fileName == null)
     {
@@ -93,7 +98,7 @@ public class ExcelExportTask extends ExportTask
   /**
    * Exports the report into an Excel file.
    */
-  protected void performExport()
+  protected void performExport ()
   {
     OutputStream out = null;
     final File file = new File(fileName);
@@ -139,7 +144,7 @@ public class ExcelExportTask extends ExportTask
     }
     catch (Exception re)
     {
-      Log.error ("Excel export failed", re);
+      Log.error("Excel export failed", re);
       setTaskFailed(re);
     }
     finally
@@ -153,7 +158,7 @@ public class ExcelExportTask extends ExportTask
       }
       catch (Exception e)
       {
-        Log.error ("Unable to close the output stream.", e);
+        Log.error("Unable to close the output stream.", e);
         setTaskFailed(e);
         // if there is already another error, this exception is
         // just a minor obstactle. Something big crashed before ...
@@ -168,7 +173,7 @@ public class ExcelExportTask extends ExportTask
   /**
    * Remove all listeners and prepare the finalization.
    */
-  protected void dispose()
+  protected void dispose ()
   {
     super.dispose();
     if (progressDialog != null)

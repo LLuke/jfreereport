@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlDirExportTask.java,v 1.7.4.2 2004/10/11 21:00:39 taqua Exp $
+ * $Id: HtmlDirExportTask.java,v 1.10 2005/01/25 00:06:04 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,32 +50,39 @@ import org.jfree.report.modules.output.table.html.HtmlProcessor;
 import org.jfree.report.util.Log;
 
 /**
- * An export task implementation that exports the report into a HTML
- * directory structure.
- * 
+ * An export task implementation that exports the report into a HTML directory structure.
+ *
  * @author Thomas Morgner
  */
 public class HtmlDirExportTask extends ExportTask
 {
-  /** The progress dialog that monitors the export process. */
+  /**
+   * The progress dialog that monitors the export process.
+   */
   private final ReportProgressDialog progressDialog;
-  /** The name of the target file. */
+  /**
+   * The name of the target file.
+   */
   private final String fileName;
-  /** The name of the data directory (relative to the target file). */
+  /**
+   * The name of the data directory (relative to the target file).
+   */
   private final String dataDirectory;
-  /** The report that should be exported. */
+  /**
+   * The report that should be exported.
+   */
   private final JFreeReport report;
 
   /**
    * Creates a new html export task.
-   * 
-   * @param fileName the name of the target file.
+   *
+   * @param fileName      the name of the target file.
    * @param dataDirectory the name of the data directory (relative to the target file).
-   * @param dialog the progress monitor component (may be null).
-   * @param report the report that should be exported.
+   * @param dialog        the progress monitor component (may be null).
+   * @param report        the report that should be exported.
    */
-  public HtmlDirExportTask(final String fileName, final String dataDirectory,
-                           final ReportProgressDialog dialog, final JFreeReport report)
+  public HtmlDirExportTask (final String fileName, final String dataDirectory,
+                            final ReportProgressDialog dialog, final JFreeReport report)
   {
     if (fileName == null)
     {
@@ -98,7 +105,7 @@ public class HtmlDirExportTask extends ExportTask
   /**
    * Exports the report into a Html Directory Structure.
    */
-  protected void performExport()
+  protected void performExport ()
   {
     try
     {
@@ -135,11 +142,11 @@ public class HtmlDirExportTask extends ExportTask
     {
       setTaskAborted();
       Log.warn(new Log.SimpleMessage
-          ("Unable to delete incomplete export: File ", fileName, " DataDir: ", dataDirectory));
+              ("Unable to delete incomplete export: File ", fileName, " DataDir: ", dataDirectory));
     }
     catch (Exception re)
     {
-      Log.error ("Exporting failed .", re);
+      Log.error("Exporting failed .", re);
       setTaskFailed(re);
     }
     if (progressDialog != null)
@@ -151,12 +158,12 @@ public class HtmlDirExportTask extends ExportTask
   /**
    * Remove all listeners and prepare the finalization.
    */
-  protected void dispose()
+  protected void dispose ()
   {
     super.dispose();
     if (progressDialog != null)
     {
       progressDialog.dispose();
-    }      
+    }
   }
 }

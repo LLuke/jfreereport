@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportDefinition.java,v 1.9 2005/01/24 23:57:48 taqua Exp $
+ * $Id: ReportDefinition.java,v 1.10 2005/01/25 21:39:54 taqua Exp $
  *
  * Changes
  * -------
@@ -45,8 +45,8 @@ import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.ReportProperties;
 
 /**
- * A report definition. This the working copy of the JFreeReport object. This object
- * is not serializable, as it is used internally.
+ * A report definition. This the working copy of the JFreeReport object. This object is
+ * not serializable, as it is used internally.
  *
  * @author Thomas Morgner.
  */
@@ -57,100 +57,97 @@ public interface ReportDefinition extends Cloneable
    *
    * @return The list of groups.
    */
-  public GroupList getGroups();
+  public GroupList getGroups ();
 
   /**
    * Returns the report header.
    *
    * @return The report header.
    */
-  public ReportHeader getReportHeader();
+  public ReportHeader getReportHeader ();
 
   /**
    * Returns the report footer.
    *
    * @return The report footer.
    */
-  public ReportFooter getReportFooter();
+  public ReportFooter getReportFooter ();
 
   /**
    * Returns the page header.
    *
    * @return The page header.
    */
-  public PageHeader getPageHeader();
+  public PageHeader getPageHeader ();
 
   /**
    * Returns the page footer.
    *
    * @return The page footer.
    */
-  public PageFooter getPageFooter();
+  public PageFooter getPageFooter ();
 
   /**
    * Returns the item band.
    *
    * @return The item band.
    */
-  public ItemBand getItemBand();
+  public ItemBand getItemBand ();
 
   /**
    * Returns the watermark band.
    *
    * @return The watermark band.
    */
-  public Watermark getWatermark();
+  public Watermark getWatermark ();
 
   /**
    * Returns the report properties.
    *
    * @return The report properties.
    */
-  public ReportProperties getProperties();
+  public ReportProperties getProperties ();
 
   /**
    * Returns the report configuration.
    *
    * @return The report configuration.
    */
-  public ReportConfiguration getReportConfiguration();
+  public ReportConfiguration getReportConfiguration ();
 
   /**
-   * Returns the number of groups in this report.
-   * <P>
-   * Every report has at least one group defined.
+   * Returns the number of groups in this report. <P> Every report has at least one group
+   * defined.
    *
    * @return the group count.
    */
-  public int getGroupCount();
+  public int getGroupCount ();
 
   /**
-   * Returns the group at the specified index or null, if there
-   * is no such group.
+   * Returns the group at the specified index or null, if there is no such group.
    *
-   * @param count  the group index.
-   *
+   * @param count the group index.
    * @return the requested group.
    *
-   * @throws IllegalArgumentException if the count is negative.
-   * @throws IndexOutOfBoundsException if the count is greater than
-   * the number of defined groups.
+   * @throws IllegalArgumentException  if the count is negative.
+   * @throws IndexOutOfBoundsException if the count is greater than the number of defined
+   *                                   groups.
    */
-  public Group getGroup(int count);
+  public Group getGroup (int count);
 
   /**
    * Returns the stylesheet collection of this report definition. The stylesheet
-   * collection is fixed for the report definition and all elements of the report.
-   * When a band or group is added to the report it will get registered with this
-   * stylesheet collection and cannot be used in an different report.
+   * collection is fixed for the report definition and all elements of the report. When a
+   * band or group is added to the report it will get registered with this stylesheet
+   * collection and cannot be used in an different report.
    *
    * @return the stylesheet collection of the report, never null.
    */
-  public StyleSheetCollection getStyleSheetCollection();
+  public StyleSheetCollection getStyleSheetCollection ();
 
   public DataRow getDataRow ();
 
-  public PageDefinition getPageDefinition();
+  public PageDefinition getPageDefinition ();
 
   public ResourceBundle getResourceBundle (String identifier);
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentStyle.java,v 1.3 2005/01/25 00:13:22 taqua Exp $
+ * $Id: HtmlContentStyle.java,v 1.4 2005/02/19 13:30:02 taqua Exp $
  *
  * Changes
  * -------
@@ -42,26 +42,36 @@ import org.jfree.report.ElementAlignment;
 import org.jfree.report.style.FontDefinition;
 
 /**
- * The HtmlCellStyle is used to define the style for the generated HTML-CellStyle.
- * This style directly references to an CSS-StyleDefinition.
+ * The HtmlCellStyle is used to define the style for the generated HTML-CellStyle. This
+ * style directly references to an CSS-StyleDefinition.
  *
  * @author Thomas Morgner
  */
 public final class HtmlContentStyle implements HtmlStyle
 {
-  /** the font definition used for the text. */
+  /**
+   * the font definition used for the text.
+   */
   private FontDefinition font;
 
-  /** the text color. */
+  /**
+   * the text color.
+   */
   private Color fontColor;
 
-  /** the vertical content alignment. */
+  /**
+   * the vertical content alignment.
+   */
   private ElementAlignment verticalAlignment;
 
-  /** the horizontal content alignment. */
+  /**
+   * the horizontal content alignment.
+   */
   private ElementAlignment horizontalAlignment;
 
-  /** the cached hashcode. */
+  /**
+   * the cached hashcode.
+   */
   private int hashCode;
 
   //private String name;
@@ -69,15 +79,15 @@ public final class HtmlContentStyle implements HtmlStyle
   /**
    * Creates a new HTML-StyleDefinition.
    *
-   * @param font the font used to display text.
-   * @param fontColor the text color.
-   * @param verticalAlignment the vertical content alignment.
+   * @param font                the font used to display text.
+   * @param fontColor           the text color.
+   * @param verticalAlignment   the vertical content alignment.
    * @param horizontalAlignment the horizontal content alignment.
    * @throws NullPointerException if any of the parameters is null.
    */
-  public HtmlContentStyle(final FontDefinition font, final Color fontColor,
-                          final ElementAlignment verticalAlignment,
-                          final ElementAlignment horizontalAlignment)
+  public HtmlContentStyle (final FontDefinition font, final Color fontColor,
+                           final ElementAlignment verticalAlignment,
+                           final ElementAlignment horizontalAlignment)
   {
     if (font == null)
     {
@@ -107,7 +117,7 @@ public final class HtmlContentStyle implements HtmlStyle
    *
    * @return the defined font.
    */
-  public FontDefinition getFont()
+  public FontDefinition getFont ()
   {
     return font;
   }
@@ -117,7 +127,7 @@ public final class HtmlContentStyle implements HtmlStyle
    *
    * @return the text color.
    */
-  public Color getFontColor()
+  public Color getFontColor ()
   {
     return fontColor;
   }
@@ -127,7 +137,7 @@ public final class HtmlContentStyle implements HtmlStyle
    *
    * @return the vertical alignment.
    */
-  public ElementAlignment getVerticalAlignment()
+  public ElementAlignment getVerticalAlignment ()
   {
     return verticalAlignment;
   }
@@ -137,7 +147,7 @@ public final class HtmlContentStyle implements HtmlStyle
    *
    * @return the horizontal alignment.
    */
-  public ElementAlignment getHorizontalAlignment()
+  public ElementAlignment getHorizontalAlignment ()
   {
     return horizontalAlignment;
   }
@@ -146,10 +156,10 @@ public final class HtmlContentStyle implements HtmlStyle
    * Test, whether an other object equals this HtmlCellStyle.
    *
    * @param o the compared object.
-   * @return true, if the given object is a HtmlCellStyle with the same properties
-   * defined as this style.
+   * @return true, if the given object is a HtmlCellStyle with the same properties defined
+   *         as this style.
    */
-  public boolean equals(final Object o)
+  public boolean equals (final Object o)
   {
     if (this == o)
     {
@@ -187,7 +197,7 @@ public final class HtmlContentStyle implements HtmlStyle
    *
    * @return the hashcode.
    */
-  public int hashCode()
+  public int hashCode ()
   {
     if (hashCode == 0)
     {
@@ -202,14 +212,14 @@ public final class HtmlContentStyle implements HtmlStyle
   }
 
   /**
-   * Translates the font name of the FontDefinition into the HTML-Font name.
-   * If the fontdefinition describes a logical font, then the html font name
-   * for that logical font is returned.
+   * Translates the font name of the FontDefinition into the HTML-Font name. If the
+   * fontdefinition describes a logical font, then the html font name for that logical
+   * font is returned.
    *
    * @param font the font definition.
    * @return the translated html font name.
    */
-  private String translateFontName(final FontDefinition font)
+  private String translateFontName (final FontDefinition font)
   {
     if (font.isCourier())
     {
@@ -226,7 +236,7 @@ public final class HtmlContentStyle implements HtmlStyle
     return "'" + font.getFontName() + "'";
   }
 
-    /**
+  /**
    * Transforms the given HtmlCellStyle into a Cascading StyleSheet definition.
    *
    * @return the generated stylesheet definition.
@@ -241,7 +251,7 @@ public final class HtmlContentStyle implements HtmlStyle
 
     if (font.isBold())
     {
-      builder.append("font-weight",  "bold");
+      builder.append("font-weight", "bold");
     }
     if (font.isItalic())
     {
@@ -273,13 +283,13 @@ public final class HtmlContentStyle implements HtmlStyle
 
 
   /**
-   * Translates the JFreeReport horizontal element alignment into a
-   * HTML alignment constant.
+   * Translates the JFreeReport horizontal element alignment into a HTML alignment
+   * constant.
    *
    * @param ea the element alignment
    * @return the translated alignment name.
    */
-  private String translateHorizontalAlignment(final ElementAlignment ea)
+  private String translateHorizontalAlignment (final ElementAlignment ea)
   {
     if (ea == ElementAlignment.RIGHT)
     {
@@ -294,13 +304,13 @@ public final class HtmlContentStyle implements HtmlStyle
 
 
   /**
-   * Translates the JFreeReport vertical element alignment into a
-   * HTML alignment constant.
+   * Translates the JFreeReport vertical element alignment into a HTML alignment
+   * constant.
    *
    * @param ea the element alignment
    * @return the translated alignment name.
    */
-  private String translateVerticalAlignment(final ElementAlignment ea)
+  private String translateVerticalAlignment (final ElementAlignment ea)
   {
     if (ea == ElementAlignment.BOTTOM)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TopAlignment.java,v 1.7 2004/05/07 12:53:06 mungady Exp $
+ * $Id: TopAlignment.java,v 1.8 2005/02/19 13:29:58 taqua Exp $
  *
  * Changes
  * -------
@@ -50,9 +50,9 @@ public strictfp class TopAlignment extends VerticalBoundsAlignment
   /**
    * Creates a new alignment object.
    *
-   * @param bounds  the reference bounds.
+   * @param bounds the reference bounds.
    */
-  public TopAlignment(final StrictBounds bounds)
+  public TopAlignment (final StrictBounds bounds)
   {
     super(bounds);
   }
@@ -60,11 +60,10 @@ public strictfp class TopAlignment extends VerticalBoundsAlignment
   /**
    * Aligns a rectangle to the top of the current bounds.
    *
-   * @param r  the region to align (<code>null</code> not permitted).
-   *
+   * @param r the region to align (<code>null</code> not permitted).
    * @return the aligned rectangle.
    */
-  public StrictBounds align(final StrictBounds r)
+  public StrictBounds align (final StrictBounds r)
   {
     if (r == null)
     {
@@ -72,7 +71,7 @@ public strictfp class TopAlignment extends VerticalBoundsAlignment
     }
     final long x = r.getX();
     final long y = getReferenceBounds().getY();
-    final long h = Math.min (r.getHeight(), getReferenceBounds().getHeight());
+    final long h = Math.min(r.getHeight(), getReferenceBounds().getHeight());
     final long w = Math.min(r.getWidth(), getReferenceBounds().getWidth());
 
     r.setRect(x, y, w, h);

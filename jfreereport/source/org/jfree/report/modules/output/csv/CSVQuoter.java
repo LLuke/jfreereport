@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVQuoter.java,v 1.2 2003/08/24 15:06:42 taqua Exp $
+ * $Id: CSVQuoter.java,v 1.3 2004/05/07 12:53:10 mungady Exp $
  *
  * Changes
  * -------
@@ -41,19 +41,22 @@
 package org.jfree.report.modules.output.csv;
 
 /**
- * The <code>CSVQuoter</code> is a helper class to encode a string for the CSV file format.
+ * The <code>CSVQuoter</code> is a helper class to encode a string for the CSV file
+ * format.
  *
  * @author Thomas Morgner.
  */
 public class CSVQuoter
 {
-  /** The separator used in the CSV file. */
+  /**
+   * The separator used in the CSV file.
+   */
   private String separator;
 
   /**
    * Creates a new CSVQuoter, which uses a comma as the default separator.
    */
-  public CSVQuoter()
+  public CSVQuoter ()
   {
     this(",");
   }
@@ -61,24 +64,22 @@ public class CSVQuoter
   /**
    * Creates a new <code>CSVQuoter</code>, which uses the defined separator.
    *
-   * @param separator  the separator.
-   *
+   * @param separator the separator.
    * @throws NullPointerException if the given separator is <code>null</code>.
    */
-  public CSVQuoter(final String separator)
+  public CSVQuoter (final String separator)
   {
     setSeparator(separator);
   }
 
   /**
-   * Encodes the string, so that the string can safely be used in CSV files.
-   * If the string does not need quoting, the original string is returned unchanged.
+   * Encodes the string, so that the string can safely be used in CSV files. If the string
+   * does not need quoting, the original string is returned unchanged.
    *
-   * @param original  the unquoted string.
-   *
+   * @param original the unquoted string.
    * @return The quoted string
    */
-  public String doQuoting(final String original)
+  public String doQuoting (final String original)
   {
     if (isQuotingNeeded(original))
     {
@@ -95,14 +96,13 @@ public class CSVQuoter
   }
 
   /**
-   * Decodes the string, so that all escape sequences get removed.
-   * If the string was not quoted, then the string is returned unchanged.
+   * Decodes the string, so that all escape sequences get removed. If the string was not
+   * quoted, then the string is returned unchanged.
    *
-   * @param nativeString  the quoted string.
-   *
+   * @param nativeString the quoted string.
    * @return The unquoted string.
    */
-  public String undoQuoting(final String nativeString)
+  public String undoQuoting (final String nativeString)
   {
     if (isQuotingNeeded(nativeString))
     {
@@ -133,14 +133,13 @@ public class CSVQuoter
   }
 
   /**
-   * Tests, whether this string needs to be quoted. A string is encoded if
-   * the string contains a newline character, a quote character or the defined
-   * separator.
+   * Tests, whether this string needs to be quoted. A string is encoded if the string
+   * contains a newline character, a quote character or the defined separator.
    *
    * @param str the string that should be tested.
    * @return true, if quoting needs to be applied, false otherwise.
    */
-  private boolean isQuotingNeeded(final String str)
+  private boolean isQuotingNeeded (final String str)
   {
     if (str.indexOf(separator) != -1)
     {
@@ -158,13 +157,13 @@ public class CSVQuoter
   }
 
   /**
-   * Applies the quoting to a given string, and stores the result in the
-   * StringBuffer <code>b</code>.
+   * Applies the quoting to a given string, and stores the result in the StringBuffer
+   * <code>b</code>.
    *
-   * @param b the result buffer
+   * @param b        the result buffer
    * @param original the string, that should be quoted.
    */
-  private void applyQuote(final StringBuffer b, final String original)
+  private void applyQuote (final StringBuffer b, final String original)
   {
     // This solution needs improvements. Copy blocks instead of single
     // characters.
@@ -189,19 +188,18 @@ public class CSVQuoter
    *
    * @return the separator (never <code>null</code>).
    */
-  public String getSeparator()
+  public String getSeparator ()
   {
     return separator;
   }
 
   /**
-   * Defines the separator, which is used in the CSV file. If you use
-   * different separators for quoting and writing, the resulting file will
-   * be invalid.
+   * Defines the separator, which is used in the CSV file. If you use different separators
+   * for quoting and writing, the resulting file will be invalid.
    *
-   * @param separator  the separator (<code>null</code> not permitted).
+   * @param separator the separator (<code>null</code> not permitted).
    */
-  public void setSeparator(final String separator)
+  public void setSeparator (final String separator)
   {
     if (separator == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: KeyedQueue.java,v 1.3 2004/05/07 08:14:23 mungady Exp $
+ * $Id: KeyedQueue.java,v 1.4 2005/02/22 20:20:00 taqua Exp $
  *
  * Changes
  * -------
@@ -44,25 +44,32 @@ import java.util.LinkedList;
 
 /**
  * A keyed queue is a hashtable like structure which will store a certain number of
- * elements. If the defined element size is exceeded, the firstly stored element gets removed.
+ * elements. If the defined element size is exceeded, the firstly stored element gets
+ * removed.
  *
  * @author Thomas Morgner
  */
 public class KeyedQueue implements Serializable, Cloneable
 {
-  /** Ordered storage for the queued items. */
+  /**
+   * Ordered storage for the queued items.
+   */
   private LinkedList list;
 
-  /** Keyed storage for the queued items. */
+  /**
+   * Keyed storage for the queued items.
+   */
   private HashMap table;
 
-  /** The maximum number of items in the queue. */
+  /**
+   * The maximum number of items in the queue.
+   */
   private int limit;
 
   /**
    * Creates a KeyedQueue with an initial limit of 10 items.
    */
-  public KeyedQueue()
+  public KeyedQueue ()
   {
     this(10);
   }
@@ -70,9 +77,9 @@ public class KeyedQueue implements Serializable, Cloneable
   /**
    * Creates a KeyedQueue with an initial limit if <code>limit</code> items.
    *
-   * @param limit  the maximum number of items.
+   * @param limit the maximum number of items.
    */
-  public KeyedQueue(final int limit)
+  public KeyedQueue (final int limit)
   {
     table = new HashMap();
     list = new LinkedList();
@@ -82,9 +89,9 @@ public class KeyedQueue implements Serializable, Cloneable
   /**
    * Defines the maximal number of elements in the queue.
    *
-   * @param limit  the maximum number of items.
+   * @param limit the maximum number of items.
    */
-  public void setLimit(final int limit)
+  public void setLimit (final int limit)
   {
     if (limit < 0)
     {
@@ -98,19 +105,19 @@ public class KeyedQueue implements Serializable, Cloneable
    *
    * @return the maximum number of elements in the queue.
    */
-  public int getLimit()
+  public int getLimit ()
   {
     return limit;
   }
 
   /**
-   * Adds a new key/value pair to the queue. If the pair is already contained in the
-   * list, it is moved to the first position so that is gets removed last.
+   * Adds a new key/value pair to the queue. If the pair is already contained in the list,
+   * it is moved to the first position so that is gets removed last.
    *
-   * @param key  the key.
+   * @param key the key.
    * @param ob  the value.
    */
-  public void put(final Object key, final Object ob)
+  public void put (final Object key, final Object ob)
   {
     if (key == null)
     {
@@ -137,11 +144,10 @@ public class KeyedQueue implements Serializable, Cloneable
   /**
    * Queries the queue for the value stored under the given key.
    *
-   * @param key  the key.
-   *
+   * @param key the key.
    * @return the value.
    */
-  public Object get(final Object key)
+  public Object get (final Object key)
   {
     if (key == null)
     {
@@ -154,9 +160,9 @@ public class KeyedQueue implements Serializable, Cloneable
   /**
    * Removes the entry stored under the given key.
    *
-   * @param key  the key.
+   * @param key the key.
    */
-  public void remove(final Object key)
+  public void remove (final Object key)
   {
     if (key == null)
     {
@@ -169,7 +175,7 @@ public class KeyedQueue implements Serializable, Cloneable
   /**
    * Removes the last element in the queue.
    */
-  public void removeLast()
+  public void removeLast ()
   {
     final Object o = list.getLast();
     table.remove(o);
@@ -179,7 +185,7 @@ public class KeyedQueue implements Serializable, Cloneable
   /**
    * Removes all elements in the queue.
    */
-  public void clear()
+  public void clear ()
   {
     table.clear();
     list.clear();
@@ -188,11 +194,12 @@ public class KeyedQueue implements Serializable, Cloneable
   /**
    * Clones the queue.
    *
-   * @return  a clone.
+   * @return a clone.
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final KeyedQueue q = (KeyedQueue) super.clone();
     q.list = (LinkedList) list.clone();

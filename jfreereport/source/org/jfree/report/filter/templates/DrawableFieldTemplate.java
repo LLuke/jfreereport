@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableFieldTemplate.java,v 1.7 2005/01/24 23:59:48 taqua Exp $
+ * $Id: DrawableFieldTemplate.java,v 1.8 2005/01/25 21:40:14 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,21 +43,22 @@ import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.ReportConnectable;
 
 /**
- * An drawable field template. The drawable content will be read from
- * the datarow.
- *  
+ * An drawable field template. The drawable content will be read from the datarow.
+ *
  * @author Thomas Morgner
  */
 public class DrawableFieldTemplate extends AbstractTemplate
-    implements ReportConnectable
+        implements ReportConnectable
 {
-  /** The data row reader. */
+  /**
+   * The data row reader.
+   */
   private DataRowDataSource dataRowDataSource;
 
   /**
    * Creates a new image field template.
    */
-  public DrawableFieldTemplate()
+  public DrawableFieldTemplate ()
   {
     dataRowDataSource = new DataRowDataSource();
   }
@@ -67,7 +68,7 @@ public class DrawableFieldTemplate extends AbstractTemplate
    *
    * @return The field name.
    */
-  public String getField()
+  public String getField ()
   {
     return dataRowDataSource.getDataSourceColumnName();
   }
@@ -75,9 +76,9 @@ public class DrawableFieldTemplate extends AbstractTemplate
   /**
    * Sets the field name.
    *
-   * @param field  the field name.
+   * @param field the field name.
    */
-  public void setField(final String field)
+  public void setField (final String field)
   {
     dataRowDataSource.setDataSourceColumnName(field);
   }
@@ -87,7 +88,7 @@ public class DrawableFieldTemplate extends AbstractTemplate
    *
    * @return the value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return dataRowDataSource.getValue();
   }
@@ -99,24 +100,25 @@ public class DrawableFieldTemplate extends AbstractTemplate
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final DrawableFieldTemplate template = (DrawableFieldTemplate) super.clone();
     template.dataRowDataSource = (DataRowDataSource) template.dataRowDataSource.clone();
     return template;
   }
 
-  public void registerReportDefinition(final ReportDefinition reportDefinition)
+  public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().registerReportDefinition(reportDefinition);
   }
 
-  public void unregisterReportDefinition(final ReportDefinition reportDefinition)
+  public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().unregisterReportDefinition(reportDefinition);
   }
 
-  protected DataRowDataSource getDataRowDataSource()
+  protected DataRowDataSource getDataRowDataSource ()
   {
     return dataRowDataSource;
   }

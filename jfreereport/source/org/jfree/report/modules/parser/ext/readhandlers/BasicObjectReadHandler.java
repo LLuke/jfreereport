@@ -20,9 +20,8 @@ public class BasicObjectReadHandler extends AbstractPropertyXmlReadHandler
   private CommentHintPath commentHintPath;
 
   /**
-   *
    * @param objectDescription may be null.
-   * @param commentHintPath never null.
+   * @param commentHintPath   never null.
    */
   public BasicObjectReadHandler (final ObjectDescription objectDescription,
                                  final CommentHintPath commentHintPath)
@@ -46,7 +45,7 @@ public class BasicObjectReadHandler extends AbstractPropertyXmlReadHandler
   {
     super.init(rootHandler, tagName);
     this.classFactory = (ClassFactory)
-        getRootHandler().getHelperObject(ReportDefinitionReadHandler.CLASS_FACTORY_KEY);
+            getRootHandler().getHelperObject(ReportDefinitionReadHandler.CLASS_FACTORY_KEY);
   }
 
   protected ObjectDescription getObjectDescription ()

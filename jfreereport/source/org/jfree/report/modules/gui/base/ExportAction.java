@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportAction.java,v 1.3.4.2 2004/10/13 18:42:16 taqua Exp $
+ * $Id: ExportAction.java,v 1.5 2005/01/25 00:01:15 taqua Exp $
  *
  * Changes
  * --------
@@ -48,8 +48,8 @@ import org.jfree.report.util.Log;
 import org.jfree.ui.action.ActionDowngrade;
 
 /**
- * An export action that works with any class that implements
- * the {@link org.jfree.report.modules.gui.base.ExportPlugin} interface.
+ * An export action that works with any class that implements the {@link
+ * org.jfree.report.modules.gui.base.ExportPlugin} interface.
  *
  * @author Thomas Morgner.
  */
@@ -63,10 +63,11 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
 
     /**
      * This method gets called when a bound property is changed.
-     * @param evt A PropertyChangeEvent object describing the event source
-     *   	and the property that has changed.
+     *
+     * @param evt A PropertyChangeEvent object describing the event source and the
+     *            property that has changed.
      */
-    public void propertyChange(final PropertyChangeEvent evt)
+    public void propertyChange (final PropertyChangeEvent evt)
     {
       if ("enabled".equals(evt.getPropertyName()))
       {
@@ -75,18 +76,23 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
     }
   }
 
-  /** The export plug-in. */
+  /**
+   * The export plug-in.
+   */
   private ExportPlugin plugin;
 
-  /** The report. */
+  /**
+   * The report.
+   */
   private JFreeReport report;
 
   /**
-   * Defines an <code>Action</code> object with a default description string and default icon.
+   * Defines an <code>Action</code> object with a default description string and default
+   * icon.
    *
-   * @param plugin  the export plug-in.
+   * @param plugin the export plug-in.
    */
-  public ExportAction(final ExportPlugin plugin)
+  public ExportAction (final ExportPlugin plugin)
   {
     if (plugin == null)
     {
@@ -126,7 +132,7 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
    *
    * @return The report.
    */
-  public JFreeReport getReport()
+  public JFreeReport getReport ()
   {
     return report;
   }
@@ -134,9 +140,9 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
   /**
    * Sets the report.
    *
-   * @param report  the report.
+   * @param report the report.
    */
-  public void setReport(final JFreeReport report)
+  public void setReport (final JFreeReport report)
   {
     this.report = report;
   }
@@ -144,9 +150,9 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
   /**
    * Exports the current report using the installed export plug-in.
    *
-   * @param e  the event.
+   * @param e the event.
    */
-  public void actionPerformed(final ActionEvent e)
+  public void actionPerformed (final ActionEvent e)
   {
     if (plugin.isControlPlugin() == false)
     {
@@ -159,17 +165,16 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
   }
 
   /**
-   * When an object implementing interface <code>Runnable</code> is used
-   * to create a thread, starting the thread causes the object's
-   * <code>run</code> method to be called in that separately executing
-   * thread.
-   * <p>
-   * The general contract of the method <code>run</code> is that it may
-   * take any action whatsoever.
+   * When an object implementing interface <code>Runnable</code> is used to create a
+   * thread, starting the thread causes the object's <code>run</code> method to be called
+   * in that separately executing thread.
+   * <p/>
+   * The general contract of the method <code>run</code> is that it may take any action
+   * whatsoever.
    *
-   * @see     java.lang.Thread#run()
+   * @see java.lang.Thread#run()
    */
-  public void run()
+  public void run ()
   {
     final boolean retval = plugin.performExport(report);
     if (plugin.isControlPlugin() == false && retval == false)

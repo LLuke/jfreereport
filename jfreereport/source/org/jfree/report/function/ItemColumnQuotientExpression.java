@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemColumnQuotientExpression.java,v 1.8 2005/01/25 00:00:10 taqua Exp $
+ * $Id: ItemColumnQuotientExpression.java,v 1.9 2005/02/04 19:22:54 taqua Exp $
  *
  * Changes
  * -------
@@ -43,58 +43,58 @@ import java.io.Serializable;
 import org.jfree.report.util.Log;
 
 /**
- * A report function that calculates the quotient of two fields (columns)
- * from the current row.
- * <p>
- * This function expects its input values to be either java.lang.Number instances or Strings
- * that can be parsed to java.lang.Number instances using a java.text.DecimalFormat.
- * <p>
- * The function undestands two parameters.
- * The <code>dividend</code> parameter is required and denotes the name of an ItemBand-field
- * which is used as dividend. The <code>divisor</code> parameter is required and denotes
- * the name of an ItemBand-field which is uses as divisor.
- * <p>
+ * A report function that calculates the quotient of two fields (columns) from the current
+ * row.
+ * <p/>
+ * This function expects its input values to be either java.lang.Number instances or
+ * Strings that can be parsed to java.lang.Number instances using a
+ * java.text.DecimalFormat.
+ * <p/>
+ * The function undestands two parameters. The <code>dividend</code> parameter is required
+ * and denotes the name of an ItemBand-field which is used as dividend. The
+ * <code>divisor</code> parameter is required and denotes the name of an ItemBand-field
+ * which is uses as divisor.
+ * <p/>
  *
  * @author Heiko Evermann
  */
-public class ItemColumnQuotientExpression extends AbstractExpression implements Serializable
+public class ItemColumnQuotientExpression extends AbstractExpression
+        implements Serializable
 {
   private String dividend;
   private String divisor;
 
   /**
-   * Constructs a new function.
-   * <P>
-   * Initially the function has no name...be sure to assign one before using the function.
+   * Constructs a new function. <P> Initially the function has no name...be sure to assign
+   * one before using the function.
    */
-  public ItemColumnQuotientExpression()
+  public ItemColumnQuotientExpression ()
   {
   }
 
   /**
-   * Returns a clone of the function.
-   * <P>
-   * Be aware, this does not create a deep copy. If you have complex
-   * strucures contained in objects, you have to overwrite this function.
+   * Returns a clone of the function. <P> Be aware, this does not create a deep copy. If
+   * you have complex strucures contained in objects, you have to overwrite this
+   * function.
    *
    * @return A clone of the function.
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     return super.clone();
   }
 
   /**
-   * Return the current function value.
-   * <P>
-   * The value is calculated as the quotient of two columns: the dividend column and the divisor
-   * column.  If the divisor is zero, the return value is "n/a";
+   * Return the current function value. <P> The value is calculated as the quotient of two
+   * columns: the dividend column and the divisor column.  If the divisor is zero, the
+   * return value is "n/a";
    *
    * @return The quotient
    */
-  public Object getValue()
+  public Object getValue ()
   {
     // calculate quotient
     double dividend = 0.0;
@@ -138,63 +138,59 @@ public class ItemColumnQuotientExpression extends AbstractExpression implements 
   }
 
   /**
-   * Returns the field used as dividend by the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Returns the field used as dividend by the function. <P> The field name corresponds to
+   * a column name in the report's TableModel.
    *
    * @return The field name.
    */
-  public String getDividend()
+  public String getDividend ()
   {
     return dividend;
   }
 
   /**
-   * Returns the field used as divisor by the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Returns the field used as divisor by the function. <P> The field name corresponds to
+   * a column name in the report's TableModel.
    *
    * @return The field name.
    */
-  public String getDivisor()
+  public String getDivisor ()
   {
     return divisor;
   }
 
   /**
-   * Sets the field name to be used as dividend for the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Sets the field name to be used as dividend for the function. <P> The field name
+   * corresponds to a column name in the report's TableModel.
    *
    * @param dividend the field name (null not permitted).
    */
-  public void setDividend(final String dividend)
+  public void setDividend (final String dividend)
   {
     this.dividend = dividend;
   }
 
   /**
-   * Sets the field name to be used as divisor for the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Sets the field name to be used as divisor for the function. <P> The field name
+   * corresponds to a column name in the report's TableModel.
    *
    * @param divisor the field name (null not permitted).
    */
-  public void setDivisor(final String divisor)
+  public void setDivisor (final String divisor)
   {
     this.divisor = divisor;
   }
 
   /**
-   * Return a completely separated copy of this function. The copy does no
-   * longer share any changeable objects with the original function.
+   * Return a completely separated copy of this function. The copy does no longer share
+   * any changeable objects with the original function.
    *
    * @return a copy of this function.
    */
-  public Expression getInstance()
+  public Expression getInstance ()
   {
     final ItemColumnQuotientExpression function =
-        (ItemColumnQuotientExpression) super.getInstance();
+            (ItemColumnQuotientExpression) super.getInstance();
     return function;
   }
 }

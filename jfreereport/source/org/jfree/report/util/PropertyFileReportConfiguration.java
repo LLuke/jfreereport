@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PropertyFileReportConfiguration.java,v 1.6 2003/09/15 18:26:51 taqua Exp $
+ * $Id: PropertyFileReportConfiguration.java,v 1.7 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes
  * -------
@@ -49,13 +49,13 @@ import java.util.Properties;
 public class PropertyFileReportConfiguration extends ReportConfiguration
 {
   /**
-   * Loads the properties stored in the given file. This method does nothing if
-   * the file does not exist or is unreadable. Appends the contents of the loaded
-   * properties to the already stored contents.
+   * Loads the properties stored in the given file. This method does nothing if the file
+   * does not exist or is unreadable. Appends the contents of the loaded properties to the
+   * already stored contents.
    *
    * @param fileName the file name of the stored properties.
    */
-  public void load(final String fileName)
+  public void load (final String fileName)
   {
     final InputStream in = this.getClass().getResourceAsStream(fileName);
     if (in != null)
@@ -64,19 +64,19 @@ public class PropertyFileReportConfiguration extends ReportConfiguration
     }
     else
     {
-      Log.debug ("Report configuration file not found: " + fileName);
+      Log.debug("Report configuration file not found: " + fileName);
     }
 
   }
 
   /**
-   * Loads the properties stored in the given file. This method does nothing if
-   * the file does not exist or is unreadable. Appends the contents of the loaded
-   * properties to the already stored contents.
+   * Loads the properties stored in the given file. This method does nothing if the file
+   * does not exist or is unreadable. Appends the contents of the loaded properties to the
+   * already stored contents.
    *
    * @param in the input stream used to read the properties.
    */
-  public void load(final InputStream in)
+  public void load (final InputStream in)
   {
     if (in == null)
     {
@@ -101,7 +101,7 @@ public class PropertyFileReportConfiguration extends ReportConfiguration
   /**
    * Default constructor.
    */
-  public PropertyFileReportConfiguration()
+  public PropertyFileReportConfiguration ()
   {
   }
 }

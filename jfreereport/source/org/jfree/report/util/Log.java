@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: Log.java,v 1.10 2003/09/15 18:26:51 taqua Exp $
+ * $Id: Log.java,v 1.11 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes
  * -------
@@ -47,9 +47,8 @@ import java.util.Arrays;
 import org.jfree.util.LogTarget;
 
 /**
- * A simple logging facility. Create a class implementing the
- * {@link org.jfree.util.LogTarget} interface to use
- * this feature.
+ * A simple logging facility. Create a class implementing the {@link
+ * org.jfree.util.LogTarget} interface to use this feature.
  *
  * @author Thomas Morgner
  */
@@ -60,15 +59,17 @@ public final class Log extends org.jfree.util.Log
    */
   public static class MemoryUsageMessage
   {
-    /** The message. */
+    /**
+     * The message.
+     */
     private final String message;
 
     /**
      * Creates a new message.
      *
-     * @param message  the message.
+     * @param message the message.
      */
-    public MemoryUsageMessage(final String message)
+    public MemoryUsageMessage (final String message)
     {
       this.message = message;
     }
@@ -78,32 +79,35 @@ public final class Log extends org.jfree.util.Log
      *
      * @return the string.
      */
-    public String toString()
+    public String toString ()
     {
       return (message
-          + "Free: " + Runtime.getRuntime().freeMemory() + "; "
-          + "Total: " + Runtime.getRuntime().totalMemory());
+              + "Free: " + Runtime.getRuntime().freeMemory() + "; "
+              + "Total: " + Runtime.getRuntime().totalMemory());
     }
   }
 
   /**
-   * A message object that pads the output if the text is shorted than
-   * the given length.
+   * A message object that pads the output if the text is shorted than the given length.
    */
   public static class PadMessage
   {
-    /** The message. */
+    /**
+     * The message.
+     */
     private final Object text;
-    /** The padding size. */
+    /**
+     * The padding size.
+     */
     private final int length;
 
     /**
      * Creates a new message.
      *
-     * @param message  the message.
-     * @param length the padding size.
+     * @param message the message.
+     * @param length  the padding size.
      */
-    public PadMessage(final Object message, final int length)
+    public PadMessage (final Object message, final int length)
     {
       this.text = message;
       this.length = length;
@@ -128,28 +132,40 @@ public final class Log extends org.jfree.util.Log
     }
   }
 
-  /** The log level for error messages. */
+  /**
+   * The log level for error messages.
+   */
   public static final int ERROR = LogTarget.ERROR;
 
-  /** The log level for warning messages. */
+  /**
+   * The log level for warning messages.
+   */
   public static final int WARN = LogTarget.WARN;
 
-  /** The log level for information messages. */
+  /**
+   * The log level for information messages.
+   */
   public static final int INFO = LogTarget.INFO;
 
-  /** The log level for debug messages. */
+  /**
+   * The log level for debug messages.
+   */
   public static final int DEBUG = LogTarget.DEBUG;
 
-  /** The default log target. */
+  /**
+   * The default log target.
+   */
   private static final SystemOutLogTarget DEFAULT_LOG_TARGET = new SystemOutLogTarget();
 
-  /** The JFreeReport log instance. */
+  /**
+   * The JFreeReport log instance.
+   */
   private static final Log JFREEREPORTLOG;
 
   /**
    * Private to prevent creating instances.
    */
-  private Log()
+  private Log ()
   {
   }
 
@@ -180,16 +196,16 @@ public final class Log extends org.jfree.util.Log
    *
    * @return the log object.
    */
-  public static Log getJFreeReportLog()
+  public static Log getJFreeReportLog ()
   {
     return JFREEREPORTLOG;
   }
 
   /**
-   * Initializes the log system after the log module was loaded and a log target
-   * was defined. This is the second step of the log initialisation.
+   * Initializes the log system after the log module was loaded and a log target was
+   * defined. This is the second step of the log initialisation.
    */
-  public void init()
+  public void init ()
   {
     removeTarget(DEFAULT_LOG_TARGET);
     final String logLevel = ReportConfiguration.getGlobalConfig().getLogLevel();
@@ -214,9 +230,9 @@ public final class Log extends org.jfree.util.Log
   /**
    * A convenience method for logging a 'debug' message.
    *
-   * @param message  the message.
+   * @param message the message.
    */
-  public static void debug(final Object message)
+  public static void debug (final Object message)
   {
     log(LogTarget.DEBUG, message);
   }
@@ -224,10 +240,10 @@ public final class Log extends org.jfree.util.Log
   /**
    * A convenience method for logging a 'debug' message.
    *
-   * @param message  the message.
-   * @param e  the exception.
+   * @param message the message.
+   * @param e       the exception.
    */
-  public static void debug(final Object message, final Exception e)
+  public static void debug (final Object message, final Exception e)
   {
     log(LogTarget.DEBUG, message, e);
   }
@@ -235,9 +251,9 @@ public final class Log extends org.jfree.util.Log
   /**
    * A convenience method for logging an 'info' message.
    *
-   * @param message  the message.
+   * @param message the message.
    */
-  public static void info(final Object message)
+  public static void info (final Object message)
   {
     log(LogTarget.INFO, message);
   }
@@ -245,10 +261,10 @@ public final class Log extends org.jfree.util.Log
   /**
    * A convenience method for logging an 'info' message.
    *
-   * @param message  the message.
-   * @param e  the exception.
+   * @param message the message.
+   * @param e       the exception.
    */
-  public static void info(final Object message, final Exception e)
+  public static void info (final Object message, final Exception e)
   {
     log(LogTarget.INFO, message, e);
   }
@@ -256,9 +272,9 @@ public final class Log extends org.jfree.util.Log
   /**
    * A convenience method for logging a 'warning' message.
    *
-   * @param message  the message.
+   * @param message the message.
    */
-  public static void warn(final Object message)
+  public static void warn (final Object message)
   {
     log(LogTarget.WARN, message);
   }
@@ -266,10 +282,10 @@ public final class Log extends org.jfree.util.Log
   /**
    * A convenience method for logging a 'warning' message.
    *
-   * @param message  the message.
-   * @param e  the exception.
+   * @param message the message.
+   * @param e       the exception.
    */
-  public static void warn(final Object message, final Exception e)
+  public static void warn (final Object message, final Exception e)
   {
     log(LogTarget.WARN, message, e);
   }
@@ -277,9 +293,9 @@ public final class Log extends org.jfree.util.Log
   /**
    * A convenience method for logging an 'error' message.
    *
-   * @param message  the message.
+   * @param message the message.
    */
-  public static void error(final Object message)
+  public static void error (final Object message)
   {
     log(LogTarget.ERROR, message);
   }
@@ -287,39 +303,39 @@ public final class Log extends org.jfree.util.Log
   /**
    * A convenience method for logging an 'error' message.
    *
-   * @param message  the message.
-   * @param e  the exception.
+   * @param message the message.
+   * @param e       the exception.
    */
-  public static void error(final Object message, final Exception e)
+  public static void error (final Object message, final Exception e)
   {
     log(LogTarget.ERROR, message, e);
   }
 
   /**
-   * Logs a message to the main log stream.  All attached log targets will also
-   * receive this message. If the given log-level is higher than the given debug-level
-   * in the main config file, no logging will be done.
+   * Logs a message to the main log stream.  All attached log targets will also receive
+   * this message. If the given log-level is higher than the given debug-level in the main
+   * config file, no logging will be done.
    *
-   * @param level  log level of the message.
-   * @param message  text to be logged.
+   * @param level   log level of the message.
+   * @param message text to be logged.
    */
-  public static void log(final int level, final Object message)
+  public static void log (final int level, final Object message)
   {
     org.jfree.util.Log.log(level, message);
   }
 
   /**
-   * Logs a message to the main log stream. All attached logTargets will also
-   * receive this message. If the given log-level is higher than the given debug-level
-   * in the main config file, no logging will be done.
-   *
+   * Logs a message to the main log stream. All attached logTargets will also receive this
+   * message. If the given log-level is higher than the given debug-level in the main
+   * config file, no logging will be done.
+   * <p/>
    * The exception's stacktrace will be appended to the log-stream
    *
-   * @param level  log level of the message.
-   * @param message  text to be logged.
-   * @param e  the exception, which should be logged.
+   * @param level   log level of the message.
+   * @param message text to be logged.
+   * @param e       the exception, which should be logged.
    */
-  public static void log(final int level, final Object message, final Exception e)
+  public static void log (final int level, final Object message, final Exception e)
   {
     org.jfree.util.Log.log(level, message, e);
   }

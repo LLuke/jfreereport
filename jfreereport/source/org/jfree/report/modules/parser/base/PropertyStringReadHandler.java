@@ -1,7 +1,7 @@
 package org.jfree.report.modules.parser.base;
 
-import org.xml.sax.SAXException;
 import org.jfree.report.util.PropertyLookupParser;
+import org.xml.sax.SAXException;
 
 public class PropertyStringReadHandler extends AbstractPropertyXmlReadHandler
 {
@@ -40,6 +40,7 @@ public class PropertyStringReadHandler extends AbstractPropertyXmlReadHandler
 
   /**
    * May be null...
+   *
    * @return
    */
   protected CommentHintPath getHintPath ()

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFMetaElement.java,v 1.2.2.1 2004/12/13 19:27:11 taqua Exp $
+ * $Id: RTFMetaElement.java,v 1.3 2005/01/25 00:15:22 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -55,12 +55,12 @@ public abstract class RTFMetaElement extends MetaElement
     super(elementContent, style);
   }
 
-    /**
+  /**
    * Defines the content alignment for the given iText cell.
    *
    * @param cell the iText cell, that should be formated.
    */
-  protected void applyAlignment(final Cell cell)
+  protected void applyAlignment (final Cell cell)
   {
     final ElementAlignment horizontalAlignment = (ElementAlignment)
             getProperty(ElementStyleSheet.ALIGNMENT);
@@ -99,7 +99,9 @@ public abstract class RTFMetaElement extends MetaElement
    * Creates a iText TableCell with some content in it.
    *
    * @return the cell with the content.
+   *
    * @throws DocumentException if there is a problem adding the cell to the document.
    */
-  public abstract RtfCell getCell() throws DocumentException;
+  public abstract RtfCell getCell ()
+          throws DocumentException;
 }

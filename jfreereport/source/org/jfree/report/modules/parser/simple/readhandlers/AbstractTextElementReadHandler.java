@@ -10,9 +10,13 @@ import org.xml.sax.SAXException;
 
 public abstract class AbstractTextElementReadHandler extends AbstractElementReadHandler
 {
-  /** A constant defining the name of the reserved-literal attribute. */
+  /**
+   * A constant defining the name of the reserved-literal attribute.
+   */
   public static final String RESERVED_LITERAL_ATT = "reserved-literal";
-  /** A constant defining the name of the trim-text-content attribute. */
+  /**
+   * A constant defining the name of the trim-text-content attribute.
+   */
   public static final String TRIM_TEXT_CONTENT_ATT = "trim-text-content";
 
   public AbstractTextElementReadHandler ()
@@ -58,14 +62,16 @@ public abstract class AbstractTextElementReadHandler extends AbstractElementRead
   }
 
   /**
-   * Parses the text looking for a text alignment, which is one of "left", "center" or "right".
-   * <p>
-   * The method returns one of the values:  Element.LEFT, Element.CENTER and Element.RIGHT.
+   * Parses the text looking for a text alignment, which is one of "left", "center" or
+   * "right".
+   * <p/>
+   * The method returns one of the values:  Element.LEFT, Element.CENTER and
+   * Element.RIGHT.
    *
-   * @param alignment  the alignment.
+   * @param alignment the alignment.
    * @return an alignment code.
    */
-  private ElementAlignment parseTextAlignment(final String alignment)
+  private ElementAlignment parseTextAlignment (final String alignment)
   {
     ElementAlignment elementAlignment = null;
     if (alignment != null)
@@ -87,16 +93,17 @@ public abstract class AbstractTextElementReadHandler extends AbstractElementRead
   }
 
   /**
-   * Parses the text looking for a text alignment, which is one of "top", "middle"/"center"
-   * or "bottom".
-   * <p>
-   * The method returns one of the values:  Element.TOP, Element.BOTTOM and Element.MIDDLE.
+   * Parses the text looking for a text alignment, which is one of "top",
+   * "middle"/"center" or "bottom".
+   * <p/>
+   * The method returns one of the values:  Element.TOP, Element.BOTTOM and
+   * Element.MIDDLE.
    *
-   * @param alignment  the alignment.
+   * @param alignment the alignment.
    * @return an alignment code.
    */
   private ElementAlignment parseTextVerticalAlignment
-      (final String alignment)
+          (final String alignment)
   {
     if (alignment != null)
     {
@@ -120,11 +127,12 @@ public abstract class AbstractTextElementReadHandler extends AbstractElementRead
    * Reads an attribute as int and returns <code>def</code> if that fails.
    *
    * @param val the attribute value.
-   *
    * @return the int value.
+   *
    * @throws SAXException if an parse error occured.
    */
-  private Integer parseInteger(final String val) throws SAXException
+  private Integer parseInteger (final String val)
+          throws SAXException
   {
     if (val == null)
     {
@@ -145,9 +153,11 @@ public abstract class AbstractTextElementReadHandler extends AbstractElementRead
    *
    * @param value the attribute value.
    * @return the float value.
+   *
    * @throws SAXException if an parse error occured.
    */
-  private Float parseFloat(final String value) throws SAXException
+  private Float parseFloat (final String value)
+          throws SAXException
   {
     if (value == null)
     {
@@ -169,10 +179,10 @@ public abstract class AbstractTextElementReadHandler extends AbstractElementRead
    * releases and should no longer be used. Use the boolean flags instead.
    *
    * @param fontStyle the font style string.
-   * @param target the text element factory that should receive the parsed values.
+   * @param target    the text element factory that should receive the parsed values.
    */
   private void parseSimpleFontStyle
-      (final String fontStyle, final TextElementFactory target)
+          (final String fontStyle, final TextElementFactory target)
   {
     if (fontStyle != null)
     {
@@ -200,14 +210,16 @@ public abstract class AbstractTextElementReadHandler extends AbstractElementRead
   }
 
   /**
-   * Translates an boolean string ("true" or "false") into the corresponding
-   * Boolean object.
+   * Translates an boolean string ("true" or "false") into the corresponding Boolean
+   * object.
    *
    * @param value the string that represents the boolean.
    * @return Boolean.TRUE or Boolean.FALSE
+   *
    * @throws SAXException if an parse error occured.
    */
-  private Boolean parseBoolean(final String value) throws SAXException
+  private Boolean parseBoolean (final String value)
+          throws SAXException
   {
     if (value == null)
     {

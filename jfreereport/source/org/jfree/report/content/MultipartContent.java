@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MultipartContent.java,v 1.1 2004/03/27 20:22:10 taqua Exp $
+ * $Id: MultipartContent.java,v 1.2 2004/05/07 08:02:49 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -41,21 +41,18 @@ package org.jfree.report.content;
 public interface MultipartContent extends Content
 {
   /**
-   * Returns the number of sub-content items for this item.
-   * <P>
-   * Only subclasses of {@link org.jfree.report.content.ContentContainer} will
-   * return non-zero results.
+   * Returns the number of sub-content items for this item. <P> Only subclasses of {@link
+   * org.jfree.report.content.ContentContainer} will return non-zero results.
    *
    * @return the number of sub-content items.
    */
-  public int getContentPartCount();
+  public int getContentPartCount ();
 
   /**
    * Returns a sub-content item.
    *
-   * @param part  the sub-content index (zero-based).
-   *
+   * @param part the sub-content index (zero-based).
    * @return the subcontent (possibly null).
    */
-  public Content getContentPart(int part);
+  public Content getContentPart (int part);
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: VerticalLineTemplate.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
+ * $Id: VerticalLineTemplate.java,v 1.5 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -41,9 +41,9 @@ package org.jfree.report.filter.templates;
 import java.awt.geom.Line2D;
 
 /**
- * Defines a horizontal line template. The line always has the width of 100 points.
- * This implementation is used to cover the common use of the line shape element.
- * Use the scaling feature of the shape element to adjust the size of the line.
+ * Defines a horizontal line template. The line always has the width of 100 points. This
+ * implementation is used to cover the common use of the line shape element. Use the
+ * scaling feature of the shape element to adjust the size of the line.
  *
  * @author Thomas Morgner
  */
@@ -52,7 +52,7 @@ public class VerticalLineTemplate extends AbstractTemplate
   /**
    * Default Constructor.
    */
-  public VerticalLineTemplate()
+  public VerticalLineTemplate ()
   {
   }
 
@@ -61,7 +61,7 @@ public class VerticalLineTemplate extends AbstractTemplate
    *
    * @return a vertical line with a height of 100.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return new Line2D.Float(0, 0, 0, 100);
   }

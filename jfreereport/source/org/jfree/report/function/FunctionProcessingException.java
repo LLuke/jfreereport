@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionProcessingException.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: FunctionProcessingException.java,v 1.4 2005/01/25 00:00:10 taqua Exp $
  *
  * Changes
  * -------
@@ -51,17 +51,17 @@ public class FunctionProcessingException extends StackableRuntimeException
   /**
    * Default constructor.
    */
-  public FunctionProcessingException()
+  public FunctionProcessingException ()
   {
   }
 
   /**
    * Creates an exception.
    *
-   * @param message  the exception message.
-   * @param ex  the parent exception.
+   * @param message the exception message.
+   * @param ex      the parent exception.
    */
-  public FunctionProcessingException(final String message, final Exception ex)
+  public FunctionProcessingException (final String message, final Exception ex)
   {
     super(message, ex);
   }
@@ -69,9 +69,9 @@ public class FunctionProcessingException extends StackableRuntimeException
   /**
    * Creates an exception.
    *
-   * @param message  the exception message.
+   * @param message the exception message.
    */
-  public FunctionProcessingException(final String message)
+  public FunctionProcessingException (final String message)
   {
     super(message);
   }

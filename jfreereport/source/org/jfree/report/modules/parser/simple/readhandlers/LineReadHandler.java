@@ -10,10 +10,9 @@ import org.jfree.report.Element;
 import org.jfree.report.content.ShapeTransform;
 import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
-import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.util.Log;
-import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.xml.ParserUtil;
 import org.jfree.xml.parser.XmlReaderException;
 import org.xml.sax.SAXException;
@@ -69,10 +68,10 @@ public class LineReadHandler extends AbstractPropertyXmlReadHandler
 
     if (x1 == x2 && y1 == y2)
     {
-      Log.warn ("creating a horizontal line with 'x1 == x2 && y1 == y2' is deprecated. " +
+      Log.warn("creating a horizontal line with 'x1 == x2 && y1 == y2' is deprecated. " +
               "Use relative coordinates instead.");
       element = (StaticShapeElementFactory.createHorizontalLine
-                  (name, c, stroke, y2));
+              (name, c, stroke, y2));
     }
     else
     {
@@ -85,10 +84,10 @@ public class LineReadHandler extends AbstractPropertyXmlReadHandler
       final Rectangle2D shapeBounds = line.getBounds2D();
       // translate so that the shape starts at position (0,0)
       final Shape transformedShape =
-          ShapeTransform.translateShape(line, -shapeBounds.getX(), -shapeBounds.getY());
+              ShapeTransform.translateShape(line, -shapeBounds.getX(), -shapeBounds.getY());
       // and use that shape with the user's bounds to create the element.
       element = StaticShapeElementFactory.createShapeElement
-                (name, bounds, c, stroke, transformedShape, true, false, true, false);
+              (name, bounds, c, stroke, transformedShape, true, false, true, false);
     }
   }
 

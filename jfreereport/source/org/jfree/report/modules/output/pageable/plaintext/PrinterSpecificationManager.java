@@ -19,7 +19,7 @@ public class PrinterSpecificationManager
     public GenericPrinterSpecification ()
     {
       genericEncoding = new PrinterEncoding
-              ("ASCII", "ASCII", "ASCII", new byte[]{0,0});
+              ("ASCII", "ASCII", "ASCII", new byte[]{0, 0});
     }
 
     public String getDisplayName ()
@@ -90,16 +90,16 @@ public class PrinterSpecificationManager
     final InputStream in = getClass().getResourceAsStream(resourceName);
     if (in == null)
     {
-      Log.error ("Printer definition is missing: " + resourceName);
+      Log.error("Printer definition is missing: " + resourceName);
       return;
     }
     try
     {
-      load (in);
+      load(in);
     }
     catch (IOException e)
     {
-      Log.error ("Unable to load printer definition file " + resourceName, e);
+      Log.error("Unable to load printer definition file " + resourceName, e);
     }
   }
 
@@ -110,7 +110,7 @@ public class PrinterSpecificationManager
     encodingConfig.load(in);
 
     final PrinterEncoding[] encodings = loadEncodings(encodingConfig);
-    final PrinterSpecification[] printers = loadPrinters (encodingConfig, encodings);
+    final PrinterSpecification[] printers = loadPrinters(encodingConfig, encodings);
 
     for (int i = 0; i < printers.length; i++)
     {
@@ -130,7 +130,7 @@ public class PrinterSpecificationManager
 
   public PrinterSpecification getPrinter (final String name)
   {
-    return (PrinterSpecification) printerModels.get (name);
+    return (PrinterSpecification) printerModels.get(name);
   }
 
   public static synchronized PrinterSpecification getGenericPrinter ()

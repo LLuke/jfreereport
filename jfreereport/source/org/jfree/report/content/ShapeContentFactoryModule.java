@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ShapeContentFactoryModule.java,v 1.7 2005/02/19 13:29:52 taqua Exp $
+ * $Id: ShapeContentFactoryModule.java,v 1.8 2005/02/19 20:10:25 taqua Exp $
  *
  * Changes
  * -------
@@ -61,7 +61,7 @@ public class ShapeContentFactoryModule implements ContentFactoryModule
   /**
    * creates a new ShapeContentFactoryModule.
    */
-  public ShapeContentFactoryModule()
+  public ShapeContentFactoryModule ()
   {
   }
 
@@ -70,11 +70,10 @@ public class ShapeContentFactoryModule implements ContentFactoryModule
    * <code>false</code> otherwise. Returns true, if the content type is a subtype of
    * "shape".
    *
-   * @param contentType  the content type.
-   *
+   * @param contentType the content type.
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean canHandleContent(final String contentType)
+  public boolean canHandleContent (final String contentType)
   {
     return (StringUtil.startsWithIgnoreCase(contentType, "shape/"));
   }
@@ -83,20 +82,19 @@ public class ShapeContentFactoryModule implements ContentFactoryModule
   /**
    * Creates content for an element.
    *
-   * @param e  the element.
-   * @param bounds  the bounds.
-   * @param ot  the output target.
-   *
+   * @param e      the element.
+   * @param bounds the bounds.
+   * @param ot     the output target.
    * @return the content.
    *
    * @throws ContentCreationException if there is a problem with the OutputTarget.
    */
-  public Content createContentForElement(final Element e, final ElementLayoutInformation bounds,
-                                         final LayoutSupport ot)
-      throws ContentCreationException
+  public Content createContentForElement (final Element e, final ElementLayoutInformation bounds,
+                                          final LayoutSupport ot)
+          throws ContentCreationException
   {
     if ((e.getStyle().getBooleanStyleProperty(ShapeElement.DRAW_SHAPE) == false) &&
-        (e.getStyle().getBooleanStyleProperty(ShapeElement.FILL_SHAPE) == false))
+            (e.getStyle().getBooleanStyleProperty(ShapeElement.FILL_SHAPE) == false))
     {
       return EmptyContent.getDefaultEmptyContent();
     }
@@ -120,9 +118,9 @@ public class ShapeContentFactoryModule implements ContentFactoryModule
     final StrictPoint point = bounds.getAbsolutePosition();
 
     final Shape s = ShapeTransform.transformShape(value,
-        e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE),
-        e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO),
-        StrictGeomUtility.createAWTDimension(iBounds.getWidth(), iBounds.getHeight()));
+            e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE),
+            e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO),
+            StrictGeomUtility.createAWTDimension(iBounds.getWidth(), iBounds.getHeight()));
     return new ShapeContent(s, new StrictBounds
             (point.getX(), point.getY(), iBounds.getWidth(), iBounds.getHeight()));
   }

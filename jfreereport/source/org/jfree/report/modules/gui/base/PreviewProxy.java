@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PreviewProxy.java,v 1.4 2003/09/09 21:31:36 taqua Exp $
+ * $Id: PreviewProxy.java,v 1.5 2004/05/07 14:29:21 mungady Exp $
  *
  * Changes
  * --------
@@ -51,59 +51,59 @@ public interface PreviewProxy
   /**
    * Packs the preview component.
    */
-  public void pack();
+  public void pack ();
 
   /**
    * Disposes the preview component.
    */
-  public void dispose();
+  public void dispose ();
 
   /**
    * Adds a component listener to the preview component.
    *
-   * @param listener  the listener.
+   * @param listener the listener.
    */
-  public void addComponentListener(ComponentListener listener);
+  public void addComponentListener (ComponentListener listener);
 
   /**
    * Removes the component listener.
    *
-   * @param listener  the listener.
+   * @param listener the listener.
    */
-  public void removeComponentListener(ComponentListener listener);
+  public void removeComponentListener (ComponentListener listener);
 
   /**
    * Creates a default close action.
    *
    * @return The close action.
    */
-  public Action createDefaultCloseAction();
+  public Action createDefaultCloseAction ();
 
   /**
    * Sets the menu bar for the preview component.
    *
-   * @param bar  the menu bar.
+   * @param bar the menu bar.
    */
-  public void setJMenuBar(JMenuBar bar);
+  public void setJMenuBar (JMenuBar bar);
 
   /**
    * Sets the title for the preview component.
    *
-   * @param title  the title.
+   * @param title the title.
    */
-  public void setTitle(String title);
+  public void setTitle (String title);
 
   /**
-   * Returns the proxybase used to implement the behaviour of the report
-   * preview component.
+   * Returns the proxybase used to implement the behaviour of the report preview
+   * component.
    *
    * @return the proxybase of this preview component.
    */
-  public PreviewProxyBase getBase();
+  public PreviewProxyBase getBase ();
 
   /**
-   * Shuts down the preview component. Once the component is closed, it
-   * cannot be reactivated anymore.
+   * Shuts down the preview component. Once the component is closed, it cannot be
+   * reactivated anymore.
    */
-  public void close();
+  public void close ();
 }

@@ -14,10 +14,11 @@ public class ResourceLabelReadHandler extends StringFieldReadHandler
 
   public ResourceLabelReadHandler ()
   {
-    this(new ResourceFieldElementFactory ());
+    this(new ResourceFieldElementFactory());
   }
 
-  protected ResourceLabelReadHandler (final TextFieldElementFactory textFieldElementFactory)
+  protected ResourceLabelReadHandler (
+          final TextFieldElementFactory textFieldElementFactory)
   {
     super(textFieldElementFactory);
     stringReadHandler = new PropertyStringReadHandler(null);

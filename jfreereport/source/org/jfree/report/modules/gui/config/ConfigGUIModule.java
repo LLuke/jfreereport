@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigGUIModule.java,v 1.2 2004/05/07 14:29:21 mungady Exp $
+ * $Id: ConfigGUIModule.java,v 1.3 2005/01/25 00:03:59 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -55,7 +55,8 @@ public class ConfigGUIModule extends AbstractModule
    *
    * @throws ModuleInitializeException if an error occures.
    */
-  public ConfigGUIModule() throws ModuleInitializeException
+  public ConfigGUIModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }

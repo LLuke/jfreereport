@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BandLayoutClassFactory.java,v 1.2 2003/08/24 15:08:21 taqua Exp $
+ * $Id: BandLayoutClassFactory.java,v 1.3 2004/05/07 14:29:08 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -52,7 +52,7 @@ public class BandLayoutClassFactory extends ClassFactoryImpl
   /**
    * Creates a new band layout class factory.
    */
-  public BandLayoutClassFactory()
+  public BandLayoutClassFactory ()
   {
     registerClass(BandLayoutManager.class, new ClassLoaderObjectDescription());
   }

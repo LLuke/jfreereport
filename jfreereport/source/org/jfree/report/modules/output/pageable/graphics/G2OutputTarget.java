@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.16 2005/02/19 20:10:27 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.17 2005/02/22 20:18:01 taqua Exp $
  *
  * Changes
  * -------
@@ -48,30 +48,30 @@ package org.jfree.report.modules.output.pageable.graphics;
 import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Paint;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
-import java.net.URL;
 import java.io.IOException;
+import java.net.URL;
 
 import org.jfree.report.ImageContainer;
 import org.jfree.report.LocalImageContainer;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.URLImageContainer;
-import org.jfree.report.resourceloader.ImageFactory;
 import org.jfree.report.content.DrawableContent;
 import org.jfree.report.content.ImageContent;
 import org.jfree.report.layout.DefaultSizeCalculator;
 import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.output.AbstractOutputTarget;
+import org.jfree.report.resourceloader.ImageFactory;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
@@ -81,30 +81,42 @@ import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.ui.Drawable;
 
 /**
- * A report output target that uses a Graphics2D object to draw the report.  This allows reports
- * to be printed on the screen and on the printer.
+ * A report output target that uses a Graphics2D object to draw the report.  This allows
+ * reports to be printed on the screen and on the printer.
  *
  * @author David Gilbert
  * @author Thomas Morgner
  */
 public strictfp class G2OutputTarget extends AbstractOutputTarget
 {
-  /** The graphics device. */
+  /**
+   * The graphics device.
+   */
   private Graphics2D g2;
 
-  /** The saved state of the Graphics2D device. */
+  /**
+   * The saved state of the Graphics2D device.
+   */
   private G2State savedState;
 
-  /** Temporary storage for the Graphics2D clip region. */
+  /**
+   * Temporary storage for the Graphics2D clip region.
+   */
   private Shape originalClip;
 
-  /** A dummy graphics2D. */
+  /**
+   * A dummy graphics2D.
+   */
   private static Graphics2D dummyGraphics;
 
-  /** The open flag. */
+  /**
+   * The open flag.
+   */
   private boolean isOpen;
 
-  /** The current font definition for this outputtarget. */
+  /**
+   * The current font definition for this outputtarget.
+   */
   private FontDefinition fontDefinition;
 
   /**
@@ -112,7 +124,7 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    *
    * @return a Graphics2D instance.
    */
-  public static Graphics2D createEmptyGraphics()
+  public static Graphics2D createEmptyGraphics ()
   {
     if (dummyGraphics == null)
     {
@@ -124,29 +136,29 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Configures a Graphics2D object to use a predefined set of RenderingHints.
-   * This enables KEY_FRACTIONALMETRICS to value VALUE_FRACTIONALMETRICS_ON,
-   * KEY_ANTIALIASING to value VALUE_ANTIALIAS_OFF and sets the TextAliasing
-   * as defined by the DefaultFontRenderContext.
+   * Configures a Graphics2D object to use a predefined set of RenderingHints. This
+   * enables KEY_FRACTIONALMETRICS to value VALUE_FRACTIONALMETRICS_ON, KEY_ANTIALIASING
+   * to value VALUE_ANTIALIAS_OFF and sets the TextAliasing as defined by the
+   * DefaultFontRenderContext.
    *
    * @param g2 the graphics2D object that should be configured
    */
-  private static void applyStandardRenderingHints(final Graphics2D g2)
+  private static void applyStandardRenderingHints (final Graphics2D g2)
   {
     g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-        RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+            RenderingHints.VALUE_FRACTIONALMETRICS_ON);
     if (DefaultSizeCalculator.getFrcDetector().isAliased())
     {
       g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-          RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+              RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
     }
     else
     {
       g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-          RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+              RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
     }
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-        RenderingHints.VALUE_ANTIALIAS_OFF);
+            RenderingHints.VALUE_ANTIALIAS_OFF);
   }
 
   /**
@@ -155,30 +167,42 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    */
   private static final class G2State
   {
-    /** The paint. */
+    /**
+     * The paint.
+     */
     private Paint mypaint;
 
-    /** The font. */
+    /**
+     * The font.
+     */
     private FontDefinition myfont;
 
-    /** The stroke. */
+    /**
+     * The stroke.
+     */
     private Stroke mystroke;
 
-    /** The transform. */
+    /**
+     * The transform.
+     */
     private AffineTransform mytransform;
 
-    /** The background. */
+    /**
+     * The background.
+     */
     private Color mybackground;
 
-    /** The clip area. */
+    /**
+     * The clip area.
+     */
     private Shape myclip;
 
     /**
      * Create a new state.
      *
-     * @param s  the graphics device.
+     * @param s the graphics device.
      */
-    private G2State(final G2OutputTarget s)
+    private G2State (final G2OutputTarget s)
     {
       save(s);
     }
@@ -186,9 +210,9 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
     /**
      * Saves the state of the Graphics2D.
      *
-     * @param source  the Graphics2D.
+     * @param source the Graphics2D.
      */
-    protected void save(final G2OutputTarget source)
+    protected void save (final G2OutputTarget source)
     {
       mypaint = source.getPaint();
       myfont = source.getFont();
@@ -203,9 +227,9 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
     /**
      * Copies the state back to the specified Graphics2D.
      *
-     * @param target  the Graphics2D.
+     * @param target the Graphics2D.
      */
-    protected void restore(final G2OutputTarget target)
+    protected void restore (final G2OutputTarget target)
     {
       target.setStroke(mystroke);
       target.setFont(myfont);
@@ -219,14 +243,14 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   }
 
   private PageFormat currentPageFormat;
- // private Rectangle2D pageBounds;
+  // private Rectangle2D pageBounds;
 
   /**
    * Creates a new output target.
    *
-   * @param graphics  the graphics device.
+   * @param graphics the graphics device.
    */
-  public G2OutputTarget(final Graphics2D graphics)
+  public G2OutputTarget (final Graphics2D graphics)
   {
     setGraphics2D(graphics);
   }
@@ -234,9 +258,9 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   /**
    * Sets the graphics device for this output target.
    *
-   * @param g2  the graphics device (null not permitted).
+   * @param g2 the graphics device (null not permitted).
    */
-  private void setGraphics2D(final Graphics2D g2)
+  private void setGraphics2D (final Graphics2D g2)
   {
     if (g2 == null)
     {
@@ -252,7 +276,8 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem with the output target.
    */
-  public void open() throws OutputTargetException
+  public void open ()
+          throws OutputTargetException
   {
     originalClip = g2.getClip();
     setFont(new FontDefinition(g2.getFont().getName(), g2.getFont().getSize()));
@@ -262,7 +287,7 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   /**
    * Closes the target.
    */
-  public void close()
+  public void close ()
   {
     originalClip = null;
     savedState = null;
@@ -270,11 +295,12 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Returns <code>true</code> if the output target is open, and <code>false</code> otherwise.
+   * Returns <code>true</code> if the output target is open, and <code>false</code>
+   * otherwise.
    *
    * @return the open state of this target.
    */
-  public boolean isOpen()
+  public boolean isOpen ()
   {
     return isOpen;
   }
@@ -282,22 +308,21 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   /**
    * A page is starting.  This target saves the current state of the Graphics2D device.
    *
-   * @param page  the physical page.
+   * @param page the physical page.
    */
-  protected void beginPage(final PageDefinition page, final int index)
+  protected void beginPage (final PageDefinition page, final int index)
   {
     final Rectangle2D pageBounds = page.getPagePosition(index);
     currentPageFormat = page.getPageFormat(index);
     final Rectangle2D bounds = new Rectangle2D.Double
-        ((currentPageFormat.getImageableX()),
-         (currentPageFormat.getImageableY()),
-          currentPageFormat.getImageableWidth() + 1d,
-          currentPageFormat.getImageableHeight() + 1d);
+            ((currentPageFormat.getImageableX()),
+                    (currentPageFormat.getImageableY()),
+                    currentPageFormat.getImageableWidth() + 1d,
+                    currentPageFormat.getImageableHeight() + 1d);
 
     g2.clip(bounds);
-    g2.transform(AffineTransform.getTranslateInstance(
-        currentPageFormat.getImageableX() - (pageBounds.getX()),
-        currentPageFormat.getImageableY() - (pageBounds.getY())));
+    g2.transform(AffineTransform.getTranslateInstance(currentPageFormat.getImageableX() - (pageBounds.getX()),
+            currentPageFormat.getImageableY() - (pageBounds.getY())));
 
     savedState = saveState();
   }
@@ -307,13 +332,14 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem with the target.
    */
-  protected void endPage() throws OutputTargetException
+  protected void endPage ()
+          throws OutputTargetException
   {
     final Rectangle2D pageBounds = getPageBounds();
     g2.transform(AffineTransform.getTranslateInstance(0 - currentPageFormat.getImageableX()
-        + pageBounds.getX(),
-        0 - currentPageFormat.getImageableY()
-        + pageBounds.getY()));
+            + pageBounds.getX(),
+            0 - currentPageFormat.getImageableY()
+            + pageBounds.getY()));
     g2.setClip(originalClip);
     restoreState();
   }
@@ -321,9 +347,9 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   /**
    * Sets the font.
    *
-   * @param font  the font.
+   * @param font the font.
    */
-  protected void setFont(final FontDefinition font)
+  protected void setFont (final FontDefinition font)
   {
     if (font == null)
     {
@@ -338,7 +364,7 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    *
    * @return the font.
    */
-  protected FontDefinition getFont()
+  protected FontDefinition getFont ()
   {
     return fontDefinition;
   }
@@ -348,7 +374,7 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    *
    * @param paint The paint.
    */
-  protected void setPaint(final Paint paint)
+  protected void setPaint (final Paint paint)
   {
     g2.setPaint(paint);
   }
@@ -358,7 +384,7 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    *
    * @return the paint.
    */
-  protected Paint getPaint()
+  protected Paint getPaint ()
   {
     return g2.getPaint();
   }
@@ -368,7 +394,7 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    *
    * @return the stroke.
    */
-  protected Stroke getStroke()
+  protected Stroke getStroke ()
   {
     return g2.getStroke();
   }
@@ -376,33 +402,31 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   /**
    * Sets the Stroke for the Graphics2D context.
    *
-   * @param stroke  the stroke.
+   * @param stroke the stroke.
    */
-  protected void setStroke(final Stroke stroke)
+  protected void setStroke (final Stroke stroke)
   {
     g2.setStroke(stroke);
   }
 
   /**
-   * Draws a shape. The shape is drawn using Graphics2D.draw.  A paint and a stroke have to be
-   * set separately.
-   * <P>
+   * Draws a shape. The shape is drawn using Graphics2D.draw.  A paint and a stroke have
+   * to be set separately. <P>
    *
    * @param shape The shape.
    */
-  protected void drawShape(final Shape shape)
+  protected void drawShape (final Shape shape)
   {
     g2.draw(shape);
   }
 
   /**
-   * Fills a shape. The shape is drawn using Graphics2D.draw. A paint and a stroke have to be
-   * set separately.
-   * <P>
+   * Fills a shape. The shape is drawn using Graphics2D.draw. A paint and a stroke have to
+   * be set separately. <P>
    *
    * @param shape The shape.
    */
-  protected void fillShape(final Shape shape)
+  protected void fillShape (final Shape shape)
   {
     g2.fill(shape);
   }
@@ -412,7 +436,7 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    *
    * @param content the image content.
    */
-  protected void drawImage(final ImageContent content)
+  protected void drawImage (final ImageContent content)
   {
     Image image = null;
     final ImageContainer imageContainer = content.getContent();
@@ -440,7 +464,7 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
       }
       catch (IOException e)
       {
-        Log.warn ("Unable to load image from " + url);
+        Log.warn("Unable to load image from " + url);
         return;
       }
     }
@@ -494,12 +518,12 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Draws a string inside a rectangular area (the lower edge is aligned with the baseline of
-   * the text).
+   * Draws a string inside a rectangular area (the lower edge is aligned with the baseline
+   * of the text).
    *
    * @param text The text.
    */
-  protected void printText(final String text)
+  protected void printText (final String text)
   {
     // Draw the string on the given location. The fontmetrics is not correct for
     // the fonts I tested ("Arial 10 Plain -> FM.height = 13, Ascent = 10, Descent = 2"
@@ -525,17 +549,18 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
     {
       final float fontHeight = getFont().getFont().getSize2D();
       final Line2D line = new Line2D.Float(0, fontHeight / 2,
-          (float) getOperationBounds().getWidth(), fontHeight / 2);
+              (float) getOperationBounds().getWidth(), fontHeight / 2);
       g2.draw(line);
     }
   }
 
   /**
    * The Graphics2D target supports all paint types.
+   *
    * @param p
    * @return
    */
-  protected boolean isPaintSupported(final Paint p)
+  protected boolean isPaintSupported (final Paint p)
   {
     return p != null;
   }
@@ -543,18 +568,18 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   /**
    * Restores the state of this graphics.
    */
-  private void restoreState()
+  private void restoreState ()
   {
     savedState.restore(this);
   }
 
   /**
-   * Saves the state of this graphics object. Use restoreState to restore a previously saved
-   * state.
+   * Saves the state of this graphics object. Use restoreState to restore a previously
+   * saved state.
    *
    * @return the state container.
    */
-  private G2State saveState()
+  private G2State saveState ()
   {
     return new G2State(this);
   }
@@ -564,20 +589,20 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    *
    * @return the graphics2D instance used in this target.
    */
-  protected Graphics2D getGraphics2D()
+  protected Graphics2D getGraphics2D ()
   {
     return g2;
   }
 
   /**
    * Configures the output target.
-   * <p>
+   * <p/>
    * There are no configuration parameters that affect this output target, so this method
    * does nothing.
    *
-   * @param config  the configuration.
+   * @param config the configuration.
    */
-  public void configure(final ReportConfiguration config)
+  public void configure (final ReportConfiguration config)
   {
     // nothing to do here, G2OuputTarget is not configured in any way.
   }
@@ -586,11 +611,10 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    * Creates a size calculator for the current state of the output target. The calculator
    * is used to calculate the string width and line height and later maybe more.
    *
-   * @param font  the font.
-   *
+   * @param font the font.
    * @return the size calculator.
    */
-  public SizeCalculator createTextSizeCalculator(final FontDefinition font)
+  public SizeCalculator createTextSizeCalculator (final FontDefinition font)
   {
     return DefaultSizeCalculator.getDefaultSizeCalculator(font);
   }
@@ -598,21 +622,21 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   /**
    * Sets the operation bounds.
    *
-   * @param bounds  the bounds.
+   * @param bounds the bounds.
    */
-  protected void setInternalOperationBounds(final StrictBounds bounds)
+  protected void setInternalOperationBounds (final StrictBounds bounds)
   {
     final StrictBounds oldBounds = super.getInternalOperationBounds();
     // undo the last bounds operation
 
     g2.transform(AffineTransform.getTranslateInstance
             (0 - StrictGeomUtility.toExternalValue(oldBounds.getX()),
-             0 - StrictGeomUtility.toExternalValue(oldBounds.getY())));
+                    0 - StrictGeomUtility.toExternalValue(oldBounds.getY())));
     super.setInternalOperationBounds(bounds);
     // then apply the new bounds operation
     g2.transform(AffineTransform.getTranslateInstance
             (StrictGeomUtility.toExternalValue(bounds.getX()),
-             StrictGeomUtility.toExternalValue(bounds.getY())));
+                    StrictGeomUtility.toExternalValue(bounds.getY())));
   }
 
   /**
@@ -620,7 +644,7 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    *
    * @param content the drawable to draw.
    */
-  protected void drawDrawable(final DrawableContent content)
+  protected void drawDrawable (final DrawableContent content)
   {
     // only the drawable clippingbounds region will be drawn.
     // the clipping is set to the clipping bounds of the drawable

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultClassFactory.java,v 1.2 2003/08/24 15:08:21 taqua Exp $
+ * $Id: DefaultClassFactory.java,v 1.3 2004/05/07 14:29:08 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -46,7 +46,8 @@ import org.jfree.report.style.FontDefinition;
 import org.jfree.xml.factory.objects.JavaBaseClassFactory;
 
 /**
- * A default implementation of the {@link org.jfree.xml.factory.objects.ClassFactory} interface.
+ * A default implementation of the {@link org.jfree.xml.factory.objects.ClassFactory}
+ * interface.
  *
  * @author Thomas Morgner
  */
@@ -55,7 +56,7 @@ public class DefaultClassFactory extends JavaBaseClassFactory
   /**
    * Creates a new factory.
    */
-  public DefaultClassFactory()
+  public DefaultClassFactory ()
   {
     registerClass(ElementAlignment.class, new AlignmentObjectDescription());
     registerClass(FontDefinition.class, new FontDefinitionObjectDescription());

@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2003, by Thomas Morgner.
  *
- * $Id: ResourceFileFilter.java,v 1.5 2005/01/24 23:59:41 taqua Exp $
+ * $Id: ResourceFileFilter.java,v 1.6 2005/01/25 21:40:13 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -42,19 +42,22 @@ import org.jfree.report.util.Log;
 
 /**
  * Lookup a key from a datasource using a ResourceBundle.
- * <p>
- * Filters a given datasource and uses the datasource value as key
- * for a ResourceBundle.
+ * <p/>
+ * Filters a given datasource and uses the datasource value as key for a ResourceBundle.
  *
  * @author Thomas Morgner
  */
 public class ResourceFileFilter
-    implements DataFilter, Serializable, ReportConnectable
+        implements DataFilter, Serializable, ReportConnectable
 {
-  /** the used resource bundle. */
+  /**
+   * the used resource bundle.
+   */
   private String resourceIdentifier;
 
-  /** the filtered data source. */
+  /**
+   * the filtered data source.
+   */
   private DataSource dataSource;
 
   private ReportDefinition reportDefinition;
@@ -62,7 +65,7 @@ public class ResourceFileFilter
   /**
    * Creates a new ResourceFileFilter.
    */
-  public ResourceFileFilter()
+  public ResourceFileFilter ()
   {
   }
 
@@ -77,17 +80,16 @@ public class ResourceFileFilter
   }
 
   /**
-   * Returns the current value for the data source. The method will
-   * return null, if no datasource or no resource bundle is defined
-   * or if the datasource's value is null.
-   * <p>
-   * The value read from the dataSource is looked up in the given
-   * resourcebundle using the <code>ResourceBundle.getObject()</code>
-   * method. If the lookup fails, null is returned.
+   * Returns the current value for the data source. The method will return null, if no
+   * datasource or no resource bundle is defined or if the datasource's value is null.
+   * <p/>
+   * The value read from the dataSource is looked up in the given resourcebundle using the
+   * <code>ResourceBundle.getObject()</code> method. If the lookup fails, null is
+   * returned.
    *
    * @return the value or null, if the value could not be looked up.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     if (dataSource == null)
     {
@@ -131,7 +133,8 @@ public class ResourceFileFilter
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final ResourceFileFilter filter = (ResourceFileFilter) super.clone();
     filter.dataSource = (DataSource) dataSource.clone();
@@ -144,7 +147,7 @@ public class ResourceFileFilter
    *
    * @return The datasource.
    */
-  public DataSource getDataSource()
+  public DataSource getDataSource ()
   {
     return dataSource;
   }
@@ -154,12 +157,12 @@ public class ResourceFileFilter
    *
    * @param ds The data source.
    */
-  public void setDataSource(final DataSource ds)
+  public void setDataSource (final DataSource ds)
   {
     this.dataSource = ds;
   }
 
-  public void registerReportDefinition(final ReportDefinition reportDefinition)
+  public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != null)
     {
@@ -172,7 +175,7 @@ public class ResourceFileFilter
     this.reportDefinition = reportDefinition;
   }
 
-  public void unregisterReportDefinition(final ReportDefinition reportDefinition)
+  public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != reportDefinition)
     {

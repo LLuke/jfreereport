@@ -38,7 +38,7 @@
     <antcall target="copy-resources" inheritAll="true"/>
 
     <!-- make the jar -->
-    <jar jarfile="${jfreereport-all-jar-file}"
+    <jar jarfile="${jfreereport-all-jar-file}" 
       basedir="build">
       <manifest>
         <attribute name="Class-Path"

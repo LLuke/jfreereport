@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFTableModule.java,v 1.4.4.2 2004/12/13 19:27:10 taqua Exp $
+ * $Id: RTFTableModule.java,v 1.6 2005/01/25 00:15:18 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,9 +51,11 @@ public class RTFTableModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public RTFTableModule() throws ModuleInitializeException
+  public RTFTableModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }

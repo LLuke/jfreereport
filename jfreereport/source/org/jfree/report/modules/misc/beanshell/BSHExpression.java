@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.8 2005/01/25 00:07:59 taqua Exp $
+ * $Id: BSHExpression.java,v 1.9 2005/02/04 19:22:54 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -54,63 +54,60 @@ import org.jfree.report.function.Expression;
 import org.jfree.report.util.Log;
 
 /**
- * An expression that uses the BeanShell scripting framework to perform a scripted calculation.
- * The expression itself is contained in a function called
- * <p>
+ * An expression that uses the BeanShell scripting framework to perform a scripted
+ * calculation. The expression itself is contained in a function called
+ * <p/>
  * <code>Object getValue()</code>
- * <p>
- * and this function is defined in the <code>expression</code> property. You have to overwrite
- * the function <code>getValue()</code> to begin and to end your expression, but you are free to
- * add your own functions to the script.
- * <p>
- * By default, base Java core and extension packages are imported for you. They are:
- * <ul>
- * <li><code>java.lang<code>
- * <li><code>java.io</code>
- * <li><code>java.util</code>
- * <li><code>java.net</code>
- * <li><code>java.awt</code>
- * <li><code>java.awt.event</code>
- * <li><code>javax.swing</code>
- * <li><code>javax.swing.event</code>
- * </ul>
- * <p>
+ * <p/>
+ * and this function is defined in the <code>expression</code> property. You have to
+ * overwrite the function <code>getValue()</code> to begin and to end your expression, but
+ * you are free to add your own functions to the script.
+ * <p/>
+ * By default, base Java core and extension packages are imported for you. They are: <ul>
+ * <li><code>java.lang<code> <li><code>java.io</code> <li><code>java.util</code>
+ * <li><code>java.net</code> <li><code>java.awt</code> <li><code>java.awt.event</code>
+ * <li><code>javax.swing</code> <li><code>javax.swing.event</code> </ul>
+ * <p/>
  * An example in the XML format: (from report1.xml)
- * <p>
+ * <p/>
  * <pre><expression name="expression" class="org.jfree.report.modules.misc.beanshell.BSHExpression">
- <properties>
- <property name="expression">
- // you may import packages and classes or use the fully qualified name of the class
- import org.jfree.report.*;
-
- String userdefinedFunction (String parameter, Date date)
- {
- return parameter + " - the current date is " + date);
- }
-
- // use simple java code to perform the expression. You may use all classes
- // available in your classpath as if you write "real" java code in your favourite
- // IDE.
- // See the www.beanshell.org site for more information ...
- //
- // A return value of type "Object" is alway implied ...
- getValue ()
- {
- return userdefinedFunction ("Hello World :) ", new Date());
- }
- </property>
- </properties>
- </expression></pre>
+ * <properties>
+ * <property name="expression">
+ * // you may import packages and classes or use the fully qualified name of the class
+ * import org.jfree.report.*;
+ * <p/>
+ * String userdefinedFunction (String parameter, Date date)
+ * {
+ * return parameter + " - the current date is " + date);
+ * }
+ * <p/>
+ * // use simple java code to perform the expression. You may use all classes
+ * // available in your classpath as if you write "real" java code in your favourite
+ * // IDE.
+ * // See the www.beanshell.org site for more information ...
+ * //
+ * // A return value of type "Object" is alway implied ...
+ * getValue ()
+ * {
+ * return userdefinedFunction ("Hello World :) ", new Date());
+ * }
+ * </property>
+ * </properties>
+ * </expression></pre>
  *
  * @author Thomas Morgner
  */
 public class BSHExpression extends AbstractExpression implements Serializable
 {
-  /** The headerfile with the default initialisations.*/
+  /**
+   * The headerfile with the default initialisations.
+   */
   public static final String BSHHEADERFILE =
-      "org/jfree/report/modules/misc/beanshell/BSHExpressionHeader.txt";
+          "org/jfree/report/modules/misc/beanshell/BSHExpressionHeader.txt";
 
-  /** The beanshell-interpreter used to evaluate the expression. */
+  /**
+   * The beanshell-interpreter used to evaluate the expression.
+   */
   private transient Interpreter interpreter;
   private transient boolean invalid;
 
@@ -119,7 +116,7 @@ public class BSHExpression extends AbstractExpression implements Serializable
   /**
    * default constructor, create a new BeanShellExpression.
    */
-  public BSHExpression()
+  public BSHExpression ()
   {
   }
 
@@ -154,17 +151,17 @@ public class BSHExpression extends AbstractExpression implements Serializable
 
   /**
    * Evaluates the defined expression. If an exception or an evaluation error occures, the
-   * evaluation returns null and the error is logged. The current datarow and a copy of the
-   * expressions properties are set to script-internal variables. Changes to the properties will
-   * not alter the expressions original properties and will be lost when the evaluation is
-   * finished.
-   * <p>
-   * Expressions do not maintain a state and no assumptions about the order of evaluation can be
-   * made.
+   * evaluation returns null and the error is logged. The current datarow and a copy of
+   * the expressions properties are set to script-internal variables. Changes to the
+   * properties will not alter the expressions original properties and will be lost when
+   * the evaluation is finished.
+   * <p/>
+   * Expressions do not maintain a state and no assumptions about the order of evaluation
+   * can be made.
    *
    * @return the evaluated value or null.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     if (invalid)
     {
@@ -187,7 +184,7 @@ public class BSHExpression extends AbstractExpression implements Serializable
     catch (Exception e)
     {
       Log.warn(new Log.SimpleMessage("Evaluation error: ",
-          e.getClass(), " - ", e.getMessage()), e);
+              e.getClass(), " - ", e.getMessage()), e);
       return null;
     }
   }
@@ -195,11 +192,12 @@ public class BSHExpression extends AbstractExpression implements Serializable
   /**
    * Clones the expression and reinitializes the script.
    *
-   * @return  a clone of the expression.
+   * @return a clone of the expression.
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final BSHExpression expression = (BSHExpression) super.clone();
     expression.interpreter = null;
@@ -207,13 +205,12 @@ public class BSHExpression extends AbstractExpression implements Serializable
   }
 
   /**
-   * Return a new instance of this expression. The copy is initialized
-   * and uses the same parameters as the original, but does not share any
-   * objects.
+   * Return a new instance of this expression. The copy is initialized and uses the same
+   * parameters as the original, but does not share any objects.
    *
    * @return a copy of this function.
    */
-  public Expression getInstance()
+  public Expression getInstance ()
   {
     final BSHExpression expression = (BSHExpression) super.getInstance();
     return expression;
@@ -222,23 +219,22 @@ public class BSHExpression extends AbstractExpression implements Serializable
   /**
    * Serialisation support. The transient child elements were not saved.
    *
-   * @param in  the input stream.
-   *
-   * @throws IOException if there is an I/O error.
+   * @param in the input stream.
+   * @throws IOException            if there is an I/O error.
    * @throws ClassNotFoundException if a serialized class is not defined on this system.
    */
-  private void readObject(final ObjectInputStream in)
-      throws IOException, ClassNotFoundException
+  private void readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
   }
 
-  public String getExpression()
+  public String getExpression ()
   {
     return expression;
   }
 
-  public void setExpression(final String expression)
+  public void setExpression (final String expression)
   {
     this.expression = expression;
     this.invalid = false;

@@ -125,7 +125,7 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
     this.driverState = new DriverState();
 
     //validate the CPI values
-    if (isValidCPI (charsPerInch) == false)
+    if (isValidCPI(charsPerInch) == false)
     {
       throw new IllegalArgumentException
               ("The given CPI of '" + charsPerInch +
@@ -137,13 +137,21 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
   private boolean isValidCPI (final float charsPerInch)
   {
     if (charsPerInch == CPI_10)
+    {
       return true;
+    }
     if (charsPerInch == CPI_12)
+    {
       return true;
+    }
     if (charsPerInch == CPI_17)
+    {
       return true;
+    }
     if (charsPerInch == CPI_20)
+    {
       return true;
+    }
     if (charsPerInch == CPI_15 &&
             getPrinterSpecification().isFeatureAvailable(FONT_15_CPI))
     {
@@ -347,7 +355,7 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
     final int lines = (int) ((paper.getHeight() / 72f) * getLinesPerInch());
     sendDefinePageLengthInLines(lines);
 
-    sendDefineCharacterWidth (getCharactersPerInch());
+    sendDefineCharacterWidth(getCharactersPerInch());
 
     final PageFormatFactory fact = PageFormatFactory.getInstance();
     final int borderLeft = (int) (fact.getLeftBorder(paper) / charWidthPoints);
@@ -483,7 +491,7 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
     out.write(0x00); // Select charset 0 (works on all printers)
   }
 
-  protected void sendDefineUserCharacters()
+  protected void sendDefineUserCharacters ()
   {
   }
 
@@ -496,7 +504,7 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
           throws IOException
   {
     if (encodingUtilities != null &&
-        encodingUtilities.getEncoding().equals(encoding))
+            encodingUtilities.getEncoding().equals(encoding))
     {
       return encodingUtilities;
     }

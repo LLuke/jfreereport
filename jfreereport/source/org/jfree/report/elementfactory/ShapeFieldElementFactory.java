@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ShapeFieldElementFactory.java,v 1.6 2004/05/07 08:24:41 mungady Exp $
+ * $Id: ShapeFieldElementFactory.java,v 1.7 2005/02/19 13:29:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -55,14 +55,15 @@ import org.jfree.ui.FloatDimension;
  */
 public class ShapeFieldElementFactory extends ShapeElementFactory
 {
-  /** The fieldname of the datarow from where to read the content. */
+  /**
+   * The fieldname of the datarow from where to read the content.
+   */
   private String fieldname;
 
   /**
    * DefaultConstructor.
-   *
    */
-  public ShapeFieldElementFactory()
+  public ShapeFieldElementFactory ()
   {
   }
 
@@ -71,18 +72,18 @@ public class ShapeFieldElementFactory extends ShapeElementFactory
    *
    * @return the field name.
    */
-  public String getFieldname()
+  public String getFieldname ()
   {
     return fieldname;
   }
 
   /**
-   * Defines the field name from where to read the content of the element.
-   * The field name is the name of a datarow column.
+   * Defines the field name from where to read the content of the element. The field name
+   * is the name of a datarow column.
    *
    * @param fieldname the field name.
    */
-  public void setFieldname(final String fieldname)
+  public void setFieldname (final String fieldname)
   {
     this.fieldname = fieldname;
   }
@@ -90,12 +91,12 @@ public class ShapeFieldElementFactory extends ShapeElementFactory
   /**
    * Creates the shape field element.
    *
-   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
-   *
    * @return the generated shape field element
+   *
    * @throws IllegalStateException if the fieldname is not defined.
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
    */
-  public Element createElement()
+  public Element createElement ()
   {
     if (getFieldname() == null)
     {
@@ -112,35 +113,35 @@ public class ShapeFieldElementFactory extends ShapeElementFactory
   /**
    * Creates a new ShapeElement.
    *
-   * @param name  the name of the new element.
-   * @param bounds  the bounds.
-   * @param paint  the line color of this element.
-   * @param stroke  the stroke of this shape. For pdf use, restrict to BasicStrokes.
-   * @param fieldname  the fieldname from where to get the shape.
-   * @param shouldDraw  draw the shape?
-   * @param shouldFill  fill the shape?
-   * @param shouldScale  scale the shape?
-   * @param keepAspectRatio  preserve the aspect ratio?
-   *
+   * @param name            the name of the new element.
+   * @param bounds          the bounds.
+   * @param paint           the line color of this element.
+   * @param stroke          the stroke of this shape. For pdf use, restrict to
+   *                        BasicStrokes.
+   * @param fieldname       the fieldname from where to get the shape.
+   * @param shouldDraw      draw the shape?
+   * @param shouldFill      fill the shape?
+   * @param shouldScale     scale the shape?
+   * @param keepAspectRatio preserve the aspect ratio?
    * @return a report element for drawing a line.
    *
-   * @throws NullPointerException if bounds, name or shape are null
+   * @throws NullPointerException     if bounds, name or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ShapeElement createShapeElement(final String name,
-                                                final Rectangle2D bounds,
-                                                final Color paint,
-                                                final Stroke stroke,
-                                                final String fieldname,
-                                                final boolean shouldDraw,
-                                                final boolean shouldFill,
-                                                final boolean shouldScale,
-                                                final boolean keepAspectRatio)
+  public static ShapeElement createShapeElement (final String name,
+                                                 final Rectangle2D bounds,
+                                                 final Color paint,
+                                                 final Stroke stroke,
+                                                 final String fieldname,
+                                                 final boolean shouldDraw,
+                                                 final boolean shouldFill,
+                                                 final boolean shouldScale,
+                                                 final boolean keepAspectRatio)
   {
     final ShapeFieldElementFactory factory = new ShapeFieldElementFactory();
     factory.setName(name);
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setColor(paint);
     factory.setKeepAspectRatio(new Boolean(keepAspectRatio));
     factory.setFieldname(fieldname);

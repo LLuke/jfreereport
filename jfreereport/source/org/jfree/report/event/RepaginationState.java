@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RepaginationState.java,v 1.3 2003/09/08 18:11:48 taqua Exp $
+ * $Id: RepaginationState.java,v 1.4 2004/05/07 08:03:37 mungady Exp $
  *
  * Changes
  * -------
@@ -45,50 +45,58 @@ import java.util.EventObject;
  */
 public class RepaginationState extends EventObject
 {
-  /** The current pass. */
+  /**
+   * The current pass.
+   */
   private int pass;
 
-  /** The page. */
+  /**
+   * The page.
+   */
   private int page;
 
-  /** The current row. */
+  /**
+   * The current row.
+   */
   private int currentRow;
 
-  /** The maximum row. */
+  /**
+   * The maximum row.
+   */
   private int maxRow;
 
-  /** Whether the event was generated during the prepare run... */
+  /**
+   * Whether the event was generated during the prepare run...
+   */
   private boolean prepare;
 
   /**
    * Creates a new state.
    *
-   * @param source the source object that fired the event.
-   * @param pass  the pass the current function level of the processor.
-   * This counts down to -1.
-   * @param page  the page that is currently being processed, or -1 if the 
-   * page is not known.
-   * @param currentRow  the current row the current row of the tablemodel
-   * that is processed.
-   * @param maxRow  the maximum row the total number of rows in the tablemodel.
-   * @param prepare true, if the event was fired by a prepare run, 
-   * false otherwise. 
+   * @param source     the source object that fired the event.
+   * @param pass       the pass the current function level of the processor. This counts
+   *                   down to -1.
+   * @param page       the page that is currently being processed, or -1 if the page is
+   *                   not known.
+   * @param currentRow the current row the current row of the tablemodel that is
+   *                   processed.
+   * @param maxRow     the maximum row the total number of rows in the tablemodel.
+   * @param prepare    true, if the event was fired by a prepare run, false otherwise.
    */
-  public RepaginationState(final Object source, final int pass,
-                           final int page, final int currentRow,
-                           final int maxRow, final boolean prepare)
+  public RepaginationState (final Object source, final int pass,
+                            final int page, final int currentRow,
+                            final int maxRow, final boolean prepare)
   {
     super(source);
     reuse(pass, page, currentRow, maxRow, prepare);
   }
 
   /**
-   * Returns the pass, which is the current function level of the report
-   * processor.
+   * Returns the pass, which is the current function level of the report processor.
    *
    * @return the report processors function level.
    */
-  public int getPass()
+  public int getPass ()
   {
     return pass;
   }
@@ -98,7 +106,7 @@ public class RepaginationState extends EventObject
    *
    * @return The page or -1 if the page is not known.
    */
-  public int getPage()
+  public int getPage ()
   {
     return page;
   }
@@ -108,7 +116,7 @@ public class RepaginationState extends EventObject
    *
    * @return the current row.
    */
-  public int getCurrentRow()
+  public int getCurrentRow ()
   {
     return currentRow;
   }
@@ -118,27 +126,26 @@ public class RepaginationState extends EventObject
    *
    * @return the max row.
    */
-  public int getMaxRow()
+  public int getMaxRow ()
   {
     return maxRow;
   }
 
   /**
-   * Makes it possible to reuse the event object. Repagination events
-   * are generated in masses, and it wastes resources to throw them away.
+   * Makes it possible to reuse the event object. Repagination events are generated in
+   * masses, and it wastes resources to throw them away.
    *
-   * @param pass  the pass the current function level of the processor.
-   * This counts down to -1.
-   * @param page  the page that is currently being processed, or -1 if the 
-   * page is not known.
-   * @param currentRow  the current row the current row of the tablemodel
-   * that is processed.
-   * @param maxRow  the maximum row the total number of rows in the tablemodel.
-   * @param prepare true, if the event was fired by a prepare run, 
-   * false otherwise. 
+   * @param pass       the pass the current function level of the processor. This counts
+   *                   down to -1.
+   * @param page       the page that is currently being processed, or -1 if the page is
+   *                   not known.
+   * @param currentRow the current row the current row of the tablemodel that is
+   *                   processed.
+   * @param maxRow     the maximum row the total number of rows in the tablemodel.
+   * @param prepare    true, if the event was fired by a prepare run, false otherwise.
    */
-  public void reuse(final int pass, final int page, final int currentRow,
-                    final int maxRow, final boolean prepare)
+  public void reuse (final int pass, final int page, final int currentRow,
+                     final int maxRow, final boolean prepare)
   {
     this.pass = pass;
     this.page = page;
@@ -148,13 +155,11 @@ public class RepaginationState extends EventObject
   }
 
   /**
-   * Checks, whether the event was fired during a prepare run of the report
-   * processor.
-   * 
-   * @return true, if the report processor works on a prepare run, false
-   * otherwise.
+   * Checks, whether the event was fired during a prepare run of the report processor.
+   *
+   * @return true, if the report processor works on a prepare run, false otherwise.
    */
-  public boolean isPrepare()
+  public boolean isPrepare ()
   {
     return prepare;
   }

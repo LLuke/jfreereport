@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Object Refinery Limited);
  *
- * $Id: HSSFFontWrapper.java,v 1.4.4.1 2004/12/13 19:27:12 taqua Exp $
+ * $Id: HSSFFontWrapper.java,v 1.7 2005/01/25 00:16:37 taqua Exp $
  *
  * Changes
  * -------
@@ -48,40 +48,58 @@ import org.jfree.report.style.FontDefinition;
  */
 public final class HSSFFontWrapper
 {
-  /** scale between Excel and awt. With this value it looks fine. */
+  /**
+   * scale between Excel and awt. With this value it looks fine.
+   */
   public static final int FONT_FACTOR = 20;
 
-  /** the font name. */
+  /**
+   * the font name.
+   */
   private final String fontName;
 
-  /** the excel color index. */
+  /**
+   * the excel color index.
+   */
   private final short colorIndex;
 
-  /** the font size. */
+  /**
+   * the font size.
+   */
   private final int fontHeight;
 
-  /** the font's bold flag. */
+  /**
+   * the font's bold flag.
+   */
   private final boolean bold;
 
-  /** the font's italic flag. */
+  /**
+   * the font's italic flag.
+   */
   private final boolean italic;
 
-  /** the font's underline flag. */
+  /**
+   * the font's underline flag.
+   */
   private final boolean underline;
 
-  /** the font's strikethrough flag. */
+  /**
+   * the font's strikethrough flag.
+   */
   private final boolean strikethrough;
 
-  /** the cached hashcode. */
+  /**
+   * the cached hashcode.
+   */
   private int hashCode;
 
   /**
    * Creates a new HSSFFontWrapper for the given font and color.
    *
-   * @param font the wrapped font.
+   * @param font  the wrapped font.
    * @param color the foreground color.
    */
-  public HSSFFontWrapper(final FontDefinition font, final Color color)
+  public HSSFFontWrapper (final FontDefinition font, final Color color)
   {
     if (font == null)
     {
@@ -142,9 +160,10 @@ public final class HSSFFontWrapper
    * Indicates whether some other object is "equal to" this one.
    *
    * @param o the compared object.
-   * @return true, if the font wrapper contains the same font definition, false otherwise.
+   * @return true, if the font wrapper contains the same font definition, false
+   *         otherwise.
    */
-  public boolean equals(final Object o)
+  public boolean equals (final Object o)
   {
     if (this == o)
     {
@@ -190,13 +209,12 @@ public final class HSSFFontWrapper
   }
 
   /**
-   * Returns a hash code value for the object. This method is
-   * supported for the benefit of hashtables such as those provided by
-   * <code>java.util.Hashtable</code>.
+   * Returns a hash code value for the object. This method is supported for the benefit of
+   * hashtables such as those provided by <code>java.util.Hashtable</code>.
    *
    * @return the hash code.
    */
-  public int hashCode()
+  public int hashCode ()
   {
     if (hashCode == 0)
     {

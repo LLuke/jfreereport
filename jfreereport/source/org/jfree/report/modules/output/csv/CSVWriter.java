@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVWriter.java,v 1.3 2003/08/25 14:29:31 taqua Exp $
+ * $Id: CSVWriter.java,v 1.4 2004/05/07 12:53:10 mungady Exp $
  *
  * Changes
  * -------
@@ -52,9 +52,9 @@ import org.jfree.report.function.AbstractFunction;
 import org.jfree.report.function.FunctionProcessingException;
 
 /**
- * The CSV Writer is the content creation function used to create the CSV content.
- * This implementation does no layouting, the DataRow's raw data is written to the
- * supplied writer.
+ * The CSV Writer is the content creation function used to create the CSV content. This
+ * implementation does no layouting, the DataRow's raw data is written to the supplied
+ * writer.
  *
  * @author Thomas Morgner.
  */
@@ -65,21 +65,27 @@ public class CSVWriter extends AbstractFunction
    */
   private static class CSVRow
   {
-    /** The data. */
+    /**
+     * The data.
+     */
     private final ArrayList data;
 
-    /** A quoter utility object. */
+    /**
+     * A quoter utility object.
+     */
     private final CSVQuoter quoter;
 
-    /** The line separator. */
+    /**
+     * The line separator.
+     */
     private final String lineSeparator;
 
     /**
      * Creates a new CSVQuoter. The Quoter uses the system's default line separator.
      *
-     * @param quoter  a utility class for quoting CSV strings.
+     * @param quoter a utility class for quoting CSV strings.
      */
-    public CSVRow(final CSVQuoter quoter)
+    public CSVRow (final CSVQuoter quoter)
     {
       data = new ArrayList();
       this.quoter = quoter;
@@ -91,7 +97,7 @@ public class CSVWriter extends AbstractFunction
      *
      * @param value the appended int value
      */
-    public void append(final int value)
+    public void append (final int value)
     {
       data.add(new Integer(value));
     }
@@ -101,7 +107,7 @@ public class CSVWriter extends AbstractFunction
      *
      * @param o the appended value
      */
-    public void append(final Object o)
+    public void append (final Object o)
     {
       data.add(o);
     }
@@ -109,11 +115,11 @@ public class CSVWriter extends AbstractFunction
     /**
      * Writes the contents of the collected row, separated by colon.
      *
-     * @param w  the writer.
-     *
+     * @param w the writer.
      * @throws IOException if an I/O error occurred.
      */
-    public void write(final Writer w) throws IOException
+    public void write (final Writer w)
+            throws IOException
     {
       final Iterator it = data.iterator();
       while (it.hasNext())
@@ -128,23 +134,31 @@ public class CSVWriter extends AbstractFunction
     }
   }
 
-  /** the writer used to output the generated data. */
+  /**
+   * the writer used to output the generated data.
+   */
   private Writer w;
 
-  /** the functions dependency level, -1 by default. */
+  /**
+   * the functions dependency level, -1 by default.
+   */
   private int depLevel;
 
-  /** the CSVQuoter used to encode the column values. */
+  /**
+   * the CSVQuoter used to encode the column values.
+   */
   private final CSVQuoter quoter;
 
-  /** a flag indicating whether to writer data row names as column header. */
+  /**
+   * a flag indicating whether to writer data row names as column header.
+   */
   private boolean writeDataRowNames;
 
   /**
-   * DefaulConstructor. Creates a CSVWriter with a dependency level of -1 and
-   * a default CSVQuoter.
+   * DefaulConstructor. Creates a CSVWriter with a dependency level of -1 and a default
+   * CSVQuoter.
    */
-  public CSVWriter()
+  public CSVWriter ()
   {
     setDependencyLevel(-1);
     quoter = new CSVQuoter();
@@ -155,7 +169,7 @@ public class CSVWriter extends AbstractFunction
    *
    * @return true, if column names are printed, false otherwise.
    */
-  public boolean isWriteDataRowNames()
+  public boolean isWriteDataRowNames ()
   {
     return writeDataRowNames;
   }
@@ -165,7 +179,7 @@ public class CSVWriter extends AbstractFunction
    *
    * @param writeDataRowNames true, if column names are printed, false otherwise
    */
-  public void setWriteDataRowNames(final boolean writeDataRowNames)
+  public void setWriteDataRowNames (final boolean writeDataRowNames)
   {
     this.writeDataRowNames = writeDataRowNames;
   }
@@ -175,7 +189,7 @@ public class CSVWriter extends AbstractFunction
    *
    * @return the writer
    */
-  public Writer getWriter()
+  public Writer getWriter ()
   {
     return w;
   }
@@ -185,7 +199,7 @@ public class CSVWriter extends AbstractFunction
    *
    * @param w the writer
    */
-  public void setWriter(final Writer w)
+  public void setWriter (final Writer w)
   {
     this.w = w;
   }
@@ -194,11 +208,10 @@ public class CSVWriter extends AbstractFunction
    * Defines the separator, which is used to separate columns in a row.
    *
    * @param separator the separator string, never null.
-   *
-   * @throws NullPointerException if the separator is null.
+   * @throws NullPointerException     if the separator is null.
    * @throws IllegalArgumentException if the separator is an empty string.
    */
-  public void setSeparator(final String separator)
+  public void setSeparator (final String separator)
   {
     if (separator == null)
     {
@@ -216,7 +229,7 @@ public class CSVWriter extends AbstractFunction
    *
    * @return the separator, never null.
    */
-  public String getSeparator()
+  public String getSeparator ()
   {
     return quoter.getSeparator();
   }
@@ -224,10 +237,10 @@ public class CSVWriter extends AbstractFunction
   /**
    * Writes the contents of the dataRow into the CSVRow.
    *
-   * @param dr the dataRow which should be written
+   * @param dr  the dataRow which should be written
    * @param row the CSVRow used to collect the RowData.
    */
-  private void writeDataRow(final DataRow dr, final CSVRow row)
+  private void writeDataRow (final DataRow dr, final CSVRow row)
   {
     for (int i = 0; i < dr.getColumnCount(); i++)
     {
@@ -246,10 +259,10 @@ public class CSVWriter extends AbstractFunction
   /**
    * Writes the names of the columns of the dataRow into the CSVRow.
    *
-   * @param dr the dataRow which should be written
+   * @param dr  the dataRow which should be written
    * @param row the CSVRow used to collect the RowData.
    */
-  private void writeDataRowNames(final DataRow dr, final CSVRow row)
+  private void writeDataRowNames (final DataRow dr, final CSVRow row)
   {
     for (int i = 0; i < dr.getColumnCount(); i++)
     {
@@ -260,9 +273,9 @@ public class CSVWriter extends AbstractFunction
   /**
    * Writes the ReportHeader and (if defined) the dataRow names.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportStarted(final ReportEvent event)
+  public void reportStarted (final ReportEvent event)
   {
     try
     {
@@ -290,9 +303,9 @@ public class CSVWriter extends AbstractFunction
   /**
    * Writes the ReportFooter.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportFinished(final ReportEvent event)
+  public void reportFinished (final ReportEvent event)
   {
     try
     {
@@ -311,9 +324,9 @@ public class CSVWriter extends AbstractFunction
   /**
    * Writes the GroupHeader of the current group.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupStarted(final ReportEvent event)
+  public void groupStarted (final ReportEvent event)
   {
     try
     {
@@ -337,9 +350,9 @@ public class CSVWriter extends AbstractFunction
   /**
    * Writes the GroupFooter of the active group.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupFinished(final ReportEvent event)
+  public void groupFinished (final ReportEvent event)
   {
     try
     {
@@ -363,9 +376,9 @@ public class CSVWriter extends AbstractFunction
   /**
    * Writes the current ItemBand.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void itemsAdvanced(final ReportEvent event)
+  public void itemsAdvanced (final ReportEvent event)
   {
     try
     {
@@ -382,37 +395,38 @@ public class CSVWriter extends AbstractFunction
   }
 
   /**
-   * Return a selfreference of this CSVWriter. This selfreference is used to
-   * confiugre the output process.
+   * Return a selfreference of this CSVWriter. This selfreference is used to confiugre the
+   * output process.
    *
    * @return this CSVWriter.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return this;
   }
 
   /**
-   * The dependency level defines the level of execution for this function. Higher dependency
-   * functions are executed before lower dependency functions. For ordinary functions and
-   * expressions, the range for dependencies is defined to start from 0 (lowest dependency
-   * possible) to 2^31 (upper limit of int).
-   * <p>
-   * PageLayouter functions override the default behaviour an place them self at depency level -1,
-   * an so before any userdefined function.
+   * The dependency level defines the level of execution for this function. Higher
+   * dependency functions are executed before lower dependency functions. For ordinary
+   * functions and expressions, the range for dependencies is defined to start from 0
+   * (lowest dependency possible) to 2^31 (upper limit of int).
+   * <p/>
+   * PageLayouter functions override the default behaviour an place them self at depency
+   * level -1, an so before any userdefined function.
    *
    * @return the level.
    */
-  public int getDependencyLevel()
+  public int getDependencyLevel ()
   {
     return depLevel;
   }
 
   /**
    * Overrides the depency level. Should be lower than any other function depency.
+   *
    * @param deplevel the new depency level.
    */
-  public void setDependencyLevel(final int deplevel)
+  public void setDependencyLevel (final int deplevel)
   {
     this.depLevel = deplevel;
   }

@@ -3,8 +3,8 @@ package org.jfree.report.modules.parser.ext.readhandlers;
 import org.jfree.report.Element;
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
-import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
 import org.xml.sax.SAXException;
@@ -66,14 +66,14 @@ public class ElementReadHandler extends AbstractPropertyXmlReadHandler
     }
     else if (tagName.equals("datasource"))
     {
-      final CommentHintPath hintPath = new CommentHintPath (element);
+      final CommentHintPath hintPath = new CommentHintPath(element);
       hintPath.addName("datasource");
       dataSourceHandler = new DataSourceReadHandler(hintPath);
       return dataSourceHandler;
     }
     else if (tagName.equals("template"))
     {
-      final CommentHintPath hintPath = new CommentHintPath (element);
+      final CommentHintPath hintPath = new CommentHintPath(element);
       hintPath.addName("template");
       dataSourceHandler = new TemplateReadHandler(false, hintPath);
       return dataSourceHandler;

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PageFooter.java,v 1.7 2005/01/30 23:37:18 taqua Exp $
+ * $Id: PageFooter.java,v 1.8 2005/02/23 19:31:40 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -46,8 +46,8 @@ package org.jfree.report;
 import org.jfree.report.style.BandStyleKeys;
 
 /**
- * A report band that appears at the bottom of every page.  There is an option to suppress the
- * page footer on the first page, and another option does the same for the last page.
+ * A report band that appears at the bottom of every page.  There is an option to suppress
+ * the page footer on the first page, and another option does the same for the last page.
  *
  * @author David Gilbert
  */
@@ -56,19 +56,19 @@ public class PageFooter extends Band implements RootLevelBand
   /**
    * Constructs a page footer containing no elements.
    */
-  public PageFooter()
+  public PageFooter ()
   {
   }
 
   /**
    * Constructs a page footer containing no elements.
-   * 
-   * @param onFirstPage defines, whether the page header will be printed
-   * on the first page
-   * @param onLastPage defines, whether the page footer will be printed on the
-   * last page.
+   *
+   * @param onFirstPage defines, whether the page header will be printed on the first
+   *                    page
+   * @param onLastPage  defines, whether the page footer will be printed on the last
+   *                    page.
    */
-  public PageFooter(final boolean onFirstPage, final boolean onLastPage)
+  public PageFooter (final boolean onFirstPage, final boolean onLastPage)
   {
     super();
     setDisplayOnFirstPage(onFirstPage);
@@ -80,7 +80,7 @@ public class PageFooter extends Band implements RootLevelBand
    *
    * @return true or false.
    */
-  public boolean isDisplayOnFirstPage()
+  public boolean isDisplayOnFirstPage ()
   {
     return getStyle().getBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_FIRSTPAGE, false);
   }
@@ -88,9 +88,9 @@ public class PageFooter extends Band implements RootLevelBand
   /**
    * Defines whether the footer should be shown on the first page.
    *
-   * @param b  a flag indicating whether or not the footer is shown on the first page.
+   * @param b a flag indicating whether or not the footer is shown on the first page.
    */
-  public void setDisplayOnFirstPage(final boolean b)
+  public void setDisplayOnFirstPage (final boolean b)
   {
     getStyle().setBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_FIRSTPAGE, b);
   }
@@ -100,7 +100,7 @@ public class PageFooter extends Band implements RootLevelBand
    *
    * @return true or false.
    */
-  public boolean isDisplayOnLastPage()
+  public boolean isDisplayOnLastPage ()
   {
     return getStyle().getBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_LASTPAGE, false);
   }
@@ -108,16 +108,16 @@ public class PageFooter extends Band implements RootLevelBand
   /**
    * Defines whether the footer should be shown on the last page.
    *
-   * @param b  a flag indicating whether or not the footer is shown on the first page.
+   * @param b a flag indicating whether or not the footer is shown on the first page.
    */
-  public void setDisplayOnLastPage(final boolean b)
+  public void setDisplayOnLastPage (final boolean b)
   {
     getStyle().setBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_LASTPAGE, b);
   }
 
   /**
-   * Assigns the report definition. Don't play with that function,
-   * unless you know what you are doing. You might get burned.
+   * Assigns the report definition. Don't play with that function, unless you know what
+   * you are doing. You might get burned.
    *
    * @param reportDefinition the report definition.
    */

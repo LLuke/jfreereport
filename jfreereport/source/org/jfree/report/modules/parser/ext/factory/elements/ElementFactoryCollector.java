@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementFactoryCollector.java,v 1.6 2003/08/25 14:29:33 taqua Exp $
+ * $Id: ElementFactoryCollector.java,v 1.7 2004/05/07 14:29:48 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -50,13 +50,15 @@ import org.jfree.report.Element;
  */
 public class ElementFactoryCollector implements ElementFactory
 {
-  /** Storage for the element factories. */
+  /**
+   * Storage for the element factories.
+   */
   private final ArrayList factories;
 
   /**
    * Creates a new element factory.
    */
-  public ElementFactoryCollector()
+  public ElementFactoryCollector ()
   {
     factories = new ArrayList();
   }
@@ -64,9 +66,9 @@ public class ElementFactoryCollector implements ElementFactory
   /**
    * Adds an element factory.
    *
-   * @param factory  the factory.
+   * @param factory the factory.
    */
-  public void addFactory(final ElementFactory factory)
+  public void addFactory (final ElementFactory factory)
   {
     factories.add(factory);
   }
@@ -76,7 +78,7 @@ public class ElementFactoryCollector implements ElementFactory
    *
    * @return The iterator.
    */
-  public Iterator getFactories()
+  public Iterator getFactories ()
   {
     return factories.iterator();
   }
@@ -84,11 +86,10 @@ public class ElementFactoryCollector implements ElementFactory
   /**
    * Returns an element for the given type.
    *
-   * @param type  the content type.
-   *
+   * @param type the content type.
    * @return The element.
    */
-  public Element getElementForType(final String type)
+  public Element getElementForType (final String type)
   {
     for (int i = 0; i < factories.size(); i++)
     {
@@ -104,12 +105,13 @@ public class ElementFactoryCollector implements ElementFactory
 
   /**
    * Indicated whether an other object is equal to this one.
-   * @see java.lang.Object#equals(java.lang.Object)
    *
    * @param o the other object.
    * @return true, if the object is equal, false otherwise.
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
    */
-  public boolean equals(final Object o)
+  public boolean equals (final Object o)
   {
     if (this == o)
     {
@@ -132,11 +134,12 @@ public class ElementFactoryCollector implements ElementFactory
 
   /**
    * Computes an hashcode for this factory.
-   * @see java.lang.Object#hashCode()
    *
    * @return the hashcode.
+   *
+   * @see java.lang.Object#hashCode()
    */
-  public int hashCode()
+  public int hashCode ()
   {
     return factories.hashCode();
   }

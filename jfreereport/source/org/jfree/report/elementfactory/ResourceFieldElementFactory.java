@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ResourceFieldElementFactory.java,v 1.9 2005/01/25 21:40:11 taqua Exp $
+ * $Id: ResourceFieldElementFactory.java,v 1.10 2005/02/19 13:29:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,20 +50,22 @@ import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
 
 /**
- * A factory to define ResourceFieldElements. ResourceField translate their content
- * using a ResourceBundle instance.
+ * A factory to define ResourceFieldElements. ResourceField translate their content using
+ * a ResourceBundle instance.
  *
  * @author Thomas Morgner
  */
 public class ResourceFieldElementFactory extends TextFieldElementFactory
 {
-  /** The resource base from which to read the translations. */
+  /**
+   * The resource base from which to read the translations.
+   */
   private String resourceBase;
 
   /**
    * Default Constructor.
    */
-  public ResourceFieldElementFactory()
+  public ResourceFieldElementFactory ()
   {
   }
 
@@ -72,7 +74,7 @@ public class ResourceFieldElementFactory extends TextFieldElementFactory
    *
    * @return the resource bundle name of the element.
    */
-  public String getResourceBase()
+  public String getResourceBase ()
   {
     return resourceBase;
   }
@@ -82,7 +84,7 @@ public class ResourceFieldElementFactory extends TextFieldElementFactory
    *
    * @param resourceBase the resource bundle name of the element.
    */
-  public void setResourceBase(final String resourceBase)
+  public void setResourceBase (final String resourceBase)
   {
     this.resourceBase = resourceBase;
   }
@@ -90,12 +92,12 @@ public class ResourceFieldElementFactory extends TextFieldElementFactory
   /**
    * Creates the resource field element based on the set properties.
    *
-   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
-   *
    * @return the generated element.
+   *
    * @throws IllegalStateException if the fieldname is not defined.
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
    */
-  public Element createElement()
+  public Element createElement ()
   {
     if (getFieldname() == null)
     {
@@ -122,30 +124,30 @@ public class ResourceFieldElementFactory extends TextFieldElementFactory
    * creates a ResourceElement. ResourceElements resolve their value using a
    * <code>java.util.ResourceBundle</code>.
    *
-   * @param name the name of the element (null allowed)
-   * @param bounds the element's bounds
-   * @param color the text color of the element
-   * @param alignment the element's horizontal text alignment
-   * @param valignment the element's vertical text alignment
-   * @param font the elements font
-   * @param nullValue the text used when the value of this element is null
-   * @param field the field in the datamodel to retrieve values from
+   * @param name         the name of the element (null allowed)
+   * @param bounds       the element's bounds
+   * @param color        the text color of the element
+   * @param alignment    the element's horizontal text alignment
+   * @param valignment   the element's vertical text alignment
+   * @param font         the elements font
+   * @param nullValue    the text used when the value of this element is null
+   * @param field        the field in the datamodel to retrieve values from
    * @param resourceBase the classname/basename of the assigned resource bundle
    * @return the created ResourceElement
    */
-  public static TextElement createResourceElement(final String name,
-                                                  final Rectangle2D bounds,
-                                                  final Color color,
-                                                  final ElementAlignment alignment,
-                                                  final ElementAlignment valignment,
-                                                  final FontDefinition font,
-                                                  final String nullValue,
-                                                  final String resourceBase,
-                                                  final String field)
+  public static TextElement createResourceElement (final String name,
+                                                   final Rectangle2D bounds,
+                                                   final Color color,
+                                                   final ElementAlignment alignment,
+                                                   final ElementAlignment valignment,
+                                                   final FontDefinition font,
+                                                   final String nullValue,
+                                                   final String resourceBase,
+                                                   final String field)
   {
     final ResourceFieldElementFactory factory = new ResourceFieldElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setName(name);
     factory.setColor(color);
     factory.setHorizontalAlignment(alignment);

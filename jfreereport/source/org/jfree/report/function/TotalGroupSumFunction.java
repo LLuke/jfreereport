@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupSumFunction.java,v 1.7 2005/01/25 00:00:19 taqua Exp $
+ * $Id: TotalGroupSumFunction.java,v 1.8 2005/02/04 19:22:54 taqua Exp $
  *
  * Changes
  * -------
@@ -53,23 +53,20 @@ import org.jfree.report.util.Log;
 
 /**
  * A report function that calculates the sum of one field (column) from the TableModel.
- * This function produces a global total. The total sum of the group is known when the group
- * processing starts and the report is not performing a prepare-run. The sum is calculated in
- * the prepare run and recalled in the printing run.
- * <p>
- * The function can be used in two ways:
- * <ul>
- * <li>to calculate a sum for the entire report;</li>
- * <li>to calculate a sum within a particular group;</li>
- * </ul>
- * This function expects its input values to be either java.lang.Number instances or Strings
- * that can be parsed to java.lang.Number instances using a java.text.DecimalFormat.
- * <p>
- * The function undestands two parameters, the <code>field</code> parameter is required and
- * denotes the name of an ItemBand-field which gets summed up.
- * <p>
- * The parameter <code>group</code> denotes the name of a group. When this group is started,
- * the counter gets reseted to null. This parameter is optional.
+ * This function produces a global total. The total sum of the group is known when the
+ * group processing starts and the report is not performing a prepare-run. The sum is
+ * calculated in the prepare run and recalled in the printing run.
+ * <p/>
+ * The function can be used in two ways: <ul> <li>to calculate a sum for the entire
+ * report;</li> <li>to calculate a sum within a particular group;</li> </ul> This function
+ * expects its input values to be either java.lang.Number instances or Strings that can be
+ * parsed to java.lang.Number instances using a java.text.DecimalFormat.
+ * <p/>
+ * The function undestands two parameters, the <code>field</code> parameter is required
+ * and denotes the name of an ItemBand-field which gets summed up.
+ * <p/>
+ * The parameter <code>group</code> denotes the name of a group. When this group is
+ * started, the counter gets reseted to null. This parameter is optional.
  *
  * @author Thomas Morgner
  */
@@ -80,13 +77,15 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
    */
   private static class GroupSum implements Serializable
   {
-    /** The result. */
+    /**
+     * The result.
+     */
     private BigDecimal result;
 
     /**
      * Default constructor.
      */
-    public GroupSum()
+    public GroupSum ()
     {
       result = new BigDecimal(0);
     }
@@ -94,9 +93,9 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
     /**
      * Adds a number to the result.
      *
-     * @param n  the number.
+     * @param n the number.
      */
-    public void add(final Number n)
+    public void add (final Number n)
     {
       if (n == null)
       {
@@ -111,30 +110,35 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
      *
      * @return the sum.
      */
-    public BigDecimal getResult()
+    public BigDecimal getResult ()
     {
       return result;
     }
   }
 
-  /** The group sum. */
+  /**
+   * The group sum.
+   */
   private transient GroupSum groupResult;
 
-  /** A list of results. */
+  /**
+   * A list of results.
+   */
   private transient ArrayList results;
 
-  /** The current index. */
+  /**
+   * The current index.
+   */
   private transient int currentIndex;
 
   private String field;
   private String group;
 
   /**
-   * Constructs a new function.
-   * <P>
-   * Initially the function has no name...be sure to assign one before using the function.
+   * Constructs a new function. <P> Initially the function has no name...be sure to assign
+   * one before using the function.
    */
-  public TotalGroupSumFunction()
+  public TotalGroupSumFunction ()
   {
     groupResult = new GroupSum();
     results = new ArrayList();
@@ -143,9 +147,9 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
   /**
    * Receives notification that the report has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportInitialized(final ReportEvent event)
+  public void reportInitialized (final ReportEvent event)
   {
     currentIndex = -1;
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
@@ -173,9 +177,9 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
   /**
    * Receives notification that a group has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupStarted(final ReportEvent event)
+  public void groupStarted (final ReportEvent event)
   {
     if (FunctionUtilities.isDefinedGroup(getGroup(), event) == false)
     {
@@ -201,9 +205,9 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
   /**
    * Receives notification that a row of data is being processed.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void itemsAdvanced(final ReportEvent event)
+  public void itemsAdvanced (final ReportEvent event)
   {
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event) == false)
     {
@@ -232,55 +236,52 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
    *
    * @return the group name.
    */
-  public String getGroup()
+  public String getGroup ()
   {
     return group;
   }
 
   /**
-   * Defines the name of the group to be totalled.
-   * If the name is null, all groups are totalled.
+   * Defines the name of the group to be totalled. If the name is null, all groups are
+   * totalled.
    *
-   * @param group  the group name.
+   * @param group the group name.
    */
-  public void setGroup(final String group)
+  public void setGroup (final String group)
   {
     this.group = group;
   }
 
   /**
-   * Return the current function value.
-   * <P>
-   * The value depends (obviously) on the function implementation.   For example, a page counting
-   * function will return the current page number.
+   * Return the current function value. <P> The value depends (obviously) on the function
+   * implementation.   For example, a page counting function will return the current page
+   * number.
    *
    * @return The value of the function.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return groupResult.getResult();
   }
 
   /**
-   * Returns the field used by the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Returns the field used by the function. <P> The field name corresponds to a column
+   * name in the report's TableModel.
    *
    * @return The field name.
    */
-  public String getField()
+  public String getField ()
   {
     return field;
   }
 
   /**
-   * Sets the field name for the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Sets the field name for the function. <P> The field name corresponds to a column name
+   * in the report's TableModel.
    *
    * @param field the field name (null not permitted).
    */
-  public void setField(final String field)
+  public void setField (final String field)
   {
     if (field == null)
     {
@@ -290,12 +291,12 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
   }
 
   /**
-   * Return a completly separated copy of this function. The copy does no
-   * longer share any changeable objects with the original function.
+   * Return a completly separated copy of this function. The copy does no longer share any
+   * changeable objects with the original function.
    *
    * @return a copy of this function.
    */
-  public Expression getInstance()
+  public Expression getInstance ()
   {
     final TotalGroupSumFunction function = (TotalGroupSumFunction) super.getInstance();
     function.groupResult = new GroupSum();
@@ -303,8 +304,8 @@ public class TotalGroupSumFunction extends AbstractFunction implements Serializa
     return function;
   }
 
-  private void readObject(final ObjectInputStream in)
-      throws IOException, ClassNotFoundException
+  private void readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
     this.results = new ArrayList();

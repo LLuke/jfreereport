@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableFieldTemplateDescription.java,v 1.3 2004/05/07 14:29:23 mungady Exp $
+ * $Id: DrawableURLFieldTemplateDescription.java,v 1.1 2005/01/25 23:35:35 taqua Exp $
  *
  * Changes (from 09-Apr-2003)
  * -------------------------
@@ -53,9 +53,9 @@ public class DrawableURLFieldTemplateDescription extends AbstractTemplateDescrip
   /**
    * Creates a new template description.
    *
-   * @param name  the name.
+   * @param name the name.
    */
-  public DrawableURLFieldTemplateDescription(final String name)
+  public DrawableURLFieldTemplateDescription (final String name)
   {
     super(name, DrawableURLFieldTemplate.class, false);
     setParameterDefinition("content", String.class);
@@ -67,7 +67,7 @@ public class DrawableURLFieldTemplateDescription extends AbstractTemplateDescrip
    *
    * @return The object.
    */
-  public Object createObject()
+  public Object createObject ()
   {
     final DrawableURLFieldTemplate t = (DrawableURLFieldTemplate) super.createObject();
     if (t.getBaseURL() == null)

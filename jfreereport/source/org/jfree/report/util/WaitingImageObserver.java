@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   Stefan Prange;
  *
- * $Id: WaitingImageObserver.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: WaitingImageObserver.java,v 1.3 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -49,35 +49,40 @@ import java.awt.image.ImageObserver;
 import java.io.Serializable;
 
 /**
- * This image observer blocks until the image is completely loaded. AWT
- * defers the loading of images until they are painted on a graphic.
- *
- * While printing reports it is not very nice, not to know whether a image
- * was completely loaded, so this observer forces the loading of the image
- * until a final state (either ALLBITS, ABORT or ERROR) is reached.
+ * This image observer blocks until the image is completely loaded. AWT defers the loading
+ * of images until they are painted on a graphic.
+ * <p/>
+ * While printing reports it is not very nice, not to know whether a image was completely
+ * loaded, so this observer forces the loading of the image until a final state (either
+ * ALLBITS, ABORT or ERROR) is reached.
  *
  * @author Thomas Morgner
  */
 public class WaitingImageObserver implements ImageObserver, Serializable, Cloneable
 {
-  /** The lock. */
+  /**
+   * The lock.
+   */
   private boolean lock;
 
-  /** The image. */
+  /**
+   * The image.
+   */
   private Image image;
 
-  /** A flag that signals an error. */
+  /**
+   * A flag that signals an error.
+   */
   private boolean error;
 
   /**
-   * Creates a new ImageObserver for the given Image. The Oberver has to be started
-   * by an external thread.
+   * Creates a new ImageObserver for the given Image. The Oberver has to be started by an
+   * external thread.
    *
-   * @param image  the image to observe.
-   *
+   * @param image the image to observe.
    * @throws NullPointerException if the given image is null.
    */
-  public WaitingImageObserver(final Image image)
+  public WaitingImageObserver (final Image image)
   {
     if (image == null)
     {
@@ -89,29 +94,27 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
 
   /**
    * Callback function used by AWT to inform that more data is available. The observer
-   * waits until either all data is loaded or AWT signals that the image cannot be loaded.
+   * waits until either all data is loaded or AWT signals that the image cannot be
+   * loaded.
    *
-   * @param     img   the image being observed.
-   * @param     infoflags   the bitwise inclusive OR of the following
-   *               flags:  <code>WIDTH</code>, <code>HEIGHT</code>,
-   *               <code>PROPERTIES</code>, <code>SOMEBITS</code>,
-   *               <code>FRAMEBITS</code>, <code>ALLBITS</code>,
-   *               <code>ERROR</code>, <code>ABORT</code>.
-   * @param     x   the <i>x</i> coordinate.
-   * @param     y   the <i>y</i> coordinate.
-   * @param     width    the width.
-   * @param     height   the height.
-   *
-   * @return    <code>false</code> if the infoflags indicate that the
-   *            image is completely loaded; <code>true</code> otherwise.
+   * @param img       the image being observed.
+   * @param infoflags the bitwise inclusive OR of the following flags:
+   *                  <code>WIDTH</code>, <code>HEIGHT</code>, <code>PROPERTIES</code>,
+   *                  <code>SOMEBITS</code>, <code>FRAMEBITS</code>, <code>ALLBITS</code>,
+   *                  <code>ERROR</code>, <code>ABORT</code>.
+   * @param x         the <i>x</i> coordinate.
+   * @param y         the <i>y</i> coordinate.
+   * @param width     the width.
+   * @param height    the height.
+   * @return <code>false</code> if the infoflags indicate that the image is completely
+   *         loaded; <code>true</code> otherwise.
    */
-  public boolean imageUpdate(
-      final Image img,
-      final int infoflags,
-      final int x,
-      final int y,
-      final int width,
-      final int height)
+  public boolean imageUpdate (final Image img,
+                              final int infoflags,
+                              final int x,
+                              final int y,
+                              final int width,
+                              final int height)
   {
     if ((infoflags & ImageObserver.ALLBITS) == ImageObserver.ALLBITS)
     {
@@ -119,7 +122,7 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
       error = false;
     }
     else if ((infoflags & ImageObserver.ABORT) == ImageObserver.ABORT
-        || (infoflags & ImageObserver.ERROR) == ImageObserver.ERROR)
+            || (infoflags & ImageObserver.ERROR) == ImageObserver.ERROR)
     {
       lock = false;
       error = true;
@@ -128,10 +131,10 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
   }
 
   /**
-   * The workerthread. Simply draws the image to a BufferedImage's Graphics-Object
-   * and waits for the AWT to load the image.
+   * The workerthread. Simply draws the image to a BufferedImage's Graphics-Object and
+   * waits for the AWT to load the image.
    */
-  public void waitImageLoaded()
+  public void waitImageLoaded ()
   {
     final BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
     final Graphics g = img.getGraphics();
@@ -160,7 +163,8 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final WaitingImageObserver obs = (WaitingImageObserver) super.clone();
     return obs;
@@ -171,7 +175,7 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
    *
    * @return A boolean.
    */
-  public boolean isError()
+  public boolean isError ()
   {
     return error;
   }

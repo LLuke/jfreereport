@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: InItemGroupState.java,v 1.4 2004/05/07 08:14:22 mungady Exp $
+ * $Id: InItemGroupState.java,v 1.5 2005/01/28 19:26:59 taqua Exp $
  *
  * Changes
  * -------
@@ -46,11 +46,12 @@ import org.jfree.report.event.ReportEvent;
  * Prints the itemBand. Before the band is printed, the items are advanced and the next
  * data row gets activated. Before any row has been read, the currentItem state is
  * BEFORE_FIRST_ITEM, comparable to ResultSet.isBeforeFirst () in java.sql.ResultSet.
- * After the item has advanced the elements are populated and an
- * itemsAdvancedEvent is fired.
- * <p>
+ * After the item has advanced the elements are populated and an itemsAdvancedEvent is
+ * fired.
+ * <p/>
  * If the activated Item is the last item in its group, the next state will be an
- * PostItemGroupHeader.  In the other case, the current state remains this ItemsAdvanced state.
+ * PostItemGroupHeader.  In the other case, the current state remains this ItemsAdvanced
+ * state.
  *
  * @author David Gilbert
  */
@@ -59,9 +60,9 @@ public final class InItemGroupState extends ReportState
   /**
    * Creates a new '<code>IN-ITEM-GROUP</code>' state.
    *
-   * @param previous  the previous state.
+   * @param previous the previous state.
    */
-  public InItemGroupState(final ReportState previous)
+  public InItemGroupState (final ReportState previous)
   {
     super(previous);
   }
@@ -78,7 +79,8 @@ public final class InItemGroupState extends ReportState
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public ReportState advance() throws ReportProcessingException
+  public ReportState advance ()
+          throws ReportProcessingException
   {
     // If there is enough space to print the itemband, advance the items, populate
     // the band and print it. If there was not enough space, the engine will return
@@ -107,7 +109,7 @@ public final class InItemGroupState extends ReportState
   /**
    * Advances the active data row to the next line.
    */
-  private void advanceItem()
+  private void advanceItem ()
   {
     setCurrentItem(getCurrentDataItem() + 1);
     getDataRowBackend().setCurrentRow(getCurrentDisplayItem());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SelectCardFunction.java,v 1.4 2005/01/24 23:58:49 taqua Exp $
+ * $Id: SelectCardFunction.java,v 1.5 2005/02/04 19:22:52 taqua Exp $
  *
  * Changes
  * -------
@@ -42,21 +42,13 @@ import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
-import org.jfree.report.function.FunctionInitializeException;
 
 /**
- * The SelectCardFunction defines the visiblity of the card bands depending
- * on the current card type.
- *
- * Valid property names are:
- * <ul>
- * <li>Account
- * <li>Admin
- * <li>User
- * <li>Prepaid
- * <li>Free
- * <li>Empty
- * </ul>
+ * The SelectCardFunction defines the visiblity of the card bands depending on the current
+ * card type.
+ * <p/>
+ * Valid property names are: <ul> <li>Account <li>Admin <li>User <li>Prepaid <li>Free
+ * <li>Empty </ul>
  *
  * @author Thomas Morgner.
  */
@@ -74,18 +66,17 @@ public class SelectCardFunction extends AbstractFunction implements Serializable
   /**
    * Default constructor.
    */
-  public SelectCardFunction()
+  public SelectCardFunction ()
   {
   }
 
   /**
-   * Hides all bands, which are invalid for the current card type.
-   * A band declares its validity by having the same element name as the
-   * card type name.
+   * Hides all bands, which are invalid for the current card type. A band declares its
+   * validity by having the same element name as the card type name.
    *
    * @param band the band that should be evaluated
    */
-  private void selectBand(final Band band)
+  private void selectBand (final Band band)
   {
     CardType type = (CardType) getDataRow().get(getField());
     if (type == null)
@@ -119,9 +110,9 @@ public class SelectCardFunction extends AbstractFunction implements Serializable
   /**
    * Receives notification that a row of data is being processed.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void itemsAdvanced(final ReportEvent event)
+  public void itemsAdvanced (final ReportEvent event)
   {
     final Element[] elements = event.getReport().getItemBand().getElementArray();
     final String rootName = getBaseCard();
@@ -136,93 +127,92 @@ public class SelectCardFunction extends AbstractFunction implements Serializable
   }
 
   /**
-   * Return the current expression value.
-   * <P>
-   * The value depends (obviously) on the expression implementation.
+   * Return the current expression value. <P> The value depends (obviously) on the
+   * expression implementation.
    *
    * @return the value of the function.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return null;
   }
 
-  public String getBaseCard()
+  public String getBaseCard ()
   {
     return baseCard;
   }
 
-  public void setBaseCard(String baseCard)
+  public void setBaseCard (String baseCard)
   {
     this.baseCard = baseCard;
   }
 
-  public String getField()
+  public String getField ()
   {
     return field;
   }
 
-  public void setField(String field)
+  public void setField (String field)
   {
     this.field = field;
   }
 
-  public String getAccount()
+  public String getAccount ()
   {
     return account;
   }
 
-  public void setAccount(String account)
+  public void setAccount (String account)
   {
     this.account = account;
   }
 
-  public String getAdmin()
+  public String getAdmin ()
   {
     return admin;
   }
 
-  public void setAdmin(String admin)
+  public void setAdmin (String admin)
   {
     this.admin = admin;
   }
 
-  public String getUser()
+  public String getUser ()
   {
     return user;
   }
 
-  public void setUser(String user)
+  public void setUser (String user)
   {
     this.user = user;
   }
 
-  public String getPrepaid()
+  public String getPrepaid ()
   {
     return prepaid;
   }
 
-  public void setPrepaid(String prepaid)
+  public void setPrepaid (String prepaid)
   {
     this.prepaid = prepaid;
   }
 
-  public String getFree()
+  public String getFree ()
   {
     return free;
   }
 
-  public void setFree(String free)
+  public void setFree (String free)
   {
     this.free = free;
   }
 
-  public String getEmpty()
+  public String getEmpty ()
   {
     return empty;
   }
 
-  public void setEmpty(String empty)
+  public void setEmpty (String empty)
   {
     this.empty = empty;
   }
@@ -237,11 +227,11 @@ public class SelectCardFunction extends AbstractFunction implements Serializable
     {
       return getAdmin();
     }
-    if (CardType.FREE== ct)
+    if (CardType.FREE == ct)
     {
       return getFree();
     }
-    if (CardType.PREPAID== ct)
+    if (CardType.PREPAID == ct)
     {
       return getPrepaid();
     }

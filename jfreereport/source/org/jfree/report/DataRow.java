@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRow.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: DataRow.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -45,71 +45,69 @@ package org.jfree.report;
 
 /**
  * The datarow is used to access the current row in the <code>TableModel</code>,
- * <code>Expression</code>s and <code>Function</code>s using a generic interface.
- * The DataRow is able to detect deadlocks and to check function depencies.
- * <p>
- * The DataRows depends on a unmodifiable row structure, so it is forbidden to add
- * new functions and expressions to the report or to modify the tablemodel after
- * the report processing has started.
- * <p>
+ * <code>Expression</code>s and <code>Function</code>s using a generic interface. The
+ * DataRow is able to detect deadlocks and to check function depencies.
+ * <p/>
+ * The DataRows depends on a unmodifiable row structure, so it is forbidden to add new
+ * functions and expressions to the report or to modify the tablemodel after the report
+ * processing has started.
+ * <p/>
  * ReportProperties can only be queried if they are marked. Marked properties get
- * enumerated when the report processing starts. Marking properties after that point
- * has no effect. Removing the property will not remove the column from this datarow,
- * this DataRow's column will return <code>null</code> when queried in that case.
+ * enumerated when the report processing starts. Marking properties after that point has
+ * no effect. Removing the property will not remove the column from this datarow, this
+ * DataRow's column will return <code>null</code> when queried in that case.
  *
+ * @author Thomas Morgner
  * @see org.jfree.report.function.Expression
  * @see org.jfree.report.function.Function
  * @see javax.swing.table.TableModel
- * @author Thomas Morgner
  */
 public interface DataRow
 {
   /**
-   * Returns the value of the function, expression or column in the tablemodel using the column
-   * number. For functions and expressions, the <code>getValue()</code> method is called and for
-   * columns from the tablemodel the tablemodel method <code>getValueAt(row, column)</code>
-   * gets called.
+   * Returns the value of the function, expression or column in the tablemodel using the
+   * column number. For functions and expressions, the <code>getValue()</code> method is
+   * called and for columns from the tablemodel the tablemodel method
+   * <code>getValueAt(row, column)</code> gets called.
    *
-   * @param col  the item index.
-   *
+   * @param col the item index.
    * @return the value.
    */
-  public Object get(int col);
+  public Object get (int col);
 
   /**
-   * Returns the value of the function, expression or column using its specific name.
-   * The given name is translated into a valid column number and the the column is queried.
+   * Returns the value of the function, expression or column using its specific name. The
+   * given name is translated into a valid column number and the the column is queried.
    * For functions and expressions, the <code>getValue()</code> method is called and for
-   * columns from the tablemodel the tablemodel method <code>getValueAt(row, column)</code>
-   * gets called.
+   * columns from the tablemodel the tablemodel method <code>getValueAt(row,
+   * column)</code> gets called.
    *
-   * @param col  the item index.
-   *
+   * @param col the item index.
    * @return the value.
+   *
    * @throws IllegalStateException if the datarow detected a deadlock.
    */
-  public Object get(String col) throws IllegalStateException;
+  public Object get (String col)
+          throws IllegalStateException;
 
   /**
-   * Returns the name of the column, expression or function. For columns from the tablemodel,
-   * the tablemodels <code>getColumnName</code> method is called. For functions, expressions
-   * and report properties the assigned name is returned.
+   * Returns the name of the column, expression or function. For columns from the
+   * tablemodel, the tablemodels <code>getColumnName</code> method is called. For
+   * functions, expressions and report properties the assigned name is returned.
    *
-   * @param col  the item index.
-   *
+   * @param col the item index.
    * @return the name.
    */
-  public String getColumnName(int col);
+  public String getColumnName (int col);
 
   /**
-   * Returns the column position of the column, expression or function with the given name or
-   * -1 if the given name does not exist in this DataRow.
+   * Returns the column position of the column, expression or function with the given name
+   * or -1 if the given name does not exist in this DataRow.
    *
-   * @param name  the item name.
-   *
+   * @param name the item name.
    * @return the item index.
    */
-  public int findColumn(String name);
+  public int findColumn (String name);
 
   /**
    * Returns the number of columns, expressions and functions and marked ReportProperties
@@ -117,5 +115,5 @@ public interface DataRow
    *
    * @return the item count.
    */
-  public int getColumnCount();
+  public int getColumnCount ();
 }

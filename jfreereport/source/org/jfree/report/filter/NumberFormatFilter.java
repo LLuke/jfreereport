@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: NumberFormatFilter.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: NumberFormatFilter.java,v 1.3 2004/05/07 08:24:42 mungady Exp $
  *
  * Changes
  * -------
@@ -43,26 +43,22 @@ import java.text.NumberFormat;
 
 /**
  * A filter that formats the numeric value from a data source to a string representation.
- * <p>
- * This filter will format java.lang.Number objects using a
- * java.text.NumericFormat to create the string representation for the number obtained
- * from the datasource.
- * <p>
+ * <p/>
+ * This filter will format java.lang.Number objects using a java.text.NumericFormat to
+ * create the string representation for the number obtained from the datasource.
+ * <p/>
  * If the object read from the datasource is no number, the NullValue defined by
  * setNullValue(Object) is returned.
  *
- * @see java.text.NumberFormat
- *
  * @author Thomas Morgner
+ * @see java.text.NumberFormat
  */
 public class NumberFormatFilter extends FormatFilter
 {
   /**
-   * Default constructor.
-   * <P>
-   * Uses a general number format for the current locale.
+   * Default constructor. <P> Uses a general number format for the current locale.
    */
-  public NumberFormatFilter()
+  public NumberFormatFilter ()
   {
     setNumberFormat(NumberFormat.getInstance());
   }
@@ -72,7 +68,7 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @param nf The number format.
    */
-  public void setNumberFormat(final NumberFormat nf)
+  public void setNumberFormat (final NumberFormat nf)
   {
     setFormatter(nf);
   }
@@ -82,7 +78,7 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @return The number format.
    */
-  public NumberFormat getNumberFormat()
+  public NumberFormat getNumberFormat ()
   {
     return (NumberFormat) getFormatter();
   }
@@ -92,7 +88,7 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @param f The format.
    */
-  public void setFormatter(final Format f)
+  public void setFormatter (final Format f)
   {
     final NumberFormat fm = (NumberFormat) f;
     super.setFormatter(fm);
@@ -103,7 +99,7 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @param newValue The new value of the grouping flag.
    */
-  public void setGroupingUsed(final boolean newValue)
+  public void setGroupingUsed (final boolean newValue)
   {
     getNumberFormat().setGroupingUsed(newValue);
   }
@@ -113,7 +109,7 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @return The grouping flag.
    */
-  public boolean isGroupingUsed()
+  public boolean isGroupingUsed ()
   {
     return getNumberFormat().isGroupingUsed();
   }
@@ -123,7 +119,7 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @param newValue The number of digits.
    */
-  public void setMaximumFractionDigits(final int newValue)
+  public void setMaximumFractionDigits (final int newValue)
   {
     getNumberFormat().setMaximumFractionDigits(newValue);
   }
@@ -133,7 +129,7 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @return The digits.
    */
-  public int getMaximumFractionDigits()
+  public int getMaximumFractionDigits ()
   {
     return getNumberFormat().getMaximumFractionDigits();
   }
@@ -143,7 +139,7 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @param newValue The number of digits.
    */
-  public void setMaximumIntegerDigits(final int newValue)
+  public void setMaximumIntegerDigits (final int newValue)
   {
     getNumberFormat().setMaximumFractionDigits(newValue);
   }
@@ -153,7 +149,7 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @return The digits.
    */
-  public int getMaximumIntegerDigits()
+  public int getMaximumIntegerDigits ()
   {
     return getNumberFormat().getMaximumFractionDigits();
   }
@@ -163,7 +159,7 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @param newValue The number of digits.
    */
-  public void setMinimumFractionDigits(final int newValue)
+  public void setMinimumFractionDigits (final int newValue)
   {
     getNumberFormat().setMaximumFractionDigits(newValue);
   }
@@ -173,7 +169,7 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @return The digits.
    */
-  public int getMinimumFractionDigits()
+  public int getMinimumFractionDigits ()
   {
     return getNumberFormat().getMaximumFractionDigits();
   }
@@ -183,7 +179,7 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @param newValue The number of digits.
    */
-  public void setMinimumIntegerDigits(final int newValue)
+  public void setMinimumIntegerDigits (final int newValue)
   {
     getNumberFormat().setMaximumFractionDigits(newValue);
   }
@@ -193,7 +189,7 @@ public class NumberFormatFilter extends FormatFilter
    *
    * @return The digits.
    */
-  public int getMinimumIntegerDigits()
+  public int getMinimumIntegerDigits ()
   {
     return getNumberFormat().getMaximumFractionDigits();
   }

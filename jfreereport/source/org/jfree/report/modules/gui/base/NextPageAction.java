@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: NextPageAction.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
+ * $Id: NextPageAction.java,v 1.5 2005/01/25 00:01:16 taqua Exp $
  *
  * Changes
  * -------
@@ -44,9 +44,9 @@ import org.jfree.ui.action.ActionDowngrade;
 import org.jfree.util.ResourceBundleSupport;
 
 /**
- * Creates a new NextPageAction used by the PreviewPane to directly jump to the next
- * page of the report. This abstract class is used for initializing the default locales,
- * the actual work is done in an internal subclass in PreviewFrame.
+ * Creates a new NextPageAction used by the PreviewPane to directly jump to the next page
+ * of the report. This abstract class is used for initializing the default locales, the
+ * actual work is done in an internal subclass in PreviewFrame.
  *
  * @author JS
  */
@@ -55,16 +55,16 @@ public abstract class NextPageAction extends AbstractActionDowngrade
   /**
    * Constructs a new action.
    *
-   * @param resources  localised resources.
+   * @param resources localised resources.
    */
-  protected NextPageAction(final ResourceBundleSupport resources)
+  protected NextPageAction (final ResourceBundleSupport resources)
   {
     putValue(NAME, resources.getString("action.forward.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.forward.description"));
     putValue(ActionDowngrade.ACCELERATOR_KEY,
-        resources.getKeyStroke("action.forward.accelerator"));
+            resources.getKeyStroke("action.forward.accelerator"));
     putValue(ActionDowngrade.MNEMONIC_KEY,
-        resources.getMnemonic("action.forward.mnemonic"));
+            resources.getMnemonic("action.forward.mnemonic"));
     putValue(SMALL_ICON, resources.getIcon("action.forward.small-icon", false));
     putValue("ICON24", resources.getIcon("action.forward.icon", true));
   }

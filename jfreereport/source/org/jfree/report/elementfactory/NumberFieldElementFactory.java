@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFieldElementFactory.java,v 1.8 2005/02/05 18:35:17 taqua Exp $
+ * $Id: NumberFieldElementFactory.java,v 1.9 2005/02/19 13:29:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -56,24 +56,26 @@ import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
 
 /**
- * The number format factory can be used to create numeric text elements.
- * These text elements have special abilities to format numeric values.
- * <p>
- * Once the desired properties are set, the factory can be reused to create
- * similiar text elements.
+ * The number format factory can be used to create numeric text elements. These text
+ * elements have special abilities to format numeric values.
+ * <p/>
+ * Once the desired properties are set, the factory can be reused to create similiar text
+ * elements.
  *
  * @author Thomas Morgner
  */
 public class NumberFieldElementFactory extends TextFieldElementFactory
 {
-  /** The number format instance used to format numeric values in the text element. */
+  /**
+   * The number format instance used to format numeric values in the text element.
+   */
   private NumberFormat format;
   private String excelCellFormat;
 
   /**
    * Creates a new number field element factory.
    */
-  public NumberFieldElementFactory()
+  public NumberFieldElementFactory ()
   {
   }
 
@@ -88,34 +90,34 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
   }
 
   /**
-   * Returns the number format used for all generated text elements. The
-   * number format is shared among all generated elements.
+   * Returns the number format used for all generated text elements. The number format is
+   * shared among all generated elements.
    *
    * @return the number format used in this factory.
    */
-  public NumberFormat getFormat()
+  public NumberFormat getFormat ()
   {
     return format;
   }
 
   /**
-   * Defines the number format used for all generated text elements. The
-   * number format is shared among all generated elements.
+   * Defines the number format used for all generated text elements. The number format is
+   * shared among all generated elements.
    *
    * @param format the number format used in this factory.
    */
-  public void setFormat(final NumberFormat format)
+  public void setFormat (final NumberFormat format)
   {
     this.format = format;
   }
 
   /**
-   * Returns the format string of the used number format. This method will
-   * return null, if the current number format is no instance of DecimalFormat.
+   * Returns the format string of the used number format. This method will return null, if
+   * the current number format is no instance of DecimalFormat.
    *
    * @return the formatstring of the number format instance.
    */
-  public String getFormatString()
+  public String getFormatString ()
   {
     if (getFormat() instanceof DecimalFormat)
     {
@@ -126,31 +128,31 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
   }
 
   /**
-   * Defines the format string of the used number format. This method will
-   * replace the number format instance of this factory.
+   * Defines the format string of the used number format. This method will replace the
+   * number format instance of this factory.
    *
    * @param formatString the formatstring of the number format instance.
    */
-  public void setFormatString(final String formatString)
+  public void setFormatString (final String formatString)
   {
     setFormat(new DecimalFormat(formatString));
   }
 
   /**
-   * Creates the number text element based on the defined settings.
-   * Undefined properties will not be set in the generated element.
-   *
-   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
+   * Creates the number text element based on the defined settings. Undefined properties
+   * will not be set in the generated element.
    *
    * @return the generated numberic text element
+   *
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
    */
-  public Element createElement()
+  public Element createElement ()
   {
     final DataSource dataSource;
     if (getFormat() instanceof DecimalFormat)
     {
       final NumberFieldTemplate template = new NumberFieldTemplate();
-      template.setDecimalFormat ((DecimalFormat) getFormat());
+      template.setDecimalFormat((DecimalFormat) getFormat());
       if (getNullString() != null)
       {
         template.setNullValue(getNullString());
@@ -182,67 +184,65 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
   /**
    * Creates a new TextElement containing a numeric filter structure.
    *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the text color of this text element
+   * @param name       the name of the new element
+   * @param bounds     the bounds of the new element
+   * @param paint      the text color of this text element
    * @param alignment  the horizontal text alignment.
-   * @param font the font for this element
+   * @param font       the font for this element
    * @param nullString the text used when the value of this element is null
-   * @param field the field in the datamodel to retrieve values from
-   * @param format the NumberFormat used in this number element
-   *
+   * @param field      the field in the datamodel to retrieve values from
+   * @param format     the NumberFormat used in this number element
    * @return a report element for displaying <code>Number</code> objects.
    *
-   * @throws NullPointerException if bounds, name or function are null
+   * @throws NullPointerException     if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createNumberElement(final String name,
-                                                final Rectangle2D bounds,
-                                                final Color paint,
-                                                final ElementAlignment alignment,
-                                                final FontDefinition font,
-                                                final String nullString,
-                                                final NumberFormat format,
-                                                final String field)
+  public static TextElement createNumberElement (final String name,
+                                                 final Rectangle2D bounds,
+                                                 final Color paint,
+                                                 final ElementAlignment alignment,
+                                                 final FontDefinition font,
+                                                 final String nullString,
+                                                 final NumberFormat format,
+                                                 final String field)
   {
     return createNumberElement(name, bounds, paint, alignment,
-        ElementAlignment.TOP,
-        font, nullString,
-        format, field);
+            ElementAlignment.TOP,
+            font, nullString,
+            format, field);
   }
 
   /**
    * Creates a new TextElement containing a numeric filter structure.
    *
-   * @param name  the name of the new element.
-   * @param bounds  the bounds of the new element.
-   * @param color  the text color of this text element.
+   * @param name       the name of the new element.
+   * @param bounds     the bounds of the new element.
+   * @param color      the text color of this text element.
    * @param alignment  the horizontal text alignment.
-   * @param valign  the vertical alignment.
-   * @param font  the font for this element.
-   * @param nullString  the text used when the value of this element is null.
-   * @param field  the field in the datamodel to retrieve values from.
-   * @param format  the NumberFormat used in this number element.
-   *
+   * @param valign     the vertical alignment.
+   * @param font       the font for this element.
+   * @param nullString the text used when the value of this element is null.
+   * @param field      the field in the datamodel to retrieve values from.
+   * @param format     the NumberFormat used in this number element.
    * @return a report element for displaying <code>Number</code> objects.
    *
-   * @throws NullPointerException if bounds, name or function are null
+   * @throws NullPointerException     if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createNumberElement(final String name,
-                                                final Rectangle2D bounds,
-                                                final Color color,
-                                                final ElementAlignment alignment,
-                                                final ElementAlignment valign,
-                                                final FontDefinition font,
-                                                final String nullString,
-                                                final NumberFormat format,
-                                                final String field)
+  public static TextElement createNumberElement (final String name,
+                                                 final Rectangle2D bounds,
+                                                 final Color color,
+                                                 final ElementAlignment alignment,
+                                                 final ElementAlignment valign,
+                                                 final FontDefinition font,
+                                                 final String nullString,
+                                                 final NumberFormat format,
+                                                 final String field)
   {
 
     final NumberFieldElementFactory factory = new NumberFieldElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setName(name);
     factory.setColor(color);
     factory.setHorizontalAlignment(alignment);
@@ -268,67 +268,65 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
   /**
    * Creates a new TextElement containing a numeric filter structure.
    *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the text color of this text element
+   * @param name       the name of the new element
+   * @param bounds     the bounds of the new element
+   * @param paint      the text color of this text element
    * @param alignment  the horizontal text alignment.
-   * @param font the font for this element
+   * @param font       the font for this element
    * @param nullString the text used when the value of this element is null
-   * @param field the fieldname in the datamodel to retrieve values from
-   * @param format the DecimalFormatString used in this text field
-   *
+   * @param field      the fieldname in the datamodel to retrieve values from
+   * @param format     the DecimalFormatString used in this text field
    * @return a report element for displaying <code>Number</code> objects.
    *
-   * @throws NullPointerException if bounds, name or function are null
+   * @throws NullPointerException     if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createNumberElement(final String name,
-                                                final Rectangle2D bounds,
-                                                final Color paint,
-                                                final ElementAlignment alignment,
-                                                final FontDefinition font,
-                                                final String nullString,
-                                                final String format,
-                                                final String field)
+  public static TextElement createNumberElement (final String name,
+                                                 final Rectangle2D bounds,
+                                                 final Color paint,
+                                                 final ElementAlignment alignment,
+                                                 final FontDefinition font,
+                                                 final String nullString,
+                                                 final String format,
+                                                 final String field)
   {
     return createNumberElement(name, bounds, paint, alignment,
-        null,
-        font, nullString,
-        format, field);
+            null,
+            font, nullString,
+            format, field);
   }
 
   /**
    * Creates a new TextElement containing a numeric filter structure.
    *
-   * @param name  the name of the new element.
-   * @param bounds  the bounds of the new element.
-   * @param color the text color of the element.
+   * @param name       the name of the new element.
+   * @param bounds     the bounds of the new element.
+   * @param color      the text color of the element.
    * @param alignment  the horizontal text alignment.
-   * @param valign  the vertical alignment.
-   * @param font  the font for this element.
+   * @param valign     the vertical alignment.
+   * @param font       the font for this element.
    * @param nullString t he text used when the value of this element is null.
-   * @param field  the fieldname in the datamodel to retrieve values from.
-   * @param format  the DecimalFormatString used in this text field.
-   *
+   * @param field      the fieldname in the datamodel to retrieve values from.
+   * @param format     the DecimalFormatString used in this text field.
    * @return a report element for displaying <code>Number</code> objects.
    *
-   * @throws NullPointerException if bounds, name or function are null
+   * @throws NullPointerException     if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createNumberElement(final String name,
-                                                final Rectangle2D bounds,
-                                                final Color color,
-                                                final ElementAlignment alignment,
-                                                final ElementAlignment valign,
-                                                final FontDefinition font,
-                                                final String nullString,
-                                                final String format,
-                                                final String field)
+  public static TextElement createNumberElement (final String name,
+                                                 final Rectangle2D bounds,
+                                                 final Color color,
+                                                 final ElementAlignment alignment,
+                                                 final ElementAlignment valign,
+                                                 final FontDefinition font,
+                                                 final String nullString,
+                                                 final String format,
+                                                 final String field)
   {
 
     final NumberFieldElementFactory factory = new NumberFieldElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setName(name);
     factory.setColor(color);
     factory.setHorizontalAlignment(alignment);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: WorkerPool.java,v 1.3 2003/11/07 18:33:57 taqua Exp $
+ * $Id: WorkerPool.java,v 1.4 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -40,46 +40,50 @@ package org.jfree.report.util;
 
 /**
  * A simple static workpool. Worker threads are created when necessary.
- * 
+ *
  * @author Thomas Morgner
  */
 public class WorkerPool
 {
-  /** The worker array. */
+  /**
+   * The worker array.
+   */
   private Worker[] workers;
-  /** A flag indicating whether idle workers are available. */
+  /**
+   * A flag indicating whether idle workers are available.
+   */
   private boolean workersAvailable;
-  /** the name prefix for all workers of this pool. */
+  /**
+   * the name prefix for all workers of this pool.
+   */
   private String namePrefix;
 
   /**
-   * Creates a new worker pool with the default size of 10 workers and 
-   * the default name.
+   * Creates a new worker pool with the default size of 10 workers and the default name.
    */
-  public WorkerPool()
+  public WorkerPool ()
   {
-    this (10);
+    this(10);
   }
 
   /**
-   * Creates a new workerpool with the given number of workers and the default
-   * name.
-   * 
+   * Creates a new workerpool with the given number of workers and the default name.
+   *
    * @param size the maximum number of workers available.
    */
-  public WorkerPool(final int size)
+  public WorkerPool (final int size)
   {
-    this (size, "WorkerPool-worker");
+    this(size, "WorkerPool-worker");
   }
 
   /**
-   * Creates a new worker pool for the given number of workers and with the
-   * given name prefix.
-   *  
-   * @param size the size of the worker pool.
+   * Creates a new worker pool for the given number of workers and with the given name
+   * prefix.
+   *
+   * @param size       the size of the worker pool.
    * @param namePrefix the name prefix for all created workers.
    */
-  public WorkerPool(final int size, final String namePrefix)
+  public WorkerPool (final int size, final String namePrefix)
   {
     if (size <= 0)
     {
@@ -92,7 +96,7 @@ public class WorkerPool
 
   /**
    * Checks, whether workers are available.
-   * 
+   *
    * @return true, if at least one worker is idle, false otherwise.
    */
   public synchronized boolean isWorkerAvailable ()
@@ -141,9 +145,9 @@ public class WorkerPool
   }
 
   /**
-   * Returns a workerhandle for the given workload. This method will wait
-   * until an idle worker is found. 
-   * 
+   * Returns a workerhandle for the given workload. This method will wait until an idle
+   * worker is found.
+   *
    * @param r the workload for the worker
    * @return a handle to the worker.
    */
@@ -181,13 +185,13 @@ public class WorkerPool
       return new WorkerHandle(workers[emptySlot]);
     }
     throw new IllegalStateException
-        ("At this point, a worker should already have been assigned.");
+            ("At this point, a worker should already have been assigned.");
   }
 
   /**
-   * Marks the given worker as finished. The worker will be removed from the
-   * list of the available workers.
-   * 
+   * Marks the given worker as finished. The worker will be removed from the list of the
+   * available workers.
+   *
    * @param worker the worker which was finished.
    */
   public void workerFinished (final Worker worker)
@@ -214,7 +218,7 @@ public class WorkerPool
 
   /**
    * Marks the given worker as available.
-   * 
+   *
    * @param worker the worker which was available.
    */
   public synchronized void workerAvailable (final Worker worker)
@@ -236,7 +240,6 @@ public class WorkerPool
 
   /**
    * Finishes all worker of this pool.
-   *
    */
   public void finishAll ()
   {

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactory;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.StyleKey;
@@ -47,10 +47,11 @@ public class StyleReadHandler extends CompoundObjectReadHandler
                       final ElementStyleSheet styleSheet)
     {
       this.keyfactory = (StyleKeyFactory)
-          rootHandler.getHelperObject(ReportDefinitionReadHandler.STYLE_FACTORY_KEY);
+              rootHandler.getHelperObject(ReportDefinitionReadHandler.STYLE_FACTORY_KEY);
       this.styleSheet = styleSheet;
 
     }
+
     /**
      * Creates an object based on the description.
      *
@@ -171,7 +172,7 @@ public class StyleReadHandler extends CompoundObjectReadHandler
 
   public StyleReadHandler ()
   {
-    this (null);
+    this(null);
   }
 
   public StyleReadHandler (final ElementStyleSheet styleSheet)
@@ -216,7 +217,7 @@ public class StyleReadHandler extends CompoundObjectReadHandler
     }
 
     getCommentHintPath().addName(styleSheet);
-    
+
     final ElementStyleSheetObjectDescription objectDescription =
             (ElementStyleSheetObjectDescription) getObjectDescription();
     objectDescription.init(getRootHandler(), styleSheet);

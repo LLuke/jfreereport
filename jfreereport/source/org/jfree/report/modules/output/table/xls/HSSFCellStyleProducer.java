@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HSSFCellStyleProducer.java,v 1.9 2005/01/25 00:16:36 taqua Exp $
+ * $Id: HSSFCellStyleProducer.java,v 1.10 2005/02/05 18:35:19 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -53,9 +53,8 @@ import org.jfree.report.modules.output.table.xls.util.ExcelFontFactory;
 import org.jfree.report.style.ElementStyleSheet;
 
 /**
- * The cellstyle producer converts the JFreeReport content into excel
- * cell styles. This class is able to use the POI 2.0 features to build
- * data cells.
+ * The cellstyle producer converts the JFreeReport content into excel cell styles. This
+ * class is able to use the POI 2.0 features to build data cells.
  *
  * @author Thomas Morgner
  */
@@ -67,9 +66,8 @@ public class HSSFCellStyleProducer
     private ExcelDataCellStyle cellStyle;
 
     /**
-     *
      * @param background can be null
-     * @param cellStyle can be null
+     * @param cellStyle  can be null
      */
     public HSSFCellStyleKey (final TableCellBackground background,
                              final ExcelDataCellStyle cellStyle)
@@ -112,22 +110,34 @@ public class HSSFCellStyleProducer
     }
   }
 
-  /** The workbook wide singleton instance of an empty cell. */
+  /**
+   * The workbook wide singleton instance of an empty cell.
+   */
   private HSSFCellStyle emptyCellStyle;
 
-  /** the font factory is used to create excel fonts. */
+  /**
+   * the font factory is used to create excel fonts.
+   */
   private ExcelFontFactory fontFactory;
 
-  /** The workbook, which creates all cells and styles. */
+  /**
+   * The workbook, which creates all cells and styles.
+   */
   private HSSFWorkbook workbook;
 
-  /** The data format is used to create format strings. */
+  /**
+   * The data format is used to create format strings.
+   */
   private HSSFDataFormat dataFormat;
 
-  /** White background. This is the default background if not specified otherwise. */
+  /**
+   * White background. This is the default background if not specified otherwise.
+   */
   private static final short WHITE_INDEX = (new HSSFColor.WHITE()).getIndex();
 
-  /** The cache for all generated styles. */
+  /**
+   * The cache for all generated styles.
+   */
   private HashMap styleCache;
 
   /**
@@ -135,7 +145,7 @@ public class HSSFCellStyleProducer
    *
    * @param workbook the workbook for which the styles should be created.
    */
-  public HSSFCellStyleProducer(final HSSFWorkbook workbook)
+  public HSSFCellStyleProducer (final HSSFWorkbook workbook)
   {
     if (workbook == null)
     {
@@ -152,7 +162,7 @@ public class HSSFCellStyleProducer
    *
    * @return the default style for empty cells.
    */
-  public HSSFCellStyle getEmptyCellStyle()
+  public HSSFCellStyle getEmptyCellStyle ()
   {
     if (emptyCellStyle == null)
     {
@@ -163,7 +173,7 @@ public class HSSFCellStyleProducer
     return emptyCellStyle;
   }
 
-  private ExcelDataCellStyle createCachedStyle(final MetaElement element)
+  private ExcelDataCellStyle createCachedStyle (final MetaElement element)
   {
     final Color textColor = (Color) element.getProperty(ElementStyleSheet.PAINT);
     final ElementAlignment horizontal =
@@ -182,15 +192,15 @@ public class HSSFCellStyleProducer
   }
 
   /**
-   * Creates a HSSFCellStyle based on the given ExcelDataCellStyle.
-   * If a similiar cell style was previously generated, then reuse that
-   * cached result.
+   * Creates a HSSFCellStyle based on the given ExcelDataCellStyle. If a similiar cell
+   * style was previously generated, then reuse that cached result.
    *
    * @param element never null
-   * @param bg the background style for the table cell.
+   * @param bg      the background style for the table cell.
    * @return the generated or cached HSSFCellStyle.
    */
-  public HSSFCellStyle createCellStyle(final MetaElement element, final TableCellBackground bg)
+  public HSSFCellStyle createCellStyle (final MetaElement element,
+                                        final TableCellBackground bg)
   {
     final ExcelDataCellStyle style;
     if (element != null)
@@ -205,7 +215,7 @@ public class HSSFCellStyleProducer
     final HSSFCellStyleKey styleKey = new HSSFCellStyleKey(bg, style);
     if (styleCache.containsKey(style))
     {
-      return (HSSFCellStyle) styleCache.get (styleKey);
+      return (HSSFCellStyle) styleCache.get(styleKey);
     }
 
     final HSSFCellStyle hssfCellStyle = workbook.createCellStyle();
@@ -261,9 +271,10 @@ public class HSSFCellStyleProducer
    *
    * @param e the JFreeReport element alignment.
    * @return the HSSFCellStyle-Alignment.
+   *
    * @throws IllegalArgumentException if an Unknown JFreeReport alignment is given.
    */
-  private short convertAlignment(final ElementAlignment e)
+  private short convertAlignment (final ElementAlignment e)
   {
     if (e == ElementAlignment.LEFT)
     {
@@ -294,13 +305,13 @@ public class HSSFCellStyleProducer
   }
 
   /**
-   * Tries to translate the given stroke width into one of the
-   * predefined excel border styles.
+   * Tries to translate the given stroke width into one of the predefined excel border
+   * styles.
    *
    * @param width the AWT-Stroke-Width.
    * @return the translated excel border width.
    */
-  private short translateStroke(final float width)
+  private short translateStroke (final float width)
   {
     if (width == 0)
     {

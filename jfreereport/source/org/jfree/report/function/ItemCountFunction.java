@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.5.4.1 2004/12/30 14:46:11 taqua Exp $
+ * $Id: ItemCountFunction.java,v 1.7 2005/01/25 00:00:10 taqua Exp $
  *
  * Changes
  * -------
@@ -52,24 +52,25 @@ import org.jfree.report.event.ReportEvent;
 import org.jfree.report.states.ReportState;
 
 /**
- * A report function that counts items in a report.  If the "group" property is set, the item
- * count is reset to zero whenever the group changes.
+ * A report function that counts items in a report.  If the "group" property is set, the
+ * item count is reset to zero whenever the group changes.
  *
  * @author Thomas Morgner
  */
 public class ItemCountFunction extends AbstractFunction implements Serializable
 {
-  /** The item count. */
+  /**
+   * The item count.
+   */
   private transient int count;
 
   private String group;
 
   /**
-   * Constructs an unnamed function.
-   * <P>
-   * This constructor is intended for use by the SAX handler class only.
+   * Constructs an unnamed function. <P> This constructor is intended for use by the SAX
+   * handler class only.
    */
-  public ItemCountFunction()
+  public ItemCountFunction ()
   {
   }
 
@@ -77,74 +78,75 @@ public class ItemCountFunction extends AbstractFunction implements Serializable
    * Constructs an item count report function.
    *
    * @param name The name of the function.
-   *
    * @throws NullPointerException if the name is null
    */
-  public ItemCountFunction(final String name)
+  public ItemCountFunction (final String name)
   {
     setName(name);
   }
 
   /**
    * Returns the current count value.
-   * 
+   *
    * @return the current count value.
    */
-  protected int getCount()
+  protected int getCount ()
   {
     return count;
   }
 
   /**
    * Defines the current count value.
-   * 
+   *
    * @param count the current count value.
    */
-  protected void setCount(final int count)
+  protected void setCount (final int count)
   {
     this.count = count;
   }
 
   /**
-   * Receives notification that a new report is about to start.  The item count is set to zero.
+   * Receives notification that a new report is about to start.  The item count is set to
+   * zero.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportInitialized(final ReportEvent event)
+  public void reportInitialized (final ReportEvent event)
   {
     setCount(0);
   }
 
   /**
-   * Returns the name of the group (possibly null) for this function.  The item count is reset
-   * to zero at the start of each instance of this group.
+   * Returns the name of the group (possibly null) for this function.  The item count is
+   * reset to zero at the start of each instance of this group.
    *
    * @return the group name.
    */
-  public String getGroup()
+  public String getGroup ()
   {
     return group;
   }
 
   /**
-   * Setss the name of the group for this function.  The item count is reset to zero at the start
-   * of each instance of this group.  If the name is null, all items in the report are counted.
+   * Setss the name of the group for this function.  The item count is reset to zero at
+   * the start of each instance of this group.  If the name is null, all items in the
+   * report are counted.
    *
    * @param group The group name.
    */
-  public void setGroup(final String group)
+  public void setGroup (final String group)
   {
     this.group = group;
   }
 
   /**
-   * Receives notification that a new group is about to start.  Checks to see if the group that
-   * is starting is the same as the group defined for this function...if so, the item count is
-   * reset to zero.
+   * Receives notification that a new group is about to start.  Checks to see if the group
+   * that is starting is the same as the group defined for this function...if so, the item
+   * count is reset to zero.
    *
    * @param event Information about the event.
    */
-  public void groupStarted(final ReportEvent event)
+  public void groupStarted (final ReportEvent event)
   {
     if (getGroup() == null)
     {
@@ -164,18 +166,19 @@ public class ItemCountFunction extends AbstractFunction implements Serializable
    *
    * @param event Information about the event.
    */
-  public void itemsAdvanced(final ReportEvent event)
+  public void itemsAdvanced (final ReportEvent event)
   {
     setCount(getCount() + 1);
   }
 
   /**
-   * Returns the number of items counted (so far) by the function.  This is either the number
-   * of items in the report, or the group (if a group has been defined for the function).
+   * Returns the number of items counted (so far) by the function.  This is either the
+   * number of items in the report, or the group (if a group has been defined for the
+   * function).
    *
    * @return The item count.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return new Integer(getCount());
   }

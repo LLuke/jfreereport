@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: ImageLoadFilter.java,v 1.4 2004/05/07 08:24:42 mungady Exp $
+ * $Id: ImageLoadFilter.java,v 1.5 2005/01/25 21:40:12 taqua Exp $
  *
  * ChangeLog
  * --------------------------------------
@@ -45,19 +45,19 @@ import org.jfree.report.util.KeyedQueue;
 import org.jfree.report.util.Log;
 
 /**
- * The image load filter is used to load images during the report generation process.
- * This filter expects its datasource to return a java.net.URL. If the datasource does
- * not return an URL, <code>null</code> is returned.
- * <p>
- * This filter is mostly used in conjunction with the URLFilter, which creates URLs
- * from Strings and files if nessesary.
- * <p>
- * The url is used to create a new imagereference which is returned to the caller.
- * The loaded/created imagereference is stored in an internal cache.
- * <p>
+ * The image load filter is used to load images during the report generation process. This
+ * filter expects its datasource to return a java.net.URL. If the datasource does not
+ * return an URL, <code>null</code> is returned.
+ * <p/>
+ * This filter is mostly used in conjunction with the URLFilter, which creates URLs from
+ * Strings and files if nessesary.
+ * <p/>
+ * The url is used to create a new imagereference which is returned to the caller. The
+ * loaded/created imagereference is stored in an internal cache.
+ * <p/>
  * This filter can be used to dynamically change images of a report, a very nice feature
  * for photo albums and catalogs for instance.
- * <p>
+ * <p/>
  * This filter will return null, if something else than an URL was retrieved from the
  * assigned datasource
  *
@@ -67,7 +67,6 @@ public class ImageLoadFilter implements DataFilter, Serializable
 {
   /**
    * the cache for previously loaded images. If the maximum size of the cache reached,
-   *
    */
   private KeyedQueue imageCache;
 
@@ -79,7 +78,7 @@ public class ImageLoadFilter implements DataFilter, Serializable
   /**
    * creates a new ImageLoadFilter with a cache size of 10.
    */
-  public ImageLoadFilter()
+  public ImageLoadFilter ()
   {
     this(10);
   }
@@ -87,21 +86,21 @@ public class ImageLoadFilter implements DataFilter, Serializable
   /**
    * Creates a new ImageLoadFilter with the defined cache size.
    *
-   * @param cacheSize  the cache size.
+   * @param cacheSize the cache size.
    */
-  public ImageLoadFilter(final int cacheSize)
+  public ImageLoadFilter (final int cacheSize)
   {
     imageCache = new KeyedQueue(cacheSize);
   }
 
   /**
-   * Reads this filter's datasource and if the source returned an URL, tries to form
-   * a imagereference. If the image is loaded in a previous run and is still in the cache,
+   * Reads this filter's datasource and if the source returned an URL, tries to form a
+   * imagereference. If the image is loaded in a previous run and is still in the cache,
    * no new reference is created and the previously loaded reference is returned.
    *
-   * @return  the current value for this filter.
+   * @return the current value for this filter.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     final DataSource ds = getDataSource();
     if (ds == null)
@@ -145,7 +144,7 @@ public class ImageLoadFilter implements DataFilter, Serializable
    *
    * @return The data source.
    */
-  public DataSource getDataSource()
+  public DataSource getDataSource ()
   {
     return source;
   }
@@ -155,7 +154,7 @@ public class ImageLoadFilter implements DataFilter, Serializable
    *
    * @param ds The data source.
    */
-  public void setDataSource(final DataSource ds)
+  public void setDataSource (final DataSource ds)
   {
     if (ds == null)
     {
@@ -172,7 +171,8 @@ public class ImageLoadFilter implements DataFilter, Serializable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final ImageLoadFilter il = (ImageLoadFilter) super.clone();
     il.imageCache = (KeyedQueue) imageCache.clone();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVModule.java,v 1.6 2005/01/25 00:09:44 taqua Exp $
+ * $Id: CSVModule.java,v 1.7 2005/02/19 13:29:56 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -52,9 +52,11 @@ public class CSVModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public CSVModule() throws ModuleInitializeException
+  public CSVModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }

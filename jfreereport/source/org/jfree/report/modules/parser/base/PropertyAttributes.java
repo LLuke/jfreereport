@@ -1,7 +1,7 @@
 package org.jfree.report.modules.parser.base;
 
-import org.jfree.xml.parser.RootXmlReadHandler;
 import org.jfree.report.util.PropertyLookupParser;
+import org.jfree.xml.parser.RootXmlReadHandler;
 import org.xml.sax.Attributes;
 
 public class PropertyAttributes extends PropertyLookupParser implements Attributes

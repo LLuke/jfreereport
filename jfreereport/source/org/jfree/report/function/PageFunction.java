@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.9 2005/01/30 23:37:19 taqua Exp $
+ * $Id: PageFunction.java,v 1.10 2005/02/04 19:22:54 taqua Exp $
  *
  * Changes
  * -------
@@ -54,25 +54,29 @@ import org.jfree.report.event.ReportEvent;
 import org.jfree.report.states.ReportState;
 
 /**
- * A report function that counts pages. This method is only useable when a
- * report processor is used, which generated PageEvents. The PageableReportProcessor
- * is one of them.
- * <p>
- * As with all page dependent functions: The function will only be active, when
- * the page events get fired, this usually only happens during the last pagination
- * run and the printing. The function level will be negative when this happens.
- * <p>
+ * A report function that counts pages. This method is only useable when a report
+ * processor is used, which generated PageEvents. The PageableReportProcessor is one of
+ * them.
+ * <p/>
+ * As with all page dependent functions: The function will only be active, when the page
+ * events get fired, this usually only happens during the last pagination run and the
+ * printing. The function level will be negative when this happens.
+ * <p/>
  *
  * @author Thomas Morgner
  */
 public class PageFunction extends AbstractFunction
-    implements Serializable, PageEventListener, LayoutListener
+        implements Serializable, PageEventListener, LayoutListener
 {
 
-  /** The page. */
+  /**
+   * The page.
+   */
   private transient int page;
 
-  /** The 'group-started' flag. */
+  /**
+   * The 'group-started' flag.
+   */
   private transient boolean isGroupStarted;
 
   private transient boolean ignoreNextGroup;
@@ -83,11 +87,10 @@ public class PageFunction extends AbstractFunction
   private boolean ignorePageCancelEvents;
 
   /**
-   * Constructs an unnamed function.
-   * <P>
-   * This constructor is intended for use by the SAX handler class only.
+   * Constructs an unnamed function. <P> This constructor is intended for use by the SAX
+   * handler class only.
    */
-  public PageFunction()
+  public PageFunction ()
   {
     this.startPage = 1;
   }
@@ -95,9 +98,9 @@ public class PageFunction extends AbstractFunction
   /**
    * Constructs a named function.
    *
-   * @param name  the function name.
+   * @param name the function name.
    */
-  public PageFunction(final String name)
+  public PageFunction (final String name)
   {
     this.startPage = 1;
     setName(name);
@@ -114,12 +117,12 @@ public class PageFunction extends AbstractFunction
   }
 
   /**
-   * Receives notification from the report engine that a new page is starting.  Grabs the page
-   * number from the report state and stores it.
+   * Receives notification from the report engine that a new page is starting.  Grabs the
+   * page number from the report state and stores it.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void pageStarted(final ReportEvent event)
+  public void pageStarted (final ReportEvent event)
   {
     if (isGroupStarted())
     {
@@ -137,7 +140,7 @@ public class PageFunction extends AbstractFunction
    *
    * @param event The event.
    */
-  public void pageCanceled(final ReportEvent event)
+  public void pageCanceled (final ReportEvent event)
   {
     if (isIgnorePageCancelEvents())
     {
@@ -152,16 +155,16 @@ public class PageFunction extends AbstractFunction
    *
    * @param event The event.
    */
-  public void pageFinished(final ReportEvent event)
+  public void pageFinished (final ReportEvent event)
   {
   }
 
   /**
    * Receives notification that a group has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupStarted(final ReportEvent event)
+  public void groupStarted (final ReportEvent event)
   {
     if (getGroup() == null)
     {
@@ -193,11 +196,11 @@ public class PageFunction extends AbstractFunction
 
       if (isIgnoreNextGroup() == false)
       {
-        setGroupStarted (true);
+        setGroupStarted(true);
         // this PageStorage is only null, if the report has never reached the first report start
         // event
       }
-      setIgnoreNextGroup (false);
+      setIgnoreNextGroup(false);
     }
   }
 
@@ -234,9 +237,9 @@ public class PageFunction extends AbstractFunction
   /**
    * Receives notification that the report has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportInitialized(final ReportEvent event)
+  public void reportInitialized (final ReportEvent event)
   {
     this.setPage(getStartPage() - 1);
     setIgnoreNextGroup(true);
@@ -258,7 +261,7 @@ public class PageFunction extends AbstractFunction
    *
    * @return the page number.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return new Integer(getPage());
   }
@@ -268,7 +271,7 @@ public class PageFunction extends AbstractFunction
    *
    * @return the group name.
    */
-  public String getGroup()
+  public String getGroup ()
   {
     return group;
   }
@@ -276,9 +279,9 @@ public class PageFunction extends AbstractFunction
   /**
    * Sets the name of the group that the function acts upon.
    *
-   * @param group  the group name.
+   * @param group the group name.
    */
-  public void setGroup(final String group)
+  public void setGroup (final String group)
   {
     this.group = group;
   }
@@ -288,7 +291,7 @@ public class PageFunction extends AbstractFunction
    *
    * @return the start page.
    */
-  public int getStartPage()
+  public int getStartPage ()
   {
     return this.startPage;
   }
@@ -299,13 +302,12 @@ public class PageFunction extends AbstractFunction
   }
 
   /**
-   * Returns whether this function will ignore PageCancel events.
-   * This defaults to false, so that there will be no gaps between
-   * the generated pages.
+   * Returns whether this function will ignore PageCancel events. This defaults to false,
+   * so that there will be no gaps between the generated pages.
    *
    * @return true, if canceled pages should be ignored, false otherwise.
    */
-  public boolean isIgnorePageCancelEvents()
+  public boolean isIgnorePageCancelEvents ()
   {
     return ignorePageCancelEvents;
   }
@@ -320,7 +322,7 @@ public class PageFunction extends AbstractFunction
    *
    * @return the current page.
    */
-  protected int getPage()
+  protected int getPage ()
   {
     return page;
   }
@@ -328,9 +330,9 @@ public class PageFunction extends AbstractFunction
   /**
    * Sets the current page.
    *
-   * @param page  the page.
+   * @param page the page.
    */
-  protected void setPage(final int page)
+  protected void setPage (final int page)
   {
     this.page = page;
   }
@@ -355,7 +357,7 @@ public class PageFunction extends AbstractFunction
     if (event.getLayoutedBand() instanceof GroupFooter)
     {
       setGroupStarted(true);
-      setIgnoreNextGroup (true);
+      setIgnoreNextGroup(true);
       setWaitForFooterPrinted(false);
     }
   }

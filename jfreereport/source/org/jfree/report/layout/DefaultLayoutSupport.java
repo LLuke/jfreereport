@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultLayoutSupport.java,v 1.4 2004/05/07 08:03:40 mungady Exp $
+ * $Id: DefaultLayoutSupport.java,v 1.5 2005/01/30 23:37:19 taqua Exp $
  *
  * Changes
  * -------
@@ -38,30 +38,32 @@
  */
 package org.jfree.report.layout;
 
+import org.jfree.report.content.AnchorContentFactoryModule;
 import org.jfree.report.content.ContentFactory;
 import org.jfree.report.content.DefaultContentFactory;
 import org.jfree.report.content.DrawableContentFactoryModule;
 import org.jfree.report.content.ImageContentFactoryModule;
 import org.jfree.report.content.ShapeContentFactoryModule;
 import org.jfree.report.content.TextContentFactoryModule;
-import org.jfree.report.content.AnchorContentFactoryModule;
 import org.jfree.report.style.FontDefinition;
 
 /**
- * The DefaultLayoutSupport uses the AWT to estaminate the content sizes.
- * A LayoutSupport contains all methods required to estaminate sizes for the
- * content-creation.
- *
- * @see org.jfree.report.content.Content
+ * The DefaultLayoutSupport uses the AWT to estaminate the content sizes. A LayoutSupport
+ * contains all methods required to estaminate sizes for the content-creation.
  *
  * @author Thomas Morgner
+ * @see org.jfree.report.content.Content
  */
 public class DefaultLayoutSupport implements LayoutSupport
 {
-  /** The content factory. */
+  /**
+   * The content factory.
+   */
   private final DefaultContentFactory contentFactory;
 
-  /** A singleton instance of the DefaultLayoutSupport. */
+  /**
+   * A singleton instance of the DefaultLayoutSupport.
+   */
   private static DefaultLayoutSupport singleton;
 
   /**
@@ -69,7 +71,7 @@ public class DefaultLayoutSupport implements LayoutSupport
    *
    * @return The single instance of this class.
    */
-  public static DefaultLayoutSupport getDefaultInstance()
+  public static DefaultLayoutSupport getDefaultInstance ()
   {
     if (singleton == null)
     {
@@ -81,7 +83,7 @@ public class DefaultLayoutSupport implements LayoutSupport
   /**
    * Default-Constructor.
    */
-  public DefaultLayoutSupport()
+  public DefaultLayoutSupport ()
   {
     contentFactory = new DefaultContentFactory();
     contentFactory.addModule(new TextContentFactoryModule());
@@ -95,40 +97,37 @@ public class DefaultLayoutSupport implements LayoutSupport
    * Creates a size calculator for the current state of the output target.  The calculator
    * is used to calculate the string width and line height and later maybe more...
    *
-   * @param font  the font.
-   *
+   * @param font the font.
    * @return the size calculator.
    *
    * @throws SizeCalculatorException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(final FontDefinition font)
-      throws SizeCalculatorException
+  public SizeCalculator createTextSizeCalculator (final FontDefinition font)
+          throws SizeCalculatorException
   {
     return DefaultSizeCalculator.getDefaultSizeCalculator(font);
   }
 
   /**
-   * Returns the element alignment. Elements will be layouted aligned to this
-   * border, so that <code>mod(X, horizontalAlignment) == 0</code> and
-   * <code>mod(Y, verticalAlignment) == 0</code>. Returning 0 will disable
-   * the alignment.
+   * Returns the element alignment. Elements will be layouted aligned to this border, so
+   * that <code>mod(X, horizontalAlignment) == 0</code> and <code>mod(Y,
+   * verticalAlignment) == 0</code>. Returning 0 will disable the alignment.
    *
    * @return the vertical alignment grid boundry
    */
-  public float getVerticalAlignmentBorder()
+  public float getVerticalAlignmentBorder ()
   {
     return 0;
   }
 
   /**
-   * Returns the element alignment. Elements will be layouted aligned to this
-   * border, so that <code>mod(X, horizontalAlignment) == 0</code> and
-   * <code>mod(Y, verticalAlignment) == 0</code>. Returning 0 will disable
-   * the alignment.
+   * Returns the element alignment. Elements will be layouted aligned to this border, so
+   * that <code>mod(X, horizontalAlignment) == 0</code> and <code>mod(Y,
+   * verticalAlignment) == 0</code>. Returning 0 will disable the alignment.
    *
    * @return the vertical alignment grid boundry
    */
-  public float getHorizontalAlignmentBorder()
+  public float getHorizontalAlignmentBorder ()
   {
     return 0;
   }
@@ -138,7 +137,7 @@ public class DefaultLayoutSupport implements LayoutSupport
    *
    * @return the content factory.
    */
-  public ContentFactory getContentFactory()
+  public ContentFactory getContentFactory ()
   {
     return contentFactory;
   }

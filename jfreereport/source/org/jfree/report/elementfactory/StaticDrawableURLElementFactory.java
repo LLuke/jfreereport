@@ -21,18 +21,18 @@ public class StaticDrawableURLElementFactory extends ElementFactory
    *
    * @return the field name.
    */
-  public String getContent()
+  public String getContent ()
   {
     return content;
   }
 
   /**
-   * Defines the field name from where to read the content of the element.
-   * The field name is the name of a datarow column.
+   * Defines the field name from where to read the content of the element. The field name
+   * is the name of a datarow column.
    *
    * @param content the field name.
    */
-  public void setContent(final String content)
+  public void setContent (final String content)
   {
     this.content = content;
   }
@@ -50,12 +50,12 @@ public class StaticDrawableURLElementFactory extends ElementFactory
   /**
    * Creates a new drawable field element based on the defined properties.
    *
-   * @see ElementFactory#createElement()
-   *
    * @return the generated elements
+   *
    * @throws IllegalStateException if the field name is not set.
+   * @see ElementFactory#createElement()
    */
-  public Element createElement()
+  public Element createElement ()
   {
     if (getContent() == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTask.java,v 1.9.4.6 2004/12/13 20:23:56 taqua Exp $
+ * $Id: PlainTextExportTask.java,v 1.12 2005/01/25 00:06:35 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -60,37 +60,49 @@ import org.jfree.report.util.StringUtil;
 
 /**
  * An export task implementation that writes the report into a plain text file.
- * 
+ *
  * @author Thomas Morgner
  */
 public class PlainTextExportTask extends ExportTask
 {
-  /** The progress monitor component that visualizes the export progress. */
+  /**
+   * The progress monitor component that visualizes the export progress.
+   */
   private final ReportProgressDialog progressDialog;
-  /** The name of the target file. */
+  /**
+   * The name of the target file.
+   */
   private final String fileName;
-  /** The report that should be exported. */
+  /**
+   * The report that should be exported.
+   */
   private final JFreeReport report;
-  /** The desired export type, one of the constants defined in the PlainTextExportDialog. */
+  /**
+   * The desired export type, one of the constants defined in the PlainTextExportDialog.
+   */
   private final int exportType;
-  /** The chars per inch for the export. */
+  /**
+   * The chars per inch for the export.
+   */
   private final int charPerInch;
-  /** The lines per inch for the export. */
+  /**
+   * The lines per inch for the export.
+   */
   private final int linesPerInch;
 
   private String printer;
 
   /**
    * Creates a new plain text export task.
-   * 
-   * @param fileName the name of the target file.
-   * @param dialog the progress monitor dialog.
+   *
+   * @param fileName   the name of the target file.
+   * @param dialog     the progress monitor dialog.
    * @param exportType the desired export type.
-   * @param report the report that should be exported.
+   * @param report     the report that should be exported.
    */
   public PlainTextExportTask
-      (final String fileName, final ReportProgressDialog dialog,
-       final int exportType, final JFreeReport report, final String printer)
+          (final String fileName, final ReportProgressDialog dialog,
+           final int exportType, final JFreeReport report, final String printer)
   {
     if (fileName == null)
     {
@@ -107,39 +119,38 @@ public class PlainTextExportTask extends ExportTask
     this.printer = printer;
 
     charPerInch = StringUtil.parseInt(report.getReportConfiguration().getConfigProperty
-        (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.CHARS_PER_INCH),10);
+            (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.CHARS_PER_INCH), 10);
     linesPerInch = StringUtil.parseInt(report.getReportConfiguration().getConfigProperty
-        (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.LINES_PER_INCH) ,6);
+            (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.LINES_PER_INCH), 6);
   }
 
   /**
    * Returns the printer command set for the given report and export type.
    *
-   * @param out  the output stream.
-   * @param report  the report.
-   *
+   * @param out    the output stream.
+   * @param report the report.
    * @return The printer command set.
    */
-  protected PrinterDriver getPrinterCommandSet(final OutputStream out,
-                                                   final JFreeReport report,
-                                                   final String printer)
+  protected PrinterDriver getPrinterCommandSet (final OutputStream out,
+                                                final JFreeReport report,
+                                                final String printer)
   {
     switch (exportType)
     {
       case PlainTextExportDialog.TYPE_PLAIN_OUTPUT:
         {
           return new TextFilePrinterDriver(out,
-              charPerInch, linesPerInch);
+                  charPerInch, linesPerInch);
         }
       case PlainTextExportDialog.TYPE_IBM_OUTPUT:
         {
-          return new IBMCompatiblePrinterDriver (out,
-              charPerInch, linesPerInch);
+          return new IBMCompatiblePrinterDriver(out,
+                  charPerInch, linesPerInch);
         }
       case PlainTextExportDialog.TYPE_EPSON_OUTPUT:
         {
           return new Epson24PinPrinterDriver(out,
-              charPerInch, linesPerInch, printer);
+                  charPerInch, linesPerInch, printer);
         }
       default:
         throw new IllegalArgumentException();
@@ -149,14 +160,13 @@ public class PlainTextExportTask extends ExportTask
   /**
    * Exports the report into a plain text file.
    */
-  protected void performExport()
+  protected void performExport ()
   {
     OutputStream out = null;
-    final File file = new File (fileName);
+    final File file = new File(fileName);
     try
     {
-      out = new BufferedOutputStream(
-          new FileOutputStream(file));
+      out = new BufferedOutputStream(new FileOutputStream(file));
       final PrinterDriver pc = getPrinterCommandSet(out, report, printer);
       final PlainTextOutputTarget target = new PlainTextOutputTarget(pc);
       target.configure(report.getReportConfiguration());
@@ -209,7 +219,7 @@ public class PlainTextExportTask extends ExportTask
     }
     catch (Exception re)
     {
-      Log.error ("PlainText export failed", re);
+      Log.error("PlainText export failed", re);
       setTaskFailed(re);
     }
     finally
@@ -223,7 +233,7 @@ public class PlainTextExportTask extends ExportTask
       }
       catch (Exception e)
       {
-        Log.error ("Unable to close the output stream.", e);
+        Log.error("Unable to close the output stream.", e);
         setTaskFailed(e);
         // if there is already another error, this exception is
         // just a minor obstactle. Something big crashed before ...
@@ -238,7 +248,7 @@ public class PlainTextExportTask extends ExportTask
   /**
    * Remove all listeners and prepare the finalization.
    */
-  protected void dispose()
+  protected void dispose ()
   {
     super.dispose();
     if (progressDialog != null)

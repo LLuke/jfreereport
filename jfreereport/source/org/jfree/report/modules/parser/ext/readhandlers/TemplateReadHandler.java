@@ -49,19 +49,19 @@ public class TemplateReadHandler extends CompoundObjectReadHandler
     if (nameRequired && templateName == null)
     {
       throw new ParseException("The 'name' attribute is required for template definitions",
-          getRootHandler().getLocator());
+              getRootHandler().getLocator());
     }
     final String references = attrs.getValue("references");
     if (references == null)
     {
       throw new ParseException("The 'references' attribute is required for template definitions",
-          getRootHandler().getLocator());
+              getRootHandler().getLocator());
     }
     TemplateDescription template = templateCollection.getTemplate(references);
     if (template == null)
     {
       throw new ParseException("The template '" + references + "' is not defined",
-          getRootHandler().getLocator());
+              getRootHandler().getLocator());
     }
 
     // Clone the defined template ... we don't change the original ..

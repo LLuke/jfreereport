@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ResourceLabelTemplate.java,v 1.5 2004/05/07 08:24:41 mungady Exp $
+ * $Id: ResourceLabelTemplate.java,v 1.6 2005/01/25 21:40:14 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -39,7 +39,6 @@
 package org.jfree.report.filter.templates;
 
 import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.filter.ReportConnectable;
@@ -53,21 +52,27 @@ import org.jfree.report.filter.StringFilter;
  * @author Thomas Morgner
  */
 public class ResourceLabelTemplate extends AbstractTemplate
-    implements ReportConnectable
+        implements ReportConnectable
 {
-  /** A static datasource. */
+  /**
+   * A static datasource.
+   */
   private StaticDataSource staticDataSource;
 
-  /** A string filter. */
+  /**
+   * A string filter.
+   */
   private StringFilter stringFilter;
 
-  /** A resource file filter. */
+  /**
+   * A resource file filter.
+   */
   private ResourceFileFilter resourceFilter;
 
   /**
    * Creates a new template.
    */
-  public ResourceLabelTemplate()
+  public ResourceLabelTemplate ()
   {
     staticDataSource = new StaticDataSource();
     resourceFilter = new ResourceFileFilter();
@@ -81,7 +86,7 @@ public class ResourceLabelTemplate extends AbstractTemplate
    *
    * @return The resource class name.
    */
-  public String getResourceIdentifier()
+  public String getResourceIdentifier ()
   {
     return resourceFilter.getResourceIdentifier();
   }
@@ -89,13 +94,12 @@ public class ResourceLabelTemplate extends AbstractTemplate
   /**
    * Sets the resource class name.
    *
-   * @param resourceClassName  the class name.
-   *
+   * @param resourceClassName the class name.
    * @throws MissingResourceException if the resource is missing.
-   * @throws NullPointerException if the resource class name is null.
+   * @throws NullPointerException     if the resource class name is null.
    */
-  public void setResourceIdentifier(final String resourceClassName)
-      throws MissingResourceException
+  public void setResourceIdentifier (final String resourceClassName)
+          throws MissingResourceException
   {
     resourceFilter.setResourceIdentifier(resourceClassName);
   }
@@ -103,9 +107,9 @@ public class ResourceLabelTemplate extends AbstractTemplate
   /**
    * Sets the content.
    *
-   * @param content  the content.
+   * @param content the content.
    */
-  public void setContent(final String content)
+  public void setContent (final String content)
   {
     staticDataSource.setValue(content);
   }
@@ -115,7 +119,7 @@ public class ResourceLabelTemplate extends AbstractTemplate
    *
    * @return The content.
    */
-  public String getContent()
+  public String getContent ()
   {
     return (String) (staticDataSource.getValue());
   }
@@ -125,7 +129,7 @@ public class ResourceLabelTemplate extends AbstractTemplate
    *
    * @return The string that represents a <code>null</code> value.
    */
-  public String getNullValue()
+  public String getNullValue ()
   {
     return stringFilter.getNullValue();
   }
@@ -133,9 +137,9 @@ public class ResourceLabelTemplate extends AbstractTemplate
   /**
    * Sets the string that represents a <code>null</code> value.
    *
-   * @param nullValue  The string that represents a <code>null</code> value.
+   * @param nullValue The string that represents a <code>null</code> value.
    */
-  public void setNullValue(final String nullValue)
+  public void setNullValue (final String nullValue)
   {
     stringFilter.setNullValue(nullValue);
   }
@@ -145,7 +149,7 @@ public class ResourceLabelTemplate extends AbstractTemplate
    *
    * @return the value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return stringFilter.getValue();
   }
@@ -157,7 +161,8 @@ public class ResourceLabelTemplate extends AbstractTemplate
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final ResourceLabelTemplate template = (ResourceLabelTemplate) super.clone();
     template.stringFilter = (StringFilter) stringFilter.clone();
@@ -167,12 +172,12 @@ public class ResourceLabelTemplate extends AbstractTemplate
   }
 
 
-  public void registerReportDefinition(ReportDefinition reportDefinition)
+  public void registerReportDefinition (ReportDefinition reportDefinition)
   {
     resourceFilter.registerReportDefinition(reportDefinition);
   }
 
-  public void unregisterReportDefinition(ReportDefinition reportDefinition)
+  public void unregisterReportDefinition (ReportDefinition reportDefinition)
   {
     resourceFilter.unregisterReportDefinition(reportDefinition);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CountDistinctFunction.java,v 1.2.4.1 2004/12/30 14:46:11 taqua Exp $
+ * $Id: CountDistinctFunction.java,v 1.4 2005/01/25 00:00:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,14 +46,16 @@ import java.util.HashSet;
 import org.jfree.report.event.ReportEvent;
 
 /**
- * Counts the distinct occurences of an certain value of an column.
- * This functionality is similiar to the SQL distinct() function.
+ * Counts the distinct occurences of an certain value of an column. This functionality is
+ * similiar to the SQL distinct() function.
  *
  * @author Thomas Morgner
  */
 public class CountDistinctFunction extends AbstractFunction implements Serializable
 {
-  /** The collected values for the current group. */
+  /**
+   * The collected values for the current group.
+   */
   private transient HashSet values;
   private String group;
   private String field;
@@ -61,7 +63,7 @@ public class CountDistinctFunction extends AbstractFunction implements Serializa
   /**
    * DefaultConstructor.
    */
-  public CountDistinctFunction()
+  public CountDistinctFunction ()
   {
     values = new HashSet();
   }
@@ -71,57 +73,52 @@ public class CountDistinctFunction extends AbstractFunction implements Serializa
    *
    * @return The group name.
    */
-  public String getGroup()
+  public String getGroup ()
   {
     return group;
   }
 
   /**
-   * Sets the group name.
-   * <P>
-   * If a group is defined, the running total is reset to zero at the start of every instance of
-   * this group.
+   * Sets the group name. <P> If a group is defined, the running total is reset to zero at
+   * the start of every instance of this group.
    *
-   * @param name  the group name (null permitted).
+   * @param name the group name (null permitted).
    */
-  public void setGroup(final String name)
+  public void setGroup (final String name)
   {
     this.group = name;
   }
 
   /**
-   * Returns the field used by the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Returns the field used by the function. <P> The field name corresponds to a column
+   * name in the report's TableModel.
    *
    * @return The field name.
    */
-  public String getField()
+  public String getField ()
   {
     return field;
   }
 
   /**
-   * Sets the field name for the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Sets the field name for the function. <P> The field name corresponds to a column name
+   * in the report's TableModel.
    *
-   * @param field  the field name (null not permitted).
+   * @param field the field name (null not permitted).
    */
-  public void setField(final String field)
+  public void setField (final String field)
   {
     this.field = field;
   }
 
   /**
-   * Receives notification that report generation initializes the current run.
-   * <P>
-   * The event carries a ReportState.Started state.  Use this to initialize the report.
+   * Receives notification that report generation initializes the current run. <P> The
+   * event carries a ReportState.Started state.  Use this to initialize the report.
    *
    * @param event The event.
    */
-  public void reportInitialized(final ReportEvent event)
-  {    
+  public void reportInitialized (final ReportEvent event)
+  {
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event) == false)
     {
       return;
@@ -132,9 +129,9 @@ public class CountDistinctFunction extends AbstractFunction implements Serializa
   /**
    * Receives notification that a group has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupStarted(final ReportEvent event)
+  public void groupStarted (final ReportEvent event)
   {
     if (getField() == null)
     {
@@ -156,9 +153,9 @@ public class CountDistinctFunction extends AbstractFunction implements Serializa
   /**
    * Receives notification that a row of data is being processed.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void itemsAdvanced(final ReportEvent event)
+  public void itemsAdvanced (final ReportEvent event)
   {
     if (getField() == null)
     {
@@ -178,7 +175,7 @@ public class CountDistinctFunction extends AbstractFunction implements Serializa
    *
    * @return the value of the function.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return new Integer(values.size());
   }
@@ -187,12 +184,12 @@ public class CountDistinctFunction extends AbstractFunction implements Serializa
    * Helper method for serialization.
    *
    * @param in the input stream from where to read the serialized object.
-   * @throws IOException when reading the stream fails.
-   * @throws ClassNotFoundException if a class definition for a serialized object
-   * could not be found.
+   * @throws IOException            when reading the stream fails.
+   * @throws ClassNotFoundException if a class definition for a serialized object could
+   *                                not be found.
    */
-  private void readObject(final ObjectInputStream in)
-      throws IOException, ClassNotFoundException
+  private void readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
     values = new HashSet();

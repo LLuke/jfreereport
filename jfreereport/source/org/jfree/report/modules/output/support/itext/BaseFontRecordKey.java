@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecordKey.java,v 1.7 2005/01/25 00:12:00 taqua Exp $
+ * $Id: BaseFontRecordKey.java,v 1.8 2005/02/19 13:30:00 taqua Exp $
  *
  * Changes
  * -------
@@ -47,25 +47,31 @@ package org.jfree.report.modules.output.support.itext;
  */
 public final class BaseFontRecordKey
 {
-  /** The logical name. */
+  /**
+   * The logical name.
+   */
   private final String logicalName;
 
-  /** The encoding. */
+  /**
+   * The encoding.
+   */
   private final String encoding;
 
   private boolean embedded;
 
-  /** The cached hashcode for this object. */
+  /**
+   * The cached hashcode for this object.
+   */
   private int hashCode;
-  
+
   /**
    * Creates a new key.
    *
-   * @param logicalName  the logical name.
-   * @param encoding  the encoding.
+   * @param logicalName the logical name.
+   * @param encoding    the encoding.
    */
-  public BaseFontRecordKey(final String logicalName,
-                           final String encoding, final boolean embedded)
+  public BaseFontRecordKey (final String logicalName,
+                            final String encoding, final boolean embedded)
   {
     if (logicalName == null)
     {
@@ -83,11 +89,10 @@ public final class BaseFontRecordKey
   /**
    * Indicates whether some other object is "equal to" this BaseFontRecordKey.
    *
-   * @param o  the object to test.
-   *
+   * @param o the object to test.
    * @return true or false.
    */
-  public boolean equals(final Object o)
+  public boolean equals (final Object o)
   {
     if (this == o)
     {
@@ -119,7 +124,7 @@ public final class BaseFontRecordKey
    *
    * @return the hash code.
    */
-  public int hashCode()
+  public int hashCode ()
   {
     if (hashCode == 0)
     {
@@ -151,7 +156,7 @@ public final class BaseFontRecordKey
    */
   public String toString ()
   {
-    return ("FontKey={name="  + logicalName + "; encoding=" +
+    return ("FontKey={name=" + logicalName + "; encoding=" +
             encoding + "; embedded=" + embedded + "}");
 
   }

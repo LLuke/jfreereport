@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigStorage.java,v 1.4 2003/08/25 14:29:30 taqua Exp $
+ * $Id: ConfigStorage.java,v 1.5 2004/05/07 14:29:46 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -41,11 +41,10 @@ package org.jfree.report.modules.misc.configstore.base;
 import java.util.Properties;
 
 /**
- * Config storage implementations are used to store a set of properties
- * to a certain key.
- * <p>
+ * Config storage implementations are used to store a set of properties to a certain key.
+ * <p/>
  * A valid configuration path does not contain dots, semicolons or colons.
- * <p>
+ * <p/>
  * A valid path obeys to the same rules as java identifiers ..
  *
  * @author Thomas Morgner
@@ -59,21 +58,21 @@ public interface ConfigStorage
    * @param properties the properties which should be stored.
    * @throws ConfigStoreException if an error occured.
    */
-  public void storeProperties(String configPath, Properties properties)
-      throws ConfigStoreException;
+  public void storeProperties (String configPath, Properties properties)
+          throws ConfigStoreException;
 
   /**
-   * Loads the properties from the given path, specifying the given properties
-   * as default.
+   * Loads the properties from the given path, specifying the given properties as
+   * default.
    *
    * @param configPath the configuration path from where to read the properties.
-   * @param defaults the property set that acts as fallback to provide default
-   * values.
+   * @param defaults   the property set that acts as fallback to provide default values.
    * @return the loaded properties
+   *
    * @throws ConfigStoreException if an error occured.
    */
-  public Properties loadProperties(String configPath, Properties defaults)
-      throws ConfigStoreException;
+  public Properties loadProperties (String configPath, Properties defaults)
+          throws ConfigStoreException;
 
   /**
    * Tests, whether some configuration data exists for the given configuration.
@@ -81,5 +80,5 @@ public interface ConfigStorage
    * @param configPath the configuration path to the property storage.
    * @return true, if there are properties under this path, false otherwise.
    */
-  public boolean existsProperties(String configPath);
+  public boolean existsProperties (String configPath);
 }

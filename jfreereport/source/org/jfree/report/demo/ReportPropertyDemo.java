@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportPropertyDemo.java,v 1.2.4.1 2004/04/06 13:56:13 taqua Exp $
+ * $Id: ReportPropertyDemo.java,v 1.4 2005/01/24 23:58:36 taqua Exp $
  *
  * Changes
  * -------
@@ -59,8 +59,8 @@ import org.jfree.report.modules.gui.base.PreviewFrame;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.ui.RefineryUtilities;
-import org.jfree.ui.action.ActionMenuItem;
 import org.jfree.ui.action.ActionButton;
+import org.jfree.ui.action.ActionMenuItem;
 
 /**
  * A simple report that shows the user input as report property value.
@@ -69,15 +69,17 @@ import org.jfree.ui.action.ActionButton;
  */
 public class ReportPropertyDemo extends AbstractDemoFrame
 {
-  /** The text area contains the userinput which should be displayed in the report. */  
+  /**
+   * The text area contains the userinput which should be displayed in the report.
+   */
   private JTextArea textArea;
 
   /**
    * Constructs the demo application.
    *
-   * @param title  the frame title.
+   * @param title the frame title.
    */
-  public ReportPropertyDemo(final String title)
+  public ReportPropertyDemo (final String title)
   {
     setTitle(title);
     setJMenuBar(createMenuBar());
@@ -89,7 +91,7 @@ public class ReportPropertyDemo extends AbstractDemoFrame
    *
    * @return the menu bar.
    */
-  public JMenuBar createMenuBar()
+  public JMenuBar createMenuBar ()
   {
     final JMenuBar mb = new JMenuBar();
     final JMenu fileMenu = createJMenu("menu.file");
@@ -109,7 +111,7 @@ public class ReportPropertyDemo extends AbstractDemoFrame
    *
    * @return a panel containing the basic user interface.
    */
-  public JPanel createContent()
+  public JPanel createContent ()
   {
     final JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
@@ -132,16 +134,16 @@ public class ReportPropertyDemo extends AbstractDemoFrame
   /**
    * Displays a print preview screen for the sample report.
    */
-  protected void attemptPreview()
+  protected void attemptPreview ()
   {
     final URL in = getClass().getResource("/org/jfree/report/demo/ReportPropertyDemo.xml");
 
     if (in == null)
     {
       JOptionPane.showMessageDialog(this,
-          MessageFormat.format(getResources().getString("report.definitionnotfound"),
-              new Object[]{in}),
-          getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+              MessageFormat.format(getResources().getString("report.definitionnotfound"),
+                      new Object[]{in}),
+              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 
     final JFreeReport report;
@@ -174,11 +176,10 @@ public class ReportPropertyDemo extends AbstractDemoFrame
   /**
    * Reads the report from the specified template file.
    *
-   * @param templateURL  the template location.
-   *
+   * @param templateURL the template location.
    * @return a report.
    */
-  private JFreeReport parseReport(final URL templateURL)
+  private JFreeReport parseReport (final URL templateURL)
   {
 
     JFreeReport result = null;
@@ -198,9 +199,9 @@ public class ReportPropertyDemo extends AbstractDemoFrame
   /**
    * Entry point for running the demo application...
    *
-   * @param args  ignored.
+   * @param args ignored.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();

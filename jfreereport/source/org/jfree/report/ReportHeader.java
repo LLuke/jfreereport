@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportHeader.java,v 1.5 2005/01/30 23:37:18 taqua Exp $
+ * $Id: ReportHeader.java,v 1.6 2005/02/23 19:31:41 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -45,14 +45,14 @@ package org.jfree.report;
 
 /**
  * A report band that is printed once only at the beginning of the report.
- * <p>
- * A flag can be set forcing the report generator to start a new page after printing the report
- * header.
- * <p>
- * Note that if there is a page header on the first page of your report, it will be printed
- * above the report header, the logic being that the page header *always* appears at the top
- * of the page.  In many cases, it makes better sense to suppress the page header on the first
- * page of the report (leaving just the report header on page 1).
+ * <p/>
+ * A flag can be set forcing the report generator to start a new page after printing the
+ * report header.
+ * <p/>
+ * Note that if there is a page header on the first page of your report, it will be
+ * printed above the report header, the logic being that the page header *always* appears
+ * at the top of the page.  In many cases, it makes better sense to suppress the page
+ * header on the first page of the report (leaving just the report header on page 1).
  *
  * @author David Gilbert
  * @author Thomas Morgner
@@ -62,13 +62,13 @@ public class ReportHeader extends Band implements RootLevelBand
   /**
    * Constructs a report header, initially containing no elements.
    */
-  public ReportHeader()
+  public ReportHeader ()
   {
   }
 
   /**
-   * Assigns the report definition. Don't play with that function,
-   * unless you know what you are doing. You might get burned.
+   * Assigns the report definition. Don't play with that function, unless you know what
+   * you are doing. You might get burned.
    *
    * @param reportDefinition the report definition.
    */

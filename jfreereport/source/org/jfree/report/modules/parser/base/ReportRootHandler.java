@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportRootHandler.java,v 1.9 2005/01/25 00:18:05 taqua Exp $
+ * $Id: ReportRootHandler.java,v 1.10 2005/02/04 19:07:13 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,14 +41,13 @@ package org.jfree.report.modules.parser.base;
 import org.jfree.xml.parser.XmlReadHandler;
 
 /**
- * The report root handler provides a special initialization method
- * to resolve the definition of the current parser instance. It is
- * guaranteed that the init method is called as soon as the object
- * was created.
+ * The report root handler provides a special initialization method to resolve the
+ * definition of the current parser instance. It is guaranteed that the init method is
+ * called as soon as the object was created.
  *
  * @author Thomas Morgner
  */
 public interface ReportRootHandler extends XmlReadHandler
 {
-  
+
 }

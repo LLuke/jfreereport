@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HorizontalLineTemplateDescription.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
+ * $Id: HorizontalLineTemplateDescription.java,v 1.5 2004/05/07 14:29:23 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -50,9 +50,9 @@ public class HorizontalLineTemplateDescription extends AbstractTemplateDescripti
   /**
    * Creates a new template description.
    *
-   * @param name  the name.
+   * @param name the name.
    */
-  public HorizontalLineTemplateDescription(final String name)
+  public HorizontalLineTemplateDescription (final String name)
   {
     super(name, HorizontalLineTemplate.class, true);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CloseableTableModel.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: CloseableTableModel.java,v 1.3 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,6 @@ public interface CloseableTableModel extends TableModel
    * If this model has a resultset assigned, close it, if this is a DefaultTableModel,
    * remove all data.
    */
-  public void close();
+  public void close ();
 
 }

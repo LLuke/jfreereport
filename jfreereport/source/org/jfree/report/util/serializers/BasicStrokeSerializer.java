@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BasicStrokeSerializer.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: BasicStrokeSerializer.java,v 1.3 2004/05/07 12:43:01 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -58,18 +58,19 @@ public class BasicStrokeSerializer implements SerializeMethod
   /**
    * Default Constructor.
    */
-  public BasicStrokeSerializer()
+  public BasicStrokeSerializer ()
   {
   }
 
   /**
    * Writes a serializable object description to the given object output stream.
    *
-   * @param o the to be serialized object.
+   * @param o   the to be serialized object.
    * @param out the outputstream that should receive the object.
    * @throws IOException if an I/O error occured.
    */
-  public void writeObject(final Object o, final ObjectOutputStream out) throws IOException
+  public void writeObject (final Object o, final ObjectOutputStream out)
+          throws IOException
   {
     SerialUtilities.writeStroke((Stroke) o, out);
   }
@@ -79,10 +80,12 @@ public class BasicStrokeSerializer implements SerializeMethod
    *
    * @param in the object input stream from where to read the serialized data.
    * @return the generated object.
-   * @throws IOException if reading the stream failed.
+   *
+   * @throws IOException            if reading the stream failed.
    * @throws ClassNotFoundException if serialized object class cannot be found.
    */
-  public Object readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException
+  public Object readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
     return SerialUtilities.readStroke(in);
   }
@@ -92,7 +95,7 @@ public class BasicStrokeSerializer implements SerializeMethod
    *
    * @return the class <code>java.awt.BasicStroke</code>.
    */
-  public Class getObjectClass()
+  public Class getObjectClass ()
   {
     return BasicStroke.class;
   }

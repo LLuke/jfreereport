@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultElementFactory.java,v 1.3 2004/05/07 14:29:48 mungady Exp $
+ * $Id: DefaultElementFactory.java,v 1.4 2005/02/22 20:19:39 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -38,11 +38,11 @@
 
 package org.jfree.report.modules.parser.ext.factory.elements;
 
+import org.jfree.report.AnchorElement;
 import org.jfree.report.DrawableElement;
 import org.jfree.report.ImageElement;
 import org.jfree.report.ShapeElement;
 import org.jfree.report.TextElement;
-import org.jfree.report.AnchorElement;
 
 /**
  * A default implementation of the {@link ElementFactory} interface.
@@ -54,7 +54,7 @@ public class DefaultElementFactory extends AbstractElementFactory
   /**
    * Creates a new element factory.
    */
-  public DefaultElementFactory()
+  public DefaultElementFactory ()
   {
     registerElement(new AnchorElement());
     registerElement(new TextElement());

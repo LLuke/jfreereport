@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLWriter.java,v 1.3 2003/08/25 14:29:32 taqua Exp $
+ * $Id: XMLWriter.java,v 1.5 2005/01/25 00:17:21 taqua Exp $
  *
  * Changes
  * -------
@@ -48,33 +48,38 @@ import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.report.util.Log;
 
 /**
- * The XMLWriter is the content creation function used to create the XML content.
- * This implementation does no layouting, the bands and elements are written in the
- * defined order.
- * <p>
- * The xml writer is intended as simple example on how to write OutputFunctions,
- * the XML-code generated is very simple and easy to understand. If you seek
- * complexer XML-Outputs, have a look at the HTML-Writer, this implementation is able
- * to write XHTML output.
+ * The XMLWriter is the content creation function used to create the XML content. This
+ * implementation does no layouting, the bands and elements are written in the defined
+ * order.
+ * <p/>
+ * The xml writer is intended as simple example on how to write OutputFunctions, the
+ * XML-code generated is very simple and easy to understand. If you seek complexer
+ * XML-Outputs, have a look at the HTML-Writer, this implementation is able to write XHTML
+ * output.
  *
  * @author Thomas Morgner
  */
 public class XMLWriter extends AbstractFunction
 {
-  /** the writer used to write the generated document. */
+  /**
+   * the writer used to write the generated document.
+   */
   private Writer w;
 
-  /** the dependency level. */
+  /**
+   * the dependency level.
+   */
   private int depLevel;
 
-  /** the XMLEntity parser used to encode the xml characters. */
+  /**
+   * the XMLEntity parser used to encode the xml characters.
+   */
   private final CharacterEntityParser entityParser;
 
   /**
-   * Creates a new XMLWriter function. The Writer gets a dependency level of
-   * -1.
+   * Creates a new XMLWriter function. The Writer gets a dependency level of -1.
    */
-  public XMLWriter()
+  public XMLWriter ()
   {
     setDependencyLevel(-1);
     entityParser = CharacterEntityParser.createXMLEntityParser();
@@ -85,7 +90,7 @@ public class XMLWriter extends AbstractFunction
    *
    * @return the writer.
    */
-  public Writer getWriter()
+  public Writer getWriter ()
   {
     return w;
   }
@@ -95,7 +100,7 @@ public class XMLWriter extends AbstractFunction
    *
    * @param w the writer.
    */
-  public void setWriter(final Writer w)
+  public void setWriter (final Writer w)
   {
     this.w = w;
   }
@@ -106,8 +111,8 @@ public class XMLWriter extends AbstractFunction
    * @param b the band that should be written.
    * @throws IOException if an IO-Error occurs.
    */
-  private void writeBand(final Band b)
-      throws IOException
+  private void writeBand (final Band b)
+          throws IOException
   {
     final Element[] elements = b.getElementArray();
     for (int i = 0; i < elements.length; i++)
@@ -133,9 +138,9 @@ public class XMLWriter extends AbstractFunction
   /**
    * Writes the report header.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportStarted(final ReportEvent event)
+  public void reportStarted (final ReportEvent event)
   {
     try
     {
@@ -153,9 +158,9 @@ public class XMLWriter extends AbstractFunction
   /**
    * Writes the report footer.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportFinished(final ReportEvent event)
+  public void reportFinished (final ReportEvent event)
   {
     try
     {
@@ -173,9 +178,9 @@ public class XMLWriter extends AbstractFunction
   /**
    * Writes the header of the current group.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupStarted(final ReportEvent event)
+  public void groupStarted (final ReportEvent event)
   {
     try
     {
@@ -195,9 +200,9 @@ public class XMLWriter extends AbstractFunction
   /**
    * Writes the footer of the current group.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupFinished(final ReportEvent event)
+  public void groupFinished (final ReportEvent event)
   {
     try
     {
@@ -217,9 +222,9 @@ public class XMLWriter extends AbstractFunction
   /**
    * Writes the itemband.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void itemsAdvanced(final ReportEvent event)
+  public void itemsAdvanced (final ReportEvent event)
   {
     try
     {
@@ -234,13 +239,12 @@ public class XMLWriter extends AbstractFunction
   }
 
   /**
-   * Starts the itembands section.
-   * <P>
-   * The next events will be itemsAdvanced events until the itemsFinished event is raised.
+   * Starts the itembands section. <P> The next events will be itemsAdvanced events until
+   * the itemsFinished event is raised.
    *
    * @param event The event.
    */
-  public void itemsStarted(final ReportEvent event)
+  public void itemsStarted (final ReportEvent event)
   {
     try
     {
@@ -253,13 +257,12 @@ public class XMLWriter extends AbstractFunction
   }
 
   /**
-   * Closes the itemband section.
-   * <P>
-   * The itemBand is finished, the report starts to close open groups.
+   * Closes the itemband section. <P> The itemBand is finished, the report starts to close
+   * open groups.
    *
    * @param event The event.
    */
-  public void itemsFinished(final ReportEvent event)
+  public void itemsFinished (final ReportEvent event)
   {
     try
     {
@@ -276,32 +279,33 @@ public class XMLWriter extends AbstractFunction
    *
    * @return the value of the function.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return this;
   }
 
   /**
-   * The dependency level defines the level of execution for this function. Higher dependency
-   * functions are executed before lower dependency functions. For ordinary functions and
-   * expressions, the range for dependencies is defined to start from 0 (lowest dependency
-   * possible) to 2^31 (upper limit of int).
-   * <p>
-   * PageLayouter functions override the default behaviour an place them self at depency level -1,
-   * an so before any userdefined function.
+   * The dependency level defines the level of execution for this function. Higher
+   * dependency functions are executed before lower dependency functions. For ordinary
+   * functions and expressions, the range for dependencies is defined to start from 0
+   * (lowest dependency possible) to 2^31 (upper limit of int).
+   * <p/>
+   * PageLayouter functions override the default behaviour an place them self at depency
+   * level -1, an so before any userdefined function.
    *
    * @return the level.
    */
-  public int getDependencyLevel()
+  public int getDependencyLevel ()
   {
     return depLevel;
   }
 
   /**
    * Overrides the depency level. Should be lower than any other function depency.
+   *
    * @param deplevel the new depency level.
    */
-  public void setDependencyLevel(final int deplevel)
+  public void setDependencyLevel (final int deplevel)
   {
     this.depLevel = deplevel;
   }

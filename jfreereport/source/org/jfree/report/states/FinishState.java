@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: FinishState.java,v 1.3 2004/05/07 08:14:21 mungady Exp $
+ * $Id: FinishState.java,v 1.4 2005/01/28 19:26:59 taqua Exp $
  *
  * Changes
  * -------
@@ -52,24 +52,26 @@ public final class FinishState extends ReportState
   /**
    * Creates a new 'finish' report state.
    *
-   * @param previous  the previous state.
+   * @param previous the previous state.
    */
-  public FinishState(final ReportState previous)
+  public FinishState (final ReportState previous)
   {
     super(previous);
   }
 
   /**
-   * Normally, this method would perform a transition to the next state, but since this is the
-   * final state there is nowhere to go, so a <code>ReportProcessingException</code> is thrown.
+   * Normally, this method would perform a transition to the next state, but since this is
+   * the final state there is nowhere to go, so a <code>ReportProcessingException</code>
+   * is thrown.
    *
    * @return nothing, since a <code>ReportProcessingException</code> is thrown before the
    *         method returns.
    *
-   * @throws ReportProcessingException to indicate that it is not possible to advance to another
-   *         state from the finish state.
+   * @throws ReportProcessingException to indicate that it is not possible to advance to
+   *                                   another state from the finish state.
    */
-  public ReportState advance() throws ReportProcessingException
+  public ReportState advance ()
+          throws ReportProcessingException
   {
     throw new ReportProcessingException("Cannot advance beyond finish!");
   }
@@ -79,7 +81,7 @@ public final class FinishState extends ReportState
    *
    * @return true, as this report is done and will no longer advance.
    */
-  public boolean isFinish()
+  public boolean isFinish ()
   {
     return true;
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostReportFooterState.java,v 1.3 2004/05/07 08:14:21 mungady Exp $
+ * $Id: PostReportFooterState.java,v 1.4 2005/01/28 19:26:59 taqua Exp $
  *
  * Changes
  * -------
@@ -52,9 +52,9 @@ public class PostReportFooterState extends ReportState
   /**
    * Creates a new 'finish' report state.
    *
-   * @param previous  the previous state.
+   * @param previous the previous state.
    */
-  public PostReportFooterState(final ReportState previous)
+  public PostReportFooterState (final ReportState previous)
   {
     super(previous);
   }
@@ -65,14 +65,16 @@ public class PostReportFooterState extends ReportState
   }
 
   /**
-   * Advance to the FinishState. The PostReportFooterState is used to catch a
-   * continued reportfooter.
+   * Advance to the FinishState. The PostReportFooterState is used to catch a continued
+   * reportfooter.
    *
-   * @return a finish state, as there is nothing to be done after the report footer
-   * has been completed.
+   * @return a finish state, as there is nothing to be done after the report footer has
+   *         been completed.
+   *
    * @throws ReportProcessingException if advancing failed.
    */
-  public ReportState advance() throws ReportProcessingException
+  public ReportState advance ()
+          throws ReportProcessingException
   {
     firePrepareEvent();
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlProcessor.java,v 1.8.4.1 2004/12/13 19:27:08 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.11 2005/01/25 00:13:28 taqua Exp $
  *
  * Changes
  * -------
@@ -46,60 +46,69 @@ import org.jfree.report.modules.output.table.base.TableProcessor;
 /**
  * The HtmlProcessor handles the initialisation of the report writer and starts and
  * manages the report process.
- * <p>
+ * <p/>
  * The Html content is not written directly into an OutputStream. As Html-Files are able
- * to use external references to include images and style information, the output
- * target is provided using an abstract HtmlFilesystem.
- * <p>
- * Depending on the implementation, the output is written into a directory, a ZipFile
- * or a single Html-stream.
- * <p>
+ * to use external references to include images and style information, the output target
+ * is provided using an abstract HtmlFilesystem.
+ * <p/>
+ * Depending on the implementation, the output is written into a directory, a ZipFile or a
+ * single Html-stream.
+ * <p/>
  * This output target supports the generation of XHTML or HTML4 output. All recent
- * browsers should be able to handle XHTML output. XHTML is standard XML code, so that
- * any XML parser is able to read and parse the generated output.
- * <p>
- * If not specified otherwise, this Processor uses the System Encoding as output enconding,
- * or UTF-8 if no system encoding is defined. When generating XHTML output, make sure that
- * your parser supports your selected encoding, all JAXP compatible parsers must support
- * at least UTF-8 and US-ASCII encoding.
- *
- * @see HtmlFilesystem
+ * browsers should be able to handle XHTML output. XHTML is standard XML code, so that any
+ * XML parser is able to read and parse the generated output.
+ * <p/>
+ * If not specified otherwise, this Processor uses the System Encoding as output
+ * enconding, or UTF-8 if no system encoding is defined. When generating XHTML output,
+ * make sure that your parser supports your selected encoding, all JAXP compatible parsers
+ * must support at least UTF-8 and US-ASCII encoding.
  *
  * @author Thomas Morgner
+ * @see HtmlFilesystem
  */
 public class HtmlProcessor extends TableProcessor
 {
-  /** the filesystem implementation used for writing the generated content. */
-  private HtmlFilesystem filesystem;
-  
-  /** 
-   * The configuration prefix when reading the configuration settings 
-   * from the report configuration.
+  /**
+   * the filesystem implementation used for writing the generated content.
    */
-  public static final String CONFIGURATION_PREFIX = 
-    "org.jfree.report.modules.output.table.html";
+  private HtmlFilesystem filesystem;
 
-  /** The configuration key that defines whether to generate XHTML code. */
+  /**
+   * The configuration prefix when reading the configuration settings from the report
+   * configuration.
+   */
+  public static final String CONFIGURATION_PREFIX =
+          "org.jfree.report.modules.output.table.html";
+
+  /**
+   * The configuration key that defines whether to generate XHTML code.
+   */
   public static final String GENERATE_XHTML = "GenerateXHTML";
 
-  /** the fileencoding for the main html file. */
+  /**
+   * the fileencoding for the main html file.
+   */
   public static final String ENCODING = "Encoding";
-  /** a default value for the fileencoding of the main html file. */
+  /**
+   * a default value for the fileencoding of the main html file.
+   */
   public static final String ENCODING_DEFAULT = "UTF-8";
 
-  /** The property key to define whether to build a html body fragment. */
+  /**
+   * The property key to define whether to build a html body fragment.
+   */
   public static final String BODY_FRAGMENT = "BodyFragment";
 
 
   /**
-   * Creates a new HtmlProcessor, which generates HTML4 output and uses the
-   * standard file encoding.
+   * Creates a new HtmlProcessor, which generates HTML4 output and uses the standard file
+   * encoding.
    *
    * @param report the report that should be processed.
    * @throws ReportProcessingException if the report initialization failed
    */
-  public HtmlProcessor(final JFreeReport report)
-      throws ReportProcessingException
+  public HtmlProcessor (final JFreeReport report)
+          throws ReportProcessingException
   {
     super(report);
   }
@@ -107,13 +116,13 @@ public class HtmlProcessor extends TableProcessor
   /**
    * Creates a new HtmlProcessor, which uses the standard file encoding.
    *
-   * @param report  the report that should be processed.
-   * @param useXHTML  true, if XML output should be generated, false for HTML4 compatible output.
-   *
+   * @param report   the report that should be processed.
+   * @param useXHTML true, if XML output should be generated, false for HTML4 compatible
+   *                 output.
    * @throws ReportProcessingException if the report initialization failed
    */
-  public HtmlProcessor(final JFreeReport report, final boolean useXHTML)
-      throws ReportProcessingException
+  public HtmlProcessor (final JFreeReport report, final boolean useXHTML)
+          throws ReportProcessingException
   {
     super(report);
     setGenerateXHTML(useXHTML);
@@ -124,31 +133,31 @@ public class HtmlProcessor extends TableProcessor
    *
    * @return true, if XHTML output is generated, false otherwise.
    */
-  public boolean isGenerateXHTML()
+  public boolean isGenerateXHTML ()
   {
     return getReport().getReportConfiguration().getConfigProperty
             (getReportConfigurationPrefix() + "." + GENERATE_XHTML, "false").equals("true");
   }
 
   /**
-   * Defines the XHTML flag. Set to true, to generate XHTML output, false for
-   * HTML4 compatible code.
+   * Defines the XHTML flag. Set to true, to generate XHTML output, false for HTML4
+   * compatible code.
    *
    * @param useXHTML the XHTML flag.
    */
-  public void setGenerateXHTML(final boolean useXHTML)
+  public void setGenerateXHTML (final boolean useXHTML)
   {
     getReport().getReportConfiguration().setConfigProperty
             (getReportConfigurationPrefix() + "." + GENERATE_XHTML, String.valueOf(useXHTML));
   }
 
   /**
-   * Gets the HTMLFilesystem, which should be used, or null, if no filesystem
-   * is defined yet.
+   * Gets the HTMLFilesystem, which should be used, or null, if no filesystem is defined
+   * yet.
    *
    * @return the filesystem, which should be used to store the created content.
    */
-  public HtmlFilesystem getFilesystem()
+  public HtmlFilesystem getFilesystem ()
   {
     return filesystem;
   }
@@ -158,18 +167,18 @@ public class HtmlProcessor extends TableProcessor
    *
    * @param filesystem the filesystem for storing the generated content.
    */
-  public void setFilesystem(final HtmlFilesystem filesystem)
+  public void setFilesystem (final HtmlFilesystem filesystem)
   {
     this.filesystem = filesystem;
   }
 
   /**
-   * Gets the report configuration prefix for that processor. This prefix defines
-   * how to map the property names into the global report configuration.
+   * Gets the report configuration prefix for that processor. This prefix defines how to
+   * map the property names into the global report configuration.
    *
    * @return the report configuration prefix.
    */
-  protected String getReportConfigurationPrefix()
+  protected String getReportConfigurationPrefix ()
   {
     return CONFIGURATION_PREFIX;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableCellBackground.java,v 1.17 2005/02/19 13:30:01 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.18 2005/02/22 20:18:52 taqua Exp $
  *
  * Changes
  * -------
@@ -50,86 +50,106 @@ import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.geom.StrictBounds;
 
 /**
- * Encapsulates all TableCellBackground informations, such as borders and background color.
- * <p>
- * The TableCellBackground contains the format information for the table cells.
- * Background information is used to format the tablecells in the {@link TableWriter}.
+ * Encapsulates all TableCellBackground informations, such as borders and background
+ * color.
+ * <p/>
+ * The TableCellBackground contains the format information for the table cells. Background
+ * information is used to format the tablecells in the {@link TableWriter}.
  * CellBackgrounds can be shared for multiple cells.
  *
  * @author Thomas Morgner
  */
 public strictfp class TableCellBackground
-    extends MetaElement implements Cloneable
+        extends MetaElement implements Cloneable
 {
   private ArrayList anchors;
 
-  /** The top border's size. */
+  /**
+   * The top border's size.
+   */
   private float borderSizeTop;
 
-  /** The bottom border's size. */
+  /**
+   * The bottom border's size.
+   */
   private float borderSizeBottom;
 
-  /** The left border's size. */
+  /**
+   * The left border's size.
+   */
   private float borderSizeLeft;
 
-  /** The right border's size. */
+  /**
+   * The right border's size.
+   */
   private float borderSizeRight;
 
-  /** The top border's color. */
+  /**
+   * The top border's color.
+   */
   private Color colorTop;
 
-  /** The left border's color. */
+  /**
+   * The left border's color.
+   */
   private Color colorLeft;
 
-  /** The bottom border's color. */
+  /**
+   * The bottom border's color.
+   */
   private Color colorBottom;
 
-  /** The right border's color. */
+  /**
+   * The right border's color.
+   */
   private Color colorRight;
 
-  /** The cell background color. */
+  /**
+   * The cell background color.
+   */
   private Color color;
 
-  public TableCellBackground(final Content elementContent,
-                             final ElementStyleSheet style,
-                             final Color color)
+  public TableCellBackground (final Content elementContent,
+                              final ElementStyleSheet style,
+                              final Color color)
   {
     super(elementContent, style);
     this.color = color;
     this.anchors = new ArrayList();
   }
- 
+
   /**
-   * Gets the background color for this cell, or <code>null</code> if this cell has no background.
+   * Gets the background color for this cell, or <code>null</code> if this cell has no
+   * background.
    *
    * @return the background color or <code>null</code>.
    */
-  public Color getColor()
+  public Color getColor ()
   {
     return color;
   }
 
   /**
-   * Defines the top border. If color is null or the size is 0, then no top border
-   * is drawn.
+   * Defines the top border. If color is null or the size is 0, then no top border is
+   * drawn.
    *
    * @param color the color of the top border.
-   * @param size the line width of the top border.
+   * @param size  the line width of the top border.
    */
-  public void setBorderTop(final Color color, final float size)
+  public void setBorderTop (final Color color, final float size)
   {
     colorTop = color;
     borderSizeTop = size;
   }
 
   /**
-   * Defines the left border. If color is null or the size is 0, then no left border
-   * is drawn.
+   * Defines the left border. If color is null or the size is 0, then no left border is
+   * drawn.
    *
    * @param color the color of the left border.
-   * @param size the line width of the left border.
+   * @param size  the line width of the left border.
    */
-  public void setBorderLeft(final Color color, final float size)
+  public void setBorderLeft (final Color color, final float size)
   {
     colorLeft = color;
     borderSizeLeft = size;
@@ -140,22 +160,22 @@ public strictfp class TableCellBackground
    * is drawn.
    *
    * @param color the color of the bottom border.
-   * @param size the line width of the bottom border.
+   * @param size  the line width of the bottom border.
    */
-  public void setBorderBottom(final Color color, final float size)
+  public void setBorderBottom (final Color color, final float size)
   {
     colorBottom = color;
     borderSizeBottom = size;
   }
 
   /**
-   * Defines the right border. If color is null or the size is 0, then no right border
-   * is drawn.
+   * Defines the right border. If color is null or the size is 0, then no right border is
+   * drawn.
    *
    * @param color the color of the right border.
-   * @param size the line width of the right border.
+   * @param size  the line width of the right border.
    */
-  public void setBorderRight(final Color color, final float size)
+  public void setBorderRight (final Color color, final float size)
   {
     colorRight = color;
     borderSizeRight = size;
@@ -166,7 +186,7 @@ public strictfp class TableCellBackground
    *
    * @return the  line width of the top border.
    */
-  public float getBorderSizeTop()
+  public float getBorderSizeTop ()
   {
     return borderSizeTop;
   }
@@ -176,7 +196,7 @@ public strictfp class TableCellBackground
    *
    * @return the  line width of the bottom border.
    */
-  public float getBorderSizeBottom()
+  public float getBorderSizeBottom ()
   {
     return borderSizeBottom;
   }
@@ -186,7 +206,7 @@ public strictfp class TableCellBackground
    *
    * @return the  line width of the left border.
    */
-  public float getBorderSizeLeft()
+  public float getBorderSizeLeft ()
   {
     return borderSizeLeft;
   }
@@ -196,7 +216,7 @@ public strictfp class TableCellBackground
    *
    * @return the  line width of the right border.
    */
-  public float getBorderSizeRight()
+  public float getBorderSizeRight ()
   {
     return borderSizeRight;
   }
@@ -206,7 +226,7 @@ public strictfp class TableCellBackground
    *
    * @return the  color of the top border.
    */
-  public Color getColorTop()
+  public Color getColorTop ()
   {
     return colorTop;
   }
@@ -216,7 +236,7 @@ public strictfp class TableCellBackground
    *
    * @return the  color of the left border.
    */
-  public Color getColorLeft()
+  public Color getColorLeft ()
   {
     return colorLeft;
   }
@@ -226,7 +246,7 @@ public strictfp class TableCellBackground
    *
    * @return the  color of the bottom border.
    */
-  public Color getColorBottom()
+  public Color getColorBottom ()
   {
     return colorBottom;
   }
@@ -236,25 +256,24 @@ public strictfp class TableCellBackground
    *
    * @return the  color of the right border.
    */
-  public Color getColorRight()
+  public Color getColorRight ()
   {
     return colorRight;
   }
 
   /**
-   * Merges this background with the given background and returns the
-   * result. The given background is considered to be overlayed by this
-   * background.
-   * <p>
-   * This function returns a <code>this</code> reference if the background
-   * was not merged.
-   * <p>
+   * Merges this background with the given background and returns the result. The given
+   * background is considered to be overlayed by this background.
+   * <p/>
+   * This function returns a <code>this</code> reference if the background was not
+   * merged.
+   * <p/>
    * Merging two unrelated backgrounds will now work.
    *
    * @param background the other background cell
    * @return a union of the background informations.
    */
-  public TableCellBackground merge(final TableCellBackground background)
+  public TableCellBackground merge (final TableCellBackground background)
   {
     final StrictBounds bounds = getBounds();
     final StrictBounds backgroundBounds = background.getBounds();
@@ -264,7 +283,7 @@ public strictfp class TableCellBackground
     // the this cell does not fully overlap the given cell
     // then do nothing ...
     if (StrictBounds.contains(bounds, cellBounds) == false &&
-        StrictBounds.contains(cellBounds, bounds) == false)
+            StrictBounds.contains(cellBounds, bounds) == false)
     {
       return this;
     }
@@ -298,7 +317,7 @@ public strictfp class TableCellBackground
     final long y2 = backgroundBounds.getY() + backgroundBounds.getHeight();
 
     // test TopBorder ...
-    if (x1 <= bgx1 &&  x2 >= bgx2)
+    if (x1 <= bgx1 && x2 >= bgx2)
     {
       if (bgy1 == y1)
       {
@@ -318,7 +337,7 @@ public strictfp class TableCellBackground
       }
     }
 
-    if (x1 <= bgx1 &&  x2 >= bgx2)
+    if (x1 <= bgx1 && x2 >= bgx2)
     {
       if (bgy2 == y1)
       {
@@ -327,7 +346,7 @@ public strictfp class TableCellBackground
           merged.setBorderBottom(background.getColorTop(), background.getBorderSizeTop());
         }
       }
-      else if (bgy2 == y2 )
+      else if (bgy2 == y2)
       {
         // bottom border ..
         if (merged.getColorBottom() == null || merged.getBorderSizeBottom() == 0)
@@ -382,7 +401,7 @@ public strictfp class TableCellBackground
 
   /**
    * Creates an merged instance of this background for the given bounds.
-   * 
+   *
    * @return a copy of this background with new bounds.
    */
   protected TableCellBackground createMergedInstance ()
@@ -400,13 +419,14 @@ public strictfp class TableCellBackground
   }
 
   /**
-   * Adds two colors, the result is the mixed color of the base color and the paint color.
+   * Adds two colors, the result is the mixed color of the base color and the paint
+   * color.
    *
-   * @param base the base color
+   * @param base  the base color
    * @param paint the overlay color
    * @return the merged colors.
    */
-  private static Color addColor(final Color base, final Color paint)
+  private static Color addColor (final Color base, final Color paint)
   {
     final BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     final Graphics g = img.getGraphics();
@@ -427,7 +447,7 @@ public strictfp class TableCellBackground
    *
    * @return the string representation of this cell background.
    */
-  public String toString()
+  public String toString ()
   {
     final StringBuffer b = new StringBuffer();
     b.append("TableCellBackground={bounds=");
@@ -457,11 +477,10 @@ public strictfp class TableCellBackground
   /**
    * Tests this object for equality with another object.
    *
-   * @param o  the other object.
-   *
+   * @param o the other object.
    * @return A boolean.
    */
-  public boolean equals(final Object o)
+  public boolean equals (final Object o)
   {
     if (this == o)
     {
@@ -491,27 +510,27 @@ public strictfp class TableCellBackground
       return false;
     }
     if (color != null ? !color.equals(tableCellBackground.color)
-        : tableCellBackground.color != null)
+            : tableCellBackground.color != null)
     {
       return false;
     }
     if (colorBottom != null ? !colorBottom.equals(tableCellBackground.colorBottom)
-        : tableCellBackground.colorBottom != null)
+            : tableCellBackground.colorBottom != null)
     {
       return false;
     }
     if (colorLeft != null ? !colorLeft.equals(tableCellBackground.colorLeft)
-        : tableCellBackground.colorLeft != null)
+            : tableCellBackground.colorLeft != null)
     {
       return false;
     }
     if (colorRight != null ? !colorRight.equals(tableCellBackground.colorRight)
-        : tableCellBackground.colorRight != null)
+            : tableCellBackground.colorRight != null)
     {
       return false;
     }
     if (colorTop != null ? !colorTop.equals(tableCellBackground.colorTop)
-        : tableCellBackground.colorTop != null)
+            : tableCellBackground.colorTop != null)
     {
       return false;
     }
@@ -523,7 +542,7 @@ public strictfp class TableCellBackground
    *
    * @return A hash code.
    */
-  public int hashCode()
+  public int hashCode ()
   {
     int result;
     result = Float.floatToIntBits(borderSizeTop);

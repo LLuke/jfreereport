@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableProcessor.java,v 1.16 2005/02/04 19:22:57 taqua Exp $
+ * $Id: TableProcessor.java,v 1.17 2005/02/19 13:30:01 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
 import org.jfree.report.modules.output.meta.MetaBandProducer;
@@ -53,54 +52,76 @@ import org.jfree.report.states.FinishState;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.states.ReportStateProgress;
 import org.jfree.report.states.StartState;
+import org.jfree.report.util.geom.StrictGeomUtility;
 
 /**
- * The TableProcessor is the abstract base class for all table based output targets.
- * It handles the initialisation of the report writer and starts and manages the
- * report process.
- * <p>
+ * The TableProcessor is the abstract base class for all table based output targets. It
+ * handles the initialisation of the report writer and starts and manages the report
+ * process.
+ * <p/>
  * Implementing classes should supply a table producer by implementing the createProducer
  * method.
- * <p>
+ * <p/>
  * Like all other report processors, this implementation is not synchronized.
  *
  * @author Thomas Morgner
  */
 public abstract class TableProcessor
 {
-  /** A compile time constant to define how many events should be fired during the processing. */
+  /**
+   * A compile time constant to define how many events should be fired during the
+   * processing.
+   */
   private static final int MAX_EVENTS_PER_RUN = 400;
 
-  /** Disable strict layout by default. */
+  /**
+   * Disable strict layout by default.
+   */
   public static final String STRICT_LAYOUT_DEFAULT = "false";
 
-  /** The local property name for strict layout. */
+  /**
+   * The local property name for strict layout.
+   */
   public static final String STRICT_LAYOUT = "StrictLayout";
 
-  /** the function name used for the created tablewriter. */
+  /**
+   * the function name used for the created tablewriter.
+   */
   private static final String TABLE_WRITER = TableProcessor.class.getName() + "$table-writer";
 
-  /** Literal text for the 'title' property name. */
+  /**
+   * Literal text for the 'title' property name.
+   */
   public static final String TITLE = "Title";
 
-  /** Literal text for the 'author' property name. */
+  /**
+   * Literal text for the 'author' property name.
+   */
   public static final String AUTHOR = "Author";
 
 
-  /** the report that should be processed. */
+  /**
+   * the report that should be processed.
+   */
   private JFreeReport report;
 
-  /** The tablewriter function. */
+  /**
+   * The tablewriter function.
+   */
   private TableWriter tableWriter;
-  /** 
-   * A flag that controls, whether this processor should monitor the 
-   * thread's interrupted state. 
+  /**
+   * A flag that controls, whether this processor should monitor the thread's interrupted
+   * state.
    */
   private boolean handleInterruptedState;
 
-  /** Storage for listener references. */
+  /**
+   * Storage for listener references.
+   */
   private ArrayList listeners;
-  /** The listeners as object array for faster access. */
+  /**
+   * The listeners as object array for faster access.
+   */
   private Object[] listenersCache;
 
   private transient LayoutCreator layoutCreator;
@@ -109,15 +130,14 @@ public abstract class TableProcessor
   public static final String GLOBAL_LAYOUT_DEFAULT = "false";
 
   /**
-   * Creates a new TableProcessor. The TableProcessor creates a private copy
-   * of the supplied report.
+   * Creates a new TableProcessor. The TableProcessor creates a private copy of the
+   * supplied report.
    *
    * @param report the report that should be processed.
-   *
    * @throws ReportProcessingException if the report initialization failed
    */
-  public TableProcessor(final JFreeReport report)
-      throws ReportProcessingException
+  public TableProcessor (final JFreeReport report)
+          throws ReportProcessingException
   {
     if (report == null)
     {
@@ -140,18 +160,18 @@ public abstract class TableProcessor
     // initialize with the report default.
   }
 
-  protected abstract MetaBandProducer createMetaBandProducer();
+  protected abstract MetaBandProducer createMetaBandProducer ();
 
   /**
-   * returns true, if the TableWriter should perform a stricter layout translation.
-   * When set to true, all element bounds are used to create the table. This could result
-   * in a complex layout, more suitable for printing. If set to false, only the starting
-   * bounds (the left and the upper border) are used to create the layout. This will result
-   * is lesser cells and rows, the layout will be better suitable for later processing.
+   * returns true, if the TableWriter should perform a stricter layout translation. When
+   * set to true, all element bounds are used to create the table. This could result in a
+   * complex layout, more suitable for printing. If set to false, only the starting bounds
+   * (the left and the upper border) are used to create the layout. This will result is
+   * lesser cells and rows, the layout will be better suitable for later processing.
    *
    * @return true, if strict layouting rules should be applied, false otherwise.
    */
-  public boolean isStrictLayout()
+  public boolean isStrictLayout ()
   {
     return report.getReportConfiguration().getConfigProperty
             (getReportConfigurationPrefix() + "." + STRICT_LAYOUT, "false").equals("true");
@@ -161,10 +181,9 @@ public abstract class TableProcessor
    * Defines whether strict layouting rules should be used for the TableLayouter.
    *
    * @param strictLayout set to true, to use strict layouting rules, false otherwise.
-   *
    * @see TableProcessor#isStrictLayout
    */
-  public void setStrictLayout(final boolean strictLayout)
+  public void setStrictLayout (final boolean strictLayout)
   {
     report.getReportConfiguration().setConfigProperty
             (getReportConfigurationPrefix() + "." + STRICT_LAYOUT,
@@ -176,18 +195,18 @@ public abstract class TableProcessor
    *
    * @return the tablewriter function of the current report.
    */
-  protected TableWriter getTableWriter()
+  protected TableWriter getTableWriter ()
   {
     return tableWriter;
   }
 
   /**
-   * Returns the private copy of the used report. The report is initialized for the
-   * report writing, so handle this instance with care.
+   * Returns the private copy of the used report. The report is initialized for the report
+   * writing, so handle this instance with care.
    *
    * @return the local report.
    */
-  protected JFreeReport getReport()
+  protected JFreeReport getReport ()
   {
     return report;
   }
@@ -199,8 +218,8 @@ public abstract class TableProcessor
    *
    * @throws ReportProcessingException if there was a problem processing the report.
    */
-  private ReportState repaginate()
-      throws ReportProcessingException
+  private ReportState repaginate ()
+          throws ReportProcessingException
   {
     // apply the configuration ...
     configure();
@@ -268,7 +287,8 @@ public abstract class TableProcessor
         int lastRow = -1;
         int eventCount = 0;
         final boolean failOnError
-            = (level == -1) && getReport().getReportConfiguration().isStrictErrorHandling();
+                = (level == -1) && getReport().getReportConfiguration()
+                .isStrictErrorHandling();
         while (!state.isFinish())
         {
           checkInterrupted();
@@ -279,7 +299,7 @@ public abstract class TableProcessor
             if (eventCount == 0)
             {
               stateEvent.reuse(level, state.getCurrentPage(), state.getCurrentDataItem(),
-                  state.getNumberOfRows(), true);
+                      state.getNumberOfRows(), true);
               fireStateUpdate(stateEvent);
               eventCount += 1;
             }
@@ -364,21 +384,22 @@ public abstract class TableProcessor
    *
    * @return
    */
-  protected LayoutCreator createLayoutCreator()
+  protected LayoutCreator createLayoutCreator ()
   {
-    return new DefaultLayoutCreator (getReportConfigurationPrefix());
+    return new DefaultLayoutCreator(getReportConfigurationPrefix());
   }
 
-  protected abstract TableCreator createContentCreator();
+  protected abstract TableCreator createContentCreator ();
 
   /**
-   * Returns the previously created LayoutCreator. Calling this method
-   * is only valid during the report processing.
+   * Returns the previously created LayoutCreator. Calling this method is only valid
+   * during the report processing.
    *
    * @return the layout creator
+   *
    * @throws IllegalStateException if there is no layout creator.
    */
-  protected LayoutCreator getLayoutCreator()
+  protected LayoutCreator getLayoutCreator ()
   {
     if (layoutCreator == null)
     {
@@ -388,12 +409,13 @@ public abstract class TableProcessor
   }
 
   /**
-   * Processes the report. The generated output is written using the defined
-   * writer, the report is repaginated before the final writing.
+   * Processes the report. The generated output is written using the defined writer, the
+   * report is repaginated before the final writing.
    *
    * @throws ReportProcessingException if the report processing failed.
    */
-  public synchronized void processReport() throws ReportProcessingException
+  public synchronized void processReport ()
+          throws ReportProcessingException
   {
     ReportState state = repaginate();
 
@@ -410,7 +432,7 @@ public abstract class TableProcessor
     final int eventTrigger = maxRows / MAX_EVENTS_PER_RUN;
 
     final boolean failOnError =
-        getReport().getReportConfiguration().isStrictErrorHandling();
+            getReport().getReportConfiguration().isStrictErrorHandling();
     ReportStateProgress progress = null;
     while (!state.isFinish())
     {
@@ -422,7 +444,7 @@ public abstract class TableProcessor
         if (eventCount == 0)
         {
           stateEvent.reuse(TableWriter.OUTPUT_LEVEL, state.getCurrentPage(),
-              state.getCurrentDataItem(), state.getNumberOfRows(), true);
+                  state.getCurrentDataItem(), state.getNumberOfRows(), true);
           fireStateUpdate(stateEvent);
           eventCount += 1;
         }
@@ -456,30 +478,29 @@ public abstract class TableProcessor
   }
 
   /**
-   * Gets the report configuration prefix for that processor. This prefix defines
-   * how to map the property names into the global report configuration.
+   * Gets the report configuration prefix for that processor. This prefix defines how to
+   * map the property names into the global report configuration.
    *
    * @return the report configuration prefix.
    */
-  protected abstract String getReportConfigurationPrefix();
+  protected abstract String getReportConfigurationPrefix ();
 
   /**
-   * Copies all report configuration properties which match the configuration
-   * prefix of this table processor into the property set of this processor.
+   * Copies all report configuration properties which match the configuration prefix of
+   * this table processor into the property set of this processor.
    */
-  protected void configure()
+  protected void configure ()
   {
     getTableWriter().setMaxWidth(StrictGeomUtility.toInternalValue
             (getReport().getPageDefinition().getWidth()));
   }
 
   /**
-   * Adds a repagination listener. This listener will be informed of
-   * pagination events.
+   * Adds a repagination listener. This listener will be informed of pagination events.
    *
-   * @param l  the listener.
+   * @param l the listener.
    */
-  public void addRepaginationListener(final RepaginationListener l)
+  public void addRepaginationListener (final RepaginationListener l)
   {
     if (l == null)
     {
@@ -496,9 +517,9 @@ public abstract class TableProcessor
   /**
    * Removes a repagination listener.
    *
-   * @param l  the listener.
+   * @param l the listener.
    */
-  public void removeRepaginationListener(final RepaginationListener l)
+  public void removeRepaginationListener (final RepaginationListener l)
   {
     if (l == null)
     {
@@ -515,9 +536,9 @@ public abstract class TableProcessor
   /**
    * Sends a repagination update to all registered listeners.
    *
-   * @param state  the state.
+   * @param state the state.
    */
-  protected void fireStateUpdate(final RepaginationState state)
+  protected void fireStateUpdate (final RepaginationState state)
   {
     if (listeners == null)
     {
@@ -537,10 +558,11 @@ public abstract class TableProcessor
   /**
    * Checks, whether the current thread is interrupted.
    *
-   * @throws org.jfree.report.ReportInterruptedException if the thread is interrupted to
-   * abort the report processing.
+   * @throws org.jfree.report.ReportInterruptedException
+   *          if the thread is interrupted to abort the report processing.
    */
-  protected void checkInterrupted () throws ReportInterruptedException
+  protected void checkInterrupted ()
+          throws ReportInterruptedException
   {
     if (isHandleInterruptedState() && Thread.interrupted())
     {
@@ -550,26 +572,25 @@ public abstract class TableProcessor
 
 
   /**
-   * Returns whether the processor should check the threads interrupted state.
-   * If this is set to true and the thread was interrupted, then the report processing
-   * is aborted.
+   * Returns whether the processor should check the threads interrupted state. If this is
+   * set to true and the thread was interrupted, then the report processing is aborted.
    *
-   * @return true, if the processor should check the current thread state, false otherwise.
+   * @return true, if the processor should check the current thread state, false
+   *         otherwise.
    */
-  public boolean isHandleInterruptedState()
+  public boolean isHandleInterruptedState ()
   {
     return handleInterruptedState;
   }
 
   /**
-   * Defines, whether the processor should check the threads interrupted state.
-   * If this is set to true and the thread was interrupted, then the report processing
-   * is aborted.
+   * Defines, whether the processor should check the threads interrupted state. If this is
+   * set to true and the thread was interrupted, then the report processing is aborted.
    *
-   * @param handleInterruptedState true, if the processor should check the current thread state,
-   *                               false otherwise.
+   * @param handleInterruptedState true, if the processor should check the current thread
+   *                               state, false otherwise.
    */
-  public void setHandleInterruptedState(final boolean handleInterruptedState)
+  public void setHandleInterruptedState (final boolean handleInterruptedState)
   {
     this.handleInterruptedState = handleInterruptedState;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceCollector.java,v 1.7 2005/01/25 00:19:41 taqua Exp $
+ * $Id: DataSourceCollector.java,v 1.8 2005/02/23 19:32:05 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -42,8 +42,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.jfree.util.Configuration;
 import org.jfree.util.ClassComparator;
+import org.jfree.util.Configuration;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ObjectDescription;
 
@@ -54,17 +54,23 @@ import org.jfree.xml.factory.objects.ObjectDescription;
  */
 public class DataSourceCollector implements DataSourceFactory, Serializable
 {
-  /** Storage for the factories. */
+  /**
+   * Storage for the factories.
+   */
   private final ArrayList factories;
-  /** The comparator used to compare class instances. */
+  /**
+   * The comparator used to compare class instances.
+   */
   private final ClassComparator comparator;
-  /** The parser/report configuration. */
+  /**
+   * The parser/report configuration.
+   */
   private Configuration config;
 
   /**
    * Creates a new factory.
    */
-  public DataSourceCollector()
+  public DataSourceCollector ()
   {
     factories = new ArrayList();
     comparator = new ClassComparator();
@@ -73,9 +79,9 @@ public class DataSourceCollector implements DataSourceFactory, Serializable
   /**
    * Adds a factory to the collection.
    *
-   * @param factory  the factory.
+   * @param factory the factory.
    */
-  public void addFactory(final DataSourceFactory factory)
+  public void addFactory (final DataSourceFactory factory)
   {
     factories.add(factory);
     if (getConfig() != null)
@@ -89,7 +95,7 @@ public class DataSourceCollector implements DataSourceFactory, Serializable
    *
    * @return The iterator.
    */
-  public Iterator getFactories()
+  public Iterator getFactories ()
   {
     return factories.iterator();
   }
@@ -97,11 +103,10 @@ public class DataSourceCollector implements DataSourceFactory, Serializable
   /**
    * Returns a data source description.
    *
-   * @param name  the data source name.
-   *
+   * @param name the data source name.
    * @return The description.
    */
-  public ObjectDescription getDataSourceDescription(final String name)
+  public ObjectDescription getDataSourceDescription (final String name)
   {
     for (int i = 0; i < factories.size(); i++)
     {
@@ -118,11 +123,10 @@ public class DataSourceCollector implements DataSourceFactory, Serializable
   /**
    * Returns a data source name.
    *
-   * @param od  the object description.
-   *
+   * @param od the object description.
    * @return The name.
    */
-  public String getDataSourceName(final ObjectDescription od)
+  public String getDataSourceName (final ObjectDescription od)
   {
     for (int i = 0; i < factories.size(); i++)
     {
@@ -139,11 +143,10 @@ public class DataSourceCollector implements DataSourceFactory, Serializable
   /**
    * Returns a description for the class.
    *
-   * @param c  the class.
-   *
+   * @param c the class.
    * @return The description.
    */
-  public ObjectDescription getDescriptionForClass(final Class c)
+  public ObjectDescription getDescriptionForClass (final Class c)
   {
     for (int i = 0; i < factories.size(); i++)
     {
@@ -160,14 +163,13 @@ public class DataSourceCollector implements DataSourceFactory, Serializable
   /**
    * Returns a description for the super class.
    *
-   * @param d  the class.
-   * @param knownSuperClass the last known super class for the given class or null
-   * if none was found yet.
-   *
+   * @param d               the class.
+   * @param knownSuperClass the last known super class for the given class or null if none
+   *                        was found yet.
    * @return The object description suitable to create instances of the given class d.
    */
   public ObjectDescription getSuperClassObjectDescription
-      (final Class d, ObjectDescription knownSuperClass)
+          (final Class d, ObjectDescription knownSuperClass)
   {
     for (int i = 0; i < factories.size(); i++)
     {
@@ -184,7 +186,7 @@ public class DataSourceCollector implements DataSourceFactory, Serializable
       else
       {
         if (comparator.isComparable(knownSuperClass.getObjectClass(), od.getObjectClass())
-            && (comparator.compare(knownSuperClass.getObjectClass(), od.getObjectClass()) < 0))
+                && (comparator.compare(knownSuperClass.getObjectClass(), od.getObjectClass()) < 0))
         {
           knownSuperClass = od;
         }
@@ -202,7 +204,7 @@ public class DataSourceCollector implements DataSourceFactory, Serializable
    *
    * @return The iterator.
    */
-  public Iterator getRegisteredClasses()
+  public Iterator getRegisteredClasses ()
   {
     final ArrayList list = new ArrayList();
     for (int i = 0; i < factories.size(); i++)
@@ -218,15 +220,15 @@ public class DataSourceCollector implements DataSourceFactory, Serializable
   }
 
   /**
-   * Configures this factory. The configuration contains several keys and
-   * their defined values. The given reference to the configuration object
-   * will remain valid until the report parsing or writing ends.
-   * <p>
+   * Configures this factory. The configuration contains several keys and their defined
+   * values. The given reference to the configuration object will remain valid until the
+   * report parsing or writing ends.
+   * <p/>
    * The configuration contents may change during the reporting.
    *
    * @param config the configuration, never null
    */
-  public void configure(final Configuration config)
+  public void configure (final Configuration config)
   {
     if (config == null)
     {
@@ -253,7 +255,7 @@ public class DataSourceCollector implements DataSourceFactory, Serializable
    *
    * @return the configuration.
    */
-  public Configuration getConfig()
+  public Configuration getConfig ()
   {
     return config;
   }
@@ -263,7 +265,7 @@ public class DataSourceCollector implements DataSourceFactory, Serializable
    *
    * @return the registered names.
    */
-  public Iterator getRegisteredNames()
+  public Iterator getRegisteredNames ()
   {
     return new ArrayList().iterator();
   }

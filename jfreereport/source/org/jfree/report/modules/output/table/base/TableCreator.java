@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableCreator.java,v 1.2.2.1 2004/12/13 19:27:06 taqua Exp $
+ * $Id: TableCreator.java,v 1.3 2005/01/25 00:12:44 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,42 +43,42 @@ import org.jfree.report.ReportProcessingException;
 import org.jfree.report.modules.output.meta.MetaBand;
 
 /**
- * The table creator is a streaming interface for the table producers.
- * Metabands get processed by TableCreators to either compute a layout
- * or to create the actual content.
- * <p>
+ * The table creator is a streaming interface for the table producers. Metabands get
+ * processed by TableCreators to either compute a layout or to create the actual content.
+ * <p/>
  * The order of the metabands is not defined, it depends on the tablewriter
- * implementation. It is guaranteed, that once a metaband is <code>flush</code>ed,
- * it is safe to write the band to the output stream.
- * <p>
- * When flush is called, it is guaranteed, that the subsequent bands will
- * be printed below the flushed bands. Flushed and non-flushed content will
- * never overlap.
+ * implementation. It is guaranteed, that once a metaband is <code>flush</code>ed, it is
+ * safe to write the band to the output stream.
+ * <p/>
+ * When flush is called, it is guaranteed, that the subsequent bands will be printed below
+ * the flushed bands. Flushed and non-flushed content will never overlap.
  */
 public interface TableCreator
 {
   /**
-   * Starts the report processing. This method is called only once
-   * per report processing. The TableCreator might use the report
-   * definition to configure itself and to perform startup operations.
+   * Starts the report processing. This method is called only once per report processing.
+   * The TableCreator might use the report definition to configure itself and to perform
+   * startup operations.
    *
    * @param report the report definition.
    */
-  public void open(ReportDefinition report) throws ReportProcessingException;
+  public void open (ReportDefinition report)
+          throws ReportProcessingException;
 
   /**
-   * Begins a table. A table is considered a closed entity, it usually
-   * represents a sheet or a single page. Table headers and table properties
-   * can be defined using the given report definition.
+   * Begins a table. A table is considered a closed entity, it usually represents a sheet
+   * or a single page. Table headers and table properties can be defined using the given
+   * report definition.
    *
    * @param report the report definiton.
    */
-  public void beginTable (ReportDefinition report) throws ReportProcessingException;
+  public void beginTable (ReportDefinition report)
+          throws ReportProcessingException;
 
   /**
-   * Processes the given metaband. The MetaBandProducer has already collected
-   * all necessary data to allow the content creation. Table implementors
-   * should provide their own MetaBandProducer if they need additional properties.
+   * Processes the given metaband. The MetaBandProducer has already collected all
+   * necessary data to allow the content creation. Table implementors should provide their
+   * own MetaBandProducer if they need additional properties.
    *
    * @param band the metaband that is processed.
    */
@@ -87,33 +87,35 @@ public interface TableCreator
   /**
    * Finishes the current table.
    */
-  public void endTable () throws ReportProcessingException;
+  public void endTable ()
+          throws ReportProcessingException;
 
   /**
    * Closes the report processing.
    */
-  public void close() throws ReportProcessingException;
+  public void close ()
+          throws ReportProcessingException;
 
   /**
    * Checks, whether the report processing has started.
    *
    * @return true, if the report is open, false otherwise.
    */
-  public boolean isOpen();
+  public boolean isOpen ();
 
   /**
-   * Checks, whether the current table contains content. Returns true,
-   * if there is no current table open.
+   * Checks, whether the current table contains content. Returns true, if there is no
+   * current table open.
    *
    * @return true, if the table does not contain content, false otherwise.
    */
-  public boolean isEmpty();
+  public boolean isEmpty ();
 
   /**
-   * Commits all bands. See the class description for details on the
-   * flushing process.
-   * 
+   * Commits all bands. See the class description for details on the flushing process.
+   *
    * @return true, if the content was flushed, false otherwise.
    */
-  public boolean flush() throws ReportProcessingException;
+  public boolean flush ()
+          throws ReportProcessingException;
 }

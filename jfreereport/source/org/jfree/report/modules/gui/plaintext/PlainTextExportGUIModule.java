@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PlainTextExportGUIModule.java,v 1.8 2004/05/07 14:29:53 mungady Exp $
+ * $Id: PlainTextExportGUIModule.java,v 1.9 2005/01/25 00:06:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,11 +38,11 @@
 
 package org.jfree.report.modules.gui.plaintext;
 
-import org.jfree.report.modules.gui.base.ExportPluginFactory;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
+import org.jfree.report.modules.gui.base.ExportPluginFactory;
+import org.jfree.report.util.ReportConfiguration;
 
 /**
  * The module definition for the plain text export gui module.
@@ -51,16 +51,22 @@ import org.jfree.base.modules.SubSystem;
  */
 public class PlainTextExportGUIModule extends AbstractModule
 {
-  /** The export plugin preference key. */
+  /**
+   * The export plugin preference key.
+   */
   private static final String ORDER_KEY = "org.jfree.report.modules.gui.plaintext.Order";
-  /** The export plugin enable key. */
+  /**
+   * The export plugin enable key.
+   */
   private static final String ENABLE_KEY = "org.jfree.report.modules.gui.plaintext.Enable";
 
   /**
    * DefaultConstructor. Loads the module specification.
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public PlainTextExportGUIModule() throws ModuleInitializeException
+  public PlainTextExportGUIModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }
@@ -79,9 +85,9 @@ public class PlainTextExportGUIModule extends AbstractModule
           throws ModuleInitializeException
   {
     final String order = ReportConfiguration.getGlobalConfig().getConfigProperty
-        (ORDER_KEY, "0");
+            (ORDER_KEY, "0");
 
     ExportPluginFactory.getInstance().registerPlugin
-        (PlainTextExportPlugin.class, order, ENABLE_KEY);
+            (PlainTextExportPlugin.class, order, ENABLE_KEY);
   }
 }

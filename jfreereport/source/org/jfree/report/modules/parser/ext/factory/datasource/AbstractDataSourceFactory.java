@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractDataSourceFactory.java,v 1.3 2003/08/25 14:29:33 taqua Exp $
+ * $Id: AbstractDataSourceFactory.java,v 1.5 2005/01/25 00:19:35 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -50,15 +50,17 @@ import org.jfree.xml.factory.objects.ObjectDescription;
  * @author Thomas Morgner
  */
 public abstract class AbstractDataSourceFactory
-    extends ClassFactoryImpl implements DataSourceFactory
+        extends ClassFactoryImpl implements DataSourceFactory
 {
-  /** Storage for the data sources. */
+  /**
+   * Storage for the data sources.
+   */
   private final HashMap dataSources;
 
   /**
    * Creates a new factory.
    */
-  public AbstractDataSourceFactory()
+  public AbstractDataSourceFactory ()
   {
     dataSources = new HashMap();
   }
@@ -66,10 +68,10 @@ public abstract class AbstractDataSourceFactory
   /**
    * Registers a data source.
    *
-   * @param name  the name.
-   * @param o  the object description.
+   * @param name the name.
+   * @param o    the object description.
    */
-  public void registerDataSources(final String name, final ObjectDescription o)
+  public void registerDataSources (final String name, final ObjectDescription o)
   {
     dataSources.put(name, o);
     registerClass(o.getObjectClass(), o);
@@ -78,11 +80,10 @@ public abstract class AbstractDataSourceFactory
   /**
    * Returns a data source description.
    *
-   * @param name  the data source name.
-   *
+   * @param name the data source name.
    * @return The object description.
    */
-  public ObjectDescription getDataSourceDescription(final String name)
+  public ObjectDescription getDataSourceDescription (final String name)
   {
     final ObjectDescription od = (ObjectDescription) dataSources.get(name);
     if (od != null)
@@ -95,11 +96,10 @@ public abstract class AbstractDataSourceFactory
   /**
    * Returns a data source name given a description.
    *
-   * @param od  the object description.
-   *
+   * @param od the object description.
    * @return The name.
    */
-  public String getDataSourceName(final ObjectDescription od)
+  public String getDataSourceName (final ObjectDescription od)
   {
     final Iterator keys = dataSources.keySet().iterator();
     while (keys.hasNext())
@@ -119,7 +119,7 @@ public abstract class AbstractDataSourceFactory
    *
    * @return the registered names.
    */
-  public Iterator getRegisteredNames()
+  public Iterator getRegisteredNames ()
   {
     return dataSources.keySet().iterator();
   }

@@ -1,7 +1,7 @@
 package org.jfree.report.elementfactory;
 
-import org.jfree.report.Element;
 import org.jfree.report.AnchorElement;
+import org.jfree.report.Element;
 import org.jfree.report.filter.templates.AnchorFieldTemplate;
 
 public class AnchorFieldElementFactory extends ElementFactory

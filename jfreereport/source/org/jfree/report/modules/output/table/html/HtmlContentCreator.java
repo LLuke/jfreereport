@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.3 2005/01/30 23:37:23 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.4 2005/02/19 13:30:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,9 +46,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.jfree.report.Anchor;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDefinition;
-import org.jfree.report.Anchor;
 import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.GenericObjectTable;
@@ -66,7 +66,9 @@ import org.jfree.report.util.geom.StrictGeomUtility;
 public class HtmlContentCreator extends TableContentCreator
 {
 
-  /** the standard XHTML document type declaration and header. */
+  /**
+   * the standard XHTML document type declaration and header.
+   */
   private static final String[] XHTML_HEADER = {
     "<!DOCTYPE html",
     "     PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"",
@@ -74,7 +76,9 @@ public class HtmlContentCreator extends TableContentCreator
     "<html xmlns=\"http://www.w3.org/1999/xhtml\">",
     "<head>"};
 
-  /** the standard HTML4 document type declaration and header. */
+  /**
+   * the standard HTML4 document type declaration and header.
+   */
   private static final String[] HTML4_HEADER = {
     "<!DOCTYPE HTML ",
     "     PUBLIC \"-//W3C//DTD HTML 4.01//EN\"",
@@ -129,13 +133,14 @@ public class HtmlContentCreator extends TableContentCreator
 
 
   /**
-   * Creates the global Cascading Stylesheet definition for the
-   * report.
+   * Creates the global Cascading Stylesheet definition for the report.
    *
    * @return the global stylesheet as html reference.
+   *
    * @throws IOException if an error occured.
    */
-  private HtmlReference buildGlobalStyleSheet() throws IOException
+  private HtmlReference buildGlobalStyleSheet ()
+          throws IOException
   {
     //
     // Creates the stylesheets and the StyleSheet reference.
@@ -207,7 +212,7 @@ public class HtmlContentCreator extends TableContentCreator
       try
       {
         this.pout = new PrintWriter(new OutputStreamWriter
-            (filesystem.getRootStream(), encoding), false);
+                (filesystem.getRootStream(), encoding), false);
         // write the standard headers
         if (isUseXHTML())
         {
@@ -282,7 +287,7 @@ public class HtmlContentCreator extends TableContentCreator
       catch (IOException ioe)
       {
         throw new FunctionProcessingException
-            ("Failed to create the writer or write the header.", ioe);
+                ("Failed to create the writer or write the header.", ioe);
       }
     }
   }
@@ -377,8 +382,7 @@ public class HtmlContentCreator extends TableContentCreator
           pout.print(cellStyleName);
           pout.print("\">");
         }
-        else
-        if (style != null)
+        else if (style != null)
         {
           pout.print("<div style=\"");
           pout.print(style.getCSSString(HtmlStyle.INLINE));
@@ -395,7 +399,7 @@ public class HtmlContentCreator extends TableContentCreator
         }
         else if (isDebugReportLayout())
         {
-          pout.println ("<!-- Invalid element @(" + x + ", " + y + ") -->&nbsp;");
+          pout.println("<!-- Invalid element @(" + x + ", " + y + ") -->&nbsp;");
         }
         pout.println("</div></td>");
       }
@@ -409,8 +413,8 @@ public class HtmlContentCreator extends TableContentCreator
    * Prints the table data cell definition for a content cell.
    *
    * @param rectangle the cell's rectangle in the table grid
-   * @param x the cell's x coordinate
-   * @param y the cell's y coordinate
+   * @param x         the cell's x coordinate
+   * @param y         the cell's y coordinate
    */
   private void printContentCellStart (final TableRectangle rectangle,
                                       final int x, final int y)
@@ -420,21 +424,21 @@ public class HtmlContentCreator extends TableContentCreator
     // lets do some work!
     if (isDebugReportLayout())
     {
-      pout.println("<!-- content cell @(" + x + "," + y +") -->");
+      pout.println("<!-- content cell @(" + x + "," + y + ") -->");
     }
 
     pout.print("<td ");
     if (rectangle.getRowSpan() > 1)
     {
-      pout.print ("rowspan=\"");
-      pout.print (rectangle.getRowSpan());
-      pout.print ("\" ");
+      pout.print("rowspan=\"");
+      pout.print(rectangle.getRowSpan());
+      pout.print("\" ");
     }
     if (rectangle.getColumnSpan() > 1)
     {
-      pout.print ("colspan=\"");
-      pout.print (rectangle.getColumnSpan());
-      pout.print ("\" ");
+      pout.print("colspan=\"");
+      pout.print(rectangle.getColumnSpan());
+      pout.print("\" ");
     }
 
     final String internalStyleName = layout.getBackgroundStyleAt(y, x);
@@ -548,10 +552,10 @@ public class HtmlContentCreator extends TableContentCreator
 
     if (isDebugReportLayout())
     {
-      pout.println("<!-- empty cell @(" + x + "," + y +")-->");
+      pout.println("<!-- empty cell @(" + x + "," + y + ")-->");
     }
 
-    final int width = (int) StrictGeomUtility.toExternalValue(layout.getCellWidth(x, x+1));
+    final int width = (int) StrictGeomUtility.toExternalValue(layout.getCellWidth(x, x + 1));
     if (cellStyleName != null || isCreateBodyFragment())
     {
       pout.print("<td class=\"");

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKeyFactoryCollector.java,v 1.7.4.1 2004/05/11 13:25:49 taqua Exp $
+ * $Id: StyleKeyFactoryCollector.java,v 1.9 2005/01/25 00:20:05 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -51,13 +51,15 @@ import org.jfree.xml.factory.objects.ClassFactory;
  */
 public class StyleKeyFactoryCollector implements StyleKeyFactory
 {
-  /** Storage for the factories. */
+  /**
+   * Storage for the factories.
+   */
   private final ArrayList factories;
 
   /**
    * Creates a new factory.
    */
-  public StyleKeyFactoryCollector()
+  public StyleKeyFactoryCollector ()
   {
     factories = new ArrayList();
   }
@@ -65,9 +67,9 @@ public class StyleKeyFactoryCollector implements StyleKeyFactory
   /**
    * Adds a factory.
    *
-   * @param factory  the factory.
+   * @param factory the factory.
    */
-  public void addFactory(final StyleKeyFactory factory)
+  public void addFactory (final StyleKeyFactory factory)
   {
     factories.add(factory);
   }
@@ -77,7 +79,7 @@ public class StyleKeyFactoryCollector implements StyleKeyFactory
    *
    * @return The iterator.
    */
-  public Iterator getFactories()
+  public Iterator getFactories ()
   {
     return factories.iterator();
   }
@@ -85,11 +87,10 @@ public class StyleKeyFactoryCollector implements StyleKeyFactory
   /**
    * Returns a style key.
    *
-   * @param name  the name.
-   *
+   * @param name the name.
    * @return The style key.
    */
-  public StyleKey getStyleKey(final String name)
+  public StyleKey getStyleKey (final String name)
   {
     for (int i = 0; i < factories.size(); i++)
     {
@@ -106,15 +107,14 @@ public class StyleKeyFactoryCollector implements StyleKeyFactory
   /**
    * Creates an object.
    *
-   * @param k  the style key.
-   * @param value  the value.
-   * @param c  the class.
-   * @param cf the class factory used to create the basic object.
-   *
+   * @param k     the style key.
+   * @param value the value.
+   * @param c     the class.
+   * @param cf    the class factory used to create the basic object.
    * @return The object.
    */
-  public Object createBasicObject(final StyleKey k, final String value,
-                                  final Class c, final ClassFactory cf)
+  public Object createBasicObject (final StyleKey k, final String value,
+                                   final Class c, final ClassFactory cf)
   {
     for (int i = 0; i < factories.size(); i++)
     {
@@ -133,7 +133,7 @@ public class StyleKeyFactoryCollector implements StyleKeyFactory
    *
    * @return The iterator.
    */
-  public Iterator getRegisteredKeys()
+  public Iterator getRegisteredKeys ()
   {
     final ArrayList list = new ArrayList();
     for (int i = 0; i < factories.size(); i++)
@@ -150,12 +150,13 @@ public class StyleKeyFactoryCollector implements StyleKeyFactory
 
   /**
    * Indicated whether an other object is equal to this one.
-   * @see java.lang.Object#equals(java.lang.Object)
    *
    * @param o the other object.
    * @return true, if the object is equal, false otherwise.
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
    */
-  public boolean equals(final Object o)
+  public boolean equals (final Object o)
   {
     if (this == o)
     {
@@ -178,11 +179,12 @@ public class StyleKeyFactoryCollector implements StyleKeyFactory
 
   /**
    * Computes an hashcode for this factory.
-   * @see java.lang.Object#hashCode()
    *
    * @return the hashcode.
+   *
+   * @see java.lang.Object#hashCode()
    */
-  public int hashCode()
+  public int hashCode ()
   {
     return factories.hashCode();
   }

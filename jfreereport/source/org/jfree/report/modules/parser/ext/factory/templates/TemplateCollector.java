@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TemplateCollector.java,v 1.6 2003/08/25 14:29:33 taqua Exp $
+ * $Id: TemplateCollector.java,v 1.7 2004/05/07 14:29:23 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -51,13 +51,15 @@ import org.jfree.util.Configuration;
  */
 public class TemplateCollector extends TemplateCollection
 {
-  /** Storage for the factories. */
+  /**
+   * Storage for the factories.
+   */
   private final ArrayList factories;
 
   /**
    * Creates a new template collector.
    */
-  public TemplateCollector()
+  public TemplateCollector ()
   {
     factories = new ArrayList();
   }
@@ -65,9 +67,9 @@ public class TemplateCollector extends TemplateCollection
   /**
    * Adds a template collection.
    *
-   * @param tc  the template collection.
+   * @param tc the template collection.
    */
-  public void addTemplateCollection(final TemplateCollection tc)
+  public void addTemplateCollection (final TemplateCollection tc)
   {
     factories.add(tc);
     if (getConfig() != null)
@@ -81,7 +83,7 @@ public class TemplateCollector extends TemplateCollection
    *
    * @return The iterator.
    */
-  public Iterator getFactories()
+  public Iterator getFactories ()
   {
     return factories.iterator();
   }
@@ -89,11 +91,10 @@ public class TemplateCollector extends TemplateCollection
   /**
    * Returns a template description.
    *
-   * @param name  the name.
-   *
+   * @param name the name.
    * @return The template description.
    */
-  public TemplateDescription getTemplate(final String name)
+  public TemplateDescription getTemplate (final String name)
   {
     for (int i = 0; i < factories.size(); i++)
     {
@@ -110,11 +111,10 @@ public class TemplateCollector extends TemplateCollection
   /**
    * Returns a template description.
    *
-   * @param template  the template.
-   *
+   * @param template the template.
    * @return The description.
    */
-  public TemplateDescription getDescription(final Template template)
+  public TemplateDescription getDescription (final Template template)
   {
     for (int i = 0; i < factories.size(); i++)
     {
@@ -129,15 +129,15 @@ public class TemplateCollector extends TemplateCollection
   }
 
   /**
-   * Configures this factory. The configuration contains several keys and
-   * their defined values. The given reference to the configuration object
-   * will remain valid until the report parsing or writing ends.
-   * <p>
+   * Configures this factory. The configuration contains several keys and their defined
+   * values. The given reference to the configuration object will remain valid until the
+   * report parsing or writing ends.
+   * <p/>
    * The configuration contents may change during the reporting.
    *
    * @param config the configuration, never null
    */
-  public void configure(final Configuration config)
+  public void configure (final Configuration config)
   {
     if (getConfig() != null)
     {
@@ -157,12 +157,13 @@ public class TemplateCollector extends TemplateCollection
 
   /**
    * Indicated whether an other object is equal to this one.
-   * @see java.lang.Object#equals(java.lang.Object)
    *
    * @param o the other object.
    * @return true, if the object is equal, false otherwise.
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
    */
-  public boolean equals(final Object o)
+  public boolean equals (final Object o)
   {
     if (this == o)
     {
@@ -189,11 +190,12 @@ public class TemplateCollector extends TemplateCollection
 
   /**
    * Computes an hashcode for this factory.
-   * @see java.lang.Object#hashCode()
    *
    * @return the hashcode.
+   *
+   * @see java.lang.Object#hashCode()
    */
-  public int hashCode()
+  public int hashCode ()
   {
     int result = super.hashCode();
     result = 29 * result + factories.hashCode();

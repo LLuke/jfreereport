@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeTransform.java,v 1.9 2005/02/05 18:35:17 taqua Exp $
+ * $Id: ShapeTransform.java,v 1.10 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -260,8 +260,8 @@ public final strictfp class ShapeTransform
       final Line2D line = (Line2D) s;
       final Point2D[] clipped = getClipped
               (line.getX1(), line.getY1(), line.getX2(), line.getY2(),
-              -DELTA, DELTA + bounds.getWidth(),
-              -DELTA, DELTA + bounds.getHeight());
+                      -DELTA, DELTA + bounds.getWidth(),
+                      -DELTA, DELTA + bounds.getHeight());
       if (clipped == null)
       {
         return new GeneralPath();
@@ -330,7 +330,6 @@ public final strictfp class ShapeTransform
     final Shape transformedShape = af.createTransformedShape(s);
     return transformedShape;
   }
-
 
 
   /**

@@ -23,63 +23,99 @@ import org.xml.sax.SAXException;
 
 public class BandReadHandler extends AbstractPropertyXmlReadHandler
 {
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String LABEL_TAG = "label";
 
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String STRING_FIELD_TAG = "string-field";
 
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String NUMBER_FIELD_TAG = "number-field";
 
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String DATE_FIELD_TAG = "date-field";
 
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String IMAGEREF_TAG = "imageref";
 
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String IMAGEFIELD_TAG = "image-field";
 
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String IMAGEURLFIELD_TAG = "imageurl-field";
 
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String RECTANGLE_TAG = "rectangle";
 
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String RESOURCELABEL_TAG = "resource-label";
 
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String RESOURCEFIELD_TAG = "resource-field";
 
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String LINE_TAG = "line";
 
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String DRAWABLE_FIELD_TAG = "drawable-field";
 
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String SHAPE_FIELD_TAG = "shape-field";
 
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String BAND_TAG = "band";
 
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String MESSAGE_FIELD_TAG = "message-field";
 
-  /** Literal text for an XML report element. */
+  /**
+   * Literal text for an XML report element.
+   */
   public static final String ANCHOR_FIELD_TAG = "anchor-field";
 
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String ALIGNMENT_ATT = "alignment";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String VALIGNMENT_ATT = "vertical-alignment";
 
 
-  private static final String NAME_ATT= "name";
+  private static final String NAME_ATT = "name";
   private static final String COLOR_ATT = "color";
   public static final String RESERVED_LITERAL_ATT = "reserved-literal";
 
@@ -90,7 +126,7 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
 
   public BandReadHandler ()
   {
-    this (new Band());
+    this(new Band());
   }
 
   protected BandReadHandler (final Band band)
@@ -206,20 +242,20 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
   }
 
   protected void handleAlignment (final Attributes attr)
-    throws SAXException
+          throws SAXException
   {
     final String valign = attr.getValue(VALIGNMENT_ATT);
     if (valign != null)
     {
       getBand().getStyle().setStyleProperty(ElementStyleSheet.VALIGNMENT,
-          ReportParserUtil.parseVerticalElementAlignment(valign));
+              ReportParserUtil.parseVerticalElementAlignment(valign));
     }
 
     final String halign = attr.getValue(ALIGNMENT_ATT);
     if (halign != null)
     {
       getBand().getStyle().setStyleProperty(ElementStyleSheet.ALIGNMENT,
-          ReportParserUtil.parseHorizontalElementAlignment(halign));
+              ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
   }
 
@@ -230,7 +266,8 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
    * @param atts the attribute set containing the "x" and "y" attributes.
    * @throws SAXException if parsing the element position failed.
    */
-  private void handlePosition(final Attributes atts) throws SAXException
+  private void handlePosition (final Attributes atts)
+          throws SAXException
   {
     String xValue = atts.getValue("x");
     if (xValue == null)
@@ -245,7 +282,7 @@ public class BandReadHandler extends AbstractPropertyXmlReadHandler
     final float x = ParserUtil.parseRelativeFloat(xValue, "Element x not valid");
     final float y = ParserUtil.parseRelativeFloat(yValue, "Element y not valid");
     getBand().getStyle().setStyleProperty
-        (StaticLayoutManager.ABSOLUTE_POS, new Point2D.Float(x, y));
+            (StaticLayoutManager.ABSOLUTE_POS, new Point2D.Float(x, y));
   }
 
   /**

@@ -1,8 +1,8 @@
 package org.jfree.report.modules.parser.base.common;
 
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.PropertyStringReadHandler;
-import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.util.beans.ConverterRegistry;
 import org.jfree.report.util.beans.StringValueConverter;
 import org.jfree.report.util.beans.ValueConverter;

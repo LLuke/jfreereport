@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverter.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
+ * $Id: ReportConverter.java,v 1.6 2005/01/25 00:20:33 taqua Exp $
  *
  * Changes
  * -------
@@ -63,8 +63,8 @@ import org.jfree.xml.factory.objects.ArrayClassFactory;
 import org.jfree.xml.factory.objects.URLClassFactory;
 
 /**
- * A utility class for converting XML report definitions from the old format to the
- * new format.
+ * A utility class for converting XML report definitions from the old format to the new
+ * format.
  *
  * @author Thomas Morgner
  */
@@ -73,25 +73,24 @@ public class ReportConverter
   /**
    * Default constructor.
    */
-  public ReportConverter()
+  public ReportConverter ()
   {
   }
 
   /**
    * Writes a report in the new XML format.
    *
-   * @param report  the report.
-   * @param w  a character stream writer.
+   * @param report      the report.
+   * @param w           a character stream writer.
    * @param contentBase the content base for creating relative URLs.
-   * @param encoding the encoding of the generated file.
-   *
-   * @throws IOException if there is an I/O problem.
-   * @throws ReportWriterException if there were problems while serializing
-   * the report definition.
+   * @param encoding    the encoding of the generated file.
+   * @throws IOException           if there is an I/O problem.
+   * @throws ReportWriterException if there were problems while serializing the report
+   *                               definition.
    */
-  public void write(final JFreeReport report, final Writer w,
-                    final URL contentBase, final String encoding)
-      throws IOException, ReportWriterException
+  public void write (final JFreeReport report, final Writer w,
+                     final URL contentBase, final String encoding)
+          throws IOException, ReportWriterException
   {
     if (contentBase == null)
     {
@@ -117,14 +116,13 @@ public class ReportConverter
   /**
    * Returns the URL of a report.
    *
-   * @param name  the report name.
-   *
+   * @param name the report name.
    * @return The URL (or <code>null</code>).
    *
    * @throws java.io.IOException if there is an I/O problem.
    */
-  public URL findReport(final String name)
-      throws IOException
+  public URL findReport (final String name)
+          throws IOException
   {
     final URL in = getClass().getResource(name);
     if (in != null)
@@ -142,14 +140,13 @@ public class ReportConverter
   /**
    * Parses a report from the specified template file.
    *
-   * @param templateURL  the template location.
-   *
+   * @param templateURL the template location.
    * @return The report.
    *
    * @throws java.io.IOException if there is an I/O problem.
    */
-  private JFreeReport parseReport(final URL templateURL)
-      throws IOException
+  private JFreeReport parseReport (final URL templateURL)
+          throws IOException
   {
     try
     {
@@ -164,19 +161,18 @@ public class ReportConverter
   }
 
   /**
-   * Parses a report from the old version of the XML report format, and writes a file
-   * in the new XML report format.
+   * Parses a report from the old version of the XML report format, and writes a file in
+   * the new XML report format.
    *
-   * @param inName  the input report file.
+   * @param inName   the input report file.
    * @param outFile  the output report file.
    * @param encoding the encoding of the generated file.
-   *
-   * @throws IOException if there is an I/O problem.
+   * @throws IOException           if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void convertReport(final String inName, final String outFile,
-                            final String encoding)
-      throws IOException, ReportWriterException
+  public void convertReport (final String inName, final String outFile,
+                             final String encoding)
+          throws IOException, ReportWriterException
   {
     final URL reportURL = findReport(inName);
     if (reportURL == null)
@@ -197,22 +193,21 @@ public class ReportConverter
   }
 
   /**
-   * Parses a report from the old version of the XML report format, and writes a file
-   * in the new XML report format.
+   * Parses a report from the old version of the XML report format, and writes a file in
+   * the new XML report format.
    *
-   * @param in  the input report file.
-   * @param out the output report file.
+   * @param in       the input report file.
+   * @param out      the output report file.
    * @param encoding the encoding of the generated file.
-   *
-   * @throws IOException if there is an I/O problem.
+   * @throws IOException           if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void convertReport(final File in, final File out, final String encoding)
-      throws IOException, ReportWriterException
+  public void convertReport (final File in, final File out, final String encoding)
+          throws IOException, ReportWriterException
   {
     final OutputStream base = new FileOutputStream(out);
     final Writer w = new BufferedWriter
-        (new OutputStreamWriter(base, encoding));
+            (new OutputStreamWriter(base, encoding));
     try
     {
       convertReport(in.toURL(), out.toURL(), w, encoding);
@@ -224,20 +219,19 @@ public class ReportConverter
   }
 
   /**
-   * Parses a report from the old version of the XML report format, and writes a file
-   * in the new XML report format.
+   * Parses a report from the old version of the XML report format, and writes a file in
+   * the new XML report format.
    *
-   * @param in the input resource from where to read the report
+   * @param in          the input resource from where to read the report
    * @param contentBase the contentbase where the new report will be stored.
-   * @param w the report writer
-   * @param encoding the encoding of the generated file.
-   *
-   * @throws IOException if there is an I/O problem.
+   * @param w           the report writer
+   * @param encoding    the encoding of the generated file.
+   * @throws IOException           if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void convertReport(final URL in, final URL contentBase,
-                            final Writer w, final String encoding)
-      throws IOException, ReportWriterException
+  public void convertReport (final URL in, final URL contentBase,
+                             final Writer w, final String encoding)
+          throws IOException, ReportWriterException
   {
     if (in == null)
     {
@@ -263,15 +257,14 @@ public class ReportConverter
   /**
    * The starting point for the conversion utility.  The utility accepts two command line
    * arguments, the first is the name of the input file (a report in the old format) and
-   * the second is the name of the output file (a report in the new format will be written to
-   * this file).
+   * the second is the name of the output file (a report in the new format will be written
+   * to this file).
    *
-   * @param args  command line arguments.
-   *
+   * @param args command line arguments.
    * @throws Exception if there is any problem.
    */
-  public static void main(final String[] args)
-      throws Exception
+  public static void main (final String[] args)
+          throws Exception
   {
     if (args.length != 2)
     {

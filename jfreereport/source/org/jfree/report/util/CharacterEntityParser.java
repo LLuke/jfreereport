@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CharacterEntityParser.java,v 1.5.4.3 2004/12/13 19:27:15 taqua Exp $
+ * $Id: CharacterEntityParser.java,v 1.7 2005/01/25 00:22:40 taqua Exp $
  *
  * Changes
  * -------
@@ -42,26 +42,30 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 /**
- * The character entity parser replaces all known occurrences of an entity
- * in the format &amp;entityname;.
+ * The character entity parser replaces all known occurrences of an entity in the format
+ * &amp;entityname;.
  *
  * @author Thomas Morgner
  */
 public class CharacterEntityParser
 {
-  /** the entities, keyed by entity name. */
+  /**
+   * the entities, keyed by entity name.
+   */
   private final Properties entities;
 
-  /** the reverse lookup entities, keyed by character. */
+  /**
+   * the reverse lookup entities, keyed by character.
+   */
   private final Properties reverse;
 
   /**
-   * Creates a new CharacterEntityParser and initializes the parser with
-   * the given set of entities.
+   * Creates a new CharacterEntityParser and initializes the parser with the given set of
+   * entities.
    *
    * @param characterEntities the entities used for the parser
    */
-  public CharacterEntityParser(final Properties characterEntities)
+  public CharacterEntityParser (final Properties characterEntities)
   {
     entities = characterEntities;
     reverse = new Properties();
@@ -75,12 +79,12 @@ public class CharacterEntityParser
   }
 
   /**
-   * create a new Character entity parser and initializes the parser with
-   * the entities defined in the XML standard.
+   * create a new Character entity parser and initializes the parser with the entities
+   * defined in the XML standard.
    *
    * @return the CharacterEntityParser initialized with XML entities.
    */
-  public static CharacterEntityParser createXMLEntityParser()
+  public static CharacterEntityParser createXMLEntityParser ()
   {
     final Properties entities = new Properties();
     entities.setProperty("amp", "&");
@@ -96,7 +100,7 @@ public class CharacterEntityParser
    *
    * @return the properties for this parser.
    */
-  private Properties getEntities()
+  private Properties getEntities ()
   {
     return entities;
   }
@@ -106,7 +110,7 @@ public class CharacterEntityParser
    *
    * @return the reverse-lookup properties for this parsers.
    */
-  private Properties getReverse()
+  private Properties getReverse ()
   {
     return reverse;
   }
@@ -117,7 +121,7 @@ public class CharacterEntityParser
    * @param key the entity name
    * @return the character as string with a length of 1
    */
-  private String lookupCharacter(final String key)
+  private String lookupCharacter (final String key)
   {
     final String val = getEntities().getProperty(key);
     return val;
@@ -129,7 +133,7 @@ public class CharacterEntityParser
    * @param character the character that should be translated into the entity
    * @return the entity name for the character or the untranslated character.
    */
-  private String lookupEntity(final String character)
+  private String lookupEntity (final String character)
   {
     final String val = getReverse().getProperty(character);
     if (val == null)
@@ -149,7 +153,7 @@ public class CharacterEntityParser
    * @param value the original string
    * @return the encoded string.
    */
-  public String encodeEntities(final String value)
+  public String encodeEntities (final String value)
   {
     final StringBuffer writer = new StringBuffer();
     for (int i = 0; i < value.length(); i++)
@@ -174,7 +178,7 @@ public class CharacterEntityParser
    * @param value the string that should be decoded.
    * @return the decoded string.
    */
-  public String decodeEntities(final String value)
+  public String decodeEntities (final String value)
   {
     int parserIndex = 0;
     int subStart = value.indexOf("&", parserIndex);
@@ -204,7 +208,7 @@ public class CharacterEntityParser
         else
         {
           // invalid entity, do not decode ..
-          bufValue.append (value.substring(subStart, subEnd));
+          bufValue.append(value.substring(subStart, subEnd));
         }
       }
       else

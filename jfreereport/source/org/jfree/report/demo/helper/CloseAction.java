@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: CloseAction.java,v 1.4 2003/08/31 19:27:56 taqua Exp $
+ * $Id: CloseAction.java,v 1.7 2005/01/24 23:59:05 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,9 @@
 package org.jfree.report.demo.helper;
 
 import org.jfree.report.util.ImageUtils;
-import org.jfree.util.ResourceBundleSupport;
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionDowngrade;
+import org.jfree.util.ResourceBundleSupport;
 
 /**
  * An action for closing the demo programms frame.
@@ -56,14 +56,14 @@ public abstract class CloseAction extends AbstractActionDowngrade
   /**
    * Constructs a new action.
    *
-   * @param resources  localised resources.
+   * @param resources localised resources.
    */
-  protected CloseAction(final ResourceBundleSupport resources)
+  protected CloseAction (final ResourceBundleSupport resources)
   {
     this.putValue(NAME, resources.getString("action.close.name"));
     this.putValue(SHORT_DESCRIPTION, resources.getString("action.close.description"));
     this.putValue(ActionDowngrade.MNEMONIC_KEY,
-        resources.getMnemonic("action.close.mnemonic"));
+            resources.getMnemonic("action.close.mnemonic"));
     this.putValue(SMALL_ICON, ImageUtils.createTransparentIcon(16, 16));
     this.putValue("ICON24", ImageUtils.createTransparentIcon(24, 24));
   }

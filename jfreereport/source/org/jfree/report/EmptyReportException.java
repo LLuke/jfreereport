@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: EmptyReportException.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: EmptyReportException.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -39,8 +39,7 @@
 package org.jfree.report;
 
 /**
- * The EmptyReportException is thrown, it the report processing generated
- * no content.
+ * The EmptyReportException is thrown, it the report processing generated no content.
  *
  * @author Thomas Morgner.
  */
@@ -49,10 +48,10 @@ public class EmptyReportException extends ReportProcessingException
   /**
    * Creates an EmptyReportException.
    *
-   * @param message  the exception message.
-   * @param ex  the parent exception.
+   * @param message the exception message.
+   * @param ex      the parent exception.
    */
-  public EmptyReportException(final String message, final Exception ex)
+  public EmptyReportException (final String message, final Exception ex)
   {
     super(message, ex);
   }
@@ -60,9 +59,9 @@ public class EmptyReportException extends ReportProcessingException
   /**
    * Creates an EmptyReportException.
    *
-   * @param message  the exception message.
+   * @param message the exception message.
    */
-  public EmptyReportException(final String message)
+  public EmptyReportException (final String message)
   {
     super(message);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFMetaBandProducer.java,v 1.4 2005/02/19 13:30:02 taqua Exp $
+ * $Id: RTFMetaBandProducer.java,v 1.5 2005/02/22 20:19:25 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -54,8 +54,8 @@ import org.jfree.report.modules.output.table.rtf.metaelements.RTFImageMetaElemen
 import org.jfree.report.modules.output.table.rtf.metaelements.RTFTextMetaElement;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
-import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.geom.StrictBounds;
 
 public class RTFMetaBandProducer extends TableMetaBandProducer
 {
@@ -105,7 +105,7 @@ public class RTFMetaBandProducer extends TableMetaBandProducer
     }
     final StrictBounds rect = (StrictBounds)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
-    return new RTFImageMetaElement (new ImageContent ((ImageContainer) o, rect),
+    return new RTFImageMetaElement(new ImageContent((ImageContainer) o, rect),
             createStyleForImageElement(e, x, y), imageCache);
   }
 
@@ -129,7 +129,7 @@ public class RTFMetaBandProducer extends TableMetaBandProducer
     {
       final BaseFont font =
               baseFontSupport.createBaseFont(def, encoding, false).getBaseFont();
-      return new RTFTextMetaElement (new RawContent (rect, o),
+      return new RTFTextMetaElement(new RawContent(rect, o),
               createStyleForTextElement(e, x, y), font);
     }
     catch (BaseFontCreateException e1)

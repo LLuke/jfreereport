@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.8 2005/01/25 22:55:39 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.9 2005/02/19 20:10:26 taqua Exp $
  *
  * Changes
  * -------
@@ -48,45 +48,51 @@ import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
- * An AWT-Based default implementation of an SizeCalculator. This implementation
- * tries to detect the currently used FontRendererContext; some JDKs are unable
- * to return reasonable sizes for the given text.
- *
- * @see org.jfree.report.layout.DefaultSizeCalculator
+ * An AWT-Based default implementation of an SizeCalculator. This implementation tries to
+ * detect the currently used FontRendererContext; some JDKs are unable to return
+ * reasonable sizes for the given text.
  *
  * @author Thomas Morgner
+ * @see org.jfree.report.layout.DefaultSizeCalculator
  */
 public strictfp class DefaultSizeCalculator implements SizeCalculator
 {
   private static final boolean VERBOSE_LOGGING = false;
 
   /**
-   * A helper class that is able to detect whether the implementation is considered
-   * buggy. A non-buggy implementation should show no differences between aliased-versions
-   * of Graphics2D and non-aliased versions.
-   * <p>
-   * On JDK 1.4 the font renderer changed.
-   * In previous versions, the font renderer was sensitive to fractional metrics,
-   * so that fonts were always rendered without FractionalMetrics enabled.
-   * Since 1.4, fonts are always rendered with FractionalMetrics disabled.
-   * <p>
+   * A helper class that is able to detect whether the implementation is considered buggy.
+   * A non-buggy implementation should show no differences between aliased-versions of
+   * Graphics2D and non-aliased versions.
+   * <p/>
+   * On JDK 1.4 the font renderer changed. In previous versions, the font renderer was
+   * sensitive to fractional metrics, so that fonts were always rendered without
+   * FractionalMetrics enabled. Since 1.4, fonts are always rendered with
+   * FractionalMetrics disabled.
+   * <p/>
    * Obviously this is annoying if you try to write a layouter for all JDKs :(
    */
   public static class BuggyFontRendererDetector
   {
-    /** a flag that indicates whether the FontRenderContext implementation is buggy. */
+    /**
+     * a flag that indicates whether the FontRenderContext implementation is buggy.
+     */
     private boolean isBuggyVersion;
 
-    /** a flag that checks whether aliasing is used to draw the contents on Graphics objects. */
+    /**
+     * a flag that checks whether aliasing is used to draw the contents on Graphics
+     * objects.
+     */
     private final boolean isAliased;
 
-    /** Cache the created FontRenderContext. FRC is read only. */
+    /**
+     * Cache the created FontRenderContext. FRC is read only.
+     */
     private FontRenderContext fontRenderContext;
 
     /**
      * creates a new BuggyFontRendererDetector.
      */
-    protected BuggyFontRendererDetector()
+    protected BuggyFontRendererDetector ()
     {
       isAliased = ReportConfiguration.getGlobalConfig().isFontRendererUseAliasing();
 
@@ -102,11 +108,13 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
       final Font font = new Font("Serif", Font.PLAIN, 10);
       final String myText = "A simple text with some characters to calculate the length.";
 
-      final double wAlias = font.getStringBounds(myText, 0, myText.length(), frcAlias).getWidth();
+      final double wAlias = font.getStringBounds(myText, 0, myText.length(), frcAlias)
+              .getWidth();
       final double wNoAlias =
-          font.getStringBounds(myText, 0, myText.length(), frcNoAlias).getWidth();
+              font.getStringBounds(myText, 0, myText.length(), frcNoAlias).getWidth();
       isBuggyVersion = (wAlias != wNoAlias);
-      final boolean buggyOverride = ReportConfiguration.getGlobalConfig().isFontRendererBuggy();
+      final boolean buggyOverride = ReportConfiguration.getGlobalConfig()
+              .isFontRendererBuggy();
 
       if (VERBOSE_LOGGING)
       {
@@ -117,32 +125,32 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
           if (isAliased())
           {
             Log.debug("The G2OutputTarget uses Antialiasing. \n"
-                + "The FontRendererBugs should not be visible in TextAntiAliasing-Mode.\n"
-                + "If there are problems with the string-placement, please report your \n"
-                + "Operating System version and your JDK Version to "
-                + "www.object-refinery.com/jfreereport.\n");
+                    + "The FontRendererBugs should not be visible in TextAntiAliasing-Mode.\n"
+                    + "If there are problems with the string-placement, please report your \n"
+                    + "Operating System version and your JDK Version to "
+                    + "www.object-refinery.com/jfreereport.\n");
           }
           else
           {
             Log.debug("The G2OutputTarget does not use Antialiasing. \n"
-                + "Your FontRenderer is buggy (text is not displayed correctly by "
-                + "default).\n"
-                + "The system was able to detect this and tries to correct that bug. \n"
-                + "If your strings are not displayed correctly, report your Operating System "
-                + "version and your \n"
-                + "JDK Version to www.object-refinery.com/jfreereport\n");
+                    + "Your FontRenderer is buggy (text is not displayed correctly by "
+                    + "default).\n"
+                    + "The system was able to detect this and tries to correct that bug. \n"
+                    + "If your strings are not displayed correctly, report your Operating System "
+                    + "version and your \n"
+                    + "JDK Version to www.object-refinery.com/jfreereport\n");
           }
         }
         else
         {
           Log.debug("Your FontRenderer seems to be ok, our tests didn't produce buggy results. \n"
-              + "If your strings are not displayed correctly, try to enable the "
-              + "configuration key \n"
-              + "\"org.jfree.report.targets.G2OutputTarget.isBuggyFRC=true\"\n"
-              + "in the file 'jfreereport.properties' or set this property as "
-              + "System-property. \n"
-              + "If the bug still remains alive, please report your Operating System version "
-              + "and your \nJDK Version to www.object-refinery.com/jfreereport.\n");
+                  + "If your strings are not displayed correctly, try to enable the "
+                  + "configuration key \n"
+                  + "\"org.jfree.report.targets.G2OutputTarget.isBuggyFRC=true\"\n"
+                  + "in the file 'jfreereport.properties' or set this property as "
+                  + "System-property. \n"
+                  + "If the bug still remains alive, please report your Operating System version "
+                  + "and your \nJDK Version to www.object-refinery.com/jfreereport.\n");
         }
         Log.debug("If text layouting is working as expected, no further action is required.");
       }
@@ -159,7 +167,7 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
      *
      * @return a font render context that is valid and not affected by the bugs.
      */
-    protected FontRenderContext createFontRenderContext()
+    protected FontRenderContext createFontRenderContext ()
     {
       if (fontRenderContext == null)
       {
@@ -180,11 +188,12 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
     }
 
     /**
-     * Gets the defined aliasing state for the FontRenderContext and the target Graphics2D.
+     * Gets the defined aliasing state for the FontRenderContext and the target
+     * Graphics2D.
      *
      * @return the aliasing state.
      */
-    public boolean isAliased()
+    public boolean isAliased ()
     {
       return isAliased;
     }
@@ -193,15 +202,17 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
      * Gets the buggy state of the AWT implementation.
      *
      * @return true, if the AWT implementation is buggy and not able to perform accurate
-     * font rendering.
+     *         font rendering.
      */
-    public boolean isBuggyVersion()
+    public boolean isBuggyVersion ()
     {
       return isBuggyVersion;
     }
   }
 
-  /** the FontRenderContext bug detector instance. */
+  /**
+   * the FontRenderContext bug detector instance.
+   */
   private static BuggyFontRendererDetector frcDetector;
 
   /**
@@ -209,7 +220,7 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
    *
    * @return the FontRenderContext-detector
    */
-  public static BuggyFontRendererDetector getFrcDetector()
+  public static BuggyFontRendererDetector getFrcDetector ()
   {
     if (frcDetector == null)
     {
@@ -218,20 +229,24 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
     return frcDetector;
   }
 
-  /** A cache for the last sizecalculators. */
+  /**
+   * A cache for the last sizecalculators.
+   */
   private static WeakHashMap cache;
 
-  /** The font. */
+  /**
+   * The font.
+   */
   private FontDefinition font;
 
   /**
    * Returns an instance.
    *
-   * @param font  The font definition.
-   *
+   * @param font The font definition.
    * @return A default size calculator.
    */
-  public static DefaultSizeCalculator getDefaultSizeCalculator(final FontDefinition font)
+  public static DefaultSizeCalculator getDefaultSizeCalculator (
+          final FontDefinition font)
   {
     if (cache == null)
     {
@@ -249,9 +264,9 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
   /**
    * Creates a new size calculator.
    *
-   * @param font  the font.
+   * @param font the font.
    */
-  public DefaultSizeCalculator(final FontDefinition font)
+  public DefaultSizeCalculator (final FontDefinition font)
   {
     if (font == null)
     {
@@ -265,12 +280,12 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
   }
 
   /**
-   * Returns the height of the current font. The font height specifies the distance between
-   * 2 base lines.
+   * Returns the height of the current font. The font height specifies the distance
+   * between 2 base lines.
    *
    * @return the font height.
    */
-  public float getLineHeight()
+  public float getLineHeight ()
   {
     return font.getFont().getSize2D();
   }
@@ -278,13 +293,14 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
   /**
    * Calculates the width of the specified String in the current Graphics context.
    *
-   * @param text the text to be weighted.
+   * @param text         the text to be weighted.
    * @param lineStartPos the start position of the substring to be weighted.
-   * @param endPos the position of the last characterto be included in the weightening process.
-   *
+   * @param endPos       the position of the last characterto be included in the
+   *                     weightening process.
    * @return the width of the given string in 1/72" dpi.
    */
-  public float getStringWidth(final String text, final int lineStartPos, final int endPos)
+  public float getStringWidth (final String text, final int lineStartPos,
+                               final int endPos)
   {
     if (lineStartPos < 0)
     {
@@ -312,7 +328,7 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
    *
    * @return a string.
    */
-  public String toString()
+  public String toString ()
   {
     return "DefaultSizeCalculator={font=" + font + "}";
   }

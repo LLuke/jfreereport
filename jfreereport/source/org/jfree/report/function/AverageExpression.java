@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: AverageExpression.java,v 1.1.2.3 2004/12/30 14:46:11 taqua Exp $
+ * $Id: AverageExpression.java,v 1.2 2005/01/25 01:14:05 taqua Exp $
  *
  * Changes
  * -------
@@ -126,21 +126,21 @@ public class AverageExpression extends AbstractExpression implements Serializabl
    *
    * @return the fields
    */
-  public String[] getField()
+  public String[] getField ()
   {
     return (String[]) fieldList.toArray(new String[fieldList.size()]);
   }
 
-  public void setField(final String[] fields)
+  public void setField (final String[] fields)
   {
     this.fieldList.clear();
     this.fieldList.addAll(Arrays.asList(fields));
   }
 
   /**
-   *
    * @param idx
    * @return the field at the given index
+   *
    * @throws IndexOutOfBoundsException if the index is invalid.
    */
   public String getField (final int idx)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EditorFactory.java,v 1.4.4.2 2004/05/11 13:25:32 taqua Exp $
+ * $Id: EditorFactory.java,v 1.6 2005/01/25 00:04:33 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,36 +46,39 @@ import org.jfree.report.modules.gui.config.model.ConfigDescriptionEntry;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
- * The editor factory is used to create a module editor for an given
- * module. Implementors may add their own, more specialized editor components
- * to the factory.
- * 
+ * The editor factory is used to create a module editor for an given module. Implementors
+ * may add their own, more specialized editor components to the factory.
+ *
  * @author Thomas Morgner
  */
 public final class EditorFactory
 {
-  /** The singleton instance of the factory. */
+  /**
+   * The singleton instance of the factory.
+   */
   private static EditorFactory factory;
-  /** A collection containing all defined modules and their priorities. */
+  /**
+   * A collection containing all defined modules and their priorities.
+   */
   private final Hashtable priorities;
 
   /**
-   * Creates a new editor factory, which has the default module editor
-   * registered at lowest priority.
+   * Creates a new editor factory, which has the default module editor registered at
+   * lowest priority.
    */
-  private EditorFactory()
+  private EditorFactory ()
   {
     priorities = new Hashtable();
     registerModuleEditor(new DefaultModuleEditor(), -1);
   }
 
   /**
-   * Returns the singleton instance of this factory or creates a 
-   * new one if no already done.
-   * 
+   * Returns the singleton instance of this factory or creates a new one if no already
+   * done.
+   *
    * @return the editor factory instance.
    */
-  public synchronized static EditorFactory getInstance()
+  public synchronized static EditorFactory getInstance ()
   {
     if (factory == null)
     {
@@ -85,10 +88,10 @@ public final class EditorFactory
   }
 
   /**
-   * Registers a module editor with this factory. The editor will be 
-   * registered at the given priority.
-   * 
-   * @param editor the editor that should be registered.
+   * Registers a module editor with this factory. The editor will be registered at the
+   * given priority.
+   *
+   * @param editor   the editor that should be registered.
    * @param priority the priority.
    */
   public void registerModuleEditor (final ModuleEditor editor, final int priority)
@@ -97,34 +100,33 @@ public final class EditorFactory
     {
       throw new NullPointerException("Editor is null.");
     }
-    priorities.put (editor, new Integer (priority));
+    priorities.put(editor, new Integer(priority));
   }
 
   /**
-   * Returns the module editor that will be most suitable for editing 
-   * the given module.
-   *  
-   * @param module the module that should be edited.
-   * @param config the configuration which will supply the values for the edited keys.
-   * @param keyNames the configuration entries which should be edited within the module. 
-   * @return the module editor for the given module or null, if no editor
-   * is suitable for the given module.
+   * Returns the module editor that will be most suitable for editing the given module.
+   *
+   * @param module   the module that should be edited.
+   * @param config   the configuration which will supply the values for the edited keys.
+   * @param keyNames the configuration entries which should be edited within the module.
+   * @return the module editor for the given module or null, if no editor is suitable for
+   *         the given module.
    */
   public ModuleEditor getModule
-      (final Module module, final ReportConfiguration config,
-       final ConfigDescriptionEntry[] keyNames)
+          (final Module module, final ReportConfiguration config,
+           final ConfigDescriptionEntry[] keyNames)
   {
     if (module == null)
     {
-      throw new NullPointerException ("Module is null.");
+      throw new NullPointerException("Module is null.");
     }
     if (config == null)
     {
-      throw new NullPointerException ("config is null.");
+      throw new NullPointerException("config is null.");
     }
     if (keyNames == null)
     {
-      throw new NullPointerException ("keyNames is null.");
+      throw new NullPointerException("keyNames is null.");
     }
     final Enumeration keys = priorities.keys();
     ModuleEditor currentEditor = null;
@@ -135,7 +137,7 @@ public final class EditorFactory
       final ModuleEditor ed = (ModuleEditor) keys.nextElement();
       if (ed.canHandle(module))
       {
-        final Integer prio = (Integer) priorities.get (ed);
+        final Integer prio = (Integer) priorities.get(ed);
         if (prio.intValue() > currentEditorPriority)
         {
           currentEditorPriority = prio.intValue();

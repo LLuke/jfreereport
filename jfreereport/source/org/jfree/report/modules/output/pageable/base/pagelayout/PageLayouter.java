@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageLayouter.java,v 1.16 2005/01/28 19:26:50 taqua Exp $
+ * $Id: PageLayouter.java,v 1.17 2005/02/19 13:29:58 taqua Exp $
  *
  * Changes
  * -------
@@ -53,44 +53,42 @@ import org.jfree.report.states.ReportState;
 import org.jfree.report.util.Log;
 
 /**
- * The baseclass for all PageLayouter. A page layouter is the layoutmanager of
- * an logical page. This layoutmanager is responsible for handling and detecting
- * page breaks, for placing the various Root-Bands (bands that are contained
- * directly in an report) on the page and for the global appeareance of an page
- * (columns, band placement policy etc.)
- * <p>
+ * The baseclass for all PageLayouter. A page layouter is the layoutmanager of an logical
+ * page. This layoutmanager is responsible for handling and detecting page breaks, for
+ * placing the various Root-Bands (bands that are contained directly in an report) on the
+ * page and for the global appeareance of an page (columns, band placement policy etc.)
+ * <p/>
  * A PageLayouter for an Report is defined by the ReportProperty
- * <code>pageable.layoutManager</code> by setting the classname of the page layouter.
- * The specified class must contain an DefaultConstructor and must be an instance of
+ * <code>pageable.layoutManager</code> by setting the classname of the page layouter. The
+ * specified class must contain an DefaultConstructor and must be an instance of
  * PageLayouter.
- * <p>
- * All PageLayouter may define a set of LayoutConstraints for use in the Root-Bands.
- * These constraints can be used to configure the layouting process. It is up to
- * the layoutmanager implementation, which constraints are recognized and how these
+ * <p/>
+ * All PageLayouter may define a set of LayoutConstraints for use in the Root-Bands. These
+ * constraints can be used to configure the layouting process. It is up to the
+ * layoutmanager implementation, which constraints are recognized and how these
  * constraints are used.
- * <p>
+ * <p/>
  * All layoutmanagers should document their known constraints.
  *
  * @author Thomas Morgner
  */
 public abstract strictfp class PageLayouter extends AbstractFunction
-    implements PageEventListener
+        implements PageEventListener
 {
 
   /**
-   * Represents the state of the page layouter. Subclasses must override this
-   * class to create an internal state which can be saved and restored when
-   * a page-break occurs.
-   * <p>
-   * The state is required to be cloneable and must support deep-cloning so that
-   * the state can be restored multiple times whenever the page printing continues.
+   * Represents the state of the page layouter. Subclasses must override this class to
+   * create an internal state which can be saved and restored when a page-break occurs.
+   * <p/>
+   * The state is required to be cloneable and must support deep-cloning so that the state
+   * can be restored multiple times whenever the page printing continues.
    */
   protected abstract static class LayoutManagerState implements Cloneable
   {
     /**
      * Creates a new state.
      */
-    public LayoutManagerState()
+    public LayoutManagerState ()
     {
     }
 
@@ -102,46 +100,51 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   }
 
   /**
-   * The current layoutmanager state. This is used to reconstruct the state of
-   * the last print operation whenever an pagebreak occured. The contents depend
-   * on the specific implementation of the PageLayouter.
+   * The current layoutmanager state. This is used to reconstruct the state of the last
+   * print operation whenever an pagebreak occured. The contents depend on the specific
+   * implementation of the PageLayouter.
    */
   private LayoutManagerState layoutManagerState;
 
-  /** The logical page used to output the generated content. */
+  /**
+   * The logical page used to output the generated content.
+   */
   private LogicalPage logicalPage;
 
-  /** The latest report event. */
+  /**
+   * The latest report event.
+   */
   private ReportEvent currentEvent;
 
   private boolean pageEnded;
 
   /**
-   * The depency level. Should be set to -1 or lower to ensure that this function
-   * has the highest priority in the function collection.
+   * The depency level. Should be set to -1 or lower to ensure that this function has the
+   * highest priority in the function collection.
    */
   private int depLevel;
 
   /**
-   * The 'finishing page' flag. Indicates that the current page is shut down.
-   * The page footer should be printed and the state stored. Trying to end the
-   * page again while the finishing process is not complete will result in an
-   * IllegalState.
-   * <p>
+   * The 'finishing page' flag. Indicates that the current page is shut down. The page
+   * footer should be printed and the state stored. Trying to end the page again while the
+   * finishing process is not complete will result in an IllegalState.
+   * <p/>
    * If the page should be finished while the page is restarted, will throw an
    * ReportProcessing exception, as this would result in an infinite loop.
    */
   private boolean finishingPage;
 
   /**
-   * The 'restarting page' flag. Is set to true, while the page is started.
-   * The last saved state is restored and the page header gets prepared.
-   * Trying the start the page again while the restarting process is not complete
-   * or while the page is currently being finished, will result in an IllegalState.
+   * The 'restarting page' flag. Is set to true, while the page is started. The last saved
+   * state is restored and the page header gets prepared. Trying the start the page again
+   * while the restarting process is not complete or while the page is currently being
+   * finished, will result in an IllegalState.
    */
   private boolean restartingPage;
 
-  /** A flag indicating whether the process of restarting the page is completed. */
+  /**
+   * A flag indicating whether the process of restarting the page is completed.
+   */
   private boolean pageRestartDone;
 
   private ArrayList bands;
@@ -150,35 +153,35 @@ public abstract strictfp class PageLayouter extends AbstractFunction
    * Creates a new page layouter. The function depency level is set to -1 (highest
    * priority).
    */
-  public PageLayouter()
+  public PageLayouter ()
   {
     setDependencyLevel(-1);
     bands = new ArrayList(40);
   }
 
   /**
-   * Returns whether the restarting of the page is completed. Restarting the
-   * page is separated into two processes. The first step restores the save state,
-   * and the second step starts to print the page header and opens the logical page.
-   * The second step is not executed, if no more content is printed.
+   * Returns whether the restarting of the page is completed. Restarting the page is
+   * separated into two processes. The first step restores the save state, and the second
+   * step starts to print the page header and opens the logical page. The second step is
+   * not executed, if no more content is printed.
    *
    * @return true, if the restart process for this page is completed, false otherwise.
    */
-  public boolean isPageRestartDone()
+  public boolean isPageRestartDone ()
   {
     return pageRestartDone;
   }
 
   /**
-   * Defines whether the restarting of the page is completed. Restarting the
-   * page is separated into two processes. The first step restores the save state,
-   * and the second step starts to print the page header and opens the logical page.
-   * The second step is not executed, if no more content is printed.
+   * Defines whether the restarting of the page is completed. Restarting the page is
+   * separated into two processes. The first step restores the save state, and the second
+   * step starts to print the page header and opens the logical page. The second step is
+   * not executed, if no more content is printed.
    *
-   * @param pageRestartDone set to true, if the restart process for this page is completed,
-   *                        false otherwise.
+   * @param pageRestartDone set to true, if the restart process for this page is
+   *                        completed, false otherwise.
    */
-  public void setPageRestartDone(final boolean pageRestartDone)
+  public void setPageRestartDone (final boolean pageRestartDone)
   {
     this.pageRestartDone = pageRestartDone;
   }
@@ -186,13 +189,13 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   /**
    * Maintains a flag, whether the generated page was completly empty.
    *
-   * @return true, if the page was empty when the logical page was closed,
-   * false otherwise.
+   * @return true, if the page was empty when the logical page was closed, false
+   *         otherwise.
    */
-  public boolean isGeneratedPageEmpty()
+  public boolean isGeneratedPageEmpty ()
   {
     final MetaElement[] elements = (MetaElement[]) bands.toArray
-        (new MetaElement[bands.size()]);
+            (new MetaElement[bands.size()]);
 
     return MetaPage.isEmpty(elements);
   }
@@ -200,10 +203,10 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   /**
    * Sets the logical page for the layouter.
    *
-   * @param logicalPage  the logical page (null not permitted).
+   * @param logicalPage the logical page (null not permitted).
    * @throws NullPointerException it the logical page is null
    */
-  public void setLogicalPage(final LogicalPage logicalPage)
+  public void setLogicalPage (final LogicalPage logicalPage)
   {
     if (logicalPage == null)
     {
@@ -213,10 +216,10 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   }
 
   /**
-   * Clears the logical page reference. This method must be called after
-   * the page has been processed.
+   * Clears the logical page reference. This method must be called after the page has been
+   * processed.
    */
-  public void clearLogicalPage()
+  public void clearLogicalPage ()
   {
     this.logicalPage = null;
   }
@@ -226,25 +229,24 @@ public abstract strictfp class PageLayouter extends AbstractFunction
    *
    * @return the logical page.
    */
-  public LogicalPage getLogicalPage()
+  public LogicalPage getLogicalPage ()
   {
     return logicalPage;
   }
 
   /**
    * Returns the 'finishing page' flag.
-   * <p>
-   * When set to true, indicates that the current page is shut down.
-   * The page footer should be printed and the state stored. Trying to end the
-   * page again while the finishing process is not complete will result in an
-   * IllegalState.
-   * <p>
+   * <p/>
+   * When set to true, indicates that the current page is shut down. The page footer
+   * should be printed and the state stored. Trying to end the page again while the
+   * finishing process is not complete will result in an IllegalState.
+   * <p/>
    * If the page should be finished while the page is restarted, will throw an
    * ReportProcessing exception, as this would result in an infinite loop.
    *
    * @return true if the current page is currently shut down, false otherwise.
    */
-  public boolean isFinishingPage()
+  public boolean isFinishingPage ()
   {
     return finishingPage;
   }
@@ -252,25 +254,25 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   /**
    * Sets the 'finishing page' flag.
    *
+   * @param finishingPage the new flag value.
    * @see PageLayouter#isFinishingPage
-   * @param finishingPage  the new flag value.
    */
-  public void setFinishingPage(final boolean finishingPage)
+  public void setFinishingPage (final boolean finishingPage)
   {
     this.finishingPage = finishingPage;
   }
 
   /**
    * Returns the 'restarting page' flag.
-   * <p>
-   * Is set to true, while the page is started.
-   * The last saved state is restored and the page header gets prepared.
-   * Trying the start the page again while the restarting process is not complete
-   * or while the page is currently being finished, will result in an IllegalState.
+   * <p/>
+   * Is set to true, while the page is started. The last saved state is restored and the
+   * page header gets prepared. Trying the start the page again while the restarting
+   * process is not complete or while the page is currently being finished, will result in
+   * an IllegalState.
    *
    * @return true if the current page is currently restarting, false otherwise
    */
-  public boolean isRestartingPage()
+  public boolean isRestartingPage ()
   {
     return restartingPage;
   }
@@ -278,21 +280,21 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   /**
    * Sets the 'restarting page' flag.
    *
+   * @param restartingPage sets the restarting page flag.
    * @see PageLayouter#isRestartingPage
-   * @param restartingPage  sets the restarting page flag.
    */
-  public void setRestartingPage(final boolean restartingPage)
+  public void setRestartingPage (final boolean restartingPage)
   {
     this.restartingPage = restartingPage;
   }
 
   /**
-   * Returns the report that should be printed. This is the report contained
-   * in the last ReportEvent received, or null, if no event occurred here.
+   * Returns the report that should be printed. This is the report contained in the last
+   * ReportEvent received, or null, if no event occurred here.
    *
    * @return the report.
    */
-  public ReportDefinition getReport()
+  public ReportDefinition getReport ()
   {
     if (getCurrentEvent() == null)
     {
@@ -306,7 +308,7 @@ public abstract strictfp class PageLayouter extends AbstractFunction
    *
    * @return the event.
    */
-  protected ReportEvent getCurrentEvent()
+  protected ReportEvent getCurrentEvent ()
   {
     return currentEvent;
   }
@@ -316,7 +318,7 @@ public abstract strictfp class PageLayouter extends AbstractFunction
    *
    * @param currentEvent event.
    */
-  protected void setCurrentEvent(final ReportEvent currentEvent)
+  protected void setCurrentEvent (final ReportEvent currentEvent)
   {
     if (currentEvent == null)
     {
@@ -328,30 +330,31 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   /**
    * Clears the current event.
    */
-  protected void clearCurrentEvent()
+  protected void clearCurrentEvent ()
   {
     if (currentEvent == null)
     {
-      Log.error ("Failed to clear current event; we don't have an event set!",
-          new IllegalStateException("stacktrace generated:"));
+      Log.error("Failed to clear current event; we don't have an event set!",
+              new IllegalStateException("stacktrace generated:"));
     }
     this.currentEvent = null;
   }
 
   /**
-   * Ends a page. During the process, an PageFinished event is generated and
-   * the state advances to the next page. The Layoutmanager-State is saved and
-   * the logical page is closed.
-   * <p>
+   * Ends a page. During the process, an PageFinished event is generated and the state
+   * advances to the next page. The Layoutmanager-State is saved and the logical page is
+   * closed.
+   * <p/>
    * While this method is executed, the FinishingPage flag is set to true.
-   * <p>
+   * <p/>
    * You are not able to print on the logical page after the page is finished.
    *
-   * @throws IllegalStateException if the page end is requested a second time
-   * @throws ReportProcessingException if the page end is requested while the page
-   * is restarted.
+   * @throws IllegalStateException     if the page end is requested a second time
+   * @throws ReportProcessingException if the page end is requested while the page is
+   *                                   restarted.
    */
-  protected void endPage() throws ReportProcessingException
+  protected void endPage ()
+          throws ReportProcessingException
   {
     // this can be dangerous if a band spans multiple pages.
     // rethink that.
@@ -386,11 +389,10 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   }
 
   /**
-   * Restarts the current page. The logical page is opened again and the
-   * PageStartedEvent is fired. While this method is executed, the RestartingPage
-   * flag is set to true.
+   * Restarts the current page. The logical page is opened again and the PageStartedEvent
+   * is fired. While this method is executed, the RestartingPage flag is set to true.
    */
-  protected void startPage()
+  protected void startPage ()
   {
     if (isPageRestartDone() == true)
     {
@@ -414,39 +416,39 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   }
 
   /**
-   * Checks whether this page has ended. If this method returns true, no
-   * printing to the logical page is allowed.
+   * Checks whether this page has ended. If this method returns true, no printing to the
+   * logical page is allowed.
    *
    * @return true, if the logical page is closed and no printing is allowed
    */
-  public boolean isPageEnded()
+  public boolean isPageEnded ()
   {
     return pageEnded;
   }
 
   /**
-   * Returns true, if the PageLayouter has successfully started a new page. The
-   * start of the new page is delayed, until the first content is printed.
+   * Returns true, if the PageLayouter has successfully started a new page. The start of
+   * the new page is delayed, until the first content is printed.
    *
    * @return true, if a new page has already been started, false otherwise.
    */
-  public abstract boolean isNewPageStarted();
+  public abstract boolean isNewPageStarted ();
 
   /**
    * Save the current state into the LayoutManagerState object. The concrete
-   * implementation is responsible to save all required information so that the
-   * printing can be continued after the pagebreak is done.
+   * implementation is responsible to save all required information so that the printing
+   * can be continued after the pagebreak is done.
    *
    * @return a valid beginTransaction, never null
    */
-  protected abstract LayoutManagerState saveCurrentState();
+  protected abstract LayoutManagerState saveCurrentState ();
 
   /**
-   * Return the last stored LayoutManager state or null if there is no state
-   * stored.
+   * Return the last stored LayoutManager state or null if there is no state stored.
+   *
    * @return the last LayoutManagerState.
    */
-  public LayoutManagerState getLayoutManagerState()
+  public LayoutManagerState getLayoutManagerState ()
   {
     return layoutManagerState;
   }
@@ -469,7 +471,7 @@ public abstract strictfp class PageLayouter extends AbstractFunction
    * Clear the beginTransaction. This should be called after the beginTransaction has been
    * restored.
    */
-  protected void clearSaveState()
+  protected void clearSaveState ()
   {
     layoutManagerState = null;
   }
@@ -481,48 +483,49 @@ public abstract strictfp class PageLayouter extends AbstractFunction
    *
    * @return this PageLayouter.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return this;
   }
 
   /**
-   * The dependency level defines the level of execution for this function. Higher dependency
-   * functions are executed before lower dependency functions. For ordinary functions and
-   * expressions, the range for dependencies is defined to start from 0 (lowest dependency
-   * possible) to 2^31 (upper limit of int).
-   * <p>
-   * PageLayouter functions override the default behaviour an place them self at depency level -1,
-   * an so before any userdefined function.
+   * The dependency level defines the level of execution for this function. Higher
+   * dependency functions are executed before lower dependency functions. For ordinary
+   * functions and expressions, the range for dependencies is defined to start from 0
+   * (lowest dependency possible) to 2^31 (upper limit of int).
+   * <p/>
+   * PageLayouter functions override the default behaviour an place them self at depency
+   * level -1, an so before any userdefined function.
    *
    * @return the level.
    */
-  public int getDependencyLevel()
+  public int getDependencyLevel ()
   {
     return depLevel;
   }
 
   /**
    * Overrides the depency level. Should be lower than any other function depency.
+   *
    * @param deplevel the new depency level.
    */
-  public void setDependencyLevel(final int deplevel)
+  public void setDependencyLevel (final int deplevel)
   {
     this.depLevel = deplevel;
   }
 
 
   /**
-   * Returns a clone of the PageLayouter.
-   * <P>
-   * Be aware, this does not create a deep copy. If you have complex
-   * structures contained in objects, you have to overwrite this function.
+   * Returns a clone of the PageLayouter. <P> Be aware, this does not create a deep copy.
+   * If you have complex structures contained in objects, you have to overwrite this
+   * function.
    *
    * @return a clone of the function.
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final PageLayouter l = (PageLayouter) super.clone();
     l.currentEvent = null;
@@ -532,15 +535,14 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   /**
    * Restores the state.
    *
-   * @param ancestor  the ancestor state.
-   *
-   * @throws ReportProcessingException if the printing failed or a pagebreak is
-   * requested while the page is restored.
-   * @throws IllegalStateException if there is no SavedState but this is not the
-   * first page.
+   * @param ancestor the ancestor state.
+   * @throws ReportProcessingException if the printing failed or a pagebreak is requested
+   *                                   while the page is restored.
+   * @throws IllegalStateException     if there is no SavedState but this is not the first
+   *                                   page.
    */
-  public void restoreSaveState(final ReportState ancestor)
-      throws ReportProcessingException
+  public void restoreSaveState (final ReportState ancestor)
+          throws ReportProcessingException
   {
     final Object state = getLayoutManagerState();
     // reset the report finished flag...
@@ -556,7 +558,7 @@ public abstract strictfp class PageLayouter extends AbstractFunction
       if (ancestor.getCurrentPage() != ReportState.BEFORE_FIRST_PAGE)
       {
         throw new IllegalStateException("State is null, but this is not the first page."
-            + ancestor.getCurrentPage());
+                + ancestor.getCurrentPage());
       }
     }
     // open the logical page ...
@@ -564,13 +566,12 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   }
 
   /**
-   * Receives notification that a page was canceled by the ReportProcessor.
-   * This method is called, when a page was removed from the report after
-   * it was generated.
+   * Receives notification that a page was canceled by the ReportProcessor. This method is
+   * called, when a page was removed from the report after it was generated.
    *
    * @param event The event.
    */
-  public void pageCanceled(final ReportEvent event)
+  public void pageCanceled (final ReportEvent event)
   {
     // does nothing, we dont care about canceled pages by default..
   }
@@ -579,7 +580,7 @@ public abstract strictfp class PageLayouter extends AbstractFunction
   {
     if (band.getElementCount() > 0)
     {
-      bands.add (band);
+      bands.add(band);
     }
   }
 

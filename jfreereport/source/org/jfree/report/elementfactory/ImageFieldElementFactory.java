@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageFieldElementFactory.java,v 1.7 2004/05/07 08:24:41 mungady Exp $
+ * $Id: ImageFieldElementFactory.java,v 1.8 2005/02/19 13:29:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,27 +43,26 @@ import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.Element;
 import org.jfree.report.ImageElement;
-import org.jfree.report.util.geom.StrictDimension;
-import org.jfree.report.util.geom.StrictPoint;
 import org.jfree.report.filter.templates.ImageFieldTemplate;
 import org.jfree.ui.FloatDimension;
 
 /**
- * A factory to define ImageFieldElements. These elements expect an java.awt.Image
- * or an ImageReference instance as content and will display the content in the report.
+ * A factory to define ImageFieldElements. These elements expect an java.awt.Image or an
+ * ImageReference instance as content and will display the content in the report.
  *
  * @author Thomas Morgner
  */
 public class ImageFieldElementFactory extends ImageElementFactory
 {
-  /** The fieldname of the datarow from where to read the content. */
+  /**
+   * The fieldname of the datarow from where to read the content.
+   */
   private String fieldname;
 
   /**
    * DefaultConstructor.
-   *
    */
-  public ImageFieldElementFactory()
+  public ImageFieldElementFactory ()
   {
   }
 
@@ -72,18 +71,18 @@ public class ImageFieldElementFactory extends ImageElementFactory
    *
    * @return the field name.
    */
-  public String getFieldname()
+  public String getFieldname ()
   {
     return fieldname;
   }
 
   /**
-   * Defines the field name from where to read the content of the element.
-   * The field name is the name of a datarow column.
+   * Defines the field name from where to read the content of the element. The field name
+   * is the name of a datarow column.
    *
    * @param fieldname the field name.
    */
-  public void setFieldname(final String fieldname)
+  public void setFieldname (final String fieldname)
   {
     this.fieldname = fieldname;
   }
@@ -91,12 +90,12 @@ public class ImageFieldElementFactory extends ImageElementFactory
   /**
    * Creates the image element based on the defined properties.
    *
-   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
-   *
    * @return the created image element.
+   *
    * @throws IllegalStateException if the fieldname is not set.
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
    */
-  public Element createElement()
+  public Element createElement ()
   {
     if (getFieldname() == null)
     {
@@ -117,19 +116,18 @@ public class ImageFieldElementFactory extends ImageElementFactory
   /**
    * Creates a new ImageElement.
    *
-   * @param name the name of the new element
+   * @param name   the name of the new element
    * @param bounds the bounds of the new element
-   * @param field  the name of the column/function/expression that returns the URL for the image.
-   *
+   * @param field  the name of the column/function/expression that returns the URL for the
+   *               image.
    * @return a report element for displaying an image.
    *
-   * @throws NullPointerException if bounds, name or source are null
+   * @throws NullPointerException     if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ImageElement createImageDataRowElement(final String name,
-                                                       final Rectangle2D bounds,
-                                                       final String field
-                                                       )
+  public static ImageElement createImageDataRowElement (final String name,
+                                                        final Rectangle2D bounds,
+                                                        final String field)
   {
     return createImageDataRowElement(name, bounds, field, true);
   }
@@ -137,20 +135,20 @@ public class ImageFieldElementFactory extends ImageElementFactory
   /**
    * Creates a new ImageElement.
    *
-   * @param name  the name of the new element.
-   * @param bounds  the bounds of the new element.
-   * @param field  the name of the column/function/expression that returns the URL for the image.
+   * @param name   the name of the new element.
+   * @param bounds the bounds of the new element.
+   * @param field  the name of the column/function/expression that returns the URL for the
+   *               image.
    * @param scale  scale the image?
-   *
    * @return a report element for displaying an image.
    *
-   * @throws NullPointerException if bounds, name or source are null
+   * @throws NullPointerException     if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ImageElement createImageDataRowElement(final String name,
-                                                       final Rectangle2D bounds,
-                                                       final String field,
-                                                       final boolean scale)
+  public static ImageElement createImageDataRowElement (final String name,
+                                                        final Rectangle2D bounds,
+                                                        final String field,
+                                                        final boolean scale)
   {
     return createImageDataRowElement(name, bounds, field, scale, false);
   }
@@ -158,28 +156,28 @@ public class ImageFieldElementFactory extends ImageElementFactory
   /**
    * Creates a new ImageElement.
    *
-   * @param name  the name of the new element.
-   * @param bounds  the bounds of the new element.
-   * @param field  the name of the column/function/expression that returns the URL for the image.
-   * @param scale  scale the image?
-   * @param keepAspectRatio  preserve the aspect ratio?
-   *
+   * @param name            the name of the new element.
+   * @param bounds          the bounds of the new element.
+   * @param field           the name of the column/function/expression that returns the
+   *                        URL for the image.
+   * @param scale           scale the image?
+   * @param keepAspectRatio preserve the aspect ratio?
    * @return a report element for displaying an image.
    *
-   * @throws NullPointerException if bounds, name or source are null
+   * @throws NullPointerException     if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ImageElement createImageDataRowElement(final String name,
-                                                       final Rectangle2D bounds,
-                                                       final String field,
-                                                       final boolean scale,
-                                                       final boolean keepAspectRatio)
+  public static ImageElement createImageDataRowElement (final String name,
+                                                        final Rectangle2D bounds,
+                                                        final String field,
+                                                        final boolean scale,
+                                                        final boolean keepAspectRatio)
   {
     final ImageFieldElementFactory factory = new ImageFieldElementFactory();
     factory.setName(name);
     factory.setName(name);
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setScale(new Boolean(scale));
     factory.setKeepAspectRatio(new Boolean(keepAspectRatio));
     factory.setFieldname(field);

@@ -30,7 +30,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVTokenizer.java,v 1.3 2003/09/15 18:26:51 taqua Exp $
+ * $Id: CSVTokenizer.java,v 1.4 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -43,36 +43,27 @@ import java.util.Enumeration;
 import java.util.NoSuchElementException;
 
 /**
- * The csv tokenizer class allows an application to break a
- * Comma Separated Value format into tokens.
- * The tokenization method is much simpler than
- * the one used by the <code>StringTokenizer</code> class. The
- * <code>CSVTokenizer</code> methods do not distinguish among
- * identifiers, numbers, and quoted strings, nor do they recognize
- * and skip comments.
- * <p>
- * The set of separator (the characters that separate tokens) may
- * be specified either at creation time or on a per-token basis.
- * <p>
- * An instance of <code>CSVTokenizer</code> behaves in one of two
- * ways, depending on whether it was created with the
- * <code>returnSeparators</code> flag having the value <code>true</code>
- * or <code>false</code>:
- * <ul>
- * <li>If the flag is <code>false</code>, delimiter characters serve to
- *     separate tokens. A token is a maximal sequence of consecutive
- *     characters that are not separator.
- * <li>If the flag is <code>true</code>, delimiter characters are themselves
- *     considered to be tokens. A token is thus either one delimiter
- *     character, or a maximal sequence of consecutive characters that are
- *     not separator.
- * </ul><p>
- * A <tt>CSVTokenizer</tt> object internally maintains a current
- * position within the string to be tokenized. Some operations advance this
- * current position past the characters processed.<p>
- * A token is returned by taking a substring of the string that was used to
- * create the <tt>CSVTokenizer</tt> object.
- * <p>
+ * The csv tokenizer class allows an application to break a Comma Separated Value format
+ * into tokens. The tokenization method is much simpler than the one used by the
+ * <code>StringTokenizer</code> class. The <code>CSVTokenizer</code> methods do not
+ * distinguish among identifiers, numbers, and quoted strings, nor do they recognize and
+ * skip comments.
+ * <p/>
+ * The set of separator (the characters that separate tokens) may be specified either at
+ * creation time or on a per-token basis.
+ * <p/>
+ * An instance of <code>CSVTokenizer</code> behaves in one of two ways, depending on
+ * whether it was created with the <code>returnSeparators</code> flag having the value
+ * <code>true</code> or <code>false</code>: <ul> <li>If the flag is <code>false</code>,
+ * delimiter characters serve to separate tokens. A token is a maximal sequence of
+ * consecutive characters that are not separator. <li>If the flag is <code>true</code>,
+ * delimiter characters are themselves considered to be tokens. A token is thus either one
+ * delimiter character, or a maximal sequence of consecutive characters that are not
+ * separator. </ul><p> A <tt>CSVTokenizer</tt> object internally maintains a current
+ * position within the string to be tokenized. Some operations advance this current
+ * position past the characters processed.<p> A token is returned by taking a substring of
+ * the string that was used to create the <tt>CSVTokenizer</tt> object.
+ * <p/>
  * The following is one example of the use of the tokenizer. The code:
  * <blockquote><pre>
  *     CSVTokenizer csvt = new CSVTokenizer("this,is,a,test");
@@ -80,7 +71,7 @@ import java.util.NoSuchElementException;
  *         println(csvt.nextToken());
  *     }
  * </pre></blockquote>
- * <p>
+ * <p/>
  * prints the following output:
  * <blockquote><pre>
  *     this
@@ -88,50 +79,68 @@ import java.util.NoSuchElementException;
  *     a
  *     test
  * </pre></blockquote>
- * @author  abupon
+ *
+ * @author abupon
  */
 public class CSVTokenizer implements Enumeration
 {
-  /** The complete record that should be separated into elements. */
+  /**
+   * The complete record that should be separated into elements.
+   */
   private String record;
-  /** The separator. */
+  /**
+   * The separator.
+   */
   private String separator;
-  /** The quoting char. */
+  /**
+   * The quoting char.
+   */
   private String quate;
 
-  /**the current parsing position. */ 
+  /**
+   * the current parsing position.
+   */
   private int currentIndex;
 
-  /** A possible separator constant. */ 
+  /**
+   * A possible separator constant.
+   */
   public static final String SEPARATOR_COMMA = ",";
-  /** A possible separator constant. */ 
+  /**
+   * A possible separator constant.
+   */
   public static final String SEPARATOR_TAB = "\t";
-  /** A possible separator constant. */ 
+  /**
+   * A possible separator constant.
+   */
   public static final String SEPARATOR_SPACE = " ";
 
-  /** A possible quote character constant. */
+  /**
+   * A possible quote character constant.
+   */
   public static final String DOUBLE_QUATE = "\"";
-  /** A possible quote character constant. */
+  /**
+   * A possible quote character constant.
+   */
   public static final String SINGLE_QUATE = "'";
 
   /**
-   * Constructs a csv tokenizer for the specified string.
-   * <code>theSeparator</code> argument is the separator
-   * for separating tokens.
-   * <p>
-   * If the <code>returnSeparators</code> flag is <code>true</code>,
-   * then the separator string is also returned as tokens.
-   * separator is returned as a string. If the flag is
-   * <code>false</code>, the separator string is skipped and only
-   * serve as separator between tokens.
+   * Constructs a csv tokenizer for the specified string. <code>theSeparator</code>
+   * argument is the separator for separating tokens.
+   * <p/>
+   * If the <code>returnSeparators</code> flag is <code>true</code>, then the separator
+   * string is also returned as tokens. separator is returned as a string. If the flag is
+   * <code>false</code>, the separator string is skipped and only serve as separator
+   * between tokens.
    *
-   * @param aString a string to be parsed.
-   * @param theSeparator the separator
-   *        (CSVTokenizer.SEPARATOR_COMMA, CSVTokenizer.TAB, CSVTokenizer.SPACE, etc.).
-   * @param theQuate the quate
-   *        (CSVTokenizer.SINGLE_QUATE, CSVTokenizer.DOUBLE_QUATE, etc.).
+   * @param aString      a string to be parsed.
+   * @param theSeparator the separator (CSVTokenizer.SEPARATOR_COMMA, CSVTokenizer.TAB,
+   *                     CSVTokenizer.SPACE, etc.).
+   * @param theQuate     the quate (CSVTokenizer.SINGLE_QUATE, CSVTokenizer.DOUBLE_QUATE,
+   *                     etc.).
    */
-  public CSVTokenizer(final String aString, final String theSeparator, final String theQuate)
+  public CSVTokenizer (final String aString, final String theSeparator,
+                       final String theQuate)
   {
     if (aString == null)
     {
@@ -152,44 +161,40 @@ public class CSVTokenizer implements Enumeration
   }
 
   /**
-   * Constructs a csv tokenizer for the specified string. The
-   * characters in the <code>theSeparator</code> argument are
-   * the separator for separating tokens.
-   * Separator string themselves will not be treated as tokens.
+   * Constructs a csv tokenizer for the specified string. The characters in the
+   * <code>theSeparator</code> argument are the separator for separating tokens. Separator
+   * string themselves will not be treated as tokens.
    *
-   * @param aString a string to be parsed.
-   * @param theSeparator the separator
-   *        (CSVTokenizer.SEPARATOR_COMMA, CSVTokenizer.TAB, CSVTokenizer.SPACE, etc.).
+   * @param aString      a string to be parsed.
+   * @param theSeparator the separator (CSVTokenizer.SEPARATOR_COMMA, CSVTokenizer.TAB,
+   *                     CSVTokenizer.SPACE, etc.).
    */
-  public CSVTokenizer(final String aString, final String theSeparator)
+  public CSVTokenizer (final String aString, final String theSeparator)
   {
     this(aString, theSeparator, CSVTokenizer.DOUBLE_QUATE);
   }
 
   /**
-   * Constructs a string tokenizer for the specified string. The
-   * tokenizer uses the default separator set, which is
-   * <code>CSVTokenizer.SEPARATOR_COMMA</code>.
-   * Separator string themselves will not be treated as tokens.
+   * Constructs a string tokenizer for the specified string. The tokenizer uses the
+   * default separator set, which is <code>CSVTokenizer.SEPARATOR_COMMA</code>. Separator
+   * string themselves will not be treated as tokens.
    *
    * @param aString a string to be parsed.
-   *
    */
-  public CSVTokenizer(final String aString)
+  public CSVTokenizer (final String aString)
   {
     this(aString, CSVTokenizer.SEPARATOR_COMMA);
   }
 
   /**
-   * Tests if there are more tokens available from this tokenizer's string.
-   * If this method returns <tt>true</tt>, then a subsequent call to
-   * <tt>nextToken</tt> with no argument will successfully return a token.
+   * Tests if there are more tokens available from this tokenizer's string. If this method
+   * returns <tt>true</tt>, then a subsequent call to <tt>nextToken</tt> with no argument
+   * will successfully return a token.
    *
-   * @return  <code>true</code> if and only if there is at least one token
-   *          in the string after the current position; <code>false</code>
-   *          otherwise.
+   * @return <code>true</code> if and only if there is at least one token in the string
+   *         after the current position; <code>false</code> otherwise.
    */
-  public boolean hasMoreTokens()
+  public boolean hasMoreTokens ()
   {
     return (this.currentIndex < this.record.length());
   }
@@ -197,13 +202,14 @@ public class CSVTokenizer implements Enumeration
   /**
    * Returns the next token from this string tokenizer.
    *
-   * @return     the next token from this string tokenizer.
-   * @exception  NoSuchElementException  if there are no more tokens in this
-   *               tokenizer's string.
-   * @exception  IllegalArgumentException if given parameter string format was wrong
+   * @return the next token from this string tokenizer.
+   *
+   * @throws NoSuchElementException   if there are no more tokens in this tokenizer's
+   *                                  string.
+   * @throws IllegalArgumentException if given parameter string format was wrong
    */
-  public String nextToken()
-      throws NoSuchElementException, IllegalArgumentException
+  public String nextToken ()
+          throws NoSuchElementException, IllegalArgumentException
   {
     String token;
     final int start;
@@ -259,67 +265,67 @@ public class CSVTokenizer implements Enumeration
   }
 
   /**
-   * Returns the next token in this string tokenizer's string. First,
-   * the set of characters considered to be separator by this
-   * <tt>CSVTokenizer</tt> object is changed to be the characters in
-   * the string <tt>separator</tt>. Then the next token in the string
-   * after the current position is returned. The current position is
-   * advanced beyond the recognized token.  The new delimiter set
-   * remains the default after this call.
+   * Returns the next token in this string tokenizer's string. First, the set of
+   * characters considered to be separator by this <tt>CSVTokenizer</tt> object is changed
+   * to be the characters in the string <tt>separator</tt>. Then the next token in the
+   * string after the current position is returned. The current position is advanced
+   * beyond the recognized token.  The new delimiter set remains the default after this
+   * call.
    *
-   * @param      theSeparator   the new separator.
-   * @return     the next token, after switching to the new delimiter set.
-   * @exception  java.util.NoSuchElementException  if there are no more tokens in this
-   *               tokenizer's string.
+   * @param theSeparator the new separator.
+   * @return the next token, after switching to the new delimiter set.
+   *
+   * @throws java.util.NoSuchElementException
+   *          if there are no more tokens in this tokenizer's string.
    */
-  public String nextToken(final String theSeparator)
+  public String nextToken (final String theSeparator)
   {
     separator = theSeparator;
     return nextToken();
   }
 
   /**
-   * Returns the same value as the <code>hasMoreTokens</code>
-   * method. It exists so that this class can implement the
-   * <code>Enumeration</code> interface.
+   * Returns the same value as the <code>hasMoreTokens</code> method. It exists so that
+   * this class can implement the <code>Enumeration</code> interface.
    *
-   * @return  <code>true</code> if there are more tokens;
-   *          <code>false</code> otherwise.
-   * @see     java.util.Enumeration
-   * @see     org.jfree.report.util.CSVTokenizer#hasMoreTokens()
+   * @return <code>true</code> if there are more tokens; <code>false</code> otherwise.
+   *
+   * @see java.util.Enumeration
+   * @see org.jfree.report.util.CSVTokenizer#hasMoreTokens()
    */
-  public boolean hasMoreElements()
+  public boolean hasMoreElements ()
   {
     return hasMoreTokens();
   }
 
   /**
-   * Returns the same value as the <code>nextToken</code> method,
-   * except that its declared return value is <code>Object</code> rather than
-   * <code>String</code>. It exists so that this class can implement the
-   * <code>Enumeration</code> interface.
+   * Returns the same value as the <code>nextToken</code> method, except that its declared
+   * return value is <code>Object</code> rather than <code>String</code>. It exists so
+   * that this class can implement the <code>Enumeration</code> interface.
    *
-   * @return     the next token in the string.
-   * @exception  java.util.NoSuchElementException  if there are no more tokens in this
-   *               tokenizer's string.
-   * @see        java.util.Enumeration
-   * @see        org.jfree.report.util.CSVTokenizer#nextToken()
+   * @return the next token in the string.
+   *
+   * @throws java.util.NoSuchElementException
+   *          if there are no more tokens in this tokenizer's string.
+   * @see java.util.Enumeration
+   * @see org.jfree.report.util.CSVTokenizer#nextToken()
    */
-  public Object nextElement()
+  public Object nextElement ()
   {
     return nextToken();
   }
 
   /**
-   * Calculates the number of times that this tokenizer's
-   * <code>nextToken</code> method can be called before it generates an
-   * exception. The current position is not advanced.
+   * Calculates the number of times that this tokenizer's <code>nextToken</code> method
+   * can be called before it generates an exception. The current position is not
+   * advanced.
    *
-   * @return  the number of tokens remaining in the string using the current
-   *          delimiter set.
-   * @see     org.jfree.report.util.CSVTokenizer#nextToken()
+   * @return the number of tokens remaining in the string using the current delimiter
+   *         set.
+   *
+   * @see org.jfree.report.util.CSVTokenizer#nextToken()
    */
-  public int countTokens()
+  public int countTokens ()
   {
     int count = 0;
 
@@ -336,18 +342,20 @@ public class CSVTokenizer implements Enumeration
 
   /**
    * Returns the quate.
+   *
    * @return char
    */
-  public String getQuate()
+  public String getQuate ()
   {
     return this.quate;
   }
 
   /**
    * Sets the quate.
+   *
    * @param quate The quate to set
    */
-  public void setQuate(final String quate)
+  public void setQuate (final String quate)
   {
     this.quate = quate;
   }

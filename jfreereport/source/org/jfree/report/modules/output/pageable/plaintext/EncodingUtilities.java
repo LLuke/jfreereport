@@ -6,17 +6,25 @@ import java.io.UnsupportedEncodingException;
 
 public class EncodingUtilities
 {
-  /** The encoding name. */
+  /**
+   * The encoding name.
+   */
   private String encoding;
-  /** The header sequence of the encoding (-2, -1 for UTF-16). */
+  /**
+   * The header sequence of the encoding (-2, -1 for UTF-16).
+   */
   private byte[] header;
-  /** A single encoded space character. */
+  /**
+   * A single encoded space character.
+   */
   private byte[] space;
-  /** The header plus the single space. */
+  /**
+   * The header plus the single space.
+   */
   private byte[] encodingHeader;
 
   public EncodingUtilities (final String codepage)
-    throws UnsupportedEncodingException
+          throws UnsupportedEncodingException
   {
     this.encoding = codepage;
 
@@ -47,7 +55,8 @@ public class EncodingUtilities
    * @throws java.io.IOException if an error occures.
    */
   public void writeEncodedText
-          (final char[] textString, final OutputStream out) throws IOException
+          (final char[] textString, final OutputStream out)
+          throws IOException
   {
     final StringBuffer buffer = new StringBuffer(" ");
     buffer.append(textString);
@@ -63,7 +72,8 @@ public class EncodingUtilities
    * @throws java.io.IOException if an error occures.
    */
   public void writeEncodedText
-          (final String textString, final OutputStream out) throws IOException
+          (final String textString, final OutputStream out)
+          throws IOException
   {
     final StringBuffer buffer = new StringBuffer(" ");
     buffer.append(textString);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TriggerTypeFunction.java,v 1.1.2.1 2004/04/27 15:02:07 taqua Exp $
+ * $Id: TriggerTypeFunction.java,v 1.2 2005/01/25 01:13:41 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -67,7 +67,7 @@ public class TriggerTypeFunction extends AbstractFunction
       return;
     }
 
-    final String type = (String) event.getDataRow().get ("type");
+    final String type = (String) event.getDataRow().get("type");
     final Group g = FunctionUtilities.getCurrentGroup(event);
 
     final Element headerIncomeBand =

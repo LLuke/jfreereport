@@ -1,17 +1,17 @@
 package org.jfree.report.resourceloader;
 
-import java.util.ArrayList;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.io.InputStream;
-import java.io.IOException;
-import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
-import org.jfree.util.ObjectUtilities;
 import org.jfree.io.IOUtils;
 import org.jfree.report.util.Log;
+import org.jfree.util.ObjectUtilities;
 
 public class ImageFactory
 {
@@ -38,10 +38,10 @@ public class ImageFactory
     {
       final Class c = ObjectUtilities.getClassLoader
               (getClass()).loadClass(className);
-      registerModule ((ImageFactoryModule) c.newInstance());
+      registerModule((ImageFactoryModule) c.newInstance());
       return true;
     }
-    catch(Exception e)
+    catch (Exception e)
     {
       return false;
     }
@@ -71,8 +71,8 @@ public class ImageFactory
                             final String mimeType)
           throws IOException
   {
-    final ByteArrayOutputStream bout = new ByteArrayOutputStream(32*1024);
-    IOUtils.getInstance().copyStreams(in, bout, 16*1024);
+    final ByteArrayOutputStream bout = new ByteArrayOutputStream(32 * 1024);
+    IOUtils.getInstance().copyStreams(in, bout, 16 * 1024);
     return createImage(bout.toByteArray(), fileName, mimeType);
   }
 
@@ -90,7 +90,7 @@ public class ImageFactory
       {
         final ImageFactoryModule module = (ImageFactoryModule) factoryModules.get(i);
         if (module.getHeaderFingerprintSize() > 0 &&
-            data.length >= module.getHeaderFingerprintSize())
+                data.length >= module.getHeaderFingerprintSize())
         {
           if (module.canHandleResourceByContent(data))
           {
@@ -98,10 +98,10 @@ public class ImageFactory
           }
         }
       }
-      catch(IOException ioe)
+      catch (IOException ioe)
       {
         // first try failed ..
-        Log.debug ("Failed to load image: Trying harder ..", ioe);
+        Log.debug("Failed to load image: Trying harder ..", ioe);
       }
     }
 
@@ -120,10 +120,10 @@ public class ImageFactory
             return module.createImage(data, fileName, mimeType);
           }
         }
-        catch(IOException ioe)
+        catch (IOException ioe)
         {
           // first try failed ..
-          Log.debug ("Failed to load image: Trying harder ..", ioe);
+          Log.debug("Failed to load image: Trying harder ..", ioe);
         }
       }
     }
@@ -143,15 +143,15 @@ public class ImageFactory
             return module.createImage(data, fileName, mimeType);
           }
         }
-        catch(IOException ioe)
+        catch (IOException ioe)
         {
           // first try failed ..
-          Log.debug ("Failed to load image: Trying harder ..", ioe);
+          Log.debug("Failed to load image: Trying harder ..", ioe);
         }
       }
     }
 
-    Log.debug ("Failed to find suitable factory for image: Using the AWT as fallback ..");
+    Log.debug("Failed to find suitable factory for image: Using the AWT as fallback ..");
     // default failback ..
     // the JDK implementation might be able to handle some more modules
     return Toolkit.getDefaultToolkit().createImage(data);

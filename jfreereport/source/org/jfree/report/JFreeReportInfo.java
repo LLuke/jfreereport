@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.18 2005/01/25 21:39:54 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.19 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes:
  * --------
@@ -59,39 +59,37 @@ public class JFreeReportInfo extends ProjectInfo
 {
   /**
    * Constructs an object containing information about the JFreeReport project.
-   * <p>
+   * <p/>
    * Uses a resource bundle to localise some of the information.
    */
-  public JFreeReportInfo()
+  public JFreeReportInfo ()
   {
     setName("JFreeReport");
     setVersion("0.8.5-alpha-01");
     setInfo("http://www.jfree.org/jfreereport/index.html");
     setCopyright
-        ("(C)opyright 2000-2004, by Thomas Morgner, Object Refinery Limited and Contributors");
+            ("(C)opyright 2000-2004, by Thomas Morgner, Object Refinery Limited and Contributors");
 
-    setContributors(Arrays.asList(
-        new Contributor[]
-        {
-          new Contributor("David Gilbert", "david.gilbert@object-refinery.com"),
-          new Contributor("Thomas Morgner", "taqua@users.sourceforge.net"),
-          new Contributor("J\u00d6rg Sch\u00d6mer", "joerg.schoemer@nikocity.de"),
-          new Contributor("Heiko Evermann", "-"),
-          new Contributor("Piotr Bzdyl", "-"),
-          new Contributor("Patrice Rolland", "-"),
-          new Contributor("Cedric Pronzato", "-"),
-          new Contributor("Maciej Wegorkiewicz","-"),
-          new Contributor("Michael Tennes", "-"),
-          new Contributor("Dmitri Colebatch", "dimc@users.sourceforge.net"),
-          new Contributor("J\u00d6rg Schaible", "joehni@users.sourceforge.net"),
-          new Contributor("Marc Casas", "-"),
-          new Contributor("Ramon Juanes", "-"),
-          new Contributor("Demeter F. Tamas", "-"),
-          new Contributor("Hendri Smit", "-"),
-          new Contributor("Sergey M Mozgovoi", "-"),
-          new Contributor("Thomas Dilts", "-"),
-        }
-    ));
+    setContributors(Arrays.asList(new Contributor[]
+    {
+      new Contributor("David Gilbert", "david.gilbert@object-refinery.com"),
+      new Contributor("Thomas Morgner", "taqua@users.sourceforge.net"),
+      new Contributor("J\u00d6rg Sch\u00d6mer", "joerg.schoemer@nikocity.de"),
+      new Contributor("Heiko Evermann", "-"),
+      new Contributor("Piotr Bzdyl", "-"),
+      new Contributor("Patrice Rolland", "-"),
+      new Contributor("Cedric Pronzato", "-"),
+      new Contributor("Maciej Wegorkiewicz", "-"),
+      new Contributor("Michael Tennes", "-"),
+      new Contributor("Dmitri Colebatch", "dimc@users.sourceforge.net"),
+      new Contributor("J\u00d6rg Schaible", "joehni@users.sourceforge.net"),
+      new Contributor("Marc Casas", "-"),
+      new Contributor("Ramon Juanes", "-"),
+      new Contributor("Demeter F. Tamas", "-"),
+      new Contributor("Hendri Smit", "-"),
+      new Contributor("Sergey M Mozgovoi", "-"),
+      new Contributor("Thomas Dilts", "-"),
+    }));
 
     this.addLibrary(JCommon.INFO);
 
@@ -102,13 +100,13 @@ public class JFreeReportInfo extends ProjectInfo
     }
   }
 
-  private static Library tryLoadPixieInfo()
+  private static Library tryLoadPixieInfo ()
   {
     try
     {
       return (Library) Class.forName("org.jfree.pixie.PixieInfo").newInstance();
     }
-    catch(Exception e)
+    catch (Exception e)
     {
       return null;
     }
@@ -120,27 +118,27 @@ public class JFreeReportInfo extends ProjectInfo
   }
 
   /**
-   * Tries to read the licence text from jcommon. This method does not reference
-   * jcommon directly, as this would increase the size of that class file.
+   * Tries to read the licence text from jcommon. This method does not reference jcommon
+   * directly, as this would increase the size of that class file.
+   *
+   * @return the licence text for this project.
    *
    * @see org.jfree.ui.about.ProjectInfo#getLicenceText()
-   * @return the licence text for this project.
    */
-  public String getLicenceText()
+  public String getLicenceText ()
   {
     return Licences.getInstance().getLGPL();
   }
 
   /**
    * Print the library version and information about the library.
-   * <p>
-   * After there seems to be confusion about which version is currently used by
-   * the user, this method will print the project information to clarify this
-   * issue.
+   * <p/>
+   * After there seems to be confusion about which version is currently used by the user,
+   * this method will print the project information to clarify this issue.
    *
    * @param args ignored
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     final JFreeReportInfo info = new JFreeReportInfo();
     System.out.println(info.getName() + " " + info.getVersion());
@@ -149,7 +147,7 @@ public class JFreeReportInfo extends ProjectInfo
     System.out.println(info.getInfo());
     System.out.println("----------------------------------------------------------------");
     System.out.println("This project is licenced under the terms of the "
-        + info.getLicenceName() + ".");
+            + info.getLicenceName() + ".");
     System.exit(0);
   }
 }

@@ -4,15 +4,18 @@ import org.jfree.report.Band;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.style.BandStyleKeys;
 import org.jfree.xml.ParserUtil;
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class PageBandReadHandler extends RootLevelBandReadHandler
 {
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String ON_FIRST_PAGE_ATTR = "onfirstpage";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String ON_LAST_PAGE_ATTR = "onlastpage";
 
   public PageBandReadHandler (final Band band)
@@ -46,7 +49,7 @@ public class PageBandReadHandler extends RootLevelBandReadHandler
     {
       final boolean breakBefore = ParserUtil.parseBoolean(breakBeforeAttr, false);
       getBand().getStyle().setBooleanStyleProperty
-          (BandStyleKeys.DISPLAY_ON_FIRSTPAGE, breakBefore);
+              (BandStyleKeys.DISPLAY_ON_FIRSTPAGE, breakBefore);
     }
   }
 
@@ -57,7 +60,7 @@ public class PageBandReadHandler extends RootLevelBandReadHandler
     {
       final boolean breakBefore = ParserUtil.parseBoolean(breakBeforeAttr, false);
       getBand().getStyle().setBooleanStyleProperty
-          (BandStyleKeys.DISPLAY_ON_LASTPAGE, breakBefore);
+              (BandStyleKeys.DISPLAY_ON_LASTPAGE, breakBefore);
     }
   }
 }

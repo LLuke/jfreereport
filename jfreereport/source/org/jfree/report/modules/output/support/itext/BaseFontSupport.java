@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BaseFontSupport.java,v 1.15 2005/02/19 16:05:50 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.16 2005/02/22 20:18:23 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,9 @@ import org.jfree.report.util.StringUtil;
  */
 public class BaseFontSupport implements FontMapper
 {
-  /** Storage for BaseFont objects created. */
+  /**
+   * Storage for BaseFont objects created.
+   */
   private final Map baseFonts;
 
   private String defaultEncoding;
@@ -67,7 +69,7 @@ public class BaseFontSupport implements FontMapper
   /**
    * Creates a new support instance.
    */
-  public BaseFontSupport()
+  public BaseFontSupport ()
   {
     this(BaseFont.IDENTITY_H);
   }
@@ -95,7 +97,7 @@ public class BaseFontSupport implements FontMapper
   /**
    * Close the font support.
    */
-  public void close()
+  public void close ()
   {
     this.baseFonts.clear();
   }
@@ -104,17 +106,18 @@ public class BaseFontSupport implements FontMapper
    * Creates a BaseFontRecord for an AWT font.  If no basefont could be created, an
    * OutputTargetException is thrown.
    *
-   * @param font  the new font (null not permitted).
-   * @param encoding  the encoding.
-   * @param embedded a flag indicating whether to embed the font glyphs in the generated documents.
-   *
+   * @param font     the new font (null not permitted).
+   * @param encoding the encoding.
+   * @param embedded a flag indicating whether to embed the font glyphs in the generated
+   *                 documents.
    * @return the base font record.
    *
-   * @throws BaseFontCreateException if there was a problem setting the font for the target.
+   * @throws BaseFontCreateException if there was a problem setting the font for the
+   *                                 target.
    */
-  public BaseFontRecord createBaseFont(final FontDefinition font,
-                                       final String encoding, final boolean embedded)
-      throws BaseFontCreateException
+  public BaseFontRecord createBaseFont (final FontDefinition font,
+                                        final String encoding, final boolean embedded)
+          throws BaseFontCreateException
   {
     if (font == null)
     {
@@ -131,7 +134,7 @@ public class BaseFontSupport implements FontMapper
     boolean italic = false;
 
     if (StringUtil.endsWithIgnoreCase(logicalName, "bolditalic")
-        || (font.isBold() && font.isItalic()))
+            || (font.isBold() && font.isItalic()))
     {
       bold = true;
       italic = true;
@@ -195,7 +198,7 @@ public class BaseFontSupport implements FontMapper
         boolean embeddedOverride = embedded;
         if (embedded == true && factory.isEmbeddable(filename) == false)
         {
-          Log.warn ("License of font forbids embedded usage for font: " + fontKey);
+          Log.warn("License of font forbids embedded usage for font: " + fontKey);
           // strict mode here?
           embeddedOverride = false;
         }
@@ -212,7 +215,7 @@ public class BaseFontSupport implements FontMapper
         // filename is null, so no ttf file registered for the fontname, maybe this is
         // one of the internal fonts ...
         final BaseFont f = BaseFont.createFont(fontKey, stringEncoding, embedded,
-            false, null, null);
+                false, null, null);
 
         if (f != null)
         {
@@ -227,7 +230,7 @@ public class BaseFontSupport implements FontMapper
 //      final String filename = BaseFontFactory.getFontFactory().getFontfileForName(fontKey);
 //      Log.debug ("BaseFont.createFont failed. " + filename); 
       Log.warn(new Log.SimpleMessage
-        ("BaseFont.createFont failed. Key = ", fontKey, ": ",e.getMessage()));
+              ("BaseFont.createFont failed. Key = ", fontKey, ": ", e.getMessage()));
     }
     // fallback .. use BaseFont.HELVETICA as default
     try
@@ -244,7 +247,7 @@ public class BaseFontSupport implements FontMapper
 
       // no helvetica created, so do this now ...
       final BaseFont f = BaseFont.createFont(BaseFont.HELVETICA, stringEncoding, embedded,
-          false, null, null);
+              false, null, null);
       if (f != null)
       {
         fontRecord = new BaseFontRecord(BaseFont.HELVETICA, embedded, f);
@@ -264,26 +267,26 @@ public class BaseFontSupport implements FontMapper
   /**
    * Creates a PDF font record from a true type font.
    *
-   * @param font  the font.
-   * @param filename  the filename.
-   * @param encoding  the encoding.
-   * @param stringEncoding  the string encoding.
-   * @param embedded a flag indicating whether to embed the font glyphs in the generated documents.
-   *
+   * @param font           the font.
+   * @param filename       the filename.
+   * @param encoding       the encoding.
+   * @param stringEncoding the string encoding.
+   * @param embedded       a flag indicating whether to embed the font glyphs in the
+   *                       generated documents.
    * @return the PDF font record.
    *
-   * @throws IOException if there is an I/O problem.
+   * @throws IOException       if there is an I/O problem.
    * @throws DocumentException if the BaseFont could not be created.
    */
-  private BaseFontRecord createFontFromTTF(final FontDefinition font, final String filename,
-                                           final String encoding, final String stringEncoding,
-                                           final boolean embedded)
-      throws IOException, DocumentException
+  private BaseFontRecord createFontFromTTF (final FontDefinition font, final String filename,
+                                            final String encoding, final String stringEncoding,
+                                            final boolean embedded)
+          throws IOException, DocumentException
   {
 
     // TrueType fonts need extra handling if the font is a symbolic font.
     if ((StringUtil.endsWithIgnoreCase(filename, ".ttf") == false) &&
-        (StringUtil.endsWithIgnoreCase(filename, ".ttc") == false))
+            (StringUtil.endsWithIgnoreCase(filename, ".ttc") == false))
     {
       return null;
     }
@@ -331,29 +334,29 @@ public class BaseFontSupport implements FontMapper
   /**
    * Stores a record in the cache.
    *
-   * @param record  the record.
+   * @param record the record.
    */
-  private void putToCache(final BaseFontRecord record)
+  private void putToCache (final BaseFontRecord record)
   {
     final BaseFontRecordKey key = record.createKey();
     putToCache(key, record);
   }
 
-  private void putToCache(final BaseFontRecordKey key, final BaseFontRecord record)
+  private void putToCache (final BaseFontRecordKey key, final BaseFontRecord record)
   {
     baseFonts.put(key, record);
   }
+
   /**
    * Retrieves a record from the cache.
    *
    * @param fontKey  the font key; never null.
-   * @param encoding  the encoding; never null.
-   *
+   * @param encoding the encoding; never null.
    * @return the PDF font record or null, if not found.
    */
-  private BaseFontRecord getFromCache(final String fontKey,
-                                      final String encoding,
-                                      final boolean embedded)
+  private BaseFontRecord getFromCache (final String fontKey,
+                                       final String encoding,
+                                       final boolean embedded)
   {
     final Object key = new BaseFontRecordKey(fontKey, encoding, embedded);
     final BaseFontRecord r = (BaseFontRecord) baseFonts.get(key);
@@ -367,12 +370,11 @@ public class BaseFontSupport implements FontMapper
   /**
    * Creates a sans-serif font name.
    *
-   * @param bold  bold?
-   * @param italic  italic?
-   *
+   * @param bold   bold?
+   * @param italic italic?
    * @return the font name.
    */
-  private String createSansSerifName(final boolean bold, final boolean italic)
+  private String createSansSerifName (final boolean bold, final boolean italic)
   {
     if (bold && italic)
     {
@@ -395,12 +397,11 @@ public class BaseFontSupport implements FontMapper
   /**
    * Creates a serif font name.
    *
-   * @param bold  bold?
-   * @param italic  italic?
-   *
+   * @param bold   bold?
+   * @param italic italic?
    * @return the font name.
    */
-  private String createSerifName(final boolean bold, final boolean italic)
+  private String createSerifName (final boolean bold, final boolean italic)
   {
     if (bold && italic)
     {
@@ -423,12 +424,11 @@ public class BaseFontSupport implements FontMapper
   /**
    * Creates a courier font name.
    *
-   * @param bold  bold?
-   * @param italic  italic?
-   *
+   * @param bold   bold?
+   * @param italic italic?
    * @return the font name.
    */
-  private String createCourierName(final boolean bold, final boolean italic)
+  private String createCourierName (final boolean bold, final boolean italic)
   {
     if (bold && italic)
     {
@@ -455,14 +455,14 @@ public class BaseFontSupport implements FontMapper
    * @return	a BaseFont which has similar properties to the provided Font
    */
 
-  public BaseFont awtToPdf(final Font font)
+  public BaseFont awtToPdf (final Font font)
   {
     // this has to be defined in the element, an has to set as a default...
     final boolean embed = false;
     final String encoding = getDefaultEncoding();
     final FontDefinition fdef = new FontDefinition
-        (font.getName(), font.getSize(), font.isBold(), font.isItalic(),
-            false, false, encoding, embed);
+            (font.getName(), font.getSize(), font.isBold(), font.isItalic(),
+                    false, false, encoding, embed);
     try
     {
       final BaseFontRecord record = createBaseFont(fdef, encoding, embed);
@@ -484,7 +484,7 @@ public class BaseFontSupport implements FontMapper
    * @return	a Font which has similar properties to the provided BaseFont
    */
 
-  public Font pdfToAwt(final BaseFont font, final int size)
+  public Font pdfToAwt (final BaseFont font, final int size)
   {
     final String logicalName = getFontName(font);
     boolean bold = false;
@@ -505,12 +505,12 @@ public class BaseFontSupport implements FontMapper
     }
 
     final FontDefinition fdef = new FontDefinition
-        (logicalName, size, bold, italic,false, false, font.getEncoding(), font.isEmbedded());
+            (logicalName, size, bold, italic, false, false, font.getEncoding(), font.isEmbedded());
 
     return fdef.getFont();
   }
 
-  private String getFontName(final BaseFont font)
+  private String getFontName (final BaseFont font)
   {
     final String names[][] = font.getFullFontName();
     if (names.length == 1)

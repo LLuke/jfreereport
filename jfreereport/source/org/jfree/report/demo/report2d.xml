@@ -32,7 +32,7 @@
       </groupheader>
 
       <!-- GROUP FOOTER -->
-      <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9" pagebreak-after-print="true" >
+      <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9" pagebreak-after-print="true">
         <label x="0" y="2" width="100%" height="12" alignment="left">Total for letter:</label>
         <number-field fieldname="Sum2" format="#,##0.00" x="276" y="2" width="176" height="12" alignment="right"/>
       </groupfooter>
@@ -48,7 +48,7 @@
     <group name="Color Group">
 
       <!-- GROUP HEADER -->
-      <groupheader height="18" fontname="Monospaced" fontstyle="bold" fontsize="9" repeat="true" >
+      <groupheader height="18" fontname="Monospaced" fontstyle="bold" fontsize="9" repeat="true">
         <label x="0" y="1" width="120" height="9" alignment="left">Color Group:</label>
         <string-field x="124" y="1" width="76" height="9" alignment="left" fieldname="Color"/>
         <line x1="0" y1="12" x2="100%" y2="12" weight="0.25"/>
@@ -73,12 +73,12 @@
   <!-- ITEMS -->
   <items height="10" fontname="Monospaced" fontstyle="plain" fontsize="8">
     <!-- This will draw the table cell borders ... -->
-    <rectangle name="NameBorder" x="0" y="0" width="110" height="10" color="black" fill="false" draw="true" />
-    <rectangle name="Count1Border" x="110" y="0" width="40" height="10" color="black" fill="false" draw="true" />
-    <rectangle name="LetterBorder" x="150" y="0" width="74" height="10" color="black" fill="false" draw="true" />
-    <rectangle name="ColorBorder" x="224" y="0" width="76" height="10" color="black" fill="false" draw="true" />
-    <rectangle name="IntegerBorder" x="300" y="0" width="76" height="10" color="black" fill="false" draw="true" />
-    <rectangle name="DoubleBorder" x="376" y="0" width="76" height="10" color="black" fill="false" draw="true" />
+    <rectangle name="NameBorder" x="0" y="0" width="110" height="10" color="black" fill="false" draw="true"/>
+    <rectangle name="Count1Border" x="110" y="0" width="40" height="10" color="black" fill="false" draw="true"/>
+    <rectangle name="LetterBorder" x="150" y="0" width="74" height="10" color="black" fill="false" draw="true"/>
+    <rectangle name="ColorBorder" x="224" y="0" width="76" height="10" color="black" fill="false" draw="true"/>
+    <rectangle name="IntegerBorder" x="300" y="0" width="76" height="10" color="black" fill="false" draw="true"/>
+    <rectangle name="DoubleBorder" x="376" y="0" width="76" height="10" color="black" fill="false" draw="true"/>
 
     <!-- width reduced to 110 (former value 140) -->
     <string-field x="0" y="0" width="110" height="8" alignment="left" fieldname="Name"/>

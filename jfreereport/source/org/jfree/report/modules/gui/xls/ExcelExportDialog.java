@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportDialog.java,v 1.8.4.6 2004/12/13 19:26:59 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.11 2005/01/25 00:07:30 taqua Exp $
  *
  * Changes
  * --------
@@ -76,14 +76,13 @@ import org.jfree.report.modules.output.table.xls.ExcelProcessor;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
-import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.FilesystemFilter;
+import org.jfree.ui.action.ActionButton;
 
 /**
  * A dialog that is used to prepare the printing of a report into an Excel file.
- * <p>
- * The main method to call the dialog is
- * {@link org.jfree.report.modules.gui.xls.ExcelExportDialog#performQueryForExport(JFreeReport)}. 
+ * <p/>
+ * The main method to call the dialog is {@link org.jfree.report.modules.gui.xls.ExcelExportDialog#performQueryForExport(JFreeReport)}.
  * Given a report, the dialog is shown and if the user approved the dialog, the excel file
  * is saved using the settings made in the dialog.
  *
@@ -99,7 +98,7 @@ public class ExcelExportDialog extends JDialog
     /**
      * Default constructor.
      */
-    public ActionConfirm()
+    public ActionConfirm ()
     {
       putValue(Action.NAME, getResources().getString("excelexportdialog.confirm"));
     }
@@ -107,9 +106,9 @@ public class ExcelExportDialog extends JDialog
     /**
      * Receives notification that the action has occurred.
      *
-     * @param e  the action event.
+     * @param e the action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       if (performValidate())
       {
@@ -127,7 +126,7 @@ public class ExcelExportDialog extends JDialog
     /**
      * Default constructor.
      */
-    public ActionCancel()
+    public ActionCancel ()
     {
       putValue(Action.NAME, getResources().getString("excelexportdialog.cancel"));
     }
@@ -135,9 +134,9 @@ public class ExcelExportDialog extends JDialog
     /**
      * Receives notification that the action has occurred.
      *
-     * @param e  the action event.
+     * @param e the action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       setConfirmed(false);
       setVisible(false);
@@ -152,7 +151,7 @@ public class ExcelExportDialog extends JDialog
     /**
      * Default constructor.
      */
-    public ActionSelectFile()
+    public ActionSelectFile ()
     {
       putValue(Action.NAME, getResources().getString("excelexportdialog.selectFile"));
     }
@@ -160,50 +159,70 @@ public class ExcelExportDialog extends JDialog
     /**
      * Receives notification that the action has occurred.
      *
-     * @param e  the action event.
+     * @param e the action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       performSelectFile();
     }
   }
 
-  /** Confirm action. */
+  /**
+   * Confirm action.
+   */
   private Action actionConfirm;
 
-  /** Cancel action. */
+  /**
+   * Cancel action.
+   */
   private Action actionCancel;
 
-  /** Select file action. */
+  /**
+   * Select file action.
+   */
   private Action actionSelectFile;
 
-  /** Filename text field. */
+  /**
+   * Filename text field.
+   */
   private JTextField txFilename;
 
-  /** The strict layout check-box. */
+  /**
+   * The strict layout check-box.
+   */
   private JCheckBox cbStrictLayout;
 
-  /** Confirmed flag. */
+  /**
+   * Confirmed flag.
+   */
   private boolean confirmed;
 
-  /** Confirm button. */
+  /**
+   * Confirm button.
+   */
   private JButton btnConfirm;
 
-  /** Cancel button. */
+  /**
+   * Cancel button.
+   */
   private JButton btnCancel;
 
-  /** Localised resources. */
+  /**
+   * Localised resources.
+   */
   private ResourceBundle resources;
 
-  /** A file chooser. */
+  /**
+   * A file chooser.
+   */
   private JFileChooser fileChooser;
 
   /**
    * Creates a new Excel save dialog.
    *
-   * @param owner  the dialog owner.
+   * @param owner the dialog owner.
    */
-  public ExcelExportDialog(final Frame owner)
+  public ExcelExportDialog (final Frame owner)
   {
     super(owner);
     initConstructor();
@@ -212,9 +231,9 @@ public class ExcelExportDialog extends JDialog
   /**
    * Creates a new Excel dialog.
    *
-   * @param owner  the dialog owner.
+   * @param owner the dialog owner.
    */
-  public ExcelExportDialog(final Dialog owner)
+  public ExcelExportDialog (final Dialog owner)
   {
     super(owner);
     initConstructor();
@@ -223,7 +242,7 @@ public class ExcelExportDialog extends JDialog
   /**
    * Creates a new Excel save dialog.  The created dialog is modal.
    */
-  public ExcelExportDialog()
+  public ExcelExportDialog ()
   {
     initConstructor();
   }
@@ -231,7 +250,7 @@ public class ExcelExportDialog extends JDialog
   /**
    * Initialisation.
    */
-  private void initConstructor()
+  private void initConstructor ()
   {
     setModal(true);
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -242,12 +261,11 @@ public class ExcelExportDialog extends JDialog
 
     addWindowListener(new WindowAdapter()
     {
-      public void windowClosing(final WindowEvent e)
+      public void windowClosing (final WindowEvent e)
       {
         getActionCancel().actionPerformed(null);
       }
-    }
-    );
+    });
   }
 
   /**
@@ -255,7 +273,7 @@ public class ExcelExportDialog extends JDialog
    *
    * @return the resource bundle
    */
-  protected ResourceBundle getResources()
+  protected ResourceBundle getResources ()
   {
     return resources;
   }
@@ -265,7 +283,7 @@ public class ExcelExportDialog extends JDialog
    *
    * @return the action.
    */
-  private Action getActionSelectFile()
+  private Action getActionSelectFile ()
   {
     if (actionSelectFile == null)
     {
@@ -279,7 +297,7 @@ public class ExcelExportDialog extends JDialog
    *
    * @return the action.
    */
-  private Action getActionConfirm()
+  private Action getActionConfirm ()
   {
     if (actionConfirm == null)
     {
@@ -293,7 +311,7 @@ public class ExcelExportDialog extends JDialog
    *
    * @return the action.
    */
-  protected Action getActionCancel()
+  protected Action getActionCancel ()
   {
     if (actionCancel == null)
     {
@@ -305,7 +323,7 @@ public class ExcelExportDialog extends JDialog
   /**
    * Initializes the Swing components of this dialog.
    */
-  private void initialize()
+  private void initialize ()
   {
     final JPanel contentPane = new JPanel();
     contentPane.setLayout(new GridBagLayout());
@@ -359,7 +377,7 @@ public class ExcelExportDialog extends JDialog
     getRootPane().setDefaultButton(btnConfirm);
 
     buttonPanel.registerKeyboardAction(getActionConfirm(), KeyStroke.getKeyStroke('\n'),
-        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+            JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.NONE;
     gbc.weightx = 1;
@@ -377,7 +395,7 @@ public class ExcelExportDialog extends JDialog
    *
    * @return the name of the file where to save the excel file.
    */
-  public String getFilename()
+  public String getFilename ()
   {
     return txFilename.getText();
   }
@@ -387,19 +405,19 @@ public class ExcelExportDialog extends JDialog
    *
    * @param filename the filename of the excel file
    */
-  public void setFilename(final String filename)
+  public void setFilename (final String filename)
   {
     this.txFilename.setText(filename);
   }
 
   /**
-   * Gets the confirmation state of the dialog. A confirmed dialog has no invalid
-   * settings and the user confirmed any resource conflicts.
+   * Gets the confirmation state of the dialog. A confirmed dialog has no invalid settings
+   * and the user confirmed any resource conflicts.
    *
    * @return true, if the dialog has been confirmed and the excel file should be saved,
-   * false otherwise.
+   *         false otherwise.
    */
-  public boolean isConfirmed()
+  public boolean isConfirmed ()
   {
     return confirmed;
   }
@@ -409,7 +427,7 @@ public class ExcelExportDialog extends JDialog
    *
    * @param confirmed set to true, if OK was pressed, false otherwise
    */
-  protected void setConfirmed(final boolean confirmed)
+  protected void setConfirmed (final boolean confirmed)
   {
     this.confirmed = confirmed;
   }
@@ -419,7 +437,7 @@ public class ExcelExportDialog extends JDialog
    *
    * @return A boolean.
    */
-  public boolean isStrictLayout()
+  public boolean isStrictLayout ()
   {
     return cbStrictLayout.isSelected();
   }
@@ -427,9 +445,9 @@ public class ExcelExportDialog extends JDialog
   /**
    * Sets the 'strict-layout' check-box.
    *
-   * @param strictLayout  the new setting.
+   * @param strictLayout the new setting.
    */
-  public void setStrictLayout(final boolean strictLayout)
+  public void setStrictLayout (final boolean strictLayout)
   {
     cbStrictLayout.setSelected(strictLayout);
   }
@@ -437,7 +455,7 @@ public class ExcelExportDialog extends JDialog
   /**
    * Clears all selections and input fields.
    */
-  public void clear()
+  public void clear ()
   {
     txFilename.setText("");
     cbStrictLayout.setSelected(false);
@@ -470,7 +488,7 @@ public class ExcelExportDialog extends JDialog
   /**
    * Selects a file to use as target for the report processing.
    */
-  protected void performSelectFile()
+  protected void performSelectFile ()
   {
     if (fileChooser == null)
     {
@@ -499,20 +517,20 @@ public class ExcelExportDialog extends JDialog
   }
 
   /**
-   * Validates the contents of the dialog's input fields. If the selected file exists, it is also
-   * checked for validity.
+   * Validates the contents of the dialog's input fields. If the selected file exists, it
+   * is also checked for validity.
    *
    * @return true, if the input is valid, false otherwise
    */
-  public boolean performValidate()
+  public boolean performValidate ()
   {
     final String filename = getFilename();
     if (filename.trim().length() == 0)
     {
       JOptionPane.showMessageDialog(this,
-          getResources().getString("excelexportdialog.targetIsEmpty"),
-          getResources().getString("excelexportdialog.errorTitle"),
-          JOptionPane.ERROR_MESSAGE);
+              getResources().getString("excelexportdialog.targetIsEmpty"),
+              getResources().getString("excelexportdialog.errorTitle"),
+              JOptionPane.ERROR_MESSAGE);
       return false;
     }
     final File f = new File(filename);
@@ -521,29 +539,27 @@ public class ExcelExportDialog extends JDialog
       if (f.isFile() == false)
       {
         JOptionPane.showMessageDialog(this,
-            getResources().getString("excelexportdialog.targetIsNoFile"),
-            getResources().getString("excelexportdialog.errorTitle"),
-            JOptionPane.ERROR_MESSAGE);
+                getResources().getString("excelexportdialog.targetIsNoFile"),
+                getResources().getString("excelexportdialog.errorTitle"),
+                JOptionPane.ERROR_MESSAGE);
         return false;
       }
       if (f.canWrite() == false)
       {
         JOptionPane.showMessageDialog(this,
-            getResources().getString(
-                "excelexportdialog.targetIsNotWritable"),
-            getResources().getString("excelexportdialog.errorTitle"),
-            JOptionPane.ERROR_MESSAGE);
+                getResources().getString("excelexportdialog.targetIsNotWritable"),
+                getResources().getString("excelexportdialog.errorTitle"),
+                JOptionPane.ERROR_MESSAGE);
         return false;
       }
       final String key1 = "excelexportdialog.targetOverwriteConfirmation";
       final String key2 = "excelexportdialog.targetOverwriteTitle";
       if (JOptionPane.showConfirmDialog(this,
-          MessageFormat.format(getResources().getString(key1),
-              new Object[]{getFilename()}
-          ),
-          getResources().getString(key2),
-          JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-          == JOptionPane.NO_OPTION)
+              MessageFormat.format(getResources().getString(key1),
+                      new Object[]{getFilename()}),
+              getResources().getString(key2),
+              JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+              == JOptionPane.NO_OPTION)
       {
         return false;
       }
@@ -553,25 +569,25 @@ public class ExcelExportDialog extends JDialog
   }
 
   /**
-   * Opens the dialog to query all necessary input from the user.
-   * This will not start the processing, as this is done elsewhere.
-   * 
+   * Opens the dialog to query all necessary input from the user. This will not start the
+   * processing, as this is done elsewhere.
+   *
    * @param report the report that should be processed.
    * @return true, if the processing should continue, false otherwise.
    */
-  public boolean performQueryForExport(final JFreeReport report)
+  public boolean performQueryForExport (final JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
     final ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
     try
     {
       setDialogContents(storage.loadProperties
-          (ConfigFactory.encodePath(report.getName() + "_xlsexport"),
-              new Properties()));
+              (ConfigFactory.encodePath(report.getName() + "_xlsexport"),
+                      new Properties()));
     }
     catch (Exception cse)
     {
-      Log.debug ("Unable to load the defaults in XLS export dialog.");
+      Log.debug("Unable to load the defaults in XLS export dialog.");
     }
 
     setModal(true);
@@ -585,12 +601,12 @@ public class ExcelExportDialog extends JDialog
     try
     {
       storage.storeProperties
-          (ConfigFactory.encodePath(report.getName() + "_xlsexport"),
-              getDialogContents());
+              (ConfigFactory.encodePath(report.getName() + "_xlsexport"),
+                      getDialogContents());
     }
     catch (ConfigStoreException cse)
     {
-      Log.debug ("Unable to store the defaults in XLS export dialog.");
+      Log.debug("Unable to store the defaults in XLS export dialog.");
     }
     return true;
   }
@@ -598,28 +614,26 @@ public class ExcelExportDialog extends JDialog
   /**
    * Initialises the Excel export dialog from the settings in the report configuration.
    *
-   * @param config  the report configuration.
+   * @param config the report configuration.
    */
-  public void initFromConfiguration(final ReportConfiguration config)
+  public void initFromConfiguration (final ReportConfiguration config)
   {
     final String strict = config.getConfigProperty
-        (ExcelProcessor.CONFIGURATION_PREFIX +
-        ExcelProcessor.STRICT_LAYOUT,
-            config.getConfigProperty(TableProcessor.STRICT_LAYOUT,
-                TableProcessor.STRICT_LAYOUT_DEFAULT));
+            (ExcelProcessor.CONFIGURATION_PREFIX +
+            ExcelProcessor.STRICT_LAYOUT,
+                    config.getConfigProperty(TableProcessor.STRICT_LAYOUT,
+                            TableProcessor.STRICT_LAYOUT_DEFAULT));
     setStrictLayout(strict.equals("true"));
   }
 
   /**
-   * Stores the input from the dialog into the report configuration of the 
-   * report.
-   * 
-   * @param config the report configuration that should receive the new
-   * settings.
+   * Stores the input from the dialog into the report configuration of the report.
+   *
+   * @param config the report configuration that should receive the new settings.
    */
-  public void storeToConfiguration(final ReportConfiguration config)
+  public void storeToConfiguration (final ReportConfiguration config)
   {
     config.setConfigProperty(ExcelProcessor.CONFIGURATION_PREFIX +
-        ExcelProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));
+            ExcelProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ShapeFilter.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ShapeFilter.java,v 1.3 2004/05/07 08:24:42 mungady Exp $
  *
  * Changes
  * -------
@@ -51,11 +51,13 @@ public class ShapeFilter implements DataFilter, Serializable
   /**
    * Default constructor.
    */
-  public ShapeFilter()
+  public ShapeFilter ()
   {
   }
 
-  /** The data source. */
+  /**
+   * The data source.
+   */
   private DataSource dataSource;
 
   /**
@@ -63,7 +65,7 @@ public class ShapeFilter implements DataFilter, Serializable
    *
    * @return The data source.
    */
-  public DataSource getDataSource()
+  public DataSource getDataSource ()
   {
     return dataSource;
   }
@@ -73,19 +75,18 @@ public class ShapeFilter implements DataFilter, Serializable
    *
    * @param dataSource The data source.
    */
-  public void setDataSource(final DataSource dataSource)
+  public void setDataSource (final DataSource dataSource)
   {
     this.dataSource = dataSource;
   }
 
   /**
-   * Returns the current value for the data source.
-   * <P>
-   * The returned object, unless it is null, will be an instance of ImageReference.
+   * Returns the current value for the data source. <P> The returned object, unless it is
+   * null, will be an instance of ImageReference.
    *
    * @return The value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     final DataSource ds = getDataSource();
     if (ds == null)
@@ -107,7 +108,8 @@ public class ShapeFilter implements DataFilter, Serializable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final ShapeFilter r = (ShapeFilter) super.clone();
     if (dataSource != null)

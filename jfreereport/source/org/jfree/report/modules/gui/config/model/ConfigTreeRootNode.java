@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigTreeRootNode.java,v 1.3 2003/11/07 18:33:52 taqua Exp $
+ * $Id: ConfigTreeRootNode.java,v 1.4 2004/05/07 14:29:24 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -41,29 +41,29 @@ package org.jfree.report.modules.gui.config.model;
 import javax.swing.tree.TreeNode;
 
 /**
- * The root node contains the local and the global node and is the
- * main entry point into the tree.
- * 
+ * The root node contains the local and the global node and is the main entry point into
+ * the tree.
+ *
  * @author Thomas Morgner
  */
 public class ConfigTreeRootNode extends AbstractConfigTreeNode
 {
   /**
    * Creates a new root node with the given name.
-   * 
+   *
    * @param name the name of the node.
    */
-  public ConfigTreeRootNode(final String name)
+  public ConfigTreeRootNode (final String name)
   {
     super(name);
   }
 
   /**
    * Returns the parent <code>TreeNode</code> of the receiver.
-   * 
-   * @return always null, as the root node never has a parent. 
+   *
+   * @return always null, as the root node never has a parent.
    */
-  public TreeNode getParent()
+  public TreeNode getParent ()
   {
     return null;
   }

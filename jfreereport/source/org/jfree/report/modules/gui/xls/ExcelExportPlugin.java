@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.15.4.1 2004/02/03 15:14:51 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.19 2005/01/25 00:07:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -58,22 +58,28 @@ import org.jfree.util.ResourceBundleSupport;
  */
 public class ExcelExportPlugin extends AbstractExportPlugin
 {
-  /** The excel export dialog which handles the export. */
+  /**
+   * The excel export dialog which handles the export.
+   */
   private ExcelExportDialog exportDialog;
 
-  /** Localised resources. */
+  /**
+   * Localised resources.
+   */
   private final ResourceBundleSupport resources;
 
-  /** The base resource class. */
+  /**
+   * The base resource class.
+   */
   public static final String BASE_RESOURCE_CLASS =
           "org.jfree.report.modules.gui.xls.resources.xls-export-resources";
   public static final String PROGRESS_DIALOG_ENABLE_KEY =
-      "org.jfree.report.modules.gui.xls.ProgressDialogEnabled";
+          "org.jfree.report.modules.gui.xls.ProgressDialogEnabled";
 
   /**
    * DefaultConstructor.
    */
-  public ExcelExportPlugin()
+  public ExcelExportPlugin ()
   {
     resources = new ResourceBundleSupport(BASE_RESOURCE_CLASS);
   }
@@ -83,7 +89,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    *
    * @return the progress monitor dialog.
    */
-  protected ReportProgressDialog createProgressDialog()
+  protected ReportProgressDialog createProgressDialog ()
   {
     final ReportProgressDialog progressDialog = super.createProgressDialog();
     progressDialog.setDefaultCloseOperation(ReportProgressDialog.DO_NOTHING_ON_CLOSE);
@@ -99,7 +105,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    *
    * @param proxy the preview proxy that created this plugin.
    */
-  public void init(final PreviewProxy proxy)
+  public void init (final PreviewProxy proxy)
   {
     super.init(proxy);
     if (proxy instanceof Frame)
@@ -121,11 +127,10 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    * Shows this dialog and (if the dialog is confirmed) saves the complete report into an
    * Excel file.
    *
-   * @param report  the report being processed.
-   *
+   * @param report the report being processed.
    * @return true or false.
    */
-  public boolean performExport(final JFreeReport report)
+  public boolean performExport (final JFreeReport report)
   {
     final boolean result = exportDialog.performQueryForExport(report);
     if (result == false)
@@ -136,8 +141,8 @@ public class ExcelExportPlugin extends AbstractExportPlugin
 
     final ReportProgressDialog progressDialog;
     if (report.getReportConfiguration().getConfigProperty
-        (PROGRESS_DIALOG_ENABLE_KEY,
-            "false").equals("true"))
+            (PROGRESS_DIALOG_ENABLE_KEY,
+                    "false").equals("true"))
     {
       progressDialog = createProgressDialog();
     }
@@ -147,8 +152,8 @@ public class ExcelExportPlugin extends AbstractExportPlugin
     }
 
     final ExcelExportTask task =
-      new ExcelExportTask(exportDialog.getFilename(), progressDialog, report);
-    task.addExportTaskListener(new DefaultExportTaskListener ());
+            new ExcelExportTask(exportDialog.getFilename(), progressDialog, report);
+    task.addExportTaskListener(new DefaultExportTaskListener());
     delegateTask(task);
     return handleExportResult(task);
   }
@@ -158,7 +163,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    *
    * @return The description.
    */
-  public String getShortDescription()
+  public String getShortDescription ()
   {
     return resources.getString("action.export-to-excel.description");
   }
@@ -168,7 +173,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    *
    * @return The icon.
    */
-  public Icon getSmallIcon()
+  public Icon getSmallIcon ()
   {
     return resources.getIcon("action.export-to-excel.small-icon");
   }
@@ -178,7 +183,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    *
    * @return The icon.
    */
-  public Icon getLargeIcon()
+  public Icon getLargeIcon ()
   {
     return resources.getIcon("action.export-to-excel.icon");
   }
@@ -188,7 +193,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    *
    * @return The key stroke.
    */
-  public KeyStroke getAcceleratorKey()
+  public KeyStroke getAcceleratorKey ()
   {
     return resources.getKeyStroke("action.export-to-excel.accelerator");
   }
@@ -198,7 +203,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    *
    * @return The key code.
    */
-  public Integer getMnemonicKey()
+  public Integer getMnemonicKey ()
   {
     return resources.getMnemonic("action.export-to-excel.mnemonic");
   }
@@ -208,7 +213,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    *
    * @return The display name.
    */
-  public String getDisplayName()
+  public String getDisplayName ()
   {
     return resources.getString("action.export-to-excel.name");
   }
@@ -219,44 +224,43 @@ public class ExcelExportPlugin extends AbstractExportPlugin
    *
    * @return true, if the plugin should be added to the toolbar, false otherwise.
    */
-  public boolean isAddToToolbar()
+  public boolean isAddToToolbar ()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        ("org.jfree.report.modules.gui.xls.AddToToolbar", "false").equals("true");
+            ("org.jfree.report.modules.gui.xls.AddToToolbar", "false").equals("true");
   }
 
   /**
-   * Returns true if the action is separated, and false otherwise. A separated
-   * action starts a new action group and will be spearated from previous actions
-   * on the menu and toolbar.
+   * Returns true if the action is separated, and false otherwise. A separated action
+   * starts a new action group and will be spearated from previous actions on the menu and
+   * toolbar.
    *
-   * @return true, if the action should be separated from previous actions,
-   * false otherwise.
+   * @return true, if the action should be separated from previous actions, false
+   *         otherwise.
    */
-  public boolean isSeparated()
+  public boolean isSeparated ()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        ("org.jfree.report.modules.gui.xls.Separated", "false").equals("true");
+            ("org.jfree.report.modules.gui.xls.Separated", "false").equals("true");
   }
 
   /**
-   * Returns the Export dialog used to query the required export parameters
-   * from the user.
+   * Returns the Export dialog used to query the required export parameters from the
+   * user.
    *
    * @return the default export dialog.
    */
-  protected ExcelExportDialog getExportDialog()
+  protected ExcelExportDialog getExportDialog ()
   {
     return exportDialog;
   }
 
   /**
-   * Returns the resourcebundle to be used to translate strings into
-   * localized content.
-   * 
+   * Returns the resourcebundle to be used to translate strings into localized content.
+   *
    * @return the resourcebundle for the localisation.
    */
-  protected ResourceBundleSupport getResources()
+  protected ResourceBundleSupport getResources ()
   {
     return resources;
   }

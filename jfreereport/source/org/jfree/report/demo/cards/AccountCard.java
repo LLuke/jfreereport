@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AccountCard.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: AccountCard.java,v 1.3 2004/05/07 12:43:25 mungady Exp $
  *
  * Changes
  * -------
@@ -43,23 +43,27 @@ package org.jfree.report.demo.cards;
  */
 public class AccountCard extends PersonBoundCard
 {
-  /** The login id. */
+  /**
+   * The login id.
+   */
   private String login;
 
-  /** The password. */
+  /**
+   * The password.
+   */
   private String password;
 
   /**
    * Creates a new user account card.
    *
-   * @param firstName  the first name.
+   * @param firstName the first name.
    * @param lastName  the last name.
-   * @param cardNr  the card number.
-   * @param login  the login id.
+   * @param cardNr    the card number.
+   * @param login     the login id.
    * @param password  the password.
    */
-  public AccountCard(final String firstName, final String lastName, final String cardNr,
-                     final String login, final String password)
+  public AccountCard (final String firstName, final String lastName, final String cardNr,
+                      final String login, final String password)
   {
     super(firstName, lastName, cardNr);
     if (login == null)
@@ -80,7 +84,7 @@ public class AccountCard extends PersonBoundCard
    *
    * @return The login id.
    */
-  public String getLogin()
+  public String getLogin ()
   {
     return login;
   }
@@ -90,7 +94,7 @@ public class AccountCard extends PersonBoundCard
    *
    * @return The password.
    */
-  public String getPassword()
+  public String getPassword ()
   {
     return password;
   }
@@ -100,7 +104,7 @@ public class AccountCard extends PersonBoundCard
    *
    * @return The account type.
    */
-  public CardType getType()
+  public CardType getType ()
   {
     return CardType.ACCOUNT;
   }

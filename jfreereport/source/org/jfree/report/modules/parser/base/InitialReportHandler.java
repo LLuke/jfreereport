@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
 
- * $Id: InitialReportHandler.java,v 1.8 2005/01/25 00:17:38 taqua Exp $
+ * $Id: InitialReportHandler.java,v 1.9 2005/02/04 19:07:13 taqua Exp $
  *
  * Changes
  * -------
@@ -40,38 +40,40 @@ package org.jfree.report.modules.parser.base;
 
 import java.util.Hashtable;
 
+import org.jfree.xml.ElementDefinitionException;
+import org.jfree.xml.parser.RootXmlReadHandler;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
-import org.jfree.xml.parser.RootXmlReadHandler;
-import org.jfree.xml.ElementDefinitionException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * The InitialReportHandler is used to decide, which parser profile to use
- * for parsing the xml definition.
- * <p>
- * If the root element is <code>report-definition</code>, then the extended
- * profile is used, if the root element is <code>report</code> then the simple
- * report definition format will be used.
- * <p>
- * Once one of the profiles is activated, the parser forwards all SAXEvents to
- * the selected ElementDefinitionHandler.
+ * The InitialReportHandler is used to decide, which parser profile to use for parsing the
+ * xml definition.
+ * <p/>
+ * If the root element is <code>report-definition</code>, then the extended profile is
+ * used, if the root element is <code>report</code> then the simple report definition
+ * format will be used.
+ * <p/>
+ * Once one of the profiles is activated, the parser forwards all SAXEvents to the
+ * selected ElementDefinitionHandler.
  *
  * @author Thomas Morgner
  */
 public class InitialReportHandler implements XmlReadHandler
 {
-  /** A collection of all defined element handlers. */
+  /**
+   * A collection of all defined element handlers.
+   */
   private static Hashtable definedHandlers;
 
   /**
    * Registers a new handler for the given tagname.
    *
-   * @param tagname the tagname for which this handler class should be registered.
+   * @param tagname      the tagname for which this handler class should be registered.
    * @param handlerClass the handler class name.
    */
-  public static void registerHandler(final String tagname, final String handlerClass)
+  public static void registerHandler (final String tagname, final String handlerClass)
   {
     if (definedHandlers == null)
     {
@@ -81,12 +83,12 @@ public class InitialReportHandler implements XmlReadHandler
   }
 
   /**
-   * Removes the tagname and its assigned handler from the list of
-   * registered report definition handlers.
+   * Removes the tagname and its assigned handler from the list of registered report
+   * definition handlers.
    *
    * @param tagname the tagname that should be removed from the list.
    */
-  public static void unregisterHandler(final String tagname)
+  public static void unregisterHandler (final String tagname)
   {
     if (definedHandlers == null)
     {
@@ -99,10 +101,9 @@ public class InitialReportHandler implements XmlReadHandler
    * Looks up a handler for the given tagname.
    *
    * @param tagname the tagname for which we search an handler.
-   * @return the handler class name or null, if no handler is registered
-   * for this tag.
+   * @return the handler class name or null, if no handler is registered for this tag.
    */
-  public static String getRegisteredHandler(final String tagname)
+  public static String getRegisteredHandler (final String tagname)
   {
     if (definedHandlers == null)
     {
@@ -111,7 +112,9 @@ public class InitialReportHandler implements XmlReadHandler
     return (String) definedHandlers.get(tagname);
   }
 
-  /** THe currently processed document element tag. */
+  /**
+   * THe currently processed document element tag.
+   */
   private String activeRootTag;
 
   private RootXmlReadHandler rootXmlReadHandler;
@@ -125,9 +128,11 @@ public class InitialReportHandler implements XmlReadHandler
    *
    * @param className the name of the handler implementation.
    * @return the instantiated handler
+   *
    * @throws SAXException if the handler could not be loaded.
    */
-  private XmlReadHandler loadHandler(final String className) throws SAXException
+  private XmlReadHandler loadHandler (final String className)
+          throws SAXException
   {
     try
     {
@@ -138,8 +143,8 @@ public class InitialReportHandler implements XmlReadHandler
     {
       e.printStackTrace();
       throw new SAXException
-          ("Unable to load handler. An optional handler module for " +
-          "this report definition type is missing. [" + className + "]");
+              ("Unable to load handler. An optional handler module for " +
+              "this report definition type is missing. [" + className + "]");
     }
   }
 
@@ -174,13 +179,12 @@ public class InitialReportHandler implements XmlReadHandler
    * Callback to indicate that an XML element start tag has been read by the parser.
    * Selects the parser profile depending on the current tag name.
    *
-   * @param tagName  the tag name.
-   * @param attrs  the attributes.
-   *
+   * @param tagName the tag name.
+   * @param attrs   the attributes.
    * @throws org.xml.sax.SAXException if a parser error occurs or the validation failed.
    */
-  public void startElement(final String tagName, final Attributes attrs)
-      throws SAXException
+  public void startElement (final String tagName, final Attributes attrs)
+          throws SAXException
   {
     final String activeHandler = getRegisteredHandler(tagName);
     if (activeHandler == null)
@@ -195,18 +199,18 @@ public class InitialReportHandler implements XmlReadHandler
     }
     catch (XmlReaderException e)
     {
-      throw new ElementDefinitionException ("Unable to delegate parsing process.");
+      throw new ElementDefinitionException("Unable to delegate parsing process.");
     }
   }
 
   /**
    * Callback to indicate that some character data has been read. This is ignored.
    *
-   * @param ch  the character array.
+   * @param ch     the character array.
    * @param start  the start index for the characters.
-   * @param length  the length of the character sequence.
+   * @param length the length of the character sequence.
    */
-  public void characters(final char[] ch, final int start, final int length)
+  public void characters (final char[] ch, final int start, final int length)
   {
     // characters are ignored at this point...
   }
@@ -214,11 +218,11 @@ public class InitialReportHandler implements XmlReadHandler
   /**
    * Callback to indicate that an XML element end tag has been read by the parser.
    *
-   * @param tagName  the tag name.
-   *
+   * @param tagName the tag name.
    * @throws org.xml.sax.SAXException if a parser error occurs or the validation failed.
    */
-  public void endElement(final String tagName) throws SAXException
+  public void endElement (final String tagName)
+          throws SAXException
   {
     if (tagName.equals(activeRootTag))
     {
@@ -227,7 +231,7 @@ public class InitialReportHandler implements XmlReadHandler
     else
     {
       throw new SAXException("Invalid TagName: " + tagName + ", expected one of the "
-          + " registered root tag names.");
+              + " registered root tag names.");
     }
   }
 }

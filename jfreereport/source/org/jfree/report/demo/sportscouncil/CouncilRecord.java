@@ -1,7 +1,6 @@
 package org.jfree.report.demo.sportscouncil;
 
 
-
 public class CouncilRecord extends Record
 {
   private String orgName;

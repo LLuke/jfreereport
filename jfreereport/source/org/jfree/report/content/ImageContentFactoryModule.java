@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentFactoryModule.java,v 1.8 2005/01/24 23:58:16 taqua Exp $
+ * $Id: ImageContentFactoryModule.java,v 1.9 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,8 @@ import org.jfree.report.util.geom.StrictDimension;
 import org.jfree.report.util.geom.StrictPoint;
 
 /**
- * The ImageContentFactoryModule creates image content from the given element.
- * The content type of the used element should fit "image/*".
+ * The ImageContentFactoryModule creates image content from the given element. The content
+ * type of the used element should fit "image/*".
  *
  * @author Thomas Morgner
  */
@@ -57,7 +57,7 @@ public strictfp class ImageContentFactoryModule implements ContentFactoryModule
   /**
    * DefaultConstructor.
    */
-  public ImageContentFactoryModule()
+  public ImageContentFactoryModule ()
   {
   }
 
@@ -65,11 +65,10 @@ public strictfp class ImageContentFactoryModule implements ContentFactoryModule
    * Returns <code>true</code> if the module can handle the specified content type, and
    * <code>false</code> otherwise.
    *
-   * @param contentType  the content type.
-   *
+   * @param contentType the content type.
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean canHandleContent(final String contentType)
+  public boolean canHandleContent (final String contentType)
   {
     return (StringUtil.startsWithIgnoreCase(contentType, "image/"));
   }
@@ -77,14 +76,13 @@ public strictfp class ImageContentFactoryModule implements ContentFactoryModule
   /**
    * Creates a content wrapper for the element.
    *
-   * @param e  the element.
-   * @param bounds  the bounds.
-   * @param ot  the output target.
-   *
+   * @param e      the element.
+   * @param bounds the bounds.
+   * @param ot     the output target.
    * @return the content.
    */
-  public Content createContentForElement(final Element e, final ElementLayoutInformation bounds,
-                                         final LayoutSupport ot)
+  public Content createContentForElement (final Element e, final ElementLayoutInformation bounds,
+                                          final LayoutSupport ot)
   {
     final ImageContainer ir = (ImageContainer) e.getValue();
     // there is no content?

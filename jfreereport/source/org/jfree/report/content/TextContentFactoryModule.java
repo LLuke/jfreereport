@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextContentFactoryModule.java,v 1.9 2005/01/30 23:37:18 taqua Exp $
+ * $Id: TextContentFactoryModule.java,v 1.10 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -44,12 +44,12 @@ import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.ElementLayoutInformation;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictDimension;
-import org.jfree.report.util.geom.StrictPoint;
 import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.report.util.geom.StrictPoint;
 
 /**
- * The TextContentFactoryModule creates plain text content from the given element.
- * The content type of the used element should be "text/plain".
+ * The TextContentFactoryModule creates plain text content from the given element. The
+ * content type of the used element should be "text/plain".
  *
  * @author Thomas Morgner
  */
@@ -58,7 +58,7 @@ public class TextContentFactoryModule implements ContentFactoryModule
   /**
    * creates a new TextContentFactoryModule.
    */
-  public TextContentFactoryModule()
+  public TextContentFactoryModule ()
   {
   }
 
@@ -67,11 +67,10 @@ public class TextContentFactoryModule implements ContentFactoryModule
    * <code>false</code> otherwise. This implementation is able to handle the type
    * &quot;text/plain&quot;.
    *
-   * @param contentType  the content type.
-   *
+   * @param contentType the content type.
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean canHandleContent(final String contentType)
+  public boolean canHandleContent (final String contentType)
   {
     return contentType.equalsIgnoreCase("text/plain");
   }
@@ -80,17 +79,16 @@ public class TextContentFactoryModule implements ContentFactoryModule
    * Creates a content wrapper for the element. If the text given is null or the text's
    * length is zero, this method will return the EmptyContent reference.
    *
-   * @param e  the element.
-   * @param bounds  the bounds.
-   * @param ot  the output target.
-   *
+   * @param e      the element.
+   * @param bounds the bounds.
+   * @param ot     the output target.
    * @return the content, never null.
    *
    * @throws ContentCreationException if there is a problem creating the content.
    */
-  public Content createContentForElement(final Element e, final ElementLayoutInformation bounds,
-                                         final LayoutSupport ot)
-      throws ContentCreationException
+  public Content createContentForElement (final Element e, final ElementLayoutInformation bounds,
+                                          final LayoutSupport ot)
+          throws ContentCreationException
   {
     final Object value = e.getValue();
     if (value == null)
@@ -125,20 +123,20 @@ public class TextContentFactoryModule implements ContentFactoryModule
 
     final FontDefinition f = e.getStyle().getFontDefinitionProperty();
     final StrictBounds tBounds = new StrictBounds
-        (point.getX(), point.getY(), dim.getWidth(), dim.getHeight());
+            (point.getX(), point.getY(), dim.getWidth(), dim.getHeight());
 
     final Float lineHeight = (Float) e.getStyle().getStyleProperty(ElementStyleSheet.LINEHEIGHT);
     try
     {
       final String reservedLiteral = (String) e.getStyle().getStyleProperty
-          (ElementStyleSheet.RESERVED_LITERAL, "..");
+              (ElementStyleSheet.RESERVED_LITERAL, "..");
 
       final boolean trimTextContent = e.getStyle().getBooleanStyleProperty
-          (ElementStyleSheet.TRIM_TEXT_CONTENT);
+              (ElementStyleSheet.TRIM_TEXT_CONTENT);
 
       final TextContent tc = new TextContent
-          (text, StrictGeomUtility.toInternalValue(lineHeight.floatValue()), tBounds,
-           ot.createTextSizeCalculator(f), reservedLiteral, trimTextContent);
+              (text, StrictGeomUtility.toInternalValue(lineHeight.floatValue()), tBounds,
+                      ot.createTextSizeCalculator(f), reservedLiteral, trimTextContent);
       return tc;
     }
     catch (SizeCalculatorException se)

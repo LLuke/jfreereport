@@ -30,12 +30,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionCollection.java,v 1.5 2005/01/25 00:00:10 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.6 2005/02/04 19:22:54 taqua Exp $
  =======
- * $Id: ExpressionCollection.java,v 1.5 2005/01/25 00:00:10 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.6 2005/02/04 19:22:54 taqua Exp $
  >>>>>>> 1.7
  =======
- * $Id: ExpressionCollection.java,v 1.5 2005/01/25 00:00:10 taqua Exp $
+ * $Id: ExpressionCollection.java,v 1.6 2005/02/04 19:22:54 taqua Exp $
  >>>>>>> 1.8
  *
  * Changes
@@ -52,30 +52,34 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /**
- * Collects all expressions used in the report. There exist 2 states of the ExpressionCollection.
- * In the first, modifiable state, expressions can be added to the collection. During the adding
- * the expressions get initialized. An ExpressionCollection in this state is not able to connect
- * to an DataRow.
- * <p>
- * The second state is an immutable state of this collection, no expressions can be added or
- * removed.  This ReadOnlyExpressionCollection can be created by calling getCopy() on the
- * first-state expression collection. The ReadOnlyExpressionCollection is able to connect to a
- * DataRow.
+ * Collects all expressions used in the report. There exist 2 states of the
+ * ExpressionCollection. In the first, modifiable state, expressions can be added to the
+ * collection. During the adding the expressions get initialized. An ExpressionCollection
+ * in this state is not able to connect to an DataRow.
+ * <p/>
+ * The second state is an immutable state of this collection, no expressions can be added
+ * or removed.  This ReadOnlyExpressionCollection can be created by calling getCopy() on
+ * the first-state expression collection. The ReadOnlyExpressionCollection is able to
+ * connect to a DataRow.
  *
  * @author Thomas Morgner
  */
 public class ExpressionCollection implements Cloneable, Serializable
 {
-  /** Storage for the Expressions in the collection. */
+  /**
+   * Storage for the Expressions in the collection.
+   */
   private HashMap expressionPositions;
 
-  /** Ordered storage for the Expressions. */
+  /**
+   * Ordered storage for the Expressions.
+   */
   private ArrayList expressionList;
 
   /**
    * Creates a new expression collection (initially empty).
    */
-  public ExpressionCollection()
+  public ExpressionCollection ()
   {
     expressionPositions = new HashMap();
     expressionList = new ArrayList();
@@ -84,13 +88,12 @@ public class ExpressionCollection implements Cloneable, Serializable
   /**
    * Creates a new expression collection, populated with the supplied expressions.
    *
-   * @param expressions  a collection of expressions.
-   *
+   * @param expressions a collection of expressions.
    * @throws FunctionInitializeException if any of the expressions cannot be initialized.
-   * @throws ClassCastException if the collection does not contain Expressions
+   * @throws ClassCastException          if the collection does not contain Expressions
    */
-  public ExpressionCollection(final Collection expressions)
-      throws FunctionInitializeException
+  public ExpressionCollection (final Collection expressions)
+          throws FunctionInitializeException
   {
     this();
     addAll(expressions);
@@ -100,13 +103,13 @@ public class ExpressionCollection implements Cloneable, Serializable
    * Adds all expressions contained in the given collection to this expression collection.
    * The expressions get initialized during the adding process.
    *
-   * @param expressions  the expressions to be added.
-   *
-   * @throws ClassCastException if the collection does not contain expressions
-   * @throws FunctionInitializeException if a contained expression could not be initialized.
+   * @param expressions the expressions to be added.
+   * @throws ClassCastException          if the collection does not contain expressions
+   * @throws FunctionInitializeException if a contained expression could not be
+   *                                     initialized.
    */
-  public void addAll(final Collection expressions)
-      throws FunctionInitializeException
+  public void addAll (final Collection expressions)
+          throws FunctionInitializeException
   {
     if (expressions != null)
     {
@@ -122,13 +125,12 @@ public class ExpressionCollection implements Cloneable, Serializable
   /**
    * Returns the {@link Expression} with the specified name (or <code>null</code>).
    *
-   * @param name  the expression name (<code>null</code> not permitted).
-   *
+   * @param name the expression name (<code>null</code> not permitted).
    * @return The expression.
    *
    * @throws NullPointerException if the name given is <code>null</code>.
    */
-  public Expression get(final String name)
+  public Expression get (final String name)
   {
     final Integer position = (Integer) expressionPositions.get(name);
     if (position == null)
@@ -139,12 +141,12 @@ public class ExpressionCollection implements Cloneable, Serializable
   }
 
   /**
-   * Adds an expression to the collection.  The expression is initialized before it is added to
-   * this collection.
+   * Adds an expression to the collection.  The expression is initialized before it is
+   * added to this collection.
    *
-   * @param e  the expression.
+   * @param e the expression.
    */
-  public void add(final Expression e)
+  public void add (final Expression e)
   {
     if (e == null)
     {
@@ -161,11 +163,10 @@ public class ExpressionCollection implements Cloneable, Serializable
   /**
    * Adds an expression to the collection.
    *
-   * @param e  the expression.
-   *
+   * @param e the expression.
    * @throws NullPointerException if the given Expression is null.
    */
-  protected void privateAdd(final Expression e)
+  protected void privateAdd (final Expression e)
   {
     expressionPositions.put(e.getName(), new Integer(expressionList.size()));
     expressionList.add(e);
@@ -174,11 +175,10 @@ public class ExpressionCollection implements Cloneable, Serializable
   /**
    * Removes an expression from the collection.
    *
-   * @param e  the expression.
-   *
+   * @param e the expression.
    * @throws NullPointerException if the given Expression is null.
    */
-  public void removeExpression(final Expression e)
+  public void removeExpression (final Expression e)
   {
     final Integer val = (Integer) expressionPositions.get(e.getName());
     if (val == null)
@@ -194,7 +194,7 @@ public class ExpressionCollection implements Cloneable, Serializable
    *
    * @return the number of expressions in this collection
    */
-  public int size()
+  public int size ()
   {
     return expressionList.size();
   }
@@ -202,13 +202,12 @@ public class ExpressionCollection implements Cloneable, Serializable
   /**
    * Returns the expression on the given position in the list.
    *
-   * @param pos  the position in the list.
-   *
+   * @param pos the position in the list.
    * @return the expression.
    *
    * @throws IndexOutOfBoundsException if the given position is invalid
    */
-  public Expression getExpression(final int pos)
+  public Expression getExpression (final int pos)
   {
     return (Expression) expressionList.get(pos);
   }
@@ -220,7 +219,8 @@ public class ExpressionCollection implements Cloneable, Serializable
    *
    * @throws CloneNotSupportedException should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final ExpressionCollection col = (ExpressionCollection) super.clone();
     col.expressionPositions = new HashMap();

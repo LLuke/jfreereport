@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineBreakIterator.java,v 1.2.4.1 2004/11/21 16:39:27 taqua Exp $
+ * $Id: LineBreakIterator.java,v 1.4 2005/01/25 00:22:55 taqua Exp $
  *
  * Changes
  * -------
@@ -45,19 +45,25 @@ import java.util.Iterator;
  */
 public class LineBreakIterator implements Iterator
 {
-  /** A useful constant. */
+  /**
+   * A useful constant.
+   */
   public static final int DONE = -1;
 
-  /** Storage for the text. */
+  /**
+   * Storage for the text.
+   */
   private char[] text;
 
-  /** The current position. */
+  /**
+   * The current position.
+   */
   private int position;
 
   /**
    * Default constructor.
    */
-  public LineBreakIterator()
+  public LineBreakIterator ()
   {
     setText("");
   }
@@ -67,7 +73,7 @@ public class LineBreakIterator implements Iterator
    *
    * @param text the text to be broken up.
    */
-  public LineBreakIterator(final String text)
+  public LineBreakIterator (final String text)
   {
     setText(text);
   }
@@ -77,7 +83,7 @@ public class LineBreakIterator implements Iterator
    *
    * @return A position.
    */
-  public synchronized int nextPosition()
+  public synchronized int nextPosition ()
   {
     if (text == null)
     {
@@ -135,12 +141,12 @@ public class LineBreakIterator implements Iterator
   }
 
   /**
-   * Same like next(), but returns the End-Of-Text as
-   * if there was a linebreak added (Reader.readLine() compatible)
+   * Same like next(), but returns the End-Of-Text as if there was a linebreak added
+   * (Reader.readLine() compatible)
    *
    * @return The next position.
    */
-  public int nextWithEnd()
+  public int nextWithEnd ()
   {
     final int pos = position;
     if (pos == DONE)
@@ -165,7 +171,7 @@ public class LineBreakIterator implements Iterator
    *
    * @return The text.
    */
-  public String getText()
+  public String getText ()
   {
     return new String(text);
   }
@@ -173,22 +179,22 @@ public class LineBreakIterator implements Iterator
   /**
    * Sets the text to be broken up.
    *
-   * @param text  the text.
+   * @param text the text.
    */
-  public void setText(final String text)
+  public void setText (final String text)
   {
     position = 0;
     this.text = text.toCharArray();
   }
 
   /**
-   * Returns <tt>true</tt> if the iteration has more elements. (In other
-   * words, returns <tt>true</tt> if <tt>next</tt> would return an element
-   * rather than throwing an exception.)
+   * Returns <tt>true</tt> if the iteration has more elements. (In other words, returns
+   * <tt>true</tt> if <tt>next</tt> would return an element rather than throwing an
+   * exception.)
    *
    * @return <tt>true</tt> if the iterator has more elements.
    */
-  public boolean hasNext()
+  public boolean hasNext ()
   {
     return (position != DONE);
   }
@@ -198,7 +204,7 @@ public class LineBreakIterator implements Iterator
    *
    * @return the next element in the iteration.
    */
-  public Object next()
+  public Object next ()
   {
     if (position == DONE)
     {
@@ -229,21 +235,19 @@ public class LineBreakIterator implements Iterator
   }
 
   /**
+   * Removes from the underlying collection the last element returned by the iterator
+   * (optional operation).  This method can be called only once per call to <tt>next</tt>.
+   *  The behavior of an iterator is unspecified if the underlying collection is modified
+   * while the iteration is in progress in any way other than by calling this method.
    *
-   * Removes from the underlying collection the last element returned by the
-   * iterator (optional operation).  This method can be called only once per
-   * call to <tt>next</tt>.  The behavior of an iterator is unspecified if
-   * the underlying collection is modified while the iteration is in
-   * progress in any way other than by calling this method.
-   *
-   * @exception UnsupportedOperationException if the <tt>remove</tt>
-   *    operation is not supported by this Iterator.
-   * @exception IllegalStateException if the <tt>next</tt> method has not
-   *    yet been called, or the <tt>remove</tt> method has already
-   *    been called after the last call to the <tt>next</tt>
-   *    method.
+   * @throws UnsupportedOperationException if the <tt>remove</tt> operation is not
+   *                                       supported by this Iterator.
+   * @throws IllegalStateException         if the <tt>next</tt> method has not yet been
+   *                                       called, or the <tt>remove</tt> method has
+   *                                       already been called after the last call to the
+   *                                       <tt>next</tt> method.
    */
-  public void remove()
+  public void remove ()
   {
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaBandProducer.java,v 1.7 2005/02/05 18:35:18 taqua Exp $
+ * $Id: MetaBandProducer.java,v 1.8 2005/02/19 13:29:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -56,10 +56,9 @@ import org.jfree.report.util.ElementLayoutInformation;
 import org.jfree.report.util.geom.StrictBounds;
 
 /**
- * The MetaBandProducer is responsible for converting a report band
- * into an output target dependent metaband. The metabands use a
- * global coordinate system, so that every metaelement contains the
- * absolute position on the page.
+ * The MetaBandProducer is responsible for converting a report band into an output target
+ * dependent metaband. The metabands use a global coordinate system, so that every
+ * metaelement contains the absolute position on the page.
  */
 public class MetaBandProducer
 {
@@ -79,7 +78,7 @@ public class MetaBandProducer
 
   private LayoutSupport support;
 
-  public MetaBandProducer(final LayoutSupport support)
+  public MetaBandProducer (final LayoutSupport support)
   {
     if (support == null)
     {
@@ -88,20 +87,20 @@ public class MetaBandProducer
     this.support = support;
   }
 
-  protected LayoutSupport getLayoutSupport()
+  protected LayoutSupport getLayoutSupport ()
   {
     return support;
   }
 
-  public MetaBand createBand(final Band band, final boolean spool)
-      throws ContentCreationException
+  public MetaBand createBand (final Band band, final boolean spool)
+          throws ContentCreationException
   {
-    return createBand (band, spool, 0, 0);
+    return createBand(band, spool, 0, 0);
   }
 
   public MetaBand createBand (final Band band, final boolean spool,
                               final long parentX, final long parentY)
-      throws ContentCreationException
+          throws ContentCreationException
   {
     if (band.isVisible() == false)
     {
@@ -115,9 +114,9 @@ public class MetaBandProducer
     final ArrayList metaElements = new ArrayList();
     final Element[] elements = band.getElementArray();
     final StrictBounds bounds = (StrictBounds)
-            band.getStyle ().getStyleProperty (ElementStyleSheet.BOUNDS);
-    final long x = bounds.getX () + parentX;
-    final long y = bounds.getY () + parentY;
+            band.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+    final long x = bounds.getX() + parentX;
+    final long y = bounds.getY() + parentY;
 
     for (int i = 0; i < elements.length; i++)
     {
@@ -146,7 +145,7 @@ public class MetaBandProducer
     }
 
     final MetaElement[] metaElementArray = (MetaElement[]) metaElements.toArray
-        (new MetaElement[metaElements.size()]);
+            (new MetaElement[metaElements.size()]);
 
     return new MetaBand(EmptyContent.getDefaultEmptyContent(),
             createStyleForBand(band, parentX, parentY),
@@ -154,21 +153,22 @@ public class MetaBandProducer
   }
 
   /**
-   * Creates a metaelement from the given report element. After that creation,
-   * the metaelement will be independent from the original element.
-   * <p>
-   * This method should return null,if the element contains invalid content,
-   * which cannot be displayed by the particular output target.
+   * Creates a metaelement from the given report element. After that creation, the
+   * metaelement will be independent from the original element.
+   * <p/>
+   * This method should return null,if the element contains invalid content, which cannot
+   * be displayed by the particular output target.
    *
    * @param e
    * @param parentx
    * @param parenty
    * @return
+   *
    * @throws ContentCreationException
    */
   protected MetaElement createElement
           (final Element e, final long parentx, final long parenty)
-      throws ContentCreationException
+          throws ContentCreationException
   {
     if (support.getContentFactory().canHandleContent(e.getContentType()) == false)
     {
@@ -186,7 +186,7 @@ public class MetaBandProducer
     final Content content =
             support.getContentFactory().createContentForElement(e, eli, support);
     final MetaElement element = new MetaElement
-        (content, styleSheet);
+            (content, styleSheet);
     return element;
   }
 
@@ -196,12 +196,12 @@ public class MetaBandProducer
     final ElementStyleSheet elementStyle = e.getStyle();
     final ElementStyleSheet style =
             new MetaElementStyleSheet("meta-" + e.getName());
-    style.setStyleProperty (ElementStyleSheet.BOUNDS,
-        createElementBounds(elementStyle, x, y));
-    style.setStyleProperty (ElementStyleSheet.VALIGNMENT,
-        elementStyle.getStyleProperty(ElementStyleSheet.VALIGNMENT));
-    style.setStyleProperty (ElementStyleSheet.ALIGNMENT,
-        elementStyle.getStyleProperty(ElementStyleSheet.ALIGNMENT));
+    style.setStyleProperty(ElementStyleSheet.BOUNDS,
+            createElementBounds(elementStyle, x, y));
+    style.setStyleProperty(ElementStyleSheet.VALIGNMENT,
+            elementStyle.getStyleProperty(ElementStyleSheet.VALIGNMENT));
+    style.setStyleProperty(ElementStyleSheet.ALIGNMENT,
+            elementStyle.getStyleProperty(ElementStyleSheet.ALIGNMENT));
     style.setStyleProperty(ElementStyleSheet.HREF_TARGET,
             elementStyle.getStyleProperty(ElementStyleSheet.HREF_TARGET));
     style.setBooleanStyleProperty(ElementStyleSheet.HREF_INHERITED,
@@ -216,7 +216,7 @@ public class MetaBandProducer
     final ElementStyleSheet style = createCommonStyleForElement(e, x, y);
     // check if necessary ...
     style.setStyleProperty(ElementStyleSheet.PAINT,
-        elementStyle.getStyleProperty(ElementStyleSheet.PAINT));
+            elementStyle.getStyleProperty(ElementStyleSheet.PAINT));
     return style;
   }
 
@@ -226,13 +226,13 @@ public class MetaBandProducer
     final ElementStyleSheet elementStyle = e.getStyle();
     final ElementStyleSheet style = createCommonStyleForElement(e, x, y);
     style.setStyleProperty(ElementStyleSheet.PAINT,
-        elementStyle.getStyleProperty(ElementStyleSheet.PAINT));
+            elementStyle.getStyleProperty(ElementStyleSheet.PAINT));
     style.setStyleProperty(ElementStyleSheet.STROKE,
-        elementStyle.getStyleProperty(ElementStyleSheet.STROKE));
+            elementStyle.getStyleProperty(ElementStyleSheet.STROKE));
     style.setStyleProperty(ShapeElement.FILL_SHAPE,
-        elementStyle.getStyleProperty(ShapeElement.FILL_SHAPE));
+            elementStyle.getStyleProperty(ShapeElement.FILL_SHAPE));
     style.setStyleProperty(ShapeElement.DRAW_SHAPE,
-        elementStyle.getStyleProperty(ShapeElement.DRAW_SHAPE));
+            elementStyle.getStyleProperty(ShapeElement.DRAW_SHAPE));
     return style;
   }
 
@@ -251,9 +251,9 @@ public class MetaBandProducer
     final ElementStyleSheet style = createCommonStyleForElement(e, x, y);
     style.setFontDefinitionProperty(elementStyle.getFontDefinitionProperty());
     style.setStyleProperty(ElementStyleSheet.PAINT,
-        elementStyle.getStyleProperty(ElementStyleSheet.PAINT));
+            elementStyle.getStyleProperty(ElementStyleSheet.PAINT));
     style.setStyleProperty(ElementStyleSheet.STROKE,
-        elementStyle.getStyleProperty(ElementStyleSheet.STROKE));
+            elementStyle.getStyleProperty(ElementStyleSheet.STROKE));
     return style;
   }
 
@@ -282,18 +282,19 @@ public class MetaBandProducer
   }
 
   protected StrictBounds createElementBounds (final ElementStyleSheet style,
-                                             final long x, final long y)
+                                              final long x, final long y)
   {
     final StrictBounds bounds = (StrictBounds)
-            style.getStyleProperty (ElementStyleSheet.BOUNDS);
+            style.getStyleProperty(ElementStyleSheet.BOUNDS);
 
     return new StrictBounds
             ((x + bounds.getX()),
-             (y + bounds.getY()),
-             bounds.getWidth(),
-             bounds.getHeight());
+                    (y + bounds.getY()),
+                    bounds.getWidth(),
+                    bounds.getHeight());
 
   }
+
   protected ElementStyleSheet createStyleForBand
           (final Band band, final long x, final long y)
   {
@@ -301,7 +302,7 @@ public class MetaBandProducer
     final ElementStyleSheet style =
             new MetaElementStyleSheet("meta-band");
     style.setStyleProperty
-        (ElementStyleSheet.BOUNDS, createElementBounds(bandStyle, x, y));
+            (ElementStyleSheet.BOUNDS, createElementBounds(bandStyle, x, y));
     return style;
   }
 }

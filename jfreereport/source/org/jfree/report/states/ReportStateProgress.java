@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportStateProgress.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
+ * $Id: ReportStateProgress.java,v 1.5 2004/05/07 08:14:21 mungady Exp $
  *
  * Changes
  * -------
@@ -43,35 +43,43 @@ package org.jfree.report.states;
  */
 public class ReportStateProgress
 {
-  /** The current group index. */
+  /**
+   * The current group index.
+   */
   private int currentGroupIndex;
 
-  /** The current data item. */
+  /**
+   * The current data item.
+   */
   private int currentDataItem;
 
-  /** The current page. */
+  /**
+   * The current page.
+   */
   private int currentPage;
 
-  /** The state class. */
+  /**
+   * The state class.
+   */
   private Class stateClass;
 
   /**
    * Default constructor.
    */
-  public ReportStateProgress()
+  public ReportStateProgress ()
   {
   }
 
   /**
    * Creates a new instance.
    *
-   * @param currentGroupIndex  the current group index.
-   * @param currentDataItem  the current data item.
-   * @param currentPage  the current page.
-   * @param stateClass  the state class.
+   * @param currentGroupIndex the current group index.
+   * @param currentDataItem   the current data item.
+   * @param currentPage       the current page.
+   * @param stateClass        the state class.
    */
-  public ReportStateProgress(final int currentGroupIndex, final int currentDataItem,
-                             final int currentPage, final Class stateClass)
+  public ReportStateProgress (final int currentGroupIndex, final int currentDataItem,
+                              final int currentPage, final Class stateClass)
   {
     this.currentGroupIndex = currentGroupIndex;
     this.currentDataItem = currentDataItem;
@@ -86,9 +94,9 @@ public class ReportStateProgress
   /**
    * Sets the current group index.
    *
-   * @param currentGroupIndex  the new index value.
+   * @param currentGroupIndex the new index value.
    */
-  public void setCurrentGroupIndex(final int currentGroupIndex)
+  public void setCurrentGroupIndex (final int currentGroupIndex)
   {
     this.currentGroupIndex = currentGroupIndex;
   }
@@ -96,9 +104,9 @@ public class ReportStateProgress
   /**
    * Sets the current data item.
    *
-   * @param currentDataItem  the current data item.
+   * @param currentDataItem the current data item.
    */
-  public void setCurrentDataItem(final int currentDataItem)
+  public void setCurrentDataItem (final int currentDataItem)
   {
     this.currentDataItem = currentDataItem;
   }
@@ -106,9 +114,9 @@ public class ReportStateProgress
   /**
    * Sets the current page.
    *
-   * @param currentPage  the current page.
+   * @param currentPage the current page.
    */
-  public void setCurrentPage(final int currentPage)
+  public void setCurrentPage (final int currentPage)
   {
     this.currentPage = currentPage;
   }
@@ -116,9 +124,9 @@ public class ReportStateProgress
   /**
    * Sets the state class.
    *
-   * @param stateClass  the state class.
+   * @param stateClass the state class.
    */
-  public void setStateClass(final Class stateClass)
+  public void setStateClass (final Class stateClass)
   {
     if (stateClass == null)
     {
@@ -132,7 +140,7 @@ public class ReportStateProgress
    *
    * @return The group index.
    */
-  public int getCurrentGroupIndex()
+  public int getCurrentGroupIndex ()
   {
     return currentGroupIndex;
   }
@@ -142,7 +150,7 @@ public class ReportStateProgress
    *
    * @return The current data item.
    */
-  public int getCurrentDataItem()
+  public int getCurrentDataItem ()
   {
     return currentDataItem;
   }
@@ -152,7 +160,7 @@ public class ReportStateProgress
    *
    * @return The current page.
    */
-  public int getCurrentPage()
+  public int getCurrentPage ()
   {
     return currentPage;
   }
@@ -162,7 +170,7 @@ public class ReportStateProgress
    *
    * @return The state class.
    */
-  public Class getStateClass()
+  public Class getStateClass ()
   {
     return stateClass;
   }

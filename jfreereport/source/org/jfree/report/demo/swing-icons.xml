@@ -29,11 +29,11 @@
   <report-config>
     <page-definition>
       <page orientation="portrait"
-      pageformat="LETTER"
-      topmargin="72"
-      bottommargin="72"
-      leftmargin="72"
-      rightmargin="72"/>
+        pageformat="LETTER"
+        topmargin="72"
+        bottommargin="72"
+        leftmargin="72"
+        rightmargin="72"/>
     </page-definition>
   </report-config>
 
@@ -677,7 +677,7 @@
             <basic-object name="width">-30.0</basic-object>
           </compound-key>
           <basic-key name="alignment">center</basic-key>
-          <basic-key name="valignment">middle</basic-key> 
+          <basic-key name="valignment">middle</basic-key>
         </style>
         <template references="image-field">
           <basic-object name="field">Icon</basic-object>

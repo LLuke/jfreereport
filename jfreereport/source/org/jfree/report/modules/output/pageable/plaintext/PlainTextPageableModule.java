@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PlainTextPageableModule.java,v 1.5 2004/05/07 12:53:09 mungady Exp $
+ * $Id: PlainTextPageableModule.java,v 1.6 2005/01/25 00:11:21 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,20 +51,24 @@ public class PlainTextPageableModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
-   * @throws org.jfree.base.modules.ModuleInitializeException if an error occured.
+   *
+   * @throws org.jfree.base.modules.ModuleInitializeException
+   *          if an error occured.
    */
-  public PlainTextPageableModule() throws ModuleInitializeException
+  public PlainTextPageableModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
   /**
    * Initalizes the module. This method is empty.
-   * @see org.jfree.base.modules.Module#initialize(org.jfree.base.modules.SubSystem)
    *
    * @throws ModuleInitializeException if an error occured.
+   * @see org.jfree.base.modules.Module#initialize(org.jfree.base.modules.SubSystem)
    */
-  public void initialize(final SubSystem subSystem) throws ModuleInitializeException
+  public void initialize (final SubSystem subSystem)
+          throws ModuleInitializeException
   {
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ZoomInAction.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
+ * $Id: ZoomInAction.java,v 1.5 2005/01/25 00:01:38 taqua Exp $
  *
  * Changes
  * -------
@@ -44,10 +44,10 @@ import org.jfree.ui.action.ActionDowngrade;
 import org.jfree.util.ResourceBundleSupport;
 
 /**
- * The zoomIn action is used to increase the ZoomFactor of the report. Zooming
- * can be increased in predefined steps from 25% to 400%. This abstract base class
- * implements the locales specific initialisations, actual work is done in an internal
- * subclass in PreviewFrame.
+ * The zoomIn action is used to increase the ZoomFactor of the report. Zooming can be
+ * increased in predefined steps from 25% to 400%. This abstract base class implements the
+ * locales specific initialisations, actual work is done in an internal subclass in
+ * PreviewFrame.
  *
  * @author David Gilbert
  */
@@ -56,16 +56,16 @@ public abstract class ZoomInAction extends AbstractActionDowngrade
   /**
    * Constructs a new action.
    *
-   * @param resources  localised resources.
+   * @param resources localised resources.
    */
-  protected ZoomInAction(final ResourceBundleSupport resources)
+  protected ZoomInAction (final ResourceBundleSupport resources)
   {
     putValue(NAME, resources.getString("action.zoomIn.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.zoomIn.description"));
     putValue(ActionDowngrade.MNEMONIC_KEY,
-        resources.getMnemonic("action.zoomIn.mnemonic"));
+            resources.getMnemonic("action.zoomIn.mnemonic"));
     putValue(ActionDowngrade.ACCELERATOR_KEY,
-        resources.getKeyStroke("action.zoomIn.accelerator"));
+            resources.getKeyStroke("action.zoomIn.accelerator"));
     putValue(SMALL_ICON, resources.getIcon("action.zoomIn.small-icon", false));
     putValue("ICON24", resources.getIcon("action.zoomIn.icon", true));
   }

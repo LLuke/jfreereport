@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticShapeElementFactory.java,v 1.10 2005/02/10 14:19:45 taqua Exp $
+ * $Id: StaticShapeElementFactory.java,v 1.11 2005/02/19 13:29:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -65,7 +65,7 @@ import org.jfree.util.Log;
  * old behaviour.
  * <p/>
  * The static method {@link StaticShapeElementFactory#createShapeElement(String, Color,
-    * Stroke, Shape, boolean, boolean)} extracts the bounds from the given shape and performs
+        * Stroke, Shape, boolean, boolean)} extracts the bounds from the given shape and performs
  * an tranlate transform to map the shape to the coordinate (0,0).
  *
  * @author Thomas Morgner
@@ -80,7 +80,7 @@ public class StaticShapeElementFactory extends ShapeElementFactory
   /**
    * Default Constructor.
    */
-  public StaticShapeElementFactory()
+  public StaticShapeElementFactory ()
   {
   }
 
@@ -89,7 +89,7 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    *
    * @return the shape content.
    */
-  public Shape getShape()
+  public Shape getShape ()
   {
     return shape;
   }
@@ -99,7 +99,7 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    *
    * @param shape the shape content.
    */
-  public void setShape(final Shape shape)
+  public void setShape (final Shape shape)
   {
     if (shape == null)
     {
@@ -113,9 +113,10 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    * Generates a new shape element.
    *
    * @return the generated element.
+   *
    * @see org.jfree.report.elementfactory.ElementFactory#createElement()
    */
-  public Element createElement()
+  public Element createElement ()
   {
     final ShapeElement e = new ShapeElement();
     applyElementName(e);
@@ -124,26 +125,26 @@ public class StaticShapeElementFactory extends ShapeElementFactory
     return e;
   }
 
-  public static ShapeElement createHorizontalLine(final String name,
-                                                  final Color paint,
-                                                  final Stroke stroke,
-                                                  final double y1)
+  public static ShapeElement createHorizontalLine (final String name,
+                                                   final Color paint,
+                                                   final Stroke stroke,
+                                                   final double y1)
   {
     // scale the line, is horizontal,the line is on pos 0,0 within the element
     final Rectangle2D bounds = new Rectangle2D.Float(0, (float) y1, -100, 0);
     return createShapeElement(name, bounds, paint, stroke, new Line2D.Float(0, 0, 100, 0),
-        true, false, true);
+            true, false, true);
   }
 
-  public static ShapeElement createVerticalLine(final String name,
-                                                  final Color paint,
-                                                  final Stroke stroke,
-                                                  final double y1)
+  public static ShapeElement createVerticalLine (final String name,
+                                                 final Color paint,
+                                                 final Stroke stroke,
+                                                 final double y1)
   {
     // scale the line, is horizontal,the line is on pos 0,0 within the element
     final Rectangle2D bounds = new Rectangle2D.Float(0, (float) y1, 00, -100);
     return createShapeElement(name, bounds, paint, stroke, new Line2D.Float(0, 0, 0, 100),
-        true, false, true);
+            true, false, true);
   }
 
   /**
@@ -152,30 +153,30 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    * will have use one of the createShape methods.
    * <p/>
    * This method is now deprecated, as it has an unclean syntax. For horizontal lines use
-   * the {@link StaticShapeElementFactory#createHorizontalLine(String, Color, Stroke, double)}
-   * method.
+   * the {@link StaticShapeElementFactory#createHorizontalLine(String, Color, Stroke,
+          * double)} method.
    *
    * @param name   the name of the new element
    * @param paint  the line color of this element
    * @param stroke the stroke of this shape. For pdf use, restrict to BasicStokes.
    * @param shape  the Line2D shape
    * @return a report element for drawing a line.
+   *
    * @throws NullPointerException     if bounds or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    * @deprecated the line shape elements should be created by using one of the
-   *             <code>createShapeElement</code> methods or the
-   *             <code>createHorizontalLine</code> method for horizontal lines which
-   *             span the complete band.
+   *             <code>createShapeElement</code> methods or the <code>createHorizontalLine</code>
+   *             method for horizontal lines which span the complete band.
    */
-  public static ShapeElement createLineShapeElement(final String name,
-                                                    final Color paint,
-                                                    final Stroke stroke,
-                                                    final Line2D shape)
+  public static ShapeElement createLineShapeElement (final String name,
+                                                     final Color paint,
+                                                     final Stroke stroke,
+                                                     final Line2D shape)
   {
     if (shape.getX1() == shape.getX2() && shape.getY1() == shape.getY2())
     {
       Log.info("The use of Line(x1, y1, x1, y1) to create a scaled horizontal line is deprecated.\n" +
-          "Use a Horizontal-Line element instead.");
+              "Use a Horizontal-Line element instead.");
       return createHorizontalLine(name, paint, stroke, shape.getY1());
     }
     else
@@ -191,9 +192,9 @@ public class StaticShapeElementFactory extends ShapeElementFactory
       }
 
       shape.setLine(shape.getX1() - bounds.getX(),
-          shape.getY1() - bounds.getY(),
-          shape.getX2() - bounds.getX(),
-          shape.getY2() - bounds.getY());
+              shape.getY1() - bounds.getY(),
+              shape.getX2() - bounds.getX(),
+              shape.getY2() - bounds.getY());
       return createShapeElement(name, bounds, paint, stroke, shape, true, false, true);
     }
   }
@@ -203,7 +204,7 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    * correct the shape to start from point (0,0) by using an AffineTransform. Use one of
    * the createShape methods, that allow you to supply separate bounds and shapes, if you
    * want to have full control over the creation process.
-   * <p>
+   * <p/>
    * <strong>Warning:</strong> This function will misbehave, if you supply a Line2D
    * instance with relative coordinates. The bounds of such lines cannot be securely
    * translated into relative coordinates as used by JFreeReport.
@@ -215,15 +216,16 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    * @param shouldDraw draw the shape?
    * @param shouldFill fill the shape?
    * @return a report element for drawing a line.
+   *
    * @throws NullPointerException     if bounds or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ShapeElement createShapeElement(final String name,
-                                                final Color paint,
-                                                final Stroke stroke,
-                                                final Shape shape,
-                                                final boolean shouldDraw,
-                                                final boolean shouldFill)
+  public static ShapeElement createShapeElement (final String name,
+                                                 final Color paint,
+                                                 final Stroke stroke,
+                                                 final Shape shape,
+                                                 final boolean shouldDraw,
+                                                 final boolean shouldFill)
   {
     // we have two choices here: let the element be big enough to take up
     // the complete shape and let the element start at 0,0, and the shape
@@ -241,13 +243,13 @@ public class StaticShapeElementFactory extends ShapeElementFactory
     {
       // no need to translate ...
       return createShapeElement(name, shapeBounds, paint, stroke, shape,
-          shouldDraw, shouldFill, true);
+              shouldDraw, shouldFill, true);
     }
 
     final Shape transformedShape =
-        ShapeTransform.translateShape(shape, -shapeBounds.getX(), -shapeBounds.getY());
+            ShapeTransform.translateShape(shape, -shapeBounds.getX(), -shapeBounds.getY());
     return createShapeElement(name, shapeBounds, paint, stroke, transformedShape,
-        shouldDraw, shouldFill, true);
+            shouldDraw, shouldFill, true);
   }
 
   /**
@@ -262,20 +264,21 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    * @param shouldFill  fill the shape?
    * @param shouldScale scale the shape?
    * @return a report element for drawing a line.
+   *
    * @throws NullPointerException     if bounds or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ShapeElement createShapeElement(final String name,
-                                                final Rectangle2D bounds,
-                                                final Color paint,
-                                                final Stroke stroke,
-                                                final Shape shape,
-                                                final boolean shouldDraw,
-                                                final boolean shouldFill,
-                                                final boolean shouldScale)
+  public static ShapeElement createShapeElement (final String name,
+                                                 final Rectangle2D bounds,
+                                                 final Color paint,
+                                                 final Stroke stroke,
+                                                 final Shape shape,
+                                                 final boolean shouldDraw,
+                                                 final boolean shouldFill,
+                                                 final boolean shouldScale)
   {
     return createShapeElement(name, bounds, paint, stroke, shape, shouldDraw,
-        shouldFill, shouldScale, false);
+            shouldFill, shouldScale, false);
   }
 
   /**
@@ -292,23 +295,24 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    * @param shouldScale     scale the shape?
    * @param keepAspectRatio preserve the aspect ratio?
    * @return a report element for drawing a line.
+   *
    * @throws NullPointerException     if bounds or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ShapeElement createShapeElement(final String name,
-                                                final Rectangle2D bounds,
-                                                final Color paint,
-                                                final Stroke stroke,
-                                                final Shape shape,
-                                                final boolean shouldDraw,
-                                                final boolean shouldFill,
-                                                final boolean shouldScale,
-                                                final boolean keepAspectRatio)
+  public static ShapeElement createShapeElement (final String name,
+                                                 final Rectangle2D bounds,
+                                                 final Color paint,
+                                                 final Stroke stroke,
+                                                 final Shape shape,
+                                                 final boolean shouldDraw,
+                                                 final boolean shouldFill,
+                                                 final boolean shouldScale,
+                                                 final boolean keepAspectRatio)
   {
     final StaticShapeElementFactory factory = new StaticShapeElementFactory();
     factory.setName(name);
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setColor(paint);
     factory.setKeepAspectRatio(new Boolean(keepAspectRatio));
     factory.setScale(new Boolean(shouldScale));
@@ -330,22 +334,23 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    * @param shouldDraw a flag controlling whether or not the shape outline is drawn.
    * @param shouldFill a flag controlling whether or not the shape interior is filled.
    * @return a report element for drawing a rectangle.
+   *
    * @throws NullPointerException     if bounds or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ShapeElement createRectangleShapeElement(final String name,
-                                                         final Color paint,
-                                                         final Stroke stroke,
-                                                         final Rectangle2D shape,
-                                                         final boolean shouldDraw,
-                                                         final boolean shouldFill)
+  public static ShapeElement createRectangleShapeElement (final String name,
+                                                          final Color paint,
+                                                          final Stroke stroke,
+                                                          final Rectangle2D shape,
+                                                          final boolean shouldDraw,
+                                                          final boolean shouldFill)
   {
     if (shape.getX() < 0 || shape.getY() < 0 || shape.getWidth() < 0 || shape.getHeight() < 0)
     {
       // this is a relative rectangle element, so the shape defines the bounds
       // and expects to draw a scaled rectangle within these bounds
       return createShapeElement(name, shape, paint, stroke, new Rectangle2D.Float(0, 0, 100, 100),
-          shouldDraw, shouldFill, true);
+              shouldDraw, shouldFill, true);
     }
     final Rectangle2D rect = (Rectangle2D) shape.clone();
     rect.setRect(0, 0, rect.getWidth(), rect.getHeight());

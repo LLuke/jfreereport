@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.10 2005/02/22 20:19:02 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.11 2005/02/23 19:32:04 taqua Exp $
  *
  * Changes
  * -------
@@ -45,28 +45,36 @@ import java.util.TreeMap;
 import org.jfree.util.PaintUtilities;
 
 /**
- * The HtmlStyleCollection is used to create HtmlCellStyles and to convert these
- * cell styles into Cascading StyleSheet code.
- * <p>
+ * The HtmlStyleCollection is used to create HtmlCellStyles and to convert these cell
+ * styles into Cascading StyleSheet code.
+ * <p/>
  * The collection reuses previously generated styles to create optimized code.
- * <p>
- * Created StyleSheets are stored in the collection and can be used as keys
- * to lookup the name of that style in the global style sheet.
+ * <p/>
+ * Created StyleSheets are stored in the collection and can be used as keys to lookup the
+ * name of that style in the global style sheet.
  *
  * @author Thomas Morgner
  */
 public class HtmlStyleCollection
 {
-  /** contains all generated style sheets. */
+  /**
+   * contains all generated style sheets.
+   */
   private final HashMap table;
   private final HashMap reverseTable;
 
-  /** the name counter helps to create unique names for the tablerow-styles. */
+  /**
+   * the name counter helps to create unique names for the tablerow-styles.
+   */
   private int rowCounter;
-  /** the name counter helps to create unique names for the tabledata-styles. */
+  /**
+   * the name counter helps to create unique names for the tabledata-styles.
+   */
   private int cellCounter;
 
-  /** the name counter helps to create unique names for the styles. */
+  /**
+   * the name counter helps to create unique names for the styles.
+   */
   private int nameCounter;
 
   private static final String ROW_STYLE_PREFIX = "tr.";
@@ -77,7 +85,7 @@ public class HtmlStyleCollection
   /**
    * Creates a new HtmlStyleCollection.
    */
-  public HtmlStyleCollection()
+  public HtmlStyleCollection ()
   {
     this.table = new HashMap();
     this.reverseTable = new HashMap();
@@ -88,10 +96,10 @@ public class HtmlStyleCollection
    *
    * @return the generated name.
    */
-  private String createName()
+  private String createName ()
   {
     // the leading dot is important - it makes the style a generic class definition
-    final String name = GENERIC_STYLE_PREFIX+ "style-" + nameCounter;
+    final String name = GENERIC_STYLE_PREFIX + "style-" + nameCounter;
     nameCounter++;
     return name;
 
@@ -103,7 +111,7 @@ public class HtmlStyleCollection
    * @param style the generated style, that should be added to the style cache.
    * @return the registered name for the stylesheet.
    */
-  public String addContentStyle(final HtmlContentStyle style)
+  public String addContentStyle (final HtmlContentStyle style)
   {
     String name = lookupName(style);
     if (name == null)
@@ -126,7 +134,7 @@ public class HtmlStyleCollection
    * @param style the style, that should be checked.
    * @return true, if the style is registered, false otherwise.
    */
-  public boolean isRegistered(final HtmlStyle style)
+  public boolean isRegistered (final HtmlStyle style)
   {
     final String name = lookupName(style);
 
@@ -143,7 +151,7 @@ public class HtmlStyleCollection
    *
    * @return the styles as enumeration.
    */
-  public Iterator getDefinedStyles()
+  public Iterator getDefinedStyles ()
   {
     return table.keySet().iterator();
   }
@@ -161,27 +169,29 @@ public class HtmlStyleCollection
   }
 
   /**
-   * Try to find the registered name of the given style. Returns null,
-   * if the style is not registered.
+   * Try to find the registered name of the given style. Returns null, if the style is not
+   * registered.
    *
    * @param name the name of the style, that should be looked up.
    * @return the style, or null, if the name is not registed.
+   *
    * @see HtmlStyleCollection#isRegistered
    */
-  public HtmlStyle lookupStyle(final String name)
+  public HtmlStyle lookupStyle (final String name)
   {
     return (HtmlStyle) reverseTable.get(name);
   }
 
   /**
-   * Try to find the registered name of the given style. Returns null,
-   * if the style is not registered.
+   * Try to find the registered name of the given style. Returns null, if the style is not
+   * registered.
    *
    * @param style the style, which should be looked up.
    * @return the registered name for this style, or null, if the style is not registed.
+   *
    * @see HtmlStyleCollection#isRegistered
    */
-  public String lookupName(final HtmlStyle style)
+  public String lookupName (final HtmlStyle style)
   {
     return (String) table.get(style);
   }
@@ -210,7 +220,7 @@ public class HtmlStyleCollection
   /**
    * Removes all registered styles.
    */
-  public void clear()
+  public void clear ()
   {
     table.clear();
     reverseTable.clear();
@@ -218,14 +228,14 @@ public class HtmlStyleCollection
 
 
   /**
-   * Creates the color string for the given AWT color. If the color is one of
-   * the predefined HTML colors, then the logical name is returned. For all other
-   * colors, the RGB-Tripple is returned.
+   * Creates the color string for the given AWT color. If the color is one of the
+   * predefined HTML colors, then the logical name is returned. For all other colors, the
+   * RGB-Tripple is returned.
    *
    * @param color the AWTColor that should be translated.
    * @return the translated html color definition
    */
-  public static String getColorString(final Color color)
+  public static String getColorString (final Color color)
   {
     try
     {

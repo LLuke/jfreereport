@@ -24,7 +24,8 @@ import org.xml.sax.SAXException;
 
 /**
  * <pre>
- * &lt;!ELEMENT report   (configuration?, reportheader?, reportfooter?, pageheader?, pagefooter?, watermark?, groups?, items?, functions?)&gt;
+ * &lt;!ELEMENT report   (configuration?, reportheader?, reportfooter?, pageheader?,
+ * pagefooter?, watermark?, groups?, items?, functions?)&gt;
  * &lt;!ATTLIST report
  *   width          CDATA           #IMPLIED
  *   height         CDATA           #IMPLIED

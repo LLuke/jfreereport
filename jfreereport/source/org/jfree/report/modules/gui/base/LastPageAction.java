@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   Thomas Morgner;
  *
- * $Id: LastPageAction.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
+ * $Id: LastPageAction.java,v 1.5 2005/01/25 00:01:16 taqua Exp $
  *
  * 29-May-2002 : Initial version
  * 05-Jun-2002 : Documentation update.
@@ -45,9 +45,9 @@ import org.jfree.ui.action.ActionDowngrade;
 import org.jfree.util.ResourceBundleSupport;
 
 /**
- * Creates a new LastPageAction used by the PreviewPane to directly jump to the last
- * page of the report. This abstract class is used for initializing the default locales,
- * the actual work is done in an internal subclass in PreviewFrame.
+ * Creates a new LastPageAction used by the PreviewPane to directly jump to the last page
+ * of the report. This abstract class is used for initializing the default locales, the
+ * actual work is done in an internal subclass in PreviewFrame.
  *
  * @author JS
  */
@@ -56,16 +56,16 @@ public abstract class LastPageAction extends AbstractActionDowngrade
   /**
    * Constructs a new action.
    *
-   * @param resources  localised resources.
+   * @param resources localised resources.
    */
-  protected LastPageAction(final ResourceBundleSupport resources)
+  protected LastPageAction (final ResourceBundleSupport resources)
   {
     putValue(NAME, resources.getString("action.lastpage.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.lastpage.description"));
     putValue(ActionDowngrade.MNEMONIC_KEY,
-        resources.getMnemonic("action.lastpage.mnemonic"));
+            resources.getMnemonic("action.lastpage.mnemonic"));
     putValue(ActionDowngrade.ACCELERATOR_KEY,
-        resources.getKeyStroke("action.lastpage.accelerator"));
+            resources.getKeyStroke("action.lastpage.accelerator"));
     putValue(SMALL_ICON, resources.getIcon("action.lastpage.small-icon", false));
     putValue("ICON24", resources.getIcon("action.lastpage.icon", true));
   }

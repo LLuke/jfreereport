@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AdminCard.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: AdminCard.java,v 1.3 2004/05/07 12:43:25 mungady Exp $
  *
  * Changes
  * -------
@@ -49,15 +49,15 @@ public class AdminCard extends UserCard
   /**
    * Creates a new administrator account card.
    *
-   * @param firstName  the first name.
+   * @param firstName the first name.
    * @param lastName  the last name.
-   * @param cardNr  the card number.
-   * @param login  the login id.
+   * @param cardNr    the card number.
+   * @param login     the login id.
    * @param password  the password.
-   * @param expires  the card expiry date.
+   * @param expires   the card expiry date.
    */
-  public AdminCard(final String firstName, final String lastName, final String cardNr,
-                   final String login, final String password, final Date expires)
+  public AdminCard (final String firstName, final String lastName, final String cardNr,
+                    final String login, final String password, final Date expires)
   {
     super(firstName, lastName, cardNr, login, password, expires);
   }
@@ -67,7 +67,7 @@ public class AdminCard extends UserCard
    *
    * @return The account type.
    */
-  public CardType getType()
+  public CardType getType ()
   {
     return CardType.ADMIN;
   }

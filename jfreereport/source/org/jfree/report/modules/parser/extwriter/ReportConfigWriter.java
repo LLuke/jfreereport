@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigWriter.java,v 1.9 2005/01/25 00:20:32 taqua Exp $
+ * $Id: ReportConfigWriter.java,v 1.10 2005/02/04 19:08:53 taqua Exp $
  *
  * Changes
  * -------
@@ -59,34 +59,40 @@ import org.jfree.xml.writer.AttributeList;
  */
 public class ReportConfigWriter extends AbstractXMLDefinitionWriter
 {
-  /** The comment hint path for all report config related parser hints. */
+  /**
+   * The comment hint path for all report config related parser hints.
+   */
   private static final CommentHintPath REPORT_CONFIG_HINT_PATH =
-      new CommentHintPath(new String[]
-      {REPORT_DEFINITION_TAG, REPORT_CONFIG_TAG});
+          new CommentHintPath(new String[]
+          {REPORT_DEFINITION_TAG, REPORT_CONFIG_TAG});
 
-  /** The comment hint path for all report config related parser hints. */
+  /**
+   * The comment hint path for all report config related parser hints.
+   */
   private static final CommentHintPath CONFIGURATION_HINT_PATH =
-      new CommentHintPath(new String[]
-      {REPORT_DEFINITION_TAG,
-       REPORT_CONFIG_TAG,
-       CONFIGURATION_TAG
-      });
+          new CommentHintPath(new String[]
+          {REPORT_DEFINITION_TAG,
+           REPORT_CONFIG_TAG,
+           CONFIGURATION_TAG
+          });
 
-  /** The comment hint path for all page format definition related parser hints. */
+  /**
+   * The comment hint path for all page format definition related parser hints.
+   */
   private static final CommentHintPath DEFAULT_PAGEFORMAT_HINT_PATH =
-      new CommentHintPath(new String[]
-      {REPORT_DEFINITION_TAG,
-       REPORT_CONFIG_TAG,
-       DEFAULT_PAGEFORMAT_TAG
-      });
+          new CommentHintPath(new String[]
+          {REPORT_DEFINITION_TAG,
+           REPORT_CONFIG_TAG,
+           DEFAULT_PAGEFORMAT_TAG
+          });
 
   /**
    * A report configuration writer.
    *
-   * @param reportWriter  the report writer.
-   * @param indentLevel the current indention level.
+   * @param reportWriter the report writer.
+   * @param indentLevel  the current indention level.
    */
-  public ReportConfigWriter(final ReportWriter reportWriter, final int indentLevel)
+  public ReportConfigWriter (final ReportWriter reportWriter, final int indentLevel)
   {
     super(reportWriter, indentLevel);
   }
@@ -94,18 +100,18 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
   /**
    * Writes the report configuration element.
    *
-   * @param writer  the writer.
-   *
+   * @param writer the writer.
    * @throws java.io.IOException if there is an I/O problem.
    */
-  public void write(final Writer writer) throws IOException
+  public void write (final Writer writer)
+          throws IOException
   {
     writeComment(writer, REPORT_CONFIG_HINT_PATH, CommentHandler.OPEN_TAG_COMMENT);
     writeTag(writer, REPORT_CONFIG_TAG);
 
     writeComment(writer, DEFAULT_PAGEFORMAT_HINT_PATH, CommentHandler.OPEN_TAG_COMMENT);
     writeTag(writer, DEFAULT_PAGEFORMAT_TAG,
-        buildPageFormatProperties(), CLOSE);
+            buildPageFormatProperties(), CLOSE);
     final ReportConfiguration config = getReport().getReportConfiguration();
     final Enumeration properties = config.getConfigProperties();
     if (properties.hasMoreElements())
@@ -140,7 +146,7 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
    *
    * @return The properties.
    */
-  private AttributeList buildPageFormatProperties()
+  private AttributeList buildPageFormatProperties ()
   {
     final AttributeList retval = new AttributeList();
     final PageFormat fmt = getReport().getPageDefinition().getPageFormat(0);
@@ -149,34 +155,34 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
     if (fmt.getOrientation() == PageFormat.LANDSCAPE)
     {
       retval.setAttribute(ORIENTATION_ATT,
-          ORIENTATION_LANDSCAPE_VAL);
+              ORIENTATION_LANDSCAPE_VAL);
       retval.setAttribute(TOPMARGIN_ATT, String.valueOf(borders[RIGHT_BORDER]));
       retval.setAttribute(LEFTMARGIN_ATT, String.valueOf(borders[TOP_BORDER]));
       retval.setAttribute(BOTTOMMARGIN_ATT,
-          String.valueOf(borders[LEFT_BORDER]));
+              String.valueOf(borders[LEFT_BORDER]));
       retval.setAttribute(RIGHTMARGIN_ATT,
-          String.valueOf(borders[BOTTOM_BORDER]));
+              String.valueOf(borders[BOTTOM_BORDER]));
     }
     else if (fmt.getOrientation() == PageFormat.PORTRAIT)
     {
       retval.setAttribute(ORIENTATION_ATT,
-          ORIENTATION_PORTRAIT_VAL);
+              ORIENTATION_PORTRAIT_VAL);
       retval.setAttribute(TOPMARGIN_ATT, String.valueOf(borders[TOP_BORDER]));
       retval.setAttribute(LEFTMARGIN_ATT, String.valueOf(borders[LEFT_BORDER]));
       retval.setAttribute(BOTTOMMARGIN_ATT,
-          String.valueOf(borders[BOTTOM_BORDER]));
+              String.valueOf(borders[BOTTOM_BORDER]));
       retval.setAttribute(RIGHTMARGIN_ATT,
-          String.valueOf(borders[RIGHT_BORDER]));
+              String.valueOf(borders[RIGHT_BORDER]));
     }
     else
     {
       retval.setAttribute(ORIENTATION_ATT,
-          ORIENTATION_REVERSE_LANDSCAPE_VAL);
+              ORIENTATION_REVERSE_LANDSCAPE_VAL);
       retval.setAttribute(TOPMARGIN_ATT, String.valueOf(borders[LEFT_BORDER]));
       retval.setAttribute(LEFTMARGIN_ATT,
-          String.valueOf(borders[BOTTOM_BORDER]));
+              String.valueOf(borders[BOTTOM_BORDER]));
       retval.setAttribute(BOTTOMMARGIN_ATT,
-          String.valueOf(borders[RIGHT_BORDER]));
+              String.valueOf(borders[RIGHT_BORDER]));
       retval.setAttribute(RIGHTMARGIN_ATT, String.valueOf(borders[TOP_BORDER]));
     }
 
@@ -196,26 +202,33 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
     return retval;
   }
 
-  /** A constant for the top border. */
+  /**
+   * A constant for the top border.
+   */
   private static final int TOP_BORDER = 0;
 
-  /** A constant for the left border. */
+  /**
+   * A constant for the left border.
+   */
   private static final int LEFT_BORDER = 1;
 
-  /** A constant for the bottom border. */
+  /**
+   * A constant for the bottom border.
+   */
   private static final int BOTTOM_BORDER = 2;
 
-  /** A constant for the right border. */
+  /**
+   * A constant for the right border.
+   */
   private static final int RIGHT_BORDER = 3;
 
   /**
    * Returns the borders for the given paper.
    *
-   * @param p  the paper.
-   *
+   * @param p the paper.
    * @return The borders.
    */
-  private int[] getBorders(final Paper p)
+  private int[] getBorders (final Paper p)
   {
     final int[] retval = new int[4];
 
@@ -227,16 +240,14 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
   }
 
   /**
-   * Finds the page definition from the
-   * {@link org.jfree.report.util.PageFormatFactory} class that matches the
-   * specified width and height.
+   * Finds the page definition from the {@link org.jfree.report.util.PageFormatFactory}
+   * class that matches the specified width and height.
    *
-   * @param w  the width.
-   * @param h  the height.
-   *
+   * @param w the width.
+   * @param h the height.
    * @return The page definition name.
    */
-  public String lookupPageDefinition(final int w, final int h)
+  public String lookupPageDefinition (final int w, final int h)
   {
     try
     {

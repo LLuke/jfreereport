@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AlignedLogicalPage.java,v 1.3 2005/01/25 00:09:55 taqua Exp $
+ * $Id: AlignedLogicalPage.java,v 1.4 2005/02/19 13:29:57 taqua Exp $
  *
  * Changes
  * -------
@@ -41,25 +41,28 @@ import org.jfree.report.PageDefinition;
 import org.jfree.report.layout.LayoutSupport;
 
 /**
- * The AlignedLogicalPage corrects all values of the page format
- * so that the bounds are aligned for a given LayoutSupport.
+ * The AlignedLogicalPage corrects all values of the page format so that the bounds are
+ * aligned for a given LayoutSupport.
  *
  * @author Thomas Morgner
  */
 public strictfp class AlignedLogicalPage implements LogicalPage
 {
-  /** the layout support implementation which defines the alignments. */
+  /**
+   * the layout support implementation which defines the alignments.
+   */
   private LayoutSupport layoutSupport;
   private PageDefinition pageDefinition;
 
   /**
-   * Creates a AlignedLogicalPageWrapper, which wraps the logicalpage to obey
-   * to the alignment defined by the LayoutSupport.
+   * Creates a AlignedLogicalPageWrapper, which wraps the logicalpage to obey to the
+   * alignment defined by the LayoutSupport.
    *
    * @param support the layout support which defines the alignment.
    * @throws NullPointerException if one of the parameters is null.
    */
-  public AlignedLogicalPage(final LayoutSupport support, final PageDefinition pageDefinition)
+  public AlignedLogicalPage (final LayoutSupport support,
+                             final PageDefinition pageDefinition)
   {
     if (support == null)
     {
@@ -76,11 +79,11 @@ public strictfp class AlignedLogicalPage implements LogicalPage
   /**
    * A helper function which alignes the given value along the boundry.
    *
-   * @param value the value that should be aligned
+   * @param value    the value that should be aligned
    * @param boundary the alignment boundary
    * @return the aligned value
    */
-  private float alignDown(final float value, final float boundary)
+  private float alignDown (final float value, final float boundary)
   {
     if (boundary == 0)
     {
@@ -94,7 +97,7 @@ public strictfp class AlignedLogicalPage implements LogicalPage
    *
    * @return the page width.
    */
-  public float getWidth()
+  public float getWidth ()
   {
     return alignDown(pageDefinition.getWidth(), layoutSupport.getHorizontalAlignmentBorder());
   }
@@ -104,7 +107,7 @@ public strictfp class AlignedLogicalPage implements LogicalPage
    *
    * @return the page height.
    */
-  public float getHeight()
+  public float getHeight ()
   {
     return alignDown(pageDefinition.getHeight(), layoutSupport.getVerticalAlignmentBorder());
   }
@@ -114,7 +117,7 @@ public strictfp class AlignedLogicalPage implements LogicalPage
    *
    * @return the output target metrics.
    */
-  public LayoutSupport getLayoutSupport()
+  public LayoutSupport getLayoutSupport ()
   {
     return layoutSupport;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLProcessor.java,v 1.10 2005/01/25 00:17:19 taqua Exp $
+ * $Id: XMLProcessor.java,v 1.11 2005/02/19 13:30:03 taqua Exp $
  *
  * Changes
  * -------
@@ -50,25 +50,31 @@ import org.jfree.report.states.StartState;
 import org.jfree.report.util.NullOutputStream;
 
 /**
- * The XMLProcessor coordinates the report processing for the XML-Output.
- * This class is responsible to initialize and maintain the XMLWriter, which performs
- * the output process.
- * <p>
+ * The XMLProcessor coordinates the report processing for the XML-Output. This class is
+ * responsible to initialize and maintain the XMLWriter, which performs the output
+ * process.
+ * <p/>
  * The XMLProcessor is not intended to produce complex output, it is an educational
- * example. If you want valid xml data enriched with layouting information, then
- * have a look at the HTML-OutputTarget, this target is also able to write XHTMl code.
+ * example. If you want valid xml data enriched with layouting information, then have a
+ * look at the HTML-OutputTarget, this target is also able to write XHTMl code.
  *
  * @author Thomas Morgner
  */
 public class XMLProcessor
 {
-  /** the name of the writer function used in the report processing. */
+  /**
+   * the name of the writer function used in the report processing.
+   */
   private static final String XML_WRITER = "org.jfree.report.targets.xml-writer";
 
-  /** the target writer. */
+  /**
+   * the target writer.
+   */
   private Writer writer;
 
-  /** the source report. */
+  /**
+   * the source report.
+   */
   private JFreeReport report;
 
   /**
@@ -78,8 +84,8 @@ public class XMLProcessor
    * @param report the report that should be processed
    * @throws ReportProcessingException if the report could not be initialized
    */
-  public XMLProcessor(final JFreeReport report)
-      throws ReportProcessingException
+  public XMLProcessor (final JFreeReport report)
+          throws ReportProcessingException
   {
     if (report == null)
     {
@@ -100,12 +106,12 @@ public class XMLProcessor
   }
 
   /**
-   * Returns the XMLProcessors local report instance. This instance has the
-   * XMLWriter attached and should be used outside of this class.
+   * Returns the XMLProcessors local report instance. This instance has the XMLWriter
+   * attached and should be used outside of this class.
    *
    * @return the processors report instance.
    */
-  protected JFreeReport getReport()
+  protected JFreeReport getReport ()
   {
     return report;
   }
@@ -115,32 +121,34 @@ public class XMLProcessor
    *
    * @return the writer
    */
-  public Writer getWriter()
+  public Writer getWriter ()
   {
     return writer;
   }
 
   /**
-   * Sets the writer, which will receive the generated output.
-   * The writer should have the proper encoding set.
+   * Sets the writer, which will receive the generated output. The writer should have the
+   * proper encoding set.
    *
    * @param writer that should receive the generated output.
    */
-  public void setWriter(final Writer writer)
+  public void setWriter (final Writer writer)
   {
     this.writer = writer;
   }
 
   /**
-   * Processes the entire report and records the state at the end of the report preparation.
+   * Processes the entire report and records the state at the end of the report
+   * preparation.
    *
    * @return the final ReportState
    *
-   * @throws ReportProcessingException if there was a problem processing the report.
+   * @throws ReportProcessingException  if there was a problem processing the report.
    * @throws CloneNotSupportedException if there is a cloning problem.
    */
-  private ReportState repaginate() throws
-      ReportProcessingException, CloneNotSupportedException
+  private ReportState repaginate ()
+          throws
+          ReportProcessingException, CloneNotSupportedException
   {
     final StartState startState = new StartState(getReport());
     ReportState state = startState;
@@ -188,7 +196,7 @@ public class XMLProcessor
       // for the current level. Higher level functions are not available in the
       // dataRow.
       final boolean failOnError = (level == -1)
-          && getReport().getReportConfiguration().isStrictErrorHandling();
+              && getReport().getReportConfiguration().isStrictErrorHandling();
       while (!state.isFinish())
       {
         progress = state.createStateProgress(progress);
@@ -251,13 +259,14 @@ public class XMLProcessor
   }
 
   /**
-   * Processes the report. The generated output is written using the defined
-   * writer, the report is repaginated before the final writing.
+   * Processes the report. The generated output is written using the defined writer, the
+   * report is repaginated before the final writing.
    *
    * @throws ReportProcessingException if the report processing failed.
-   * @throws IllegalStateException if there is no writer defined.
+   * @throws IllegalStateException     if there is no writer defined.
    */
-  public void processReport() throws ReportProcessingException
+  public void processReport ()
+          throws ReportProcessingException
   {
     if (writer == null)
     {
@@ -271,7 +280,7 @@ public class XMLProcessor
       w.setWriter(getWriter());
 
       final boolean failOnError =
-          getReport().getReportConfiguration().isStrictErrorHandling();
+              getReport().getReportConfiguration().isStrictErrorHandling();
       ReportStateProgress progress = null;
       while (!state.isFinish())
       {

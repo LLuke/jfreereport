@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Watermark.java,v 1.3 2005/01/30 23:37:18 taqua Exp $
+ * $Id: Watermark.java,v 1.4 2005/02/23 19:31:41 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -55,20 +55,19 @@ public class Watermark extends Band implements RootLevelBand
   /**
    * Constructs a page header.
    */
-  public Watermark()
+  public Watermark ()
   {
   }
 
   /**
    * Constructs a page footer containing no elements.
-   * 
-   * @param onFirstPage defines, whether the page header will be printed
-   * on the first page
-   * @param onLastPage defines, whether the page footer will be printed on the
-   * last page.
-   * 
+   *
+   * @param onFirstPage defines, whether the page header will be printed on the first
+   *                    page
+   * @param onLastPage  defines, whether the page footer will be printed on the last
+   *                    page.
    */
-  public Watermark(final boolean onFirstPage, final boolean onLastPage)
+  public Watermark (final boolean onFirstPage, final boolean onLastPage)
   {
     super();
     setDisplayOnFirstPage(onFirstPage);
@@ -80,7 +79,7 @@ public class Watermark extends Band implements RootLevelBand
    *
    * @return true or false.
    */
-  public boolean isDisplayOnFirstPage()
+  public boolean isDisplayOnFirstPage ()
   {
     return getStyle().getBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_FIRSTPAGE);
   }
@@ -88,9 +87,9 @@ public class Watermark extends Band implements RootLevelBand
   /**
    * Defines whether the header should be shown on the first page.
    *
-   * @param b  a flag indicating whether or not the header is shown on the first page.
+   * @param b a flag indicating whether or not the header is shown on the first page.
    */
-  public void setDisplayOnFirstPage(final boolean b)
+  public void setDisplayOnFirstPage (final boolean b)
   {
     getStyle().setBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_FIRSTPAGE, b);
   }
@@ -100,7 +99,7 @@ public class Watermark extends Band implements RootLevelBand
    *
    * @return true or false.
    */
-  public boolean isDisplayOnLastPage()
+  public boolean isDisplayOnLastPage ()
   {
     return getStyle().getBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_LASTPAGE);
   }
@@ -108,16 +107,16 @@ public class Watermark extends Band implements RootLevelBand
   /**
    * Defines whether the header should be shown on the last page.
    *
-   * @param b  a flag indicating whether or not the header is shown on the last page.
+   * @param b a flag indicating whether or not the header is shown on the last page.
    */
-  public void setDisplayOnLastPage(final boolean b)
+  public void setDisplayOnLastPage (final boolean b)
   {
     getStyle().setBooleanStyleProperty(BandStyleKeys.DISPLAY_ON_LASTPAGE, b);
   }
 
   /**
-   * Assigns the report definition. Don't play with that function,
-   * unless you know what you are doing. You might get burned.
+   * Assigns the report definition. Don't play with that function, unless you know what
+   * you are doing. You might get burned.
    *
    * @param reportDefinition the report definition.
    */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.11 2005/01/25 00:09:48 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.12 2005/02/19 13:29:56 taqua Exp $
  *
  * Changes
  * -------
@@ -58,94 +58,95 @@ import org.jfree.report.util.NullOutputStream;
 
 /**
  * The <code>CSVProcessor</code> coordinates the writing process for the raw CSV output.
- * <p>
- * A {@link CSVWriter} is added to the private copy of the report to handle the output process.
+ * <p/>
+ * A {@link CSVWriter} is added to the private copy of the report to handle the output
+ * process.
  *
  * @author Thomas Morgner
  */
 public class CSVProcessor
 {
   /**
-   * A key for accessing the separator string in the
-   * {@link org.jfree.report.util.ReportConfiguration}.
+   * A key for accessing the separator string in the {@link org.jfree.report.util.ReportConfiguration}.
    */
   public static final String CSV_SEPARATOR =
-      "org.jfree.report.modules.output.csv.Separator";
+          "org.jfree.report.modules.output.csv.Separator";
 
   /**
-   * A key for accessing the 'print data row names' flag in the
-   * {@link org.jfree.report.util.ReportConfiguration}.
+   * A key for accessing the 'print data row names' flag in the {@link
+   * org.jfree.report.util.ReportConfiguration}.
    */
   public static final String CSV_DATAROWNAME
-      = "org.jfree.report.modules.output.csv.WriteDatarowNames";
+          = "org.jfree.report.modules.output.csv.WriteDatarowNames";
 
-  /** The default name for the csv writer function used by this processor. */
+  /**
+   * The default name for the csv writer function used by this processor.
+   */
   private static final String CSV_WRITER =
-      "org.jfree.report.modules.output.csv.csv-writer";
+          "org.jfree.report.modules.output.csv.csv-writer";
 
-  /** The character stream writer to be used by the {@link CSVWriter} function. */
+  /**
+   * The character stream writer to be used by the {@link CSVWriter} function.
+   */
   private Writer writer;
 
-  /** The report to be processed. */
+  /**
+   * The report to be processed.
+   */
   private JFreeReport report;
 
-  /** Defines, whether this processor should check the thread for an interrupt request. */
+  /**
+   * Defines, whether this processor should check the thread for an interrupt request.
+   */
   private boolean handleInterruptedState;
 
   /**
-   * Creates a new <code>CSVProcessor</code>. The processor will use a comma (",") to separate
-   * the column values, unless defined otherwise in the report configuration.
-   * The processor creates a private copy of the clone, so that no change to
-   * the original report will influence the report processing. DataRow names
-   * are not written.
+   * Creates a new <code>CSVProcessor</code>. The processor will use a comma (",") to
+   * separate the column values, unless defined otherwise in the report configuration. The
+   * processor creates a private copy of the clone, so that no change to the original
+   * report will influence the report processing. DataRow names are not written.
    *
-   * @param report  the report to be processed.
-   *
+   * @param report the report to be processed.
    * @throws ReportProcessingException if the report initialisation failed.
    */
-  public CSVProcessor(final JFreeReport report)
-      throws ReportProcessingException
+  public CSVProcessor (final JFreeReport report)
+          throws ReportProcessingException
   {
     this(report, report.getReportConfiguration().getConfigProperty(CSV_SEPARATOR, ","));
   }
 
   /**
+   * Creates a new CSVProcessor. The processor will use the specified separator, the
+   * report configuration is not queried for a separator. The processor creates a private
+   * copy of the clone, so that no change to the original report will influence the report
+   * processing. DataRowNames are not written.
    *
-   * Creates a new CSVProcessor. The processor will use the specified separator,
-   * the report configuration is not queried for a separator.
-   * The processor creates a private copy of the clone, so that no change to
-   * the original report will influence the report processing. DataRowNames
-   * are not written.
-   *
-   * @param report the report to be processed.
+   * @param report    the report to be processed.
    * @param separator the separator string to mark column boundaries.
-   *
    * @throws ReportProcessingException if the report initialisation failed.
    */
-  public CSVProcessor(final JFreeReport report, final String separator)
-      throws ReportProcessingException
+  public CSVProcessor (final JFreeReport report, final String separator)
+          throws ReportProcessingException
   {
     this(report, separator,
-        report.getReportConfiguration().getConfigProperty
-        (CSV_DATAROWNAME, "false").equals("true"));
+            report.getReportConfiguration().getConfigProperty
+            (CSV_DATAROWNAME, "false").equals("true"));
   }
 
   /**
-   * Creates a new CSVProcessor. The processor will use the specified separator,
-   * the report configuration is not queried for a separator.
-   * The processor creates a private copy of the clone, so that no change to
-   * the original report will influence the report processing. The first row
-   * will contain the datarow names.
+   * Creates a new CSVProcessor. The processor will use the specified separator, the
+   * report configuration is not queried for a separator. The processor creates a private
+   * copy of the clone, so that no change to the original report will influence the report
+   * processing. The first row will contain the datarow names.
    *
-   * @param report  the report to be processed.
-   * @param separator the separator string to mark column boundaries.
-   * @param writeDataRowNames  controls whether or not the data row names are output.
-   *
+   * @param report            the report to be processed.
+   * @param separator         the separator string to mark column boundaries.
+   * @param writeDataRowNames controls whether or not the data row names are output.
    * @throws ReportProcessingException if the report initialisation failed.
    */
-  public CSVProcessor(final JFreeReport report, final String separator,
-                      final boolean writeDataRowNames)
-      throws ReportProcessingException
+  public CSVProcessor (final JFreeReport report, final String separator,
+                       final boolean writeDataRowNames)
+          throws ReportProcessingException
   {
     if (report == null)
     {
@@ -171,13 +172,13 @@ public class CSVProcessor
   }
 
   /**
-   * Gets the local copy of the report. This report is initialized to handle the
-   * report writing, changes to the report can have funny results, so be carefull,
-   * when using the report object.
+   * Gets the local copy of the report. This report is initialized to handle the report
+   * writing, changes to the report can have funny results, so be carefull, when using the
+   * report object.
    *
    * @return the local copy of the report.
    */
-  protected JFreeReport getReport()
+  protected JFreeReport getReport ()
   {
     return report;
   }
@@ -187,7 +188,7 @@ public class CSVProcessor
    *
    * @return the writer
    */
-  public Writer getWriter()
+  public Writer getWriter ()
   {
     return writer;
   }
@@ -197,7 +198,7 @@ public class CSVProcessor
    *
    * @param writer the writer.
    */
-  public void setWriter(final Writer writer)
+  public void setWriter (final Writer writer)
   {
     this.writer = writer;
   }
@@ -207,11 +208,11 @@ public class CSVProcessor
    *
    * @return a list of report states (one for the beginning of each page in the report).
    *
-   * @throws ReportProcessingException if there was a problem processing the report.
+   * @throws ReportProcessingException  if there was a problem processing the report.
    * @throws CloneNotSupportedException if there is a problem cloning.
    */
-  private ReportState repaginate()
-      throws ReportProcessingException, CloneNotSupportedException
+  private ReportState repaginate ()
+          throws ReportProcessingException, CloneNotSupportedException
   {
     // every report processing starts with an StartState.
     final StartState startState;
@@ -268,7 +269,8 @@ public class CSVProcessor
       // for the current level. Higher level functions are not available in the
       // dataRow.
       final boolean failOnError
-          = (level == -1) && getReport().getReportConfiguration().isStrictErrorHandling();
+              = (level == -1) && getReport().getReportConfiguration()
+              .isStrictErrorHandling();
 
       while (!state.isFinish())
       {
@@ -333,13 +335,14 @@ public class CSVProcessor
   }
 
   /**
-   * Processes the report. The generated output is written using the defined
-   * writer, the report is repaginated before the final writing.
+   * Processes the report. The generated output is written using the defined writer, the
+   * report is repaginated before the final writing.
    *
    * @throws ReportProcessingException if the report processing failed.
-   * @throws IllegalStateException if there is no writer defined.
+   * @throws IllegalStateException     if there is no writer defined.
    */
-  public void processReport() throws ReportProcessingException
+  public void processReport ()
+          throws ReportProcessingException
   {
     if (writer == null)
     {
@@ -353,7 +356,7 @@ public class CSVProcessor
       w.setWriter(getWriter());
 
       final boolean failOnError =
-          getReport().getReportConfiguration().isStrictErrorHandling();
+              getReport().getReportConfiguration().isStrictErrorHandling();
       ReportStateProgress progress = null;
       while (!state.isFinish())
       {
@@ -380,26 +383,25 @@ public class CSVProcessor
   }
 
   /**
-   * Returns whether the processor should check the threads interrupted state.
-   * If this is set to true and the thread was interrupted, then the report processing
-   * is aborted.
+   * Returns whether the processor should check the threads interrupted state. If this is
+   * set to true and the thread was interrupted, then the report processing is aborted.
    *
-   * @return true, if the processor should check the current thread state, false otherwise.
+   * @return true, if the processor should check the current thread state, false
+   *         otherwise.
    */
-  public boolean isHandleInterruptedState()
+  public boolean isHandleInterruptedState ()
   {
     return handleInterruptedState;
   }
 
   /**
-   * Defines, whether the processor should check the threads interrupted state.
-   * If this is set to true and the thread was interrupted, then the report processing
-   * is aborted.
+   * Defines, whether the processor should check the threads interrupted state. If this is
+   * set to true and the thread was interrupted, then the report processing is aborted.
    *
-   * @param handleInterruptedState true, if the processor should check the current thread state,
-   *                               false otherwise.
+   * @param handleInterruptedState true, if the processor should check the current thread
+   *                               state, false otherwise.
    */
-  public void setHandleInterruptedState(final boolean handleInterruptedState)
+  public void setHandleInterruptedState (final boolean handleInterruptedState)
   {
     this.handleInterruptedState = handleInterruptedState;
   }
@@ -407,10 +409,11 @@ public class CSVProcessor
   /**
    * Checks, whether the current thread is interrupted.
    *
-   * @throws org.jfree.report.ReportInterruptedException if the thread is interrupted to
-   * abort the report processing.
+   * @throws org.jfree.report.ReportInterruptedException
+   *          if the thread is interrupted to abort the report processing.
    */
-  protected void checkInterrupted () throws ReportInterruptedException
+  protected void checkInterrupted ()
+          throws ReportInterruptedException
   {
     if (isHandleInterruptedState() && Thread.interrupted())
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: WrappingTableModel.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
+ * $Id: WrappingTableModel.java,v 1.5 2004/05/07 12:43:25 mungady Exp $
  *
  * Changes
  * -------
@@ -49,30 +49,32 @@ import javax.swing.table.TableModel;
 public class WrappingTableModel implements TableModel
 {
   /**
-   * A helper class, that translates tableevents received from the wrapped table model
-   * and forwards them with changed indices to the regitered listeners.
+   * A helper class, that translates tableevents received from the wrapped table model and
+   * forwards them with changed indices to the regitered listeners.
    */
   private class TableEventTranslator implements TableModelListener
   {
-    /** the registered listeners. */
+    /**
+     * the registered listeners.
+     */
     private final ArrayList listeners;
 
     /**
      * Default Constructor.
      */
-    public TableEventTranslator()
+    public TableEventTranslator ()
     {
       listeners = new ArrayList();
     }
 
     /**
-     * This fine grain notification tells listeners the exact range
-     * of cells, rows, or columns that changed. The received rows are
-     * translated to fit the external tablemodel size.
+     * This fine grain notification tells listeners the exact range of cells, rows, or
+     * columns that changed. The received rows are translated to fit the external
+     * tablemodel size.
      *
      * @param e the event, that should be translated.
      */
-    public void tableChanged(final TableModelEvent e)
+    public void tableChanged (final TableModelEvent e)
     {
       // inefficient, but necessary ...
       final int columnIndex = TableModelEvent.ALL_COLUMNS;
@@ -84,8 +86,8 @@ public class WrappingTableModel implements TableModel
       final int lastRowIndex = (lastRow / 2);
 
       final TableModelEvent event =
-          new TableModelEvent(WrappingTableModel.this, firstRowIndex, lastRowIndex,
-              columnIndex, e.getType());
+              new TableModelEvent(WrappingTableModel.this, firstRowIndex, lastRowIndex,
+                      columnIndex, e.getType());
 
       for (int i = 0; i < listeners.size(); i++)
       {
@@ -100,7 +102,7 @@ public class WrappingTableModel implements TableModel
      *
      * @param l the tablemodel listener
      */
-    public void addTableModelListener(final TableModelListener l)
+    public void addTableModelListener (final TableModelListener l)
     {
       listeners.add(l);
     }
@@ -110,30 +112,38 @@ public class WrappingTableModel implements TableModel
      *
      * @param l the tablemodel listener
      */
-    public void removeTableModelListener(final TableModelListener l)
+    public void removeTableModelListener (final TableModelListener l)
     {
       listeners.remove(l);
     }
   }
 
-  /** A table event translator. */
+  /**
+   * A table event translator.
+   */
   private TableEventTranslator translator;
 
-  /** The column prefix 1. */
+  /**
+   * The column prefix 1.
+   */
   private String columnPrefix1;
 
-  /** The column prefix 2. */
+  /**
+   * The column prefix 2.
+   */
   private String columnPrefix2;
 
-  /** The table model. */
+  /**
+   * The table model.
+   */
   private TableModel model;
 
   /**
    * Creates a new wrapping table model.
    *
-   * @param model  the underlying table model.
+   * @param model the underlying table model.
    */
-  public WrappingTableModel(final TableModel model)
+  public WrappingTableModel (final TableModel model)
   {
     this(model, "Column1_", "Column2_");
   }
@@ -141,11 +151,12 @@ public class WrappingTableModel implements TableModel
   /**
    * Creates a new wrapping table model.
    *
-   * @param model  the underlying table model.
-   * @param prefix1  the first column prefix.
-   * @param prefix2  the second column prefix.
+   * @param model   the underlying table model.
+   * @param prefix1 the first column prefix.
+   * @param prefix2 the second column prefix.
    */
-  public WrappingTableModel(final TableModel model, final String prefix1, final String prefix2)
+  public WrappingTableModel (final TableModel model, final String prefix1,
+                             final String prefix2)
   {
     if (prefix1 == null)
     {
@@ -170,7 +181,7 @@ public class WrappingTableModel implements TableModel
    *
    * @return Column prefix 1.
    */
-  public String getColumnPrefix1()
+  public String getColumnPrefix1 ()
   {
     return columnPrefix1;
   }
@@ -180,48 +191,47 @@ public class WrappingTableModel implements TableModel
    *
    * @return Column prefix 2.
    */
-  public String getColumnPrefix2()
+  public String getColumnPrefix2 ()
   {
     return columnPrefix2;
   }
 
   /**
-   * Returns the number of rows in the model. A
-   * <code>JTable</code> uses this method to determine how many rows it
-   * should display.  This method should be quick, as it
-   * is called frequently during rendering.
+   * Returns the number of rows in the model. A <code>JTable</code> uses this method to
+   * determine how many rows it should display.  This method should be quick, as it is
+   * called frequently during rendering.
    *
    * @return the number of rows in the model
+   *
    * @see #getColumnCount
    */
-  public int getRowCount()
+  public int getRowCount ()
   {
     return (int) Math.ceil(model.getRowCount() / 2.0);
   }
 
   /**
-   * Returns the number of columns in the model. A
-   * <code>JTable</code> uses this method to determine how many columns it
-   * should create and display by default.
+   * Returns the number of columns in the model. A <code>JTable</code> uses this method to
+   * determine how many columns it should create and display by default.
    *
    * @return the number of columns in the model
+   *
    * @see #getRowCount
    */
-  public int getColumnCount()
+  public int getColumnCount ()
   {
     return 2 * model.getColumnCount();
   }
 
   /**
-   * Returns the name of the column at <code>columnIndex</code>.  This is used
-   * to initialize the table's column header name.  Note: this name does
-   * not need to be unique; two columns in a table can have the same name.
+   * Returns the name of the column at <code>columnIndex</code>.  This is used to
+   * initialize the table's column header name.  Note: this name does not need to be
+   * unique; two columns in a table can have the same name.
    *
-   * @param columnIndex  the index of the column
-   *
+   * @param columnIndex the index of the column
    * @return the name of the column
    */
-  public String getColumnName(final int columnIndex)
+  public String getColumnName (final int columnIndex)
   {
     final int tmpColumnIndex = (columnIndex % model.getColumnCount());
     if (columnIndex < model.getColumnCount())
@@ -235,32 +245,31 @@ public class WrappingTableModel implements TableModel
   }
 
   /**
-   * Returns the most specific superclass for all the cell values
-   * in the column.  This is used by the <code>JTable</code> to set up a
-   * default renderer and editor for the column.
+   * Returns the most specific superclass for all the cell values in the column.  This is
+   * used by the <code>JTable</code> to set up a default renderer and editor for the
+   * column.
    *
-   * @param columnIndex  the index of the column
+   * @param columnIndex the index of the column
    * @return the common ancestor class of the object values in the model.
    */
-  public Class getColumnClass(final int columnIndex)
+  public Class getColumnClass (final int columnIndex)
   {
     final int tmpColumnIndex = (columnIndex % model.getColumnCount());
     return model.getColumnClass(tmpColumnIndex);
   }
 
   /**
-   * Returns true if the cell at <code>rowIndex</code> and
-   * <code>columnIndex</code>
-   * is editable.  Otherwise, <code>setValueAt</code> on the cell will not
-   * change the value of that cell.
+   * Returns true if the cell at <code>rowIndex</code> and <code>columnIndex</code> is
+   * editable.  Otherwise, <code>setValueAt</code> on the cell will not change the value
+   * of that cell.
    *
-   * @param rowIndex  the row whose value to be queried
-   * @param columnIndex  the column whose value to be queried
-   *
+   * @param rowIndex    the row whose value to be queried
+   * @param columnIndex the column whose value to be queried
    * @return true if the cell is editable
+   *
    * @see #setValueAt
    */
-  public boolean isCellEditable(final int rowIndex, final int columnIndex)
+  public boolean isCellEditable (final int rowIndex, final int columnIndex)
   {
     final int tmpColumnIndex = (columnIndex % model.getColumnCount());
     final int tmpRowIndex = calculateRow(rowIndex, columnIndex);
@@ -274,12 +283,11 @@ public class WrappingTableModel implements TableModel
   /**
    * Calculates the physical row.
    *
-   * @param row  the (logical) row index.
-   * @param column  the column index.
-   *
+   * @param row    the (logical) row index.
+   * @param column the column index.
    * @return The physical row.
    */
-  private int calculateRow(final int row, final int column)
+  private int calculateRow (final int row, final int column)
   {
     if (column < model.getColumnCount())
     {
@@ -297,12 +305,11 @@ public class WrappingTableModel implements TableModel
    * Returns the value for the cell at <code>columnIndex</code> and
    * <code>rowIndex</code>.
    *
-   * @param rowIndex  the row whose value is to be queried
-   * @param columnIndex  the column whose value is to be queried
-   *
+   * @param rowIndex    the row whose value is to be queried
+   * @param columnIndex the column whose value is to be queried
    * @return the value Object at the specified cell
    */
-  public Object getValueAt(final int rowIndex, final int columnIndex)
+  public Object getValueAt (final int rowIndex, final int columnIndex)
   {
     final int tmpColumnIndex = (columnIndex % model.getColumnCount());
     final int tmpRowIndex = calculateRow(rowIndex, columnIndex);
@@ -314,16 +321,16 @@ public class WrappingTableModel implements TableModel
   }
 
   /**
-   * Sets the value in the cell at <code>columnIndex</code> and
-   * <code>rowIndex</code> to <code>aValue</code>.
+   * Sets the value in the cell at <code>columnIndex</code> and <code>rowIndex</code> to
+   * <code>aValue</code>.
    *
-   * @param aValue  the new value
-   * @param rowIndex  the row whose value is to be changed
-   * @param columnIndex  the column whose value is to be changed
+   * @param aValue      the new value
+   * @param rowIndex    the row whose value is to be changed
+   * @param columnIndex the column whose value is to be changed
    * @see #getValueAt
    * @see #isCellEditable
    */
-  public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex)
+  public void setValueAt (final Object aValue, final int rowIndex, final int columnIndex)
   {
     final int tmpColumnIndex = (columnIndex % model.getColumnCount());
     final int tmpRowIndex = calculateRow(rowIndex, columnIndex);
@@ -335,23 +342,23 @@ public class WrappingTableModel implements TableModel
   }
 
   /**
-   * Adds a listener to the list that is notified each time a change
-   * to the data model occurs.
+   * Adds a listener to the list that is notified each time a change to the data model
+   * occurs.
    *
-   * @param l  the TableModelListener
+   * @param l the TableModelListener
    */
-  public void addTableModelListener(final TableModelListener l)
+  public void addTableModelListener (final TableModelListener l)
   {
     translator.addTableModelListener(l);
   }
 
   /**
-   * Removes a listener from the list that is notified each time a
-   * change to the data model occurs.
+   * Removes a listener from the list that is notified each time a change to the data
+   * model occurs.
    *
-   * @param l  the TableModelListener
+   * @param l the TableModelListener
    */
-  public void removeTableModelListener(final TableModelListener l)
+  public void removeTableModelListener (final TableModelListener l)
   {
     translator.removeTableModelListener(l);
   }

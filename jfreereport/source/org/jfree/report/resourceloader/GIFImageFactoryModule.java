@@ -8,13 +8,14 @@ import org.jfree.report.util.StringUtil;
 
 public class GIFImageFactoryModule implements ImageFactoryModule
 {
-  private static final byte GIF_ID[] = {(byte)'G', (byte)'I', (byte)'F', (byte)'8'};
+  private static final byte GIF_ID[] = {(byte) 'G', (byte) 'I', (byte) 'F', (byte) '8'};
 
   private static final String[] MIMETYPES = {
-      "image/gif",
-      "image/x-xbitmap",
-      "image/gi_"
+    "image/gif",
+    "image/x-xbitmap",
+    "image/gi_"
   };
+
   public GIFImageFactoryModule ()
   {
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.8.4.1 2004/04/05 16:49:35 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.10 2005/01/25 00:09:26 taqua Exp $
  *
  * Changes
  * -------
@@ -51,90 +51,92 @@ import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
- * Creates a <code>TableModel</code> which is backed up by a <code>ResultSet</code>.
- * If the <code>ResultSet</code> is scrollable, a
- * {@link org.jfree.report.modules.misc.tablemodel.ScrollableResultSetTableModel} is
- * created, otherwise all data is copied from the <code>ResultSet</code> into a
+ * Creates a <code>TableModel</code> which is backed up by a <code>ResultSet</code>. If
+ * the <code>ResultSet</code> is scrollable, a {@link org.jfree.report.modules.misc.tablemodel.ScrollableResultSetTableModel}
+ * is created, otherwise all data is copied from the <code>ResultSet</code> into a
  * <code>DefaultTableModel</code>.
- * <p>
+ * <p/>
  * The creation of a <code>DefaultTableModel</code> can be forced if the system property
- * <code>"org.jfree.report.modules.misc.tablemodel.TableFactoryMode"</code>
- * is set to <code>"simple"</code>.
+ * <code>"org.jfree.report.modules.misc.tablemodel.TableFactoryMode"</code> is set to
+ * <code>"simple"</code>.
  *
  * @author Thomas Morgner
  */
 public final class ResultSetTableModelFactory
 {
-  /** The configuration key defining how to map column names to column indices. */
+  /**
+   * The configuration key defining how to map column names to column indices.
+   */
   public static final String COLUMN_NAME_MAPPING_KEY =
-      "org.jfree.report.modules.misc.tablemodel.ColumnNameMapping";
+          "org.jfree.report.modules.misc.tablemodel.ColumnNameMapping";
 
-  /** The 'ResultSet factory mode'. */
+  /**
+   * The 'ResultSet factory mode'.
+   */
   public static final String RESULTSET_FACTORY_MODE
-      = "org.jfree.report.modules.misc.tablemodel.TableFactoryMode";
+          = "org.jfree.report.modules.misc.tablemodel.TableFactoryMode";
 
-  /** Singleton instance of the factory. */
+  /**
+   * Singleton instance of the factory.
+   */
   private static ResultSetTableModelFactory defaultInstance;
 
   /**
    * Default constructor. This is a Singleton, use getInstance().
    */
-  private ResultSetTableModelFactory()
+  private ResultSetTableModelFactory ()
   {
   }
 
   /**
-   * Creates a table model by using the given <code>ResultSet</code> as the backend.
-   * If the <code>ResultSet</code> is scrollable (the type is not <code>TYPE_FORWARD_ONLY</code>),
-   * an instance of
-   * {@link org.jfree.report.modules.misc.tablemodel.ScrollableResultSetTableModel} is
-   * returned. This model uses the
-   * extended capabilities of scrollable resultsets to directly read data from the database
-   * without caching or the need of copying the complete <code>ResultSet</code> into the programs
-   * memory.
-   * <p>
-   * If the <code>ResultSet</code> lacks the scollable features, the data will be copied into a
-   * <code>DefaultTableModel</code> and the <code>ResultSet</code> gets closed.
+   * Creates a table model by using the given <code>ResultSet</code> as the backend. If
+   * the <code>ResultSet</code> is scrollable (the type is not
+   * <code>TYPE_FORWARD_ONLY</code>), an instance of {@link org.jfree.report.modules.misc.tablemodel.ScrollableResultSetTableModel}
+   * is returned. This model uses the extended capabilities of scrollable resultsets to
+   * directly read data from the database without caching or the need of copying the
+   * complete <code>ResultSet</code> into the programs memory.
+   * <p/>
+   * If the <code>ResultSet</code> lacks the scollable features, the data will be copied
+   * into a <code>DefaultTableModel</code> and the <code>ResultSet</code> gets closed.
    *
-   * @param rs  the result set.
+   * @param rs the result set.
    * @return a closeable table model.
    *
    * @throws SQLException if there is a problem with the result set.
    */
-  public CloseableTableModel createTableModel(final ResultSet rs)
-      throws SQLException
+  public CloseableTableModel createTableModel (final ResultSet rs)
+          throws SQLException
   {
     return createTableModel
-        (rs, ReportConfiguration.getGlobalConfig().getConfigProperty
-        (COLUMN_NAME_MAPPING_KEY, "Label").equals("Label"));
+            (rs, ReportConfiguration.getGlobalConfig().getConfigProperty
+            (COLUMN_NAME_MAPPING_KEY, "Label").equals("Label"));
   }
 
   /**
-   * Creates a table model by using the given <code>ResultSet</code> as the backend.
-   * If the <code>ResultSet</code> is scrollable (the type is not <code>TYPE_FORWARD_ONLY</code>),
-   * an instance of
-   * {@link org.jfree.report.modules.misc.tablemodel.ScrollableResultSetTableModel} is
-   * returned. This model uses the
-   * extended capabilities of scrollable resultsets to directly read data from the database
-   * without caching or the need of copying the complete <code>ResultSet</code> into the programs
-   * memory.
-   * <p>
-   * If the <code>ResultSet</code> lacks the scollable features, the data will be copied into a
-   * <code>DefaultTableModel</code> and the <code>ResultSet</code> gets closed.
+   * Creates a table model by using the given <code>ResultSet</code> as the backend. If
+   * the <code>ResultSet</code> is scrollable (the type is not
+   * <code>TYPE_FORWARD_ONLY</code>), an instance of {@link org.jfree.report.modules.misc.tablemodel.ScrollableResultSetTableModel}
+   * is returned. This model uses the extended capabilities of scrollable resultsets to
+   * directly read data from the database without caching or the need of copying the
+   * complete <code>ResultSet</code> into the programs memory.
+   * <p/>
+   * If the <code>ResultSet</code> lacks the scollable features, the data will be copied
+   * into a <code>DefaultTableModel</code> and the <code>ResultSet</code> gets closed.
    *
-   * @param rs  the result set.
-   * @param labelMapping defines, whether to use column names or column labels
-   * to compute the column index.
+   * @param rs           the result set.
+   * @param labelMapping defines, whether to use column names or column labels to compute
+   *                     the column index.
    * @return a closeable table model.
    *
    * @throws SQLException if there is a problem with the result set.
    */
-  public CloseableTableModel createTableModel(final ResultSet rs, final boolean labelMapping)
-      throws SQLException
+  public CloseableTableModel createTableModel (final ResultSet rs,
+                                               final boolean labelMapping)
+          throws SQLException
   {
     // Allow for override, some jdbc drivers are buggy :(
     final String prop = ReportConfiguration
-        .getGlobalConfig().getConfigProperty(RESULTSET_FACTORY_MODE, "");
+            .getGlobalConfig().getConfigProperty(RESULTSET_FACTORY_MODE, "");
 
     if (prop.equalsIgnoreCase("simple"))
     {
@@ -149,7 +151,7 @@ public final class ResultSetTableModelFactory
     catch (SQLException sqle)
     {
       Log.info
-          ("ResultSet type could not be determined, assuming default table model.");
+              ("ResultSet type could not be determined, assuming default table model.");
     }
     if (resultSetType == ResultSet.TYPE_FORWARD_ONLY)
     {
@@ -165,20 +167,22 @@ public final class ResultSetTableModelFactory
    * A DefaultTableModel that implements the CloseableTableModel interface.
    */
   private final class CloseableDefaultTableModel extends DefaultTableModel
-      implements CloseableTableModel
+          implements CloseableTableModel
   {
-    /** The results set. */
+    /**
+     * The results set.
+     */
     private final ResultSet res;
 
     /**
      * Creates a new closeable table model.
      *
      * @param objects  the table data.
-     * @param objects1  the column names.
-     * @param res  the result set.
+     * @param objects1 the column names.
+     * @param res      the result set.
      */
-    private CloseableDefaultTableModel(final Object[][] objects,
-                                       final Object[] objects1, final ResultSet res)
+    private CloseableDefaultTableModel (final Object[][] objects,
+                                        final Object[] objects1, final ResultSet res)
     {
       super(objects, objects1);
       this.res = res;
@@ -188,7 +192,7 @@ public final class ResultSetTableModelFactory
      * If this model has a resultset assigned, close it, if this is a DefaultTableModel,
      * remove all data.
      */
-    public void close()
+    public void close ()
     {
       setDataVector(new Object[0][0], new Object[0]);
       try
@@ -204,43 +208,43 @@ public final class ResultSetTableModelFactory
 
   /**
    * Generates a <code>TableModel</code> that gets its contents filled from a
-   * <code>ResultSet</code>. The column names of the <code>ResultSet</code> will form the column
-   * names of the table model.
-   * <p>
+   * <code>ResultSet</code>. The column names of the <code>ResultSet</code> will form the
+   * column names of the table model.
+   * <p/>
    * Hint: To customize the names of the columns, use the SQL column aliasing (done with
    * <code>SELECT nativecolumnname AS "JavaColumnName" FROM ....</code>
    *
-   * @param rs  the result set.
-   *
+   * @param rs the result set.
    * @return a closeable table model.
    *
    * @throws SQLException if there is a problem with the result set.
    */
-  public CloseableTableModel generateDefaultTableModel(final ResultSet rs)
-      throws SQLException
+  public CloseableTableModel generateDefaultTableModel (final ResultSet rs)
+          throws SQLException
   {
-    return generateDefaultTableModel(rs, ReportConfiguration.getGlobalConfig().getConfigProperty
-        (COLUMN_NAME_MAPPING_KEY, "Label").equals("Label"));
+    return generateDefaultTableModel(rs, ReportConfiguration.getGlobalConfig()
+            .getConfigProperty
+            (COLUMN_NAME_MAPPING_KEY, "Label").equals("Label"));
   }
 
   /**
    * Generates a <code>TableModel</code> that gets its contents filled from a
-   * <code>ResultSet</code>. The column names of the <code>ResultSet</code> will form the column
-   * names of the table model.
-   * <p>
+   * <code>ResultSet</code>. The column names of the <code>ResultSet</code> will form the
+   * column names of the table model.
+   * <p/>
    * Hint: To customize the names of the columns, use the SQL column aliasing (done with
    * <code>SELECT nativecolumnname AS "JavaColumnName" FROM ....</code>
    *
-   * @param rs  the result set.
-   * @param labelMapping defines, whether to use column names or column labels
-   * to compute the column index.
+   * @param rs           the result set.
+   * @param labelMapping defines, whether to use column names or column labels to compute
+   *                     the column index.
    * @return a closeable table model.
    *
    * @throws SQLException if there is a problem with the result set.
    */
   public CloseableTableModel generateDefaultTableModel
-    (final ResultSet rs, final boolean labelMapping)
-      throws SQLException
+          (final ResultSet rs, final boolean labelMapping)
+          throws SQLException
   {
     final ResultSetMetaData rsmd = rs.getMetaData();
     final int colcount = rsmd.getColumnCount();
@@ -277,7 +281,7 @@ public final class ResultSetTableModelFactory
       rowMap[i] = (Object[]) tempRows[i];
     }
     final CloseableDefaultTableModel model =
-        new CloseableDefaultTableModel(rowMap, header.toArray(), rs);
+            new CloseableDefaultTableModel(rowMap, header.toArray(), rs);
     for (int i = 0; i < colcount; i++)
     {
     }
@@ -289,7 +293,7 @@ public final class ResultSetTableModelFactory
    *
    * @return an instance of this factory.
    */
-  public synchronized static ResultSetTableModelFactory getInstance()
+  public synchronized static ResultSetTableModelFactory getInstance ()
   {
     if (defaultInstance == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextFormatExpression.java,v 1.2.4.1 2004/12/30 14:46:12 taqua Exp $
+ * $Id: TextFormatExpression.java,v 1.4 2005/01/25 00:00:18 taqua Exp $
  *
  * Changes
  * -------
@@ -43,49 +43,55 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * A TextFormatExpression uses a java.text.MessageFormat to concat and format one or more values
- * evaluated from an expression, function or report datasource.
- * <p>
- * The TextFormatExpression uses the pattern property to define the global format-pattern used
- * when evaluating the expression. The dataRow fields used to fill the expressions placeholders
- * are defined in a list of properties where the property-names are numbers. The property counting
- * starts at "0".
- * <p>
- * The Syntax of the <code>pattern</code> property is explained in java.text.MessageFormat.
- * <p>
+ * A TextFormatExpression uses a java.text.MessageFormat to concat and format one or more
+ * values evaluated from an expression, function or report datasource.
+ * <p/>
+ * The TextFormatExpression uses the pattern property to define the global format-pattern
+ * used when evaluating the expression. The dataRow fields used to fill the expressions
+ * placeholders are defined in a list of properties where the property-names are numbers.
+ * The property counting starts at "0".
+ * <p/>
+ * The Syntax of the <code>pattern</code> property is explained in
+ * java.text.MessageFormat.
+ * <p/>
  * Example:
- <pre>
- <expression name="expr" class="org.jfree.report.function.TextFormatExpression">
- <properties>
- <property name="pattern">Invoice for your order from {0, date, EEE, MMM d, yyyy}</property>
- <property name="0">printdate</property>
- </properties>
- </expression>
- </pre>
+ * <pre>
+ * <expression name="expr" class="org.jfree.report.function.TextFormatExpression">
+ * <properties>
+ * <property name="pattern">Invoice for your order from {0, date, EEE, MMM d,
+ * yyyy}</property>
+ * <property name="0">printdate</property>
+ * </properties>
+ * </expression>
+ * </pre>
  *
  * @author Thomas Morgner
  */
 public class TextFormatExpression extends AbstractExpression implements Serializable
 {
-  /** An ordered list containing the fieldnames used in the expression. */
+  /**
+   * An ordered list containing the fieldnames used in the expression.
+   */
   private ArrayList fields;
   private String pattern;
 
   /**
    * Default constructor, creates a new unnamed TextFormatExpression.
    */
-  public TextFormatExpression()
+  public TextFormatExpression ()
   {
     fields = new ArrayList();
   }
 
   /**
    * Evaluates the expression by collecting all values defined in the fieldlist from the
-   * datarow. The collected values are then parsed and formated by the MessageFormat-object.
+   * datarow. The collected values are then parsed and formated by the
+   * MessageFormat-object.
    *
-   * @return a string containing the pattern inclusive the formatted values from the datarow
+   * @return a string containing the pattern inclusive the formatted values from the
+   *         datarow
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return MessageFormat.format(getPattern(), getFieldValues());
   }
@@ -95,7 +101,7 @@ public class TextFormatExpression extends AbstractExpression implements Serializ
    *
    * @return an Objectarray containing all defined values from the datarow
    */
-  protected Object[] getFieldValues()
+  protected Object[] getFieldValues ()
   {
     final Object[] retval = new Object[fields.size()];
     for (int i = 0; i < fields.size(); i++)
@@ -111,19 +117,19 @@ public class TextFormatExpression extends AbstractExpression implements Serializ
    *
    * @return the pattern.
    */
-  public String getPattern()
+  public String getPattern ()
   {
     return pattern;
   }
 
   /**
    * Defines the pattern for this expression. The pattern syntax is defined by the
-   * java.text.MessageFormat object and the given pattern string has to be valid according to
-   * the rules defined there.
+   * java.text.MessageFormat object and the given pattern string has to be valid according
+   * to the rules defined there.
    *
-   * @param pattern  the pattern string
+   * @param pattern the pattern string
    */
-  public void setPattern(final String pattern)
+  public void setPattern (final String pattern)
   {
     this.pattern = pattern;
   }
@@ -135,7 +141,8 @@ public class TextFormatExpression extends AbstractExpression implements Serializ
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final TextFormatExpression tex = (TextFormatExpression) super.clone();
     tex.fields = new ArrayList(fields);
@@ -150,7 +157,7 @@ public class TextFormatExpression extends AbstractExpression implements Serializ
     }
     else
     {
-      fields.set (index, field);
+      fields.set(index, field);
     }
   }
 
@@ -159,17 +166,17 @@ public class TextFormatExpression extends AbstractExpression implements Serializ
     return (String) fields.get(index);
   }
 
-  public int getFieldCount()
+  public int getFieldCount ()
   {
     return fields.size();
   }
 
-  public String[] getField()
+  public String[] getField ()
   {
     return (String[]) fields.toArray(new String[fields.size()]);
   }
 
-  public void setField(final String[] fields)
+  public void setField (final String[] fields)
   {
     this.fields.clear();
     this.fields.addAll(Arrays.asList(fields));

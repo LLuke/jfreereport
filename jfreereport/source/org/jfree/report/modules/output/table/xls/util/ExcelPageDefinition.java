@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelPageDefinition.java,v 1.2.2.1 2004/12/13 19:27:12 taqua Exp $
+ * $Id: ExcelPageDefinition.java,v 1.3 2005/01/25 00:17:15 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,26 +39,33 @@
 package org.jfree.report.modules.output.table.xls.util;
 
 /**
- * A read only page format mapping definiton to map a page format to an
- * predefined excel constant.
+ * A read only page format mapping definiton to map a page format to an predefined excel
+ * constant.
  */
 public final class ExcelPageDefinition
 {
-  /** The excel internal page format code referring to that page size. */
+  /**
+   * The excel internal page format code referring to that page size.
+   */
   private final short pageFormatCode;
-  /** The width of the page format. */
+  /**
+   * The width of the page format.
+   */
   private final int width;
-  /** The height of the page format. */
+  /**
+   * The height of the page format.
+   */
   private final int height;
 
   /**
    * Defines a new excel page format mapping.
    *
    * @param pageFormatCode the excel internal page format code.
-   * @param width the width of the page.
-   * @param height the height of the page.
+   * @param width          the width of the page.
+   * @param height         the height of the page.
    */
-  public ExcelPageDefinition(final short pageFormatCode, final int width, final int height)
+  public ExcelPageDefinition (final short pageFormatCode, final int width,
+                              final int height)
   {
     this.pageFormatCode = pageFormatCode;
     this.width = width;
@@ -70,7 +77,7 @@ public final class ExcelPageDefinition
    *
    * @return the page format code as defined in the Excel File format.
    */
-  public short getPageFormatCode()
+  public short getPageFormatCode ()
   {
     return pageFormatCode;
   }
@@ -80,7 +87,7 @@ public final class ExcelPageDefinition
    *
    * @return the page width;
    */
-  public int getWidth()
+  public int getWidth ()
   {
     return width;
   }
@@ -90,7 +97,7 @@ public final class ExcelPageDefinition
    *
    * @return the page height;
    */
-  public int getHeight()
+  public int getHeight ()
   {
     return height;
   }

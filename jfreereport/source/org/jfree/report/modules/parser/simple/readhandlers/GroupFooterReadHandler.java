@@ -34,11 +34,11 @@ public class GroupFooterReadHandler extends RootLevelBandReadHandler
     final String ownPageAttr = attr.getValue("pagebreak");
     if (ownPageAttr != null)
     {
-      Log.warn ("The 'pagebreak' attribute of the <group-footer> tag is deprecated. " +
+      Log.warn("The 'pagebreak' attribute of the <group-footer> tag is deprecated. " +
               "Use the 'pagebreak-after' attribute instead.");
       final boolean ownPage = ParserUtil.parseBoolean(ownPageAttr, false);
       getBand().getStyle().setBooleanStyleProperty
-          (BandStyleKeys.PAGEBREAK_AFTER, ownPage);
+              (BandStyleKeys.PAGEBREAK_AFTER, ownPage);
     }
   }
 }

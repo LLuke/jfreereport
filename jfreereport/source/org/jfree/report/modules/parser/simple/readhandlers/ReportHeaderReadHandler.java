@@ -32,11 +32,11 @@ public class ReportHeaderReadHandler extends RootLevelBandReadHandler
     final String ownPageAttr = attr.getValue("ownpage");
     if (ownPageAttr != null)
     {
-      Log.warn ("The 'ownpage' attribute of the <report-header> tag is deprecated. " +
+      Log.warn("The 'ownpage' attribute of the <report-header> tag is deprecated. " +
               "Use the 'pagebreak-after' attribute instead.");
       final boolean ownPage = ParserUtil.parseBoolean(ownPageAttr, false);
       getBand().getStyle().setBooleanStyleProperty
-          (BandStyleKeys.PAGEBREAK_AFTER, ownPage);
+              (BandStyleKeys.PAGEBREAK_AFTER, ownPage);
     }
   }
 

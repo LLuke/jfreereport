@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ClassConfigDescriptionEntry.java,v 1.5 2003/11/07 18:33:52 taqua Exp $
+ * $Id: ClassConfigDescriptionEntry.java,v 1.6 2004/05/07 14:29:24 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -39,23 +39,24 @@
 package org.jfree.report.modules.gui.config.model;
 
 /**
- * A config description entry that describes class name configurations.
- * The specified class in the configuration is forced to be a subclass 
- * of the specified base class.
- * 
+ * A config description entry that describes class name configurations. The specified
+ * class in the configuration is forced to be a subclass of the specified base class.
+ *
  * @author Thomas Morgner
  */
 public class ClassConfigDescriptionEntry extends ConfigDescriptionEntry
 {
-  /** The base class for the configuration value. */
+  /**
+   * The base class for the configuration value.
+   */
   private Class baseClass;
 
   /**
-   * Creates a new config description entry. 
-   * 
+   * Creates a new config description entry.
+   *
    * @param keyName the full name of the key.
    */
-  public ClassConfigDescriptionEntry(final String keyName)
+  public ClassConfigDescriptionEntry (final String keyName)
   {
     super(keyName);
     baseClass = Object.class;
@@ -63,20 +64,20 @@ public class ClassConfigDescriptionEntry extends ConfigDescriptionEntry
 
   /**
    * Returns the base class used to verify the configuration values.
-   * 
+   *
    * @return the base class or Object.class if not specified otherwise.
    */
-  public Class getBaseClass()
+  public Class getBaseClass ()
   {
     return baseClass;
   }
 
   /**
    * Defines the base class for this configuration entry.
-   * 
+   *
    * @param baseClass the base class, never null.
    */
-  public void setBaseClass(final Class baseClass)
+  public void setBaseClass (final Class baseClass)
   {
     if (baseClass == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimpleInvoiceDemo.java,v 1.1.2.3 2004/04/06 13:57:17 taqua Exp $
+ * $Id: SimpleInvoiceDemo.java,v 1.2 2005/01/25 01:14:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -83,11 +83,11 @@ public class SimpleInvoiceDemo extends AbstractDemoFrame
     final Article memory = new Article("MEM.36", "Dusty RAM modules", 59.99f);
     final Article operatingSystem = new Article
             ("OS.36", "QDOS with C/PM compatibility module", 259.99f, "Serial #44638-444-123");
-    invoice.addArticle (mainboard);
-    invoice.addArticle (hardDisk);
-    invoice.addArticle (memory);
-    invoice.addArticle (memory);
-    invoice.addArticle (operatingSystem);
+    invoice.addArticle(mainboard);
+    invoice.addArticle(hardDisk);
+    invoice.addArticle(memory);
+    invoice.addArticle(memory);
+    invoice.addArticle(operatingSystem);
 
     data = new InvoiceTableModel();
     data.addInvoice(invoice);
@@ -105,7 +105,7 @@ public class SimpleInvoiceDemo extends AbstractDemoFrame
    *
    * @return the menu bar.
    */
-  public JMenuBar createMenuBar()
+  public JMenuBar createMenuBar ()
   {
     final JMenuBar mb = new JMenuBar();
     final JMenu fileMenu = createJMenu("menu.file");
@@ -125,7 +125,7 @@ public class SimpleInvoiceDemo extends AbstractDemoFrame
    *
    * @return a panel containing the basic user interface.
    */
-  public JPanel createContent()
+  public JPanel createContent ()
   {
     final JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
@@ -152,16 +152,16 @@ public class SimpleInvoiceDemo extends AbstractDemoFrame
   /**
    * Displays a print preview screen for the sample report.
    */
-  protected void attemptPreview()
+  protected void attemptPreview ()
   {
     final URL in = getClass().getResource("/org/jfree/report/demo/invoice/invoice.xml");
 
     if (in == null)
     {
       JOptionPane.showMessageDialog(this,
-          MessageFormat.format(getResources().getString("report.definitionnotfound"),
-              new Object[]{in}),
-          getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+              MessageFormat.format(getResources().getString("report.definitionnotfound"),
+                      new Object[]{in}),
+              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 
     final JFreeReport report;
@@ -194,11 +194,10 @@ public class SimpleInvoiceDemo extends AbstractDemoFrame
   /**
    * Reads the report from the specified template file.
    *
-   * @param templateURL  the template location.
-   *
+   * @param templateURL the template location.
    * @return a report.
    */
-  private JFreeReport parseReport(final URL templateURL)
+  private JFreeReport parseReport (final URL templateURL)
   {
 
     JFreeReport result = null;
@@ -218,9 +217,9 @@ public class SimpleInvoiceDemo extends AbstractDemoFrame
   /**
    * Entry point for running the demo application...
    *
-   * @param args  ignored.
+   * @param args ignored.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();

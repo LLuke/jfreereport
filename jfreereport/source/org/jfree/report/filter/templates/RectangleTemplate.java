@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RectangleTemplate.java,v 1.6 2005/02/19 13:29:55 taqua Exp $
+ * $Id: RectangleTemplate.java,v 1.7 2005/02/19 20:10:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,11 +41,11 @@ package org.jfree.report.filter.templates;
 import java.awt.geom.Rectangle2D;
 
 /**
- * A template to create rectangle elements. The rectangle always has the width and
- * the height of 100 points.
- * <p>
- * This implementation is used to cover the common use of the rectangle shape element.
- * Use the scaling feature of the shape element to adjust the size of the rectangle.
+ * A template to create rectangle elements. The rectangle always has the width and the
+ * height of 100 points.
+ * <p/>
+ * This implementation is used to cover the common use of the rectangle shape element. Use
+ * the scaling feature of the shape element to adjust the size of the rectangle.
  *
  * @author Thomas Morgner
  */
@@ -54,7 +54,7 @@ public class RectangleTemplate extends AbstractTemplate
   /**
    * Default Constructor.
    */
-  public RectangleTemplate()
+  public RectangleTemplate ()
   {
   }
 
@@ -63,7 +63,7 @@ public class RectangleTemplate extends AbstractTemplate
    *
    * @return a rectangle with a width and height of 100.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return new Rectangle2D.Float(0, 0, 100, 100);
   }

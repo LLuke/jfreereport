@@ -28,7 +28,7 @@ public class AnchorFieldReadHandler extends AbstractElementReadHandler
     final String fieldName = atts.getValue("fieldname");
     if (fieldName == null)
     {
-      throw new ElementDefinitionException ("Required attribute 'fieldname' is missing.");
+      throw new ElementDefinitionException("Required attribute 'fieldname' is missing.");
     }
     elementFactory.setFieldname(fieldName);
     elementFactory.setName(atts.getValue(NAME_ATT));

@@ -47,7 +47,7 @@ public class SportsCouncilDemo extends AbstractDemoFrame
    *
    * @return the menu bar.
    */
-  public JMenuBar createMenuBar()
+  public JMenuBar createMenuBar ()
   {
     final JMenuBar mb = new JMenuBar();
     final JMenu fileMenu = createJMenu("menu.file");
@@ -67,7 +67,7 @@ public class SportsCouncilDemo extends AbstractDemoFrame
    *
    * @return a panel containing the basic user interface.
    */
-  public JPanel createContent()
+  public JPanel createContent ()
   {
     final JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
@@ -87,7 +87,7 @@ public class SportsCouncilDemo extends AbstractDemoFrame
     textArea.setEditable(false);
     final JScrollPane scroll = new JScrollPane(textArea);
     scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    
+
     final JTable table = new JTable(this.data);
     table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
     table.getTableHeader().setResizingAllowed(true);
@@ -112,16 +112,16 @@ public class SportsCouncilDemo extends AbstractDemoFrame
   /**
    * Displays a print preview screen for the sample report.
    */
-  protected void attemptPreview()
+  protected void attemptPreview ()
   {
     final URL in = getClass().getResource("/org/jfree/report/demo/sportscouncil/council.xml");
 
     if (in == null)
     {
       JOptionPane.showMessageDialog(this,
-          MessageFormat.format(getResources().getString("report.definitionnotfound"),
-              new Object[]{in}),
-          getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+              MessageFormat.format(getResources().getString("report.definitionnotfound"),
+                      new Object[]{in}),
+              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 
     final JFreeReport report;
@@ -154,11 +154,10 @@ public class SportsCouncilDemo extends AbstractDemoFrame
   /**
    * Reads the report from the specified template file.
    *
-   * @param templateURL  the template location.
-   *
+   * @param templateURL the template location.
    * @return a report.
    */
-  private JFreeReport parseReport(final URL templateURL)
+  private JFreeReport parseReport (final URL templateURL)
   {
 
     JFreeReport result = null;
@@ -178,9 +177,9 @@ public class SportsCouncilDemo extends AbstractDemoFrame
   /**
    * Entry point for running the demo application...
    *
-   * @param args  ignored.
+   * @param args ignored.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();

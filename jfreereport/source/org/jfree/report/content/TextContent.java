@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextContent.java,v 1.11 2004/05/07 08:02:48 mungady Exp $
+ * $Id: TextContent.java,v 1.12 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -50,34 +50,35 @@ import org.jfree.report.util.geom.StrictBounds;
 /**
  * A container for text content. The content will be split into paragraphs.
  *
- * @see TextParagraph
- *
  * @author Thomas Morgner
+ * @see TextParagraph
  */
 public strictfp class TextContent extends ContentContainer
 {
   public static final String DEBUG_TEXTCONTENT_KEY =
-      "org.jfree.report.content.DebugTextContent";
+          "org.jfree.report.content.DebugTextContent";
 
-  /** A size calculator. */
+  /**
+   * A size calculator.
+   */
   private final SizeCalculator sizeCalculator;
 
   /**
-   * Creates a new container for text. The line height can be used to extend the height
-   * of a single text line. It can not be used to narrow down the text line.
+   * Creates a new container for text. The line height can be used to extend the height of
+   * a single text line. It can not be used to narrow down the text line.
    *
-   * @param value  the text.
-   * @param lineHeight the height of a text line
-   * @param bounds  the bounds.
-   * @param ot  the size calculator.
-   * @param reservedLiteral the text that should be appended if the text does
-   * not fit into the bounds
-   * @param trimTextContent defines, whether to remove whitespaces from the start
-   * and end of an line.
+   * @param value           the text.
+   * @param lineHeight      the height of a text line
+   * @param bounds          the bounds.
+   * @param ot              the size calculator.
+   * @param reservedLiteral the text that should be appended if the text does not fit into
+   *                        the bounds
+   * @param trimTextContent defines, whether to remove whitespaces from the start and end
+   *                        of an line.
    */
-  public TextContent(final String value, final long lineHeight,
-                     final StrictBounds bounds, final SizeCalculator ot,
-                     final String reservedLiteral, final boolean trimTextContent)
+  public TextContent (final String value, final long lineHeight,
+                      final StrictBounds bounds, final SizeCalculator ot,
+                      final String reservedLiteral, final boolean trimTextContent)
   {
     super(bounds);
     this.sizeCalculator = ot;
@@ -94,17 +95,17 @@ public strictfp class TextContent extends ContentContainer
       for (int i = 0; i < paragraphs.size(); i++)
       {
         final TextParagraph p = new TextParagraph
-            (getSizeCalculator(), lineHeight, reservedLiteral, trimTextContent);
+                (getSizeCalculator(), lineHeight, reservedLiteral, trimTextContent);
         p.setContent((String) paragraphs.get(i), x, y + usedHeight, w, h - usedHeight);
         usedHeight += p.getBounds().getHeight();
         addContentPart(p);
       }
 
       if (usedHeight == 0 &&
-          ReportConfiguration.getGlobalConfig().getConfigProperty
-          (DEBUG_TEXTCONTENT_KEY, "false").equals("true"))
+              ReportConfiguration.getGlobalConfig().getConfigProperty
+              (DEBUG_TEXTCONTENT_KEY, "false").equals("true"))
       {
-        Log.warn ("Empty TextContent created. This might indicate an invalid font size definition.");
+        Log.warn("Empty TextContent created. This might indicate an invalid font size definition.");
       }
     }
   }
@@ -114,7 +115,7 @@ public strictfp class TextContent extends ContentContainer
    *
    * @return the size calculator.
    */
-  private SizeCalculator getSizeCalculator()
+  private SizeCalculator getSizeCalculator ()
   {
     return sizeCalculator;
   }
@@ -122,11 +123,10 @@ public strictfp class TextContent extends ContentContainer
   /**
    * Returns the supplied text as a list of lines/paragraphs.
    *
-   * @param text  the text.
-   *
+   * @param text the text.
    * @return a list of lines/paragraphs.
    */
-  private List splitContent(final String text)
+  private List splitContent (final String text)
   {
     final List lines = new ArrayList();
 

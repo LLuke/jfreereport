@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.18 2005/01/25 00:01:20 taqua Exp $
+ * $Id: ReportPane.java,v 1.19 2005/02/23 19:31:46 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -211,7 +211,7 @@ public class ReportPane extends JComponent
       paginateState = PAGINATE_IDLE;
     }
 
-    public synchronized boolean isIdle()
+    public synchronized boolean isIdle ()
     {
       return paginateState == PAGINATE_IDLE;
     }
@@ -697,7 +697,7 @@ public class ReportPane extends JComponent
   {
     try
     {
-      synchronized(paginateLock)
+      synchronized (paginateLock)
       {
         if (isPrinting())
         {
@@ -757,7 +757,7 @@ public class ReportPane extends JComponent
       final Graphics2D g2 = (Graphics2D) g;
       final G2OutputTarget target = new G2OutputTarget(g2);
 
-      synchronized(paginateLock)
+      synchronized (paginateLock)
       {
         getProcessor().setOutputTarget(target);
         target.open();
@@ -786,7 +786,7 @@ public class ReportPane extends JComponent
     }
     finally
     {
-      synchronized(paginateLock)
+      synchronized (paginateLock)
       {
         setPrinting(true);
       }
@@ -867,7 +867,7 @@ public class ReportPane extends JComponent
         setPageNumber(0);
       }
 
-      synchronized(paginateLock)
+      synchronized (paginateLock)
       {
         setPaginated(true);
       }
@@ -878,7 +878,7 @@ public class ReportPane extends JComponent
       {
         getProcessor().setOutputTarget(null);
       }
-      synchronized(paginateLock)
+      synchronized (paginateLock)
       {
         setPaginating(false);
       }
@@ -1091,7 +1091,7 @@ public class ReportPane extends JComponent
       }
       catch (Exception e)
       {
-        Log.error ("Unable to propagate PropertyChange.", e);
+        Log.error("Unable to propagate PropertyChange.", e);
       }
     }
   }

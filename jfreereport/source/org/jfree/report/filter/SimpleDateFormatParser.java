@@ -25,7 +25,7 @@
  * ---------------------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: SimpleDateFormatParser.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: SimpleDateFormatParser.java,v 1.3 2004/05/07 08:24:42 mungady Exp $
  *
  * Changes
  * -------
@@ -36,26 +36,25 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 
 /**
- * Parses a String into a java.util.Date. The string is read from the given datasource
- * and then parsed by the dateformat contained in this FormatParser.
- * <p>
- * <p>
+ * Parses a String into a java.util.Date. The string is read from the given datasource and
+ * then parsed by the dateformat contained in this FormatParser.
+ * <p/>
+ * <p/>
  * If the object read from the datasource is no string, the value is converted to string
  * using String.valueOf (Object)
- * <p>
+ * <p/>
  * This implementation uses a SimpleDateFormat and grants more control over the parsing
  * results.
  *
- * @see java.text.SimpleDateFormat
- *
  * @author Thomas Morgner
+ * @see java.text.SimpleDateFormat
  */
 public class SimpleDateFormatParser extends DateFormatParser
 {
   /**
    * DefaultConstructor.
    */
-  public SimpleDateFormatParser()
+  public SimpleDateFormatParser ()
   {
     setFormatter(new SimpleDateFormat());
   }
@@ -66,7 +65,7 @@ public class SimpleDateFormatParser extends DateFormatParser
    *
    * @return The date format object.
    */
-  public SimpleDateFormat getSimpleDateFormat()
+  public SimpleDateFormat getSimpleDateFormat ()
   {
     return (SimpleDateFormat) getFormatter();
   }
@@ -77,7 +76,7 @@ public class SimpleDateFormatParser extends DateFormatParser
    * @param format The format.
    * @throws NullPointerException if the format given is null
    */
-  public void setSimpleDateFormat(final SimpleDateFormat format)
+  public void setSimpleDateFormat (final SimpleDateFormat format)
   {
     super.setFormatter(format);
   }
@@ -88,9 +87,9 @@ public class SimpleDateFormatParser extends DateFormatParser
    *
    * @param format The format.
    * @throws NullPointerException if the format given is null
-   * @throws ClassCastException if the format given is no DateFormat
+   * @throws ClassCastException   if the format given is no DateFormat
    */
-  public void setFormatter(final Format format)
+  public void setFormatter (final Format format)
   {
     final SimpleDateFormat sdfmt = (SimpleDateFormat) format;
     super.setFormatter(sdfmt);
@@ -100,10 +99,11 @@ public class SimpleDateFormatParser extends DateFormatParser
    * Returns the formatString for this SimpleDateFormat. For a more detailed explaination
    * of SimpleDateFormat formatstrings see java.text.SimpleDateFormat.
    *
-   * @see java.text.SimpleDateFormat
    * @return the formatstring used for this DateFormat.
+   *
+   * @see java.text.SimpleDateFormat
    */
-  public String getFormatString()
+  public String getFormatString ()
   {
     return getSimpleDateFormat().toPattern();
   }
@@ -114,19 +114,20 @@ public class SimpleDateFormatParser extends DateFormatParser
    * @param format the formatString
    * @throws IllegalArgumentException if the string is invalid
    */
-  public void setFormatString(final String format)
+  public void setFormatString (final String format)
   {
     getSimpleDateFormat().applyPattern(format);
   }
 
   /**
-   * Returns a localized formatString for this SimpleDateFormat. For a more detailed explaination
-   * of SimpleDateFormat formatstrings see java.text.SimpleDateFormat.
+   * Returns a localized formatString for this SimpleDateFormat. For a more detailed
+   * explaination of SimpleDateFormat formatstrings see java.text.SimpleDateFormat.
+   *
+   * @return the localized format string.
    *
    * @see java.text.SimpleDateFormat
-   * @return the localized format string.
    */
-  public String getLocalizedFormatString()
+  public String getLocalizedFormatString ()
   {
     return getSimpleDateFormat().toLocalizedPattern();
   }
@@ -138,7 +139,7 @@ public class SimpleDateFormatParser extends DateFormatParser
    * @param format the formatString
    * @throws IllegalArgumentException if the string is invalid
    */
-  public void setLocalizedFormatString(final String format)
+  public void setLocalizedFormatString (final String format)
   {
     getSimpleDateFormat().applyLocalizedPattern(format);
   }

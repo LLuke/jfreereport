@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelTableModule.java,v 1.2.2.1 2004/12/13 19:27:12 taqua Exp $
+ * $Id: ExcelTableModule.java,v 1.3 2005/01/25 00:16:36 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,9 +51,11 @@ public class ExcelTableModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public ExcelTableModule() throws ModuleInitializeException
+  public ExcelTableModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }

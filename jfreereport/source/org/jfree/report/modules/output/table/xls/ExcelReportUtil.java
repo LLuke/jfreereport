@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelReportUtil.java,v 1.2.2.1 2004/12/13 19:27:12 taqua Exp $
+ * $Id: ExcelReportUtil.java,v 1.3 2005/01/25 00:16:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,8 +47,7 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 
 /**
- * Utility class to provide an easy to use default implementation of
- * excel exports.
+ * Utility class to provide an easy to use default implementation of excel exports.
  *
  * @author Thomas Morgner
  */
@@ -56,23 +55,22 @@ public final class ExcelReportUtil
 {
   /**
    * DefaultConstructor.
-   *
    */
-  private ExcelReportUtil()
+  private ExcelReportUtil ()
   {
   }
 
   /**
    * Saves a report to Excel format.
    *
-   * @param report  the report.
+   * @param report   the report.
    * @param filename target file name.
-   *
    * @throws ReportProcessingException if the report processing failed.
-   * @throws IOException if there was an IOerror while processing the report.
+   * @throws IOException               if there was an IOerror while processing the
+   *                                   report.
    */
-  public static void createXLS(final JFreeReport report, final String filename)
-      throws IOException, ReportProcessingException
+  public static void createXLS (final JFreeReport report, final String filename)
+          throws IOException, ReportProcessingException
   {
     final ExcelProcessor pr = new ExcelProcessor(report);
     pr.setStrictLayout(false);

@@ -16,7 +16,8 @@ public class StringFieldReadHandler extends AbstractTextElementReadHandler
     textFieldElementFactory = new TextFieldElementFactory();
   }
 
-  protected StringFieldReadHandler (final TextFieldElementFactory textFieldElementFactory)
+  protected StringFieldReadHandler (
+          final TextFieldElementFactory textFieldElementFactory)
   {
     this.textFieldElementFactory = textFieldElementFactory;
   }
@@ -35,7 +36,7 @@ public class StringFieldReadHandler extends AbstractTextElementReadHandler
     final String fieldName = atts.getValue("fieldname");
     if (fieldName == null)
     {
-      throw new ElementDefinitionException ("Required attribute 'fieldname' is missing.");
+      throw new ElementDefinitionException("Required attribute 'fieldname' is missing.");
     }
     textFieldElementFactory.setFieldname(fieldName);
     textFieldElementFactory.setNullString(atts.getValue("nullstring"));

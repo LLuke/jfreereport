@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ResourceFieldTemplate.java,v 1.5 2005/01/24 23:59:49 taqua Exp $
+ * $Id: ResourceFieldTemplate.java,v 1.6 2005/01/25 21:40:14 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -52,21 +52,27 @@ import org.jfree.report.filter.StringFilter;
  * @author Thomas Morgner
  */
 public class ResourceFieldTemplate extends AbstractTemplate
-    implements ReportConnectable
+        implements ReportConnectable
 {
-  /** A data-row accessor. */
+  /**
+   * A data-row accessor.
+   */
   private DataRowDataSource dataRowDataSource;
 
-  /** A string filter. */
+  /**
+   * A string filter.
+   */
   private StringFilter stringFilter;
 
-  /** A resource file filter. */
+  /**
+   * A resource file filter.
+   */
   private ResourceFileFilter resourceFilter;
 
   /**
    * Creates a new template.
    */
-  public ResourceFieldTemplate()
+  public ResourceFieldTemplate ()
   {
     dataRowDataSource = new DataRowDataSource();
     resourceFilter = new ResourceFileFilter();
@@ -80,7 +86,7 @@ public class ResourceFieldTemplate extends AbstractTemplate
    *
    * @return The field name.
    */
-  public String getField()
+  public String getField ()
   {
     return dataRowDataSource.getDataSourceColumnName();
   }
@@ -88,9 +94,9 @@ public class ResourceFieldTemplate extends AbstractTemplate
   /**
    * Sets the field name.
    *
-   * @param field  the field name.
+   * @param field the field name.
    */
-  public void setField(final String field)
+  public void setField (final String field)
   {
     dataRowDataSource.setDataSourceColumnName(field);
   }
@@ -100,7 +106,7 @@ public class ResourceFieldTemplate extends AbstractTemplate
    *
    * @return The resource class name.
    */
-  public String getResourceIdentifier()
+  public String getResourceIdentifier ()
   {
     return resourceFilter.getResourceIdentifier();
   }
@@ -108,12 +114,11 @@ public class ResourceFieldTemplate extends AbstractTemplate
   /**
    * Sets the resource class name.
    *
-   * @param resourceClassName  the resource class name.
-   *
+   * @param resourceClassName the resource class name.
    * @throws MissingResourceException if the resource is missing.
    */
-  public void setResourceIdentifier(final String resourceClassName)
-      throws MissingResourceException
+  public void setResourceIdentifier (final String resourceClassName)
+          throws MissingResourceException
   {
     resourceFilter.setResourceIdentifier(resourceClassName);
   }
@@ -123,7 +128,7 @@ public class ResourceFieldTemplate extends AbstractTemplate
    *
    * @return The string that represents a <code>null</code> value.
    */
-  public String getNullValue()
+  public String getNullValue ()
   {
     return stringFilter.getNullValue();
   }
@@ -131,9 +136,9 @@ public class ResourceFieldTemplate extends AbstractTemplate
   /**
    * Sets the string that represents a <code>null</code> value.
    *
-   * @param nullValue  the string that represents a <code>null</code> value.
+   * @param nullValue the string that represents a <code>null</code> value.
    */
-  public void setNullValue(final String nullValue)
+  public void setNullValue (final String nullValue)
   {
     stringFilter.setNullValue(nullValue);
   }
@@ -143,7 +148,7 @@ public class ResourceFieldTemplate extends AbstractTemplate
    *
    * @return the value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return stringFilter.getValue();
   }
@@ -155,7 +160,8 @@ public class ResourceFieldTemplate extends AbstractTemplate
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final ResourceFieldTemplate template = (ResourceFieldTemplate) super.clone();
     template.stringFilter = (StringFilter) stringFilter.clone();
@@ -164,19 +170,19 @@ public class ResourceFieldTemplate extends AbstractTemplate
     return template;
   }
 
-  public void registerReportDefinition(final ReportDefinition reportDefinition)
+  public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().registerReportDefinition(reportDefinition);
     resourceFilter.registerReportDefinition(reportDefinition);
   }
 
-  public void unregisterReportDefinition(final ReportDefinition reportDefinition)
+  public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().unregisterReportDefinition(reportDefinition);
     resourceFilter.unregisterReportDefinition(reportDefinition);
   }
 
-  protected DataRowDataSource getDataRowDataSource()
+  protected DataRowDataSource getDataRowDataSource ()
   {
     return dataRowDataSource;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StringFilter.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
+ * $Id: StringFilter.java,v 1.4 2004/05/07 08:24:42 mungady Exp $
  *
  * Changes
  * -------
@@ -43,10 +43,10 @@ package org.jfree.report.filter;
 import java.io.Serializable;
 
 /**
- * A filter that returns the value from a data source as a String. The value is converted to an
- * String using String.valueOf () which uses Object.toString() to convert the object into the
- * string.
- * <p>
+ * A filter that returns the value from a data source as a String. The value is converted
+ * to an String using String.valueOf () which uses Object.toString() to convert the object
+ * into the string.
+ * <p/>
  * You can specify a default string to return when the value from the data source is
  * <code>null</code>.  Initially the string 'null' is used.
  *
@@ -54,25 +54,29 @@ import java.io.Serializable;
  */
 public class StringFilter implements DataFilter, Serializable
 {
-  /** The data source for this filter. */
+  /**
+   * The data source for this filter.
+   */
   private DataSource source;
 
-  /** The string used to represent a null value. */
+  /**
+   * The string used to represent a null value.
+   */
   private String nullvalue;
 
   /**
    * Default constructor.
    */
-  public StringFilter()
+  public StringFilter ()
   {
   }
 
   /**
    * Sets the string used to represent a null value.
    *
-   * @param nullvalue  the null value.
+   * @param nullvalue the null value.
    */
-  public void setNullValue(final String nullvalue)
+  public void setNullValue (final String nullvalue)
   {
     this.nullvalue = nullvalue;
   }
@@ -82,20 +86,19 @@ public class StringFilter implements DataFilter, Serializable
    *
    * @return the string.
    */
-  public String getNullValue()
+  public String getNullValue ()
   {
     return nullvalue;
   }
 
   /**
-   * Returns the value obtained from the data source.
-   * <P>
-   * The filter ensures that the returned value is a String, even though the return type is
-   * Object (as required by the DataSource interface).
+   * Returns the value obtained from the data source. <P> The filter ensures that the
+   * returned value is a String, even though the return type is Object (as required by the
+   * DataSource interface).
    *
    * @return the string.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     final DataSource ds = getDataSource();
     if (ds == null)
@@ -119,7 +122,7 @@ public class StringFilter implements DataFilter, Serializable
    *
    * @return the data source.
    */
-  public DataSource getDataSource()
+  public DataSource getDataSource ()
   {
     return source;
   }
@@ -127,9 +130,9 @@ public class StringFilter implements DataFilter, Serializable
   /**
    * Sets the data source for this filter.
    *
-   * @param ds  the data source.
+   * @param ds the data source.
    */
-  public void setDataSource(final DataSource ds)
+  public void setDataSource (final DataSource ds)
   {
     if (ds == null)
     {
@@ -145,7 +148,8 @@ public class StringFilter implements DataFilter, Serializable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final StringFilter f = (StringFilter) super.clone();
     if (source != null)

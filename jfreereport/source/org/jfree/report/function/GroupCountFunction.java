@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupCountFunction.java,v 1.5.4.2 2004/12/30 14:46:11 taqua Exp $
+ * $Id: GroupCountFunction.java,v 1.7 2005/01/25 00:00:10 taqua Exp $
  *
  * Changes
  * -------
@@ -45,14 +45,13 @@ import org.jfree.report.event.ReportEvent;
 import org.jfree.report.util.Log;
 
 /**
- * A report function that counts groups in a report.
- * If a null-groupname is given, all groups are counted.
- * <p>
- * The group to be counted can be defined using the property "group".
- * An optional container group can be defined using the property "parent-group".
- * When the group start event of that group is encountered, the counter
- * will be reset to '0'.
- * <p>
+ * A report function that counts groups in a report. If a null-groupname is given, all
+ * groups are counted.
+ * <p/>
+ * The group to be counted can be defined using the property "group". An optional
+ * container group can be defined using the property "parent-group". When the group start
+ * event of that group is encountered, the counter will be reset to '0'.
+ * <p/>
  * If the group property is not set, all group starts get counted.
  *
  * @author David Gilbert
@@ -61,24 +60,26 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
 {
   private String group;
   private String parentGroup;
-  /** The number of groups. */
+  /**
+   * The number of groups.
+   */
   private int count;
 
   /**
    * Default constructor.
    */
-  public GroupCountFunction()
+  public GroupCountFunction ()
   {
   }
 
   /**
    * Constructs a report function for counting groups.
    *
-   * @param name The function name.
+   * @param name  The function name.
    * @param group The group name.
    * @throws NullPointerException if the given name is null
    */
-  public GroupCountFunction(final String name, final String group)
+  public GroupCountFunction (final String name, final String group)
   {
     setName(name);
     setGroup(group);
@@ -89,18 +90,18 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
    *
    * @return the name of the group or null, if all groups are counted
    */
-  public String getParentGroup()
+  public String getParentGroup ()
   {
     return parentGroup;
   }
 
   /**
-   * defines the name of the group on which to reset the counter.
-   * If the name is null, all groups are counted.
+   * defines the name of the group on which to reset the counter. If the name is null, all
+   * groups are counted.
    *
    * @param group the name of the group to be counted.
    */
-  public void setParentGroup(final String group)
+  public void setParentGroup (final String group)
   {
     this.parentGroup = group;
   }
@@ -110,40 +111,39 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
    *
    * @return the name of the group or null, if all groups are counted
    */
-  public String getGroup()
+  public String getGroup ()
   {
     return group;
   }
 
   /**
-   * defines the name of the group to be counted.
-   * If the name is null, all groups are counted.
+   * defines the name of the group to be counted. If the name is null, all groups are
+   * counted.
    *
    * @param group the name of the group to be counted.
    */
-  public void setGroup(final String group)
+  public void setGroup (final String group)
   {
     this.group = group;
   }
 
   /**
-   * Receives notification that a new report is about to start.
-   * Resets the count.
+   * Receives notification that a new report is about to start. Resets the count.
    *
    * @param event the current report event received.
    */
-  public void reportInitialized(final ReportEvent event)
+  public void reportInitialized (final ReportEvent event)
   {
     setCount(0);
   }
 
   /**
-   * Receives notification that a new group is about to start.
-   * Increases the count if all groups are counted or the name defines the current group.
+   * Receives notification that a new group is about to start. Increases the count if all
+   * groups are counted or the name defines the current group.
    *
    * @param event the current report event received.
    */
-  public void groupStarted(final ReportEvent event)
+  public void groupStarted (final ReportEvent event)
   {
     final Group group = FunctionUtilities.getCurrentGroup(event);
 
@@ -166,7 +166,7 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
     }
     else
     {
-      Log.debug ("Missmatch " + group.getName());
+      Log.debug("Missmatch " + group.getName());
     }
 
   }
@@ -176,7 +176,7 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
    *
    * @return the curernt group count.
    */
-  protected int getCount()
+  protected int getCount ()
   {
     return count;
   }
@@ -186,7 +186,7 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
    *
    * @param count the curernt group count.
    */
-  protected void setCount(final int count)
+  protected void setCount (final int count)
   {
     this.count = count;
   }
@@ -196,7 +196,7 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
    *
    * @return the number of groups processed as java.lang.Integer.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return new Integer(getCount());
   }

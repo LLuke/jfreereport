@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextConfigDescriptionEntry.java,v 1.4 2003/11/07 18:33:52 taqua Exp $
+ * $Id: TextConfigDescriptionEntry.java,v 1.5 2004/05/07 14:29:24 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -39,20 +39,19 @@
 package org.jfree.report.modules.gui.config.model;
 
 /**
- * The text config description entry represents an configuration
- * key, where users may enter free-form text. 
- * 
+ * The text config description entry represents an configuration key, where users may
+ * enter free-form text.
+ *
  * @author Thomas Morgner
  */
 public class TextConfigDescriptionEntry extends ConfigDescriptionEntry
 {
   /**
-   * Creates a new text description entry for the given configuration
-   * key.
-   * 
+   * Creates a new text description entry for the given configuration key.
+   *
    * @param keyName the keyname of this entry.
    */
-  public TextConfigDescriptionEntry(final String keyName)
+  public TextConfigDescriptionEntry (final String keyName)
   {
     super(keyName);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlCharacterEntities.java,v 1.2.2.1 2004/12/13 19:27:10 taqua Exp $
+ * $Id: HtmlCharacterEntities.java,v 1.3 2005/01/25 00:14:12 taqua Exp $
  *
  * Changes
  * -------
@@ -42,22 +42,22 @@ import java.util.Properties;
 import org.jfree.report.util.CharacterEntityParser;
 
 /**
- * A collection of all character entites defined in the HTML4 standard.
- * The key is the entity name, the property value is the decoded string.
+ * A collection of all character entites defined in the HTML4 standard. The key is the
+ * entity name, the property value is the decoded string.
  *
  * @author Thomas Morgner
  */
 public class HtmlCharacterEntities extends Properties
 {
   private static CharacterEntityParser entityParser;
-  
+
   /**
    * Gets the character entity parser for HTML content. The CharacterEntity parser
    * translates known characters into predefined entities.
    *
    * @return the character entity parser instance.
    */
-  public static CharacterEntityParser getEntityParser()
+  public static CharacterEntityParser getEntityParser ()
   {
     if (entityParser == null)
     {
@@ -69,7 +69,7 @@ public class HtmlCharacterEntities extends Properties
   /**
    * Creates an instance.
    */
-  public HtmlCharacterEntities()
+  public HtmlCharacterEntities ()
   {
     setProperty("ang", "\u2220");
     setProperty("spades", "\u2660");
@@ -222,9 +222,8 @@ public class HtmlCharacterEntities extends Properties
 
   /**
    * Externalized initialization method to make CheckStyle happy.
-   *
    */
-  private void fillMoreEntities()
+  private void fillMoreEntities ()
   {
     setProperty("piv", "\u03d6");
     setProperty("minus", "\u2212");

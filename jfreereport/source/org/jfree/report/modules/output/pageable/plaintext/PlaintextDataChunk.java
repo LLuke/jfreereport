@@ -7,19 +7,29 @@ import org.jfree.report.style.FontDefinition;
  */
 public class PlaintextDataChunk
 {
-  /** The text that should be printed. */
+  /**
+   * The text that should be printed.
+   */
   private final String text;
 
-  /** The font definition stores the font style. */
+  /**
+   * The font definition stores the font style.
+   */
   private final FontDefinition font;
 
-  /** the column where the text starts. */
+  /**
+   * the column where the text starts.
+   */
   private final int x;
 
-  /** the row of the text. */
+  /**
+   * the row of the text.
+   */
   private final int y;
 
-  /** the text width. */
+  /**
+   * the text width.
+   */
   private final int width;
 
   private final String encoding;
@@ -29,14 +39,14 @@ public class PlaintextDataChunk
    *
    * @param text the text that should be printed
    * @param font the font style for the text
-   * @param x the column where the text starts
-   * @param y the row of the text
-   * @param w the number of characters of the text that should be printed.
+   * @param x    the column where the text starts
+   * @param y    the row of the text
+   * @param w    the number of characters of the text that should be printed.
    */
-  protected PlaintextDataChunk(final String text,
-                               final FontDefinition font,
-                               final String encoding,
-                               final int x, final int y, final int w)
+  protected PlaintextDataChunk (final String text,
+                                final FontDefinition font,
+                                final String encoding,
+                                final int x, final int y, final int w)
   {
     if (font == null)
     {
@@ -78,7 +88,7 @@ public class PlaintextDataChunk
    *
    * @return the text
    */
-  public String getText()
+  public String getText ()
   {
     return text;
   }
@@ -88,7 +98,7 @@ public class PlaintextDataChunk
    *
    * @return the font definition.
    */
-  public FontDefinition getFont()
+  public FontDefinition getFont ()
   {
     return font;
   }
@@ -98,7 +108,7 @@ public class PlaintextDataChunk
    *
    * @return the column of the first character.
    */
-  public int getX()
+  public int getX ()
   {
     return x;
   }
@@ -108,7 +118,7 @@ public class PlaintextDataChunk
    *
    * @return the row.
    */
-  public int getY()
+  public int getY ()
   {
     return y;
   }
@@ -118,7 +128,7 @@ public class PlaintextDataChunk
    *
    * @return the number of printable characters.
    */
-  public int getWidth()
+  public int getWidth ()
   {
     return width;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableMetaBandProducer.java,v 1.4 2005/01/30 23:37:23 taqua Exp $
+ * $Id: TableMetaBandProducer.java,v 1.5 2005/02/19 13:30:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,21 +44,21 @@ import java.awt.Shape;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
+import org.jfree.report.AnchorElement;
 import org.jfree.report.Band;
 import org.jfree.report.DrawableElement;
 import org.jfree.report.Element;
 import org.jfree.report.ImageElement;
 import org.jfree.report.ShapeElement;
 import org.jfree.report.TextElement;
-import org.jfree.report.AnchorElement;
+import org.jfree.report.content.AnchorContent;
+import org.jfree.report.content.AnchorContentFactoryModule;
 import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.content.ContentFactory;
 import org.jfree.report.content.ContentType;
 import org.jfree.report.content.EmptyContent;
 import org.jfree.report.content.ShapeContent;
-import org.jfree.report.content.AnchorContent;
-import org.jfree.report.content.AnchorContentFactoryModule;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.modules.output.meta.MetaBandProducer;
 import org.jfree.report.modules.output.meta.MetaElement;
@@ -70,20 +70,19 @@ import org.jfree.report.util.geom.StrictPoint;
 
 public abstract class TableMetaBandProducer extends MetaBandProducer
 {
-  public TableMetaBandProducer(final LayoutSupport support)
+  public TableMetaBandProducer (final LayoutSupport support)
   {
     super(support);
   }
 
   /**
-   * Create a band cell for the given element. A band cell is used to create
-   * borders for the band bounds, and contains no other data or formats.
+   * Create a band cell for the given element. A band cell is used to create borders for
+   * the band bounds, and contains no other data or formats.
    *
-   * @param rect  the bounds of the element.
-   *
+   * @param rect the bounds of the element.
    * @return The band area or <code>null<code>, if the band has a height or width of 0.
    */
-  public MetaElement createBandCell(final StrictBounds rect)
+  public MetaElement createBandCell (final StrictBounds rect)
   {
     if (rect.getHeight() == 0 || rect.getWidth() == 0)
     {
@@ -96,19 +95,19 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
   }
 
   /**
-   * Handles the creation of background cells. This implementation translates lines
-   * and rectangles into border and background color specifications.
-   * <p>
-   * The shape must be either a horizontal or vertical line or a rectangle. Other
-   * shape types are ignored, as they cannot be translated into the table cell space.
+   * Handles the creation of background cells. This implementation translates lines and
+   * rectangles into border and background color specifications.
+   * <p/>
+   * The shape must be either a horizontal or vertical line or a rectangle. Other shape
+   * types are ignored, as they cannot be translated into the table cell space.
    *
-   * @param e  the element that defines the background, usually a {@link org.jfree.report.ShapeElement}.
-   *
-   * @return the generated {@link TableCellBackground} or <code>null</code> if the background
-   *         shape is not supported.
+   * @param e the element that defines the background, usually a {@link
+   *          org.jfree.report.ShapeElement}.
+   * @return the generated {@link TableCellBackground} or <code>null</code> if the
+   *         background shape is not supported.
    */
   public TableCellBackground createBackground
-      (final Element e, final long x, final long y)
+          (final Element e, final long x, final long y)
   {
     if (e.getContentType().equals(ShapeElement.CONTENT_TYPE) == false)
     {
@@ -126,11 +125,11 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
     {
       final StrictBounds bounds = createElementBounds(e.getStyle(), x, y);
       content = cf.createContentForElement
-          (e, new ElementLayoutInformation (bounds), getLayoutSupport());
+              (e, new ElementLayoutInformation(bounds), getLayoutSupport());
     }
     catch (ContentCreationException ex)
     {
-      Log.warn ("Failed to create content for background.", ex);
+      Log.warn("Failed to create content for background.", ex);
       return null;
     }
 
@@ -143,13 +142,13 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
   }
 
   protected TableCellBackground createBackgroundFromShape
-      (final ShapeContent shapeContent, final Element element,
+          (final ShapeContent shapeContent, final Element element,
            final long x, final long y)
   {
     final ElementStyleSheet backgroundStyle =
             createStyleForElement(element, x, y);
     final Color color = (Color) backgroundStyle.getStyleProperty
-        (ElementStyleSheet.PAINT);
+            (ElementStyleSheet.PAINT);
     final StrictBounds shapeBounds = shapeContent.getBounds();
     final Shape shape = shapeContent.getShape();
 
@@ -157,7 +156,7 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
     if (backgroundStyle.getBooleanStyleProperty(ShapeElement.DRAW_SHAPE))
     {
       final Object maybeStroke =
-          backgroundStyle.getStyleProperty(ElementStyleSheet.STROKE);
+              backgroundStyle.getStyleProperty(ElementStyleSheet.STROKE);
       final float strokeWidth;
 
       if (maybeStroke instanceof BasicStroke)
@@ -241,15 +240,15 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
     }
     else if (e.getContentType().equals(ImageElement.CONTENT_TYPE))
     {
-      return createImageCell (e, x, y);
+      return createImageCell(e, x, y);
     }
     else if (e.getContentType().equals(TextElement.CONTENT_TYPE))
     {
-      return createTextCell (e, x, y);
+      return createTextCell(e, x, y);
     }
     else if (e.getContentType().equals(AnchorElement.CONTENT_TYPE))
     {
-      return createAnchorCell (e, x, y);
+      return createAnchorCell(e, x, y);
     }
     return null;
   }
@@ -260,10 +259,10 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
     final ElementStyleSheet backgroundStyle =
             createStyleForElement(element, x, y);
     final StrictBounds bounds = (StrictBounds)
-            backgroundStyle.getStyleProperty (ElementStyleSheet.BOUNDS);
+            backgroundStyle.getStyleProperty(ElementStyleSheet.BOUNDS);
     final Content ac =
             AnchorContentFactoryModule.createAnchor
-            (element.getValue(), new StrictPoint (x + bounds.getX(), y + bounds.getY()));
+            (element.getValue(), new StrictPoint(x + bounds.getX(), y + bounds.getY()));
     if (ac instanceof AnchorContent == false)
     {
       return null;
@@ -271,7 +270,7 @@ public abstract class TableMetaBandProducer extends MetaBandProducer
     final AnchorContent anchorContent = (AnchorContent) ac;
     final TableCellBackground tcb =
             new TableCellBackground(ac, backgroundStyle, null);
-    tcb.addAnchor (anchorContent.getAnchor());
+    tcb.addAnchor(anchorContent.getAnchor());
     return tcb;
   }
 

@@ -22,8 +22,8 @@ import org.jfree.report.modules.gui.base.PreviewFrame;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.ui.RefineryUtilities;
-import org.jfree.ui.action.ActionMenuItem;
 import org.jfree.ui.action.ActionButton;
+import org.jfree.ui.action.ActionMenuItem;
 import org.jfree.xml.ElementDefinitionException;
 
 public abstract class SimpleDemoFrame extends AbstractDemoFrame
@@ -32,22 +32,23 @@ public abstract class SimpleDemoFrame extends AbstractDemoFrame
   {
   }
 
-  protected void init()
+  protected void init ()
   {
     setTitle(getResources().getString(getResourcePrefix() + ".Title"));
     setJMenuBar(createMenuBar());
     setContentPane(createContent());
   }
 
-  protected abstract String getResourcePrefix();
-  protected abstract TableModel getData();
+  protected abstract String getResourcePrefix ();
+
+  protected abstract TableModel getData ();
 
   /**
    * Creates a menu bar.
    *
    * @return the menu bar.
    */
-  protected JMenuBar createMenuBar()
+  protected JMenuBar createMenuBar ()
   {
     final JMenuBar mb = new JMenuBar();
     final JMenu fileMenu = createJMenu("menu.file");
@@ -67,7 +68,7 @@ public abstract class SimpleDemoFrame extends AbstractDemoFrame
    *
    * @return a panel containing the basic user interface.
    */
-  public JPanel createContent()
+  public JPanel createContent ()
   {
     final String d = getResources().getString(getResourcePrefix() + ".Description");
     final JTextArea textArea = new JTextArea(d);
@@ -97,12 +98,12 @@ public abstract class SimpleDemoFrame extends AbstractDemoFrame
    */
   protected void attemptPreview ()
   {
-    Log.debug ("Attempt Preview");
+    Log.debug("Attempt Preview");
     try
     {
       final JFreeReport report = createReport();
       report.setData(getData());
-      Log.debug ("Got the report");
+      Log.debug("Got the report");
       final PreviewFrame frame = new PreviewFrame(report);
       frame.getBase().setToolbarFloatable(true);
       frame.pack();
@@ -112,30 +113,30 @@ public abstract class SimpleDemoFrame extends AbstractDemoFrame
     }
     catch (ElementDefinitionException e)
     {
-      Log.error ("Unable to parse the report; report definition contained errors.",e);
+      Log.error("Unable to parse the report; report definition contained errors.", e);
       showExceptionDialog("report.definitionfailure", e);
     }
     catch (FileNotFoundException e)
     {
-      Log.error ("The report definition file was not found.");
+      Log.error("The report definition file was not found.");
       JOptionPane.showMessageDialog(this,
-          MessageFormat.format(getResources().getString("report.definitionnotfound"),
-              new Object[]{e.getMessage()}),
-          getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+              MessageFormat.format(getResources().getString("report.definitionnotfound"),
+                      new Object[]{e.getMessage()}),
+              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
     catch (IOException e)
     {
-      Log.error ("Unable to parse the report; IO failure while reading the report.", e);
+      Log.error("Unable to parse the report; IO failure while reading the report.", e);
       showExceptionDialog("report.definitionfailure", e);
     }
     catch (ReportProcessingException rpe)
     {
-      Log.error ("Unable to procress the report");
+      Log.error("Unable to procress the report");
       showExceptionDialog("report.previewfailure", rpe);
     }
   }
 
-  protected abstract JFreeReport createReport()
+  protected abstract JFreeReport createReport ()
           throws ElementDefinitionException, IOException;
 
 
@@ -143,11 +144,10 @@ public abstract class SimpleDemoFrame extends AbstractDemoFrame
    * Reads the report from the specified template file.
    *
    * @param resourceName the template location.
-   *
    * @return a report.
-   * @throws IOException if an error occured while readin the stream
-   * @throws ElementDefinitionException if the XML contained syntax
-   * errors.
+   *
+   * @throws IOException                if an error occured while readin the stream
+   * @throws ElementDefinitionException if the XML contained syntax errors.
    */
   protected JFreeReport loadReport (final String resourceName)
           throws IOException, ElementDefinitionException

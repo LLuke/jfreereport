@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExportPluginFactory.java,v 1.15 2004/03/16 15:09:23 taqua Exp $
+ * $Id: ExportPluginFactory.java,v 1.16 2004/05/07 14:29:21 mungady Exp $
  *
  * Changes
  * --------
@@ -45,8 +45,8 @@ import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.WorkerPool;
 
 /**
- * An export plug-in factory. This factory is used to collect all available
- * export plugins and to make them avaiable to the preview components.
+ * An export plug-in factory. This factory is used to collect all available export plugins
+ * and to make them avaiable to the preview components.
  *
  * @author Thomas Morgner.
  */
@@ -59,23 +59,29 @@ public final class ExportPluginFactory
    */
   private static class PluginDefinition implements Comparable
   {
-    /** The class of the export plugin implementation. */
+    /**
+     * The class of the export plugin implementation.
+     */
     private Class pluginClass;
-    /** The preference string (used to sort the modules in the menu). */
+    /**
+     * The preference string (used to sort the modules in the menu).
+     */
     private String preference;
-    /** The configuration key that controls whether a module is visible. */
+    /**
+     * The configuration key that controls whether a module is visible.
+     */
     private String enableKey;
 
     /**
      * Creates a new plugin definition.
      *
      * @param pluginClass the plugin class that should be defined.
-     * @param preference the preference of the class in the menu.
-     * @param enableKey the report configuration key that triggers the visiblity
-     * of the plugin.
+     * @param preference  the preference of the class in the menu.
+     * @param enableKey   the report configuration key that triggers the visiblity of the
+     *                    plugin.
      */
     public PluginDefinition
-      (final Class pluginClass, final String preference, final String enableKey)
+            (final Class pluginClass, final String preference, final String enableKey)
     {
       if (pluginClass == null)
       {
@@ -95,16 +101,16 @@ public final class ExportPluginFactory
     }
 
     /**
-     * Checks whether this plugin definition is equal to the given object.
-     * The object will be considered equal if it is a plugin definition pointing
-     * to the same export plugin.
-     *
-     * @see java.lang.Object#equals(java.lang.Object)
+     * Checks whether this plugin definition is equal to the given object. The object will
+     * be considered equal if it is a plugin definition pointing to the same export
+     * plugin.
      *
      * @param o the object to compare
      * @return true, if the object is equal, false otherwise.
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(final Object o)
+    public boolean equals (final Object o)
     {
       if (this == o)
       {
@@ -127,11 +133,12 @@ public final class ExportPluginFactory
 
     /**
      * Computes an hashcode for this export plugin.
-     * @see java.lang.Object#hashCode()
      *
      * @return the computed hashcode.
+     *
+     * @see java.lang.Object#hashCode()
      */
-    public int hashCode()
+    public int hashCode ()
     {
       return pluginClass.hashCode();
     }
@@ -141,18 +148,18 @@ public final class ExportPluginFactory
      *
      * @return the export plugin class.
      */
-    public Class getPluginClass()
+    public Class getPluginClass ()
     {
       return pluginClass;
     }
 
     /**
-     * Returns the preference of the plugin in the menu. The preference is used
-     * to order the export plugins.
+     * Returns the preference of the plugin in the menu. The preference is used to order
+     * the export plugins.
      *
      * @return the preference of the plugin in the menu
      */
-    public String getPreference()
+    public String getPreference ()
     {
       return preference;
     }
@@ -163,24 +170,24 @@ public final class ExportPluginFactory
      *
      * @return the enable key.
      */
-    public String getEnableKey()
+    public String getEnableKey ()
     {
       return enableKey;
     }
 
     /**
-     * Compares this object with the specified object for order.  Returns a
-     * negative integer, zero, or a positive integer as this object is less
-     * than, equal to, or greater than the specified object.<p>
+     * Compares this object with the specified object for order.  Returns a negative
+     * integer, zero, or a positive integer as this object is less than, equal to, or
+     * greater than the specified object.<p>
      *
-     * @param   o the Object to be compared.
-     * @return  a negative integer, zero, or a positive integer as this object
-     *          is less than, equal to, or greater than the specified object.
+     * @param o the Object to be compared.
+     * @return a negative integer, zero, or a positive integer as this object is less
+     *         than, equal to, or greater than the specified object.
      *
-     * @throws ClassCastException if the specified object's type prevents it
-     *         from being compared to this Object.
+     * @throws ClassCastException if the specified object's type prevents it from being
+     *                            compared to this Object.
      */
-    public int compareTo(final Object o)
+    public int compareTo (final Object o)
     {
       if (this == o)
       {
@@ -191,7 +198,9 @@ public final class ExportPluginFactory
     }
   }
 
-  /** The singleton instance of this factory. */
+  /**
+   * The singleton instance of this factory.
+   */
   private static ExportPluginFactory factory;
 
   /**
@@ -199,7 +208,7 @@ public final class ExportPluginFactory
    *
    * @return the factory instance
    */
-  public static ExportPluginFactory getInstance()
+  public static ExportPluginFactory getInstance ()
   {
     if (factory == null)
     {
@@ -208,14 +217,15 @@ public final class ExportPluginFactory
     return factory;
   }
 
-  /** The list of all known export plugins. */
+  /**
+   * The list of all known export plugins.
+   */
   private final ArrayList exportPlugins;
 
   /**
    * DefaultConstructor. Defines a new export plugin factory.
-   *
    */
-  private ExportPluginFactory()
+  private ExportPluginFactory ()
   {
     exportPlugins = new ArrayList();
   }
@@ -223,11 +233,12 @@ public final class ExportPluginFactory
   /**
    * Registers the given plugin in this factory.
    *
-   * @param plugin the implementing class of the export plugin
+   * @param plugin     the implementing class of the export plugin
    * @param preference the preference in the menu
-   * @param enableKey the enable key of the export plugin to trigger the visiblity
+   * @param enableKey  the enable key of the export plugin to trigger the visiblity
    */
-  public void registerPlugin(final Class plugin, final String preference, final String enableKey)
+  public void registerPlugin (final Class plugin, final String preference,
+                              final String enableKey)
   {
     if (ExportPlugin.class.isAssignableFrom(plugin))
     {
@@ -236,7 +247,7 @@ public final class ExportPluginFactory
       {
         exportPlugins.add(def);
       }
-      Log.debug ("Registered Plugin "  + plugin);
+      Log.debug("Registered Plugin " + plugin);
     }
   }
 
@@ -247,7 +258,7 @@ public final class ExportPluginFactory
    * @param plugin the class of the export plugin.
    * @return The plug-in.
    */
-  protected ExportPlugin createPlugIn(final PreviewProxy proxy, final Class plugin)
+  protected ExportPlugin createPlugIn (final PreviewProxy proxy, final Class plugin)
   {
     if (proxy == null)
     {
@@ -267,14 +278,15 @@ public final class ExportPluginFactory
   }
 
   /**
-   * Returns true if the plug-in is enabled for a given report configuration, and false otherwise.
+   * Returns true if the plug-in is enabled for a given report configuration, and false
+   * otherwise.
    *
-   * @param config  the report configuration.
-   * @param pluginKey  the plug-in enable key.
-   *
+   * @param config    the report configuration.
+   * @param pluginKey the plug-in enable key.
    * @return A boolean.
    */
-  protected boolean isPluginEnabled(final ReportConfiguration config, final String pluginKey)
+  protected boolean isPluginEnabled (final ReportConfiguration config,
+                                     final String pluginKey)
   {
     return config.getConfigProperty(pluginKey, "false").equals("true");
   }
@@ -283,17 +295,17 @@ public final class ExportPluginFactory
    * Creates a list containing all available export plugins.
    *
    * @param proxy  the preview proxy.
-   * @param config  the report configuration.
-   * @param worker the woker that should be used to execute the exports, or 
-   * null, if all tasks should be executed synchronous.
-   *
-   * @return  The list of export plugins.
+   * @param config the report configuration.
+   * @param worker the woker that should be used to execute the exports, or null, if all
+   *               tasks should be executed synchronous.
+   * @return The list of export plugins.
    */
   public ArrayList createExportPlugIns
-      (final PreviewProxy proxy, final ReportConfiguration config, final WorkerPool worker)
+          (final PreviewProxy proxy, final ReportConfiguration config,
+           final WorkerPool worker)
   {
     final PluginDefinition[] def = (PluginDefinition[])
-        exportPlugins.toArray(new PluginDefinition[exportPlugins.size()]);
+            exportPlugins.toArray(new PluginDefinition[exportPlugins.size()]);
 
     Arrays.sort(def);
     final ArrayList retval = new ArrayList();
@@ -311,13 +323,13 @@ public final class ExportPluginFactory
         }
         else
         {
-          Log.warn ("Cannot create plugin: " + definition.getPluginClass());
+          Log.warn("Cannot create plugin: " + definition.getPluginClass());
         }
       }
       else
       {
         Log.info(new Log.SimpleMessage("Plugin ", definition.getPluginClass(),
-            ",", definition.getEnableKey(), " is not enabled."));
+                ",", definition.getEnableKey(), " is not enabled."));
       }
     }
     return retval;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: SampleData5.java,v 1.3 2003/11/15 20:51:04 taqua Exp $
+ * $Id: SampleData5.java,v 1.5 2005/01/24 23:58:41 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -51,7 +51,7 @@ public class SampleData5 extends AbstractTableModel
   /**
    * Default constructor - builds a sample data source.
    */
-  public SampleData5()
+  public SampleData5 ()
   {
   }
 
@@ -60,7 +60,7 @@ public class SampleData5 extends AbstractTableModel
    *
    * @return the row count.
    */
-  public int getRowCount()
+  public int getRowCount ()
   {
     return 120000;
   }
@@ -70,7 +70,7 @@ public class SampleData5 extends AbstractTableModel
    *
    * @return the column count.
    */
-  public int getColumnCount()
+  public int getColumnCount ()
   {
     return 5;
   }
@@ -78,11 +78,10 @@ public class SampleData5 extends AbstractTableModel
   /**
    * Returns the class of the data in the specified column.
    *
-   * @param column  the column (zero-based index).
-   *
+   * @param column the column (zero-based index).
    * @return the column class.
    */
-  public Class getColumnClass(final int column)
+  public Class getColumnClass (final int column)
   {
     return Number.class;
   }
@@ -90,11 +89,10 @@ public class SampleData5 extends AbstractTableModel
   /**
    * Returns the name of the specified column.
    *
-   * @param column  the column (zero-based index).
-   *
+   * @param column the column (zero-based index).
    * @return the column name.
    */
-  public String getColumnName(final int column)
+  public String getColumnName (final int column)
   {
     if (column == 0)
     {
@@ -125,12 +123,11 @@ public class SampleData5 extends AbstractTableModel
   /**
    * Returns the data value at the specified row and column.
    *
-   * @param row  the row index (zero based).
-   * @param column  the column index (zero based).
-   *
+   * @param row    the row index (zero based).
+   * @param column the column index (zero based).
    * @return the value.
    */
-  public strictfp Object getValueAt(final int row, final int column)
+  public strictfp Object getValueAt (final int row, final int column)
   {
     return new Long((long) (row / Math.pow(10, 4 - column)));
   }

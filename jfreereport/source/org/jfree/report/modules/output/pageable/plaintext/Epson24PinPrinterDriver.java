@@ -162,7 +162,7 @@ public class Epson24PinPrinterDriver extends AbstractEpsonPrinterDriver
     return loadSpecificationManager();
   }
 
-  public static synchronized PrinterSpecificationManager loadSpecificationManager()
+  public static synchronized PrinterSpecificationManager loadSpecificationManager ()
   {
     if (printerSpecificationManager == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PersonBoundCard.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: PersonBoundCard.java,v 1.3 2004/05/07 12:43:24 mungady Exp $
  *
  * Changes
  * -------
@@ -43,23 +43,30 @@ package org.jfree.report.demo.cards;
  */
 public abstract class PersonBoundCard extends Card
 {
-  /** The person's first name. */
+  /**
+   * The person's first name.
+   */
   private String firstName;
 
-  /** The person's last name. */
+  /**
+   * The person's last name.
+   */
   private String lastName;
 
-  /** The card number. */
+  /**
+   * The card number.
+   */
   private String cardNr;
 
   /**
    * Creates a new card.
    *
-   * @param firstName  the first name.
+   * @param firstName the first name.
    * @param lastName  the last name.
-   * @param cardNr  the card number.
+   * @param cardNr    the card number.
    */
-  public PersonBoundCard(final String firstName, final String lastName, final String cardNr)
+  public PersonBoundCard (final String firstName, final String lastName,
+                          final String cardNr)
   {
     if (firstName == null)
     {
@@ -84,7 +91,7 @@ public abstract class PersonBoundCard extends Card
    *
    * @return The first name.
    */
-  public String getFirstName()
+  public String getFirstName ()
   {
     return firstName;
   }
@@ -94,7 +101,7 @@ public abstract class PersonBoundCard extends Card
    *
    * @return The last name.
    */
-  public String getLastName()
+  public String getLastName ()
   {
     return lastName;
   }
@@ -104,7 +111,7 @@ public abstract class PersonBoundCard extends Card
    *
    * @return The card number.
    */
-  public String getCardNr()
+  public String getCardNr ()
   {
     return cardNr;
   }

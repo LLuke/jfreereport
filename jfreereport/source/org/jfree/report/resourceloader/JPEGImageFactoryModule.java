@@ -9,7 +9,7 @@ import org.jfree.report.util.StringUtil;
 public class JPEGImageFactoryModule implements ImageFactoryModule
 {
   private static final byte JFIF_ID[] = {0x4A, 0x46, 0x49, 0x46, 0x00};
-  private static final String[] MIMETYPES = 
+  private static final String[] MIMETYPES =
           {
             "image/jpeg",
             "image/jpg",

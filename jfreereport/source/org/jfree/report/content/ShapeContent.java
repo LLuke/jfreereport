@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ShapeContent.java,v 1.6 2005/02/05 18:35:17 taqua Exp $
+ * $Id: ShapeContent.java,v 1.7 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -43,28 +43,32 @@ import java.awt.Shape;
 import org.jfree.report.util.geom.StrictBounds;
 
 /**
- * A report content item that encapsulates a <code>Shape</code> object.
- * The shape contained in the Content is not modified - and does not
- * necessarily fit the given bounds. If clipping is needed, it is up
- * to the output target to transform the given shape to fit the bounds. 
+ * A report content item that encapsulates a <code>Shape</code> object. The shape
+ * contained in the Content is not modified - and does not necessarily fit the given
+ * bounds. If clipping is needed, it is up to the output target to transform the given
+ * shape to fit the bounds.
  *
  * @author Thomas Morgner.
  */
 public strictfp class ShapeContent implements Content
 {
-  /** The shape. */
+  /**
+   * The shape.
+   */
   private Shape shape;
 
-  /** The bounds. */
+  /**
+   * The bounds.
+   */
   private StrictBounds bounds;
 
   /**
    * Creates a new shape content.
    *
-   * @param s  the shape.
-   * @param bounds  the bounds.
+   * @param s      the shape.
+   * @param bounds the bounds.
    */
-  public ShapeContent(final Shape s, final StrictBounds bounds)
+  public ShapeContent (final Shape s, final StrictBounds bounds)
   {
     if (s == null)
     {
@@ -80,12 +84,11 @@ public strictfp class ShapeContent implements Content
   }
 
   /**
-   * Returns the content type, in this case
-   * {@link org.jfree.report.content.ContentType#SHAPE}.
+   * Returns the content type, in this case {@link org.jfree.report.content.ContentType#SHAPE}.
    *
    * @return the content type.
    */
-  public ContentType getContentType()
+  public ContentType getContentType ()
   {
     return ContentType.SHAPE;
   }
@@ -95,7 +98,7 @@ public strictfp class ShapeContent implements Content
    *
    * @return the shape.
    */
-  public Shape getShape()
+  public Shape getShape ()
   {
     return shape;
   }
@@ -105,7 +108,7 @@ public strictfp class ShapeContent implements Content
    *
    * @return the bounds.
    */
-  public StrictBounds getBounds()
+  public StrictBounds getBounds ()
   {
     return (StrictBounds) bounds.clone();
   }
@@ -115,7 +118,7 @@ public strictfp class ShapeContent implements Content
    *
    * @return the minimum content size.
    */
-  public StrictBounds getMinimumContentSize()
+  public StrictBounds getMinimumContentSize ()
   {
     return getBounds();
   }
@@ -123,11 +126,10 @@ public strictfp class ShapeContent implements Content
   /**
    * Returns content that falls within the specified bounds.
    *
-   * @param bounds  the bounds.
-   *
+   * @param bounds the bounds.
    * @return the content.
    */
-  public Content getContentForBounds(final StrictBounds bounds)
+  public Content getContentForBounds (final StrictBounds bounds)
   {
     final StrictBounds newBounds = bounds.createIntersection(getBounds());
     return new ShapeContent(getShape(), newBounds);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.9.4.2 2004/12/13 19:26:21 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.12 2005/01/24 23:58:41 taqua Exp $
  *
  * Changes
  * -------
@@ -66,9 +66,9 @@ import org.jfree.report.util.ReportConfiguration;
 import org.jfree.xml.ParseException;
 
 /**
- * A demonstration that shows how to generate a report and save it to PDF without displaying
- * the print preview or the PDF save-as dialog. The methods to save the report to the various
- * file formats are also implemented in
+ * A demonstration that shows how to generate a report and save it to PDF without
+ * displaying the print preview or the PDF save-as dialog. The methods to save the report
+ * to the various file formats are also implemented in
  *
  * @author Thomas Morgner
  */
@@ -78,10 +78,11 @@ public class StraightToEverything
   /**
    * Creates a new demo application.
    *
-   * @param filename  the output filename.
+   * @param filename the output filename.
    * @throws ParseException if the report could not be parsed.
    */
-  public StraightToEverything(final String filename) throws ParseException
+  public StraightToEverything (final String filename)
+          throws ParseException
   {
     final URL in = getClass().getResource("/org/jfree/report/demo/OpenSourceDemo.xml");
     final JFreeReport report = parseReport(in);
@@ -107,12 +108,13 @@ public class StraightToEverything
   /**
    * Reads the report from the specified template file.
    *
-   * @param templateURL  the template location.
-   *
+   * @param templateURL the template location.
    * @return a report.
+   *
    * @throws ParseException if the report could not be parsed.
    */
-  private JFreeReport parseReport(final URL templateURL) throws ParseException
+  private JFreeReport parseReport (final URL templateURL)
+          throws ParseException
   {
     final ReportGenerator generator = ReportGenerator.getInstance();
     try
@@ -128,12 +130,11 @@ public class StraightToEverything
   /**
    * Saves a report to PDF format.
    *
-   * @param report  the report.
+   * @param report   the report.
    * @param fileName target file name.
-   *
    * @return true or false.
    */
-  public static boolean createPDF(final JFreeReport report, final String fileName)
+  public static boolean createPDF (final JFreeReport report, final String fileName)
   {
     OutputStream out = null;
     try
@@ -174,12 +175,12 @@ public class StraightToEverything
   /**
    * Saves a report to plain text format.
    *
-   * @param report  the report.
+   * @param report   the report.
    * @param filename target file name.
    * @throws Exception if an error occurs.
    */
-  public static void createPlainText(final JFreeReport report, final String filename)
-      throws Exception
+  public static void createPlainText (final JFreeReport report, final String filename)
+          throws Exception
   {
     final PageableReportProcessor pr = new PageableReportProcessor(report);
     final OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
@@ -196,12 +197,12 @@ public class StraightToEverything
   /**
    * Saves a report to rich-text format (RTF).
    *
-   * @param report  the report.
+   * @param report   the report.
    * @param filename target file name.
    * @throws Exception if an error occurs.
    */
-  public static void createRTF(final JFreeReport report, final String filename)
-      throws Exception
+  public static void createRTF (final JFreeReport report, final String filename)
+          throws Exception
   {
     final RTFProcessor pr = new RTFProcessor(report);
     pr.setStrictLayout(false);
@@ -214,12 +215,12 @@ public class StraightToEverything
   /**
    * Saves a report to CSV format.
    *
-   * @param report  the report.
+   * @param report   the report.
    * @param filename target file name.
    * @throws Exception if an error occurs.
    */
-  public static void createCSV(final JFreeReport report, final String filename)
-      throws Exception
+  public static void createCSV (final JFreeReport report, final String filename)
+          throws Exception
   {
     final CSVTableProcessor pr = new CSVTableProcessor(report);
     pr.setStrictLayout(false);
@@ -232,12 +233,12 @@ public class StraightToEverything
   /**
    * Saves a report to Excel format.
    *
-   * @param report  the report.
+   * @param report   the report.
    * @param filename target file name.
    * @throws Exception if an error occurs.
    */
-  public static void createXLS(final JFreeReport report, final String filename)
-      throws Exception
+  public static void createXLS (final JFreeReport report, final String filename)
+          throws Exception
   {
     final ExcelProcessor pr = new ExcelProcessor(report);
     pr.setStrictLayout(false);
@@ -250,12 +251,12 @@ public class StraightToEverything
   /**
    * Saves a report into a single HTML format.
    *
-   * @param report  the report.
+   * @param report   the report.
    * @param filename target file name.
    * @throws Exception if an error occurs.
    */
-  public static void createStreamHTML(final JFreeReport report, final String filename)
-      throws Exception
+  public static void createStreamHTML (final JFreeReport report, final String filename)
+          throws Exception
   {
     final HtmlProcessor pr = new HtmlProcessor(report);
     pr.setStrictLayout(false);
@@ -269,12 +270,13 @@ public class StraightToEverything
   /**
    * Saves a report to HTML. The HTML file is stored in a directory.
    *
-   * @param report  the report.
+   * @param report   the report.
    * @param filename target file name.
    * @throws Exception if an error occurs.
    */
-  public static void createDirectoryHTML(final JFreeReport report, final String filename)
-      throws Exception
+  public static void createDirectoryHTML (final JFreeReport report,
+                                          final String filename)
+          throws Exception
   {
     final HtmlProcessor pr = new HtmlProcessor(report);
     pr.setFilesystem(new DirectoryHtmlFilesystem(new File(filename)));
@@ -284,12 +286,12 @@ public class StraightToEverything
   /**
    * Saves a report in a ZIP file. The zip file contains a HTML document.
    *
-   * @param report  the report.
+   * @param report   the report.
    * @param filename target file name.
    * @throws Exception if an error occurs.
    */
-  public static void createZIPHTML(final JFreeReport report, final String filename)
-      throws Exception
+  public static void createZIPHTML (final JFreeReport report, final String filename)
+          throws Exception
   {
     final HtmlProcessor pr = new HtmlProcessor(report);
     final OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
@@ -301,9 +303,9 @@ public class StraightToEverything
   /**
    * Demo starting point.
    *
-   * @param args  ignored.
+   * @param args ignored.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     ReportConfiguration.getGlobalConfig().setLogLevel("Warn");
     // disable PDF target autoinit must be done outside ...

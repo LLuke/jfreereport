@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: NullConfigStorage.java,v 1.5 2003/08/25 14:29:30 taqua Exp $
+ * $Id: NullConfigStorage.java,v 1.6 2004/05/07 14:29:46 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -41,9 +41,8 @@ package org.jfree.report.modules.misc.configstore.base;
 import java.util.Properties;
 
 /**
- * An empty default implementation. This config storare will not store
- * any values and will provide no read access to stored properties by
- * denying their existence.
+ * An empty default implementation. This config storare will not store any values and will
+ * provide no read access to stored properties by denying their existence.
  *
  * @author Thomas Morgner
  */
@@ -52,52 +51,51 @@ public class NullConfigStorage implements ConfigStorage
   /**
    * DefaultConstructor.
    */
-  public NullConfigStorage()
+  public NullConfigStorage ()
   {
   }
 
   /**
    * This method does nothing.
    *
-   * @see org.jfree.report.modules.misc.configstore.base.ConfigStorage#storeProperties
-   * (java.lang.String, java.util.Properties)
-   *
    * @param configPath this parameter is not used.
    * @param properties this parameter is not used.
+   * @see org.jfree.report.modules.misc.configstore.base.ConfigStorage#storeProperties
+   *      (java.lang.String, java.util.Properties)
    */
-  public void storeProperties(final String configPath, final Properties properties)
+  public void storeProperties (final String configPath, final Properties properties)
   {
   }
 
   /**
-   * Loads the properties from the given path, specifying the given properties
-   * as default.
-   * <p>
-   * This implementation will always throw and ConfigStoreException as the
-   * specified resource is not available.
+   * Loads the properties from the given path, specifying the given properties as
+   * default.
+   * <p/>
+   * This implementation will always throw and ConfigStoreException as the specified
+   * resource is not available.
    *
    * @param configPath the configuration path from where to read the properties.
-   * @param defaults the property set that acts as fallback to provide default
-   * values.
+   * @param defaults   the property set that acts as fallback to provide default values.
    * @return the loaded properties
-   * @throws ConfigStoreException always throws this exception as the specified
-   * resource will be not available.
+   *
+   * @throws ConfigStoreException always throws this exception as the specified resource
+   *                              will be not available.
    */
-  public Properties loadProperties(final String configPath, final Properties defaults)
-      throws ConfigStoreException
+  public Properties loadProperties (final String configPath, final Properties defaults)
+          throws ConfigStoreException
   {
     throw new ConfigStoreException("This configuration path is not available.");
   }
 
   /**
    * Tests, whether some configuration data exists for the given configuration.
-   * <p>
+   * <p/>
    * This method returns always false and denies the existence of any resource.
    *
    * @param configPath the configuration path to the property storage.
    * @return always false as this implementation does not store anything.
    */
-  public boolean existsProperties(final String configPath)
+  public boolean existsProperties (final String configPath)
   {
     return false;
   }

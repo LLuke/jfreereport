@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StringFieldTemplate.java,v 1.4 2004/05/07 08:24:41 mungady Exp $
+ * $Id: StringFieldTemplate.java,v 1.5 2005/01/24 23:59:50 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -49,18 +49,22 @@ import org.jfree.report.filter.StringFilter;
  * @author Thomas Morgner
  */
 public class StringFieldTemplate extends AbstractTemplate
-    implements ReportConnectable
+        implements ReportConnectable
 {
-  /** The data-row data source. */
+  /**
+   * The data-row data source.
+   */
   private DataRowDataSource dataRowDataSource;
 
-  /** A string filter. */
+  /**
+   * A string filter.
+   */
   private StringFilter stringFilter;
 
   /**
    * Creates a new string field template.
    */
-  public StringFieldTemplate()
+  public StringFieldTemplate ()
   {
     dataRowDataSource = new DataRowDataSource();
     stringFilter = new StringFilter();
@@ -72,7 +76,7 @@ public class StringFieldTemplate extends AbstractTemplate
    *
    * @return The field name.
    */
-  public String getField()
+  public String getField ()
   {
     return dataRowDataSource.getDataSourceColumnName();
   }
@@ -80,29 +84,31 @@ public class StringFieldTemplate extends AbstractTemplate
   /**
    * Sets the field name.
    *
-   * @param field  the field name.
+   * @param field the field name.
    */
-  public void setField(final String field)
+  public void setField (final String field)
   {
     dataRowDataSource.setDataSourceColumnName(field);
   }
 
   /**
-   * Returns the value displayed by the field when the data source value is <code>null</code>.
+   * Returns the value displayed by the field when the data source value is
+   * <code>null</code>.
    *
    * @return A value to represent <code>null</code>.
    */
-  public String getNullValue()
+  public String getNullValue ()
   {
     return stringFilter.getNullValue();
   }
 
   /**
-   * Sets the value displayed by the field when the data source value is <code>null</code>.
+   * Sets the value displayed by the field when the data source value is
+   * <code>null</code>.
    *
-   * @param nullValue  the value that represents <code>null</code>.
+   * @param nullValue the value that represents <code>null</code>.
    */
-  public void setNullValue(final String nullValue)
+  public void setNullValue (final String nullValue)
   {
     stringFilter.setNullValue(nullValue);
   }
@@ -112,7 +118,7 @@ public class StringFieldTemplate extends AbstractTemplate
    *
    * @return the value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return stringFilter.getValue();
   }
@@ -124,7 +130,8 @@ public class StringFieldTemplate extends AbstractTemplate
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final StringFieldTemplate template = (StringFieldTemplate) super.clone();
     template.stringFilter = (StringFilter) stringFilter.clone();
@@ -132,17 +139,17 @@ public class StringFieldTemplate extends AbstractTemplate
     return template;
   }
 
-  public void registerReportDefinition(ReportDefinition reportDefinition)
+  public void registerReportDefinition (ReportDefinition reportDefinition)
   {
     getDataRowDataSource().registerReportDefinition(reportDefinition);
   }
 
-  public void unregisterReportDefinition(ReportDefinition reportDefinition)
+  public void unregisterReportDefinition (ReportDefinition reportDefinition)
   {
     getDataRowDataSource().unregisterReportDefinition(reportDefinition);
   }
 
-  protected DataRowDataSource getDataRowDataSource()
+  protected DataRowDataSource getDataRowDataSource ()
   {
     return dataRowDataSource;
   }

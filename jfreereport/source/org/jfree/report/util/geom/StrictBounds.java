@@ -176,27 +176,27 @@ public class StrictBounds implements Serializable, Cloneable
 
 
   /**
-   * Checks, whether the given rectangle1 fully contains rectangle 2
-   * (even if rectangle 2 has a height or width of zero!).
+   * Checks, whether the given rectangle1 fully contains rectangle 2 (even if rectangle 2
+   * has a height or width of zero!).
    *
-   * @param rect1  the first rectangle.
-   * @param rect2  the second rectangle.
-   *
+   * @param rect1 the first rectangle.
+   * @param rect2 the second rectangle.
    * @return A boolean.
    */
-  public static boolean contains(final StrictBounds rect1,
-                                 final StrictBounds rect2) {
+  public static boolean contains (final StrictBounds rect1,
+                                  final StrictBounds rect2)
+  {
 
-      final long x0 = rect1.getX();
-      final long y0 = rect1.getY();
-      final long x = rect2.getX();
-      final long y = rect2.getY();
-      final long w = rect2.getWidth();
-      final long h = rect2.getHeight();
+    final long x0 = rect1.getX();
+    final long y0 = rect1.getY();
+    final long x = rect2.getX();
+    final long y = rect2.getY();
+    final long w = rect2.getWidth();
+    final long h = rect2.getHeight();
 
-      return ((x >= x0) && (y >= y0) &&
-              ((x + w) <= (x0 + rect1.getWidth())) &&
-              ((y + h) <= (y0 + rect1.getHeight())));
+    return ((x >= x0) && (y >= y0) &&
+            ((x + w) <= (x0 + rect1.getWidth())) &&
+            ((y + h) <= (y0 + rect1.getHeight())));
 
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StyleKey.java,v 1.8 2005/01/25 21:40:37 taqua Exp $
+ * $Id: StyleKey.java,v 1.9 2005/01/30 23:37:26 taqua Exp $
  *
  * Changes
  * -------
@@ -43,47 +43,58 @@ import java.io.Serializable;
 import java.util.Hashtable;
 
 /**
- * A style key represents a (key, class) pair.  Style keys are used to access style attributes
- * defined in a <code>BandStyleSheet</code> or an <code>ElementStyleSheet</code>
- * <p>
+ * A style key represents a (key, class) pair.  Style keys are used to access style
+ * attributes defined in a <code>BandStyleSheet</code> or an <code>ElementStyleSheet</code>
+ * <p/>
  * Note that this class also defines a static Hashtable in which all defined keys are
  * stored.
  *
+ * @author Thomas Morgner
  * @see BandStyleKeys
  * @see ElementStyleSheet
- *
- * @author Thomas Morgner
  */
 public final class StyleKey implements Serializable, Cloneable
 {
-  /** Shared storage for the defined keys. */
+  /**
+   * Shared storage for the defined keys.
+   */
   private static Hashtable definedKeys;
 
-  /** The name of the style key. */
+  /**
+   * The name of the style key.
+   */
   private String name;
 
-  /** The class of the value. */
+  /**
+   * The class of the value.
+   */
   private Class valueType;
 
-  /** A unique int-key for the stylekey. */
+  /**
+   * A unique int-key for the stylekey.
+   */
   private int identifier;
 
-  /** Whether this stylekey is transient. */
+  /**
+   * Whether this stylekey is transient.
+   */
   private boolean trans;
 
-  /** Whether this stylekey is inheritable. */
+  /**
+   * Whether this stylekey is inheritable.
+   */
   private boolean inheritable;
 
   /**
    * Creates a new style key.
    *
-   * @param name  the name (never null).
-   * @param valueType  the class of the value for this key (never null).
+   * @param name      the name (never null).
+   * @param valueType the class of the value for this key (never null).
    */
-  private StyleKey(final String name,
-                   final Class valueType,
-                   final boolean trans,
-                   final boolean inheritable)
+  private StyleKey (final String name,
+                    final Class valueType,
+                    final boolean trans,
+                    final boolean inheritable)
   {
     setName(name);
     setValueType(valueType);
@@ -96,7 +107,7 @@ public final class StyleKey implements Serializable, Cloneable
    *
    * @return the name.
    */
-  public String getName()
+  public String getName ()
   {
     return name;
   }
@@ -104,9 +115,9 @@ public final class StyleKey implements Serializable, Cloneable
   /**
    * Sets the name of the key.
    *
-   * @param name  the name (null not permitted).
+   * @param name the name (null not permitted).
    */
-  private void setName(final String name)
+  private void setName (final String name)
   {
     if (name == null)
     {
@@ -121,7 +132,7 @@ public final class StyleKey implements Serializable, Cloneable
    *
    * @return the class.
    */
-  public Class getValueType()
+  public Class getValueType ()
   {
     return valueType;
   }
@@ -129,9 +140,9 @@ public final class StyleKey implements Serializable, Cloneable
   /**
    * Sets the class of the value for this key.
    *
-   * @param valueType  the class.
+   * @param valueType the class.
    */
-  private void setValueType(final Class valueType)
+  private void setValueType (final Class valueType)
   {
     if (valueType == null)
     {
@@ -141,34 +152,32 @@ public final class StyleKey implements Serializable, Cloneable
   }
 
   /**
-   * Returns the key with the specified name. The given type is not
-   * checked against a possibly alredy defined definition, it is
-   * assumed that the type is only given for a new key definition.
+   * Returns the key with the specified name. The given type is not checked against a
+   * possibly alredy defined definition, it is assumed that the type is only given for a
+   * new key definition.
    *
-   * @param name  the name.
-   * @param valueType  the class.
-   *
+   * @param name      the name.
+   * @param valueType the class.
    * @return the style key.
    */
-  public static StyleKey getStyleKey(final String name, final Class valueType)
+  public static StyleKey getStyleKey (final String name, final Class valueType)
   {
     return getStyleKey(name, valueType, false, true);
   }
 
   /**
-   * Returns the key with the specified name. The given type is not
-   * checked against a possibly alredy defined definition, it is
-   * assumed that the type is only given for a new key definition.
+   * Returns the key with the specified name. The given type is not checked against a
+   * possibly alredy defined definition, it is assumed that the type is only given for a
+   * new key definition.
    *
-   * @param name  the name.
-   * @param valueType  the class.
-   *
+   * @param name      the name.
+   * @param valueType the class.
    * @return the style key.
    */
-  public static synchronized StyleKey getStyleKey(final String name,
-                                     final Class valueType, 
-                                     final boolean trans,
-                                     final boolean inheritable)
+  public static synchronized StyleKey getStyleKey (final String name,
+                                                   final Class valueType,
+                                                   final boolean trans,
+                                                   final boolean inheritable)
   {
     if (definedKeys == null)
     {
@@ -186,11 +195,10 @@ public final class StyleKey implements Serializable, Cloneable
   /**
    * Returns the key with the specified name.
    *
-   * @param name  the name.
-   *
+   * @param name the name.
    * @return the style key.
    */
-  public static StyleKey getStyleKey(final String name)
+  public static StyleKey getStyleKey (final String name)
   {
     if (definedKeys == null)
     {
@@ -205,11 +213,11 @@ public final class StyleKey implements Serializable, Cloneable
   /**
    * Indicates whether some other object is "equal to" this one.
    *
-   * @param   o  the reference object with which to compare.
-   * @return  <code>true</code> if this object is the same as the obj
-   *          argument; <code>false</code> otherwise.
+   * @param o the reference object with which to compare.
+   * @return <code>true</code> if this object is the same as the obj argument;
+   *         <code>false</code> otherwise.
    */
-  public boolean equals(final Object o)
+  public boolean equals (final Object o)
   {
     if (this == o)
     {
@@ -235,29 +243,29 @@ public final class StyleKey implements Serializable, Cloneable
   }
 
   /**
-   * Returns a hash code value for the object. This method is
-   * supported for the benefit of hashtables such as those provided by
-   * <code>java.util.Hashtable</code>.
-   * <p>
+   * Returns a hash code value for the object. This method is supported for the benefit of
+   * hashtables such as those provided by <code>java.util.Hashtable</code>.
+   * <p/>
    *
-   * @return  a hash code value for this object.
+   * @return a hash code value for this object.
    */
-  public int hashCode()
+  public int hashCode ()
   {
     return identifier;
   }
 
   /**
-   * Replaces the automaticly generated instance with one of the defined
-   * stylekey instances or creates a new stylekey.
+   * Replaces the automaticly generated instance with one of the defined stylekey
+   * instances or creates a new stylekey.
    *
    * @return the resolved element
    *
    * @throws ObjectStreamException if the element could not be resolved.
    */
-  protected Object readResolve() throws ObjectStreamException
+  protected Object readResolve ()
+          throws ObjectStreamException
   {
-    synchronized(StyleKey.class)
+    synchronized (StyleKey.class)
     {
       final StyleKey key = getStyleKey(name);
       if (key != null)
@@ -268,7 +276,7 @@ public final class StyleKey implements Serializable, Cloneable
     }
   }
 
-  public boolean isTransient()
+  public boolean isTransient ()
   {
     return trans;
   }
@@ -276,9 +284,9 @@ public final class StyleKey implements Serializable, Cloneable
   /**
    * Returns a string representation of the object.
    *
-   * @return  a string representation of the object.
+   * @return a string representation of the object.
    */
-  public String toString()
+  public String toString ()
   {
     final StringBuffer b = new StringBuffer();
     b.append("StyleKey={name='");

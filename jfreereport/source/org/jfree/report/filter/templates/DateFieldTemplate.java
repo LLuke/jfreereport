@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DateFieldTemplate.java,v 1.4 2004/05/07 08:24:41 mungady Exp $
+ * $Id: DateFieldTemplate.java,v 1.5 2005/01/24 23:59:42 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -52,21 +52,27 @@ import org.jfree.report.filter.StringFilter;
  * @author Thomas Morgner
  */
 public class DateFieldTemplate extends AbstractTemplate
-    implements ReportConnectable
+        implements ReportConnectable
 {
-  /** The date format filter. */
+  /**
+   * The date format filter.
+   */
   private SimpleDateFormatFilter dateFilter;
 
-  /** The data-row datasource. */
+  /**
+   * The data-row datasource.
+   */
   private DataRowDataSource dataRowDataSource;
 
-  /** A string filter. */
+  /**
+   * A string filter.
+   */
   private StringFilter stringFilter;
 
   /**
    * Creates a new date field template.
    */
-  public DateFieldTemplate()
+  public DateFieldTemplate ()
   {
     dataRowDataSource = new DataRowDataSource();
     dateFilter = new SimpleDateFormatFilter();
@@ -80,7 +86,7 @@ public class DateFieldTemplate extends AbstractTemplate
    *
    * @return The date format string.
    */
-  public String getFormat()
+  public String getFormat ()
   {
     return getDateFilter().getFormatString();
   }
@@ -88,9 +94,9 @@ public class DateFieldTemplate extends AbstractTemplate
   /**
    * Sets the date format string.
    *
-   * @param format  the format string.
+   * @param format the format string.
    */
-  public void setFormat(final String format)
+  public void setFormat (final String format)
   {
     getDateFilter().setFormatString(format);
   }
@@ -100,7 +106,7 @@ public class DateFieldTemplate extends AbstractTemplate
    *
    * @return The field name.
    */
-  public String getField()
+  public String getField ()
   {
     return getDataRowDataSource().getDataSourceColumnName();
   }
@@ -108,9 +114,9 @@ public class DateFieldTemplate extends AbstractTemplate
   /**
    * Sets the field name.
    *
-   * @param field  the field name.
+   * @param field the field name.
    */
-  public void setField(final String field)
+  public void setField (final String field)
   {
     getDataRowDataSource().setDataSourceColumnName(field);
   }
@@ -120,7 +126,7 @@ public class DateFieldTemplate extends AbstractTemplate
    *
    * @return A string.
    */
-  public String getNullValue()
+  public String getNullValue ()
   {
     return getStringFilter().getNullValue();
   }
@@ -128,9 +134,9 @@ public class DateFieldTemplate extends AbstractTemplate
   /**
    * Sets the string that represents <code>null</code> values.
    *
-   * @param nullValue  the string that represents <code>null</code> values.
+   * @param nullValue the string that represents <code>null</code> values.
    */
-  public void setNullValue(final String nullValue)
+  public void setNullValue (final String nullValue)
   {
     getStringFilter().setNullValue(nullValue);
   }
@@ -140,7 +146,7 @@ public class DateFieldTemplate extends AbstractTemplate
    *
    * @return The date formatter.
    */
-  public SimpleDateFormat getDateFormat()
+  public SimpleDateFormat getDateFormat ()
   {
     return (SimpleDateFormat) getDateFilter().getFormatter();
   }
@@ -148,9 +154,9 @@ public class DateFieldTemplate extends AbstractTemplate
   /**
    * Sets the date formatter.
    *
-   * @param dateFormat  the date formatter.
+   * @param dateFormat the date formatter.
    */
-  public void setDateFormat(final SimpleDateFormat dateFormat)
+  public void setDateFormat (final SimpleDateFormat dateFormat)
   {
     getDateFilter().setFormatter(dateFormat);
   }
@@ -160,7 +166,7 @@ public class DateFieldTemplate extends AbstractTemplate
    *
    * @return the value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return getStringFilter().getValue();
   }
@@ -172,7 +178,8 @@ public class DateFieldTemplate extends AbstractTemplate
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final DateFieldTemplate template = (DateFieldTemplate) super.clone();
     template.stringFilter = (StringFilter) stringFilter.clone();
@@ -186,7 +193,7 @@ public class DateFieldTemplate extends AbstractTemplate
    *
    * @return The date filter.
    */
-  protected SimpleDateFormatFilter getDateFilter()
+  protected SimpleDateFormatFilter getDateFilter ()
   {
     return dateFilter;
   }
@@ -196,7 +203,7 @@ public class DateFieldTemplate extends AbstractTemplate
    *
    * @return The data-row datasource.
    */
-  protected DataRowDataSource getDataRowDataSource()
+  protected DataRowDataSource getDataRowDataSource ()
   {
     return dataRowDataSource;
   }
@@ -206,17 +213,17 @@ public class DateFieldTemplate extends AbstractTemplate
    *
    * @return The string filter.
    */
-  protected StringFilter getStringFilter()
+  protected StringFilter getStringFilter ()
   {
     return stringFilter;
   }
 
-  public void registerReportDefinition(final ReportDefinition reportDefinition)
+  public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().registerReportDefinition(reportDefinition);
   }
 
-  public void unregisterReportDefinition(final ReportDefinition reportDefinition)
+  public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().unregisterReportDefinition(reportDefinition);
   }

@@ -1,59 +1,59 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple/version 0.8.5"
                         "http://jfreereport.sourceforge.net/report-085.dtd">
-<report name="Sample Report 2"  pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
+<report name="Sample Report 2" pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
 
-    <!-- REPORT HEADER -->
-    <reportheader height="144" fontname="SansSerif" fontstyle="bold" fontsize="18">
-        <label x="0" y="0" width="100%" height="20" alignment="center">Sample Report Two C</label>
-        <label x="0" y="24" width="100%" height="10" fontsize="10" alignment="center">Generated using JFreeReport (version 0.7.6)</label>
-    </reportheader>
+  <!-- REPORT HEADER -->
+  <reportheader height="144" fontname="SansSerif" fontstyle="bold" fontsize="18">
+    <label x="0" y="0" width="100%" height="20" alignment="center">Sample Report Two C</label>
+    <label x="0" y="24" width="100%" height="10" fontsize="10" alignment="center">Generated using JFreeReport (version 0.7.6)</label>
+  </reportheader>
 
-    <!-- REPORT FOOTER -->
-    <reportfooter height="24" fontname="SansSerif" fontstyle="bold" fontsize="10">
-        <label x="0" y="0" width="100%" height="20" alignment="center">END OF REPORT</label>
-    </reportfooter>
+  <!-- REPORT FOOTER -->
+  <reportfooter height="24" fontname="SansSerif" fontstyle="bold" fontsize="10">
+    <label x="0" y="0" width="100%" height="20" alignment="center">END OF REPORT</label>
+  </reportfooter>
 
-    <!-- PAGE HEADER -->
-    <pageheader height="32" onfirstpage="false" fontname="Serif" fontstyle="bold" fontsize="10">
-        <line x1="0" y1="30" x2="100%" y2="30" weight="0.5"/>
-        <label x="0" y="0" width="100%" height="20" alignment="center">PAGE HEADER</label>
-    </pageheader>
+  <!-- PAGE HEADER -->
+  <pageheader height="32" onfirstpage="false" fontname="Serif" fontstyle="bold" fontsize="10">
+    <line x1="0" y1="30" x2="100%" y2="30" weight="0.5"/>
+    <label x="0" y="0" width="100%" height="20" alignment="center">PAGE HEADER</label>
+  </pageheader>
 
-    <!-- PAGE FOOTER -->
-    <pagefooter height="24" onfirstpage="true" onlastpage="true" fontname="Serif" fontstyle="italic" fontsize="9">
-        <line x1="0" y1="4" x2="100%" y2="4" weight="0.5"></line>
-        <date-field fieldname="report.date"   x="0" y="4" width="100" height="18" alignment="left"/>
-        <number-field fieldname="PageNumber" format="Page 0" x="0" y="4" width="100%" height="18" alignment="right"/>
-    </pagefooter>
+  <!-- PAGE FOOTER -->
+  <pagefooter height="24" onfirstpage="true" onlastpage="true" fontname="Serif" fontstyle="italic" fontsize="9">
+    <line x1="0" y1="4" x2="100%" y2="4" weight="0.5"></line>
+    <date-field fieldname="report.date" x="0" y="4" width="100" height="18" alignment="left"/>
+    <number-field fieldname="PageNumber" format="Page 0" x="0" y="4" width="100%" height="18" alignment="right"/>
+  </pagefooter>
 
-    <!-- GROUPS -->
-    <groups>
+  <!-- GROUPS -->
+  <groups>
 
-        <!-- FIRST GROUP -->
-        <group name="Letter Group">
+    <!-- FIRST GROUP -->
+    <group name="Letter Group">
 
-        <!-- GROUP HEADER -->
-            <groupheader height="20" fontname="Monospaced" fontstyle="bold" fontsize="9" pagebreak-before-print="true">
-                <label x="0" y="1" width="120" height="9" alignment="left">LETTER GROUP:</label>
-                <string-field x="120" y="1" width="76" height="9" alignment="left" fieldname="Letter"/>
-                <line x1="0" y1="12" x2="100%" y2="12" weight="0.25"></line>
-                <line x1="0" y1="14" x2="100%" y2="14" weight="0.25"></line>
-            </groupheader>
-            <!-- GROUP FOOTER -->
-            <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
-                <label x="0" y="0" width="276" height="12" alignment="left">Total for letter:</label>
-                <number-field fieldname="Sum2" format="#,##0.00" x="276" y="0" width="176" height="12" alignment="right"/>
-            </groupfooter>
+      <!-- GROUP HEADER -->
+      <groupheader height="20" fontname="Monospaced" fontstyle="bold" fontsize="9" pagebreak-before-print="true">
+        <label x="0" y="1" width="120" height="9" alignment="left">LETTER GROUP:</label>
+        <string-field x="120" y="1" width="76" height="9" alignment="left" fieldname="Letter"/>
+        <line x1="0" y1="12" x2="100%" y2="12" weight="0.25"></line>
+        <line x1="0" y1="14" x2="100%" y2="14" weight="0.25"></line>
+      </groupheader>
+      <!-- GROUP FOOTER -->
+      <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
+        <label x="0" y="0" width="276" height="12" alignment="left">Total for letter:</label>
+        <number-field fieldname="Sum2" format="#,##0.00" x="276" y="0" width="176" height="12" alignment="right"/>
+      </groupfooter>
 
-        <!-- GROUP FIELDS -->
-            <fields>
-                 <field>Letter</field>
-            </fields>
+      <!-- GROUP FIELDS -->
+      <fields>
+        <field>Letter</field>
+      </fields>
 
-        </group>
+    </group>
 
-    </groups>
+  </groups>
 
   <!-- ITEMS -->
   <items height="10" fontname="Monospaced" fontstyle="plain" fontsize="8">

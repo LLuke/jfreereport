@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToXML.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
+ * $Id: StraightToXML.java,v 1.6 2005/01/24 23:58:42 taqua Exp $
  *
  * Changes
  * -------
@@ -52,8 +52,8 @@ import org.jfree.report.util.Log;
 import org.jfree.xml.ParseException;
 
 /**
- * A demonstration that shows how to generate a report and save it to XML without displaying
- * any print preview first.
+ * A demonstration that shows how to generate a report and save it to XML without
+ * displaying any print preview first.
  *
  * @author Thomas Morgner
  */
@@ -63,10 +63,11 @@ public class StraightToXML
   /**
    * Creates a new demo application.
    *
-   * @param filename  the output filename.
+   * @param filename the output filename.
    * @throws ParseException if the report could not be parsed.
    */
-  public StraightToXML(final String filename) throws ParseException
+  public StraightToXML (final String filename)
+          throws ParseException
   {
     final URL in = getClass().getResource("/org/jfree/report/demo/OpenSourceDemo.xml");
     final JFreeReport report = parseReport(in);
@@ -78,12 +79,13 @@ public class StraightToXML
   /**
    * Reads the report from the specified template file.
    *
-   * @param templateURL  the template location.
-   *
+   * @param templateURL the template location.
    * @return a report.
+   *
    * @throws ParseException if the report could not be parsed.
    */
-  private JFreeReport parseReport(final URL templateURL) throws ParseException
+  private JFreeReport parseReport (final URL templateURL)
+          throws ParseException
   {
     final ReportGenerator generator = ReportGenerator.getInstance();
     try
@@ -99,12 +101,11 @@ public class StraightToXML
   /**
    * Saves a report to XML format.
    *
-   * @param report  the report.
-   * @param fileName  target file name.
-   *
+   * @param report   the report.
+   * @param fileName target file name.
    * @return <code>true</code> if the export succeeded, and <code>false</code> otherwise.
    */
-  public boolean saveXML(final JFreeReport report, final String fileName)
+  public boolean saveXML (final JFreeReport report, final String fileName)
   {
     Writer out = null;
     try
@@ -142,9 +143,9 @@ public class StraightToXML
   /**
    * Demo starting point.
    *
-   * @param args  ignored.
+   * @param args ignored.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     try
     {

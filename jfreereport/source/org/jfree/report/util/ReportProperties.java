@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportProperties.java,v 1.4 2003/08/25 14:29:34 taqua Exp $
+ * $Id: ReportProperties.java,v 1.5 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes
  * -------
@@ -47,58 +47,60 @@ import java.util.Iterator;
 import java.util.TreeSet;
 
 /**
- * The report properties is a hashtable with string keys. ReportProperties are bound to
- * a report as a general purpose storage. ReportProperties bound to a JFreeReport object
- * are visible to all generated report-state chains. A ReportState will inherit all
- * ReportProperties bound to the JFreeReport-object when the ReportState.StartState object is
- * created.  Properties bound to the report definition after the report state is created are not
- * visible to the ReportState and its children.
- * <p>
+ * The report properties is a hashtable with string keys. ReportProperties are bound to a
+ * report as a general purpose storage. ReportProperties bound to a JFreeReport object are
+ * visible to all generated report-state chains. A ReportState will inherit all
+ * ReportProperties bound to the JFreeReport-object when the ReportState.StartState object
+ * is created.  Properties bound to the report definition after the report state is
+ * created are not visible to the ReportState and its children.
+ * <p/>
  * ReportProperties bound to a ReportState are not visible to the report definition (the
- * JFreeReport object), but are visible to all ReportStates of that ReportState-chain.
- * So when you add a property at the end of a report run to a ReportState, the value of
- * this property will be visible to all ReportStates when the report is restarted at a certain
+ * JFreeReport object), but are visible to all ReportStates of that ReportState-chain. So
+ * when you add a property at the end of a report run to a ReportState, the value of this
+ * property will be visible to all ReportStates when the report is restarted at a certain
  * point.
- * <p>
- * ReportProperties can be seen as a stateless shared report internal storage area. All functions
- * have access to the properties by using the ReportState.getProperty() and
+ * <p/>
+ * ReportProperties can be seen as a stateless shared report internal storage area. All
+ * functions have access to the properties by using the ReportState.getProperty() and
  * ReportState.setProperty() functions.
- * <p>
- * JFreeReport has defined properties to publish the current state of the report:
- * <ul>
- * <li><code>JFreeReport.NAME_PROPERTY = "report.name"</code><p>
- * The name of the report as defined in JFreeReport.setName(). Changing this property in the
- * ReportState will not affect the ReportDefinition object.
- * <li><code>REPORT_DATE_PROPERTY = "report.date"</code><p>
- * A java.lang.Date object containing the timestamp when this reportchain was created. This
- * denotes the moment of the pagination, and changes when the report is repaginated.
- * <li><code>REPORT_PAGEFORMAT_PROPERTY = "report.pageformat"</code><p>
- * Contains the current PageFormat used for printing.
- * <li><code>REPORT_PAGECOUNT_PROPERTY = "report.pagecount"</code><p>
- * The number of pages for this report. <b>This property is not available in the prepare run.</b>
- * <li><code>REPORT_PREPARERUN_PROPERTY = "report.preparerun"</code><p>
- * The prepare run is invoked on repagination. This run collects the restart states for every
- * page of the report. When printing or displaying selected pages of the report, these saved
- * states are used as restarting points for the report generation. The prepare-run is invoked only
- * once per PageFormat. Subsequent report printings are restarted on clones of the stored page
- * states.
+ * <p/>
+ * JFreeReport has defined properties to publish the current state of the report: <ul>
+ * <li><code>JFreeReport.NAME_PROPERTY = "report.name"</code><p> The name of the report as
+ * defined in JFreeReport.setName(). Changing this property in the ReportState will not
+ * affect the ReportDefinition object. <li><code>REPORT_DATE_PROPERTY =
+ * "report.date"</code><p> A java.lang.Date object containing the timestamp when this
+ * reportchain was created. This denotes the moment of the pagination, and changes when
+ * the report is repaginated. <li><code>REPORT_PAGEFORMAT_PROPERTY =
+ * "report.pageformat"</code><p> Contains the current PageFormat used for printing.
+ * <li><code>REPORT_PAGECOUNT_PROPERTY = "report.pagecount"</code><p> The number of pages
+ * for this report. <b>This property is not available in the prepare run.</b>
+ * <li><code>REPORT_PREPARERUN_PROPERTY = "report.preparerun"</code><p> The prepare run is
+ * invoked on repagination. This run collects the restart states for every page of the
+ * report. When printing or displaying selected pages of the report, these saved states
+ * are used as restarting points for the report generation. The prepare-run is invoked
+ * only once per PageFormat. Subsequent report printings are restarted on clones of the
+ * stored page states.
  *
  * @author Thomas Morgner
  */
 public class ReportProperties implements Serializable, Cloneable
 {
-  /** Storage for the properties. */
+  /**
+   * Storage for the properties.
+   */
   private HashMap properties;
 
-  /** Marked property names. */
+  /**
+   * Marked property names.
+   */
   private TreeSet markedProperties;
 
   /**
    * Copy constructor.
    *
-   * @param props  an existing ReportProperties instance.
+   * @param props an existing ReportProperties instance.
    */
-  public ReportProperties(final ReportProperties props)
+  public ReportProperties (final ReportProperties props)
   {
     this.properties = new HashMap(props.properties);
     this.markedProperties = new TreeSet();
@@ -107,7 +109,7 @@ public class ReportProperties implements Serializable, Cloneable
   /**
    * Default constructor.
    */
-  public ReportProperties()
+  public ReportProperties ()
   {
     this.properties = new HashMap();
     this.markedProperties = new TreeSet();
@@ -119,10 +121,10 @@ public class ReportProperties implements Serializable, Cloneable
    * exist, the property will be replaced with the new value. If the value is null, the
    * property will be removed.
    *
-   * @param key  the property key.
-   * @param value  the property value.
+   * @param key   the property key.
+   * @param value the property value.
    */
-  public void put(final String key, final Object value)
+  public void put (final String key, final Object value)
   {
     if (value == null)
     {
@@ -137,26 +139,26 @@ public class ReportProperties implements Serializable, Cloneable
   /**
    * Retrieves the value stored for a key in this properties collection.
    *
-   * @param key  the property key.
-   *
-   * @return The stored value, or <code>null</code> if the key does not exist in this collection.
+   * @param key the property key.
+   * @return The stored value, or <code>null</code> if the key does not exist in this
+   *         collection.
    */
-  public Object get(final String key)
+  public Object get (final String key)
   {
     return this.properties.get(key);
   }
 
   /**
-   * Retrieves the value stored for a key in this properties collection, and returning
-   * the default value if the key was not stored in this properties collection.
+   * Retrieves the value stored for a key in this properties collection, and returning the
+   * default value if the key was not stored in this properties collection.
    *
-   * @param key  the property key.
-   * @param defaultValue  the default value to be returned when the key is not stored in this
-   *                      properties collection.
-   *
-   * @return The stored value, or the default value if the key does not exist in this collection.
+   * @param key          the property key.
+   * @param defaultValue the default value to be returned when the key is not stored in
+   *                     this properties collection.
+   * @return The stored value, or the default value if the key does not exist in this
+   *         collection.
    */
-  public Object get(final String key, final Object defaultValue)
+  public Object get (final String key, final Object defaultValue)
   {
     final Object o = this.properties.get(key);
     if (o == null)
@@ -171,7 +173,7 @@ public class ReportProperties implements Serializable, Cloneable
    *
    * @return an enumeration of the property keys.
    */
-  public Iterator keys()
+  public Iterator keys ()
   {
     final TreeSet list = new TreeSet();
     list.addAll(this.properties.keySet());
@@ -182,7 +184,7 @@ public class ReportProperties implements Serializable, Cloneable
   /**
    * Removes all properties stored in this collection.
    */
-  public void clear()
+  public void clear ()
   {
     this.properties.clear();
   }
@@ -190,11 +192,10 @@ public class ReportProperties implements Serializable, Cloneable
   /**
    * Checks whether the given key is stored in this collection of ReportProperties.
    *
-   * @param key  the property key.
-   *
+   * @param key the property key.
    * @return true, if the given key is known.
    */
-  public boolean containsKey(final String key)
+  public boolean containsKey (final String key)
   {
     return this.properties.containsKey(key);
   }
@@ -206,7 +207,8 @@ public class ReportProperties implements Serializable, Cloneable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final ReportProperties p = (ReportProperties) super.clone();
     p.properties = (HashMap) this.properties.clone();
@@ -217,10 +219,10 @@ public class ReportProperties implements Serializable, Cloneable
   /**
    * Marks a property.
    *
-   * @param property  the property key.
-   * @param marked  boolean.
+   * @param property the property key.
+   * @param marked   boolean.
    */
-  public void setMarked(final String property, final boolean marked)
+  public void setMarked (final String property, final boolean marked)
   {
     if (marked)
     {
@@ -235,11 +237,10 @@ public class ReportProperties implements Serializable, Cloneable
   /**
    * Returns true if the specified property is marked, and false otherwise.
    *
-   * @param property  the property key.
-   *
+   * @param property the property key.
    * @return true for marked properties, false otherwise.
    */
-  public boolean isMarked(final String property)
+  public boolean isMarked (final String property)
   {
     return this.markedProperties.contains(property);
   }
@@ -249,7 +250,7 @@ public class ReportProperties implements Serializable, Cloneable
    *
    * @return true, if there are some properties marked, false otherwise.
    */
-  public boolean containsMarkedProperties()
+  public boolean containsMarkedProperties ()
   {
     return markedProperties.isEmpty() == false;
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: LGPLTextDemo.java,v 1.4.4.2 2004/10/11 21:00:34 taqua Exp $
+ * $Id: LGPLTextDemo.java,v 1.6 2005/01/24 23:58:32 taqua Exp $
  *
  * Changes
  * -------
@@ -49,8 +49,8 @@ import org.jfree.ui.RefineryUtilities;
 import org.jfree.xml.ElementDefinitionException;
 
 /**
- * A simple JFreeReport demonstration.  The generated report contains
- * the complete text of the LGPL.
+ * A simple JFreeReport demonstration.  The generated report contains the complete text of
+ * the LGPL.
  *
  * @author Thomas Morgner
  */
@@ -60,7 +60,7 @@ public class LGPLTextDemo extends SimpleDemoFrame
   /**
    * Constructs the demo application.
    */
-  public LGPLTextDemo()
+  public LGPLTextDemo ()
   {
     init();
   }
@@ -84,9 +84,9 @@ public class LGPLTextDemo extends SimpleDemoFrame
   /**
    * Entry point for running the demo application...
    *
-   * @param args  ignored.
+   * @param args ignored.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();

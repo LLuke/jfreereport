@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: IncludeParser.java,v 1.8 2005/02/05 18:35:20 taqua Exp $
+ * $Id: IncludeParser.java,v 1.9 2005/02/19 13:30:03 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,25 +38,28 @@
 
 package org.jfree.report.modules.parser.base;
 
+import org.jfree.report.JFreeReport;
 import org.jfree.xml.FrontendDefaultHandler;
 import org.jfree.xml.parser.RootXmlReadHandler;
-import org.jfree.report.JFreeReport;
 import org.xml.sax.SAXException;
 
 /**
- * The include parser is used to support include statements in
- * the report definition. It contains a special mark to indicate
- * that this is a included report definition and uses the
- * configuration settings of an parent parser.
+ * The include parser is used to support include statements in the report definition. It
+ * contains a special mark to indicate that this is a included report definition and uses
+ * the configuration settings of an parent parser.
  *
  * @author Thomas Morgner
  */
 public class IncludeParser extends ReportParser
 {
-  /** The key that indicates that this is a included parser. */
+  /**
+   * The key that indicates that this is a included parser.
+   */
   public static final String INCLUDE_PARSING_KEY = "include-parsing";
 
-  /** The parser backend that supplies the configuration. */
+  /**
+   * The parser backend that supplies the configuration.
+   */
   private final RootXmlReadHandler backend;
 
   /**
@@ -64,7 +67,7 @@ public class IncludeParser extends ReportParser
    *
    * @param backend the backend parser that provides the configuration.
    */
-  public IncludeParser(final RootXmlReadHandler backend)
+  public IncludeParser (final RootXmlReadHandler backend)
   {
     this.backend = backend;
     this.setConfigProperty(IncludeParser.INCLUDE_PARSING_KEY, "true");
@@ -76,55 +79,56 @@ public class IncludeParser extends ReportParser
 
   /**
    * Returns a new parser instance.
-   * @see org.jfree.xml.Parser#getInstance()
    *
-   * @return the new include parser instance using the same backend as
-   * this instance.
+   * @return the new include parser instance using the same backend as this instance.
+   *
+   * @see org.jfree.xml.Parser#getInstance()
    */
-  public FrontendDefaultHandler newInstance()
+  public FrontendDefaultHandler newInstance ()
   {
     return new IncludeParser(backend);
   }
 
   /**
    * Returns the parser result. Returns the backends result.
-   * @see org.jfree.xml.Parser#getResult()
    *
    * @return the backends result.
+   *
+   * @see org.jfree.xml.Parser#getResult()
    */
-  public Object getResult() throws SAXException
+  public Object getResult ()
+          throws SAXException
   {
     return backend.getResult();
   }
 
   /**
-   * Returns the configuration property stored with the given key.
-   * Uses the backend as provider for the default value.
-   *
-   * @see org.jfree.util.Configuration#getConfigProperty(java.lang.String)
+   * Returns the configuration property stored with the given key. Uses the backend as
+   * provider for the default value.
    *
    * @param key the property name.
    * @return the stored value
+   *
+   * @see org.jfree.util.Configuration#getConfigProperty(java.lang.String)
    */
-  public String getConfigProperty(final String key)
+  public String getConfigProperty (final String key)
   {
     return super.getConfigProperty(key, backend.getConfigProperty(key));
   }
 
   /**
-   * Returns the configuration property stored with the given key using
-   * the given default values as final fallback.
-   * Uses the backend as provider for the default value. The backends
-   * value will be used before the default value is returned.
+   * Returns the configuration property stored with the given key using the given default
+   * values as final fallback. Uses the backend as provider for the default value. The
+   * backends value will be used before the default value is returned.
+   *
+   * @param key          the property name.
+   * @param defaultValue the default value that should be returned in case that neither
+   *                     this parser or the backend contains a value for that key.
+   * @return the stored value
    *
    * @see org.jfree.util.Configuration#getConfigProperty(java.lang.String)
-   *
-   * @param key the property name.
-   * @param defaultValue the default value that should be returned in case
-   * that neither this parser or the backend contains a value for that key.
-   * @return the stored value
    */
-  public String getConfigProperty(final String key, final String defaultValue)
+  public String getConfigProperty (final String key, final String defaultValue)
   {
     return super.getConfigProperty(key, backend.getConfigProperty(key, defaultValue));
   }

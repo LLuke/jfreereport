@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimpleParserModuleInit.java,v 1.10 2005/02/04 19:08:54 taqua Exp $
+ * $Id: SimpleParserModuleInit.java,v 1.11 2005/02/19 13:30:04 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,47 +40,52 @@ package org.jfree.report.modules.parser.simple;
 
 import java.net.URL;
 
+import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.ModuleInitializer;
 import org.jfree.report.modules.parser.base.InitialReportHandler;
 import org.jfree.report.modules.parser.base.ParserEntityResolver;
 import org.jfree.report.modules.parser.simple.readhandlers.JFreeReportReadHandler;
-import org.jfree.base.modules.ModuleInitializer;
-import org.jfree.base.modules.ModuleInitializeException;
 
 /**
- * Handles the initalisation of the simple parser module. This contains support
- * for the simple report definition format.
+ * Handles the initalisation of the simple parser module. This contains support for the
+ * simple report definition format.
  *
  * @author Thomas Morgner
  */
 public class SimpleParserModuleInit implements ModuleInitializer
 {
 
-  /** the document element tag for the simple report format. */
+  /**
+   * the document element tag for the simple report format.
+   */
   public static final String SIMPLE_REPORT_TAG = "report";
 
-  /** the Public ID for the simple version of JFreeReport XML definitions. */
+  /**
+   * the Public ID for the simple version of JFreeReport XML definitions.
+   */
   public static final String PUBLIC_ID_SIMPLE =
-      "-//JFreeReport//DTD report definition//EN//simple/version 0.8.5";
+          "-//JFreeReport//DTD report definition//EN//simple/version 0.8.5";
 
   /**
    * DefaultConstructor. Does nothing.
    */
-  public SimpleParserModuleInit()
+  public SimpleParserModuleInit ()
   {
   }
 
   /**
-   * Initializes the simple parser and registers this handler with the parser
-   * base module.
+   * Initializes the simple parser and registers this handler with the parser base
+   * module.
    *
    * @throws ModuleInitializeException if initializing the module failes.
    */
-  public void performInit() throws ModuleInitializeException
+  public void performInit ()
+          throws ModuleInitializeException
   {
     final ParserEntityResolver res = ParserEntityResolver.getDefaultResolver();
 
     final URL urlReportDTD = res.getClass().getResource
-        ("/org/jfree/report/modules/parser/simple/resources/report-085.dtd");
+            ("/org/jfree/report/modules/parser/simple/resources/report-085.dtd");
     res.setDTDLocation(PUBLIC_ID_SIMPLE, urlReportDTD);
 
     InitialReportHandler.registerHandler

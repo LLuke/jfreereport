@@ -27,7 +27,7 @@ public class SportsCouncilTableModel extends AbstractTableModel
     Number.class, Number.class,
     String.class, String.class, String.class,
     String.class, String.class, String.class,
-    String.class, Number.class, Number.class };
+    String.class, Number.class, Number.class};
 
   private ArrayList columns;
 
@@ -73,7 +73,7 @@ public class SportsCouncilTableModel extends AbstractTableModel
    */
   public Object getValueAt (final int rowIndex, final int columnIndex)
   {
-    final Object[] rowData = (Object[]) columns.get (rowIndex);
+    final Object[] rowData = (Object[]) columns.get(rowIndex);
     return rowData[columnIndex];
   }
 
@@ -117,10 +117,10 @@ public class SportsCouncilTableModel extends AbstractTableModel
     councilData[10] = councilRecord.getPhoneNumber();
     councilData[11] = councilRecord.getExtension();
     councilData[12] = councilRecord.getFaxNumber();
-    councilData[13] = new Integer (councilRecord.getYearEventCount());
-    councilData[14] = new Integer (councilRecord.getThisMonthEventCount());
-    councilData[15] = new Integer (councilRecord.getLastMonthEventCount());
-    councilData[16] = new Integer (councilRecord.getFutureEventCount());
+    councilData[13] = new Integer(councilRecord.getYearEventCount());
+    councilData[14] = new Integer(councilRecord.getThisMonthEventCount());
+    councilData[15] = new Integer(councilRecord.getLastMonthEventCount());
+    councilData[16] = new Integer(councilRecord.getFutureEventCount());
 
     for (int i = 0; i < org.getLeaderCount(); i++)
     {
@@ -133,7 +133,7 @@ public class SportsCouncilTableModel extends AbstractTableModel
       rowData[19] = leaderRecord.getPosition();
       rowData[20] = leaderRecord.getLeadershipPhoneNumber();
       rowData[21] = leaderRecord.getEmail();
-      columns.add (rowData);
+      columns.add(rowData);
     }
 
     for (int i = 0; i < org.getSubOrganzationsCount(); i++)
@@ -146,7 +146,7 @@ public class SportsCouncilTableModel extends AbstractTableModel
       rowData[23] = subOrganizationRecord.getEmail();
       rowData[24] = new Integer(subOrganizationRecord.getMaleGenderCount());
       rowData[25] = new Integer(subOrganizationRecord.getFemaleGenderCount());
-      columns.add (rowData);
+      columns.add(rowData);
     }
   }
 
@@ -154,19 +154,19 @@ public class SportsCouncilTableModel extends AbstractTableModel
   {
     final CouncilRecord councilRecord = new CouncilRecord
             ("1", "Unseen University",
-             "http://www.unseen-university.edu", "council@unseen-university.edu",
-             "Alberto Malich Plaza 1", "", "Ankh-Mopork", "AM", "88888",
-             "(01 33) 5 85 38 56 36", "123", "(01 33) 5 85 38 99 99", 400, 35, 79, 111);
+                    "http://www.unseen-university.edu", "council@unseen-university.edu",
+                    "Alberto Malich Plaza 1", "", "Ankh-Mopork", "AM", "88888",
+                    "(01 33) 5 85 38 56 36", "123", "(01 33) 5 85 38 99 99", 400, 35, 79, 111);
     final Organization org = new Organization(councilRecord);
     org.addLeader(new LeaderRecord
             ("1", "Mustrum", "Ridcully", "Archchancellor", "(01 33) 5 85 38 00 08",
-            "big.boss@unseen-university.edu"));
+                    "big.boss@unseen-university.edu"));
     org.addLeader(new LeaderRecord
             ("1", "Dr.", "Dinwiddie", "Bursar", "(01 33) 5 85 38 53 21",
-            "bursar@unseen-university.edu"));
+                    "bursar@unseen-university.edu"));
     org.addLeader(new LeaderRecord
             ("1", "Windle", "Poons", "Wizzard", "(01 33) 5 85 38 12 36",
-            "poons@unseen-university.edu"));
+                    "poons@unseen-university.edu"));
 
     final SubOrganizationRecord sailors =
             new SubOrganizationRecord("1", "Sailing Club",

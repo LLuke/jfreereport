@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceFactory.java,v 1.4 2003/08/24 15:08:20 taqua Exp $
+ * $Id: DataSourceFactory.java,v 1.6 2005/01/25 00:19:41 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -53,25 +53,23 @@ public interface DataSourceFactory extends ClassFactory
   /**
    * Returns a data source description.
    *
-   * @param name  the name.
-   *
+   * @param name the name.
    * @return The description.
    */
-  public ObjectDescription getDataSourceDescription(String name);
+  public ObjectDescription getDataSourceDescription (String name);
 
   /**
    * Returns a data source name.
    *
-   * @param od  the description.
-   *
+   * @param od the description.
    * @return The name.
    */
-  public String getDataSourceName(ObjectDescription od);
+  public String getDataSourceName (ObjectDescription od);
 
   /**
    * Returns the names of all registered datasources as iterator.
    *
    * @return the registered names.
    */
-  public Iterator getRegisteredNames();
+  public Iterator getRegisteredNames ();
 }

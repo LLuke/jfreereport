@@ -9,13 +9,17 @@ import org.jfree.xml.util.SimpleObjectFactory;
 
 public class ExtReportRootXmlReadHandler extends RootXmlReadHandler
 {
-  /** The object factory loader. */
+  /**
+   * The object factory loader.
+   */
   private ObjectFactory factoryLoader;
 
   /**
-   * Creates a new root handler for reading {@link org.jfree.report.JFreeReport} objects from XML.
+   * Creates a new root handler for reading {@link org.jfree.report.JFreeReport} objects
+   * from XML.
    */
-  public ExtReportRootXmlReadHandler() {
+  public ExtReportRootXmlReadHandler ()
+  {
     factoryLoader = new SimpleObjectFactory();
     setRootHandler(new ReportDefinitionReadHandler());
   }
@@ -25,8 +29,9 @@ public class ExtReportRootXmlReadHandler extends RootXmlReadHandler
    *
    * @return the object factory loader.
    */
-  public ObjectFactory getFactoryLoader() {
-      return this.factoryLoader;
+  public ObjectFactory getFactoryLoader ()
+  {
+    return this.factoryLoader;
   }
 
   /**
@@ -34,13 +39,16 @@ public class ExtReportRootXmlReadHandler extends RootXmlReadHandler
    *
    * @return the chart.
    */
-  public JFreeReport getReport() {
-      try {
-          return (JFreeReport) getRootHandler().getObject();
-      }
-      catch (Exception e) {
-          return null;
-      }
+  public JFreeReport getReport ()
+  {
+    try
+    {
+      return (JFreeReport) getRootHandler().getObject();
+    }
+    catch (Exception e)
+    {
+      return null;
+    }
   }
 
   /**

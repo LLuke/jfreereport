@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultLogModule.java,v 1.3 2004/05/07 07:43:53 mungady Exp $
+ * $Id: DefaultLogModule.java,v 1.4 2005/01/24 23:57:45 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,17 +40,17 @@ package org.jfree.report;
 
 import java.io.InputStream;
 
-import org.jfree.report.util.Log;
-import org.jfree.report.util.ReportConfiguration;
-import org.jfree.report.util.SystemOutLogTarget;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
+import org.jfree.report.util.Log;
+import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.SystemOutLogTarget;
 
 /**
- * The module definition for the System.out-Logging. This is the
- * default log implementation and is provided to insert the logging
- * initialisation in the module loading process.
+ * The module definition for the System.out-Logging. This is the default log
+ * implementation and is provided to insert the logging initialisation in the module
+ * loading process.
  *
  * @author Thomas Morgner
  */
@@ -58,17 +58,18 @@ public class DefaultLogModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
-   * 
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public DefaultLogModule() throws ModuleInitializeException
+  public DefaultLogModule ()
+          throws ModuleInitializeException
   {
     final InputStream in = getClass().getResourceAsStream
-        ("logmodule.properties");
+            ("logmodule.properties");
     if (in == null)
     {
       throw new ModuleInitializeException
-          ("File 'logmodule.properties' not found in JFreeReport package.");
+              ("File 'logmodule.properties' not found in JFreeReport package.");
     }
     loadModuleInfo(in);
   }
@@ -91,7 +92,7 @@ public class DefaultLogModule extends AbstractModule
       return;
     }
     if (ReportConfiguration.getGlobalConfig().getLogTarget().equals
-        (SystemOutLogTarget.class.getName()))
+            (SystemOutLogTarget.class.getName()))
     {
       Log.getJFreeReportLog().addTarget(new SystemOutLogTarget());
       Log.getJFreeReportLog().init();

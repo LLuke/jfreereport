@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SwingIconsDemoTableModel.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: SwingIconsDemoTableModel.java,v 1.4 2005/01/24 23:58:42 taqua Exp $
  *
  * Changes
  * -------
@@ -53,8 +53,9 @@ import org.jfree.io.IOUtils;
 import org.jfree.report.util.Log;
 
 /**
- * A table model implementation for the SwingIconsDemo.java demo application.  The model reads
- * the contents of the file "jlfgr-1_0.jar", which must be reachable via the classpath.
+ * A table model implementation for the SwingIconsDemo.java demo application.  The model
+ * reads the contents of the file "jlfgr-1_0.jar", which must be reachable via the
+ * classpath.
  *
  * @author Thomas Morgner.
  */
@@ -63,7 +64,7 @@ public class SwingIconsDemoTableModel extends IconTableModel
   /**
    * Creates a new table model.
    */
-  public SwingIconsDemoTableModel()
+  public SwingIconsDemoTableModel ()
   {
     this(null);
   }
@@ -71,9 +72,10 @@ public class SwingIconsDemoTableModel extends IconTableModel
   /**
    * Creates a new table model.
    *
-   * @param url  the url for the jlfgr-1_0.jar file (or <code>null</code> to search the classpath).
+   * @param url the url for the jlfgr-1_0.jar file (or <code>null</code> to search the
+   *            classpath).
    */
-  public SwingIconsDemoTableModel(URL url)
+  public SwingIconsDemoTableModel (URL url)
   {
     if (url == null)
     {
@@ -81,11 +83,11 @@ public class SwingIconsDemoTableModel extends IconTableModel
       if (url == null)
       {
         Log.warn("Unable to find jlfgr-1_0.jar\n"
-            + "Unable to load the icons.\n"
-            + "Please make sure you have the Java Look and Feel Graphics Repository in "
-            + "your classpath.\n"
-            + "You may download this jar-file from "
-            + "http://developer.java.sun.com/developer/techDocs/hi/repository.");
+                + "Unable to load the icons.\n"
+                + "Please make sure you have the Java Look and Feel Graphics Repository in "
+                + "your classpath.\n"
+                + "You may download this jar-file from "
+                + "http://developer.java.sun.com/developer/techDocs/hi/repository.");
         return;
       }
     }
@@ -107,9 +109,9 @@ public class SwingIconsDemoTableModel extends IconTableModel
   /**
    * Reads the icon data from the jar file.
    *
-   * @param in  the input stream.
+   * @param in the input stream.
    */
-  private void readData(final InputStream in)
+  private void readData (final InputStream in)
   {
     try
     {
@@ -141,11 +143,10 @@ public class SwingIconsDemoTableModel extends IconTableModel
   /**
    * Reads an icon from the jar file.
    *
-   * @param in  the input stream.
-   *
+   * @param in the input stream.
    * @return The image.
    */
-  private Image getImage(final InputStream in)
+  private Image getImage (final InputStream in)
   {
     Image result = null;
     final ByteArrayOutputStream byteIn = new ByteArrayOutputStream();
@@ -165,11 +166,10 @@ public class SwingIconsDemoTableModel extends IconTableModel
   /**
    * Returns the category.
    *
-   * @param fullName  the icon file path/name.
-   *
+   * @param fullName the icon file path/name.
    * @return The category extracted from the file name.
    */
-  private String getCategory(final String fullName)
+  private String getCategory (final String fullName)
   {
     final int start = fullName.indexOf("/") + 1;
     final int end = fullName.lastIndexOf("/");
@@ -179,11 +179,10 @@ public class SwingIconsDemoTableModel extends IconTableModel
   /**
    * Returns the name.
    *
-   * @param fullName  the icon file path/name.
-   *
+   * @param fullName the icon file path/name.
    * @return The name extracted from the full name.
    */
-  private String getName(final String fullName)
+  private String getName (final String fullName)
   {
     final int start = fullName.lastIndexOf("/") + 1;
     final int end = fullName.indexOf(".");

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentType.java,v 1.6 2005/01/24 23:58:10 taqua Exp $
+ * $Id: ContentType.java,v 1.7 2005/01/30 23:37:18 taqua Exp $
  *
  * Changes
  * -------
@@ -40,55 +40,64 @@ package org.jfree.report.content;
 
 /**
  * A class for representing a content type.  The four predefined content types are:
- *
- * <ul>
- * <li><code>TEXT</code>;</li>
- * <li><code>SHAPE</code>;</li>
- * <li><code>IMAGE</code>;</li>
- * <li><code>CONTAINER</code>;</li>
- * </ul>
- *
- * @see org.jfree.report.content.Content
+ * <p/>
+ * <ul> <li><code>TEXT</code>;</li> <li><code>SHAPE</code>;</li>
+ * <li><code>IMAGE</code>;</li> <li><code>CONTAINER</code>;</li> </ul>
  *
  * @author Thomas Morgner
+ * @see org.jfree.report.content.Content
  */
 public final class ContentType
 {
-  /** Anchor content type. */
+  /**
+   * Anchor content type.
+   */
   public static final ContentType ANCHOR = new ContentType("Anchor");
 
-  /** Text content type. */
+  /**
+   * Text content type.
+   */
   public static final ContentType TEXT = new ContentType("Text");
 
-  /** Shape content type. */
+  /**
+   * Shape content type.
+   */
   public static final ContentType SHAPE = new ContentType("Shape");
 
-  /** Image content type. */
+  /**
+   * Image content type.
+   */
   public static final ContentType IMAGE = new ContentType("Image");
 
-  /** Drawable content type. */
+  /**
+   * Drawable content type.
+   */
   public static final ContentType DRAWABLE = new ContentType("Drawable");
 
-  /** Container content type. */
+  /**
+   * Container content type.
+   */
   public static final ContentType CONTAINER = new ContentType("Container");
 
   /**
-   * Raw content type. This denotes a user defined content type, usually
-   * a intermediate product while producing the physical content.
+   * Raw content type. This denotes a user defined content type, usually a intermediate
+   * product while producing the physical content.
    */
   public static final ContentType RAW = new ContentType("Raw");
 
-  /** The content name (for debug purposes). */
+  /**
+   * The content name (for debug purposes).
+   */
   private final String myName;
 
   /**
    * Creates a new content type.
-   * <p>
+   * <p/>
    * This constructor is private, so you can't use it directly.
    *
-   * @param name  the name.
+   * @param name the name.
    */
-  private ContentType(final String name)
+  private ContentType (final String name)
   {
     myName = name;
   }
@@ -98,7 +107,7 @@ public final class ContentType
    *
    * @return the name of the content type.
    */
-  public String toString()
+  public String toString ()
   {
     return myName;
   }

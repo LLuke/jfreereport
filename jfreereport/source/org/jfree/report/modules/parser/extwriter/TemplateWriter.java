@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateWriter.java,v 1.9 2005/01/25 00:20:40 taqua Exp $
+ * $Id: TemplateWriter.java,v 1.10 2005/02/04 19:08:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,32 +49,35 @@ import org.jfree.xml.CommentHandler;
 import org.jfree.xml.writer.AttributeList;
 
 /**
- * The template writer writes a single template definition to the xml-definition
- * stream. This writer requires report builder hints to be present for all
- * templates.
+ * The template writer writes a single template definition to the xml-definition stream.
+ * This writer requires report builder hints to be present for all templates.
  *
  * @author Thomas Morgner
  */
 public class TemplateWriter extends ObjectWriter
 {
-  /** The template that should be written. */
+  /**
+   * The template that should be written.
+   */
   private TemplateDescription template;
-  /** The parent of the current template. */
+  /**
+   * The parent of the current template.
+   */
   private TemplateDescription parent;
 
   /**
    * Creates a new template writer.
    *
    * @param reportWriter the report writer that is used to coordinate the writing.
-   * @param indentLevel the current indention level.
-   * @param template the template that should be written.
-   * @param parent the parent of the template.
-   * @param path the comment hint path used to resolve xml-comments from the
-   * parser.
+   * @param indentLevel  the current indention level.
+   * @param template     the template that should be written.
+   * @param parent       the parent of the template.
+   * @param path         the comment hint path used to resolve xml-comments from the
+   *                     parser.
    */
-  public TemplateWriter(final ReportWriter reportWriter, final int indentLevel,
-                        final TemplateDescription template, final TemplateDescription parent,
-                        final CommentHintPath path)
+  public TemplateWriter (final ReportWriter reportWriter, final int indentLevel,
+                         final TemplateDescription template, final TemplateDescription parent,
+                         final CommentHintPath path)
   {
     super(reportWriter, template, indentLevel, path);
     if (template == null)
@@ -90,17 +93,16 @@ public class TemplateWriter extends ObjectWriter
   }
 
   /**
-   * Writes the report definition portion. Every DefinitionWriter handles one
-   * or more elements of the JFreeReport object tree, DefinitionWriter traverse
-   * the object tree and write the known objects or forward objects to other
-   * definition writers.
+   * Writes the report definition portion. Every DefinitionWriter handles one or more
+   * elements of the JFreeReport object tree, DefinitionWriter traverse the object tree
+   * and write the known objects or forward objects to other definition writers.
    *
-   * @param writer  the writer.
-   *
-   * @throws java.io.IOException if there is an I/O problem.
+   * @param writer the writer.
+   * @throws java.io.IOException   if there is an I/O problem.
    * @throws ReportWriterException if the report serialisation failed.
    */
-  public void write(final Writer writer) throws IOException, ReportWriterException
+  public void write (final Writer writer)
+          throws IOException, ReportWriterException
   {
     final AttributeList p = new AttributeList();
     if (template.getName() != null)
@@ -143,14 +145,13 @@ public class TemplateWriter extends ObjectWriter
   }
 
   /**
-   * Tests, whether the given parameter should be written in this template.
-   * This will return false, if the parameter is not set, or the parent
-   * contains the same value.
+   * Tests, whether the given parameter should be written in this template. This will
+   * return false, if the parameter is not set, or the parent contains the same value.
    *
    * @param parameterName the name of the parameter that should be tested
    * @return true, if the parameter should be written, false otherwise.
    */
-  private boolean shouldWriteParameter(final String parameterName)
+  private boolean shouldWriteParameter (final String parameterName)
   {
     final Object parameterObject = template.getParameter(parameterName);
     if (parameterObject == null)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DemoFrontend.java,v 1.1.2.4 2004/12/13 19:26:20 taqua Exp $
+ * $Id: DemoFrontend.java,v 1.2 2005/01/25 01:13:33 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -103,15 +103,15 @@ public class DemoFrontend extends AbstractDemoFrame
     demos = createDemoActions();
     setTitle("Demo Selector");
     setJMenuBar(createMenuBar());
-    setContentPane(createContentPane ());
+    setContentPane(createContentPane());
     ReportConfiguration.getGlobalConfig().setConfigProperty
-              ("org.jfree.report.demo.Embedded", "true");
+            ("org.jfree.report.demo.Embedded", "true");
   }
 
   private JPanel createContentPane ()
   {
     final int cols = 2;
-    final int rows = (int) Math.ceil(demos.length/ (double) cols);
+    final int rows = (int) Math.ceil(demos.length / (double) cols);
 
     final JPanel panel = new JPanel();
     panel.setLayout(new GridLayout(rows, cols));
@@ -123,7 +123,7 @@ public class DemoFrontend extends AbstractDemoFrame
 //      gbc.gridy = i;
 //      gbc.fill = GridBagConstraints.HORIZONTAL;
 //      gbc.insets = new Insets (2, 2, 2, 2);
-      panel.add (new ActionButton (demos[i]));
+      panel.add(new ActionButton(demos[i]));
 
 //      gbc = new GridBagConstraints();
 //      gbc.gridx = 1;
@@ -149,7 +149,7 @@ public class DemoFrontend extends AbstractDemoFrame
 
     for (int i = 0; i < demos.length; i++)
     {
-      fileMenu.add(new ActionMenuItem (demos[i]));
+      fileMenu.add(new ActionMenuItem(demos[i]));
     }
     fileMenu.addSeparator();
     fileMenu.add(exitItem);
@@ -163,7 +163,7 @@ public class DemoFrontend extends AbstractDemoFrame
     final InputStream in = getClass().getResourceAsStream("demos.properties");
     if (in == null)
     {
-      Log.warn ("Missing resource: demos.properties");
+      Log.warn("Missing resource: demos.properties");
       return null;
     }
     try
@@ -185,16 +185,16 @@ public class DemoFrontend extends AbstractDemoFrame
           continue;
         }
         final Class c = Class.forName(className);
-        list.add (new RunDemoAction(name, c, description));
+        list.add(new RunDemoAction(name, c, description));
       }
 
       final RunDemoAction[] retval = (RunDemoAction[])
-         list.toArray(new RunDemoAction[list.size()]);
+              list.toArray(new RunDemoAction[list.size()]);
       return retval;
     }
     catch (Exception e)
     {
-      Log.warn ("Unable to parse demo list: demos.properties", e);
+      Log.warn("Unable to parse demo list: demos.properties", e);
       return null;
     }
   }
@@ -207,12 +207,11 @@ public class DemoFrontend extends AbstractDemoFrame
   protected boolean attemptExit ()
   {
     final boolean close =
-        JOptionPane.showConfirmDialog(
-            this,
-            getResources().getString("exitdialog.message"),
-            getResources().getString("exitdialog.title"),
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
+            JOptionPane.showConfirmDialog(this,
+                    getResources().getString("exitdialog.message"),
+                    getResources().getString("exitdialog.title"),
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
     if (close)
     {
       System.exit(0);

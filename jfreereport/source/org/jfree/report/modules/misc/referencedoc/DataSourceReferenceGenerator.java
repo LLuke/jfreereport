@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceReferenceGenerator.java,v 1.3.4.1 2004/12/13 19:27:01 taqua Exp $
+ * $Id: DataSourceReferenceGenerator.java,v 1.6 2005/01/25 00:09:05 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -55,13 +55,15 @@ import org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceF
  */
 public final class DataSourceReferenceGenerator
 {
-  /** The report definition file. */
+  /**
+   * The report definition file.
+   */
   private static final String REFERENCE_REPORT = "DataSourceReferenceReport.xml";
 
   /**
    * DefaultConstructor.
    */
-  private DataSourceReferenceGenerator()
+  private DataSourceReferenceGenerator ()
   {
   }
 
@@ -70,7 +72,7 @@ public final class DataSourceReferenceGenerator
    *
    * @return the tablemodel for the reference documentation.
    */
-  public static TableModel createData()
+  public static TableModel createData ()
   {
     final DataSourceCollector cc = new DataSourceCollector();
     cc.addFactory(new DefaultDataSourceFactory());
@@ -82,9 +84,9 @@ public final class DataSourceReferenceGenerator
   /**
    * The starting point for the application.
    *
-   * @param args  ignored.
+   * @param args ignored.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     final ReportGenerator gen = ReportGenerator.getInstance();
     final URL reportURL = DataSourceReferenceGenerator.class.getResource(REFERENCE_REPORT);
@@ -113,9 +115,9 @@ public final class DataSourceReferenceGenerator
     try
     {
       HtmlReportUtil.createStreamHTML(report, System.getProperty("user.home")
-          + "/datasource-reference.html");
+              + "/datasource-reference.html");
       PDFReportUtil.createPDF(report, System.getProperty("user.home")
-          + "/datasource-reference.pdf");
+              + "/datasource-reference.pdf");
     }
     catch (Exception e)
     {

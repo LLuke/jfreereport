@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProgressBar.java,v 1.1.2.2 2004/10/11 21:00:38 taqua Exp $
+ * $Id: ReportProgressBar.java,v 1.5 2005/01/25 00:01:34 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -56,8 +56,8 @@ public class ReportProgressBar extends JProgressBar implements RepaginationListe
     private int maxRow;
     private int currentRow;
 
-    public ScreenUpdateRunnable(final int currentRow, final int maxRow,
-                                final int page, final int pass, final boolean prepare)
+    public ScreenUpdateRunnable (final int currentRow, final int maxRow,
+                                 final int page, final int pass, final boolean prepare)
     {
       this.currentRow = currentRow;
       this.maxRow = maxRow;
@@ -66,7 +66,7 @@ public class ReportProgressBar extends JProgressBar implements RepaginationListe
       this.prepare = prepare;
     }
 
-    public void run()
+    public void run ()
     {
       updatePassMessage(page, pass, prepare);
       final boolean maxRowChanged = lastMaxRow != maxRow;
@@ -78,31 +78,45 @@ public class ReportProgressBar extends JProgressBar implements RepaginationListe
     }
   }
 
-  /** The last page received. */
+  /**
+   * The last page received.
+   */
   private int lastPage;
-  /** The last pass values received. */
+  /**
+   * The last pass values received.
+   */
   private int lastPass;
-  /** The last max-row received. */
+  /**
+   * The last max-row received.
+   */
   private int lastMaxRow;
 
-  /** The reuseable message format for the page label. */
+  /**
+   * The reuseable message format for the page label.
+   */
   private MessageFormat pageMessageFormatter;
-  /** The reuseable message format for the pass label. */
+  /**
+   * The reuseable message format for the pass label.
+   */
   private MessageFormat passMessageFormatter;
-  /** a text which describes the layouting process. */
+  /**
+   * a text which describes the layouting process.
+   */
   private String layoutText;
-  /** a text that describes the export phase of the report processing. */
+  /**
+   * a text that describes the export phase of the report processing.
+   */
   private String outputText;
 
 
-  /** Localised resources. */
+  /**
+   * Localised resources.
+   */
   private ResourceBundle resources;
 
   /**
-   * Creates a horizontal progress bar
-   * that displays a border but no progress string.
-   * The initial and minimum values are 0,
-   * and the maximum is 100.
+   * Creates a horizontal progress bar that displays a border but no progress string. The
+   * initial and minimum values are 0, and the maximum is 100.
    *
    * @see #setOrientation
    * @see #setBorderPainted
@@ -110,7 +124,7 @@ public class ReportProgressBar extends JProgressBar implements RepaginationListe
    * @see #setString
    * @see #setIndeterminate
    */
-  public ReportProgressBar()
+  public ReportProgressBar ()
   {
     resources = ResourceBundle.getBundle(PreviewBaseModule.RESOURCES_BASE_NAME);
     pageMessageFormatter = new MessageFormat(resources.getString("progress-dialog.page-label"));
@@ -126,13 +140,13 @@ public class ReportProgressBar extends JProgressBar implements RepaginationListe
   /**
    * Receives notification of a repagination update.
    *
-   * @param state  the state.
+   * @param state the state.
    */
-  public void repaginationUpdate(final RepaginationState state)
+  public void repaginationUpdate (final RepaginationState state)
   {
     final ScreenUpdateRunnable runnable = new ScreenUpdateRunnable
-        (state.getCurrentRow(), state.getMaxRow(), state.getPage(),
-            state.getPass(), state.isPrepare());
+            (state.getCurrentRow(), state.getMaxRow(), state.getPage(),
+                    state.getPass(), state.isPrepare());
     if (SwingUtilities.isEventDispatchThread())
     {
       runnable.run();
@@ -143,7 +157,7 @@ public class ReportProgressBar extends JProgressBar implements RepaginationListe
     }
   }
 
-  private void updatePassMessage(final int page, final int pass, final boolean prepare)
+  private void updatePassMessage (final int page, final int pass, final boolean prepare)
   {
 
     if (lastPage != page || lastPass != pass)
@@ -178,23 +192,23 @@ public class ReportProgressBar extends JProgressBar implements RepaginationListe
   }
 
   /**
-   * Returns the output text message. This text describes the export phases of
-   * the report processing.
+   * Returns the output text message. This text describes the export phases of the report
+   * processing.
    *
    * @return the output phase description.
    */
-  public String getOutputText()
+  public String getOutputText ()
   {
     return outputText;
   }
 
   /**
-   * Defines the output text message. This text describes the export phases of
-   * the report processing.
+   * Defines the output text message. This text describes the export phases of the report
+   * processing.
    *
    * @param outputText the output message.
    */
-  public void setOutputText(final String outputText)
+  public void setOutputText (final String outputText)
   {
     if (outputText == null)
     {
@@ -204,23 +218,23 @@ public class ReportProgressBar extends JProgressBar implements RepaginationListe
   }
 
   /**
-   * Returns the layout text. This text describes the prepare phases of
-   * the report processing.
+   * Returns the layout text. This text describes the prepare phases of the report
+   * processing.
    *
    * @return the layout text.
    */
-  public String getLayoutText()
+  public String getLayoutText ()
   {
     return layoutText;
   }
 
   /**
-   * Defines the layout text message. This text describes the prepare phases of
-   * the report processing.
+   * Defines the layout text message. This text describes the prepare phases of the report
+   * processing.
    *
    * @param layoutText the layout message.
    */
-  public void setLayoutText(final String layoutText)
+  public void setLayoutText (final String layoutText)
   {
     if (layoutText == null)
     {

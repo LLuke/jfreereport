@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataTarget.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: DataTarget.java,v 1.3 2004/05/07 08:24:42 mungady Exp $
  *
  * Changes
  * -------
@@ -54,14 +54,14 @@ public interface DataTarget extends Serializable, Cloneable
    *
    * @return The datasource.
    */
-  public DataSource getDataSource();
+  public DataSource getDataSource ();
 
   /**
    * Assigns a DataSource for this Target.
    *
    * @param ds The data source.
    */
-  public void setDataSource(DataSource ds);
+  public void setDataSource (DataSource ds);
 
   /**
    * Clones this datatarget.
@@ -70,5 +70,6 @@ public interface DataTarget extends Serializable, Cloneable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException;
+  public Object clone ()
+          throws CloneNotSupportedException;
 }

@@ -9,7 +9,7 @@ public class NumberFieldReadHandler extends StringFieldReadHandler
 {
   public NumberFieldReadHandler ()
   {
-    super(new NumberFieldElementFactory ());
+    super(new NumberFieldElementFactory());
   }
 
   /**

@@ -29,7 +29,7 @@
  * based on ideas and code from JRXlsExporter.java of JasperReports
  * Contributor(s):   -;
  *
- * $Id: ExcelFontFactory.java,v 1.2.2.1 2004/12/13 19:27:12 taqua Exp $
+ * $Id: ExcelFontFactory.java,v 1.3 2005/01/25 00:17:15 taqua Exp $
  *
  * Changes
  * -------
@@ -44,42 +44,44 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.jfree.report.modules.output.table.xls.HSSFFontWrapper;
 
 /**
- * This class keeps track of all fonts that we have used so far in our
- * Excel file.
- * <p>
- * Excel fonts should never be created directly, as excel does not like
- * the idea of having too many font definitions.
+ * This class keeps track of all fonts that we have used so far in our Excel file.
+ * <p/>
+ * Excel fonts should never be created directly, as excel does not like the idea of having
+ * too many font definitions.
  *
  * @author Heiko Evermann
  */
 public class ExcelFontFactory
 {
-  /** The list of fonts that we have used so far. */
+  /**
+   * The list of fonts that we have used so far.
+   */
   private HashMap fonts;
 
-  /** The workbook that is used to create the font. */
+  /**
+   * The workbook that is used to create the font.
+   */
   private final HSSFWorkbook workbook;
 
   /**
    * Constructor for ExcelFontFactory.
    *
-   * @param workbook  the workbook.
+   * @param workbook the workbook.
    */
-  public ExcelFontFactory(final HSSFWorkbook workbook)
+  public ExcelFontFactory (final HSSFWorkbook workbook)
   {
     this.fonts = new HashMap();
     this.workbook = workbook;
   }
 
   /**
-   * Creates a HSSFFont. The created font is cached and reused later,
-   * if a similiar font is requested.
+   * Creates a HSSFFont. The created font is cached and reused later, if a similiar font
+   * is requested.
    *
-   * @param wrapper the font information that should be used to produce
-   * the excel font
+   * @param wrapper the font information that should be used to produce the excel font
    * @return the created or a cached HSSFFont instance
    */
-  public HSSFFont getExcelFont(final HSSFFontWrapper wrapper)
+  public HSSFFont getExcelFont (final HSSFFontWrapper wrapper)
   {
     if (fonts.containsKey(wrapper))
     {

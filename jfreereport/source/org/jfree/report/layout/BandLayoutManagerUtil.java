@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.13 2005/01/25 00:00:40 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.14 2005/02/19 13:29:55 taqua Exp $
  *
  * Changes
  * -------
@@ -55,21 +55,20 @@ public final strictfp class BandLayoutManagerUtil
   /**
    * Default constructor.
    */
-  private BandLayoutManagerUtil()
+  private BandLayoutManagerUtil ()
   {
   }
 
   /**
    * Returns the layout manager for an element in a report.
    *
-   * @param e  the element.
-   *
+   * @param e the element.
    * @return the layout manager.
    */
-  public static BandLayoutManager getLayoutManager(final Element e)
+  public static BandLayoutManager getLayoutManager (final Element e)
   {
     final BandLayoutManager lm =
-        (BandLayoutManager) e.getStyle().getStyleProperty(BandLayoutManager.LAYOUTMANAGER);
+            (BandLayoutManager) e.getStyle().getStyleProperty(BandLayoutManager.LAYOUTMANAGER);
 
     if (lm == null)
     {
@@ -82,14 +81,15 @@ public final strictfp class BandLayoutManagerUtil
   /**
    * Returns the bounds of an element.
    *
-   * @param e  the element.
-   * @param bounds  if non-null, this structure will be updated and returned as the result (use
-   *                this to avoid creating unnecessary work for the garbage collector).
-   *
+   * @param e      the element.
+   * @param bounds if non-null, this structure will be updated and returned as the result
+   *               (use this to avoid creating unnecessary work for the garbage
+   *               collector).
    * @return the element bounds.
+   *
    * @throws java.lang.NullPointerException if the given element is null
    */
-  public static StrictBounds getBounds(final Element e, StrictBounds bounds)
+  public static StrictBounds getBounds (final Element e, StrictBounds bounds)
   {
     if (e == null)
     {
@@ -107,35 +107,34 @@ public final strictfp class BandLayoutManagerUtil
   /**
    * Sets the bounds for an element.
    *
-   * @param e  the element.
-   * @param bounds  the new bounds.
+   * @param e      the element.
+   * @param bounds the new bounds.
    * @throws java.lang.NullPointerException if the given element or the bounds are null
    */
-  public static void setBounds(final Element e, final StrictBounds bounds)
+  public static void setBounds (final Element e, final StrictBounds bounds)
   {
     e.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds.clone());
   }
 
   /**
-   * Performs all required steps to layout the band. The bands height gets initially limited by
-   * the specified width and height. The band updates these dimensions after the initial
-   * layouting is done. The band will never exceed the specified bounds, they define a
-   * hard limit.
-   * <p>
-   * The bands elements get their BOUNDS property updated
-   * to reflect the new layout settings.
+   * Performs all required steps to layout the band. The bands height gets initially
+   * limited by the specified width and height. The band updates these dimensions after
+   * the initial layouting is done. The band will never exceed the specified bounds, they
+   * define a hard limit.
+   * <p/>
+   * The bands elements get their BOUNDS property updated to reflect the new layout
+   * settings.
    *
-   * @param band  the band that should be laid out.
-   * @param support  the LayoutSupport implementation used to calculate the bounds of dynamic
-   *                 content.
-   * @param width  the initial maximum width of the container.
+   * @param band    the band that should be laid out.
+   * @param support the LayoutSupport implementation used to calculate the bounds of
+   *                dynamic content.
+   * @param width   the initial maximum width of the container.
    * @param height  the initial maximum height of the container.
-   *
-   * @return the bounds for the layouted band. The band itself got updated to
-   * contain the new element bounds.
+   * @return the bounds for the layouted band. The band itself got updated to contain the
+   *         new element bounds.
    */
-  public static StrictBounds doLayout(final Band band, final LayoutSupport support,
-                                     final long width, final long height)
+  public static StrictBounds doLayout (final Band band, final LayoutSupport support,
+                                       final long width, final long height)
   {
     if (band == null)
     {
@@ -157,11 +156,11 @@ public final strictfp class BandLayoutManagerUtil
     }
 
     final BandLayoutManager lm
-        = BandLayoutManagerUtil.getLayoutManager(band);
+            = BandLayoutManagerUtil.getLayoutManager(band);
     // in this layouter the width of a band is always the full page width
     //final Dimension2D fdim = lm.minimumLayoutSize(band, new FloatDimension(width, height));
     final StrictDimension fdim = lm.preferredLayoutSize
-      (band, new StrictDimension(width, height), support);
+            (band, new StrictDimension(width, height), support);
 
     // the height is redefined by the band's requirements to support
     // the dynamic elements.
@@ -179,21 +178,21 @@ public final strictfp class BandLayoutManagerUtil
    * Performs all required steps to layout the band; the bands bounds are predefined by
    * the caller and will not be computed. The band will never exceed the specified bounds,
    * they define a hard limit.
-   * <p>
-   * The bands elements get their BOUNDS property updated to reflect the new layout settings.
+   * <p/>
+   * The bands elements get their BOUNDS property updated to reflect the new layout
+   * settings.
    *
-   * @param band  the band that should be laid out.
-   * @param support  the LayoutSupport implementation used to calculate the bounds of dynamic
-   *                 content.
-   * @param width  the initial maximum width of the container.
+   * @param band    the band that should be laid out.
+   * @param support the LayoutSupport implementation used to calculate the bounds of
+   *                dynamic content.
+   * @param width   the initial maximum width of the container.
    * @param height  the initial maximum height of the container.
-   *
-   * @return the bounds for the layouted band. The band itself got updated to
-   * contain the new element bounds.
+   * @return the bounds for the layouted band. The band itself got updated to contain the
+   *         new element bounds.
    */
   public static StrictBounds doFixedLayout
-                                    (final Band band, final LayoutSupport support,
-                                     final long width, final long height)
+          (final Band band, final LayoutSupport support,
+           final long width, final long height)
   {
     if (band == null)
     {
@@ -216,7 +215,7 @@ public final strictfp class BandLayoutManagerUtil
     }
 
     final BandLayoutManager lm
-        = BandLayoutManagerUtil.getLayoutManager(band);
+            = BandLayoutManagerUtil.getLayoutManager(band);
 
     final StrictBounds bounds = new StrictBounds(0, 0, width, height);
     band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);

@@ -2,13 +2,15 @@ package org.jfree.report.filter.templates;
 
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.filter.MessageFormatFilter;
-import org.jfree.report.filter.StringFilter;
 import org.jfree.report.filter.ReportConnectable;
+import org.jfree.report.filter.StringFilter;
 
 public class MessageFieldTemplate extends AbstractTemplate
         implements ReportConnectable
 {
-  /** A string filter. */
+  /**
+   * A string filter.
+   */
   private StringFilter stringFilter;
 
   private MessageFormatFilter messageFormatFilter;
@@ -16,7 +18,7 @@ public class MessageFieldTemplate extends AbstractTemplate
   /**
    * Creates a new string field template.
    */
-  public MessageFieldTemplate()
+  public MessageFieldTemplate ()
   {
     messageFormatFilter = new MessageFormatFilter();
     stringFilter = new StringFilter();
@@ -34,21 +36,23 @@ public class MessageFieldTemplate extends AbstractTemplate
   }
 
   /**
-   * Returns the value displayed by the field when the data source value is <code>null</code>.
+   * Returns the value displayed by the field when the data source value is
+   * <code>null</code>.
    *
    * @return A value to represent <code>null</code>.
    */
-  public String getNullValue()
+  public String getNullValue ()
   {
     return stringFilter.getNullValue();
   }
 
   /**
-   * Sets the value displayed by the field when the data source value is <code>null</code>.
+   * Sets the value displayed by the field when the data source value is
+   * <code>null</code>.
    *
-   * @param nullValue  the value that represents <code>null</code>.
+   * @param nullValue the value that represents <code>null</code>.
    */
-  public void setNullValue(final String nullValue)
+  public void setNullValue (final String nullValue)
   {
     stringFilter.setNullValue(nullValue);
   }
@@ -58,7 +62,7 @@ public class MessageFieldTemplate extends AbstractTemplate
    *
    * @return the value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return stringFilter.getValue();
   }
@@ -70,7 +74,8 @@ public class MessageFieldTemplate extends AbstractTemplate
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final MessageFieldTemplate template = (MessageFieldTemplate) super.clone();
     template.stringFilter = (StringFilter) stringFilter.clone();
@@ -78,12 +83,12 @@ public class MessageFieldTemplate extends AbstractTemplate
     return template;
   }
 
-  public void registerReportDefinition(final ReportDefinition reportDefinition)
+  public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     messageFormatFilter.registerReportDefinition(reportDefinition);
   }
 
-  public void unregisterReportDefinition(final ReportDefinition reportDefinition)
+  public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     messageFormatFilter.unregisterReportDefinition(reportDefinition);
   }

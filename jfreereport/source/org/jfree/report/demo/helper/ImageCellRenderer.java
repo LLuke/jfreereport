@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: ImageCellRenderer.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
+ * $Id: ImageCellRenderer.java,v 1.5 2004/05/07 12:43:43 mungady Exp $
  *
  * Changes
  * -------
@@ -47,22 +47,24 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
 /**
- * A table cell renderer that draws an image in a table cell.
- * <P>
- * This class will be moved to the JCommon class library.
+ * A table cell renderer that draws an image in a table cell. <P> This class will be moved
+ * to the JCommon class library.
  *
  * @author David Gilbert
  */
-public class ImageCellRenderer extends DefaultTableCellRenderer implements TableCellRenderer
+public class ImageCellRenderer extends DefaultTableCellRenderer
+        implements TableCellRenderer
 {
 
-  /** The icon. */
+  /**
+   * The icon.
+   */
   private final ImageIcon icon = new ImageIcon();
 
   /**
    * Constructs a new renderer.
    */
-  public ImageCellRenderer()
+  public ImageCellRenderer ()
   {
     super();
     setHorizontalAlignment(JLabel.CENTER);
@@ -73,17 +75,17 @@ public class ImageCellRenderer extends DefaultTableCellRenderer implements Table
   /**
    * Returns itself as the renderer. Supports the TableCellRenderer interface.
    *
-   * @param table The table.
-   * @param value The data to be rendered.
+   * @param table      The table.
+   * @param value      The data to be rendered.
    * @param isSelected A boolean that indicates whether or not the cell is selected.
-   * @param hasFocus A boolean that indicates whether or not the cell has the focus.
-   * @param row The (zero-based) row index.
-   * @param column The (zero-based) column index.
+   * @param hasFocus   A boolean that indicates whether or not the cell has the focus.
+   * @param row        The (zero-based) row index.
+   * @param column     The (zero-based) column index.
    * @return The component that can render the contents of the cell.
    */
   public Component getTableCellRendererComponent
-      (final JTable table, final Object value, final boolean isSelected,
-       final boolean hasFocus, final int row, final int column)
+          (final JTable table, final Object value, final boolean isSelected,
+           final boolean hasFocus, final int row, final int column)
   {
 
     setFont(null);

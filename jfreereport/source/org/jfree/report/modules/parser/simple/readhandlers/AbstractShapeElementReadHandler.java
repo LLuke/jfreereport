@@ -29,8 +29,8 @@ public abstract class AbstractShapeElementReadHandler extends AbstractElementRea
           throws SAXException, XmlReaderException
   {
     super.startParsing(atts);
-    handleScale (atts);
-    handleKeepAspectRatio (atts);
+    handleScale(atts);
+    handleKeepAspectRatio(atts);
     handleFill(atts);
     handleDraw(atts);
     handleStroke(atts);

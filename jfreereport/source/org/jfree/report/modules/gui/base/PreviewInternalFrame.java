@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewInternalFrame.java,v 1.15 2005/01/25 00:01:17 taqua Exp $
+ * $Id: PreviewInternalFrame.java,v 1.16 2005/01/30 23:37:20 taqua Exp $
  *
  * Changes
  * -------
@@ -63,18 +63,18 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
     /**
      * Creates a 'close' action.
      */
-    public DefaultCloseAction()
+    public DefaultCloseAction ()
     {
       super(getResources());
     }
 
     /**
-     * Closes the preview frame if the default close operation is set to dispose
-     * so this frame is reusable.
+     * Closes the preview frame if the default close operation is set to dispose so this
+     * frame is reusable.
      *
      * @param e The action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       if (getDefaultCloseOperation() == DISPOSE_ON_CLOSE)
       {
@@ -95,20 +95,25 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
     }
   }
 
-  /** A preview proxy. */
+  /**
+   * A preview proxy.
+   */
   private PreviewProxyBase base;
 
-  /** Localised resources. */
+  /**
+   * Localised resources.
+   */
   private ResourceBundleSupport resources;
 
   /**
    * Constructs a preview frame that displays the specified report.
    *
-   * @param report  the report to be displayed.
-   *
-   * @throws org.jfree.report.ReportProcessingException if there is a problem processing the report.
+   * @param report the report to be displayed.
+   * @throws org.jfree.report.ReportProcessingException
+   *          if there is a problem processing the report.
    */
-  public PreviewInternalFrame(final JFreeReport report) throws ReportProcessingException
+  public PreviewInternalFrame (final JFreeReport report)
+          throws ReportProcessingException
   {
     init(report);
   }
@@ -116,11 +121,12 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
   /**
    * Initialise.
    *
-   * @param report  the report.
-   *
-   * @throws org.jfree.report.ReportProcessingException if there is a problem processing the report.
+   * @param report the report.
+   * @throws org.jfree.report.ReportProcessingException
+   *          if there is a problem processing the report.
    */
-  private void init(final JFreeReport report) throws ReportProcessingException
+  private void init (final JFreeReport report)
+          throws ReportProcessingException
   {
     base = createPreviewProxyBase();
     base.setReport(report);
@@ -138,7 +144,7 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
    *
    * @return this frames ResourceBundle.
    */
-  public ResourceBundleSupport getResources()
+  public ResourceBundleSupport getResources ()
   {
     if (resources == null)
     {
@@ -152,7 +158,7 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
    *
    * @return The action.
    */
-  public Action createDefaultCloseAction()
+  public Action createDefaultCloseAction ()
   {
     return new DefaultCloseAction();
   }
@@ -160,17 +166,17 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
   /**
    * Disposes the frame.
    */
-  public void dispose()
+  public void dispose ()
   {
     super.dispose();
     base.dispose();
   }
 
   /**
-   * Shuts down the preview component. Once the component is closed, it
-   * cannot be reactivated anymore.
+   * Shuts down the preview component. Once the component is closed, it cannot be
+   * reactivated anymore.
    */
-  public void close()
+  public void close ()
   {
     base.close();
   }
@@ -180,7 +186,7 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
    *
    * @return The proxy.
    */
-  public PreviewProxyBase getBase()
+  public PreviewProxyBase getBase ()
   {
     return base;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.15 2005/01/28 19:26:49 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.16 2005/01/30 23:37:19 taqua Exp $
  *
  * Changes
  * -------
@@ -51,17 +51,19 @@ import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.PrepareEventListener;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.event.ReportListener;
-import org.jfree.report.util.LevelList;
 import org.jfree.report.util.IntList;
+import org.jfree.report.util.LevelList;
 
 /**
- * A list of expressions/functions and associated levels.  This class listens for report events,
- * then passes these events on to the expressions and functions in *descending* level order.
+ * A list of expressions/functions and associated levels.  This class listens for report
+ * events, then passes these events on to the expressions and functions in *descending*
+ * level order.
  *
  * @author Thomas Morgner
  */
 public final class LevelledExpressionList implements ReportListener,
-    Cloneable, LayoutListener, PageEventListener
+                                                     Cloneable, LayoutListener,
+                                                     PageEventListener
 {
   private static class LevelStorage
   {
@@ -94,22 +96,34 @@ public final class LevelledExpressionList implements ReportListener,
     }
   }
 
-  /** error list stores the errors that occur during the event dispatching. */
+  /**
+   * error list stores the errors that occur during the event dispatching.
+   */
   private ArrayList errorList;
 
-  /** The current processing level. */
+  /**
+   * The current processing level.
+   */
   private int level;
 
-  /** The dataRow for all functions. */
+  /**
+   * The dataRow for all functions.
+   */
   private DataRow dataRow;
 
-  /** The expressions sorted by levels. */
+  /**
+   * The expressions sorted by levels.
+   */
   private LevelStorage[] levelData;
 
-  /** all data as flat list. */
+  /**
+   * all data as flat list.
+   */
   private Expression[] flatData;
 
-  /** The number of functions and expressions in this list. */
+  /**
+   * The number of functions and expressions in this list.
+   */
   private int size;
 
   protected LevelledExpressionList ()
@@ -120,23 +134,21 @@ public final class LevelledExpressionList implements ReportListener,
   /**
    * Creates a new list.
    *
-   * @param ec  the expressions from the report definition.
+   * @param ec the expressions from the report definition.
    */
-  public LevelledExpressionList(final ExpressionCollection ec)
+  public LevelledExpressionList (final ExpressionCollection ec)
   {
     errorList = new ArrayList();
     initialize(ec);
   }
 
   /**
-   * Receives notification that report generation has started.
-   * <P>
-   * The event carries a ReportState.Started state.
-   * Use this to prepare the report header.
+   * Receives notification that report generation has started. <P> The event carries a
+   * ReportState.Started state. Use this to prepare the report header.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportStarted(final ReportEvent event)
+  public void reportStarted (final ReportEvent event)
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
@@ -176,13 +188,12 @@ public final class LevelledExpressionList implements ReportListener,
   }
 
   /**
-   * Receives notification that report generation has started.
-   * <P>
-   * The event carries a ReportState.Started state.  Use this to initialize the report.
+   * Receives notification that report generation has started. <P> The event carries a
+   * ReportState.Started state.  Use this to initialize the report.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportInitialized(final ReportEvent event)
+  public void reportInitialized (final ReportEvent event)
   {
     clearError(); // has no prepare event ...
     for (int levelIndex = 0; levelIndex < levelData.length; levelIndex++)
@@ -223,12 +234,12 @@ public final class LevelledExpressionList implements ReportListener,
   }
 
   /**
-   * Receives notification that report generation has finished (the last record is read and all
-   * groups are closed).
+   * Receives notification that report generation has finished (the last record is read
+   * and all groups are closed).
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportFinished(final ReportEvent event)
+  public void reportFinished (final ReportEvent event)
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
@@ -270,9 +281,9 @@ public final class LevelledExpressionList implements ReportListener,
   /**
    * Receives notification that a new page is being started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void pageStarted(final ReportEvent event)
+  public void pageStarted (final ReportEvent event)
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
@@ -314,9 +325,9 @@ public final class LevelledExpressionList implements ReportListener,
   /**
    * Receives notification that a new page is being started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void pageCanceled(final ReportEvent event)
+  public void pageCanceled (final ReportEvent event)
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
@@ -344,9 +355,9 @@ public final class LevelledExpressionList implements ReportListener,
   /**
    * Receives notification that a new page is being started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void pageRolledBack(final ReportEvent event)
+  public void pageRolledBack (final ReportEvent event)
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
@@ -375,9 +386,9 @@ public final class LevelledExpressionList implements ReportListener,
   /**
    * Receives notification that a page is completed.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void pageFinished(final ReportEvent event)
+  public void pageFinished (final ReportEvent event)
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
@@ -417,13 +428,12 @@ public final class LevelledExpressionList implements ReportListener,
   }
 
   /**
-   * Receives notification that a new group has started.
-   * <P>
-   * The group can be determined by the report state's getCurrentGroup() function.
+   * Receives notification that a new group has started. <P> The group can be determined
+   * by the report state's getCurrentGroup() function.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupStarted(final ReportEvent event)
+  public void groupStarted (final ReportEvent event)
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
@@ -464,13 +474,12 @@ public final class LevelledExpressionList implements ReportListener,
   }
 
   /**
-   * Receives notification that a group is finished.
-   * <P>
-   * The group can be determined by the report state's getCurrentGroup() function.
+   * Receives notification that a group is finished. <P> The group can be determined by
+   * the report state's getCurrentGroup() function.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupFinished(final ReportEvent event)
+  public void groupFinished (final ReportEvent event)
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
@@ -510,13 +519,12 @@ public final class LevelledExpressionList implements ReportListener,
   }
 
   /**
-   * Receives notification that a group of item bands is about to be processed.
-   * <P>
-   * The next events will be itemsAdvanced events until the itemsFinished event is raised.
+   * Receives notification that a group of item bands is about to be processed. <P> The
+   * next events will be itemsAdvanced events until the itemsFinished event is raised.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void itemsStarted(final ReportEvent event)
+  public void itemsStarted (final ReportEvent event)
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
@@ -556,13 +564,12 @@ public final class LevelledExpressionList implements ReportListener,
   }
 
   /**
-   * Receives notification that a group of item bands has been completed.
-   * <P>
-   * The itemBand is finished, the report starts to close open groups.
+   * Receives notification that a group of item bands has been completed. <P> The itemBand
+   * is finished, the report starts to close open groups.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void itemsFinished(final ReportEvent event)
+  public void itemsFinished (final ReportEvent event)
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
@@ -602,13 +609,12 @@ public final class LevelledExpressionList implements ReportListener,
   }
 
   /**
-   * Receives notification that a new row has been read.
-   * <P>
-   * This event is raised before an ItemBand is printed.
+   * Receives notification that a new row has been read. <P> This event is raised before
+   * an ItemBand is printed.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void itemsAdvanced(final ReportEvent event)
+  public void itemsAdvanced (final ReportEvent event)
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
@@ -648,13 +654,12 @@ public final class LevelledExpressionList implements ReportListener,
   }
 
   /**
-   * Receives notification that the band layouting has completed.
-   * <P>
-   * The event carries the current report state.
+   * Receives notification that the band layouting has completed. <P> The event carries
+   * the current report state.
    *
    * @param event The event.
    */
-  public void layoutComplete(final LayoutEvent event)
+  public void layoutComplete (final LayoutEvent event)
   {
     firePrepareEventLayoutListener(event);
 
@@ -696,13 +701,12 @@ public final class LevelledExpressionList implements ReportListener,
   }
 
   /**
-   * Receives notification that the band output has completed.
-   * <P>
-   * The event carries the current report state.
+   * Receives notification that the band output has completed. <P> The event carries the
+   * current report state.
    *
    * @param event The event.
    */
-  public void outputComplete(final LayoutEvent event)
+  public void outputComplete (final LayoutEvent event)
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
@@ -728,12 +732,13 @@ public final class LevelledExpressionList implements ReportListener,
   }
 
   /**
-   * Receives notification that report generation has completed, the report footer was printed,
-   * no more output is done. This is a helper event to shut down the output service.
+   * Receives notification that report generation has completed, the report footer was
+   * printed, no more output is done. This is a helper event to shut down the output
+   * service.
    *
    * @param event The event.
    */
-  public void reportDone(final ReportEvent event)
+  public void reportDone (final ReportEvent event)
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
@@ -773,36 +778,34 @@ public final class LevelledExpressionList implements ReportListener,
   }
 
   /**
-   * Connects the given datarow to the expression collection and all expressions contained in
-   * this collection.
+   * Connects the given datarow to the expression collection and all expressions contained
+   * in this collection.
    *
-   * @param dr  the datarow to be connected (null not permitted).
-   *
+   * @param dr the datarow to be connected (null not permitted).
    * @throws IllegalStateException if there is a datarow already connected.
-   * @throws NullPointerException if the given datarow is null.
+   * @throws NullPointerException  if the given datarow is null.
    */
-  public void setDataRow(final DataRow dr)
+  public void setDataRow (final DataRow dr)
   {
     if (dr != null && dataRow != null)
     {
       // be paranoid and make sure that we dont replace the datarow
       // by accident
       throw new IllegalStateException
-          ("Paranoia: Update calls must be done using the updateDataRow method.");
+              ("Paranoia: Update calls must be done using the updateDataRow method.");
     }
     updateDataRow(dr);
   }
 
   /**
-   * Updates the datarow for all expressions. Does not perform validity
-   * checks, so use this function with care.
+   * Updates the datarow for all expressions. Does not perform validity checks, so use
+   * this function with care.
    *
-   * @param dr  the datarow to be connected.
-   *
-   * @throws NullPointerException if the given datarow is null.
+   * @param dr the datarow to be connected.
+   * @throws NullPointerException  if the given datarow is null.
    * @throws IllegalStateException if there is no datarow connected.
    */
-  public void updateDataRow(final DataRow dr)
+  public void updateDataRow (final DataRow dr)
   {
     dataRow = dr;
     for (int i = 0; i < flatData.length; i++)
@@ -817,7 +820,7 @@ public final class LevelledExpressionList implements ReportListener,
    *
    * @return the dataRow.
    */
-  public DataRow getDataRow()
+  public DataRow getDataRow ()
   {
     return dataRow;
   }
@@ -825,9 +828,9 @@ public final class LevelledExpressionList implements ReportListener,
   /**
    * Initialises the expressions.
    *
-   * @param expressionCollection  the expression collection.
+   * @param expressionCollection the expression collection.
    */
-  private void initialize(final ExpressionCollection expressionCollection)
+  private void initialize (final ExpressionCollection expressionCollection)
   {
     final LevelList expressionList = new LevelList();
 
@@ -847,9 +850,8 @@ public final class LevelledExpressionList implements ReportListener,
 
   /**
    * Initializes the expression list from the given levellist.
-   * 
-   * @param expressionList the list containing the expressions and 
-   * functions.
+   *
+   * @param expressionList the list containing the expressions and functions.
    */
   private void initializeFromLevelList (final LevelList expressionList)
   {
@@ -870,8 +872,8 @@ public final class LevelledExpressionList implements ReportListener,
     {
       final int currentLevel = levels[i].intValue();
       final Expression[] data = (Expression[])
-          expressionList.getElementArrayForLevel(currentLevel,
-          new Expression[expressionList.getElementCountForLevel(currentLevel)]);
+              expressionList.getElementArrayForLevel(currentLevel,
+                      new Expression[expressionList.getElementCountForLevel(currentLevel)]);
       System.arraycopy(data, 0, this.flatData, this.size, data.length);
       for (int x = 0; x < data.length; x++)
       {
@@ -887,7 +889,7 @@ public final class LevelledExpressionList implements ReportListener,
         {
           continue;
         }
-        functions.add (globalPosition);
+        functions.add(globalPosition);
         if (ex instanceof PageEventListener)
         {
           pageEventListeners.add(globalPosition);
@@ -906,7 +908,7 @@ public final class LevelledExpressionList implements ReportListener,
           prepareEventListeners.add(globalPosition);
         }
       }
-      
+
       final LevelStorage storage = new LevelStorage(currentLevel,
               expressions.toArray(), activeExpressions.toArray(),
               functions.toArray(), pageEventListeners.toArray(),
@@ -930,25 +932,26 @@ public final class LevelledExpressionList implements ReportListener,
    *
    * @return the size.
    */
-  public int size()
+  public int size ()
   {
     return size;
   }
 
   /**
-   * Creates and returns a copy of this object.  The precise meaning
-   * of "copy" may depend on the class of the object.
-   * <p>
-   * The cloned LevelledExpressionList will no longer be connected to
-   * a datarow.
+   * Creates and returns a copy of this object.  The precise meaning of "copy" may depend
+   * on the class of the object.
+   * <p/>
+   * The cloned LevelledExpressionList will no longer be connected to a datarow.
    *
-   * @return     a clone of this instance.
-   * @exception  CloneNotSupportedException  if the object's class does not
-   *               support the <code>Cloneable</code> interface.
-   * @exception  OutOfMemoryError            if there is not enough memory.
-   * @see        java.lang.Cloneable
+   * @return a clone of this instance.
+   *
+   * @throws CloneNotSupportedException if the object's class does not support the
+   *                                    <code>Cloneable</code> interface.
+   * @throws OutOfMemoryError           if there is not enough memory.
+   * @see java.lang.Cloneable
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final LevelledExpressionList ft = (LevelledExpressionList) super.clone();
     // ft.levels = levels; // no need to clone them ...
@@ -957,7 +960,7 @@ public final class LevelledExpressionList implements ReportListener,
     ft.errorList = (ArrayList) errorList.clone();
     ft.flatData = (Expression[]) ft.flatData.clone();
 
-    for (int expression = 0; expression< flatData.length; expression++)
+    for (int expression = 0; expression < flatData.length; expression++)
     {
       ft.flatData[expression] = (Expression) flatData[expression].clone();
       ft.flatData[expression].setDataRow(null);
@@ -966,12 +969,12 @@ public final class LevelledExpressionList implements ReportListener,
   }
 
   /**
-   * Returns the preview instance of the levelled expression list. This list
-   * does no longer contain any Function instances.
-   *  
+   * Returns the preview instance of the levelled expression list. This list does no
+   * longer contain any Function instances.
+   *
    * @return the preview (expressions only) instance of the levelled expression list.
    */
-  public LevelledExpressionList getPreviewInstance()
+  public LevelledExpressionList getPreviewInstance ()
   {
     final LevelList expressionList = new LevelList();
 
@@ -1001,9 +1004,9 @@ public final class LevelledExpressionList implements ReportListener,
   /**
    * Sets the level.
    *
-   * @param level  the level.
+   * @param level the level.
    */
-  public void setLevel(final int level)
+  public void setLevel (final int level)
   {
     this.level = level;
   }
@@ -1013,7 +1016,7 @@ public final class LevelledExpressionList implements ReportListener,
    *
    * @return the current level.
    */
-  public int getLevel()
+  public int getLevel ()
   {
     return level;
   }
@@ -1023,7 +1026,7 @@ public final class LevelledExpressionList implements ReportListener,
    *
    * @return the iterator.
    */
-  public Iterator getLevelsDescending()
+  public Iterator getLevelsDescending ()
   {
     final Integer[] levelIntegers = new Integer[levelData.length];
     for (int i = 0; i < levelData.length; i++)
@@ -1039,7 +1042,7 @@ public final class LevelledExpressionList implements ReportListener,
    *
    * @return the iterator.
    */
-  public Iterator getLevelsAscending()
+  public Iterator getLevelsAscending ()
   {
     final Integer[] levelIntegers = new Integer[levelData.length];
     for (int i = 0; i < levelData.length; i++)
@@ -1052,11 +1055,10 @@ public final class LevelledExpressionList implements ReportListener,
   /**
    * Returns the values of an expression.
    *
-   * @param index  the function/expression index.
-   *
+   * @param index the function/expression index.
    * @return the value.
    */
-  public Object getValue(final int index)
+  public Object getValue (final int index)
   {
     return flatData[index].getValue();
   }
@@ -1064,11 +1066,10 @@ public final class LevelledExpressionList implements ReportListener,
   /**
    * Returns an expression.
    *
-   * @param index  the function/expression index.
-   *
+   * @param index the function/expression index.
    * @return the function/expression.
    */
-  public Expression getExpression(final int index)
+  public Expression getExpression (final int index)
   {
     return flatData[index];
   }
@@ -1078,7 +1079,7 @@ public final class LevelledExpressionList implements ReportListener,
    *
    * @return the list of errors.
    */
-  public List getErrors()
+  public List getErrors ()
   {
     return Collections.unmodifiableList(errorList);
   }
@@ -1088,7 +1089,7 @@ public final class LevelledExpressionList implements ReportListener,
    *
    * @return true, if there were errors, false otherwise.
    */
-  public boolean hasErrors()
+  public boolean hasErrors ()
   {
     return errorList.size() != 0;
   }
@@ -1098,7 +1099,7 @@ public final class LevelledExpressionList implements ReportListener,
    *
    * @param e the new exception that occured during the event dispatching.
    */
-  protected void addError(final Exception e)
+  protected void addError (final Exception e)
   {
     errorList.add(e);
   }
@@ -1106,7 +1107,7 @@ public final class LevelledExpressionList implements ReportListener,
   /**
    * Clears the error list.
    */
-  protected void clearError()
+  protected void clearError ()
   {
     errorList.clear();
   }
@@ -1114,9 +1115,9 @@ public final class LevelledExpressionList implements ReportListener,
   /**
    * Fires a prepare event.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void firePrepareEvent(final ReportEvent event)
+  public void firePrepareEvent (final ReportEvent event)
   {
     clearError();
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
@@ -1146,9 +1147,9 @@ public final class LevelledExpressionList implements ReportListener,
   /**
    * Fires a prepare event layout listeners.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  protected void firePrepareEventLayoutListener(final ReportEvent event)
+  protected void firePrepareEventLayoutListener (final ReportEvent event)
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {

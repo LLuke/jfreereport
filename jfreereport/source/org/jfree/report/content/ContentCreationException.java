@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ContentCreationException.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: ContentCreationException.java,v 1.3 2004/05/07 08:02:49 mungady Exp $
  *
  * Changes
  * -------
@@ -48,17 +48,17 @@ public class ContentCreationException extends StackableException
   /**
    * Creates a ContentCreationException with no message and no parent.
    */
-  public ContentCreationException()
+  public ContentCreationException ()
   {
   }
 
   /**
    * Creates an ContentCreationException.
    *
-   * @param message  the exception message.
-   * @param ex  the parent exception.
+   * @param message the exception message.
+   * @param ex      the parent exception.
    */
-  public ContentCreationException(final String message, final Exception ex)
+  public ContentCreationException (final String message, final Exception ex)
   {
     super(message, ex);
   }
@@ -66,9 +66,9 @@ public class ContentCreationException extends StackableException
   /**
    * Creates an ContentCreationException.
    *
-   * @param message  the exception message.
+   * @param message the exception message.
    */
-  public ContentCreationException(final String message)
+  public ContentCreationException (final String message)
   {
     super(message);
   }

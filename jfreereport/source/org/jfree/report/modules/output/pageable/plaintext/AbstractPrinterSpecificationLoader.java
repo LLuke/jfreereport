@@ -52,7 +52,7 @@ public abstract class AbstractPrinterSpecificationLoader
       {
         continue;
       }
-      availablePrinterNames.add (name.substring(beginIndex + 1, endIndex));
+      availablePrinterNames.add(name.substring(beginIndex + 1, endIndex));
     }
 
     final PrinterSpecification[] retval =
@@ -65,10 +65,10 @@ public abstract class AbstractPrinterSpecificationLoader
       final String printerKey = (String) printerIt.next();
       final String printerName = printerConfig.getProperty
               (PRINTER_PREFIX + printerKey +
-               PRINTER_NAME);
+              PRINTER_NAME);
       final String printerCharsets = printerConfig.getProperty
               (PRINTER_PREFIX + printerKey +
-               PRINTER_ENCODINGS);
+              PRINTER_ENCODINGS);
       //final String printerOperations = printerConfig.getProperty
       //        (PRINTER_PREFIX + printerKey + ".operations");
       final String[] supportedCharsets = parseCSVString(printerCharsets);
@@ -104,7 +104,7 @@ public abstract class AbstractPrinterSpecificationLoader
     // collect all available encoding names ...
     final TreeSet availableEncodingNames = new TreeSet();
     final Iterator it = encodingConfig.findPropertyKeys
-            (ENCODING_PREFIX );
+            (ENCODING_PREFIX);
     while (it.hasNext())
     {
       final String name = (String) it.next();
@@ -118,7 +118,7 @@ public abstract class AbstractPrinterSpecificationLoader
       {
         continue;
       }
-      availableEncodingNames.add (name.substring(beginIndex + 1, endIndex));
+      availableEncodingNames.add(name.substring(beginIndex + 1, endIndex));
     }
 
     // and load them
@@ -129,18 +129,18 @@ public abstract class AbstractPrinterSpecificationLoader
       final String encodingKey = (String) encIt.next();
       final String encodingName = encodingConfig.getProperty
               (ENCODING_PREFIX + encodingKey +
-               ENCODING_NAME);
+              ENCODING_NAME);
       final String encodingCharset = encodingConfig.getProperty
               (ENCODING_PREFIX + encodingKey +
-               ENCODING_CHARSET );
+              ENCODING_CHARSET);
       final String encodingBytes = encodingConfig.getProperty
               (ENCODING_PREFIX + encodingKey +
-               ENCODING_BYTES );
+              ENCODING_BYTES);
       final byte[] encodingCode = parseBytes(encodingBytes);
       final PrinterEncoding encoding =
               new PrinterEncoding(encodingKey, encodingName,
                       encodingCharset, encodingCode);
-      encodings.add (encoding);
+      encodings.add(encoding);
     }
 
     return (PrinterEncoding[])
@@ -154,13 +154,13 @@ public abstract class AbstractPrinterSpecificationLoader
     while (strtok.hasMoreTokens())
     {
       final String token = strtok.nextToken();
-      tokens.add (token);
+      tokens.add(token);
     }
 
     final byte[] retval = new byte[tokens.size()];
     for (int i = 0; i < tokens.size(); i++)
     {
-      retval[i] = Byte.parseByte((String) tokens.get (i));
+      retval[i] = Byte.parseByte((String) tokens.get(i));
     }
     return retval;
   }
@@ -172,7 +172,7 @@ public abstract class AbstractPrinterSpecificationLoader
     while (strtok.hasMoreTokens())
     {
       final String token = strtok.nextToken();
-      tokens.add (token);
+      tokens.add(token);
     }
 
     final String[] retval = new String[tokens.size()];

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataSourceReferenceTableModel.java,v 1.4 2003/08/25 14:29:31 taqua Exp $
+ * $Id: DataSourceReferenceTableModel.java,v 1.5 2004/05/07 14:29:24 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -59,24 +59,30 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
    */
   private class DataSourceDescriptionRow
   {
-    /** The factory. */
+    /**
+     * The factory.
+     */
     private final DataSourceFactory datasourceFactory;
 
-    /** The key. */
+    /**
+     * The key.
+     */
     private final String datasourceName;
 
-    /** The implementing class for the datasource name. */
+    /**
+     * The implementing class for the datasource name.
+     */
     private final Class implementingClass;
 
     /**
      * Creates a new row.
      *
      * @param datasourceFactory the datasource factory
-     * @param name the name of the datasource within the factory.
+     * @param name              the name of the datasource within the factory.
      * @param implementingClass the class that implements the named datasource.
      */
-    public DataSourceDescriptionRow(final DataSourceFactory datasourceFactory,
-                                    final String name, final Class implementingClass)
+    public DataSourceDescriptionRow (final DataSourceFactory datasourceFactory,
+                                     final String name, final Class implementingClass)
     {
       this.datasourceFactory = datasourceFactory;
       this.datasourceName = name;
@@ -88,7 +94,7 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
      *
      * @return The factory.
      */
-    public DataSourceFactory getFactory()
+    public DataSourceFactory getFactory ()
     {
       return datasourceFactory;
     }
@@ -98,7 +104,7 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
      *
      * @return The datasource name.
      */
-    public String getName()
+    public String getName ()
     {
       return datasourceName;
     }
@@ -108,29 +114,33 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
      *
      * @return the datasource class.
      */
-    public Class getImplementingClass()
+    public Class getImplementingClass ()
     {
       return implementingClass;
     }
   }
 
-  /** The column names. */
+  /**
+   * The column names.
+   */
   private static final String[] COLUMN_NAMES =
-      {
-        "datasource-factory",
-        "datasource-name",
-        "datasource-class"
-      };
+          {
+            "datasource-factory",
+            "datasource-name",
+            "datasource-class"
+          };
 
-  /** Storage for the rows. */
+  /**
+   * Storage for the rows.
+   */
   private final ArrayList rows;
 
   /**
    * Creates a new table model.
    *
-   * @param cf  the factory collection.
+   * @param cf the factory collection.
    */
-  public DataSourceReferenceTableModel(final DataSourceCollector cf)
+  public DataSourceReferenceTableModel (final DataSourceCollector cf)
   {
     rows = new ArrayList();
     addFactoryCollector(cf);
@@ -139,9 +149,9 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
   /**
    * Adds a factory.
    *
-   * @param cf  the factory.
+   * @param cf the factory.
    */
-  private void addFactoryCollector(final DataSourceCollector cf)
+  private void addFactoryCollector (final DataSourceCollector cf)
   {
     final Iterator it = cf.getFactories();
     while (it.hasNext())
@@ -161,9 +171,9 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
   /**
    * Adds a factory.
    *
-   * @param cf  the factory.
+   * @param cf the factory.
    */
-  private void addDataSourceFactory(final DataSourceFactory cf)
+  private void addDataSourceFactory (final DataSourceFactory cf)
   {
     Iterator it = cf.getRegisteredNames();
     final ArrayList factories = new ArrayList();
@@ -186,28 +196,28 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
   }
 
   /**
-   * Returns the number of rows in the model. A
-   * <code>JTable</code> uses this method to determine how many rows it
-   * should display.  This method should be quick, as it
-   * is called frequently during rendering.
+   * Returns the number of rows in the model. A <code>JTable</code> uses this method to
+   * determine how many rows it should display.  This method should be quick, as it is
+   * called frequently during rendering.
    *
    * @return the number of rows in the model
+   *
    * @see #getColumnCount
    */
-  public int getRowCount()
+  public int getRowCount ()
   {
     return rows.size();
   }
 
   /**
-   * Returns the number of columns in the model. A
-   * <code>JTable</code> uses this method to determine how many columns it
-   * should create and display by default.
+   * Returns the number of columns in the model. A <code>JTable</code> uses this method to
+   * determine how many columns it should create and display by default.
    *
    * @return the number of columns in the model
+   *
    * @see #getRowCount
    */
-  public int getColumnCount()
+  public int getColumnCount ()
   {
     return COLUMN_NAMES.length;
   }
@@ -215,21 +225,21 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
   /**
    * Returns the column name.
    *
-   * @param column  the column being queried
+   * @param column the column being queried
    * @return a string containing the default name of <code>column</code>
    */
-  public String getColumnName(final int column)
+  public String getColumnName (final int column)
   {
     return COLUMN_NAMES[column];
   }
 
   /**
-   *  Returns <code>String.class</code> regardless of <code>columnIndex</code>.
+   * Returns <code>String.class</code> regardless of <code>columnIndex</code>.
    *
-   *  @param columnIndex  the column being queried
-   *  @return the Object.class
+   * @param columnIndex the column being queried
+   * @return the Object.class
    */
-  public Class getColumnClass(final int columnIndex)
+  public Class getColumnClass (final int columnIndex)
   {
     return String.class;
   }
@@ -238,12 +248,11 @@ public class DataSourceReferenceTableModel extends AbstractTableModel
    * Returns the value for the cell at <code>columnIndex</code> and
    * <code>rowIndex</code>.
    *
-   * @param rowIndex  the row whose value is to be queried
-   * @param columnIndex  the column whose value is to be queried
-   *
+   * @param rowIndex    the row whose value is to be queried
+   * @param columnIndex the column whose value is to be queried
    * @return the value Object at the specified cell
    */
-  public Object getValueAt(final int rowIndex, final int columnIndex)
+  public Object getValueAt (final int rowIndex, final int columnIndex)
   {
     final DataSourceDescriptionRow or = (DataSourceDescriptionRow) rows.get(rowIndex);
     switch (columnIndex)

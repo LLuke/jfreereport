@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExceptionDialog.java,v 1.5 2004/05/07 14:29:24 mungady Exp $
+ * $Id: ExceptionDialog.java,v 1.6 2005/01/25 00:03:34 taqua Exp $
  *
  * Changes
  * -------
@@ -59,8 +59,8 @@ import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
 import org.jfree.report.util.Log;
-import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.FloatingButtonEnabler;
+import org.jfree.ui.action.ActionButton;
 
 /**
  * The exception dialog is used to display an exception and the exceptions stacktrace to
@@ -70,13 +70,15 @@ import org.jfree.ui.FloatingButtonEnabler;
  */
 public class ExceptionDialog extends JDialog
 {
-  /** OK action. */
+  /**
+   * OK action.
+   */
   private final class OKAction extends AbstractAction
   {
     /**
      * Default constructor.
      */
-    private OKAction()
+    private OKAction ()
     {
       putValue(NAME, UIManager.getDefaults().getString("OptionPane.okButtonText"));
     }
@@ -84,9 +86,9 @@ public class ExceptionDialog extends JDialog
     /**
      * Receives notification that an action event has occurred.
      *
-     * @param event  the action event.
+     * @param event the action event.
      */
-    public void actionPerformed(final ActionEvent event)
+    public void actionPerformed (final ActionEvent event)
     {
       setVisible(false);
     }
@@ -100,7 +102,7 @@ public class ExceptionDialog extends JDialog
     /**
      * Default constructor.
      */
-    private DetailsAction()
+    private DetailsAction ()
     {
       putValue(NAME, ">>");
     }
@@ -108,9 +110,9 @@ public class ExceptionDialog extends JDialog
     /**
      * Receives notification that an action event has occurred.
      *
-     * @param event  the action event.
+     * @param event the action event.
      */
-    public void actionPerformed(final ActionEvent event)
+    public void actionPerformed (final ActionEvent event)
     {
       setScrollerVisible(!(isScrollerVisible()));
       if (isScrollerVisible())
@@ -125,34 +127,50 @@ public class ExceptionDialog extends JDialog
     }
   }
 
-  /** A UI component for displaying the stack trace. */
+  /**
+   * A UI component for displaying the stack trace.
+   */
   private final JTextArea backtraceArea;
 
-  /** A UI component for displaying the message. */
+  /**
+   * A UI component for displaying the message.
+   */
   private final JLabel messageLabel;
 
-  /** The exception. */
+  /**
+   * The exception.
+   */
   private Exception currentEx;
 
-  /** An action associated with the 'OK' button. */
+  /**
+   * An action associated with the 'OK' button.
+   */
   private OKAction okAction;
 
-  /** An action associated with the 'Details' button. */
+  /**
+   * An action associated with the 'Details' button.
+   */
   private DetailsAction detailsAction;
 
-  /** A scroll pane. */
+  /**
+   * A scroll pane.
+   */
   private final JScrollPane scroller;
 
-  /** A filler panel. */
+  /**
+   * A filler panel.
+   */
   private final JPanel filler;
 
-  /** The default dialog. */
+  /**
+   * The default dialog.
+   */
   private static ExceptionDialog defaultDialog;
 
   /**
    * Creates a new ExceptionDialog.
    */
-  public ExceptionDialog()
+  public ExceptionDialog ()
   {
     setModal(true);
     messageLabel = new JLabel();
@@ -220,9 +238,10 @@ public class ExceptionDialog extends JDialog
   }
 
   /**
-   * Adjusts the size of the dialog to fit the with of the contained message and stacktrace.
+   * Adjusts the size of the dialog to fit the with of the contained message and
+   * stacktrace.
    */
-  public void adjustSize()
+  public void adjustSize ()
   {
     final Dimension scSize = scroller.getPreferredSize();
     final Dimension cbase = filler.getPreferredSize();
@@ -238,7 +257,7 @@ public class ExceptionDialog extends JDialog
    *
    * @param b true, if the scroller should be visible, false otherwise.
    */
-  protected void setScrollerVisible(final boolean b)
+  protected void setScrollerVisible (final boolean b)
   {
     scroller.setVisible(b);
   }
@@ -248,7 +267,7 @@ public class ExceptionDialog extends JDialog
    *
    * @return true, if the scroller is visible, false otherwise.
    */
-  protected boolean isScrollerVisible()
+  protected boolean isScrollerVisible ()
   {
     return scroller.isVisible();
   }
@@ -258,7 +277,7 @@ public class ExceptionDialog extends JDialog
    *
    * @return a panel containing the 'OK' and 'Details' buttons.
    */
-  private JPanel createButtonPane()
+  private JPanel createButtonPane ()
   {
     final JPanel buttonPane = new JPanel();
     buttonPane.setLayout(new FlowLayout(2));
@@ -278,33 +297,35 @@ public class ExceptionDialog extends JDialog
   }
 
   /**
-   * Sets the message for this exception dialog. The message is displayed on the main page.
+   * Sets the message for this exception dialog. The message is displayed on the main
+   * page.
    *
-   * @param mesg  the message.
+   * @param mesg the message.
    */
-  public void setMessage(final String mesg)
+  public void setMessage (final String mesg)
   {
     messageLabel.setText(mesg);
   }
 
   /**
-   * Returns the message for this exception dialog.   The message is displayed on the main page.
+   * Returns the message for this exception dialog.   The message is displayed on the main
+   * page.
    *
    * @return the message.
    */
-  public String getMessage()
+  public String getMessage ()
   {
     return messageLabel.getText();
   }
 
   /**
-   * Sets the exception for this dialog. If no exception is set, the "Detail" button is disabled
-   * and the stacktrace text cleared. Else the stacktraces text is read into the detail message
-   * area.
+   * Sets the exception for this dialog. If no exception is set, the "Detail" button is
+   * disabled and the stacktrace text cleared. Else the stacktraces text is read into the
+   * detail message area.
    *
-   * @param e  the exception.
+   * @param e the exception.
    */
-  public void setException(final Exception e)
+  public void setException (final Exception e)
   {
     currentEx = e;
     if (e == null)
@@ -321,11 +342,10 @@ public class ExceptionDialog extends JDialog
   /**
    * Reads the stacktrace text from the exception.
    *
-   * @param e  the exception.
-   *
+   * @param e the exception.
    * @return the stack trace.
    */
-  private String readFromException(final Exception e)
+  private String readFromException (final Exception e)
   {
     String text = "No backtrace available";
     try
@@ -348,21 +368,21 @@ public class ExceptionDialog extends JDialog
    *
    * @return the exception.
    */
-  public Exception getException()
+  public Exception getException ()
   {
     return currentEx;
   }
 
   /**
-   * Shows an default dialog with the given message and title and the exceptions stacktrace
-   * in the detail area.
+   * Shows an default dialog with the given message and title and the exceptions
+   * stacktrace in the detail area.
    *
-   * @param title  the title.
-   * @param message  the message.
-   * @param e  the exception.
+   * @param title   the title.
+   * @param message the message.
+   * @param e       the exception.
    */
   public static void showExceptionDialog
-      (final String title, final String message, final Exception e)
+          (final String title, final String message, final Exception e)
   {
     if (defaultDialog == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DateFormatFilter.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: DateFormatFilter.java,v 1.3 2004/05/07 08:24:42 mungady Exp $
  *
  * Changes
  * -------
@@ -42,24 +42,23 @@ import java.text.DateFormat;
 import java.text.Format;
 
 /**
- * A filter that creates string from dates. This filter will format java.util.
- * Date objects using a java.text.DateFormat to create the string representation for
- * the date obtained from the datasource.
- * <p>
+ * A filter that creates string from dates. This filter will format java.util. Date
+ * objects using a java.text.DateFormat to create the string representation for the date
+ * obtained from the datasource.
+ * <p/>
  * If the object read from the datasource is no date, the NullValue defined by
  * setNullValue(Object) is returned.
  *
- * @see java.text.DateFormat
- *
  * @author Thomas Morgner
+ * @see java.text.DateFormat
  */
 public class DateFormatFilter extends FormatFilter
 {
   /**
-   * Default constructor.  Creates a new filter using the default date format for the current
-   * locale.
+   * Default constructor.  Creates a new filter using the default date format for the
+   * current locale.
    */
-  public DateFormatFilter()
+  public DateFormatFilter ()
   {
     setFormatter(DateFormat.getInstance());
   }
@@ -69,7 +68,7 @@ public class DateFormatFilter extends FormatFilter
    *
    * @return The date format object.
    */
-  public DateFormat getDateFormat()
+  public DateFormat getDateFormat ()
   {
     return (DateFormat) getFormatter();
   }
@@ -80,7 +79,7 @@ public class DateFormatFilter extends FormatFilter
    * @param format The format.
    * @throws NullPointerException if the format given is null
    */
-  public void setDateFormat(final DateFormat format)
+  public void setDateFormat (final DateFormat format)
   {
     super.setFormatter(format);
   }
@@ -89,10 +88,10 @@ public class DateFormatFilter extends FormatFilter
    * Sets the formatter.
    *
    * @param format The format.
-   * @throws ClassCastException if the format given is no DateFormat
+   * @throws ClassCastException   if the format given is no DateFormat
    * @throws NullPointerException if the format given is null
    */
-  public void setFormatter(final Format format)
+  public void setFormatter (final Format format)
   {
     final DateFormat dfmt = (DateFormat) format;
     super.setFormatter(dfmt);

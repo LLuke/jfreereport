@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.10 2005/01/25 00:20:29 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.11 2005/02/04 19:08:53 taqua Exp $
  *
  * Changes
  * -------
@@ -60,21 +60,25 @@ import org.jfree.xml.writer.AttributeList;
  */
 public class FunctionsWriter extends AbstractXMLDefinitionWriter
 {
-  /** The comment hint path for all functions related parser hints. */
+  /**
+   * The comment hint path for all functions related parser hints.
+   */
   private static final CommentHintPath FUNCTIONS_PATH = new CommentHintPath
-      (new String[]{REPORT_DEFINITION_TAG, FUNCTIONS_TAG});
+          (new String[]{REPORT_DEFINITION_TAG, FUNCTIONS_TAG});
 
 
-  /** The object factory. */
+  /**
+   * The object factory.
+   */
   private final ClassFactoryCollector cfc;
 
   /**
    * Creates a new writer.
    *
-   * @param reportWriter  the report writer.
-   * @param indentLevel the current indention level.
+   * @param reportWriter the report writer.
+   * @param indentLevel  the current indention level.
    */
-  public FunctionsWriter(final ReportWriter reportWriter, final int indentLevel)
+  public FunctionsWriter (final ReportWriter reportWriter, final int indentLevel)
   {
     super(reportWriter, indentLevel);
     cfc = getReportWriter().getClassFactoryCollector();
@@ -83,14 +87,13 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
   /**
    * Writes the functions to XML.
    *
-   * @param writer  the writer.
-   *
-   * @throws IOException if there is an I/O problem.
-   * @throws ReportWriterException if the report function definition
-   * could not be written.
+   * @param writer the writer.
+   * @throws IOException           if there is an I/O problem.
+   * @throws ReportWriterException if the report function definition could not be
+   *                               written.
    */
-  public void write(final Writer writer)
-      throws IOException, ReportWriterException
+  public void write (final Writer writer)
+          throws IOException, ReportWriterException
   {
     writeComment(writer, FUNCTIONS_PATH, CommentHandler.OPEN_TAG_COMMENT);
     if (shouldWriteFunctions())
@@ -108,10 +111,10 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
   /**
    * Tests, whether to start a functions section.
    *
-   * @return true, if there are functions, marked properties or
-   * expressions defined, false otherwise.
+   * @return true, if there are functions, marked properties or expressions defined, false
+   *         otherwise.
    */
-  private boolean shouldWriteFunctions()
+  private boolean shouldWriteFunctions ()
   {
     if (getReport().getProperties().containsMarkedProperties())
     {
@@ -127,13 +130,12 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
   /**
    * Writes a collection of functions/expressions to XML.
    *
-   * @param writer  the writer.
-   * @param exp  the collection.
-   *
+   * @param writer the writer.
+   * @param exp    the collection.
    * @throws java.io.IOException if there is an I/O problem.
    */
-  public void writeExpressions(final Writer writer, final ExpressionCollection exp)
-      throws IOException
+  public void writeExpressions (final Writer writer, final ExpressionCollection exp)
+          throws IOException
   {
     for (int i = 0; i < exp.size(); i++)
     {
@@ -176,9 +178,9 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
   }
 
   private void writeExpressionParameters
-      (Writer writer, final CommentHintPath path,
-       final String[] propertyNames, final BeanUtility beanUtility)
-      throws IOException, BeanException
+          (Writer writer, final CommentHintPath path,
+           final String[] propertyNames, final BeanUtility beanUtility)
+          throws IOException, BeanException
   {
     final CommentHintPath propertiesPath = path.getInstance();
     propertiesPath.addName(PROPERTIES_TAG);
@@ -208,13 +210,12 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
   /**
    * Writes the property references to XML.
    *
-   * @param writer  the writer.
-   *
-   * @throws IOException if there is an I/O problem.
+   * @param writer the writer.
+   * @throws IOException           if there is an I/O problem.
    * @throws ReportWriterException if the report definition could not be written.
    */
-  private void writePropertyRefs(final Writer writer)
-      throws IOException, ReportWriterException
+  private void writePropertyRefs (final Writer writer)
+          throws IOException, ReportWriterException
   {
     final ReportProperties reportProperties = getReport().getProperties();
     final Iterator keys = reportProperties.keys();
@@ -265,18 +266,17 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
   /**
    * Writes an object description to XML.
    *
-   * @param writer  the writer.
-   * @param od  the object description.
-   * @param o  the object.
-   * @param path the path on where to search for ext-parser comments
-   * in the report builder hints.
-   *
-   * @throws IOException if there is an I/O problem.
+   * @param writer the writer.
+   * @param od     the object description.
+   * @param o      the object.
+   * @param path   the path on where to search for ext-parser comments in the report
+   *               builder hints.
+   * @throws IOException           if there is an I/O problem.
    * @throws ReportWriterException if the report definition could not be written.
    */
-  private void writeObjectDescription(final Writer writer, final ObjectDescription od,
-                                      final Object o, final CommentHintPath path)
-      throws IOException, ReportWriterException
+  private void writeObjectDescription (final Writer writer, final ObjectDescription od,
+                                       final Object o, final CommentHintPath path)
+          throws IOException, ReportWriterException
   {
     try
     {
@@ -298,7 +298,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
     else
     {
       final ObjectWriter objectWriter =
-          new ObjectWriter(getReportWriter(), o, od, getIndentLevel(), path);
+              new ObjectWriter(getReportWriter(), o, od, getIndentLevel(), path);
       objectWriter.write(writer);
     }
 
@@ -308,11 +308,10 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    * Returns <code>true</code> if the object description is for a basic object, and
    * <code>false</code> otherwise.
    *
-   * @param od  the object description.
-   *
+   * @param od the object description.
    * @return <code>true</code> or <code>false</code>.
    */
-  private boolean isBasicObject(final ObjectDescription od)
+  private boolean isBasicObject (final ObjectDescription od)
   {
     final Iterator odNames = od.getParameterNames();
     if (odNames.hasNext() == false)

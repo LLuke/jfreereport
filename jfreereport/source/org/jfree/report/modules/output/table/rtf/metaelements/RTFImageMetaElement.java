@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFImageMetaElement.java,v 1.4 2005/02/19 13:30:02 taqua Exp $
+ * $Id: RTFImageMetaElement.java,v 1.5 2005/02/22 20:19:32 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -83,13 +83,15 @@ public class RTFImageMetaElement extends RTFMetaElement
 
 
   /**
-   * Creates a iText TableCell with image content in it. The image is
-   * recoded as PNG if necessary.
+   * Creates a iText TableCell with image content in it. The image is recoded as PNG if
+   * necessary.
    *
    * @return the cell with the content.
+   *
    * @throws DocumentException if the cell could not be created.
    */
-  public RtfCell getCell() throws DocumentException
+  public RtfCell getCell ()
+          throws DocumentException
   {
     try
     {

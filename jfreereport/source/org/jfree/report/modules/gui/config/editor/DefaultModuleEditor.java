@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultModuleEditor.java,v 1.7 2004/05/07 14:29:52 mungady Exp $
+ * $Id: DefaultModuleEditor.java,v 1.8 2005/01/25 00:04:32 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -62,31 +62,34 @@ import org.jfree.report.modules.gui.config.model.ModuleNodeFactory;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
- * The default module editor provides a simple default implementation to
- * edit all configuration keys for a given module.
- * 
+ * The default module editor provides a simple default implementation to edit all
+ * configuration keys for a given module.
+ *
  * @author Thomas Morgner
  */
 public class DefaultModuleEditor implements ModuleEditor
 {
   /**
-   * Handles the selection of an checkbox and enables the assigned
-   * editor component.
+   * Handles the selection of an checkbox and enables the assigned editor component.
    */
   private static class EnableAction implements ActionListener
   {
-    /** The key editor that is assigned to the checkbox. */
+    /**
+     * The key editor that is assigned to the checkbox.
+     */
     private final KeyEditor editor;
-    /** The source checkbox, to which this action is assigned. */
+    /**
+     * The source checkbox, to which this action is assigned.
+     */
     private final JCheckBox source;
 
     /**
      * Creates a new enable action for the given checkbox.
-     * 
-     * @param ed the key editor that is assigned to the checkbox
+     *
+     * @param ed     the key editor that is assigned to the checkbox
      * @param source the checkbox on which this action is registered-
      */
-    public EnableAction(final KeyEditor ed, final JCheckBox source)
+    public EnableAction (final KeyEditor ed, final JCheckBox source)
     {
       this.editor = ed;
       this.source = source;
@@ -94,33 +97,37 @@ public class DefaultModuleEditor implements ModuleEditor
 
     /**
      * Enables the key editor if the checkbox is selected.
-     * 
+     *
      * @param e not used
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       editor.setEnabled(source.isSelected());
     }
   }
 
   /**
-   * A editor carrier implementation used to collect all active editor
-   * components and their assigned checkboxes.
+   * A editor carrier implementation used to collect all active editor components and
+   * their assigned checkboxes.
    */
   private static class EditorCarrier
   {
-    /** The editor component. */
-    private final KeyEditor editor;
-    /** The checkbox that enabled the editor. */
-    private final JCheckBox enableBox;
-  
     /**
-     * Creates a new carrier for the given editor and checkbox. 
-     * 
-     * @param editor the editor component to which the checkbox is assigned
+     * The editor component.
+     */
+    private final KeyEditor editor;
+    /**
+     * The checkbox that enabled the editor.
+     */
+    private final JCheckBox enableBox;
+
+    /**
+     * Creates a new carrier for the given editor and checkbox.
+     *
+     * @param editor    the editor component to which the checkbox is assigned
      * @param enableBox the checkbox that enabled the editor.
      */
-    public EditorCarrier(final KeyEditor editor, final JCheckBox enableBox)
+    public EditorCarrier (final KeyEditor editor, final JCheckBox enableBox)
     {
       this.editor = editor;
       this.enableBox = enableBox;
@@ -128,45 +135,61 @@ public class DefaultModuleEditor implements ModuleEditor
 
     /**
      * Return the key editor.
+     *
      * @return the editor.
      */
-    public KeyEditor getEditor()
+    public KeyEditor getEditor ()
     {
       return editor;
     }
 
     /**
      * Resets the keyeditor and the checkbox to the default value.
-     *
      */
-    public void reset()
+    public void reset ()
     {
       enableBox.setSelected(editor.isDefined());
       editor.setEnabled(editor.isDefined());
     }
   }
-  
-  /** The report configuration used in this module editor. */
+
+  /**
+   * The report configuration used in this module editor.
+   */
   private ReportConfiguration config;
-  /** The list of keynames used in the editor. */
+  /**
+   * The list of keynames used in the editor.
+   */
   private ConfigDescriptionEntry[] keyNames;
-  /** The contentpane that holds all other components. */
+  /**
+   * The contentpane that holds all other components.
+   */
   private final JPanel contentpane;
-  /** all active key editors as array. */
+  /**
+   * all active key editors as array.
+   */
   private EditorCarrier[] activeEditors;
-  /** The module which we edit. */
+  /**
+   * The module which we edit.
+   */
   private Module module;
-  /** The package of the module implementation. */
+  /**
+   * The package of the module implementation.
+   */
   private String modulePackage;
-  /** The rootpane holds the editor and the help area. */
+  /**
+   * The rootpane holds the editor and the help area.
+   */
   private final JSplitPane rootpane;
-  /** The rootpane holds the editor and the help area. */
+  /**
+   * The rootpane holds the editor and the help area.
+   */
   private final JEditorPane helpPane;
 
   /**
    * Creates a new, uninitialized module editor.
    */
-  public DefaultModuleEditor()
+  public DefaultModuleEditor ()
   {
     contentpane = new JPanel();
     contentpane.setLayout(new VerticalLayout());
@@ -176,8 +199,8 @@ public class DefaultModuleEditor implements ModuleEditor
     helpPane.setEditorKit(new HTMLEditorKit());
     final JPanel toolbar = new JPanel();
     toolbar.setLayout(new BorderLayout());
-    toolbar.add (new JScrollPane(helpPane));
-    toolbar.setMinimumSize(new Dimension (100, 150));
+    toolbar.add(new JScrollPane(helpPane));
+    toolbar.setMinimumSize(new Dimension(100, 150));
 
     rootpane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
     try
@@ -185,7 +208,7 @@ public class DefaultModuleEditor implements ModuleEditor
       // An ugly way of calling
       //   rootpane.setResizeWeight(1);
       final Method m = rootpane.getClass().getMethod
-          ("setResizeWeight", new Class[]{ Double.TYPE });
+              ("setResizeWeight", new Class[]{Double.TYPE});
       m.invoke(rootpane, new Object[]{new Double(1)});
     }
     catch (Exception e)
@@ -197,18 +220,19 @@ public class DefaultModuleEditor implements ModuleEditor
   }
 
   /**
-   * Creates a new, initialized instance of the default module editor. 
-   * @see ModuleEditor#createInstance(Module, 
-   * ReportConfiguration, ConfigDescriptionEntry[])
-   * 
-   * @param module the module that should be edited.
-   * @param config the report configuration used to fill the values of the editors.
+   * Creates a new, initialized instance of the default module editor.
+   *
+   * @param module   the module that should be edited.
+   * @param config   the report configuration used to fill the values of the editors.
    * @param keyNames the list of keynames this module editor should handle.
-   * @return the created new editor instance. 
+   * @return the created new editor instance.
+   *
+   * @see ModuleEditor#createInstance(Module, ReportConfiguration,
+          *      ConfigDescriptionEntry[])
    */
   public ModuleEditor createInstance
-      (final Module module, final ReportConfiguration config, 
-       final ConfigDescriptionEntry[] keyNames)
+          (final Module module, final ReportConfiguration config,
+           final ConfigDescriptionEntry[] keyNames)
   {
     final DefaultModuleEditor ed = new DefaultModuleEditor();
     ed.setConfig(config);
@@ -219,21 +243,21 @@ public class DefaultModuleEditor implements ModuleEditor
   }
 
   /**
-   * Returns the currently edited module. 
-   * 
+   * Returns the currently edited module.
+   *
    * @return the module of this editor.
    */
-  protected Module getModule()
+  protected Module getModule ()
   {
     return module;
   }
 
   /**
    * Defines the module for this editor.
-   * 
+   *
    * @param module the module, which should be handled by this editor.
    */
-  protected void setModule(final Module module)
+  protected void setModule (final Module module)
   {
     if (module == null)
     {
@@ -245,70 +269,73 @@ public class DefaultModuleEditor implements ModuleEditor
 
   /**
    * Checks, whether this module editor can handle the given module.
-   *  
+   *
    * @param module the module to be edited.
    * @return true, if this editor may be used to edit the module, false otherwise.
+   *
    * @see ModuleEditor#canHandle(Module)
    */
-  public boolean canHandle(final Module module)
+  public boolean canHandle (final Module module)
   {
     return true;
   }
 
   /**
    * Returns the report configuration used when loading values for this editor.
+   *
    * @return the report configuration.
    */
-  protected ReportConfiguration getConfig()
+  protected ReportConfiguration getConfig ()
   {
     return config;
   }
 
   /**
    * Defines the report configuration for this editor.
+   *
    * @param config the report configuration.
    */
-  protected void setConfig(final ReportConfiguration config)
+  protected void setConfig (final ReportConfiguration config)
   {
     this.config = config;
   }
 
   /**
    * Returns the key names used in this editor.
-   * 
+   *
    * @return the keynames.
    */
-  protected ConfigDescriptionEntry[] getKeyNames()
+  protected ConfigDescriptionEntry[] getKeyNames ()
   {
     return keyNames;
   }
 
   /**
-   * Defines the suggested key names for the module editor. This 
-   * implementation will use these keys to build the key editors.
-   * 
+   * Defines the suggested key names for the module editor. This implementation will use
+   * these keys to build the key editors.
+   *
    * @param keyNames the key names for the editor.
    */
-  protected void setKeyNames(final ConfigDescriptionEntry[] keyNames)
+  protected void setKeyNames (final ConfigDescriptionEntry[] keyNames)
   {
     this.keyNames = keyNames;
   }
 
   /**
-   * Returns the editor component of the module. Calling this method is 
-   * only valid on instances created with createInstance.
-   *   
+   * Returns the editor component of the module. Calling this method is only valid on
+   * instances created with createInstance.
+   *
    * @return the editor component for the GUI.
    */
-  public JComponent getComponent()
+  public JComponent getComponent ()
   {
     return rootpane;
   }
 
   /**
-   * Creates a cut down display name for the given key. The display name
-   * will replace the module package with '~'.
-   * 
+   * Creates a cut down display name for the given key. The display name will replace the
+   * module package with '~'.
+   *
    * @param keyName the keyname which should be shortend.
    * @return the modified keyname suitable to be displayed as label.
    */
@@ -322,25 +349,25 @@ public class DefaultModuleEditor implements ModuleEditor
   }
 
   /**
-   * Initializes all component for the module editor and creates
-   * and layouts all keyeditors.
+   * Initializes all component for the module editor and creates and layouts all
+   * keyeditors.
    */
-  protected void build()
+  protected void build ()
   {
     final StringWriter writer = new StringWriter();
     writer.write("<html><head><title></title></head><body>");
 
     final JLabel mangleInfo = new JLabel();
     mangleInfo.setText
-        ("All keys marked with '~.' are relative to the module package '" +
-        modulePackage + "'");
-    contentpane.add (mangleInfo);
+            ("All keys marked with '~.' are relative to the module package '" +
+            modulePackage + "'");
+    contentpane.add(mangleInfo);
 
     final ConfigDescriptionEntry[] keyNames = getKeyNames();
     if (keyNames == null)
     {
       throw new IllegalStateException
-          ("No keys defined. Are you working on the template?");
+              ("No keys defined. Are you working on the template?");
     }
     activeEditors = new EditorCarrier[keyNames.length];
     for (int i = 0; i < keyNames.length; i++)
@@ -367,8 +394,8 @@ public class DefaultModuleEditor implements ModuleEditor
       enableCB.addActionListener(new EnableAction(editor, enableCB));
       final JPanel panel = new JPanel();
       panel.setLayout(new BorderLayout());
-      panel.add (enableCB, BorderLayout.WEST);
-      panel.add (editor.getComponent(), BorderLayout.CENTER);
+      panel.add(enableCB, BorderLayout.WEST);
+      panel.add(editor.getComponent(), BorderLayout.CENTER);
 
       contentpane.add(panel);
       activeEditors[i] = new EditorCarrier(editor, enableCB);
@@ -384,7 +411,7 @@ public class DefaultModuleEditor implements ModuleEditor
     int width = 0;
     for (int i = 0; i < activeEditors.length; i++)
     {
-      width = Math.max (width, activeEditors[i].getEditor().getLabelWidth());
+      width = Math.max(width, activeEditors[i].getEditor().getLabelWidth());
     }
     for (int i = 0; i < activeEditors.length; i++)
     {
@@ -399,7 +426,7 @@ public class DefaultModuleEditor implements ModuleEditor
   /**
    * Resets all keys to the values from the report configuration.
    */
-  public void reset()
+  public void reset ()
   {
     for (int i = 0; i < activeEditors.length; i++)
     {
@@ -410,7 +437,7 @@ public class DefaultModuleEditor implements ModuleEditor
   /**
    * Stores all values for the editor's keys into the report configuration.
    */
-  public void store()
+  public void store ()
   {
     for (int i = 0; i < activeEditors.length; i++)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ClassKeyEditor.java,v 1.4.4.2 2004/12/13 19:26:32 taqua Exp $
+ * $Id: ClassKeyEditor.java,v 1.6 2005/01/25 00:04:26 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,43 +44,47 @@ import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.ObjectUtilities;
 
 /**
- * The class key editor is used to edit report configuration keys which
- * take the name of an class as value.
- * 
+ * The class key editor is used to edit report configuration keys which take the name of
+ * an class as value.
+ *
  * @author Thomas Morgner
  */
 public class ClassKeyEditor extends TextKeyEditor
 {
-  /** The base class, to which all value classes must be assignable. */
+  /**
+   * The base class, to which all value classes must be assignable.
+   */
   private Class baseClass;
 
   /**
-   * Creates a new class key editor for the given entry and configuration.
-   * The given display name will be used as label text.
-   * 
-   * @param config the report configuration.
-   * @param entry the configuration description entry that describes the key 
+   * Creates a new class key editor for the given entry and configuration. The given
+   * display name will be used as label text.
+   *
+   * @param config      the report configuration.
+   * @param entry       the configuration description entry that describes the key
    * @param displayName the text for the label
    */
-  public ClassKeyEditor(final ReportConfiguration config,
-      final ClassConfigDescriptionEntry entry, final String displayName)
+  public ClassKeyEditor (final ReportConfiguration config,
+                         final ClassConfigDescriptionEntry entry,
+                         final String displayName)
   {
     super(config, entry, displayName);
     baseClass = entry.getBaseClass();
     if (baseClass == null)
     {
-      Log.warn ("Base class undefined, defaulting to java.lang.Object");
+      Log.warn("Base class undefined, defaulting to java.lang.Object");
       baseClass = Object.class;
     }
     validateContent();
   }
 
   /**
-   * Checks, whether the given value is a valid classname and is assignable
-   * from the base class. 
+   * Checks, whether the given value is a valid classname and is assignable from the base
+   * class.
+   *
    * @see org.jfree.report.modules.gui.config.editor.TextKeyEditor#validateContent()
    */
-  public void validateContent()
+  public void validateContent ()
   {
     if (baseClass == null)
     {
@@ -90,7 +94,7 @@ public class ClassKeyEditor extends TextKeyEditor
     try
     {
       final Class c = ObjectUtilities.getClassLoader(getClass()).loadClass(getContent());
-      setValidInput (baseClass.isAssignableFrom(c));
+      setValidInput(baseClass.isAssignableFrom(c));
     }
     catch (Exception e)
     {

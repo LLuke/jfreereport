@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ShapeFieldTemplate.java,v 1.5 2004/05/07 08:24:41 mungady Exp $
+ * $Id: ShapeFieldTemplate.java,v 1.6 2005/01/24 23:59:49 taqua Exp $
  *
  * Changes
  * -------
@@ -49,18 +49,22 @@ import org.jfree.report.filter.ShapeFilter;
  * @author Thomas Morgner.
  */
 public class ShapeFieldTemplate extends AbstractTemplate
-    implements ReportConnectable
+        implements ReportConnectable
 {
-  /** The data row reader. */
+  /**
+   * The data row reader.
+   */
   private DataRowDataSource dataRowDataSource;
 
-  /** A shape filter. */
+  /**
+   * A shape filter.
+   */
   private ShapeFilter shapeFilter;
 
   /**
    * Creates a new shape field template.
    */
-  public ShapeFieldTemplate()
+  public ShapeFieldTemplate ()
   {
     dataRowDataSource = new DataRowDataSource();
     shapeFilter = new ShapeFilter();
@@ -72,7 +76,7 @@ public class ShapeFieldTemplate extends AbstractTemplate
    *
    * @return The field name.
    */
-  public String getField()
+  public String getField ()
   {
     return dataRowDataSource.getDataSourceColumnName();
   }
@@ -80,9 +84,9 @@ public class ShapeFieldTemplate extends AbstractTemplate
   /**
    * Sets the field name.
    *
-   * @param field  the field name.
+   * @param field the field name.
    */
-  public void setField(final String field)
+  public void setField (final String field)
   {
     dataRowDataSource.setDataSourceColumnName(field);
   }
@@ -92,7 +96,7 @@ public class ShapeFieldTemplate extends AbstractTemplate
    *
    * @return the value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return shapeFilter.getValue();
   }
@@ -104,7 +108,8 @@ public class ShapeFieldTemplate extends AbstractTemplate
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final ShapeFieldTemplate template = (ShapeFieldTemplate) super.clone();
     template.shapeFilter = (ShapeFilter) shapeFilter.clone();
@@ -112,17 +117,17 @@ public class ShapeFieldTemplate extends AbstractTemplate
     return template;
   }
 
-  public void registerReportDefinition(ReportDefinition reportDefinition)
+  public void registerReportDefinition (ReportDefinition reportDefinition)
   {
     getDataRowDataSource().registerReportDefinition(reportDefinition);
   }
 
-  public void unregisterReportDefinition(ReportDefinition reportDefinition)
+  public void unregisterReportDefinition (ReportDefinition reportDefinition)
   {
     getDataRowDataSource().unregisterReportDefinition(reportDefinition);
   }
 
-  protected DataRowDataSource getDataRowDataSource()
+  protected DataRowDataSource getDataRowDataSource ()
   {
     return dataRowDataSource;
   }

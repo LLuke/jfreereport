@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportConnectable.java,v 1.1 2003/12/21 23:47:09 taqua Exp $
+ * $Id: ReportConnectable.java,v 1.2 2004/05/07 08:24:42 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -43,5 +43,6 @@ import org.jfree.report.ReportDefinition;
 public interface ReportConnectable
 {
   public void registerReportDefinition (ReportDefinition reportDefinition);
+
   public void unregisterReportDefinition (ReportDefinition reportDefinition);
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: GeneralPathObjectDescription.java,v 1.3 2003/08/25 14:29:33 taqua Exp $
+ * $Id: GeneralPathObjectDescription.java,v 1.4 2004/05/07 14:29:08 mungady Exp $
  *
  * Changes
  * -------
@@ -52,38 +52,47 @@ import org.jfree.xml.factory.objects.ObjectFactoryException;
  */
 public class GeneralPathObjectDescription extends AbstractObjectDescription
 {
-  /** A constant for the "segments" parameter. */
+  /**
+   * A constant for the "segments" parameter.
+   */
   private static final String SEGMENTS_NAME = "segments";
 
-  /** A constant for the "windingRule" parameter. */
+  /**
+   * A constant for the "windingRule" parameter.
+   */
   private static final String WINDING_RULE_NAME = "windingRule";
 
-  /** A constant value for the "windingRule" parameter. */
+  /**
+   * A constant value for the "windingRule" parameter.
+   */
   private static final String WINDING_RULE_EVEN_ODD = "wind-even-odd";
 
-  /** A constant value for the "windingRule" parameter. */
+  /**
+   * A constant value for the "windingRule" parameter.
+   */
   private static final String WINDING_RULE_NON_ZERO = "wind-non-zero";
 
-  /** The number of maximum points in a path iterator segment. */
+  /**
+   * The number of maximum points in a path iterator segment.
+   */
   private static final int MAX_POINTS = 6;
 
   /**
-   * DefaultConstructor. Initializes this object description to produce
-   * GeneralPath objects.
+   * DefaultConstructor. Initializes this object description to produce GeneralPath
+   * objects.
    */
-  public GeneralPathObjectDescription()
+  public GeneralPathObjectDescription ()
   {
     this(GeneralPath.class);
   }
 
   /**
-   * Creates a new GeneralPathObjectDescription. The given class must be
-   * an instance of an shape, the generated objects will be general path
-   * objects.
+   * Creates a new GeneralPathObjectDescription. The given class must be an instance of an
+   * shape, the generated objects will be general path objects.
    *
    * @param c the registered base class, an instance of shape.
    */
-  public GeneralPathObjectDescription(final Class c)
+  public GeneralPathObjectDescription (final Class c)
   {
     super(c);
     if (Shape.class.isAssignableFrom(c) == false)
@@ -100,7 +109,7 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
    *
    * @return The object.
    */
-  public Object createObject()
+  public Object createObject ()
   {
     final int wRule = parseWindingRule();
     if (wRule == -1)
@@ -129,8 +138,8 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
         case PathIterator.SEG_CUBICTO:
           {
             path.curveTo(segments[i].getX1(), segments[i].getY1(),
-                segments[i].getX2(), segments[i].getY2(),
-                segments[i].getX3(), segments[i].getY3());
+                    segments[i].getX2(), segments[i].getY2(),
+                    segments[i].getX3(), segments[i].getY3());
             break;
           }
         case PathIterator.SEG_LINETO:
@@ -146,7 +155,7 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
         case PathIterator.SEG_QUADTO:
           {
             path.quadTo(segments[i].getX1(), segments[i].getY1(),
-                segments[i].getX2(), segments[i].getY2());
+                    segments[i].getX2(), segments[i].getY2());
             break;
           }
         default:
@@ -161,7 +170,7 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
    *
    * @return the translated winding rule or -1 if the rule was invalid.
    */
-  private int parseWindingRule()
+  private int parseWindingRule ()
   {
     final String windingRule = (String) getParameter(WINDING_RULE_NAME);
     int wRule = -1;
@@ -183,11 +192,11 @@ public class GeneralPathObjectDescription extends AbstractObjectDescription
   /**
    * Sets the parameters of this description object to match the supplied object.
    *
-   * @param o  the object (should be an instance of <code>FontDefinition</code>).
-   *
+   * @param o the object (should be an instance of <code>FontDefinition</code>).
    * @throws ObjectFactoryException if the object is not an instance of <code>Float</code>.
    */
-  public void setParameterFromObject(final Object o) throws ObjectFactoryException
+  public void setParameterFromObject (final Object o)
+          throws ObjectFactoryException
   {
     if (getObjectClass().isAssignableFrom(o.getClass()) == false)
     {

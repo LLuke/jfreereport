@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemHideFunction.java,v 1.8 2005/01/28 19:26:49 taqua Exp $
+ * $Id: ItemHideFunction.java,v 1.9 2005/02/04 19:22:54 taqua Exp $
  *
  * Changes
  * -------
@@ -45,10 +45,10 @@ import org.jfree.report.event.ReportEvent;
 import org.jfree.util.ObjectUtilities;
 
 /**
- * The ItemHideFunction hides equal values in a group. Only the first changed value is printed.
- * This function uses the property <code>element</code> to define the name of the element in the
- * ItemBand that should be made visible or invisible by this function.
- * The property <code>field</code> defines the field in the datasource or the expression which
+ * The ItemHideFunction hides equal values in a group. Only the first changed value is
+ * printed. This function uses the property <code>element</code> to define the name of the
+ * element in the ItemBand that should be made visible or invisible by this function. The
+ * property <code>field</code> defines the field in the datasource or the expression which
  * should be used to determine the visibility.
  *
  * @author Thomas Morgner
@@ -56,46 +56,51 @@ import org.jfree.util.ObjectUtilities;
 public class ItemHideFunction extends AbstractFunction
         implements Serializable, PageEventListener
 {
-  /** The last object. */
+  /**
+   * The last object.
+   */
   private transient Object lastObject;
 
-  /** The 'visible' flag. */
+  /**
+   * The 'visible' flag.
+   */
   private transient boolean visible;
 
-  /** The 'first-in-group' flag. */
+  /**
+   * The 'first-in-group' flag.
+   */
   private transient boolean firstInGroup;
 
   private String element;
   private String field;
 
   /**
-   * Constructs an unnamed function.
-   * <P>
-   * Make sure to set the function name before it is used, or function initialisation will fail.
+   * Constructs an unnamed function. <P> Make sure to set the function name before it is
+   * used, or function initialisation will fail.
    */
-  public ItemHideFunction()
+  public ItemHideFunction ()
   {
   }
 
   /**
-   * Constructs a named function.
-   * <P>
-   * The field must be defined before using the function.
+   * Constructs a named function. <P> The field must be defined before using the
+   * function.
    *
    * @param name The function name.
    */
-  public ItemHideFunction(final String name)
+  public ItemHideFunction (final String name)
   {
     this();
     setName(name);
   }
 
   /**
-   * Returns the name of the element in the item band that should be set visible/invisible.
+   * Returns the name of the element in the item band that should be set
+   * visible/invisible.
    *
    * @return The element name.
    */
-  public String getElement()
+  public String getElement ()
   {
     return element;
   }
@@ -103,45 +108,43 @@ public class ItemHideFunction extends AbstractFunction
   /**
    * Sets the name of the element in the item band that should be set visible/invisible.
    *
-   * @param name  the element name (must not be null).
+   * @param name the element name (must not be null).
    */
-  public void setElement(final String name)
+  public void setElement (final String name)
   {
     this.element = name;
   }
 
   /**
-   * Returns the field used by the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel or to an expression.
+   * Returns the field used by the function. <P> The field name corresponds to a column
+   * name in the report's TableModel or to an expression.
    *
    * @return The field name.
    */
-  public String getField()
+  public String getField ()
   {
     return field;
   }
 
   /**
-   * Sets the field name for the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Sets the field name for the function. <P> The field name corresponds to a column name
+   * in the report's TableModel.
    *
-   * @param field  the field name (null not permitted).
+   * @param field the field name (null not permitted).
    */
-  public void setField(final String field)
+  public void setField (final String field)
   {
     this.field = field;
   }
 
   /**
-   * Receives notification that a row of data is being processed.  Reads the data from the field
-   * defined for this function and hides the field if the value is equal to the last value and the
-   * this is not the first row of the item group.
+   * Receives notification that a row of data is being processed.  Reads the data from the
+   * field defined for this function and hides the field if the value is equal to the last
+   * value and the this is not the first row of the item group.
    *
    * @param event Information about the event.
    */
-  public void itemsAdvanced(final ReportEvent event)
+  public void itemsAdvanced (final ReportEvent event)
   {
     final Object fieldValue = event.getDataRow().get(getField());
 
@@ -168,9 +171,9 @@ public class ItemHideFunction extends AbstractFunction
   /**
    * Resets the state of the function when a new ItemGroup has started.
    *
-   * @param event  the report event.
+   * @param event the report event.
    */
-  public void itemsStarted(final ReportEvent event)
+  public void itemsStarted (final ReportEvent event)
   {
     lastObject = null;
     firstInGroup = true;
@@ -181,7 +184,7 @@ public class ItemHideFunction extends AbstractFunction
    *
    * @return The function value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     if (visible)
     {
@@ -232,12 +235,12 @@ public class ItemHideFunction extends AbstractFunction
   }
 
   /**
-   * Return a completly separated copy of this function. The copy does no
-   * longer share any changeable objects with the original function.
+   * Return a completly separated copy of this function. The copy does no longer share any
+   * changeable objects with the original function.
    *
    * @return a copy of this function.
    */
-  public Expression getInstance()
+  public Expression getInstance ()
   {
     final ItemHideFunction ih = (ItemHideFunction) super.getInstance();
     ih.lastObject = null;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationResult.java,v 1.3 2003/11/07 18:33:56 taqua Exp $
+ * $Id: OperationResult.java,v 1.5 2005/01/25 00:17:39 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,46 +41,53 @@ package org.jfree.report.modules.parser.base;
 import java.io.Serializable;
 
 /**
- * The OperationResult class provides the possibility to monitor the result of 
- * the parsing progress and to handle warnings and errors.
- *  
+ * The OperationResult class provides the possibility to monitor the result of the parsing
+ * progress and to handle warnings and errors.
+ *
  * @author Thomas Morgner
  */
 public class OperationResult implements Serializable
 {
-  /** The message of the result object. */
+  /**
+   * The message of the result object.
+   */
   private String message;
-  /** The severity level of the message. */
+  /**
+   * The severity level of the message.
+   */
   private SeverityLevel severity;
-  /** The column in the xml file where the result was generated. */
+  /**
+   * The column in the xml file where the result was generated.
+   */
   private int column;
-  /** The line in the xml file where the result was generated. */
+  /**
+   * The line in the xml file where the result was generated.
+   */
   private int line;
 
   /**
    * Creates a new operation result with the given message and severity.
-   * 
-   * @param message the message of this result object.
+   *
+   * @param message  the message of this result object.
    * @param severity the assigned severity.
    * @throws NullPointerException if one of the parameters is null.
    */
-  public OperationResult(final String message, final SeverityLevel severity)
+  public OperationResult (final String message, final SeverityLevel severity)
   {
-    this (message, severity, -1, -1);
+    this(message, severity, -1, -1);
   }
 
   /**
-   * Creates a new operation result with the given message, severity and
-   * parse position.
-   * 
-   * @param message the message of this result object.
+   * Creates a new operation result with the given message, severity and parse position.
+   *
+   * @param message  the message of this result object.
    * @param severity the assigned severity.
-   * @param column the column of the parse position
-   * @param line the line of the parse position.
+   * @param column   the column of the parse position
+   * @param line     the line of the parse position.
    * @throws NullPointerException if one of the parameters is null.
    */
-  public OperationResult(final String message, final SeverityLevel severity, 
-                         final int column, final int line)
+  public OperationResult (final String message, final SeverityLevel severity,
+                          final int column, final int line)
   {
     if (message == null)
     {
@@ -97,41 +104,41 @@ public class OperationResult implements Serializable
   }
 
   /**
-   * Returns the message of the operation result. The message is never null. 
-   * 
+   * Returns the message of the operation result. The message is never null.
+   *
    * @return the message.
    */
-  public String getMessage()
+  public String getMessage ()
   {
     return message;
   }
 
   /**
    * Returns the severity of the message. The severity is never null.
-   * 
+   *
    * @return the severity.
    */
-  public SeverityLevel getSeverity()
+  public SeverityLevel getSeverity ()
   {
     return severity;
   }
 
   /**
    * Returns the column of the parse position where this message occured.
-   * 
+   *
    * @return the column of the parse position.
    */
-  public int getColumn()
+  public int getColumn ()
   {
     return column;
   }
 
   /**
    * Returns the line of the parse position where this message occured.
-   * 
+   *
    * @return the line of the parse position.
    */
-  public int getLine()
+  public int getLine ()
   {
     return line;
   }

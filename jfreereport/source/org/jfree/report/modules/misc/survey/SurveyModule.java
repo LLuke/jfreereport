@@ -19,8 +19,7 @@ public class SurveyModule extends AbstractModule
    * completed, throw a ModuleInitializeException to indicate the error,. The module will
    * not be available to the system.
    *
-   * @throws ModuleInitializeException
-   *          if an error ocurred while initializing the module.
+   * @throws ModuleInitializeException if an error ocurred while initializing the module.
    */
   public void initialize (SubSystem subSystem)
           throws ModuleInitializeException

@@ -27,9 +27,12 @@
  *
  * Original Author:  Mimil;
  *
- * $Id: CSVReaderDemo.java,v 1.1 2005/02/19 18:37:07 taqua Exp $
+ * $Id: CSVReaderDemo.java,v 1.2 2005/02/23 19:31:42 taqua Exp $
  *
  * $Log: CSVReaderDemo.java,v $
+ * Revision 1.2  2005/02/23 19:31:42  taqua
+ * First part of the ANT build update.
+ *
  * Revision 1.1  2005/02/19 18:37:07  taqua
  * CSVTableModel classes moved into modules/misc/tablemodel
  *
@@ -54,13 +57,13 @@ import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import javax.swing.Action;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.Action;
 import javax.swing.table.TableModel;
 
 import org.jfree.report.ElementAlignment;
@@ -81,8 +84,8 @@ import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionMenuItem;
 
 /**
- * Demo that show how to use <code>CSVTableModelProducer</code> to generate <code>TableModel</code>
- * for JFreeReport input data.
+ * Demo that show how to use <code>CSVTableModelProducer</code> to generate
+ * <code>TableModel</code> for JFreeReport input data.
  *
  * @see CSVTableModelProducer
  */
@@ -339,7 +342,7 @@ public class CSVReaderDemo extends AbstractDemoFrame
     }
   }
 
-  private void handleError (final String message, final  Exception e)
+  private void handleError (final String message, final Exception e)
   {
     ExceptionDialog.showExceptionDialog("Error", message, e);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.11 2005/01/24 23:58:41 taqua Exp $
+ * $Id: SampleReport1.java,v 1.12 2005/01/30 23:37:18 taqua Exp $
  *
  * Changes:
  * --------
@@ -83,7 +83,7 @@ public class SampleReport1
    *
    * @return the page header.
    */
-  private PageHeader createPageHeader()
+  private PageHeader createPageHeader ()
   {
     final PageHeader header = new PageHeader();
     header.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 18));
@@ -92,12 +92,9 @@ public class SampleReport1
     header.setDisplayOnLastPage(false);
 
     // is by default true, but it is defined in the xml template, so I add it here too.
-    header.addElement(
-        StaticShapeElementFactory.createRectangleShapeElement(
-            null, Color.decode("#AFAFAF"), null,
+    header.addElement(StaticShapeElementFactory.createRectangleShapeElement(null, Color.decode("#AFAFAF"), null,
             new Rectangle2D.Float(0, 0, -100, -100),
-            false, true)
-    );
+            false, true));
     final DateFieldElementFactory factory = new DateFieldElementFactory();
     factory.setName("date1");
     factory.setAbsolutePosition(new Point2D.Float(0, 0));
@@ -109,11 +106,8 @@ public class SampleReport1
     factory.setFieldname("report.date");
     header.addElement(factory.createElement());
 
-    header.addElement(
-        StaticShapeElementFactory.createHorizontalLine(
-            "line1", Color.decode("#CFCFCF"),
-            new BasicStroke(2), 16)
-    );
+    header.addElement(StaticShapeElementFactory.createHorizontalLine("line1", Color.decode("#CFCFCF"),
+            new BasicStroke(2), 16));
     return header;
   }
 
@@ -122,15 +116,15 @@ public class SampleReport1
    *
    * @return The page footer.
    */
-  private PageFooter createPageFooter()
+  private PageFooter createPageFooter ()
   {
     final PageFooter pageFooter = new PageFooter();
     pageFooter.getStyle().setStyleProperty
-        (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 30));
+            (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 30));
     pageFooter.getStyle().setFontDefinitionProperty(new FontDefinition("Dialog", 10));
 
     pageFooter.addElement(StaticShapeElementFactory.createRectangleShapeElement
-        (null, Color.black, null, new Rectangle2D.Float(0, 0, -100, -100), true, false));
+            (null, Color.black, null, new Rectangle2D.Float(0, 0, -100, -100), true, false));
 
     final LabelElementFactory factory = new LabelElementFactory();
     factory.setName("Label 2");
@@ -149,13 +143,13 @@ public class SampleReport1
    *
    * @return the report footer.
    */
-  private ReportFooter createReportFooter()
+  private ReportFooter createReportFooter ()
   {
     final ReportFooter footer = new ReportFooter();
     footer.getStyle().setStyleProperty
-        (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 48));
+            (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 48));
     footer.getStyle().setFontDefinitionProperty
-        (new FontDefinition("Serif", 16, true, false, false, false));
+            (new FontDefinition("Serif", 16, true, false, false, false));
 
     final LabelElementFactory factory = new LabelElementFactory();
     factory.setName("Label 2");
@@ -173,13 +167,13 @@ public class SampleReport1
    *
    * @return the report header.
    */
-  private ReportHeader createReportHeader()
+  private ReportHeader createReportHeader ()
   {
     final ReportHeader header = new ReportHeader();
     header.getStyle().setStyleProperty
-        (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 48));
+            (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 48));
     header.getStyle().setFontDefinitionProperty
-        (new FontDefinition("Serif", 20, true, false, false, false));
+            (new FontDefinition("Serif", 20, true, false, false, false));
 
     final LabelElementFactory factory = new LabelElementFactory();
     factory.setName("Label 1");
@@ -198,22 +192,22 @@ public class SampleReport1
    *
    * @return the item band.
    */
-  private ItemBand createItemBand()
+  private ItemBand createItemBand ()
   {
     final ItemBand items = new ItemBand();
     items.getStyle().setStyleProperty
-        (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 10));
+            (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 10));
     items.getStyle().setFontDefinitionProperty
-        (new FontDefinition("Monospaced", 10));
+            (new FontDefinition("Monospaced", 10));
 
 
     items.addElement(StaticShapeElementFactory.createRectangleShapeElement
-        ("background", Color.decode("#DFDFDF"), new BasicStroke(0),
-            new Rectangle2D.Float(0, 0, -100, -100), false, true));
+            ("background", Color.decode("#DFDFDF"), new BasicStroke(0),
+                    new Rectangle2D.Float(0, 0, -100, -100), false, true));
     items.addElement(StaticShapeElementFactory.createHorizontalLine
-        ("top", Color.decode("#DFDFDF"), new BasicStroke(0.1f), 0));
+            ("top", Color.decode("#DFDFDF"), new BasicStroke(0.1f), 0));
     items.addElement(StaticShapeElementFactory.createHorizontalLine
-        ("bottom", Color.decode("#DFDFDF"), new BasicStroke(0.1f), 10));
+            ("bottom", Color.decode("#DFDFDF"), new BasicStroke(0.1f), 10));
 
     TextFieldElementFactory factory = new TextFieldElementFactory();
     factory.setName("Country Element");
@@ -250,29 +244,31 @@ public class SampleReport1
 
   /**
    * Creates the function collection. The xml definition for this construct:
-   *
-   <pre>
-   <functions>
-   <function name="sum" class="org.jfree.report.function.ItemSumFunction">
-   <properties>
-   <property name="field">Population</property>
-   <property name="group">Continent Group</property>
-   </properties>
-   </function>
-   <function name="backgroundTrigger"
-   class="org.jfree.report.function.ElementVisibilitySwitchFunction">
-   <properties>
-   <property name="element">background</property>
-   </properties>
-   </function>
-   </functions>
-   </pre>
+   * <p/>
+   * <pre>
+   * <functions>
+   * <function name="sum" class="org.jfree.report.function.ItemSumFunction">
+   * <properties>
+   * <property name="field">Population</property>
+   * <property name="group">Continent Group</property>
+   * </properties>
+   * </function>
+   * <function name="backgroundTrigger"
+   * class="org.jfree.report.function.ElementVisibilitySwitchFunction">
+   * <properties>
+   * <property name="element">background</property>
+   * </properties>
+   * </function>
+   * </functions>
+   * </pre>
    *
    * @return the functions.
    *
-   * @throws FunctionInitializeException if there is a problem initialising the functions.
+   * @throws FunctionInitializeException if there is a problem initialising the
+   *                                     functions.
    */
-  private ExpressionCollection createFunctions() throws FunctionInitializeException
+  private ExpressionCollection createFunctions ()
+          throws FunctionInitializeException
   {
     final ExpressionCollection functions = new ExpressionCollection();
 
@@ -290,17 +286,17 @@ public class SampleReport1
   }
 
   /**
-   <pre>
-   <groups>
-
-   ... create the groups and add them to the list ...
-
-   </groups>
-   </pre>
+   * <pre>
+   * <groups>
+   * <p/>
+   * ... create the groups and add them to the list ...
+   * <p/>
+   * </groups>
+   * </pre>
    *
    * @return the groups.
    */
-  private GroupList createGroups()
+  private GroupList createGroups ()
   {
     final GroupList list = new GroupList();
     list.add(createContinentGroup());
@@ -308,29 +304,32 @@ public class SampleReport1
   }
 
   /**
-   <pre>
-   <group name="Continent Group">
-   <groupheader height="18" fontname="Monospaced" fontstyle="bold" fontsize="9" pagebreak="false">
-   <label name="Label 5" x="0" y="1" width="76" height="9" alignment="left">CONTINENT:</label>
-   <string-field name="Continent Element" x="96" y="1" width="76" height="9" alignment="left"
-   fieldname="Continent"/>
-   <line name="line1" x1="0" y1="12" x2="0" y2="12" weight="0.5"/>
-   </groupheader>
-   <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
-   <label name="Label 6" x="0" y="0" width="450" height="12" alignment="left"
-   baseline="10">Population:</label>
-   <number-function x="260" y="0" width="76" height="12" alignment="right" baseline="10"
-   format="#,##0" function="sum"/>
-   </groupfooter>
-   <fields>
-   <field>Continent</field>
-   </fields>
-   </group>
-   </pre>
+   * <pre>
+   * <group name="Continent Group">
+   * <groupheader height="18" fontname="Monospaced" fontstyle="bold" fontsize="9"
+   * pagebreak="false">
+   * <label name="Label 5" x="0" y="1" width="76" height="9" alignment="left">CONTINENT:</label>
+   * <string-field name="Continent Element" x="96" y="1" width="76" height="9"
+   * alignment="left"
+   * fieldname="Continent"/>
+   * <line name="line1" x1="0" y1="12" x2="0" y2="12" weight="0.5"/>
+   * </groupheader>
+   * <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
+   * <label name="Label 6" x="0" y="0" width="450" height="12" alignment="left"
+   * baseline="10">Population:</label>
+   * <number-function x="260" y="0" width="76" height="12" alignment="right"
+   * baseline="10"
+   * format="#,##0" function="sum"/>
+   * </groupfooter>
+   * <fields>
+   * <field>Continent</field>
+   * </fields>
+   * </group>
+   * </pre>
    *
    * @return the continent group.
    */
-  private Group createContinentGroup()
+  private Group createContinentGroup ()
   {
     final Group continentGroup = new Group();
     continentGroup.setName("Continent Group");
@@ -339,9 +338,9 @@ public class SampleReport1
     final GroupHeader header = new GroupHeader();
 
     header.getStyle().setStyleProperty
-        (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 18));
+            (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 18));
     header.getStyle().setFontDefinitionProperty
-        (new FontDefinition("Monospaced", 9, true, false, false, false));
+            (new FontDefinition("Monospaced", 9, true, false, false, false));
 
     LabelElementFactory factory = new LabelElementFactory();
     factory.setName("Label 5");
@@ -363,14 +362,14 @@ public class SampleReport1
     header.addElement(tfactory.createElement());
 
     header.addElement(StaticShapeElementFactory.createHorizontalLine
-        ("line1", null, new BasicStroke(0.5f), 12));
+            ("line1", null, new BasicStroke(0.5f), 12));
     continentGroup.setHeader(header);
 
     final GroupFooter footer = new GroupFooter();
     footer.getStyle().setStyleProperty
-        (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 18));
+            (ElementStyleSheet.MINIMUMSIZE, new FloatDimension(0, 18));
     footer.getStyle().setFontDefinitionProperty
-        (new FontDefinition("Monospaced", 9, true, false, false, false));
+            (new FontDefinition("Monospaced", 9, true, false, false, false));
 
     factory = new LabelElementFactory();
     factory.setName("Label 6");
@@ -400,9 +399,11 @@ public class SampleReport1
    *
    * @return the constructed report.
    *
-   * @throws FunctionInitializeException if there was a problem initialising any of the functions.
+   * @throws FunctionInitializeException if there was a problem initialising any of the
+   *                                     functions.
    */
-  public JFreeReport createReport() throws FunctionInitializeException
+  public JFreeReport createReport ()
+          throws FunctionInitializeException
   {
     final JFreeReport report = new JFreeReport();
     report.setName("Sample Report 1");
@@ -420,7 +421,7 @@ public class SampleReport1
   /**
    * Default constructor.
    */
-  public SampleReport1()
+  public SampleReport1 ()
   {
   }
 
@@ -430,7 +431,8 @@ public class SampleReport1
    * @param args the arguments (ignored).
    * @throws Exception if an error occurs (default: print a stack trace)
    */
-  public static void main(final String[] args) throws Exception
+  public static void main (final String[] args)
+          throws Exception
   {
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TemplateClassFactory.java,v 1.4 2004/05/07 14:29:23 mungady Exp $
+ * $Id: TemplateClassFactory.java,v 1.5 2005/01/25 21:40:35 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -50,7 +50,7 @@ public class TemplateClassFactory extends ClassFactoryImpl
   /**
    * Creates a new factory.
    */
-  public TemplateClassFactory()
+  public TemplateClassFactory ()
   {
     addTemplate(new DateFieldTemplateDescription("date-field"));
     addTemplate(new ImageFieldTemplateDescription("image-field"));
@@ -71,9 +71,9 @@ public class TemplateClassFactory extends ClassFactoryImpl
   /**
    * Adds a template.
    *
-   * @param td  the template description.
+   * @param td the template description.
    */
-  private void addTemplate(final TemplateDescription td)
+  private void addTemplate (final TemplateDescription td)
   {
     registerClass(td.getObjectClass(), td);
   }

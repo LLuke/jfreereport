@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigStoreBaseModule.java,v 1.5 2004/05/07 14:29:46 mungady Exp $
+ * $Id: ConfigStoreBaseModule.java,v 1.6 2005/01/25 00:08:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -52,20 +52,23 @@ public class ConfigStoreBaseModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public ConfigStoreBaseModule() throws ModuleInitializeException
+  public ConfigStoreBaseModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
   /**
    * Initalizes the module. This method is empty.
-   * @see org.jfree.report.modules.Module#initialize()
    *
    * @throws ModuleInitializeException if an error occured.
+   * @see org.jfree.report.modules.Module#initialize()
    */
-  public void initialize() throws ModuleInitializeException
+  public void initialize ()
+          throws ModuleInitializeException
   {
   }
 

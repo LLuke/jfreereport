@@ -52,10 +52,7 @@
       deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}" target="${build.target}">
       <include name="**/*.java"/>
       <exclude name="org/jfree/report/demo/**"/>
-      <exclude name="org/jfree/report/modules/gui/**"/>
-      <exclude name="org/jfree/report/modules/misc/**"/>
-      <exclude name="org/jfree/report/modules/output/**"/>
-      <exclude name="org/jfree/report/modules/parser/**"/>
+      <exclude name="org/jfree/report/modules/**"/>
       <exclude name="org/jfree/report/resourceloader/WmfImageFactoryModule.java" unless="pixie-jar-file-present"/>
       <classpath>
         <pathelement location="${libdir}/${jcommon-jar-file}" />

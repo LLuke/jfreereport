@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaElement.java,v 1.4 2005/01/25 00:09:53 taqua Exp $
+ * $Id: MetaElement.java,v 1.5 2005/02/19 13:29:57 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,27 +46,24 @@ import org.jfree.report.util.geom.StrictBounds;
 
 /**
  * Lightweight structures to carry layout information.
- * <p>
- * These elements are produced by the OutputFunction and will
- * be transformed into the final output by the OutputProcessor.
- * This two-step process replaces the old direct way of producing
- * the output.
- * <p>
- * The content of the styleProperties is defined by the OutputFunction,
- * and should contain the complete subset necessary to display the
- * content correctly. The properties do not inherit from enclosing
- * bands, all inheritance must have been resolved while the element
+ * <p/>
+ * These elements are produced by the OutputFunction and will be transformed into the
+ * final output by the OutputProcessor. This two-step process replaces the old direct way
+ * of producing the output.
+ * <p/>
+ * The content of the styleProperties is defined by the OutputFunction, and should contain
+ * the complete subset necessary to display the content correctly. The properties do not
+ * inherit from enclosing bands, all inheritance must have been resolved while the element
  * gets created.
- * <p>
- * Once created these elements should be considered independent of
- * the created objects.
+ * <p/>
+ * Once created these elements should be considered independent of the created objects.
  */
 public class MetaElement implements Cloneable
 {
   private ElementStyleSheet styleProperties;
   private Content elementContent;
 
-  public MetaElement(final Content elementContent, final ElementStyleSheet style)
+  public MetaElement (final Content elementContent, final ElementStyleSheet style)
   {
     if (elementContent == null)
     {
@@ -95,7 +92,7 @@ public class MetaElement implements Cloneable
     return styleProperties.getStyleProperty(key, value);
   }
 
-  public Content getContent()
+  public Content getContent ()
   {
     return elementContent;
   }
@@ -105,7 +102,7 @@ public class MetaElement implements Cloneable
     return (StrictBounds) styleProperties.getStyleProperty(ElementStyleSheet.BOUNDS);
   }
 
-  public final FontDefinition getFontDefinitionProperty()
+  public final FontDefinition getFontDefinitionProperty ()
   {
     return styleProperties.getFontDefinitionProperty();
   }
@@ -122,18 +119,20 @@ public class MetaElement implements Cloneable
   }
 
   /**
-   * Creates and returns a copy of this object.  The precise meaning
-   * of "copy" may depend on the class of the object.
+   * Creates and returns a copy of this object.  The precise meaning of "copy" may depend
+   * on the class of the object.
    *
-   * @return     a clone of this instance.
-   * @exception  CloneNotSupportedException  if the object's class does not
-   *               support the <code>Cloneable</code> interface. Subclasses
-   *               that override the <code>clone</code> method can also
-   *               throw this exception to indicate that an instance cannot
-   *               be cloned.
+   * @return a clone of this instance.
+   *
+   * @throws CloneNotSupportedException if the object's class does not support the
+   *                                    <code>Cloneable</code> interface. Subclasses that
+   *                                    override the <code>clone</code> method can also
+   *                                    throw this exception to indicate that an instance
+   *                                    cannot be cloned.
    * @see Cloneable
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     // content and style is immutable...
     final MetaElement e = (MetaElement) super.clone();

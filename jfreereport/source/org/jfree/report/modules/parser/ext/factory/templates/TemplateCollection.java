@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateCollection.java,v 1.11 2005/01/25 00:20:09 taqua Exp $
+ * $Id: TemplateCollection.java,v 1.12 2005/02/22 20:19:50 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -52,16 +52,20 @@ import org.jfree.util.Configuration;
  */
 public class TemplateCollection implements Serializable
 {
-  /** Storage for the templates. */
+  /**
+   * Storage for the templates.
+   */
   private final HashMap templates;
 
-  /** The parser/report configuration. */
+  /**
+   * The parser/report configuration.
+   */
   private Configuration config;
 
   /**
    * Creates a new collection.
    */
-  public TemplateCollection()
+  public TemplateCollection ()
   {
     templates = new HashMap();
   }
@@ -69,9 +73,9 @@ public class TemplateCollection implements Serializable
   /**
    * Adds a template.
    *
-   * @param template  the template.
+   * @param template the template.
    */
-  public void addTemplate(final TemplateDescription template)
+  public void addTemplate (final TemplateDescription template)
   {
     templates.put(template.getName(), template);
     if (getConfig() != null)
@@ -83,11 +87,10 @@ public class TemplateCollection implements Serializable
   /**
    * Returns a template.
    *
-   * @param name  the template name.
-   *
+   * @param name the template name.
    * @return The template description.
    */
-  public TemplateDescription getTemplate(final String name)
+  public TemplateDescription getTemplate (final String name)
   {
     final TemplateDescription td = (TemplateDescription) templates.get(name);
     if (td != null)
@@ -100,11 +103,10 @@ public class TemplateCollection implements Serializable
   /**
    * Returns a template description.
    *
-   * @param template  the template.
-   *
+   * @param template the template.
    * @return The description.
    */
-  public TemplateDescription getDescription(final Template template)
+  public TemplateDescription getDescription (final Template template)
   {
     if (template == null)
     {
@@ -124,15 +126,15 @@ public class TemplateCollection implements Serializable
 
 
   /**
-   * Configures this factory. The configuration contains several keys and
-   * their defined values. The given reference to the configuration object
-   * will remain valid until the report parsing or writing ends.
-   * <p>
+   * Configures this factory. The configuration contains several keys and their defined
+   * values. The given reference to the configuration object will remain valid until the
+   * report parsing or writing ends.
+   * <p/>
    * The configuration contents may change during the reporting.
    *
    * @param config the configuration, never null
    */
-  public void configure(final Configuration config)
+  public void configure (final Configuration config)
   {
     if (config == null)
     {
@@ -159,19 +161,20 @@ public class TemplateCollection implements Serializable
    *
    * @return the configuration.
    */
-  public Configuration getConfig()
+  public Configuration getConfig ()
   {
     return config;
   }
 
   /**
    * Indicated whether an other object is equal to this one.
-   * @see java.lang.Object#equals(java.lang.Object)
    *
    * @param o the other object.
    * @return true, if the object is equal, false otherwise.
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
    */
-  public boolean equals(final Object o)
+  public boolean equals (final Object o)
   {
     if (this == o)
     {
@@ -194,11 +197,12 @@ public class TemplateCollection implements Serializable
 
   /**
    * Computes an hashcode for this factory.
-   * @see java.lang.Object#hashCode()
    *
    * @return the hashcode.
+   *
+   * @see java.lang.Object#hashCode()
    */
-  public int hashCode()
+  public int hashCode ()
   {
     return templates.hashCode();
   }

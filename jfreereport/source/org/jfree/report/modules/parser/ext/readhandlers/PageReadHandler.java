@@ -5,8 +5,8 @@ import java.awt.print.Paper;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
-import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.xml.ParseException;
@@ -18,37 +18,59 @@ import org.xml.sax.SAXException;
 public class PageReadHandler extends AbstractPropertyXmlReadHandler
 {
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String PAGEFORMAT_ATT = "pageformat";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String LEFTMARGIN_ATT = "leftmargin";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String RIGHTMARGIN_ATT = "rightmargin";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String TOPMARGIN_ATT = "topmargin";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String BOTTOMMARGIN_ATT = "bottommargin";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String WIDTH_ATT = "width";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String HEIGHT_ATT = "height";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String ORIENTATION_ATT = "orientation";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String ORIENTATION_PORTRAIT_VAL = "portrait";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String ORIENTATION_LANDSCAPE_VAL = "landscape";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String ORIENTATION_REVERSE_LANDSCAPE_VAL = "reverselandscape";
 
   private float x;
@@ -92,11 +114,11 @@ public class PageReadHandler extends AbstractPropertyXmlReadHandler
   /**
    * Handles the page format.
    *
-   * @param atts  the attributes.
-   *
+   * @param atts the attributes.
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  private void handlePageFormat(final Attributes atts) throws SAXException
+  private void handlePageFormat (final Attributes atts)
+          throws SAXException
   {
     final JFreeReport report = (JFreeReport)
             getRootHandler().getHelperObject(ReportDefinitionReadHandler.REPORT_KEY);
@@ -105,10 +127,10 @@ public class PageReadHandler extends AbstractPropertyXmlReadHandler
     PageFormat format = report.getPageDefinition().getPageFormat(0);
     float defTopMargin = (float) format.getImageableY();
     float defBottomMargin = (float) (format.getHeight() - format.getImageableHeight()
-        - format.getImageableY());
+            - format.getImageableY());
     float defLeftMargin = (float) format.getImageableX();
     float defRightMargin = (float) (format.getWidth() - format.getImageableWidth()
-        - format.getImageableX());
+            - format.getImageableX());
 
     format = createPageFormat(format, atts);
 
@@ -122,16 +144,16 @@ public class PageReadHandler extends AbstractPropertyXmlReadHandler
     {
       case PageFormat.PORTRAIT:
         PageFormatFactory.getInstance().setBorders(p, defTopMargin, defLeftMargin,
-            defBottomMargin, defRightMargin);
+                defBottomMargin, defRightMargin);
         break;
       case PageFormat.LANDSCAPE:
         // right, top, left, bottom
         PageFormatFactory.getInstance().setBorders(p, defRightMargin, defTopMargin,
-            defLeftMargin, defBottomMargin);
+                defLeftMargin, defBottomMargin);
         break;
       case PageFormat.REVERSE_LANDSCAPE:
         PageFormatFactory.getInstance().setBorders(p, defLeftMargin, defBottomMargin,
-            defRightMargin, defTopMargin);
+                defRightMargin, defTopMargin);
         break;
       default:
         // will not happen..
@@ -143,21 +165,20 @@ public class PageReadHandler extends AbstractPropertyXmlReadHandler
   }
 
   /**
-   * Creates the pageFormat by using the given Attributes. If an PageFormat name is given, the
-   * named PageFormat is used and the parameters width and height are ignored. If no name is
-   * defined, height and width attributes are used to create the pageformat. The attributes define
-   * the dimension of the PageFormat in points, where the printing resolution is defined at 72
-   * pixels per inch.
+   * Creates the pageFormat by using the given Attributes. If an PageFormat name is given,
+   * the named PageFormat is used and the parameters width and height are ignored. If no
+   * name is defined, height and width attributes are used to create the pageformat. The
+   * attributes define the dimension of the PageFormat in points, where the printing
+   * resolution is defined at 72 pixels per inch.
    *
-   * @param format  the page format.
-   * @param atts  the element attributes.
-   *
+   * @param format the page format.
+   * @param atts   the element attributes.
    * @return the page format.
    *
    * @throws SAXException if there is an error parsing the report.
    */
-  private PageFormat createPageFormat(final PageFormat format, final Attributes atts)
-      throws SAXException
+  private PageFormat createPageFormat (final PageFormat format, final Attributes atts)
+          throws SAXException
   {
     final String pageformatName = atts.getValue(PAGEFORMAT_ATT);
 
@@ -182,7 +203,7 @@ public class PageReadHandler extends AbstractPropertyXmlReadHandler
     else
     {
       throw new ParseException("Orientation value in REPORT-Tag is invalid.",
-          getRootHandler().getLocator());
+              getRootHandler().getLocator());
     }
     if (pageformatName != null)
     {
@@ -204,7 +225,7 @@ public class PageReadHandler extends AbstractPropertyXmlReadHandler
       if (p == null)
       {
         Log.warn("Unable to create the requested Paper. Paper={" + pageformatData[0] + ", "
-            + pageformatData[1] + "}");
+                + pageformatData[1] + "}");
         return format;
       }
       return PageFormatFactory.getInstance().createPageFormat(p, orientationVal);
@@ -232,7 +253,8 @@ public class PageReadHandler extends AbstractPropertyXmlReadHandler
   protected void storeComments ()
           throws SAXException
   {
-    final Object[] serializedPageFormat = PageFormatFactory.getInstance().resolvePageFormat(pageFormat);
+    final Object[] serializedPageFormat = PageFormatFactory.getInstance()
+            .resolvePageFormat(pageFormat);
     final CommentHintPath path = new CommentHintPath(serializedPageFormat);
     defaultStoreComments(path);
   }

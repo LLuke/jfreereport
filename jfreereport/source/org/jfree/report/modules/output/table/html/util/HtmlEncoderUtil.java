@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlEncoderUtil.java,v 1.2.2.1 2004/12/13 19:27:10 taqua Exp $
+ * $Id: HtmlEncoderUtil.java,v 1.3 2005/01/25 00:14:14 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,8 +43,7 @@ import java.io.PrintWriter;
 import org.jfree.report.util.LineBreakIterator;
 
 /**
- * Utility methods to support HTML style encodings like the UTF and
- * CSS encodings.
+ * Utility methods to support HTML style encodings like the UTF and CSS encodings.
  *
  * @author Thomas Morgner
  */
@@ -52,16 +51,15 @@ public final class HtmlEncoderUtil
 {
   /**
    * DefaultConstructor.
-   *
    */
-  private HtmlEncoderUtil()
+  private HtmlEncoderUtil ()
   {
   }
 
   /**
-   * Provides a method to encode any string into a URL-safe form.
-   * Non-ASCII characters are first encoded as sequences of two or three bytes, using the
-   * UTF-8 algorithm, before being encoded as %HH escapes.
+   * Provides a method to encode any string into a URL-safe form. Non-ASCII characters are
+   * first encoded as sequences of two or three bytes, using the UTF-8 algorithm, before
+   * being encoded as %HH escapes.
    */
   private static final String[] HEX_URL_ENCODING = {
     "%00", "%01", "%02", "%03", "%04", "%05", "%06", "%07",
@@ -99,31 +97,27 @@ public final class HtmlEncoderUtil
   };
 
   /**
-   * Encode a string to the "x-www-form-urlencoded" form, enhanced
-   * with the UTF-8-in-URL proposal. This is what happens:
-   *
-   * <ul>
-   * <li><p>The ASCII characters 'a' through 'z', 'A' through 'Z',
-   *        and '0' through '9' remain the same.
-   *
+   * Encode a string to the "x-www-form-urlencoded" form, enhanced with the UTF-8-in-URL
+   * proposal. This is what happens:
+   * <p/>
+   * <ul> <li><p>The ASCII characters 'a' through 'z', 'A' through 'Z', and '0' through
+   * '9' remain the same.
+   * <p/>
    * <li><p>The unreserved characters - _ . ! ~ * ' ( ) remain the same.
-   *
+   * <p/>
    * <li><p>The space character ' ' is converted into a plus sign '+'.
-   *
-   * <li><p>All other ASCII characters are converted into the
-   *        3-character string "%xy", where xy is
-   *        the two-digit hexadecimal representation of the character
-   *        code
-   *
-   * <li><p>All non-ASCII characters are encoded in two steps: first
-   *        to a sequence of 2 or 3 bytes, using the UTF-8 algorithm;
-   *        secondly each of these bytes is encoded as "%xx".
+   * <p/>
+   * <li><p>All other ASCII characters are converted into the 3-character string "%xy",
+   * where xy is the two-digit hexadecimal representation of the character code
+   * <p/>
+   * <li><p>All non-ASCII characters are encoded in two steps: first to a sequence of 2 or
+   * 3 bytes, using the UTF-8 algorithm; secondly each of these bytes is encoded as "%xx".
    * </ul>
    *
    * @param s The string to be encoded
    * @return The encoded string
    */
-  public static String encodeUTF(final String s)
+  public static String encodeUTF (final String s)
   {
     final StringBuffer sbuf = new StringBuffer();
     final int len = s.length();
@@ -147,10 +141,10 @@ public final class HtmlEncoderUtil
         sbuf.append('+');
       }
       else if (ch == '-' || ch == '_'  // unreserved
-          || ch == '.' || ch == '!'
-          || ch == '~' || ch == '*'
-          || ch == '\'' || ch == '('
-          || ch == ')')
+              || ch == '.' || ch == '!'
+              || ch == '~' || ch == '*'
+              || ch == '\'' || ch == '('
+              || ch == ')')
       {
         sbuf.append((char) ch);
       }
@@ -175,11 +169,9 @@ public final class HtmlEncoderUtil
 
 
   /**
-   * Provides a method to encode any string into a URL-safe
-   * form.
-   * Non-ASCII characters are first encoded as sequences of
-   * two or three bytes, using the UTF-8 algorithm, before being
-   * encoded as %HH escapes.
+   * Provides a method to encode any string into a URL-safe form. Non-ASCII characters are
+   * first encoded as sequences of two or three bytes, using the UTF-8 algorithm, before
+   * being encoded as %HH escapes.
    */
   private static final String[] HEX_CSS_ENCODING = {
     "\\00 ", "\\01 ", "\\02 ", "\\03 ", "\\04 ", "\\05 ", "\\06 ", "\\07 ",
@@ -217,31 +209,27 @@ public final class HtmlEncoderUtil
   };
 
   /**
-   * Encode a string to the "x-www-form-urlencoded" form, enhanced
-   * with the UTF-8-in-URL proposal. This is what happens:
-   *
-   * <ul>
-   * <li><p>The ASCII characters 'a' through 'z', 'A' through 'Z',
-   *        and '0' through '9' remain the same.
-   *
+   * Encode a string to the "x-www-form-urlencoded" form, enhanced with the UTF-8-in-URL
+   * proposal. This is what happens:
+   * <p/>
+   * <ul> <li><p>The ASCII characters 'a' through 'z', 'A' through 'Z', and '0' through
+   * '9' remain the same.
+   * <p/>
    * <li><p>The unreserved characters - _ . ! ~ * ' ( ) remain the same.
-   *
+   * <p/>
    * <li><p>The space character ' ' is converted into a plus sign '+'.
-   *
-   * <li><p>All other ASCII characters are converted into the
-   *        3-character string "%xy", where xy is
-   *        the two-digit hexadecimal representation of the character
-   *        code
-   *
-   * <li><p>All non-ASCII characters are encoded in two steps: first
-   *        to a sequence of 2 or 3 bytes, using the UTF-8 algorithm;
-   *        secondly each of these bytes is encoded as "%xx".
+   * <p/>
+   * <li><p>All other ASCII characters are converted into the 3-character string "%xy",
+   * where xy is the two-digit hexadecimal representation of the character code
+   * <p/>
+   * <li><p>All non-ASCII characters are encoded in two steps: first to a sequence of 2 or
+   * 3 bytes, using the UTF-8 algorithm; secondly each of these bytes is encoded as "%xx".
    * </ul>
    *
    * @param s The string to be encoded
    * @return The encoded string
    */
-  public static String encodeCSS(final String s)
+  public static String encodeCSS (final String s)
   {
     final StringBuffer sbuf = new StringBuffer();
     final int len = s.length();
@@ -286,11 +274,12 @@ public final class HtmlEncoderUtil
   /**
    * Generates the HTML output for printing the given text.
    *
-   * @param pout the target writer
-   * @param text the text that should be printed.
+   * @param pout     the target writer
+   * @param text     the text that should be printed.
    * @param useXHTML true, if XHTML is generated, false otherwise.
    */
-  public static void printText(final PrintWriter pout, final String text, final boolean useXHTML)
+  public static void printText (final PrintWriter pout, final String text,
+                                final boolean useXHTML)
   {
     if (text.length() == 0)
     {

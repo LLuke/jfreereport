@@ -25,8 +25,8 @@ public abstract class AbstractImageElementReadHandler extends AbstractElementRea
           throws SAXException, XmlReaderException
   {
     super.startParsing(atts);
-    handleScale (atts);
-    handleKeepAspectRatio (atts);
+    handleScale(atts);
+    handleKeepAspectRatio(atts);
   }
 
   protected void handleScale (final PropertyAttributes atts)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePatientFormDemo.java,v 1.1.2.4 2004/10/13 18:42:15 taqua Exp $
+ * $Id: SimplePatientFormDemo.java,v 1.2 2005/01/25 01:13:55 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -72,23 +72,23 @@ public class SimplePatientFormDemo extends AbstractDemoFrame
   {
     final Patient johnDoe = new Patient("John Doe", "12 Nowhere Road", "Anytown",
             "1234-5678-AB12", "Greedy Health Care Corp.",
-            "Symptoms - Weeping and RSI caused by hours of tearing up holiday photos. \n"+
+            "Symptoms - Weeping and RSI caused by hours of tearing up holiday photos. \n" +
             "Cause - Someone richer, younger and thinner than the patient. \n" +
             "Diagnostics - Broken Heart Disease");
     johnDoe.addTreament(new Treatment
-            (DateUtilities.createDate (12, 10, 1999),
+            (DateUtilities.createDate(12, 10, 1999),
                     "Initial consulting of the doctor", "-", "done"));
     johnDoe.addTreament(new Treatment
-            (DateUtilities.createDate (12, 10, 1999),
+            (DateUtilities.createDate(12, 10, 1999),
                     "X-Ray the patients chest", "-", "done"));
     johnDoe.addTreament(new Treatment
-            (DateUtilities.createDate (12, 10, 1999),
+            (DateUtilities.createDate(12, 10, 1999),
                     "Psychiatrist consulting", "-", "failed"));
     johnDoe.addTreament(new Treatment
-            (DateUtilities.createDate (12, 10, 1999),
+            (DateUtilities.createDate(12, 10, 1999),
                     "2nd X-Ray scan", "-", "done"));
     johnDoe.addTreament(new Treatment
-            (DateUtilities.createDate (12, 10, 1999),
+            (DateUtilities.createDate(12, 10, 1999),
                     "Two Surgeons open the chest and gently mend " +
             "the heart whilst holding their breath.", "anesthetics", "sucess"));
     johnDoe.setLevel("totally healed");
@@ -97,20 +97,20 @@ public class SimplePatientFormDemo extends AbstractDemoFrame
             ("Kane, (First name not known)", "United States commercial starship Nostromo",
                     "-", "4637-1345-NO123", "Aurora Mining Corp.",
                     "Cause - Face huggers equipped with intelligent alien blood.\n" +
-                    "Symptoms - Gradual alien metamorphosis and desire to destroy our cities. \n" +
-                    "Diagnostics - Alien DNA");
+            "Symptoms - Gradual alien metamorphosis and desire to destroy our cities. \n" +
+            "Diagnostics - Alien DNA");
     kane.addTreament(new Treatment
-            (DateUtilities.createDate (12, 10, 1999),
+            (DateUtilities.createDate(12, 10, 1999),
                     "Initial consulting of the doctor", "-", "failure"));
     kane.addTreament(new Treatment
-            (DateUtilities.createDate (12, 10, 1999),
+            (DateUtilities.createDate(12, 10, 1999),
                     "X-Ray Scan", "-", "failure"));
     kane.addTreament(new Treatment
-            (DateUtilities.createDate (12, 10, 1999),
+            (DateUtilities.createDate(12, 10, 1999),
                     "mechanically removing the DNA , cleaning of alien elements " +
-                    "and replacing quickly with clean DNA.", "-", "success"));
+            "and replacing quickly with clean DNA.", "-", "success"));
     kane.addTreament(new Treatment
-            (DateUtilities.createDate (12, 10, 1999),
+            (DateUtilities.createDate(12, 10, 1999),
                     "balanced diet", "-", "failed"));
     kane.setAllergy("fast food");
     kane.setLevel("Alien escaped and killed the patient.");
@@ -118,7 +118,7 @@ public class SimplePatientFormDemo extends AbstractDemoFrame
     data = new PatientTableModel();
     data.addPatient(johnDoe);
     data.addPatient(kane);
-    
+
     setTitle("Simple Patient Form Demo");
     // as the tablemodel does not fire any change events, we have to initialize it first
     // evil lazy me .. should change that ...
@@ -132,7 +132,7 @@ public class SimplePatientFormDemo extends AbstractDemoFrame
    *
    * @return the menu bar.
    */
-  public JMenuBar createMenuBar()
+  public JMenuBar createMenuBar ()
   {
     final JMenuBar mb = new JMenuBar();
     final JMenu fileMenu = createJMenu("menu.file");
@@ -152,7 +152,7 @@ public class SimplePatientFormDemo extends AbstractDemoFrame
    *
    * @return a panel containing the basic user interface.
    */
-  public JPanel createContent()
+  public JPanel createContent ()
   {
     final JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
@@ -179,16 +179,16 @@ public class SimplePatientFormDemo extends AbstractDemoFrame
   /**
    * Displays a print preview screen for the sample report.
    */
-  protected void attemptPreview()
+  protected void attemptPreview ()
   {
     final URL in = getClass().getResource("/org/jfree/report/demo/form/patient.xml");
 
     if (in == null)
     {
       JOptionPane.showMessageDialog(this,
-          MessageFormat.format(getResources().getString("report.definitionnotfound"),
-              new Object[]{in}),
-          getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+              MessageFormat.format(getResources().getString("report.definitionnotfound"),
+                      new Object[]{in}),
+              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 
     final JFreeReport report;
@@ -221,11 +221,10 @@ public class SimplePatientFormDemo extends AbstractDemoFrame
   /**
    * Reads the report from the specified template file.
    *
-   * @param templateURL  the template location.
-   *
+   * @param templateURL the template location.
    * @return a report.
    */
-  private JFreeReport parseReport(final URL templateURL)
+  private JFreeReport parseReport (final URL templateURL)
   {
 
     JFreeReport result = null;
@@ -245,9 +244,9 @@ public class SimplePatientFormDemo extends AbstractDemoFrame
   /**
    * Entry point for running the demo application...
    *
-   * @param args  ignored.
+   * @param args ignored.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageDefinition.java,v 1.7 2005/02/19 13:29:52 taqua Exp $
+ * $Id: SimplePageDefinition.java,v 1.8 2005/02/22 20:17:57 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,8 +45,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
 
-import org.jfree.report.util.SerializerHelper;
 import org.jfree.report.util.PageFormatFactory;
+import org.jfree.report.util.SerializerHelper;
 
 public class SimplePageDefinition implements PageDefinition
 {
@@ -55,8 +55,8 @@ public class SimplePageDefinition implements PageDefinition
   private int pageCountHorizontal;
   private int pageCountVertical;
 
-  public SimplePageDefinition(final PageFormat format,
-                              final int x, final int y)
+  public SimplePageDefinition (final PageFormat format,
+                               final int x, final int y)
   {
     if (format == null)
     {
@@ -92,17 +92,17 @@ public class SimplePageDefinition implements PageDefinition
     }
   }
 
-  public SimplePageDefinition(final PageFormat format)
+  public SimplePageDefinition (final PageFormat format)
   {
-    this (format, 1, 1);
+    this(format, 1, 1);
   }
 
-  public int getPageCount()
+  public int getPageCount ()
   {
     return pageCountHorizontal * pageCountVertical;
   }
 
-  public PageFormat getPageFormat(final int pos)
+  public PageFormat getPageFormat (final int pos)
   {
     if (pos < 0 || pos > getPageCount())
     {
@@ -111,7 +111,7 @@ public class SimplePageDefinition implements PageDefinition
     return (PageFormat) format.clone();
   }
 
-  public Rectangle2D getPagePosition(final int pos)
+  public Rectangle2D getPagePosition (final int pos)
   {
     if (pos < 0 || pos > getPageCount())
     {
@@ -120,7 +120,7 @@ public class SimplePageDefinition implements PageDefinition
     return pagePositions[pos].getBounds2D();
   }
 
-  public Rectangle2D[] getPagePositions()
+  public Rectangle2D[] getPagePositions ()
   {
     final Rectangle2D[] rects =
             new Rectangle2D.Float[pagePositions.length];
@@ -131,12 +131,12 @@ public class SimplePageDefinition implements PageDefinition
     return rects;
   }
 
-  public float getHeight()
+  public float getHeight ()
   {
     return (float) (format.getImageableHeight() * pageCountVertical);
   }
 
-  public float getWidth()
+  public float getWidth ()
   {
     return (float) (format.getImageableWidth() * pageCountHorizontal);
   }
@@ -147,8 +147,8 @@ public class SimplePageDefinition implements PageDefinition
    * @param out the objectoutput stream
    * @throws java.io.IOException if errors occur
    */
-  private void writeObject(final ObjectOutputStream out)
-      throws IOException
+  private void writeObject (final ObjectOutputStream out)
+          throws IOException
   {
     out.defaultWriteObject();
     final SerializerHelper instance = SerializerHelper.getInstance();
@@ -163,13 +163,12 @@ public class SimplePageDefinition implements PageDefinition
   /**
    * resolve the pageformat, as PageFormat is not serializable.
    *
-   * @param in  the input stream.
-   *
-   * @throws java.io.IOException if there is an IO problem.
+   * @param in the input stream.
+   * @throws java.io.IOException    if there is an IO problem.
    * @throws ClassNotFoundException if there is a class problem.
    */
-  private void readObject(final ObjectInputStream in)
-      throws IOException, ClassNotFoundException
+  private void readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
     final SerializerHelper instance = SerializerHelper.getInstance();
@@ -182,7 +181,8 @@ public class SimplePageDefinition implements PageDefinition
     }
   }
 
-  public Object clone () throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final SimplePageDefinition pdef = (SimplePageDefinition) super.clone();
     pdef.format = (PageFormat) format.clone();

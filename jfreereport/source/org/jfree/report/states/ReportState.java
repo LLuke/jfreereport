@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.13 2005/01/28 19:26:59 taqua Exp $
+ * $Id: ReportState.java,v 1.14 2005/02/23 19:32:09 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -71,64 +71,88 @@ import org.jfree.report.util.ReportPropertiesList;
 import org.jfree.util.ObjectUtilities;
 
 /**
- * Captures state information for a report while it is in the process of being displayed or
- * printed.  JFreeReport uses a state transition diagram to track progress through the report
- * generation.
- * <p>
- * The report processing will usually pass through many states for each page generated.  We
- * record the report state at the end of each page, so that we can jump directly to the start of
- * any page without having to regenerate all the preceding pages.
+ * Captures state information for a report while it is in the process of being displayed
+ * or printed.  JFreeReport uses a state transition diagram to track progress through the
+ * report generation.
+ * <p/>
+ * The report processing will usually pass through many states for each page generated.
+ * We record the report state at the end of each page, so that we can jump directly to the
+ * start of any page without having to regenerate all the preceding pages.
  *
  * @author David Gilbert
  * @author Thomas Morgner
  */
 public abstract class ReportState implements Cloneable
 {
-  /** The report that the state belongs to. */
+  /**
+   * The report that the state belongs to.
+   */
   private ReportDefinitionImpl report;
 
-  /** The number of rows in the tablemodel. */
+  /**
+   * The number of rows in the tablemodel.
+   */
   private int numberOfRows;
 
-  /** The current item (row in the TableModel). */
+  /**
+   * The current item (row in the TableModel).
+   */
   private int currentItem;
 
-  /** The page that this state applies to. */
+  /**
+   * The page that this state applies to.
+   */
   private int currentPage;
 
-  /** The current group. */
+  /**
+   * The current group.
+   */
   private int currentGroupIndex;
 
-  /** The report properties. */
+  /**
+   * The report properties.
+   */
   private ReportProperties reportProperties;
 
-  /** The data row. */
+  /**
+   * The data row.
+   */
   private DataRowBackend dataRow;
 
-  /** The data row preview. */
+  /**
+   * The data row preview.
+   */
   private DataRowPreview dataRowPreview;
 
-  /** A row number that is 'before' the first row. */
+  /**
+   * A row number that is 'before' the first row.
+   */
   public static final int BEFORE_FIRST_ROW = -1;
 
-  /** A group number that is 'before' the first group. */
+  /**
+   * A group number that is 'before' the first group.
+   */
   public static final int BEFORE_FIRST_GROUP = -1;
 
-  /** The first page. */
+  /**
+   * The first page.
+   */
   public static final int BEFORE_FIRST_PAGE = 0;
 
   /**
-   * Constructs a new state for the specified report.  The report (which encapsulates a reference
-   * to the data, plus definitions for the required layout) is cloned to isolate the reporting
-   * engine from changes to the report that occur after report processing begins.
-   * <p>
+   * Constructs a new state for the specified report.  The report (which encapsulates a
+   * reference to the data, plus definitions for the required layout) is cloned to isolate
+   * the reporting engine from changes to the report that occur after report processing
+   * begins.
+   * <p/>
    * This constructor is protected, it is intended to be used by subclasses only.
    *
-   * @param reportPar  the report.
-   * @throws CloneNotSupportedException if the initial cloning of the report definition fails.
+   * @param reportPar the report.
+   * @throws CloneNotSupportedException if the initial cloning of the report definition
+   *                                    fails.
    */
-  protected ReportState(final JFreeReport reportPar)
-      throws CloneNotSupportedException
+  protected ReportState (final JFreeReport reportPar)
+          throws CloneNotSupportedException
   {
     setReportDefinition(new ReportDefinitionImpl(reportPar));
     numberOfRows = reportPar.getData().getRowCount();
@@ -151,7 +175,7 @@ public abstract class ReportState implements Cloneable
   /**
    * Resets the state, so that the datarow points to the first row.
    */
-  protected void resetState()
+  protected void resetState ()
   {
     setCurrentItem(BEFORE_FIRST_ROW);
     setCurrentPage(BEFORE_FIRST_PAGE);
@@ -160,13 +184,13 @@ public abstract class ReportState implements Cloneable
   }
 
   /**
-   * Constructs a ReportState from an existing ReportState and optionally resets
-   * the state.
+   * Constructs a ReportState from an existing ReportState and optionally resets the
+   * state.
    *
    * @param clone the base report state from which to initialize.
    * @param reset true, if the state should be reseted, false otherwise.
    */
-  protected ReportState(final ReportState clone, final boolean reset)
+  protected ReportState (final ReportState clone, final boolean reset)
   {
     setReportDefinition(clone.getReportDefinition());
     reportProperties = clone.reportProperties;
@@ -190,19 +214,19 @@ public abstract class ReportState implements Cloneable
   /**
    * Constructs a ReportState from an existing ReportState.
    *
-   * @param clone  the existing state.
+   * @param clone the existing state.
    */
-  protected ReportState(final ReportState clone)
+  protected ReportState (final ReportState clone)
   {
     this(clone, false);
   }
 
   /**
    * Implements a singleton datarow preview.
-   * 
+   *
    * @return the preview instance of the datarow.
    */
-  protected DataRowPreview getDataRowPreview()
+  protected DataRowPreview getDataRowPreview ()
   {
     if (dataRowPreview == null)
     {
@@ -217,7 +241,7 @@ public abstract class ReportState implements Cloneable
    *
    * @return The number of row.
    */
-  public int getNumberOfRows()
+  public int getNumberOfRows ()
   {
     return numberOfRows;
   }
@@ -225,9 +249,9 @@ public abstract class ReportState implements Cloneable
   /**
    * Returns the current data row.
    *
-   * @return  the current data row.
+   * @return the current data row.
    */
-  public DataRow getDataRow()
+  public DataRow getDataRow ()
   {
     return dataRow.getDataRow();
   }
@@ -237,7 +261,7 @@ public abstract class ReportState implements Cloneable
    *
    * @return the data row backend.
    */
-  protected DataRowBackend getDataRowBackend()
+  protected DataRowBackend getDataRowBackend ()
   {
     return dataRow;
   }
@@ -247,28 +271,29 @@ public abstract class ReportState implements Cloneable
    *
    * @return the report.
    */
-  public ReportDefinition getReport()
+  public ReportDefinition getReport ()
   {
     return report;
   }
 
   /**
-   * The advance method performs a transition from the current report state to the next report
-   * state.  Each transition will usually involve some processing of the report.
+   * The advance method performs a transition from the current report state to the next
+   * report state.  Each transition will usually involve some processing of the report.
    *
    * @return the next report state.
+   *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public abstract ReportState advance() throws ReportProcessingException;
+  public abstract ReportState advance ()
+          throws ReportProcessingException;
 
   /**
    * Sets the report for this state.
    *
-   * @param report  the report (null not permitted).
-   *
+   * @param report the report (null not permitted).
    * @throws NullPointerException if the given report is null
    */
-  private void setReportDefinition(final ReportDefinitionImpl report)
+  private void setReportDefinition (final ReportDefinitionImpl report)
   {
     if (report == null)
     {
@@ -278,12 +303,12 @@ public abstract class ReportState implements Cloneable
   }
 
   /**
-   * Returns the report definition implementation used as backend when generating
-   * the report. Don't play with it!
-   * 
+   * Returns the report definition implementation used as backend when generating the
+   * report. Don't play with it!
+   *
    * @return the internal report definition.
    */
-  protected ReportDefinitionImpl getReportDefinition()
+  protected ReportDefinitionImpl getReportDefinition ()
   {
     return this.report;
   }
@@ -293,19 +318,19 @@ public abstract class ReportState implements Cloneable
    *
    * @return The current row index.
    */
-  public int getCurrentDataItem()
+  public int getCurrentDataItem ()
   {
     return this.currentItem;
   }
 
   /**
-   * Returns the current item that should be displayed for this state. Before any item
-   * has advanced, dataItem is -1. This function automatically corrects the currentRow according
-   * to the current state of the report (if the header is processed, add +1).
+   * Returns the current item that should be displayed for this state. Before any item has
+   * advanced, dataItem is -1. This function automatically corrects the currentRow
+   * according to the current state of the report (if the header is processed, add +1).
    *
    * @return the row to use for obtaining data from the TableModel.
    */
-  public final int getCurrentDisplayItem()
+  public final int getCurrentDisplayItem ()
   {
     if (isPrefetchState())
     {
@@ -319,24 +344,24 @@ public abstract class ReportState implements Cloneable
 
   /**
    * Returns the 'prefetch' state for this report state (defaults to false).
-   * <p>
-   * Some states will override this method and return true...in this case, any access to the
-   * report's TableModel will look to the current row + 1.
+   * <p/>
+   * Some states will override this method and return true...in this case, any access to
+   * the report's TableModel will look to the current row + 1.
    *
    * @return always false (subclasses may override).
    */
-  public boolean isPrefetchState()
+  public boolean isPrefetchState ()
   {
     return false;
   }
 
   /**
-   * Sets the current item index (corresponds to a row in the TableModel).
-   * This element is -1 before a row is read.
+   * Sets the current item index (corresponds to a row in the TableModel). This element is
+   * -1 before a row is read.
    *
    * @param itemIndex The new item index.
    */
-  protected void setCurrentItem(final int itemIndex)
+  protected void setCurrentItem (final int itemIndex)
   {
     this.currentItem = itemIndex;
   }
@@ -346,7 +371,7 @@ public abstract class ReportState implements Cloneable
    *
    * @return the page number.
    */
-  public int getCurrentPage()
+  public int getCurrentPage ()
   {
     return this.currentPage;
   }
@@ -356,7 +381,7 @@ public abstract class ReportState implements Cloneable
    *
    * @param page The new page number.
    */
-  protected void setCurrentPage(final int page)
+  protected void setCurrentPage (final int page)
   {
     if (page < 0)
     {
@@ -367,12 +392,12 @@ public abstract class ReportState implements Cloneable
 
   /**
    * Returns the current group index.
-   * <p>
+   * <p/>
    * This starts at zero for the item group, and increases for each higher level group.
    *
    * @return The current group index.
    */
-  public int getCurrentGroupIndex()
+  public int getCurrentGroupIndex ()
   {
     return currentGroupIndex;
   }
@@ -382,7 +407,7 @@ public abstract class ReportState implements Cloneable
    *
    * @param index The new group index.
    */
-  protected void setCurrentGroupIndex(final int index)
+  protected void setCurrentGroupIndex (final int index)
   {
     if (index < -1)
     {
@@ -396,7 +421,7 @@ public abstract class ReportState implements Cloneable
    *
    * @return the functions.
    */
-  protected final LevelledExpressionList getFunctions()
+  protected final LevelledExpressionList getFunctions ()
   {
     if (dataRow.getFunctions().getDataRow() != dataRow.getDataRow())
     {
@@ -408,25 +433,23 @@ public abstract class ReportState implements Cloneable
   /**
    * Returns the value of a property with the specified name.
    *
-   * @param key  the property name.
-   *
+   * @param key the property name.
    * @return the property value.
    */
-  public Object getProperty(final String key)
+  public Object getProperty (final String key)
   {
     return reportProperties.get(key);
   }
 
   /**
-   * Returns a property with the specified name.  If no property with the specified name is found,
-   * returns def.
+   * Returns a property with the specified name.  If no property with the specified name
+   * is found, returns def.
    *
-   * @param key  the property name.
-   * @param def  the default value.
-   *
+   * @param key the property name.
+   * @param def the default value.
    * @return the property value.
    */
-  public Object getProperty(final String key, final Object def)
+  public Object getProperty (final String key, final Object def)
   {
     return reportProperties.get(key, def);
   }
@@ -434,10 +457,10 @@ public abstract class ReportState implements Cloneable
   /**
    * Sets a property.
    *
-   * @param key  the property name.
-   * @param o  the property value.
+   * @param key the property name.
+   * @param o   the property value.
    */
-  public void setProperty(final String key, final Object o)
+  public void setProperty (final String key, final Object o)
   {
     reportProperties.put(key, o);
   }
@@ -447,38 +470,37 @@ public abstract class ReportState implements Cloneable
    *
    * @return the report properties.
    */
-  public ReportProperties getProperties()
+  public ReportProperties getProperties ()
   {
     return reportProperties;
   }
 
   /**
    * Returns a flag indicating whether this is the 'prepare' run.
-   * <p>
+   * <p/>
    * This run is used to do repagination, and is only done when the pageformat changes.
    *
    * @return true, if this is a prepare run of the report engine.
    */
-  public boolean isPrepareRun()
+  public boolean isPrepareRun ()
   {
     final Boolean bool = (Boolean) getProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY,
-        Boolean.FALSE);
+            Boolean.FALSE);
     return bool.booleanValue();
   }
 
   /**
-   * Creates a shallow clone. Handle with care. This is a relativly cheap operation,
-   * so we have a copy to check whether some progress was made, without having to
-   * pay for the complete (deep) cloning.
-   * <p>
-   * Don't use that function to store/copy a report state for a longer storage time.
-   * The next few advances may render the reportstate copy invalid.
+   * Creates a shallow clone. Handle with care. This is a relativly cheap operation, so we
+   * have a copy to check whether some progress was made, without having to pay for the
+   * complete (deep) cloning.
+   * <p/>
+   * Don't use that function to store/copy a report state for a longer storage time. The
+   * next few advances may render the reportstate copy invalid.
    *
-   * @param progress  a carrier for the result.
-   *
+   * @param progress a carrier for the result.
    * @return a progress object of this state.
    */
-  public ReportStateProgress createStateProgress(ReportStateProgress progress)
+  public ReportStateProgress createStateProgress (ReportStateProgress progress)
   {
     if (progress == null)
     {
@@ -504,7 +526,7 @@ public abstract class ReportState implements Cloneable
     }
 
     public ReportState restorePageProgressCopy ()
-      throws CloneNotSupportedException
+            throws CloneNotSupportedException
     {
       final ReportState result = state;
       result.dataRow = backend;
@@ -521,7 +543,8 @@ public abstract class ReportState implements Cloneable
     return (ReportState) super.clone();
   }
 
-  public PageBreakSaveState createPageProgressCopy () throws CloneNotSupportedException
+  public PageBreakSaveState createPageProgressCopy ()
+          throws CloneNotSupportedException
   {
     return new PageBreakSaveState(this);
   }
@@ -533,7 +556,8 @@ public abstract class ReportState implements Cloneable
    *
    * @throws CloneNotSupportedException if there is a cloning problem.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final ReportState result = (ReportState) super.clone();
     result.report = (ReportDefinitionImpl) report.clone();
@@ -544,17 +568,16 @@ public abstract class ReportState implements Cloneable
 
 
   /**
-   * This is a helper function used to detect infinite loops on report
-   * processing. Returns true, if the report did proceed over at least one element.
-   * <p>
-   * If this method returns false, we need to bail out of processing the report because there is
-   * some problem.
+   * This is a helper function used to detect infinite loops on report processing. Returns
+   * true, if the report did proceed over at least one element.
+   * <p/>
+   * If this method returns false, we need to bail out of processing the report because
+   * there is some problem.
    *
    * @param oldstate the previous state.
-   *
    * @return true if some progress has been made, false otherwise.
    */
-  public boolean isProceeding(final ReportStateProgress oldstate)
+  public boolean isProceeding (final ReportStateProgress oldstate)
   {
     // a state is proceeding if it changed its group
     if (getCurrentGroupIndex() != oldstate.getCurrentGroupIndex())
@@ -629,7 +652,7 @@ public abstract class ReportState implements Cloneable
   /**
    * Advances the current page by one.
    */
-  public void nextPage()
+  public void nextPage ()
   {
     setCurrentPage(getCurrentPage() + 1);
   }
@@ -639,7 +662,7 @@ public abstract class ReportState implements Cloneable
    *
    * @return false (subclasses may override).
    */
-  public boolean isStart()
+  public boolean isStart ()
   {
     return false;
   }
@@ -649,7 +672,7 @@ public abstract class ReportState implements Cloneable
    *
    * @return false (subclasses may override).
    */
-  public boolean isFinish()
+  public boolean isFinish ()
   {
     return false;
   }
@@ -657,7 +680,7 @@ public abstract class ReportState implements Cloneable
   /**
    * Fires a 'report-started' event.
    */
-  public void fireReportInitializedEvent()
+  public void fireReportInitializedEvent ()
   {
     getFunctions().reportInitialized(new ReportEvent(this, ReportEvent.REPORT_INITIALIZED));
   }
@@ -665,7 +688,7 @@ public abstract class ReportState implements Cloneable
   /**
    * Fires a 'report-started' event.
    */
-  public void fireReportStartedEvent()
+  public void fireReportStartedEvent ()
   {
     getFunctions().reportStarted(new ReportEvent(this, ReportEvent.REPORT_STARTED));
   }
@@ -673,7 +696,7 @@ public abstract class ReportState implements Cloneable
   /**
    * Fires a 'prepare' event.
    */
-  public void firePrepareEvent()
+  public void firePrepareEvent ()
   {
     getFunctions().firePrepareEvent(new ReportEvent(this, (ReportEvent.PREPARE_EVENT | getEventCode())));
   }
@@ -681,7 +704,7 @@ public abstract class ReportState implements Cloneable
   /**
    * Fires a 'report-finished' event.
    */
-  public void fireReportFinishedEvent()
+  public void fireReportFinishedEvent ()
   {
     getFunctions().reportFinished(new ReportEvent(this, ReportEvent.REPORT_FINISHED));
   }
@@ -689,7 +712,7 @@ public abstract class ReportState implements Cloneable
   /**
    * Fires a 'report-finished' event.
    */
-  public void fireReportDoneEvent()
+  public void fireReportDoneEvent ()
   {
     getFunctions().reportDone(new ReportEvent(this, ReportEvent.REPORT_DONE));
   }
@@ -698,36 +721,37 @@ public abstract class ReportState implements Cloneable
    * Fires a 'page-started' event.
    *
    * @param baseEvent the type of the base event which caused the page start to be
-   * triggered.
+   *                  triggered.
    */
-  public void firePageStartedEvent(final int baseEvent)
+  public void firePageStartedEvent (final int baseEvent)
   {
     getFunctions().pageStarted(new ReportEvent(this, ReportEvent.PAGE_STARTED | baseEvent));
   }
 
   /**
-   * Fires a '<code>page-finished</code>' event.  The <code>pageFinished(...)</code> method is
-   * called for every report function.
+   * Fires a '<code>page-finished</code>' event.  The <code>pageFinished(...)</code>
+   * method is called for every report function.
    */
-  public void firePageFinishedEvent()
+  public void firePageFinishedEvent ()
   {
     getFunctions().pageFinished(new ReportEvent(this, ReportEvent.PAGE_FINISHED));
   }
 
   /**
-   * Fires a '<code>page-canceled</code>' event.  The <code>pageCanceled(...)</code> method is
-   * called for every report function that implements the PageListener interface.
+   * Fires a '<code>page-canceled</code>' event.  The <code>pageCanceled(...)</code>
+   * method is called for every report function that implements the PageListener
+   * interface.
    */
-  public void firePageCanceledEvent()
+  public void firePageCanceledEvent ()
   {
     getFunctions().pageCanceled(new ReportEvent(this, ReportEvent.PAGE_CANCELED));
   }
 
   /**
-   * Fires a '<code>group-started</code>' event.  The <code>groupStarted(...)</code> method is
-   * called for every report function.
+   * Fires a '<code>group-started</code>' event.  The <code>groupStarted(...)</code>
+   * method is called for every report function.
    */
-  public void fireGroupStartedEvent()
+  public void fireGroupStartedEvent ()
   {
     getFunctions().groupStarted(new ReportEvent(this, ReportEvent.GROUP_STARTED));
   }
@@ -735,7 +759,7 @@ public abstract class ReportState implements Cloneable
   /**
    * Fires a 'group-finished' event.
    */
-  public void fireGroupFinishedEvent()
+  public void fireGroupFinishedEvent ()
   {
     getFunctions().groupFinished(new ReportEvent(this, ReportEvent.GROUP_FINISHED));
   }
@@ -743,7 +767,7 @@ public abstract class ReportState implements Cloneable
   /**
    * Fires an 'items-started' event.
    */
-  public void fireItemsStartedEvent()
+  public void fireItemsStartedEvent ()
   {
     getFunctions().itemsStarted(new ReportEvent(this, ReportEvent.ITEMS_STARTED));
   }
@@ -751,7 +775,7 @@ public abstract class ReportState implements Cloneable
   /**
    * Fires an 'items-finished' event.
    */
-  public void fireItemsFinishedEvent()
+  public void fireItemsFinishedEvent ()
   {
     getFunctions().itemsFinished(new ReportEvent(this, ReportEvent.ITEMS_FINISHED));
   }
@@ -759,7 +783,7 @@ public abstract class ReportState implements Cloneable
   /**
    * Fires an 'items-advanced' event.
    */
-  public void fireItemsAdvancedEvent()
+  public void fireItemsAdvancedEvent ()
   {
     getFunctions().itemsAdvanced(new ReportEvent(this, ReportEvent.ITEMS_ADVANCED));
   }
@@ -770,7 +794,7 @@ public abstract class ReportState implements Cloneable
    * @param band the band, that completed layouting.
    * @param type the type of the base event fireing the laout complete event.
    */
-  public void fireLayoutCompleteEvent(final Band band, final int type)
+  public void fireLayoutCompleteEvent (final Band band, final int type)
   {
     getFunctions().layoutComplete(new LayoutEvent(this, band, LayoutEvent.LAYOUT_EVENT | type));
   }
@@ -780,7 +804,7 @@ public abstract class ReportState implements Cloneable
    *
    * @return the function level.
    */
-  public int getLevel()
+  public int getLevel ()
   {
     return getFunctions().getLevel();
   }
@@ -790,18 +814,18 @@ public abstract class ReportState implements Cloneable
    *
    * @return an iterator.
    */
-  public Iterator getLevels()
+  public Iterator getLevels ()
   {
     return getFunctions().getLevelsDescending();
   }
 
   /**
-   * Returns the errors that occured during the last event dispatching. This list
-   * gets cleared when the next event gets dispatched.
+   * Returns the errors that occured during the last event dispatching. This list gets
+   * cleared when the next event gets dispatched.
    *
    * @return the error list.
    */
-  public List getErrors()
+  public List getErrors ()
   {
     return getFunctions().getErrors();
   }
@@ -811,7 +835,7 @@ public abstract class ReportState implements Cloneable
    *
    * @return true, if there were errors recorded, false otherwise.
    */
-  public boolean isErrorOccured()
+  public boolean isErrorOccured ()
   {
     return getFunctions().hasErrors();
   }
@@ -819,14 +843,14 @@ public abstract class ReportState implements Cloneable
   /**
    * Returns true if this is the last item in the group, and false otherwise.
    *
-   * @param g the group that should be checked.
-   * @param currentDataRow  the current data row.
-   * @param nextDataRow   the next data row, or null, if this is the last datarow.
-   *
+   * @param g              the group that should be checked.
+   * @param currentDataRow the current data row.
+   * @param nextDataRow    the next data row, or null, if this is the last datarow.
    * @return A flag indicating whether or not the current item is the last in its group.
    */
   public static boolean isLastItemInGroup
-      (final Group g, final DataRowBackend currentDataRow, final DataRowBackend nextDataRow)
+          (final Group g, final DataRowBackend currentDataRow,
+           final DataRowBackend nextDataRow)
   {
     // return true if this is the last row in the model.
     if (currentDataRow.isLastRow() || nextDataRow == null)
@@ -869,6 +893,6 @@ public abstract class ReportState implements Cloneable
     getFunctions().outputComplete(new LayoutEvent(this, band, LayoutEvent.LAYOUT_EVENT | type));
   }
 
-  public abstract int getEventCode();
+  public abstract int getEventCode ();
 
 }

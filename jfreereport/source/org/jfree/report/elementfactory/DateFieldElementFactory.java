@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DateFieldElementFactory.java,v 1.8 2005/02/05 18:35:17 taqua Exp $
+ * $Id: DateFieldElementFactory.java,v 1.9 2005/02/19 13:29:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -56,17 +56,19 @@ import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
 
 /**
- * The date format factory can be used to create date/time text elements.
- * These text elements have special abilities to format date/time values.
- * <p>
- * Once the desired properties are set, the factory can be reused to create
- * similiar text elements.
+ * The date format factory can be used to create date/time text elements. These text
+ * elements have special abilities to format date/time values.
+ * <p/>
+ * Once the desired properties are set, the factory can be reused to create similiar text
+ * elements.
  *
  * @author Thomas Morgner
  */
 public class DateFieldElementFactory extends TextFieldElementFactory
 {
-  /** The date format instance used to format date values in the text element. */
+  /**
+   * The date format instance used to format date values in the text element.
+   */
   private DateFormat format;
 
   private String excelCellFormat;
@@ -74,7 +76,7 @@ public class DateFieldElementFactory extends TextFieldElementFactory
   /**
    * Creates a new date field element factory.
    */
-  public DateFieldElementFactory()
+  public DateFieldElementFactory ()
   {
   }
 
@@ -89,34 +91,34 @@ public class DateFieldElementFactory extends TextFieldElementFactory
   }
 
   /**
-   * Returns the date format used for all generated text elements. The
-   * date format is shared among all generated elements.
+   * Returns the date format used for all generated text elements. The date format is
+   * shared among all generated elements.
    *
    * @return the date format used in this factory.
    */
-  public DateFormat getFormat()
+  public DateFormat getFormat ()
   {
     return format;
   }
 
   /**
-   * Defines the date format used for all generated text elements. The
-   * date format is shared among all generated elements.
+   * Defines the date format used for all generated text elements. The date format is
+   * shared among all generated elements.
    *
    * @param format the date format used in this factory.
    */
-  public void setFormat(final DateFormat format)
+  public void setFormat (final DateFormat format)
   {
     this.format = format;
   }
 
   /**
-   * Returns the format string of the used date format. This method will
-   * return null, if the current date format is no instance of SimpleDateFormat.
+   * Returns the format string of the used date format. This method will return null, if
+   * the current date format is no instance of SimpleDateFormat.
    *
    * @return the formatstring of the date format instance.
    */
-  public String getFormatString()
+  public String getFormatString ()
   {
     if (getFormat() instanceof SimpleDateFormat)
     {
@@ -127,13 +129,13 @@ public class DateFieldElementFactory extends TextFieldElementFactory
   }
 
   /**
-   * Defines the format string of the used date format. This method will
-   * replace the date format instance of this factory. If the format string
-   * is null, the default format string of the current locale is used.
+   * Defines the format string of the used date format. This method will replace the date
+   * format instance of this factory. If the format string is null, the default format
+   * string of the current locale is used.
    *
    * @param formatString the formatstring of the date format instance.
    */
-  public void setFormatString(final String formatString)
+  public void setFormatString (final String formatString)
   {
     if (formatString == null)
     {
@@ -146,14 +148,14 @@ public class DateFieldElementFactory extends TextFieldElementFactory
   }
 
   /**
-   * Creates the date text element based on the defined settings.
-   * Undefined properties will not be set in the generated element.
-   *
-   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
+   * Creates the date text element based on the defined settings. Undefined properties
+   * will not be set in the generated element.
    *
    * @return the generated date text element
+   *
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
    */
-  public Element createElement()
+  public Element createElement ()
   {
     final DataSource dataSource;
     if (getFormatString() != null)
@@ -191,66 +193,64 @@ public class DateFieldElementFactory extends TextFieldElementFactory
   /**
    * Creates a new {@link TextElement} containing a date filter structure.
    *
-   * @param name  the name of the new element
-   * @param bounds  the bounds of the new element
-   * @param paint  the text color of this text element
+   * @param name       the name of the new element
+   * @param bounds     the bounds of the new element
+   * @param paint      the text color of this text element
    * @param alignment  the horizontal text alignment.
-   * @param font  the font for this element
-   * @param nullString  the text used when the value of this element is <code>null</code>
-   * @param format  the SimpleDateFormat-formatstring used to format the date
-   * @param field  the fieldname to retrieve values from
-   *
+   * @param font       the font for this element
+   * @param nullString the text used when the value of this element is <code>null</code>
+   * @param format     the SimpleDateFormat-formatstring used to format the date
+   * @param field      the fieldname to retrieve values from
    * @return a report element for displaying a java.util.Date value.
    *
-   * @throws NullPointerException if bounds, format or field are <code>null</code>
+   * @throws NullPointerException     if bounds, format or field are <code>null</code>
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createDateElement(final String name,
-                                              final Rectangle2D bounds,
-                                              final Color paint,
-                                              final ElementAlignment alignment,
-                                              final FontDefinition font,
-                                              final String nullString,
-                                              final String format,
-                                              final String field)
+  public static TextElement createDateElement (final String name,
+                                               final Rectangle2D bounds,
+                                               final Color paint,
+                                               final ElementAlignment alignment,
+                                               final FontDefinition font,
+                                               final String nullString,
+                                               final String format,
+                                               final String field)
   {
     return createDateElement(name,
-        bounds,
-        paint,
-        alignment, null,
-        font,
-        nullString,
-        format,
-        field);
+            bounds,
+            paint,
+            alignment, null,
+            font,
+            nullString,
+            format,
+            field);
   }
 
   /**
    * Creates a new {@link TextElement} containing a date filter structure.
    *
-   * @param name  the name of the new element
-   * @param bounds  the bounds of the new element
-   * @param paint  the text color of this text element
+   * @param name       the name of the new element
+   * @param bounds     the bounds of the new element
+   * @param paint      the text color of this text element
    * @param alignment  the horizontal text alignment
-   * @param valign  the vertical text alignment
-   * @param font  the font for this element
-   * @param nullString  the text used when the value of this element is <code>null</code>
-   * @param format  the SimpleDateFormat-formatstring used to format the date
-   * @param field  the fieldname to retrieve values from
-   *
+   * @param valign     the vertical text alignment
+   * @param font       the font for this element
+   * @param nullString the text used when the value of this element is <code>null</code>
+   * @param format     the SimpleDateFormat-formatstring used to format the date
+   * @param field      the fieldname to retrieve values from
    * @return a report element for displaying a java.util.Date value.
    *
-   * @throws NullPointerException if bounds, format or field are <code>null</code>
+   * @throws NullPointerException     if bounds, format or field are <code>null</code>
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createDateElement(final String name,
-                                              final Rectangle2D bounds,
-                                              final Color paint,
-                                              final ElementAlignment alignment,
-                                              final ElementAlignment valign,
-                                              final FontDefinition font,
-                                              final String nullString,
-                                              final String format,
-                                              final String field)
+  public static TextElement createDateElement (final String name,
+                                               final Rectangle2D bounds,
+                                               final Color paint,
+                                               final ElementAlignment alignment,
+                                               final ElementAlignment valign,
+                                               final FontDefinition font,
+                                               final String nullString,
+                                               final String format,
+                                               final String field)
   {
     final DateFieldElementFactory factory = new DateFieldElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
@@ -280,64 +280,63 @@ public class DateFieldElementFactory extends TextFieldElementFactory
   /**
    * Creates a new {@link TextElement} containing a date filter structure.
    *
-   * @param name  the name of the new element
-   * @param bounds  the bounds of the new element
-   * @param paint  the text color of this text element
+   * @param name       the name of the new element
+   * @param bounds     the bounds of the new element
+   * @param paint      the text color of this text element
    * @param alignment  the horizontal text alignment
-   * @param font  the font for this element
-   * @param nullString  the text used when the value of this element is <code>null</code>
-   * @param format  the SimpleDateFormat used to format the date
-   * @param field  the fieldname to retrieve values from
-   *
+   * @param font       the font for this element
+   * @param nullString the text used when the value of this element is <code>null</code>
+   * @param format     the SimpleDateFormat used to format the date
+   * @param field      the fieldname to retrieve values from
    * @return a report element for displaying a java.util.Date value.
    *
-   * @throws NullPointerException if bounds, name, format or field are <code>null</code>
+   * @throws NullPointerException     if bounds, name, format or field are
+   *                                  <code>null</code>
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createDateElement(final String name,
-                                              final Rectangle2D bounds,
-                                              final Color paint,
-                                              final ElementAlignment alignment,
-                                              final FontDefinition font,
-                                              final String nullString,
-                                              final DateFormat format,
-                                              final String field)
+  public static TextElement createDateElement (final String name,
+                                               final Rectangle2D bounds,
+                                               final Color paint,
+                                               final ElementAlignment alignment,
+                                               final FontDefinition font,
+                                               final String nullString,
+                                               final DateFormat format,
+                                               final String field)
   {
     return createDateElement(name, bounds, paint, alignment,
-        null, font, nullString, format, field);
+            null, font, nullString, format, field);
   }
 
   /**
    * Creates a new TextElement containing a date filter structure.
    *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the text color of this text element
-   * @param alignment the horizontal text alignment.
-   * @param valign the vertical text alignment
-   * @param font the font for this element
+   * @param name       the name of the new element
+   * @param bounds     the bounds of the new element
+   * @param paint      the text color of this text element
+   * @param alignment  the horizontal text alignment.
+   * @param valign     the vertical text alignment
+   * @param font       the font for this element
    * @param nullString the text used when the value of this element is null
-   * @param format the SimpleDateFormat used to format the date
-   * @param field the fieldname to retrieve values from
-   *
+   * @param format     the SimpleDateFormat used to format the date
+   * @param field      the fieldname to retrieve values from
    * @return a report element for displaying a java.util.Date value.
    *
-   * @throws NullPointerException if bounds, name, format or field are null
+   * @throws NullPointerException     if bounds, name, format or field are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createDateElement(final String name,
-                                              final Rectangle2D bounds,
-                                              final Color paint,
-                                              final ElementAlignment alignment,
-                                              final ElementAlignment valign,
-                                              final FontDefinition font,
-                                              final String nullString,
-                                              final DateFormat format,
-                                              final String field)
+  public static TextElement createDateElement (final String name,
+                                               final Rectangle2D bounds,
+                                               final Color paint,
+                                               final ElementAlignment alignment,
+                                               final ElementAlignment valign,
+                                               final FontDefinition font,
+                                               final String nullString,
+                                               final DateFormat format,
+                                               final String field)
   {
     final DateFieldElementFactory factory = new DateFieldElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setName(name);
     factory.setColor(paint);
     factory.setHorizontalAlignment(alignment);

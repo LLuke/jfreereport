@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelContentCreator.java,v 1.4 2005/01/30 23:37:23 taqua Exp $
+ * $Id: ExcelContentCreator.java,v 1.5 2005/02/19 13:30:02 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -64,10 +64,14 @@ import org.jfree.report.util.geom.StrictGeomUtility;
 
 public class ExcelContentCreator extends TableContentCreator
 {
-  /** factor for transformation of internal scale to excel scale. */
+  /**
+   * factor for transformation of internal scale to excel scale.
+   */
   private static final int XFACTOR = 55;
 
-  /** factor for transformation of internal scale to excel scale. */
+  /**
+   * factor for transformation of internal scale to excel scale.
+   */
   private static final int YFACTOR = 40;
 
   private HSSFCellStyleProducer cellStyleProducer;
@@ -103,13 +107,14 @@ public class ExcelContentCreator extends TableContentCreator
 
     final String paper = reportDefinition.getReportConfiguration().getConfigProperty
             (ExcelProcessor.CONFIGURATION_PREFIX + ".Paper");
-    final String paperOrientation = reportDefinition.getReportConfiguration().getConfigProperty
+    final String paperOrientation = reportDefinition.getReportConfiguration()
+            .getConfigProperty
             (ExcelProcessor.CONFIGURATION_PREFIX + ".PaperOrientation");
 
     final HSSFPrintSetup printSetup = sheet.getPrintSetup();
     ExcelPrintSetupFactory.performPageSetup
-        (printSetup, reportDefinition.getPageDefinition(),
-            paper, paperOrientation);
+            (printSetup, reportDefinition.getPageDefinition(),
+                    paper, paperOrientation);
 
   }
 
@@ -157,7 +162,8 @@ public class ExcelContentCreator extends TableContentCreator
    *
    * @return true, if the content was flushed, false otherwise.
    */
-  public boolean handleFlush () throws ReportProcessingException
+  public boolean handleFlush ()
+          throws ReportProcessingException
   {
     final GenericObjectTable go = getBackend();
     final SheetLayout layout = getCurrentLayout();
@@ -166,10 +172,10 @@ public class ExcelContentCreator extends TableContentCreator
     for (int i = 0; i < width; i++)
     {
       final int cellWidth = (int) StrictGeomUtility.toExternalValue
-              (layout.getCellWidth(i , i+1));
+              (layout.getCellWidth(i, i + 1));
       sheet.setColumnWidth((short) i, (short) (cellWidth * XFACTOR));
     }
-    
+
     final int height = go.getRowCount();
     final int layoutOffset = getLayoutOffset();
     for (int y = layoutOffset; y < height + layoutOffset; y++)
@@ -216,27 +222,26 @@ public class ExcelContentCreator extends TableContentCreator
 
 
   /**
-   * Exports the cell. The cell is generated and the stored cell style
-   * applied.
+   * Exports the cell. The cell is generated and the stored cell style applied.
    *
-   * @param row the HSSFRow, where the generated cell gets added.
-   * @param x the column
-   * @param y the row number
-   * @param element the content
-   * @param bg the background style.
+   * @param row       the HSSFRow, where the generated cell gets added.
+   * @param x         the column
+   * @param y         the row number
+   * @param element   the content
+   * @param bg        the background style.
    * @param rectangle the rectangle within the global grid
    */
-  private void exportCell(final HSSFRow row,
-                          final MetaElement element,
-                          final TableCellBackground bg,
-                          final TableRectangle rectangle,
-                          final short x, final int y)
+  private void exportCell (final HSSFRow row,
+                           final MetaElement element,
+                           final TableCellBackground bg,
+                           final TableRectangle rectangle,
+                           final short x, final int y)
   {
     if (rectangle.getColumnSpan() > 1 || rectangle.getRowSpan() > 1)
     {
       sheet.addMergedRegion(new Region(y, x,
-          (y + rectangle.getRowSpan() - 1),
-          (short) (x + rectangle.getColumnSpan() - 1)));
+              (y + rectangle.getRowSpan() - 1),
+              (short) (x + rectangle.getColumnSpan() - 1)));
     }
     final HSSFCell cell = row.createCell(x);
     final HSSFCellStyle style =

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageLayoutModule.java,v 1.4 2005/01/25 00:12:05 taqua Exp $
+ * $Id: PageLayoutModule.java,v 1.5 2005/02/19 13:30:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -52,9 +52,11 @@ public class PageLayoutModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public PageLayoutModule() throws ModuleInitializeException
+  public PageLayoutModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }

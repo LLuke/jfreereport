@@ -9,7 +9,7 @@ public class DateFieldReadHandler extends StringFieldReadHandler
 {
   public DateFieldReadHandler ()
   {
-    super(new DateFieldElementFactory ());
+    super(new DateFieldElementFactory());
   }
 
   /**

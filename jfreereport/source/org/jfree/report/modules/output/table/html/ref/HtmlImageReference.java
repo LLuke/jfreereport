@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlImageReference.java,v 1.1.2.1 2004/12/13 19:27:09 taqua Exp $
+ * $Id: HtmlImageReference.java,v 1.2 2005/01/25 01:26:07 taqua Exp $
  *
  * Changes
  * -------
@@ -37,16 +37,17 @@
 package org.jfree.report.modules.output.table.html.ref;
 
 
-
 /**
- * Defines a external image reference to an image file. The image is included
- * in the generated content using the &lt;IMG&gt; html-tag.
+ * Defines a external image reference to an image file. The image is included in the
+ * generated content using the &lt;IMG&gt; html-tag.
  *
  * @author Thomas Morgner
  */
 public class HtmlImageReference extends HtmlReference
 {
-  /** the referenced file name. */
+  /**
+   * the referenced file name.
+   */
   private final String reference;
 
   /**
@@ -54,7 +55,7 @@ public class HtmlImageReference extends HtmlReference
    *
    * @param reference the referenced file name.
    */
-  public HtmlImageReference(final String reference)
+  public HtmlImageReference (final String reference)
   {
     super(true);
     if (reference == null)
@@ -65,12 +66,12 @@ public class HtmlImageReference extends HtmlReference
   }
 
   /**
-   * Generates the reference fragment, which should be inserted into the HTML-Code.
-   * This implementation returns the referenced file name.
+   * Generates the reference fragment, which should be inserted into the HTML-Code. This
+   * implementation returns the referenced file name.
    *
    * @return the referenced file name.
    */
-  public String getReferenceData()
+  public String getReferenceData ()
   {
     return reference;
   }

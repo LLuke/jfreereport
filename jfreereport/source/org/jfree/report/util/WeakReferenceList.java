@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: WeakReferenceList.java,v 1.4 2003/11/07 18:33:57 taqua Exp $
+ * $Id: WeakReferenceList.java,v 1.5 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes
  * -------
@@ -47,47 +47,58 @@ import java.lang.ref.WeakReference;
 
 /**
  * The WeakReference list uses <code>java.lang.ref.WeakReference</code>s to store its
- * contents. In contrast to the WeakHashtable, this list knows how to restore missing content,
- * so that garbage collected elements can be restored when they are accessed.
- * <p>
+ * contents. In contrast to the WeakHashtable, this list knows how to restore missing
+ * content, so that garbage collected elements can be restored when they are accessed.
+ * <p/>
  * By default this list can contain 25 elements, where the first element is stored using a
  * strong reference, which is not garbage collected.
- * <p>
- * Restoring the elements is not implemented, concrete implementations will have to override
- * the <code>restoreChild(int)</code> method. The <code>getMaxChildCount</code> method defines
- * the maxmimum number of children in the list. When more than <code>maxChildCount</code> elements
- * are contained in this list, add will always return false to indicate that adding the element
- * failed.
- * <p>
- * To customize the list, override createReference to create a different kind of reference.
- * <p>
- * This list is able to add or replace elements, but inserting or removing of elements is not
- * possible.
- * <p>
- * Todo: Check, if the master computation can be removed - master seems to be always at index 0
+ * <p/>
+ * Restoring the elements is not implemented, concrete implementations will have to
+ * override the <code>restoreChild(int)</code> method. The <code>getMaxChildCount</code>
+ * method defines the maxmimum number of children in the list. When more than
+ * <code>maxChildCount</code> elements are contained in this list, add will always return
+ * false to indicate that adding the element failed.
+ * <p/>
+ * To customize the list, override createReference to create a different kind of
+ * reference.
+ * <p/>
+ * This list is able to add or replace elements, but inserting or removing of elements is
+ * not possible.
+ * <p/>
+ * Todo: Check, if the master computation can be removed - master seems to be always at
+ * index 0
+ *
  * @author Thomas Morgner
  */
 public abstract class WeakReferenceList implements Serializable, Cloneable
 {
-  /** The master element. */
+  /**
+   * The master element.
+   */
   private Object master;
 
-  /** Storage for the references. */
+  /**
+   * Storage for the references.
+   */
   private Reference[] childs;
 
-  /** The current number of elements. */
+  /**
+   * The current number of elements.
+   */
   private int size;
 
-  /** The maximum number of elements. */
+  /**
+   * The maximum number of elements.
+   */
   private final int maxChilds;
 
   /**
-   * Creates a new weak reference list. The storage of the list is limited to getMaxChildCount()
-   * elements.
+   * Creates a new weak reference list. The storage of the list is limited to
+   * getMaxChildCount() elements.
    *
-   * @param maxChildCount  the maximum number of elements.
+   * @param maxChildCount the maximum number of elements.
    */
-  protected WeakReferenceList(final int maxChildCount)
+  protected WeakReferenceList (final int maxChildCount)
   {
     this.maxChilds = maxChildCount;
     this.childs = new Reference[maxChildCount - 1];
@@ -98,7 +109,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @return the maximum number of elements in this list.
    */
-  protected final int getMaxChildCount()
+  protected final int getMaxChildCount ()
   {
     return maxChilds;
   }
@@ -109,7 +120,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @return the master element
    */
-  protected Object getMaster()
+  protected Object getMaster ()
   {
     return master;
   }
@@ -117,21 +128,19 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   /**
    * Attempts to restore the child stored on the given index.
    *
-   * @param index  the index.
-   *
+   * @param index the index.
    * @return null if the child could not be restored or the restored child.
    */
-  protected abstract Object restoreChild(int index);
+  protected abstract Object restoreChild (int index);
 
   /**
    * Returns the child stored at the given index. If the child has been garbage collected,
    * it gets restored using the restoreChild function.
    *
-   * @param index  the index.
-   *
+   * @param index the index.
    * @return the object.
    */
-  public Object get(final int index)
+  public Object get (final int index)
   {
     if (isMaster(index))
     {
@@ -157,11 +166,10 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   /**
    * Replaces the child stored at the given index with the new child which can be null.
    *
-   * @param report  the object.
+   * @param report the object.
    * @param index  the index.
-   *
    */
-  public void set(final Object report, final int index)
+  public void set (final Object report, final int index)
   {
     if (isMaster(index))
     {
@@ -176,24 +184,22 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   /**
    * Creates a new reference for the given object.
    *
-   * @param o  the object.
-   *
+   * @param o the object.
    * @return a WeakReference for the object o without any ReferenceQueue attached.
    */
-  private Reference createReference(final Object o)
+  private Reference createReference (final Object o)
   {
     return new WeakReference(o);
   }
 
   /**
-   * Adds the element to the list. If the maximum size of the list is exceeded, this function
-   * returns false to indicate that adding failed.
+   * Adds the element to the list. If the maximum size of the list is exceeded, this
+   * function returns false to indicate that adding failed.
    *
-   * @param rs  the object.
-   *
+   * @param rs the object.
    * @return true, if the object was successfully added to the list, false otherwise
    */
-  public boolean add(final Object rs)
+  public boolean add (final Object rs)
   {
     if (size == 0)
     {
@@ -220,11 +226,10 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   /**
    * Returns true, if the given index denotes a master index of this list.
    *
-   * @param index  the index.
-   *
+   * @param index the index.
    * @return true if the index is a master index.
    */
-  protected boolean isMaster(final int index)
+  protected boolean isMaster (final int index)
   {
     return index % getMaxChildCount() == 0;
   }
@@ -232,11 +237,10 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   /**
    * Returns the internal storage position for the child.
    *
-   * @param index  the index.
-   *
+   * @param index the index.
    * @return the internal storage index.
    */
-  protected int getChildPos(final int index)
+  protected int getChildPos (final int index)
   {
     return index % getMaxChildCount() - 1;
   }
@@ -246,7 +250,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    *
    * @return the size.
    */
-  public int getSize()
+  public int getSize ()
   {
     return size;
   }
@@ -254,12 +258,11 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   /**
    * Serialisation support. The transient child elements are not saved.
    *
-   * @param out  the output stream.
-   *
+   * @param out the output stream.
    * @throws IOException if there is an I/O error.
    */
-  private void writeObject(final java.io.ObjectOutputStream out)
-      throws IOException
+  private void writeObject (final java.io.ObjectOutputStream out)
+          throws IOException
   {
     final Reference[] orgChilds = childs;
     try
@@ -276,13 +279,12 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   /**
    * Serialisation support. The transient child elements were not saved.
    *
-   * @param in  the input stream.
-   *
-   * @throws IOException if there is an I/O error.
+   * @param in the input stream.
+   * @throws IOException            if there is an I/O error.
    * @throws ClassNotFoundException if a serialized class is not defined on this system.
    */
-  private void readObject(final java.io.ObjectInputStream in)
-      throws IOException, ClassNotFoundException
+  private void readObject (final java.io.ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
     childs = new Reference[getMaxChildCount() - 1];

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: EnumKeyEditor.java,v 1.6 2003/11/07 18:33:52 taqua Exp $
+ * $Id: EnumKeyEditor.java,v 1.7 2004/05/07 14:29:52 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -52,87 +52,93 @@ import org.jfree.report.modules.gui.config.model.EnumConfigDescriptionEntry;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
- * The enumeration key editor is used to edit configuration keys, which
- * accept a closed set of values. The possible values are defined in the
- * config-description.
- * 
+ * The enumeration key editor is used to edit configuration keys, which accept a closed
+ * set of values. The possible values are defined in the config-description.
+ *
  * @author Thomas Morgner
  */
 public class EnumKeyEditor extends AbstractKeyEditor
 {
   /**
-   * Handles the selection event from the combobox and validates
-   * the input.
+   * Handles the selection event from the combobox and validates the input.
    */
   private class ComboBoxSelectionHandler implements ItemListener
   {
     /**
-     * Invoked when an item has been selected or deselected.
-     * The code written for this method performs the operations
-     * that need to occur when an item is selected (or deselected).
-     * 
+     * Invoked when an item has been selected or deselected. The code written for this
+     * method performs the operations that need to occur when an item is selected (or
+     * deselected).
+     *
      * @param e not used
      */
-    public void itemStateChanged(final ItemEvent e)
+    public void itemStateChanged (final ItemEvent e)
     {
       validateInput();
     }
   }
 
-  /** The editor component. */
+  /**
+   * The editor component.
+   */
   private final JComboBox content;
-  /** The label to name the editor component. */
+  /**
+   * The label to name the editor component.
+   */
   private final JLabel entryLabel;
-  /** A list of selectable options. */
+  /**
+   * A list of selectable options.
+   */
   private final List options;
-  /** the content pane. */
+  /**
+   * the content pane.
+   */
   private final JPanel entryLabelCarrier;
 
   /**
-   * Creates a new enumeration key editor for the given configuration
-   * and key definition. The given displayname will be used as label.
-   * 
-   * @param config the report configuration used to read the values. 
-   * @param entry the metadata for the edited key.
+   * Creates a new enumeration key editor for the given configuration and key definition.
+   * The given displayname will be used as label.
+   *
+   * @param config      the report configuration used to read the values.
+   * @param entry       the metadata for the edited key.
    * @param displayName the text for the label.
    */
-  public EnumKeyEditor(final ReportConfiguration config,
-    final EnumConfigDescriptionEntry entry, final String displayName)
+  public EnumKeyEditor (final ReportConfiguration config,
+                        final EnumConfigDescriptionEntry entry, final String displayName)
   {
     super(config, entry);
 
     final JPanel contentPane = new JPanel();
-    contentPane.setLayout(new BorderLayout(5,0));
-    entryLabel = new JLabel (displayName);
+    contentPane.setLayout(new BorderLayout(5, 0));
+    entryLabel = new JLabel(displayName);
     entryLabel.setToolTipText(entry.getDescription());
 
     entryLabelCarrier = new JPanel();
     entryLabelCarrier.setLayout(new BorderLayout());
     entryLabelCarrier.add(entryLabel);
-    contentPane.add (entryLabelCarrier, BorderLayout.WEST);
+    contentPane.add(entryLabelCarrier, BorderLayout.WEST);
 
 
     this.options = Arrays.asList(entry.getOptions());
 
     content = new JComboBox(entry.getOptions());
     content.addItemListener(new ComboBoxSelectionHandler());
-    contentPane.add (content, BorderLayout.CENTER);
+    contentPane.add(content, BorderLayout.CENTER);
     setContentPane(contentPane);
     reset();
   }
 
   /**
-   * Restores the original value as read from the report configuration. 
+   * Restores the original value as read from the report configuration.
+   *
    * @see org.jfree.report.modules.gui.config.editor.KeyEditor#reset()
    */
-  public void reset()
+  public void reset ()
   {
     content.setSelectedItem(loadValue());
   }
 
   /**
-   * Checks, whether the input from the combobox is a valid option. 
-   *
+   * Checks, whether the input from the combobox is a valid option.
    */
   protected void validateInput ()
   {
@@ -140,11 +146,11 @@ public class EnumKeyEditor extends AbstractKeyEditor
   }
 
   /**
-   * Saves the currently selected option as new value in the report
-   * configuration. 
+   * Saves the currently selected option as new value in the report configuration.
+   *
    * @see org.jfree.report.modules.gui.config.editor.KeyEditor#store()
    */
-  public void store()
+  public void store ()
   {
     if (isValidInput())
     {
@@ -160,41 +166,40 @@ public class EnumKeyEditor extends AbstractKeyEditor
   }
 
   /**
-   * Sets whether or not this component is enabled.
-   * A component which is enabled may respond to user input,
-   * while a component which is not enabled cannot respond to
-   * user input.  Some components may alter their visual
-   * representation when they are disabled in order to
-   * provide feedback to the user that they cannot take input.
+   * Sets whether or not this component is enabled. A component which is enabled may
+   * respond to user input, while a component which is not enabled cannot respond to user
+   * input.  Some components may alter their visual representation when they are disabled
+   * in order to provide feedback to the user that they cannot take input.
    *
-   * @see java.awt.Component#isEnabled
    * @param enabled defines, whether this editor is enabled.
+   * @see java.awt.Component#isEnabled
    */
-  public void setEnabled(final boolean enabled)
+  public void setEnabled (final boolean enabled)
   {
     super.setEnabled(enabled);
     content.setEnabled(enabled);
   }
 
   /**
-   * Defines the preferred width of the label. 
-   * @see org.jfree.report.modules.gui.config.editor.KeyEditor#setLabelWidth(int)
-   * 
+   * Defines the preferred width of the label.
+   *
    * @param width the new preferred width.
+   * @see org.jfree.report.modules.gui.config.editor.KeyEditor#setLabelWidth(int)
    */
-  public void setLabelWidth(final int width)
+  public void setLabelWidth (final int width)
   {
     final Dimension prefSize = entryLabel.getPreferredSize();
     entryLabelCarrier.setPreferredSize(new Dimension(width, prefSize.height));
   }
 
   /**
-   * Returns the preferred width of the label. 
-   * @see org.jfree.report.modules.gui.config.editor.KeyEditor#getLabelWidth()
-   * 
+   * Returns the preferred width of the label.
+   *
    * @return the preferred width.
+   *
+   * @see org.jfree.report.modules.gui.config.editor.KeyEditor#getLabelWidth()
    */
-  public int getLabelWidth()
+  public int getLabelWidth ()
   {
     final Dimension prefSize = entryLabel.getPreferredSize();
     if (prefSize != null)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ModuleNodeFactory.java,v 1.8.4.1 2004/05/11 13:25:33 taqua Exp $
+ * $Id: ModuleNodeFactory.java,v 1.10 2005/01/25 00:04:38 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -57,16 +57,16 @@ import org.jfree.report.util.ReportConfiguration;
 import org.xml.sax.SAXException;
 
 /**
- * The module node factory is used to build the lists of modules and their
- * assigned keys for the ConfigTreeModel.
- * 
+ * The module node factory is used to build the lists of modules and their assigned keys
+ * for the ConfigTreeModel.
+ *
  * @author Thomas Morgner
  */
 public class ModuleNodeFactory
 {
   /**
    * Sorts the given modules by their class package names.
-   * 
+   *
    * @author Thomas Morgner
    */
   private static class ModuleSorter implements Comparator
@@ -77,21 +77,21 @@ public class ModuleNodeFactory
     public ModuleSorter ()
     {
     }
-    
+
     /**
-     * Compares its two arguments for order.  Returns a negative integer,
-     * zero, or a positive integer as the first argument is less than, equal
-     * to, or greater than the second.<p>
+     * Compares its two arguments for order.  Returns a negative integer, zero, or a
+     * positive integer as the first argument is less than, equal to, or greater than the
+     * second.<p>
      *
      * @param o1 the first object to be compared.
      * @param o2 the second object to be compared.
-     * @return a negative integer, zero, or a positive integer as the
-     *         first argument is less than, equal to, or greater than the
-     *         second.
-     * @throws ClassCastException if the arguments' types prevent them from
-     *         being compared by this Comparator.
+     * @return a negative integer, zero, or a positive integer as the first argument is
+     *         less than, equal to, or greater than the second.
+     *
+     * @throws ClassCastException if the arguments' types prevent them from being compared
+     *                            by this Comparator.
      */
-    public int compare(final Object o1, final Object o2)
+    public int compare (final Object o1, final Object o2)
     {
       final String name1;
       final String name2;
@@ -110,17 +110,25 @@ public class ModuleNodeFactory
     }
   }
 
-  /** All known modules as known at construction time. */ 
+  /**
+   * All known modules as known at construction time.
+   */
   private final Module[] activeModules;
-  /** A list of global module nodes. */
+  /**
+   * A list of global module nodes.
+   */
   private final ArrayList globalNodes;
-  /** A list of local module nodes. */
+  /**
+   * A list of local module nodes.
+   */
   private final ArrayList localNodes;
-  /** A hashtable of all defined config description entries. */
+  /**
+   * A hashtable of all defined config description entries.
+   */
   private final Hashtable configEntryLookup;
 
   /**
-   * Create a new and uninitialized module node factory. 
+   * Create a new and uninitialized module node factory.
    */
   private ModuleNodeFactory ()
   {
@@ -135,14 +143,15 @@ public class ModuleNodeFactory
   }
 
   /**
-   * Creates a new module node factory and initializes the factory from
-   * the given input stream. The stream will be used to build a ConfigDescription
-   * model and should contain suitable XML content. 
-   * 
+   * Creates a new module node factory and initializes the factory from the given input
+   * stream. The stream will be used to build a ConfigDescription model and should contain
+   * suitable XML content.
+   *
    * @param in the input stream from where to read the model content.
    * @throws IOException if an error occured while reading the stream.
    */
-  public ModuleNodeFactory (final InputStream in) throws IOException
+  public ModuleNodeFactory (final InputStream in)
+          throws IOException
   {
     this();
     final ConfigDescriptionModel model = new ConfigDescriptionModel();
@@ -152,12 +161,12 @@ public class ModuleNodeFactory
     }
     catch (SAXException saxException)
     {
-      Log.error ("Failed to parse the model description.", saxException);
+      Log.error("Failed to parse the model description.", saxException);
       throw new IOException("Failed to parse the model description:" + saxException.getMessage());
     }
     catch (ParserConfigurationException pE)
     {
-      Log.error ("Failed to configure the xml parser.", pE);
+      Log.error("Failed to configure the xml parser.", pE);
       throw new IOException("Failed to configure the xml parser:" + pE.getMessage());
     }
 
@@ -170,14 +179,15 @@ public class ModuleNodeFactory
   }
 
   /**
-   * (Re)Initializes the factory from the given report configuration. This
-   * will assign all keys frmo the report configuration to the model and 
-   * assignes the definition from the configuration description if possible.
-   *  
+   * (Re)Initializes the factory from the given report configuration. This will assign all
+   * keys frmo the report configuration to the model and assignes the definition from the
+   * configuration description if possible.
+   *
    * @param config the report configuration that contains the keys.
    * @throws ConfigTreeModelException if an error occurs.
    */
-  public void init (final ReportConfiguration config) throws ConfigTreeModelException
+  public void init (final ReportConfiguration config)
+          throws ConfigTreeModelException
   {
     globalNodes.clear();
     localNodes.clear();
@@ -192,15 +202,15 @@ public class ModuleNodeFactory
   }
 
   /**
-   * Processes a single report configuration key and tries to find a definition
-   * for that key.
-   * 
-   * @param key the name of the report configuration key
+   * Processes a single report configuration key and tries to find a definition for that
+   * key.
+   *
+   * @param key    the name of the report configuration key
    * @param config the report configuration used to build the model
    * @throws ConfigTreeModelException if an error occurs
    */
-  private void processKey (final String key, final ReportConfiguration config) 
-    throws ConfigTreeModelException
+  private void processKey (final String key, final ReportConfiguration config)
+          throws ConfigTreeModelException
   {
     ConfigDescriptionEntry cde = (ConfigDescriptionEntry) configEntryLookup.get(key);
 
@@ -222,17 +232,17 @@ public class ModuleNodeFactory
       {
         if (System.getProperties().containsKey(key))
         {
-          Log.debug ("Ignored key from the system properties: " + key);
+          Log.debug("Ignored key from the system properties: " + key);
         }
         else
         {
-          Log.debug ("Undefined key added on the fly: " + key);
+          Log.debug("Undefined key added on the fly: " + key);
           cde = new TextConfigDescriptionEntry(key);
         }
       }
       catch (SecurityException se)
       {
-        Log.debug ("Unsafe key-definition due to security restrictions: " + key);
+        Log.debug("Unsafe key-definition due to security restrictions: " + key);
         cde = new TextConfigDescriptionEntry(key);
       }
     }
@@ -267,8 +277,8 @@ public class ModuleNodeFactory
 
   /**
    * Tries to find a module node for the given module in the given list.
-   * 
-   * @param key the module that is searched.
+   *
+   * @param key      the module that is searched.
    * @param nodeList the list with all known modules.
    * @return the node containing the given module, or null if not found.
    */
@@ -286,10 +296,9 @@ public class ModuleNodeFactory
   }
 
   /**
-   * Returns the name of the package for the given class. This is a
-   * workaround for the classloader behaviour of JDK1.2.2 where no 
-   * package objects are created.
-   * 
+   * Returns the name of the package for the given class. This is a workaround for the
+   * classloader behaviour of JDK1.2.2 where no package objects are created.
+   *
    * @param c the class for which we search the package.
    * @return the name of the package, never null.
    */
@@ -309,18 +318,19 @@ public class ModuleNodeFactory
   }
 
   /**
-   * Looks up the module for the given key. If no module is responsible
-   * for the key, then it will be assigned to the core module. 
-   * 
-   * If the core is not defined, then a ConfigTreeModelException is thrown.
-   * The core is the base for all modules, and is always defined in a sane
-   * environment. 
-   * 
-   * @param key the name of the configuration key 
+   * Looks up the module for the given key. If no module is responsible for the key, then
+   * it will be assigned to the core module.
+   * <p/>
+   * If the core is not defined, then a ConfigTreeModelException is thrown. The core is
+   * the base for all modules, and is always defined in a sane environment.
+   *
+   * @param key the name of the configuration key
    * @return the module that most likely defines that key
+   *
    * @throws ConfigTreeModelException if the core module is not available.
    */
-  private Module lookupModule (final String key) throws ConfigTreeModelException
+  private Module lookupModule (final String key)
+          throws ConfigTreeModelException
   {
     Module fallback = null;
     for (int i = 0; i < activeModules.length; i++)
@@ -351,35 +361,35 @@ public class ModuleNodeFactory
   }
 
   /**
-   * Returns all global nodes. You have to initialize the factory before
-   * using this method.
-   * 
+   * Returns all global nodes. You have to initialize the factory before using this
+   * method.
+   *
    * @return the list of all global nodes.
    */
-  public ArrayList getGlobalNodes()
+  public ArrayList getGlobalNodes ()
   {
     return globalNodes;
   }
 
   /**
-   * Returns all local nodes. You have to initialize the factory before
-   * using this method.
-   * 
+   * Returns all local nodes. You have to initialize the factory before using this
+   * method.
+   *
    * @return the list of all global nodes.
    */
-  public ArrayList getLocalNodes()
+  public ArrayList getLocalNodes ()
   {
     return localNodes;
   }
 
   /**
-   * Returns the entry for the given key or null, if the key has no
-   * metadata.
+   * Returns the entry for the given key or null, if the key has no metadata.
+   *
    * @param key the name of the key
    * @return the entry or null if not found.
    */
   public ConfigDescriptionEntry getEntryForKey (final String key)
   {
-    return (ConfigDescriptionEntry) configEntryLookup.get (key);
+    return (ConfigDescriptionEntry) configEntryLookup.get(key);
   }
 }

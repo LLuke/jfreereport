@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVContentCreator.java,v 1.1.2.1 2004/12/13 19:27:07 taqua Exp $
+ * $Id: CSVContentCreator.java,v 1.2 2005/01/25 01:25:47 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -58,11 +58,13 @@ public class CSVContentCreator extends TableContentCreator
   private PrintWriter writer;
   private boolean open;
 
-  /** The CSVQuoter that is used when writing the content. */
+  /**
+   * The CSVQuoter that is used when writing the content.
+   */
   private CSVQuoter quoter;
 
   public CSVContentCreator
-      (final SheetLayoutCollection sheetLayoutCollection, final Writer writer)
+          (final SheetLayoutCollection sheetLayoutCollection, final Writer writer)
   {
     super(sheetLayoutCollection);
     if (writer == null)
@@ -72,17 +74,17 @@ public class CSVContentCreator extends TableContentCreator
     this.writer = new PrintWriter(writer);
   }
 
-  protected void handleBeginTable(final ReportDefinition reportDefinition)
+  protected void handleBeginTable (final ReportDefinition reportDefinition)
   {
     // remains empty, as we don't support multiple tables.
   }
 
-  protected void handleEndTable()
+  protected void handleEndTable ()
   {
     // remains empty, as we don't support multiple tables.
   }
 
-  protected void handleOpen(final ReportDefinition reportDefinition)
+  protected void handleOpen (final ReportDefinition reportDefinition)
   {
     // remains empty, as we don't support multiple tables.
     // possibly write a header ...
@@ -95,19 +97,18 @@ public class CSVContentCreator extends TableContentCreator
     this.quoter = new CSVQuoter(separator);
   }
 
-  protected void handleClose()
+  protected void handleClose ()
   {
     // remains empty, as we don't support multiple tables.
     open = false;
   }
 
   /**
-   * Commits all bands. See the class description for details on the
-   * flushing process.
+   * Commits all bands. See the class description for details on the flushing process.
    *
    * @return true, if the content was flushed, false otherwise.
    */
-  public boolean handleFlush()
+  public boolean handleFlush ()
   {
     final GenericObjectTable go = getBackend();
     final SheetLayout layout = getCurrentLayout();
@@ -154,7 +155,7 @@ public class CSVContentCreator extends TableContentCreator
    *
    * @return true, if the report is open, false otherwise.
    */
-  public boolean isOpen()
+  public boolean isOpen ()
   {
     return open;
   }

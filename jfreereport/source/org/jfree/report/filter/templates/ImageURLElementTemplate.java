@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageURLElementTemplate.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ImageURLElementTemplate.java,v 1.3 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -51,19 +51,25 @@ import org.jfree.report.filter.URLFilter;
  */
 public class ImageURLElementTemplate extends AbstractTemplate
 {
-  /** The image load filter. */
+  /**
+   * The image load filter.
+   */
   private ImageLoadFilter imageLoadFilter;
 
-  /** A static datasource. */
+  /**
+   * A static datasource.
+   */
   private StaticDataSource staticDataSource;
 
-  /** A URL filter. */
+  /**
+   * A URL filter.
+   */
   private URLFilter urlFilter;
 
   /**
    * Creates a new template.
    */
-  public ImageURLElementTemplate()
+  public ImageURLElementTemplate ()
   {
     staticDataSource = new StaticDataSource();
     urlFilter = new URLFilter();
@@ -75,9 +81,9 @@ public class ImageURLElementTemplate extends AbstractTemplate
   /**
    * Sets the URL for the template.
    *
-   * @param content  the URL.
+   * @param content the URL.
    */
-  public void setContent(final String content)
+  public void setContent (final String content)
   {
     staticDataSource.setValue(content);
   }
@@ -87,7 +93,7 @@ public class ImageURLElementTemplate extends AbstractTemplate
    *
    * @return The URL text.
    */
-  public String getContent()
+  public String getContent ()
   {
     return (String) (staticDataSource.getValue());
   }
@@ -97,7 +103,7 @@ public class ImageURLElementTemplate extends AbstractTemplate
    *
    * @return The URL.
    */
-  public URL getBaseURL()
+  public URL getBaseURL ()
   {
     return urlFilter.getBaseURL();
   }
@@ -105,9 +111,9 @@ public class ImageURLElementTemplate extends AbstractTemplate
   /**
    * Sets the base URL.
    *
-   * @param baseURL  the URL.
+   * @param baseURL the URL.
    */
-  public void setBaseURL(final URL baseURL)
+  public void setBaseURL (final URL baseURL)
   {
     urlFilter.setBaseURL(baseURL);
   }
@@ -117,7 +123,7 @@ public class ImageURLElementTemplate extends AbstractTemplate
    *
    * @return the value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return imageLoadFilter.getValue();
   }
@@ -129,7 +135,8 @@ public class ImageURLElementTemplate extends AbstractTemplate
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final ImageURLElementTemplate template = (ImageURLElementTemplate) super.clone();
     template.imageLoadFilter = (ImageLoadFilter) imageLoadFilter.clone();

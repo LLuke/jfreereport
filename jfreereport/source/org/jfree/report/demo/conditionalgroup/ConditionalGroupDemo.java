@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConditionalGroupDemo.java,v 1.1.2.1 2004/04/27 15:02:06 taqua Exp $
+ * $Id: ConditionalGroupDemo.java,v 1.2 2005/01/25 01:13:38 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -72,11 +72,11 @@ public class ConditionalGroupDemo extends AbstractDemoFrame
   {
     setTitle("Conditional Group Demo");
     this.data = new ConditionalGroupTableModel();
-    this.data.addRecord("Income","Account 1",null,new BigDecimal("9999.99"));
-    this.data.addRecord("Income","Account 2",null,new BigDecimal("9999.99"));
-    this.data.addRecord("Expense","Account A", "Account Z",new BigDecimal("9999.99"));
-    this.data.addRecord("Expense","Account A", "Account Y",new BigDecimal("9999.99"));
-    this.data.addRecord("Expense","Account B",null,new BigDecimal("9999.99"));
+    this.data.addRecord("Income", "Account 1", null, new BigDecimal("9999.99"));
+    this.data.addRecord("Income", "Account 2", null, new BigDecimal("9999.99"));
+    this.data.addRecord("Expense", "Account A", "Account Z", new BigDecimal("9999.99"));
+    this.data.addRecord("Expense", "Account A", "Account Y", new BigDecimal("9999.99"));
+    this.data.addRecord("Expense", "Account B", null, new BigDecimal("9999.99"));
 
     setJMenuBar(createMenuBar());
     setContentPane(createContent());
@@ -87,7 +87,7 @@ public class ConditionalGroupDemo extends AbstractDemoFrame
    *
    * @return the menu bar.
    */
-  public JMenuBar createMenuBar()
+  public JMenuBar createMenuBar ()
   {
     final JMenuBar mb = new JMenuBar();
     final JMenu fileMenu = createJMenu("menu.file");
@@ -107,7 +107,7 @@ public class ConditionalGroupDemo extends AbstractDemoFrame
    *
    * @return a panel containing the basic user interface.
    */
-  public JPanel createContent()
+  public JPanel createContent ()
   {
     final JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
@@ -143,9 +143,9 @@ public class ConditionalGroupDemo extends AbstractDemoFrame
     if (in == null)
     {
       JOptionPane.showMessageDialog(this,
-          MessageFormat.format(getResources().getString("report.definitionnotfound"),
-              new Object[]{in}),
-          getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+              MessageFormat.format(getResources().getString("report.definitionnotfound"),
+                      new Object[]{in}),
+              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 
     final JFreeReport report;
@@ -179,11 +179,10 @@ public class ConditionalGroupDemo extends AbstractDemoFrame
   /**
    * Reads the report from the specified template file.
    *
-   * @param templateURL  the template location.
-   *
+   * @param templateURL the template location.
    * @return a report.
    */
-  private JFreeReport parseReport(final URL templateURL)
+  private JFreeReport parseReport (final URL templateURL)
   {
 
     JFreeReport result = null;
@@ -202,9 +201,9 @@ public class ConditionalGroupDemo extends AbstractDemoFrame
   /**
    * Entry point for running the demo application...
    *
-   * @param args  ignored.
+   * @param args ignored.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: NoPrintCard.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: NoPrintCard.java,v 1.3 2004/05/07 12:43:25 mungady Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,7 @@ public class NoPrintCard extends Card
   /**
    * Creates an empty card.
    */
-  public NoPrintCard()
+  public NoPrintCard ()
   {
   }
 
@@ -55,7 +55,7 @@ public class NoPrintCard extends Card
    *
    * @return The card type.
    */
-  public CardType getType()
+  public CardType getType ()
   {
     return CardType.EMPTY;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageDefinition.java,v 1.2 2004/04/15 15:13:38 taqua Exp $
+ * $Id: PageDefinition.java,v 1.3 2004/05/07 07:43:53 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -44,23 +44,25 @@ import java.io.Serializable;
 
 public interface PageDefinition extends Cloneable, Serializable
 {
-  public float getWidth();
-  public float getHeight();
+  public float getWidth ();
 
-  public int getPageCount();
+  public float getHeight ();
+
+  public int getPageCount ();
 
   /**
    * Returns all page positions as array.
-   * @see PageDefinition#getPagePosition(int)
+   *
    * @return the collected page positions
+   *
+   * @see PageDefinition#getPagePosition(int)
    */
-  public Rectangle2D[] getPagePositions();
+  public Rectangle2D[] getPagePositions ();
 
   /**
-   * Describes the internal position of the given page within
-   * the logical page. The logical page does not include any
-   * page margins, the printable area for a page starts at
-   * (0,0).
+   * Describes the internal position of the given page within the logical page. The
+   * logical page does not include any page margins, the printable area for a page starts
+   * at (0,0).
    *
    * @param pos
    * @return
@@ -68,15 +70,15 @@ public interface PageDefinition extends Cloneable, Serializable
   public Rectangle2D getPagePosition (int pos);
 
   /**
-   * Returns the page format for the given page number.
-   * The page format contains local coordinates - that means
-   * that the point (0,0) denotes the upper left corner of
-   * this returned page format and not global coordinates.
+   * Returns the page format for the given page number. The page format contains local
+   * coordinates - that means that the point (0,0) denotes the upper left corner of this
+   * returned page format and not global coordinates.
    *
    * @param pos the position of the pageformat within the page
    * @return the given pageformat.
    */
-  public PageFormat getPageFormat(int pos);
+  public PageFormat getPageFormat (int pos);
 
-  public Object clone () throws CloneNotSupportedException;
+  public Object clone ()
+          throws CloneNotSupportedException;
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StaticDataSource.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: StaticDataSource.java,v 1.3 2004/05/07 08:24:42 mungady Exp $
  *
  * Changes
  * -------
@@ -52,13 +52,15 @@ import org.jfree.report.util.SerializerHelper;
  */
 public class StaticDataSource implements DataSource, Serializable
 {
-  /** The value. */
+  /**
+   * The value.
+   */
   private transient Object value;
 
   /**
    * Default constructor.
    */
-  public StaticDataSource()
+  public StaticDataSource ()
   {
   }
 
@@ -67,7 +69,7 @@ public class StaticDataSource implements DataSource, Serializable
    *
    * @param o The value.
    */
-  public StaticDataSource(final Object o)
+  public StaticDataSource (final Object o)
   {
     setValue(o);
   }
@@ -77,7 +79,7 @@ public class StaticDataSource implements DataSource, Serializable
    *
    * @param o The value.
    */
-  public void setValue(final Object o)
+  public void setValue (final Object o)
   {
     this.value = o;
   }
@@ -87,7 +89,7 @@ public class StaticDataSource implements DataSource, Serializable
    *
    * @return The value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return value;
   }
@@ -99,7 +101,8 @@ public class StaticDataSource implements DataSource, Serializable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     return super.clone();
   }
@@ -110,8 +113,8 @@ public class StaticDataSource implements DataSource, Serializable
    * @param out the output stream where to write the object.
    * @throws IOException if errors occur while writing the stream.
    */
-  private void writeObject(final ObjectOutputStream out)
-      throws IOException
+  private void writeObject (final ObjectOutputStream out)
+          throws IOException
   {
     out.defaultWriteObject();
     SerializerHelper.getInstance().writeObject(value, out);
@@ -121,12 +124,12 @@ public class StaticDataSource implements DataSource, Serializable
    * Helper method for serialization.
    *
    * @param in the input stream from where to read the serialized object.
-   * @throws IOException when reading the stream fails.
-   * @throws ClassNotFoundException if a class definition for a serialized object
-   * could not be found.
+   * @throws IOException            when reading the stream fails.
+   * @throws ClassNotFoundException if a class definition for a serialized object could
+   *                                not be found.
    */
-  private void readObject(final java.io.ObjectInputStream in)
-      throws IOException, ClassNotFoundException
+  private void readObject (final java.io.ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
     value = SerializerHelper.getInstance().readObject(in);

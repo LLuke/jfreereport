@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageElement.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: ImageElement.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes:
  * --------
@@ -47,22 +47,23 @@ package org.jfree.report;
 import org.jfree.report.style.ElementStyleSheet;
 
 /**
- * Used to draw images (Gif, JPEG, PNG or wmf) on a report band.
- * PNG Support needs JDK 1.3 or higher. This class encapsulates an
- * ImageReference into an element.
- * <p>
+ * Used to draw images (Gif, JPEG, PNG or wmf) on a report band. PNG Support needs JDK 1.3
+ * or higher. This class encapsulates an ImageReference into an element.
+ * <p/>
  *
  * @author Thomas Morgner
  */
 public class ImageElement extends Element
 {
-  /** A string for the content type. */
+  /**
+   * A string for the content type.
+   */
   public static final String CONTENT_TYPE = "image/generic";
 
   /**
    * Constructs a image element.
    */
-  public ImageElement()
+  public ImageElement ()
   {
   }
 
@@ -71,7 +72,7 @@ public class ImageElement extends Element
    *
    * @return the content type.
    */
-  public String getContentType()
+  public String getContentType ()
   {
     return CONTENT_TYPE;
   }
@@ -81,17 +82,18 @@ public class ImageElement extends Element
    *
    * @return true or false.
    */
-  public boolean isScale()
+  public boolean isScale ()
   {
     return getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE);
   }
 
   /**
-   * Sets a flag that controls whether the image should be scaled to fit the element bounds.
+   * Sets a flag that controls whether the image should be scaled to fit the element
+   * bounds.
    *
-   * @param scale  the flag.
+   * @param scale the flag.
    */
-  public void setScale(final boolean scale)
+  public void setScale (final boolean scale)
   {
     getStyle().setBooleanStyleProperty(ElementStyleSheet.SCALE, scale);
   }
@@ -101,7 +103,7 @@ public class ImageElement extends Element
    *
    * @return true or false.
    */
-  public boolean isKeepAspectRatio()
+  public boolean isKeepAspectRatio ()
   {
     return getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO);
   }
@@ -111,7 +113,7 @@ public class ImageElement extends Element
    *
    * @param kar the flag.
    */
-  public void setKeepAspectRatio(final boolean kar)
+  public void setKeepAspectRatio (final boolean kar)
   {
     getStyle().setBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO, kar);
   }

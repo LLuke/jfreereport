@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.13 2004/05/07 14:29:46 mungady Exp $
+ * $Id: ReportConverterGUI.java,v 1.14 2005/01/25 00:04:58 taqua Exp $
  *
  * Changes
  * -------
@@ -83,24 +83,26 @@ import org.jfree.report.modules.parser.ext.factory.templates.DefaultTemplateColl
 import org.jfree.report.modules.parser.extwriter.ReportWriter;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.StringUtil;
+import org.jfree.ui.FilesystemFilter;
+import org.jfree.ui.action.ActionButton;
 import org.jfree.util.DefaultConfiguration;
 import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ArrayClassFactory;
 import org.jfree.xml.factory.objects.URLClassFactory;
-import org.jfree.ui.FilesystemFilter;
-import org.jfree.ui.action.ActionButton;
 
 /**
- * A utility application for converting XML report files from the old format to the
- * new format.
+ * A utility application for converting XML report files from the old format to the new
+ * format.
  *
  * @author Thomas Morgner.
  */
 public class ReportConverterGUI extends JFrame
 {
-  /** The base resource class. */
+  /**
+   * The base resource class.
+   */
   public static final String BASE_RESOURCE_CLASS =
-      "org.jfree.report.modules.gui.converter.resources.converter-resources";
+          "org.jfree.report.modules.gui.converter.resources.converter-resources";
 
   /**
    * An action for selecting the target.
@@ -108,22 +110,22 @@ public class ReportConverterGUI extends JFrame
   private class SelectTargetAction extends AbstractAction
   {
     /**
-     * Defines an <code>Action</code> object with a default
-     * description string and default icon.
+     * Defines an <code>Action</code> object with a default description string and default
+     * icon.
      */
-    public SelectTargetAction()
+    public SelectTargetAction ()
     {
       putValue(Action.NAME, getResources().getString("convertdialog.action.selectTarget.name"));
       putValue(Action.SHORT_DESCRIPTION,
-          getResources().getString("convertdialog.action.selectTarget.description"));
+              getResources().getString("convertdialog.action.selectTarget.description"));
     }
 
     /**
      * Invoked when an action occurs.
      *
-     * @param e  the action event.
+     * @param e the action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       setTargetFile(performSelectFile(getTargetFile(), true));
     }
@@ -135,22 +137,22 @@ public class ReportConverterGUI extends JFrame
   private class SelectSourceAction extends AbstractAction
   {
     /**
-     * Defines an <code>Action</code> object with a default
-     * description string and default icon.
+     * Defines an <code>Action</code> object with a default description string and default
+     * icon.
      */
-    public SelectSourceAction()
+    public SelectSourceAction ()
     {
       putValue(Action.NAME, getResources().getString("convertdialog.action.selectSource.name"));
       putValue(Action.SHORT_DESCRIPTION,
-          getResources().getString("convertdialog.action.selectSource.description"));
+              getResources().getString("convertdialog.action.selectSource.description"));
     }
 
     /**
      * Invoked when an action occurs.
      *
-     * @param e  the action event.
+     * @param e the action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       setSourceFile(performSelectFile(getSourceFile(), false));
     }
@@ -162,52 +164,66 @@ public class ReportConverterGUI extends JFrame
   private class ConvertAction extends AbstractAction
   {
     /**
-     * Defines an <code>Action</code> object with a default
-     * description string and default icon.
+     * Defines an <code>Action</code> object with a default description string and default
+     * icon.
      */
-    public ConvertAction()
+    public ConvertAction ()
     {
       putValue(Action.NAME, getResources().getString("convertdialog.action.convert.name"));
       putValue(Action.SHORT_DESCRIPTION,
-          getResources().getString("convertdialog.action.convert.description"));
+              getResources().getString("convertdialog.action.convert.description"));
     }
 
     /**
      * Invoked when an action occurs.
      *
-     * @param e  the action event.
+     * @param e the action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       convert();
     }
   }
 
-  /** The source field. */
+  /**
+   * The source field.
+   */
   private final JTextField sourceField;
 
-  /** The target field. */
+  /**
+   * The target field.
+   */
   private final JTextField targetField;
 
-  /** A file chooser. */
+  /**
+   * A file chooser.
+   */
   private final JFileChooser fileChooser;
 
-  /** Localised resources. */
+  /**
+   * Localised resources.
+   */
   private ResourceBundle resources;
 
-  /** The encoding combo box model used to select the target file encoding. */
+  /**
+   * The encoding combo box model used to select the target file encoding.
+   */
   private final EncodingComboBoxModel encodingModel;
 
-  /** The table model that displays all messages from the conversion. */
+  /**
+   * The table model that displays all messages from the conversion.
+   */
   private final OperationResultTableModel resultTableModel;
 
-  /** A primitive status bar. */
+  /**
+   * A primitive status bar.
+   */
   private JLabel statusHolder;
 
   /**
    * Default constructor.
    */
-  public ReportConverterGUI()
+  public ReportConverterGUI ()
   {
     encodingModel = EncodingComboBoxModel.createDefaultModel();
     encodingModel.ensureEncodingAvailable("UTF-16");
@@ -220,9 +236,9 @@ public class ReportConverterGUI extends JFrame
     targetField = new JTextField();
 
     final JTable table = new JTable(resultTableModel);
-    table.setMinimumSize(new Dimension (100, 100));
+    table.setMinimumSize(new Dimension(100, 100));
     final JSplitPane componentPane = new JSplitPane
-        (JSplitPane.VERTICAL_SPLIT, createMainPane(), new JScrollPane(table));
+            (JSplitPane.VERTICAL_SPLIT, createMainPane(), new JScrollPane(table));
     componentPane.setOneTouchExpandable(true);
     componentPane.resetToPreferredSizes();
 
@@ -234,23 +250,23 @@ public class ReportConverterGUI extends JFrame
 
     fileChooser = new JFileChooser();
     fileChooser.addChoosableFileFilter(new FilesystemFilter(new String[]{".xml"},
-        "XML-Report definitions", true));
+            "XML-Report definitions", true));
     fileChooser.setMultiSelectionEnabled(false);
 
     setTitle(getResources().getString("convertdialog.title"));
   }
 
   /**
-   * Creates the statusbar for this frame. Use setStatus() to display text on the status bar.
+   * Creates the statusbar for this frame. Use setStatus() to display text on the status
+   * bar.
    *
    * @return the status bar.
    */
-  protected JPanel createStatusBar()
+  protected JPanel createStatusBar ()
   {
     final JPanel statusPane = new JPanel();
     statusPane.setLayout(new BorderLayout());
-    statusPane.setBorder(
-        BorderFactory.createLineBorder(UIManager.getDefaults().getColor("controlShadow")));
+    statusPane.setBorder(BorderFactory.createLineBorder(UIManager.getDefaults().getColor("controlShadow")));
     statusHolder = new JLabel(" ");
     statusPane.setMinimumSize(statusHolder.getPreferredSize());
     statusPane.add(statusHolder, BorderLayout.WEST);
@@ -260,7 +276,7 @@ public class ReportConverterGUI extends JFrame
 
   /**
    * Sets the text of the status line.
-   * 
+   *
    * @param text the new text that should be displayed in the status bar.
    */
   public void setStatusText (final String text)
@@ -270,7 +286,7 @@ public class ReportConverterGUI extends JFrame
 
   /**
    * Returns the text from the status bar.
-   * 
+   *
    * @return the status bar text.
    */
   public String getStatusText ()
@@ -280,7 +296,7 @@ public class ReportConverterGUI extends JFrame
 
   /**
    * Creates the main panel and all child components.
-   *  
+   *
    * @return the created panel.
    */
   private JPanel createMainPane ()
@@ -291,7 +307,7 @@ public class ReportConverterGUI extends JFrame
 
     final JPanel contentPane = new JPanel();
     contentPane.setLayout(new GridBagLayout());
-    contentPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+    contentPane.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = 0;
@@ -370,17 +386,18 @@ public class ReportConverterGUI extends JFrame
 
     return contentPane;
   }
+
   /**
    * Starting point for the utility application.
    *
-   * @param args  ignored.
+   * @param args ignored.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     final ReportConverterGUI gui = new ReportConverterGUI();
     gui.addWindowListener(new WindowAdapter()
     {
-      public void windowClosing(final WindowEvent e)
+      public void windowClosing (final WindowEvent e)
       {
         System.exit(0);
       }
@@ -390,21 +407,20 @@ public class ReportConverterGUI extends JFrame
   }
 
   /**
-   * Validates the contents of the dialogs input fields. If the selected file exists, it is also
-   * checked for validity.
+   * Validates the contents of the dialogs input fields. If the selected file exists, it
+   * is also checked for validity.
    *
-   * @param filename  the file name.
-   *
+   * @param filename the file name.
    * @return true, if the input is valid, false otherwise
    */
-  public boolean performTargetValidate(final String filename)
+  public boolean performTargetValidate (final String filename)
   {
     if (filename.trim().length() == 0)
     {
       JOptionPane.showMessageDialog(this,
-          getResources().getString("convertdialog.targetIsEmpty"),
-          getResources().getString("convertdialog.errorTitle"),
-          JOptionPane.ERROR_MESSAGE);
+              getResources().getString("convertdialog.targetIsEmpty"),
+              getResources().getString("convertdialog.errorTitle"),
+              JOptionPane.ERROR_MESSAGE);
       return false;
     }
     final File f = new File(filename);
@@ -413,28 +429,27 @@ public class ReportConverterGUI extends JFrame
       if (f.isFile() == false)
       {
         JOptionPane.showMessageDialog(this,
-            getResources().getString("convertdialog.targetIsNoFile"),
-            getResources().getString("convertdialog.errorTitle"),
-            JOptionPane.ERROR_MESSAGE);
+                getResources().getString("convertdialog.targetIsNoFile"),
+                getResources().getString("convertdialog.errorTitle"),
+                JOptionPane.ERROR_MESSAGE);
         return false;
       }
       if (f.canWrite() == false)
       {
         JOptionPane.showMessageDialog(this,
-            getResources().getString("convertdialog.targetIsNotWritable"),
-            getResources().getString("convertdialog.errorTitle"),
-            JOptionPane.ERROR_MESSAGE);
+                getResources().getString("convertdialog.targetIsNotWritable"),
+                getResources().getString("convertdialog.errorTitle"),
+                JOptionPane.ERROR_MESSAGE);
         return false;
       }
       final String key1 = "convertdialog.targetOverwriteConfirmation";
       final String key2 = "convertdialog.targetOverwriteTitle";
       if (JOptionPane.showConfirmDialog(this,
-          MessageFormat.format(getResources().getString(key1),
-              new Object[]{filename}
-          ),
-          getResources().getString(key2),
-          JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-          == JOptionPane.NO_OPTION)
+              MessageFormat.format(getResources().getString(key1),
+                      new Object[]{filename}),
+              getResources().getString(key2),
+              JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+              == JOptionPane.NO_OPTION)
       {
         return false;
       }
@@ -444,21 +459,20 @@ public class ReportConverterGUI extends JFrame
   }
 
   /**
-   * Validates the contents of the dialogs input fields. If the selected file exists, it is also
-   * checked for validity.
+   * Validates the contents of the dialogs input fields. If the selected file exists, it
+   * is also checked for validity.
    *
-   * @param filename  the file name.
-   *
+   * @param filename the file name.
    * @return true, if the input is valid, false otherwise
    */
-  public boolean performSourceValidate(final String filename)
+  public boolean performSourceValidate (final String filename)
   {
     if (filename.trim().length() == 0)
     {
       JOptionPane.showMessageDialog(this,
-          getResources().getString("convertdialog.sourceIsEmpty"),
-          getResources().getString("convertdialog.errorTitle"),
-          JOptionPane.ERROR_MESSAGE);
+              getResources().getString("convertdialog.sourceIsEmpty"),
+              getResources().getString("convertdialog.errorTitle"),
+              JOptionPane.ERROR_MESSAGE);
       return false;
     }
     final File f = new File(filename);
@@ -470,29 +484,29 @@ public class ReportConverterGUI extends JFrame
     if (f.isFile() == false)
     {
       JOptionPane.showMessageDialog(this,
-          getResources().getString("convertdialog.sourceIsNoFile"),
-          getResources().getString("convertdialog.errorTitle"),
-          JOptionPane.ERROR_MESSAGE);
+              getResources().getString("convertdialog.sourceIsNoFile"),
+              getResources().getString("convertdialog.errorTitle"),
+              JOptionPane.ERROR_MESSAGE);
       return false;
     }
     if (f.canRead() == false)
     {
       JOptionPane.showMessageDialog(this,
-          getResources().getString("convertdialog.sourceIsNotReadable"),
-          getResources().getString("convertdialog.errorTitle"),
-          JOptionPane.ERROR_MESSAGE);
+              getResources().getString("convertdialog.sourceIsNotReadable"),
+              getResources().getString("convertdialog.errorTitle"),
+              JOptionPane.ERROR_MESSAGE);
       return false;
     }
     return true;
   }
 
   /**
-   * Retrieves the resources for the frame. If the resources are not initialized,
-   * they get loaded on the first call to this method.
+   * Retrieves the resources for the frame. If the resources are not initialized, they get
+   * loaded on the first call to this method.
    *
    * @return The resources.
    */
-  protected ResourceBundle getResources()
+  protected ResourceBundle getResources ()
   {
     if (resources == null)
     {
@@ -504,9 +518,9 @@ public class ReportConverterGUI extends JFrame
   /**
    * Sets the source file.
    *
-   * @param file  the file name.
+   * @param file the file name.
    */
-  protected void setSourceFile(final String file)
+  protected void setSourceFile (final String file)
   {
     sourceField.setText(file);
   }
@@ -514,9 +528,9 @@ public class ReportConverterGUI extends JFrame
   /**
    * Sets the target file.
    *
-   * @param file  the file name.
+   * @param file the file name.
    */
-  protected void setTargetFile(final String file)
+  protected void setTargetFile (final String file)
   {
     targetField.setText(file);
   }
@@ -526,7 +540,7 @@ public class ReportConverterGUI extends JFrame
    *
    * @return The name.
    */
-  protected String getSourceFile()
+  protected String getSourceFile ()
   {
     return sourceField.getText();
   }
@@ -536,18 +550,18 @@ public class ReportConverterGUI extends JFrame
    *
    * @return The name.
    */
-  protected String getTargetFile()
+  protected String getTargetFile ()
   {
     return targetField.getText();
   }
 
   /**
-   * Performs the conversion, returning <code>true</code> if the conversion is successful, and
-   * <code>false</code> otherwise.
+   * Performs the conversion, returning <code>true</code> if the conversion is successful,
+   * and <code>false</code> otherwise.
    *
    * @return A boolean.
    */
-  public boolean convert()
+  public boolean convert ()
   {
 
     if (performSourceValidate(getSourceFile()) == false)
@@ -564,11 +578,11 @@ public class ReportConverterGUI extends JFrame
     try
     {
       final ConverterParserFrontend frontend = new ConverterParserFrontend();
-      final File sourceFile = new File (getSourceFile());
-      final File targetFile = new File (getTargetFile());
+      final File sourceFile = new File(getSourceFile());
+      final File targetFile = new File(getTargetFile());
       final String encoding = encodingModel.getSelectedEncoding();
       final JFreeReport report = (JFreeReport)
-          frontend.parse(sourceFile.toURL(), sourceFile.toURL());
+              frontend.parse(sourceFile.toURL(), sourceFile.toURL());
 
       final DefaultConfiguration config = new DefaultConfiguration();
       config.setProperty(Parser.CONTENTBASE_KEY, targetFile.toURL().toExternalForm());
@@ -596,20 +610,20 @@ public class ReportConverterGUI extends JFrame
     }
     catch (Exception e)
     {
-      Log.warn ("Failed to convert the report. ", e);
+      Log.warn("Failed to convert the report. ", e);
       setStatusText("Failed to convert the report:" + e.getMessage());
       return false;
     }
   }
+
   /**
    * Selects a file to use.
    *
    * @param filename  the current selection.
-   * @param appendExt  append an extension?
-   *
+   * @param appendExt append an extension?
    * @return The file name.
    */
-  protected String performSelectFile(final String filename, final boolean appendExt)
+  protected String performSelectFile (final String filename, final boolean appendExt)
   {
     final File file = new File(filename);
     fileChooser.setCurrentDirectory(file);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Patient.java,v 1.1.2.1 2004/04/05 16:48:50 taqua Exp $
+ * $Id: Patient.java,v 1.2 2005/01/25 01:13:54 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -136,17 +136,17 @@ public class Patient
 
   public Treatment getTreatment (final int i)
   {
-    return (Treatment) treatments.get (i);
+    return (Treatment) treatments.get(i);
   }
 
   public void addTreament (final Treatment t)
   {
-    treatments.add (t);
+    treatments.add(t);
   }
 
   public void removeTreatment (final Treatment t)
   {
-    treatments.remove (t);
+    treatments.remove(t);
   }
 
   public String getAllergy ()

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -
  *
- * $Id: FunctionInitializeException.java,v 1.3 2003/10/18 19:32:12 taqua Exp $
+ * $Id: FunctionInitializeException.java,v 1.5 2005/01/25 00:00:10 taqua Exp $
  *
  * Changes
  * -------
@@ -51,16 +51,18 @@ import org.jfree.report.ReportInitialisationException;
  */
 public class FunctionInitializeException extends ReportInitialisationException
 {
-  /** The parent exception. */
+  /**
+   * The parent exception.
+   */
   private Exception parent;
 
   /**
    * Creates an exception.
    *
-   * @param message  the exception message.
-   * @param ex  the parent exception.
+   * @param message the exception message.
+   * @param ex      the parent exception.
    */
-  public FunctionInitializeException(final String message, final Exception ex)
+  public FunctionInitializeException (final String message, final Exception ex)
   {
     super(message);
     parent = ex;
@@ -69,9 +71,9 @@ public class FunctionInitializeException extends ReportInitialisationException
   /**
    * Creates an exception.
    *
-   * @param message  the exception message.
+   * @param message the exception message.
    */
-  public FunctionInitializeException(final String message)
+  public FunctionInitializeException (final String message)
   {
     super(message);
   }
@@ -81,7 +83,7 @@ public class FunctionInitializeException extends ReportInitialisationException
    *
    * @return the parent exception.
    */
-  public Exception getParent()
+  public Exception getParent ()
   {
     return parent;
   }
@@ -89,9 +91,9 @@ public class FunctionInitializeException extends ReportInitialisationException
   /**
    * Prints the stack trace to the specified stream.
    *
-   * @param stream  the output stream.
+   * @param stream the output stream.
    */
-  public void printStackTrace(final PrintStream stream)
+  public void printStackTrace (final PrintStream stream)
   {
     super.printStackTrace(stream);
     if (getParent() != null)
@@ -104,9 +106,9 @@ public class FunctionInitializeException extends ReportInitialisationException
   /**
    * Prints the stack trace to the specified writer.
    *
-   * @param writer  the writer.
+   * @param writer the writer.
    */
-  public void printStackTrace(final PrintWriter writer)
+  public void printStackTrace (final PrintWriter writer)
   {
     super.printStackTrace(writer);
     if (getParent() != null)

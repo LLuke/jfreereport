@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlMetaBandProducer.java,v 1.6 2005/02/19 13:30:02 taqua Exp $
+ * $Id: HtmlMetaBandProducer.java,v 1.7 2005/02/22 20:19:02 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -78,7 +78,7 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
     }
     final StrictBounds rect = (StrictBounds)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
-    return new HtmlTextMetaElement (new RawContent (rect, o),
+    return new HtmlTextMetaElement(new RawContent(rect, o),
             createStyleForTextElement(e, x, y), useXHTML);
   }
 
@@ -94,7 +94,7 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
     final StrictBounds rect = (StrictBounds)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
     final ImageContent ic = new ImageContent((ImageContainer) o, (StrictBounds) rect.clone());
-    return new HtmlImageMetaElement (ic, createStyleForImageElement(e, x, y), useXHTML);
+    return new HtmlImageMetaElement(ic, createStyleForImageElement(e, x, y), useXHTML);
   }
 
   protected MetaElement createDrawableCell
@@ -117,15 +117,15 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
     {
       return null;
     }
-    final Image image = ImageUtils.createTransparentImage (imageWidth, imageHeight);
+    final Image image = ImageUtils.createTransparentImage(imageWidth, imageHeight);
     final Graphics2D g2 = (Graphics2D) image.getGraphics();
     // the clipping bounds are a sub-area of the whole drawable
     // we only want to print a certain area ...
 
-    drawable.draw(g2, new Rectangle2D.Double (0, 0, imageWidth, imageHeight));
+    drawable.draw(g2, new Rectangle2D.Double(0, 0, imageWidth, imageHeight));
     g2.dispose();
     final DefaultImageReference imgref = new DefaultImageReference(image);
     final ImageContent ic = new ImageContent(imgref, (StrictBounds) rect.clone());
-    return new HtmlImageMetaElement (ic, createStyleForDrawableElement(e, x, y), useXHTML);
+    return new HtmlImageMetaElement(ic, createStyleForDrawableElement(e, x, y), useXHTML);
   }
 }

@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: ImageLoadFilter.java,v 1.4 2004/05/07 08:24:42 mungady Exp $
+ * $Id: DrawableLoadFilter.java,v 1.1 2005/01/25 22:55:36 taqua Exp $
  *
  * ChangeLog
  * --------------------------------------
@@ -45,19 +45,20 @@ import org.jfree.report.util.KeyedQueue;
 import org.jfree.report.util.Log;
 
 /**
- * The DrawableLoadFilter is used to load drawable image files (like WMF's) during the report generation process.
- * This filter expects its datasource to return a java.net.URL. If the datasource does
- * not return an URL, <code>null</code> is returned as result of calling "getValue()".
- * <p>
- * This filter is mostly used in conjunction with the URLFilter, which creates URLs
- * from Strings and files if nessesary.
- * <p>
- * The url is used to create a new Drawable object which is returned to the caller.
- * The loaded/created Drawable is also stored in an internal cache.
- * <p>
+ * The DrawableLoadFilter is used to load drawable image files (like WMF's) during the
+ * report generation process. This filter expects its datasource to return a java.net.URL.
+ * If the datasource does not return an URL, <code>null</code> is returned as result of
+ * calling "getValue()".
+ * <p/>
+ * This filter is mostly used in conjunction with the URLFilter, which creates URLs from
+ * Strings and files if nessesary.
+ * <p/>
+ * The url is used to create a new Drawable object which is returned to the caller. The
+ * loaded/created Drawable is also stored in an internal cache.
+ * <p/>
  * This filter can be used to dynamically change images of a report, a very nice feature
  * for photo albums and catalogs for instance.
- * <p>
+ * <p/>
  * This filter will return null, if something else than an URL was retrieved from the
  * assigned datasource
  *
@@ -67,7 +68,6 @@ public class DrawableLoadFilter implements DataFilter, Serializable
 {
   /**
    * the cache for previously loaded images. If the maximum size of the cache reached,
-   *
    */
   private KeyedQueue imageCache;
 
@@ -79,7 +79,7 @@ public class DrawableLoadFilter implements DataFilter, Serializable
   /**
    * creates a new ImageLoadFilter with a cache size of 10.
    */
-  public DrawableLoadFilter()
+  public DrawableLoadFilter ()
   {
     this(10);
   }
@@ -87,21 +87,21 @@ public class DrawableLoadFilter implements DataFilter, Serializable
   /**
    * Creates a new ImageLoadFilter with the defined cache size.
    *
-   * @param cacheSize  the cache size.
+   * @param cacheSize the cache size.
    */
-  public DrawableLoadFilter(final int cacheSize)
+  public DrawableLoadFilter (final int cacheSize)
   {
     imageCache = new KeyedQueue(cacheSize);
   }
 
   /**
-   * Reads this filter's datasource and if the source returned an URL, tries to form
-   * a imagereference. If the image is loaded in a previous run and is still in the cache,
+   * Reads this filter's datasource and if the source returned an URL, tries to form a
+   * imagereference. If the image is loaded in a previous run and is still in the cache,
    * no new reference is created and the previously loaded reference is returned.
    *
-   * @return  the current value for this filter.
+   * @return the current value for this filter.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     final DataSource ds = getDataSource();
     if (ds == null)
@@ -145,7 +145,7 @@ public class DrawableLoadFilter implements DataFilter, Serializable
    *
    * @return The data source.
    */
-  public DataSource getDataSource()
+  public DataSource getDataSource ()
   {
     return source;
   }
@@ -155,7 +155,7 @@ public class DrawableLoadFilter implements DataFilter, Serializable
    *
    * @param ds The data source.
    */
-  public void setDataSource(final DataSource ds)
+  public void setDataSource (final DataSource ds)
   {
     if (ds == null)
     {
@@ -172,7 +172,8 @@ public class DrawableLoadFilter implements DataFilter, Serializable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final DrawableLoadFilter il = (DrawableLoadFilter) super.clone();
     il.imageCache = (KeyedQueue) imageCache.clone();

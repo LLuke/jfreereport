@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HorizontalBoundsAlignment.java,v 1.5 2004/05/07 12:53:06 mungady Exp $
+ * $Id: HorizontalBoundsAlignment.java,v 1.6 2005/02/19 13:29:58 taqua Exp $
  *
  * Changes
  * -------
@@ -50,9 +50,9 @@ public abstract strictfp class HorizontalBoundsAlignment extends BoundsAlignment
   /**
    * Creates a new horizontal alignment object.
    *
-   * @param bounds  the bounds.
+   * @param bounds the bounds.
    */
-  protected HorizontalBoundsAlignment(final StrictBounds bounds)
+  protected HorizontalBoundsAlignment (final StrictBounds bounds)
   {
     super(bounds);
   }

@@ -8,9 +8,9 @@ public class SubOrganizationRecord extends Record
   private int femaleGenderCount;
 
   public SubOrganizationRecord (final String orgID,
-                            final String name, final String email,
-                            final int maleGenderCount,
-                            final int femaleGenderCount)
+                                final String name, final String email,
+                                final int maleGenderCount,
+                                final int femaleGenderCount)
   {
     super("org", orgID);
     this.name = name;

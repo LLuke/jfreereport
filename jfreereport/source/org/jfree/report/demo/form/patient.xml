@@ -26,7 +26,7 @@
   -->
   <watermark>
     <rectangle x="0" y="0" width="575" height="100%" color="#efefef" fill="true"/>
-    <rectangle x="0" y="0" width="575" height="100%" color="black"  draw="true" fill="false"/>
+    <rectangle x="0" y="0" width="575" height="100%" color="black" draw="true" fill="false"/>
 
     <rectangle x="115" y="30" width="210" height="18" color="white" fill="true"/>
     <rectangle x="115" y="30" width="210" height="18" color="black" draw="true" fill="false"/>
@@ -72,26 +72,26 @@
   <groups>
     <group name="Patient-Group">
       <groupheader height="330" fontsize="9" vertical-alignment="bottom">
-        <label        x="10"  y="10" width="100" height="20" fsbold="true" fontname="SansSerif" fontsize="14" alignment="left">Patient:</label>
-        <label        x="10"  y="30" width="100" height="16" fsbold="true" fontname="SansSerif" alignment="left">Name</label>
+        <label x="10" y="10" width="100" height="20" fsbold="true" fontname="SansSerif" fontsize="14" alignment="left">Patient:</label>
+        <label x="10" y="30" width="100" height="16" fsbold="true" fontname="SansSerif" alignment="left">Name</label>
         <string-field x="120" y="30" width="200" height="16" fontname="MonoSpaced" fieldname="patient.name"/>
-        <label        x="10"  y="50" width="100" height="16" fsbold="true" fontname="SansSerif" alignment="left">Address</label>
+        <label x="10" y="50" width="100" height="16" fsbold="true" fontname="SansSerif" alignment="left">Address</label>
         <string-field x="120" y="50" width="200" height="16" fontname="MonoSpaced" fieldname="patient.address"/>
-        <label        x="10"  y="70" width="100" height="16" fsbold="true" fontname="SansSerif" alignment="left">Town</label>
+        <label x="10" y="70" width="100" height="16" fsbold="true" fontname="SansSerif" alignment="left">Town</label>
         <string-field x="120" y="70" width="200" height="16" fontname="MonoSpaced" fieldname="patient.town"/>
-        <label        x="10"  y="90" width="100" height="16" fsbold="true" fontname="SansSerif" alignment="left">SSN</label>
+        <label x="10" y="90" width="100" height="16" fsbold="true" fontname="SansSerif" alignment="left">SSN</label>
         <string-field x="120" y="90" width="200" height="16" fontname="MonoSpaced" fieldname="patient.ssn"/>
-        <label        x="10"  y="110" width="100" height="16" fsbold="true" fontname="SansSerif" alignment="left">Insurance</label>
+        <label x="10" y="110" width="100" height="16" fsbold="true" fontname="SansSerif" alignment="left">Insurance</label>
         <string-field x="120" y="110" width="200" height="16" fontname="MonoSpaced" fieldname="patient.insurance"/>
-        <label        x="10" y="150" width="100" height="16" fsbold="true" fontname="SansSerif" alignment="left">Cause / Symptoms</label>
+        <label x="10" y="150" width="100" height="16" fsbold="true" fontname="SansSerif" alignment="left">Cause / Symptoms</label>
         <string-field x="10" y="170" width="555" height="100" fontname="MonoSpaced" vertical-alignment="top" fieldname="patient.symptoms"/>
-        <label x="10" y="290" width="100" height="9"  fsbold="true" fontname="SansSerif" alignment="left">Treatment</label>
-        <label x="10" y="310" width="60" height="16"  fsbold="true"  fontname="SansSerif" alignment="left">Date</label>
-        <label x="75" y="310" width="200" height="16" fsbold="true"  fontname="SansSerif" alignment="left">Treatment</label>
+        <label x="10" y="290" width="100" height="9" fsbold="true" fontname="SansSerif" alignment="left">Treatment</label>
+        <label x="10" y="310" width="60" height="16" fsbold="true" fontname="SansSerif" alignment="left">Date</label>
+        <label x="75" y="310" width="200" height="16" fsbold="true" fontname="SansSerif" alignment="left">Treatment</label>
         <label x="280" y="310" width="200" height="16" fsbold="true" fontname="SansSerif" alignment="left">Medication</label>
-        <label x="485" y="310" width="75" height="16"  fsbold="true" fontname="SansSerif" alignment="left">Success</label>
+        <label x="485" y="310" width="75" height="16" fsbold="true" fontname="SansSerif" alignment="left">Success</label>
       </groupheader>
-      <groupfooter height="18" fontsize="9" fixed-position="550" >
+      <groupfooter height="18" fontsize="9" fixed-position="550">
         <label x="10" y="0" width="200" height="20" fsbold="true" fontname="SansSerif">Allergy Notes</label>
         <string-field x="10" y="20" width="565" height="70" fontname="MonoSpaced" fieldname="patient.allergy"/>
         <label x="10" y="100" width="100" height="20" fsbold="true" fontname="SansSerif">Health Level</label>
@@ -105,7 +105,7 @@
 
   <!-- Form has a max of 10 Itembands every item has a height of 20 points -->
   <items height="20" fontname="MonoSpaced" fontsize="8" vertical-alignment="middle">
-    <date-field x="10" y="0" width="60" height="16" fieldname="treatment.date" format="dd-MM-yyyy" />
+    <date-field x="10" y="0" width="60" height="16" fieldname="treatment.date" format="dd-MM-yyyy"/>
     <string-field x="75" y="0" width="200" height="16" fieldname="treatment.description"/>
     <string-field x="280" y="0" width="200" height="16" fieldname="treatment.medication"/>
     <string-field x="485" y="0" width="75" height="16" fieldname="treatment.success"/>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionWriter.java,v 1.12 2005/02/19 13:30:04 taqua Exp $
+ * $Id: ReportDescriptionWriter.java,v 1.13 2005/02/22 20:19:54 taqua Exp $
  *
  * Changes
  * -------
@@ -62,29 +62,30 @@ import org.jfree.xml.factory.objects.ObjectFactoryException;
 import org.jfree.xml.writer.AttributeList;
 
 /**
- * A report description writer.  The
- * {@link org.jfree.report.modules.parser.extwriter.ReportDefinitionWriter} class is
- * responsible for writing the complete XML report definition file, but it delegates
- * one large section (the report description) to this class.
+ * A report description writer.  The {@link org.jfree.report.modules.parser.extwriter.ReportDefinitionWriter}
+ * class is responsible for writing the complete XML report definition file, but it
+ * delegates one large section (the report description) to this class.
  *
  * @author Thomas Morgner.
  */
 public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 {
-  /** The comment hint path used to store comments from the ext-parser. */
+  /**
+   * The comment hint path used to store comments from the ext-parser.
+   */
   private static final CommentHintPath REPORT_DESCRIPTION_HINT_PATH =
-      new CommentHintPath(new String[]
-      {REPORT_DEFINITION_TAG,
-       REPORT_DESCRIPTION_TAG});
+          new CommentHintPath(new String[]
+          {REPORT_DEFINITION_TAG,
+           REPORT_DESCRIPTION_TAG});
 
 
   /**
    * Creates a new report description writer.
    *
-   * @param reportWriter  the report writer.
-   * @param indent the current indention level.
+   * @param reportWriter the report writer.
+   * @param indent       the current indention level.
    */
-  public ReportDescriptionWriter(final ReportWriter reportWriter, final int indent)
+  public ReportDescriptionWriter (final ReportWriter reportWriter, final int indent)
   {
     super(reportWriter, indent);
   }
@@ -92,29 +93,29 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
   /**
    * Writes a report description element to a character stream writer.
    *
-   * @param writer  the character stream writer.
-   *
-   * @throws IOException if there is an I/O problem.
+   * @param writer the character stream writer.
+   * @throws IOException           if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void write(final Writer writer) throws IOException, ReportWriterException
+  public void write (final Writer writer)
+          throws IOException, ReportWriterException
   {
     writeComment(writer, REPORT_DESCRIPTION_HINT_PATH, CommentHandler.OPEN_TAG_COMMENT);
     writeTag(writer, REPORT_DESCRIPTION_TAG);
 
     writeBand(writer, REPORT_HEADER_TAG,
-        getReport().getReportHeader(), REPORT_DESCRIPTION_HINT_PATH);
+            getReport().getReportHeader(), REPORT_DESCRIPTION_HINT_PATH);
     writeBand(writer, REPORT_FOOTER_TAG,
-        getReport().getReportFooter(), REPORT_DESCRIPTION_HINT_PATH);
+            getReport().getReportFooter(), REPORT_DESCRIPTION_HINT_PATH);
     writeBand(writer, PAGE_HEADER_TAG,
-        getReport().getPageHeader(), REPORT_DESCRIPTION_HINT_PATH);
+            getReport().getPageHeader(), REPORT_DESCRIPTION_HINT_PATH);
     writeBand(writer, PAGE_FOOTER_TAG,
-        getReport().getPageFooter(), REPORT_DESCRIPTION_HINT_PATH);
+            getReport().getPageFooter(), REPORT_DESCRIPTION_HINT_PATH);
     writeBand(writer, WATERMARK_TAG,
-        getReport().getWatermark(), REPORT_DESCRIPTION_HINT_PATH);
+            getReport().getWatermark(), REPORT_DESCRIPTION_HINT_PATH);
     writeGroups(writer);
     writeBand(writer, ITEMBAND_TAG,
-        getReport().getItemBand(), REPORT_DESCRIPTION_HINT_PATH);
+            getReport().getItemBand(), REPORT_DESCRIPTION_HINT_PATH);
 
     writeComment(writer, REPORT_DESCRIPTION_HINT_PATH, CommentHandler.CLOSE_TAG_COMMENT);
     writeCloseTag(writer, REPORT_DESCRIPTION_TAG);
@@ -124,16 +125,15 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
    * Writes an element for a report band.
    *
    * @param writer  a character stream writer.
-   * @param tagName  the tag name (for the band).
-   * @param band  the band.
-   * @param path the comment path used to read stored comments from the ext-parser.
-   *
-   * @throws IOException if there is an I/O problem.
+   * @param tagName the tag name (for the band).
+   * @param band    the band.
+   * @param path    the comment path used to read stored comments from the ext-parser.
+   * @throws IOException           if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  private void writeBand(final Writer writer, final String tagName,
-                         final Band band, final CommentHintPath path)
-      throws IOException, ReportWriterException
+  private void writeBand (final Writer writer, final String tagName,
+                          final Band band, final CommentHintPath path)
+          throws IOException, ReportWriterException
   {
     if (isBandEmpty(band))
     {
@@ -162,8 +162,8 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
       writeTag(writer, STYLE_TAG);
 
       final StyleWriter styleWriter =
-          new StyleWriter(getReportWriter(), band.getStyle(),
-              getIndentLevel(), stylePath);
+              new StyleWriter(getReportWriter(), band.getStyle(),
+                      getIndentLevel(), stylePath);
       styleWriter.write(writer);
       writeComment(writer, stylePath, CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(writer, STYLE_TAG);
@@ -189,16 +189,16 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
   }
 
   /**
-   * Checks, whether the given stylesheet is empty and does not inherit values
-   * from modifiable or userdefined parents.
+   * Checks, whether the given stylesheet is empty and does not inherit values from
+   * modifiable or userdefined parents.
    *
    * @param es the element stylesheet to test
    * @return true, if the sheet is empty, false otherwise.
    */
-  private boolean isStyleSheetEmpty(final ElementStyleSheet es)
+  private boolean isStyleSheetEmpty (final ElementStyleSheet es)
   {
     if (es.getParents().length == 0 &&
-        es.getDefinedPropertyNames().hasNext() == false)
+            es.getDefinedPropertyNames().hasNext() == false)
     {
       return true;
     }
@@ -209,16 +209,16 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
    * Writes an element to a character stream writer.
    *
    * @param writer  the character stream writer.
-   * @param element  the element.
+   * @param element the element.
    * @param parent  the band.
-   * @param path the comment hint path used to read the stored comments of the ext-parser.
-   *
-   * @throws IOException if there is an I/O problem.
+   * @param path    the comment hint path used to read the stored comments of the
+   *                ext-parser.
+   * @throws IOException           if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  private void writeElement(final Writer writer, final Element element,
-                            final Band parent, final CommentHintPath path)
-      throws IOException, ReportWriterException
+  private void writeElement (final Writer writer, final Element element,
+                             final Band parent, final CommentHintPath path)
+          throws IOException, ReportWriterException
   {
     if (parent.getElements().indexOf(element) == -1)
     {
@@ -246,8 +246,8 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
       writeTag(writer, STYLE_TAG);
 
       final StyleWriter styleWriter =
-          new StyleWriter(getReportWriter(), element.getStyle(),
-              getIndentLevel(), stylePath);
+              new StyleWriter(getReportWriter(), element.getStyle(),
+                      getIndentLevel(), stylePath);
       styleWriter.write(writer);
       writeComment(writer, stylePath, CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(writer, STYLE_TAG);
@@ -263,14 +263,14 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
    * Writes the datasource- or template-tag for an given element.
    *
    * @param element the element, which should be written.
-   * @param writer the writer that should receive the contents.
-   * @param path the comment hint path used to read the ext-parser comments.
+   * @param writer  the writer that should receive the contents.
+   * @param path    the comment hint path used to read the ext-parser comments.
    * @throws ReportWriterException if there is a problem writing the report
-   * @throws IOException if there is an IO error.
+   * @throws IOException           if there is an IO error.
    */
   protected void writeDataSourceForElement
-      (final Element element, final Writer writer, final CommentHintPath path)
-      throws ReportWriterException, IOException
+          (final Element element, final Writer writer, final CommentHintPath path)
+          throws ReportWriterException, IOException
   {
     if ((element.getDataSource() instanceof EmptyDataSource))
     {
@@ -289,7 +289,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     // the template description of the element template will get the
     // template name as its name.
     final TemplateDescription templateDescription =
-        tc.getDescription(template);
+            tc.getDescription(template);
 
     if (templateDescription == null)
     {
@@ -314,11 +314,11 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     if (hints != null)
     {
       final String templateExtends = (String) hints.getHint
-          (element, "ext.parser.template-reference", String.class);
+              (element, "ext.parser.template-reference", String.class);
       if (templateExtends != null)
       {
         final TemplateDescription parent =
-            TemplatesWriter.getTemplateDescription(getReportWriter(), templateExtends);
+                TemplatesWriter.getTemplateDescription(getReportWriter(), templateExtends);
         if (parent != null)
         {
           parentTemplate = parent;
@@ -330,38 +330,38 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     templatePath.addName(TEMPLATE_TAG);
 
     final TemplateWriter templateWriter = new TemplateWriter
-        (getReportWriter(), getIndentLevel(),
-            templateDescription, parentTemplate, templatePath);
+            (getReportWriter(), getIndentLevel(),
+                    templateDescription, parentTemplate, templatePath);
     templateWriter.write(writer);
   }
 
   /**
    * Writes a data source to a character stream writer.
    *
-   * @param writer  the character stream writer.
-   * @param datasource  the datasource.
-   * @param path the comment hint path used to read the ext-parser comments.
-   *
-   * @throws IOException if there is an I/O problem.
+   * @param writer     the character stream writer.
+   * @param datasource the datasource.
+   * @param path       the comment hint path used to read the ext-parser comments.
+   * @throws IOException           if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  private void writeDataSource(final Writer writer, final DataSource datasource,
-                               final CommentHintPath path)
-      throws IOException, ReportWriterException
+  private void writeDataSource (final Writer writer, final DataSource datasource,
+                                final CommentHintPath path)
+          throws IOException, ReportWriterException
   {
     ObjectDescription od =
-        getReportWriter().getClassFactoryCollector().getDescriptionForClass(datasource.getClass());
+            getReportWriter().getClassFactoryCollector().getDescriptionForClass(datasource.getClass());
     if (od == null)
     {
       od = getReportWriter().getClassFactoryCollector().
-          getSuperClassObjectDescription(datasource.getClass(), null);
+              getSuperClassObjectDescription(datasource.getClass(), null);
     }
     if (od == null)
     {
       throw new ReportWriterException("Unable to resolve DataSource: " + datasource.getClass());
     }
 
-    final DataSourceCollector dataSourceCollector = getReportWriter().getDataSourceCollector();
+    final DataSourceCollector dataSourceCollector = getReportWriter()
+            .getDataSourceCollector();
     final String dsname = dataSourceCollector.getDataSourceName(od);
     if (dsname == null)
     {
@@ -374,7 +374,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     writeTag(writer, DATASOURCE_TAG, "type", dsname, OPEN);
 
     final DataSourceWriter dsWriter =
-        new DataSourceWriter(getReportWriter(), datasource, od, getIndentLevel(), dataSourcePath);
+            new DataSourceWriter(getReportWriter(), datasource, od, getIndentLevel(), dataSourcePath);
     dsWriter.write(writer);
 
     writeComment(writer, dataSourcePath, CommentHandler.CLOSE_TAG_COMMENT);
@@ -384,13 +384,12 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
   /**
    * Writes groups to a character stream writer.
    *
-   * @param writer  the character stream writer.
-   *
-   * @throws IOException if there is an I/O problem.
+   * @param writer the character stream writer.
+   * @throws IOException           if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  private void writeGroups(final Writer writer)
-      throws IOException, ReportWriterException
+  private void writeGroups (final Writer writer)
+          throws IOException, ReportWriterException
   {
     final CommentHintPath groupsPath = REPORT_DESCRIPTION_HINT_PATH.getInstance();
     groupsPath.addName(GROUPS_TAG);
@@ -453,7 +452,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
    * @param g the group that should be tested
    * @return true, if the group is empty, false otherwise.
    */
-  private boolean isGroupEmpty(final Group g)
+  private boolean isGroupEmpty (final Group g)
   {
     if (g.getFields().isEmpty() == false)
     {
@@ -472,15 +471,15 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Checks whether the given band is empty.
-   * <p>
-   * A band is considered empty, if it does only define the a band layoutmanager
-   * and no other style definition.
+   * <p/>
+   * A band is considered empty, if it does only define the a band layoutmanager and no
+   * other style definition.
    *
    * @param b the band that should be tested.
    * @return true, if the band does not contain child elements and does not define a
-   * specific style.
+   *         specific style.
    */
-  private boolean isBandEmpty(final Band b)
+  private boolean isBandEmpty (final Band b)
   {
     if (b.getElementCount() != 0)
     {

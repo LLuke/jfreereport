@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ShapeElementFactory.java,v 1.7 2003/11/07 18:33:48 taqua Exp $
+ * $Id: ShapeElementFactory.java,v 1.8 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -51,23 +51,35 @@ import org.jfree.report.style.ElementStyleSheet;
  */
 public abstract class ShapeElementFactory extends ElementFactory
 {
-  /** The shape color. */
+  /**
+   * The shape color.
+   */
   private Color color;
-  /** The shape's stroke.*/
+  /**
+   * The shape's stroke.
+   */
   private Stroke stroke;
-  /** Defines, whether to scale the shape to fit the element bounds. */
+  /**
+   * Defines, whether to scale the shape to fit the element bounds.
+   */
   private Boolean scale;
-  /** Defines, whether to keep the aspect ratio when scaling. */
+  /**
+   * Defines, whether to keep the aspect ratio when scaling.
+   */
   private Boolean keepAspectRatio;
-  /** Defines, whether the shape should be filled. */
+  /**
+   * Defines, whether the shape should be filled.
+   */
   private Boolean shouldFill;
-  /** Defines, whether the shape outline should be drawn. */
+  /**
+   * Defines, whether the shape outline should be drawn.
+   */
   private Boolean shouldDraw;
 
   /**
    * DefaultConstructor.
    */
-  public ShapeElementFactory()
+  public ShapeElementFactory ()
   {
   }
 
@@ -76,7 +88,7 @@ public abstract class ShapeElementFactory extends ElementFactory
    *
    * @return the color of the shape.
    */
-  public Color getColor()
+  public Color getColor ()
   {
     return color;
   }
@@ -86,7 +98,7 @@ public abstract class ShapeElementFactory extends ElementFactory
    *
    * @param color the color of the shape.
    */
-  public void setColor(final Color color)
+  public void setColor (final Color color)
   {
     this.color = color;
   }
@@ -96,7 +108,7 @@ public abstract class ShapeElementFactory extends ElementFactory
    *
    * @return the stoke.
    */
-  public Stroke getStroke()
+  public Stroke getStroke ()
   {
     return stroke;
   }
@@ -106,54 +118,54 @@ public abstract class ShapeElementFactory extends ElementFactory
    *
    * @param stroke the stoke.
    */
-  public void setStroke(final Stroke stroke)
+  public void setStroke (final Stroke stroke)
   {
     this.stroke = stroke;
   }
 
   /**
-   * Returns, whether the image content should be scaled to fit the complete image
-   * element bounds.
+   * Returns, whether the image content should be scaled to fit the complete image element
+   * bounds.
    *
    * @return the scale flag of the image element.
    */
-  public Boolean getScale()
+  public Boolean getScale ()
   {
     return scale;
   }
 
   /**
-   * Defines, whether the image content should be scaled to fit the complete image
-   * element bounds.
+   * Defines, whether the image content should be scaled to fit the complete image element
+   * bounds.
    *
    * @param scale the scale flag of the image element.
    */
-  public void setScale(final Boolean scale)
+  public void setScale (final Boolean scale)
   {
     this.scale = scale;
   }
 
   /**
-   * Returns whether the generated image element should preserve the original aspect
-   * ratio of the image content during scaling. This property has no effect if the image
-   * content is not scaled.
+   * Returns whether the generated image element should preserve the original aspect ratio
+   * of the image content during scaling. This property has no effect if the image content
+   * is not scaled.
    *
    * @return the keep aspect ratio flag.
    */
-  public Boolean getKeepAspectRatio()
+  public Boolean getKeepAspectRatio ()
   {
     return keepAspectRatio;
   }
 
   /**
-   * Defines whether the generated image element should preserve the original aspect
-   * ratio of the image content during scaling. This property has no effect if the image
-   * content is not scaled.
+   * Defines whether the generated image element should preserve the original aspect ratio
+   * of the image content during scaling. This property has no effect if the image content
+   * is not scaled.
    *
    * @param keepAspectRatio whether to keep the aspect ratio of the image content during
-   * the scaling.
+   *                        the scaling.
    */
-  public void setKeepAspectRatio(final Boolean keepAspectRatio)
+  public void setKeepAspectRatio (final Boolean keepAspectRatio)
   {
     this.keepAspectRatio = keepAspectRatio;
   }
@@ -163,7 +175,7 @@ public abstract class ShapeElementFactory extends ElementFactory
    *
    * @return the should fill flag.
    */
-  public Boolean getShouldFill()
+  public Boolean getShouldFill ()
   {
     return shouldFill;
   }
@@ -173,7 +185,7 @@ public abstract class ShapeElementFactory extends ElementFactory
    *
    * @param shouldFill the fill flag.
    */
-  public void setShouldFill(final Boolean shouldFill)
+  public void setShouldFill (final Boolean shouldFill)
   {
     this.shouldFill = shouldFill;
   }
@@ -183,7 +195,7 @@ public abstract class ShapeElementFactory extends ElementFactory
    *
    * @return the draw shape flag.
    */
-  public Boolean getShouldDraw()
+  public Boolean getShouldDraw ()
   {
     return shouldDraw;
   }
@@ -193,14 +205,14 @@ public abstract class ShapeElementFactory extends ElementFactory
    *
    * @param shouldDraw the draw shape flag.
    */
-  public void setShouldDraw(final Boolean shouldDraw)
+  public void setShouldDraw (final Boolean shouldDraw)
   {
     this.shouldDraw = shouldDraw;
   }
 
   /**
    * Applies the style definition to the elements stylesheet.
-   *  
+   *
    * @param style the element stylesheet which should receive the style definition.
    */
   protected void applyStyle (final ElementStyleSheet style)

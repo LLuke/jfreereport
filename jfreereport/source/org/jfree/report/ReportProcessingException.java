@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportProcessingException.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: ReportProcessingException.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -53,10 +53,10 @@ public class ReportProcessingException extends StackableException
   /**
    * Creates an exception.
    *
-   * @param message  the exception message.
-   * @param ex  the parent exception.
+   * @param message the exception message.
+   * @param ex      the parent exception.
    */
-  public ReportProcessingException(final String message, final Exception ex)
+  public ReportProcessingException (final String message, final Exception ex)
   {
     super(message, ex);
   }
@@ -64,9 +64,9 @@ public class ReportProcessingException extends StackableException
   /**
    * Creates an exception.
    *
-   * @param message  the exception message.
+   * @param message the exception message.
    */
-  public ReportProcessingException(final String message)
+  public ReportProcessingException (final String message)
   {
     super(message);
   }

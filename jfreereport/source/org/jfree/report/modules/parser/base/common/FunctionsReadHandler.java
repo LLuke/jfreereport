@@ -7,7 +7,6 @@ import org.jfree.report.function.Expression;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
-import org.jfree.report.modules.parser.base.common.PropertyReferenceReadHandler;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
 import org.xml.sax.SAXException;

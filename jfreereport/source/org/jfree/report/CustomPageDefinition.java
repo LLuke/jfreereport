@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AnchorElement.java,v 1.14 2005/02/19 13:29:51 taqua Exp $
+ * $Id: CustomPageDefinition.java,v 1.4 2005/02/23 19:31:21 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,21 +48,29 @@ import org.jfree.report.util.PageFormatFactory;
 import org.jfree.report.util.SerializerHelper;
 
 /**
- * A page definition, that consists of one or many pages. The pages
- * are allowed to overlapp or to leave areas of the page uncovered.
+ * A page definition, that consists of one or many pages. The pages are allowed to
+ * overlapp or to leave areas of the page uncovered.
  *
  * @author Thomas Morgner
  * @see PageDefinition
  */
 public class CustomPageDefinition implements PageDefinition
 {
-  /** The page bounds, the imageable area on the global virtual page. */
+  /**
+   * The page bounds, the imageable area on the global virtual page.
+   */
   private transient ArrayList pageBoundsList;
-  /** The page format list. */
+  /**
+   * The page format list.
+   */
   private transient ArrayList pageFormatList;
-  /** The total width of the page. */
+  /**
+   * The total width of the page.
+   */
   private float width;
-  /** The total height of the page. */
+  /**
+   * The total height of the page.
+   */
   private float height;
 
   /**
@@ -78,8 +86,8 @@ public class CustomPageDefinition implements PageDefinition
    * Adds a new page format to the page definition.
    *
    * @param format the page format
-   * @param x the x-position to where the imageable-x of the pageformat is mapped.
-   * @param y the y-position to where the imageable-y of the pageformat is mapped.
+   * @param x      the x-position to where the imageable-x of the pageformat is mapped.
+   * @param y      the y-position to where the imageable-y of the pageformat is mapped.
    */
   public void addPageFormat (final PageFormat format, final float x, final float y)
   {
@@ -87,18 +95,19 @@ public class CustomPageDefinition implements PageDefinition
     {
       throw new NullPointerException("The given pageformat must not be null.");
     }
-    width = Math.max(width, (float)(format.getImageableWidth() + x));
-    height = Math.max(height, (float)(format.getImageableHeight() + y));
+    width = Math.max(width, (float) (format.getImageableWidth() + x));
+    height = Math.max(height, (float) (format.getImageableHeight() + y));
     final Rectangle2D bounds = new Rectangle2D.Double
-            ( x, y,
-             format.getImageableWidth(),
-             format.getImageableHeight());
+            (x, y,
+                    format.getImageableWidth(),
+                    format.getImageableHeight());
     pageBoundsList.add(bounds);
     pageFormatList.add(format.clone());
   }
 
   /**
    * Returns the number of pages in the list.
+   *
    * @return the number of pages in the list.
    */
   public int getPageCount ()
@@ -155,6 +164,7 @@ public class CustomPageDefinition implements PageDefinition
 
   /**
    * Returns the total width of the page definition.
+   *
    * @return the total width of the page definition.
    */
   public float getWidth ()
@@ -164,6 +174,7 @@ public class CustomPageDefinition implements PageDefinition
 
   /**
    * Returns the total height of the page definition.
+   *
    * @return the total height of the page definition.
    */
   public float getHeight ()
@@ -175,6 +186,7 @@ public class CustomPageDefinition implements PageDefinition
    * Clones the given page definition object.
    *
    * @return a clone of this page definition.
+   *
    * @throws CloneNotSupportedException if an error occured.
    */
   public Object clone ()
@@ -193,8 +205,8 @@ public class CustomPageDefinition implements PageDefinition
    * @param out the objectoutput stream
    * @throws java.io.IOException if errors occur
    */
-  private void writeObject(final ObjectOutputStream out)
-      throws IOException
+  private void writeObject (final ObjectOutputStream out)
+          throws IOException
   {
     out.defaultWriteObject();
     final SerializerHelper instance = SerializerHelper.getInstance();
@@ -215,13 +227,12 @@ public class CustomPageDefinition implements PageDefinition
   /**
    * Resolve the pageformat, as PageFormat is not serializable.
    *
-   * @param in  the input stream.
-   *
-   * @throws java.io.IOException if there is an IO problem.
+   * @param in the input stream.
+   * @throws java.io.IOException    if there is an IO problem.
    * @throws ClassNotFoundException if there is a class problem.
    */
-  private void readObject(final ObjectInputStream in)
-      throws IOException, ClassNotFoundException
+  private void readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
     final SerializerHelper instance = SerializerHelper.getInstance();
@@ -297,6 +308,7 @@ public class CustomPageDefinition implements PageDefinition
 
   /**
    * Computes the hashcode of this page definition.
+   *
    * @return the hashcode.
    */
   public int hashCode ()

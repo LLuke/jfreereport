@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlSheetLayout.java,v 1.3 2005/01/25 00:13:41 taqua Exp $
+ * $Id: HtmlSheetLayout.java,v 1.4 2005/02/19 13:30:02 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,7 +42,6 @@ import java.awt.Color;
 import java.util.HashSet;
 
 import org.jfree.report.ElementAlignment;
-import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.report.content.Content;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.GenericObjectTable;
@@ -52,12 +51,13 @@ import org.jfree.report.modules.output.table.base.TableCellBackground;
 import org.jfree.report.modules.output.table.base.TableRectangle;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
+import org.jfree.report.util.geom.StrictGeomUtility;
 
 /**
- * The Html Sheet layout collects the CSS-information for the generated
- * cells of a single page. This class will transform the element style
- * into a HTML Cascading Stylesheet definition.
- * <p>
+ * The Html Sheet layout collects the CSS-information for the generated cells of a single
+ * page. This class will transform the element style into a HTML Cascading Stylesheet
+ * definition.
+ * <p/>
  * Currently, one global stylesheet is created for all tables.
  */
 public strictfp class HtmlSheetLayout extends SheetLayout
@@ -65,7 +65,9 @@ public strictfp class HtmlSheetLayout extends SheetLayout
   private HtmlStyleCollection styleCollection;
   private TableRectangle rectangle;
 
-  /** A table of style names; these names are the internal names. */ 
+  /**
+   * A table of style names; these names are the internal names.
+   */
   private GenericObjectTable backgroundStyleTable;
   private GenericObjectTable contentStyleTable;
 
@@ -83,10 +85,10 @@ public strictfp class HtmlSheetLayout extends SheetLayout
   }
 
 
-
   /**
-   * Adds the bounds of the given TableCellData to the grid. The bounds given must be the same as the bounds of the
-   * element, or the layouting might produce surprising results.
+   * Adds the bounds of the given TableCellData to the grid. The bounds given must be the
+   * same as the bounds of the element, or the layouting might produce surprising
+   * results.
    *
    * @param element the position that should be added to the grid (might be null).
    * @throws NullPointerException if the bounds are null
@@ -116,9 +118,9 @@ public strictfp class HtmlSheetLayout extends SheetLayout
     final FontDefinition font = element.getFontDefinitionProperty();
     final Color color = (Color) element.getProperty(ElementStyleSheet.PAINT);
     final ElementAlignment valign
-        = (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT);
+            = (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT);
     final ElementAlignment halign
-        = (ElementAlignment) element.getProperty(ElementStyleSheet.ALIGNMENT);
+            = (ElementAlignment) element.getProperty(ElementStyleSheet.ALIGNMENT);
 
     final HtmlContentStyle style =
             new HtmlContentStyle(font, color, valign, halign);
@@ -140,7 +142,8 @@ public strictfp class HtmlSheetLayout extends SheetLayout
     }
   }
 
-  protected void columnInserted (final int coordinate, final int oldColumn, final int newColumn)
+  protected void columnInserted (final int coordinate, final int oldColumn,
+                                 final int newColumn)
   {
     super.columnInserted(coordinate, oldColumn, newColumn);
     contentStyleTable.copyColumn(oldColumn, newColumn);
@@ -155,9 +158,9 @@ public strictfp class HtmlSheetLayout extends SheetLayout
   }
 
   /**
-   * A Callback method to inform the sheet layout, that the current page
-   * is complete, and no more content will be added.
-   * <p>
+   * A Callback method to inform the sheet layout, that the current page is complete, and
+   * no more content will be added.
+   * <p/>
    * This computes the row styles.
    */
   public void pageCompleted ()
@@ -190,14 +193,14 @@ public strictfp class HtmlSheetLayout extends SheetLayout
         final HtmlTableCellStyle style = new HtmlTableCellStyle(element);
         final String styleName = styleCollection.addCellStyle(style);
         backgroundStyleTable.setObject(layoutRow, layoutCol, styleName);
-        completedElements.add (element);
+        completedElements.add(element);
       }
     }
   }
 
   /**
-   * Returns the name of the style assigned to the given cell
-   * position. The style itself is storef in the stylecollection.
+   * Returns the name of the style assigned to the given cell position. The style itself
+   * is storef in the stylecollection.
    *
    * @param row
    * @param column
@@ -209,8 +212,8 @@ public strictfp class HtmlSheetLayout extends SheetLayout
   }
 
   /**
-   * Returns the name of the style assigned to the given cell
-   * position. The style itself is storef in the stylecollection.
+   * Returns the name of the style assigned to the given cell position. The style itself
+   * is storef in the stylecollection.
    *
    * @param row
    * @param column

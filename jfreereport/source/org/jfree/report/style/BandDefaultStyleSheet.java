@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BandDefaultStyleSheet.java,v 1.4 2005/01/30 23:37:25 taqua Exp $
+ * $Id: BandDefaultStyleSheet.java,v 1.5 2005/02/19 13:30:05 taqua Exp $
  *
  * Changes
  * -------
@@ -42,20 +42,22 @@ import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.ui.FloatDimension;
 
 /**
- * A default band style sheet. This StyleSheet defines the default attribute
- * values for all Bands.
+ * A default band style sheet. This StyleSheet defines the default attribute values for
+ * all Bands.
  *
  * @author Thomas Morgner
  */
 public class BandDefaultStyleSheet extends ElementDefaultStyleSheet
 {
-  /** A shared default style-sheet. */
+  /**
+   * A shared default style-sheet.
+   */
   private static BandDefaultStyleSheet defaultStyle;
 
   /**
    * Creates a new default style sheet.
    */
-  protected BandDefaultStyleSheet()
+  protected BandDefaultStyleSheet ()
   {
     super("GlobalBand");
     setLocked(false);
@@ -74,7 +76,7 @@ public class BandDefaultStyleSheet extends ElementDefaultStyleSheet
    *
    * @return the style-sheet.
    */
-  public static final BandDefaultStyleSheet getBandDefaultStyle()
+  public static final BandDefaultStyleSheet getBandDefaultStyle ()
   {
     if (defaultStyle == null)
     {

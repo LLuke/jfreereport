@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.19 2005/02/05 18:35:21 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.20 2005/02/19 13:30:05 taqua Exp $
  *
  * Changes
  * -------
@@ -70,13 +70,14 @@ import org.jfree.report.util.geom.StrictBounds;
  * defined there.
  * <p/>
  * All StyleSheet entries are checked against the StyleKeyDefinition for validity.
- * <p>
- * As usual, this implementation is not synchronized, we need the performance during
- * the reporting.
+ * <p/>
+ * As usual, this implementation is not synchronized, we need the performance during the
+ * reporting.
  *
  * @author Thomas Morgner
  */
-public abstract class ElementStyleSheet implements Serializable, StyleChangeListener, Cloneable
+public abstract class ElementStyleSheet implements Serializable, StyleChangeListener,
+                                                   Cloneable
 {
   /**
    * A marker to indicate that none of the parent stylesheets defines this value.
@@ -246,13 +247,17 @@ public abstract class ElementStyleSheet implements Serializable, StyleChangeList
   public static final StyleKey HREF_INHERITED = StyleKey.getStyleKey("href-inherited",
           Boolean.class, true, false);
 
-  /** The StyleKey for the user defined cell data format. */
+  /**
+   * The StyleKey for the user defined cell data format.
+   */
   public static final StyleKey EXCEL_WRAP_TEXT =
-      StyleKey.getStyleKey("Excel.WrapText", Boolean.class);
+          StyleKey.getStyleKey("Excel.WrapText", Boolean.class);
 
-  /** The StyleKey for the user defined cell data format. */
+  /**
+   * The StyleKey for the user defined cell data format.
+   */
   public static final StyleKey EXCEL_DATA_FORMAT_STRING =
-      StyleKey.getStyleKey("Excel.CellDataFormat", String.class);
+          StyleKey.getStyleKey("Excel.CellDataFormat", String.class);
 
 
   /**
@@ -303,7 +308,7 @@ public abstract class ElementStyleSheet implements Serializable, StyleChangeList
    * Creates a new element style-sheet with the given name.  The style-sheet initially
    * contains no attributes, and has no parent style-sheets.
    *
-   * @param name       the name (<code>null</code> not permitted).
+   * @param name the name (<code>null</code> not permitted).
    */
   protected ElementStyleSheet (final String name)
   {
@@ -750,7 +755,8 @@ public abstract class ElementStyleSheet implements Serializable, StyleChangeList
    *
    * @see Cloneable
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     try
     {
@@ -787,7 +793,7 @@ public abstract class ElementStyleSheet implements Serializable, StyleChangeList
     }
   }
 
-  protected StyleSheetCarrier[] getParentReferences()
+  protected StyleSheetCarrier[] getParentReferences ()
   {
     parentsToCache();
     return parentsCached;
@@ -800,7 +806,8 @@ public abstract class ElementStyleSheet implements Serializable, StyleChangeList
    *
    * @return the clone.
    */
-  public ElementStyleSheet getCopy () throws CloneNotSupportedException
+  public ElementStyleSheet getCopy ()
+          throws CloneNotSupportedException
   {
     return (ElementStyleSheet) clone();
   }
@@ -965,7 +972,7 @@ public abstract class ElementStyleSheet implements Serializable, StyleChangeList
     final ArrayList al = new ArrayList();
     if (propertyKeys != null)
     {
-      for (int i = 0;  i< propertyKeys.length; i++)
+      for (int i = 0; i < propertyKeys.length; i++)
       {
         if (propertyKeys[i] != null)
         {
@@ -1103,8 +1110,8 @@ public abstract class ElementStyleSheet implements Serializable, StyleChangeList
     properties = new Object[StyleKey.getDefinedStyleKeyCount()];
     propertyKeys = new StyleKey[StyleKey.getDefinedStyleKeyCount()];
     final int maxLen = Math.min
-            (Math.min (properties.length, keys.length),
-             Math.min (propertyKeys.length, values.length));
+            (Math.min(properties.length, keys.length),
+                    Math.min(propertyKeys.length, values.length));
     for (int i = 0; i < maxLen; i++)
     {
       final StyleKey key = keys[i];

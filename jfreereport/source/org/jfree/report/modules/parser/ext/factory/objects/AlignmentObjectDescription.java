@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AlignmentObjectDescription.java,v 1.2 2003/08/24 15:08:21 taqua Exp $
+ * $Id: AlignmentObjectDescription.java,v 1.3 2004/05/07 14:29:08 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -52,7 +52,7 @@ public class AlignmentObjectDescription extends AbstractObjectDescription
   /**
    * Creates a new object description.
    */
-  public AlignmentObjectDescription()
+  public AlignmentObjectDescription ()
   {
     super(ElementAlignment.class);
     setParameterDefinition("value", String.class);
@@ -63,7 +63,7 @@ public class AlignmentObjectDescription extends AbstractObjectDescription
    *
    * @return The object.
    */
-  public Object createObject()
+  public Object createObject ()
   {
     final String o = (String) getParameter("value");
     if (o == null)
@@ -100,11 +100,11 @@ public class AlignmentObjectDescription extends AbstractObjectDescription
   /**
    * Sets the parameters in the object description to match the specified object.
    *
-   * @param o  the object (an {@link ElementAlignment} instance).
-   *
+   * @param o the object (an {@link ElementAlignment} instance).
    * @throws ObjectFactoryException if the object is not recognised.
    */
-  public void setParameterFromObject(final Object o) throws ObjectFactoryException
+  public void setParameterFromObject (final Object o)
+          throws ObjectFactoryException
   {
     if (o.equals(ElementAlignment.BOTTOM))
     {

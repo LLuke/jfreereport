@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BoundsAlignment.java,v 1.7 2004/05/07 12:53:06 mungady Exp $
+ * $Id: BoundsAlignment.java,v 1.8 2005/02/19 13:29:58 taqua Exp $
  *
  * Changes
  * -------
@@ -41,56 +41,56 @@ package org.jfree.report.modules.output.pageable.base.operations;
 import org.jfree.report.util.geom.StrictBounds;
 
 /**
- * An abstract base class for performing alignment of one <code>Rectangle2D</code> to another.
+ * An abstract base class for performing alignment of one <code>Rectangle2D</code> to
+ * another.
  *
  * @author Thomas Morgner
  */
 public abstract strictfp class BoundsAlignment
 {
-  /** The bounds against which the alignment is performed. */
+  /**
+   * The bounds against which the alignment is performed.
+   */
   private StrictBounds referenceBounds;
 
   /**
    * Creates a new alignment object.
    *
-   * @param bounds  the reference bounds (alignment will be performed relative to this rectangle).
+   * @param bounds the reference bounds (alignment will be performed relative to this
+   *               rectangle).
    */
-  protected BoundsAlignment(final StrictBounds bounds)
+  protected BoundsAlignment (final StrictBounds bounds)
   {
     if (bounds == null)
     {
       throw new NullPointerException("Bounds are null");
     }
     if (bounds.getX() < 0 || bounds.getY() < 0 ||
-        bounds.getWidth() < 0 || bounds.getHeight() < 0)
+            bounds.getWidth() < 0 || bounds.getHeight() < 0)
     {
       throw new IllegalArgumentException
-          ("Bounds must not contain negative values.");
+              ("Bounds must not contain negative values.");
     }
     this.referenceBounds = bounds;
   }
 
   /**
-   * Returns the internal reference bounds. This is no clone or copy, so take
-   * care!
+   * Returns the internal reference bounds. This is no clone or copy, so take care!
    *
    * @return the reference bounds.
    */
-  protected StrictBounds getReferenceBounds()
+  protected StrictBounds getReferenceBounds ()
   {
     return referenceBounds;
   }
 
   /**
-   * Aligns a rectangle with this object's reference bounds.
-   * <P>
-   * Subclasses determine the exact alignment behaviour (for example, the
-   * {@link TopAlignment}
-   * class will align a rectangle to the top of the reference bounds).
+   * Aligns a rectangle with this object's reference bounds. <P> Subclasses determine the
+   * exact alignment behaviour (for example, the {@link TopAlignment} class will align a
+   * rectangle to the top of the reference bounds).
    *
-   * @param r  the rectangle to be aligned with this object's reference bounds.
-   *
+   * @param r the rectangle to be aligned with this object's reference bounds.
    * @return the aligned rectangle.
    */
-  public abstract StrictBounds align(StrictBounds r);
+  public abstract StrictBounds align (StrictBounds r);
 }

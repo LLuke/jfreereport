@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: FileConfigStoreModule.java,v 1.5 2004/05/07 14:29:49 mungady Exp $
+ * $Id: FileConfigStoreModule.java,v 1.6 2005/01/25 00:08:51 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,15 +38,15 @@
 
 package org.jfree.report.modules.misc.configstore.filesystem;
 
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
+import org.jfree.report.util.ReportConfiguration;
 
 /**
- * The module definition for the filesystem config storage module.
- * This module provides an configuration store implementation that
- * saves all properties to an configurable directory on the filesystem.
+ * The module definition for the filesystem config storage module. This module provides an
+ * configuration store implementation that saves all properties to an configurable
+ * directory on the filesystem.
  *
  * @author Thomas Morgner
  */
@@ -54,9 +54,11 @@ public class FileConfigStoreModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public FileConfigStoreModule() throws ModuleInitializeException
+  public FileConfigStoreModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }
@@ -75,7 +77,7 @@ public class FileConfigStoreModule extends AbstractModule
           throws ModuleInitializeException
   {
     final String value = ReportConfiguration.getGlobalConfig().getConfigProperty
-        ("org.jfree.report.ConfigStore", "<not defined>");
+            ("org.jfree.report.ConfigStore", "<not defined>");
     if (value.equals(FileConfigStorage.class.getName()))
     {
       performExternalInitialize(FileConfigStoreModuleInitializer.class.getName());

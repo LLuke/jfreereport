@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: UserCard.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: UserCard.java,v 1.3 2004/05/07 12:43:25 mungady Exp $
  *
  * Changes
  * -------
@@ -45,27 +45,33 @@ import java.util.Date;
  */
 public class UserCard extends PersonBoundCard
 {
-  /** The login id. */
+  /**
+   * The login id.
+   */
   private String login;
 
-  /** The password. */
+  /**
+   * The password.
+   */
   private String password;
 
-  /** The expiry date. */
+  /**
+   * The expiry date.
+   */
   private Date expires;
 
   /**
    * Creates a new user account card.
    *
-   * @param firstName  the first name.
+   * @param firstName the first name.
    * @param lastName  the last name.
-   * @param cardNr  the card number.
-   * @param login  the login id.
+   * @param cardNr    the card number.
+   * @param login     the login id.
    * @param password  the password.
-   * @param expires  the expiry date.
+   * @param expires   the expiry date.
    */
-  public UserCard(final String firstName, final String lastName, final String cardNr,
-                  final String login, final String password, final Date expires)
+  public UserCard (final String firstName, final String lastName, final String cardNr,
+                   final String login, final String password, final Date expires)
   {
     super(firstName, lastName, cardNr);
     if (login == null)
@@ -91,7 +97,7 @@ public class UserCard extends PersonBoundCard
    *
    * @return The login id.
    */
-  public String getLogin()
+  public String getLogin ()
   {
     return login;
   }
@@ -101,7 +107,7 @@ public class UserCard extends PersonBoundCard
    *
    * @return The password.
    */
-  public String getPassword()
+  public String getPassword ()
   {
     return password;
   }
@@ -111,7 +117,7 @@ public class UserCard extends PersonBoundCard
    *
    * @return The expiry date.
    */
-  public Date getExpires()
+  public Date getExpires ()
   {
     return expires;
   }
@@ -121,7 +127,7 @@ public class UserCard extends PersonBoundCard
    *
    * @return The card type.
    */
-  public CardType getType()
+  public CardType getType ()
   {
     return CardType.USER;
   }

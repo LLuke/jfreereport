@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableBandArea.java,v 1.6.4.2 2004/12/13 19:27:05 taqua Exp $
+ * $Id: TableBandArea.java,v 1.9 2005/01/25 00:12:35 taqua Exp $
  *
  * Changes
  * -------
@@ -44,15 +44,16 @@ import org.jfree.report.content.Content;
 import org.jfree.report.style.ElementStyleSheet;
 
 /**
- * A band representation. Bands should create their own x- y- cuts so
- * that the layout is more accurate.
+ * A band representation. Bands should create their own x- y- cuts so that the layout is
+ * more accurate.
  *
  * @author Thomas Morgner.
  */
 public class TableBandArea extends TableCellBackground
 {
   public TableBandArea
-      (final Content elementContent, final ElementStyleSheet style, final Color color)
+          (final Content elementContent, final ElementStyleSheet style,
+           final Color color)
   {
     super(elementContent, style, color);
   }
@@ -62,7 +63,7 @@ public class TableBandArea extends TableCellBackground
    *
    * @return The string.
    */
-  public String toString()
+  public String toString ()
   {
     return "TableBandArea={bounds=" + getBounds() + "}";
   }

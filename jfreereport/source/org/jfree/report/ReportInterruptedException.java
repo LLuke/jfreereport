@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportInterruptedException.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: ReportInterruptedException.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,9 @@
 package org.jfree.report;
 
 /**
- * This exception is thrown when the current thread received the Interrupt-signal
- * while the report is beeing processed. Depending on the ReportProcessor implementation
- * such an signal would abort the report generation.
+ * This exception is thrown when the current thread received the Interrupt-signal while
+ * the report is beeing processed. Depending on the ReportProcessor implementation such an
+ * signal would abort the report generation.
  *
  * @author Thomas Morgner
  */
@@ -49,10 +49,10 @@ public class ReportInterruptedException extends ReportProcessingException
   /**
    * Creates an exception.
    *
-   * @param message  the exception message.
-   * @param ex  the parent exception.
+   * @param message the exception message.
+   * @param ex      the parent exception.
    */
-  public ReportInterruptedException(final String message, final Exception ex)
+  public ReportInterruptedException (final String message, final Exception ex)
   {
     super(message, ex);
   }
@@ -60,9 +60,9 @@ public class ReportInterruptedException extends ReportProcessingException
   /**
    * Creates an exception.
    *
-   * @param message  the exception message.
+   * @param message the exception message.
    */
-  public ReportInterruptedException(final String message)
+  public ReportInterruptedException (final String message)
   {
     super(message);
   }

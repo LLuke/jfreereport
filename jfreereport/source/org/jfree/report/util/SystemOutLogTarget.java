@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SystemOutLogTarget.java,v 1.8 2003/12/04 18:04:07 taqua Exp $
+ * $Id: SystemOutLogTarget.java,v 1.9 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes
  * -------
@@ -45,33 +45,36 @@ import java.io.Serializable;
 import org.jfree.util.LogTarget;
 
 /**
- * 
  * A log target that sends all log messages to the <code>System.out</code> stream.
- *
+ * <p/>
  * // todo is now implemented by PrintStreamLogTarget of jcommon
+ *
  * @author Thomas Morgner
  */
 public class SystemOutLogTarget implements LogTarget, Serializable
 {
-  /** The printstream we use .. */
+  /**
+   * The printstream we use ..
+   */
   private PrintStream printStream;
 
   /**
    * The default constructor. Initializes this target with the system.out stream.
-   * <p>
+   * <p/>
    * All {@link org.jfree.util.LogTarget} implementations need a default constructor.
    */
-  public SystemOutLogTarget()
+  public SystemOutLogTarget ()
   {
-    this (System.out);
+    this(System.out);
   }
 
   /**
    * The default constructor. Initializes this target with the given stream.
-   * <p>
+   * <p/>
+   *
    * @param printStream the print stream that is used to write the content.
    */
-  public SystemOutLogTarget(final PrintStream printStream)
+  public SystemOutLogTarget (final PrintStream printStream)
   {
     if (printStream == null)
     {
@@ -81,14 +84,14 @@ public class SystemOutLogTarget implements LogTarget, Serializable
   }
 
   /**
-   * Logs a message to the main log stream. All attached logStreams will also
-   * receive this message. If the given log-level is higher than the given debug-level
-   * in the main config file, no logging will be done.
+   * Logs a message to the main log stream. All attached logStreams will also receive this
+   * message. If the given log-level is higher than the given debug-level in the main
+   * config file, no logging will be done.
    *
-   * @param level log level of the message.
+   * @param level   log level of the message.
    * @param message text to be logged.
    */
-  public void log(int level, final Object message)
+  public void log (int level, final Object message)
   {
     if (level > 3)
     {
@@ -103,17 +106,17 @@ public class SystemOutLogTarget implements LogTarget, Serializable
   }
 
   /**
-   * logs an message to the main-log stream. All attached logStreams will also
-   * receive this message. If the given log-level is higher than the given debug-level
-   * in the main config file, no logging will be done.
-   *
+   * logs an message to the main-log stream. All attached logStreams will also receive
+   * this message. If the given log-level is higher than the given debug-level in the main
+   * config file, no logging will be done.
+   * <p/>
    * The exception's stacktrace will be appended to the log-stream
    *
-   * @param level log level of the message.
+   * @param level   log level of the message.
    * @param message text to be logged.
-   * @param e the exception, which should be logged.
+   * @param e       the exception, which should be logged.
    */
-  public void log(int level, final Object message, final Exception e)
+  public void log (int level, final Object message, final Exception e)
   {
     if (level > 3)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableFieldElementFactory.java,v 1.9 2003/11/07 18:33:48 taqua Exp $
+ * $Id: DrawableFieldElementFactory.java,v 1.10 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -45,21 +45,23 @@ import org.jfree.report.filter.templates.DrawableFieldTemplate;
 /**
  * The drawable field element factory can be used to create elements that display
  * org.jfree.ui.Drawable elements.
- * <p>
- * Once the desired properties are set, the factory can be reused to create
- * similiar elements.
+ * <p/>
+ * Once the desired properties are set, the factory can be reused to create similiar
+ * elements.
  *
  * @author Thomas Morgner
  */
 public class DrawableFieldElementFactory extends ElementFactory
 {
-  /** The fieldname of the datarow from where to read the element data. */
+  /**
+   * The fieldname of the datarow from where to read the element data.
+   */
   private String fieldname;
 
   /**
    * DefaultConstructor.
    */
-  public DrawableFieldElementFactory()
+  public DrawableFieldElementFactory ()
   {
   }
 
@@ -68,18 +70,18 @@ public class DrawableFieldElementFactory extends ElementFactory
    *
    * @return the field name.
    */
-  public String getFieldname()
+  public String getFieldname ()
   {
     return fieldname;
   }
 
   /**
-   * Defines the field name from where to read the content of the element.
-   * The field name is the name of a datarow column.
+   * Defines the field name from where to read the content of the element. The field name
+   * is the name of a datarow column.
    *
    * @param fieldname the field name.
    */
-  public void setFieldname(final String fieldname)
+  public void setFieldname (final String fieldname)
   {
     this.fieldname = fieldname;
   }
@@ -87,12 +89,12 @@ public class DrawableFieldElementFactory extends ElementFactory
   /**
    * Creates a new drawable field element based on the defined properties.
    *
-   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
-   *
    * @return the generated elements
+   *
    * @throws IllegalStateException if the field name is not set.
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
    */
-  public Element createElement()
+  public Element createElement ()
   {
     if (getFieldname() == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReferenceDocModule.java,v 1.5 2004/05/07 14:29:24 mungady Exp $
+ * $Id: ReferenceDocModule.java,v 1.6 2005/01/25 00:09:21 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -52,9 +52,11 @@ public class ReferenceDocModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public ReferenceDocModule() throws ModuleInitializeException
+  public ReferenceDocModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }
@@ -64,7 +66,8 @@ public class ReferenceDocModule extends AbstractModule
    *
    * @throws ModuleInitializeException if an error occured.
    */
-  public void initialize() throws ModuleInitializeException
+  public void initialize ()
+          throws ModuleInitializeException
   {
   }
 

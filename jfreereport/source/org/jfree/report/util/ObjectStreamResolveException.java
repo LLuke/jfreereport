@@ -25,7 +25,7 @@
  * ---------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * $Id: ObjectStreamResolveException.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: ObjectStreamResolveException.java,v 1.3 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes
  * -------
@@ -37,8 +37,8 @@ package org.jfree.report.util;
 import java.io.ObjectStreamException;
 
 /**
- * The <code>ObjectStreamResolveException</code> this thrown, when the object
- * resolving operation for serialized objects failed.
+ * The <code>ObjectStreamResolveException</code> this thrown, when the object resolving
+ * operation for serialized objects failed.
  *
  * @author Thomas Morgner
  */
@@ -49,7 +49,7 @@ public class ObjectStreamResolveException extends ObjectStreamException
    *
    * @param classname the detailed message for the exception
    */
-  public ObjectStreamResolveException(final String classname)
+  public ObjectStreamResolveException (final String classname)
   {
     super(classname);
   }
@@ -57,7 +57,7 @@ public class ObjectStreamResolveException extends ObjectStreamException
   /**
    * Create an ObjectStreamException.
    */
-  public ObjectStreamResolveException()
+  public ObjectStreamResolveException ()
   {
   }
 }

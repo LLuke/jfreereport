@@ -53,8 +53,8 @@ public class ConfigurationReadHandler extends AbstractPropertyXmlReadHandler
       path.addName("configuration");
 
       final PropertyStringReadHandler readHandler =
-              new PropertyStringReadHandler (path);
-      fieldHandlers.put (name, readHandler);
+              new PropertyStringReadHandler(path);
+      fieldHandlers.put(name, readHandler);
       return readHandler;
     }
     return null;
@@ -71,7 +71,7 @@ public class ConfigurationReadHandler extends AbstractPropertyXmlReadHandler
           throws SAXException, XmlReaderException
   {
     final Iterator it = fieldHandlers.entrySet().iterator();
-    while(it.hasNext())
+    while (it.hasNext())
     {
       final Map.Entry entry = (Map.Entry) it.next();
       final String key = (String) entry.getKey();

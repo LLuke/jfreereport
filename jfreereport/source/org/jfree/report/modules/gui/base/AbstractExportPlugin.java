@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractExportPlugin.java,v 1.10.4.2 2004/10/11 21:00:37 taqua Exp $
+ * $Id: AbstractExportPlugin.java,v 1.12 2005/01/25 00:01:05 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -54,71 +54,77 @@ import org.jfree.report.util.WorkerPool;
 public abstract class AbstractExportPlugin implements ExportPlugin
 {
   /**
-   * The DefaultExportTaskListener is used to monitor the progress of the
-   * export and to set the export result.
-   * 
+   * The DefaultExportTaskListener is used to monitor the progress of the export and to
+   * set the export result.
+   *
    * @author Thomas Morgner
    */
   protected class DefaultExportTaskListener implements ExportTaskListener
   {
     /**
-     * Creates a new export task listener, which will wait for the end of the
-     * report processing..
+     * Creates a new export task listener, which will wait for the end of the report
+     * processing..
      */
-    public DefaultExportTaskListener()
+    public DefaultExportTaskListener ()
     {
     }
 
     /**
-     * Informs the listener, that the export was completed without errors.
-     * The pagination listener is removed from the 
-     * 
+     * Informs the listener, that the export was completed without errors. The pagination
+     * listener is removed from the
+     *
      * @param task the export task which was completed.
      */
-    public void taskAborted(final ExportTask task)
+    public void taskAborted (final ExportTask task)
     {
       AbstractExportPlugin.this.handleExportResult(task);
     }
 
     /**
      * Informs the listener, that the export was aborted by the user.
-     * 
+     *
      * @param task the export task which was aborted.
      */
-    public void taskDone(final ExportTask task)
+    public void taskDone (final ExportTask task)
     {
       AbstractExportPlugin.this.handleExportResult(task);
     }
 
     /**
      * Informs the listener, that the export failed due to errors.
-     * 
+     *
      * @param task the export task which failed.
      */
-    public void taskFailed(final ExportTask task)
+    public void taskFailed (final ExportTask task)
     {
       AbstractExportPlugin.this.handleExportResult(task);
     }
 
     /**
-     * This method is empty as it does not indicate an finish event. 
-     * @see org.jfree.report.modules.gui.base.ExportTaskListener#taskWaiting
-     * (org.jfree.report.modules.gui.base.ExportTask)
-     * 
+     * This method is empty as it does not indicate an finish event.
+     *
      * @param task the export task.
+     * @see org.jfree.report.modules.gui.base.ExportTaskListener#taskWaiting
+     *      (org.jfree.report.modules.gui.base.ExportTask)
      */
-    public void taskWaiting(final ExportTask task)
+    public void taskWaiting (final ExportTask task)
     {
     }
   }
 
-  /** The backend to perform post or preprocessing. */
+  /**
+   * The backend to perform post or preprocessing.
+   */
   private PreviewProxyBase base;
 
-  /** The preview proxy used to display the preview component. */
+  /**
+   * The preview proxy used to display the preview component.
+   */
   private PreviewProxy proxy;
 
-  /** The worker instance from the main dialog. */
+  /**
+   * The worker instance from the main dialog.
+   */
   private WorkerPool worker;
 
   private PropertyChangeSupport propertyChangeSupport;
@@ -128,37 +134,37 @@ public abstract class AbstractExportPlugin implements ExportPlugin
   /**
    * DefaultConstructor.
    */
-  public AbstractExportPlugin()
+  public AbstractExportPlugin ()
   {
     propertyChangeSupport = new PropertyChangeSupport(this);
   }
 
-  protected PropertyChangeSupport getPropertyChangeSupport()
+  protected PropertyChangeSupport getPropertyChangeSupport ()
   {
     return propertyChangeSupport;
   }
 
   /**
-   * Returns true if the action is separated, and false otherwise. A separated
-   * action starts a new action group and will be spearated from previous actions
-   * on the menu and toolbar.
+   * Returns true if the action is separated, and false otherwise. A separated action
+   * starts a new action group and will be spearated from previous actions on the menu and
+   * toolbar.
    *
-   * @return true, if the action should be separated from previous actions,
-   * false otherwise.
+   * @return true, if the action should be separated from previous actions, false
+   *         otherwise.
    */
-  public boolean isSeparated()
+  public boolean isSeparated ()
   {
     return false;
   }
 
   /**
-   * Returns an error description for the last operation. This implementation
-   * provides a basic default failure description text and should be overriden
-   * to give a more detailed explaination.
+   * Returns an error description for the last operation. This implementation provides a
+   * basic default failure description text and should be overriden to give a more
+   * detailed explaination.
    *
    * @return returns a error description.
    */
-  public String getFailureDescription()
+  public String getFailureDescription ()
   {
     return getDisplayName() + " failed on export.";
   }
@@ -169,7 +175,7 @@ public abstract class AbstractExportPlugin implements ExportPlugin
    *
    * @return true if this is a control plugin, false otherwise.
    */
-  public boolean isControlPlugin()
+  public boolean isControlPlugin ()
   {
     return false;
   }
@@ -178,10 +184,10 @@ public abstract class AbstractExportPlugin implements ExportPlugin
    * Initializes the plugin to work with the given PreviewProxy.
    *
    * @param proxy the preview proxy that created this plugin.
-   * @throws java.lang.NullPointerException if the proxy or the proxy's basecomponent
-   * is null.
+   * @throws java.lang.NullPointerException if the proxy or the proxy's basecomponent is
+   *                                        null.
    */
-  public void init(final PreviewProxy proxy)
+  public void init (final PreviewProxy proxy)
   {
     if (proxy == null)
     {
@@ -196,12 +202,12 @@ public abstract class AbstractExportPlugin implements ExportPlugin
   }
 
   /**
-   * Returns the preview proxy base. This is the same as
-   * calling <code>getProxy().getBase()</code>.
+   * Returns the preview proxy base. This is the same as calling
+   * <code>getProxy().getBase()</code>.
    *
    * @return the preview proxy base.
    */
-  public PreviewProxyBase getBase()
+  public PreviewProxyBase getBase ()
   {
     return base;
   }
@@ -211,7 +217,7 @@ public abstract class AbstractExportPlugin implements ExportPlugin
    *
    * @return the preview proxy.
    */
-  public PreviewProxy getProxy()
+  public PreviewProxy getProxy ()
   {
     return proxy;
   }
@@ -221,7 +227,7 @@ public abstract class AbstractExportPlugin implements ExportPlugin
    *
    * @return true, if the plugin should be added to the toolbar, false otherwise.
    */
-  public boolean isAddToToolbar()
+  public boolean isAddToToolbar ()
   {
     return false;
   }
@@ -231,19 +237,19 @@ public abstract class AbstractExportPlugin implements ExportPlugin
    *
    * @param text the new status line text.
    */
-  protected void updateStatusText(final String text)
+  protected void updateStatusText (final String text)
   {
     getBase().setStatusText(text);
   }
 
   /**
-   * Provides a default implementation to handle export errors.
-   * This implementation updates the status line of the preview component.
+   * Provides a default implementation to handle export errors. This implementation
+   * updates the status line of the preview component.
    *
    * @param result the result of the export operation.
    * @return the value of result unmodified.
    */
-  protected boolean handleExportResult(final boolean result)
+  protected boolean handleExportResult (final boolean result)
   {
     if (isControlPlugin() == false && result == false)
     {
@@ -253,13 +259,13 @@ public abstract class AbstractExportPlugin implements ExportPlugin
   }
 
   /**
-   * Provides a default implementation to handle export errors.
-   * This implementation updates the status line of the preview component.
+   * Provides a default implementation to handle export errors. This implementation
+   * updates the status line of the preview component.
    *
    * @param task the result of the export operation.
    * @return the value of result unmodified.
    */
-  protected boolean handleExportResult(final ExportTask task)
+  protected boolean handleExportResult (final ExportTask task)
   {
     if (task.isTaskDone() == false)
     {
@@ -281,7 +287,7 @@ public abstract class AbstractExportPlugin implements ExportPlugin
       if (task.getException() != null)
       {
         updateStatusText("Export failed: " +
-            task.getException().getLocalizedMessage());
+                task.getException().getLocalizedMessage());
       }
       else
       {
@@ -292,24 +298,24 @@ public abstract class AbstractExportPlugin implements ExportPlugin
   }
 
   /**
-   * Defines the worker instance for that export plugin. Workers can
-   * be used to delegate tasks to an other thread. The workers are shared
-   * among all export plugins of an dialog instance.
+   * Defines the worker instance for that export plugin. Workers can be used to delegate
+   * tasks to an other thread. The workers are shared among all export plugins of an
+   * dialog instance.
    *
    * @param worker the worker.
    */
-  public void defineWorkerPool(final WorkerPool worker)
+  public void defineWorkerPool (final WorkerPool worker)
   {
     this.worker = worker;
   }
 
   /**
-   * Delegates the task to a worker. If no worker is defined,
-   * the runnable is executed directly.
+   * Delegates the task to a worker. If no worker is defined, the runnable is executed
+   * directly.
    *
    * @param runnable the task that should be executed.
    */
-  public void delegateTask(final Runnable runnable)
+  public void delegateTask (final Runnable runnable)
   {
     if (worker != null)
     {
@@ -331,14 +337,14 @@ public abstract class AbstractExportPlugin implements ExportPlugin
   }
 
   /**
-   * Creates a progress dialog, and tries to assign a parent based on the
-   * given preview proxy.
-   * 
+   * Creates a progress dialog, and tries to assign a parent based on the given preview
+   * proxy.
+   *
    * @return the progress dialog.
    */
   protected ReportProgressDialog createProgressDialog ()
   {
-    
+
     if (proxy instanceof Frame)
     {
       return new ReportProgressDialog((Frame) proxy);
@@ -353,32 +359,33 @@ public abstract class AbstractExportPlugin implements ExportPlugin
     }
   }
 
-  public void addPropertyChangeListener(final PropertyChangeListener l)
+  public void addPropertyChangeListener (final PropertyChangeListener l)
   {
     propertyChangeSupport.addPropertyChangeListener(l);
   }
 
-  public void addPropertyChangeListener(final String property, final PropertyChangeListener l)
+  public void addPropertyChangeListener (final String property,
+                                         final PropertyChangeListener l)
   {
     propertyChangeSupport.addPropertyChangeListener(property, l);
   }
 
-  public void removePropertyChangeListener(final PropertyChangeListener l)
+  public void removePropertyChangeListener (final PropertyChangeListener l)
   {
     propertyChangeSupport.removePropertyChangeListener(l);
   }
 
-  public void setEnabled(final boolean enabled)
+  public void setEnabled (final boolean enabled)
   {
     final boolean oldEnabled = this.enabled;
     this.enabled = enabled;
     propertyChangeSupport.firePropertyChange("enabled", oldEnabled, enabled);
   }
 
-  public boolean isEnabled()
+  public boolean isEnabled ()
   {
     return enabled;
   }
 
-  
+
 }

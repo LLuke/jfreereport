@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageEventListener.java,v 1.3 2004/05/07 08:03:37 mungady Exp $
+ * $Id: PageEventListener.java,v 1.4 2005/01/28 19:26:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,16 +42,15 @@ import java.util.EventListener;
 
 /**
  * The PageEventListener gets informed of PageEvents.
- * <p>
- * This is an extracted interface of the original ReportEventListener.
- * As page events are only fired by some (page sensitive) report processors,
- * there is no need to support page events in the ReportEventListener interface.
- * <p>
- * Functions that should be informed of page events should implement this
- * interface.
- * <p>
- * Information: The pageCanceled method is called, if a empty page was created
- * and was removed from the report afterwards.
+ * <p/>
+ * This is an extracted interface of the original ReportEventListener. As page events are
+ * only fired by some (page sensitive) report processors, there is no need to support page
+ * events in the ReportEventListener interface.
+ * <p/>
+ * Functions that should be informed of page events should implement this interface.
+ * <p/>
+ * Information: The pageCanceled method is called, if a empty page was created and was
+ * removed from the report afterwards.
  *
  * @author Thomas Morgner
  */
@@ -63,29 +62,28 @@ public interface PageEventListener extends EventListener
    *
    * @param event The event.
    */
-  public void pageStarted(ReportEvent event);
+  public void pageStarted (ReportEvent event);
 
   /**
    * Receives notification that a page is completed.
    *
    * @param event The event.
    */
-  public void pageFinished(ReportEvent event);
+  public void pageFinished (ReportEvent event);
 
   /**
-   * Receives notification that a page was canceled by the ReportProcessor.
-   * This method is called, when a page was removed from the report after
-   * it was generated.
+   * Receives notification that a page was canceled by the ReportProcessor. This method is
+   * called, when a page was removed from the report after it was generated.
    *
    * @param event The event.
    */
-  public void pageCanceled(ReportEvent event);
+  public void pageCanceled (ReportEvent event);
 
   /**
-   * This event is fired, whenever an automatic pagebreak has been detected
-   * and the report state had been reverted to the previous state.
-   *  
+   * This event is fired, whenever an automatic pagebreak has been detected and the report
+   * state had been reverted to the previous state.
+   *
    * @param event
    */
-  public void pageRolledBack(ReportEvent event);
+  public void pageRolledBack (ReportEvent event);
 }

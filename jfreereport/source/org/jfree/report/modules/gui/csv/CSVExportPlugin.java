@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportPlugin.java,v 1.12.4.2 2004/02/04 19:07:59 taqua Exp $
+ * $Id: CSVExportPlugin.java,v 1.15 2005/01/25 00:05:42 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -59,28 +59,35 @@ import org.jfree.util.ResourceBundleSupport;
  */
 public class CSVExportPlugin extends AbstractExportPlugin
 {
-  /** The CSV export dialog. */
+  /**
+   * The CSV export dialog.
+   */
   private CSVExportDialog exportDialog;
 
-  /** Localised resources. */
+  /**
+   * Localised resources.
+   */
   private final ResourceBundleSupport resources;
 
-  /** The base resource class. */
+  /**
+   * The base resource class.
+   */
   public static final String BASE_RESOURCE_CLASS =
-      "org.jfree.report.modules.gui.csv.resources.csv-export-resources";
+          "org.jfree.report.modules.gui.csv.resources.csv-export-resources";
   public static final String PROGRESS_DIALOG_ENABLE_KEY =
-      "org.jfree.report.modules.gui.csv.ProgressDialogEnabled";
+          "org.jfree.report.modules.gui.csv.ProgressDialogEnabled";
 
   /**
    * DefaultConstructor.
    */
-  public CSVExportPlugin()
+  public CSVExportPlugin ()
   {
     resources = new ResourceBundleSupport(BASE_RESOURCE_CLASS);
   }
 
   /**
    * Creates the report progress dialog used to monitor the export.
+   *
    * @return the created dialog.
    */
   protected ReportProgressDialog createProgressDialog ()
@@ -93,15 +100,15 @@ public class CSVExportPlugin extends AbstractExportPlugin
     RefineryUtilities.positionFrameRandomly(progressDialog);
     return progressDialog;
   }
+
   /**
    * Shows this dialog and (if the dialog is confirmed) saves the complete report into an
    * comma separated values file.
    *
-   * @param report  the report being processed.
-   *
+   * @param report the report being processed.
    * @return true or false.
    */
-  public boolean performExport(final JFreeReport report)
+  public boolean performExport (final JFreeReport report)
   {
     final boolean result = exportDialog.performQueryForExport(report);
     if (result == false)
@@ -114,21 +121,21 @@ public class CSVExportPlugin extends AbstractExportPlugin
     if (exportDialog.isExportRawData())
     {
       task = new CSVRawExportTask
-          (exportDialog.getFilename(), exportDialog.getEncoding(), report);
+              (exportDialog.getFilename(), exportDialog.getEncoding(), report);
     }
     else
     {
       ReportProgressDialog progressDialog = null;
       if (report.getReportConfiguration().getConfigProperty
-          (PROGRESS_DIALOG_ENABLE_KEY,
-              "false").equals("true"))
+              (PROGRESS_DIALOG_ENABLE_KEY,
+                      "false").equals("true"))
       {
         progressDialog = createProgressDialog();
       }
 
       task = new CSVTableExportTask
-          (exportDialog.getFilename(), exportDialog.getEncoding(),
-              progressDialog, report);
+              (exportDialog.getFilename(), exportDialog.getEncoding(),
+                      progressDialog, report);
     }
     task.addExportTaskListener(new DefaultExportTaskListener());
     delegateTask(task);
@@ -137,20 +144,20 @@ public class CSVExportPlugin extends AbstractExportPlugin
 
   /**
    * Returns the dialog used to query the export parameters from the user.
+   *
    * @return the export dialog.
    */
-  protected CSVExportDialog getExportDialog()
+  protected CSVExportDialog getExportDialog ()
   {
     return exportDialog;
   }
 
   /**
-   * Returns the resourcebundle to be used to translate strings into
-   * localized content.
+   * Returns the resourcebundle to be used to translate strings into localized content.
    *
    * @return the resourcebundle for the localisation.
    */
-  protected ResourceBundleSupport getResources()
+  protected ResourceBundleSupport getResources ()
   {
     return resources;
   }
@@ -160,7 +167,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
    *
    * @return The name.
    */
-  public String getDisplayName()
+  public String getDisplayName ()
   {
     return resources.getString("action.export-to-csv.name");
   }
@@ -170,7 +177,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
    *
    * @return The description.
    */
-  public String getShortDescription()
+  public String getShortDescription ()
   {
     return resources.getString("action.export-to-csv.description");
   }
@@ -180,7 +187,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
    *
    * @return The icon.
    */
-  public Icon getSmallIcon()
+  public Icon getSmallIcon ()
   {
     return resources.getIcon("action.export-to-csv.small-icon");
   }
@@ -190,7 +197,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
    *
    * @return The icon.
    */
-  public Icon getLargeIcon()
+  public Icon getLargeIcon ()
   {
     return resources.getIcon("action.export-to-csv.icon");
   }
@@ -200,7 +207,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
    *
    * @return The key stroke.
    */
-  public KeyStroke getAcceleratorKey()
+  public KeyStroke getAcceleratorKey ()
   {
     return resources.getKeyStroke("action.export-to-csv.accelerator");
   }
@@ -210,7 +217,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
    *
    * @return The key code.
    */
-  public Integer getMnemonicKey()
+  public Integer getMnemonicKey ()
   {
     return resources.getMnemonic("action.export-to-csv.mnemonic");
   }
@@ -220,7 +227,7 @@ public class CSVExportPlugin extends AbstractExportPlugin
    *
    * @param proxy the preview proxy that is used to display the preview component.
    */
-  public void init(final PreviewProxy proxy)
+  public void init (final PreviewProxy proxy)
   {
     super.init(proxy);
     if (proxy instanceof Frame)
@@ -243,24 +250,24 @@ public class CSVExportPlugin extends AbstractExportPlugin
    *
    * @return true, if the plugin should be added to the toolbar, false otherwise.
    */
-  public boolean isAddToToolbar()
+  public boolean isAddToToolbar ()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        ("org.jfree.report.modules.gui.csv.AddToToolbar", "false").equals("true");
+            ("org.jfree.report.modules.gui.csv.AddToToolbar", "false").equals("true");
   }
 
   /**
-   * Returns true if the action is separated, and false otherwise. A separated
-   * action starts a new action group and will be spearated from previous actions
-   * on the menu and toolbar.
+   * Returns true if the action is separated, and false otherwise. A separated action
+   * starts a new action group and will be spearated from previous actions on the menu and
+   * toolbar.
    *
-   * @return true, if the action should be separated from previous actions,
-   * false otherwise.
+   * @return true, if the action should be separated from previous actions, false
+   *         otherwise.
    */
-  public boolean isSeparated()
+  public boolean isSeparated ()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        ("org.jfree.report.modules.gui.csv.Separated", "false").equals("true");
+            ("org.jfree.report.modules.gui.csv.Separated", "false").equals("true");
   }
 
 

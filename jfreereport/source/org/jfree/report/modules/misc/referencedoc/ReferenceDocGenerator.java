@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReferenceDocGenerator.java,v 1.4 2004/05/07 14:29:24 mungady Exp $
+ * $Id: ReferenceDocGenerator.java,v 1.5 2005/01/25 00:09:20 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,8 @@ import org.jfree.report.JFreeReportBoot;
 
 
 /**
- * An application that generates reports that document properties of the JFreeReport extended
- * parser.
+ * An application that generates reports that document properties of the JFreeReport
+ * extended parser.
  *
  * @author Thomas Morgner.
  */
@@ -52,16 +52,16 @@ public class ReferenceDocGenerator
   /**
    * DefaultConstructor.
    */
-  protected ReferenceDocGenerator()
+  protected ReferenceDocGenerator ()
   {
   }
 
   /**
    * The starting point for the application.
    *
-   * @param args  command line arguments.
+   * @param args command line arguments.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     JFreeReportBoot.getInstance().start();
     StyleKeyReferenceGenerator.main(args);

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportEventException.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: ReportEventException.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -42,24 +42,26 @@ import java.io.PrintWriter;
 import java.util.List;
 
 /**
- * The ReportEventException is thrown, if there were unrecoverable exceptions
- * during the report processing.
+ * The ReportEventException is thrown, if there were unrecoverable exceptions during the
+ * report processing.
  *
  * @author Thomas Morgner
  */
 public class ReportEventException extends ReportProcessingException
 {
-  /** the collected child exceptions. */
+  /**
+   * the collected child exceptions.
+   */
   private List childExceptions;
 
   /**
-   * Creates an ReportEventException to handle exceptions, that occured
-   * during the event dispatching.
+   * Creates an ReportEventException to handle exceptions, that occured during the event
+   * dispatching.
    *
-   * @param message  the exception message.
+   * @param message         the exception message.
    * @param childExceptions the collected exceptions.
    */
-  public ReportEventException(final String message, final List childExceptions)
+  public ReportEventException (final String message, final List childExceptions)
   {
     super(message);
     if (childExceptions == null)
@@ -70,12 +72,11 @@ public class ReportEventException extends ReportProcessingException
   }
 
   /**
-   * Gets the collected child exceptions, that occured during the event
-   * dispatching.
+   * Gets the collected child exceptions, that occured during the event dispatching.
    *
    * @return the collected child exceptions.
    */
-  public List getChildExceptions()
+  public List getChildExceptions ()
   {
     return childExceptions;
   }
@@ -83,13 +84,11 @@ public class ReportEventException extends ReportProcessingException
   /**
    * Returns the errort message string of this throwable object.
    *
-   * @return  the error message string of this <code>Throwable</code>
-   *          object if it was created with an
-   *          error message string; or <code>null</code> if it was
-   *          created with no error message.
-   *
+   * @return the error message string of this <code>Throwable</code> object if it was
+   *         created with an error message string; or <code>null</code> if it was created
+   *         with no error message.
    */
-  public String getMessage()
+  public String getMessage ()
   {
     return super.getMessage() + ": " + childExceptions.size() + " exceptions occured.";
   }
@@ -97,9 +96,9 @@ public class ReportEventException extends ReportProcessingException
   /**
    * Prints the stack trace to the specified writer.
    *
-   * @param writer  the writer.
+   * @param writer the writer.
    */
-  public void printStackTrace(final PrintWriter writer)
+  public void printStackTrace (final PrintWriter writer)
   {
     super.printStackTrace(writer);
     for (int i = 0; i < childExceptions.size(); i++)
@@ -121,9 +120,9 @@ public class ReportEventException extends ReportProcessingException
   /**
    * Prints the stack trace to the specified stream.
    *
-   * @param stream  the output stream.
+   * @param stream the output stream.
    */
-  public void printStackTrace(final PrintStream stream)
+  public void printStackTrace (final PrintStream stream)
   {
     super.printStackTrace(stream);
     for (int i = 0; i < childExceptions.size(); i++)

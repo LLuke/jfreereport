@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GotoPageAction.java,v 1.4 2003/08/31 19:27:56 taqua Exp $
+ * $Id: GotoPageAction.java,v 1.7 2005/01/25 00:01:16 taqua Exp $
  *
  * Changes
  * -------
@@ -47,9 +47,9 @@ import org.jfree.ui.action.ActionDowngrade;
 import org.jfree.util.ResourceBundleSupport;
 
 /**
- * The GotoPageAction is used to direclty jump to a page. A simple dialog opens to
- * ask the user for the page. This is the abstract base for the action doing the
- * localisation specific initialisation.
+ * The GotoPageAction is used to direclty jump to a page. A simple dialog opens to ask the
+ * user for the page. This is the abstract base for the action doing the localisation
+ * specific initialisation.
  *
  * @author Thomas Morgner
  */
@@ -60,14 +60,14 @@ public abstract class GotoPageAction extends AbstractActionDowngrade
    *
    * @param resources Localised resources for the action.
    */
-  protected GotoPageAction(final ResourceBundleSupport resources)
+  protected GotoPageAction (final ResourceBundleSupport resources)
   {
     this.putValue(NAME, resources.getString("action.gotopage.name"));
     this.putValue(SHORT_DESCRIPTION, resources.getString("action.gotopage.description"));
     this.putValue(ActionDowngrade.MNEMONIC_KEY,
-        resources.getMnemonic("action.gotopage.mnemonic"));
+            resources.getMnemonic("action.gotopage.mnemonic"));
     this.putValue(ActionDowngrade.ACCELERATOR_KEY,
-        resources.getKeyStroke("action.gotopage.accelerator"));
+            resources.getKeyStroke("action.gotopage.accelerator"));
     this.putValue(SMALL_ICON, ImageUtils.createTransparentIcon(16, 16));
     this.putValue("ICON24", ImageUtils.createTransparentIcon(24, 24));
   }

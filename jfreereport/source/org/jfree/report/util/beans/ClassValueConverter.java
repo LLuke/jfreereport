@@ -6,20 +6,21 @@ package org.jfree.report.util.beans;
  */
 public class ClassValueConverter implements ValueConverter
 {
-  public ClassValueConverter()
+  public ClassValueConverter ()
   {
   }
 
-  public String toAttributeValue(Object o)
+  public String toAttributeValue (Object o)
   {
-    if (o instanceof Class) {
+    if (o instanceof Class)
+    {
       Class c = (Class) o;
-        return c.getName();
+      return c.getName();
     }
     throw new ClassCastException("Give me a real type.");
   }
 
-  public Object toPropertyValue(String s)
+  public Object toPropertyValue (String s)
   {
     try
     {

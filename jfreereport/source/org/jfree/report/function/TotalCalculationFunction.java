@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: TotalCalculationFunction.java,v 1.9 2005/01/25 00:00:18 taqua Exp $
+ * $Id: TotalCalculationFunction.java,v 1.10 2005/02/04 19:22:54 taqua Exp $
  *
  * Changes
  * -------
@@ -45,43 +45,48 @@ import java.util.ArrayList;
 import org.jfree.report.event.ReportEvent;
 
 /**
- * A report function that stores the result of a calculation for a group or the
- * complete report. The field value, that was read when the group finished, is
- * stored and returned when the group gets active again in a higher processing level.
- * <p>
- * This function can be used to calculate total values for a group, f.I. a TotalMax
- * for the group, which returns the maximum value encountered for that field in the
- * current group. The computed values are available to all bands of the group.
- * <p>
- * The function undestands two parameters, the <code>field</code> parameter is required and
- * denotes the name of an ItemBand-field which gets summed up.
- * <p>
- * The parameter <code>group</code> denotes the name of a group. When this group is started,
- * the counter gets reseted to null. This parameter is optional.
+ * A report function that stores the result of a calculation for a group or the complete
+ * report. The field value, that was read when the group finished, is stored and returned
+ * when the group gets active again in a higher processing level.
+ * <p/>
+ * This function can be used to calculate total values for a group, f.I. a TotalMax for
+ * the group, which returns the maximum value encountered for that field in the current
+ * group. The computed values are available to all bands of the group.
+ * <p/>
+ * The function undestands two parameters, the <code>field</code> parameter is required
+ * and denotes the name of an ItemBand-field which gets summed up.
+ * <p/>
+ * The parameter <code>group</code> denotes the name of a group. When this group is
+ * started, the counter gets reseted to null. This parameter is optional.
  *
  * @author Thomas Morgner
  */
 public class TotalCalculationFunction
-    extends AbstractFunction implements Serializable
+        extends AbstractFunction implements Serializable
 {
-  /** A list of results. */
+  /**
+   * A list of results.
+   */
   private transient ArrayList storedResults;
 
-  /** The current index. */
+  /**
+   * The current index.
+   */
   private transient int currentIndex;
 
-  /** The current object. */
+  /**
+   * The current object.
+   */
   private transient Object currentObject;
 
   private String field;
   private String group;
 
   /**
-   * Constructs a new function.
-   * <P>
-   * Initially the function has no name...be sure to assign one before using the function.
+   * Constructs a new function. <P> Initially the function has no name...be sure to assign
+   * one before using the function.
    */
-  public TotalCalculationFunction()
+  public TotalCalculationFunction ()
   {
     storedResults = new ArrayList();
   }
@@ -90,9 +95,9 @@ public class TotalCalculationFunction
   /**
    * Receives notification that the report has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportInitialized(final ReportEvent event)
+  public void reportInitialized (final ReportEvent event)
   {
     currentIndex = -1;
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
@@ -103,7 +108,7 @@ public class TotalCalculationFunction
     {
       if (getGroup() == null)
       {
-        storedResults.get (0);
+        storedResults.get(0);
       }
     }
   }
@@ -111,9 +116,9 @@ public class TotalCalculationFunction
   /**
    * Receives notification that a group has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupStarted(final ReportEvent event)
+  public void groupStarted (final ReportEvent event)
   {
     if (FunctionUtilities.isDefinedGroup(getGroup(), event) == false)
     {
@@ -139,9 +144,9 @@ public class TotalCalculationFunction
   /**
    * Receives notification that a group has finished.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupFinished(final ReportEvent event)
+  public void groupFinished (final ReportEvent event)
   {
     if (FunctionUtilities.isDefinedGroup(getGroup(), event) == false)
     {
@@ -158,13 +163,13 @@ public class TotalCalculationFunction
   /**
    * Receives notification that the report has finished.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportFinished(final ReportEvent event)
+  public void reportFinished (final ReportEvent event)
   {
     if (getGroup() == null)
     {
-      storedResults.add (currentObject);
+      storedResults.add(currentObject);
     }
   }
 
@@ -173,18 +178,18 @@ public class TotalCalculationFunction
    *
    * @return the group name.
    */
-  public String getGroup()
+  public String getGroup ()
   {
     return group;
   }
 
   /**
-   * Defines the name of the group to be totalled.
-   * If the name is null, all groups are totalled.
+   * Defines the name of the group to be totalled. If the name is null, all groups are
+   * totalled.
    *
-   * @param group  the group name.
+   * @param group the group name.
    */
-  public void setGroup(final String group)
+  public void setGroup (final String group)
   {
     this.group = group;
   }
@@ -194,30 +199,29 @@ public class TotalCalculationFunction
    *
    * @return the group name.
    */
-  public String getField()
+  public String getField ()
   {
     return field;
   }
 
   /**
-   * Defines the name of the group to be totalled.
-   * If the name is null, all groups are totalled.
+   * Defines the name of the group to be totalled. If the name is null, all groups are
+   * totalled.
    *
    * @param field the field name.
    */
-  public void setField(final String field)
+  public void setField (final String field)
   {
     this.field = field;
   }
 
   /**
-   * Return the current expression value.
-   * <P>
-   * The value depends (obviously) on the expression implementation.
+   * Return the current expression value. <P> The value depends (obviously) on the
+   * expression implementation.
    *
    * @return the value of the function.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return currentObject;
   }
@@ -226,12 +230,12 @@ public class TotalCalculationFunction
    * Helper method for serialization.
    *
    * @param in the input stream from where to read the serialized object.
-   * @throws java.io.IOException when reading the stream fails.
-   * @throws ClassNotFoundException if a class definition for a serialized object
-   * could not be found.
+   * @throws java.io.IOException    when reading the stream fails.
+   * @throws ClassNotFoundException if a class definition for a serialized object could
+   *                                not be found.
    */
-  private void readObject(final ObjectInputStream in)
-      throws IOException, ClassNotFoundException
+  private void readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
     storedResults = new ArrayList();

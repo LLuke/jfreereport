@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableModelInfo.java,v 1.4 2003/08/25 14:29:31 taqua Exp $
+ * $Id: TableModelInfo.java,v 1.5 2004/05/07 14:29:51 mungady Exp $
  *
  * Changes
  * -------
@@ -49,24 +49,23 @@ public final class TableModelInfo
 {
   /**
    * DefaultConstructor.
-   *
    */
-  private TableModelInfo()
+  private TableModelInfo ()
   {
   }
 
   /**
    * Prints a table model to standard output.
    *
-   * @param mod  the model.
+   * @param mod the model.
    */
-  public static void printTableModel(final TableModel mod)
+  public static void printTableModel (final TableModel mod)
   {
     System.out.println("Tablemodel contains " + mod.getRowCount() + " rows.");
     for (int i = 0; i < mod.getColumnCount(); i++)
     {
       System.out.println("Column: " + i + " Name = " + mod.getColumnName(i) + "; DataType = "
-          + mod.getColumnClass(i));
+              + mod.getColumnClass(i));
     }
 
     System.out.println("Checking the data inside");
@@ -85,13 +84,13 @@ public final class TableModelInfo
           if (c.isAssignableFrom(value.getClass()) == false)
           {
             System.out.println
-                ("ValueAt (" + rows + ", " + i + ") is not assignable from " + c);
+                    ("ValueAt (" + rows + ", " + i + ") is not assignable from " + c);
           }
           if (c.equals(Object.class))
           {
             System.out.println
-                ("ValueAt (" + rows + ", " + i + ") is in a generic column and is of "
-                + "type " + value.getClass());
+                    ("ValueAt (" + rows + ", " + i + ") is in a generic column and is of "
+                    + "type " + value.getClass());
           }
         }
       }
@@ -101,15 +100,15 @@ public final class TableModelInfo
   /**
    * Prints a table model to standard output.
    *
-   * @param mod  the model.
+   * @param mod the model.
    */
-  public static void printTableModelContents(final TableModel mod)
+  public static void printTableModelContents (final TableModel mod)
   {
     System.out.println("Tablemodel contains " + mod.getRowCount() + " rows.");
     for (int i = 0; i < mod.getColumnCount(); i++)
     {
       System.out.println("Column: " + i + " Name = " + mod.getColumnName(i) + "; DataType = "
-          + mod.getColumnClass(i));
+              + mod.getColumnClass(i));
     }
 
     System.out.println("Checking the data inside");

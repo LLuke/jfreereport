@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: EmptyDataSource.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: EmptyDataSource.java,v 1.3 2004/05/07 08:24:42 mungady Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ public final class EmptyDataSource implements DataSource
    *
    * @return always null.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return null;
   }
@@ -64,7 +64,8 @@ public final class EmptyDataSource implements DataSource
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     return this;
   }

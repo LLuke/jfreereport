@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: URLFilterObjectDescription.java,v 1.2 2003/08/24 15:08:20 taqua Exp $
+ * $Id: URLFilterObjectDescription.java,v 1.4 2005/01/25 00:19:43 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,8 +46,8 @@ import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.BeanObjectDescription;
 
 /**
- * An ObjectDescription for the URLFilterClass. This class uses either
- * an given or an preconfigured base url to construct the URL.
+ * An ObjectDescription for the URLFilterClass. This class uses either an given or an
+ * preconfigured base url to construct the URL.
  *
  * @author Thomas Morgner
  */
@@ -56,9 +56,9 @@ public class URLFilterObjectDescription extends BeanObjectDescription
   /**
    * Creates a new object description.
    *
-   * @param className  the class.
+   * @param className the class.
    */
-  public URLFilterObjectDescription(final Class className)
+  public URLFilterObjectDescription (final Class className)
   {
     super(className);
     if (URLFilter.class.isAssignableFrom(className) == false)
@@ -72,7 +72,7 @@ public class URLFilterObjectDescription extends BeanObjectDescription
    *
    * @return The object.
    */
-  public Object createObject()
+  public Object createObject ()
   {
     final URLFilter t = (URLFilter) super.createObject();
     if (t.getBaseURL() == null)

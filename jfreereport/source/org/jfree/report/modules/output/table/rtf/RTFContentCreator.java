@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFContentCreator.java,v 1.2.2.1 2004/12/13 19:27:10 taqua Exp $
+ * $Id: RTFContentCreator.java,v 1.3 2005/01/25 00:15:14 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -70,9 +70,11 @@ import org.jfree.report.util.NoCloseOutputStream;
 
 public class RTFContentCreator extends TableContentCreator
 {
-  /** A useful constant for specifying the PDF creator. */
+  /**
+   * A useful constant for specifying the PDF creator.
+   */
   private static final String CREATOR = JFreeReport.getInfo().getName() + " version "
-      + JFreeReport.getInfo().getVersion();
+          + JFreeReport.getInfo().getVersion();
 
   private boolean open;
   private Document document;
@@ -96,7 +98,8 @@ public class RTFContentCreator extends TableContentCreator
     document.close();
   }
 
-  protected void handleEndTable () throws ReportProcessingException
+  protected void handleEndTable ()
+          throws ReportProcessingException
   {
     final SheetLayout layout = getCurrentLayout();
     if (layout.isEmpty())
@@ -174,11 +177,11 @@ public class RTFContentCreator extends TableContentCreator
 
       document.add(table);
     }
-    catch(BadElementException be)
+    catch (BadElementException be)
     {
       throw new ReportProcessingException("Failed!", be);
     }
-    catch(DocumentException be)
+    catch (DocumentException be)
     {
       throw new ReportProcessingException("Failed!", be);
     }
@@ -186,14 +189,14 @@ public class RTFContentCreator extends TableContentCreator
   }
 
   /**
-   * Defines the cell background style for the given cell. The cell background
-   * is defined in the background list.
+   * Defines the cell background style for the given cell. The cell background is defined
+   * in the background list.
    *
    * @param cell the cell that should be defined.
-   * @param bg the background definition for the cell.
+   * @param bg   the background definition for the cell.
    */
-  private void setCellBackgroundStyle(final Cell cell,
-                                      final TableCellBackground bg)
+  private void setCellBackgroundStyle (final Cell cell,
+                                       final TableCellBackground bg)
   {
     if (bg == null)
     {
@@ -216,9 +219,9 @@ public class RTFContentCreator extends TableContentCreator
       return;
     }
     if (bT.equals(bB) && bT.equals(bL) && bT.equals(bR)
-        && bg.getBorderSizeBottom() == bg.getBorderSizeTop()
-        && bg.getBorderSizeBottom() == bg.getBorderSizeLeft()
-        && bg.getBorderSizeBottom() == bg.getBorderSizeRight())
+            && bg.getBorderSizeBottom() == bg.getBorderSizeTop()
+            && bg.getBorderSizeBottom() == bg.getBorderSizeLeft()
+            && bg.getBorderSizeBottom() == bg.getBorderSizeRight())
     {
       cell.setBorderColor(bT);
       cell.setBorderWidth(bg.getBorderSizeTop());
@@ -233,14 +236,14 @@ public class RTFContentCreator extends TableContentCreator
 
     final float marginLeft = (float) pageFormat.getImageableX();
     final float marginRight =
-        (float) (pageFormat.getWidth()
-        - pageFormat.getImageableWidth()
-        - pageFormat.getImageableX());
+            (float) (pageFormat.getWidth()
+            - pageFormat.getImageableWidth()
+            - pageFormat.getImageableX());
     final float marginTop = (float) pageFormat.getImageableY();
     final float marginBottom =
-        (float) (pageFormat.getHeight()
-        - pageFormat.getImageableHeight()
-        - pageFormat.getImageableY());
+            (float) (pageFormat.getHeight()
+            - pageFormat.getImageableHeight()
+            - pageFormat.getImageableY());
     final Rectangle pageSize = new Rectangle(urx, ury);
 
     document = new Document(pageSize, marginLeft, marginRight, marginTop, marginBottom);
@@ -277,7 +280,7 @@ public class RTFContentCreator extends TableContentCreator
     }
     catch (Exception e)
     {
-      Log.debug ("Unable to add creation date.", e);
+      Log.debug("Unable to add creation date.", e);
     }
 
     document.open();

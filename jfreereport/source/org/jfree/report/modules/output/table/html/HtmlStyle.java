@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlStyle.java,v 1.3 2005/01/25 00:13:42 taqua Exp $
+ * $Id: HtmlStyle.java,v 1.4 2005/02/19 13:30:02 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,6 +42,6 @@ public interface HtmlStyle
 {
   public static final boolean INLINE = true;
   public static final boolean EXTERNAL = false;
-  
+
   public String getCSSString (final boolean compact);
 }

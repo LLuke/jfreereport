@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContent.java,v 1.10 2005/02/05 18:35:17 taqua Exp $
+ * $Id: ImageContent.java,v 1.11 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -49,37 +49,43 @@ import org.jfree.report.util.geom.StrictGeomUtility;
  */
 public strictfp class ImageContent implements Content
 {
-  /** The image reference. */
+  /**
+   * The image reference.
+   */
   private final ImageContainer reference;
 
-  /** The bounds. */
+  /**
+   * The bounds.
+   */
   private final StrictBounds bounds;
 
-  /** The bounds of the displayed area of the image (unscaled). */
+  /**
+   * The bounds of the displayed area of the image (unscaled).
+   */
   private final StrictBounds imageArea;
 
   /**
    * Creates a new image content.
    *
-   * @param ref  the image reference.
-   * @param bounds  the content bounds.
+   * @param ref    the image reference.
+   * @param bounds the content bounds.
    */
-  public ImageContent(final ImageContainer ref,
-                      final StrictBounds bounds)
+  public ImageContent (final ImageContainer ref,
+                       final StrictBounds bounds)
   {
-    this (ref, bounds, StrictGeomUtility.createBounds
+    this(ref, bounds, StrictGeomUtility.createBounds
             (0, 0, ref.getImageWidth(), ref.getImageHeight()));
   }
 
   /**
    * Creates a new image content.
    *
-   * @param ref  the image reference.
-   * @param bounds  the content bounds.
+   * @param ref    the image reference.
+   * @param bounds the content bounds.
    */
-  protected ImageContent(final ImageContainer ref,
-                         final StrictBounds bounds,
-                         final StrictBounds imageArea)
+  protected ImageContent (final ImageContainer ref,
+                          final StrictBounds bounds,
+                          final StrictBounds imageArea)
   {
     if (ref == null)
     {
@@ -92,12 +98,11 @@ public strictfp class ImageContent implements Content
   }
 
   /**
-   * Returns the content type, in this case
-   * {@link org.jfree.report.content.ContentType#IMAGE}.
+   * Returns the content type, in this case {@link org.jfree.report.content.ContentType#IMAGE}.
    *
    * @return the content type.
    */
-  public ContentType getContentType()
+  public ContentType getContentType ()
   {
     return ContentType.IMAGE;
   }
@@ -107,19 +112,19 @@ public strictfp class ImageContent implements Content
    *
    * @return always zero, image content does never contains multiple parts.
    */
-  public int getContentPartCount()
+  public int getContentPartCount ()
   {
     return 0;
   }
 
   /**
-   * This class does not store sub-content items, so this method always returns <code>null</code>.
+   * This class does not store sub-content items, so this method always returns
+   * <code>null</code>.
    *
-   * @param part  ignored.
-   *
+   * @param part ignored.
    * @return <code>null</code>.
    */
-  public Content getContentPart(final int part)
+  public Content getContentPart (final int part)
   {
     return null;
   }
@@ -129,7 +134,7 @@ public strictfp class ImageContent implements Content
    *
    * @return the content bounds.
    */
-  public StrictBounds getBounds()
+  public StrictBounds getBounds ()
   {
     return (StrictBounds) bounds.clone();
   }
@@ -137,11 +142,10 @@ public strictfp class ImageContent implements Content
   /**
    * Returns content that falls within the specified bounds.
    *
-   * @param bounds  the bounds.
-   *
+   * @param bounds the bounds.
    * @return the content.
    */
-  public Content getContentForBounds(final StrictBounds bounds)
+  public Content getContentForBounds (final StrictBounds bounds)
   {
     if (StrictBounds.intersects(bounds, this.bounds) == false)
     {
@@ -152,9 +156,9 @@ public strictfp class ImageContent implements Content
     return new ImageContent(reference, myBounds,
             new StrictBounds
                     (mapHorizontalPointToImage(myBounds.getX() - this.bounds.getX()),
-                     mapVerticalPointToImage(myBounds.getY() - this.bounds.getY()),
-                     mapHorizontalPointToImage(myBounds.getWidth()),
-                     mapVerticalPointToImage(myBounds.getHeight())));
+                            mapVerticalPointToImage(myBounds.getY() - this.bounds.getY()),
+                            mapHorizontalPointToImage(myBounds.getWidth()),
+                            mapVerticalPointToImage(myBounds.getHeight())));
   }
 
   private long mapHorizontalPointToImage (final long px)
@@ -169,7 +173,7 @@ public strictfp class ImageContent implements Content
 
   public StrictBounds getImageArea ()
   {
-    return  (StrictBounds) imageArea.clone();
+    return (StrictBounds) imageArea.clone();
   }
 
   /**
@@ -177,7 +181,7 @@ public strictfp class ImageContent implements Content
    *
    * @return the image.
    */
-  public ImageContainer getContent()
+  public ImageContainer getContent ()
   {
     return reference;
   }
@@ -187,7 +191,7 @@ public strictfp class ImageContent implements Content
    *
    * @return the minimum content size.
    */
-  public StrictBounds getMinimumContentSize()
+  public StrictBounds getMinimumContentSize ()
   {
     return getBounds();
   }

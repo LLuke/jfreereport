@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: VerticalBoundsAlignment.java,v 1.8 2004/05/07 12:53:06 mungady Exp $
+ * $Id: VerticalBoundsAlignment.java,v 1.9 2005/02/19 13:29:58 taqua Exp $
  *
  * Changes
  * -------
@@ -37,8 +37,6 @@
  */
 
 package org.jfree.report.modules.output.pageable.base.operations;
-
-import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.util.geom.StrictBounds;
 
@@ -53,9 +51,9 @@ public abstract strictfp class VerticalBoundsAlignment extends BoundsAlignment
   /**
    * Creates a new horizontal alignment object.
    *
-   * @param bounds  the bounds.
+   * @param bounds the bounds.
    */
-  protected VerticalBoundsAlignment(final StrictBounds bounds)
+  protected VerticalBoundsAlignment (final StrictBounds bounds)
   {
     super(bounds);
   }

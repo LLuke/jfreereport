@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageComparator.java,v 1.5 2004/03/16 15:09:56 taqua Exp $
+ * $Id: ImageComparator.java,v 1.6 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes
  * -------
@@ -45,9 +45,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 /**
- * The ImageComparator tries to compare a byte[] for equality by creating
- * 2 hashes for the bytearray and comparing thoose hashes. If no digest
- * algorithms are available, then the complete byte[] is used for comparison.
+ * The ImageComparator tries to compare a byte[] for equality by creating 2 hashes for the
+ * bytearray and comparing thoose hashes. If no digest algorithms are available, then the
+ * complete byte[] is used for comparison.
  *
  * @author Thomas Morgner
  */
@@ -65,7 +65,9 @@ public class ImageComparator
    */
   private static final class CompleteImageCompareData extends ImageCompareData
   {
-    /** The image content. */
+    /**
+     * The image content.
+     */
     private final byte[] image;
 
     /**
@@ -73,7 +75,7 @@ public class ImageComparator
      *
      * @param image the image data used for comparison.
      */
-    private CompleteImageCompareData(final byte[] image)
+    private CompleteImageCompareData (final byte[] image)
     {
       this.image = image;
     }
@@ -84,7 +86,7 @@ public class ImageComparator
      * @param o the to be compared object
      * @return true, if both objects are equal
      */
-    public boolean equals(final Object o)
+    public boolean equals (final Object o)
     {
       if (this == o)
       {
@@ -107,24 +109,28 @@ public class ImageComparator
 
     /**
      * returns a hashcode for this class.
+     *
      * @return always 0.
      */
-    public int hashCode()
+    public int hashCode ()
     {
       return 0;
     }
   }
 
   /**
-   * An ImageComparator which uses precomputed Message-Digests to compare the
-   * image.
+   * An ImageComparator which uses precomputed Message-Digests to compare the image.
    */
   private static final class DigestImageCompareData extends ImageCompareData
   {
-    /** An MD5 digest. */
+    /**
+     * An MD5 digest.
+     */
     private byte[] digestMD5Data;
 
-    /** An SHA digest. */
+    /**
+     * An SHA digest.
+     */
     private byte[] digestSHAData;
 
     /**
@@ -133,7 +139,8 @@ public class ImageComparator
      * @param digestMD5Data the MD5 digest data
      * @param digestSHAData the SHA1 digest data
      */
-    private DigestImageCompareData(final byte[] digestMD5Data, final byte[] digestSHAData)
+    private DigestImageCompareData (final byte[] digestMD5Data,
+                                    final byte[] digestSHAData)
     {
       if (digestMD5Data == null || digestSHAData == null)
       {
@@ -149,7 +156,7 @@ public class ImageComparator
      * @param o the to be compared object
      * @return true, if both objects are equal
      */
-    public boolean equals(final Object o)
+    public boolean equals (final Object o)
     {
       if (this == o)
       {
@@ -176,27 +183,31 @@ public class ImageComparator
 
     /**
      * returns a hashcode for this class.
+     *
      * @return always 0.
      */
-    public int hashCode()
+    public int hashCode ()
     {
       return 0;
     }
   }
 
-  /** An MD5 message digest. */
+  /**
+   * An MD5 message digest.
+   */
   private MessageDigest digestMD5;
 
-  /** An SHA message digest. */
+  /**
+   * An SHA message digest.
+   */
   private MessageDigest digestSHA;
 
   /**
-   * Creates a new ImageComparator. The comparator checks whether the MD5
-   * and the SHA message digest implementations are available. If they are
-   * not available, an alternative comparison method is used, which is more
-   * memory consuming.
+   * Creates a new ImageComparator. The comparator checks whether the MD5 and the SHA
+   * message digest implementations are available. If they are not available, an
+   * alternative comparison method is used, which is more memory consuming.
    */
-  public ImageComparator()
+  public ImageComparator ()
   {
     try
     {
@@ -220,12 +231,12 @@ public class ImageComparator
    * Creates 2 comparable objects. These objects can be compared for equality.
    *
    * @param image the image data which should be prepared for comparison
-   * @param fast whether to prefer the memory intensive faster compare method to
-   * the digest based comparation. This may result in outofmemory errors on
-   * huge reports or images.
+   * @param fast  whether to prefer the memory intensive faster compare method to the
+   *              digest based comparation. This may result in outofmemory errors on huge
+   *              reports or images.
    * @return the prepared image data.
    */
-  public Object createCompareData(final byte[] image, final boolean fast)
+  public Object createCompareData (final byte[] image, final boolean fast)
   {
     if (fast == false && (digestMD5 != null && digestSHA != null))
     {

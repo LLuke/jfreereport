@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Boot.java,v 1.6.4.1 2004/10/06 21:28:43 taqua Exp $
+ * $Id: Boot.java,v 1.8 2005/01/24 23:57:39 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,20 +39,18 @@
 package org.jfree.report;
 
 /**
- * An utility class to safely boot and initialize the JFreeReport library.
- * This class should be called before using the JFreeReport classes, to
- * make sure that all subsystems are initialized correctly and in the correct
- * order.
- * <p>
- * Application developers should make sure, that the booting is done, before
- * JFreeReport objects are used. Although the boot process will be started
- * automaticly if needed, this automated start may no longer guarantee the 
- * module initialization order.  
- * <p>
+ * An utility class to safely boot and initialize the JFreeReport library. This class
+ * should be called before using the JFreeReport classes, to make sure that all subsystems
+ * are initialized correctly and in the correct order.
+ * <p/>
+ * Application developers should make sure, that the booting is done, before JFreeReport
+ * objects are used. Although the boot process will be started automaticly if needed, this
+ * automated start may no longer guarantee the module initialization order.
+ * <p/>
  * Additional modules can be specified by defining the system property
- * "org.jfree.report.boot.Modules". The property expects a comma-separated
- * list of Module implementations.
- * 
+ * "org.jfree.report.boot.Modules". The property expects a comma-separated list of Module
+ * implementations.
+ *
  * @author Thomas Morgner
  * @deprecated Use JFreeReportBoot now.
  */
@@ -64,13 +62,13 @@ public final class Boot
   private Boot ()
   {
   }
-  
+
   /**
    * Checks, whether the booting of JFreeReport is in progress.
    *
    * @return true, if the booting is in progress, false otherwise.
    */
-  public synchronized static boolean isBootInProgress()
+  public synchronized static boolean isBootInProgress ()
   {
     return JFreeReportBoot.getInstance().isBootInProgress();
   }
@@ -80,36 +78,34 @@ public final class Boot
    *
    * @return true, if the booting is complete, false otherwise.
    */
-  public synchronized static boolean isBootDone()
+  public synchronized static boolean isBootDone ()
   {
     return JFreeReportBoot.getInstance().isBootDone();
   }
 
   /**
-   * Starts the boot process. This method does nothing, if the booting
-   * is currently in progress or already done.
+   * Starts the boot process. This method does nothing, if the booting is currently in
+   * progress or already done.
    */
-  public static void start()
+  public static void start ()
   {
     JFreeReportBoot.getInstance().start();
   }
 
   /**
    * This method returns true on non-strict floating point systems.
-   * <p>
-   * Since Java1.2 VMs may implement the floating point arithmetics
-   * in a more performant way, which does not put the old strict constraints
-   * on the floating point types <code>float</code> and <code>double</code>
-   * <p>
-   * As iText and this library requires strict (in the sense of Java1.1)
-   * floating point operations, we have to test for that feature here.
-   * <p>
-   * The only known VM that seems to implement that feature is the
-   * JRockit VM. The strict mode can be restored on that VM by adding
-   * the "-Xstrictfp" VM parameter.
+   * <p/>
+   * Since Java1.2 VMs may implement the floating point arithmetics in a more performant
+   * way, which does not put the old strict constraints on the floating point types
+   * <code>float</code> and <code>double</code>
+   * <p/>
+   * As iText and this library requires strict (in the sense of Java1.1) floating point
+   * operations, we have to test for that feature here.
+   * <p/>
+   * The only known VM that seems to implement that feature is the JRockit VM. The strict
+   * mode can be restored on that VM by adding the "-Xstrictfp" VM parameter.
    *
-   * @return true, if the VM uses strict floating points by default,
-   * false otherwise.
+   * @return true, if the VM uses strict floating points by default, false otherwise.
    */
   public static boolean isStrictFP ()
   {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AnchorElement.java,v 1.14 2005/02/19 13:29:51 taqua Exp $
+ * $Id: AnchorElement.java,v 1.2 2005/02/23 19:31:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,12 +38,14 @@ package org.jfree.report;
 
 /**
  * The anchor element creates targets for hyperlinks.
- * 
+ *
  * @author Thomas Morgner
  */
 public class AnchorElement extends Element
 {
-  /** The content type. */
+  /**
+   * The content type.
+   */
   public static final String CONTENT_TYPE = "X-Anchor";
 
   /**

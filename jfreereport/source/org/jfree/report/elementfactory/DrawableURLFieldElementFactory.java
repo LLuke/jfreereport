@@ -8,7 +8,9 @@ import org.jfree.report.filter.templates.DrawableURLFieldTemplate;
 
 public class DrawableURLFieldElementFactory extends ElementFactory
 {
-  /** The fieldname of the datarow from where to read the content. */
+  /**
+   * The fieldname of the datarow from where to read the content.
+   */
   private String fieldname;
 
   private URL baseURL;
@@ -22,18 +24,18 @@ public class DrawableURLFieldElementFactory extends ElementFactory
    *
    * @return the field name.
    */
-  public String getFieldname()
+  public String getFieldname ()
   {
     return fieldname;
   }
 
   /**
-   * Defines the field name from where to read the content of the element.
-   * The field name is the name of a datarow column.
+   * Defines the field name from where to read the content of the element. The field name
+   * is the name of a datarow column.
    *
    * @param fieldname the field name.
    */
-  public void setFieldname(final String fieldname)
+  public void setFieldname (final String fieldname)
   {
     this.fieldname = fieldname;
   }
@@ -51,12 +53,12 @@ public class DrawableURLFieldElementFactory extends ElementFactory
   /**
    * Creates a new drawable field element based on the defined properties.
    *
-   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
-   *
    * @return the generated elements
+   *
    * @throws IllegalStateException if the field name is not set.
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
    */
-  public Element createElement()
+  public Element createElement ()
   {
     if (getFieldname() == null)
     {

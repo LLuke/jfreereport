@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TranslationTableFactory.java,v 1.6.4.2 2004/05/11 13:25:33 taqua Exp $
+ * $Id: TranslationTableFactory.java,v 1.8 2005/01/25 00:05:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,33 +47,35 @@ import org.jfree.report.util.CSVTokenizer;
 import org.jfree.report.util.Log;
 
 /**
- * The translation table factory is responsible for building the contexts
- * and reading the translations.
- * 
+ * The translation table factory is responsible for building the contexts and reading the
+ * translations.
+ *
  * @author Thomas Morgner
  */
 public final class TranslationTableFactory
 {
   /**
-   * The context rule defines a transition from one context state to
-   * an other. How the mapping is done is defined in the contextmap.properties
-   * file. 
+   * The context rule defines a transition from one context state to an other. How the
+   * mapping is done is defined in the contextmap.properties file.
    */
   public static class ContextRule
   {
-    /** The name of the context. */
+    /**
+     * The name of the context.
+     */
     private String name;
-    /** The mapped name of the context. If null, the no mapping is done.*/
+    /**
+     * The mapped name of the context. If null, the no mapping is done.
+     */
     private String mapTo;
 
     /**
-     * Creates a new rule for the given name and mapping. The mapping is
-     * optional.
-     * 
-     * @param name the name of the context
+     * Creates a new rule for the given name and mapping. The mapping is optional.
+     *
+     * @param name  the name of the context
      * @param mapTo the name of the target context or null if no mapping is done.
      */
-    public ContextRule(final String name, final String mapTo)
+    public ContextRule (final String name, final String mapTo)
     {
       if (name == null)
       {
@@ -84,8 +86,8 @@ public final class TranslationTableFactory
     }
 
     /**
-     * Checks, whether a mapping is defined for this rule. 
-     * 
+     * Checks, whether a mapping is defined for this rule.
+     *
      * @return true, if a mapping is defined, false otherwise.
      */
     public boolean isMappingDefined ()
@@ -95,47 +97,48 @@ public final class TranslationTableFactory
 
     /**
      * Returns the name of this context rule.
+     *
      * @return the context rule name.
      */
-    public String getName()
+    public String getName ()
     {
       return name;
     }
 
     /**
      * Returns the mapping for this rule or null, if no mapping is defined.
-     * 
+     *
      * @return the mapping.
      */
-    public String getMapTo()
+    public String getMapTo ()
     {
       return mapTo;
     }
 
     /**
-     * Checks, wether this context rule is equal to an other object.
-     * It is equal, if the other object is also an context rule which
-     * has the same name. 
-     * @see java.lang.Object#equals(java.lang.Object)
-     * 
+     * Checks, wether this context rule is equal to an other object. It is equal, if the
+     * other object is also an context rule which has the same name.
+     *
      * @param o the other object
      * @return true, if the other object is equal, false otherwise.
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(final Object o)
+    public boolean equals (final Object o)
     {
       if (this == o)
-      { 
+      {
         return true;
       }
       if (!(o instanceof ContextRule))
-      { 
+      {
         return false;
       }
 
       final ContextRule contextRule = (ContextRule) o;
 
       if (!name.equals(contextRule.name))
-      { 
+      {
         return false;
       }
 
@@ -144,23 +147,25 @@ public final class TranslationTableFactory
 
     /**
      * Computes an hashcode for this object.
-     *  
-     * @see java.lang.Object#hashCode()
-     * 
+     *
      * @return the hashcode.
+     *
+     * @see java.lang.Object#hashCode()
      */
-    public int hashCode()
+    public int hashCode ()
     {
       return name.hashCode();
     }
   }
 
-  /** The singleton instance of the translation table factory. */
+  /**
+   * The singleton instance of the translation table factory.
+   */
   private static TranslationTableFactory singleton;
 
   /**
    * Returns the singleton instance of this factory.
-   * 
+   *
    * @return the factory.
    */
   public synchronized static TranslationTableFactory getInstance ()
@@ -172,15 +177,19 @@ public final class TranslationTableFactory
     return singleton;
   }
 
-  /** A collection of all known contexts. */
+  /**
+   * A collection of all known contexts.
+   */
   private final Hashtable contexts;
-  /** A collection of all known translations. */
+  /**
+   * A collection of all known translations.
+   */
   private final Properties translations;
 
   /**
    * Creates a new translation factory and loads the required property files.
    */
-  private TranslationTableFactory()
+  private TranslationTableFactory ()
   {
     contexts = new Hashtable();
     translations = new Properties();
@@ -189,15 +198,14 @@ public final class TranslationTableFactory
   }
 
   /**
-   * Loads the translation specifications. This method will ignore all
-   * errors.
+   * Loads the translation specifications. This method will ignore all errors.
    */
-  private void loadTranslationSpecs()
+  private void loadTranslationSpecs ()
   {
     final InputStream in = this.getClass().getResourceAsStream("translations.properties");
     if (in == null)
     {
-      Log.warn ("Unable to locate the resource 'translations.properties'");
+      Log.warn("Unable to locate the resource 'translations.properties'");
       return;
     }
     try
@@ -206,20 +214,19 @@ public final class TranslationTableFactory
     }
     catch (Exception e)
     {
-      Log.warn ("Unable to load the translation set.", e);
+      Log.warn("Unable to load the translation set.", e);
     }
   }
 
   /**
-   * Loads the context mapping specifications. This method will ignore all
-   * errors.
+   * Loads the context mapping specifications. This method will ignore all errors.
    */
-  private void loadContextMap()
+  private void loadContextMap ()
   {
     final InputStream in = this.getClass().getResourceAsStream("contextmap.properties");
     if (in == null)
     {
-      Log.warn ("Unable to locate the resource 'contextmap.properties'");
+      Log.warn("Unable to locate the resource 'contextmap.properties'");
       return;
     }
     try
@@ -230,7 +237,7 @@ public final class TranslationTableFactory
       final String initialContext = contextProperties.getProperty("%init");
       if (initialContext == null)
       {
-        Log.debug ("Initial context is null.");
+        Log.debug("Initial context is null.");
         return;
       }
       final CSVTokenizer tokenizer = new CSVTokenizer(initialContext, CSVTokenizer.SEPARATOR_COMMA);
@@ -258,16 +265,16 @@ public final class TranslationTableFactory
     }
     catch (Exception e)
     {
-      Log.error ("Failed to load the context map:", e);
+      Log.error("Failed to load the context map:", e);
       return;
     }
   }
 
   /**
-   * Builds a context rule for the specified base name and stores the
-   * rule in the map of available mappings.
-   * 
-   * @param base the base name
+   * Builds a context rule for the specified base name and stores the rule in the map of
+   * available mappings.
+   *
+   * @param base       the base name
    * @param contextMap the context map that contains all known mappings.
    */
   private void buildContext (final String base, final Properties contextMap)
@@ -316,19 +323,18 @@ public final class TranslationTableFactory
   }
 
   /**
-   * Builds a context based on the given last context and the new context name.
-   * If no last context is given, the context is considered to be an initial
-   * context.
-   * 
+   * Builds a context based on the given last context and the new context name. If no last
+   * context is given, the context is considered to be an initial context.
+   *
    * @param lastContext the (possibly null) context rule of the last node.
-   * @param context the new context name segment.
+   * @param context     the new context name segment.
    * @return the new context rule, or null, if there is no such context defined.
    */
   public ContextRule buildContext (final ContextRule lastContext, final String context)
   {
     if (lastContext == null)
     {
-      return (ContextRule) contexts.get (context);
+      return (ContextRule) contexts.get(context);
     }
 
     if (lastContext.isMappingDefined())
@@ -337,10 +343,10 @@ public final class TranslationTableFactory
     }
 
     ContextRule nextContext = (ContextRule)
-        contexts.get(lastContext.getName() + "." + context);
+            contexts.get(lastContext.getName() + "." + context);
     if (nextContext == null)
     {
-      Log.debug ("Undefined mapping: " + lastContext.getName() + " -> " + context);
+      Log.debug("Undefined mapping: " + lastContext.getName() + " -> " + context);
       return null;
     }
 
@@ -352,11 +358,12 @@ public final class TranslationTableFactory
   }
 
   /**
-   * Creates a mapping for the given rule. 
-   * 
+   * Creates a mapping for the given rule.
+   *
    * @param rule the rule that should be looked up
    * @return a translation table for the given rule.
-   * @throws NullPointerException if the rule is null. 
+   *
+   * @throws NullPointerException if the rule is null.
    */
   public TranslationTable getTranslationTable (final ContextRule rule)
   {

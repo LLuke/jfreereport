@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CenterAlignment.java,v 1.8 2004/05/07 14:29:49 mungady Exp $
+ * $Id: CenterAlignment.java,v 1.9 2005/02/19 13:29:58 taqua Exp $
  *
  * Changes
  * -------
@@ -51,9 +51,9 @@ public strictfp class CenterAlignment extends HorizontalBoundsAlignment
   /**
    * Creates a new alignment object.
    *
-   * @param bounds  the bounds.
+   * @param bounds the bounds.
    */
-  public CenterAlignment(final StrictBounds bounds)
+  public CenterAlignment (final StrictBounds bounds)
   {
     super(bounds);
   }
@@ -61,11 +61,10 @@ public strictfp class CenterAlignment extends HorizontalBoundsAlignment
   /**
    * Aligns a rectangle to the (horizontal) center of the current bounds.
    *
-   * @param inner  the region to align.
-   *
+   * @param inner the region to align.
    * @return the aligned rectangle.
    */
-  public StrictBounds align(final StrictBounds inner)
+  public StrictBounds align (final StrictBounds inner)
   {
     if (inner == null)
     {
@@ -73,7 +72,7 @@ public strictfp class CenterAlignment extends HorizontalBoundsAlignment
     }
 
     final long y = inner.getY();
-    final long w = Math.min (inner.getWidth(), getReferenceBounds().getWidth());
+    final long w = Math.min(inner.getWidth(), getReferenceBounds().getWidth());
     final long x = getReferenceBounds().getX() +
             ((getReferenceBounds().getWidth() - w) / 2);
     final long h = inner.getHeight();

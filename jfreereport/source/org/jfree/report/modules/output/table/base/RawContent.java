@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RawContent.java,v 1.3 2005/01/25 00:12:35 taqua Exp $
+ * $Id: RawContent.java,v 1.4 2005/02/19 13:30:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -49,7 +49,8 @@ public class RawContent implements Content
 
   /**
    * Creates a new RawContent instance.
-   * @param bounds the bounds, relative to the element bounds
+   *
+   * @param bounds  the bounds, relative to the element bounds
    * @param content the content that should be encapsulated.
    */
   public RawContent (final StrictBounds bounds, final Object content)
@@ -69,8 +70,9 @@ public class RawContent implements Content
   }
 
   /**
-   * Returns the content for the given bounds. The extracted content is the content that would be displayed in the
-   * specific bounds if the content would be printed with clipping enabled at the given boundary.
+   * Returns the content for the given bounds. The extracted content is the content that
+   * would be displayed in the specific bounds if the content would be printed with
+   * clipping enabled at the given boundary.
    * <p/>
    * This method returns <code>null</code> if there is no content in these bounds.
    *
@@ -105,8 +107,8 @@ public class RawContent implements Content
   }
 
   /**
-   * Returns the content type (the types include <code>TEXT</code>, <code>IMAGE</code>, <code>SHAPE</code> and
-   * <code>CONTAINER</code>).
+   * Returns the content type (the types include <code>TEXT</code>, <code>IMAGE</code>,
+   * <code>SHAPE</code> and <code>CONTAINER</code>).
    *
    * @return the content type.
    */

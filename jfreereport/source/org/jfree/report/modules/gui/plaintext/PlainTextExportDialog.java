@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.12 2005/01/25 21:40:17 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.13 2005/02/23 19:31:58 taqua Exp $
  *
  * Changes
  * --------
@@ -78,12 +78,12 @@ import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
 import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
 import org.jfree.report.modules.output.pageable.plaintext.AbstractEpsonPrinterDriver;
+import org.jfree.report.modules.output.pageable.plaintext.Epson24PinPrinterDriver;
+import org.jfree.report.modules.output.pageable.plaintext.Epson9PinPrinterDriver;
 import org.jfree.report.modules.output.pageable.plaintext.IBMCompatiblePrinterDriver;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterSpecification;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterSpecificationManager;
-import org.jfree.report.modules.output.pageable.plaintext.Epson24PinPrinterDriver;
-import org.jfree.report.modules.output.pageable.plaintext.Epson9PinPrinterDriver;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
@@ -107,7 +107,7 @@ public class PlainTextExportDialog extends JDialog
     /**
      * Default constructor.
      */
-    public ActionConfirm()
+    public ActionConfirm ()
     {
       putValue(Action.NAME, getResources().getString("plain-text-exportdialog.confirm"));
     }
@@ -115,9 +115,9 @@ public class PlainTextExportDialog extends JDialog
     /**
      * Receives notification that the action has occurred.
      *
-     * @param e  the action event.
+     * @param e the action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       if (performValidate())
       {
@@ -135,7 +135,7 @@ public class PlainTextExportDialog extends JDialog
     /**
      * Default constructor.
      */
-    public ActionCancel()
+    public ActionCancel ()
     {
       putValue(Action.NAME, getResources().getString("plain-text-exportdialog.cancel"));
     }
@@ -143,9 +143,9 @@ public class PlainTextExportDialog extends JDialog
     /**
      * Receives notification that the action has occurred.
      *
-     * @param e  the action event.
+     * @param e the action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       setConfirmed(false);
       setVisible(false);
@@ -158,12 +158,12 @@ public class PlainTextExportDialog extends JDialog
   private class ActionSelectFile extends AbstractFileSelectionAction
   {
     /**
-     * Defines an <code>Action</code> object with a default
-     * description string and default icon.
+     * Defines an <code>Action</code> object with a default description string and default
+     * icon.
      */
-    public ActionSelectFile()
+    public ActionSelectFile ()
     {
-      super (PlainTextExportDialog.this);
+      super(PlainTextExportDialog.this);
       putValue(Action.NAME, getResources().getString("plain-text-exportdialog.selectFile"));
     }
 
@@ -190,12 +190,12 @@ public class PlainTextExportDialog extends JDialog
     /**
      * Invoked when an action occurs.
      *
-     * @param e  the action event.
+     * @param e the action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       final File selectedFile = performSelectFile
-              (new File (getFilename()), JFileChooser.SAVE_DIALOG, true);
+              (new File(getFilename()), JFileChooser.SAVE_DIALOG, true);
       if (selectedFile != null)
       {
         setFilename(selectedFile.getPath());
@@ -211,10 +211,10 @@ public class PlainTextExportDialog extends JDialog
     private int printer;
 
     /**
-     * Defines an <code>Action</code> object with a default
-     * description string and default icon.
+     * Defines an <code>Action</code> object with a default description string and default
+     * icon.
      */
-    public ActionSelectPrinter(final int printer)
+    public ActionSelectPrinter (final int printer)
     {
       putValue(NAME, getResources().getString(PRINTER_NAMES[printer]));
       this.printer = printer;
@@ -223,9 +223,9 @@ public class PlainTextExportDialog extends JDialog
     /**
      * Invoked when an action occurs.
      *
-     * @param e  the action event.
+     * @param e the action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       setSelectedPrinter(printer);
     }
@@ -250,67 +250,105 @@ public class PlainTextExportDialog extends JDialog
     }
   }
 
-  /** Plain text output. */
+  /**
+   * Plain text output.
+   */
   public static final int TYPE_PLAIN_OUTPUT = 0;
 
-  /** Epson printer output. */
+  /**
+   * Epson printer output.
+   */
   public static final int TYPE_EPSON_OUTPUT = 1;
 
-  /** IBM printer output. */
+  /**
+   * IBM printer output.
+   */
   public static final int TYPE_IBM_OUTPUT = 2;
 
-  private static final String[] PRINTER_NAMES = new String[] {
+  private static final String[] PRINTER_NAMES = new String[]{
     "plain-text-exportdialog.printer.plain",
     "plain-text-exportdialog.printer.epson",
     "plain-text-exportdialog.printer.ibm"
   };
 
-  /** 6 lines per inch. */
+  /**
+   * 6 lines per inch.
+   */
   public static final Integer LPI_6 = new Integer(6);
 
-  /** 10 lines per inch. */
+  /**
+   * 10 lines per inch.
+   */
   public static final Integer LPI_10 = new Integer(10);
 
-  /** 10 characters per inch. */
+  /**
+   * 10 characters per inch.
+   */
   public static final Integer CPI_10 = new Integer(10);
 
-  /** 12 characters per inch. */
+  /**
+   * 12 characters per inch.
+   */
   public static final Integer CPI_12 = new Integer(12);
 
-  /** 15 characters per inch. */
+  /**
+   * 15 characters per inch.
+   */
   public static final Integer CPI_15 = new Integer(15);
 
-  /** 17 characters per inch. */
+  /**
+   * 17 characters per inch.
+   */
   public static final Integer CPI_17 = new Integer(17);
 
-  /** 20 characters per inch. */
+  /**
+   * 20 characters per inch.
+   */
   public static final Integer CPI_20 = new Integer(20);
 
-  /** Confirmed flag. */
+  /**
+   * Confirmed flag.
+   */
   private boolean confirmed;
 
-  /** Localised resources. */
+  /**
+   * Localised resources.
+   */
   private ResourceBundle resources;
 
-  /** A combo-box for selecting the encoding. */
+  /**
+   * A combo-box for selecting the encoding.
+   */
   private EncodingSelector encodingSelector;
 
-  /** A radio button for selecting plain printer commands. */
+  /**
+   * A radio button for selecting plain printer commands.
+   */
   private JRadioButton rbPlainPrinterCommandSet;
 
-  /** A radio button for selecting Epson printer commands. */
+  /**
+   * A radio button for selecting Epson printer commands.
+   */
   private JRadioButton rbEpsonPrinterCommandSet;
 
-  /** A radio button for selecting IBM printer commands. */
+  /**
+   * A radio button for selecting IBM printer commands.
+   */
   private JRadioButton rbIBMPrinterCommandSet;
 
-  /** The filename text field. */
+  /**
+   * The filename text field.
+   */
   private JTextField txFilename;
 
-  /** A combo-box for selecting lines per inch. */
+  /**
+   * A combo-box for selecting lines per inch.
+   */
   private JComboBox cbLinesPerInch;
 
-  /** A combo-box for selecting characters per inch. */
+  /**
+   * A combo-box for selecting characters per inch.
+   */
   private JComboBox cbCharsPerInch;
 
   private JComboBox cbEpsonPrinterType;
@@ -341,34 +379,31 @@ public class PlainTextExportDialog extends JDialog
   }
 
   /**
-   * Creates a non-modal dialog without a title and without
-   * a specified Frame owner.  A shared, hidden frame will be
-   * set as the owner of the Dialog.
+   * Creates a non-modal dialog without a title and without a specified Frame owner.  A
+   * shared, hidden frame will be set as the owner of the Dialog.
    */
-  public PlainTextExportDialog()
+  public PlainTextExportDialog ()
   {
     init();
   }
 
   /**
-   * Creates a non-modal dialog without a title with the
-   * specifed Frame as its owner.
+   * Creates a non-modal dialog without a title with the specifed Frame as its owner.
    *
    * @param owner the Frame from which the dialog is displayed
    */
-  public PlainTextExportDialog(final Frame owner)
+  public PlainTextExportDialog (final Frame owner)
   {
     super(owner);
     init();
   }
 
   /**
-   * Creates a non-modal dialog without a title with the
-   * specifed Dialog as its owner.
+   * Creates a non-modal dialog without a title with the specifed Dialog as its owner.
    *
    * @param owner the Dialog from which the dialog is displayed
    */
-  public PlainTextExportDialog(final Dialog owner)
+  public PlainTextExportDialog (final Dialog owner)
   {
     super(owner);
     init();
@@ -377,7 +412,7 @@ public class PlainTextExportDialog extends JDialog
   /**
    * Initialise the dialog.
    */
-  private void init()
+  private void init ()
   {
     setModal(true);
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -403,7 +438,7 @@ public class PlainTextExportDialog extends JDialog
     cbLinesPerInch = new JComboBox(new DefaultComboBoxModel(lpiModel));
     cbCharsPerInch = new JComboBox(new DefaultComboBoxModel(cpiModel));
 
-    rbPlainPrinterCommandSet = new ActionRadioButton (new ActionSelectPrinter(TYPE_PLAIN_OUTPUT));
+    rbPlainPrinterCommandSet = new ActionRadioButton(new ActionSelectPrinter(TYPE_PLAIN_OUTPUT));
     rbEpsonPrinterCommandSet = new ActionRadioButton(new ActionSelectPrinter(TYPE_EPSON_OUTPUT));
     rbIBMPrinterCommandSet = new ActionRadioButton(new ActionSelectPrinter(TYPE_IBM_OUTPUT));
 
@@ -415,7 +450,7 @@ public class PlainTextExportDialog extends JDialog
     bg.add(rbEpsonPrinterCommandSet);
     bg.add(rbIBMPrinterCommandSet);
 
-    final JPanel rootPane = new JPanel ();
+    final JPanel rootPane = new JPanel();
     rootPane.setLayout(new BorderLayout());
 
     rootPane.add(createButtonPanel(), BorderLayout.SOUTH);
@@ -426,12 +461,11 @@ public class PlainTextExportDialog extends JDialog
 
     addWindowListener(new WindowAdapter()
     {
-      public void windowClosing(final WindowEvent e)
+      public void windowClosing (final WindowEvent e)
       {
         new ActionCancel().actionPerformed(null);
       }
-    }
-    );
+    });
   }
 
   private KeyedComboBoxModel loadEpsonPrinters ()
@@ -470,26 +504,22 @@ public class PlainTextExportDialog extends JDialog
    *
    * @return the created content pane.
    */
-  private JComponent createContentPane()
+  private JComponent createContentPane ()
   {
     final JPanel contentPane = new JPanel();
     contentPane.setLayout(new GridBagLayout());
     contentPane.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 
-    final JLabel lblPrinterSelect = new JLabel(
-        getResources().getString("plain-text-exportdialog.printer"));
+    final JLabel lblPrinterSelect = new JLabel(getResources().getString("plain-text-exportdialog.printer"));
     final JLabel lblFileName
-        = new JLabel(getResources().getString("plain-text-exportdialog.filename"));
+            = new JLabel(getResources().getString("plain-text-exportdialog.filename"));
     final JLabel lblEncoding
-        = new JLabel(getResources().getString("plain-text-exportdialog.encoding"));
+            = new JLabel(getResources().getString("plain-text-exportdialog.encoding"));
     final JButton btnSelect = new ActionButton(new ActionSelectFile());
 
-    final JLabel lblCharsPerInch = new JLabel(
-        getResources().getString("plain-text-exportdialog.chars-per-inch"));
-    final JLabel lblLinesPerInch = new JLabel(
-        getResources().getString("plain-text-exportdialog.lines-per-inch"));
-    final JLabel lblFontSettings = new JLabel(
-        getResources().getString("plain-text-exportdialog.font-settings"));
+    final JLabel lblCharsPerInch = new JLabel(getResources().getString("plain-text-exportdialog.chars-per-inch"));
+    final JLabel lblLinesPerInch = new JLabel(getResources().getString("plain-text-exportdialog.lines-per-inch"));
+    final JLabel lblFontSettings = new JLabel(getResources().getString("plain-text-exportdialog.font-settings"));
 
     GridBagConstraints gbc = new GridBagConstraints();
     gbc.gridx = 0;
@@ -621,7 +651,7 @@ public class PlainTextExportDialog extends JDialog
    *
    * @return the created button panel
    */
-  private JPanel createButtonPanel()
+  private JPanel createButtonPanel ()
   {
     // button panel
     final JButton btnCancel = new ActionButton(new ActionCancel());
@@ -632,8 +662,8 @@ public class PlainTextExportDialog extends JDialog
     buttonPanel.add(btnCancel);
     btnConfirm.setDefaultCapable(true);
     buttonPanel.registerKeyboardAction(new ActionConfirm(),
-        KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
-        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+            KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
+            JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
     final JPanel buttonCarrier = new JPanel();
     buttonCarrier.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -659,9 +689,9 @@ public class PlainTextExportDialog extends JDialog
   /**
    * Sets the selected printer.
    *
-   * @param type  the type.
+   * @param type the type.
    */
-  public void setSelectedPrinter(final int type)
+  public void setSelectedPrinter (final int type)
   {
     final String oldEncoding = getEncoding();
     if (type == TYPE_EPSON_OUTPUT)
@@ -697,7 +727,7 @@ public class PlainTextExportDialog extends JDialog
    *
    * @return The printer type.
    */
-  public int getSelectedPrinter()
+  public int getSelectedPrinter ()
   {
     if (rbPlainPrinterCommandSet.isSelected())
     {
@@ -715,7 +745,7 @@ public class PlainTextExportDialog extends JDialog
    *
    * @return the name of the file where to save the file.
    */
-  public String getFilename()
+  public String getFilename ()
   {
     return txFilename.getText();
   }
@@ -725,19 +755,19 @@ public class PlainTextExportDialog extends JDialog
    *
    * @param filename the filename of the file
    */
-  public void setFilename(final String filename)
+  public void setFilename (final String filename)
   {
     this.txFilename.setText(filename);
   }
 
   /**
-   * Gets the confirmation state of the dialog. A confirmed dialog has no invalid
-   * settings and the user confirmed any resource conflicts.
+   * Gets the confirmation state of the dialog. A confirmed dialog has no invalid settings
+   * and the user confirmed any resource conflicts.
    *
    * @return true, if the dialog has been confirmed and the excel file should be saved,
-   * false otherwise.
+   *         false otherwise.
    */
-  public boolean isConfirmed()
+  public boolean isConfirmed ()
   {
     return confirmed;
   }
@@ -747,7 +777,7 @@ public class PlainTextExportDialog extends JDialog
    *
    * @param confirmed set to true, if OK was pressed, false otherwise
    */
-  protected void setConfirmed(final boolean confirmed)
+  protected void setConfirmed (final boolean confirmed)
   {
     this.confirmed = confirmed;
   }
@@ -755,7 +785,7 @@ public class PlainTextExportDialog extends JDialog
   /**
    * clears all selections, input fields and set the selected encryption level to none.
    */
-  public void clear()
+  public void clear ()
   {
     txFilename.setText("");
     setSelectedPrinter(TYPE_PLAIN_OUTPUT);
@@ -809,7 +839,7 @@ public class PlainTextExportDialog extends JDialog
    *
    * @return The lines-per-inch setting.
    */
-  public int getLinesPerInch()
+  public int getLinesPerInch ()
   {
     final Integer i = (Integer) cbLinesPerInch.getSelectedItem();
     if (i == null)
@@ -822,11 +852,11 @@ public class PlainTextExportDialog extends JDialog
   /**
    * Sets the lines per inch.
    *
-   * @param lpi  the lines per inch.
+   * @param lpi the lines per inch.
    */
-  public void setLinesPerInch(final int lpi)
+  public void setLinesPerInch (final int lpi)
   {
-    final Integer lpiObj = new Integer (lpi);
+    final Integer lpiObj = new Integer(lpi);
     final ComboBoxModel model = cbLinesPerInch.getModel();
     for (int i = 0; i < model.getSize(); i++)
     {
@@ -844,7 +874,7 @@ public class PlainTextExportDialog extends JDialog
    *
    * @return The characters-per-inch setting.
    */
-  public int getCharsPerInch()
+  public int getCharsPerInch ()
   {
     final Integer i = (Integer) cbCharsPerInch.getSelectedItem();
     if (i == null)
@@ -857,11 +887,11 @@ public class PlainTextExportDialog extends JDialog
   /**
    * Sets the characters per inch.
    *
-   * @param cpi  the characters per inch.
+   * @param cpi the characters per inch.
    */
-  public void setCharsPerInch(final int cpi)
+  public void setCharsPerInch (final int cpi)
   {
-    final Integer cpiObj = new Integer (cpi);
+    final Integer cpiObj = new Integer(cpi);
     final ComboBoxModel model = cbCharsPerInch.getModel();
     for (int i = 0; i < model.getSize(); i++)
     {
@@ -879,7 +909,7 @@ public class PlainTextExportDialog extends JDialog
    *
    * @return The encoding.
    */
-  public String getEncoding()
+  public String getEncoding ()
   {
     return encodingSelector.getSelectedEncoding();
   }
@@ -887,9 +917,9 @@ public class PlainTextExportDialog extends JDialog
   /**
    * Sets the encoding.
    *
-   * @param encoding  the encoding.
+   * @param encoding the encoding.
    */
-  public void setEncoding(final String encoding)
+  public void setEncoding (final String encoding)
   {
     if (encoding == null)
     {
@@ -901,21 +931,21 @@ public class PlainTextExportDialog extends JDialog
   /**
    * Initialises the PDF save dialog from the settings in the report configuration.
    *
-   * @param config  the report configuration.
+   * @param config the report configuration.
    */
-  public void initFromConfiguration(final ReportConfiguration config)
+  public void initFromConfiguration (final ReportConfiguration config)
   {
     setEncoding(config.getConfigProperty
-        (PlainTextOutputTarget.TEXT_OUTPUT_ENCODING,
-            PlainTextOutputTarget.TEXT_OUTPUT_ENCODING_DEFAULT));
+            (PlainTextOutputTarget.TEXT_OUTPUT_ENCODING,
+                    PlainTextOutputTarget.TEXT_OUTPUT_ENCODING_DEFAULT));
     config.getConfigProperty
             (AbstractEpsonPrinterDriver.EPSON_PRINTER_TYPE, getSelectedPrinterModel());
 
     try
     {
       setLinesPerInch(StringUtil.parseInt(config.getConfigProperty
-          (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.LINES_PER_INCH, "6"),
-          getLinesPerInch()));
+              (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.LINES_PER_INCH, "6"),
+              getLinesPerInch()));
     }
     catch (IllegalArgumentException e)
     {
@@ -924,8 +954,8 @@ public class PlainTextExportDialog extends JDialog
     try
     {
       setCharsPerInch(StringUtil.parseInt(config.getConfigProperty
-          (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.CHARS_PER_INCH, "10"),
-          getCharsPerInch()));
+              (PlainTextOutputTarget.CONFIGURATION_PREFIX + PlainTextOutputTarget.CHARS_PER_INCH, "10"),
+              getCharsPerInch()));
     }
     catch (IllegalArgumentException e)
     {
@@ -934,76 +964,74 @@ public class PlainTextExportDialog extends JDialog
   }
 
   /**
-   * Stores the input from the dialog into the report configuration of the 
-   * report.
-   * 
-   * @param config the report configuration that should receive the new
-   * settings.
+   * Stores the input from the dialog into the report configuration of the report.
+   *
+   * @param config the report configuration that should receive the new settings.
    */
-  public void storeToConfiguration(final ReportConfiguration config)
+  public void storeToConfiguration (final ReportConfiguration config)
   {
     config.setConfigProperty(PlainTextOutputTarget.TEXT_OUTPUT_ENCODING,
-        getEncoding());
+            getEncoding());
     config.setConfigProperty(PlainTextOutputTarget.CONFIGURATION_PREFIX +
-        PlainTextOutputTarget.CHARS_PER_INCH, String.valueOf(getCharsPerInch()));
+            PlainTextOutputTarget.CHARS_PER_INCH, String.valueOf(getCharsPerInch()));
     config.setConfigProperty(PlainTextOutputTarget.CONFIGURATION_PREFIX +
-        PlainTextOutputTarget.LINES_PER_INCH, String.valueOf(getLinesPerInch()));
+            PlainTextOutputTarget.LINES_PER_INCH, String.valueOf(getLinesPerInch()));
     config.setConfigProperty
             (AbstractEpsonPrinterDriver.EPSON_PRINTER_TYPE, getSelectedPrinterModel());
   }
 
   /**
-   * Opens the dialog to query all necessary input from the user.
-   * This will not start the processing, as this is done elsewhere.
-   * 
+   * Opens the dialog to query all necessary input from the user. This will not start the
+   * processing, as this is done elsewhere.
+   *
    * @param report the report that should be processed.
    * @return true, if the processing should continue, false otherwise.
    */
-  public boolean performQueryForExport(final JFreeReport report)
+  public boolean performQueryForExport (final JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
     final ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
     try
     {
       setDialogContents(storage.loadProperties
-          (ConfigFactory.encodePath(report.getName() + "_plaintextexport"),
-              new Properties()));
+              (ConfigFactory.encodePath(report.getName() + "_plaintextexport"),
+                      new Properties()));
     }
     catch (Exception cse)
     {
-      Log.debug ("Unable to load the defaults in PlainText export dialog: " + cse.getLocalizedMessage());
+      Log.debug("Unable to load the defaults in PlainText export dialog: " + cse.getLocalizedMessage());
     }
 
     setModal(true);
     setVisible(true);
     if (isConfirmed() == false)
     {
-      Log.debug ("Is not confirmed...");
+      Log.debug("Is not confirmed...");
       return false;
     }
     storeToConfiguration(report.getReportConfiguration());
     try
     {
-      Log.debug ("About to store:  "+ storage);
+      Log.debug("About to store:  " + storage);
       storage.storeProperties
-          (ConfigFactory.encodePath(report.getName() + "_plaintextexport"),
-              getDialogContents());
+              (ConfigFactory.encodePath(report.getName() + "_plaintextexport"),
+                      getDialogContents());
     }
     catch (ConfigStoreException cse)
     {
-      Log.debug ("Unable to store the defaults in PlainText export dialog.");
+      Log.debug("Unable to store the defaults in PlainText export dialog.");
     }
 
     return true;
   }
 
   /**
-   * Retrieves the resources for this dialog. If the resources are not initialized,
-   * they get loaded on the first call to this method.
+   * Retrieves the resources for this dialog. If the resources are not initialized, they
+   * get loaded on the first call to this method.
    *
    * @return this frames ResourceBundle.
    */
-  protected ResourceBundle getResources()
+  protected ResourceBundle getResources ()
   {
     if (resources == null)
     {
@@ -1013,21 +1041,20 @@ public class PlainTextExportDialog extends JDialog
   }
 
   /**
-   * Validates the contents of the dialog's input fields. If the selected file exists, it is also
-   * checked for validity.
+   * Validates the contents of the dialog's input fields. If the selected file exists, it
+   * is also checked for validity.
    *
    * @return true, if the input is valid, false otherwise
    */
-  public boolean performValidate()
+  public boolean performValidate ()
   {
     final String filename = getFilename();
     if (filename.trim().length() == 0)
     {
       JOptionPane.showMessageDialog(this,
-          getResources().getString(
-              "plain-text-exportdialog.targetIsEmpty"),
-          getResources().getString("plain-text-exportdialog.errorTitle"),
-          JOptionPane.ERROR_MESSAGE);
+              getResources().getString("plain-text-exportdialog.targetIsEmpty"),
+              getResources().getString("plain-text-exportdialog.errorTitle"),
+              JOptionPane.ERROR_MESSAGE);
       return false;
     }
     final File f = new File(filename);
@@ -1036,28 +1063,27 @@ public class PlainTextExportDialog extends JDialog
       if (f.isFile() == false)
       {
         JOptionPane.showMessageDialog(this,
-            getResources().getString("plain-text-exportdialog.targetIsNoFile"),
-            getResources().getString("plain-text-exportdialog.errorTitle"),
-            JOptionPane.ERROR_MESSAGE);
+                getResources().getString("plain-text-exportdialog.targetIsNoFile"),
+                getResources().getString("plain-text-exportdialog.errorTitle"),
+                JOptionPane.ERROR_MESSAGE);
         return false;
       }
       if (f.canWrite() == false)
       {
         JOptionPane.showMessageDialog(this,
-            getResources().getString("plain-text-exportdialog.targetIsNotWritable"),
-            getResources().getString("plain-text-exportdialog.errorTitle"),
-            JOptionPane.ERROR_MESSAGE);
+                getResources().getString("plain-text-exportdialog.targetIsNotWritable"),
+                getResources().getString("plain-text-exportdialog.errorTitle"),
+                JOptionPane.ERROR_MESSAGE);
         return false;
       }
       final String key1 = "plain-text-exportdialog.targetOverwriteConfirmation";
       final String key2 = "plain-text-exportdialog.targetOverwriteTitle";
       if (JOptionPane.showConfirmDialog(this,
-          MessageFormat.format(getResources().getString(key1),
-              new Object[]{getFilename()}
-          ),
-          getResources().getString(key2),
-          JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-          == JOptionPane.NO_OPTION)
+              MessageFormat.format(getResources().getString(key1),
+                      new Object[]{getFilename()}),
+              getResources().getString(key2),
+              JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+              == JOptionPane.NO_OPTION)
       {
         return false;
       }
@@ -1068,6 +1094,7 @@ public class PlainTextExportDialog extends JDialog
 
   /**
    * Warning: Might return null!
+   *
    * @return
    */
   public String getSelectedPrinterModel ()

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandStyleSheet.java,v 1.4 2005/01/25 00:22:38 taqua Exp $
+ * $Id: BandStyleKeys.java,v 1.1 2005/01/30 23:39:15 taqua Exp $
  *
  * Changes
  * -------
@@ -42,34 +42,46 @@ package org.jfree.report.style;
  */
 public class BandStyleKeys
 {
-  /** A key for the band's 'page break before' flag. */
+  /**
+   * A key for the band's 'page break before' flag.
+   */
   public static final StyleKey PAGEBREAK_BEFORE = StyleKey.getStyleKey("pagebreak-before",
-      Boolean.class);
+          Boolean.class);
 
-  /** A key for the band's 'page break after' flag. */
+  /**
+   * A key for the band's 'page break after' flag.
+   */
   public static final StyleKey PAGEBREAK_AFTER = StyleKey.getStyleKey("pagebreak-after",
-      Boolean.class);
+          Boolean.class);
 
-  /** A key for the band's 'display on first page' flag. */
+  /**
+   * A key for the band's 'display on first page' flag.
+   */
   public static final StyleKey DISPLAY_ON_FIRSTPAGE = StyleKey.getStyleKey("display-on-firstpage",
-      Boolean.class);
+          Boolean.class);
 
-  /** A key for the band's 'display on last page' flag. */
+  /**
+   * A key for the band's 'display on last page' flag.
+   */
   public static final StyleKey DISPLAY_ON_LASTPAGE = StyleKey.getStyleKey("display-on-lastpage",
-      Boolean.class);
+          Boolean.class);
 
-  /** A key for the band's 'repeat header' flag. */
+  /**
+   * A key for the band's 'repeat header' flag.
+   */
   public static final StyleKey REPEAT_HEADER = StyleKey.getStyleKey("repeat-header",
-      Boolean.class);
+          Boolean.class);
 
-  /** A key for the band's 'print on bottom' flag. */
+  /**
+   * A key for the band's 'print on bottom' flag.
+   */
   public static final StyleKey FIXED_POSITION = StyleKey.getStyleKey("fixed-position",
-      Float.class);
+          Float.class);
 
   /**
    * Creates a new band style-sheet.
    */
-  private BandStyleKeys()
+  private BandStyleKeys ()
   {
   }
 }

@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: FontChangeFunction.java,v 1.4 2005/01/24 23:59:05 taqua Exp $
+ * $Id: FontChangeFunction.java,v 1.5 2005/02/04 19:22:52 taqua Exp $
  *
  * Changes
  * -------
@@ -42,44 +42,42 @@ import org.jfree.report.Element;
 import org.jfree.report.TextElement;
 import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
-import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.style.FontDefinition;
 
 /**
  * This is a function used in report4-demo. The function demonstrates how to alter an
  * elements property during the report generation. The elements font is changed base on
  * the data provided in the reports datasource.
- * <p>
+ * <p/>
  * For every new item row in the report, the font for that row is changed to the fontname
  * specified in the second column of the report data source.
- * <p>
- * Parameters:<br>
- * The function expects the name of a field in the item band in the parameter "element".
- * This functions value will always be null.
+ * <p/>
+ * Parameters:<br> The function expects the name of a field in the item band in the
+ * parameter "element". This functions value will always be null.
  *
  * @author Thomas Morgner
  */
 public class FontChangeFunction extends AbstractFunction implements Serializable
 {
   private String element;
+
   /**
    * DefaultConstructor.
    */
-  public FontChangeFunction()
+  public FontChangeFunction ()
   {
   }
 
 
-
   /**
-   * Before an ItemBand is printed, the report generator will call itemsAdvanced
-   * for all functions in the function collection. This is the right place to alter
-   * the font of the element defined in the "element" property, so that every ItemBand
-   * has the font set, that is defined in the data model.
+   * Before an ItemBand is printed, the report generator will call itemsAdvanced for all
+   * functions in the function collection. This is the right place to alter the font of
+   * the element defined in the "element" property, so that every ItemBand has the font
+   * set, that is defined in the data model.
    *
    * @param event the report event.
    */
-  public void itemsAdvanced(final ReportEvent event)
+  public void itemsAdvanced (final ReportEvent event)
   {
     // if this is a preparerun, nothing gets printed and so no font change is required.
     if (event.getState().isPrepareRun())
@@ -103,42 +101,41 @@ public class FontChangeFunction extends AbstractFunction implements Serializable
     if (e != null && (e instanceof TextElement))
     {
       final TextElement tx = (TextElement) e;
-      tx.getStyle().setFontDefinitionProperty(
-          new FontDefinition(new Font(fontname, Font.PLAIN, 10)));
+      tx.getStyle().setFontDefinitionProperty(new FontDefinition(new Font(fontname, Font.PLAIN, 10)));
     }
   }
 
   /**
-   * Defines the name of the text element that gets its font altered. If the element
-   * does not exist or is no text element, the function will do nothing.
-   * <p>
+   * Defines the name of the text element that gets its font altered. If the element does
+   * not exist or is no text element, the function will do nothing.
+   * <p/>
    * This functions property is reachable by using the key "element" on getProperty.
    *
-   * @param name  the element name.
+   * @param name the element name.
    */
-  public void setElement(final String name)
+  public void setElement (final String name)
   {
     this.element = name;
   }
 
   /**
-   * Returns the name of the element that should get the font set. Returns an empty string,
-   * if the property is not set.
+   * Returns the name of the element that should get the font set. Returns an empty
+   * string, if the property is not set.
    *
    * @return the element name.
    */
-  public String getElement()
+  public String getElement ()
   {
     return element;
   }
 
   /**
-   * Returns the value calculated by this function. As this function does not calculate values,
-   * this method does always return null.
+   * Returns the value calculated by this function. As this function does not calculate
+   * values, this method does always return null.
    *
    * @return always null, as this function does not calculate something.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return null;
   }

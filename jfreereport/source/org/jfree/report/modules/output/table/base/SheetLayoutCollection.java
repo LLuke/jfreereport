@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayoutCollection.java,v 1.3 2005/01/25 00:12:35 taqua Exp $
+ * $Id: SheetLayoutCollection.java,v 1.4 2005/02/19 13:30:01 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,27 +40,28 @@ package org.jfree.report.modules.output.table.base;
 
 import java.util.ArrayList;
 
-import org.jfree.report.util.Log;
-
 /**
- * The tablelayout info class is used to store the layout that was generated
- * in the repagination process. This layout can be shared over several pages
- * to unify the look of the tables.
+ * The tablelayout info class is used to store the layout that was generated in the
+ * repagination process. This layout can be shared over several pages to unify the look of
+ * the tables.
  *
  * @author Thomas Morgner
  */
 public class SheetLayoutCollection
 {
-  /** A list of page layouts, one entry for every page. */
+  /**
+   * A list of page layouts, one entry for every page.
+   */
   private ArrayList pageLayouts;
   private SheetLayout globalLayout;
   private boolean useGlobalLayout;
+
   /**
    * Creates a new tablelayout info object to store the layout information.
    *
    * @param useGlobalLayout whether to use a global layout for all pages
    */
-  public SheetLayoutCollection(final boolean useGlobalLayout)
+  public SheetLayoutCollection (final boolean useGlobalLayout)
   {
     this.pageLayouts = new ArrayList();
     this.useGlobalLayout = useGlobalLayout;
@@ -72,7 +73,7 @@ public class SheetLayoutCollection
    *
    * @param bounds the layout.
    */
-  public void addLayout(final SheetLayout bounds)
+  public void addLayout (final SheetLayout bounds)
   {
     //Log.debug ("Added Sheet: " + isGlobalLayout() + ": " + bounds);
     if (isGlobalLayout())
@@ -90,20 +91,21 @@ public class SheetLayoutCollection
    *
    * @return true, if the report uses an global layout, false otherwise.
    */
-  public boolean isGlobalLayout()
+  public boolean isGlobalLayout ()
   {
     return useGlobalLayout;
   }
 
   /**
-   * Returns the layout for a given page. This returns the same layout for
-   * all pages if the globallayout feature is enabled.
+   * Returns the layout for a given page. This returns the same layout for all pages if
+   * the globallayout feature is enabled.
    *
    * @param page the page for that the layout is requested.
    * @return the stored layout.
+   *
    * @throws IndexOutOfBoundsException if the page is invalid.
    */
-  public SheetLayout getLayoutForPage(final int page)
+  public SheetLayout getLayoutForPage (final int page)
   {
     //Log.debug("Query Layout [" + isGlobalLayout() + "] for page " + page);
     if (isGlobalLayout())
@@ -126,12 +128,12 @@ public class SheetLayoutCollection
   }
 
   /**
-   * Return the number of pages stored in that list. This
-   * returns 1 if the global layout is active.
+   * Return the number of pages stored in that list. This returns 1 if the global layout
+   * is active.
    *
    * @return the number of pages.
    */
-  public int getPageCount()
+  public int getPageCount ()
   {
     if (!isGlobalLayout())
     {

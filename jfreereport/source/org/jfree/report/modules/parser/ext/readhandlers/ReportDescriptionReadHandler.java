@@ -2,8 +2,8 @@ package org.jfree.report.modules.parser.ext.readhandlers;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
-import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
 import org.xml.sax.SAXException;

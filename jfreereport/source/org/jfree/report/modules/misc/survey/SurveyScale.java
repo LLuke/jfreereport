@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScale.java,v 1.2 2005/01/25 01:25:37 taqua Exp $
+ * $Id: SurveyScale.java,v 1.3 2005/02/04 19:22:55 taqua Exp $
  *
  * Changes
  * -------
@@ -205,8 +205,8 @@ public class SurveyScale implements Drawable
   }
 
   /**
-   * Creates the shape list used when drawing the scale.
-   * The list returned must contain exactly 6 elements.
+   * Creates the shape list used when drawing the scale. The list returned must contain
+   * exactly 6 elements.
    *
    * @return
    */
@@ -450,8 +450,8 @@ public class SurveyScale implements Drawable
   }
 
   /**
-   * Returns the default shape, which is used, if a shape for a
-   * certain value is not defined.
+   * Returns the default shape, which is used, if a shape for a certain value is not
+   * defined.
    *
    * @return the default shape, never null.
    */

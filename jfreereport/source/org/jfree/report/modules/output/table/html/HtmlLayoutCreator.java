@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlLayoutCreator.java,v 1.2.2.1 2004/12/13 19:27:08 taqua Exp $
+ * $Id: HtmlLayoutCreator.java,v 1.3 2005/01/25 00:13:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,15 +42,17 @@ import org.jfree.report.modules.output.table.base.DefaultLayoutCreator;
 import org.jfree.report.modules.output.table.base.SheetLayout;
 
 /**
- * The HtmlLayoutCreator collects the StyleSheet information and
- * builds the table grid for the HTML output.
- * <p>
- * The StyleCollection is shared among all sheet-layouts to create
- * one single global stylesheet.
+ * The HtmlLayoutCreator collects the StyleSheet information and builds the table grid for
+ * the HTML output.
+ * <p/>
+ * The StyleCollection is shared among all sheet-layouts to create one single global
+ * stylesheet.
  */
 public class HtmlLayoutCreator extends DefaultLayoutCreator
 {
-  /** The style collection to build the global stylesheet. */
+  /**
+   * The style collection to build the global stylesheet.
+   */
   private HtmlStyleCollection styleCollection;
 
   /**
@@ -65,13 +67,11 @@ public class HtmlLayoutCreator extends DefaultLayoutCreator
   }
 
   /**
-   * Creates a new sheet layout instance to collect the grid
-   * bounds and the style information for a single table.
+   * Creates a new sheet layout instance to collect the grid bounds and the style
+   * information for a single table.
    *
-   * @param strict defines, whether to use a stricter layouting
-   * algorithm.
-   * @return the sheetlayout instance to collect the cell bounds
-   * of a single page.
+   * @param strict defines, whether to use a stricter layouting algorithm.
+   * @return the sheetlayout instance to collect the cell bounds of a single page.
    */
   protected SheetLayout createSheetLayout (final boolean strict)
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableModelModule.java,v 1.5 2004/05/07 14:29:51 mungady Exp $
+ * $Id: TableModelModule.java,v 1.6 2005/01/25 00:09:31 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -52,9 +52,11 @@ public class TableModelModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public TableModelModule() throws ModuleInitializeException
+  public TableModelModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }

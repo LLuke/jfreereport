@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTableRowStyle.java,v 1.2.2.1 2004/12/13 19:27:08 taqua Exp $
+ * $Id: HtmlTableRowStyle.java,v 1.3 2005/01/25 00:13:44 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -37,7 +37,6 @@
  */
 
 package org.jfree.report.modules.output.table.html;
-
 
 
 public class HtmlTableRowStyle implements HtmlStyle

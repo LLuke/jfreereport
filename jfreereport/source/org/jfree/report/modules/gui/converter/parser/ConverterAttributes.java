@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConverterAttributes.java,v 1.3 2003/11/07 18:33:53 taqua Exp $
+ * $Id: ConverterAttributes.java,v 1.4 2004/05/07 14:29:46 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -41,26 +41,31 @@ package org.jfree.report.modules.gui.converter.parser;
 import org.xml.sax.Attributes;
 
 /**
- * An Attribute implementation that uses a translation table to map given
- * attribute values into the new value-space.
- *  
+ * An Attribute implementation that uses a translation table to map given attribute values
+ * into the new value-space.
+ *
  * @author Thomas Morgner
  */
 public class ConverterAttributes implements Attributes
 {
-  /** The attributes from the XML parser are used as backend. */
+  /**
+   * The attributes from the XML parser are used as backend.
+   */
   private Attributes base;
-  /** The translation table that translates the attribute values. */
+  /**
+   * The translation table that translates the attribute values.
+   */
   private TranslationTable translationTable;
 
   /**
-   * Creates a new ConverterAttribute set for the given attributes and
-   * the specified translation table.
-   * 
-   * @param base the attributes from the XML parser
+   * Creates a new ConverterAttribute set for the given attributes and the specified
+   * translation table.
+   *
+   * @param base             the attributes from the XML parser
    * @param translationTable the translation table.
    */
-  public ConverterAttributes(final Attributes base, final TranslationTable translationTable)
+  public ConverterAttributes (final Attributes base,
+                              final TranslationTable translationTable)
   {
     if (base == null)
     {
@@ -77,18 +82,17 @@ public class ConverterAttributes implements Attributes
 
   /**
    * Look up an attribute's value by index.
-   *
-   * <p>If the attribute value is a list of tokens (IDREFS,
-   * ENTITIES, or NMTOKENS), the tokens will be concatenated
-   * into a single string with each token separated by a
+   * <p/>
+   * <p>If the attribute value is a list of tokens (IDREFS, ENTITIES, or NMTOKENS), the
+   * tokens will be concatenated into a single string with each token separated by a
    * single space.</p>
    *
    * @param index The attribute index (zero-based).
-   * @return The attribute's value as a string, or null if the
-   *         index is out of range.
+   * @return The attribute's value as a string, or null if the index is out of range.
+   *
    * @see #getLength
    */
-  public String getValue(final int index)
+  public String getValue (final int index)
   {
     final String localName = getLocalName(index);
     return translationTable.translateAttribute(localName, base.getValue(index));
@@ -97,17 +101,17 @@ public class ConverterAttributes implements Attributes
 
   /**
    * Look up an attribute's value by Namespace name.
+   * <p/>
+   * <p>See {@link #getValue(int) getValue(int)} for a description of the possible
+   * values.</p>
    *
-   * <p>See {@link #getValue(int) getValue(int)} for a description
-   * of the possible values.</p>
-   *
-   * @param uri The Namespace URI, or the empty String if the
-   *        name has no Namespace URI.
+   * @param uri       The Namespace URI, or the empty String if the name has no Namespace
+   *                  URI.
    * @param localName The local name of the attribute.
-   * @return The attribute value as a string, or null if the
-   *         attribute is not in the list.
+   * @return The attribute value as a string, or null if the attribute is not in the
+   *         list.
    */
-  public String getValue(final String uri, final String localName)
+  public String getValue (final String uri, final String localName)
   {
     // local name already given ...
     return translationTable.translateAttribute(localName, base.getValue(uri, localName));
@@ -115,34 +119,33 @@ public class ConverterAttributes implements Attributes
 
   /**
    * Look up an attribute's value by XML 1.0 qualified name.
-   *
-   * <p>See {@link #getValue(int) getValue(int)} for a description
-   * of the possible values.</p>
+   * <p/>
+   * <p>See {@link #getValue(int) getValue(int)} for a description of the possible
+   * values.</p>
    *
    * @param qName The XML 1.0 qualified name.
-   * @return The attribute value as a string, or null if the
-   *         attribute is not in the list or if qualified names
-   *         are not available.
+   * @return The attribute value as a string, or null if the attribute is not in the list
+   *         or if qualified names are not available.
    */
-  public String getValue(final String qName)
+  public String getValue (final String qName)
   {
     return translationTable.translateAttribute(qName, base.getValue(qName));
   }
 
   /**
    * Return the number of attributes in the list.
-   *
-   * <p>Once you know the number of attributes, you can iterate
-   * through the list.</p>
+   * <p/>
+   * <p>Once you know the number of attributes, you can iterate through the list.</p>
    *
    * @return The number of attributes in the list.
+   *
    * @see #getURI(int)
    * @see #getLocalName(int)
    * @see #getQName(int)
    * @see #getType(int)
    * @see #getValue(int)
    */
-  public int getLength()
+  public int getLength ()
   {
     return base.getLength();
   }
@@ -151,12 +154,12 @@ public class ConverterAttributes implements Attributes
    * Look up an attribute's Namespace URI by index.
    *
    * @param index The attribute index (zero-based).
-   * @return The Namespace URI, or the empty string if none
-   *         is available, or null if the index is out of
-   *         range.
+   * @return The Namespace URI, or the empty string if none is available, or null if the
+   *         index is out of range.
+   *
    * @see #getLength
    */
-  public String getURI(final int index)
+  public String getURI (final int index)
   {
     return base.getURI(index);
   }
@@ -165,12 +168,12 @@ public class ConverterAttributes implements Attributes
    * Look up an attribute's local name by index.
    *
    * @param index The attribute index (zero-based).
-   * @return The local name, or the empty string if Namespace
-   *         processing is not being performed, or null
-   *         if the index is out of range.
+   * @return The local name, or the empty string if Namespace processing is not being
+   *         performed, or null if the index is out of range.
+   *
    * @see #getLength
    */
-  public String getLocalName(final int index)
+  public String getLocalName (final int index)
   {
     return base.getLocalName(index);
   }
@@ -179,37 +182,36 @@ public class ConverterAttributes implements Attributes
    * Look up an attribute's XML 1.0 qualified name by index.
    *
    * @param index The attribute index (zero-based).
-   * @return The XML 1.0 qualified name, or the empty string
-   *         if none is available, or null if the index
-   *         is out of range.
+   * @return The XML 1.0 qualified name, or the empty string if none is available, or null
+   *         if the index is out of range.
+   *
    * @see #getLength
    */
-  public String getQName(final int index)
+  public String getQName (final int index)
   {
     return base.getQName(index);
   }
 
   /**
    * Look up an attribute's type by index.
-   *
-   * <p>The attribute type is one of the strings "CDATA", "ID",
-   * "IDREF", "IDREFS", "NMTOKEN", "NMTOKENS", "ENTITY", "ENTITIES",
-   * or "NOTATION" (always in upper case).</p>
-   *
-   * <p>If the parser has not read a declaration for the attribute,
-   * or if the parser does not report attribute types, then it must
-   * return the value "CDATA" as stated in the XML 1.0 Recommentation
-   * (clause 3.3.3, "Attribute-Value Normalization").</p>
-   *
-   * <p>For an enumerated attribute that is not a notation, the
-   * parser will report the type as "NMTOKEN".</p>
+   * <p/>
+   * <p>The attribute type is one of the strings "CDATA", "ID", "IDREF", "IDREFS",
+   * "NMTOKEN", "NMTOKENS", "ENTITY", "ENTITIES", or "NOTATION" (always in upper
+   * case).</p>
+   * <p/>
+   * <p>If the parser has not read a declaration for the attribute, or if the parser does
+   * not report attribute types, then it must return the value "CDATA" as stated in the
+   * XML 1.0 Recommentation (clause 3.3.3, "Attribute-Value Normalization").</p>
+   * <p/>
+   * <p>For an enumerated attribute that is not a notation, the parser will report the
+   * type as "NMTOKEN".</p>
    *
    * @param index The attribute index (zero-based).
-   * @return The attribute's type as a string, or null if the
-   *         index is out of range.
+   * @return The attribute's type as a string, or null if the index is out of range.
+   *
    * @see #getLength
    */
-  public String getType(final int index)
+  public String getType (final int index)
   {
     return base.getType(index);
   }
@@ -217,13 +219,12 @@ public class ConverterAttributes implements Attributes
   /**
    * Look up the index of an attribute by Namespace name.
    *
-   * @param uri The Namespace URI, or the empty string if
-   *        the name has no Namespace URI.
+   * @param uri       The Namespace URI, or the empty string if the name has no Namespace
+   *                  URI.
    * @param localName The attribute's local name.
-   * @return The index of the attribute, or -1 if it does not
-   *         appear in the list.
+   * @return The index of the attribute, or -1 if it does not appear in the list.
    */
-  public int getIndex(final String uri, final String localName)
+  public int getIndex (final String uri, final String localName)
   {
     return base.getIndex(uri, localName);
   }
@@ -232,44 +233,41 @@ public class ConverterAttributes implements Attributes
    * Look up the index of an attribute by XML 1.0 qualified name.
    *
    * @param qName The qualified (prefixed) name.
-   * @return The index of the attribute, or -1 if it does not
-   *         appear in the list.
+   * @return The index of the attribute, or -1 if it does not appear in the list.
    */
-  public int getIndex(final String qName)
+  public int getIndex (final String qName)
   {
     return base.getIndex(qName);
   }
 
   /**
    * Look up an attribute's type by Namespace name.
+   * <p/>
+   * <p>See {@link #getType(int) getType(int)} for a description of the possible
+   * types.</p>
    *
-   * <p>See {@link #getType(int) getType(int)} for a description
-   * of the possible types.</p>
-   *
-   * @param uri The Namespace URI, or the empty String if the
-   *        name has no Namespace URI.
+   * @param uri       The Namespace URI, or the empty String if the name has no Namespace
+   *                  URI.
    * @param localName The local name of the attribute.
-   * @return The attribute type as a string, or null if the
-   *         attribute is not in the list or if Namespace
-   *         processing is not being performed.
+   * @return The attribute type as a string, or null if the attribute is not in the list
+   *         or if Namespace processing is not being performed.
    */
-  public String getType(final String uri, final String localName)
+  public String getType (final String uri, final String localName)
   {
     return getType(uri, localName);
   }
 
   /**
    * Look up an attribute's type by XML 1.0 qualified name.
-   *
-   * <p>See {@link #getType(int) getType(int)} for a description
-   * of the possible types.</p>
+   * <p/>
+   * <p>See {@link #getType(int) getType(int)} for a description of the possible
+   * types.</p>
    *
    * @param qName The XML 1.0 qualified name.
-   * @return The attribute type as a string, or null if the
-   *         attribute is not in the list or if qualified names
-   *         are not available.
+   * @return The attribute type as a string, or null if the attribute is not in the list
+   *         or if qualified names are not available.
    */
-  public String getType(final String qName)
+  public String getType (final String qName)
   {
     return getType(qName);
   }

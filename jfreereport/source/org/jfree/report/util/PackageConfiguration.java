@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PackageConfiguration.java,v 1.4 2003/08/25 14:29:34 taqua Exp $
+ * $Id: PackageConfiguration.java,v 1.5 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -48,17 +48,17 @@ public class PackageConfiguration extends PropertyFileReportConfiguration
   /**
    * DefaultConstructor. Creates a new package configuration.
    */
-  public PackageConfiguration()
+  public PackageConfiguration ()
   {
   }
 
   /**
-   * The new configuartion will be inserted into the list of report configuration,
-   * so that this configuration has the given report configuration instance as parent.
+   * The new configuartion will be inserted into the list of report configuration, so that
+   * this configuration has the given report configuration instance as parent.
    *
    * @param config the new report configuration.
    */
-  public void insertConfiguration(final ReportConfiguration config)
+  public void insertConfiguration (final ReportConfiguration config)
   {
     super.insertConfiguration(config);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractDemoFrame.java,v 1.3.4.2 2004/10/13 18:42:15 taqua Exp $
+ * $Id: AbstractDemoFrame.java,v 1.7 2005/01/24 23:59:05 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -53,9 +53,9 @@ import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.ResourceBundleSupport;
 
 /**
- * The AbstractDemoFrame provides some basic functionality shared among all demos.
- * It provides default handlers for preview and the window-closing event as well
- * as helper function to display error messages.
+ * The AbstractDemoFrame provides some basic functionality shared among all demos. It
+ * provides default handlers for preview and the window-closing event as well as helper
+ * function to display error messages.
  *
  * @author Thomas Morgner
  */
@@ -69,7 +69,7 @@ public abstract class AbstractDemoFrame extends JFrame
     /**
      * Default constructor.
      */
-    public DemoCloseAction()
+    public DemoCloseAction ()
     {
       super(getResources());
     }
@@ -77,9 +77,9 @@ public abstract class AbstractDemoFrame extends JFrame
     /**
      * Receives notification of an action event.
      *
-     * @param event  the event.
+     * @param event the event.
      */
-    public void actionPerformed(final ActionEvent event)
+    public void actionPerformed (final ActionEvent event)
     {
       attemptExit();
     }
@@ -97,9 +97,9 @@ public abstract class AbstractDemoFrame extends JFrame
     /**
      * Handles the window closing event.
      *
-     * @param event  the window event.
+     * @param event the window event.
      */
-    public void windowClosing(final WindowEvent event)
+    public void windowClosing (final WindowEvent event)
     {
       attemptExit();
     }
@@ -113,7 +113,7 @@ public abstract class AbstractDemoFrame extends JFrame
     /**
      * Default constructor.
      */
-    public DemoPreviewAction()
+    public DemoPreviewAction ()
     {
       super(getResources());
     }
@@ -121,34 +121,42 @@ public abstract class AbstractDemoFrame extends JFrame
     /**
      * Receives notification of an action event.
      *
-     * @param event  the event.
+     * @param event the event.
      */
-    public void actionPerformed(final ActionEvent event)
+    public void actionPerformed (final ActionEvent event)
     {
       attemptPreview();
     }
   }
 
-  /** The base resource class. */
+  /**
+   * The base resource class.
+   */
   public static final String RESOURCE_BASE =
           "org.jfree.report.demo.resources.demo-resources";
 
-  /** Localised resources. */
+  /**
+   * Localised resources.
+   */
   private final ResourceBundleSupport resources;
 
-  /** The close action is called when closing the frame. */
+  /**
+   * The close action is called when closing the frame.
+   */
   private final Action closeAction;
 
-  /** The preview action is called when the user chooses to preview the report. */
+  /**
+   * The preview action is called when the user chooses to preview the report.
+   */
   private final Action previewAction;
 
   /**
    * Constructs a new frame that is initially invisible.
-   * <p>
-   * This constructor sets the component's locale property to the value
-   * returned by <code>JComponent.getDefaultLocale</code>.
+   * <p/>
+   * This constructor sets the component's locale property to the value returned by
+   * <code>JComponent.getDefaultLocale</code>.
    */
-  public AbstractDemoFrame()
+  public AbstractDemoFrame ()
   {
     resources = new ResourceBundleSupport(RESOURCE_BASE);
     previewAction = new DemoPreviewAction();
@@ -162,7 +170,7 @@ public abstract class AbstractDemoFrame extends JFrame
    *
    * @return the resource bundle for the localization.
    */
-  public ResourceBundleSupport getResources()
+  public ResourceBundleSupport getResources ()
   {
     return resources;
   }
@@ -172,7 +180,7 @@ public abstract class AbstractDemoFrame extends JFrame
    *
    * @return the close action.
    */
-  public Action getCloseAction()
+  public Action getCloseAction ()
   {
     return closeAction;
   }
@@ -182,7 +190,7 @@ public abstract class AbstractDemoFrame extends JFrame
    *
    * @return the preview action.
    */
-  public Action getPreviewAction()
+  public Action getPreviewAction ()
   {
     return previewAction;
   }
@@ -192,15 +200,14 @@ public abstract class AbstractDemoFrame extends JFrame
    *
    * @return false if the user decides not to exit the application.
    */
-  protected boolean attemptExit()
+  protected boolean attemptExit ()
   {
     final boolean close =
-        JOptionPane.showConfirmDialog(
-            this,
-            getResources().getString("exitdialog.message"),
-            getResources().getString("exitdialog.title"),
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
+            JOptionPane.showConfirmDialog(this,
+                    getResources().getString("exitdialog.message"),
+                    getResources().getString("exitdialog.title"),
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
     if (close)
     {
       if (ReportConfiguration.getGlobalConfig().getConfigProperty
@@ -222,16 +229,15 @@ public abstract class AbstractDemoFrame extends JFrame
    * Handler method called by the preview action. This method should perform all
    * operations to preview the report.
    */
-  protected abstract void attemptPreview();
+  protected abstract void attemptPreview ();
 
   /**
    * Creates a JMenu which gets initialized from the current resource bundle.
    *
    * @param base the resource prefix.
-   *
    * @return the menu.
    */
-  protected JMenu createJMenu(final String base)
+  protected JMenu createJMenu (final String base)
   {
     final String label = getResources().getString(base + ".name");
     final Integer mnemonic = getResources().getMnemonic(base + ".mnemonic");
@@ -245,22 +251,19 @@ public abstract class AbstractDemoFrame extends JFrame
   }
 
   /**
-   * Shows the exception dialog by using localized messages. The message base is
-   * used to construct the localisation key by appending ".title" and ".message" to the
-   * base name.
+   * Shows the exception dialog by using localized messages. The message base is used to
+   * construct the localisation key by appending ".title" and ".message" to the base
+   * name.
    *
-   * @param localisationBase  the resource prefix.
-   * @param e  the exception.
+   * @param localisationBase the resource prefix.
+   * @param e                the exception.
    */
-  protected void showExceptionDialog(final String localisationBase, final Exception e)
+  protected void showExceptionDialog (final String localisationBase, final Exception e)
   {
-    ExceptionDialog.showExceptionDialog(
-        getResources().getString(localisationBase + ".title"),
-        MessageFormat.format(
-            getResources().getString(localisationBase + ".message"),
-            new Object[]{e.getLocalizedMessage()}
-        ),
-        e);
+    ExceptionDialog.showExceptionDialog(getResources().getString(localisationBase + ".title"),
+            MessageFormat.format(getResources().getString(localisationBase + ".message"),
+                    new Object[]{e.getLocalizedMessage()}),
+            e);
   }
 
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SeverityLevel.java,v 1.4 2003/11/07 18:33:56 taqua Exp $
+ * $Id: SeverityLevel.java,v 1.6 2005/01/25 00:18:11 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,70 +44,83 @@ import org.jfree.report.util.ObjectStreamResolveException;
 
 /**
  * An enumeration class to represent the severity level of an operation result.
- * 
+ *
  * @author Thomas Morgner
  */
 public final class SeverityLevel implements Serializable
 {
-  /** Represents warning messages. */
+  /**
+   * Represents warning messages.
+   */
   public static final SeverityLevel WARNING =
-      new SeverityLevel("WARNING");
-  /** Represents error messages. */
+          new SeverityLevel("WARNING");
+  /**
+   * Represents error messages.
+   */
   public static final SeverityLevel ERROR =
-      new SeverityLevel("ERROR");
-  /** Represents fatal parse error messages. */
+          new SeverityLevel("ERROR");
+  /**
+   * Represents fatal parse error messages.
+   */
   public static final SeverityLevel FATAL_ERROR =
-      new SeverityLevel("FATAL_ERROR");
-  /** Represents informational messages. */
+          new SeverityLevel("FATAL_ERROR");
+  /**
+   * Represents informational messages.
+   */
   public static final SeverityLevel INFO =
-      new SeverityLevel("INFO");
+          new SeverityLevel("INFO");
 
-  /** a string representation of this severity level. */
+  /**
+   * a string representation of this severity level.
+   */
   private final String myName; // for debug only
 
   /**
    * Creates a new the severity level instance.
+   *
    * @param name the name of the severity level.
    */
-  private SeverityLevel(final String name)
+  private SeverityLevel (final String name)
   {
     myName = name;
   }
 
   /**
-   * Returns the string representation of this severity level object. 
-   * @see java.lang.Object#toString()
-   * 
+   * Returns the string representation of this severity level object.
+   *
    * @return a string representing this object.
+   *
+   * @see java.lang.Object#toString()
    */
-  public String toString()
+  public String toString ()
   {
     return myName;
   }
 
   /**
-   * Compares the severity level for equality with the given object. 
-   * @see java.lang.Object#equals(java.lang.Object)
-   * 
+   * Compares the severity level for equality with the given object.
+   *
    * @param o the other object that should be compared.
    * @return true, if both objects are equal, false otherwise.
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
    */
-  public boolean equals(final Object o)
+  public boolean equals (final Object o)
   {
     if (this == o)
-    { 
+    {
       return true;
     }
-    
+
     if (!(o instanceof SeverityLevel))
-    { 
+    {
       return false;
     }
 
     final SeverityLevel severityLevel = (SeverityLevel) o;
 
     if (!myName.equals(severityLevel.myName))
-    { 
+    {
       return false;
     }
 
@@ -115,24 +128,26 @@ public final class SeverityLevel implements Serializable
   }
 
   /**
-   * Computes an hashcode for this level object.  
-   * @see java.lang.Object#hashCode()
-   * 
+   * Computes an hashcode for this level object.
+   *
    * @return the hashcode.
+   *
+   * @see java.lang.Object#hashCode()
    */
-  public int hashCode()
+  public int hashCode ()
   {
     return myName.hashCode();
   }
 
   /**
-   * Replaces the automatically generated instance with one of the 
-   * enumeration instances.
+   * Replaces the automatically generated instance with one of the enumeration instances.
    *
    * @return the resolved element
+   *
    * @throws ObjectStreamException if the element could not be resolved.
    */
-  protected Object readResolve() throws ObjectStreamException
+  protected Object readResolve ()
+          throws ObjectStreamException
   {
     if (this.equals(SeverityLevel.ERROR))
     {

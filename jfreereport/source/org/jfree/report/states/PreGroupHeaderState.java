@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreGroupHeaderState.java,v 1.4 2004/05/07 08:14:22 mungady Exp $
+ * $Id: PreGroupHeaderState.java,v 1.5 2005/01/28 19:26:59 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,8 @@ package org.jfree.report.states;
 import org.jfree.report.event.ReportEvent;
 
 /**
- * Processes an groupheader. Activates the next group and fires the GroupStartEvent
- * for that group. then the PostGroupHeaderState-State gets activated.
+ * Processes an groupheader. Activates the next group and fires the GroupStartEvent for
+ * that group. then the PostGroupHeaderState-State gets activated.
  *
  * @author David Gilbert
  */
@@ -49,9 +49,9 @@ public final class PreGroupHeaderState extends ReportState
   /**
    * Creates a new '<code>PRE-GROUP-HEADER</code>' state.
    *
-   * @param previous  the previous state.
+   * @param previous the previous state.
    */
-  public PreGroupHeaderState(final ReportState previous)
+  public PreGroupHeaderState (final ReportState previous)
   {
     super(previous);
   }
@@ -62,12 +62,12 @@ public final class PreGroupHeaderState extends ReportState
   }
 
   /**
-   * Advances from this state to the '<code>POST-GROUP-HEADER</code>' state after
-   * fireing the GroupStartedEvent.
+   * Advances from this state to the '<code>POST-GROUP-HEADER</code>' state after fireing
+   * the GroupStartedEvent.
    *
-   * @return  the next state ('<code>POST-GROUP-HEADER</code>').
+   * @return the next state ('<code>POST-GROUP-HEADER</code>').
    */
-  public ReportState advance()
+  public ReportState advance ()
   {
     firePrepareEvent();
 
@@ -78,21 +78,22 @@ public final class PreGroupHeaderState extends ReportState
   }
 
   /**
-   * Activates the next group by incrementing the current group index.  The outer-most group is
-   * given an index of zero, and this increases for each subgroup that is defined.
+   * Activates the next group by incrementing the current group index.  The outer-most
+   * group is given an index of zero, and this increases for each subgroup that is
+   * defined.
    */
-  private void enterGroup()
+  private void enterGroup ()
   {
     setCurrentGroupIndex(getCurrentGroupIndex() + 1);
   }
 
   /**
-   * Returns the corrected display item for this state. As the currentItem has not yet advanced
-   * we perform a readAHead lookup when populating elements.
+   * Returns the corrected display item for this state. As the currentItem has not yet
+   * advanced we perform a readAHead lookup when populating elements.
    *
    * @return true; Header related states preview the next itemband DataRow.
    */
-  public boolean isPrefetchState()
+  public boolean isPrefetchState ()
   {
     return true;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigTreeRenderer.java,v 1.3 2003/11/07 18:33:51 taqua Exp $
+ * $Id: ConfigTreeRenderer.java,v 1.4 2004/05/07 14:29:21 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -49,57 +49,55 @@ import org.jfree.report.modules.gui.config.model.ConfigTreeRootNode;
 import org.jfree.report.modules.gui.config.model.ConfigTreeSectionNode;
 
 /**
- * Implements a config tree renderer that fixes some AWT-Graphics problems
- * in conjunction with the clipping. It seems that the AWT-Graphics ignores
- * the clipping bounds for some primitive operations. Clipping is done
- * if the operations are performed on the Graphics2D level.
- * 
- * @see org.jfree.report.modules.gui.config.BugFixProxyGraphics2D
+ * Implements a config tree renderer that fixes some AWT-Graphics problems in conjunction
+ * with the clipping. It seems that the AWT-Graphics ignores the clipping bounds for some
+ * primitive operations. Clipping is done if the operations are performed on the
+ * Graphics2D level.
+ *
  * @author Thomas Morgner
+ * @see org.jfree.report.modules.gui.config.BugFixProxyGraphics2D
  */
 public class ConfigTreeRenderer extends DefaultTreeCellRenderer
 {
   /**
    * DefaultConstructor.
    */
-  public ConfigTreeRenderer()
+  public ConfigTreeRenderer ()
   {
     setDoubleBuffered(false);
   }
 
   /**
-   * Configures the renderer based on the passed in components.
-   * The value is set from messaging the tree with
-   * <code>convertValueToText</code>, which ultimately invokes
-   * <code>toString</code> on <code>value</code>.
-   * The foreground color is set based on the selection and the icon
-   * is set based on on leaf and expanded.
-   * 
-   * @param tree the tree that renders the node.
-   * @param value the tree node
-   * @param sel whether the node is selected.
+   * Configures the renderer based on the passed in components. The value is set from
+   * messaging the tree with <code>convertValueToText</code>, which ultimately invokes
+   * <code>toString</code> on <code>value</code>. The foreground color is set based on the
+   * selection and the icon is set based on on leaf and expanded.
+   *
+   * @param tree     the tree that renders the node.
+   * @param value    the tree node
+   * @param sel      whether the node is selected.
    * @param expanded whether the node is expanded
-   * @param leaf whether the node is a leaf
-   * @param row the row number of the node in the tree.
+   * @param leaf     whether the node is a leaf
+   * @param row      the row number of the node in the tree.
    * @param hasFocus whether the node has the input focus
    * @return the renderer component.
    */
-  public Component getTreeCellRendererComponent(final JTree tree, final Object value,
-                                                final boolean sel,
-                                                final boolean expanded,
-                                                final boolean leaf, final int row,
-                                                final boolean hasFocus)
+  public Component getTreeCellRendererComponent (final JTree tree, final Object value,
+                                                 final boolean sel,
+                                                 final boolean expanded,
+                                                 final boolean leaf, final int row,
+                                                 final boolean hasFocus)
   {
     if (value instanceof ConfigTreeRootNode)
     {
       return super.getTreeCellRendererComponent(tree, "<Root>",
-          sel, expanded, leaf, row, hasFocus);
+              sel, expanded, leaf, row, hasFocus);
     }
     else if (value instanceof ConfigTreeSectionNode)
     {
       final ConfigTreeSectionNode node = (ConfigTreeSectionNode) value;
       return super.getTreeCellRendererComponent(tree, node.getName(),
-          sel, expanded, leaf, row, hasFocus);
+              sel, expanded, leaf, row, hasFocus);
     }
     else if (value instanceof ConfigTreeModuleNode)
     {
@@ -113,22 +111,21 @@ public class ConfigTreeRenderer extends DefaultTreeCellRenderer
       text.append("-");
       text.append(node.getModule().getPatchLevel());
       return super.getTreeCellRendererComponent(tree, text.toString(),
-          sel, expanded, leaf, row, hasFocus);
+              sel, expanded, leaf, row, hasFocus);
     }
     return super.getTreeCellRendererComponent(tree, value,
-        sel, expanded, leaf, row, hasFocus);
+            sel, expanded, leaf, row, hasFocus);
   }
 
   /**
-   * Paints the value.  The background is filled based on selected.
-   * The TreeCellRenderer or Swing or something else has a bug inside so
-   * that the clipping of the graphics is not done correctly. If a rectangle
-   * is painted with Graphics.fillRect(int, int, int, int) the graphics
-   * is totally messed up.
+   * Paints the value.  The background is filled based on selected. The TreeCellRenderer
+   * or Swing or something else has a bug inside so that the clipping of the graphics is
+   * not done correctly. If a rectangle is painted with Graphics.fillRect(int, int, int,
+   * int) the graphics is totally messed up.
    *
    * @param g the graphics.
    */
-  public void paint(final Graphics g)
+  public void paint (final Graphics g)
   {
     super.paint(new BugFixProxyGraphics2D((Graphics2D) g));
   }

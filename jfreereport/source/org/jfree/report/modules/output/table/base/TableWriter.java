@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.17 2005/02/19 13:30:01 taqua Exp $
+ * $Id: TableWriter.java,v 1.18 2005/02/22 20:18:55 taqua Exp $
  *
  * Changes
  * -------
@@ -288,7 +288,7 @@ public strictfp class TableWriter
           throws ReportProcessingException
   {
     if (!isInEndPage() && handlePagebreakBefore
-        && band.getStyle().getBooleanStyleProperty(BandStyleKeys.PAGEBREAK_BEFORE) == true)
+            && band.getStyle().getBooleanStyleProperty(BandStyleKeys.PAGEBREAK_BEFORE) == true)
     {
       if (isPageEmpty() == false)
       {
@@ -297,7 +297,7 @@ public strictfp class TableWriter
       }
       else
       {
-        Log.debug ("Page is empty; so no break");
+        Log.debug("Page is empty; so no break");
       }
     }
 
@@ -318,7 +318,7 @@ public strictfp class TableWriter
     }
 
     if (!isInEndPage() &&
-        band.getStyle().getBooleanStyleProperty(BandStyleKeys.PAGEBREAK_AFTER) == true)
+            band.getStyle().getBooleanStyleProperty(BandStyleKeys.PAGEBREAK_AFTER) == true)
     {
       if (isPageEmpty() == false)
       {
@@ -327,7 +327,7 @@ public strictfp class TableWriter
       }
       else
       {
-        Log.debug ("Empty Page, ignore!");
+        Log.debug("Empty Page, ignore!");
       }
     }
     return true;
@@ -388,8 +388,8 @@ public strictfp class TableWriter
   }
 
   /**
-   * Gets the maximum width available for a root band during the layouting process.
-   * The value specifies the maximum page width in the internal unit.
+   * Gets the maximum width available for a root band during the layouting process. The
+   * value specifies the maximum page width in the internal unit.
    *
    * @return the maximum width for a root band.
    */
@@ -399,8 +399,8 @@ public strictfp class TableWriter
   }
 
   /**
-   * Defines the maximum width available for a root band during the layouting process.
-   * The value specifies the maximum page width in the internal unit.
+   * Defines the maximum width available for a root band during the layouting process. The
+   * value specifies the maximum page width in the internal unit.
    *
    * @param width the maximum width for a root band.
    */
@@ -593,7 +593,7 @@ public strictfp class TableWriter
     }
     catch (ReportProcessingException e)
     {
-      throw new FunctionProcessingException ("TableWriter", e);
+      throw new FunctionProcessingException("TableWriter", e);
     }
   }
 
@@ -613,9 +613,9 @@ public strictfp class TableWriter
     }
     catch (ReportProcessingException e)
     {
-      throw new FunctionProcessingException ("TableWriter", e);
+      throw new FunctionProcessingException("TableWriter", e);
     }
-      
+
   }
 
   /**

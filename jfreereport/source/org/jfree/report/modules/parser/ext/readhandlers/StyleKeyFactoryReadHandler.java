@@ -1,8 +1,8 @@
 package org.jfree.report.modules.parser.ext.readhandlers;
 
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
-import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactory;
 import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactoryCollector;
 import org.jfree.util.ObjectUtilities;
@@ -28,10 +28,11 @@ public class StyleKeyFactoryReadHandler extends AbstractPropertyXmlReadHandler
     final String className = attrs.getValue("class");
     if (className == null)
     {
-      throw new ParseException("Attribute 'class' is missing.", getRootHandler().getLocator());
+      throw new ParseException("Attribute 'class' is missing.", getRootHandler()
+              .getLocator());
     }
     final StyleKeyFactoryCollector fc =
-        (StyleKeyFactoryCollector) getRootHandler().getHelperObject
+            (StyleKeyFactoryCollector) getRootHandler().getHelperObject
             (ReportDefinitionReadHandler.STYLE_FACTORY_KEY);
 
     final StyleKeyFactory factory = (StyleKeyFactory)

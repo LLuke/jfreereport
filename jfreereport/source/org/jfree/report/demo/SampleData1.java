@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData1.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
+ * $Id: SampleData1.java,v 1.6 2005/01/24 23:58:36 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -48,14 +48,16 @@ import javax.swing.table.AbstractTableModel;
 public class SampleData1 extends AbstractTableModel
 {
 
-  /** Storage for the data. */
+  /**
+   * Storage for the data.
+   */
   private final Object[][] data;
 
   /**
    * Default constructor - builds the sample data source using incomplete (and possibly
    * inaccurate) data for countries of the world.
    */
-  public SampleData1()
+  public SampleData1 ()
   {
     data = new Object[23][4];
     data[0] = new Object[]{"Morocco", "MA", "Africa", new Integer(29114497)};
@@ -89,7 +91,7 @@ public class SampleData1 extends AbstractTableModel
    *
    * @return the row count.
    */
-  public int getRowCount()
+  public int getRowCount ()
   {
     return data.length;
   }
@@ -99,7 +101,7 @@ public class SampleData1 extends AbstractTableModel
    *
    * @return the column count.
    */
-  public int getColumnCount()
+  public int getColumnCount ()
   {
     return 4;
   }
@@ -107,11 +109,10 @@ public class SampleData1 extends AbstractTableModel
   /**
    * Returns the class of the data in the specified column.
    *
-   * @param column  the column (zero-based index).
-   *
+   * @param column the column (zero-based index).
    * @return the column class.
    */
-  public Class getColumnClass(final int column)
+  public Class getColumnClass (final int column)
   {
     if (column == 3)
     {
@@ -126,11 +127,10 @@ public class SampleData1 extends AbstractTableModel
   /**
    * Returns the name of the specified column.
    *
-   * @param column  the column (zero-based index).
-   *
+   * @param column the column (zero-based index).
    * @return the column name.
    */
-  public String getColumnName(final int column)
+  public String getColumnName (final int column)
   {
     if (column == 0)
     {
@@ -157,12 +157,11 @@ public class SampleData1 extends AbstractTableModel
   /**
    * Returns the data value at the specified row and column.
    *
-   * @param row  the row index (zero based).
-   * @param column  the column index (zero based).
-   *
+   * @param row    the row index (zero based).
+   * @param column the column index (zero based).
    * @return the value.
    */
-  public Object getValueAt(final int row, final int column)
+  public Object getValueAt (final int row, final int column)
   {
     return data[row][column];
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StyleSheetCollection.java,v 1.6 2004/05/07 08:14:24 mungady Exp $
+ * $Id: StyleSheetCollection.java,v 1.7 2005/01/30 23:37:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,9 +44,9 @@ import java.util.HashMap;
 import org.jfree.report.util.InstanceID;
 
 /**
- * The stylesheet collection manages all global stylesheets. It does not
- * contain the element stylesheets.
- * <p>
+ * The stylesheet collection manages all global stylesheets. It does not contain the
+ * element stylesheets.
+ * <p/>
  * The stylesheet collection does not accept foreign stylesheets.
  *
  * @author Thomas Morgner
@@ -111,10 +111,9 @@ public class StyleSheetCollection implements Cloneable, Serializable
     private StyleSheetCollection styleSheetCollection;
 
     /**
-     *
      * @param name
-     * @param collection the stylesheet collection that created this stylesheet, or null, if
-     *                   it is a foreign or private stylesheet.
+     * @param collection the stylesheet collection that created this stylesheet, or null,
+     *                   if it is a foreign or private stylesheet.
      */
     public ManagedStyleSheet (final String name, final StyleSheetCollection collection)
     {
@@ -127,8 +126,8 @@ public class StyleSheetCollection implements Cloneable, Serializable
     }
 
     /**
-     * Adds a parent style-sheet. This method adds the parent to the beginning of the list,
-     * and guarantees, that this parent is queried first.
+     * Adds a parent style-sheet. This method adds the parent to the beginning of the
+     * list, and guarantees, that this parent is queried first.
      *
      * @param parent the parent (<code>null</code> not permitted).
      */
@@ -138,16 +137,16 @@ public class StyleSheetCollection implements Cloneable, Serializable
     }
 
     /**
-     * Adds a parent style-sheet. Parents on a lower position are queried before any parent
-     * with an higher position in the list.
+     * Adds a parent style-sheet. Parents on a lower position are queried before any
+     * parent with an higher position in the list.
      *
      * @param position the position where to insert the parent style sheet
      * @param parent   the parent (<code>null</code> not permitted).
-     * @throws IndexOutOfBoundsException if the position is invalid (pos &lt; 0 or pos &gt;=
-     *                                   numberOfParents)
+     * @throws IndexOutOfBoundsException if the position is invalid (pos &lt; 0 or pos
+     *                                   &gt;= numberOfParents)
      */
     public void addParent (final int position,
-                                        final ManagedStyleSheet parent)
+                           final ManagedStyleSheet parent)
     {
       super.addParent(position, parent);
     }
@@ -160,7 +159,8 @@ public class StyleSheetCollection implements Cloneable, Serializable
      *
      * @see Cloneable
      */
-    public Object clone () throws CloneNotSupportedException
+    public Object clone ()
+            throws CloneNotSupportedException
     {
       final ManagedStyleSheet ms = (ManagedStyleSheet) super.clone();
       ms.styleSheetCollection = null;
@@ -192,7 +192,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
     }
 
     public ManagedStyleSheet createManagedCopy (final StyleSheetCollection collection)
-      throws CloneNotSupportedException
+            throws CloneNotSupportedException
     {
       final ManagedStyleSheet es = (ManagedStyleSheet) getCopy();
       es.setStyleSheetCollection(collection);
@@ -204,65 +204,69 @@ public class StyleSheetCollection implements Cloneable, Serializable
       return styleSheetCollection;
     }
 
-    protected void setStyleSheetCollection (final StyleSheetCollection styleSheetCollection)
+    protected void setStyleSheetCollection (
+            final StyleSheetCollection styleSheetCollection)
     {
       this.styleSheetCollection = styleSheetCollection;
     }
   }
 
-  /** The stylesheet storage. */
+  /**
+   * The stylesheet storage.
+   */
   private HashMap styleSheets;
   private HashMap styleSheetsByID;
 
   /**
    * DefaultConstructor.
    */
-  public StyleSheetCollection()
+  public StyleSheetCollection ()
   {
     styleSheets = new HashMap();
     styleSheetsByID = new HashMap();
   }
 
   /**
-   *
    * @throws NullPointerException if the given stylesheet is null.
    */
-  public ElementStyleSheet createStyleSheet(final String name)
+  public ElementStyleSheet createStyleSheet (final String name)
   {
     if (styleSheets.containsKey(name))
     {
       return (ElementStyleSheet) styleSheets.get(name);
     }
     final ElementStyleSheet value = new ManagedStyleSheet(name, this);
-    styleSheets.put (name, value);
-    styleSheetsByID.put (value.getId(), value);
+    styleSheets.put(name, value);
+    styleSheetsByID.put(value.getId(), value);
     return value;
   }
 
   public ElementStyleSheet getStyleSheet (final String name)
   {
-    return (ElementStyleSheet) styleSheets.get (name);
+    return (ElementStyleSheet) styleSheets.get(name);
   }
 
   public ElementStyleSheet getStyleSheetByID (final InstanceID name)
   {
-    return (ElementStyleSheet) styleSheetsByID.get (name);
+    return (ElementStyleSheet) styleSheetsByID.get(name);
   }
 
-  public Object clone () throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final StyleSheetCollection sc = (StyleSheetCollection) super.clone();
     sc.styleSheets = (HashMap) styleSheets.clone();
     sc.styleSheetsByID = (HashMap) styleSheetsByID.clone();
 
-    final ManagedStyleSheet[] styles = (ManagedStyleSheet[]) styleSheets.values().toArray(new ManagedStyleSheet[styleSheets.size()]);
+    final ManagedStyleSheet[] styles = (ManagedStyleSheet[]) styleSheets.values()
+            .toArray(new ManagedStyleSheet[styleSheets.size()]);
     final ManagedStyleSheet[] styleClones = (ManagedStyleSheet[]) styles.clone();
     // create the clones ...
     for (int i = 0; i < styles.length; i++)
     {
       final ManagedStyleSheet clone = styles[i].createManagedCopy(sc);
-      sc.styleSheets.put (clone.getName(), clone);
-      sc.styleSheetsByID.put (clone.getId(), clone);
+      sc.styleSheets.put(clone.getName(), clone);
+      sc.styleSheetsByID.put(clone.getId(), clone);
       styleClones[i] = clone;
     }
     return sc;

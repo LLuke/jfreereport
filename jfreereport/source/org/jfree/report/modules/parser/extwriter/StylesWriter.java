@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesWriter.java,v 1.9 2005/02/04 19:08:53 taqua Exp $
+ * $Id: StylesWriter.java,v 1.10 2005/02/22 20:19:57 taqua Exp $
  *
  * Changes
  * -------
@@ -56,38 +56,42 @@ import org.jfree.xml.CommentHandler;
  */
 public class StylesWriter extends AbstractXMLDefinitionWriter
 {
-  /** The comment hint path used to retrieve the comments from the parser hints. */
+  /**
+   * The comment hint path used to retrieve the comments from the parser hints.
+   */
   private static final CommentHintPath STYLES_HINT_PATH =
-      new CommentHintPath(new String[]
-      {REPORT_DEFINITION_TAG, STYLES_TAG});
+          new CommentHintPath(new String[]
+          {REPORT_DEFINITION_TAG, STYLES_TAG});
 
 
-  /** Storage for the styles. */
+  /**
+   * Storage for the styles.
+   */
   private final ArrayList reportStyles;
 
   /**
    * Creates a new styles writer.
    *
-   * @param reportWriter  the report writer.
-   * @param indentLevel the current indention level.
+   * @param reportWriter the report writer.
+   * @param indentLevel  the current indention level.
    */
-  public StylesWriter(final ReportWriter reportWriter, final int indentLevel)
+  public StylesWriter (final ReportWriter reportWriter, final int indentLevel)
   {
     super(reportWriter, indentLevel);
     reportStyles = new ArrayList();
   }
 
   /**
-   * Writes the ihnerited styles to a character stream writer. This will collect
-   * all inherited styles, ignoring all styles which are directly bound to an
-   * element or which are global default stylesheets.
+   * Writes the ihnerited styles to a character stream writer. This will collect all
+   * inherited styles, ignoring all styles which are directly bound to an element or which
+   * are global default stylesheets.
    *
-   * @param writer  the character stream writer.
-   *
-   * @throws IOException if there is an I/O problem.
+   * @param writer the character stream writer.
+   * @throws IOException           if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void write(final Writer writer) throws IOException, ReportWriterException
+  public void write (final Writer writer)
+          throws IOException, ReportWriterException
   {
     writeComment(writer, STYLES_HINT_PATH, CommentHandler.OPEN_TAG_COMMENT);
 
@@ -107,7 +111,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
       writeTag(writer, STYLE_TAG, "name", style.getName(), OPEN);
 
       final StyleWriter stW = new StyleWriter
-          (getReportWriter(), style, getIndentLevel(), stylePath);
+              (getReportWriter(), style, getIndentLevel(), stylePath);
       stW.write(writer);
 
       writeComment(writer, stylePath, CommentHandler.CLOSE_TAG_COMMENT);
@@ -119,13 +123,12 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
   }
 
   /**
-   * Collects styles from all the bands in the report. The returned styles are
-   * ordered so that parent style sheets are contained before any child stylesheets
-   * in the array.
+   * Collects styles from all the bands in the report. The returned styles are ordered so
+   * that parent style sheets are contained before any child stylesheets in the array.
    *
    * @return The styles.
    */
-  private ElementStyleSheet[] collectStyles()
+  private ElementStyleSheet[] collectStyles ()
   {
     final JFreeReport report = getReport();
     collectStylesFromBand(report.getReportHeader());
@@ -141,16 +144,16 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
     }
 
     final ElementStyleSheet[] styles = (ElementStyleSheet[])
-        reportStyles.toArray(new ElementStyleSheet[reportStyles.size()]);
+            reportStyles.toArray(new ElementStyleSheet[reportStyles.size()]);
     return styles;
   }
 
   /**
    * Collects the styles from a band.
    *
-   * @param band  the band.
+   * @param band the band.
    */
-  private void collectStylesFromBand(final Band band)
+  private void collectStylesFromBand (final Band band)
   {
     collectStylesFromElement(band);
 
@@ -172,9 +175,9 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
   /**
    * Collects the styles from an element.
    *
-   * @param element  the element.
+   * @param element the element.
    */
-  private void collectStylesFromElement(final Element element)
+  private void collectStylesFromElement (final Element element)
   {
     final ElementStyleSheet elementSheet = element.getStyle();
 
@@ -187,12 +190,12 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
   }
 
   /**
-   * Adds a defined stylesheet to the styles collection. If the stylesheet
-   * is one of the default stylesheets, then it is not collected.
+   * Adds a defined stylesheet to the styles collection. If the stylesheet is one of the
+   * default stylesheets, then it is not collected.
    *
-   * @param es  the element style sheet.
+   * @param es the element style sheet.
    */
-  private void addCollectableStyleSheet(final ElementStyleSheet es)
+  private void addCollectableStyleSheet (final ElementStyleSheet es)
   {
     if (es.isGlobalDefault())
     {

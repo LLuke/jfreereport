@@ -3,8 +3,8 @@ package org.jfree.report;
 public interface RootLevelBand
 {
   /**
-   * Assigns the report definition. Don't play with that function,
-   * unless you know what you are doing. You might get burned.
+   * Assigns the report definition. Don't play with that function, unless you know what
+   * you are doing. You might get burned.
    *
    * @param reportDefinition the report definition.
    */
@@ -15,5 +15,5 @@ public interface RootLevelBand
    *
    * @return the report definition.
    */
-  public ReportDefinition getReportDefinition();
+  public ReportDefinition getReportDefinition ();
 }

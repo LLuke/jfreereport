@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: GroupHeader.java,v 1.6 2005/01/30 23:37:17 taqua Exp $
+ * $Id: GroupHeader.java,v 1.7 2005/02/23 19:31:39 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -56,7 +56,7 @@ public class GroupHeader extends Band implements RootLevelBand
   /**
    * Constructs a group header band, containing no elements.
    */
-  public GroupHeader()
+  public GroupHeader ()
   {
   }
 
@@ -65,7 +65,7 @@ public class GroupHeader extends Band implements RootLevelBand
    *
    * @return true, if the header will be repeated, false otherwise
    */
-  public boolean isRepeat()
+  public boolean isRepeat ()
   {
     return getStyle().getBooleanStyleProperty(BandStyleKeys.REPEAT_HEADER);
   }
@@ -75,14 +75,14 @@ public class GroupHeader extends Band implements RootLevelBand
    *
    * @param repeat true, if the header will be repeated, false otherwise
    */
-  public void setRepeat(final boolean repeat)
+  public void setRepeat (final boolean repeat)
   {
     getStyle().setBooleanStyleProperty(BandStyleKeys.REPEAT_HEADER, repeat);
   }
 
   /**
-   * Assigns the report definition. Don't play with that function,
-   * unless you know what you are doing. You might get burned.
+   * Assigns the report definition. Don't play with that function, unless you know what
+   * you are doing. You might get burned.
    *
    * @param reportDefinition the report definition.
    */

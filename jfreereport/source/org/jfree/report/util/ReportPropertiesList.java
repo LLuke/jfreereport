@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ReportPropertiesList.java,v 1.2.4.1 2004/05/11 13:25:53 taqua Exp $
+ * $Id: ReportPropertiesList.java,v 1.4 2005/01/25 00:23:10 taqua Exp $
  *
  * Changes
  * -------
@@ -43,31 +43,35 @@ import java.util.Iterator;
 
 /**
  * A collection of report properties arranged into columns to provide access for the
- * DataRowBackend class. All marked properties are added as column to the ReportPropertyList.
- *
- * @see ReportProperties#setMarked
- * @see ReportProperties#isMarked
+ * DataRowBackend class. All marked properties are added as column to the
+ * ReportPropertyList.
  *
  * @author Thomas Morgner
+ * @see ReportProperties#setMarked
+ * @see ReportProperties#isMarked
  */
 
 public class ReportPropertiesList
 {
-  /** The base report properties. */
+  /**
+   * The base report properties.
+   */
   private ReportProperties base;
 
-  /** The columns. */
+  /**
+   * The columns.
+   */
   private ArrayList columns;
 
   /**
-   * Creates a list of report properties. Searches all marked properties
-   * and adds them to the ReportPropertyList. The property-values remain
-   * in the original ReportProperties-collection, all queries to this
-   * list are forwarded to that base-object.
+   * Creates a list of report properties. Searches all marked properties and adds them to
+   * the ReportPropertyList. The property-values remain in the original
+   * ReportProperties-collection, all queries to this list are forwarded to that
+   * base-object.
    *
-   * @param base  the underlying properties.
+   * @param base the underlying properties.
    */
-  public ReportPropertiesList(final ReportProperties base)
+  public ReportPropertiesList (final ReportProperties base)
   {
     if (base == null)
     {
@@ -92,7 +96,7 @@ public class ReportPropertiesList
    *
    * @return the column count.
    */
-  public int getColumnCount()
+  public int getColumnCount ()
   {
     return columns.size();
   }
@@ -100,11 +104,10 @@ public class ReportPropertiesList
   /**
    * Returns the name of the specified column.
    *
-   * @param column  the column index (zero-based).
-   *
+   * @param column the column index (zero-based).
    * @return the column name.
    */
-  public String getColumnName(final int column)
+  public String getColumnName (final int column)
   {
     return (String) columns.get(column);
   }
@@ -112,11 +115,10 @@ public class ReportPropertiesList
   /**
    * Returns the value in the specified column.
    *
-   * @param column  the column index (zero-based).
-   *
+   * @param column the column index (zero-based).
    * @return the value.
    */
-  public Object get(final int column)
+  public Object get (final int column)
   {
     return (base.get(getColumnName(column)));
   }
@@ -126,7 +128,7 @@ public class ReportPropertiesList
    *
    * @return The string.
    */
-  public String toString()
+  public String toString ()
   {
     final StringBuffer b = new StringBuffer();
 

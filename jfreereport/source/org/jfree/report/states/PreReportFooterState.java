@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreReportFooterState.java,v 1.3 2004/05/07 08:14:21 mungady Exp $
+ * $Id: PreReportFooterState.java,v 1.4 2005/01/28 19:26:59 taqua Exp $
  *
  * Changes
  * -------
@@ -52,9 +52,9 @@ public final class PreReportFooterState extends ReportState
   /**
    * Creates a 'pre-report-footer' report state.
    *
-   * @param previous  the previous report state.
+   * @param previous the previous report state.
    */
-  public PreReportFooterState(final ReportState previous)
+  public PreReportFooterState (final ReportState previous)
   {
     super(previous);
   }
@@ -69,7 +69,7 @@ public final class PreReportFooterState extends ReportState
    *
    * @return the next report state.
    */
-  public ReportState advance()
+  public ReportState advance ()
   {
     firePrepareEvent();
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageSetupPlugin.java,v 1.8.2.1.2.3 2004/10/13 18:42:19 taqua Exp $
+ * $Id: PageSetupPlugin.java,v 1.11 2005/01/25 00:06:55 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -57,8 +57,7 @@ import org.jfree.report.util.ReportConfiguration;
 import org.jfree.util.ResourceBundleSupport;
 
 /**
- * An export control plugin that handles the setup of page format objects for
- * the report.
+ * An export control plugin that handles the setup of page format objects for the report.
  *
  * @author Thomas Morgner
  */
@@ -72,16 +71,17 @@ public class PageSetupPlugin extends AbstractExportPlugin
 
     /**
      * This method gets called when a bound property is changed.
-     * @param evt A PropertyChangeEvent object describing the event source
-     *   	and the property that has changed.
+     *
+     * @param evt A PropertyChangeEvent object describing the event source and the
+     *            property that has changed.
      */
-    public void propertyChange(final PropertyChangeEvent evt)
+    public void propertyChange (final PropertyChangeEvent evt)
     {
       if (ReportPane.PRINTING_PROPERTY.equals(evt.getPropertyName()) ||
-          ReportPane.PAGINATING_PROPERTY.equals(evt.getPropertyName()))
+              ReportPane.PAGINATING_PROPERTY.equals(evt.getPropertyName()))
       {
         setEnabled((reportPane.isPrinting() == false) &&
-                   (reportPane.isPaginating() == false));
+                (reportPane.isPaginating() == false));
       }
       else if (PreviewProxyBase.REPORT_PANE_PROPERTY.equals(evt.getPropertyName()))
       {
@@ -90,7 +90,9 @@ public class PageSetupPlugin extends AbstractExportPlugin
     }
   }
 
-  /** Localised resources. */
+  /**
+   * Localised resources.
+   */
   private ResourceBundleSupport resources;
 
   private ReportPane reportPane;
@@ -99,7 +101,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
   /**
    * Default Constructor.
    */
-  public PageSetupPlugin()
+  public PageSetupPlugin ()
   {
     resources = new ResourceBundleSupport(PrintingPlugin.BASE_RESOURCE_CLASS);
     repaginationListener = new RepaginationListener();
@@ -109,10 +111,9 @@ public class PageSetupPlugin extends AbstractExportPlugin
    * Initializes the plugin to work with the given PreviewProxy.
    *
    * @param proxy the preview proxy that created this plugin.
-   * @throws NullPointerException if the proxy or the proxy's basecomponent
-   * is null.
+   * @throws NullPointerException if the proxy or the proxy's basecomponent is null.
    */
-  public void init(final PreviewProxy proxy)
+  public void init (final PreviewProxy proxy)
   {
     super.init(proxy);
     reportPane = proxy.getBase().getReportPane();
@@ -125,7 +126,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
    *
    * @return true if this is a control plugin, false otherwise.
    */
-  public boolean isControlPlugin()
+  public boolean isControlPlugin ()
   {
     return true;
   }
@@ -133,11 +134,10 @@ public class PageSetupPlugin extends AbstractExportPlugin
   /**
    * Exports a report.
    *
-   * @param report  the report.
-   *
+   * @param report the report.
    * @return A boolean.
    */
-  public boolean performExport(final JFreeReport report)
+  public boolean performExport (final JFreeReport report)
   {
     final PrinterJob pj = PrinterJob.getPrinterJob();
     final PageFormat original = report.getPageDefinition().getPageFormat(0);
@@ -154,7 +154,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
       }
       catch (ReportProcessingException rpe)
       {
-        Log.warn ("Invalid pageformat update");
+        Log.warn("Invalid pageformat update");
         return false;
       }
       return true;
@@ -166,7 +166,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
    *
    * @return The display name.
    */
-  public String getDisplayName()
+  public String getDisplayName ()
   {
     return (resources.getString("action.page-setup.name"));
   }
@@ -176,7 +176,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
    *
    * @return The short description.
    */
-  public String getShortDescription()
+  public String getShortDescription ()
   {
     return (resources.getString("action.page-setup.description"));
   }
@@ -186,7 +186,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
    *
    * @return The icon.
    */
-  public Icon getSmallIcon()
+  public Icon getSmallIcon ()
   {
     return resources.getIcon("action.page-setup.small-icon");
   }
@@ -196,7 +196,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
    *
    * @return The icon.
    */
-  public Icon getLargeIcon()
+  public Icon getLargeIcon ()
   {
     return resources.getIcon("action.page-setup.icon");
   }
@@ -206,7 +206,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
    *
    * @return The accelerator key.
    */
-  public KeyStroke getAcceleratorKey()
+  public KeyStroke getAcceleratorKey ()
   {
     return null;
   }
@@ -216,19 +216,18 @@ public class PageSetupPlugin extends AbstractExportPlugin
    *
    * @return The code.
    */
-  public Integer getMnemonicKey()
+  public Integer getMnemonicKey ()
   {
     return resources.getMnemonic("action.page-setup.mnemonic");
   }
 
 
   /**
-   * Returns the resourcebundle to be used to translate strings into
-   * localized content.
+   * Returns the resourcebundle to be used to translate strings into localized content.
    *
    * @return the resourcebundle for the localisation.
    */
-  protected ResourceBundleSupport getResources()
+  protected ResourceBundleSupport getResources ()
   {
     return resources;
   }
@@ -239,24 +238,24 @@ public class PageSetupPlugin extends AbstractExportPlugin
    *
    * @return true, if the plugin should be added to the toolbar, false otherwise.
    */
-  public boolean isAddToToolbar()
+  public boolean isAddToToolbar ()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        ("org.jfree.report.modules.gui.print.pagesetup.AddToToolbar", "false").equals("true");
+            ("org.jfree.report.modules.gui.print.pagesetup.AddToToolbar", "false").equals("true");
   }
 
   /**
-   * Returns true if the action is separated, and false otherwise. A separated
-   * action starts a new action group and will be spearated from previous actions
-   * on the menu and toolbar.
+   * Returns true if the action is separated, and false otherwise. A separated action
+   * starts a new action group and will be spearated from previous actions on the menu and
+   * toolbar.
    *
-   * @return true, if the action should be separated from previous actions,
-   * false otherwise.
+   * @return true, if the action should be separated from previous actions, false
+   *         otherwise.
    */
-  public boolean isSeparated()
+  public boolean isSeparated ()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        ("org.jfree.report.modules.gui.print.pagesetup.Separated", "false").equals("true");
+            ("org.jfree.report.modules.gui.print.pagesetup.Separated", "false").equals("true");
   }
 
   protected void updateReportPane ()
@@ -265,6 +264,6 @@ public class PageSetupPlugin extends AbstractExportPlugin
     reportPane = getBase().getReportPane();
     reportPane.addPropertyChangeListener(repaginationListener);
     setEnabled((reportPane.isPrinting() == false) &&
-               (reportPane.isPaginating() == false));
+            (reportPane.isPaginating() == false));
   }
 }

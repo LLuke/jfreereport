@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SubSetTableModel.java,v 1.4 2003/08/25 14:29:31 taqua Exp $
+ * $Id: SubSetTableModel.java,v 1.5 2004/05/07 14:29:51 mungady Exp $
  *
  * Changes
  * -------
@@ -44,38 +44,40 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 /**
- * A TableModel that proxies an other tablemodel and cuts rows from the
- * start and/or the end of the other tablemodel.
+ * A TableModel that proxies an other tablemodel and cuts rows from the start and/or the
+ * end of the other tablemodel.
  *
  * @author Thomas Morgner
  */
 public class SubSetTableModel implements TableModel
 {
   /**
-   * A helper class, that translates tableevents received from the wrapped table model
-   * and forwards them with changed indices to the registered listeners.
+   * A helper class, that translates tableevents received from the wrapped table model and
+   * forwards them with changed indices to the registered listeners.
    */
   private final class TableEventTranslator implements TableModelListener
   {
-    /** the registered listeners. */
+    /**
+     * the registered listeners.
+     */
     private final ArrayList listeners;
 
     /**
      * Default Constructor.
      */
-    private TableEventTranslator()
+    private TableEventTranslator ()
     {
       listeners = new ArrayList();
     }
 
     /**
-     * This fine grain notification tells listeners the exact range
-     * of cells, rows, or columns that changed. The received rows are
-     * translated to fit the external tablemodel size.
+     * This fine grain notification tells listeners the exact range of cells, rows, or
+     * columns that changed. The received rows are translated to fit the external
+     * tablemodel size.
      *
      * @param e the event, that should be translated.
      */
-    public void tableChanged(final TableModelEvent e)
+    public void tableChanged (final TableModelEvent e)
     {
       int firstRow = e.getFirstRow();
       if (e.getFirstRow() > 0)
@@ -93,7 +95,7 @@ public class SubSetTableModel implements TableModel
       final int column = e.getColumn();
 
       final TableModelEvent event =
-          new TableModelEvent(SubSetTableModel.this, firstRow, lastRow, column, type);
+              new TableModelEvent(SubSetTableModel.this, firstRow, lastRow, column, type);
 
       for (int i = 0; i < listeners.size(); i++)
       {
@@ -107,7 +109,7 @@ public class SubSetTableModel implements TableModel
      *
      * @param l the tablemodel listener
      */
-    protected void addTableModelListener(final TableModelListener l)
+    protected void addTableModelListener (final TableModelListener l)
     {
       listeners.add(l);
     }
@@ -117,40 +119,46 @@ public class SubSetTableModel implements TableModel
      *
      * @param l the tablemodel listener
      */
-    protected void removeTableModelListener(final TableModelListener l)
+    protected void removeTableModelListener (final TableModelListener l)
     {
       listeners.remove(l);
     }
   }
 
-  /** the row that should be the first row. */
+  /**
+   * the row that should be the first row.
+   */
   private int start;
 
-  /** the row that should be the last row. */
+  /**
+   * the row that should be the last row.
+   */
   private int end;
 
-  /** the model. */
+  /**
+   * the model.
+   */
   private TableModel model;
 
-  /** the event translator. */
+  /**
+   * the event translator.
+   */
   private TableEventTranslator eventHandler;
 
   /**
-   * Creates a new SubSetTableModel, the start and the end parameters define
-   * the new tablemodel row count. The parameter <code>start</code> must be
-   * a positive integer and denotes the number or rows removed from the start
-   * of the tablemodel. <code>end</code> is the number of the last translated
-   * row. Any row after <code>end</code> is ignored. End must be greater or
-   * equal the given start row.
+   * Creates a new SubSetTableModel, the start and the end parameters define the new
+   * tablemodel row count. The parameter <code>start</code> must be a positive integer and
+   * denotes the number or rows removed from the start of the tablemodel. <code>end</code>
+   * is the number of the last translated row. Any row after <code>end</code> is ignored.
+   * End must be greater or equal the given start row.
    *
-   * @param start  the number of rows that should be removed.
-   * @param end  the last row.
-   * @param model  the wrapped model
-   *
-   * @throws NullPointerException if the given model is null
+   * @param start the number of rows that should be removed.
+   * @param end   the last row.
+   * @param model the wrapped model
+   * @throws NullPointerException     if the given model is null
    * @throws IllegalArgumentException if start or end are invalid.
    */
-  public SubSetTableModel(final int start, final int end, final TableModel model)
+  public SubSetTableModel (final int start, final int end, final TableModel model)
   {
     if (start < 0)
     {
@@ -181,81 +189,77 @@ public class SubSetTableModel implements TableModel
    * @param rowIndex the original row index.
    * @return the translated row index.
    */
-  private int getClientRowIndex(final int rowIndex)
+  private int getClientRowIndex (final int rowIndex)
   {
     return rowIndex + start;
   }
 
   /**
-   * Returns the number of rows in the model. A
-   * <code>JTable</code> uses this method to determine how many rows it
-   * should display.  This method should be quick, as it
-   * is called frequently during rendering.
+   * Returns the number of rows in the model. A <code>JTable</code> uses this method to
+   * determine how many rows it should display.  This method should be quick, as it is
+   * called frequently during rendering.
    *
    * @return the number of rows in the model
+   *
    * @see #getColumnCount
    */
-  public int getRowCount()
+  public int getRowCount ()
   {
     final int rowCount = model.getRowCount();
     return rowCount - start - (rowCount - end);
   }
 
   /**
-   * Returns the number of columns in the model. A
-   * <code>JTable</code> uses this method to determine how many columns it
-   * should create and display by default.
+   * Returns the number of columns in the model. A <code>JTable</code> uses this method to
+   * determine how many columns it should create and display by default.
    *
    * @return the number of columns in the model
+   *
    * @see #getRowCount
    */
-  public int getColumnCount()
+  public int getColumnCount ()
   {
     return model.getColumnCount();
   }
 
   /**
-   * Returns the name of the column at <code>columnIndex</code>.  This is used
-   * to initialize the table's column header name.  Note: this name does
-   * not need to be unique; two columns in a table can have the same name.
+   * Returns the name of the column at <code>columnIndex</code>.  This is used to
+   * initialize the table's column header name.  Note: this name does not need to be
+   * unique; two columns in a table can have the same name.
    *
-   * @param columnIndex  the index of the column
-   *
+   * @param columnIndex the index of the column
    * @return the name of the column
    */
-  public String getColumnName(final int columnIndex)
+  public String getColumnName (final int columnIndex)
   {
     return model.getColumnName(columnIndex);
   }
 
   /**
-   * Returns the most specific superclass for all the cell values
-   * in the column.  This is used by the <code>JTable</code> to set up a
-   * default renderer and editor for the column.
+   * Returns the most specific superclass for all the cell values in the column.  This is
+   * used by the <code>JTable</code> to set up a default renderer and editor for the
+   * column.
    *
-   * @param columnIndex  the index of the column
-   *
+   * @param columnIndex the index of the column
    * @return the base ancestor class of the object values in the model.
    */
-  public Class getColumnClass(final int columnIndex)
+  public Class getColumnClass (final int columnIndex)
   {
     return getColumnClass(columnIndex);
   }
 
   /**
-   * Returns true if the cell at <code>rowIndex</code> and
-   * <code>columnIndex</code>
-   * is editable.  Otherwise, <code>setValueAt</code> on the cell will not
-   * change the value of that cell.
+   * Returns true if the cell at <code>rowIndex</code> and <code>columnIndex</code> is
+   * editable.  Otherwise, <code>setValueAt</code> on the cell will not change the value
+   * of that cell.
    *
-   * @param rowIndex  the row whose value to be queried
-   * @param columnIndex  the column whose value to be queried
-   *
-   * @return  true if the cell is editable
+   * @param rowIndex    the row whose value to be queried
+   * @param columnIndex the column whose value to be queried
+   * @return true if the cell is editable
    *
    * @see #setValueAt
    */
-  public boolean isCellEditable(final int rowIndex, final int columnIndex)
+  public boolean isCellEditable (final int rowIndex, final int columnIndex)
   {
     return model.isCellEditable(getClientRowIndex(rowIndex), columnIndex);
   }
@@ -264,50 +268,48 @@ public class SubSetTableModel implements TableModel
    * Returns the value for the cell at <code>columnIndex</code> and
    * <code>rowIndex</code>.
    *
-   * @param rowIndex  the row whose value is to be queried
-   * @param columnIndex  the column whose value is to be queried
-   *
-   * @return  the value Object at the specified cell
+   * @param rowIndex    the row whose value is to be queried
+   * @param columnIndex the column whose value is to be queried
+   * @return the value Object at the specified cell
    */
-  public Object getValueAt(final int rowIndex, final int columnIndex)
+  public Object getValueAt (final int rowIndex, final int columnIndex)
   {
     return model.getValueAt(getClientRowIndex(rowIndex), columnIndex);
   }
 
   /**
-   * Sets the value in the cell at <code>columnIndex</code> and
-   * <code>rowIndex</code> to <code>aValue</code>.
+   * Sets the value in the cell at <code>columnIndex</code> and <code>rowIndex</code> to
+   * <code>aValue</code>.
    *
-   * @param aValue  the new value
-   * @param rowIndex  the row whose value is to be changed
-   * @param columnIndex  the column whose value is to be changed
-   *
+   * @param aValue      the new value
+   * @param rowIndex    the row whose value is to be changed
+   * @param columnIndex the column whose value is to be changed
    * @see #getValueAt
    * @see #isCellEditable
    */
-  public void setValueAt(final Object aValue, final int rowIndex, final int columnIndex)
+  public void setValueAt (final Object aValue, final int rowIndex, final int columnIndex)
   {
     model.setValueAt(aValue, getClientRowIndex(rowIndex), columnIndex);
   }
 
   /**
-   * Adds a listener to the list that is notified each time a change
-   * to the data model occurs.
+   * Adds a listener to the list that is notified each time a change to the data model
+   * occurs.
    *
-   * @param l  the TableModelListener
+   * @param l the TableModelListener
    */
-  public void addTableModelListener(final TableModelListener l)
+  public void addTableModelListener (final TableModelListener l)
   {
     eventHandler.addTableModelListener(l);
   }
 
   /**
-   * Removes a listener from the list that is notified each time a
-   * change to the data model occurs.
+   * Removes a listener from the list that is notified each time a change to the data
+   * model occurs.
    *
-   * @param l  the TableModelListener
+   * @param l the TableModelListener
    */
-  public void removeTableModelListener(final TableModelListener l)
+  public void removeTableModelListener (final TableModelListener l)
   {
     eventHandler.removeTableModelListener(l);
   }
@@ -317,7 +319,7 @@ public class SubSetTableModel implements TableModel
    *
    * @return the enclosed table model, never null.
    */
-  protected TableModel getEnclosedModel()
+  protected TableModel getEnclosedModel ()
   {
     return model;
   }
@@ -327,7 +329,7 @@ public class SubSetTableModel implements TableModel
    *
    * @return the first row that should be visible.
    */
-  protected int getStart()
+  protected int getStart ()
   {
     return start;
   }
@@ -337,7 +339,7 @@ public class SubSetTableModel implements TableModel
    *
    * @return the number of the last row.
    */
-  protected int getEnd()
+  protected int getEnd ()
   {
     return end;
   }

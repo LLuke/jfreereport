@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.17 2005/02/19 15:41:17 taqua Exp $
+ * $Id: Element.java,v 1.18 2005/02/23 19:31:32 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -72,15 +72,16 @@ import org.jfree.report.style.StyleSheetCarrier;
 import org.jfree.report.util.InstanceID;
 
 /**
- * Base class for all report elements (display items that can appear within a report band).
- * <p>
+ * Base class for all report elements (display items that can appear within a report
+ * band).
+ * <p/>
  * All elements have a non-null name and have a style sheet defined. The style sheet is
- * used to store and access all self properties that can be used to layout the
- * self or affect the elements appeareance in a ReportProcessor.
- * <p>
- * Warning: Redefining the DataSource-Chain can cause great trouble. If you want to
- * change elements of the datasources, then disconnect the datasource from the element
- * and reconnect it later.
+ * used to store and access all self properties that can be used to layout the self or
+ * affect the elements appeareance in a ReportProcessor.
+ * <p/>
+ * Warning: Redefining the DataSource-Chain can cause great trouble. If you want to change
+ * elements of the datasources, then disconnect the datasource from the element and
+ * reconnect it later.
  * <pre>
  * Element e = // created elsewhere
  * DataSource ds = e.getDataSource();
@@ -104,18 +105,24 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   private static class InternalElementStyleSheetCarrier
           implements StyleSheetCarrier
   {
-    /** An inherited stylesheet of the element. */
+    /**
+     * An inherited stylesheet of the element.
+     */
     private transient ElementStyleSheet styleSheet;
-    /** The private stylesheet of the element. */
+    /**
+     * The private stylesheet of the element.
+     */
     private InternalElementStyleSheet self;
-    /** The stylesheet id of the inherited stylesheet. */
+    /**
+     * The stylesheet id of the inherited stylesheet.
+     */
     private InstanceID styleSheetID;
 
     /**
-     * Creates a new stylesheet carrier for the given internal stylesheet and the
-     * given inherited stylesheet.
+     * Creates a new stylesheet carrier for the given internal stylesheet and the given
+     * inherited stylesheet.
      *
-     * @param parent the internal stylesheet
+     * @param parent     the internal stylesheet
      * @param styleSheet the stylesheet
      */
     public InternalElementStyleSheetCarrier (final InternalElementStyleSheet parent,
@@ -135,10 +142,11 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     }
 
     /**
-     * Clones this reference. During cloning the stylesheet is removed. The
-     * stylesheets ID is preserved to allow to recover the stylesheet later.
+     * Clones this reference. During cloning the stylesheet is removed. The stylesheets ID
+     * is preserved to allow to recover the stylesheet later.
      *
      * @return the clone.
+     *
      * @throws CloneNotSupportedException
      */
     public Object clone ()
@@ -155,6 +163,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
      * Returns the referenced stylesheet (and recovers the stylesheet if necessary).
      *
      * @return the stylesheet
+     *
      * @throws IllegalStateException if the stylesheet could not be recovered.
      */
     public ElementStyleSheet getStyleSheet ()
@@ -186,8 +195,8 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     }
 
     /**
-     * Invalidates the stylesheet reference. Recovery is started on the next call
-     * to <code>getStylesheet()</code>
+     * Invalidates the stylesheet reference. Recovery is started on the next call to
+     * <code>getStylesheet()</code>
      */
     public void invalidate ()
     {
@@ -208,20 +217,24 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * An private implementation of a stylesheet. Using that stylesheet outside
-   * the element class will not work, cloning an element's private stylesheet
-   * without cloning the element will produce <code>IllegalStateException</code>s
-   * later.
+   * An private implementation of a stylesheet. Using that stylesheet outside the element
+   * class will not work, cloning an element's private stylesheet without cloning the
+   * element will produce <code>IllegalStateException</code>s later.
    */
   private static class InternalElementStyleSheet extends ElementStyleSheet
   {
-    /** The element that contains this stylesheet. */
+    /**
+     * The element that contains this stylesheet.
+     */
     private Element element;
-    /** The parent of the element. */
+    /**
+     * The parent of the element.
+     */
     private Band parent;
 
     /**
      * Creates a new internal stylesheet for the given element.
+     *
      * @param element the element
      */
     public InternalElementStyleSheet (final Element element)
@@ -235,6 +248,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
 
     /**
      * Returns the element for this stylesheet.
+     *
      * @return the element.
      */
     public Element getElement ()
@@ -250,7 +264,8 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
      *
      * @see Cloneable
      */
-    public Object clone () throws CloneNotSupportedException
+    public Object clone ()
+            throws CloneNotSupportedException
     {
       final InternalElementStyleSheet es = (InternalElementStyleSheet) super.clone();
       es.parent = null;
@@ -293,40 +308,56 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     }
   }
 
-  /** The internal constant to mark anonymous self names. */
+  /**
+   * The internal constant to mark anonymous self names.
+   */
   public static final String ANONYMOUS_ELEMENT_PREFIX = "anonymousElement@";
 
-  /** A null datasource. */
+  /**
+   * A null datasource.
+   */
   private static final DataSource NULL_DATASOURCE = new EmptyDataSource();
 
-  /** The head of the data source chain. */
+  /**
+   * The head of the data source chain.
+   */
   private DataSource datasource;
 
-  /** The name of the self. */
+  /**
+   * The name of the self.
+   */
   private String name;
 
-  /** The stylesheet defines global appearance for elements. */
+  /**
+   * The stylesheet defines global appearance for elements.
+   */
   private InternalElementStyleSheet style;
 
-  /** the parent for the self (the band where the self is contained in). */
+  /**
+   * the parent for the self (the band where the self is contained in).
+   */
   private Band parent;
 
-  /** the tree lock to identify the self. */
+  /**
+   * the tree lock to identify the self.
+   */
   private final InstanceID treeLock;
 
-  /** The assigned report definition for this element. */
+  /**
+   * The assigned report definition for this element.
+   */
   private ReportDefinition reportDefinition;
 
   /**
    * Constructs an self.
-   * <p>
-   * The self inherits the DefaultElementStyleSheet. When the self is added
-   * to the band, the bands default stylesheet is also added to the elements style.
-   * <p>
-   * A datasource is assigned with this self is set to a default source,
-   * which always returns null.
+   * <p/>
+   * The self inherits the DefaultElementStyleSheet. When the self is added to the band,
+   * the bands default stylesheet is also added to the elements style.
+   * <p/>
+   * A datasource is assigned with this self is set to a default source, which always
+   * returns null.
    */
-  protected Element()
+  protected Element ()
   {
     setName(ANONYMOUS_ELEMENT_PREFIX + System.identityHashCode(this));
     treeLock = new InstanceID();
@@ -335,12 +366,11 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Return the parent of the self.
-   * You can use this to explore the component tree.
+   * Return the parent of the self. You can use this to explore the component tree.
    *
    * @return the parent of the self.
    */
-  public final Band getParent()
+  public final Band getParent ()
   {
     return parent;
   }
@@ -350,7 +380,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    *
    * @param parent (null allowed).
    */
-  protected final void setParent(final Band parent)
+  protected final void setParent (final Band parent)
   {
     this.parent = parent;
     if (this.parent == null)
@@ -365,12 +395,12 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Defines the name for this self. The name must not be empty,
-   * or a NullPointerException is thrown.
+   * Defines the name for this self. The name must not be empty, or a NullPointerException
+   * is thrown.
    *
-   * @param name  the name of this self (null not permitted)
+   * @param name the name of this self (null not permitted)
    */
-  public void setName(final String name)
+  public void setName (final String name)
   {
     if (name == null)
     {
@@ -384,19 +414,19 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    *
    * @return the name.
    */
-  public String getName()
+  public String getName ()
   {
     return this.name;
   }
 
   /**
-   * Returns the datasource for this self. You cannot override this function as the
-   * self needs always be the last consumer in the chain of filters. This function
-   * must never return null.
+   * Returns the datasource for this self. You cannot override this function as the self
+   * needs always be the last consumer in the chain of filters. This function must never
+   * return null.
    *
    * @return the assigned datasource.
    */
-  public final DataSource getDataSource()
+  public final DataSource getDataSource ()
   {
     return datasource;
   }
@@ -405,9 +435,9 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * Sets the data source for this self. This datasource is queried on populateElements(),
    * to fill in the values.
    *
-   * @param ds  the datasource (<code>null</code> not permitted).
+   * @param ds the datasource (<code>null</code> not permitted).
    */
-  public void setDataSource(final DataSource ds)
+  public void setDataSource (final DataSource ds)
   {
     if (ds == null)
     {
@@ -423,22 +453,22 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    *
    * @return the value of the datasource, which can be null.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     final DataSource ds = getDataSource();
     return ds.getValue();
   }
 
   /**
-   * Defines whether this self should be painted. The detailed implementation is
-   * up to the outputtarget.
+   * Defines whether this self should be painted. The detailed implementation is up to the
+   * outputtarget.
    *
    * @return the current visiblity state.
    */
-  public boolean isVisible()
+  public boolean isVisible ()
   {
     final Boolean b = (Boolean) getStyle().getStyleProperty
-        (ElementStyleSheet.VISIBLE, Boolean.FALSE);
+            (ElementStyleSheet.VISIBLE, Boolean.FALSE);
     return b.booleanValue();
   }
 
@@ -447,20 +477,22 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    *
    * @param b the new visibility state
    */
-  public void setVisible(final boolean b)
+  public void setVisible (final boolean b)
   {
     getStyle().setStyleProperty(ElementStyleSheet.VISIBLE, b ? Boolean.TRUE : Boolean.FALSE);
   }
 
   /**
-   * Clones this Element, the datasource and the private stylesheet of this self.
-   * The clone does no longer have a parent, as the old parent would not recognize
-   * that new object.
+   * Clones this Element, the datasource and the private stylesheet of this self. The
+   * clone does no longer have a parent, as the old parent would not recognize that new
+   * object.
    *
    * @return a clone of this self.
+   *
    * @throws CloneNotSupportedException should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final Element e = (Element) super.clone();
     // stylesheet clone disconnects the parent stylessheets ..
@@ -474,31 +506,31 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Returns this elements private stylesheet. This sheet can be used to override
-   * the default values set in one of the parent-stylesheets.
+   * Returns this elements private stylesheet. This sheet can be used to override the
+   * default values set in one of the parent-stylesheets.
    *
    * @return the self's stylesheet
    */
-  public ElementStyleSheet getStyle()
+  public ElementStyleSheet getStyle ()
   {
     return style;
   }
 
   /**
-   * Defines the content-type for this self. The content-type is used as a hint
-   * how to process the contents of this self. An self implementation should
-   * restrict itself to the content-type set here, or the reportprocessing may fail
-   * or the self may not be printed.
-   * <p>
-   * An self is not allowed to change its content-type after ther report processing
-   * has started.
-   * <p>
-   * If an content-type is unknown to the output-target, the processor should ignore
-   * the content or clearly document its internal reprocessing. Ignoring is preferred.
+   * Defines the content-type for this self. The content-type is used as a hint how to
+   * process the contents of this self. An self implementation should restrict itself to
+   * the content-type set here, or the reportprocessing may fail or the self may not be
+   * printed.
+   * <p/>
+   * An self is not allowed to change its content-type after ther report processing has
+   * started.
+   * <p/>
+   * If an content-type is unknown to the output-target, the processor should ignore the
+   * content or clearly document its internal reprocessing. Ignoring is preferred.
    *
    * @return the content-type as string.
    */
-  public abstract String getContentType();
+  public abstract String getContentType ();
 
   /**
    * Returns the tree lock object for the self tree.
@@ -515,28 +547,27 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   }
 
   /**
-   * Checks, whether the layout manager should compute the size of this self
-   * based on the current content.
-   * 
+   * Checks, whether the layout manager should compute the size of this self based on the
+   * current content.
+   *
    * @return true, if the self is dynamic, false otherwise.
    */
-  public boolean isDynamicContent()
+  public boolean isDynamicContent ()
   {
     return getStyle().getBooleanStyleProperty(ElementStyleSheet.DYNAMIC_HEIGHT);
   }
 
   /**
-   * Defines the stylesheet property for the dynamic attribute. Calling this
-   * function with either parameter will override any previously defined value
-   * for the dynamic attribute. The value can no longer be inherited from parent
-   * stylesheets.
-   * 
-   * @param dynamicContent the new state of the dynamic flag. 
+   * Defines the stylesheet property for the dynamic attribute. Calling this function with
+   * either parameter will override any previously defined value for the dynamic
+   * attribute. The value can no longer be inherited from parent stylesheets.
+   *
+   * @param dynamicContent the new state of the dynamic flag.
    */
-  public void setDynamicContent(final boolean dynamicContent)
+  public void setDynamicContent (final boolean dynamicContent)
   {
     getStyle().setBooleanStyleProperty
-        (ElementStyleSheet.DYNAMIC_HEIGHT, dynamicContent);
+            (ElementStyleSheet.DYNAMIC_HEIGHT, dynamicContent);
     if (dynamicContent == true)
     {
       setLayoutCacheable(false);
@@ -546,109 +577,104 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
 
   /**
    * Returns whether the layout of this self is cacheable.
-   * 
+   *
    * @return true, if the layout is cacheable, false otherwise.
    */
-  public boolean isLayoutCacheable()
+  public boolean isLayoutCacheable ()
   {
     return getStyle().getBooleanStyleProperty
-        (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE);
+            (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE);
   }
 
   /**
    * Defines whether the layout of this self can be cached.
-   * <p>
-   * Calling this function with either parameter will override any 
-   * previously defined value for the layoutcachable attribute. 
-   * The value can no longer be inherited from parent stylesheets.
-   * 
-   * @param layoutCacheable true, if the layout is cacheable, false otherwise. 
+   * <p/>
+   * Calling this function with either parameter will override any previously defined
+   * value for the layoutcachable attribute. The value can no longer be inherited from
+   * parent stylesheets.
+   *
+   * @param layoutCacheable true, if the layout is cacheable, false otherwise.
    */
-  public void setLayoutCacheable(final boolean layoutCacheable)
+  public void setLayoutCacheable (final boolean layoutCacheable)
   {
     getStyle().setBooleanStyleProperty
-        (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, layoutCacheable);
+            (ElementStyleSheet.ELEMENT_LAYOUT_CACHEABLE, layoutCacheable);
   }
 
 
   /**
-   * Returns the minimum size of this self, if defined.
-   * Warning: The returned object is not immutable and should
-   * not be changed.
-   * 
+   * Returns the minimum size of this self, if defined. Warning: The returned object is
+   * not immutable and should not be changed.
+   *
    * @return the minimum size
    */
-  public Dimension2D getMinimumSize()
+  public Dimension2D getMinimumSize ()
   {
     return (Dimension2D) getStyle().getStyleProperty
-        (ElementStyleSheet.MINIMUMSIZE);
+            (ElementStyleSheet.MINIMUMSIZE);
   }
 
   /**
    * Defines the stylesheet property for the minimum self size.
-   * 
-   * @param minimumSize the new minimum size or null, if the value should
-   * be inherited.
+   *
+   * @param minimumSize the new minimum size or null, if the value should be inherited.
    */
-  public void setMinimumSize(final Dimension2D minimumSize)
+  public void setMinimumSize (final Dimension2D minimumSize)
   {
-    getStyle().setStyleProperty (ElementStyleSheet.MINIMUMSIZE,
-        minimumSize);
+    getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE,
+            minimumSize);
   }
 
   /**
-   * Returns the maximum size of this self, if defined.
-   * Warning: The returned object is not immutable and should
-   * not be changed.
-   * 
+   * Returns the maximum size of this self, if defined. Warning: The returned object is
+   * not immutable and should not be changed.
+   *
    * @return the maximum size
    */
-  public Dimension2D getMaximumSize()
+  public Dimension2D getMaximumSize ()
   {
     return (Dimension2D) getStyle().getStyleProperty
-        (ElementStyleSheet.MAXIMUMSIZE);
+            (ElementStyleSheet.MAXIMUMSIZE);
   }
 
   /**
    * Defines the stylesheet property for the maximum self size.
-   * 
-   * @param maximumSize the new maximum size or null, if the value should
-   * be inherited.
+   *
+   * @param maximumSize the new maximum size or null, if the value should be inherited.
    */
-  public void setMaximumSize(final Dimension2D maximumSize)
+  public void setMaximumSize (final Dimension2D maximumSize)
   {
-    getStyle().setStyleProperty (ElementStyleSheet.MAXIMUMSIZE,
-        maximumSize);
+    getStyle().setStyleProperty(ElementStyleSheet.MAXIMUMSIZE,
+            maximumSize);
   }
 
   /**
-   * Returns the preferred size of this self, if defined.
-   * Warning: The returned object is not immutable and should
-   * not be changed.
-   * 
+   * Returns the preferred size of this self, if defined. Warning: The returned object is
+   * not immutable and should not be changed.
+   *
    * @return the preferred size
    */
-  public Dimension2D getPreferredSize()
+  public Dimension2D getPreferredSize ()
   {
     return (Dimension2D) getStyle().getStyleProperty
-        (ElementStyleSheet.PREFERREDSIZE);
+            (ElementStyleSheet.PREFERREDSIZE);
   }
 
   /**
    * Defines the stylesheet property for the preferred self size.
-   * 
-   * @param preferredSize the new preferred size or null, if the value should
-   * be inherited.
+   *
+   * @param preferredSize the new preferred size or null, if the value should be
+   *                      inherited.
    */
-  public void setPreferredSize(final Dimension2D preferredSize)
+  public void setPreferredSize (final Dimension2D preferredSize)
   {
-    getStyle().setStyleProperty (ElementStyleSheet.PREFERREDSIZE,
-        preferredSize);
+    getStyle().setStyleProperty(ElementStyleSheet.PREFERREDSIZE,
+            preferredSize);
   }
 
   /**
-   * Assigns the given report definition to the element. If the reportdefinition
-   * is null, the element is not part of a report definition at all.
+   * Assigns the given report definition to the element. If the reportdefinition is null,
+   * the element is not part of a report definition at all.
    *
    * @param reportDefinition the report definition (maybe null).
    */

@@ -1,8 +1,8 @@
 package org.jfree.report.modules.parser.base.common;
 
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.PropertyStringReadHandler;
-import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.report.util.beans.BeanException;
 import org.jfree.report.util.beans.BeanUtility;
@@ -67,7 +67,7 @@ public class ExpressionPropertyReadHandler extends PropertyStringReadHandler
     try
     {
       beanUtility.setPropertyAsString
-          (propertyName, entityParser.decodeEntities(result));
+              (propertyName, entityParser.decodeEntities(result));
     }
     catch (BeanException e)
     {

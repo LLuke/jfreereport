@@ -8,8 +8,8 @@ import java.io.UnsupportedEncodingException;
 import org.jfree.report.util.PageFormatFactory;
 
 /**
- * This printer driver will ignore all TextChunk encodings, as it makes
- * no sense to have more than one encoding type in a plain text file.
+ * This printer driver will ignore all TextChunk encodings, as it makes no sense to have
+ * more than one encoding type in a plain text file.
  */
 public class TextFilePrinterDriver implements PrinterDriver
 {
@@ -32,19 +32,19 @@ public class TextFilePrinterDriver implements PrinterDriver
     this.out = out;
     this.charsPerInch = charsPerInch;
     this.linesPerInch = linesPerInch;
-    this.endOfLine = new char[] { PrinterDriver.LINE_FEED,
-                                  PrinterDriver.CARRIAGE_RETURN };
-    this.endOfPage = new char[] { PrinterDriver.LINE_FEED,
-                                  PrinterDriver.CARRIAGE_RETURN,
-                                  PrinterDriver.FORM_FEED };
+    this.endOfLine = new char[]{PrinterDriver.LINE_FEED,
+                                PrinterDriver.CARRIAGE_RETURN};
+    this.endOfPage = new char[]{PrinterDriver.LINE_FEED,
+                                PrinterDriver.CARRIAGE_RETURN,
+                                PrinterDriver.FORM_FEED};
     this.firstPage = true;
   }
 
   /**
    * Ends a new line.
    *
-   * @throws java.io.IOException if an IOError occures.
    * @param overflow
+   * @throws java.io.IOException if an IOError occures.
    */
   public void endLine (final boolean overflow)
           throws IOException
@@ -55,8 +55,8 @@ public class TextFilePrinterDriver implements PrinterDriver
   /**
    * Ends the current page. Should print empty lines or an FORM_FEED command.
    *
-   * @throws java.io.IOException if there was an IOError while writing the command
    * @param overflow
+   * @throws java.io.IOException if there was an IOError while writing the command
    */
   public void endPage (final boolean overflow)
           throws IOException
@@ -111,9 +111,11 @@ public class TextFilePrinterDriver implements PrinterDriver
 
   /**
    * Prints an empty chunk. This is called for all undefined chunk-cells.
+   *
    * @throws java.io.IOException if an IOError occured.
    */
-  public void printEmptyChunk(final int count) throws IOException
+  public void printEmptyChunk (final int count)
+          throws IOException
   {
     final EncodingUtilities encodingUtilities = getEncodingUtilities(defaultEncoding);
     for (int i = 0; i < count; i++)
@@ -181,7 +183,7 @@ public class TextFilePrinterDriver implements PrinterDriver
           throws UnsupportedEncodingException
   {
     if (encodingUtilities != null &&
-        encodingUtilities.getEncoding().equals(encoding))
+            encodingUtilities.getEncoding().equals(encoding))
     {
       return encodingUtilities;
     }

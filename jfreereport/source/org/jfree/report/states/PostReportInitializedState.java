@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PostReportInitializedState.java,v 1.3 2004/05/07 08:14:21 mungady Exp $
+ * $Id: PostReportInitializedState.java,v 1.4 2005/01/28 19:26:59 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,8 +42,8 @@ import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.ReportEvent;
 
 /**
- * Prints the report header. This state is the second state in the report
- * processing and was created after the report was initialized.
+ * Prints the report header. This state is the second state in the report processing and
+ * was created after the report was initialized.
  *
  * @author Thomas Morgner
  */
@@ -52,9 +52,9 @@ public class PostReportInitializedState extends ReportState
   /**
    * Constructs a ReportState from an existing ReportState.
    *
-   * @param clone  the existing state.
+   * @param clone the existing state.
    */
-  public PostReportInitializedState(final ReportState clone)
+  public PostReportInitializedState (final ReportState clone)
   {
     super(clone);
   }
@@ -65,13 +65,15 @@ public class PostReportInitializedState extends ReportState
   }
 
   /**
-   * The advance method performs a transition from the current report state to the next report
-   * state.  Each transition will usually involve some processing of the report.
+   * The advance method performs a transition from the current report state to the next
+   * report state.  Each transition will usually involve some processing of the report.
    *
    * @return the next report state.
+   *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public ReportState advance() throws ReportProcessingException
+  public ReportState advance ()
+          throws ReportProcessingException
   {
     nextPage();
     firePrepareEvent();
@@ -82,12 +84,12 @@ public class PostReportInitializedState extends ReportState
   }
 
   /**
-   * Returns the corrected display item for this state. As the currentItem has not yet advanced
-   * we perform a readAHead lookup when populating elements.
+   * Returns the corrected display item for this state. As the currentItem has not yet
+   * advanced we perform a readAHead lookup when populating elements.
    *
    * @return true; Header related states preview the next itemband DataRow.
    */
-  public boolean isPrefetchState()
+  public boolean isPrefetchState ()
   {
     return true;
   }

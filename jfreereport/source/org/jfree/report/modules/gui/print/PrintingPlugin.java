@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintingPlugin.java,v 1.12.4.2 2004/02/03 15:14:50 taqua Exp $
+ * $Id: PrintingPlugin.java,v 1.16 2005/01/25 00:06:56 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,30 +50,36 @@ import org.jfree.util.ResourceBundleSupport;
 
 /**
  * An export plugin for the <code>java.awt.print</code> API.
- * <p>
+ * <p/>
+ *
  * @author Thomas Morgner
  */
 public class PrintingPlugin extends AbstractExportPlugin
 {
-  /** Localised resources. */
+  /**
+   * Localised resources.
+   */
   private final ResourceBundleSupport resources;
 
-  /** The base resource class. */
+  /**
+   * The base resource class.
+   */
   public static final String BASE_RESOURCE_CLASS =
           "org.jfree.report.modules.gui.print.resources.print-export-resources";
   public static final String PROGRESS_DIALOG_ENABLE_KEY =
-      "org.jfree.report.modules.gui.print.ProgressDialogEnabled";
+          "org.jfree.report.modules.gui.print.ProgressDialogEnabled";
 
   /**
    * DefaultConstructor.
    */
-  public PrintingPlugin()
+  public PrintingPlugin ()
   {
     resources = new ResourceBundleSupport(BASE_RESOURCE_CLASS);
   }
 
   /**
    * Returns the resourcebundle used to translate strings.
+   *
    * @return the resourcebundle.
    */
   protected ResourceBundleSupport getResources ()
@@ -100,17 +106,16 @@ public class PrintingPlugin extends AbstractExportPlugin
   /**
    * Exports a report.
    *
-   * @param report  the report.
-   *
+   * @param report the report.
    * @return A boolean.
    */
-  public boolean performExport(final JFreeReport report)
+  public boolean performExport (final JFreeReport report)
   {
     // need to connect to the report pane to receive state updates ...
     final ReportProgressDialog progressDialog;
     if (report.getReportConfiguration().getConfigProperty
-        (PROGRESS_DIALOG_ENABLE_KEY,
-            "false").equals("true"))
+            (PROGRESS_DIALOG_ENABLE_KEY,
+                    "false").equals("true"))
     {
       progressDialog = createProgressDialog();
     }
@@ -120,8 +125,8 @@ public class PrintingPlugin extends AbstractExportPlugin
     }
 
     final PrintExportTask task = new PrintExportTask
-        (getBase().getReportPane(), progressDialog,
-         report.getReportConfiguration().getConfigProperty
+            (getBase().getReportPane(), progressDialog,
+                    report.getReportConfiguration().getConfigProperty
             ("org.jfree.report.modules.gui.print.JobName"));
     task.addExportTaskListener(new DefaultExportTaskListener());
     delegateTask(task);
@@ -133,7 +138,7 @@ public class PrintingPlugin extends AbstractExportPlugin
    *
    * @return The display name.
    */
-  public String getDisplayName()
+  public String getDisplayName ()
   {
     return (resources.getString("action.print.name"));
   }
@@ -143,7 +148,7 @@ public class PrintingPlugin extends AbstractExportPlugin
    *
    * @return The short description.
    */
-  public String getShortDescription()
+  public String getShortDescription ()
   {
     return (resources.getString("action.print.description"));
   }
@@ -153,7 +158,7 @@ public class PrintingPlugin extends AbstractExportPlugin
    *
    * @return The icon.
    */
-  public Icon getSmallIcon()
+  public Icon getSmallIcon ()
   {
     return resources.getIcon("action.print.small-icon");
   }
@@ -163,7 +168,7 @@ public class PrintingPlugin extends AbstractExportPlugin
    *
    * @return The icon.
    */
-  public Icon getLargeIcon()
+  public Icon getLargeIcon ()
   {
     return resources.getIcon("action.print.icon");
   }
@@ -173,7 +178,7 @@ public class PrintingPlugin extends AbstractExportPlugin
    *
    * @return The accelerator key.
    */
-  public KeyStroke getAcceleratorKey()
+  public KeyStroke getAcceleratorKey ()
   {
     return (resources.getKeyStroke("action.print.accelerator"));
   }
@@ -183,9 +188,9 @@ public class PrintingPlugin extends AbstractExportPlugin
    *
    * @return The code.
    */
-  public Integer getMnemonicKey()
+  public Integer getMnemonicKey ()
   {
-    return  (resources.getMnemonic("action.print.mnemonic"));
+    return (resources.getMnemonic("action.print.mnemonic"));
   }
 
 
@@ -194,24 +199,24 @@ public class PrintingPlugin extends AbstractExportPlugin
    *
    * @return true, if the plugin should be added to the toolbar, false otherwise.
    */
-  public boolean isAddToToolbar()
+  public boolean isAddToToolbar ()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        ("org.jfree.report.modules.gui.print.AddToToolbar", "false").equals("true");
+            ("org.jfree.report.modules.gui.print.AddToToolbar", "false").equals("true");
   }
 
   /**
-   * Returns true if the action is separated, and false otherwise. A separated
-   * action starts a new action group and will be spearated from previous actions
-   * on the menu and toolbar.
+   * Returns true if the action is separated, and false otherwise. A separated action
+   * starts a new action group and will be spearated from previous actions on the menu and
+   * toolbar.
    *
-   * @return true, if the action should be separated from previous actions,
-   * false otherwise.
+   * @return true, if the action should be separated from previous actions, false
+   *         otherwise.
    */
-  public boolean isSeparated()
+  public boolean isSeparated ()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        ("org.jfree.report.modules.gui.print.Separated", "false").equals("true");
+            ("org.jfree.report.modules.gui.print.Separated", "false").equals("true");
   }
 
 }

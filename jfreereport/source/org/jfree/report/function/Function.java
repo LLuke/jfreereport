@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Function.java,v 1.5 2005/01/25 00:00:10 taqua Exp $
+ * $Id: Function.java,v 1.6 2005/02/04 19:22:54 taqua Exp $
  *
  * Changes
  * -------
@@ -43,16 +43,16 @@ package org.jfree.report.function;
 import org.jfree.report.event.ReportListener;
 
 /**
- * The interface for report functions.  A report function separates the business logic from
- * presentation of the result.  The function is called whenever JFreeReport changes its state
- * while generating the report. The working model for the functions is based on cloning the
- * state of the function on certain checkpoints to support the ReportState implementation of
- * JFreeReport.
- * <p>
+ * The interface for report functions.  A report function separates the business logic
+ * from presentation of the result.  The function is called whenever JFreeReport changes
+ * its state while generating the report. The working model for the functions is based on
+ * cloning the state of the function on certain checkpoints to support the ReportState
+ * implementation of JFreeReport.
+ * <p/>
  * Although functions support the ReportListener interface, they are not directly added to
  * a report. A report FunctionCollection is used to control the functions. Functions are
  * required to be cloneable.
- * <p>
+ * <p/>
  *
  * @author Thomas Morgner
  */

@@ -2,8 +2,8 @@ package org.jfree.report.modules.parser.simple.readhandlers;
 
 import org.jfree.report.GroupList;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
-import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
 import org.xml.sax.SAXException;
@@ -34,7 +34,7 @@ public class GroupsReadHandler extends AbstractPropertyXmlReadHandler
   {
     if (tagName.equals("group"))
     {
-      return new GroupReadHandler (groupList);
+      return new GroupReadHandler(groupList);
     }
     return null;
   }

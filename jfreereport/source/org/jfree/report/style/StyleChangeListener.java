@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StyleChangeListener.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: StyleChangeListener.java,v 1.3 2004/05/07 08:14:24 mungady Exp $
  *
  * Changes
  * -------
@@ -47,17 +47,17 @@ public interface StyleChangeListener
   /**
    * Receives notification that a style has changed.
    *
-   * @param source  the source of the change.
-   * @param key  the style key.
+   * @param source the source of the change.
+   * @param key    the style key.
    * @param value  the value.
    */
-  public void styleChanged(ElementStyleSheet source, StyleKey key, Object value);
+  public void styleChanged (ElementStyleSheet source, StyleKey key, Object value);
 
   /**
    * Receives notification that a style has been removed.
    *
-   * @param source  the source of the change.
-   * @param key  the style key.
+   * @param source the source of the change.
+   * @param key    the style key.
    */
-  public void styleRemoved(ElementStyleSheet source, StyleKey key);
+  public void styleRemoved (ElementStyleSheet source, StyleKey key);
 }

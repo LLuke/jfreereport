@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData6.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
+ * $Id: SampleData6.java,v 1.5 2005/01/24 23:58:41 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -51,7 +51,7 @@ public class SampleData6 extends AbstractTableModel
   /**
    * Default constructor - builds a sample data source.
    */
-  public SampleData6()
+  public SampleData6 ()
   {
   }
 
@@ -60,7 +60,7 @@ public class SampleData6 extends AbstractTableModel
    *
    * @return the row count.
    */
-  public int getRowCount()
+  public int getRowCount ()
   {
     return 20000;
   }
@@ -70,7 +70,7 @@ public class SampleData6 extends AbstractTableModel
    *
    * @return the column count.
    */
-  public int getColumnCount()
+  public int getColumnCount ()
   {
     return 5;
   }
@@ -78,11 +78,10 @@ public class SampleData6 extends AbstractTableModel
   /**
    * Returns the class of the data in the specified column.
    *
-   * @param column  the column (zero-based index).
-   *
+   * @param column the column (zero-based index).
    * @return the column class.
    */
-  public Class getColumnClass(final int column)
+  public Class getColumnClass (final int column)
   {
     if (column == 3)
     {
@@ -101,11 +100,10 @@ public class SampleData6 extends AbstractTableModel
   /**
    * Returns the name of the specified column.
    *
-   * @param column  the column (zero-based index).
-   *
+   * @param column the column (zero-based index).
    * @return the column name.
    */
-  public String getColumnName(final int column)
+  public String getColumnName (final int column)
   {
     if (column == 0)
     {
@@ -136,12 +134,11 @@ public class SampleData6 extends AbstractTableModel
   /**
    * Returns the data value at the specified row and column.
    *
-   * @param row  the row index (zero based).
-   * @param column  the column index (zero based).
-   *
+   * @param row    the row index (zero based).
+   * @param column the column index (zero based).
    * @return the value.
    */
-  public Object getValueAt(final int row, final int column)
+  public Object getValueAt (final int row, final int column)
   {
     switch (column)
     {

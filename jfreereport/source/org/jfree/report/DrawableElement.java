@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DrawableElement.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: DrawableElement.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -45,31 +45,33 @@ package org.jfree.report;
  */
 public class DrawableElement extends Element
 {
-  /** The content type for the element. */
+  /**
+   * The content type for the element.
+   */
   public static final String CONTENT_TYPE = "drawable/generic";
 
   /**
    * Default constructor.
    */
-  public DrawableElement()
+  public DrawableElement ()
   {
   }
 
   /**
-   * Defines the content-type for this element. The content-type is used as a hint
-   * how to process the contents of this element. An element implementation should
-   * restrict itself to the content-type set here, or the reportprocessing may fail
-   * or the element may not be printed.
-   * <p>
-   * An element is not allowed to change its content-type after ther report processing
-   * has started.
-   * <p>
-   * If an content-type is unknown to the output-target, the processor should ignore
-   * the content or clearly document its internal reprocessing. Ignoring is preferred.
+   * Defines the content-type for this element. The content-type is used as a hint how to
+   * process the contents of this element. An element implementation should restrict
+   * itself to the content-type set here, or the reportprocessing may fail or the element
+   * may not be printed.
+   * <p/>
+   * An element is not allowed to change its content-type after ther report processing has
+   * started.
+   * <p/>
+   * If an content-type is unknown to the output-target, the processor should ignore the
+   * content or clearly document its internal reprocessing. Ignoring is preferred.
    *
    * @return the content-type as string.
    */
-  public String getContentType()
+  public String getContentType ()
   {
     return CONTENT_TYPE;
   }

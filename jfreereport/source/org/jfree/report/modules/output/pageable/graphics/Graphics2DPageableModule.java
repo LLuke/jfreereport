@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: Graphics2DPageableModule.java,v 1.5 2004/05/07 12:53:09 mungady Exp $
+ * $Id: Graphics2DPageableModule.java,v 1.6 2005/01/25 00:10:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -52,9 +52,11 @@ public class Graphics2DPageableModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public Graphics2DPageableModule() throws ModuleInitializeException
+  public Graphics2DPageableModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }

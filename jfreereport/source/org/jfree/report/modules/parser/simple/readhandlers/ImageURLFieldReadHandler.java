@@ -29,12 +29,13 @@ public class ImageURLFieldReadHandler extends AbstractImageElementReadHandler
     handleFieldName(atts);
   }
 
-  private void handleFieldName (final PropertyAttributes atts) throws ElementDefinitionException
+  private void handleFieldName (final PropertyAttributes atts)
+          throws ElementDefinitionException
   {
     final String fieldName = atts.getValue("fieldname");
     if (fieldName == null)
     {
-      throw new ElementDefinitionException ("Required attribute 'fieldname' is missing.");
+      throw new ElementDefinitionException("Required attribute 'fieldname' is missing.");
     }
     elementFactory.setFieldname(fieldName);
   }

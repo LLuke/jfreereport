@@ -30,7 +30,7 @@ public class DrawableRefReadHandler extends AbstractElementReadHandler
     final String content = atts.getValue("src");
     if (content == null)
     {
-      throw new ElementDefinitionException ("Required attribute 'src' is missing.");
+      throw new ElementDefinitionException("Required attribute 'src' is missing.");
     }
     elementFactory.setContent(content);
     elementFactory.setBaseURL(getRootHandler().getContentBase());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AbstractElementFactory.java,v 1.6 2003/08/25 14:29:33 taqua Exp $
+ * $Id: AbstractElementFactory.java,v 1.7 2004/05/07 14:29:48 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -49,13 +49,15 @@ import org.jfree.report.Element;
  */
 public class AbstractElementFactory implements ElementFactory
 {
-  /** Storage for the elements. */
+  /**
+   * Storage for the elements.
+   */
   private final HashMap elements;
 
   /**
    * Creates a new element factory.
    */
-  public AbstractElementFactory()
+  public AbstractElementFactory ()
   {
     elements = new HashMap();
   }
@@ -63,9 +65,9 @@ public class AbstractElementFactory implements ElementFactory
   /**
    * Registers an element.
    *
-   * @param e  the element.
+   * @param e the element.
    */
-  public void registerElement(final Element e)
+  public void registerElement (final Element e)
   {
     registerElement(e.getContentType(), e);
   }
@@ -73,24 +75,23 @@ public class AbstractElementFactory implements ElementFactory
   /**
    * Registers an element.
    *
-   * @param type  the element type.
-   * @param e  the element.
+   * @param type the element type.
+   * @param e    the element.
    */
-  public void registerElement(final String type, final Element e)
+  public void registerElement (final String type, final Element e)
   {
     elements.put(type, e);
   }
 
   /**
-   * Returns an element for the specified type. This implementation assumes, that
-   * all elements have a public default constructor and uses Class.newInstance()
-   * to create a new instance of that element.
+   * Returns an element for the specified type. This implementation assumes, that all
+   * elements have a public default constructor and uses Class.newInstance() to create a
+   * new instance of that element.
    *
-   * @param type  the type.
-   *
+   * @param type the type.
    * @return The element.
    */
-  public Element getElementForType(final String type)
+  public Element getElementForType (final String type)
   {
     final Element e = (Element) elements.get(type);
     if (e == null)
@@ -108,16 +109,15 @@ public class AbstractElementFactory implements ElementFactory
   }
 
   /**
-   * Compares this object with the given object for equality.
-   * The object will be considered equal if it is a element factory
-   * and contains the same elements.
-   *
-   * @see java.lang.Object#equals(java.lang.Object)
+   * Compares this object with the given object for equality. The object will be
+   * considered equal if it is a element factory and contains the same elements.
    *
    * @param o the object that should be compared.
    * @return true, if the given object is equal, false otherwise.
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
    */
-  public boolean equals(final Object o)
+  public boolean equals (final Object o)
   {
     if (this == o)
     {
@@ -140,11 +140,12 @@ public class AbstractElementFactory implements ElementFactory
 
   /**
    * Computes an hashcode for this factory.
-   * @see java.lang.Object#hashCode()
    *
    * @return the hashcode.
+   *
+   * @see java.lang.Object#hashCode()
    */
-  public int hashCode()
+  public int hashCode ()
   {
     return elements.hashCode();
   }

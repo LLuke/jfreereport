@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PathIteratorSegmentObjectDescription.java,v 1.3.4.1 2004/12/13 19:27:13 taqua Exp $
+ * $Id: PathIteratorSegmentObjectDescription.java,v 1.5 2005/01/25 00:20:03 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,45 +43,39 @@ import org.jfree.xml.factory.objects.AbstractObjectDescription;
 import org.jfree.xml.factory.objects.ObjectFactoryException;
 
 /**
- * Describes the PathIteratorSegment object for the object factories used
- * in the parser.
+ * Describes the PathIteratorSegment object for the object factories used in the parser.
  *
+ * @author Thomas Morgner
  * @see org.jfree.xml.factory.objects.ClassFactory
  * @see org.jfree.xml.factory.objects.ObjectDescription
- * @author Thomas Morgner
  */
 public class PathIteratorSegmentObjectDescription extends AbstractObjectDescription
 {
   /**
-   * A constant defining a possible string representation of a
-   * PathIterator constant.
+   * A constant defining a possible string representation of a PathIterator constant.
    */
   private static final String SEG_MOVE_TO = "move-to";
   /**
-   * A constant defining a possible string representation of a
-   * PathIterator constant.
+   * A constant defining a possible string representation of a PathIterator constant.
    */
   private static final String SEG_LINE_TO = "line-to";
   /**
-   * A constant defining a possible string representation of a
-   * PathIterator constant.
+   * A constant defining a possible string representation of a PathIterator constant.
    */
   private static final String SEG_CUBIC_TO = "cubic-to";
   /**
-   * A constant defining a possible string representation of a
-   * PathIterator constant.
+   * A constant defining a possible string representation of a PathIterator constant.
    */
   private static final String SEG_QUAD_TO = "quad-to";
   /**
-   * A constant defining a possible string representation of a
-   * PathIterator constant.
+   * A constant defining a possible string representation of a PathIterator constant.
    */
   private static final String SEG_CLOSE = "close";
 
   /**
    * Creates a new object description.
    */
-  public PathIteratorSegmentObjectDescription()
+  public PathIteratorSegmentObjectDescription ()
   {
     super(PathIteratorSegment.class);
     setParameterDefinition("x1", Float.TYPE);
@@ -98,7 +92,7 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
    *
    * @return The object.
    */
-  public Object createObject()
+  public Object createObject ()
   {
     final PathIteratorSegment seg = new PathIteratorSegment();
     final int segType = parseSegmentType((String) getParameter("segmentType"));
@@ -118,13 +112,13 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
   }
 
   /**
-   * Parses the given string representation and returns the path iterator
-   * type or -1 if the string does not represent a path iterator value.
+   * Parses the given string representation and returns the path iterator type or -1 if
+   * the string does not represent a path iterator value.
    *
    * @param segment the string that contains the PathIterator type.
    * @return the parsed PathIterator type or -1.
    */
-  private int parseSegmentType(final String segment)
+  private int parseSegmentType (final String segment)
   {
     if (segment == null)
     {
@@ -158,11 +152,12 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
    *
    * @param segment the segment type
    * @return the segment type as string
-   * @throws IllegalArgumentException if the segment type is none of the
-   * predefined PathIterator types.
+   *
+   * @throws IllegalArgumentException if the segment type is none of the predefined
+   *                                  PathIterator types.
    */
-  private String createSegmentType(final int segment)
-      throws IllegalArgumentException
+  private String createSegmentType (final int segment)
+          throws IllegalArgumentException
   {
     switch (segment)
     {
@@ -182,13 +177,12 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
   }
 
   /**
-   * Reads the given parameter as float or returns 0 if the parameter
-   * is not specified.
+   * Reads the given parameter as float or returns 0 if the parameter is not specified.
    *
    * @param name the parameter name
    * @return the float value of the parameter or 0.
    */
-  private float getFloatParameter(final String name)
+  private float getFloatParameter (final String name)
   {
     final Float o = (Float) getParameter(name);
     if (o == null)
@@ -201,17 +195,16 @@ public class PathIteratorSegmentObjectDescription extends AbstractObjectDescript
   /**
    * Sets the parameters of this description object to match the supplied object.
    *
-   * @param o  the object.
-   *
-   * @throws ObjectFactoryException if there is a problem while reading the
-   * properties of the given object.
+   * @param o the object.
+   * @throws ObjectFactoryException if there is a problem while reading the properties of
+   *                                the given object.
    */
-  public void setParameterFromObject(final Object o) throws ObjectFactoryException
+  public void setParameterFromObject (final Object o)
+          throws ObjectFactoryException
   {
     if ((o instanceof PathIteratorSegment) == false)
     {
-      throw new ObjectFactoryException(
-          "The given object is no PathIteratorSegment.");
+      throw new ObjectFactoryException("The given object is no PathIteratorSegment.");
     }
 
     final PathIteratorSegment seg = (PathIteratorSegment) o;

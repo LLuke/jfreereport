@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: HelloWorld.java,v 1.6.4.3 2004/11/28 19:53:12 taqua Exp $
+ * $Id: HelloWorld.java,v 1.8 2005/01/24 23:58:18 taqua Exp $
  *
  * Changes
  * -------
@@ -56,11 +56,12 @@ import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.FloatDimension;
 
 /**
- * A very simple JFreeReport demo.  The purpose of this demo is to illustrate the basic steps
- * required to connect a report definition with some data and display a report preview on-screen.
- *
- * In this example, the report definition is created in code.  It is also possible to read a
- * report definition from an XML file...that is demonstrated elsewhere.
+ * A very simple JFreeReport demo.  The purpose of this demo is to illustrate the basic
+ * steps required to connect a report definition with some data and display a report
+ * preview on-screen.
+ * <p/>
+ * In this example, the report definition is created in code.  It is also possible to read
+ * a report definition from an XML file...that is demonstrated elsewhere.
  *
  * @author David Gilbert
  */
@@ -78,9 +79,9 @@ public class HelloWorld
     /**
      * Handles the window closing event.
      *
-     * @param event  the window event.
+     * @param event the window event.
      */
-    public void windowClosing(final WindowEvent event)
+    public void windowClosing (final WindowEvent event)
     {
       if (ReportConfiguration.getGlobalConfig().getConfigProperty
               ("org.jfree.report.demo.Embedded", "false").equals("false"))
@@ -97,7 +98,7 @@ public class HelloWorld
   /**
    * Creates and displays a simple report.
    */
-  public HelloWorld()
+  public HelloWorld ()
   {
 
     final TableModel data = createData();
@@ -123,7 +124,7 @@ public class HelloWorld
    *
    * @return a dataset.
    */
-  private TableModel createData()
+  private TableModel createData ()
   {
 
     final Object[] columnNames = new String[]{"Column1", "Column2"};
@@ -139,7 +140,7 @@ public class HelloWorld
    *
    * @return a report definition.
    */
-  private JFreeReport createReportDefinition()
+  private JFreeReport createReportDefinition ()
   {
 
     final JFreeReport report = new JFreeReport();
@@ -172,6 +173,7 @@ public class HelloWorld
 
   /**
    * Returns a short description of the demo.
+   *
    * @return
    */
   public String getDescription ()
@@ -182,9 +184,9 @@ public class HelloWorld
   /**
    * The starting point for the "Hello World" demo application.
    *
-   * @param args  ignored.
+   * @param args ignored.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();

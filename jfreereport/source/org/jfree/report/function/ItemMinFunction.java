@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemMinFunction.java,v 1.6 2005/02/04 19:22:54 taqua Exp $
+ * $Id: ItemMinFunction.java,v 1.7 2005/02/19 13:29:55 taqua Exp $
  *
  * Changes
  * -------
@@ -53,26 +53,26 @@ import org.jfree.report.event.ReportEvent;
 import org.jfree.report.util.Log;
 
 /**
- * A report function that calculates the minimum value of one field (column) from the TableModel.
- * The function can be used in two ways:
- * <ul>
- * <li>to calculate a minimum value for the entire report;</li>
- * <li>to calculate a minimum value within a particular group;</li>
- * </ul>
- * This function expects its input values to be either java.lang.Number instances or Strings
- * that can be parsed to java.lang.Number instances using a java.text.DecimalFormat.
- * <p>
- * The function undestands two parameters, the <code>field</code> parameter is required and
- * denotes the name of an ItemBand-field which gets summed up.
- * <p>
- * The parameter <code>group</code> denotes the name of a group. When this group is started,
- * the counter gets reseted to null.
+ * A report function that calculates the minimum value of one field (column) from the
+ * TableModel. The function can be used in two ways: <ul> <li>to calculate a minimum value
+ * for the entire report;</li> <li>to calculate a minimum value within a particular
+ * group;</li> </ul> This function expects its input values to be either java.lang.Number
+ * instances or Strings that can be parsed to java.lang.Number instances using a
+ * java.text.DecimalFormat.
+ * <p/>
+ * The function undestands two parameters, the <code>field</code> parameter is required
+ * and denotes the name of an ItemBand-field which gets summed up.
+ * <p/>
+ * The parameter <code>group</code> denotes the name of a group. When this group is
+ * started, the counter gets reseted to null.
  *
  * @author Thomas Morgner
  */
 public class ItemMinFunction extends AbstractFunction implements Serializable
 {
-  /** The minimum value. */
+  /**
+   * The minimum value.
+   */
   private transient Comparable min;
   private String group;
   private String field;
@@ -81,44 +81,40 @@ public class ItemMinFunction extends AbstractFunction implements Serializable
    * Constructs an unnamed function. Make sure to set a Name or function initialisation
    * will fail.
    */
-  public ItemMinFunction()
+  public ItemMinFunction ()
   {
     min = null;
   }
 
   /**
-   * Constructs a named function.
-   * <P>
-   * The field must be defined before using the function.
+   * Constructs a named function. <P> The field must be defined before using the
+   * function.
    *
    * @param name The function name.
    */
-  public ItemMinFunction(final String name)
+  public ItemMinFunction (final String name)
   {
     this();
     setName(name);
   }
 
   /**
-   * Receives notification that a new report is about to start.
-   * <P>
-   * Does nothing.
+   * Receives notification that a new report is about to start. <P> Does nothing.
    *
    * @param event Information about the event.
-   *
    */
-  public void reportInitialized(final ReportEvent event)
+  public void reportInitialized (final ReportEvent event)
   {
     this.min = null;
   }
 
   /**
-   * Receives notification that a new group is about to start.  If this is the group defined for
-   * the function, then the minimum value is reset to zero.
+   * Receives notification that a new group is about to start.  If this is the group
+   * defined for the function, then the minimum value is reset to zero.
    *
    * @param event Information about the event.
    */
-  public void groupStarted(final ReportEvent event)
+  public void groupStarted (final ReportEvent event)
   {
     final String mygroup = getGroup();
     if (mygroup == null)
@@ -138,55 +134,51 @@ public class ItemMinFunction extends AbstractFunction implements Serializable
    *
    * @return The group name.
    */
-  public String getGroup()
+  public String getGroup ()
   {
     return group;
   }
 
   /**
-   * Sets the group name.
-   * <P>
-   * If a group is defined, the minimum value is reset to zero at the start of every instance of
-   * this group.
+   * Sets the group name. <P> If a group is defined, the minimum value is reset to zero at
+   * the start of every instance of this group.
    *
-   * @param name  the group name (null permitted).
+   * @param name the group name (null permitted).
    */
-  public void setGroup(final String name)
+  public void setGroup (final String name)
   {
     this.group = name;
   }
 
   /**
-   * Returns the field used by the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Returns the field used by the function. <P> The field name corresponds to a column
+   * name in the report's TableModel.
    *
    * @return The field name.
    */
-  public String getField()
+  public String getField ()
   {
     return field;
   }
 
   /**
-   * Sets the field name for the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Sets the field name for the function. <P> The field name corresponds to a column name
+   * in the report's TableModel.
    *
-   * @param field  the field name (null not permitted).
+   * @param field the field name (null not permitted).
    */
-  public void setField(final String field)
+  public void setField (final String field)
   {
     this.field = field;
   }
 
   /**
-   * Receives notification that a row of data is being processed.  Reads the data from the field
-   * defined for this function and calculates the minimum value.
+   * Receives notification that a row of data is being processed.  Reads the data from the
+   * field defined for this function and calculates the minimum value.
    *
    * @param event Information about the event.
    */
-  public void itemsAdvanced(final ReportEvent event)
+  public void itemsAdvanced (final ReportEvent event)
   {
     final Object fieldValue = event.getDataRow().get(getField());
     if (fieldValue instanceof Comparable == false)
@@ -212,24 +204,24 @@ public class ItemMinFunction extends AbstractFunction implements Serializable
   }
 
   /**
-   * Returns the function value, in this case the running total of a specific column in the
-   * report's TableModel.
+   * Returns the function value, in this case the running total of a specific column in
+   * the report's TableModel.
    *
    * @return The function value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return min;
   }
 
 
   /**
-   * Return a completly separated copy of this function. The copy does no
-   * longer share any changeable objects with the original function.
+   * Return a completly separated copy of this function. The copy does no longer share any
+   * changeable objects with the original function.
    *
    * @return a copy of this function.
    */
-  public Expression getInstance()
+  public Expression getInstance ()
   {
     final ItemMinFunction function = (ItemMinFunction) super.getInstance();
     function.min = null;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExternalStyleSheetReference.java,v 1.2.2.1 2004/12/13 19:27:09 taqua Exp $
+ * $Id: ExternalStyleSheetReference.java,v 1.3 2005/01/25 00:14:08 taqua Exp $
  *
  * Changes
  * -------
@@ -37,14 +37,16 @@
 package org.jfree.report.modules.output.table.html.ref;
 
 /**
- * Denotes a untagged href-reference. This reference is used to address
- * external stylesheet definitions.
+ * Denotes a untagged href-reference. This reference is used to address external
+ * stylesheet definitions.
  *
  * @author Thomas Morgner
  */
 public class ExternalStyleSheetReference extends HtmlReference
 {
-  /** the referenced file or URL. */
+  /**
+   * the referenced file or URL.
+   */
   private String reference;
 
   /**
@@ -52,7 +54,7 @@ public class ExternalStyleSheetReference extends HtmlReference
    *
    * @param reference the referenced resource.
    */
-  public ExternalStyleSheetReference(final String reference)
+  public ExternalStyleSheetReference (final String reference)
   {
     super(true);
     if (reference == null)
@@ -67,7 +69,7 @@ public class ExternalStyleSheetReference extends HtmlReference
    *
    * @return the HREF resource reference.
    */
-  public String getReferenceData()
+  public String getReferenceData ()
   {
     return reference;
   }

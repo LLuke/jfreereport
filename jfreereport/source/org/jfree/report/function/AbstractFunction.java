@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.7 2005/01/25 00:00:07 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.8 2005/02/04 19:22:54 taqua Exp $
  *
  * Changes
  * -------
@@ -52,24 +52,25 @@ import java.io.Serializable;
 import org.jfree.report.event.ReportEvent;
 
 /**
- * Base class for implementing new report functions.  Provides empty implementations of all the
- * methods in the Function interface.
- * <p>
- * The function is initialized when it gets added to the report. The method <code>initialize</code>
- * gets called to perform the required initializations. At this point, all function properties must
- * have been set to a valid state and the function must be named. If the initialisation fails, a
- * FunctionInitializeException is thrown and the function get not added to the report.
+ * Base class for implementing new report functions.  Provides empty implementations of
+ * all the methods in the Function interface.
+ * <p/>
+ * The function is initialized when it gets added to the report. The method
+ * <code>initialize</code> gets called to perform the required initializations. At this
+ * point, all function properties must have been set to a valid state and the function
+ * must be named. If the initialisation fails, a FunctionInitializeException is thrown and
+ * the function get not added to the report.
  *
  * @author Thomas Morgner
  */
 public abstract class AbstractFunction extends AbstractExpression
-    implements Function, Serializable
+        implements Function, Serializable
 {
   /**
-   * Creates an unnamed function. Make sure the name of the function is set using
-   * {@link #setName} before the function is added to the report's function collection.
+   * Creates an unnamed function. Make sure the name of the function is set using {@link
+   * #setName} before the function is added to the report's function collection.
    */
-  protected AbstractFunction()
+  protected AbstractFunction ()
   {
   }
 
@@ -78,111 +79,108 @@ public abstract class AbstractFunction extends AbstractExpression
    *
    * @param name the name of the function.
    */
-  protected AbstractFunction(final String name)
+  protected AbstractFunction (final String name)
   {
     setName(name);
   }
 
   /**
-   * Receives notification that report generation initializes the current run.
-   * <P>
-   * The event carries a ReportState.Started state.  Use this to initialize the report.
+   * Receives notification that report generation initializes the current run. <P> The
+   * event carries a ReportState.Started state.  Use this to initialize the report.
    *
    * @param event The event.
    */
-  public void reportInitialized(final ReportEvent event)
+  public void reportInitialized (final ReportEvent event)
   {
   }
 
   /**
    * Receives notification that the report has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportStarted(final ReportEvent event)
+  public void reportStarted (final ReportEvent event)
   {
   }
 
   /**
    * Receives notification that the report has finished.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportFinished(final ReportEvent event)
+  public void reportFinished (final ReportEvent event)
   {
   }
 
   /**
    * Receives notification that a group has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupStarted(final ReportEvent event)
+  public void groupStarted (final ReportEvent event)
   {
   }
 
   /**
    * Receives notification that a group has finished.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupFinished(final ReportEvent event)
+  public void groupFinished (final ReportEvent event)
   {
   }
 
   /**
    * Receives notification that a row of data is being processed.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void itemsAdvanced(final ReportEvent event)
+  public void itemsAdvanced (final ReportEvent event)
   {
   }
 
   /**
-   * Receives notification that a group of item bands is about to be processed.
-   * <P>
-   * The next events will be itemsAdvanced events until the itemsFinished event is raised.
+   * Receives notification that a group of item bands is about to be processed. <P> The
+   * next events will be itemsAdvanced events until the itemsFinished event is raised.
    *
    * @param event The event.
    */
-  public void itemsStarted(final ReportEvent event)
+  public void itemsStarted (final ReportEvent event)
   {
   }
 
   /**
-   * Receives notification that a group of item bands has been completed.
-   * <P>
-   * The itemBand is finished, the report starts to close open groups.
+   * Receives notification that a group of item bands has been completed. <P> The itemBand
+   * is finished, the report starts to close open groups.
    *
    * @param event The event.
    */
-  public void itemsFinished(final ReportEvent event)
+  public void itemsFinished (final ReportEvent event)
   {
   }
 
   /**
-   * Receives notification that report generation has completed, the report footer was printed,
-   * no more output is done. This is a helper event to shut down the output service.
+   * Receives notification that report generation has completed, the report footer was
+   * printed, no more output is done. This is a helper event to shut down the output
+   * service.
    *
    * @param event The event.
    */
-  public void reportDone(final ReportEvent event)
+  public void reportDone (final ReportEvent event)
   {
     // does nothing...
   }
 
   /**
-   * Clones the function.
-   * <P>
-   * Be aware, this does not create a deep copy. If you have complex
-   * strucures contained in objects, you have to override this function.
+   * Clones the function. <P> Be aware, this does not create a deep copy. If you have
+   * complex strucures contained in objects, you have to override this function.
    *
    * @return a clone of this function.
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final AbstractFunction function = (AbstractFunction) super.clone();
     return function;

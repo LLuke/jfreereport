@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PrepareEventListener.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: PrepareEventListener.java,v 1.3 2004/05/07 08:03:37 mungady Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ public interface PrepareEventListener extends EventListener
   /**
    * Receives notification of a prepare event.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void prepareEvent(ReportEvent event);
+  public void prepareEvent (ReportEvent event);
 }

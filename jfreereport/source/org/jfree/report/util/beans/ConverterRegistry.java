@@ -10,7 +10,7 @@ public final class ConverterRegistry
   private static ConverterRegistry instance;
   private HashMap registeredClasses;
 
-  public synchronized static ConverterRegistry getInstance()
+  public synchronized static ConverterRegistry getInstance ()
   {
     if (instance == null)
     {
@@ -19,7 +19,7 @@ public final class ConverterRegistry
     return instance;
   }
 
-  private ConverterRegistry()
+  private ConverterRegistry ()
   {
     registeredClasses = new HashMap();
     registeredClasses.put(BigDecimal.class, new BigDecimalValueConverter());
@@ -63,8 +63,7 @@ public final class ConverterRegistry
   /**
    * Converts an object to an attribute value.
    *
-   * @param o  the object.
-   *
+   * @param o the object.
    * @return the attribute value.
    */
   public static String toAttributeValue (final Object o)
@@ -85,8 +84,7 @@ public final class ConverterRegistry
   /**
    * Converts a string to a property value.
    *
-   * @param s  the string.
-   *
+   * @param s the string.
    * @return a property value.
    */
   public static Object toPropertyValue (final String s, final Class c)

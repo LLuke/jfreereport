@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtParserModule.java,v 1.7 2003/08/25 14:29:32 taqua Exp $
+ * $Id: ExtParserModule.java,v 1.9 2005/01/25 00:19:00 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,8 +38,8 @@
 
 package org.jfree.report.modules.parser.ext;
 
-import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.AbstractModule;
+import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
 
 /**
@@ -51,16 +51,18 @@ public class ExtParserModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public ExtParserModule() throws ModuleInitializeException
+  public ExtParserModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
   /**
-   * Initalizes the module. This performs the external initialization
-   * and checks that an JAXP1.1 parser is available.
+   * Initalizes the module. This performs the external initialization and checks that an
+   * JAXP1.1 parser is available.
    *
    * @throws ModuleInitializeException if an error occured.
    */
@@ -70,7 +72,7 @@ public class ExtParserModule extends AbstractModule
     if (isClassLoadable("org.xml.sax.ext.LexicalHandler") == false)
     {
       throw new ModuleInitializeException("Unable to load JAXP-1.1 classes. " +
-          "Check your classpath and XML parser configuration.");
+              "Check your classpath and XML parser configuration.");
     }
 
     performExternalInitialize(ExtParserModuleInit.class.getName());

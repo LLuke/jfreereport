@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   -;
  *
- * $Id: SurveyScaleDemo.java,v 1.2 2005/01/25 01:13:37 taqua Exp $
+ * $Id: SurveyScaleDemo.java,v 1.3 2005/02/04 19:22:51 taqua Exp $
  *
  * Changes
  * -------
@@ -61,14 +61,12 @@ import org.jfree.report.elementfactory.LabelElementFactory;
 import org.jfree.report.elementfactory.NumberFieldElementFactory;
 import org.jfree.report.elementfactory.StaticShapeElementFactory;
 import org.jfree.report.elementfactory.TextFieldElementFactory;
-import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.function.ItemCountFunction;
 import org.jfree.report.function.PageFunction;
 import org.jfree.report.function.PageTotalFunction;
 import org.jfree.report.function.TextFormatExpression;
 import org.jfree.report.modules.misc.survey.SurveyScale;
 import org.jfree.report.modules.misc.survey.SurveyScaleExpression;
-import org.jfree.report.util.Log;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.ui.FloatDimension;
 import org.jfree.ui.RefineryUtilities;
@@ -226,7 +224,7 @@ public final class SurveyScaleDemo extends SimpleDemoFrame
     final Paper paper = pff.createPaper(PageFormatFactory.A4);
     pff.setBorders(paper, PAGE_MARGIN_TOP, PAGE_MARGIN_LEFT, PAGE_MARGIN_BOTTOM, PAGE_MARGIN_RIGHT);
     final PageFormat format = pff.createPageFormat(paper, PageFormat.PORTRAIT);
-    report.setPageDefinition(new SimplePageDefinition (format));
+    report.setPageDefinition(new SimplePageDefinition(format));
 
     setupWatermark(report);
     setupPageHeader(report);

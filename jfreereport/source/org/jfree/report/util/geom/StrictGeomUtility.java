@@ -16,22 +16,22 @@ public class StrictGeomUtility
   public static StrictDimension createDimension (final double w, final double h)
   {
     return new StrictDimension((long) (w * CORRECTION_FACTOR),
-            (long)(h * CORRECTION_FACTOR));
+            (long) (h * CORRECTION_FACTOR));
   }
 
   public static StrictPoint createPoint (final double x, final double y)
   {
     return new StrictPoint((long) (x * CORRECTION_FACTOR),
-            (long)(y * CORRECTION_FACTOR));
+            (long) (y * CORRECTION_FACTOR));
   }
 
   public static StrictBounds createBounds (final double x, final double y,
-                                   final double width, final double height)
+                                           final double width, final double height)
   {
     return new StrictBounds((long) (x * CORRECTION_FACTOR),
-            (long)(y * CORRECTION_FACTOR),
-            (long)(width * CORRECTION_FACTOR),
-            (long)(height * CORRECTION_FACTOR));
+            (long) (y * CORRECTION_FACTOR),
+            (long) (width * CORRECTION_FACTOR),
+            (long) (height * CORRECTION_FACTOR));
   }
 
   public static Dimension2D createAWTDimension
@@ -46,7 +46,7 @@ public class StrictGeomUtility
   {
     return new Rectangle2D.Double
             (x / CORRECTION_FACTOR, y / CORRECTION_FACTOR,
-             width / CORRECTION_FACTOR, height / CORRECTION_FACTOR);
+                    width / CORRECTION_FACTOR, height / CORRECTION_FACTOR);
   }
 
   public static long toInternalValue (final double value)

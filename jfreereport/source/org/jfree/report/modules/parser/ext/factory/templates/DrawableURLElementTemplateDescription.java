@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageURLElementTemplateDescription.java,v 1.4 2004/05/07 14:29:23 mungady Exp $
+ * $Id: DrawableURLElementTemplateDescription.java,v 1.1 2005/01/25 23:35:34 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -54,9 +54,9 @@ public class DrawableURLElementTemplateDescription extends AbstractTemplateDescr
   /**
    * Creates a new template description.
    *
-   * @param name  the name.
+   * @param name the name.
    */
-  public DrawableURLElementTemplateDescription(final String name)
+  public DrawableURLElementTemplateDescription (final String name)
   {
     super(name, DrawableURLElementTemplate.class, false);
     setParameterDefinition("content", String.class);
@@ -67,7 +67,7 @@ public class DrawableURLElementTemplateDescription extends AbstractTemplateDescr
    *
    * @return The object.
    */
-  public Object createObject()
+  public Object createObject ()
   {
     final DrawableURLElementTemplate t = (DrawableURLElementTemplate) super.createObject();
     if (t.getBaseURL() == null)

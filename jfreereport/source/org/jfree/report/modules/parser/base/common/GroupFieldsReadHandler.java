@@ -43,8 +43,8 @@ public class GroupFieldsReadHandler extends AbstractPropertyXmlReadHandler
       commentHintPath.addName("field");
       defaultStoreComments(commentHintPath);
       final GroupFieldReadHandler readHandler =
-              new GroupFieldReadHandler (commentHintPath);
-      fieldHandlers.add (readHandler);
+              new GroupFieldReadHandler(commentHintPath);
+      fieldHandlers.add(readHandler);
       return readHandler;
     }
     return null;

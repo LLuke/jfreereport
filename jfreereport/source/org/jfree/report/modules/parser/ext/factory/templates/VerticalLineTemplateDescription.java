@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: VerticalLineTemplateDescription.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
+ * $Id: VerticalLineTemplateDescription.java,v 1.5 2004/05/07 14:29:23 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -51,9 +51,9 @@ public class VerticalLineTemplateDescription extends AbstractTemplateDescription
   /**
    * Creates a new template description.
    *
-   * @param name  the name.
+   * @param name the name.
    */
-  public VerticalLineTemplateDescription(final String name)
+  public VerticalLineTemplateDescription (final String name)
   {
     super(name, VerticalLineTemplate.class, true);
   }

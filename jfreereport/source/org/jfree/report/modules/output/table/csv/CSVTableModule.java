@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVTableModule.java,v 1.4.4.1 2004/12/13 19:27:07 taqua Exp $
+ * $Id: CSVTableModule.java,v 1.6 2005/01/25 00:13:07 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,9 +51,11 @@ public class CSVTableModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public CSVTableModule() throws ModuleInitializeException
+  public CSVTableModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }

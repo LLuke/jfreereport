@@ -25,7 +25,7 @@
  * -----------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: FormatParser.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: FormatParser.java,v 1.3 2004/05/07 08:24:42 mungady Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,9 @@ import java.text.ParseException;
 /**
  * A format parser tries to parse a string into an object. If the value returned by the
  * datasource is no string, a string is formed using String.valueOf (Object). This string
- * is fed into the java.text.Format of this FormatParser and the parsed object is returned.
- * <p>
+ * is fed into the java.text.Format of this FormatParser and the parsed object is
+ * returned.
+ * <p/>
  * What class of object is returned, is determined by the given format. If parsing failed,
  * the defined NullValue is returned.
  *
@@ -53,19 +54,25 @@ import java.text.ParseException;
  */
 public class FormatParser implements DataFilter, Serializable
 {
-  /** The format used to create the string representation of the data. */
+  /**
+   * The format used to create the string representation of the data.
+   */
   private Format format;
 
-  /** The datasource from where the data is obtained. */
+  /**
+   * The datasource from where the data is obtained.
+   */
   private DataSource datasource;
 
-  /** The object used to represent null. */
+  /**
+   * The object used to represent null.
+   */
   private Object nullvalue;
 
   /**
    * DefaultConstructor.
    */
-  public FormatParser()
+  public FormatParser ()
   {
   }
 
@@ -75,7 +82,7 @@ public class FormatParser implements DataFilter, Serializable
    * @param format The format.
    * @throws NullPointerException if the given format is null
    */
-  public void setFormatter(final Format format)
+  public void setFormatter (final Format format)
   {
     if (format == null)
     {
@@ -89,24 +96,24 @@ public class FormatParser implements DataFilter, Serializable
    *
    * @return The format.
    */
-  public Format getFormatter()
+  public Format getFormatter ()
   {
     return this.format;
   }
 
   /**
-   * Returns the parsed object. The value is read using the data source given
-   * and parsed using the formatter of this object. The parsing is guaranteed to
-   * completly form the target object or to return the defined NullValue.
-   * <p>
-   * If the given datasource does not return a string, the returned object is
-   * transformed into a string using String.valueOf (Object) and then parsed.
-   * <p>
+   * Returns the parsed object. The value is read using the data source given and parsed
+   * using the formatter of this object. The parsing is guaranteed to completly form the
+   * target object or to return the defined NullValue.
+   * <p/>
+   * If the given datasource does not return a string, the returned object is transformed
+   * into a string using String.valueOf (Object) and then parsed.
+   * <p/>
    * If format, datasource or object are null, the NullValue is returned.
    *
    * @return The formatted value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     final Format f = getFormatter();
     if (f == null)
@@ -142,15 +149,15 @@ public class FormatParser implements DataFilter, Serializable
   }
 
   /**
-   * Checks whether the given value is already a valid result. IF the datasource already returned
-   * a valid value, and no parsing is required, a parser can skip the parsing process by returning
-   * true in this function.
+   * Checks whether the given value is already a valid result. IF the datasource already
+   * returned a valid value, and no parsing is required, a parser can skip the parsing
+   * process by returning true in this function.
    *
-   * @param o  the object to parse.
-   *
-   * @return false as this class does not know anything about the format of input or result objects.
+   * @param o the object to parse.
+   * @return false as this class does not know anything about the format of input or
+   *         result objects.
    */
-  protected boolean isValidOutput(final Object o)
+  protected boolean isValidOutput (final Object o)
   {
     return false;
   }
@@ -160,7 +167,7 @@ public class FormatParser implements DataFilter, Serializable
    *
    * @return The data source.
    */
-  public DataSource getDataSource()
+  public DataSource getDataSource ()
   {
     return datasource;
   }
@@ -170,7 +177,7 @@ public class FormatParser implements DataFilter, Serializable
    *
    * @param ds The data source.
    */
-  public void setDataSource(final DataSource ds)
+  public void setDataSource (final DataSource ds)
   {
     if (ds == null)
     {
@@ -180,13 +187,13 @@ public class FormatParser implements DataFilter, Serializable
   }
 
   /**
-   * Sets the value that will be displayed if the data source supplies a null value.
-   * The nullValue itself can be null to cover the case when no reasonable default value
-   * can be defined.
+   * Sets the value that will be displayed if the data source supplies a null value. The
+   * nullValue itself can be null to cover the case when no reasonable default value can
+   * be defined.
    *
    * @param nullvalue The value returned when the parsing failed.
    */
-  public void setNullValue(final Object nullvalue)
+  public void setNullValue (final Object nullvalue)
   {
     this.nullvalue = nullvalue;
   }
@@ -197,7 +204,7 @@ public class FormatParser implements DataFilter, Serializable
    *
    * @return The value returned when the parsing failed.
    */
-  public Object getNullValue()
+  public Object getNullValue ()
   {
     return nullvalue;
   }
@@ -209,7 +216,8 @@ public class FormatParser implements DataFilter, Serializable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final FormatParser p = (FormatParser) super.clone();
     if (datasource != null)

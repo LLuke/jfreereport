@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserBaseModule.java,v 1.4 2003/08/25 14:29:32 taqua Exp $
+ * $Id: ParserBaseModule.java,v 1.6 2005/01/25 00:17:45 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,9 +44,9 @@ import org.jfree.base.modules.SubSystem;
 
 
 /**
- * The module definition for the parser base classes module. This
- * module provides base implementations used by all parsers and provides
- * a public interface to access all parsers in a unified way.
+ * The module definition for the parser base classes module. This module provides base
+ * implementations used by all parsers and provides a public interface to access all
+ * parsers in a unified way.
  *
  * @author Thomas Morgner
  */
@@ -54,9 +54,11 @@ public class ParserBaseModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public ParserBaseModule() throws ModuleInitializeException
+  public ParserBaseModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }

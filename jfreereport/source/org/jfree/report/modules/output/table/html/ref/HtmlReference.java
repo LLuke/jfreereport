@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlReference.java,v 1.2.2.1 2004/12/13 19:27:09 taqua Exp $
+ * $Id: HtmlReference.java,v 1.3 2005/01/25 00:14:10 taqua Exp $
  *
  * Changes
  * -------
@@ -37,17 +37,19 @@
 package org.jfree.report.modules.output.table.html.ref;
 
 /**
- * The base class for all HtmlReferences. HtmlReferences link the main document
- * with the supplementary data, like images and stylesheets.
- * <p>
- * If the reference is external, then the referenced content is stored outside
- * the main Html-File.
+ * The base class for all HtmlReferences. HtmlReferences link the main document with the
+ * supplementary data, like images and stylesheets.
+ * <p/>
+ * If the reference is external, then the referenced content is stored outside the main
+ * Html-File.
  *
  * @author Thomas Morgner
  */
 public abstract class HtmlReference
 {
-  /** A flag indicating whether this reference points to external data.  */
+  /**
+   * A flag indicating whether this reference points to external data.
+   */
   private final boolean external;
 
   /**
@@ -55,7 +57,7 @@ public abstract class HtmlReference
    *
    * @param external if the generated reference points to an external resource.
    */
-  protected HtmlReference(final boolean external)
+  protected HtmlReference (final boolean external)
   {
     this.external = external;
   }
@@ -65,16 +67,16 @@ public abstract class HtmlReference
    *
    * @return true, if the reference is external, false otherwise.
    */
-  public boolean isExternal()
+  public boolean isExternal ()
   {
     return external;
   }
 
   /**
-   * Generates the reference fragment, which should be inserted into the HTML-Code.
-   * Which content is returned depends on the reference type and the target filesystem.
+   * Generates the reference fragment, which should be inserted into the HTML-Code. Which
+   * content is returned depends on the reference type and the target filesystem.
    *
    * @return the reference code, which should be inserted into the generated HTML-Code.
    */
-  public abstract String getReferenceData();
+  public abstract String getReferenceData ();
 }

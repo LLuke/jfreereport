@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultContentFactory.java,v 1.7 2005/01/25 21:40:04 taqua Exp $
+ * $Id: DefaultContentFactory.java,v 1.8 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -41,11 +41,11 @@ import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.util.ElementLayoutInformation;
 
 /**
- * The DefaultContentFactory provides a default implementation for output targets,
- * which support all known content types.
- * <p>
- * The implementation provides support for <code>text</code>, <code>image</code>
- * and <code>shape</code> content.
+ * The DefaultContentFactory provides a default implementation for output targets, which
+ * support all known content types.
+ * <p/>
+ * The implementation provides support for <code>text</code>, <code>image</code> and
+ * <code>shape</code> content.
  *
  * @author Thomas Morgner
  */
@@ -57,7 +57,7 @@ public class DefaultContentFactory implements ContentFactory
   /**
    * Creates an empty DefaultContentFactory.
    */
-  public DefaultContentFactory()
+  public DefaultContentFactory ()
   {
     modules = new ContentFactoryModule[10];
     size = 0;
@@ -66,10 +66,10 @@ public class DefaultContentFactory implements ContentFactory
   /**
    * Adds a content factory module to the factory.
    *
-   * @param module the ContentFactoryModule that should be added to the list of
-   * available modules.
+   * @param module the ContentFactoryModule that should be added to the list of available
+   *               modules.
    */
-  public synchronized void addModule(final ContentFactoryModule module)
+  public synchronized void addModule (final ContentFactoryModule module)
   {
     if (module == null)
     {
@@ -86,29 +86,28 @@ public class DefaultContentFactory implements ContentFactory
     if (modules.length <= size)
     {
       final ContentFactoryModule[] newData =
-              new ContentFactoryModule[Math.max (modules.length + 10, size + 1)];
+              new ContentFactoryModule[Math.max(modules.length + 10, size + 1)];
       System.arraycopy(modules, 0, newData, 0, size);
       modules = newData;
     }
   }
 
   /**
-   * Creates content for an element. Delegates the request to the registered
-   * modules. If this factory has no registered handler for the element's content
-   * type, then a ContentCreationException is thrown.
+   * Creates content for an element. Delegates the request to the registered modules. If
+   * this factory has no registered handler for the element's content type, then a
+   * ContentCreationException is thrown.
    *
-   * @param e  the element.
-   * @param bounds  the bounds.
-   * @param ot  the output target.
-   *
+   * @param e      the element.
+   * @param bounds the bounds.
+   * @param ot     the output target.
    * @return the content.
    *
-   * @throws ContentCreationException if there is a problem with the OutputTarget or
-   * this factory is not able to handle this content type.
+   * @throws ContentCreationException if there is a problem with the OutputTarget or this
+   *                                  factory is not able to handle this content type.
    */
-  public Content createContentForElement(final Element e, final ElementLayoutInformation bounds,
-                                         final LayoutSupport ot)
-      throws ContentCreationException
+  public Content createContentForElement (final Element e, final ElementLayoutInformation bounds,
+                                          final LayoutSupport ot)
+          throws ContentCreationException
   {
     if (bounds == null)
     {
@@ -144,11 +143,10 @@ public class DefaultContentFactory implements ContentFactory
    * <code>false</code> otherwise. Delegates the request to the registered modules.
    * Returns false, if this factory is not able to handle this content type.
    *
-   * @param contentType  the content type.
-   *
+   * @param contentType the content type.
    * @return <code>true</code> or <code>false</code>.
    */
-  public boolean canHandleContent(final String contentType)
+  public boolean canHandleContent (final String contentType)
   {
     for (int i = 0; i < size; i++)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.9 2005/02/04 19:08:53 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.10 2005/02/19 13:30:04 taqua Exp $
  *
  * Changes
  * -------
@@ -54,192 +54,316 @@ import org.jfree.xml.writer.XMLWriterSupport;
  */
 public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
 {
-  /** the document element tag for the extended report format. */
+  /**
+   * the document element tag for the extended report format.
+   */
   public static final String REPORT_DEFINITION_TAG = "report-definition";
 
-  /** The parser config tag name. */
+  /**
+   * The parser config tag name.
+   */
   public static final String PARSER_CONFIG_TAG = "parser-config";
 
-  /** The report config tag name. */
+  /**
+   * The report config tag name.
+   */
   public static final String REPORT_CONFIG_TAG = "report-config";
 
-  /** The styles tag name. */
+  /**
+   * The styles tag name.
+   */
   public static final String STYLES_TAG = "styles";
 
-  /** The templates tag name. */
+  /**
+   * The templates tag name.
+   */
   public static final String TEMPLATES_TAG = "templates";
 
-  /** The report description tag name. */
+  /**
+   * The report description tag name.
+   */
   public static final String REPORT_DESCRIPTION_TAG = "report-description";
 
-  /** The functions tag name. */
+  /**
+   * The functions tag name.
+   */
   public static final String FUNCTIONS_TAG = "functions";
 
-  /** The 'band' tag. */
+  /**
+   * The 'band' tag.
+   */
   public static final String BAND_TAG = "band";
 
-  /** The 'element' tag. */
+  /**
+   * The 'element' tag.
+   */
   public static final String ELEMENT_TAG = "element";
 
-  /** The text for the 'compound-object' tag. */
+  /**
+   * The text for the 'compound-object' tag.
+   */
   public static final String COMPOUND_OBJECT_TAG = "compound-object";
 
-  /** The text for the 'basic-object' tag. */
+  /**
+   * The text for the 'basic-object' tag.
+   */
   public static final String BASIC_OBJECT_TAG = "basic-object";
 
-  /** The datasource tag name. */
+  /**
+   * The datasource tag name.
+   */
   public static final String DATASOURCE_TAG = "datasource";
 
-  /** The properties tag name. */
+  /**
+   * The properties tag name.
+   */
   public static final String PROPERTIES_TAG = "properties";
 
-  /** The name of the function tag. */
+  /**
+   * The name of the function tag.
+   */
   public static final String FUNCTION_TAG = "function";
 
-  /** The name of the expression tag. */
+  /**
+   * The name of the expression tag.
+   */
   public static final String EXPRESSION_TAG = "expression";
 
-  /** The name of the 'property-ref' tag. */
+  /**
+   * The name of the 'property-ref' tag.
+   */
   public static final String PROPERTY_REF_TAG = "property-ref";
 
-  /** The 'fields' tag name. */
+  /**
+   * The 'fields' tag name.
+   */
   public static final String FIELDS_TAG = "fields";
 
-  /** The 'field' tag name. */
+  /**
+   * The 'field' tag name.
+   */
   public static final String FIELD_TAG = "field";
 
-  /** The 'group-header' tag name. */
+  /**
+   * The 'group-header' tag name.
+   */
   public static final String GROUP_HEADER_TAG = "group-header";
 
-  /** The 'group-footer' tag name. */
+  /**
+   * The 'group-footer' tag name.
+   */
   public static final String GROUP_FOOTER_TAG = "group-footer";
 
-  /** The 'group' tag name. */
+  /**
+   * The 'group' tag name.
+   */
   public static final String GROUP_TAG = "group";
 
-  /** The 'stylekey-factory' tag name. */
+  /**
+   * The 'stylekey-factory' tag name.
+   */
   public static final String STYLEKEY_FACTORY_TAG = "stylekey-factory";
 
-  /** The 'template-factory' tag name. */
+  /**
+   * The 'template-factory' tag name.
+   */
   public static final String TEMPLATE_FACTORY_TAG = "template-factory";
 
-  /** The 'object-factory' tag name. */
+  /**
+   * The 'object-factory' tag name.
+   */
   public static final String OBJECT_FACTORY_TAG = "object-factory";
 
-  /** The 'datadefinition-factory' tag name. */
+  /**
+   * The 'datadefinition-factory' tag name.
+   */
   public static final String DATADEFINITION_FACTORY_TAG = "datadefinition-factory";
 
-  /** The 'datasource-factory' tag name. */
+  /**
+   * The 'datasource-factory' tag name.
+   */
   public static final String DATASOURCE_FACTORY_TAG = "datasource-factory";
 
-  /** The 'element-factory' tag name. */
+  /**
+   * The 'element-factory' tag name.
+   */
   public static final String ELEMENT_FACTORY_TAG = "element-factory";
 
-  /** The class attribute name. */
+  /**
+   * The class attribute name.
+   */
   public static final String CLASS_ATTRIBUTE = "class";
 
-  /** The 'default page format' tag name. */
+  /**
+   * The 'default page format' tag name.
+   */
   public static final String DEFAULT_PAGEFORMAT_TAG = "defaultpageformat";
 
-  /** The 'configuration' tag name. */
+  /**
+   * The 'configuration' tag name.
+   */
   public static final String CONFIGURATION_TAG = "configuration";
 
-  /** The 'output-config' tag name. */
+  /**
+   * The 'output-config' tag name.
+   */
   public static final String OUTPUT_TARGET_TAG = "output-config";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String PAGEFORMAT_ATT = "pageformat";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String LEFTMARGIN_ATT = "leftmargin";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String RIGHTMARGIN_ATT = "rightmargin";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String TOPMARGIN_ATT = "topmargin";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String BOTTOMMARGIN_ATT = "bottommargin";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String WIDTH_ATT = "width";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String HEIGHT_ATT = "height";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String ORIENTATION_ATT = "orientation";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String ORIENTATION_PORTRAIT_VAL = "portrait";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String ORIENTATION_LANDSCAPE_VAL = "landscape";
 
-  /** Literal text for an XML attribute. */
+  /**
+   * Literal text for an XML attribute.
+   */
   public static final String ORIENTATION_REVERSE_LANDSCAPE_VAL = "reverselandscape";
 
-  /** A constant defining a style key factory parser hint. */
+  /**
+   * A constant defining a style key factory parser hint.
+   */
   public static final String STYLEKEY_FACTORY_HINT =
-      "ext.parser.parser-config.stylekeyfactories";
-  /** A constant defining an object factory parser hint. */
+          "ext.parser.parser-config.stylekeyfactories";
+  /**
+   * A constant defining an object factory parser hint.
+   */
   public static final String OBJECT_FACTORY_HINT =
-      "ext.parser.parser-config.objectfactories";
-  /** A constant defining a datasource factory parser hint. */
+          "ext.parser.parser-config.objectfactories";
+  /**
+   * A constant defining a datasource factory parser hint.
+   */
   public static final String DATASOURCE_FACTORY_HINT =
-      "ext.parser.parser-config.datasourcefactories";
-  /** A constant defining a template factory parser hint. */
+          "ext.parser.parser-config.datasourcefactories";
+  /**
+   * A constant defining a template factory parser hint.
+   */
   public static final String TEMPLATE_FACTORY_HINT =
-      "ext.parser.parser-config.templatefactories";
-  /** A constant defining a element factory parser hint. */
+          "ext.parser.parser-config.templatefactories";
+  /**
+   * A constant defining a element factory parser hint.
+   */
   public static final String ELEMENT_FACTORY_HINT =
-      "ext.parser.parser-config.elementfactories";
-  /** The 'report-header' tag name. */
+          "ext.parser.parser-config.elementfactories";
+  /**
+   * The 'report-header' tag name.
+   */
   public static final String REPORT_HEADER_TAG = "report-header";
 
-  /** The 'report-footer' tag name. */
+  /**
+   * The 'report-footer' tag name.
+   */
   public static final String REPORT_FOOTER_TAG = "report-footer";
 
-  /** The 'page-header' tag name. */
+  /**
+   * The 'page-header' tag name.
+   */
   public static final String PAGE_HEADER_TAG = "page-header";
 
-  /** The 'page-footer' tag name. */
+  /**
+   * The 'page-footer' tag name.
+   */
   public static final String PAGE_FOOTER_TAG = "page-footer";
 
-  /** The 'itemband' tag name. */
+  /**
+   * The 'itemband' tag name.
+   */
   public static final String ITEMBAND_TAG = "itemband";
 
-  /** The 'groups' tag name. */
+  /**
+   * The 'groups' tag name.
+   */
   public static final String GROUPS_TAG = "groups";
 
   public static final String WATERMARK_TAG = "watermark";
-  /** The 'style' tag name. */
+  /**
+   * The 'style' tag name.
+   */
   public static final String STYLE_TAG = "style";
 
-  /** The 'compound-key' tag name. */
+  /**
+   * The 'compound-key' tag name.
+   */
   public static final String COMPOUND_KEY_TAG = "compound-key";
 
-  /** The 'basic-key' tag name. */
+  /**
+   * The 'basic-key' tag name.
+   */
   public static final String BASIC_KEY_TAG = "basic-key";
 
-  /** The 'extends' tag name. */
+  /**
+   * The 'extends' tag name.
+   */
   public static final String EXTENDS_TAG = "extends";
 
-  /** The template tag. */
+  /**
+   * The template tag.
+   */
   public static final String TEMPLATE_TAG = "template";
 
-  /** The 'property' tag name. */
+  /**
+   * The 'property' tag name.
+   */
   public static final String PROPERTY_TAG = "property";
 
-  /** The 'name' attribute text. */
+  /**
+   * The 'name' attribute text.
+   */
   public static final String NAME_ATTR = "name";
 
 
-  /** A report writer. */
+  /**
+   * A report writer.
+   */
   private final ReportWriter reportWriter;
 
-  /** A list of safe tags. */
+  /**
+   * A list of safe tags.
+   */
   private static SafeTagList safeTags;
 
   /**
@@ -247,7 +371,7 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
    *
    * @return The safe tags.
    */
-  public static SafeTagList getDefaultSafeTags()
+  public static SafeTagList getDefaultSafeTags ()
   {
     if (safeTags == null)
     {
@@ -314,10 +438,11 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
   /**
    * Creates a new writer.
    *
-   * @param reportWriter  the report writer.
-   * @param indentLevel the current indention level.
+   * @param reportWriter the report writer.
+   * @param indentLevel  the current indention level.
    */
-  public AbstractXMLDefinitionWriter(final ReportWriter reportWriter, final int indentLevel)
+  public AbstractXMLDefinitionWriter (final ReportWriter reportWriter,
+                                      final int indentLevel)
   {
     super(getDefaultSafeTags(), indentLevel);
     this.reportWriter = reportWriter;
@@ -328,7 +453,7 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
    *
    * @return The report writer.
    */
-  protected ReportWriter getReportWriter()
+  protected ReportWriter getReportWriter ()
   {
     return reportWriter;
   }
@@ -338,7 +463,7 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
    *
    * @return The report.
    */
-  protected JFreeReport getReport()
+  protected JFreeReport getReport ()
   {
     return getReportWriter().getReport();
   }
@@ -347,11 +472,10 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
    * Normalises a string, replacing certain characters with their escape sequences so that
    * the XML text is not corrupted.
    *
-   * @param s  the string.
-   *
+   * @param s the string.
    * @return The normalised string.
    */
-  public static String normalize(final String s)
+  public static String normalize (final String s)
   {
     if (s == null)
     {
@@ -420,11 +544,12 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
   /**
    * Writes the given comment. This method does nothing if the comment is null.
    *
-   * @param writer the writer that should receive the content.
+   * @param writer  the writer that should receive the content.
    * @param comment the xml comment that should be written.
    * @throws IOException if an error occurs.
    */
-  protected void writeComment(final Writer writer, final String comment) throws IOException
+  protected void writeComment (final Writer writer, final String comment)
+          throws IOException
   {
     if (comment == null)
     {
@@ -438,18 +563,18 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
   }
 
   /**
-   * Reads a comment from the given comment hint path and hint name and Writes
-   * that comment to the xml stream. This method does nothing if there is no
-   * comment stored at that position.
+   * Reads a comment from the given comment hint path and hint name and Writes that
+   * comment to the xml stream. This method does nothing if there is no comment stored at
+   * that position.
    *
-   * @param writer the writer that should receive the content
-   * @param path the comment hint path that points to the comment
+   * @param writer   the writer that should receive the content
+   * @param path     the comment hint path that points to the comment
    * @param hintName the hint name used to store the comment
    * @throws IOException if an error occured.
    */
   protected void writeComment
-      (final Writer writer, final CommentHintPath path, final String hintName)
-      throws IOException
+          (final Writer writer, final CommentHintPath path, final String hintName)
+          throws IOException
   {
 
     final ReportBuilderHints hints = getReport().getReportBuilderHints();
@@ -470,16 +595,15 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
   }
 
   /**
-   * Writes the report definition portion. Every DefinitionWriter handles one
-   * or more elements of the JFreeReport object tree, DefinitionWriter traverse
-   * the object tree and write the known objects or forward objects to other
-   * definition writers.
+   * Writes the report definition portion. Every DefinitionWriter handles one or more
+   * elements of the JFreeReport object tree, DefinitionWriter traverse the object tree
+   * and write the known objects or forward objects to other definition writers.
    *
-   * @param writer  the writer.
-   *
-   * @throws IOException if there is an I/O problem.
+   * @param writer the writer.
+   * @throws IOException           if there is an I/O problem.
    * @throws ReportWriterException if the report serialisation failed.
    */
-  public abstract void write(Writer writer) throws IOException, ReportWriterException;
+  public abstract void write (Writer writer)
+          throws IOException, ReportWriterException;
 
 }

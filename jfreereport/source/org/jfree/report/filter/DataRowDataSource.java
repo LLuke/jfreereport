@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowDataSource.java,v 1.6 2005/01/24 23:59:39 taqua Exp $
+ * $Id: DataRowDataSource.java,v 1.7 2005/01/25 21:40:12 taqua Exp $
  *
  * Changes
  * -------
@@ -46,27 +46,30 @@ import org.jfree.report.DataRow;
 import org.jfree.report.ReportDefinition;
 
 /**
- * A DataSource that can access values from the 'data-row'. The data-row contains all values from
- * the current row of the report's <code>TableModel</code>, plus the current values of the defined
- * expressions and functions for the report.
- * <p>
- * @see org.jfree.report.DataRow
+ * A DataSource that can access values from the 'data-row'. The data-row contains all
+ * values from the current row of the report's <code>TableModel</code>, plus the current
+ * values of the defined expressions and functions for the report.
+ * <p/>
+ *
  * @author Thomas Morgner
+ * @see org.jfree.report.DataRow
  */
 public class DataRowDataSource
-    implements DataSource, Serializable, ReportConnectable
+        implements DataSource, Serializable, ReportConnectable
 {
-  /**  The name of the field/expression/function referenced by this data source. */
+  /**
+   * The name of the field/expression/function referenced by this data source.
+   */
   private String dataSourceColumnName;
 
   private transient ReportDefinition reportDefinition;
 
   /**
    * Default constructor.
-   * <p>
+   * <p/>
    * The expression name is empty ("", not null), the value initially null.
    */
-  public DataRowDataSource()
+  public DataRowDataSource ()
   {
     setDataSourceColumnName("");
   }
@@ -74,9 +77,9 @@ public class DataRowDataSource
   /**
    * Constructs a new data source.
    *
-   * @param column  the name of the field, function or expression in the data-row.
+   * @param column the name of the field, function or expression in the data-row.
    */
-  public DataRowDataSource(final String column)
+  public DataRowDataSource (final String column)
   {
     setDataSourceColumnName(column);
   }
@@ -86,7 +89,7 @@ public class DataRowDataSource
    *
    * @return the column name.
    */
-  public String getDataSourceColumnName()
+  public String getDataSourceColumnName ()
   {
     return dataSourceColumnName;
   }
@@ -94,13 +97,11 @@ public class DataRowDataSource
   /**
    * Defines the name of the column in the datarow to be queried.
    *
-   * @param dataSourceColumnName  the name of the column in the datarow to be queried.
-   *
+   * @param dataSourceColumnName the name of the column in the datarow to be queried.
    * @throws NullPointerException if the name is <code>null</code>.
-   *
    * @see org.jfree.report.DataRow#get
    */
-  public void setDataSourceColumnName(final String dataSourceColumnName)
+  public void setDataSourceColumnName (final String dataSourceColumnName)
   {
     if (dataSourceColumnName == null)
     {
@@ -110,14 +111,14 @@ public class DataRowDataSource
   }
 
   /**
-   * Returns the current value of the data source, obtained from a particular column in the
-   * data-row.
+   * Returns the current value of the data source, obtained from a particular column in
+   * the data-row.
    *
-   * @return  the value.
+   * @return the value.
    *
    * @throws IllegalStateException if there is no data-row connected.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     if (getDataRow() == null)
     {
@@ -127,14 +128,15 @@ public class DataRowDataSource
   }
 
   /**
-   * Clones the data source. A previously registered report definition
-   * is not inherited to the clone.
+   * Clones the data source. A previously registered report definition is not inherited to
+   * the clone.
    *
    * @return a clone.
    *
    * @throws CloneNotSupportedException if the cloning is not supported.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final DataRowDataSource drs = (DataRowDataSource) super.clone();
     drs.reportDefinition = null;
@@ -146,7 +148,7 @@ public class DataRowDataSource
    *
    * @return the data-row.
    */
-  public DataRow getDataRow()
+  public DataRow getDataRow ()
   {
     if (reportDefinition == null)
     {
@@ -156,7 +158,7 @@ public class DataRowDataSource
   }
 
 
-  public void registerReportDefinition(final ReportDefinition reportDefinition)
+  public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != null)
     {
@@ -169,7 +171,7 @@ public class DataRowDataSource
     this.reportDefinition = reportDefinition;
   }
 
-  public void unregisterReportDefinition(final ReportDefinition reportDefinition)
+  public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != reportDefinition)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelDateMetaElement.java,v 1.2.2.1 2004/12/13 19:27:12 taqua Exp $
+ * $Id: ExcelDateMetaElement.java,v 1.3 2005/01/25 00:16:47 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,7 +46,8 @@ import org.jfree.report.style.ElementStyleSheet;
 
 public class ExcelDateMetaElement extends ExcelMetaElement
 {
-  public ExcelDateMetaElement (final RawContent elementContent, final ElementStyleSheet style)
+  public ExcelDateMetaElement (final RawContent elementContent,
+                               final ElementStyleSheet style)
   {
     super(elementContent, style);
   }

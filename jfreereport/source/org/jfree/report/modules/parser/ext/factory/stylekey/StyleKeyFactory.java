@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StyleKeyFactory.java,v 1.4 2003/08/24 15:08:21 taqua Exp $
+ * $Id: StyleKeyFactory.java,v 1.5 2004/05/07 14:29:53 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -54,28 +54,26 @@ public interface StyleKeyFactory extends Serializable
   /**
    * Returns a style key.
    *
-   * @param name  the name.
-   *
+   * @param name the name.
    * @return The style key.
    */
-  public StyleKey getStyleKey(String name);
+  public StyleKey getStyleKey (String name);
 
   /**
    * Creates an object.
    *
-   * @param k  the style key.
-   * @param value  the value.
-   * @param c  the class.
-   * @param cf the class factory used to create the basic object.
-   *
+   * @param k     the style key.
+   * @param value the value.
+   * @param c     the class.
+   * @param cf    the class factory used to create the basic object.
    * @return The object.
    */
-  public Object createBasicObject(StyleKey k, String value, Class c, ClassFactory cf);
+  public Object createBasicObject (StyleKey k, String value, Class c, ClassFactory cf);
 
   /**
    * Returns an iterator that provides access to the registered keys.
    *
    * @return The iterator.
    */
-  public Iterator getRegisteredKeys();
+  public Iterator getRegisteredKeys ();
 }

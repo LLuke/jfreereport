@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextLine.java,v 1.10 2005/01/24 23:58:18 taqua Exp $
+ * $Id: TextLine.java,v 1.11 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -49,25 +49,33 @@ import org.jfree.report.util.geom.StrictGeomUtility;
  */
 public strictfp class TextLine implements Content
 {
-  /** The size calculator. */
+  /**
+   * The size calculator.
+   */
   private final SizeCalculator sizeCalc;
 
-  /** The string. */
+  /**
+   * The string.
+   */
   private String content;
 
-  /** The content bounds. */
+  /**
+   * The content bounds.
+   */
   private final StrictBounds bounds;
 
-  /** The lineHeight defined for this line. */
+  /**
+   * The lineHeight defined for this line.
+   */
   private final long lineHeight;
 
   /**
    * Creates a new line of text.
    *
-   * @param sizeCalc  the size calculator.
+   * @param sizeCalc   the size calculator.
    * @param lineheight the line height that should be used for this text line.
    */
-  public TextLine(final SizeCalculator sizeCalc, final long lineheight)
+  public TextLine (final SizeCalculator sizeCalc, final long lineheight)
   {
     this.bounds = new StrictBounds();
     this.lineHeight = lineheight;
@@ -83,30 +91,29 @@ public strictfp class TextLine implements Content
    *
    * @return the size calculator.
    */
-  private SizeCalculator getSizeCalculator()
+  private SizeCalculator getSizeCalculator ()
   {
     return sizeCalc;
   }
 
   /**
-   * Returns the height of this text line. Remember, that this height
-   * is an internal (fixed point) value and must be corrected before used
-   * in the AWT or other output targets.
+   * Returns the height of this text line. Remember, that this height is an internal
+   * (fixed point) value and must be corrected before used in the AWT or other output
+   * targets.
    *
    * @return the height of the line of text.
    */
-  public long getHeight()
+  public long getHeight ()
   {
     return bounds.getHeight();
   }
 
   /**
-   * Returns the content type, in this case
-   * {@link org.jfree.report.content.ContentType#TEXT}.
+   * Returns the content type, in this case {@link org.jfree.report.content.ContentType#TEXT}.
    *
    * @return the content type.
    */
-  public ContentType getContentType()
+  public ContentType getContentType ()
   {
     return ContentType.TEXT;
   }
@@ -115,14 +122,14 @@ public strictfp class TextLine implements Content
    * Sets the content for the line of text.
    *
    * @param content the string for this line of text.
-   * @param x the x coordinates for the bounds.
-   * @param y the y coordinates for the bounds.
-   * @param width the width of the bounds.
-   * @param height the height of the bounds.
+   * @param x       the x coordinates for the bounds.
+   * @param y       the y coordinates for the bounds.
+   * @param width   the width of the bounds.
+   * @param height  the height of the bounds.
    */
-  public void setContent(final String content,
-                         final long x, final long y,
-                         long width, long height)
+  public void setContent (final String content,
+                          final long x, final long y,
+                          long width, long height)
   {
     if (x < 0)
     {
@@ -156,7 +163,7 @@ public strictfp class TextLine implements Content
    *
    * @return the text.
    */
-  public String getContent()
+  public String getContent ()
   {
     return content;
   }
@@ -166,22 +173,21 @@ public strictfp class TextLine implements Content
    *
    * @return the bounds.
    */
-  public StrictBounds getBounds()
+  public StrictBounds getBounds ()
   {
     return (StrictBounds) bounds.clone();
   }
 
   /**
    * Returns the content that fits in the specified bounds.
-   * <p>
-   * This is a single line, so either the content does fit the height, or it doesn't (in that
-   * case, return nothing at all).
+   * <p/>
+   * This is a single line, so either the content does fit the height, or it doesn't (in
+   * that case, return nothing at all).
    *
-   * @param bounds  the bounds.
-   *
+   * @param bounds the bounds.
    * @return the content that fits the specified bounds.
    */
-  public Content getContentForBounds(final StrictBounds bounds)
+  public Content getContentForBounds (final StrictBounds bounds)
   {
     final StrictBounds actBounds = this.bounds.createIntersection(bounds);
     if (actBounds.getHeight() < this.bounds.getHeight())
@@ -200,20 +206,19 @@ public strictfp class TextLine implements Content
 
     final TextLine line = new TextLine(getSizeCalculator(), lineHeight);
     line.setContent(content.substring(frontPos, endPos),
-        actBounds.getX(), actBounds.getY(),
-        actBounds.getWidth(), actBounds.getHeight());
+            actBounds.getX(), actBounds.getY(),
+            actBounds.getWidth(), actBounds.getHeight());
     return line;
   }
 
   /**
    * Calculates the last character that would fit into the given width.
    *
-   * @param startPos  the starting position within the string.
-   * @param maxWidth  the maximum width (in Java2D units).
-   *
+   * @param startPos the starting position within the string.
+   * @param maxWidth the maximum width (in Java2D units).
    * @return the number of characters that will fit within a certain width.
    */
-  private int calcStringLength(final int startPos, final long maxWidth)
+  private int calcStringLength (final int startPos, final long maxWidth)
   {
     if (maxWidth == 0.0)
     {
@@ -237,29 +242,29 @@ public strictfp class TextLine implements Content
   /**
    * Calculates the StringPos: the string starts at <code>startPos</code>, and it tested,
    * that <code>endPos</code> is after the pos calculated for maxWidth.
-   * <p>
+   * <p/>
    * <code>getStringWidth (content, lineStart, startPos) &lt; maxWidth<br></code>
    * <code>getStringWidth (content, lineStart, endPos) &gt; maxWidth<br></code>
-   * <p>
-   * The algorithm used is similiar to the quick-search algorithm, it splits the
-   * content in the middle and checks whether the needed position is left or right
-   * of the middle. Then the search is repeated within the new search area ...
-   * <p>
-   * This method searches the width position in a substring of the content which
-   * starts at lineStart. It is known, that the position is between startPos and
-   * endPos, startPos is greater or equal than lineStart and endPos is lower
-   * or equal to the position of the last character of the string.
-   * <p>
+   * <p/>
+   * The algorithm used is similiar to the quick-search algorithm, it splits the content
+   * in the middle and checks whether the needed position is left or right of the middle.
+   * Then the search is repeated within the new search area ...
+   * <p/>
+   * This method searches the width position in a substring of the content which starts at
+   * lineStart. It is known, that the position is between startPos and endPos, startPos is
+   * greater or equal than lineStart and endPos is lower or equal to the position of the
+   * last character of the string.
+   * <p/>
    *
-   * @param lineStart  the starting position of the substring that should be calculated.
+   * @param lineStart the starting position of the substring that should be calculated.
    * @param startPos  the known lower rangeboundry of the result-range.
-   * @param endPos  the known upper boundry of the result range.
+   * @param endPos    the known upper boundry of the result range.
    * @param maxWidth  the maximal width in points which limit the string.
-   *
    * @return the position, where the string width is nearest or equal to maxWidth..
    */
   private int calculateWidthPos
-      (final int lineStart, final int startPos, final int endPos, final long maxWidth)
+          (final int lineStart, final int startPos, final int endPos,
+           final long maxWidth)
   {
     if (startPos == endPos)
     {
@@ -294,7 +299,7 @@ public strictfp class TextLine implements Content
    *
    * @return the minimum size.
    */
-  public StrictBounds getMinimumContentSize()
+  public StrictBounds getMinimumContentSize ()
   {
     return getBounds();
   }
@@ -304,7 +309,7 @@ public strictfp class TextLine implements Content
    *
    * @return a string representation.
    */
-  public String toString()
+  public String toString ()
   {
     final StringBuffer b = new StringBuffer();
     b.append(getClass().getName());

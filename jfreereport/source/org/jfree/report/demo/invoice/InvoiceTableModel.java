@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: InvoiceTableModel.java,v 1.1.2.2 2004/04/05 16:49:34 taqua Exp $
+ * $Id: InvoiceTableModel.java,v 1.2 2005/01/25 01:14:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,27 +45,27 @@ import javax.swing.table.AbstractTableModel;
 public class InvoiceTableModel extends AbstractTableModel
 {
   private static Class[] COLUMN_TYPES =
-    {
-      Invoice.class,
-      String.class, String.class, String.class, 
-      String.class, String.class, String.class,
-      String.class, Date.class, String.class,
-      String.class, String.class, String.class,
-      Float.class, Integer.class
-    };
-  
+          {
+            Invoice.class,
+            String.class, String.class, String.class,
+            String.class, String.class, String.class,
+            String.class, Date.class, String.class,
+            String.class, String.class, String.class,
+            Float.class, Integer.class
+          };
+
   private static String[] COLUMN_NAMES =
-    {
-      "invoice",
-      "customer.firstName", "customer.lastName", "customer.street",
-      "customer.town", "customer.postalCode", "customer.country",
-      "customer.salutation", "invoice.date", "invoice.number",
-      "article.name", "article.number", "article.details",
-      "article.price", "article.count"
-    };
+          {
+            "invoice",
+            "customer.firstName", "customer.lastName", "customer.street",
+            "customer.town", "customer.postalCode", "customer.country",
+            "customer.salutation", "invoice.date", "invoice.number",
+            "article.name", "article.number", "article.details",
+            "article.price", "article.count"
+          };
 
   private transient Invoice[] invoicePerRow;
-  private transient Article []articlesPerRow;
+  private transient Article[] articlesPerRow;
 
   private ArrayList invoices;
   private int totalSize;
@@ -77,24 +77,24 @@ public class InvoiceTableModel extends AbstractTableModel
 
   public void addInvoice (final Invoice invoice)
   {
-    invoices.add (invoice);
+    invoices.add(invoice);
     invalidateCaches();
     fireTableDataChanged();
   }
 
   public void removeInvoice (final Invoice invoice)
   {
-    invoices.remove (invoice);
+    invoices.remove(invoice);
     invalidateCaches();
     fireTableDataChanged();
   }
 
   public Invoice getInvoice (final int invoice)
   {
-    return (Invoice) invoices.get (invoice);
+    return (Invoice) invoices.get(invoice);
   }
 
-  public void invalidateCaches()
+  public void invalidateCaches ()
   {
     int size = 0;
     for (int i = 0; i < invoices.size(); i++)
@@ -157,7 +157,7 @@ public class InvoiceTableModel extends AbstractTableModel
     return COLUMN_TYPES[columnIndex];
   }
 
-  private void fillCache()
+  private void fillCache ()
   {
     if (invoicePerRow != null && articlesPerRow != null)
     {
@@ -173,7 +173,7 @@ public class InvoiceTableModel extends AbstractTableModel
     final int invoiceSize = invoices.size();
     for (int i = 0; i < invoiceSize; i++)
     {
-      final Invoice inv = (Invoice) invoices.get (i);
+      final Invoice inv = (Invoice) invoices.get(i);
       final int articleCount = inv.getArticleCount();
       for (int ac = 0; ac < articleCount; ac++)
       {
@@ -201,21 +201,36 @@ public class InvoiceTableModel extends AbstractTableModel
 
     switch (columnIndex)
     {
-      case 0: return inv;
-      case 1: return inv.getCustomer().getFirstName();
-      case 2: return inv.getCustomer().getLastName();
-      case 3: return inv.getCustomer().getStreet();
-      case 4: return inv.getCustomer().getTown();
-      case 5: return inv.getCustomer().getPostalCode();
-      case 6: return inv.getCustomer().getCountry();
-      case 7: return inv.getCustomer().getSalutation();
-      case 8: return inv.getDate();
-      case 9: return inv.getInvoiceNumber();
-      case 10: return art.getName();
-      case 11: return art.getArticleNumber();
-      case 12: return art.getArticleDetails();
-      case 13: return new Float(art.getPrice());
-      case 14: return new Integer(inv.getArticleCount());
+      case 0:
+        return inv;
+      case 1:
+        return inv.getCustomer().getFirstName();
+      case 2:
+        return inv.getCustomer().getLastName();
+      case 3:
+        return inv.getCustomer().getStreet();
+      case 4:
+        return inv.getCustomer().getTown();
+      case 5:
+        return inv.getCustomer().getPostalCode();
+      case 6:
+        return inv.getCustomer().getCountry();
+      case 7:
+        return inv.getCustomer().getSalutation();
+      case 8:
+        return inv.getDate();
+      case 9:
+        return inv.getInvoiceNumber();
+      case 10:
+        return art.getName();
+      case 11:
+        return art.getArticleNumber();
+      case 12:
+        return art.getArticleDetails();
+      case 13:
+        return new Float(art.getPrice());
+      case 14:
+        return new Integer(inv.getArticleCount());
     }
     throw new IndexOutOfBoundsException("ColumnIndex");
   }

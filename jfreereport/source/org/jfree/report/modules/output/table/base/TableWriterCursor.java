@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriterCursor.java,v 1.5 2005/01/25 00:12:48 taqua Exp $
+ * $Id: TableWriterCursor.java,v 1.6 2005/02/19 13:30:01 taqua Exp $
  *
  * Changes
  * -------
@@ -39,29 +39,32 @@
 package org.jfree.report.modules.output.table.base;
 
 /**
- * A utility class for keeping track of the current output position on a table sheet.  Only the
- * vertical location is tracked, it begins at zero (the top of the page) and increases as the
- * cursor moves down the page.
+ * A utility class for keeping track of the current output position on a table sheet.
+ * Only the vertical location is tracked, it begins at zero (the top of the page) and
+ * increases as the cursor moves down the page.
  *
  * @author Thomas Morgner
  */
 public strictfp class TableWriterCursor
 {
-  /** The y-coordinate. */
+  /**
+   * The y-coordinate.
+   */
   private long y;
 
   /**
    * Default Constructor.
    */
-  public TableWriterCursor()
+  public TableWriterCursor ()
   {
   }
 
   /**
    * Adds the specified amount to the y-coordinate.
+   *
    * @param amount The amount that the cursor should advance down the page.
    */
-  public void advance(final long amount)
+  public void advance (final long amount)
   {
     if (amount < 0)
     {
@@ -72,12 +75,12 @@ public strictfp class TableWriterCursor
 
   /**
    * Moves the cursor to the given y-coordinate. All space beween the current position
-   * before the move and the new position is considered filled and won't get filled by
-   * the generator.
+   * before the move and the new position is considered filled and won't get filled by the
+   * generator.
    *
    * @param amount The amount that the cursor should advance down the page.
    */
-  public void advanceTo(final long amount)
+  public void advanceTo (final long amount)
   {
     if (amount < y)
     {
@@ -91,7 +94,7 @@ public strictfp class TableWriterCursor
    *
    * @return the current y-position of this cursor.
    */
-  public long getY()
+  public long getY ()
   {
     return y;
   }

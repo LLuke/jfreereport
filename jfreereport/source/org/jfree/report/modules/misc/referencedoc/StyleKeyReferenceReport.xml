@@ -14,7 +14,7 @@
 
   <report-config>
     <page-definition>
-      <page  orientation="portrait" pageformat="A4" topmargin="72" bottommargin="72" leftmargin="72" rightmargin="72"/>
+      <page orientation="portrait" pageformat="A4" topmargin="72" bottommargin="72" leftmargin="72" rightmargin="72"/>
     </page-definition>
     <configuration>
       <property name="org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.Author">JFreeReport - http://www.jfree.org/jfreereport</property>

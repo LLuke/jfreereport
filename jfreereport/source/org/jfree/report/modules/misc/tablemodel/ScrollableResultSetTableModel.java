@@ -25,7 +25,7 @@
  * ----------------------------------
  * (C)opyright 2002, 2003, by Thomas Morgner.
  *
- * $Id: ScrollableResultSetTableModel.java,v 1.4.4.1 2004/04/05 16:49:35 taqua Exp $
+ * $Id: ScrollableResultSetTableModel.java,v 1.6 2005/01/25 00:09:28 taqua Exp $
  *
  * Changes
  * -------
@@ -47,37 +47,49 @@ import org.jfree.report.util.Log;
  * A tableModel which is backed up by a java.sql.ResultSet. Use this to directly feed your
  * database data into JFreeReport. If you have trouble using this TableModel and you have
  * either enough memory or your query result is not huge, you may want to use
- * <code>ResultSetTableModelFactory.generateDefaultTableModel (ResultSet rs)</code>.
- * That implementation will read all data from the given ResultSet and keep that data in
+ * <code>ResultSetTableModelFactory.generateDefaultTableModel (ResultSet rs)</code>. That
+ * implementation will read all data from the given ResultSet and keep that data in
  * memory.
- * <p>
+ * <p/>
  * Use the close() function to close the ResultSet contained in this model.
  *
  * @author Thomas Morgner
  */
-public class ScrollableResultSetTableModel extends AbstractTableModel implements CloseableTableModel
+public class ScrollableResultSetTableModel extends AbstractTableModel
+        implements CloseableTableModel
 {
-  /** The scrollable ResultSet source. */
+  /**
+   * The scrollable ResultSet source.
+   */
   private ResultSet resultset;
-  /** The ResultSetMetaData object for this result set. */
+  /**
+   * The ResultSetMetaData object for this result set.
+   */
   private ResultSetMetaData dbmd;
-  /** The number of rows in the result set. */
+  /**
+   * The number of rows in the result set.
+   */
   private int rowCount;
-  /** Defines the column naming mode. */
+  /**
+   * Defines the column naming mode.
+   */
   private final boolean labelMapMode;
-  /** The column types as read from the result set. */
+  /**
+   * The column types as read from the result set.
+   */
   private Class[] types;
 
   /**
    * Constructs the model.
    *
-   * @param resultset  the result set.
-   * @param labelMapMode defines, whether to use column names or column labels
-   * to compute the column index.
+   * @param resultset    the result set.
+   * @param labelMapMode defines, whether to use column names or column labels to compute
+   *                     the column index.
    * @throws SQLException if there is a problem with the result set.
    */
-  public ScrollableResultSetTableModel(final ResultSet resultset, final boolean labelMapMode)
-      throws SQLException
+  public ScrollableResultSetTableModel (final ResultSet resultset,
+                                        final boolean labelMapMode)
+          throws SQLException
   {
     this.labelMapMode = labelMapMode;
     if (resultset != null)
@@ -91,26 +103,27 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   }
 
   /**
-   * Creates a new scrollable result set with no resultset assigned and
-   * the specified label map mode.
+   * Creates a new scrollable result set with no resultset assigned and the specified
+   * label map mode.
    *
-   * @param labelMapMode defines, whether to use column names or column labels
-   * to compute the column index.
+   * @param labelMapMode defines, whether to use column names or column labels to compute
+   *                     the column index.
    */
-  protected ScrollableResultSetTableModel(final boolean labelMapMode)
+  protected ScrollableResultSetTableModel (final boolean labelMapMode)
   {
     this.labelMapMode = labelMapMode;
   }
 
   /**
-   * Returns the column name mode used to map column names into column indices.
-   * If true, then the Label is used, else the Name is used.
+   * Returns the column name mode used to map column names into column indices. If true,
+   * then the Label is used, else the Name is used.
+   *
+   * @return true, if the column label is used for the mapping, false otherwise.
    *
    * @see ResultSetMetaData#getColumnLabel
    * @see ResultSetMetaData#getColumnName
-   * @return true, if the column label is used for the mapping, false otherwise.
    */
-  public boolean isLabelMapMode()
+  public boolean isLabelMapMode ()
   {
     return labelMapMode;
   }
@@ -119,10 +132,10 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
    * Updates the result set in this model with the given ResultSet object.
    *
    * @param resultset the new result set.
-   *
    * @throws SQLException if there is a problem with the result set.
    */
-  public void updateResultSet(final ResultSet resultset) throws SQLException
+  public void updateResultSet (final ResultSet resultset)
+          throws SQLException
   {
     if (this.resultset != null)
     {
@@ -147,7 +160,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   /**
    * Clears the model of the current result set. The resultset is closed.
    */
-  public void close()
+  public void close ()
   {
     // Close the old result set if needed.
     if (resultset != null)
@@ -169,12 +182,12 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   }
 
   /**
-   * Get a rowCount. This can be a very expensive operation on large
-   * datasets. Returns -1 if the total amount of rows is not known to the result set.
+   * Get a rowCount. This can be a very expensive operation on large datasets. Returns -1
+   * if the total amount of rows is not known to the result set.
    *
    * @return the row count.
    */
-  public int getRowCount()
+  public int getRowCount ()
   {
     if (resultset == null)
     {
@@ -205,14 +218,14 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   }
 
   /**
-   * Returns the number of columns in the ResultSet. Returns 0 if no result set is set
-   * or the column count could not be retrieved.
+   * Returns the number of columns in the ResultSet. Returns 0 if no result set is set or
+   * the column count could not be retrieved.
    *
    * @return the column count.
    *
    * @see java.sql.ResultSetMetaData#getColumnCount()
    */
-  public int getColumnCount()
+  public int getColumnCount ()
   {
     if (resultset == null)
     {
@@ -234,16 +247,15 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   }
 
   /**
-   * Returns the columnLabel or column name for the given column.
-   * Whether the label or the name is returned depends on the label map mode. 
+   * Returns the columnLabel or column name for the given column. Whether the label or the
+   * name is returned depends on the label map mode.
    *
-   * @param column  the column index.
-   *
+   * @param column the column index.
    * @return the column name.
    *
    * @see java.sql.ResultSetMetaData#getColumnLabel(int)
    */
-  public String getColumnName(final int column)
+  public String getColumnName (final int column)
   {
     if (dbmd != null)
     {
@@ -267,14 +279,14 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   }
 
   /**
-   * Returns the value of the specified row and the specified column from within the resultset.
+   * Returns the value of the specified row and the specified column from within the
+   * resultset.
    *
-   * @param row  the row index.
-   * @param column  the column index.
-   *
+   * @param row    the row index.
+   * @param column the column index.
    * @return the value.
    */
-  public Object getValueAt(final int row, final int column)
+  public Object getValueAt (final int row, final int column)
   {
     if (resultset != null)
     {
@@ -292,13 +304,13 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   }
 
   /**
-   * Returns the class of the resultset column. Returns Object.class if an error occurred.
+   * Returns the class of the resultset column. Returns Object.class if an error
+   * occurred.
    *
-   * @param column  the column index.
-   *
+   * @param column the column index.
    * @return the column class.
    */
-  public Class getColumnClass(final int column)
+  public Class getColumnClass (final int column)
   {
     if (types != null)
     {
@@ -321,13 +333,13 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
 
 
   /**
-   * Returns the classname of the resultset column. Returns Object.class if an error occurred.
+   * Returns the classname of the resultset column. Returns Object.class if an error
+   * occurred.
    *
-   * @param column  the column index.
-   *
+   * @param column the column index.
    * @return the column class name.
    */
-  public String getColumnClassName(final int column)
+  public String getColumnClassName (final int column)
   {
     if (dbmd != null)
     {
@@ -337,15 +349,13 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   }
 
   /**
-   * Just removes the word class from the start of the classname string
-   * McKoiDB version 0.92 was not able to properly return classnames of
-   * resultset elements.
+   * Just removes the word class from the start of the classname string McKoiDB version
+   * 0.92 was not able to properly return classnames of resultset elements.
    *
-   * @param classname  the class name.
-   *
+   * @param classname the class name.
    * @return the modified class name.
    */
-  private String mckoiDBFixClassName(final String classname)
+  private String mckoiDBFixClassName (final String classname)
   {
     if (classname.startsWith("class "))
     {

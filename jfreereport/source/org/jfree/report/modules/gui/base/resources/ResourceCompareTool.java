@@ -24,7 +24,7 @@
  * ResourceCompareTool.java
  * ------------------------
  *
- * $Id: ResourceCompareTool.java,v 1.5 2004/03/27 17:23:19 taqua Exp $
+ * $Id: ResourceCompareTool.java,v 1.6 2004/05/07 14:29:47 mungady Exp $
  *
  * Changes
  * -------
@@ -40,13 +40,13 @@ import java.util.Hashtable;
 import java.util.ResourceBundle;
 
 /**
- * The ResourceCompareTool provides simple reporting capabilities to compare a
- * localized resource bundle with the default resource bundle.
- * <p>
- * This report contains all keys, which are undefined in the localisation, which
- * are defined with an incompabile object value or which are not defined in the
- * default resource bundle, but defined in the localized version.
- * <p>
+ * The ResourceCompareTool provides simple reporting capabilities to compare a localized
+ * resource bundle with the default resource bundle.
+ * <p/>
+ * This report contains all keys, which are undefined in the localisation, which are
+ * defined with an incompabile object value or which are not defined in the default
+ * resource bundle, but defined in the localized version.
+ * <p/>
  * Using the automated comparing will help to make translations more easier.
  *
  * @author Thomas Morgner
@@ -56,18 +56,18 @@ public final class ResourceCompareTool
   /**
    * Default Constructor.
    */
-  private ResourceCompareTool()
+  private ResourceCompareTool ()
   {
   }
 
   /**
    * Loads the resource bundle for the given locale.
    *
-   * @param s the locale specification as ISO country code.
+   * @param s    the locale specification as ISO country code.
    * @param base the base name of the resource bundle.
    * @return the loaded resources or null, if there is no such translation.
    */
-  private static ResourceBundle loadLocale(final String base, final String s)
+  private static ResourceBundle loadLocale (final String base, final String s)
   {
     try
     {
@@ -95,10 +95,10 @@ public final class ResourceCompareTool
    * are valid and that no extra keys are defined. It also prints some status information
    * that may be helpfull to verify the integrity of the translation.
    *
-   * @param base the base name of the resource bundle.
+   * @param base   the base name of the resource bundle.
    * @param locale the locale that should be tested.
    */
-  public static void executeTest(final String base, final String locale)
+  public static void executeTest (final String base, final String locale)
   {
     final ResourceBundle resources = loadLocale(base, null);
     final ResourceBundle compare = loadLocale(base, locale);
@@ -164,7 +164,7 @@ public final class ResourceCompareTool
     Collections.sort(notImplemented);
 
     System.out.println("The following keys return values, which are not of the same baseclass as "
-        + "the original key.");
+            + "the original key.");
     for (int i = 0; i < wrongType.size(); i++)
     {
       System.out.println(wrongType.get(i));
@@ -175,7 +175,7 @@ public final class ResourceCompareTool
 
     System.out.println("The following keys are not implemented by the localisation.");
     System.out.println("This does not always indicate an error, if the key does not need to be "
-        + "translated.");
+            + "translated.");
     for (int i = 0; i < notImplemented.size(); i++)
     {
       System.out.println(notImplemented.get(i));
@@ -185,7 +185,7 @@ public final class ResourceCompareTool
     System.out.println("---------------------------------------\n\n");
 
     System.out.println("The following are invalid. These keys are not implemented by the base "
-        + "class.");
+            + "class.");
     for (int i = 0; i < invalidKey.size(); i++)
     {
       System.out.println(invalidKey.get(i));
@@ -202,7 +202,7 @@ public final class ResourceCompareTool
    *
    * @param args a string array with only one element, the ISO code of the localisation.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     if (args.length != 2)
     {

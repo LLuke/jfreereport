@@ -16,7 +16,7 @@ public class IntList
   {
     if (data.length <= c)
     {
-      final int[] newData = new int[Math.max (data.length + increment, c + 1)];
+      final int[] newData = new int[Math.max(data.length + increment, c + 1)];
       System.arraycopy(data, 0, newData, 0, size);
       data = newData;
     }
@@ -43,12 +43,12 @@ public class IntList
     size = 0;
   }
 
-  public int size()
+  public int size ()
   {
     return size;
   }
 
-  public int[] toArray()
+  public int[] toArray ()
   {
     final int[] retval = new int[size];
     System.arraycopy(data, 0, retval, 0, size);

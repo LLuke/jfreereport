@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: OperationResultTableModel.java,v 1.7 2004/05/07 14:29:48 mungady Exp $
+ * $Id: OperationResultTableModel.java,v 1.8 2005/01/25 00:05:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,51 +45,64 @@ import org.jfree.report.modules.gui.converter.ReportConverterGUI;
 import org.jfree.report.modules.parser.base.OperationResult;
 
 /**
- * The operation result tablemodel is used to display the parser and converter
- * results to the user.
- * 
+ * The operation result tablemodel is used to display the parser and converter results to
+ * the user.
+ *
  * @author Thomas Morgner
  */
 public class OperationResultTableModel extends AbstractTableModel
 {
-  /** An internal column mapping. */
+  /**
+   * An internal column mapping.
+   */
   private static final int COLUMN_SEVERITY = 0;
-  /** An internal column mapping. */
+  /**
+   * An internal column mapping.
+   */
   private static final int COLUMN_MESSAGE = 1;
-  /** An internal column mapping. */
+  /**
+   * An internal column mapping.
+   */
   private static final int COLUMN_LINE = 2;
-  /** An internal column mapping. */
+  /**
+   * An internal column mapping.
+   */
   private static final int COLUMN_COLUMN = 3;
 
-  /** The operation results are read from the parser. */
+  /**
+   * The operation results are read from the parser.
+   */
   private OperationResult[] data;
-  /** The resource bundle used to translate the column names. */
+  /**
+   * The resource bundle used to translate the column names.
+   */
   private final ResourceBundle resources;
 
-  /** The column name keys for the resource bundle. */
+  /**
+   * The column name keys for the resource bundle.
+   */
   private static final String[] COLUMN_NAMES =
-      {
-        "ResultTableModel.Severity",
-        "ResultTableModel.Message",
-        "ResultTableModel.Line",
-        "ResultTableModel.Column"
-      };
+          {
+            "ResultTableModel.Severity",
+            "ResultTableModel.Message",
+            "ResultTableModel.Line",
+            "ResultTableModel.Column"
+          };
 
   /**
    * Creates a new and initially empty operation result table model.
    */
-  public OperationResultTableModel()
+  public OperationResultTableModel ()
   {
     this(new OperationResult[0]);
   }
 
   /**
-   * Creates a new operation result table model which will be filled with
-   * the given data.
-   * 
+   * Creates a new operation result table model which will be filled with the given data.
+   *
    * @param data the operation result objects from the parser or writer.
    */
-  public OperationResultTableModel(final OperationResult[] data)
+  public OperationResultTableModel (final OperationResult[] data)
   {
     this.resources = ResourceBundle.getBundle(ReportConverterGUI.BASE_RESOURCE_CLASS);
     setData(data);
@@ -97,7 +110,7 @@ public class OperationResultTableModel extends AbstractTableModel
 
   /**
    * Sets the data for the tablemodel.
-   * 
+   *
    * @param data the data.
    */
   public void setData (final OperationResult[] data)
@@ -119,28 +132,28 @@ public class OperationResultTableModel extends AbstractTableModel
   }
 
   /**
-   * Returns the number of rows in the model. A
-   * <code>JTable</code> uses this method to determine how many rows it
-   * should display.  This method should be quick, as it
-   * is called frequently during rendering.
+   * Returns the number of rows in the model. A <code>JTable</code> uses this method to
+   * determine how many rows it should display.  This method should be quick, as it is
+   * called frequently during rendering.
    *
    * @return the number of rows in the model
+   *
    * @see #getColumnCount
    */
-  public int getRowCount()
+  public int getRowCount ()
   {
     return data.length;
   }
 
   /**
-   * Returns the number of columns in the model. A
-   * <code>JTable</code> uses this method to determine how many columns it
-   * should create and display by default.
+   * Returns the number of columns in the model. A <code>JTable</code> uses this method to
+   * determine how many columns it should create and display by default.
    *
    * @return the number of columns in the model
+   *
    * @see #getRowCount
    */
-  public int getColumnCount()
+  public int getColumnCount ()
   {
     return COLUMN_NAMES.length;
   }
@@ -149,49 +162,58 @@ public class OperationResultTableModel extends AbstractTableModel
    * Returns the value for the cell at <code>columnIndex</code> and
    * <code>rowIndex</code>.
    *
-   * @param rowIndex the row whose value is to be queried
+   * @param rowIndex    the row whose value is to be queried
    * @param columnIndex the column whose value is to be queried
    * @return the value Object at the specified cell
    */
-  public Object getValueAt(final int rowIndex, final int columnIndex)
+  public Object getValueAt (final int rowIndex, final int columnIndex)
   {
     switch (columnIndex)
     {
-      case COLUMN_SEVERITY: return data[rowIndex].getSeverity();
-      case COLUMN_MESSAGE: return (data[rowIndex].getMessage());
-      case COLUMN_LINE: return new Integer(data[rowIndex].getLine());
-      case COLUMN_COLUMN: return new Integer(data[rowIndex].getColumn());
-      default: throw new IndexOutOfBoundsException("The column index is invalid");
+      case COLUMN_SEVERITY:
+        return data[rowIndex].getSeverity();
+      case COLUMN_MESSAGE:
+        return (data[rowIndex].getMessage());
+      case COLUMN_LINE:
+        return new Integer(data[rowIndex].getLine());
+      case COLUMN_COLUMN:
+        return new Integer(data[rowIndex].getColumn());
+      default:
+        throw new IndexOutOfBoundsException("The column index is invalid");
     }
   }
 
   /**
-   *  Returns <code>Object.class</code> regardless of <code>columnIndex</code>.
+   * Returns <code>Object.class</code> regardless of <code>columnIndex</code>.
    *
-   *  @param columnIndex  the column being queried
-   *  @return the Object.class
+   * @param columnIndex the column being queried
+   * @return the Object.class
    */
-  public Class getColumnClass(final int columnIndex)
+  public Class getColumnClass (final int columnIndex)
   {
     switch (columnIndex)
     {
-      case COLUMN_SEVERITY: return Object.class;
-      case COLUMN_MESSAGE: return String.class;
-      case COLUMN_LINE: return Integer.class;
-      case COLUMN_COLUMN: return Integer.class;
-      default: throw new IndexOutOfBoundsException("The column index is invalid");
+      case COLUMN_SEVERITY:
+        return Object.class;
+      case COLUMN_MESSAGE:
+        return String.class;
+      case COLUMN_LINE:
+        return Integer.class;
+      case COLUMN_COLUMN:
+        return Integer.class;
+      default:
+        throw new IndexOutOfBoundsException("The column index is invalid");
     }
   }
 
   /**
-   *  Returns a default name for the column using spreadsheet conventions:
-   *  A, B, C, ... Z, AA, AB, etc.  If <code>column</code> cannot be found,
-   *  returns an empty string.
+   * Returns a default name for the column using spreadsheet conventions: A, B, C, ... Z,
+   * AA, AB, etc.  If <code>column</code> cannot be found, returns an empty string.
    *
-   * @param column  the column being queried
+   * @param column the column being queried
    * @return a string containing the default name of <code>column</code>
    */
-  public String getColumnName(final int column)
+  public String getColumnName (final int column)
   {
     return resources.getString(COLUMN_NAMES[column]);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);Stefan Prange
  *
- * $Id: DefaultImageReference.java,v 1.4 2005/02/04 19:22:51 taqua Exp $
+ * $Id: DefaultImageReference.java,v 1.5 2005/02/23 19:31:32 taqua Exp $
  *
  * Changes:
  * --------
@@ -53,10 +53,10 @@ import org.jfree.report.util.WaitingImageObserver;
 
 /**
  * An image reference encapsulates the source of an image together with a
- * <code>java.awt.Image</code>. The source is used to create a higher resolution
- * version if needed. The source file/URL may also be inlined into the output
- * target, to create better results.
- * <p>
+ * <code>java.awt.Image</code>. The source is used to create a higher resolution version
+ * if needed. The source file/URL may also be inlined into the output target, to create
+ * better results.
+ * <p/>
  * An ImageReference is always used in conjunction with an ImageElement.
  *
  * @author Thomas Morgner
@@ -65,33 +65,45 @@ public class DefaultImageReference
         implements Serializable, URLImageContainer, LocalImageContainer
 {
 
-  /** The image. */
+  /**
+   * The image.
+   */
   private Image image;
 
-  /** The image URL. */
+  /**
+   * The image URL.
+   */
   private URL url;
 
-  /** The width of the (unscaled) image. */
+  /**
+   * The width of the (unscaled) image.
+   */
   private int width;
 
-  /** The height of the (unscaled) image. */
+  /**
+   * The height of the (unscaled) image.
+   */
   private int height;
 
-  /** The scale factor. */
+  /**
+   * The scale factor.
+   */
   private float scaleX = 1.0f;
 
-  /** The scale factor. */
+  /**
+   * The scale factor.
+   */
   private float scaleY = 1.0f;
 
   /**
-   * Creates a new ImageReference with an origin of 0,0 and the desired
-   * width. The image data is read from the given URL.
+   * Creates a new ImageReference with an origin of 0,0 and the desired width. The image
+   * data is read from the given URL.
    *
    * @param url the source url. The url must be readable while generating reports.
-   *
    * @throws IOException if the url could not be read.
    */
-  public DefaultImageReference(final URL url) throws IOException
+  public DefaultImageReference (final URL url)
+          throws IOException
   {
     if (url == null)
     {
@@ -111,7 +123,7 @@ public class DefaultImageReference
    * @param img the image for this reference
    * @throws NullPointerException if the image is null
    */
-  public DefaultImageReference(final Image img)
+  public DefaultImageReference (final Image img)
   {
     if (img == null)
     {
@@ -127,10 +139,10 @@ public class DefaultImageReference
   /**
    * Creates a new image reference.
    *
-   * @param w  the width of the unscaled image.
-   * @param h  the height of the unscaled image.
+   * @param w the width of the unscaled image.
+   * @param h the height of the unscaled image.
    */
-  public DefaultImageReference(final int w, final int h)
+  public DefaultImageReference (final int w, final int h)
   {
     this.width = w;
     this.height = h;
@@ -145,13 +157,11 @@ public class DefaultImageReference
   }
 
   /**
-   * Returns the current image instance.
-   * <P>
-   * The image is not scaled in any way.
+   * Returns the current image instance. <P> The image is not scaled in any way.
    *
    * @return The current image instance.
    */
-  public Image getImage()
+  public Image getImage ()
   {
     return image;
   }
@@ -161,7 +171,7 @@ public class DefaultImageReference
    *
    * @return The URL.
    */
-  public URL getSourceURL()
+  public URL getSourceURL ()
   {
     return url;
   }
@@ -171,7 +181,7 @@ public class DefaultImageReference
    *
    * @return The string.
    */
-  public String toString()
+  public String toString ()
   {
     final StringBuffer buf = new StringBuffer();
 
@@ -188,10 +198,9 @@ public class DefaultImageReference
    * Checks for equality.
    *
    * @param o the object to test.
-   *
    * @return true if the specified object is equal to this one.
    */
-  public boolean equals(final Object o)
+  public boolean equals (final Object o)
   {
     if (o == null)
     {
@@ -222,7 +231,7 @@ public class DefaultImageReference
    *
    * @return the hashcode
    */
-  public int hashCode()
+  public int hashCode ()
   {
     int result;
     result = (image != null ? image.hashCode() : 0);
@@ -237,7 +246,8 @@ public class DefaultImageReference
    *
    * @throws CloneNotSupportedException this should never be thrown.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final DefaultImageReference ref = (DefaultImageReference) super.clone();
     return ref;
@@ -248,7 +258,7 @@ public class DefaultImageReference
    *
    * @return the image width.
    */
-  public int getImageWidth()
+  public int getImageWidth ()
   {
     return width;
   }
@@ -258,14 +268,14 @@ public class DefaultImageReference
    *
    * @return the image height.
    */
-  public int getImageHeight()
+  public int getImageHeight ()
   {
     return height;
   }
 
   /**
-   * Checks, whether this image reference is loadable. A default image reference
-   * is loadable, if a valid URL has been set.
+   * Checks, whether this image reference is loadable. A default image reference is
+   * loadable, if a valid URL has been set.
    *
    * @return true, if it is loadable, false otherwise.
    */
@@ -275,8 +285,8 @@ public class DefaultImageReference
   }
 
   /**
-   * Returns the identity information. This instance returns the URL
-   * of the image, if any.
+   * Returns the identity information. This instance returns the URL of the image, if
+   * any.
    *
    * @return the image identifier.
    */
@@ -286,8 +296,8 @@ public class DefaultImageReference
   }
 
   /**
-   * Returns the name of this image reference. If an URL has been set, this
-   * will return the URL of the image, else null is returned.
+   * Returns the name of this image reference. If an URL has been set, this will return
+   * the URL of the image, else null is returned.
    *
    * @return the name.
    */
@@ -312,8 +322,8 @@ public class DefaultImageReference
   }
 
   /**
-   * Returns a predefined scaling factor. That scaling will be applied before
-   * any layout specific scaling is done.
+   * Returns a predefined scaling factor. That scaling will be applied before any layout
+   * specific scaling is done.
    *
    * @return the scale factor.
    */
@@ -323,8 +333,8 @@ public class DefaultImageReference
   }
 
   /**
-   * Returns a predefined scaling factor. That scaling will be applied before
-   * any layout specific scaling is done.
+   * Returns a predefined scaling factor. That scaling will be applied before any layout
+   * specific scaling is done.
    *
    * @return the scale factor.
    */
@@ -334,8 +344,8 @@ public class DefaultImageReference
   }
 
   /**
-   * Defines a predefined scaling factor. That scaling will be applied before
-   * any layout specific scaling is done.
+   * Defines a predefined scaling factor. That scaling will be applied before any layout
+   * specific scaling is done.
    *
    * @param sx the scale factor.
    * @param sy the scale factor.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PlainTextReportUtil.java,v 1.6 2004/05/07 12:53:09 mungady Exp $
+ * $Id: PlainTextReportUtil.java,v 1.7 2005/01/25 00:11:21 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,9 +49,8 @@ import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 
 /**
- * An utility class to write an report into a plain text file. If you need more
- * control over the writing process, you will have to implement your own write
- * method.
+ * An utility class to write an report into a plain text file. If you need more control
+ * over the writing process, you will have to implement your own write method.
  *
  * @author Thomas Morgner
  */
@@ -59,30 +58,29 @@ public final class PlainTextReportUtil
 {
   /**
    * Default Constructor.
-   *
    */
-  private PlainTextReportUtil()
+  private PlainTextReportUtil ()
   {
   }
 
   /**
    * Saves a report to plain text format.
    *
-   * @param report  the report.
+   * @param report   the report.
    * @param filename target file name.
-   *
    * @throws ReportProcessingException if the report processing failed.
-   * @throws IOException if there was an IOerror while processing the report.
-   * @throws OutputTargetException if there is a problem with the output target.
+   * @throws IOException               if there was an IOerror while processing the
+   *                                   report.
+   * @throws OutputTargetException     if there is a problem with the output target.
    */
-  public static void createPlainText(final JFreeReport report, final String filename)
-      throws IOException, ReportProcessingException, OutputTargetException
+  public static void createPlainText (final JFreeReport report, final String filename)
+          throws IOException, ReportProcessingException, OutputTargetException
   {
     final PageableReportProcessor pr = new PageableReportProcessor(report);
     final OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
     final TextFilePrinterDriver pc = new TextFilePrinterDriver(fout, 6, 10);
     final PlainTextOutputTarget target =
-        new PlainTextOutputTarget(pc);
+            new PlainTextOutputTarget(pc);
     pr.setOutputTarget(target);
     target.open();
     pr.processReport();

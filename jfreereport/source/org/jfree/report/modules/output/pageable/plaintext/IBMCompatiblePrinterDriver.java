@@ -46,16 +46,18 @@ public class IBMCompatiblePrinterDriver implements PrinterDriver
     }
 
     /**
-     * Translates the given Codepage String into a IBM Byte Code. The encoding
-     * string must be in the format CpXXXX where XXXX is the number of the codepage.
-     * <p>
+     * Translates the given Codepage String into a IBM Byte Code. The encoding string must
+     * be in the format CpXXXX where XXXX is the number of the codepage.
+     * <p/>
      *
      * @param cp the code page
      * @return the epson byte code.
-     * @throws java.io.UnsupportedEncodingException if the encoding is not supported.
+     *
+     * @throws java.io.UnsupportedEncodingException
+     *          if the encoding is not supported.
      */
-    private static byte[] translateCodePage(final String cp)
-        throws UnsupportedEncodingException
+    private static byte[] translateCodePage (final String cp)
+            throws UnsupportedEncodingException
     {
       // Mapping Rule:
       // n = NumberofCodePage + (10000 if codepage contains a character (Cp437G))
@@ -231,7 +233,7 @@ public class IBMCompatiblePrinterDriver implements PrinterDriver
     this.out = out;
     this.charsPerInch = charsPerInch;
     this.linesPerInch = linesPerInch;
-    this.endOfPage = new byte[] { (byte) PrinterDriver.FORM_FEED };
+    this.endOfPage = new byte[]{(byte) PrinterDriver.FORM_FEED};
     this.printerSpecification = new GenericIBMPrinterSpecification();
     this.fontMapper = new DefaultFontMapper();
     this.fontMapper.setDefaultFont(PrinterDriver.SELECT_FONT_FROM_MENU);
@@ -262,8 +264,8 @@ public class IBMCompatiblePrinterDriver implements PrinterDriver
   /**
    * Ends a new line.
    *
-   * @throws java.io.IOException if an IOError occures.
    * @param overflow
+   * @throws java.io.IOException if an IOError occures.
    */
   public void endLine (final boolean overflow)
           throws IOException
@@ -281,8 +283,8 @@ public class IBMCompatiblePrinterDriver implements PrinterDriver
   /**
    * Ends the current page. Should print empty lines or an FORM_FEED command.
    *
-   * @throws java.io.IOException if there was an IOError while writing the command
    * @param overflow
+   * @throws java.io.IOException if there was an IOError while writing the command
    */
   public void endPage (final boolean overflow)
           throws IOException
@@ -435,10 +437,11 @@ public class IBMCompatiblePrinterDriver implements PrinterDriver
    * Defines the line spacing for the printer.
    *
    * @param lineHeight the height of a single line in points (1/72 inch).
-   * @throws java.io.IOException if an IOException occured while updating the printer state.
+   * @throws java.io.IOException if an IOException occured while updating the printer
+   *                             state.
    */
-  public void sendLineSpacing(final int lineHeight)
-      throws IOException
+  public void sendLineSpacing (final int lineHeight)
+          throws IOException
   {
     out.write(0x1b);
     out.write(0x41);
@@ -477,17 +480,17 @@ public class IBMCompatiblePrinterDriver implements PrinterDriver
   }
 
   /**
-   * Defines the font style for the printed text. The IBM-CommandSet does not
-   * support strike-through.
+   * Defines the font style for the printed text. The IBM-CommandSet does not support
+   * strike-through.
    *
-   * @param bold true, if the text should be printed in bold mode.
-   * @param italic true, if the text should be italic, false otherwise
+   * @param bold      true, if the text should be printed in bold mode.
+   * @param italic    true, if the text should be italic, false otherwise
    * @param underline true, if the text should be underlined, false otherwise
    * @throws java.io.IOException if there was an IOError while writing the command
    */
-  private void sendFontStyle(final boolean bold, final boolean italic,
-                            final boolean underline)
-      throws IOException
+  private void sendFontStyle (final boolean bold, final boolean italic,
+                              final boolean underline)
+          throws IOException
   {
     if (driverState.isBold())
     {
@@ -590,7 +593,7 @@ public class IBMCompatiblePrinterDriver implements PrinterDriver
   }
 
   private void sendDefineCodepage (final String codePage)
-    throws IOException
+          throws IOException
   {
     final PrinterEncoding spec = getPrinterSpecification().getEncoding(codePage);
     final byte[] cp = spec.getCode();
@@ -610,7 +613,7 @@ public class IBMCompatiblePrinterDriver implements PrinterDriver
   }
 
   private void sendAutoLF (final boolean autoLF)
-    throws IOException
+          throws IOException
   {
     if (autoLF == false)
     {
@@ -643,7 +646,7 @@ public class IBMCompatiblePrinterDriver implements PrinterDriver
           throws IOException
   {
     if (encodingUtilities != null &&
-        encodingUtilities.getEncoding().equals(encoding))
+            encodingUtilities.getEncoding().equals(encoding))
     {
       return encodingUtilities;
     }

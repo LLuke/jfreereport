@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TriggerPageFooterFunction.java,v 1.1.2.3 2004/12/30 14:46:12 taqua Exp $
+ * $Id: TriggerPageFooterFunction.java,v 1.2 2005/01/25 01:14:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,17 +41,15 @@ package org.jfree.report.function;
 import org.jfree.report.event.ReportEvent;
 
 /**
- * This function enables a "PageFooter only on last page"
- * functionality.
+ * This function enables a "PageFooter only on last page" functionality.
  *
  * @author Thomas Morgner
  */
 public class TriggerPageFooterFunction extends AbstractFunction
 {
   /**
-   * Creates a new TriggerPageFooterFunction with no name.
-   * You have to define one using "setName" or the function
-   * will not work.
+   * Creates a new TriggerPageFooterFunction with no name. You have to define one using
+   * "setName" or the function will not work.
    */
   public TriggerPageFooterFunction ()
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextFieldElementFactory.java,v 1.6 2004/05/07 08:24:41 mungady Exp $
+ * $Id: TextFieldElementFactory.java,v 1.7 2005/02/19 13:29:55 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,22 +51,26 @@ import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
 
 /**
- * A factory to define text fields. Text fields read their content from the
- * dataRow and try to print it as plain text (using toString() if required).
+ * A factory to define text fields. Text fields read their content from the dataRow and
+ * try to print it as plain text (using toString() if required).
  *
  * @author Thomas Morgner
  */
 public class TextFieldElementFactory extends TextElementFactory
 {
-  /** The fieldname of the datarow from where to read the content. */
+  /**
+   * The fieldname of the datarow from where to read the content.
+   */
   private String fieldname;
-  /** The nullstring of the text element if the translation was not found. */
+  /**
+   * The nullstring of the text element if the translation was not found.
+   */
   private String nullString;
 
   /**
    * DefaultConstructor.
    */
-  public TextFieldElementFactory()
+  public TextFieldElementFactory ()
   {
   }
 
@@ -75,40 +79,40 @@ public class TextFieldElementFactory extends TextElementFactory
    *
    * @return the field name.
    */
-  public String getFieldname()
+  public String getFieldname ()
   {
     return fieldname;
   }
 
   /**
-   * Defines the field name from where to read the content of the element.
-   * The field name is the name of a datarow column.
+   * Defines the field name from where to read the content of the element. The field name
+   * is the name of a datarow column.
    *
    * @param fieldname the field name.
    */
-  public void setFieldname(final String fieldname)
+  public void setFieldname (final String fieldname)
   {
     this.fieldname = fieldname;
   }
 
   /**
-   * Returns the null string for the text element. The null string is used when no
-   * content is found for that element.
+   * Returns the null string for the text element. The null string is used when no content
+   * is found for that element.
    *
    * @return the null string.
    */
-  public String getNullString()
+  public String getNullString ()
   {
     return nullString;
   }
 
   /**
-   * Defines the null string for the text element. The null string is used when no
-   * content is found for that element. The nullstring itself can be null.
+   * Defines the null string for the text element. The null string is used when no content
+   * is found for that element. The nullstring itself can be null.
    *
    * @param nullString the null string.
    */
-  public void setNullString(final String nullString)
+  public void setNullString (final String nullString)
   {
     this.nullString = nullString;
   }
@@ -116,12 +120,12 @@ public class TextFieldElementFactory extends TextElementFactory
   /**
    * Creates the text field element.
    *
-   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
-   *
    * @return the generated text field element
+   *
    * @throws IllegalStateException if the fieldname is null.
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
    */
-  public Element createElement()
+  public Element createElement ()
   {
     if (getFieldname() == null)
     {
@@ -146,60 +150,58 @@ public class TextFieldElementFactory extends TextElementFactory
   /**
    * Creates a new TextElement without any additional filtering.
    *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the text color of this text element
+   * @param name       the name of the new element
+   * @param bounds     the bounds of the new element
+   * @param paint      the text color of this text element
    * @param alignment  the horizontal text alignment.
-   * @param font the font for this element
+   * @param font       the font for this element
    * @param nullString the text used when the value of this element is null
-   * @param field the field in the datamodel to retrieve values from
-   *
+   * @param field      the field in the datamodel to retrieve values from
    * @return a report element for displaying <code>String</code> objects.
    *
-   * @throws NullPointerException if bounds, name or function are null
+   * @throws NullPointerException     if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createStringElement(final String name,
-                                                final Rectangle2D bounds,
-                                                final Color paint,
-                                                final ElementAlignment alignment,
-                                                final FontDefinition font,
-                                                final String nullString,
-                                                final String field)
+  public static TextElement createStringElement (final String name,
+                                                 final Rectangle2D bounds,
+                                                 final Color paint,
+                                                 final ElementAlignment alignment,
+                                                 final FontDefinition font,
+                                                 final String nullString,
+                                                 final String field)
   {
     return createStringElement(name, bounds, paint, alignment,
-        ElementAlignment.TOP, font, nullString, field);
+            ElementAlignment.TOP, font, nullString, field);
   }
 
   /**
    * Creates a new TextElement without any additional filtering.
    *
-   * @param name  the name of the new element
-   * @param bounds  the bounds of the new element
-   * @param paint  the text color of this text element
+   * @param name       the name of the new element
+   * @param bounds     the bounds of the new element
+   * @param paint      the text color of this text element
    * @param alignment  the horizontal text alignment.
-   * @param valign  the vertical alignment.
-   * @param font  the font for this element
-   * @param nullString  the text used when the value of this element is null
-   * @param field  the field in the datamodel to retrieve values from
-   *
+   * @param valign     the vertical alignment.
+   * @param font       the font for this element
+   * @param nullString the text used when the value of this element is null
+   * @param field      the field in the datamodel to retrieve values from
    * @return a report element for displaying <code>String</code> objects.
    *
-   * @throws NullPointerException if bounds, name or function are null
+   * @throws NullPointerException     if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createStringElement(final String name,
-                                                final Rectangle2D bounds,
-                                                final Color paint,
-                                                final ElementAlignment alignment,
-                                                final ElementAlignment valign,
-                                                final FontDefinition font,
-                                                final String nullString,
-                                                final String field)
+  public static TextElement createStringElement (final String name,
+                                                 final Rectangle2D bounds,
+                                                 final Color paint,
+                                                 final ElementAlignment alignment,
+                                                 final ElementAlignment valign,
+                                                 final FontDefinition font,
+                                                 final String nullString,
+                                                 final String field)
   {
     final TextFieldElementFactory factory = new TextFieldElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setName(name);
     factory.setColor(paint);
     factory.setHorizontalAlignment(alignment);

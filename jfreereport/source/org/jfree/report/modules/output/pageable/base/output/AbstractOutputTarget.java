@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.15 2005/02/19 15:41:22 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.16 2005/02/19 20:10:26 taqua Exp $
  *
  * Changes
  * -------
@@ -91,19 +91,23 @@ import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
 
 /**
- * The abstract OutputTarget implements base code for all pageable OutputTargets.
- * This implementation contains base functions to process the MetaPage objects
- * to create the real output.
+ * The abstract OutputTarget implements base code for all pageable OutputTargets. This
+ * implementation contains base functions to process the MetaPage objects to create the
+ * real output.
  *
  * @author David Gilbert
  * @author Thomas Morgner
  */
 public abstract strictfp class AbstractOutputTarget implements OutputTarget
 {
-  /** Storage for the output target properties. */
+  /**
+   * Storage for the output target properties.
+   */
   private final Properties properties;
 
-  /** The content factory used to create content for this output-target. */
+  /**
+   * The content factory used to create content for this output-target.
+   */
   private final ContentFactory contentFactory;
 
   private StrictBounds operationBounds;
@@ -118,14 +122,14 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
   }
 
   /**
-   * Defines a property for this output target. Properties are the standard way of configuring
-   * an output target.
+   * Defines a property for this output target. Properties are the standard way of
+   * configuring an output target.
    *
-   * @param property  the name of the property to set (<code>null</code> not permitted).
-   * @param value  the value of the property.  If the value is <code>null</code>, the property is
-   * removed from the output target.
+   * @param property the name of the property to set (<code>null</code> not permitted).
+   * @param value    the value of the property.  If the value is <code>null</code>, the
+   *                 property is removed from the output target.
    */
-  public void setProperty(final String property, final String value)
+  public void setProperty (final String property, final String value)
   {
     if (property == null)
     {
@@ -143,32 +147,30 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
   }
 
   /**
-   * Queries the property named with <code>property</code>. If the property is not found, <code>
-   * null</code> is returned.
+   * Queries the property named with <code>property</code>. If the property is not found,
+   * <code> null</code> is returned.
    *
    * @param property the name of the property to be queried
-   *
    * @return the value stored under the given property name
    *
    * @throws java.lang.NullPointerException if <code>property</code> is null
    */
-  public String getProperty(final String property)
+  public String getProperty (final String property)
   {
     return getProperty(property, null);
   }
 
   /**
-   * Queries the property named with <code>property</code>. If the property is not found, the
-   * default value is returned.
+   * Queries the property named with <code>property</code>. If the property is not found,
+   * the default value is returned.
    *
-   * @param property the name of the property to be queried
+   * @param property     the name of the property to be queried
    * @param defaultValue the defaultvalue returned if there is no such property
-   *
    * @return the value stored under the given property name
    *
    * @throws java.lang.NullPointerException if <code>property</code> is null
    */
-  public String getProperty(final String property, final String defaultValue)
+  public String getProperty (final String property, final String defaultValue)
   {
     if (property == null)
     {
@@ -188,31 +190,31 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
    *
    * @return the enumeration.
    */
-  protected Iterator getPropertyNames()
+  protected Iterator getPropertyNames ()
   {
     return properties.keySet().iterator();
   }
 
   /**
-   * Returns the element alignment. Elements will be layouted aligned to this
-   * border, so that <code>mod(X, horizontalAlignment) == 0</code> and
-   * <code>mod(Y, verticalAlignment) == 0</code>
+   * Returns the element alignment. Elements will be layouted aligned to this border, so
+   * that <code>mod(X, horizontalAlignment) == 0</code> and <code>mod(Y,
+   * verticalAlignment) == 0</code>
    *
    * @return the vertical alignment grid boundry
    */
-  public float getHorizontalAlignmentBorder()
+  public float getHorizontalAlignmentBorder ()
   {
     return 0;
   }
 
   /**
-   * Returns the element alignment. Elements will be layouted aligned to this
-   * border, so that <code>mod(X, horizontalAlignment) == 0</code> and
-   * <code>mod(Y, verticalAlignment) == 0</code>
+   * Returns the element alignment. Elements will be layouted aligned to this border, so
+   * that <code>mod(X, horizontalAlignment) == 0</code> and <code>mod(Y,
+   * verticalAlignment) == 0</code>
    *
    * @return the vertical alignment grid boundry
    */
-  public float getVerticalAlignmentBorder()
+  public float getVerticalAlignmentBorder ()
   {
     return 0;
   }
@@ -222,18 +224,18 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
    *
    * @return the content factory.
    */
-  public ContentFactory getContentFactory()
+  public ContentFactory getContentFactory ()
   {
     return contentFactory;
   }
 
   /**
-   * Creates a default content factory, which supports all known content types.
-   * Override this method to supply an own implementation of the ContentFactory.
+   * Creates a default content factory, which supports all known content types. Override
+   * this method to supply an own implementation of the ContentFactory.
    *
    * @return a default content factory.
    */
-  protected ContentFactory createContentFactory()
+  protected ContentFactory createContentFactory ()
   {
     final DefaultContentFactory contentFactory = new DefaultContentFactory();
     contentFactory.addModule(new TextContentFactoryModule());
@@ -244,12 +246,15 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
     return contentFactory;
   }
 
-  protected abstract void beginPage (PageDefinition page, int index) throws OutputTargetException;
+  protected abstract void beginPage (PageDefinition page, int index)
+          throws OutputTargetException;
 
-  protected abstract void endPage () throws OutputTargetException;
+  protected abstract void endPage ()
+          throws OutputTargetException;
 
-  public void printPage(final MetaPage content, final PageDefinition page, final int index)
-   throws OutputTargetException
+  public void printPage (final MetaPage content, final PageDefinition page,
+                         final int index)
+          throws OutputTargetException
   {
     setPageBounds(page.getPagePosition(index));
     beginPage(page, index);
@@ -269,8 +274,8 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
       }
       else
       {
-      // else ignore
-        Log.debug ("Ignoring: PageBounds:" + pageBounds + " vs . BandBounds: " + bounds);
+        // else ignore
+        Log.debug("Ignoring: PageBounds:" + pageBounds + " vs . BandBounds: " + bounds);
       }
     }
     endPage();
@@ -278,15 +283,14 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
 
 
   /**
-   * Prints all elements of the band, which are within the given bounds.
-   * The bounds are global bounds, so they define a position on the meta
-   * page, not the physical page.
+   * Prints all elements of the band, which are within the given bounds. The bounds are
+   * global bounds, so they define a position on the meta page, not the physical page.
    *
-   * @param band the band that should be printed
+   * @param band   the band that should be printed
    * @param bounds the bounds for that band.
    */
   protected void printBand (final MetaBand band, final StrictBounds bounds)
-    throws OutputTargetException
+          throws OutputTargetException
   {
     printElement(band, bounds);
     final MetaElement[] elements = band.toArray();
@@ -314,7 +318,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
   }
 
   protected void printElement (final MetaElement element, final StrictBounds bounds)
-    throws OutputTargetException
+          throws OutputTargetException
   {
     final String hrefTarget = (String) element.getProperty(ElementStyleSheet.HREF_TARGET);
     if (hrefTarget != null)
@@ -329,7 +333,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
     }
 
     final ElementAlignment va
-        = (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT);
+            = (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT);
     if (va != null)
     {
       final VerticalBoundsAlignment vba = AlignmentTools.getVerticalLayout(va, bounds);
@@ -375,7 +379,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
     }
     else
     {
-      Log.warn ("Unknown content");
+      Log.warn("Unknown content");
     }
 
     // Warning: Cheap Hack: Only working with text content, everything else will fail!
@@ -384,7 +388,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
       final MultipartContent mc = (MultipartContent) content;
       for (int i = 0; i < mc.getContentPartCount(); i++)
       {
-        printContent (element, mc.getContentPart(i), vbaShift);
+        printContent(element, mc.getContentPart(i), vbaShift);
       }
 
     }
@@ -397,7 +401,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
   protected void printTextContent
           (final MetaElement element, final Content content,
            final long vbaShift)
-    throws OutputTargetException
+          throws OutputTargetException
   {
     if (element == null)
     {
@@ -431,7 +435,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
     updateStroke(stroke);
 
     final ElementAlignment ha
-        = (ElementAlignment) element.getProperty(ElementStyleSheet.ALIGNMENT);
+            = (ElementAlignment) element.getProperty(ElementStyleSheet.ALIGNMENT);
 
     final HorizontalBoundsAlignment hba =
             AlignmentTools.getHorizontalLayout(ha, element.getBounds());
@@ -441,7 +445,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
   }
 
   protected void printShapeContent (final MetaElement element, final Content content)
-      throws OutputTargetException
+          throws OutputTargetException
   {
     if (content instanceof ShapeContent == false)
     {
@@ -497,7 +501,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
   }
 
   protected void printImageContent (final MetaElement element, final Content content)
-      throws OutputTargetException
+          throws OutputTargetException
   {
     if (content instanceof ImageContent == false)
     {
@@ -517,7 +521,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
 
 
   protected void printDrawableContent (final MetaElement element, final Content content)
-      throws OutputTargetException
+          throws OutputTargetException
   {
     if (content instanceof DrawableContent == false)
     {
@@ -532,7 +536,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
       printHRefForCurrentContent(hrefTarget);
     }
 
-    drawDrawable (drawableContent);
+    drawDrawable(drawableContent);
   }
 
   protected void printContainerContent
@@ -547,32 +551,31 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
   {
   }
 
-  protected Rectangle2D getOperationBounds()
+  protected Rectangle2D getOperationBounds ()
   {
     return StrictGeomUtility.createAWTRectangle
             (operationBounds.getX(), operationBounds.getY(),
                     operationBounds.getWidth(), operationBounds.getHeight());
   }
 
-  protected StrictBounds getInternalOperationBounds()
+  protected StrictBounds getInternalOperationBounds ()
   {
     return operationBounds;
   }
 
   /**
-   * Correct the given bounds to fit on the page. The operation bounds
-   * are valid within the global context, we have to adjust them to the
-   * page local context.
+   * Correct the given bounds to fit on the page. The operation bounds are valid within
+   * the global context, we have to adjust them to the page local context.
    *
    * @param operationBounds the operation bounds
    */
-  protected void setInternalOperationBounds(final StrictBounds operationBounds)
+  protected void setInternalOperationBounds (final StrictBounds operationBounds)
   {
     this.operationBounds.setRect(operationBounds.getX(), operationBounds.getY(),
             operationBounds.getWidth(), operationBounds.getHeight());
   }
 
-  protected void setPageBounds(final Rectangle2D pageBounds)
+  protected void setPageBounds (final Rectangle2D pageBounds)
   {
     final long x = StrictGeomUtility.toInternalValue(pageBounds.getX());
     final long y = StrictGeomUtility.toInternalValue(pageBounds.getY());
@@ -581,7 +584,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
     this.pageBounds.setRect(x, y, w, h);
   }
 
-  protected Rectangle2D getPageBounds()
+  protected Rectangle2D getPageBounds ()
   {
     return StrictGeomUtility.createAWTRectangle
             (pageBounds.getX(), pageBounds.getY(), pageBounds.getWidth(), pageBounds.getHeight());
@@ -591,13 +594,14 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
   {
     return pageBounds;
   }
+
   /**
-   * Add a single content junk (in most cases a single line or a line fragment) to
-   * the list of PhysicalOperations. This method is called recursivly for all contentparts.
+   * Add a single content junk (in most cases a single line or a line fragment) to the
+   * list of PhysicalOperations. This method is called recursivly for all contentparts.
    *
-   * @param c  the content.
-   * @param hba  the bounds.
-   * @param vbaShift  the vertical bounds alignment shifting.
+   * @param c        the content.
+   * @param hba      the bounds.
+   * @param vbaShift the vertical bounds alignment shifting.
    */
   protected void printTextLine (final TextLine c,
                                 final HorizontalBoundsAlignment hba,
@@ -607,7 +611,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
     final String value = c.getContent();
     final StrictBounds abounds = hba.align(c.getBounds());
     abounds.setRect(abounds.getX(), abounds.getY() + vbaShift,
-        abounds.getWidth(), abounds.getHeight());
+            abounds.getWidth(), abounds.getHeight());
     setInternalOperationBounds(abounds);
 
     if (hrefTarget != null)
@@ -621,7 +625,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
   protected abstract void printText (String text);
 
   protected void updateFont (final FontDefinition f)
-    throws OutputTargetException
+          throws OutputTargetException
   {
     if (f == null)
     {
@@ -633,7 +637,9 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
     }
   }
 
-  protected abstract void setFont (FontDefinition f) throws OutputTargetException;
+  protected abstract void setFont (FontDefinition f)
+          throws OutputTargetException;
+
   protected abstract FontDefinition getFont ();
 
   protected void updatePaint (final Paint paint)
@@ -645,12 +651,14 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
   }
 
   protected abstract void setPaint (Paint p);
+
   protected abstract Paint getPaint ();
+
   protected abstract boolean isPaintSupported (Paint p);
 
 
-  protected void updateStroke(final Stroke stroke)
-      throws OutputTargetException
+  protected void updateStroke (final Stroke stroke)
+          throws OutputTargetException
   {
     if (stroke == null)
     {
@@ -663,13 +671,17 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
   }
 
   protected abstract void setStroke (Stroke s)
-      throws OutputTargetException;
+          throws OutputTargetException;
+
   protected abstract Stroke getStroke ();
+
   protected abstract void drawShape (Shape s);
+
   protected abstract void fillShape (Shape s);
 
   protected abstract void drawDrawable (DrawableContent d)
-      throws OutputTargetException;
-  protected abstract void drawImage(ImageContent content)
-      throws OutputTargetException;
+          throws OutputTargetException;
+
+  protected abstract void drawImage (ImageContent content)
+          throws OutputTargetException;
 }

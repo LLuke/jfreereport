@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: ExcelPrintSetupFactory.java,v 1.2.2.1 2004/12/13 19:27:12 taqua Exp $
+ * $Id: ExcelPrintSetupFactory.java,v 1.3 2005/01/25 00:17:15 taqua Exp $
  *
  * Changes
  * -------
@@ -46,187 +46,262 @@ import org.jfree.report.util.PageFormatFactory;
 
 /**
  * Performs all steps to setup the printer page of an excel sheet.
- * <p>
- * This list is based on the specifications found in the OpenOffice documentation.
- * <a href="http://sc.openoffice.org/excelfileformat.pdf">
- * http://sc.openoffice.org/excelfileformat.pdf</a>.
+ * <p/>
+ * This list is based on the specifications found in the OpenOffice documentation. <a
+ * href="http://sc.openoffice.org/excelfileformat.pdf"> http://sc.openoffice.org/excelfileformat.pdf</a>.
  *
  * @author user
  */
 public final class ExcelPrintSetupFactory
 {
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition LETTER = new ExcelPageDefinition
-      ((short) 1, PageFormatFactory.LETTER[0], PageFormatFactory.LETTER[1]);
+          ((short) 1, PageFormatFactory.LETTER[0], PageFormatFactory.LETTER[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition LETTER_SMALL = new ExcelPageDefinition
-      ((short) 2, PageFormatFactory.LETTER_SMALL[0], PageFormatFactory.LETTER_SMALL[1]);
+          ((short) 2, PageFormatFactory.LETTER_SMALL[0], PageFormatFactory.LETTER_SMALL[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition TABLOID = new ExcelPageDefinition
-      ((short) 3, PageFormatFactory.TABLOID[0], PageFormatFactory.TABLOID[1]);
+          ((short) 3, PageFormatFactory.TABLOID[0], PageFormatFactory.TABLOID[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition LEDGER = new ExcelPageDefinition
-      ((short) 4, PageFormatFactory.LEDGER[0], PageFormatFactory.LEDGER[1]);
+          ((short) 4, PageFormatFactory.LEDGER[0], PageFormatFactory.LEDGER[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition LEGAL = new ExcelPageDefinition
-      ((short) 5, PageFormatFactory.LEGAL[0], PageFormatFactory.LEGAL[1]);
+          ((short) 5, PageFormatFactory.LEGAL[0], PageFormatFactory.LEGAL[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition STATEMENT = new ExcelPageDefinition
-      ((short) 6, PageFormatFactory.STATEMENT[0], PageFormatFactory.STATEMENT[1]);
+          ((short) 6, PageFormatFactory.STATEMENT[0], PageFormatFactory.STATEMENT[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition EXECUTIVE = new ExcelPageDefinition
-      ((short) 7, PageFormatFactory.EXECUTIVE[0], PageFormatFactory.EXECUTIVE[1]);
+          ((short) 7, PageFormatFactory.EXECUTIVE[0], PageFormatFactory.EXECUTIVE[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition A3 = new ExcelPageDefinition
-      ((short) 8, PageFormatFactory.A3[0], PageFormatFactory.A3[1]);
+          ((short) 8, PageFormatFactory.A3[0], PageFormatFactory.A3[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition A4 = new ExcelPageDefinition
-      ((short) 9, PageFormatFactory.A4[0], PageFormatFactory.A4[1]);
+          ((short) 9, PageFormatFactory.A4[0], PageFormatFactory.A4[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition A4_SMALL = new ExcelPageDefinition
-      ((short) 10, PageFormatFactory.A4_SMALL[0], PageFormatFactory.A4_SMALL[1]);
+          ((short) 10, PageFormatFactory.A4_SMALL[0], PageFormatFactory.A4_SMALL[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition A5 = new ExcelPageDefinition
-      ((short) 11, PageFormatFactory.A5[0], PageFormatFactory.A5[1]);
+          ((short) 11, PageFormatFactory.A5[0], PageFormatFactory.A5[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition B4 = new ExcelPageDefinition
-      ((short) 12, PageFormatFactory.B4[0], PageFormatFactory.B4[1]);
+          ((short) 12, PageFormatFactory.B4[0], PageFormatFactory.B4[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition B5 = new ExcelPageDefinition
-      ((short) 13, PageFormatFactory.B5[0], PageFormatFactory.B5[1]);
+          ((short) 13, PageFormatFactory.B5[0], PageFormatFactory.B5[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition FOLIO = new ExcelPageDefinition
-      ((short) 14, PageFormatFactory.FOLIO[0], PageFormatFactory.FOLIO[1]);
+          ((short) 14, PageFormatFactory.FOLIO[0], PageFormatFactory.FOLIO[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition QUARTO = new ExcelPageDefinition
-      ((short) 15, PageFormatFactory.QUARTO[0], PageFormatFactory.QUARTO[1]);
+          ((short) 15, PageFormatFactory.QUARTO[0], PageFormatFactory.QUARTO[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition PAPER10X14 = new ExcelPageDefinition
-      ((short) 16, PageFormatFactory.PAPER10X14[0], PageFormatFactory.PAPER10X14[1]);
+          ((short) 16, PageFormatFactory.PAPER10X14[0], PageFormatFactory.PAPER10X14[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition PAPER11X17 = new ExcelPageDefinition
-      ((short) 17, PageFormatFactory.PAPER11X17[0], PageFormatFactory.PAPER11X17[1]);
+          ((short) 17, PageFormatFactory.PAPER11X17[0], PageFormatFactory.PAPER11X17[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition NOTE = new ExcelPageDefinition
-      ((short) 18, PageFormatFactory.NOTE[0], PageFormatFactory.NOTE[1]);
+          ((short) 18, PageFormatFactory.NOTE[0], PageFormatFactory.NOTE[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition ENV9 = new ExcelPageDefinition
-      ((short) 19, PageFormatFactory.ENV9[0], PageFormatFactory.ENV9[1]);
+          ((short) 19, PageFormatFactory.ENV9[0], PageFormatFactory.ENV9[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition ENV10 = new ExcelPageDefinition
-      ((short) 20, PageFormatFactory.ENV10[0], PageFormatFactory.ENV10[1]);
+          ((short) 20, PageFormatFactory.ENV10[0], PageFormatFactory.ENV10[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition ENV11 = new ExcelPageDefinition
-      ((short) 21, PageFormatFactory.ENV11[0], PageFormatFactory.ENV11[1]);
+          ((short) 21, PageFormatFactory.ENV11[0], PageFormatFactory.ENV11[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition ENV12 = new ExcelPageDefinition
-      ((short) 22, PageFormatFactory.ENV12[0], PageFormatFactory.ENV12[1]);
+          ((short) 22, PageFormatFactory.ENV12[0], PageFormatFactory.ENV12[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition ENV14 = new ExcelPageDefinition
-      ((short) 23, PageFormatFactory.ENV14[0], PageFormatFactory.ENV14[1]);
+          ((short) 23, PageFormatFactory.ENV14[0], PageFormatFactory.ENV14[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition ENVDL = new ExcelPageDefinition
-      ((short) 27, PageFormatFactory.ENVDL[0], PageFormatFactory.ENVDL[1]);
+          ((short) 27, PageFormatFactory.ENVDL[0], PageFormatFactory.ENVDL[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition ENVC5 = new ExcelPageDefinition
-      ((short) 28, PageFormatFactory.ENVC5[0], PageFormatFactory.ENVC5[1]);
+          ((short) 28, PageFormatFactory.ENVC5[0], PageFormatFactory.ENVC5[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition ENVC3 = new ExcelPageDefinition
-      ((short) 29, PageFormatFactory.ENVC3[0], PageFormatFactory.ENVC3[1]);
+          ((short) 29, PageFormatFactory.ENVC3[0], PageFormatFactory.ENVC3[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition ENVC4 = new ExcelPageDefinition
-      ((short) 30, PageFormatFactory.ENVC4[0], PageFormatFactory.ENVC4[1]);
+          ((short) 30, PageFormatFactory.ENVC4[0], PageFormatFactory.ENVC4[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition ENVC6 = new ExcelPageDefinition
-      ((short) 31, PageFormatFactory.ENVC6[0], PageFormatFactory.ENVC6[1]);
+          ((short) 31, PageFormatFactory.ENVC6[0], PageFormatFactory.ENVC6[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition ENVC65 = new ExcelPageDefinition
-      ((short) 32, PageFormatFactory.ENVC65[0], PageFormatFactory.ENVC65[1]);
+          ((short) 32, PageFormatFactory.ENVC65[0], PageFormatFactory.ENVC65[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition ENVISOB4 = new ExcelPageDefinition
-      ((short) 33, PageFormatFactory.ENVISOB4[0], PageFormatFactory.ENVISOB4[1]);
+          ((short) 33, PageFormatFactory.ENVISOB4[0], PageFormatFactory.ENVISOB4[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition ENVB5 = new ExcelPageDefinition
-      ((short) 34, PageFormatFactory.ENVISOB5[0], PageFormatFactory.ENVISOB5[1]);
+          ((short) 34, PageFormatFactory.ENVISOB5[0], PageFormatFactory.ENVISOB5[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition ENVB6 = new ExcelPageDefinition
-      ((short) 35, PageFormatFactory.ENVISOB6[0], PageFormatFactory.ENVISOB6[1]);
+          ((short) 35, PageFormatFactory.ENVISOB6[0], PageFormatFactory.ENVISOB6[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition ENVELOPE = new ExcelPageDefinition
-      ((short) 36, PageFormatFactory.ENVELOPE[0], PageFormatFactory.ENVELOPE[1]);
+          ((short) 36, PageFormatFactory.ENVELOPE[0], PageFormatFactory.ENVELOPE[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition ENVMONARCH = new ExcelPageDefinition
-      ((short) 37, PageFormatFactory.ENVMONARCH[0], PageFormatFactory.ENVMONARCH[1]);
+          ((short) 37, PageFormatFactory.ENVMONARCH[0], PageFormatFactory.ENVMONARCH[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition ENVPERSONAL = new ExcelPageDefinition// envelope 6 3/4
-      ((short) 38, PageFormatFactory.ENVPERSONAL[0], PageFormatFactory.ENVPERSONAL[1]);
+          ((short) 38, PageFormatFactory.ENVPERSONAL[0], PageFormatFactory.ENVPERSONAL[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition FANFOLDUS = new ExcelPageDefinition
-      ((short) 39, PageFormatFactory.FANFOLDUS[0], PageFormatFactory.FANFOLDUS[1]);
+          ((short) 39, PageFormatFactory.FANFOLDUS[0], PageFormatFactory.FANFOLDUS[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition FANFOLDGERMAN = new ExcelPageDefinition
-      ((short) 40, PageFormatFactory.FANFOLDGERMAN[0], PageFormatFactory.FANFOLDGERMAN[1]);
+          ((short) 40, PageFormatFactory.FANFOLDGERMAN[0], PageFormatFactory.FANFOLDGERMAN[1]);
 
-  /** A standard page format mapping for excel. */
+  /**
+   * A standard page format mapping for excel.
+   */
   public static final ExcelPageDefinition FANFOLDGERMANLEGAL = new ExcelPageDefinition
-      ((short) 41, PageFormatFactory.FANFOLDGERMANLEGAL[0], 
-          PageFormatFactory.FANFOLDGERMANLEGAL[1]);
+          ((short) 41, PageFormatFactory.FANFOLDGERMANLEGAL[0],
+                  PageFormatFactory.FANFOLDGERMANLEGAL[1]);
 
   /**
    * Default Constructor.
    */
-  private ExcelPrintSetupFactory()
+  private ExcelPrintSetupFactory ()
   {
   }
 
   /**
-   * Performs the page setup and searches a matching page format for the
-   * report.
+   * Performs the page setup and searches a matching page format for the report.
    *
-   * @param printSetup the print setup object of the current sheet.
-   * @param pageformat the pageformat defined for the report.
-   * @param paperdef the excel paper size property (may be null).
+   * @param printSetup       the print setup object of the current sheet.
+   * @param pageformat       the pageformat defined for the report.
+   * @param paperdef         the excel paper size property (may be null).
    * @param paperOrientation the paper orientation, either "Landscape" or "Portrait"
    */
-  public static void performPageSetup(final HSSFPrintSetup printSetup,
-                                      final PageDefinition pageformat,
-                                      final String paperdef, final String paperOrientation)
+  public static void performPageSetup (final HSSFPrintSetup printSetup,
+                                       final PageDefinition pageformat,
+                                       final String paperdef,
+                                       final String paperOrientation)
   {
     short pageCode = parsePaperSizeProperty(paperdef);
     if (pageCode == -1)
@@ -248,17 +323,15 @@ public final class ExcelPrintSetupFactory
   }
 
   /**
-   * Searches all defined excel page formats to find a page format that
-   * matches the given pageformat. If no matching format was found, the
-   * next greater page format is used.
-   * <p>
+   * Searches all defined excel page formats to find a page format that matches the given
+   * pageformat. If no matching format was found, the next greater page format is used.
+   * <p/>
    * If no page format fits the definition, -1 is returned.
    *
    * @param format the page format
-   * @return the computed paper size or -1 if no paper size matches the
-   * requirements
+   * @return the computed paper size or -1 if no paper size matches the requirements
    */
-  private static short computePaperSize(final PageFormat format)
+  private static short computePaperSize (final PageFormat format)
   {
     ExcelPageDefinition pageDef = null;
     final int width = (int) format.getPaper().getWidth();
@@ -310,13 +383,13 @@ public final class ExcelPrintSetupFactory
   }
 
   /**
-   * Parses the defined paper size for the excel sheets. The paper size can
-   * be defined using the report configuration properties.
+   * Parses the defined paper size for the excel sheets. The paper size can be defined
+   * using the report configuration properties.
    *
    * @param paper the paper constant for the excel page size.
    * @return the parsed HSSF paper size constant or -1 if undefined.
    */
-  private static short parsePaperSizeProperty(final String paper)
+  private static short parsePaperSizeProperty (final String paper)
   {
     if (paper == null)
     {

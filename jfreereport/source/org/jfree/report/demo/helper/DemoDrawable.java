@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DemoDrawable.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: DemoDrawable.java,v 1.3 2004/05/07 12:43:43 mungady Exp $
  *
  * Changes
  * -------
@@ -55,17 +55,17 @@ public class DemoDrawable implements Drawable
   /**
    * Default constructor.
    */
-  public DemoDrawable()
+  public DemoDrawable ()
   {
   }
 
   /**
    * Draws the item.
    *
-   * @param graphics  the graphics implementation.
-   * @param bounds  the bounds.
+   * @param graphics the graphics implementation.
+   * @param bounds   the bounds.
    */
-  public void draw(final Graphics2D graphics, final Rectangle2D bounds)
+  public void draw (final Graphics2D graphics, final Rectangle2D bounds)
   {
     graphics.setColor(Color.black);
     graphics.drawString(bounds.toString(), 10, 10);

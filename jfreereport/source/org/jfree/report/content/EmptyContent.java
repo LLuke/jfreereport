@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: EmptyContent.java,v 1.4 2005/01/24 23:58:15 taqua Exp $
+ * $Id: EmptyContent.java,v 1.5 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,7 +44,7 @@ public class EmptyContent implements Content
 {
   private static EmptyContent singleton;
 
-  public static EmptyContent getDefaultEmptyContent()
+  public static EmptyContent getDefaultEmptyContent ()
   {
     if (singleton == null)
     {
@@ -52,7 +52,8 @@ public class EmptyContent implements Content
     }
     return singleton;
   }
-  public EmptyContent()
+
+  public EmptyContent ()
   {
   }
 
@@ -61,23 +62,22 @@ public class EmptyContent implements Content
    *
    * @return the bounds.
    */
-  public StrictBounds getBounds()
+  public StrictBounds getBounds ()
   {
     return new StrictBounds();
   }
 
   /**
-   * Returns the content for the given bounds. The extracted content is the content
-   * that would be displayed in the specific bounds if the content would be printed
-   * with clipping enabled at the given boundary.
-   * <p>
+   * Returns the content for the given bounds. The extracted content is the content that
+   * would be displayed in the specific bounds if the content would be printed with
+   * clipping enabled at the given boundary.
+   * <p/>
    * This method returns <code>null</code> if there is no content in these bounds.
    *
-   * @param bounds  the bounds.
-   *
+   * @param bounds the bounds.
    * @return the content (possibly <code>null</code>).
    */
-  public Content getContentForBounds(final StrictBounds bounds)
+  public Content getContentForBounds (final StrictBounds bounds)
   {
     return this;
   }
@@ -105,12 +105,11 @@ public class EmptyContent implements Content
   }
 
   /**
-   * Returns the content type, in this case
-   * {@link org.jfree.report.content.ContentType#CONTAINER}.
+   * Returns the content type, in this case {@link org.jfree.report.content.ContentType#CONTAINER}.
    *
    * @return the content type.
    */
-  public ContentType getContentType()
+  public ContentType getContentType ()
   {
     return ContentType.CONTAINER;
   }
@@ -120,7 +119,7 @@ public class EmptyContent implements Content
    *
    * @return the minimum size.
    */
-  public StrictBounds getMinimumContentSize()
+  public StrictBounds getMinimumContentSize ()
   {
     return new StrictBounds();
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: VerticalLayout.java,v 1.6 2003/11/07 18:33:51 taqua Exp $
+ * $Id: VerticalLayout.java,v 1.7 2004/05/07 14:29:21 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -46,65 +46,67 @@ import java.awt.LayoutManager;
 import java.awt.Rectangle;
 
 /**
- * A simple layout manager, which aligns all components in a vertical
- * flow layout.
- * 
+ * A simple layout manager, which aligns all components in a vertical flow layout.
+ *
  * @author Thomas Morgner
  */
 public class VerticalLayout implements LayoutManager
 {
-  /** 
-   * Defines, whether to use the parents size or whether to compute
-   * the size from the parent's childs during the layouting.
+  /**
+   * Defines, whether to use the parents size or whether to compute the size from the
+   * parent's childs during the layouting.
    */
   private final boolean useSizeFromParent;
 
   /**
    * DefaultConstructor.
    */
-  public VerticalLayout()
+  public VerticalLayout ()
   {
-    this (true);
+    this(true);
   }
 
   /**
-   * Creates a new vertical layout. If useParent is set to true,
-   * the parents size will be used when performing the layouting,
-   * else only the parents childs are used to compute the layout.
-   * 
-   * @param useParent defines, whether the parent's size is used. 
+   * Creates a new vertical layout. If useParent is set to true, the parents size will be
+   * used when performing the layouting, else only the parents childs are used to compute
+   * the layout.
+   *
+   * @param useParent defines, whether the parent's size is used.
    */
-  public VerticalLayout(final boolean useParent)
+  public VerticalLayout (final boolean useParent)
   {
     this.useSizeFromParent = useParent;
   }
 
   /**
-   * Adds the specified component with the specified name to
-   * the layout.
+   * Adds the specified component with the specified name to the layout.
+   *
    * @param name the component name
    * @param comp the component to be added
    */
-  public void addLayoutComponent(final String name, final Component comp)
+  public void addLayoutComponent (final String name, final Component comp)
   {
   }
 
   /**
    * Removes the specified component from the layout.
+   *
    * @param comp the component to be removed
    */
-  public void removeLayoutComponent(final Component comp)
+  public void removeLayoutComponent (final Component comp)
   {
   }
 
   /**
-   * Calculates the preferred size dimensions for the specified
-   * panel given the components in the specified parent container.
+   * Calculates the preferred size dimensions for the specified panel given the components
+   * in the specified parent container.
+   *
    * @param parent the component to be laid out
    * @return the preferred layout size
+   *
    * @see #minimumLayoutSize
    */
-  public Dimension preferredLayoutSize(final Container parent)
+  public Dimension preferredLayoutSize (final Container parent)
   {
     synchronized (parent.getTreeLock())
     {
@@ -128,18 +130,20 @@ public class VerticalLayout implements LayoutManager
 //      Log.debug ("PreferredSize in VLayout: " + new Dimension(width + ins.left + ins.right,
 //          height + ins.top + ins.bottom));
       return new Dimension(width + ins.left + ins.right,
-          height + ins.top + ins.bottom);
+              height + ins.top + ins.bottom);
     }
   }
 
   /**
-   * Calculates the minimum size dimensions for the specified
-   * panel given the components in the specified parent container.
+   * Calculates the minimum size dimensions for the specified panel given the components
+   * in the specified parent container.
+   *
    * @param parent the component to be laid out
    * @return the minimul layoutsize
+   *
    * @see #preferredLayoutSize
    */
-  public Dimension minimumLayoutSize(final Container parent)
+  public Dimension minimumLayoutSize (final Container parent)
   {
     synchronized (parent.getTreeLock())
     {
@@ -161,25 +165,27 @@ public class VerticalLayout implements LayoutManager
         }
       }
       return new Dimension(width + ins.left + ins.right,
-          height + ins.top + ins.bottom);
+              height + ins.top + ins.bottom);
     }
   }
 
   /**
-   * Returns, whether the parent's defined size is used during the layouting,
-   * or whether the childs are used to compute the size. 
+   * Returns, whether the parent's defined size is used during the layouting, or whether
+   * the childs are used to compute the size.
+   *
    * @return true, if the parent's size is used, false otherwise.
    */
-  public boolean isUseSizeFromParent()
+  public boolean isUseSizeFromParent ()
   {
     return useSizeFromParent;
   }
 
   /**
    * Lays out the container in the specified panel.
+   *
    * @param parent the component which needs to be laid out
    */
-  public void layoutContainer(final Container parent)
+  public void layoutContainer (final Container parent)
   {
     synchronized (parent.getTreeLock())
     {

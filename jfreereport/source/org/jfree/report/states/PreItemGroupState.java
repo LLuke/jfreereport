@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreItemGroupState.java,v 1.3 2004/05/07 08:14:21 mungady Exp $
+ * $Id: PreItemGroupState.java,v 1.4 2005/01/28 19:26:59 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@ package org.jfree.report.states;
 import org.jfree.report.event.ReportEvent;
 
 /**
- * Prepare to print the items. This state fires the itemStarted-Event and advances to
- * the InItemGroupState state.
+ * Prepare to print the items. This state fires the itemStarted-Event and advances to the
+ * InItemGroupState state.
  *
  * @author David Gilbert
  */
@@ -52,9 +52,9 @@ public final class PreItemGroupState extends ReportState
   /**
    * Creates a new 'pre-item-group' state.
    *
-   * @param previous  the previous state.
+   * @param previous the previous state.
    */
-  public PreItemGroupState(final ReportState previous)
+  public PreItemGroupState (final ReportState previous)
   {
     super(previous);
   }
@@ -65,13 +65,13 @@ public final class PreItemGroupState extends ReportState
   }
 
   /**
-   * Advances to the next state.  Normally this will be the '<code>IN-ITEM-GROUP</code>' state,
-   * but if the report's data (TableModel) has no rows, proceed to the
+   * Advances to the next state.  Normally this will be the '<code>IN-ITEM-GROUP</code>'
+   * state, but if the report's data (TableModel) has no rows, proceed to the
    * '<code>POST-ITEM-GROUP</code>' state.
    *
    * @return the next state.
    */
-  public ReportState advance()
+  public ReportState advance ()
   {
     firePrepareEvent();
 
@@ -87,12 +87,12 @@ public final class PreItemGroupState extends ReportState
   }
 
   /**
-   * Returns the corrected display item for this state. As the currentItem has not yet advanced
-   * we perform a readAHead lookup when populating elements.
+   * Returns the corrected display item for this state. As the currentItem has not yet
+   * advanced we perform a readAHead lookup when populating elements.
    *
    * @return true; Header related states preview the next itemband DataRow.
    */
-  public boolean isPrefetchState()
+  public boolean isPrefetchState ()
   {
     return true;
   }

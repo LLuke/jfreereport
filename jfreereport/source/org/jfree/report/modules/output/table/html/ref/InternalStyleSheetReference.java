@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: InternalStyleSheetReference.java,v 1.2.2.1 2004/12/13 19:27:09 taqua Exp $
+ * $Id: InternalStyleSheetReference.java,v 1.3 2005/01/25 00:14:11 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,9 @@ package org.jfree.report.modules.output.table.html.ref;
  */
 public class InternalStyleSheetReference extends HtmlReference
 {
-  /** the stylesheet definition. */
+  /**
+   * the stylesheet definition.
+   */
   private final String styleData;
 
   /**
@@ -51,19 +53,19 @@ public class InternalStyleSheetReference extends HtmlReference
    *
    * @param data the style sheet definition data.
    */
-  public InternalStyleSheetReference(final String data)
+  public InternalStyleSheetReference (final String data)
   {
     super(false);
     styleData = data;
   }
 
   /**
-   * Generates the reference fragment, which should be inserted into the HTML-Code.
-   * Which content is returned depends on the reference type and the target filesystem.
+   * Generates the reference fragment, which should be inserted into the HTML-Code. Which
+   * content is returned depends on the reference type and the target filesystem.
    *
    * @return the reference code, which should be inserted into the generated HTML-Code.
    */
-  public String getReferenceData()
+  public String getReferenceData ()
   {
     return styleData;
   }

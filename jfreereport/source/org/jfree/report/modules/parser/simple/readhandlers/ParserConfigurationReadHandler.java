@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
-import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.common.PropertyReferenceReadHandler;
 import org.jfree.xml.ElementDefinitionException;
 import org.jfree.xml.parser.XmlReadHandler;
@@ -49,8 +49,8 @@ public class ParserConfigurationReadHandler extends AbstractPropertyXmlReadHandl
       commentHintPath.addName("parser-configuration");
 
       final PropertyReferenceReadHandler readHandler =
-              new PropertyReferenceReadHandler (commentHintPath);
-      fieldHandlers.put (name, readHandler);
+              new PropertyReferenceReadHandler(commentHintPath);
+      fieldHandlers.put(name, readHandler);
       return readHandler;
     }
     return null;
@@ -67,7 +67,7 @@ public class ParserConfigurationReadHandler extends AbstractPropertyXmlReadHandl
           throws SAXException, XmlReaderException
   {
     final Iterator it = fieldHandlers.entrySet().iterator();
-    while(it.hasNext())
+    while (it.hasNext())
     {
       final Map.Entry entry = (Map.Entry) it.next();
       final String key = (String) entry.getKey();

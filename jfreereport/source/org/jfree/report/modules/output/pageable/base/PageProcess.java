@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageProcess.java,v 1.4 2005/01/25 00:10:10 taqua Exp $
+ * $Id: PageProcess.java,v 1.5 2005/01/28 19:26:49 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -73,15 +73,16 @@ public class PageProcess
       return finalState;
     }
   }
+
   private boolean handleInterruptedState;
   private OutputTarget outputTarget;
   private PageDefinition pageDefinition;
   private MetaPage metaPage;
   private WeakReference lastRecentlyUsedState;
 
-  public PageProcess(final OutputTarget target,
-                     final PageDefinition page,
-                     final boolean handleInterrupt)
+  public PageProcess (final OutputTarget target,
+                      final PageDefinition page,
+                      final boolean handleInterrupt)
   {
     this.handleInterruptedState = handleInterrupt;
     this.outputTarget = target;
@@ -96,10 +97,11 @@ public class PageProcess
   /**
    * Checks, whether the current thread is interrupted.
    *
-   * @throws org.jfree.report.ReportInterruptedException if the thread is interrupted to
-   * abort the report processing.
+   * @throws org.jfree.report.ReportInterruptedException
+   *          if the thread is interrupted to abort the report processing.
    */
-  private void checkInterrupted() throws ReportInterruptedException
+  private void checkInterrupted ()
+          throws ReportInterruptedException
   {
     if (isHandleInterruptedState() && Thread.interrupted())
     {
@@ -107,8 +109,9 @@ public class PageProcess
     }
   }
 
-  public final synchronized ReportState processPage(final ReportState currPage, final boolean failOnError)
-      throws ReportProcessingException
+  public final synchronized ReportState processPage (final ReportState currPage,
+                                                     final boolean failOnError)
+          throws ReportProcessingException
   {
     if (currPage == null)
     {
@@ -191,7 +194,7 @@ public class PageProcess
             if (state.isErrorOccured() == true)
             {
               Log.error("Failed to dispatch an event.",
-                  new ReportEventException("Failed to dispatch an event.", state.getErrors()));
+                      new ReportEventException("Failed to dispatch an event.", state.getErrors()));
             }
           }
           lm = (PageLayouter) state.getDataRow().get(PageableReportProcessor.LAYOUTMANAGER_NAME);
@@ -217,7 +220,7 @@ public class PageProcess
 
       metaPage = lm.getMetaPage();
     }
-    catch(CloneNotSupportedException cne)
+    catch (CloneNotSupportedException cne)
     {
       throw new ReportProcessingException("Unable to create temporary state object.");
     }
@@ -230,7 +233,7 @@ public class PageProcess
       }
     }
     lastRecentlyUsedState =
-      new WeakReference(new CacheInformation(currPage, state));
+    new WeakReference(new CacheInformation(currPage, state));
     return state;
   }
 

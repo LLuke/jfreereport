@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LabelTemplate.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: LabelTemplate.java,v 1.3 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -48,16 +48,20 @@ import org.jfree.report.filter.StringFilter;
  */
 public class LabelTemplate extends AbstractTemplate
 {
-  /** A static data source. */
+  /**
+   * A static data source.
+   */
   private StaticDataSource staticDataSource;
 
-  /** A string filter. */
+  /**
+   * A string filter.
+   */
   private StringFilter stringFilter;
 
   /**
    * Creates a new label template.
    */
-  public LabelTemplate()
+  public LabelTemplate ()
   {
     staticDataSource = new StaticDataSource();
     stringFilter = new StringFilter();
@@ -67,9 +71,9 @@ public class LabelTemplate extends AbstractTemplate
   /**
    * Sets the text for the label.
    *
-   * @param content  the text.
+   * @param content the text.
    */
-  public void setContent(final String content)
+  public void setContent (final String content)
   {
     staticDataSource.setValue(content);
   }
@@ -79,7 +83,7 @@ public class LabelTemplate extends AbstractTemplate
    *
    * @return The text.
    */
-  public String getContent()
+  public String getContent ()
   {
     return (String) (staticDataSource.getValue());
   }
@@ -89,7 +93,7 @@ public class LabelTemplate extends AbstractTemplate
    *
    * @return The string that represents <code>null</code>.
    */
-  public String getNullValue()
+  public String getNullValue ()
   {
     return stringFilter.getNullValue();
   }
@@ -97,9 +101,9 @@ public class LabelTemplate extends AbstractTemplate
   /**
    * Sets the string that represents <code>null</code>.
    *
-   * @param nullValue  the string.
+   * @param nullValue the string.
    */
-  public void setNullValue(final String nullValue)
+  public void setNullValue (final String nullValue)
   {
     stringFilter.setNullValue(nullValue);
   }
@@ -109,7 +113,7 @@ public class LabelTemplate extends AbstractTemplate
    *
    * @return the value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return stringFilter.getValue();
   }
@@ -121,7 +125,8 @@ public class LabelTemplate extends AbstractTemplate
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final LabelTemplate template = (LabelTemplate) super.clone();
     template.stringFilter = (StringFilter) stringFilter.clone();

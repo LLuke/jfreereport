@@ -2,9 +2,9 @@ package org.jfree.report.modules.parser.ext.readhandlers;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.ReportParser;
-import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.common.FunctionsReadHandler;
 import org.jfree.report.modules.parser.base.common.IncludeReadHandler;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;

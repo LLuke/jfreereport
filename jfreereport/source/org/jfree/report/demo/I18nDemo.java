@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: I18nDemo.java,v 1.1.2.1 2004/10/06 20:01:06 taqua Exp $
+ * $Id: I18nDemo.java,v 1.2 2005/01/25 01:13:34 taqua Exp $
  *
  * Changes
  * -------
@@ -62,8 +62,8 @@ import org.jfree.report.modules.gui.base.PreviewFrame;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.ui.RefineryUtilities;
-import org.jfree.ui.action.ActionMenuItem;
 import org.jfree.ui.action.ActionButton;
+import org.jfree.ui.action.ActionMenuItem;
 
 /**
  * A simple report where column 3 displays (column 1 / column 2) as a percentage.
@@ -73,15 +73,17 @@ import org.jfree.ui.action.ActionButton;
 public class I18nDemo extends AbstractDemoFrame
 {
 
-  /** The data for the report. */
+  /**
+   * The data for the report.
+   */
   private TableModel data;
 
   /**
    * Constructs the demo application.
    *
-   * @param title  the frame title.
+   * @param title the frame title.
    */
-  public I18nDemo(final String title)
+  public I18nDemo (final String title)
   {
     setTitle(title);
     setJMenuBar(createMenuBar());
@@ -93,7 +95,7 @@ public class I18nDemo extends AbstractDemoFrame
    *
    * @return the menu bar.
    */
-  public JMenuBar createMenuBar()
+  public JMenuBar createMenuBar ()
   {
     final JMenuBar mb = new JMenuBar();
     final JMenu fileMenu = createJMenu("menu.file");
@@ -113,14 +115,14 @@ public class I18nDemo extends AbstractDemoFrame
    *
    * @return a panel containing the basic user interface.
    */
-  public JPanel createContent()
+  public JPanel createContent ()
   {
     final JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
     final String d = "In this demo, the TableModel contains two columns A and B. The generated "
-        + "report displays the values in these columns, plus a third value (A/B) "
-        + "formatted as a percentage.";
+            + "report displays the values in these columns, plus a third value (A/B) "
+            + "formatted as a percentage.";
     final JTextArea textArea = new JTextArea(d);
     textArea.setLineWrap(true);
     textArea.setWrapStyleWord(true);
@@ -142,16 +144,16 @@ public class I18nDemo extends AbstractDemoFrame
   /**
    * Displays a print preview screen for the sample report.
    */
-  protected void attemptPreview()
+  protected void attemptPreview ()
   {
     final URL in = getClass().getResource("/org/jfree/report/demo/i18n.xml");
 
     if (in == null)
     {
       JOptionPane.showMessageDialog(this,
-          MessageFormat.format(getResources().getString("report.definitionnotfound"),
-              new Object[]{in}),
-          getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+              MessageFormat.format(getResources().getString("report.definitionnotfound"),
+                      new Object[]{in}),
+              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 
     final JFreeReport report;
@@ -184,11 +186,10 @@ public class I18nDemo extends AbstractDemoFrame
   /**
    * Reads the report from the specified template file.
    *
-   * @param templateURL  the template location.
-   *
+   * @param templateURL the template location.
    * @return a report.
    */
-  private JFreeReport parseReport(final URL templateURL)
+  private JFreeReport parseReport (final URL templateURL)
   {
 
     JFreeReport result = null;
@@ -210,7 +211,7 @@ public class I18nDemo extends AbstractDemoFrame
    *
    * @return A <code>TableModel</code>.
    */
-  public static TableModel createData()
+  public static TableModel createData ()
   {
     final DefaultTableModel data = new DefaultTableModel();
     data.addColumn("Data");
@@ -227,9 +228,9 @@ public class I18nDemo extends AbstractDemoFrame
   /**
    * Entry point for running the demo application...
    *
-   * @param args  ignored.
+   * @param args ignored.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();

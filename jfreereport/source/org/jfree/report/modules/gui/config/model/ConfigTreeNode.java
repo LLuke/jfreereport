@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigTreeNode.java,v 1.2 2003/09/11 22:17:09 taqua Exp $
+ * $Id: ConfigTreeNode.java,v 1.3 2004/05/07 14:29:24 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -42,23 +42,22 @@ import javax.swing.tree.TreeNode;
 
 /**
  * The config tree is the base class for all nodes in the ConfigTreeModel.
- * 
+ *
  * @author Thomas Morgner
  */
 public interface ConfigTreeNode extends TreeNode
 {
   /**
    * Returns the name of the node.
-   * 
+   *
    * @return the name of the node.
    */
-  public String getName();
-  
+  public String getName ();
+
   /**
-   * Defines the parent of this node; this replaces all previously defined
-   * parents.
-   * 
-   * @param parent the new parent node. 
+   * Defines the parent of this node; this replaces all previously defined parents.
+   *
+   * @param parent the new parent node.
    */
   public void setParent (TreeNode parent);
 }

@@ -37,10 +37,10 @@ public class DrawableFactory
     {
       final Class c = ObjectUtilities.getClassLoader
               (getClass()).loadClass(className);
-      registerModule ((ImageFactoryModule) c.newInstance());
+      registerModule((ImageFactoryModule) c.newInstance());
       return true;
     }
-    catch(Exception e)
+    catch (Exception e)
     {
       return false;
     }
@@ -67,16 +67,18 @@ public class DrawableFactory
 
   public Drawable createDrawable (final InputStream in,
                                   final String file,
-                                  final String contentType) throws IOException
+                                  final String contentType)
+          throws IOException
   {
-    final ByteArrayOutputStream bout = new ByteArrayOutputStream(32*1024);
-    IOUtils.getInstance().copyStreams(in, bout, 16*1024);
+    final ByteArrayOutputStream bout = new ByteArrayOutputStream(32 * 1024);
+    IOUtils.getInstance().copyStreams(in, bout, 16 * 1024);
     return createDrawable(bout.toByteArray(), file, contentType);
   }
 
   public synchronized Drawable createDrawable (final byte[] data,
                                                final String fileName,
-                                               final String mimeType) throws IOException
+                                               final String mimeType)
+          throws IOException
   {
     // first pass: Search by content
     // this is the safest method to identify the image data
@@ -87,7 +89,7 @@ public class DrawableFactory
       {
         final DrawableFactoryModule module = (DrawableFactoryModule) factoryModules.get(i);
         if (module.getHeaderFingerprintSize() > 0 &&
-            data.length >= module.getHeaderFingerprintSize())
+                data.length >= module.getHeaderFingerprintSize())
         {
           if (module.canHandleResourceByContent(data))
           {
@@ -95,10 +97,10 @@ public class DrawableFactory
           }
         }
       }
-      catch(IOException ioe)
+      catch (IOException ioe)
       {
         // first try failed ..
-        Log.info ("Failed to load image: Trying harder ..", ioe);
+        Log.info("Failed to load image: Trying harder ..", ioe);
       }
     }
 
@@ -117,10 +119,10 @@ public class DrawableFactory
             return module.createDrawable(data, fileName, mimeType);
           }
         }
-        catch(IOException ioe)
+        catch (IOException ioe)
         {
           // first try failed ..
-          Log.info ("Failed to load image: Trying harder ..", ioe);
+          Log.info("Failed to load image: Trying harder ..", ioe);
         }
       }
     }
@@ -140,10 +142,10 @@ public class DrawableFactory
             return module.createDrawable(data, fileName, mimeType);
           }
         }
-        catch(IOException ioe)
+        catch (IOException ioe)
         {
           // first try failed ..
-          Log.info ("Failed to load image: Trying harder ..", ioe);
+          Log.info("Failed to load image: Trying harder ..", ioe);
         }
       }
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Invoice.java,v 1.1.2.1 2004/03/26 21:57:54 taqua Exp $
+ * $Id: Invoice.java,v 1.2 2005/01/25 01:14:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -66,12 +66,12 @@ public class Invoice
     if (index == -1)
     {
       articles.add(article);
-      articleCounts.add (new Integer (1));
+      articleCounts.add(new Integer(1));
     }
     else
     {
-      final Integer oldCount = (Integer) articleCounts.get (index);
-      articleCounts.set (index, new Integer(oldCount.intValue() + 1));
+      final Integer oldCount = (Integer) articleCounts.get(index);
+      articleCounts.set(index, new Integer(oldCount.intValue() + 1));
     }
   }
 
@@ -80,7 +80,7 @@ public class Invoice
     final int index = articles.indexOf(article);
     if (index != -1)
     {
-      final Integer oldCount = (Integer) articleCounts.get (index);
+      final Integer oldCount = (Integer) articleCounts.get(index);
       if (oldCount.intValue() == 1)
       {
         articleCounts.remove(index);
@@ -88,7 +88,7 @@ public class Invoice
       }
       else
       {
-        articleCounts.set (index, new Integer(oldCount.intValue() - 1));
+        articleCounts.set(index, new Integer(oldCount.intValue() - 1));
       }
     }
   }

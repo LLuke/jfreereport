@@ -25,7 +25,7 @@
  * --------------
  * (C)opyright 2000-2002, by Object Refinery Limited.
  *
- * $Id: URLFilter.java,v 1.3 2003/11/21 14:48:17 taqua Exp $
+ * $Id: URLFilter.java,v 1.4 2004/05/07 08:24:42 mungady Exp $
  *
  * Changes
  * -------
@@ -44,20 +44,21 @@ import org.jfree.report.util.Log;
 /**
  * The URLFilter forms URLs from Strings ,Files and URLs. If an URL is relative, the
  * missing contents can be obtained by a default url, called the baseURL.
- * <p>
+ * <p/>
  *
  * @author Thomas Morgner
  */
 public class URLFilter implements DataFilter, Serializable
 {
   /**
-   * The datasource used to form the urls. This datasource should return
-   * strings, files or urls
+   * The datasource used to form the urls. This datasource should return strings, files or
+   * urls
    */
   private DataSource source;
 
   /**
    * The base url is used to form the complete url if the given url is relative.
+   *
    * @see java.net.URL#URL(java.net.URL, java.lang.String)
    */
   private URL baseURL;
@@ -65,7 +66,7 @@ public class URLFilter implements DataFilter, Serializable
   /**
    * DefaultConstructor.
    */
-  public URLFilter()
+  public URLFilter ()
   {
   }
 
@@ -74,7 +75,7 @@ public class URLFilter implements DataFilter, Serializable
    *
    * @return The data source.
    */
-  public DataSource getDataSource()
+  public DataSource getDataSource ()
   {
     return source;
   }
@@ -84,7 +85,7 @@ public class URLFilter implements DataFilter, Serializable
    *
    * @param ds The data source.
    */
-  public void setDataSource(final DataSource ds)
+  public void setDataSource (final DataSource ds)
   {
     if (ds == null)
     {
@@ -95,17 +96,16 @@ public class URLFilter implements DataFilter, Serializable
   }
 
   /**
-   * Tries to form a url from the object returned from the datasource.
-   * This function will return null if the datasource is null or returned null when
-   * getValue was called.
-   *
-   * Null is also returned if the datasources value is not an url, a String or a file.
-   * If the creation of the url failed with an MalformedURLException or the datasource
+   * Tries to form a url from the object returned from the datasource. This function will
+   * return null if the datasource is null or returned null when getValue was called.
+   * <p/>
+   * Null is also returned if the datasources value is not an url, a String or a file. If
+   * the creation of the url failed with an MalformedURLException or the datasource
    * returned a file which is not readable, also null is returned.
    *
    * @return created url or null if something went wrong on url creation.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     if (getDataSource() == null)
     {
@@ -157,7 +157,7 @@ public class URLFilter implements DataFilter, Serializable
    *
    * @return the base url used to complete relative urls.
    */
-  public URL getBaseURL()
+  public URL getBaseURL ()
   {
     return baseURL;
   }
@@ -165,9 +165,9 @@ public class URLFilter implements DataFilter, Serializable
   /**
    * Defines the base url used to complete relative urls.
    *
-   * @param baseURL  the base URL.
+   * @param baseURL the base URL.
    */
-  public void setBaseURL(final URL baseURL)
+  public void setBaseURL (final URL baseURL)
   {
     this.baseURL = baseURL;
   }
@@ -179,7 +179,8 @@ public class URLFilter implements DataFilter, Serializable
    *
    * @throws CloneNotSupportedException should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final URLFilter f = (URLFilter) super.clone();
     if (source != null)

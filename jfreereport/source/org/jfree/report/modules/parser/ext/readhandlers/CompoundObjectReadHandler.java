@@ -4,15 +4,15 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.jfree.xml.parser.XmlReaderException;
-import org.jfree.xml.parser.XmlReadHandler;
-import org.jfree.xml.factory.objects.ObjectDescription;
-import org.jfree.xml.factory.objects.ClassFactory;
-import org.jfree.xml.ElementDefinitionException;
-import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.CommentHintPath;
-import org.xml.sax.SAXException;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
+import org.jfree.xml.ElementDefinitionException;
+import org.jfree.xml.factory.objects.ClassFactory;
+import org.jfree.xml.factory.objects.ObjectDescription;
+import org.jfree.xml.parser.XmlReadHandler;
+import org.jfree.xml.parser.XmlReaderException;
 import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 public class CompoundObjectReadHandler extends BasicObjectReadHandler
 {
@@ -65,7 +65,7 @@ public class CompoundObjectReadHandler extends BasicObjectReadHandler
       final CompoundObjectReadHandler readHandler = (CompoundObjectReadHandler) entry.getValue();
       objectDescription.setParameter(name, readHandler.getObject());
     }
-    
+
     storeCloseComments();
     storeComments();
   }
@@ -133,7 +133,7 @@ public class CompoundObjectReadHandler extends BasicObjectReadHandler
     final ObjectDescription objectDescription =
             ObjectFactoryUtility.findDescription
             (fact, getObjectDescription().getParameterDefinition(name));
-    
+
     final CommentHintPath path = getCommentHintPath().getInstance();
     path.addName(name);
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo.java,v 1.6.4.1 2004/04/06 13:56:13 taqua Exp $
+ * $Id: OpenSourceDemo.java,v 1.8 2005/01/24 23:58:33 taqua Exp $
  *
  * Changes
  * -------
@@ -64,27 +64,29 @@ import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.WaitingImageObserver;
 import org.jfree.ui.RefineryUtilities;
-import org.jfree.ui.action.ActionMenuItem;
 import org.jfree.ui.action.ActionButton;
+import org.jfree.ui.action.ActionMenuItem;
 
 /**
- * A simple JFreeReport demonstration.  The generated report lists some free and open source
- * software projects for the Java programming language.
+ * A simple JFreeReport demonstration.  The generated report lists some free and open
+ * source software projects for the Java programming language.
  *
  * @author David Gilbert
  */
 public class OpenSourceDemo extends AbstractDemoFrame
 {
 
-  /** The data for the report. */
+  /**
+   * The data for the report.
+   */
   private final TableModel data;
 
   /**
    * Constructs the demo application.
    *
-   * @param title  the frame title.
+   * @param title the frame title.
    */
-  public OpenSourceDemo(final String title)
+  public OpenSourceDemo (final String title)
   {
     setTitle(title);
     this.data = new OpenSourceProjects();
@@ -97,7 +99,7 @@ public class OpenSourceDemo extends AbstractDemoFrame
    *
    * @return the menu bar.
    */
-  public JMenuBar createMenuBar()
+  public JMenuBar createMenuBar ()
   {
     final JMenuBar mb = new JMenuBar();
     final JMenu fileMenu = createJMenu("menu.file");
@@ -117,13 +119,13 @@ public class OpenSourceDemo extends AbstractDemoFrame
    *
    * @return a panel containing the basic user interface.
    */
-  public JPanel createContent()
+  public JPanel createContent ()
   {
     final JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
     final String d = "This demo creates a report listing some useful open " +
-        "source projects for Java.";
+            "source projects for Java.";
     final JTextArea textArea = new JTextArea(d);
     textArea.setLineWrap(true);
     textArea.setWrapStyleWord(true);
@@ -145,16 +147,16 @@ public class OpenSourceDemo extends AbstractDemoFrame
   /**
    * Displays a print preview screen for the sample report.
    */
-  protected void attemptPreview()
+  protected void attemptPreview ()
   {
     final URL in = getClass().getResource("/org/jfree/report/demo/OpenSourceDemo.xml");
 
     if (in == null)
     {
       JOptionPane.showMessageDialog(this,
-          MessageFormat.format(getResources().getString("report.definitionnotfound"),
-              new Object[]{in}),
-          getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+              MessageFormat.format(getResources().getString("report.definitionnotfound"),
+                      new Object[]{in}),
+              getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 
     final JFreeReport report;
@@ -201,11 +203,10 @@ public class OpenSourceDemo extends AbstractDemoFrame
   /**
    * Reads the report from the specified template file.
    *
-   * @param templateURL  the template location.
-   *
+   * @param templateURL the template location.
    * @return a report.
    */
-  private JFreeReport parseReport(final URL templateURL)
+  private JFreeReport parseReport (final URL templateURL)
   {
 
     JFreeReport result = null;
@@ -225,9 +226,9 @@ public class OpenSourceDemo extends AbstractDemoFrame
   /**
    * Entry point for running the demo application...
    *
-   * @param args  ignored.
+   * @param args ignored.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();

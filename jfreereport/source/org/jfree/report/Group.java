@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.10 2005/02/19 13:29:52 taqua Exp $
+ * $Id: Group.java,v 1.11 2005/02/23 19:31:35 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -58,41 +58,50 @@ import java.util.List;
 import java.util.TreeSet;
 
 /**
- * A report group.  Reports can contain any number of (nested) groups.
- * The order of the fields is important. If the group does not contain
- * any fields, the group spans the whole report from the first to the last
- * row.
- * <p>
- * The group's field list should not be modified after the group was added
- * to the group list, or the results are undefined.
- * <p>
- * Groups of the same GroupList must have a subgroup relation. The designated
- * child group must contain all fields of the direct parent plus at least one
- * new field.
- *
- * @see GroupList
+ * A report group.  Reports can contain any number of (nested) groups. The order of the
+ * fields is important. If the group does not contain any fields, the group spans the
+ * whole report from the first to the last row.
+ * <p/>
+ * The group's field list should not be modified after the group was added to the group
+ * list, or the results are undefined.
+ * <p/>
+ * Groups of the same GroupList must have a subgroup relation. The designated child group
+ * must contain all fields of the direct parent plus at least one new field.
  *
  * @author David Gilbert
  * @author Thomas Morgner
+ * @see GroupList
  */
 public class Group implements Serializable, Cloneable, Comparable
 {
-  /** The name of the group. */
+  /**
+   * The name of the group.
+   */
   private String name;
 
-  /** The fields that define the group (can be empty). */
+  /**
+   * The fields that define the group (can be empty).
+   */
   private TreeSet fields;
 
-  /** Cached fields. */
+  /**
+   * Cached fields.
+   */
   private transient String[] fieldsCached;
 
-  /** The group header (optional). */
+  /**
+   * The group header (optional).
+   */
   private GroupHeader header;
 
-  /** The group footer (optional). */
+  /**
+   * The group footer (optional).
+   */
   private GroupFooter footer;
 
-  /** The internal constant to mark anonymous group names. */
+  /**
+   * The internal constant to mark anonymous group names.
+   */
   public static final String ANONYMOUS_GROUP_PREFIX = "anonymousGroup@";
 
   private ReportDefinition reportDefinition;
@@ -100,7 +109,7 @@ public class Group implements Serializable, Cloneable, Comparable
   /**
    * Constructs a group with no fields, and an empty header and footer.
    */
-  public Group()
+  public Group ()
   {
     this.name = ANONYMOUS_GROUP_PREFIX + super.hashCode();
     this.fields = new TreeSet();
@@ -112,9 +121,9 @@ public class Group implements Serializable, Cloneable, Comparable
    * Defines the name for this group. The name must not be empty and must be unique within
    * the GroupList.
    *
-   * @param name  the group name (null not permitted).
+   * @param name the group name (null not permitted).
    */
-  public void setName(final String name)
+  public void setName (final String name)
   {
     if (name == null)
     {
@@ -129,20 +138,18 @@ public class Group implements Serializable, Cloneable, Comparable
    *
    * @return the group name.
    */
-  public String getName()
+  public String getName ()
   {
     return this.name;
   }
 
   /**
-   * Returns the group header.
-   * <P>
-   * The group header is a report band that contains elements that should be printed at the
-   * start of a group.
+   * Returns the group header. <P> The group header is a report band that contains
+   * elements that should be printed at the start of a group.
    *
    * @return the group header.
    */
-  public GroupHeader getHeader()
+  public GroupHeader getHeader ()
   {
     return header;
   }
@@ -150,11 +157,10 @@ public class Group implements Serializable, Cloneable, Comparable
   /**
    * Sets the header for the group.
    *
-   * @param header  the header (null not permitted).
-   *
+   * @param header the header (null not permitted).
    * @throws NullPointerException if the given header is null
    */
-  public void setHeader(final GroupHeader header)
+  public void setHeader (final GroupHeader header)
   {
     if (header == null)
     {
@@ -170,7 +176,7 @@ public class Group implements Serializable, Cloneable, Comparable
    *
    * @return the footer.
    */
-  public GroupFooter getFooter()
+  public GroupFooter getFooter ()
   {
     return footer;
   }
@@ -178,10 +184,10 @@ public class Group implements Serializable, Cloneable, Comparable
   /**
    * Sets the footer for the group.
    *
-   * @param footer  the footer (null not permitted).
+   * @param footer the footer (null not permitted).
    * @throws NullPointerException if the given footer is null.
    */
-  public void setFooter(final GroupFooter footer)
+  public void setFooter (final GroupFooter footer)
   {
     if (footer == null)
     {
@@ -197,11 +203,11 @@ public class Group implements Serializable, Cloneable, Comparable
    * needed fields from the DataRow. Don't reference Function-Fields here, functions are
    * not supported in th groupfield definition.
    *
-   * @param c  the list containing strings.
-   *
-   * @throws NullPointerException if the given list is null or the list contains null-values.
+   * @param c the list containing strings.
+   * @throws NullPointerException if the given list is null or the list contains
+   *                              null-values.
    */
-  public void setFields(final List c)
+  public void setFields (final List c)
   {
     if (c == null)
     {
@@ -218,14 +224,13 @@ public class Group implements Serializable, Cloneable, Comparable
   }
 
   /**
-   * Adds a field to the group.  The field names must correspond to the column names in the
-   * report's TableModel.
+   * Adds a field to the group.  The field names must correspond to the column names in
+   * the report's TableModel.
    *
-   * @param name  the field name (null not permitted).
-   *
+   * @param name the field name (null not permitted).
    * @throws NullPointerException if the name is null
    */
-  public void addField(final String name)
+  public void addField (final String name)
   {
     if (name == null)
     {
@@ -240,7 +245,7 @@ public class Group implements Serializable, Cloneable, Comparable
    *
    * @return a list (unmodifiable) of fields for the group.
    */
-  public List getFields()
+  public List getFields ()
   {
     if (fieldsCached == null)
     {
@@ -254,7 +259,7 @@ public class Group implements Serializable, Cloneable, Comparable
    *
    * @return the fields as string array.
    */
-  public String[] getFieldsArray()
+  public String[] getFieldsArray ()
   {
     if (fieldsCached == null)
     {
@@ -270,7 +275,8 @@ public class Group implements Serializable, Cloneable, Comparable
    *
    * @throws CloneNotSupportedException should never be thrown.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final Group g = (Group) super.clone();
     g.fields = new TreeSet(fields);
@@ -281,15 +287,13 @@ public class Group implements Serializable, Cloneable, Comparable
   }
 
   /**
-   * Compares two objects (required to be instances of the Group class).
-   * The group's field lists are compared, order of the fields does not
-   * matter.
+   * Compares two objects (required to be instances of the Group class). The group's field
+   * lists are compared, order of the fields does not matter.
    *
-   * @param o  the to be compared object.
-   *
+   * @param o the to be compared object.
    * @return an integer indicating the relative ordering of the two groups.
    */
-  public int compareTo(final Object o)
+  public int compareTo (final Object o)
   {
     final Group g = (Group) o;
 
@@ -305,10 +309,10 @@ public class Group implements Serializable, Cloneable, Comparable
       {
         // groups with the same number of -, but different fields, are not compareable.
         throw new IllegalArgumentException
-            ("These groups are not comparable, as they don't have any subgroup relation. " +
-             " Groups of the same GroupList must have a subgroup relation. The designated " +
-             " child group must contain all fields of the direct parent plus at least one " +
-             " new field.");
+                ("These groups are not comparable, as they don't have any subgroup relation. " +
+                " Groups of the same GroupList must have a subgroup relation. The designated " +
+                " child group must contain all fields of the direct parent plus at least one " +
+                " new field.");
       }
     }
 
@@ -325,18 +329,19 @@ public class Group implements Serializable, Cloneable, Comparable
     // not compareable, invalid groups
     // return 0;
     throw new IllegalArgumentException
-        ("These groups are not comparable, as they don't have any subgroup relation. " +
-         " Groups of the same GroupList must have a subgroup relation. The designated " +
-         " child group must contain all fields of the direct parent plus at least one " +
-         " new field.");
+            ("These groups are not comparable, as they don't have any subgroup relation. " +
+            " Groups of the same GroupList must have a subgroup relation. The designated " +
+            " child group must contain all fields of the direct parent plus at least one " +
+            " new field.");
   }
 
   /**
-   * Checks, whether the group is equal. A group is considered equal to another group,
-   * if it defines the same fields as the other group.
+   * Checks, whether the group is equal. A group is considered equal to another group, if
+   * it defines the same fields as the other group.
    *
    * @param o the object to be checked
-   * @return true, if the object is a group instance with the same fields, false otherwise.
+   * @return true, if the object is a group instance with the same fields, false
+   *         otherwise.
    */
   public boolean equals (final Object o)
   {
@@ -371,7 +376,7 @@ public class Group implements Serializable, Cloneable, Comparable
     int hashCode = 0;
     for (int i = 0; i < fields.length; i++)
     {
-      hashCode = 29*hashCode + fields[i].hashCode();
+      hashCode = 29 * hashCode + fields[i].hashCode();
     }
     return hashCode;
   }
@@ -381,7 +386,7 @@ public class Group implements Serializable, Cloneable, Comparable
    *
    * @return A string.
    */
-  public String toString()
+  public String toString ()
   {
     final StringBuffer b = new StringBuffer();
     b.append("Group={Name='");
@@ -409,7 +414,7 @@ public class Group implements Serializable, Cloneable, Comparable
    *
    * @return the report definition (maybe null).
    */
-  public ReportDefinition getReportDefinition()
+  public ReportDefinition getReportDefinition ()
   {
     return reportDefinition;
   }

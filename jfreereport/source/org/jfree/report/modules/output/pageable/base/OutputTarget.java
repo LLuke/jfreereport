@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: OutputTarget.java,v 1.4 2004/03/16 15:09:50 taqua Exp $
+ * $Id: OutputTarget.java,v 1.5 2004/05/07 12:53:08 mungady Exp $
  *
  * Changes
  * -------
@@ -53,81 +53,83 @@ import org.jfree.report.util.ReportConfiguration;
 
 /**
  * An interface that defines the methods that must be supported by a report output target.
- * JFreeReport currently implements three targets:  one for Graphics2D (screen and printer),
- * one for Acrobat PDF files and an other target for PlainText output.
+ * JFreeReport currently implements three targets:  one for Graphics2D (screen and
+ * printer), one for Acrobat PDF files and an other target for PlainText output.
  *
  * @author David Gilbert
  */
 public interface OutputTarget extends LayoutSupport
 {
-  /** Literal text for the 'title' property name. */
+  /**
+   * Literal text for the 'title' property name.
+   */
   public static final String TITLE = "Title";
 
-  /** Literal text for the 'author' property name. */
+  /**
+   * Literal text for the 'author' property name.
+   */
   public static final String AUTHOR = "Author";
 
   /**
    * Returns the value of the specified property.  If the property is not found, the
    * <code>defaultValue</code> is returned.
    *
-   * @param property  the property name (or key).
-   * @param defaultValue  the default value.
-   *
+   * @param property     the property name (or key).
+   * @param defaultValue the default value.
    * @return the property value.
    *
    * @throws java.lang.NullPointerException if <code>property</code> is null.
    */
-  public String getProperty(String property, String defaultValue);
+  public String getProperty (String property, String defaultValue);
 
   /**
-   * Returns the value of the specified property.  If the property is not found, <code>null</code>
-   * is returned.
+   * Returns the value of the specified property.  If the property is not found,
+   * <code>null</code> is returned.
    *
-   * @param property  the property name (or key).
-   *
+   * @param property the property name (or key).
    * @return the property value.
    *
    * @throws java.lang.NullPointerException if <code>property</code> is null.
    */
-  public String getProperty(String property);
+  public String getProperty (String property);
 
   /**
-   * Defines a property for this target.
-   * <P>
-   * Properties provide a mechanism for configuring a target.  For example, you can add title and
-   * author information to a PDF report using the 'title' and 'author' properties.
+   * Defines a property for this target. <P> Properties provide a mechanism for
+   * configuring a target.  For example, you can add title and author information to a PDF
+   * report using the 'title' and 'author' properties.
    *
-   * @param property  the property name (key).
-   * @param value  the property value (use null to remove an existing property).
+   * @param property the property name (key).
+   * @param value    the property value (use null to remove an existing property).
    */
-  public void setProperty(String property, String value);
+  public void setProperty (String property, String value);
 
   /**
    * Opens the target.
    *
    * @throws OutputTargetException if there is some problem opening the target.
    */
-  public void open() throws OutputTargetException;
+  public void open ()
+          throws OutputTargetException;
 
   /**
    * Returns true if the target is open, and false otherwise.
    *
    * @return true or false.
    */
-  public boolean isOpen();
+  public boolean isOpen ();
 
   /**
    * Closes the target.
    */
-  public void close();
+  public void close ();
 
   public void printPage (MetaPage content, PageDefinition page, int index)
-   throws OutputTargetException;
+          throws OutputTargetException;
 
   /**
    * Configures the output target.
    *
-   * @param config  the configuration.
+   * @param config the configuration.
    */
-  public void configure(ReportConfiguration config);
+  public void configure (ReportConfiguration config);
 }

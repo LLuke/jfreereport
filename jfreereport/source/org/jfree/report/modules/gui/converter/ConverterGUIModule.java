@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConverterGUIModule.java,v 1.5 2004/05/07 14:29:46 mungady Exp $
+ * $Id: ConverterGUIModule.java,v 1.6 2005/01/25 00:04:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -55,7 +55,8 @@ public class ConverterGUIModule extends AbstractModule
    *
    * @throws ModuleInitializeException if an error occures.
    */
-  public ConverterGUIModule() throws ModuleInitializeException
+  public ConverterGUIModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: EncodingSupport.java,v 1.3 2003/09/14 15:43:07 taqua Exp $
+ * $Id: EncodingSupport.java,v 1.4 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes
  * -------
@@ -52,24 +52,28 @@ public final class EncodingSupport
   /**
    * Default Constructor.
    */
-  private EncodingSupport()
+  private EncodingSupport ()
   {
   }
 
-  /** Storage for the known encodings. */
+  /**
+   * Storage for the known encodings.
+   */
   private static HashMap knownEncodings;
 
-  /** the string that should be encoded. */
+  /**
+   * the string that should be encoded.
+   */
   private static final String TEST_STRING = " ";
 
   /**
-   * Returns <code>true</code> if the encoding is valid, and <code>false</code> otherwise.
+   * Returns <code>true</code> if the encoding is valid, and <code>false</code>
+   * otherwise.
    *
-   * @param encoding  the encoding (name).
-   *
+   * @param encoding the encoding (name).
    * @return A boolean.
    */
-  public static boolean isSupportedEncoding(final String encoding)
+  public static boolean isSupportedEncoding (final String encoding)
   {
     if (encoding == null)
     {

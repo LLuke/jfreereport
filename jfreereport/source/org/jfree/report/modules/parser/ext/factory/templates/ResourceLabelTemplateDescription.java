@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ResourceLabelTemplateDescription.java,v 1.2 2003/08/24 15:08:21 taqua Exp $
+ * $Id: ResourceLabelTemplateDescription.java,v 1.3 2004/05/07 14:29:23 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -50,9 +50,9 @@ public class ResourceLabelTemplateDescription extends AbstractTemplateDescriptio
   /**
    * Creates a new template description.
    *
-   * @param name  the name.
+   * @param name the name.
    */
-  public ResourceLabelTemplateDescription(final String name)
+  public ResourceLabelTemplateDescription (final String name)
   {
     super(name, ResourceLabelTemplate.class, true);
   }

@@ -3,8 +3,8 @@ package org.jfree.report.modules.misc.tablemodel;
 import javax.swing.table.AbstractTableModel;
 
 /**
- * <code>TableModel</code> used by the <code>CSVTableModelProducer</code> class. It has a feature
- * which generates the column name if it is not know.
+ * <code>TableModel</code> used by the <code>CSVTableModelProducer</code> class. It has a
+ * feature which generates the column name if it is not know.
  *
  * @author Mimil
  * @see this.getColumnName()

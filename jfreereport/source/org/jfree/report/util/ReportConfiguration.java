@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.15 2005/01/25 00:23:07 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.16 2005/01/28 19:27:00 taqua Exp $
  *
  * Changes
  * -------
@@ -50,22 +50,22 @@ import org.jfree.util.Configuration;
 
 /**
  * Global and local configurations for JFreeReport.
- * <p>
+ * <p/>
  * You can access the global configuration using this statement in your code:
- * <p>
+ * <p/>
  * <code>ReportConfiguration config = ReportConfiguration.getGlobalConfig();</code>
- * <p>
+ * <p/>
  * You can access the local configuration for a report using this:
- * <p>
+ * <p/>
  * <code>ReportConfiguration local = myReport.getReportConfiguration();
- * <p>
- * You can also specify the local configuration for a report via the XML report
- * template file.
- * <p>
+ * <p/>
+ * You can also specify the local configuration for a report via the XML report template
+ * file.
+ * <p/>
  * todo document the initialization order ...
- * <p>
- * The report configuration can be modified using the configuration editor
- * in the gui-config module.
+ * <p/>
+ * The report configuration can be modified using the configuration editor in the
+ * gui-config module.
  *
  * @author Thomas Morgner
  */
@@ -148,77 +148,112 @@ public class ReportConfiguration extends HierarchicalConfiguration
     }
   }
 
-  /** The text aliasing configuration key. */
+  /**
+   * The text aliasing configuration key.
+   */
   public static final String FONTRENDERER_USEALIASING
-      = "org.jfree.report.layout.fontrenderer.UseAliasing";
+          = "org.jfree.report.layout.fontrenderer.UseAliasing";
 
-  /** The text aliasing configuration default value. Is "false". */
+  /**
+   * The text aliasing configuration default value. Is "false".
+   */
   public static final String FONTRENDERER_USEALIASING_DEFAULT = "false";
 
-  /** The G2 fontrenderer bug override configuration key. */
+  /**
+   * The G2 fontrenderer bug override configuration key.
+   */
   public static final String FONTRENDERER_ISBUGGY_FRC
-      = "org.jfree.report.layout.fontrenderer.IsBuggyFRC";
+          = "org.jfree.report.layout.fontrenderer.IsBuggyFRC";
 
-  /** The G2 fontrenderer bug override. Is "false". */
+  /**
+   * The G2 fontrenderer bug override. Is "false".
+   */
   public static final String FONTRENDERER_ISBUGGY_FRC_DEFAULT = "false";
 
-  /** The property key, which defines whether to be verbose when generating the content. */
+  /**
+   * The property key, which defines whether to be verbose when generating the content.
+   */
   public static final String PRINT_OPERATION_COMMENT
-      = "org.jfree.report.PrintOperationComment";
+          = "org.jfree.report.PrintOperationComment";
 
-  /** The default 'print operation comment' property value. */
+  /**
+   * The default 'print operation comment' property value.
+   */
   public static final String PRINT_OPERATION_COMMENT_DEFAULT = "false";
 
-  /** The property key, which defines whether errors abort the report generation. */
+  /**
+   * The property key, which defines whether errors abort the report generation.
+   */
   public static final String STRICT_ERRORHANDLING
-      = "org.jfree.report.StrictErrorHandling";
+          = "org.jfree.report.StrictErrorHandling";
 
-  /** The default 'strict errorhandling' property value. */
+  /**
+   * The default 'strict errorhandling' property value.
+   */
   public static final String STRICT_ERRORHANDLING_DEFAULT = "true";
 
-  /** The 'warn on invalid columns' property key. */
+  /**
+   * The 'warn on invalid columns' property key.
+   */
   public static final String WARN_INVALID_COLUMNS
-      = "org.jfree.report.WarnInvalidColumns";
+          = "org.jfree.report.WarnInvalidColumns";
 
-  /** The default 'warn on invalid columns' property value. */
+  /**
+   * The default 'warn on invalid columns' property value.
+   */
   public static final String WARN_INVALID_COLUMNS_DEFAULT = "false";
 
-  /** The 'disable logging' property key. */
+  /**
+   * The 'disable logging' property key.
+   */
   public static final String DISABLE_LOGGING
-      = "org.jfree.report.NoDefaultDebug";
+          = "org.jfree.report.NoDefaultDebug";
 
-  /** The 'no-printer-available' property key. */
+  /**
+   * The 'no-printer-available' property key.
+   */
   public static final String NO_PRINTER_AVAILABLE
-      = "org.jfree.report.NoPrinterAvailable";
+          = "org.jfree.report.NoPrinterAvailable";
 
-  /** The default 'disable logging' property value. */
+  /**
+   * The default 'disable logging' property value.
+   */
   public static final String DISABLE_LOGGING_DEFAULT = "false";
 
-  /** The 'log level' property key. */
+  /**
+   * The 'log level' property key.
+   */
   public static final String LOGLEVEL
-      = "org.jfree.report.LogLevel";
+          = "org.jfree.report.LogLevel";
 
-  /** The default 'log level' property value. */
+  /**
+   * The default 'log level' property value.
+   */
   public static final String LOGLEVEL_DEFAULT = "Info";
 
-  /** The 'log target' property key. */
+  /**
+   * The 'log target' property key.
+   */
   public static final String LOGTARGET = "org.jfree.report.LogTarget";
 
-  /** The default 'log target' property value. */
+  /**
+   * The default 'log target' property value.
+   */
   public static final String LOGTARGET_DEFAULT = SystemOutLogTarget.class.getName();
 
   /**
-   * The default resourcebundle that should be used for ResourceFileFilter.
-   * This property must be applied by the parser.
+   * The default resourcebundle that should be used for ResourceFileFilter. This property
+   * must be applied by the parser.
    */
   public static final String REPORT_RESOURCE_BUNDLE_KEY
-      = "org.jfree.report.ResourceBundle";
+          = "org.jfree.report.ResourceBundle";
 
   /**
    * Helper method to read the platform default encoding from the VM's system properties.
+   *
    * @return the contents of the system property "file.encoding".
    */
-  public static String getPlatformDefaultEncoding()
+  public static String getPlatformDefaultEncoding ()
   {
     try
     {
@@ -230,7 +265,9 @@ public class ReportConfiguration extends HierarchicalConfiguration
     }
   }
 
-  /** The global configuration. */
+  /**
+   * The global configuration.
+   */
   private static transient ReportConfiguration globalConfig;
 
   private static transient UserConfigWrapper userConfig = new UserConfigWrapper();
@@ -238,7 +275,7 @@ public class ReportConfiguration extends HierarchicalConfiguration
   /**
    * Default constructor.
    */
-  protected ReportConfiguration()
+  protected ReportConfiguration ()
   {
     this(null);
   }
@@ -246,9 +283,9 @@ public class ReportConfiguration extends HierarchicalConfiguration
   /**
    * Creates a new report configuration.
    *
-   * @param globalConfig  the global configuration.
+   * @param globalConfig the global configuration.
    */
-  public ReportConfiguration(final ReportConfiguration globalConfig)
+  public ReportConfiguration (final ReportConfiguration globalConfig)
   {
     super(globalConfig);
   }
@@ -258,35 +295,28 @@ public class ReportConfiguration extends HierarchicalConfiguration
    *
    * @return the log level.
    */
-  public String getLogLevel()
+  public String getLogLevel ()
   {
     return getConfigProperty(LOGLEVEL, LOGLEVEL_DEFAULT);
   }
 
   /**
-   * Sets the log level, which is read from the global report configuration at
-   * the point that the classloader loads the {@link Log} class.
-   * <p>
+   * Sets the log level, which is read from the global report configuration at the point
+   * that the classloader loads the {@link Log} class.
+   * <p/>
    * Valid log levels are:
+   * <p/>
+   * <ul> <li><code>"Error"</code> - error messages;</li> <li><code>"Warn"</code> -
+   * warning messages;</li> <li><code>"Info"</code> - information messages;</li>
+   * <li><code>"Debug"</code> - debug messages;</li> </ul>
+   * <p/>
+   * Notes: <ul> <li>the setting is not case sensitive.</li> <li>changing the log level
+   * after the {@link Log} class has been loaded will have no effect.</li> <li>to turn of
+   * logging altogether, use the {@link #setDisableLogging} method.</li> </ul>
    *
-   * <ul>
-   * <li><code>"Error"</code> - error messages;</li>
-   * <li><code>"Warn"</code> - warning messages;</li>
-   * <li><code>"Info"</code> - information messages;</li>
-   * <li><code>"Debug"</code> - debug messages;</li>
-   * </ul>
-   *
-   * Notes:
-   * <ul>
-   * <li>the setting is not case sensitive.</li>
-   * <li>changing the log level after the {@link Log} class has been
-   * loaded will have no effect.</li>
-   * <li>to turn of logging altogether, use the {@link #setDisableLogging} method.</li>
-   * </ul>
-   *
-   * @param level  the new log level.
+   * @param level the new log level.
    */
-  public void setLogLevel(final String level)
+  public void setLogLevel (final String level)
   {
     setConfigProperty(LOGLEVEL, level);
   }
@@ -296,41 +326,39 @@ public class ReportConfiguration extends HierarchicalConfiguration
    *
    * @return true, if logging is completly disabled, false otherwise.
    */
-  public boolean isDisableLogging()
+  public boolean isDisableLogging ()
   {
     return getConfigProperty
-        (DISABLE_LOGGING, DISABLE_LOGGING_DEFAULT).equalsIgnoreCase("true");
+            (DISABLE_LOGGING, DISABLE_LOGGING_DEFAULT).equalsIgnoreCase("true");
   }
 
   /**
    * Sets the flag that disables logging.
-   * <p>
+   * <p/>
    * To switch off logging globally, you can use the following code:
-   * <p>
+   * <p/>
    * <code>ReportConfiguration.getGlobalConfig().setDisableLogging(true);</code>
    *
-   * @param disableLogging  the flag.
+   * @param disableLogging the flag.
    */
-  public void setDisableLogging(final boolean disableLogging)
+  public void setDisableLogging (final boolean disableLogging)
   {
     setConfigProperty(DISABLE_LOGGING, String.valueOf(disableLogging));
   }
 
   /**
    * Returns the global configuration for JFreeReport.
-   * <p>
-   * In the current implementation, the configuration has no properties defined,
-   * but references a parent configuration that:
-   * <ul>
-   * <li>copies across all the <code>System</code> properties to use as report
-   * configuration properties (obviously the majority of them will not apply to reports);</li>
-   * <li>itself references a parent configuration that reads its properties from a file
-   *     <code>jfreereport.properties</code>.
+   * <p/>
+   * In the current implementation, the configuration has no properties defined, but
+   * references a parent configuration that: <ul> <li>copies across all the
+   * <code>System</code> properties to use as report configuration properties (obviously
+   * the majority of them will not apply to reports);</li> <li>itself references a parent
+   * configuration that reads its properties from a file <code>jfreereport.properties</code>.
    * </ul>
    *
    * @return the global configuration.
    */
-  public static synchronized ReportConfiguration getGlobalConfig()
+  public static synchronized ReportConfiguration getGlobalConfig ()
   {
     if (globalConfig == null)
     {
@@ -340,14 +368,15 @@ public class ReportConfiguration extends HierarchicalConfiguration
       rootProperty.load("/org/jfree/report/jfreereport.properties");
       rootProperty.load("/org/jfree/report/ext/jfreereport-ext.properties");
       globalConfig.insertConfiguration(rootProperty);
-      globalConfig.insertConfiguration(JFreeReportBoot.getInstance().getPackageManager().getPackageConfiguration());
+      globalConfig.insertConfiguration(JFreeReportBoot.getInstance().getPackageManager()
+              .getPackageConfiguration());
 
       final PropertyFileReportConfiguration baseProperty = new PropertyFileReportConfiguration();
       baseProperty.load("/jfreereport.properties");
       globalConfig.insertConfiguration(baseProperty);
 
       globalConfig.insertConfiguration(userConfig);
-      
+
       final SystemPropertyConfiguration systemConfig = new SystemPropertyConfiguration();
       globalConfig.insertConfiguration(systemConfig);
       // just in case it is not already started ...
@@ -362,7 +391,7 @@ public class ReportConfiguration extends HierarchicalConfiguration
    *
    * @return the log target.
    */
-  public String getLogTarget()
+  public String getLogTarget ()
   {
     return getConfigProperty(LOGTARGET, LOGTARGET_DEFAULT);
   }
@@ -370,9 +399,9 @@ public class ReportConfiguration extends HierarchicalConfiguration
   /**
    * Sets the log target.
    *
-   * @param logTarget  the new log target.
+   * @param logTarget the new log target.
    */
-  public void setLogTarget(final String logTarget)
+  public void setLogTarget (final String logTarget)
   {
     setConfigProperty(LOGTARGET, logTarget);
   }
@@ -382,19 +411,19 @@ public class ReportConfiguration extends HierarchicalConfiguration
    *
    * @return true, if invalid columns in the dataRow are logged as warning.
    */
-  public boolean isWarnInvalidColumns()
+  public boolean isWarnInvalidColumns ()
   {
     return getConfigProperty(WARN_INVALID_COLUMNS,
-        WARN_INVALID_COLUMNS_DEFAULT).equalsIgnoreCase("true");
+            WARN_INVALID_COLUMNS_DEFAULT).equalsIgnoreCase("true");
   }
 
   /**
-   * Set to true, if you want to get informed when invalid column-requests are
-   * made to the DataRow.
+   * Set to true, if you want to get informed when invalid column-requests are made to the
+   * DataRow.
    *
    * @param warnInvalidColumns the warning flag
    */
-  public void setWarnInvalidColumns(final boolean warnInvalidColumns)
+  public void setWarnInvalidColumns (final boolean warnInvalidColumns)
   {
     setConfigProperty(WARN_INVALID_COLUMNS, String.valueOf(warnInvalidColumns));
   }
@@ -405,10 +434,10 @@ public class ReportConfiguration extends HierarchicalConfiguration
    *
    * @return true, if comments are enabled.
    */
-  public boolean isPrintOperationComment()
+  public boolean isPrintOperationComment ()
   {
     return getConfigProperty(PRINT_OPERATION_COMMENT,
-        PRINT_OPERATION_COMMENT_DEFAULT).equalsIgnoreCase("true");
+            PRINT_OPERATION_COMMENT_DEFAULT).equalsIgnoreCase("true");
   }
 
   /**
@@ -417,89 +446,92 @@ public class ReportConfiguration extends HierarchicalConfiguration
    *
    * @param print set to true, if comments should be enabled.
    */
-  public void setPrintOperationComment(final boolean print)
+  public void setPrintOperationComment (final boolean print)
   {
     setConfigProperty(PRINT_OPERATION_COMMENT, String.valueOf(print));
   }
 
   /**
-   * Returns true, if the Graphics2D should use aliasing to render text. Defaults to false.
+   * Returns true, if the Graphics2D should use aliasing to render text. Defaults to
+   * false.
    *
    * @return true, if aliasing is enabled.
    */
-  public boolean isFontRendererUseAliasing()
+  public boolean isFontRendererUseAliasing ()
   {
     return getConfigProperty(FONTRENDERER_USEALIASING,
-        FONTRENDERER_USEALIASING_DEFAULT).equalsIgnoreCase("true");
+            FONTRENDERER_USEALIASING_DEFAULT).equalsIgnoreCase("true");
   }
 
   /**
-   * set to true, if the Graphics2D should use aliasing to render text. Defaults to false.
+   * set to true, if the Graphics2D should use aliasing to render text. Defaults to
+   * false.
    *
    * @param alias set to true, if the Graphics2D should use aliasing.
    */
-  public void setFontRendererUseAliasing(final boolean alias)
+  public void setFontRendererUseAliasing (final boolean alias)
   {
     setConfigProperty(FONTRENDERER_USEALIASING, String.valueOf(alias));
   }
 
   /**
-   * Returns true, if the Graphics2D implementation is buggy and is not really able
-   * to place/calculate the fontsizes correctly. Defaults to false. (SunJDK on Windows
-   * is detected and corrected, Linux SunJDK 1.3 is buggy, but not detectable).
+   * Returns true, if the Graphics2D implementation is buggy and is not really able to
+   * place/calculate the fontsizes correctly. Defaults to false. (SunJDK on Windows is
+   * detected and corrected, Linux SunJDK 1.3 is buggy, but not detectable).
    *
    * @return true, if the Graphics2D implementation does not calculate the string
-   * positions correctly and an alternative implementation should be used.
+   *         positions correctly and an alternative implementation should be used.
    */
-  public boolean isFontRendererBuggy()
+  public boolean isFontRendererBuggy ()
   {
     return getConfigProperty(FONTRENDERER_ISBUGGY_FRC,
-        FONTRENDERER_ISBUGGY_FRC_DEFAULT).equalsIgnoreCase("true");
+            FONTRENDERER_ISBUGGY_FRC_DEFAULT).equalsIgnoreCase("true");
   }
 
   /**
-   * set to true, if the Graphics2D implementation is buggy and is not really able
-   * to place/calculate the fontsizes correctly. Defaults to false. (SunJDK on Windows
-   * is detected and corrected, Linux SunJDK 1.3 is buggy, but not detectable).
+   * set to true, if the Graphics2D implementation is buggy and is not really able to
+   * place/calculate the fontsizes correctly. Defaults to false. (SunJDK on Windows is
+   * detected and corrected, Linux SunJDK 1.3 is buggy, but not detectable).
    *
-   * @param buggy set to true, if the Graphics2D implementation does not calculate the string
-   * positions correctly and an alternative implementation should be used.
+   * @param buggy set to true, if the Graphics2D implementation does not calculate the
+   *              string positions correctly and an alternative implementation should be
+   *              used.
    */
-  public void setFontRendererBuggy(final boolean buggy)
+  public void setFontRendererBuggy (final boolean buggy)
   {
     setConfigProperty(FONTRENDERER_ISBUGGY_FRC, String.valueOf(buggy));
   }
 
   /**
-   * Checks, whether a stricter error handling is applied to the report processing.
-   * If set to true, then errors in the handling of report events will cause the report
-   * processing to fail. This is a safe-and-paranoid setting, life is simpler with
-   * this set to false. The property defaults to false, as this is the old behaviour.
-   * <p>
-   * A properly defined report should not throw exceptions, so it is safe to set this
-   * to true.
+   * Checks, whether a stricter error handling is applied to the report processing. If set
+   * to true, then errors in the handling of report events will cause the report
+   * processing to fail. This is a safe-and-paranoid setting, life is simpler with this
+   * set to false. The property defaults to false, as this is the old behaviour.
+   * <p/>
+   * A properly defined report should not throw exceptions, so it is safe to set this to
+   * true.
    *
    * @return true, if the strict handling is enabled, false otherwise.
    */
-  public boolean isStrictErrorHandling()
+  public boolean isStrictErrorHandling ()
   {
     return getConfigProperty(STRICT_ERRORHANDLING,
-        STRICT_ERRORHANDLING_DEFAULT).equalsIgnoreCase("true");
+            STRICT_ERRORHANDLING_DEFAULT).equalsIgnoreCase("true");
   }
 
   /**
-   * Defines, whether a stricter error handling is applied to the report processing.
-   * If set to true, then errors in the handling of report events will cause the report
-   * processing to fail. This is a safe-and-paranoid setting, life is simpler with
-   * this set to false. The property defaults to false, as this is the old behaviour.
-   * <p>
-   * A properly defined report should not throw exceptions, so it is safe to set this
-   * to true.
+   * Defines, whether a stricter error handling is applied to the report processing. If
+   * set to true, then errors in the handling of report events will cause the report
+   * processing to fail. This is a safe-and-paranoid setting, life is simpler with this
+   * set to false. The property defaults to false, as this is the old behaviour.
+   * <p/>
+   * A properly defined report should not throw exceptions, so it is safe to set this to
+   * true.
    *
    * @param strictErrorHandling if set to true, then errors in the event dispatching will
-   * cause the reporting to fail.
+   *                            cause the reporting to fail.
    */
-  public void setStrictErrorHandling(final boolean strictErrorHandling)
+  public void setStrictErrorHandling (final boolean strictErrorHandling)
   {
     setConfigProperty(STRICT_ERRORHANDLING, String.valueOf(strictErrorHandling));
   }

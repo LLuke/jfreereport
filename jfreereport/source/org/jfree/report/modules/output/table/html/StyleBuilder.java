@@ -49,7 +49,7 @@ public class StyleBuilder
     style.append(";");
   }
 
-  public String toString()
+  public String toString ()
   {
     return style.toString();
   }

@@ -26,7 +26,7 @@ public class ImageRefReadHandler extends AbstractImageElementReadHandler
           throws SAXException, XmlReaderException
   {
     super.startParsing(atts);
-    handleSource (atts);
+    handleSource(atts);
   }
 
   private void handleSource (final PropertyAttributes atts)

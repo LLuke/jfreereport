@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConverterParserFrontend.java,v 1.3 2003/11/07 18:33:53 taqua Exp $
+ * $Id: ConverterParserFrontend.java,v 1.4 2004/05/07 14:29:46 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -42,9 +42,9 @@ import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.xml.ParserFrontend;
 
 /**
- * A parser frontend implementation that initializes the converter
- * parser. This parser will wrap around the real xml parser implementation.
- * 
+ * A parser frontend implementation that initializes the converter parser. This parser
+ * will wrap around the real xml parser implementation.
+ *
  * @author Thomas Morgner
  */
 public class ConverterParserFrontend extends ParserFrontend
@@ -52,7 +52,7 @@ public class ConverterParserFrontend extends ParserFrontend
   /**
    * Creates a new parser frontend.
    */
-  public ConverterParserFrontend()
+  public ConverterParserFrontend ()
   {
     super(new ConverterParser(new ReportParser()));
   }

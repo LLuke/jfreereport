@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.4.4.6 2005/01/20 14:50:03 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.6 2005/01/25 00:00:18 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -46,31 +46,33 @@ import java.util.HashMap;
 import org.jfree.report.event.ReportEvent;
 
 /**
- * Prints the total number of pages of an report. If a group is specified,
- * this function expects the group to have the manual pagebreak enabled. 
- * 
- * This function will only work as expected in group mode if the named 
- * group has pagebreak set to true. 
+ * Prints the total number of pages of an report. If a group is specified, this function
+ * expects the group to have the manual pagebreak enabled.
+ * <p/>
+ * This function will only work as expected in group mode if the named group has pagebreak
+ * set to true.
  *
  * @author Thomas Morgner
  */
 public class PageTotalFunction extends PageFunction
 {
   /**
-   * The current number is a shared secret over multiple report states and is shared
-   * among all states of a report (if global) or all states which belong to a group.
+   * The current number is a shared secret over multiple report states and is shared among
+   * all states of a report (if global) or all states which belong to a group.
    */
   private static class PageStorage implements Serializable
   {
-    /** The page. */
+    /**
+     * The page.
+     */
     private int page;
 
     /**
      * Creates a new page storage.
      *
-     * @param page  the page.
+     * @param page the page.
      */
-    public PageStorage(final int page)
+    public PageStorage (final int page)
     {
       this.page = page;
     }
@@ -80,7 +82,7 @@ public class PageTotalFunction extends PageFunction
      *
      * @return the page number.
      */
-    public int getPage()
+    public int getPage ()
     {
       return page;
     }
@@ -88,24 +90,28 @@ public class PageTotalFunction extends PageFunction
     /**
      * Sets the page number.
      *
-     * @param page  the page number.
+     * @param page the page number.
      */
-    public void setPage(final int page)
+    public void setPage (final int page)
     {
       this.page = page;
     }
   }
 
-  /** The page number. */
+  /**
+   * The page number.
+   */
   private PageStorage pageStorage;
 
-  /** The group pages. */
+  /**
+   * The group pages.
+   */
   private HashMap groupPages;
 
   /**
    * Creates a new page total function.
    */
-  public PageTotalFunction()
+  public PageTotalFunction ()
   {
     this.groupPages = new HashMap();
   }
@@ -113,9 +119,9 @@ public class PageTotalFunction extends PageFunction
   /**
    * Receives notification that the report has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportInitialized(final ReportEvent event)
+  public void reportInitialized (final ReportEvent event)
   {
     // report started is no longer the first event. PageStarted is called first!
     if (pageStorage == null)
@@ -127,21 +133,21 @@ public class PageTotalFunction extends PageFunction
   }
 
   /**
-   * Receives notification from the report engine that a new page is starting.  Grabs the page
-   * number from the report state and stores it.
-   * <p>
+   * Receives notification from the report engine that a new page is starting.  Grabs the
+   * page number from the report state and stores it.
+   * <p/>
    * Prepared data is bound to the display item, the current displayed row.
    *
    * @param event Information about the event.
    */
-  public void pageStarted(final ReportEvent event)
+  public void pageStarted (final ReportEvent event)
   {
     if (event.getState().isPrepareRun() && event.getState().getLevel() < 0)
     {
       if (isGroupStarted())
       {
         this.pageStorage = new PageStorage(getStartPage());
-        setGroupStarted (false);
+        setGroupStarted(false);
       }
       else
       {
@@ -155,11 +161,11 @@ public class PageTotalFunction extends PageFunction
       {
         // restore the saved state
         this.pageStorage = (PageStorage)
-            groupPages.get(new Integer(event.getState().getCurrentDisplayItem()));
+                groupPages.get(new Integer(event.getState().getCurrentDisplayItem()));
         if (pageStorage == null)
         {
           throw new IllegalStateException("No page-storage for the current state: "
-              + event.getState().getCurrentDataItem());
+                  + event.getState().getCurrentDataItem());
 
         }
       }
@@ -169,9 +175,9 @@ public class PageTotalFunction extends PageFunction
   /**
    * Sets the page number.
    *
-   * @param page  the page number.
+   * @param page the page number.
    */
-  protected void setPage(final int page)
+  protected void setPage (final int page)
   {
     if (this.pageStorage != null)
     {
@@ -184,7 +190,7 @@ public class PageTotalFunction extends PageFunction
    *
    * @return the page number.
    */
-  protected int getPage()
+  protected int getPage ()
   {
     if (this.pageStorage == null)
     {
@@ -197,12 +203,12 @@ public class PageTotalFunction extends PageFunction
   }
 
   /**
-   * Return a completly separated copy of this function. The copy does no
-   * longer share any changeable objects with the original function.
+   * Return a completly separated copy of this function. The copy does no longer share any
+   * changeable objects with the original function.
    *
    * @return a copy of this function.
    */
-  public Expression getInstance()
+  public Expression getInstance ()
   {
     final PageTotalFunction function = (PageTotalFunction) super.getInstance();
     function.groupPages = new HashMap();

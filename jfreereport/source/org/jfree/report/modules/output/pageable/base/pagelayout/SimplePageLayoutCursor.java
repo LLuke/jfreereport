@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SimplePageLayoutCursor.java,v 1.6 2005/01/25 00:10:42 taqua Exp $
+ * $Id: SimplePageLayoutCursor.java,v 1.7 2005/02/19 13:29:58 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -50,32 +50,40 @@ package org.jfree.report.modules.output.pageable.base.pagelayout;
 import java.io.Serializable;
 
 /**
- * A utility class for keeping track of the current output position on a logical page.  Only the
- * vertical location is tracked, it begins at zero (the top of the page) and increases as the
- * cursor moves down the page.
+ * A utility class for keeping track of the current output position on a logical page.
+ * Only the vertical location is tracked, it begins at zero (the top of the page) and
+ * increases as the cursor moves down the page.
  *
  * @author David Gilbert
  */
 public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
 {
-  /** The y-coordinate. */
+  /**
+   * The y-coordinate.
+   */
   private long y;
 
-  /** The bottom of the page. */
+  /**
+   * The bottom of the page.
+   */
   private final long pageBottom;
 
-  /** The reserved space at the bottom of the page. */
+  /**
+   * The reserved space at the bottom of the page.
+   */
   private long reserved;
 
-  /** The space used by the pageheader. */
+  /**
+   * The space used by the pageheader.
+   */
   private long pageTop;
 
   /**
    * Constructs a new cursor.
    *
-   * @param height  the logical page height.
+   * @param height the logical page height.
    */
-  public SimplePageLayoutCursor(final long height)
+  public SimplePageLayoutCursor (final long height)
   {
     y = 0;
     pageBottom = height;
@@ -83,12 +91,12 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
 
   /**
    * Reserves the given space at the bottom of the page. This space is considered printed
-   * and does not get filled by the various bands and elements. This functionality is
-   * used to reserve space for the page footer.
+   * and does not get filled by the various bands and elements. This functionality is used
+   * to reserve space for the page footer.
    *
-   * @param reserve  the space (in points) to reserve at the bottom of the page.
+   * @param reserve the space (in points) to reserve at the bottom of the page.
    */
-  public void setReservedSpace(final long reserve)
+  public void setReservedSpace (final long reserve)
   {
     if (reserve < 0)
     {
@@ -102,20 +110,22 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
   }
 
   /**
-   * Returns the amount of space reserved at the bottom of the page (usually for the page footer).
+   * Returns the amount of space reserved at the bottom of the page (usually for the page
+   * footer).
    *
    * @return the reserved space (in Java2D units).
    */
-  public long getReservedSpace()
+  public long getReservedSpace ()
   {
     return reserved;
   }
 
   /**
    * Adds the specified amount to the y-coordinate.
+   *
    * @param amount The amount that the cursor should advance down the page.
    */
-  public void advance(final long amount)
+  public void advance (final long amount)
   {
     if (amount < 0)
     {
@@ -126,12 +136,12 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
 
   /**
    * Moves the cursor to the given y-coordinate. All space beween the current position
-   * before the move and the new position is considered filled and won't get filled by
-   * the generator.
+   * before the move and the new position is considered filled and won't get filled by the
+   * generator.
    *
    * @param amount The amount that the cursor should advance down the page.
    */
-  public void advanceTo(final long amount)
+  public void advanceTo (final long amount)
   {
     if (amount < y)
     {
@@ -141,13 +151,13 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
   }
 
   /**
-   * Returns true if there is space for a band with the specified height, and false otherwise.
+   * Returns true if there is space for a band with the specified height, and false
+   * otherwise.
    *
    * @param height The height of the proposed band.
-   *
    * @return A flag indicating whether or not there is room to print the band.
    */
-  public boolean isSpaceFor(final long height)
+  public boolean isSpaceFor (final long height)
   {
     return (y + height <= (pageBottom - reserved));
   }
@@ -157,7 +167,7 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @return the current y-position of this cursor.
    */
-  public long getY()
+  public long getY ()
   {
     return y;
   }
@@ -167,17 +177,18 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @return the bottom border of the printable area.
    */
-  public long getPageBottom()
+  public long getPageBottom ()
   {
     return pageBottom;
   }
 
   /**
-   * Returns the y-coordinate for the start of the reserved space at the bottom of the page.
+   * Returns the y-coordinate for the start of the reserved space at the bottom of the
+   * page.
    *
    * @return the start of the space reserved for the page footer.
    */
-  public long getPageBottomReserved()
+  public long getPageBottomReserved ()
   {
     return (pageBottom - reserved);
   }
@@ -187,9 +198,10 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @return a clone of this cursor.
    *
-   * @throws CloneNotSupportedException  n.a.
+   * @throws CloneNotSupportedException n.a.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     return super.clone();
   }
@@ -199,7 +211,7 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @return the string.
    */
-  public String toString()
+  public String toString ()
   {
     final StringBuffer b = new StringBuffer();
     b.append("SimplePageLayoutCursor={y=");
@@ -218,7 +230,7 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @return the reserved page header space.
    */
-  public long getPageTop()
+  public long getPageTop ()
   {
     return pageTop;
   }
@@ -228,7 +240,7 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @param pageTop the reserved page header space.
    */
-  public void setPageTop(final long pageTop)
+  public void setPageTop (final long pageTop)
   {
     this.pageTop = pageTop;
   }

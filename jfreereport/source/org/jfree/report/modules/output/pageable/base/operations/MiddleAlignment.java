@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MiddleAlignment.java,v 1.8 2004/05/07 12:53:06 mungady Exp $
+ * $Id: MiddleAlignment.java,v 1.9 2005/02/19 13:29:58 taqua Exp $
  *
  * Changes
  * -------
@@ -51,9 +51,9 @@ public strictfp class MiddleAlignment extends VerticalBoundsAlignment
   /**
    * Creates a new middle alignment object.
    *
-   * @param bounds  the current bounds.
+   * @param bounds the current bounds.
    */
-  public MiddleAlignment(final StrictBounds bounds)
+  public MiddleAlignment (final StrictBounds bounds)
   {
     super(bounds);
   }
@@ -61,20 +61,19 @@ public strictfp class MiddleAlignment extends VerticalBoundsAlignment
   /**
    * Aligns a rectangle with the current bounds.
    *
-   * @param r  the rectangle to align (<code>null</code> not permitted).
-   *
+   * @param r the rectangle to align (<code>null</code> not permitted).
    * @return the aligned rectangle.
    */
-  public StrictBounds align(final StrictBounds r)
+  public StrictBounds align (final StrictBounds r)
   {
     if (r == null)
     {
       throw new NullPointerException("MiddleAlignment.align(...): null not permitted.");
     }
     final long x = r.getX();
-    final long h = Math.min (r.getHeight(), getReferenceBounds().getHeight());
+    final long h = Math.min(r.getHeight(), getReferenceBounds().getHeight());
     final long y = (getReferenceBounds().getY()
-        + ((getReferenceBounds().getHeight() - h) / 2));
+            + ((getReferenceBounds().getHeight() - h) / 2));
     final long w = r.getWidth();
     r.setRect(x, y, w, h);
     return r;

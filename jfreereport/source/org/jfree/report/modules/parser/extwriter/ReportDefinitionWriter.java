@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionWriter.java,v 1.7 2005/01/25 00:20:33 taqua Exp $
+ * $Id: ReportDefinitionWriter.java,v 1.8 2005/02/04 19:08:53 taqua Exp $
  *
  * Changes
  * -------
@@ -52,16 +52,18 @@ import org.jfree.xml.CommentHandler;
  */
 public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
 {
-  /** The parser hint path used to store comments and other additional information. */
+  /**
+   * The parser hint path used to store comments and other additional information.
+   */
   private static final CommentHintPath ROOT_HINT_PATH =
-      new CommentHintPath(REPORT_DEFINITION_TAG);
+          new CommentHintPath(REPORT_DEFINITION_TAG);
 
   /**
    * Creates a new writer.
    *
-   * @param writer  the report writer.
+   * @param writer the report writer.
    */
-  public ReportDefinitionWriter(final ReportWriter writer)
+  public ReportDefinitionWriter (final ReportWriter writer)
   {
     super(writer, 0);
   }
@@ -69,28 +71,21 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
   /**
    * Writes a report definition to a character stream writer.  After the standard XML
    * header and the opening tag is written, this class delegates work to:
+   * <p/>
+   * <ul> <li>{@link org.jfree.report.modules.parser.extwriter.ParserConfigWriter} to
+   * write the parser configuration;</li> <li>{@link org.jfree.report.modules.parser.extwriter.ReportConfigWriter}
+   * to write the report configuration;</li> <li>{@link org.jfree.report.modules.parser.extwriter.StylesWriter}
+   * to write the styles;</li> <li>{@link org.jfree.report.modules.parser.extwriter.TemplatesWriter}
+   * to write the templates;</li> <li>{@link org.jfree.report.modules.parser.extwriter.ReportDescriptionWriter}
+   * to write the report description;</li> <li>{@link org.jfree.report.modules.parser.extwriter.FunctionsWriter}
+   * to write the function definitions;</li> </ul>
    *
-   * <ul>
-   * <li>{@link org.jfree.report.modules.parser.extwriter.ParserConfigWriter}
-   * to write the parser configuration;</li>
-   * <li>{@link org.jfree.report.modules.parser.extwriter.ReportConfigWriter}
-   * to write the report configuration;</li>
-   * <li>{@link org.jfree.report.modules.parser.extwriter.StylesWriter}
-   * to write the styles;</li>
-   * <li>{@link org.jfree.report.modules.parser.extwriter.TemplatesWriter}
-   * to write the templates;</li>
-   * <li>{@link org.jfree.report.modules.parser.extwriter.ReportDescriptionWriter}
-   * to write the report description;</li>
-   * <li>{@link org.jfree.report.modules.parser.extwriter.FunctionsWriter}
-   * to write the function definitions;</li>
-   * </ul>
-   *
-   * @param w  the character stream writer.
-   *
-   * @throws IOException if there is an I/O problem.
+   * @param w the character stream writer.
+   * @throws IOException           if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void write(final Writer w) throws IOException, ReportWriterException
+  public void write (final Writer w)
+          throws IOException, ReportWriterException
   {
     final JFreeReport report = getReport();
     final String reportName = report.getName();
@@ -113,27 +108,27 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
     w.write(getLineSeparator());
 
     final ParserConfigWriter parserConfigWriter =
-        new ParserConfigWriter(getReportWriter(), getIndentLevel());
+            new ParserConfigWriter(getReportWriter(), getIndentLevel());
     parserConfigWriter.write(w);
 
     final ReportConfigWriter reportConfigWriter =
-        new ReportConfigWriter(getReportWriter(), getIndentLevel());
+            new ReportConfigWriter(getReportWriter(), getIndentLevel());
     reportConfigWriter.write(w);
 
     final StylesWriter stylesWriter =
-        new StylesWriter(getReportWriter(), getIndentLevel());
+            new StylesWriter(getReportWriter(), getIndentLevel());
     stylesWriter.write(w);
 
     final TemplatesWriter templatesWriter =
-        new TemplatesWriter(getReportWriter(), getIndentLevel());
+            new TemplatesWriter(getReportWriter(), getIndentLevel());
     templatesWriter.write(w);
 
     final ReportDescriptionWriter reportDescriptionWriter
-        = new ReportDescriptionWriter(getReportWriter(), getIndentLevel());
+            = new ReportDescriptionWriter(getReportWriter(), getIndentLevel());
     reportDescriptionWriter.write(w);
 
     final FunctionsWriter functionsWriter =
-        new FunctionsWriter(getReportWriter(), getIndentLevel());
+            new FunctionsWriter(getReportWriter(), getIndentLevel());
     functionsWriter.write(w);
 
     writeComment(w, ROOT_HINT_PATH, CommentHandler.CLOSE_TAG_COMMENT);

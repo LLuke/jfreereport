@@ -29,9 +29,10 @@ public class ITextImageCache
    * @param imageRef the image reference.
    * @return an image.
    *
-   * @throws com.lowagie.text.DocumentException if no PDFImageElement could be created using the given
-   *                           ImageReference.
-   * @throws java.io.IOException       if the image could not be read.
+   * @throws com.lowagie.text.DocumentException
+   *                             if no PDFImageElement could be created using the given
+   *                             ImageReference.
+   * @throws java.io.IOException if the image could not be read.
    */
   public Image getImage (final ImageContainer imageRef)
           throws DocumentException, IOException

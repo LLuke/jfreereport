@@ -1,22 +1,25 @@
 package org.jfree.report.filter.templates;
 
-import org.jfree.report.filter.DataRowDataSource;
-import org.jfree.report.filter.StringFilter;
-import org.jfree.report.filter.AnchorFilter;
 import org.jfree.report.ReportDefinition;
+import org.jfree.report.filter.AnchorFilter;
+import org.jfree.report.filter.DataRowDataSource;
 
 public class AnchorFieldTemplate extends AbstractTemplate
 {
-  /** The data-row data source. */
+  /**
+   * The data-row data source.
+   */
   private DataRowDataSource dataRowDataSource;
 
-  /** A string filter. */
+  /**
+   * A string filter.
+   */
   private AnchorFilter anchorFilter;
 
   /**
    * Creates a new string field template.
    */
-  public AnchorFieldTemplate()
+  public AnchorFieldTemplate ()
   {
     dataRowDataSource = new DataRowDataSource();
     anchorFilter = new AnchorFilter();
@@ -28,7 +31,7 @@ public class AnchorFieldTemplate extends AbstractTemplate
    *
    * @return The field name.
    */
-  public String getField()
+  public String getField ()
   {
     return dataRowDataSource.getDataSourceColumnName();
   }
@@ -36,9 +39,9 @@ public class AnchorFieldTemplate extends AbstractTemplate
   /**
    * Sets the field name.
    *
-   * @param field  the field name.
+   * @param field the field name.
    */
-  public void setField(final String field)
+  public void setField (final String field)
   {
     dataRowDataSource.setDataSourceColumnName(field);
   }
@@ -48,7 +51,7 @@ public class AnchorFieldTemplate extends AbstractTemplate
    *
    * @return the value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return anchorFilter.getValue();
   }
@@ -60,7 +63,8 @@ public class AnchorFieldTemplate extends AbstractTemplate
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final AnchorFieldTemplate template = (AnchorFieldTemplate) super.clone();
     template.anchorFilter = (AnchorFilter) anchorFilter.clone();
@@ -68,17 +72,17 @@ public class AnchorFieldTemplate extends AbstractTemplate
     return template;
   }
 
-  public void registerReportDefinition(final ReportDefinition reportDefinition)
+  public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().registerReportDefinition(reportDefinition);
   }
 
-  public void unregisterReportDefinition(final ReportDefinition reportDefinition)
+  public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().unregisterReportDefinition(reportDefinition);
   }
 
-  protected DataRowDataSource getDataRowDataSource()
+  protected DataRowDataSource getDataRowDataSource ()
   {
     return dataRowDataSource;
   }

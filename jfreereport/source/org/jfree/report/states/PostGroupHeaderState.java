@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostGroupHeaderState.java,v 1.4 2004/05/07 08:14:22 mungady Exp $
+ * $Id: PostGroupHeaderState.java,v 1.5 2005/01/28 19:26:59 taqua Exp $
  *
  * Changes
  * -------
@@ -41,10 +41,10 @@ package org.jfree.report.states;
 import org.jfree.report.event.ReportEvent;
 
 /**
- * The groupHeader has been printed. If there are more groups defined, activate them
- * by creating a new PreGroupHeader state for the next group. If no more groups can
- * be activated, start printing the items by creating a PreItemGroupState.
- * <p>
+ * The groupHeader has been printed. If there are more groups defined, activate them by
+ * creating a new PreGroupHeader state for the next group. If no more groups can be
+ * activated, start printing the items by creating a PreItemGroupState.
+ * <p/>
  * Transition: PreGroupHeaderState or PreItemHeader
  *
  * @author David Gilbert
@@ -55,9 +55,9 @@ public final class PostGroupHeaderState extends ReportState
   /**
    * Creates a new 'post-group-header' state.
    *
-   * @param previous  the previous state.
+   * @param previous the previous state.
    */
-  public PostGroupHeaderState(final ReportState previous)
+  public PostGroupHeaderState (final ReportState previous)
   {
     super(previous);
   }
@@ -67,7 +67,7 @@ public final class PostGroupHeaderState extends ReportState
    *
    * @return true, if the currentGroupIndex is smaller than the defined groups - 1
    */
-  protected boolean hasMoreGroups()
+  protected boolean hasMoreGroups ()
   {
     return this.getCurrentGroupIndex() < (this.getReport().getGroupCount() - 1);
   }
@@ -78,13 +78,13 @@ public final class PostGroupHeaderState extends ReportState
   }
 
   /**
-   * Advances from this state to the next.  If the reporting engine hasn't reached the inner-most
-   * group yet, move to the '<code>PRE-GROUP-HEADER</code>' state again, otherwise move to the
-   * '<code>PRE-ITEM-GROUP</code>' state.
+   * Advances from this state to the next.  If the reporting engine hasn't reached the
+   * inner-most group yet, move to the '<code>PRE-GROUP-HEADER</code>' state again,
+   * otherwise move to the '<code>PRE-ITEM-GROUP</code>' state.
    *
    * @return the next state.
    */
-  public ReportState advance()
+  public ReportState advance ()
   {
     firePrepareEvent();
     if (hasMoreGroups())
@@ -100,12 +100,12 @@ public final class PostGroupHeaderState extends ReportState
   }
 
   /**
-   * Returns the corrected display item for this state. As the currentItem has not yet advanced
-   * we perform a readAHead lookup when populating elements.
+   * Returns the corrected display item for this state. As the currentItem has not yet
+   * advanced we perform a readAHead lookup when populating elements.
    *
    * @return true; the post group header previews the next data row.
    */
-  public boolean isPrefetchState()
+  public boolean isPrefetchState ()
   {
     return true;
   }

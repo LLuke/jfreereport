@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaBand.java,v 1.4 2004/05/07 14:29:20 mungady Exp $
+ * $Id: MetaBand.java,v 1.5 2005/01/25 00:09:50 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,8 +48,8 @@ public class MetaBand extends MetaElement
   private MetaElement[] elements;
   private boolean spooled;
 
-  public MetaBand(final Content elementContent, final ElementStyleSheet style,
-                  final MetaElement[] elements, final boolean spool)
+  public MetaBand (final Content elementContent, final ElementStyleSheet style,
+                   final MetaElement[] elements, final boolean spool)
   {
     super(elementContent, style);
     this.elements = elements;
@@ -73,7 +73,7 @@ public class MetaBand extends MetaElement
     return newElements;
   }
 
-  public boolean isSpooled()
+  public boolean isSpooled ()
   {
     return spooled;
   }

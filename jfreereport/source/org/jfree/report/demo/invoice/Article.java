@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Article.java,v 1.1.2.1 2004/03/26 21:57:54 taqua Exp $
+ * $Id: Article.java,v 1.2 2005/01/25 01:13:59 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -51,7 +51,7 @@ public class Article
 
   public Article (final String articleNumber, final String name, final float price)
   {
-    this (articleNumber, name, price, null);
+    this(articleNumber, name, price, null);
   }
 
   public Article (final String articleNumber, final String name,

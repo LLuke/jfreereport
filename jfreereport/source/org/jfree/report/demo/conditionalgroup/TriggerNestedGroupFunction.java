@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TriggerNestedGroupFunction.java,v 1.1.2.2 2004/10/13 18:42:15 taqua Exp $
+ * $Id: TriggerNestedGroupFunction.java,v 1.2 2005/01/25 01:13:41 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -78,14 +78,14 @@ public class TriggerNestedGroupFunction extends AbstractFunction
             event.getReport().getItemBand().getElement("SecondLevel");
     if (normalItemBand == null || nestedItemBand == null)
     {
-      Log.warn ("IllegalState: Child-Itembands not found.");
+      Log.warn("IllegalState: Child-Itembands not found.");
       return;
     }
 
     // and now apply the visiblity to all bands affected
     final boolean isNestedGroup =
             (event.getDataRow().get("level-two-account") != null);
-    Log.warn ("Is Nested Group: " + event.getDataRow().get("level-one-account") + " -> " + isNestedGroup);
+    Log.warn("Is Nested Group: " + event.getDataRow().get("level-one-account") + " -> " + isNestedGroup);
     if (isNestedGroup)
     {
       normalItemBand.setVisible(false);

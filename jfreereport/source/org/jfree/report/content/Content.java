@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: Content.java,v 1.5 2004/05/07 08:02:48 mungady Exp $
+ * $Id: Content.java,v 1.6 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -53,34 +53,33 @@ public interface Content
    *
    * @return the content type.
    */
-  public ContentType getContentType();
+  public ContentType getContentType ();
 
   /**
-   * Returns the bounds for the content. ContentBounds are always relative
-   * to the element bounds.
+   * Returns the bounds for the content. ContentBounds are always relative to the element
+   * bounds.
    *
    * @return the bounds.
    */
-  public StrictBounds getBounds();
+  public StrictBounds getBounds ();
 
   /**
    * Returns the minimum content size.
    *
    * @return the minimum size.
    */
-  public StrictBounds getMinimumContentSize();
+  public StrictBounds getMinimumContentSize ();
 
   /**
-   * Returns the content for the given bounds. The extracted content is the content
-   * that would be displayed in the specific bounds if the content would be printed
-   * with clipping enabled at the given boundary.
-   * <p>
+   * Returns the content for the given bounds. The extracted content is the content that
+   * would be displayed in the specific bounds if the content would be printed with
+   * clipping enabled at the given boundary.
+   * <p/>
    * This method returns <code>null</code> if there is no content in these bounds.
    *
-   * @param bounds  the bounds.
-   *
+   * @param bounds the bounds.
    * @return the content (possibly <code>null</code>).
    */
-  public Content getContentForBounds(StrictBounds bounds);
+  public Content getContentForBounds (StrictBounds bounds);
 
 }

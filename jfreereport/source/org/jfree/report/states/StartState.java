@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.7 2005/01/25 21:40:36 taqua Exp $
+ * $Id: StartState.java,v 1.8 2005/01/28 19:27:00 taqua Exp $
  *
  * Changes
  * -------
@@ -55,18 +55,19 @@ public final class StartState extends ReportState
 {
   /**
    * Creates a start state for a given report.
-   * <p>
+   * <p/>
    * The report is cloned, and an internal reference to the clone is maintained.  Changing
    * the original report after report processing has begun will have no effect on the
    * report output for this run.
-   * <p>
+   * <p/>
    * This is the only state constructor to create a state without cloning another.
    *
-   * @param report  the report.
-   * @throws CloneNotSupportedException if the initial cloning of the report definition fails.
+   * @param report the report.
+   * @throws CloneNotSupportedException if the initial cloning of the report definition
+   *                                    fails.
    */
-  public StartState(final JFreeReport report)
-      throws CloneNotSupportedException
+  public StartState (final JFreeReport report)
+          throws CloneNotSupportedException
   {
     super(report);
     final Iterator it = getLevels();
@@ -84,24 +85,24 @@ public final class StartState extends ReportState
   /**
    * Creates a new <code>START</code> state.
    *
-   * @param fstate  the finish state.
+   * @param fstate the finish state.
    * @param level  the level.
    */
-  public StartState(final FinishState fstate, final int level)
+  public StartState (final FinishState fstate, final int level)
   {
     super(fstate, true);
     getFunctions().setLevel(level);
   }
 
   /**
-   * Advances from the '<code>START</code>' state to the '<code>PRE-GROUP-HEADER</code>' state (the
-   * only transition that is possible from this state).
-   * <p>
+   * Advances from the '<code>START</code>' state to the '<code>PRE-GROUP-HEADER</code>'
+   * state (the only transition that is possible from this state).
+   * <p/>
    * Initialises the 'report.date' property, and fires a 'report-started' event.
    *
    * @return the next state (<code>PRE-GROUP-HEADER</code>').
    */
-  public ReportState advance()
+  public ReportState advance ()
   {
     setCurrentPage(0);
 
@@ -127,18 +128,18 @@ public final class StartState extends ReportState
    *
    * @return always true, as this state starts the report processing.
    */
-  public boolean isStart()
+  public boolean isStart ()
   {
     return true;
   }
 
   /**
-   * Returns the corrected display item for this state. As the currentItem has not yet advanced
-   * we perform a readAHead lookup when populating elements.
+   * Returns the corrected display item for this state. As the currentItem has not yet
+   * advanced we perform a readAHead lookup when populating elements.
    *
    * @return true; Header related states preview the next itemband DataRow.
    */
-  public boolean isPrefetchState()
+  public boolean isPrefetchState ()
   {
     return true;
   }
@@ -146,7 +147,7 @@ public final class StartState extends ReportState
   /**
    * Resets the state.
    */
-  public void resetState()
+  public void resetState ()
   {
     super.resetState();
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SizeCalculatorException.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: SizeCalculatorException.java,v 1.3 2004/05/07 08:03:40 mungady Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,8 @@ package org.jfree.report.layout;
 import org.jfree.util.StackableException;
 
 /**
- * The SizeCalculatorException is thrown if a SizeCalculator was not able to compute
- * the dimensions of a given content.
+ * The SizeCalculatorException is thrown if a SizeCalculator was not able to compute the
+ * dimensions of a given content.
  *
  * @author Thomas Morgner
  */
@@ -50,17 +50,17 @@ public class SizeCalculatorException extends StackableException
   /**
    * Creates a SizeCalculatorException with no message and no parent.
    */
-  public SizeCalculatorException()
+  public SizeCalculatorException ()
   {
   }
 
   /**
    * Creates a SizeCalculatorException.
    *
-   * @param message  the exception message.
-   * @param ex  the parent exception.
+   * @param message the exception message.
+   * @param ex      the parent exception.
    */
-  public SizeCalculatorException(final String message, final Exception ex)
+  public SizeCalculatorException (final String message, final Exception ex)
   {
     super(message, ex);
   }
@@ -68,9 +68,9 @@ public class SizeCalculatorException extends StackableException
   /**
    * Creates a SizeCalculatorException.
    *
-   * @param message  the exception message.
+   * @param message the exception message.
    */
-  public SizeCalculatorException(final String message)
+  public SizeCalculatorException (final String message)
   {
     super(message);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataSource.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: DataSource.java,v 1.3 2004/05/07 08:24:42 mungady Exp $
  *
  * Changes
  * -------
@@ -44,13 +44,14 @@ package org.jfree.report.filter;
 import java.io.Serializable;
 
 /**
- * A DataSource is a producer in the data chain. Common Sources are StaticSources (predefined
- * data), ReportDataSources (data filled from the reports data set) or FunctionDataSource (the
- * data is filled by querying an assigned function).
- * <p>
- * All DataSources have to support the Cloneable interface so that a report can be completley
- * cloned with all assigned filters and DataSources. Reports are cloned before they are processed
- * to remove the side effect when having multiple report processors working on the same object.
+ * A DataSource is a producer in the data chain. Common Sources are StaticSources
+ * (predefined data), ReportDataSources (data filled from the reports data set) or
+ * FunctionDataSource (the data is filled by querying an assigned function).
+ * <p/>
+ * All DataSources have to support the Cloneable interface so that a report can be
+ * completley cloned with all assigned filters and DataSources. Reports are cloned before
+ * they are processed to remove the side effect when having multiple report processors
+ * working on the same object.
  *
  * @author Thomas Morgner
  */
@@ -61,7 +62,7 @@ public interface DataSource extends Serializable, Cloneable
    *
    * @return the value.
    */
-  public Object getValue();
+  public Object getValue ();
 
   /**
    * Clones this <code>DataSource</code>.
@@ -70,6 +71,7 @@ public interface DataSource extends Serializable, Cloneable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException;
+  public Object clone ()
+          throws CloneNotSupportedException;
 
 }

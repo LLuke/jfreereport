@@ -4,7 +4,7 @@
 <!--
  See class InvoiceTableModel for details on the used column names and types
  -->
-<report name="Invoice"  pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
+<report name="Invoice" pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
   <configuration>
     <property name="org.jfree.report.modules.output.pageable.pdf.Encoding">Identity-H</property>
     <property name="org.jfree.report.modules.output.pageable.pdf.EmbedFonts">true</property>
@@ -42,7 +42,7 @@
           x="0" y="290" width="450" height="12" alignment="left" fontstyle="plain" fontsize="11"/>
 
         <label name="Received" x="0" y="314" width="450" height="12" alignment="left"
-        >We received your order and will deliver the following articles to your postal address:</label>
+          >We received your order and will deliver the following articles to your postal address:</label>
 
         <!-- The table header for the invoice ... -->
         <label name="article.number" x="0" y="340" width="80" height="12" alignment="left">Product code</label>
@@ -62,12 +62,12 @@
         <line x1="200" y1="34" x2="450" y2="34" weight="0.5"/>
         <line x1="200" y1="37" x2="450" y2="37" weight="0.5"/>
         <label x="0" y="84" width="100%" height="0" alignment="left" dynamic="true" vertical-alignment="top"
->We thank you for your order and hope to see you soon again. Please pay your invoice within the next 10 days.
+          >We thank you for your order and hope to see you soon again. Please pay your invoice within the next 10 days.
 
 Yours sincerely,
 
 John W. Doe, Salesman</label>
-       </groupfooter>
+      </groupfooter>
     </group>
   </groups>
 
@@ -147,6 +147,6 @@ John W. Doe, Salesman</label>
       </properties>
     </expression>
     <function name="hideDetailElement"
-      class="org.jfree.report.demo.invoice.HideArticleDetailsFunction" />
+      class="org.jfree.report.demo.invoice.HideArticleDetailsFunction"/>
   </functions>
 </report>

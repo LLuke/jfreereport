@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.24 2005/02/19 15:41:23 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.25 2005/02/22 20:18:04 taqua Exp $
  *
  * Changes
  * -------
@@ -1177,7 +1177,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     // make sure, that the operation bounds are met ..
     g2.translate(x, y);
 
-        // only the drawable clippingbounds region will be drawn.
+    // only the drawable clippingbounds region will be drawn.
     // the clipping is set to the clipping bounds of the drawable
 
     // the clipping bounds are relative to the drawable dimension,

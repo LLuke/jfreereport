@@ -38,7 +38,7 @@ public class GeneralPathSerializer implements SerializeMethod
           throws IOException, ClassNotFoundException
   {
     final int winding = in.readInt();
-    final GeneralPath gp =  new GeneralPath(winding);
+    final GeneralPath gp = new GeneralPath(winding);
 
     // type will be -1 at the end of the GPath ..
     int type = in.readInt();
@@ -85,7 +85,7 @@ public class GeneralPathSerializer implements SerializeMethod
             break;
           }
         default:
-           throw new IOException("Unexpected type encountered: " + type);
+          throw new IOException("Unexpected type encountered: " + type);
       }
       type = in.readInt();
     }
@@ -148,7 +148,7 @@ public class GeneralPathSerializer implements SerializeMethod
             break;
           }
         default:
-           throw new IOException("Unexpected type encountered: " + type);
+          throw new IOException("Unexpected type encountered: " + type);
       }
       it.next();
     }

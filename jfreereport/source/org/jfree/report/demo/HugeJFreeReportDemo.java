@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HugeJFreeReportDemo.java,v 1.4.4.1 2004/04/06 13:56:12 taqua Exp $
+ * $Id: HugeJFreeReportDemo.java,v 1.6 2005/01/24 23:58:21 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -50,7 +50,7 @@ import org.jfree.ui.RefineryUtilities;
 /**
  * The main frame in the report demonstration application. This demo has huge reports
  * added, so calling report 5 and 6 can require some patience.
- * <p>
+ * <p/>
  * If the system property "org.jfree.report.demo.DEBUG" is set to "true", debugging
  * messages to System.out stream are enabled.
  *
@@ -59,9 +59,10 @@ import org.jfree.ui.RefineryUtilities;
 public class HugeJFreeReportDemo extends JFreeReportDemo
 {
   /**
-   * Constructs a frame containing sample reports created using the JFreeReport Class Library.
+   * Constructs a frame containing sample reports created using the JFreeReport Class
+   * Library.
    */
-  public HugeJFreeReportDemo()
+  public HugeJFreeReportDemo ()
   {
   }
 
@@ -70,7 +71,7 @@ public class HugeJFreeReportDemo extends JFreeReportDemo
    *
    * @return The list.
    */
-  protected List createAvailableDemos()
+  protected List createAvailableDemos ()
   {
     final ArrayList list = new ArrayList();
 //
@@ -91,12 +92,12 @@ public class HugeJFreeReportDemo extends JFreeReportDemo
 //        new URLDemoHandler("/org/jfree/report/demo/report4.xml")));
 
     list.add(new DemoDefinition(createExampleName(5) + " (HUGE)",
-        new SampleData5(),
-        new URLDemoHandler("/org/jfree/report/demo/report2.xml")));
+            new SampleData5(),
+            new URLDemoHandler("/org/jfree/report/demo/report2.xml")));
 
     list.add(new DemoDefinition(createExampleName(6) + " (HUGE)",
-        new SampleData6(),
-        new URLDemoHandler("/org/jfree/report/demo/report2.xml")));
+            new SampleData6(),
+            new URLDemoHandler("/org/jfree/report/demo/report2.xml")));
 
     return list;
   }
@@ -109,7 +110,7 @@ public class HugeJFreeReportDemo extends JFreeReportDemo
    *
    * @param args ignored.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();

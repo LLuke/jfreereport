@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowBackend.java,v 1.6 2005/01/28 19:26:59 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.7 2005/01/30 23:37:25 taqua Exp $
  *
  * Changes
  * -------
@@ -57,59 +57,85 @@ import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.ReportPropertiesList;
 
 /**
- * The DataRow-Backend maintains the state of a datarow. Whenever the  report state changes
- * the backend of the datarow is updated and then reconnected with the DataRowConnector.
- *
- * @see DataRowConnector
+ * The DataRow-Backend maintains the state of a datarow. Whenever the  report state
+ * changes the backend of the datarow is updated and then reconnected with the
+ * DataRowConnector.
  *
  * @author Thomas Morgner
+ * @see DataRowConnector
  */
 public class DataRowBackend implements Cloneable
 {
 
-  /** The item cache. */
+  /**
+   * The item cache.
+   */
   private final HashMap colcache;
 
-  /** The functions (set by the report state). */
+  /**
+   * The functions (set by the report state).
+   */
   private LevelledExpressionList functions;
 
-  /** The table model (set by the report state). */
+  /**
+   * The table model (set by the report state).
+   */
   private TableModel tablemodel;
 
-  /** all previously marked report-properties for this report. */
+  /**
+   * all previously marked report-properties for this report.
+   */
   private ReportPropertiesList reportProperties;
 
-  /** The current row (set by the report state). */
+  /**
+   * The current row (set by the report state).
+   */
   private int currentRow = -1;
 
-  /** Column locks. */
+  /**
+   * Column locks.
+   */
   private boolean[] columnlocks;
 
-  /** if true, invalid columns get printed to the logs. */
+  /**
+   * if true, invalid columns get printed to the logs.
+   */
   private final boolean warnInvalidColumns;
 
-  /** An empty boolean array. */
+  /**
+   * An empty boolean array.
+   */
   private static final boolean[] EMPTY_BOOLS = new boolean[0];
 
-  /** The index of the last function. */
+  /**
+   * The index of the last function.
+   */
   private int functionsEndIndex;
 
-  /** The index of the last property. */
+  /**
+   * The index of the last property.
+   */
   private int propertiesEndIndex;
 
-  /** The index of the table end. */
+  /**
+   * The index of the table end.
+   */
   private int tableEndIndex;
 
-  /** The last row. */
+  /**
+   * The last row.
+   */
   private int lastRow;
 
-  /** The datarow connector that is used to feed the functions.*/
+  /**
+   * The datarow connector that is used to feed the functions.
+   */
   private DataRowConnector dataRowConnector;
 
   /**
    * Creates a new DataRowBackend.
    */
-  public DataRowBackend()
+  public DataRowBackend ()
   {
     columnlocks = EMPTY_BOOLS;
     dataRowConnector = new DataRowConnector();
@@ -121,13 +147,13 @@ public class DataRowBackend implements Cloneable
   }
 
   /**
-   * Creates a new DataRowBackend based on the given datarow backend.
-   * Both datarow backends will share the objects, no cloning is done.
-   * Functions will not be included in the copy...
+   * Creates a new DataRowBackend based on the given datarow backend. Both datarow
+   * backends will share the objects, no cloning is done. Functions will not be included
+   * in the copy...
    *
-   * @param db  the data row backend.
+   * @param db the data row backend.
    */
-  protected DataRowBackend(final DataRowBackend db)
+  protected DataRowBackend (final DataRowBackend db)
   {
     this.dataRowConnector = new DataRowConnector();
     this.dataRowConnector.setDataRowBackend(this);
@@ -141,33 +167,34 @@ public class DataRowBackend implements Cloneable
   }
 
   /**
-   * Returns the datarow connector used to connect the functions and element
-   * with this datarow.
-   * 
+   * Returns the datarow connector used to connect the functions and element with this
+   * datarow.
+   *
    * @return the datarow connector.
    */
-  protected DataRowConnector getDataRowConnector()
+  protected DataRowConnector getDataRowConnector ()
   {
     return dataRowConnector;
   }
 
   /**
-   * Returns the public datarow instance used to query this datarow.. 
-   * 
+   * Returns the public datarow instance used to query this datarow..
+   *
    * @return the datarow.
    */
-  public DataRow getDataRow()
+  public DataRow getDataRow ()
   {
     return getDataRowConnector();
   }
 
   /**
-   * Returns the function collection used in this DataRowBackend. The FunctionCollection is
-   * stateful and will be set to a new function collection when the ReportState advances.
+   * Returns the function collection used in this DataRowBackend. The FunctionCollection
+   * is stateful and will be set to a new function collection when the ReportState
+   * advances.
    *
    * @return the currently set function collection
    */
-  public LevelledExpressionList getFunctions()
+  public LevelledExpressionList getFunctions ()
   {
     return functions;
   }
@@ -177,29 +204,29 @@ public class DataRowBackend implements Cloneable
    *
    * @return the TableModel of the Report.
    */
-  public TableModel getTablemodel()
+  public TableModel getTablemodel ()
   {
     return tablemodel;
   }
 
   /**
-   * Returns the current row in the tablemodel. The row is advanced while the report is processed.
-   * If the row is negative, the DataRowBackend <code>isBeforeFirstRow</code>.
+   * Returns the current row in the tablemodel. The row is advanced while the report is
+   * processed. If the row is negative, the DataRowBackend <code>isBeforeFirstRow</code>.
    *
    * @return the current row.
    */
-  public int getCurrentRow()
+  public int getCurrentRow ()
   {
     return currentRow;
   }
 
   /**
-   * Sets the current row of the tablemodel. The current row is advanced while the Report is being
-   * processed.
+   * Sets the current row of the tablemodel. The current row is advanced while the Report
+   * is being processed.
    *
    * @param currentRow the current row
    */
-  public void setCurrentRow(final int currentRow)
+  public void setCurrentRow (final int currentRow)
   {
     if (currentRow < -1)
     {
@@ -212,7 +239,7 @@ public class DataRowBackend implements Cloneable
       if (currentRow > getTablemodel().getRowCount())
       {
         throw new IllegalArgumentException
-            ("CurrentRow cannot be greater than the tablemodel's rowcount." + currentRow);
+                ("CurrentRow cannot be greater than the tablemodel's rowcount." + currentRow);
       }
     }
     else
@@ -220,19 +247,19 @@ public class DataRowBackend implements Cloneable
       if (currentRow != -1)
       {
         throw new IllegalArgumentException
-            ("Without an TableModel, the currentRow must always be -1");
+                ("Without an TableModel, the currentRow must always be -1");
       }
     }
     this.currentRow = currentRow;
   }
 
   /**
-   * Sets the function collection used in this DataRow. This also
-   * updates the function's dataRow reference.
+   * Sets the function collection used in this DataRow. This also updates the function's
+   * dataRow reference.
    *
    * @param functions the current function collection
    */
-  public void setFunctions(final LevelledExpressionList functions)
+  public void setFunctions (final LevelledExpressionList functions)
   {
     if (this.functions != null)
     {
@@ -249,13 +276,13 @@ public class DataRowBackend implements Cloneable
   }
 
   /**
-   * sets the tablemodel used in this DataRow. The tablemodel contains the base values for the
-   * report and the currentRow-property contains a pointer to the current row within the
-   * tablemodel.
+   * sets the tablemodel used in this DataRow. The tablemodel contains the base values for
+   * the report and the currentRow-property contains a pointer to the current row within
+   * the tablemodel.
    *
    * @param tablemodel the tablemodel used as base for the reporting
    */
-  public void setTablemodel(final TableModel tablemodel)
+  public void setTablemodel (final TableModel tablemodel)
   {
     this.tablemodel = tablemodel;
     if (tablemodel != null)
@@ -270,18 +297,17 @@ public class DataRowBackend implements Cloneable
   }
 
   /**
-   * Returns the value of the function, expression or column in the tablemodel using the column
-   * number.
+   * Returns the value of the function, expression or column in the tablemodel using the
+   * column number.
    *
-   * @param column  the item index.
-   *
+   * @param column the item index.
    * @return The item value.
    *
-   * @throws IndexOutOfBoundsException if the index is negative or greater than the number of
-   *         columns in this row.
-   * @throws IllegalStateException if a deadlock is detected.
+   * @throws IndexOutOfBoundsException if the index is negative or greater than the number
+   *                                   of columns in this row.
+   * @throws IllegalStateException     if a deadlock is detected.
    */
-  public Object get(final int column)
+  public Object get (final int column)
   {
     if (column >= getColumnCount())
     {
@@ -334,7 +360,7 @@ public class DataRowBackend implements Cloneable
     catch (Exception e)
     {
       Log.error(new org.jfree.util.Log.SimpleMessage("Column ", new Integer(column),
-          " caused an error on get()", e));
+              " caused an error on get()", e));
     }
     finally
     {
@@ -344,18 +370,17 @@ public class DataRowBackend implements Cloneable
   }
 
   /**
-   * Returns the value of the function, expression or column using its specific name. This method
-   * returns null if the named column was not found.
+   * Returns the value of the function, expression or column using its specific name. This
+   * method returns null if the named column was not found.
    *
-   * @param name  the item name.
-   *
+   * @param name the item name.
    * @return The item value.
    *
-   * @throws IndexOutOfBoundsException if the index is negative or greater than the number of
-   *         columns in this row.
-   * @throws IllegalStateException if a deadlock is detected.
+   * @throws IndexOutOfBoundsException if the index is negative or greater than the number
+   *                                   of columns in this row.
+   * @throws IllegalStateException     if a deadlock is detected.
    */
-  public Object get(final String name)
+  public Object get (final String name)
   {
     final int idx = findColumn(name);
     if (idx == -1)
@@ -371,21 +396,20 @@ public class DataRowBackend implements Cloneable
    *
    * @return the number of accessible columns in this datarow.
    */
-  public int getColumnCount()
+  public int getColumnCount ()
   {
     return propertiesEndIndex;
   }
 
   /**
-   * Looks up the position of the column with the name <code>name</code>.
-   * returns the position of the column or -1 if no columns could be retrieved.
+   * Looks up the position of the column with the name <code>name</code>. returns the
+   * position of the column or -1 if no columns could be retrieved.
    *
-   * @param name  the item name.
-   *
-   * @return the column position of the column, expression or function with the given name or
-   * -1 if the given name does not exist in this DataRow.
+   * @param name the item name.
+   * @return the column position of the column, expression or function with the given name
+   *         or -1 if the given name does not exist in this DataRow.
    */
-  public int findColumn(final String name)
+  public int findColumn (final String name)
   {
     final Integer integ = (Integer) colcache.get(name);
     if (integ != null)
@@ -414,11 +438,10 @@ public class DataRowBackend implements Cloneable
   /**
    * Returns the name of the column, expression or function.
    *
-   * @param col  the column, expression or function index.
-   *
-   * @return  The column, expression or function name.
+   * @param col the column, expression or function index.
+   * @return The column, expression or function name.
    */
-  public String getColumnName(int col)
+  public String getColumnName (int col)
   {
     if (col >= getColumnCount())
     {
@@ -453,9 +476,10 @@ public class DataRowBackend implements Cloneable
   /**
    * Tests whether the current row is set before the first row in the tablemodel.
    *
-   * @return true, if the processing has not yet started and the currentRow is lesser than 0.
+   * @return true, if the processing has not yet started and the currentRow is lesser than
+   *         0.
    */
-  public boolean isBeforeFirstRow()
+  public boolean isBeforeFirstRow ()
   {
     return getCurrentRow() < 0;
   }
@@ -465,20 +489,20 @@ public class DataRowBackend implements Cloneable
    *
    * @return true, if the current row is the last row in the tablemodel.
    */
-  public boolean isLastRow()
+  public boolean isLastRow ()
   {
     return getCurrentRow() == lastRow;
   }
 
   /**
-   * Clones this DataRowBackend. Does also clone the functions contained
-   * in this datarow.
+   * Clones this DataRowBackend. Does also clone the functions contained in this datarow.
    *
    * @return the clone.
    *
    * @throws CloneNotSupportedException should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final DataRowBackend db = (DataRowBackend) super.clone();
     db.columnlocks = new boolean[getColumnCount()];
@@ -493,22 +517,23 @@ public class DataRowBackend implements Cloneable
   }
 
   /**
-   * Calculates the end index for tableentries. TableEntries are the first entries in the row.
+   * Calculates the end index for tableentries. TableEntries are the first entries in the
+   * row.
    *
    * @return The end index.
    */
-  private int getTableEndIndex()
+  private int getTableEndIndex ()
   {
     return tableEndIndex;
   }
 
   /**
-   * Calculates the endindex for function entries. Function entries are following the TableEntries
-   * in the row.
+   * Calculates the endindex for function entries. Function entries are following the
+   * TableEntries in the row.
    *
    * @return The function end index.
    */
-  private int getFunctionEndIndex()
+  private int getFunctionEndIndex ()
   {
     return functionsEndIndex;
   }
@@ -518,7 +543,7 @@ public class DataRowBackend implements Cloneable
    *
    * @return the index.
    */
-  private int getPropertiesEndIndex()
+  private int getPropertiesEndIndex ()
   {
     return propertiesEndIndex;
   }
@@ -526,7 +551,7 @@ public class DataRowBackend implements Cloneable
   /**
    * Ensures that the columnLock does match the number of columns in this row.
    */
-  private void revalidateColumnLock()
+  private void revalidateColumnLock ()
   {
     if (getTablemodel() == null)
     {
@@ -566,7 +591,7 @@ public class DataRowBackend implements Cloneable
    *
    * @return the report properties.
    */
-  public ReportPropertiesList getReportProperties()
+  public ReportPropertiesList getReportProperties ()
   {
     return reportProperties;
   }
@@ -574,9 +599,9 @@ public class DataRowBackend implements Cloneable
   /**
    * Sets the report properties.
    *
-   * @param properties  the report properties.
+   * @param properties the report properties.
    */
-  public void setReportProperties(final ReportPropertiesList properties)
+  public void setReportProperties (final ReportPropertiesList properties)
   {
     this.reportProperties = properties;
     revalidateColumnLock();

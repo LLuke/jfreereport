@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLModule.java,v 1.4 2003/08/25 14:29:32 taqua Exp $
+ * $Id: XMLModule.java,v 1.6 2005/01/25 00:17:16 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,9 +51,11 @@ public class XMLModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public XMLModule() throws ModuleInitializeException
+  public XMLModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DOMWriter.java,v 1.5.4.1 2004/04/06 14:22:36 taqua Exp $
+ * $Id: DOMWriter.java,v 1.7 2005/01/25 00:04:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,19 +42,19 @@ import org.jfree.xml.writer.SafeTagList;
 import org.jfree.xml.writer.XMLWriterSupport;
 
 /**
- * A XML-Writer utility class, that helps when writing an XML document
- * from an arbitary data source.
- *  
+ * A XML-Writer utility class, that helps when writing an XML document from an arbitary
+ * data source.
+ *
  * @author Thomas Morgner
  */
 public final class DOMWriter extends XMLWriterSupport
 {
   /**
    * The safeTag list marks all tags which can be followed by an linebreak.
-   * 
+   *
    * @return the safetag list for this document type.
    */
-  private static SafeTagList createSafeTagList()
+  private static SafeTagList createSafeTagList ()
   {
     final SafeTagList list = new SafeTagList();
     list.add("config-description");
@@ -67,23 +67,24 @@ public final class DOMWriter extends XMLWriterSupport
   }
 
   /**
-   * Hidden default constructor. Initializes the writer with the internal
-   * safetag list.
+   * Hidden default constructor. Initializes the writer with the internal safetag list.
    */
-  private DOMWriter()
+  private DOMWriter ()
   {
     super(createSafeTagList(), 0);
   }
 
-  /** The singleton instance of this writer. */  
+  /**
+   * The singleton instance of this writer.
+   */
   private static DOMWriter singleton;
-  
-  /** 
+
+  /**
    * Returns the singleton instance of this DOM writer.
-   * 
+   *
    * @return the instance.
    */
-  public synchronized static DOMWriter getInstance()
+  public synchronized static DOMWriter getInstance ()
   {
     if (singleton == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AbstractStyleKeyFactory.java,v 1.7 2003/08/25 14:29:33 taqua Exp $
+ * $Id: AbstractStyleKeyFactory.java,v 1.8 2004/05/07 14:29:53 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -55,16 +55,20 @@ import org.jfree.xml.factory.objects.ObjectDescription;
  */
 public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
 {
-  /** the parser configuration property name for this factory. */
+  /**
+   * the parser configuration property name for this factory.
+   */
   public static final String OBJECT_FACTORY_TAG = "object-factory";
 
-  /** Storage for the keys. */
+  /**
+   * Storage for the keys.
+   */
   private final HashMap knownKeys;
 
   /**
    * Creates a new factory.
    */
-  public AbstractStyleKeyFactory()
+  public AbstractStyleKeyFactory ()
   {
     knownKeys = new HashMap();
   }
@@ -72,9 +76,9 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
   /**
    * Registers a key.
    *
-   * @param key  the key.
+   * @param key the key.
    */
-  public void addKey(final StyleKey key)
+  public void addKey (final StyleKey key)
   {
     knownKeys.put(key.getName(), key);
   }
@@ -82,11 +86,10 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
   /**
    * Returns the key with the given name.
    *
-   * @param name  the name.
-   *
+   * @param name the name.
    * @return The key.
    */
-  public StyleKey getStyleKey(final String name)
+  public StyleKey getStyleKey (final String name)
   {
     return (StyleKey) knownKeys.get(name);
   }
@@ -94,15 +97,14 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
   /**
    * Creates an object.
    *
-   * @param k  the style key.
-   * @param value  the value.
-   * @param c  the class.
-   * @param fc the class factory used to create the basic object.
-   *
+   * @param k     the style key.
+   * @param value the value.
+   * @param c     the class.
+   * @param fc    the class factory used to create the basic object.
    * @return The object.
    */
-  public Object createBasicObject(final StyleKey k, final String value,
-                                  final Class c, final ClassFactory fc)
+  public Object createBasicObject (final StyleKey k, final String value,
+                                   final Class c, final ClassFactory fc)
   {
     if (k == null)
     {
@@ -139,7 +141,7 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
    * @param c the class from where to load the stylekeys.
    * @throws SecurityException if the current security settings deny class access.
    */
-  protected void loadFromClass(final Class c)
+  protected void loadFromClass (final Class c)
   {
     final Field[] fields = c.getFields();
     for (int i = 0; i < fields.length; i++)
@@ -170,19 +172,20 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
    *
    * @return The iterator.
    */
-  public Iterator getRegisteredKeys()
+  public Iterator getRegisteredKeys ()
   {
     return knownKeys.keySet().iterator();
   }
 
   /**
    * Indicated whether an other object is equal to this one.
-   * @see java.lang.Object#equals(java.lang.Object)
    *
    * @param o the other object.
    * @return true, if the object is equal, false otherwise.
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
    */
-  public boolean equals(final Object o)
+  public boolean equals (final Object o)
   {
     if (this == o)
     {
@@ -205,11 +208,12 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
 
   /**
    * Computes an hashcode for this factory.
-   * @see java.lang.Object#hashCode()
    *
    * @return the hashcode.
+   *
+   * @see java.lang.Object#hashCode()
    */
-  public int hashCode()
+  public int hashCode ()
   {
     return knownKeys.hashCode();
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostItemGroupState.java,v 1.3 2004/05/07 08:14:21 mungady Exp $
+ * $Id: PostItemGroupState.java,v 1.4 2005/01/28 19:26:59 taqua Exp $
  *
  * Changes
  * -------
@@ -41,11 +41,11 @@ package org.jfree.report.states;
 import org.jfree.report.event.ReportEvent;
 
 /**
- * A report state that is reached after the last row of data for one instance of the inner-most
- * group is processed.
- * <p>
- * The only purpose for this state is to fire the itemsFinished event. After that task is done,
- * a PreGroupFooterState gets active.
+ * A report state that is reached after the last row of data for one instance of the
+ * inner-most group is processed.
+ * <p/>
+ * The only purpose for this state is to fire the itemsFinished event. After that task is
+ * done, a PreGroupFooterState gets active.
  *
  * @author David Gilbert
  */
@@ -54,9 +54,9 @@ public final class PostItemGroupState extends ReportState
   /**
    * Creates a new '<code>POST-ITEM-GROUP</code>' state.
    *
-   * @param previous  the previous state.
+   * @param previous the previous state.
    */
-  public PostItemGroupState(final ReportState previous)
+  public PostItemGroupState (final ReportState previous)
   {
     super(previous);
   }
@@ -67,12 +67,12 @@ public final class PostItemGroupState extends ReportState
   }
 
   /**
-   * Advances from this state to the '<code>PRE-GROUP-FOOTER</code>' state.  Before changing
-   * state, an 'items-finished' event is fired.
+   * Advances from this state to the '<code>PRE-GROUP-FOOTER</code>' state.  Before
+   * changing state, an 'items-finished' event is fired.
    *
    * @return the next report state ('<code>PRE-GROUP-FOOTER</code>').
    */
-  public ReportState advance()
+  public ReportState advance ()
   {
     firePrepareEvent();
 

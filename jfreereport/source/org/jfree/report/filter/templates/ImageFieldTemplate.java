@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageFieldTemplate.java,v 1.6 2004/05/07 08:24:41 mungady Exp $
+ * $Id: ImageFieldTemplate.java,v 1.7 2005/01/24 23:59:48 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -44,24 +44,27 @@ import org.jfree.report.filter.ImageRefFilter;
 import org.jfree.report.filter.ReportConnectable;
 
 /**
- * An image field template. The image content will be read from
- * the datarow.
+ * An image field template. The image content will be read from the datarow.
  *
  * @author Thomas Morgner
  */
 public class ImageFieldTemplate extends AbstractTemplate
-    implements ReportConnectable
+        implements ReportConnectable
 {
-  /** The data row reader. */
+  /**
+   * The data row reader.
+   */
   private DataRowDataSource dataRowDataSource;
 
-  /** An image reference filter. */
+  /**
+   * An image reference filter.
+   */
   private ImageRefFilter imageRefFilter;
 
   /**
    * Creates a new image field template.
    */
-  public ImageFieldTemplate()
+  public ImageFieldTemplate ()
   {
     dataRowDataSource = new DataRowDataSource();
     imageRefFilter = new ImageRefFilter();
@@ -73,7 +76,7 @@ public class ImageFieldTemplate extends AbstractTemplate
    *
    * @return The field name.
    */
-  public String getField()
+  public String getField ()
   {
     return dataRowDataSource.getDataSourceColumnName();
   }
@@ -81,9 +84,9 @@ public class ImageFieldTemplate extends AbstractTemplate
   /**
    * Sets the field name.
    *
-   * @param field  the field name.
+   * @param field the field name.
    */
-  public void setField(final String field)
+  public void setField (final String field)
   {
     dataRowDataSource.setDataSourceColumnName(field);
   }
@@ -93,7 +96,7 @@ public class ImageFieldTemplate extends AbstractTemplate
    *
    * @return the value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return imageRefFilter.getValue();
   }
@@ -105,7 +108,8 @@ public class ImageFieldTemplate extends AbstractTemplate
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final ImageFieldTemplate template = (ImageFieldTemplate) super.clone();
     template.imageRefFilter = (ImageRefFilter) imageRefFilter.clone();
@@ -113,17 +117,17 @@ public class ImageFieldTemplate extends AbstractTemplate
     return template;
   }
 
-  public void registerReportDefinition(final ReportDefinition reportDefinition)
+  public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().registerReportDefinition(reportDefinition);
   }
 
-  public void unregisterReportDefinition(final ReportDefinition reportDefinition)
+  public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     getDataRowDataSource().unregisterReportDefinition(reportDefinition);
   }
 
-  protected DataRowDataSource getDataRowDataSource()
+  protected DataRowDataSource getDataRowDataSource ()
   {
     return dataRowDataSource;
   }

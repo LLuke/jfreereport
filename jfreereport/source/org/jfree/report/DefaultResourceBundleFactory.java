@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultLogModule.java,v 1.4 2005/01/24 23:57:45 taqua Exp $
+ * $Id: DefaultResourceBundleFactory.java,v 1.2 2005/02/23 19:31:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,30 +41,32 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * A default implementation of the ResourceBundleFactory, that creates
- * resource bundles using the specified locale.
- * <p>
+ * A default implementation of the ResourceBundleFactory, that creates resource bundles
+ * using the specified locale.
+ * <p/>
  * If not defined otherwise, this implementation uses <code>Locale.getDefault()</code>
  *
  * @author Thomas Morgner
  */
 public class DefaultResourceBundleFactory implements ResourceBundleFactory
 {
-  /** The locale. */
+  /**
+   * The locale.
+   */
   private Locale locale;
 
   /**
-   * Creates a new DefaultResourceBundleFactory using the system's default
-   * locale as factory locale.
+   * Creates a new DefaultResourceBundleFactory using the system's default locale as
+   * factory locale.
    */
   public DefaultResourceBundleFactory ()
   {
-    this (Locale.getDefault());
+    this(Locale.getDefault());
   }
 
   /**
-   * Creates a new DefaultResourceBundleFactory using the specified
-   * locale as factory locale.
+   * Creates a new DefaultResourceBundleFactory using the specified locale as factory
+   * locale.
    */
   public DefaultResourceBundleFactory (final Locale locale)
   {
@@ -87,6 +89,7 @@ public class DefaultResourceBundleFactory implements ResourceBundleFactory
 
   /**
    * Defines the locale.
+   *
    * @param locale the new locale (never null).
    */
   public void setLocale (final Locale locale)
@@ -104,8 +107,9 @@ public class DefaultResourceBundleFactory implements ResourceBundleFactory
    *
    * @param key the name of the resourcebundle
    * @return the created resource bundle
+   *
    * @see ResourceBundle#getBundle(String,Locale)
-   */ 
+   */
   public ResourceBundle getResourceBundle (final String key)
   {
     return ResourceBundle.getBundle(key, locale);

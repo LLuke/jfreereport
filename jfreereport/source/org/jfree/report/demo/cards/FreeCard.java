@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: FreeCard.java,v 1.3 2003/08/25 14:29:28 taqua Exp $
+ * $Id: FreeCard.java,v 1.4 2004/05/07 12:43:25 mungady Exp $
  *
  * Changes
  * -------
@@ -45,19 +45,23 @@ import java.util.Date;
  */
 public class FreeCard extends Card
 {
-  /** The expiry date. */
+  /**
+   * The expiry date.
+   */
   private final Date expires;
 
-  /** The card number. */
+  /**
+   * The card number.
+   */
   private final String cardNr;
 
   /**
    * Creates a new 'free' card.
    *
    * @param cardNr  the card number.
-   * @param expires  the expiry date.
+   * @param expires the expiry date.
    */
-  public FreeCard(final String cardNr, final Date expires)
+  public FreeCard (final String cardNr, final Date expires)
   {
     this.cardNr = cardNr;
     this.expires = expires;
@@ -68,7 +72,7 @@ public class FreeCard extends Card
    *
    * @return The expiry date.
    */
-  public Date getExpires()
+  public Date getExpires ()
   {
     return expires;
   }
@@ -78,7 +82,7 @@ public class FreeCard extends Card
    *
    * @return The card number.
    */
-  public String getCardNr()
+  public String getCardNr ()
   {
     return cardNr;
   }
@@ -88,7 +92,7 @@ public class FreeCard extends Card
    *
    * @return The card type.
    */
-  public CardType getType()
+  public CardType getType ()
   {
     return CardType.FREE;
   }

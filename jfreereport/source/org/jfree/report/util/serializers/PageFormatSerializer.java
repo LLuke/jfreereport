@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageFormatSerializer.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: PageFormatSerializer.java,v 1.3 2004/05/07 12:43:01 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -57,18 +57,19 @@ public class PageFormatSerializer implements SerializeMethod
   /**
    * Default Constructor.
    */
-  public PageFormatSerializer()
+  public PageFormatSerializer ()
   {
   }
 
   /**
    * Writes a serializable object description to the given object output stream.
    *
-   * @param o the to be serialized object.
+   * @param o   the to be serialized object.
    * @param out the outputstream that should receive the object.
    * @throws IOException if an I/O error occured.
    */
-  public void writeObject(final Object o, final ObjectOutputStream out) throws IOException
+  public void writeObject (final Object o, final ObjectOutputStream out)
+          throws IOException
   {
     final PageFormat pf = (PageFormat) o;
     out.writeObject(PageFormatFactory.getInstance().resolvePageFormat(pf));
@@ -79,10 +80,12 @@ public class PageFormatSerializer implements SerializeMethod
    *
    * @param in the object input stream from where to read the serialized data.
    * @return the generated object.
-   * @throws IOException if reading the stream failed.
+   *
+   * @throws IOException            if reading the stream failed.
    * @throws ClassNotFoundException if serialized object class cannot be found.
    */
-  public Object readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException
+  public Object readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
     final Object[] pageFormatResolve = (Object[]) in.readObject();
     return PageFormatFactory.getInstance().createPageFormat(pageFormatResolve);
@@ -93,7 +96,7 @@ public class PageFormatSerializer implements SerializeMethod
    *
    * @return the class of java.awt.print.PageFormat.
    */
-  public Class getObjectClass()
+  public Class getObjectClass ()
   {
     return PageFormat.class;
   }

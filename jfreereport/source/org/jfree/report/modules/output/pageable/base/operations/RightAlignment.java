@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RightAlignment.java,v 1.8 2004/05/07 12:53:06 mungady Exp $
+ * $Id: RightAlignment.java,v 1.9 2005/02/19 13:29:58 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,7 @@ package org.jfree.report.modules.output.pageable.base.operations;
 import org.jfree.report.util.geom.StrictBounds;
 
 /**
- * A utility class that can align a rectangle to the bottom edge of the current
- * bounds.
+ * A utility class that can align a rectangle to the bottom edge of the current bounds.
  *
  * @author Thomas Morgner
  */
@@ -51,9 +50,9 @@ public strictfp class RightAlignment extends HorizontalBoundsAlignment
   /**
    * Creates a new alignment object.
    *
-   * @param bounds  the reference bounds.
+   * @param bounds the reference bounds.
    */
-  public RightAlignment(final StrictBounds bounds)
+  public RightAlignment (final StrictBounds bounds)
   {
     super(bounds);
   }
@@ -61,20 +60,19 @@ public strictfp class RightAlignment extends HorizontalBoundsAlignment
   /**
    * Aligns a rectangle to the right of the reference bounds.
    *
-   * @param rect  the rectangle.
-   *
+   * @param rect the rectangle.
    * @return the aligned rectangle.
    */
-  public StrictBounds align(final StrictBounds rect)
+  public StrictBounds align (final StrictBounds rect)
   {
     if (rect == null)
     {
       throw new NullPointerException("Rect must not be null");
     }
 
-    final long w = Math.min (rect.getWidth(), getReferenceBounds().getWidth());
+    final long w = Math.min(rect.getWidth(), getReferenceBounds().getWidth());
     final long x = (getReferenceBounds().getX() +
-        getReferenceBounds().getWidth() - w);
+            getReferenceBounds().getWidth() - w);
     final long y = rect.getY();
     final long h = rect.getHeight();
     rect.setRect(x, y, w, h);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CommentHintPath.java,v 1.7 2005/01/25 00:17:23 taqua Exp $
+ * $Id: CommentHintPath.java,v 1.8 2005/02/19 13:30:03 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,43 +42,43 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * The comment hint path is used to mark the parse position and to
- * store the comments for such an parser path.
+ * The comment hint path is used to mark the parse position and to store the comments for
+ * such an parser path.
  *
  * @author Thomas Morgner
  */
 public final class CommentHintPath implements Serializable, Cloneable
 {
-  /** the list of name segments. */
+  /**
+   * the list of name segments.
+   */
   private ArrayList nameElements;
 
   /**
    * Creates a new empty comment hint path object.
    */
-  public CommentHintPath()
+  public CommentHintPath ()
   {
     nameElements = new ArrayList();
   }
 
   /**
-   * Creates a new comment hint path and adds the given object
-   * as first name segment.
+   * Creates a new comment hint path and adds the given object as first name segment.
    *
    * @param name the first name segment.
    */
-  public CommentHintPath(final Object name)
+  public CommentHintPath (final Object name)
   {
     this();
     addName(name);
   }
 
   /**
-   * Creates a new comment hint path and adds the given objects
-   * as name segments.
+   * Creates a new comment hint path and adds the given objects as name segments.
    *
    * @param name the name segments.
    */
-  public CommentHintPath(final Object[] name)
+  public CommentHintPath (final Object[] name)
   {
     this();
     for (int i = 0; i < name.length; i++)
@@ -92,7 +92,7 @@ public final class CommentHintPath implements Serializable, Cloneable
    *
    * @param name the new path segment.
    */
-  public void addName(final Object name)
+  public void addName (final Object name)
   {
     if (name == null)
     {
@@ -106,7 +106,7 @@ public final class CommentHintPath implements Serializable, Cloneable
    *
    * @return a copy of this path.
    */
-  public CommentHintPath getInstance()
+  public CommentHintPath getInstance ()
   {
     final CommentHintPath hint = new CommentHintPath();
     hint.nameElements = new ArrayList(nameElements);
@@ -115,12 +115,13 @@ public final class CommentHintPath implements Serializable, Cloneable
 
   /**
    * Tests, whether this object is equal to the given object.
-   * @see java.lang.Object#equals(java.lang.Object)
    *
    * @param o the object that should be compared.
    * @return true, if the other object is equal, false otherwise.
+   *
+   * @see java.lang.Object#equals(java.lang.Object)
    */
-  public boolean equals(final Object o)
+  public boolean equals (final Object o)
   {
     if (this == o)
     {
@@ -143,22 +144,24 @@ public final class CommentHintPath implements Serializable, Cloneable
 
   /**
    * Computes a hashcode for this path.
-   * @see java.lang.Object#hashCode()
    *
    * @return a hashcode for this object.
+   *
+   * @see java.lang.Object#hashCode()
    */
-  public int hashCode()
+  public int hashCode ()
   {
     return nameElements.hashCode();
   }
 
   /**
    * Returns a string representation of this object for debugging purposes.
-   * @see java.lang.Object#toString()
    *
    * @return the object as string.
+   *
+   * @see java.lang.Object#toString()
    */
-  public String toString()
+  public String toString ()
   {
     final StringBuffer b = new StringBuffer();
     b.append("CommentHintPath={");
@@ -167,7 +170,8 @@ public final class CommentHintPath implements Serializable, Cloneable
     return b.toString();
   }
 
-  public Object clone () throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final CommentHintPath hp = (CommentHintPath) super.clone();
     hp.nameElements = (ArrayList) nameElements.clone();

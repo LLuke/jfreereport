@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextElement.java,v 1.5 2003/11/01 19:52:26 taqua Exp $
+ * $Id: TextElement.java,v 1.6 2003/11/07 18:33:47 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -61,30 +61,33 @@ import org.jfree.report.style.FontDefinition;
 
 /**
  * The base class for all elements that display text in a report band.
- * <p>
- * All content is converted to String using the String.valueOf () method.
- * To convert values in a more sophisicated way, add filters to this element.
- * Known filters are for instance the <code>NumberFormatFilter</code> or
- * the <code>SimpleDateFormatFilter</code>.
- * <p>
- * For more information on filters have a look at the filter package
- * {@link org.jfree.report.filter}
+ * <p/>
+ * All content is converted to String using the String.valueOf () method. To convert
+ * values in a more sophisicated way, add filters to this element. Known filters are for
+ * instance the <code>NumberFormatFilter</code> or the <code>SimpleDateFormatFilter</code>.
+ * <p/>
+ * For more information on filters have a look at the filter package {@link
+ * org.jfree.report.filter}
  *
  * @author David Gilbert
  * @author Thomas Morgner
  */
 public class TextElement extends Element
 {
-  /** The content type string. */
+  /**
+   * The content type string.
+   */
   public static final String CONTENT_TYPE = "text/plain";
 
-  /** The filter used to convert values (Objects) to strings. */
+  /**
+   * The filter used to convert values (Objects) to strings.
+   */
   private StringFilter stringfilter;
 
   /**
    * Creates a new empty text element.
    */
-  public TextElement()
+  public TextElement ()
   {
     stringfilter = new StringFilter();
     setNullString(null);
@@ -98,7 +101,7 @@ public class TextElement extends Element
    *
    * @see #setNullString(String)
    */
-  public String getNullString()
+  public String getNullString ()
   {
     return stringfilter.getNullValue();
   }
@@ -107,9 +110,9 @@ public class TextElement extends Element
    * Defines the null value representation for this element. If null is given, the value
    * is set to a reasonable value (this implementation sets the value to the string "-").
    *
-   * @param s  the null string.
+   * @param s the null string.
    */
-  public void setNullString(final String s)
+  public void setNullString (final String s)
   {
     final String nstring = (s == null) ? "-" : s;
     stringfilter.setNullValue(nstring);
@@ -117,13 +120,13 @@ public class TextElement extends Element
 
   /**
    * Returns the value for this text element.
-   * <p>
+   * <p/>
    * Internally, a <code>StringFilter</code> is used to ensure that the final result is an
    * instance of String (even though it is returned as an Object.
    *
    * @return the value for the element.
    */
-  public final Object getValue()
+  public final Object getValue ()
   {
     stringfilter.setDataSource(getDataSource());
     return stringfilter.getValue();
@@ -134,7 +137,7 @@ public class TextElement extends Element
    *
    * @return a string.
    */
-  public String toString()
+  public String toString ()
   {
     final StringBuffer b = new StringBuffer();
     b.append(this.getClass().getName());
@@ -153,7 +156,8 @@ public class TextElement extends Element
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final TextElement te = (TextElement) super.clone();
     te.stringfilter = (StringFilter) stringfilter.clone();
@@ -165,193 +169,192 @@ public class TextElement extends Element
    *
    * @return the content type.
    */
-  public String getContentType()
+  public String getContentType ()
   {
     return CONTENT_TYPE;
   }
 
   /**
    * Returns the name of the current font.
-   * 
+   *
    * @return the font name
    */
-  public String getFontName()
+  public String getFontName ()
   {
     return (String) getStyle().getStyleProperty(ElementStyleSheet.FONT);
   }
 
   /**
    * Defines the font name of the current font.
-   * 
+   *
    * @param fontName the font name
    */
-  public void setFontName(final String fontName)
+  public void setFontName (final String fontName)
   {
     getStyle().setStyleProperty(ElementStyleSheet.FONT, fontName);
   }
 
   /**
    * Returns the font size in points.
-   * 
+   *
    * @return the font size.
    */
-  public int getFontSize()
+  public int getFontSize ()
   {
     final Integer i = (Integer) getStyle().getStyleProperty
-        (ElementStyleSheet.FONTSIZE);
+            (ElementStyleSheet.FONTSIZE);
     // fontsize is never null.
     return i.intValue();
   }
 
   /**
    * Defines the height of the font in points.
-   * <p>
-   * Calling this function with either parameter will override any 
-   * previously defined value for the layoutcachable attribute. 
-   * The value can no longer be inherited from parent stylesheets.
-   * 
+   * <p/>
+   * Calling this function with either parameter will override any previously defined
+   * value for the layoutcachable attribute. The value can no longer be inherited from
+   * parent stylesheets.
+   *
    * @param fontSize the font size in points.
    */
-  public void setFontSize(final int fontSize)
+  public void setFontSize (final int fontSize)
   {
     getStyle().setStyleProperty
-        (ElementStyleSheet.FONTSIZE, new Integer(fontSize));
+            (ElementStyleSheet.FONTSIZE, new Integer(fontSize));
   }
 
   /**
    * Checks, whether the font should be displayed in bold style.
-   * 
+   *
    * @return true, if the font should be bold, false otherwise.
    */
-  public boolean isBold()
+  public boolean isBold ()
   {
     return getStyle().getBooleanStyleProperty(ElementStyleSheet.BOLD);
   }
-  
+
   /**
    * Defines, whether the font should be displayed in bold, false otherwise.
-   * <p>
-   * Calling this function with either parameter will override any 
-   * previously defined value for the layoutcachable attribute. 
-   * The value can no longer be inherited from parent stylesheets.
-   * 
+   * <p/>
+   * Calling this function with either parameter will override any previously defined
+   * value for the layoutcachable attribute. The value can no longer be inherited from
+   * parent stylesheets.
+   *
    * @param bold true, if the font should be displayed in bold, false otherwise
    */
-  public void setBold(final boolean bold)
+  public void setBold (final boolean bold)
   {
     getStyle().setBooleanStyleProperty(ElementStyleSheet.BOLD, bold);
   }
 
   /**
    * Checks, whether the font should be displayed in italic style.
-   * 
+   *
    * @return true, if the font should be italic, false otherwise.
    */
-  public boolean isItalic()
+  public boolean isItalic ()
   {
     return getStyle().getBooleanStyleProperty(ElementStyleSheet.ITALIC);
   }
 
   /**
    * Defines, whether the font should be displayed in italics.
-   * <p>
-   * Calling this function with either parameter will override any 
-   * previously defined value for the layoutcachable attribute. 
-   * The value can no longer be inherited from parent stylesheets.
-   * 
+   * <p/>
+   * Calling this function with either parameter will override any previously defined
+   * value for the layoutcachable attribute. The value can no longer be inherited from
+   * parent stylesheets.
+   *
    * @param italic true, if the font should be in italic style, false otherwise.
    */
-  public void setItalic(final boolean italic)
+  public void setItalic (final boolean italic)
   {
     getStyle().setBooleanStyleProperty(ElementStyleSheet.ITALIC, italic);
   }
 
   /**
    * Returns whether the text should be displayed underlined.
+   *
    * @return true, if the fond should be underlined, false otherwise.
    */
-  public boolean isUnderline()
+  public boolean isUnderline ()
   {
     return getStyle().getBooleanStyleProperty(ElementStyleSheet.UNDERLINED);
   }
 
   /**
-   * Defines, whether the text should be displayed with the underline style
-   * applied. 
-   * <p>
-   * Calling this function with either parameter will override any 
-   * previously defined value for the layoutcachable attribute. 
-   * The value can no longer be inherited from parent stylesheets.
+   * Defines, whether the text should be displayed with the underline style applied.
+   * <p/>
+   * Calling this function with either parameter will override any previously defined
+   * value for the layoutcachable attribute. The value can no longer be inherited from
+   * parent stylesheets.
    *
-   * @param underline true, if the text should be displayed underlined, false
-   * otherwise.
+   * @param underline true, if the text should be displayed underlined, false otherwise.
    */
-  public void setUnderline(final boolean underline)
+  public void setUnderline (final boolean underline)
   {
     getStyle().setBooleanStyleProperty(ElementStyleSheet.UNDERLINED, underline);
   }
 
   /**
    * Returns whether the text should have the strikethough style applied.
-   * 
+   *
    * @return true, if the font should be striked through, false otherwise.
    */
-  public boolean isStrikethrough()
+  public boolean isStrikethrough ()
   {
     return getStyle().getBooleanStyleProperty(ElementStyleSheet.STRIKETHROUGH);
   }
 
   /**
    * Defines, whether the text should be displayed striked through.
-   * <p>
-   * Calling this function with either parameter will override any 
-   * previously defined value for the layoutcachable attribute. 
-   * The value can no longer be inherited from parent stylesheets.
-   * 
-   * @param strikethrough whether to display the text with strikethrough style
-   * applied
+   * <p/>
+   * Calling this function with either parameter will override any previously defined
+   * value for the layoutcachable attribute. The value can no longer be inherited from
+   * parent stylesheets.
+   *
+   * @param strikethrough whether to display the text with strikethrough style applied
    */
-  public void setStrikethrough(final boolean strikethrough)
+  public void setStrikethrough (final boolean strikethrough)
   {
     getStyle().setBooleanStyleProperty(ElementStyleSheet.STRIKETHROUGH, strikethrough);
   }
 
   /**
    * Returns the font definition object assigned with this element. Never null.
+   *
    * @return the font definition for this element.
    */
-  public FontDefinition getFont()
+  public FontDefinition getFont ()
   {
     return getStyle().getFontDefinitionProperty();
   }
 
   /**
-   * Defines all font properties by applying the values from the given
-   * font definition object.
-   * <p>
-   * Calling this function with either parameter will override any 
-   * previously defined value for the layoutcachable attribute. 
-   * The value can no longer be inherited from parent stylesheets.
-   * 
+   * Defines all font properties by applying the values from the given font definition
+   * object.
+   * <p/>
+   * Calling this function with either parameter will override any previously defined
+   * value for the layoutcachable attribute. The value can no longer be inherited from
+   * parent stylesheets.
+   *
    * @param font the font definition for this element.
    */
-  public void setFont(final FontDefinition font)
+  public void setFont (final FontDefinition font)
   {
     getStyle().setFontDefinitionProperty(font);
 
   }
 
   /**
-   * Returns the lineheight for the element. The lineheight can be
-   * used to extend the space between two text lines, the effective
-   * lineheight will be the maximum of this property and the font height.
-   *  
+   * Returns the lineheight for the element. The lineheight can be used to extend the
+   * space between two text lines, the effective lineheight will be the maximum of this
+   * property and the font height.
+   *
    * @return the defined line height.
    */
-  public float getLineHeight()
+  public float getLineHeight ()
   {
     final Float i = (Float) getStyle().getStyleProperty
-        (ElementStyleSheet.LINEHEIGHT);
+            (ElementStyleSheet.LINEHEIGHT);
     if (i == null)
     {
       return 0;
@@ -360,45 +363,43 @@ public class TextElement extends Element
   }
 
   /**
-   * Defines the lineheight for the element. The lineheight can be
-   * used to extend the space between two text lines, the effective
-   * lineheight will be the maximum of this property and the font height.
-   * <p>
-   * Calling this function with any parameter will override any 
-   * previously defined value for the layoutcachable attribute. 
-   * The value can no longer be inherited from parent stylesheets.
-   *  
+   * Defines the lineheight for the element. The lineheight can be used to extend the
+   * space between two text lines, the effective lineheight will be the maximum of this
+   * property and the font height.
+   * <p/>
+   * Calling this function with any parameter will override any previously defined value
+   * for the layoutcachable attribute. The value can no longer be inherited from parent
+   * stylesheets.
+   *
    * @param lineHeight the defined line height.
    */
-  public void setLineHeight(final float lineHeight)
+  public void setLineHeight (final float lineHeight)
   {
     getStyle().setStyleProperty
-        (ElementStyleSheet.LINEHEIGHT, new Float(lineHeight));
+            (ElementStyleSheet.LINEHEIGHT, new Float(lineHeight));
   }
 
   /**
    * Returns the reserved literal for this text element. This literal is appended,
-   * whenever the text from tne content does not fully fit into the element's 
-   * bounds. 
-   *  
+   * whenever the text from tne content does not fully fit into the element's bounds.
+   *
    * @return the reserved literal.
    */
-  public String getReservedLiteral()
+  public String getReservedLiteral ()
   {
     return (String) getStyle().getStyleProperty
-        (ElementStyleSheet.RESERVED_LITERAL);
+            (ElementStyleSheet.RESERVED_LITERAL);
   }
 
   /**
    * Defines the reserved literal for this text element. This literal is appended,
-   * whenever the text from tne content does not fully fit into the element's 
-   * bounds. 
-   *  
+   * whenever the text from tne content does not fully fit into the element's bounds.
+   *
    * @param reservedLiteral the reserved literal.
    */
-  public void setReservedLiteral(final String reservedLiteral)
+  public void setReservedLiteral (final String reservedLiteral)
   {
     getStyle().setStyleProperty
-        (ElementStyleSheet.RESERVED_LITERAL, reservedLiteral);
+            (ElementStyleSheet.RESERVED_LITERAL, reservedLiteral);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CardDemo.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: CardDemo.java,v 1.3 2004/05/07 12:43:25 mungady Exp $
  *
  * Changes
  * -------
@@ -56,17 +56,17 @@ public class CardDemo extends JFreeReportDemo
   /**
    * Default constructor.
    */
-  public CardDemo()
+  public CardDemo ()
   {
   }
 
   /**
-   * Creates a <code>TableModel</code> containing data for the demo.
-   * <!-- used in JUnit tests -->
+   * Creates a <code>TableModel</code> containing data for the demo. <!-- used in JUnit
+   * tests -->
    *
    * @return A <code>TableModel</code>.
    */
-  public static TableModel createSimpleDemoModel()
+  public static TableModel createSimpleDemoModel ()
   {
     final CardTableModel model = new CardTableModel();
     model.addCard(new AdminCard("Jared", "Diamond", "NR123123", "login", "secret", new Date()));
@@ -82,7 +82,7 @@ public class CardDemo extends JFreeReportDemo
    *
    * @return A <code>TableModel</code>.
    */
-  private TableModel createEmptyStartDemoModel()
+  private TableModel createEmptyStartDemoModel ()
   {
     final CardTableModel model = new CardTableModel();
     model.addCard(new NoPrintCard());
@@ -101,17 +101,17 @@ public class CardDemo extends JFreeReportDemo
    *
    * @return A list.
    */
-  protected List createAvailableDemos()
+  protected List createAvailableDemos ()
   {
     final ArrayList demos = new ArrayList();
 
     demos.add(new DemoDefinition("Simple Card printing",
-        createSimpleDemoModel(),
-        new URLDemoHandler("/org/jfree/report/demo/cards/usercards.xml")));
+            createSimpleDemoModel(),
+            new URLDemoHandler("/org/jfree/report/demo/cards/usercards.xml")));
 
     demos.add(new DemoDefinition("First 3 cards empty",
-        createEmptyStartDemoModel(),
-        new URLDemoHandler("/org/jfree/report/demo/cards/usercards.xml")));
+            createEmptyStartDemoModel(),
+            new URLDemoHandler("/org/jfree/report/demo/cards/usercards.xml")));
 
     return demos;
   }
@@ -119,9 +119,9 @@ public class CardDemo extends JFreeReportDemo
   /**
    * The starting point for the demo application.
    *
-   * @param args  ignored.
+   * @param args ignored.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
     try
     {

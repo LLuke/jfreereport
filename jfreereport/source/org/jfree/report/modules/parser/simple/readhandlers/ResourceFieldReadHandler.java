@@ -10,10 +10,11 @@ public class ResourceFieldReadHandler extends StringFieldReadHandler
 {
   public ResourceFieldReadHandler ()
   {
-    super(new ResourceFieldElementFactory ());
+    super(new ResourceFieldElementFactory());
   }
 
-  protected ResourceFieldReadHandler (final TextFieldElementFactory textFieldElementFactory)
+  protected ResourceFieldReadHandler (
+          final TextFieldElementFactory textFieldElementFactory)
   {
     super(textFieldElementFactory);
   }

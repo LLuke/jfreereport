@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementLayoutInformation.java,v 1.8 2004/05/07 08:14:23 mungady Exp $
+ * $Id: ElementLayoutInformation.java,v 1.9 2005/02/19 13:30:06 taqua Exp $
  *
  * Changes
  * -------
@@ -42,36 +42,43 @@ import org.jfree.report.util.geom.StrictDimension;
 import org.jfree.report.util.geom.StrictPoint;
 
 /**
- * A small carrier class to encapsulate the common layout parameters. This information is a
- * utility class, don't expect to find one bound to an element.
+ * A small carrier class to encapsulate the common layout parameters. This information is
+ * a utility class, don't expect to find one bound to an element.
  *
  * @author Thomas Morgner
  */
 public strictfp class ElementLayoutInformation
 {
-  /** The absolute position of the element. */
+  /**
+   * The absolute position of the element.
+   */
   private StrictPoint absolutePosition;
 
-  /** The current minimum size for the element. */
+  /**
+   * The current minimum size for the element.
+   */
   private StrictDimension minimumSize;
 
-  /** The current maximum size for the element. */
+  /**
+   * The current maximum size for the element.
+   */
   private StrictDimension maximumSize;
 
-  /** The current preferred size for the element. */
+  /**
+   * The current preferred size for the element.
+   */
   private StrictDimension preferredSize;
 
   /**
    * Creates a new instance.
-   * <p>
-   * The position will be <code>rect.x, rect.y</code> and all dimensions
-   * are set to <code>rect.width, rect.height</code>.
+   * <p/>
+   * The position will be <code>rect.x, rect.y</code> and all dimensions are set to
+   * <code>rect.width, rect.height</code>.
    *
-   * @param rect  the rectangle that will be the base for this ElementLayoutInformation.
-   *
+   * @param rect the rectangle that will be the base for this ElementLayoutInformation.
    * @throws java.lang.NullPointerException if the given rectangle is null.
    */
-  public ElementLayoutInformation(final StrictBounds rect)
+  public ElementLayoutInformation (final StrictBounds rect)
   {
     if (rect == null)
     {
@@ -79,7 +86,7 @@ public strictfp class ElementLayoutInformation
     }
     absolutePosition = new StrictPoint(rect.getX(), rect.getY());
     final StrictDimension fdim =
-        new StrictDimension(rect.getWidth(), rect.getHeight());
+            new StrictDimension(rect.getWidth(), rect.getHeight());
     maximumSize = fdim;
     minimumSize = fdim;
     preferredSize = fdim;
@@ -87,38 +94,37 @@ public strictfp class ElementLayoutInformation
 
   /**
    * Creates a new instance.
-   * <p>
+   * <p/>
    * The preferred size will be undefined (<code>null</code>).
    *
-   * @param absolutePosition  the absolute position for the element.
-   * @param minimumSize  the minimum size for the element.
-   * @param maximumSize  the maximum size for the element.
+   * @param absolutePosition the absolute position for the element.
+   * @param minimumSize      the minimum size for the element.
+   * @param maximumSize      the maximum size for the element.
    * @throws java.lang.NullPointerException if one of the parameters is <code>null</code>.
    */
-  public ElementLayoutInformation(final StrictPoint absolutePosition,
-                                  final StrictDimension minimumSize,
-                                  final StrictDimension maximumSize)
+  public ElementLayoutInformation (final StrictPoint absolutePosition,
+                                   final StrictDimension minimumSize,
+                                   final StrictDimension maximumSize)
   {
     this(absolutePosition, minimumSize, maximumSize, null);
   }
 
   /**
    * Creates a new instance.
-   * <p>
+   * <p/>
    * If the preferred size is <code>null</code>, then it is left undefined.
    *
-   * @param absolutePosition  the absolute position for the element
-   * @param minimumSize  the minimum size for the element
-   * @param maximumSize  the maximum size for the element
-   * @param preferredSize  the preferred size or <code>null</code> if not known.
-   *
-   * @throws java.lang.NullPointerException if the position or max/min size is <code>null</code>.
-   *
+   * @param absolutePosition the absolute position for the element
+   * @param minimumSize      the minimum size for the element
+   * @param maximumSize      the maximum size for the element
+   * @param preferredSize    the preferred size or <code>null</code> if not known.
+   * @throws java.lang.NullPointerException if the position or max/min size is
+   *                                        <code>null</code>.
    */
-  public ElementLayoutInformation(final StrictPoint absolutePosition,
-                                  final StrictDimension minimumSize,
-                                  final StrictDimension maximumSize,
-                                  final StrictDimension preferredSize)
+  public ElementLayoutInformation (final StrictPoint absolutePosition,
+                                   final StrictDimension minimumSize,
+                                   final StrictDimension maximumSize,
+                                   final StrictDimension preferredSize)
   {
     if (absolutePosition == null)
     {
@@ -147,7 +153,7 @@ public strictfp class ElementLayoutInformation
    *
    * @return a clone of the absolute position.
    */
-  public StrictPoint getAbsolutePosition()
+  public StrictPoint getAbsolutePosition ()
   {
     return (StrictPoint) absolutePosition.clone();
   }
@@ -157,7 +163,7 @@ public strictfp class ElementLayoutInformation
    *
    * @return a clone of the minimum size.
    */
-  public StrictDimension getMinimumSize()
+  public StrictDimension getMinimumSize ()
   {
     return (StrictDimension) minimumSize.clone();
   }
@@ -167,7 +173,7 @@ public strictfp class ElementLayoutInformation
    *
    * @return a clone of the maximum size.
    */
-  public StrictDimension getMaximumSize()
+  public StrictDimension getMaximumSize ()
   {
     return (StrictDimension) maximumSize.clone();
   }
@@ -177,7 +183,7 @@ public strictfp class ElementLayoutInformation
    *
    * @return a clone of the preferred size.
    */
-  public StrictDimension getPreferredSize()
+  public StrictDimension getPreferredSize ()
   {
     if (preferredSize == null)
     {
@@ -187,26 +193,25 @@ public strictfp class ElementLayoutInformation
   }
 
   /**
-   * Create a minimum dimension of the given 2 dimension objects. If pref is
-   * not given, the max parameter is returned unchanged.
-   * <p>
-   * This is used to limit the element bounds to the preferred size or
-   * the maximum size (in case the user misconfigured anything).
+   * Create a minimum dimension of the given 2 dimension objects. If pref is not given,
+   * the max parameter is returned unchanged.
+   * <p/>
+   * This is used to limit the element bounds to the preferred size or the maximum size
+   * (in case the user misconfigured anything).
    *
    * @param max  the maximum size as retrieved from the element.
-   * @param pref  the preferred size.
-   *
-   * @return  the minimum dimension.
+   * @param pref the preferred size.
+   * @return the minimum dimension.
    */
-  public static StrictDimension unionMin(final StrictDimension max,
-                                         final StrictDimension pref)
+  public static StrictDimension unionMin (final StrictDimension max,
+                                          final StrictDimension pref)
   {
     if (pref == null)
     {
       return max;
     }
     return new StrictDimension(Math.min(pref.getWidth(), max.getWidth()),
-        Math.min(pref.getHeight(), max.getHeight()));
+            Math.min(pref.getHeight(), max.getHeight()));
   }
 
   /**
@@ -214,7 +219,7 @@ public strictfp class ElementLayoutInformation
    *
    * @return A string.
    */
-  public String toString()
+  public String toString ()
   {
     final StringBuffer b = new StringBuffer();
     b.append("ElementLayoutInformation: \n");

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ContentContainer.java,v 1.7 2005/01/24 23:57:53 taqua Exp $
+ * $Id: ContentContainer.java,v 1.8 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -47,30 +47,33 @@ import org.jfree.report.util.geom.StrictBounds;
  */
 public class ContentContainer implements MultipartContent
 {
-  /** Storage for the content items. */
+  /**
+   * Storage for the content items.
+   */
   private Content[] content;
   private int size;
 
-  /** The content bounds. */
+  /**
+   * The content bounds.
+   */
   private final StrictBounds bounds;
 
   /**
    * Creates a new content container.
    *
-   * @param bounds  the content bounds.
+   * @param bounds the content bounds.
    */
-  protected ContentContainer(final StrictBounds bounds)
+  protected ContentContainer (final StrictBounds bounds)
   {
     this.bounds = (StrictBounds) bounds.clone();
   }
 
   /**
-   * Returns the content type, in this case
-   * {@link org.jfree.report.content.ContentType#CONTAINER}.
+   * Returns the content type, in this case {@link org.jfree.report.content.ContentType#CONTAINER}.
    *
    * @return the content type.
    */
-  public ContentType getContentType()
+  public ContentType getContentType ()
   {
     return ContentType.CONTAINER;
   }
@@ -80,7 +83,7 @@ public class ContentContainer implements MultipartContent
    *
    * @return the bounds.
    */
-  public StrictBounds getBounds()
+  public StrictBounds getBounds ()
   {
     return (StrictBounds) bounds.clone();
   }
@@ -88,12 +91,13 @@ public class ContentContainer implements MultipartContent
   /**
    * Sets the bounds of the content.
    *
-   * @param x  the x-coordinate.
-   * @param y  the y-coordinate.
+   * @param x      the x-coordinate.
+   * @param y      the y-coordinate.
    * @param width  the width.
-   * @param height  the height.
+   * @param height the height.
    */
-  protected void setBounds(final long x, final long y, final long width, final long height)
+  protected void setBounds (final long x, final long y, final long width,
+                            final long height)
   {
     this.bounds.setRect(x, y, width, height);
   }
@@ -101,9 +105,9 @@ public class ContentContainer implements MultipartContent
   /**
    * Adds content to the container.
    *
-   * @param cp  the content to add.
+   * @param cp the content to add.
    */
-  protected void addContentPart(final Content cp)
+  protected void addContentPart (final Content cp)
   {
     if (size == 0)
     {
@@ -130,7 +134,7 @@ public class ContentContainer implements MultipartContent
    *
    * @return the item count.
    */
-  public int getContentPartCount()
+  public int getContentPartCount ()
   {
     return size;
   }
@@ -138,11 +142,10 @@ public class ContentContainer implements MultipartContent
   /**
    * Returns a content item from the container.
    *
-   * @param part  the content index (zero-based).
-   *
+   * @param part the content index (zero-based).
    * @return the content.
    */
-  public Content getContentPart(final int part)
+  public Content getContentPart (final int part)
   {
     return content[part];
   }
@@ -150,11 +153,10 @@ public class ContentContainer implements MultipartContent
   /**
    * Returns the content items from the container that intersect with the specified area.
    *
-   * @param bounds  the area.
-   *
+   * @param bounds the area.
    * @return a container holding the content items.
    */
-  public Content getContentForBounds(final StrictBounds bounds)
+  public Content getContentForBounds (final StrictBounds bounds)
   {
     ContentContainer cc = null;
     for (int i = 0; i < getContentPartCount(); i++)
@@ -193,7 +195,7 @@ public class ContentContainer implements MultipartContent
    *
    * @return the minimum size or null, if this container has no content.
    */
-  public StrictBounds getMinimumContentSize()
+  public StrictBounds getMinimumContentSize ()
   {
     StrictBounds retval = null;
     for (int i = 0; i < getContentPartCount(); i++)
@@ -222,7 +224,7 @@ public class ContentContainer implements MultipartContent
    *
    * @return The string.
    */
-  public String toString()
+  public String toString ()
   {
     final StringBuffer container = new StringBuffer();
     container.append(getClass().getName());

@@ -1,10 +1,11 @@
 package org.jfree.report.function;
 
+import org.jfree.report.Band;
 import org.jfree.report.event.PageEventListener;
 import org.jfree.report.event.ReportEvent;
-import org.jfree.report.Band;
 
-public abstract class AbstractElementFormatFunction extends AbstractFunction implements PageEventListener
+public abstract class AbstractElementFormatFunction extends AbstractFunction
+        implements PageEventListener
 {
   private String element;
 
@@ -15,7 +16,7 @@ public abstract class AbstractElementFormatFunction extends AbstractFunction imp
    * @param name The element name.
    * @see org.jfree.report.Band#getElement(String)
    */
-  public void setElement(final String name)
+  public void setElement (final String name)
   {
     this.element = name;
   }
@@ -25,7 +26,7 @@ public abstract class AbstractElementFormatFunction extends AbstractFunction imp
    *
    * @return The element name.
    */
-  public String getElement()
+  public String getElement ()
   {
     return element;
   }
@@ -33,9 +34,9 @@ public abstract class AbstractElementFormatFunction extends AbstractFunction imp
   /**
    * Receives notification that a row of data is being processed.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void itemsAdvanced(final ReportEvent event)
+  public void itemsAdvanced (final ReportEvent event)
   {
     if (event.getState().isPrepareRun())
     {
@@ -49,9 +50,9 @@ public abstract class AbstractElementFormatFunction extends AbstractFunction imp
   /**
    * Receives notification that the report has finished.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportFinished(final ReportEvent event)
+  public void reportFinished (final ReportEvent event)
   {
     if (event.getState().isPrepareRun())
     {
@@ -65,9 +66,9 @@ public abstract class AbstractElementFormatFunction extends AbstractFunction imp
   /**
    * Receives notification that the report has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportStarted(final ReportEvent event)
+  public void reportStarted (final ReportEvent event)
   {
     if (event.getState().isPrepareRun())
     {
@@ -81,9 +82,9 @@ public abstract class AbstractElementFormatFunction extends AbstractFunction imp
   /**
    * Receives notification that a group has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupStarted(final ReportEvent event)
+  public void groupStarted (final ReportEvent event)
   {
     if (event.getState().isPrepareRun())
     {
@@ -97,9 +98,9 @@ public abstract class AbstractElementFormatFunction extends AbstractFunction imp
   /**
    * Receives notification that a group has finished.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupFinished(final ReportEvent event)
+  public void groupFinished (final ReportEvent event)
   {
     if (event.getState().isPrepareRun())
     {
@@ -111,13 +112,12 @@ public abstract class AbstractElementFormatFunction extends AbstractFunction imp
   }
 
   /**
-   * Receives notification that a page was canceled by the ReportProcessor.
-   * This method is called, when a page was removed from the report after
-   * it was generated.
+   * Receives notification that a page was canceled by the ReportProcessor. This method is
+   * called, when a page was removed from the report after it was generated.
    *
    * @param event The event.
    */
-  public void pageCanceled(final ReportEvent event)
+  public void pageCanceled (final ReportEvent event)
   {
     // this can be ignored, as nothing is printed here...
   }
@@ -127,7 +127,7 @@ public abstract class AbstractElementFormatFunction extends AbstractFunction imp
    *
    * @param event The event.
    */
-  public void pageFinished(final ReportEvent event)
+  public void pageFinished (final ReportEvent event)
   {
     if (event.getState().isPrepareRun())
     {
@@ -143,7 +143,7 @@ public abstract class AbstractElementFormatFunction extends AbstractFunction imp
    *
    * @param event The event.
    */
-  public void pageStarted(final ReportEvent event)
+  public void pageStarted (final ReportEvent event)
   {
     if (event.getState().isPrepareRun())
     {

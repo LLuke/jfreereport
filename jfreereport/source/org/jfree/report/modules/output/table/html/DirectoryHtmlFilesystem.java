@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.11 2005/02/19 15:41:23 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.12 2005/02/22 20:18:57 taqua Exp $
  *
  * Changes
  * -------
@@ -369,7 +369,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
         if (name == null)
         {
           name = encodeImage(image, false);
-          usedImages.put (identity, name);
+          usedImages.put(identity, name);
         }
         return new HtmlImageReference(name);
       }
@@ -384,17 +384,18 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
   }
 
   /**
-   * Encodes the given image as PNG, stores the image in the generated
-   * file and returns the name of the new image file.
+   * Encodes the given image as PNG, stores the image in the generated file and returns
+   * the name of the new image file.
    *
-   * @param image the image to be encoded
-   * @param createComparator true, if the image creation should be cached to
-   * avoid duplicate images
+   * @param image            the image to be encoded
+   * @param createComparator true, if the image creation should be cached to avoid
+   *                         duplicate images
    * @return the name of the image, never null.
+   *
    * @throws IOException if an IO erro occured.
    */
   private String encodeImage (final Image image, final boolean createComparator)
-    throws IOException
+          throws IOException
   {
     // quick caching ... use a weak list ...
     final WaitingImageObserver obs = new WaitingImageObserver(image);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StaticImageURLElementFactory.java,v 1.6 2004/05/07 08:24:41 mungady Exp $
+ * $Id: StaticImageURLElementFactory.java,v 1.7 2005/02/19 13:29:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,42 +44,42 @@ import java.net.URL;
 
 import org.jfree.report.Element;
 import org.jfree.report.ImageElement;
-import org.jfree.report.util.geom.StrictDimension;
-import org.jfree.report.util.geom.StrictPoint;
 import org.jfree.report.filter.templates.ImageURLElementTemplate;
 import org.jfree.ui.FloatDimension;
 
 /**
- * A factory to create an image element that loads its image from an
- * static URL. The content string may contain a relative URL if an valid
- * base URL is given.
+ * A factory to create an image element that loads its image from an static URL. The
+ * content string may contain a relative URL if an valid base URL is given.
  *
  * @author Thomas Morgner
  */
 public class StaticImageURLElementFactory extends ImageElementFactory
 {
-  /** The content URL (may be a relative URL). */
+  /**
+   * The content URL (may be a relative URL).
+   */
   private String content;
-  /** The base URL for relative content URLs. */
+  /**
+   * The base URL for relative content URLs.
+   */
   private URL baseURL;
 
   /**
    * Default-Constructor.
-   *
    */
-  public StaticImageURLElementFactory()
+  public StaticImageURLElementFactory ()
   {
   }
 
   /**
    * Creates the image URL element.
    *
-   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
-   *
    * @return the generated element.
+   *
    * @throws IllegalStateException if the content is not defined.
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
    */
-  public Element createElement()
+  public Element createElement ()
   {
     if (getContent() == null)
     {
@@ -98,34 +98,34 @@ public class StaticImageURLElementFactory extends ImageElementFactory
   }
 
   /**
-   * Returns the content part of the URL. This string may contain a relative URL,
-   * if the base URL is defined.
+   * Returns the content part of the URL. This string may contain a relative URL, if the
+   * base URL is defined.
    *
    * @return the content part of the URL.
    */
-  public String getContent()
+  public String getContent ()
   {
     return content;
   }
 
   /**
-   * Defines the content part of the URL. This string may contain a relative URL,
-   * if the base URL is defined.
+   * Defines the content part of the URL. This string may contain a relative URL, if the
+   * base URL is defined.
    *
    * @param content the content part of the URL.
    */
-  public void setContent(final String content)
+  public void setContent (final String content)
   {
     this.content = content;
   }
 
   /**
-   * Returns the BaseURL. The base URL is used to build the complete URL if the
-   * content url is relative.
+   * Returns the BaseURL. The base URL is used to build the complete URL if the content
+   * url is relative.
    *
    * @return the base URL.
    */
-  public URL getBaseURL()
+  public URL getBaseURL ()
   {
     return baseURL;
   }
@@ -135,79 +135,76 @@ public class StaticImageURLElementFactory extends ImageElementFactory
    *
    * @param baseURL the base URL.
    */
-  public void setBaseURL(final URL baseURL)
+  public void setBaseURL (final URL baseURL)
   {
     this.baseURL = baseURL;
   }
 
   /**
-   * Creates a new ImageElement. The source URL is predefined in an StaticDataSource and will
-   * not change during the report processing.
+   * Creates a new ImageElement. The source URL is predefined in an StaticDataSource and
+   * will not change during the report processing.
    *
-   * @param name the name of the new element
+   * @param name   the name of the new element
    * @param bounds the bounds of the new element
    * @param source the source url from where to load the image
-   *
    * @return a report element for displaying an image.
    *
-   * @throws NullPointerException if bounds, name or source are null
+   * @throws NullPointerException     if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ImageElement createImageElement(final String name,
-                                                final Rectangle2D bounds,
-                                                final URL source)
+  public static ImageElement createImageElement (final String name,
+                                                 final Rectangle2D bounds,
+                                                 final URL source)
   {
     return createImageElement(name, bounds, source, true);
   }
 
   /**
-   * Creates a new ImageElement. The source URL is predefined in an StaticDataSource and will
-   * not change during the report processing.
+   * Creates a new ImageElement. The source URL is predefined in an StaticDataSource and
+   * will not change during the report processing.
    *
-   * @param name  the name of the new element.
-   * @param bounds  the bounds of the new element.
-   * @param source  the source url from where to load the image.
+   * @param name   the name of the new element.
+   * @param bounds the bounds of the new element.
+   * @param source the source url from where to load the image.
    * @param scale  scale the image?
-   *
    * @return a report element for displaying an image.
    *
-   * @throws NullPointerException if bounds, name or source are null
+   * @throws NullPointerException     if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ImageElement createImageElement(final String name,
-                                                final Rectangle2D bounds,
-                                                final URL source,
-                                                final boolean scale)
+  public static ImageElement createImageElement (final String name,
+                                                 final Rectangle2D bounds,
+                                                 final URL source,
+                                                 final boolean scale)
   {
     return createImageElement(name, bounds, source, scale, false);
   }
 
   /**
-   * Creates a new ImageElement. The source URL is predefined in an StaticDataSource and will
-   * not change during the report processing.
+   * Creates a new ImageElement. The source URL is predefined in an StaticDataSource and
+   * will not change during the report processing.
    *
-   * @param name  the name of the new element.
-   * @param bounds  the bounds of the new element.
-   * @param source  the source url from where to load the image.
-   * @param scale  scale the image?
-   * @param keepAspectRatio  preserve the aspect ratio?
-   *
+   * @param name            the name of the new element.
+   * @param bounds          the bounds of the new element.
+   * @param source          the source url from where to load the image.
+   * @param scale           scale the image?
+   * @param keepAspectRatio preserve the aspect ratio?
    * @return a report element for displaying an image.
    *
-   * @throws NullPointerException if bounds, name or source are null
+   * @throws NullPointerException     if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ImageElement createImageElement(final String name,
-                                                final Rectangle2D bounds,
-                                                final URL source,
-                                                final boolean scale,
-                                                final boolean keepAspectRatio)
+  public static ImageElement createImageElement (final String name,
+                                                 final Rectangle2D bounds,
+                                                 final URL source,
+                                                 final boolean scale,
+                                                 final boolean keepAspectRatio)
   {
 
     final StaticImageURLElementFactory factory = new StaticImageURLElementFactory();
     factory.setName(name);
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setScale(new Boolean(scale));
     factory.setKeepAspectRatio(new Boolean(keepAspectRatio));
     factory.setContent(source.toExternalForm());

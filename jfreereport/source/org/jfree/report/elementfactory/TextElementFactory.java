@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextElementFactory.java,v 1.12 2004/05/07 08:24:41 mungady Exp $
+ * $Id: TextElementFactory.java,v 1.13 2005/02/05 18:35:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,58 +44,85 @@ import org.jfree.report.ElementAlignment;
 import org.jfree.report.style.ElementStyleSheet;
 
 /**
- * The text element factory is the abstract base class for all
- * text element factory implementations. It provides common properties
- * shared among all text elements.
+ * The text element factory is the abstract base class for all text element factory
+ * implementations. It provides common properties shared among all text elements.
  *
  * @author Thomas Morgner
  */
 public abstract class TextElementFactory extends ElementFactory
 {
-  /** The name of the font used to print the text. */
+  /**
+   * The name of the font used to print the text.
+   */
   private String fontName;
-  /** A flag defining whether to use the bold font style. */
+  /**
+   * A flag defining whether to use the bold font style.
+   */
   private Boolean bold;
-  /** A flag defining whether to use the italic font style. */
+  /**
+   * A flag defining whether to use the italic font style.
+   */
   private Boolean italic;
-  /** A flag defining whether to use the underline font style. */
+  /**
+   * A flag defining whether to use the underline font style.
+   */
   private Boolean underline;
-  /** A flag defining whether to use the strikethough font style. */
+  /**
+   * A flag defining whether to use the strikethough font style.
+   */
   private Boolean strikethrough;
-  /** A flag defining whether to use the embed the font where possible. */
+  /**
+   * A flag defining whether to use the embed the font where possible.
+   */
   private Boolean embedFont;
-  /** Defines the font size of the used font. */
+  /**
+   * Defines the font size of the used font.
+   */
   private Integer fontSize;
-  /** Defines the lineheight. The lineheight must be >= the font size, or it is ignored. */
+  /**
+   * Defines the lineheight. The lineheight must be >= the font size, or it is ignored.
+   */
   private Float lineHeight;
-  /** Defines the text color. */
+  /**
+   * Defines the text color.
+   */
   private Color color;
-  /** Defines the font encoding used when writing the text. */
+  /**
+   * Defines the font encoding used when writing the text.
+   */
   private String encoding;
-  /** Defines the vertical alignment of the content. */
+  /**
+   * Defines the vertical alignment of the content.
+   */
   private ElementAlignment verticalAlignment;
-  /** Defines the horizontal alignment of the content. */
+  /**
+   * Defines the horizontal alignment of the content.
+   */
   private ElementAlignment horizontalAlignment;
-  /** The reserved literal. */
+  /**
+   * The reserved literal.
+   */
   private String reservedLiteral;
-  /** A flag defining whether to remove leading and trailing whitespaces from text lines. */
+  /**
+   * A flag defining whether to remove leading and trailing whitespaces from text lines.
+   */
   private Boolean trimTextContent;
   private Boolean wrapText;
 
   /**
    * Default Constructor.
    */
-  public TextElementFactory()
+  public TextElementFactory ()
   {
   }
 
   /**
-   * Returns the font embedding flag for the new text elements. Font embedding
-   * is only used in some output targets.
+   * Returns the font embedding flag for the new text elements. Font embedding is only
+   * used in some output targets.
    *
    * @return the font embedding flag.
    */
-  public Boolean getEmbedFont()
+  public Boolean getEmbedFont ()
   {
     return embedFont;
   }
@@ -105,7 +132,7 @@ public abstract class TextElementFactory extends ElementFactory
    *
    * @param embedFont embedds the font if possible.
    */
-  public void setEmbedFont(final Boolean embedFont)
+  public void setEmbedFont (final Boolean embedFont)
   {
     this.embedFont = embedFont;
   }
@@ -115,7 +142,7 @@ public abstract class TextElementFactory extends ElementFactory
    *
    * @return the font name.
    */
-  public String getFontName()
+  public String getFontName ()
   {
     return fontName;
   }
@@ -125,73 +152,73 @@ public abstract class TextElementFactory extends ElementFactory
    *
    * @param fontName the name of the font.
    */
-  public void setFontName(final String fontName)
+  public void setFontName (final String fontName)
   {
     this.fontName = fontName;
   }
 
   /**
-   * Returns the state of the bold flag for the font. This method may return
-   * null to indicate that that value should be inherited from the parents.
+   * Returns the state of the bold flag for the font. This method may return null to
+   * indicate that that value should be inherited from the parents.
    *
    * @return the bold-flag.
    */
-  public Boolean getBold()
+  public Boolean getBold ()
   {
     return bold;
   }
 
   /**
-   * Defines the state of the bold flag for the font. This value may be set to
-   * null to indicate that that value should be inherited from the parents.
+   * Defines the state of the bold flag for the font. This value may be set to null to
+   * indicate that that value should be inherited from the parents.
    *
    * @param bold the bold-flag.
    */
-  public void setBold(final Boolean bold)
+  public void setBold (final Boolean bold)
   {
     this.bold = bold;
   }
 
   /**
-   * Returns the state of the italic flag for the font. This method may return
-   * null to indicate that that value should be inherited from the parents.
+   * Returns the state of the italic flag for the font. This method may return null to
+   * indicate that that value should be inherited from the parents.
    *
    * @return the italic-flag.
    */
-  public Boolean getItalic()
+  public Boolean getItalic ()
   {
     return italic;
   }
 
   /**
-   * Defines the state of the italic flag for the font. This value may be set to
-   * null to indicate that that value should be inherited from the parents.
+   * Defines the state of the italic flag for the font. This value may be set to null to
+   * indicate that that value should be inherited from the parents.
    *
    * @param italic the italic-flag.
    */
-  public void setItalic(final Boolean italic)
+  public void setItalic (final Boolean italic)
   {
     this.italic = italic;
   }
 
   /**
-   * Returns the state of the underline flag for the font. This method may return
-   * null to indicate that that value should be inherited from the parents.
+   * Returns the state of the underline flag for the font. This method may return null to
+   * indicate that that value should be inherited from the parents.
    *
    * @return the underline-flag.
    */
-  public Boolean getUnderline()
+  public Boolean getUnderline ()
   {
     return underline;
   }
 
   /**
-   * Defines the state of the underline flag for the font. This value may be set to
-   * null to indicate that that value should be inherited from the parents.
+   * Defines the state of the underline flag for the font. This value may be set to null
+   * to indicate that that value should be inherited from the parents.
    *
    * @param underline the underline-flag.
    */
-  public void setUnderline(final Boolean underline)
+  public void setUnderline (final Boolean underline)
   {
     this.underline = underline;
   }
@@ -202,7 +229,7 @@ public abstract class TextElementFactory extends ElementFactory
    *
    * @return the strike-through-flag.
    */
-  public Boolean getStrikethrough()
+  public Boolean getStrikethrough ()
   {
     return strikethrough;
   }
@@ -213,7 +240,7 @@ public abstract class TextElementFactory extends ElementFactory
    *
    * @param strikethrough the strikethrough-flag.
    */
-  public void setStrikethrough(final Boolean strikethrough)
+  public void setStrikethrough (final Boolean strikethrough)
   {
     this.strikethrough = strikethrough;
   }
@@ -223,7 +250,7 @@ public abstract class TextElementFactory extends ElementFactory
    *
    * @return the font size.
    */
-  public Integer getFontSize()
+  public Integer getFontSize ()
   {
     return fontSize;
   }
@@ -233,7 +260,7 @@ public abstract class TextElementFactory extends ElementFactory
    *
    * @param fontSize the font size.
    */
-  public void setFontSize(final Integer fontSize)
+  public void setFontSize (final Integer fontSize)
   {
     this.fontSize = fontSize;
   }
@@ -244,7 +271,7 @@ public abstract class TextElementFactory extends ElementFactory
    *
    * @return the line height.
    */
-  public Float getLineHeight()
+  public Float getLineHeight ()
   {
     return lineHeight;
   }
@@ -255,7 +282,7 @@ public abstract class TextElementFactory extends ElementFactory
    *
    * @param lineHeight the line height.
    */
-  public void setLineHeight(final Float lineHeight)
+  public void setLineHeight (final Float lineHeight)
   {
     this.lineHeight = lineHeight;
   }
@@ -265,7 +292,7 @@ public abstract class TextElementFactory extends ElementFactory
    *
    * @return the text color.
    */
-  public Color getColor()
+  public Color getColor ()
   {
     return color;
   }
@@ -275,29 +302,29 @@ public abstract class TextElementFactory extends ElementFactory
    *
    * @param color the text color.
    */
-  public void setColor(final Color color)
+  public void setColor (final Color color)
   {
     this.color = color;
   }
 
   /**
-   * Returns the font encoding used to write the text. This parameter is only
-   * used by some output targets and will be ignored otherwise.
+   * Returns the font encoding used to write the text. This parameter is only used by some
+   * output targets and will be ignored otherwise.
    *
    * @return the font encoding.
    */
-  public String getEncoding()
+  public String getEncoding ()
   {
     return encoding;
   }
 
   /**
-   * Defines the font encoding used to write the text. This parameter is only
-   * used by some output targets and will be ignored otherwise.
+   * Defines the font encoding used to write the text. This parameter is only used by some
+   * output targets and will be ignored otherwise.
    *
    * @param encoding the font encoding.
    */
-  public void setEncoding(final String encoding)
+  public void setEncoding (final String encoding)
   {
     this.encoding = encoding;
   }
@@ -307,7 +334,7 @@ public abstract class TextElementFactory extends ElementFactory
    *
    * @return the vertical alignment.
    */
-  public ElementAlignment getVerticalAlignment()
+  public ElementAlignment getVerticalAlignment ()
   {
     return verticalAlignment;
   }
@@ -317,7 +344,7 @@ public abstract class TextElementFactory extends ElementFactory
    *
    * @param verticalAlignment the vertical alignment.
    */
-  public void setVerticalAlignment(final ElementAlignment verticalAlignment)
+  public void setVerticalAlignment (final ElementAlignment verticalAlignment)
   {
     this.verticalAlignment = verticalAlignment;
   }
@@ -327,7 +354,7 @@ public abstract class TextElementFactory extends ElementFactory
    *
    * @return the horizontal alignment.
    */
-  public ElementAlignment getHorizontalAlignment()
+  public ElementAlignment getHorizontalAlignment ()
   {
     return horizontalAlignment;
   }
@@ -337,53 +364,52 @@ public abstract class TextElementFactory extends ElementFactory
    *
    * @param horizontalAlignment the vertical alignment.
    */
-  public void setHorizontalAlignment(final ElementAlignment horizontalAlignment)
+  public void setHorizontalAlignment (final ElementAlignment horizontalAlignment)
   {
     this.horizontalAlignment = horizontalAlignment;
   }
 
   /**
-   * Returns the defined reserved literal, which should be appended to the text
-   * to signal text, which was not completly printed.
-   * 
+   * Returns the defined reserved literal, which should be appended to the text to signal
+   * text, which was not completly printed.
+   *
    * @return the reserved literal.
    */
-  public String getReservedLiteral()
+  public String getReservedLiteral ()
   {
     return reservedLiteral;
   }
 
   /**
-   * Defines the defined reserved literal, which should be appended to the text
-   * to signal text, which was not completly printed.
-   * 
+   * Defines the defined reserved literal, which should be appended to the text to signal
+   * text, which was not completly printed.
+   *
    * @param reservedLiteral the reserved literal.
    */
-  public void setReservedLiteral(final String reservedLiteral)
+  public void setReservedLiteral (final String reservedLiteral)
   {
     this.reservedLiteral = reservedLiteral;
   }
 
   /**
    * Returns, whether the text lines should be trimmed.
-   * 
-   * @return Boolean.TRUE, if the text should be trimmed, Boolean.FALSE
-   * if the text should never be trimmed or null, if the default should
-   * be applied.
+   *
+   * @return Boolean.TRUE, if the text should be trimmed, Boolean.FALSE if the text should
+   *         never be trimmed or null, if the default should be applied.
    */
-  public Boolean getTrimTextContent()
+  public Boolean getTrimTextContent ()
   {
     return trimTextContent;
   }
 
   /**
    * Defines, whether the text lines should be trimmed.
-   * 
-   * @param trimTextContent Boolean.TRUE, if the text should be trimmed, Boolean.FALSE
-   * if the text should never be trimmed or null, if the default should
-   * be applied.
+   *
+   * @param trimTextContent Boolean.TRUE, if the text should be trimmed, Boolean.FALSE if
+   *                        the text should never be trimmed or null, if the default
+   *                        should be applied.
    */
-  public void setTrimTextContent(final Boolean trimTextContent)
+  public void setTrimTextContent (final Boolean trimTextContent)
   {
     this.trimTextContent = trimTextContent;
   }
@@ -399,12 +425,12 @@ public abstract class TextElementFactory extends ElementFactory
   }
 
   /**
-   * Applies the defined element style to the given stylesheet. This is a
-   * helper function to reduce the code size of the implementors.
+   * Applies the defined element style to the given stylesheet. This is a helper function
+   * to reduce the code size of the implementors.
    *
    * @param style the stlyesheet.
    */
-  protected void applyStyle(final ElementStyleSheet style)
+  protected void applyStyle (final ElementStyleSheet style)
   {
     super.applyStyle(style);
     style.setStyleProperty(ElementStyleSheet.ALIGNMENT, getHorizontalAlignment());

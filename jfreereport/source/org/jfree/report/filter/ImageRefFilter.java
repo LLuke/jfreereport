@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageRefFilter.java,v 1.4 2004/03/16 15:09:23 taqua Exp $
+ * $Id: ImageRefFilter.java,v 1.5 2004/05/07 08:24:42 mungady Exp $
  *
  * Changes
  * -------
@@ -47,9 +47,9 @@ import org.jfree.report.DefaultImageReference;
 import org.jfree.report.ImageContainer;
 
 /**
- * A filter that converts an Image to an ImageReference. The DataSource is expected to contain an
- * java.awt.Image, the image is then wrapped into an ImageReference and this ImageReference is
- * returned to the caller.
+ * A filter that converts an Image to an ImageReference. The DataSource is expected to
+ * contain an java.awt.Image, the image is then wrapped into an ImageReference and this
+ * ImageReference is returned to the caller.
  *
  * @author Thomas Morgner
  */
@@ -58,11 +58,13 @@ public class ImageRefFilter implements DataFilter, Serializable
   /**
    * Default constructor.
    */
-  public ImageRefFilter()
+  public ImageRefFilter ()
   {
   }
 
-  /** The data source. */
+  /**
+   * The data source.
+   */
   private DataSource dataSource;
 
   /**
@@ -70,7 +72,7 @@ public class ImageRefFilter implements DataFilter, Serializable
    *
    * @return The data source.
    */
-  public DataSource getDataSource()
+  public DataSource getDataSource ()
   {
     return dataSource;
   }
@@ -80,19 +82,18 @@ public class ImageRefFilter implements DataFilter, Serializable
    *
    * @param dataSource The data source.
    */
-  public void setDataSource(final DataSource dataSource)
+  public void setDataSource (final DataSource dataSource)
   {
     this.dataSource = dataSource;
   }
 
   /**
-   * Returns the current value for the data source.
-   * <P>
-   * The returned object, unless it is null, will be an instance of ImageReference.
+   * Returns the current value for the data source. <P> The returned object, unless it is
+   * null, will be an instance of ImageReference.
    *
    * @return The value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     final DataSource ds = getDataSource();
     if (ds == null)
@@ -119,7 +120,8 @@ public class ImageRefFilter implements DataFilter, Serializable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final ImageRefFilter r = (ImageRefFilter) super.clone();
     if (dataSource != null)

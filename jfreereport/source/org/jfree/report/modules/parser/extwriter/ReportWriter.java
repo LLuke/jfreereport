@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.8 2005/02/04 19:08:53 taqua Exp $
+ * $Id: ReportWriter.java,v 1.9 2005/02/19 13:30:04 taqua Exp $
  *
  * Changes
  * -------
@@ -69,62 +69,79 @@ import org.jfree.xml.factory.objects.ClassFactoryCollector;
  */
 public class ReportWriter
 {
-  /** A data-source collector. */
+  /**
+   * A data-source collector.
+   */
   private DataSourceCollector dataSourceCollector;
 
-  /** An element factory collector. */
+  /**
+   * An element factory collector.
+   */
   private ElementFactoryCollector elementFactoryCollector;
 
-  /** A class factory collector. */
+  /**
+   * A class factory collector.
+   */
   private ClassFactoryCollector classFactoryCollector;
 
-  /** A style-key factory collector. */
+  /**
+   * A style-key factory collector.
+   */
   private StyleKeyFactoryCollector styleKeyFactoryCollector;
 
-  /** A template collector. */
+  /**
+   * A template collector.
+   */
   private TemplateCollector templateCollector;
 
-  /** The report. */
+  /**
+   * The report.
+   */
   private JFreeReport report;
 
-  /** The encoding. */
+  /**
+   * The encoding.
+   */
   private String encoding;
 
-  /** The report writer configuration used during writing. */
+  /**
+   * The report writer configuration used during writing.
+   */
   private Configuration configuration;
 
   /**
    * Builds a default configuration from a given report definition object.
-   * <p>
-   * This will only create a valid definition, if the report properties were
-   * filled by the parser and contain the key <code>report.definition.contentbase</code>.
+   * <p/>
+   * This will only create a valid definition, if the report properties were filled by the
+   * parser and contain the key <code>report.definition.contentbase</code>.
    *
    * @param report the report for which to create the writer configuration.
    * @return the generated configuration.
    */
-  public static Configuration createDefaultConfiguration(final JFreeReport report)
+  public static Configuration createDefaultConfiguration (final JFreeReport report)
   {
     final ReportConfiguration repConf = new ReportConfiguration(report.getReportConfiguration());
     repConf.setConfigProperty
-        (Parser.CONTENTBASE_KEY,
-            (String) report.getProperty(JFreeReport.REPORT_DEFINITION_CONTENTBASE));
+            (Parser.CONTENTBASE_KEY,
+                    (String) report.getProperty(JFreeReport.REPORT_DEFINITION_CONTENTBASE));
     repConf.setConfigProperty
-        (JFreeReport.REPORT_DEFINITION_CONTENTBASE,
-            (String) report.getProperty(JFreeReport.REPORT_DEFINITION_CONTENTBASE));
+            (JFreeReport.REPORT_DEFINITION_CONTENTBASE,
+                    (String) report.getProperty(JFreeReport.REPORT_DEFINITION_CONTENTBASE));
     repConf.setConfigProperty
-        (JFreeReport.REPORT_DEFINITION_SOURCE,
-            (String) report.getProperty(JFreeReport.REPORT_DEFINITION_SOURCE));
+            (JFreeReport.REPORT_DEFINITION_SOURCE,
+                    (String) report.getProperty(JFreeReport.REPORT_DEFINITION_SOURCE));
     return repConf;
   }
 
   /**
    * Creates a new report writer for a report.
    *
-   * @param report  the report.
-   * @param encoding  the encoding.
-   * @param config the write configuration.
+   * @param report   the report.
+   * @param encoding the encoding.
+   * @param config   the write configuration.
    */
-  public ReportWriter(final JFreeReport report, final String encoding, final Configuration config)
+  public ReportWriter (final JFreeReport report, final String encoding,
+                       final Configuration config)
   {
     if (report == null)
     {
@@ -141,7 +158,7 @@ public class ReportWriter
     if (config.getConfigProperty(Parser.CONTENTBASE_KEY) == null)
     {
       throw new IllegalStateException
-          ("This report writer configuration does not define a content base.");
+              ("This report writer configuration does not define a content base.");
     }
 
     this.report = report;
@@ -170,7 +187,7 @@ public class ReportWriter
   /**
    * Loads all object factories from the parser hints, if available.
    */
-  private void loadObjectFactories()
+  private void loadObjectFactories ()
   {
     final ReportBuilderHints hints = getReport().getReportBuilderHints();
     if (hints == null)
@@ -179,7 +196,7 @@ public class ReportWriter
     }
 
     final List l = (List)
-      hints.getHint(getReport(), "", List.class);
+            hints.getHint(getReport(), "", List.class);
     if (l == null)
     {
       return;
@@ -194,7 +211,7 @@ public class ReportWriter
   /**
    * Loads all datasource factories from the parser hints, if available.
    */
-  private void loadDataSourceFactories()
+  private void loadDataSourceFactories ()
   {
     final ReportBuilderHints hints = getReport().getReportBuilderHints();
     if (hints == null)
@@ -208,7 +225,7 @@ public class ReportWriter
       return;
     }
     final DataSourceFactory[] list = (DataSourceFactory[])
-        loadParserHintFactories(l, DataSourceFactory.class);
+            loadParserHintFactories(l, DataSourceFactory.class);
     for (int i = 0; i < list.length; i++)
     {
       addDataSourceFactory(list[i]);
@@ -218,7 +235,7 @@ public class ReportWriter
   /**
    * Loads all template factories from the parser hints, if available.
    */
-  private void loadTemplateFactories()
+  private void loadTemplateFactories ()
   {
     final ReportBuilderHints hints = getReport().getReportBuilderHints();
     if (hints == null)
@@ -232,7 +249,7 @@ public class ReportWriter
       return;
     }
     final TemplateCollection[] list = (TemplateCollection[])
-        loadParserHintFactories(l, TemplateCollection.class);
+            loadParserHintFactories(l, TemplateCollection.class);
     for (int i = 0; i < list.length; i++)
     {
       addTemplateCollection(list[i]);
@@ -242,7 +259,7 @@ public class ReportWriter
   /**
    * Loads all element factories from the parser hints, if available.
    */
-  private void loadElementFactories()
+  private void loadElementFactories ()
   {
     final ReportBuilderHints hints = getReport().getReportBuilderHints();
     if (hints == null)
@@ -255,8 +272,8 @@ public class ReportWriter
     {
       return;
     }
-    final ElementFactory[] list = 
-      (ElementFactory[]) loadParserHintFactories(l, ElementFactory.class);
+    final ElementFactory[] list =
+            (ElementFactory[]) loadParserHintFactories(l, ElementFactory.class);
     for (int i = 0; i < list.length; i++)
     {
       addElementFactory(list[i]);
@@ -266,7 +283,7 @@ public class ReportWriter
   /**
    * Loads all style key factories from the parser hints, if available.
    */
-  private void loadStyleKeyFactories()
+  private void loadStyleKeyFactories ()
   {
     final ReportBuilderHints hints = getReport().getReportBuilderHints();
     if (hints == null)
@@ -279,8 +296,8 @@ public class ReportWriter
     {
       return;
     }
-    final StyleKeyFactory[] list = 
-      (StyleKeyFactory[]) loadParserHintFactories(l, StyleKeyFactory.class);
+    final StyleKeyFactory[] list =
+            (StyleKeyFactory[]) loadParserHintFactories(l, StyleKeyFactory.class);
     for (int i = 0; i < list.length; i++)
     {
       addStyleKeyFactory(list[i]);
@@ -292,20 +309,20 @@ public class ReportWriter
    *
    * @return The encoding.
    */
-  public String getEncoding()
+  public String getEncoding ()
   {
     return encoding;
   }
 
   /**
-   * Loads a set of factories from the given list of class names and checks, whether
-   * the referenced classes are assignable from the given factory type.
+   * Loads a set of factories from the given list of class names and checks, whether the
+   * referenced classes are assignable from the given factory type.
    *
-   * @param hints the list of class names to load
+   * @param hints       the list of class names to load
    * @param factoryType the desired factory type.
    * @return the loaded factories as object array.
    */
-  private Object[] loadParserHintFactories(final List hints, final Class factoryType)
+  private Object[] loadParserHintFactories (final List hints, final Class factoryType)
   {
     final Object[] hintValues = hints.toArray();
     final ArrayList factories = new ArrayList(hintValues.length);
@@ -314,8 +331,8 @@ public class ReportWriter
       if (hintValues[i] instanceof String == false)
       {
         Log.warn(new Log.SimpleMessage
-            ("Invalid parser hint type for factory: ", factoryType,
-                ": Type found: ", hintValues[i]));
+                ("Invalid parser hint type for factory: ", factoryType,
+                        ": Type found: ", hintValues[i]));
         continue;
       }
 
@@ -325,8 +342,8 @@ public class ReportWriter
         if (factoryType.isAssignableFrom(c) == false)
         {
           Log.warn(new Log.SimpleMessage
-              ("Invalid factory type specified: Required ", factoryType,
-                  " but found ", c));
+                  ("Invalid factory type specified: Required ", factoryType,
+                          " but found ", c));
           continue;
         }
 
@@ -349,9 +366,9 @@ public class ReportWriter
   /**
    * Adds a data-source factory.
    *
-   * @param dsf  the data-source factory.
+   * @param dsf the data-source factory.
    */
-  public void addDataSourceFactory(final DataSourceFactory dsf)
+  public void addDataSourceFactory (final DataSourceFactory dsf)
   {
     dataSourceCollector.addFactory(dsf);
   }
@@ -361,7 +378,7 @@ public class ReportWriter
    *
    * @return The data-source collector.
    */
-  public DataSourceCollector getDataSourceCollector()
+  public DataSourceCollector getDataSourceCollector ()
   {
     return dataSourceCollector;
   }
@@ -369,9 +386,9 @@ public class ReportWriter
   /**
    * Adds an element factory.
    *
-   * @param ef  the element factory.
+   * @param ef the element factory.
    */
-  public void addElementFactory(final ElementFactory ef)
+  public void addElementFactory (final ElementFactory ef)
   {
     elementFactoryCollector.addFactory(ef);
   }
@@ -381,7 +398,7 @@ public class ReportWriter
    *
    * @return The element factory collector.
    */
-  public ElementFactoryCollector getElementFactoryCollector()
+  public ElementFactoryCollector getElementFactoryCollector ()
   {
     return elementFactoryCollector;
   }
@@ -389,9 +406,9 @@ public class ReportWriter
   /**
    * Adds a class factory.
    *
-   * @param cf  the class factory.
+   * @param cf the class factory.
    */
-  public void addClassFactoryFactory(final ClassFactory cf)
+  public void addClassFactoryFactory (final ClassFactory cf)
   {
     classFactoryCollector.addFactory(cf);
   }
@@ -401,7 +418,7 @@ public class ReportWriter
    *
    * @return The class factory collector.
    */
-  public ClassFactoryCollector getClassFactoryCollector()
+  public ClassFactoryCollector getClassFactoryCollector ()
   {
     return classFactoryCollector;
   }
@@ -409,9 +426,9 @@ public class ReportWriter
   /**
    * Adds a style-key factory.
    *
-   * @param skf  the style-key factory.
+   * @param skf the style-key factory.
    */
-  public void addStyleKeyFactory(final StyleKeyFactory skf)
+  public void addStyleKeyFactory (final StyleKeyFactory skf)
   {
     styleKeyFactoryCollector.addFactory(skf);
   }
@@ -421,7 +438,7 @@ public class ReportWriter
    *
    * @return The style-key factory collector.
    */
-  public StyleKeyFactoryCollector getStyleKeyFactoryCollector()
+  public StyleKeyFactoryCollector getStyleKeyFactoryCollector ()
   {
     return styleKeyFactoryCollector;
   }
@@ -429,9 +446,9 @@ public class ReportWriter
   /**
    * Adds a template collection.
    *
-   * @param collection  the template collection.
+   * @param collection the template collection.
    */
-  public void addTemplateCollection(final TemplateCollection collection)
+  public void addTemplateCollection (final TemplateCollection collection)
   {
     templateCollector.addTemplateCollection(collection);
   }
@@ -441,7 +458,7 @@ public class ReportWriter
    *
    * @return The template collector.
    */
-  public TemplateCollector getTemplateCollector()
+  public TemplateCollector getTemplateCollector ()
   {
     return templateCollector;
   }
@@ -451,7 +468,7 @@ public class ReportWriter
    *
    * @return The report.
    */
-  public JFreeReport getReport()
+  public JFreeReport getReport ()
   {
     return report;
   }
@@ -459,12 +476,12 @@ public class ReportWriter
   /**
    * Writes a report to a character stream writer.
    *
-   * @param w  the character stream writer.
-   *
-   * @throws IOException if there is an I/O problem.
+   * @param w the character stream writer.
+   * @throws IOException           if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void write(final Writer w) throws IOException, ReportWriterException
+  public void write (final Writer w)
+          throws IOException, ReportWriterException
   {
     final ReportDefinitionWriter writer = new ReportDefinitionWriter(this);
     writer.write(w); // we start with indentation level 0
@@ -472,9 +489,10 @@ public class ReportWriter
 
   /**
    * Returns the configuration used to write the report.
+   *
    * @return the writer configuration.
    */
-  public Configuration getConfiguration()
+  public Configuration getConfiguration ()
   {
     return configuration;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectReferenceGenerator.java,v 1.4.4.1 2004/12/13 19:27:01 taqua Exp $
+ * $Id: ObjectReferenceGenerator.java,v 1.7 2005/01/25 00:09:05 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -57,13 +57,15 @@ import org.jfree.xml.factory.objects.ClassFactoryCollector;
  */
 public final class ObjectReferenceGenerator
 {
-  /** The report definition. */
+  /**
+   * The report definition.
+   */
   private static final String REFERENCE_REPORT = "ObjectReferenceReport.xml";
 
   /**
    * DefaultConstructor.
    */
-  private ObjectReferenceGenerator()
+  private ObjectReferenceGenerator ()
   {
   }
 
@@ -72,7 +74,7 @@ public final class ObjectReferenceGenerator
    *
    * @return the tablemodel for the object reference generator.
    */
-  public static TableModel createData()
+  public static TableModel createData ()
   {
     final ClassFactoryCollector cc = new ClassFactoryCollector();
     cc.addFactory(new DefaultClassFactory());
@@ -86,9 +88,9 @@ public final class ObjectReferenceGenerator
   /**
    * Starting point for the application.
    *
-   * @param args  ignored.
+   * @param args ignored.
    */
-  public static void main(final String[] args)
+  public static void main (final String[] args)
   {
 
     final ReportGenerator gen = ReportGenerator.getInstance();
@@ -118,9 +120,9 @@ public final class ObjectReferenceGenerator
     try
     {
       HtmlReportUtil.createStreamHTML(report, System.getProperty("user.home")
-          + "/object-reference.html");
+              + "/object-reference.html");
       PDFReportUtil.createPDF(report,
-          System.getProperty("user.home") + "/object-reference.pdf");
+              System.getProperty("user.home") + "/object-reference.pdf");
     }
     catch (Exception e)
     {

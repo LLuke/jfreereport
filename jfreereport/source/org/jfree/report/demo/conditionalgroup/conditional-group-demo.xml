@@ -7,7 +7,7 @@
   <reportfooter fontname="SansSerif" fsbold="true" fsunderline="true" fontsize="14">
     <line x1="0" y1="0" x2="100%" y2="0" color="black" weight="1"/>
     <label x="0" y="0" width="200" height="20">Netto Profit/Loss</label>
-    <number-field x="300" y="0" width="200" height="20" fieldname="nettoProfit" />
+    <number-field x="300" y="0" width="200" height="20" fieldname="nettoProfit"/>
     <label x="0" y="40" width="200" height="200" fontsize="8">Yes, this report looks very ugly :)</label>
   </reportfooter>
 
@@ -36,7 +36,7 @@
           fontname="SansSerif" fsbold="true" fontsize="14">
           <line x1="0" y1="0" x2="100%" y2="0" color="black" weight="1"/>
           <label x="0" y="0" width="200" height="20">Total Income</label>
-          <number-field x="300" y="0" width="200" height="20" fieldname="sum" />
+          <number-field x="300" y="0" width="200" height="20" fieldname="sum"/>
         </band>
 
         <!-- Triggered visible if the expense group is displayed .. -->
@@ -44,7 +44,7 @@
           fontname="SansSerif" fsbold="true" fontsize="14">
           <line x1="0" y1="0" x2="100%" y2="0" color="black" weight="1"/>
           <label x="0" y="0" width="200" height="20">Total Expense</label>
-          <number-field x="300" y="0" width="200" height="20" fsbold="false" fieldname="sum" />
+          <number-field x="300" y="0" width="200" height="20" fsbold="false" fieldname="sum"/>
         </band>
 
       </groupfooter>
@@ -63,14 +63,14 @@
       </fields>
       <groupheader fontname="SansSerif" fsitalic="true" fontsize="12">
         <label x="0" y="0" width="100" height="20">Account:</label>
-        <string-field x="100" y="0" width="100" height="20" fieldname="level-one-account" />
+        <string-field x="100" y="0" width="100" height="20" fieldname="level-one-account"/>
       </groupheader>
 
       <groupfooter fontname="SansSerif" fsitalic="true" fontsize="12">
         <line x1="0" y1="0" x2="100%" y2="0" color="black" weight="0.5"/>
         <label x="0" y="0" width="100" height="20">Total Account:</label>
-        <string-field x="100" y="0" width="100" height="20" fieldname="level-one-account" />
-        <number-field x="300" y="0" width="200" height="20" fieldname="sub-sum" />
+        <string-field x="100" y="0" width="100" height="20" fieldname="level-one-account"/>
+        <number-field x="300" y="0" width="200" height="20" fieldname="sub-sum"/>
 
       </groupfooter>
     </group>
@@ -97,7 +97,7 @@
     This function is used by the NettoProfit function, therefore we have
     to set the dependency level to 1 (=dependencyLevel of "NettoProfitFunction" + 1)
     -->
-    <function class="org.jfree.report.function.ItemSumFunction" name="sum" deplevel="1" >
+    <function class="org.jfree.report.function.ItemSumFunction" name="sum" deplevel="1">
       <properties>
         <property name="field">balance</property>
         <property name="group">type-group</property>

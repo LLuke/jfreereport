@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultStyleKeyFactory.java,v 1.5 2004/05/07 14:29:53 mungady Exp $
+ * $Id: DefaultStyleKeyFactory.java,v 1.6 2005/01/30 23:37:24 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -44,10 +44,10 @@ import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.Log;
 
 /**
- * A default implementation of the {@link StyleKeyFactory} interface.
- * This implementation contains all stylekeys from the ElementStyleSheet,
- * the BandStyleSheet and the ShapeElement stylesheet.
- * <p>
+ * A default implementation of the {@link StyleKeyFactory} interface. This implementation
+ * contains all stylekeys from the ElementStyleSheet, the BandStyleSheet and the
+ * ShapeElement stylesheet.
+ * <p/>
  * If available, the excel stylesheets will also be loaded.
  *
  * @author Thomas Morgner
@@ -57,7 +57,7 @@ public class DefaultStyleKeyFactory extends AbstractStyleKeyFactory
   /**
    * Creates a new factory.
    */
-  public DefaultStyleKeyFactory()
+  public DefaultStyleKeyFactory ()
   {
     loadFromClass(ElementStyleSheet.class);
     loadFromClass(BandStyleKeys.class);
@@ -66,12 +66,12 @@ public class DefaultStyleKeyFactory extends AbstractStyleKeyFactory
     try
     {
       loadFromClass(Thread.currentThread().getContextClassLoader().
-          loadClass("org.jfree.report.modules.output.table.xls.ExcelProcessor"));
+              loadClass("org.jfree.report.modules.output.table.xls.ExcelProcessor"));
     }
     catch (Exception e)
     {
       Log.debug("Loading excel stylekeys failed. Keys " +
-          "from that module will not be available.");
+              "from that module will not be available.");
     }
 /*
     addKey(ElementStyleSheet.ALIGNMENT);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: GroupList.java,v 1.7 2005/01/30 23:37:17 taqua Exp $
+ * $Id: GroupList.java,v 1.8 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes:
  * --------
@@ -55,26 +55,30 @@ import org.jfree.report.util.ReadOnlyIterator;
 /**
  * The group list is used to store groups in a ordered way. The less specific groups are
  * guaranteed to be listed before any more specific subgroup.
- * <p>
- * Groups are ordered by comparing the declared fieldnames for the groups.
- * A subgroup of an group must contain all fields from its parent plus at least one
- * new field.
- * <p>
+ * <p/>
+ * Groups are ordered by comparing the declared fieldnames for the groups. A subgroup of
+ * an group must contain all fields from its parent plus at least one new field.
+ * <p/>
  * This implementation is not synchronized.
- * <p>
+ * <p/>
  * The group list cannot be empty. JFreeReport needs at least one group instance to work
- * as expected. By default, this default instance does not define any fields (and therefore
- * contains the complete report) and has no Bands defined (rendering it invisible).
- * You cannot remove that group. Every attempt to remove the last group will recreate a
- * new default group.
+ * as expected. By default, this default instance does not define any fields (and
+ * therefore contains the complete report) and has no Bands defined (rendering it
+ * invisible). You cannot remove that group. Every attempt to remove the last group will
+ * recreate a new default group.
  *
  * @author Thomas Morgner
  */
 public class GroupList implements Cloneable, Serializable
 {
-  /** Cache (this is a set, we need list functionality, but creating Iterators is expensive). */
+  /**
+   * Cache (this is a set, we need list functionality, but creating Iterators is
+   * expensive).
+   */
   private transient Group[] cache;
-  /** The backend to store the groups. */
+  /**
+   * The backend to store the groups.
+   */
   private ArrayList backend;
 
   private ReportDefinition reportDefinition;
@@ -82,7 +86,7 @@ public class GroupList implements Cloneable, Serializable
   /**
    * Constructs a new empty group list.
    */
-  public GroupList()
+  public GroupList ()
   {
     backend = new ArrayList();
     final Group defaultGroup = new Group();
@@ -91,13 +95,13 @@ public class GroupList implements Cloneable, Serializable
   }
 
   /**
-   * Creates a new group list and copies the contents of the given grouplist.
-   * If the given group list was assigned with an stylesheet collection, then the
-   * new group list will share that registration.
+   * Creates a new group list and copies the contents of the given grouplist. If the given
+   * group list was assigned with an stylesheet collection, then the new group list will
+   * share that registration.
    *
-   * @param list  groups to add to the list.
+   * @param list groups to add to the list.
    */
-  protected GroupList(final GroupList list)
+  protected GroupList (final GroupList list)
   {
     backend = new ArrayList();
     backend.addAll(list.backend);
@@ -106,11 +110,10 @@ public class GroupList implements Cloneable, Serializable
   /**
    * Returns the group at a position in the list.
    *
-   * @param i  the position index (zero-based).
-   *
+   * @param i the position index (zero-based).
    * @return the report group.
    */
-  public Group get(final int i)
+  public Group get (final int i)
   {
     if (cache == null)
     {
@@ -122,11 +125,12 @@ public class GroupList implements Cloneable, Serializable
   /**
    * Removes an group from the list.
    *
-   * @param o  the group that should be removed.
+   * @param o the group that should be removed.
    * @return a boolean indicating whether or not the object was removed.
+   *
    * @throws NullPointerException if the given group object is null.
    */
-  public boolean remove(final Group o)
+  public boolean remove (final Group o)
   {
     if (o == null)
     {
@@ -158,7 +162,7 @@ public class GroupList implements Cloneable, Serializable
   /**
    * Clears the list.
    */
-  public void clear()
+  public void clear ()
   {
     backend.clear();
     final Group defaultGroup = new Group();
@@ -170,9 +174,9 @@ public class GroupList implements Cloneable, Serializable
   /**
    * Adds a group to the list.
    *
-   * @param o  the group object.
+   * @param o the group object.
    */
-  public void add(final Group o)
+  public void add (final Group o)
   {
     if (o == null)
     {
@@ -207,14 +211,14 @@ public class GroupList implements Cloneable, Serializable
   }
 
   /**
-   * Adds all groups of the collection to this group list. This method will
-   * result in a ClassCastException if the collection does not contain Group objects.
+   * Adds all groups of the collection to this group list. This method will result in a
+   * ClassCastException if the collection does not contain Group objects.
    *
    * @param c the collection that contains the groups.
    * @throws NullPointerException if the given collection is null.
-   * @throws ClassCastException if the collection does not contain groups.
+   * @throws ClassCastException   if the collection does not contain groups.
    */
-  public void addAll(final Collection c)
+  public void addAll (final Collection c)
   {
     final Iterator it = c.iterator();
     while (it.hasNext())
@@ -228,7 +232,8 @@ public class GroupList implements Cloneable, Serializable
    *
    * @return a clone of this list.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final GroupList l = (GroupList) super.clone();
     l.backend = new ArrayList();
@@ -249,7 +254,7 @@ public class GroupList implements Cloneable, Serializable
    *
    * @return An iterator over all groups of the list.
    */
-  public Iterator iterator()
+  public Iterator iterator ()
   {
     return new ReadOnlyIterator(backend.iterator());
   }
@@ -259,7 +264,7 @@ public class GroupList implements Cloneable, Serializable
    *
    * @return The number of groups in the list.
    */
-  public int size()
+  public int size ()
   {
     return backend.size();
   }
@@ -269,7 +274,7 @@ public class GroupList implements Cloneable, Serializable
    *
    * @return A string.
    */
-  public String toString()
+  public String toString ()
   {
     final StringBuffer b = new StringBuffer();
     b.append("GroupList={backend='");
@@ -283,7 +288,7 @@ public class GroupList implements Cloneable, Serializable
    *
    * @return the groups of this list as array.
    */
-  protected Group[] getGroupCache()
+  protected Group[] getGroupCache ()
   {
     if (cache == null)
     {
@@ -293,13 +298,13 @@ public class GroupList implements Cloneable, Serializable
   }
 
   /**
-   * Searches a group by its defined name. This method returns null, if the
-   * group was not found.
+   * Searches a group by its defined name. This method returns null, if the group was not
+   * found.
    *
    * @param name the name of the group.
    * @return the group or null if not found.
    */
-  public Group getGroupByName(final String name)
+  public Group getGroupByName (final String name)
   {
     final Group[] cache = getGroupCache();
     for (int i = 0; i < cache.length; i++)
@@ -322,7 +327,7 @@ public class GroupList implements Cloneable, Serializable
     }
   }
 
-  public ReportDefinition getReportDefinition()
+  public ReportDefinition getReportDefinition ()
   {
     return reportDefinition;
   }

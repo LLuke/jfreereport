@@ -1,8 +1,8 @@
 package org.jfree.report.modules.parser.ext.readhandlers;
 
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
-import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollection;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
 import org.jfree.util.ObjectUtilities;
@@ -28,10 +28,11 @@ public class TemplatesFactoryReadHandler extends AbstractPropertyXmlReadHandler
     final String className = attrs.getValue("class");
     if (className == null)
     {
-      throw new ParseException("Attribute 'class' is missing.", getRootHandler().getLocator());
+      throw new ParseException("Attribute 'class' is missing.", getRootHandler()
+              .getLocator());
     }
     final TemplateCollector fc =
-        (TemplateCollector) getRootHandler().getHelperObject
+            (TemplateCollector) getRootHandler().getHelperObject
             (ReportDefinitionReadHandler.TEMPLATE_FACTORY_KEY);
 
     final TemplateCollection factory = (TemplateCollection)

@@ -1,8 +1,8 @@
 package org.jfree.report.modules.parser.ext.readhandlers;
 
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
-import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.xml.ElementDefinitionException;
@@ -40,7 +40,8 @@ public class StyleExtendsReadHandler extends AbstractPropertyXmlReadHandler
     if (parent == null)
     {
       throw new ElementDefinitionException
-              ("Specified parent stylesheet is not defined.", getRootHandler().getLocator());
+              ("Specified parent stylesheet is not defined.", getRootHandler()
+              .getLocator());
     }
     styleSheet.addParent(parent);
   }

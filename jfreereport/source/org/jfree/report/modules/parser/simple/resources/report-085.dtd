@@ -35,23 +35,23 @@
  -->
 
 <!ENTITY % boolean
-   "true | false"
+"true | false"
 >
 
 <!ENTITY % fontstyle
-   "plain | bold | italic | bold-italic"
+"plain | bold | italic | bold-italic"
 >
 
 <!ENTITY % alignmentEnum
-   "left | center | right"
+"left | center | right"
 >
 
 <!ENTITY % valignmentEnum
-   "top | middle | bottom"
+"top | middle | bottom"
 >
 
 <!ENTITY % orientations
-  "portrait | landscape | reverse_landscape"
+"portrait | landscape | reverse_landscape"
 >
 
 <!--
@@ -69,10 +69,10 @@
 
 -->
 <!ENTITY % position
- "x           CDATA          #REQUIRED
-  y           CDATA          #REQUIRED
-  width       CDATA          #REQUIRED
-  height      CDATA          #REQUIRED"
+"x           CDATA          #REQUIRED
+ y           CDATA          #REQUIRED
+ width       CDATA          #REQUIRED
+ height      CDATA          #REQUIRED"
 >
 
 <!--
@@ -95,7 +95,7 @@
   layout-cachable      (%boolean;)   #IMPLIED
   href                 CDATA         #IMPLIED
   reserved-literal     CDATA         #IMPLIED"
- >
+>
 
 <!ENTITY % fontdef
 " fontname       CDATA              #IMPLIED
@@ -111,16 +111,16 @@
 
   alignment              (%alignmentEnum;)  #IMPLIED
   vertical-alignment     (%valignmentEnum;) #IMPLIED"
- >
+>
 
 
 <!ENTITY % itemelements
-  "(label | string-field | number-field | date-field |
-	imageref | image-field | imageurl-field | rectangle |
-  resource-label | resource-field | line |
-  drawable-url-field | drawableref |
-  message-field | anchor-field |
-  drawable-field | shape-field | band)*">
+"(label | string-field | number-field | date-field |
+imageref | image-field | imageurl-field | rectangle |
+resource-label | resource-field | line |
+drawable-url-field | drawableref |
+message-field | anchor-field |
+drawable-field | shape-field | band)*">
 
 
 <!--
@@ -171,25 +171,25 @@
   -->
 
 <!ENTITY % pageFormats
-  "(  PAPER10X11 | PAPER10X13 | PAPER10X14 | PAPER12X11 | PAPER15X11 | PAPER7X9 | PAPER8X10 |
-      PAPER9X11 | PAPER9X12 | A0 | A1 | A2 | A3 | A3_TRANSVERSE | A3_EXTRA | A3_EXTRATRANSVERSE |
-      A3_ROTATED | A4 | A4_TRANSVERSE | A4_EXTRA | A4_PLUS | A4_ROTATED | A4_SMALL | A5 |
-      A5_TRANSVERSE | A5_EXTRA | A5_ROTATED | A6 | A6_ROTATED | A7 | A8 | A9 | A10 |
-      ANSIC | ANSID | ANSIE | ARCHA | ARCHB | ARCHC | ARCHD | ARCHE | B0 | B1 | B2 | B3 | B4 |
-      B4_ROTATED | B5 | B5_TRANSVERSE | B5_ROTATED | B6 | B6_ROTATED | B7 | B8 | B9 | B10 |
-      C4 | C5 | C6 | COMM10 | DL | DOUBLEPOSTCARD | DOUBLEPOSTCARD_ROTATED | ENV9 | ENV10 |
-      ENV11 | ENV12 | ENV14 | ENVC0 | ENVC1 | ENVC2 | ENVC3 | ENVC4 | ENVC5 | ENVC6 | ENVC65 | ENVC7 |
-      ENVCHOU3 | ENVCHOU3_ROTATED | ENVCHOU4 | ENVCHOU4_ROTATED | ENVDL | ENVINVITE | ENVISOB4 | ENVISOB5 |
-      ENVISOB6 | ENVITALIAN | ENVKAKU2 | ENVKAKU2_ROTATED | ENVKAKU3 | ENVKAKU3_ROTATED | ENVMONARCH |
-      ENVPERSONAL | ENVPRC1 | ENVPRC1_ROTATED | ENVPRC2 | ENVPRC2_ROTATED | ENVPRC3 | ENVPRC3_ROTATED |
-      ENVPRC4 | ENVPRC4_ROTATED | ENVPRC5 | ENVPRC5_ROTATED | ENVPRC6 | ENVPRC6_ROTATED | ENVPRC7 |
-      ENVPRC7_ROTATED | ENVPRC8 | ENVPRC8_ROTATED | ENVPRC9 | ENVPRC9_ROTATED | ENVPRC10 | ENVPRC10_ROTATED |
-      ENVYOU4 | ENVYOU4_ROTATED | EXECUTIVE | FANFOLDUS | FANFOLDGERMAN | FANFOLDGERMANLEGAL |
-      FOLIO | ISOB0 | ISOB1 | ISOB2 | ISOB3 | ISOB4 | ISOB5 | ISOB5_EXTRA | ISOB6 | ISOB7 | ISOB8 | ISOB9 |
-      ISOB10 | LEDGER | LEGAL | LEGAL_EXTRA | LETTER | LETTER_TRANSVERSE | LETTER_EXTRA | LETTER_EXTRATRANSVERSE |
-      LETTER_PLUS | LETTER_ROTATED | LETTER_SMALL | MONARCH | NOTE | POSTCARD | POSTCARD_ROTATED | PRC16K |
-      PRC16K_ROTATED | PRC32K | PRC32K_ROTATED | PRC32K_BIG | PRC32K_BIGROTATED | QUARTO | STATEMENT | SUPERA |
-      SUPERB | TABLOID | TABLOIDEXTRA )"
+"(  PAPER10X11 | PAPER10X13 | PAPER10X14 | PAPER12X11 | PAPER15X11 | PAPER7X9 | PAPER8X10 |
+    PAPER9X11 | PAPER9X12 | A0 | A1 | A2 | A3 | A3_TRANSVERSE | A3_EXTRA | A3_EXTRATRANSVERSE |
+    A3_ROTATED | A4 | A4_TRANSVERSE | A4_EXTRA | A4_PLUS | A4_ROTATED | A4_SMALL | A5 |
+    A5_TRANSVERSE | A5_EXTRA | A5_ROTATED | A6 | A6_ROTATED | A7 | A8 | A9 | A10 |
+    ANSIC | ANSID | ANSIE | ARCHA | ARCHB | ARCHC | ARCHD | ARCHE | B0 | B1 | B2 | B3 | B4 |
+    B4_ROTATED | B5 | B5_TRANSVERSE | B5_ROTATED | B6 | B6_ROTATED | B7 | B8 | B9 | B10 |
+    C4 | C5 | C6 | COMM10 | DL | DOUBLEPOSTCARD | DOUBLEPOSTCARD_ROTATED | ENV9 | ENV10 |
+    ENV11 | ENV12 | ENV14 | ENVC0 | ENVC1 | ENVC2 | ENVC3 | ENVC4 | ENVC5 | ENVC6 | ENVC65 | ENVC7 |
+    ENVCHOU3 | ENVCHOU3_ROTATED | ENVCHOU4 | ENVCHOU4_ROTATED | ENVDL | ENVINVITE | ENVISOB4 | ENVISOB5 |
+    ENVISOB6 | ENVITALIAN | ENVKAKU2 | ENVKAKU2_ROTATED | ENVKAKU3 | ENVKAKU3_ROTATED | ENVMONARCH |
+    ENVPERSONAL | ENVPRC1 | ENVPRC1_ROTATED | ENVPRC2 | ENVPRC2_ROTATED | ENVPRC3 | ENVPRC3_ROTATED |
+    ENVPRC4 | ENVPRC4_ROTATED | ENVPRC5 | ENVPRC5_ROTATED | ENVPRC6 | ENVPRC6_ROTATED | ENVPRC7 |
+    ENVPRC7_ROTATED | ENVPRC8 | ENVPRC8_ROTATED | ENVPRC9 | ENVPRC9_ROTATED | ENVPRC10 | ENVPRC10_ROTATED |
+    ENVYOU4 | ENVYOU4_ROTATED | EXECUTIVE | FANFOLDUS | FANFOLDGERMAN | FANFOLDGERMANLEGAL |
+    FOLIO | ISOB0 | ISOB1 | ISOB2 | ISOB3 | ISOB4 | ISOB5 | ISOB5_EXTRA | ISOB6 | ISOB7 | ISOB8 | ISOB9 |
+    ISOB10 | LEDGER | LEGAL | LEGAL_EXTRA | LETTER | LETTER_TRANSVERSE | LETTER_EXTRA | LETTER_EXTRATRANSVERSE |
+    LETTER_PLUS | LETTER_ROTATED | LETTER_SMALL | MONARCH | NOTE | POSTCARD | POSTCARD_ROTATED | PRC16K |
+    PRC16K_ROTATED | PRC32K | PRC32K_ROTATED | PRC32K_BIG | PRC32K_BIGROTATED | QUARTO | STATEMENT | SUPERA |
+    SUPERB | TABLOID | TABLOIDEXTRA )"
 >
 
 <!ELEMENT report   ((configuration | reportheader | reportfooter |
@@ -197,20 +197,20 @@
                      items | functions | include | parser-config)*)>
 
 <!ATTLIST report
-  width          CDATA           #IMPLIED
-  height         CDATA           #IMPLIED
-  name           CDATA           #IMPLIED
-  pageformat     %pageFormats;   #IMPLIED
-  orientation    (%orientations;) "portrait"
-  leftmargin     CDATA           #IMPLIED
-  rightmargin    CDATA           #IMPLIED
-  topmargin      CDATA           #IMPLIED
-  bottommargin   CDATA           #IMPLIED
+width          CDATA           #IMPLIED
+height         CDATA           #IMPLIED
+name           CDATA           #IMPLIED
+pageformat     %pageFormats;   #IMPLIED
+orientation    (%orientations;) "portrait"
+leftmargin     CDATA           #IMPLIED
+rightmargin    CDATA           #IMPLIED
+topmargin      CDATA           #IMPLIED
+bottommargin   CDATA           #IMPLIED
 >
 
 <!ELEMENT include EMPTY>
 <!ATTLIST include
-  src            CDATA           #REQUIRED
+src            CDATA           #REQUIRED
 >
 
 <!--
@@ -246,20 +246,20 @@ later with "${property}" in any attribute value or CDATA section.
   -->
 <!ELEMENT reportheader ( %itemelements; )>
 <!ATTLIST reportheader
-  height           CDATA           #IMPLIED
-  fixed-position   CDATA           #IMPLIED
-  pagebreak-after  CDATA           #IMPLIED
-  %basicform;
-  %fontdef;
+height           CDATA           #IMPLIED
+fixed-position   CDATA           #IMPLIED
+pagebreak-after  CDATA           #IMPLIED
+%basicform;
+%fontdef;
 >
 
 <!ELEMENT reportfooter ( %itemelements; )>
 <!ATTLIST reportfooter
-  fixed-position    CDATA          #IMPLIED
-  pagebreak-before  CDATA          #IMPLIED
-  height            CDATA          #IMPLIED
-  %basicform;
-  %fontdef;
+fixed-position    CDATA          #IMPLIED
+pagebreak-before  CDATA          #IMPLIED
+height            CDATA          #IMPLIED
+%basicform;
+%fontdef;
 >
 
 
@@ -277,11 +277,11 @@ later with "${property}" in any attribute value or CDATA section.
   -->
 <!ELEMENT pageheader ( %itemelements; )>
 <!ATTLIST pageheader
-  onfirstpage    (%boolean;)   #IMPLIED
-  onlastpage     (%boolean;)   #IMPLIED
-  height         CDATA         #IMPLIED
-  %basicform;
-  %fontdef;
+onfirstpage    (%boolean;)   #IMPLIED
+onlastpage     (%boolean;)   #IMPLIED
+height         CDATA         #IMPLIED
+%basicform;
+%fontdef;
 >
 
 <!--
@@ -304,11 +304,11 @@ later with "${property}" in any attribute value or CDATA section.
   -->
 <!ELEMENT pagefooter ( %itemelements; )>
 <!ATTLIST pagefooter
-  onfirstpage    (%boolean;)   #IMPLIED
-  onlastpage     (%boolean;)   #IMPLIED
-  height         CDATA         #IMPLIED
-  %basicform;
-  %fontdef;
+onfirstpage    (%boolean;)   #IMPLIED
+onlastpage     (%boolean;)   #IMPLIED
+height         CDATA         #IMPLIED
+%basicform;
+%fontdef;
 >
 
 <!--
@@ -323,7 +323,7 @@ later with "${property}" in any attribute value or CDATA section.
 
 <!ELEMENT group  ((groupheader | groupfooter | fields)*)>
 <!ATTLIST group
-  name           CDATA         #IMPLIED
+name           CDATA         #IMPLIED
 >
 
 <!--
@@ -344,13 +344,13 @@ later with "${property}" in any attribute value or CDATA section.
   -->
 <!ELEMENT groupheader ( %itemelements; )>
 <!ATTLIST groupheader
-  pagebreak-after-print     (%boolean;)   #IMPLIED
-  pagebreak-before-print    (%boolean;)   #IMPLIED
-  repeat                    (%boolean;)   #IMPLIED
-  height                    CDATA         #IMPLIED
-  fixed-position            CDATA         #IMPLIED
-  %basicform;
-  %fontdef;
+pagebreak-after-print     (%boolean;)   #IMPLIED
+pagebreak-before-print    (%boolean;)   #IMPLIED
+repeat                    (%boolean;)   #IMPLIED
+height                    CDATA         #IMPLIED
+fixed-position            CDATA         #IMPLIED
+%basicform;
+%fontdef;
 >
 
 <!--
@@ -366,12 +366,12 @@ later with "${property}" in any attribute value or CDATA section.
   -->
 <!ELEMENT groupfooter ( %itemelements; )>
 <!ATTLIST groupfooter
-  pagebreak-after-print     (%boolean;)   #IMPLIED
-  pagebreak-before-print    (%boolean;)   #IMPLIED
-  height                    CDATA         #IMPLIED
-  fixed-position            CDATA         #IMPLIED
-  %basicform;
-  %fontdef;
+pagebreak-after-print     (%boolean;)   #IMPLIED
+pagebreak-before-print    (%boolean;)   #IMPLIED
+height                    CDATA         #IMPLIED
+fixed-position            CDATA         #IMPLIED
+%basicform;
+%fontdef;
 >
 
 <!--
@@ -404,20 +404,20 @@ later with "${property}" in any attribute value or CDATA section.
  -->
 <!ELEMENT watermark   ( %itemelements; )>
 <!ATTLIST watermark
-  height         CDATA          #IMPLIED
-  %basicform;
-  %fontdef;
+height         CDATA          #IMPLIED
+%basicform;
+%fontdef;
 >
 
 
 <!ELEMENT items   ( %itemelements; )>
 <!ATTLIST items
-  pagebreak-after-print     (%boolean;)   #IMPLIED
-  pagebreak-before-print    (%boolean;)   #IMPLIED
-  fixed-position            CDATA         #IMPLIED
-  height                    CDATA         #IMPLIED
-  %basicform;
-  %fontdef;
+pagebreak-after-print     (%boolean;)   #IMPLIED
+pagebreak-before-print    (%boolean;)   #IMPLIED
+fixed-position            CDATA         #IMPLIED
+height                    CDATA         #IMPLIED
+%basicform;
+%fontdef;
 >
 
 <!--
@@ -431,12 +431,12 @@ later with "${property}" in any attribute value or CDATA section.
   -->
 <!ELEMENT band ( %itemelements; )>
 <!ATTLIST band
-  x              CDATA          #IMPLIED
-  y              CDATA          #IMPLIED
-  width          CDATA          #IMPLIED
-  height         CDATA          #IMPLIED
-  %basicform;
-  %fontdef;
+x              CDATA          #IMPLIED
+y              CDATA          #IMPLIED
+width          CDATA          #IMPLIED
+height         CDATA          #IMPLIED
+%basicform;
+%fontdef;
 >
 
 <!--
@@ -445,9 +445,9 @@ later with "${property}" in any attribute value or CDATA section.
   -->
 <!ELEMENT label   (#PCDATA)>
 <!ATTLIST label
-  %basicform;
-  %position;
-  %fontdef;
+%basicform;
+%position;
+%fontdef;
 >
 
 <!--
@@ -455,11 +455,11 @@ later with "${property}" in any attribute value or CDATA section.
   -->
 <!ELEMENT string-field   EMPTY>
 <!ATTLIST string-field
-  %basicform;
-  %position;
-  %fontdef;
-  fieldname   CDATA    #REQUIRED
-  nullstring  CDATA    #IMPLIED
+%basicform;
+%position;
+%fontdef;
+fieldname   CDATA    #REQUIRED
+nullstring  CDATA    #IMPLIED
 >
 
 <!--
@@ -471,11 +471,11 @@ later with "${property}" in any attribute value or CDATA section.
   -->
 <!ELEMENT resource-label   (#PCDATA)>
 <!ATTLIST resource-label
-  %basicform;
-  %fontdef;
-  %position;
-  nullstring           CDATA         #IMPLIED
-  resource-base        CDATA         #IMPLIED
+%basicform;
+%fontdef;
+%position;
+nullstring           CDATA         #IMPLIED
+resource-base        CDATA         #IMPLIED
 >
 
 <!--
@@ -486,33 +486,33 @@ later with "${property}" in any attribute value or CDATA section.
   -->
 <!ELEMENT resource-field   EMPTY>
 <!ATTLIST resource-field
-  %basicform;
-  %fontdef;
-  %position;
-  nullstring           CDATA         #IMPLIED
-  resource-base        CDATA         #IMPLIED
-  fieldname            CDATA         #REQUIRED
+%basicform;
+%fontdef;
+%position;
+nullstring           CDATA         #IMPLIED
+resource-base        CDATA         #IMPLIED
+fieldname            CDATA         #REQUIRED
 >
 
 
 <!ELEMENT number-field   EMPTY>
 <!ATTLIST number-field
-  %basicform;
-  %position;
-  %fontdef;
-  format		CDATA      #IMPLIED
-  fieldname   CDATA    #REQUIRED
-  nullstring  CDATA    #IMPLIED
+%basicform;
+%position;
+%fontdef;
+format		CDATA      #IMPLIED
+fieldname   CDATA    #REQUIRED
+nullstring  CDATA    #IMPLIED
 >
 
 <!ELEMENT date-field   EMPTY>
 <!ATTLIST date-field
-  %basicform;
-  %position;
-  %fontdef;
-  format		           CDATA         #IMPLIED
-  fieldname            CDATA         #REQUIRED
-  nullstring           CDATA         #IMPLIED
+%basicform;
+%position;
+%fontdef;
+format		           CDATA         #IMPLIED
+fieldname            CDATA         #REQUIRED
+nullstring           CDATA         #IMPLIED
 >
 
 
@@ -523,15 +523,15 @@ later with "${property}" in any attribute value or CDATA section.
   -->
 <!ELEMENT imageref   EMPTY>
 <!ATTLIST imageref
-  %position;
-  name                 CDATA         #IMPLIED
-  src                  CDATA         #REQUIRED
-  dynamic              (%boolean;)   #IMPLIED
-  visible              (%boolean;)   #IMPLIED
-  layout-cachable      (%boolean;)   #IMPLIED
-  scale                (%boolean;)   #IMPLIED
-  keepAspectRatio      (%boolean;)   #IMPLIED
-  href                 CDATA         #IMPLIED
+%position;
+name                 CDATA         #IMPLIED
+src                  CDATA         #REQUIRED
+dynamic              (%boolean;)   #IMPLIED
+visible              (%boolean;)   #IMPLIED
+layout-cachable      (%boolean;)   #IMPLIED
+scale                (%boolean;)   #IMPLIED
+keepAspectRatio      (%boolean;)   #IMPLIED
+href                 CDATA         #IMPLIED
 >
 <!--
 
@@ -541,15 +541,15 @@ later with "${property}" in any attribute value or CDATA section.
   -->
 <!ELEMENT image-field  EMPTY>
 <!ATTLIST image-field
-  %position;
-  fieldname            CDATA         #REQUIRED
-  name                 CDATA         #IMPLIED
-  dynamic              (%boolean;)   #IMPLIED
-  visible              (%boolean;)   #IMPLIED
-  layout-cachable      (%boolean;)   #IMPLIED
-  scale                (%boolean;)   #IMPLIED
-  keepAspectRatio      (%boolean;)   #IMPLIED
-  href                 CDATA         #IMPLIED
+%position;
+fieldname            CDATA         #REQUIRED
+name                 CDATA         #IMPLIED
+dynamic              (%boolean;)   #IMPLIED
+visible              (%boolean;)   #IMPLIED
+layout-cachable      (%boolean;)   #IMPLIED
+scale                (%boolean;)   #IMPLIED
+keepAspectRatio      (%boolean;)   #IMPLIED
+href                 CDATA         #IMPLIED
 >
 
 <!--
@@ -560,15 +560,15 @@ later with "${property}" in any attribute value or CDATA section.
   -->
 <!ELEMENT imageurl-field   EMPTY>
 <!ATTLIST imageurl-field
-  %position;
-  fieldname            CDATA         #REQUIRED
-  name                 CDATA         #IMPLIED
-  dynamic              (%boolean;)   #IMPLIED
-  visible              (%boolean;)   #IMPLIED
-  layout-cachable      (%boolean;)   #IMPLIED
-  scale                (%boolean;)   #IMPLIED
-  keepAspectRatio      (%boolean;)   #IMPLIED
-  href                 CDATA         #IMPLIED
+%position;
+fieldname            CDATA         #REQUIRED
+name                 CDATA         #IMPLIED
+dynamic              (%boolean;)   #IMPLIED
+visible              (%boolean;)   #IMPLIED
+layout-cachable      (%boolean;)   #IMPLIED
+scale                (%boolean;)   #IMPLIED
+keepAspectRatio      (%boolean;)   #IMPLIED
+href                 CDATA         #IMPLIED
 >
 
 <!--
@@ -578,11 +578,11 @@ later with "${property}" in any attribute value or CDATA section.
   -->
 <!ELEMENT rectangle EMPTY>
 <!ATTLIST rectangle
-  %position;
-  %basicform;
-  draw                 (%boolean;)   #IMPLIED
-  fill                 (%boolean;)   #IMPLIED
-  weight               CDATA         #IMPLIED
+%position;
+%basicform;
+draw                 (%boolean;)   #IMPLIED
+fill                 (%boolean;)   #IMPLIED
+weight               CDATA         #IMPLIED
 >
 
 <!--
@@ -602,15 +602,15 @@ later with "${property}" in any attribute value or CDATA section.
  -->
 <!ELEMENT line      EMPTY>
 <!ATTLIST line
-  x1                   CDATA         #REQUIRED
-  y1                   CDATA         #REQUIRED
-  x2                   CDATA         #REQUIRED
-  y2                   CDATA         #REQUIRED
-  width                CDATA         #IMPLIED
-  height               CDATA         #IMPLIED
-	color                CDATA         #IMPLIED
-	name                 CDATA         #IMPLIED
-	weight               CDATA         #IMPLIED
+x1                   CDATA         #REQUIRED
+y1                   CDATA         #REQUIRED
+x2                   CDATA         #REQUIRED
+y2                   CDATA         #REQUIRED
+width                CDATA         #IMPLIED
+height               CDATA         #IMPLIED
+color                CDATA         #IMPLIED
+name                 CDATA         #IMPLIED
+weight               CDATA         #IMPLIED
 >
 
 
@@ -618,29 +618,29 @@ later with "${property}" in any attribute value or CDATA section.
 -->
 <!ELEMENT drawable-field   EMPTY>
 <!ATTLIST drawable-field
-  %position;
-  height               CDATA         #REQUIRED
-  fieldname            CDATA         #REQUIRED
-  name                 CDATA         #IMPLIED
-  href                 CDATA         #IMPLIED
+%position;
+height               CDATA         #REQUIRED
+fieldname            CDATA         #REQUIRED
+name                 CDATA         #IMPLIED
+href                 CDATA         #IMPLIED
 >
 
 <!ELEMENT drawable-url-field   EMPTY>
 <!ATTLIST drawable-url-field
-  %position;
-  height               CDATA         #REQUIRED
-  fieldname            CDATA         #REQUIRED
-  name                 CDATA         #IMPLIED
-  href                 CDATA         #IMPLIED
+%position;
+height               CDATA         #REQUIRED
+fieldname            CDATA         #REQUIRED
+name                 CDATA         #IMPLIED
+href                 CDATA         #IMPLIED
 >
 
 <!ELEMENT drawableref   EMPTY>
 <!ATTLIST drawableref
-  %position;
-  height               CDATA         #REQUIRED
-  href                 CDATA         #IMPLIED
-  src                  CDATA         #REQUIRED
-  name                 CDATA         #IMPLIED
+%position;
+height               CDATA         #REQUIRED
+href                 CDATA         #IMPLIED
+src                  CDATA         #REQUIRED
+name                 CDATA         #IMPLIED
 >
 
 
@@ -651,21 +651,21 @@ later with "${property}" in any attribute value or CDATA section.
   -->
 <!ELEMENT shape-field EMPTY>
 <!ATTLIST shape-field
-  %position;
-  %basicform;
-  fieldname            CDATA         #REQUIRED
-  href                 CDATA         #IMPLIED
-  draw                 (%boolean;)   #IMPLIED
-  fill                 (%boolean;)   #IMPLIED
-  weight               CDATA         #IMPLIED
+%position;
+%basicform;
+fieldname            CDATA         #REQUIRED
+href                 CDATA         #IMPLIED
+draw                 (%boolean;)   #IMPLIED
+fill                 (%boolean;)   #IMPLIED
+weight               CDATA         #IMPLIED
 >
 
 <!ELEMENT message-field  (#PCDATA)>
 <!ATTLIST message-field
-  %basicform;
-  %position;
-  %fontdef;
-  nullstring           CDATA        #IMPLIED
+%basicform;
+%position;
+%fontdef;
+nullstring           CDATA        #IMPLIED
 >
 
 <!--
@@ -673,10 +673,10 @@ later with "${property}" in any attribute value or CDATA section.
  -->
 <!ELEMENT anchor-field  EMPTY>
 <!ATTLIST anchor-field
-  x                    CDATA        #REQUIRED
-  y                    CDATA        #REQUIRED
-  name                 CDATA        #IMPLIED
-  fieldname            CDATA        #REQUIRED
+x                    CDATA        #REQUIRED
+y                    CDATA        #REQUIRED
+name                 CDATA        #IMPLIED
+fieldname            CDATA        #REQUIRED
 >
 
 
@@ -699,8 +699,8 @@ later with "${property}" in any attribute value or CDATA section.
 -->
 <!ELEMENT property-ref  (#PCDATA)>
 <!ATTLIST property-ref
-  name       CDATA   #REQUIRED
-	encoding   CDATA   #IMPLIED
+name       CDATA   #REQUIRED
+encoding   CDATA   #IMPLIED
 >
 
 <!--
@@ -721,9 +721,9 @@ later with "${property}" in any attribute value or CDATA section.
   -->
 <!ELEMENT function   (properties?)>
 <!ATTLIST function
-  class      CDATA    #REQUIRED
-	name       CDATA    #REQUIRED
-  deplevel   CDATA    #IMPLIED
+class      CDATA    #REQUIRED
+name       CDATA    #REQUIRED
+deplevel   CDATA    #IMPLIED
 >
 
 
@@ -742,9 +742,9 @@ later with "${property}" in any attribute value or CDATA section.
   -->
 <!ELEMENT expression   (properties?)>
 <!ATTLIST expression
-  class      CDATA    #REQUIRED
-	name       CDATA    #REQUIRED
-  deplevel   CDATA    #IMPLIED
+class      CDATA    #REQUIRED
+name       CDATA    #REQUIRED
+deplevel   CDATA    #IMPLIED
 >
 
 <!--
@@ -761,7 +761,7 @@ later with "${property}" in any attribute value or CDATA section.
   -->
 <!ELEMENT property    (#PCDATA)>
 <!ATTLIST property
-  name       CDATA    #REQUIRED
-  class      CDATA    #IMPLIED
+name       CDATA    #REQUIRED
+class      CDATA    #IMPLIED
 >
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigWriter.java,v 1.8 2005/01/25 00:20:32 taqua Exp $
+ * $Id: ParserConfigWriter.java,v 1.9 2005/02/04 19:08:53 taqua Exp $
  *
  * Changes
  * -------
@@ -54,23 +54,23 @@ import org.jfree.xml.CommentHandler;
  */
 public class ParserConfigWriter extends AbstractXMLDefinitionWriter
 {
-  /** The standard parser config comment hint path. */
+  /**
+   * The standard parser config comment hint path.
+   */
   private static final CommentHintPath PARSER_CONFIG_PATH = new CommentHintPath
-      (
-          new String[]
+          (new String[]
           {
             REPORT_DEFINITION_TAG,
             PARSER_CONFIG_TAG
-          }
-      );
+          });
 
   /**
    * Creates a new writer.
    *
-   * @param reportWriter  the report writer.
-   * @param indentLevel the current indention level.
+   * @param reportWriter the report writer.
+   * @param indentLevel  the current indention level.
    */
-  public ParserConfigWriter(final ReportWriter reportWriter, final int indentLevel)
+  public ParserConfigWriter (final ReportWriter reportWriter, final int indentLevel)
   {
     super(reportWriter, indentLevel);
   }
@@ -78,26 +78,26 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
   /**
    * Writes the XML.
    *
-   * @param writer  the writer.
-   *
+   * @param writer the writer.
    * @throws java.io.IOException if there is an I/O problem.
    */
-  public void write(final Writer writer) throws IOException
+  public void write (final Writer writer)
+          throws IOException
   {
     writeComment(writer, PARSER_CONFIG_PATH, CommentHandler.OPEN_TAG_COMMENT);
 
     writeTag(writer, PARSER_CONFIG_TAG);
 
     writeFactory(writer, OBJECT_FACTORY_TAG,
-        filterFactories(getReportWriter().getClassFactoryCollector().getFactories()));
+            filterFactories(getReportWriter().getClassFactoryCollector().getFactories()));
     writeFactory(writer, ELEMENT_FACTORY_TAG,
-        filterFactories(getReportWriter().getElementFactoryCollector().getFactories()));
+            filterFactories(getReportWriter().getElementFactoryCollector().getFactories()));
     writeFactory(writer, STYLEKEY_FACTORY_TAG,
-        filterFactories(getReportWriter().getStyleKeyFactoryCollector().getFactories()));
+            filterFactories(getReportWriter().getStyleKeyFactoryCollector().getFactories()));
     writeFactory(writer, TEMPLATE_FACTORY_TAG,
-        filterFactories(getReportWriter().getTemplateCollector().getFactories()));
+            filterFactories(getReportWriter().getTemplateCollector().getFactories()));
     writeFactory(writer, DATASOURCE_FACTORY_TAG,
-        filterFactories(getReportWriter().getDataSourceCollector().getFactories()));
+            filterFactories(getReportWriter().getDataSourceCollector().getFactories()));
 
     writeComment(writer, PARSER_CONFIG_PATH, CommentHandler.CLOSE_TAG_COMMENT);
     writeCloseTag(writer, PARSER_CONFIG_TAG);
@@ -110,7 +110,7 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
    * @param it the unfiltered factories iterator.
    * @return a cleaned version of the iterator.
    */
-  private Iterator filterFactories(final Iterator it)
+  private Iterator filterFactories (final Iterator it)
   {
     final ReportWriter writer = getReportWriter();
     final ArrayList factories = new ArrayList();
@@ -149,15 +149,14 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
   /**
    * Writes a factory element.
    *
-   * @param w  the writer.
-   * @param tagName  the tag name.
-   * @param it  an iterator over a collection of factories, which should be defined
-   * for the target report.
-   *
+   * @param w       the writer.
+   * @param tagName the tag name.
+   * @param it      an iterator over a collection of factories, which should be defined
+   *                for the target report.
    * @throws java.io.IOException if there is an I/O problem.
    */
-  public void writeFactory(final Writer w, final String tagName, final Iterator it)
-      throws IOException
+  public void writeFactory (final Writer w, final String tagName, final Iterator it)
+          throws IOException
   {
     while (it.hasNext())
     {

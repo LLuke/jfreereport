@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RectangleTemplateDescription.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
+ * $Id: RectangleTemplateDescription.java,v 1.5 2004/05/07 14:29:23 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -50,9 +50,9 @@ public class RectangleTemplateDescription extends AbstractTemplateDescription
   /**
    * Creates a new template description.
    *
-   * @param name  the name.
+   * @param name the name.
    */
-  public RectangleTemplateDescription(final String name)
+  public RectangleTemplateDescription (final String name)
   {
     super(name, RectangleTemplate.class, true);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: Card.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: Card.java,v 1.3 2004/05/07 12:43:25 mungady Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ public abstract class Card
   /**
    * Default constructor.
    */
-  public Card()
+  public Card ()
   {
   }
 
@@ -56,5 +56,5 @@ public abstract class Card
    *
    * @return The card type.
    */
-  public abstract CardType getType();
+  public abstract CardType getType ();
 }

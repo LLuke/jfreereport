@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportFooter.java,v 1.4 2005/01/30 23:37:18 taqua Exp $
+ * $Id: ReportFooter.java,v 1.5 2005/02/23 19:31:41 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -43,11 +43,11 @@ package org.jfree.report;
 
 /**
  * A report band that appears as the very last band on the report.
- * <p>
+ * <p/>
  * Note that if there is a page footer on the last page of your report, it will be printed
- * below the report footer, the logic being that the page footer *always* appears at the bottom
- * of the page.  In many cases, it makes better sense to suppress the page footer on the last
- * page of the report (leaving just the report footer on the final page).
+ * below the report footer, the logic being that the page footer *always* appears at the
+ * bottom of the page.  In many cases, it makes better sense to suppress the page footer
+ * on the last page of the report (leaving just the report footer on the final page).
  *
  * @author David Gilbert
  */
@@ -56,13 +56,13 @@ public class ReportFooter extends Band implements RootLevelBand
   /**
    * Constructs a report footer containing no elements.
    */
-  public ReportFooter()
+  public ReportFooter ()
   {
   }
 
   /**
-   * Assigns the report definition. Don't play with that function,
-   * unless you know what you are doing. You might get burned.
+   * Assigns the report definition. Don't play with that function, unless you know what
+   * you are doing. You might get burned.
    *
    * @param reportDefinition the report definition.
    */
@@ -70,5 +70,5 @@ public class ReportFooter extends Band implements RootLevelBand
   {
     super.setReportDefinition(reportDefinition);
   }
-  
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFProcessor.java,v 1.6.4.1 2004/12/13 19:27:10 taqua Exp $
+ * $Id: RTFProcessor.java,v 1.9 2005/01/25 00:15:16 taqua Exp $
  *
  * Changes
  * -------
@@ -47,14 +47,16 @@ import org.jfree.report.modules.output.table.base.TableProcessor;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
- * The ExcelProcessor coordinates the output process for generating
- * RTF files using the iText library.
+ * The ExcelProcessor coordinates the output process for generating RTF files using the
+ * iText library.
  *
  * @author Thomas Morgner
  */
 public class RTFProcessor extends TableProcessor
 {
-  /** the target output stream for writing the generated content. */
+  /**
+   * the target output stream for writing the generated content.
+   */
   private OutputStream outputStream;
   public static final String CONFIG_PREFIX = "org.jfree.report.targets.table.rtf.";
 
@@ -64,8 +66,8 @@ public class RTFProcessor extends TableProcessor
    * @param report the report that should be written as RTF.
    * @throws ReportProcessingException if the report initialization failed
    */
-  public RTFProcessor(final JFreeReport report)
-      throws ReportProcessingException
+  public RTFProcessor (final JFreeReport report)
+          throws ReportProcessingException
   {
     super(report);
   }
@@ -75,7 +77,7 @@ public class RTFProcessor extends TableProcessor
    *
    * @return the output stream.
    */
-  public OutputStream getOutputStream()
+  public OutputStream getOutputStream ()
   {
     return outputStream;
   }
@@ -85,18 +87,18 @@ public class RTFProcessor extends TableProcessor
    *
    * @param outputStream the output stream.
    */
-  public void setOutputStream(final OutputStream outputStream)
+  public void setOutputStream (final OutputStream outputStream)
   {
     this.outputStream = outputStream;
   }
 
   /**
-   * Gets the report configuration prefix for that processor. This prefix defines
-   * how to map the property names into the global report configuration.
+   * Gets the report configuration prefix for that processor. This prefix defines how to
+   * map the property names into the global report configuration.
    *
    * @return the report configuration prefix.
    */
-  protected String getReportConfigurationPrefix()
+  protected String getReportConfigurationPrefix ()
   {
     return CONFIG_PREFIX;
   }

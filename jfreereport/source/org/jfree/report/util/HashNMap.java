@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HashNMap.java,v 1.3.4.1 2004/05/11 13:25:52 taqua Exp $
+ * $Id: HashNMap.java,v 1.5 2005/01/25 00:22:44 taqua Exp $
  *
  * Changes
  * -------
@@ -47,34 +47,35 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
- * The HashNMap can be used to store multiple values by a single key value. The values stored
- * can be retrieved using a direct query or by creating an enumeration over the stored elements.
+ * The HashNMap can be used to store multiple values by a single key value. The values
+ * stored can be retrieved using a direct query or by creating an enumeration over the
+ * stored elements.
  *
  * @author Thomas Morgner
  */
 public class HashNMap implements Serializable, Cloneable
 {
   /**
-   * An helper class to implement an empty iterator. This iterator will always
-   * return false when <code>hasNext</code> is called.
+   * An helper class to implement an empty iterator. This iterator will always return
+   * false when <code>hasNext</code> is called.
    */
   private static final class EmptyIterator implements Iterator
   {
     /**
      * DefaultConstructor.
      */
-    private EmptyIterator()
+    private EmptyIterator ()
     {
     }
 
     /**
-     * Returns <tt>true</tt> if the iteration has more elements. (In other
-     * words, returns <tt>true</tt> if <tt>next</tt> would return an element
-     * rather than throwing an exception.)
+     * Returns <tt>true</tt> if the iteration has more elements. (In other words, returns
+     * <tt>true</tt> if <tt>next</tt> would return an element rather than throwing an
+     * exception.)
      *
      * @return <tt>true</tt> if the iterator has more elements.
      */
-    public boolean hasNext()
+    public boolean hasNext ()
     {
       return false;
     }
@@ -83,56 +84,60 @@ public class HashNMap implements Serializable, Cloneable
      * Returns the next element in the iteration.
      *
      * @return the next element in the iteration.
-     * @exception NoSuchElementException iteration has no more elements.
+     *
+     * @throws NoSuchElementException iteration has no more elements.
      */
-    public Object next()
+    public Object next ()
     {
       throw new NoSuchElementException("This iterator is empty.");
     }
 
     /**
+     * Removes from the underlying collection the last element returned by the iterator
+     * (optional operation).  This method can be called only once per call to
+     * <tt>next</tt>.  The behavior of an iterator is unspecified if the underlying
+     * collection is modified while the iteration is in progress in any way other than by
+     * calling this method.
      *
-     * Removes from the underlying collection the last element returned by the
-     * iterator (optional operation).  This method can be called only once per
-     * call to <tt>next</tt>.  The behavior of an iterator is unspecified if
-     * the underlying collection is modified while the iteration is in
-     * progress in any way other than by calling this method.
-     *
-     * @exception UnsupportedOperationException if the <tt>remove</tt>
-     *  operation is not supported by this Iterator.
-     * @exception IllegalStateException if the <tt>next</tt> method has not
-     *  yet been called, or the <tt>remove</tt> method has already
-     *  been called after the last call to the <tt>next</tt>
-     *  method.
+     * @throws UnsupportedOperationException if the <tt>remove</tt> operation is not
+     *                                       supported by this Iterator.
+     * @throws IllegalStateException         if the <tt>next</tt> method has not yet been
+     *                                       called, or the <tt>remove</tt> method has
+     *                                       already been called after the last call to
+     *                                       the <tt>next</tt> method.
      */
-    public void remove()
+    public void remove ()
     {
       throw new UnsupportedOperationException("This iterator is empty, no remove supported.");
     }
   }
 
-  /** A singleton instance of the empty iterator. This object can be safely shared. */
+  /**
+   * A singleton instance of the empty iterator. This object can be safely shared.
+   */
   private static final Iterator EMPTY_ITERATOR = new EmptyIterator();
 
-  /** The underlying storage. */
+  /**
+   * The underlying storage.
+   */
   private HashMap table = null;
 
   /**
    * Default constructor.
    */
-  public HashNMap()
+  public HashNMap ()
   {
     table = new HashMap();
   }
 
   /**
-   * Inserts a new key/value pair into the map.  If such a pair already exists, it gets replaced
-   * with the given values.
+   * Inserts a new key/value pair into the map.  If such a pair already exists, it gets
+   * replaced with the given values.
    *
-   * @param key  the key.
-   * @param val  the value.
+   * @param key the key.
+   * @param val the value.
    */
-  public void put(final Object key, final Object val)
+  public void put (final Object key, final Object val)
   {
     final ArrayList v = new ArrayList();
     v.add(val);
@@ -140,13 +145,13 @@ public class HashNMap implements Serializable, Cloneable
   }
 
   /**
-   * Adds a new key/value pair into this map. If the key is not yet in the map, it gets added
-   * to the map and the call is equal to put(Object,Object).
+   * Adds a new key/value pair into this map. If the key is not yet in the map, it gets
+   * added to the map and the call is equal to put(Object,Object).
    *
-   * @param key  the key.
-   * @param val  the value.
+   * @param key the key.
+   * @param val the value.
    */
-  public void add(final Object key, final Object val)
+  public void add (final Object key, final Object val)
   {
     final ArrayList v = (ArrayList) table.get(key);
     if (v == null)
@@ -160,29 +165,27 @@ public class HashNMap implements Serializable, Cloneable
   }
 
   /**
-   * Retrieves the first value registered for an key or null if there was no such key
-   * in the list.
+   * Retrieves the first value registered for an key or null if there was no such key in
+   * the list.
    *
-   * @param key  the key.
-   *
+   * @param key the key.
    * @return the value.
    */
-  public Object getFirst(final Object key)
+  public Object getFirst (final Object key)
   {
     return get(key, 0);
   }
 
   /**
-   * Retrieves the n-th value registered for an key or null if there was no such key
-   * in the list. An index out of bounds exception is thrown if there are less than
-   * n elements registered to this key.
+   * Retrieves the n-th value registered for an key or null if there was no such key in
+   * the list. An index out of bounds exception is thrown if there are less than n
+   * elements registered to this key.
    *
-   * @param key  the key.
-   * @param n  the index.
-   *
+   * @param key the key.
+   * @param n   the index.
    * @return the object.
    */
-  public Object get(final Object key, final int n)
+  public Object get (final Object key, final int n)
   {
     final ArrayList v = (ArrayList) table.get(key);
     if (v == null)
@@ -195,11 +198,10 @@ public class HashNMap implements Serializable, Cloneable
   /**
    * Returns an iterator over all elements registered to the given key.
    *
-   * @param key  the key.
-   *
+   * @param key the key.
    * @return an iterator.
    */
-  public Iterator getAll(final Object key)
+  public Iterator getAll (final Object key)
   {
     final ArrayList v = (ArrayList) table.get(key);
     if (v == null)
@@ -214,7 +216,7 @@ public class HashNMap implements Serializable, Cloneable
    *
    * @return an enumeration of the keys.
    */
-  public Iterator keys()
+  public Iterator keys ()
   {
     return table.keySet().iterator();
   }
@@ -224,20 +226,20 @@ public class HashNMap implements Serializable, Cloneable
    *
    * @return a set of keys.
    */
-  public Set keySet()
+  public Set keySet ()
   {
     return table.keySet();
   }
 
   /**
-   * Removes the key/value pair from the map. If the removed entry was the last entry
-   * for this key, the key gets also removed.
+   * Removes the key/value pair from the map. If the removed entry was the last entry for
+   * this key, the key gets also removed.
    *
-   * @param key  the key.
-   * @param value  the value.
+   * @param key   the key.
+   * @param value the value.
    * @return true, if removing the element was successfull, false otherwise.
    */
-  public boolean remove(final Object key, final Object value)
+  public boolean remove (final Object key, final Object value)
   {
     final ArrayList v = (ArrayList) table.get(key);
     if (v == null)
@@ -259,9 +261,9 @@ public class HashNMap implements Serializable, Cloneable
   /**
    * Removes all elements for the given key.
    *
-   * @param key  the key.
+   * @param key the key.
    */
-  public void removeAll(final Object key)
+  public void removeAll (final Object key)
   {
     table.remove(key);
   }
@@ -269,7 +271,7 @@ public class HashNMap implements Serializable, Cloneable
   /**
    * Clears all keys and values of this map.
    */
-  public void clear()
+  public void clear ()
   {
     table.clear();
   }
@@ -277,11 +279,10 @@ public class HashNMap implements Serializable, Cloneable
   /**
    * Tests whether this map contains the given key.
    *
-   * @param key  the key.
-   *
+   * @param key the key.
    * @return true if the key is contained in the map
    */
-  public boolean containsKey(final Object key)
+  public boolean containsKey (final Object key)
   {
     return table.containsKey(key);
   }
@@ -289,11 +290,10 @@ public class HashNMap implements Serializable, Cloneable
   /**
    * Tests whether this map contains the given value.
    *
-   * @param value  the value.
-   *
+   * @param value the value.
    * @return true if the value is registered in the map for an key.
    */
-  public boolean containsValue(final Object value)
+  public boolean containsValue (final Object value)
   {
     final Iterator e = keys();
     boolean found = false;
@@ -308,11 +308,10 @@ public class HashNMap implements Serializable, Cloneable
   /**
    * Tests whether this map contains the given key or value.
    *
-   * @param value  the value.
-   *
+   * @param value the value.
    * @return true if the key or value is contained in the map
    */
-  public boolean contains(final Object value)
+  public boolean contains (final Object value)
   {
     if (containsKey(value) == true)
     {
@@ -328,7 +327,8 @@ public class HashNMap implements Serializable, Cloneable
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final HashNMap map = (HashNMap) super.clone();
     map.table = new HashMap();
@@ -346,14 +346,14 @@ public class HashNMap implements Serializable, Cloneable
   }
 
   /**
-   * Returns the contents for the given key as object array. If there were
-   * no objects registered with that key, an empty object array is returned.
+   * Returns the contents for the given key as object array. If there were no objects
+   * registered with that key, an empty object array is returned.
    *
-   * @param key the key.
+   * @param key  the key.
    * @param data the object array to receive the contents.
    * @return the contents.
    */
-  public Object[] toArray(final Object key, final Object[] data)
+  public Object[] toArray (final Object key, final Object[] data)
   {
     if (key == null)
     {
@@ -368,13 +368,13 @@ public class HashNMap implements Serializable, Cloneable
   }
 
   /**
-   * Returns the contents for the given key as object array. If there were
-   * no objects registered with that key, an empty object array is returned.
+   * Returns the contents for the given key as object array. If there were no objects
+   * registered with that key, an empty object array is returned.
    *
    * @param key the key.
    * @return the contents.
    */
-  public Object[] toArray(final Object key)
+  public Object[] toArray (final Object key)
   {
     if (key == null)
     {
@@ -393,9 +393,9 @@ public class HashNMap implements Serializable, Cloneable
    *
    * @param key the key.
    * @return the number of element for this key, or 0 if there are no elements
-   * registered.
+   *         registered.
    */
-  public int getValueCount(final Object key)
+  public int getValueCount (final Object key)
   {
     if (key == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LeftAlignment.java,v 1.7 2004/05/07 12:53:06 mungady Exp $
+ * $Id: LeftAlignment.java,v 1.8 2005/02/19 13:29:58 taqua Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,7 @@ package org.jfree.report.modules.output.pageable.base.operations;
 import org.jfree.report.util.geom.StrictBounds;
 
 /**
- * A utility class that can align a rectangle to the left edge of the current
- * bounds.
+ * A utility class that can align a rectangle to the left edge of the current bounds.
  *
  * @author Thomas Morgner
  */
@@ -51,9 +50,9 @@ public strictfp class LeftAlignment extends HorizontalBoundsAlignment
   /**
    * Creates a new left alignment object.
    *
-   * @param bounds  the bounds.
+   * @param bounds the bounds.
    */
-  public LeftAlignment(final StrictBounds bounds)
+  public LeftAlignment (final StrictBounds bounds)
   {
     super(bounds);
   }
@@ -61,11 +60,10 @@ public strictfp class LeftAlignment extends HorizontalBoundsAlignment
   /**
    * Aligns a rectangle with the current bounds.
    *
-   * @param inner  the rectangle to align.
-   *
+   * @param inner the rectangle to align.
    * @return the aligned rectangle.
    */
-  public StrictBounds align(final StrictBounds inner)
+  public StrictBounds align (final StrictBounds inner)
   {
     if (inner == null)
     {

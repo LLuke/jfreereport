@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StreamHtmlFilesystem.java,v 1.7 2005/01/25 00:13:46 taqua Exp $
+ * $Id: StreamHtmlFilesystem.java,v 1.8 2005/02/22 20:19:03 taqua Exp $
  *
  * Changes
  * -------
@@ -50,17 +50,19 @@ import org.jfree.report.modules.output.table.html.ref.InternalStyleSheetReferenc
 
 /**
  * The StreamHtmlFilesystem is an Implementation for streamed HTML output.
- * <p>
- * The generated content is a single Html-Stream, without any external generated
- * data. The generated HTML Stream has an inline style sheet definition and supports
- * external images. The external images must be loaded from HTTP, HTTPS or FTP sources,
- * generated images or images loaded from the local filesystem are not supported.
+ * <p/>
+ * The generated content is a single Html-Stream, without any external generated data. The
+ * generated HTML Stream has an inline style sheet definition and supports external
+ * images. The external images must be loaded from HTTP, HTTPS or FTP sources, generated
+ * images or images loaded from the local filesystem are not supported.
  *
  * @author Thomas Morgner
  */
 public class StreamHtmlFilesystem implements HtmlFilesystem
 {
-  /** the output stream. */
+  /**
+   * the output stream.
+   */
   private final OutputStream root;
 
   private final boolean allowFileSources;
@@ -71,22 +73,21 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
    *
    * @param root the output stream for the main file.
    */
-  public StreamHtmlFilesystem(final OutputStream root)
+  public StreamHtmlFilesystem (final OutputStream root)
   {
-    this (root, false, null);
+    this(root, false, null);
   }
 
   /**
-   * Creates a new StreamHtmlFilesystem for the given output stream,
-   * which allows URLs to be located on the local filesystem.
+   * Creates a new StreamHtmlFilesystem for the given output stream, which allows URLs to
+   * be located on the local filesystem.
    *
-   * @param root the output stream for the main file.
-   * @param allowFiles true, if "file://" URLs should also be valid as local
-   * image.
-   * @param baseURL the base URL for all URLs in the output.
+   * @param root       the output stream for the main file.
+   * @param allowFiles true, if "file://" URLs should also be valid as local image.
+   * @param baseURL    the base URL for all URLs in the output.
    */
-  public StreamHtmlFilesystem(final OutputStream root, final boolean allowFiles,
-                              final URL baseURL)
+  public StreamHtmlFilesystem (final OutputStream root, final boolean allowFiles,
+                               final URL baseURL)
   {
     if (root == null)
     {
@@ -103,29 +104,30 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
    * referenced from this file.
    *
    * @return the output stream of the main HTML file.
+   *
    * @throws IOException if an IO error occured, while providing the root stream.
    */
-  public OutputStream getRootStream() throws IOException
+  public OutputStream getRootStream ()
+          throws IOException
   {
     return root;
   }
 
   /**
-   * Creates a HtmlReference for ImageData. If the target filesystem does not support
-   * this reference type, return an empty content reference, but never null.
-   * <p>
-   * This implementation returns the external reference for all image references which
-   * are loaded from an HTTP, HTTPS or FTP source.
+   * Creates a HtmlReference for ImageData. If the target filesystem does not support this
+   * reference type, return an empty content reference, but never null.
+   * <p/>
+   * This implementation returns the external reference for all image references which are
+   * loaded from an HTTP, HTTPS or FTP source.
    *
    * @param reference the image reference containing the data.
-   *
    * @return the generated HtmlReference, never null.
    *
    * @throws IOException if there is an I/O problem.
    */
 
   public HtmlReference createImageReference (final ImageContainer reference)
-      throws IOException
+          throws IOException
   {
     if (reference instanceof URLImageContainer == false)
     {
@@ -142,7 +144,7 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
       if (baseURL != null)
       {
         return new HtmlImageReference
-            (IOUtils.getInstance().createRelativeURL(src, baseURL));
+                (IOUtils.getInstance().createRelativeURL(src, baseURL));
       }
       else
       {
@@ -156,9 +158,9 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
   {
     final String protocol = src.getProtocol();
     return (protocol.equals("http") ||
-                  protocol.equals("https") ||
-                  protocol.equals("ftp") ||
-             (isAllowFileSources() && protocol.equals("file")));
+            protocol.equals("https") ||
+            protocol.equals("ftp") ||
+            (isAllowFileSources() && protocol.equals("file")));
   }
 
   /**
@@ -169,25 +171,26 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
    *
    * @throws IOException if there is an I/O problem.
    */
-  public HtmlReference createCSSReference(final String styleSheet)
-      throws IOException
+  public HtmlReference createCSSReference (final String styleSheet)
+          throws IOException
   {
     return new InternalStyleSheetReference(styleSheet);
   }
 
   /**
-   * Close the Filesystem and write any buffered content. The used stream is
-   * flushed, but not closed.
+   * Close the Filesystem and write any buffered content. The used stream is flushed, but
+   * not closed.
    *
    * @throws IOException if the close operation failed.
    */
-  public void close() throws IOException
+  public void close ()
+          throws IOException
   {
     // nothing to do, closing the stream is up to the caller ...
     root.flush();
   }
 
-  public boolean isAllowFileSources()
+  public boolean isAllowFileSources ()
   {
     return allowFileSources;
   }

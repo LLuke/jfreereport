@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: IncludeParserFrontend.java,v 1.8 2005/02/04 19:07:12 taqua Exp $
+ * $Id: IncludeParserFrontend.java,v 1.9 2005/02/05 18:35:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,20 +46,20 @@ import org.jfree.xml.ParserFrontend;
 import org.jfree.xml.parser.RootXmlReadHandler;
 
 /**
- * A parser front end implementation to support include statements
- * in a report definition.
+ * A parser front end implementation to support include statements in a report
+ * definition.
  *
  * @author Thomas Morgner
  */
 public class IncludeParserFrontend extends ParserFrontend
 {
   /**
-   * Creates a new include parser frontend using the given
-   * parser as configuration source.
+   * Creates a new include parser frontend using the given parser as configuration
+   * source.
    *
    * @param parser the base parser
    */
-  public IncludeParserFrontend(final RootXmlReadHandler parser)
+  public IncludeParserFrontend (final RootXmlReadHandler parser)
   {
     super(new IncludeParser(parser));
   }
@@ -67,14 +67,14 @@ public class IncludeParserFrontend extends ParserFrontend
   /**
    * Starts to parse the given URL.
    *
-   * @param file the source from where to parse, must point to a
-   * report definition
+   * @param file the source from where to parse, must point to a report definition
    * @return the parsed report
+   *
    * @throws ElementDefinitionException if an parse error occured.
-   * @throws IOException if an IO error occured.
+   * @throws IOException                if an IO error occured.
    */
-  public Object parse(final URL file)
-      throws ElementDefinitionException, IOException
+  public Object parse (final URL file)
+          throws ElementDefinitionException, IOException
   {
     return parse(file, file);
   }

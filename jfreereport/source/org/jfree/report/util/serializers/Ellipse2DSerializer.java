@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: Ellipse2DSerializer.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: Ellipse2DSerializer.java,v 1.3 2004/05/07 12:43:00 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -58,18 +58,19 @@ public class Ellipse2DSerializer implements SerializeMethod
   /**
    * Default Constructor.
    */
-  public Ellipse2DSerializer()
+  public Ellipse2DSerializer ()
   {
   }
 
   /**
    * Writes a serializable object description to the given object output stream.
    *
-   * @param o the to be serialized object.
+   * @param o   the to be serialized object.
    * @param out the outputstream that should receive the object.
    * @throws IOException if an I/O error occured.
    */
-  public void writeObject(final Object o, final ObjectOutputStream out) throws IOException
+  public void writeObject (final Object o, final ObjectOutputStream out)
+          throws IOException
   {
     SerialUtilities.writeShape((Shape) o, out);
   }
@@ -79,10 +80,12 @@ public class Ellipse2DSerializer implements SerializeMethod
    *
    * @param in the object input stream from where to read the serialized data.
    * @return the generated object.
-   * @throws IOException if reading the stream failed.
+   *
+   * @throws IOException            if reading the stream failed.
    * @throws ClassNotFoundException if serialized object class cannot be found.
    */
-  public Object readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException
+  public Object readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
     return SerialUtilities.readShape(in);
   }
@@ -92,7 +95,7 @@ public class Ellipse2DSerializer implements SerializeMethod
    *
    * @return the class of java.awt.geom.Ellipse2D.
    */
-  public Class getObjectClass()
+  public Class getObjectClass ()
   {
     return Ellipse2D.class;
   }

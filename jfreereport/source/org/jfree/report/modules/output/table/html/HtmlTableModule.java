@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTableModule.java,v 1.2.2.1 2004/12/13 19:27:08 taqua Exp $
+ * $Id: HtmlTableModule.java,v 1.3 2005/01/25 00:13:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -52,9 +52,11 @@ public class HtmlTableModule extends AbstractModule
 {
   /**
    * DefaultConstructor. Loads the module specification.
+   *
    * @throws ModuleInitializeException if an error occured.
    */
-  public HtmlTableModule() throws ModuleInitializeException
+  public HtmlTableModule ()
+          throws ModuleInitializeException
   {
     loadModuleInfo();
   }

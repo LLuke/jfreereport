@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ImageURLElementTemplateDescription.java,v 1.3 2004/03/16 15:09:54 taqua Exp $
+ * $Id: ImageURLElementTemplateDescription.java,v 1.4 2004/05/07 14:29:23 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -54,9 +54,9 @@ public class ImageURLElementTemplateDescription extends AbstractTemplateDescript
   /**
    * Creates a new template description.
    *
-   * @param name  the name.
+   * @param name the name.
    */
-  public ImageURLElementTemplateDescription(final String name)
+  public ImageURLElementTemplateDescription (final String name)
   {
     super(name, ImageURLElementTemplate.class, false);
     setParameterDefinition("content", String.class);
@@ -67,7 +67,7 @@ public class ImageURLElementTemplateDescription extends AbstractTemplateDescript
    *
    * @return The object.
    */
-  public Object createObject()
+  public Object createObject ()
   {
     final ImageURLElementTemplate t = (ImageURLElementTemplate) super.createObject();
     if (t.getBaseURL() == null)

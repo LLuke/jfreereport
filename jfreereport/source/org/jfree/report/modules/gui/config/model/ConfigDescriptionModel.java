@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigDescriptionModel.java,v 1.8.4.2 2004/12/13 19:26:32 taqua Exp $
+ * $Id: ConfigDescriptionModel.java,v 1.10 2005/01/25 00:04:34 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -63,39 +63,37 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 /**
- * This list model implementation collects all config description entries
- * defined in JFreeReport. This model is used to create a configuration
- * key definition; it directly manipulates the metadata for the keys as stored
- * in the config-description.xml file.
- * 
+ * This list model implementation collects all config description entries defined in
+ * JFreeReport. This model is used to create a configuration key definition; it directly
+ * manipulates the metadata for the keys as stored in the config-description.xml file.
+ *
  * @author Thomas Morgner
  */
 public class ConfigDescriptionModel extends AbstractListModel
 {
   /**
-   * Compares an config description entry against an other entry.
-   * This simple implementation just compares the names of the two entries.
+   * Compares an config description entry against an other entry. This simple
+   * implementation just compares the names of the two entries.
    */
   private static class ConfigEntryComparator implements Comparator
   {
     /**
      * DefaultConstructor.
-     *
      */
     public ConfigEntryComparator ()
     {
     }
-    
+
     /**
-     * Compares its two arguments for order.  Returns a negative integer,
-     * zero, or a positive integer as the first argument is less than, equal
-     * to, or greater than the second.<p>
+     * Compares its two arguments for order.  Returns a negative integer, zero, or a
+     * positive integer as the first argument is less than, equal to, or greater than the
+     * second.<p>
      *
      * @param o1 the first object to compare
      * @param o2 the second object to compare
      * @return an integer indicating the comparison result.
      */
-    public int compare(final Object o1, final Object o2)
+    public int compare (final Object o1, final Object o2)
     {
       if (o1 == null && o2 == null)
       {
@@ -115,39 +113,41 @@ public class ConfigDescriptionModel extends AbstractListModel
     }
   }
 
-  /** The content of this list; all config description entries. */
+  /**
+   * The content of this list; all config description entries.
+   */
   private final ArrayList content;
 
   /**
    * Creates a new, initially empty ConfigDescriptionModel.
    */
-  public ConfigDescriptionModel()
+  public ConfigDescriptionModel ()
   {
     content = new ArrayList();
   }
 
   /**
    * Adds the given entry to the end of the list.
-   * 
+   *
    * @param entry the new entry.
    */
   public void add (final ConfigDescriptionEntry entry)
   {
     if (entry == null)
     {
-      throw new NullPointerException ("Entry is null.");
+      throw new NullPointerException("Entry is null.");
     }
     // Only add unique elements ...
     if (content.contains(entry) == false)
     {
-      content.add (entry);
+      content.add(entry);
     }
     updated();
   }
 
   /**
    * Removes the given entry from the list.
-   * 
+   *
    * @param entry the entry that should be removed.
    */
   public void remove (final ConfigDescriptionEntry entry)
@@ -162,9 +162,10 @@ public class ConfigDescriptionModel extends AbstractListModel
 
   /**
    * Returns the entry stored on the given list position.
-   * 
+   *
    * @param pos the position
    * @return the entry
+   *
    * @throws IndexOutOfBoundsException if the position is invalid.
    */
   public ConfigDescriptionEntry get (final int pos)
@@ -181,10 +182,9 @@ public class ConfigDescriptionModel extends AbstractListModel
   }
 
   /**
-   * Returns the index of the given entry or -1, if the entry is not 
-   * in the list.
-   * 
-   * @param entry the entry whose position should be searched. 
+   * Returns the index of the given entry or -1, if the entry is not in the list.
+   *
+   * @param entry the entry whose position should be searched.
    * @return the position of the entry
    */
   public int indexOf (final ConfigDescriptionEntry entry)
@@ -198,7 +198,7 @@ public class ConfigDescriptionModel extends AbstractListModel
 
   /**
    * Checks, whether the given entry is already contained in this list.
-   * 
+   *
    * @param entry the entry that should be checked.
    * @return true, if the entry is already added, false otherwise.
    */
@@ -212,8 +212,8 @@ public class ConfigDescriptionModel extends AbstractListModel
   }
 
   /**
-   * Sorts the entries of the list. Be aware that calling this method
-   * does not fire an updat event; you have to do this manually.
+   * Sorts the entries of the list. Be aware that calling this method does not fire an
+   * updat event; you have to do this manually.
    */
   public void sort ()
   {
@@ -222,33 +222,34 @@ public class ConfigDescriptionModel extends AbstractListModel
 
   /**
    * Returns the contents of this model as object array.
-   * 
+   *
    * @return the contents of the model as array.
    */
-  public ConfigDescriptionEntry[] toArray()
+  public ConfigDescriptionEntry[] toArray ()
   {
     return (ConfigDescriptionEntry[]) content.toArray
-        (new ConfigDescriptionEntry[content.size()]);
+            (new ConfigDescriptionEntry[content.size()]);
   }
 
   /**
    * Returns the length of the list.
-   * 
+   *
    * @return the length of the list
    */
-  public int getSize()
+  public int getSize ()
   {
     return content.size();
   }
 
   /**
    * Returns the value at the specified index.
+   *
    * @param index the requested index
    * @return the value at <code>index</code>
    */
-  public Object getElementAt(final int index)
+  public Object getElementAt (final int index)
   {
-    final ConfigDescriptionEntry entry = get (index);
+    final ConfigDescriptionEntry entry = get(index);
     if (entry == null)
     {
       return null;
@@ -257,10 +258,10 @@ public class ConfigDescriptionModel extends AbstractListModel
   }
 
   /**
-   * Imports all entries from the given report configuration. Only new entries
-   * will be added to the list. This does not add report properties supplied via
-   * the System.properties.
-   * 
+   * Imports all entries from the given report configuration. Only new entries will be
+   * added to the list. This does not add report properties supplied via the
+   * System.properties.
+   *
    * @param config the report configuration from where to add the entries.
    */
   public void importFromConfig (final ReportConfiguration config)
@@ -282,17 +283,16 @@ public class ConfigDescriptionModel extends AbstractListModel
   }
 
   /**
-   * Loads the entries from the given xml file. The file must be in the 
-   * format of the config-description.xml file.
-   * 
+   * Loads the entries from the given xml file. The file must be in the format of the
+   * config-description.xml file.
+   *
    * @param in the inputstream from where to read the file
-   * @throws IOException if an error occured while reading the file
-   * @throws SAXException if an XML parse error occurs.
-   * @throws ParserConfigurationException if the XML parser could not be 
-   * initialized.
+   * @throws IOException                  if an error occured while reading the file
+   * @throws SAXException                 if an XML parse error occurs.
+   * @throws ParserConfigurationException if the XML parser could not be initialized.
    */
   public void load (final InputStream in)
-      throws IOException, SAXException, ParserConfigurationException
+          throws IOException, SAXException, ParserConfigurationException
   {
     content.clear();
     final Document doc = DOMUtilities.parseInputStream(in);
@@ -302,8 +302,8 @@ public class ConfigDescriptionModel extends AbstractListModel
     {
       final Element keyElement = (Element) list.item(i);
       final String keyName = keyElement.getAttribute("name");
-      final boolean keyGlobal = StringUtil.parseBoolean (keyElement.getAttribute("global"), false);
-      final boolean keyHidden = StringUtil.parseBoolean (keyElement.getAttribute("hidden"), false);
+      final boolean keyGlobal = StringUtil.parseBoolean(keyElement.getAttribute("global"), false);
+      final boolean keyHidden = StringUtil.parseBoolean(keyElement.getAttribute("hidden"), false);
       final String descr = getDescription(keyElement);
 
       final NodeList enumNodes = keyElement.getElementsByTagName("enum");
@@ -360,13 +360,13 @@ public class ConfigDescriptionModel extends AbstractListModel
   }
 
   /**
-   * A parser helper method which collects all enumeration entries from
-   * the given element.
-   * 
+   * A parser helper method which collects all enumeration entries from the given
+   * element.
+   *
    * @param element the element from where to read the enumeration entries.
    * @return the entries as string array.
    */
-  private String[] collectEnumEntries(final Element element)
+  private String[] collectEnumEntries (final Element element)
   {
     final NodeList nl = element.getElementsByTagName("text");
     final String[] retval = new String[nl.getLength()];
@@ -378,9 +378,8 @@ public class ConfigDescriptionModel extends AbstractListModel
   }
 
   /**
-   * A parser helper method that returns the CDATA description of the 
-   * given element.
-   *  
+   * A parser helper method that returns the CDATA description of the given element.
+   *
    * @param e the element from where to read the description.
    * @return the description text.
    */
@@ -393,17 +392,18 @@ public class ConfigDescriptionModel extends AbstractListModel
     }
     return DOMUtilities.getText((Element) descr.item(0));
   }
-  
+
   /**
    * Saves the model into an xml file.
-   * 
-   * @param out the target output stream.
+   *
+   * @param out      the target output stream.
    * @param encoding the encoding of the content.
    * @throws IOException if an error occurs.
    */
-  public void save (final OutputStream out, final String encoding) throws IOException
+  public void save (final OutputStream out, final String encoding)
+          throws IOException
   {
-    final PrintWriter writer = new PrintWriter(new OutputStreamWriter (out, encoding));
+    final PrintWriter writer = new PrintWriter(new OutputStreamWriter(out, encoding));
     writer.println("<?xml version=\"1.0\" encoding=\"" + encoding + "\"?>");
     writer.println("<!DOCTYPE config-description [");
     writer.println("<!ELEMENT config-description  (key*)>");
@@ -447,12 +447,12 @@ public class ConfigDescriptionModel extends AbstractListModel
         if (ce.getBaseClass() != null)
         {
           dwriter.writeTag
-            (writer, "class", "instanceof", ce.getBaseClass().getName(), DOMWriter.CLOSE);
+                  (writer, "class", "instanceof", ce.getBaseClass().getName(), DOMWriter.CLOSE);
         }
         else
         {
           dwriter.writeTag
-            (writer, "class", "instanceof", "java.lang.Object", DOMWriter.CLOSE);
+                  (writer, "class", "instanceof", "java.lang.Object", DOMWriter.CLOSE);
         }
       }
       else if (entry instanceof TextConfigDescriptionEntry)
@@ -469,7 +469,7 @@ public class ConfigDescriptionModel extends AbstractListModel
         {
           for (int optCount = 0; optCount < alts.length; optCount++)
           {
-            dwriter.writeTag (writer, "text");
+            dwriter.writeTag(writer, "text");
             writer.write(parser.encodeEntities(alts[optCount]));
             dwriter.writeCloseTag(writer, "text");
           }

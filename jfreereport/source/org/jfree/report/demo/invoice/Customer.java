@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Customer.java,v 1.1.2.1 2004/03/26 21:57:54 taqua Exp $
+ * $Id: Customer.java,v 1.2 2005/01/25 01:14:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -50,8 +50,8 @@ public class Customer
 
   public Customer (final String firstName, final String lastName,
                    final String salutation, final String street,
-                  final String postalCode, final String town,
-                  final String country)
+                   final String postalCode, final String town,
+                   final String country)
   {
     this.firstName = firstName;
     this.lastName = lastName;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupCountFunction.java,v 1.5.4.2 2004/12/30 14:46:12 taqua Exp $
+ * $Id: TotalGroupCountFunction.java,v 1.7 2005/01/25 00:00:19 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,75 +46,84 @@ import java.util.ArrayList;
 import org.jfree.report.event.ReportEvent;
 
 /**
- * A report function that counts the total of groups in a report.
- * If a null-groupname is given, all groups are counted.
- * <p>
- * A group can be defined using the property "group".
- * If the group property is not set, all group starts get counted.
+ * A report function that counts the total of groups in a report. If a null-groupname is
+ * given, all groups are counted.
+ * <p/>
+ * A group can be defined using the property "group". If the group property is not set,
+ * all group starts get counted.
  *
  * @author Thomas Morgner
  */
 public class TotalGroupCountFunction extends GroupCountFunction
 {
   /**
-   * An internal storage to collect the total value instead of the
-   * current value. Values in this storage are not affected by cloning.
+   * An internal storage to collect the total value instead of the current value. Values
+   * in this storage are not affected by cloning.
    */
   private static class GroupCountStorage implements Serializable
   {
-    /** The current group count.*/
+    /**
+     * The current group count.
+     */
     private int groupCount;
 
     /**
      * DefaultConstructor.
      */
-    public GroupCountStorage()
+    public GroupCountStorage ()
     {
     }
 
     /**
      * Returns the current group count.
+     *
      * @return the current group count.
      */
-    public int getGroupCount()
+    public int getGroupCount ()
     {
       return groupCount;
     }
 
     /**
      * Defines the current group count.
+     *
      * @param groupCount the new value for the group count.
      */
-    public void setGroupCount(final int groupCount)
+    public void setGroupCount (final int groupCount)
     {
       this.groupCount = groupCount;
     }
   }
 
-  /** The storage used to save the computed total. */
+  /**
+   * The storage used to save the computed total.
+   */
   private transient GroupCountStorage storage;
 
-  /** A list of results. */
+  /**
+   * A list of results.
+   */
   private transient ArrayList results;
 
-  /** The current index. */
+  /**
+   * The current index.
+   */
   private transient int currentIndex;
 
   /**
    * Default constructor.
    */
-  public TotalGroupCountFunction()
+  public TotalGroupCountFunction ()
   {
     results = new ArrayList();
   }
 
   /**
-   * Receives notification that a new report is about to start.
-   * Resets the count.
+   * Receives notification that a new report is about to start. Resets the count.
    *
    * @param event the current report event received.
    */
-  public void reportInitialized(final ReportEvent event)
+  public void reportInitialized (final ReportEvent event)
   {
     currentIndex = -1;
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
@@ -138,12 +147,12 @@ public class TotalGroupCountFunction extends GroupCountFunction
   }
 
   /**
-   * Receives notification that a new group is about to start.
-   * Increases the count if all groups are counted or the name defines the current group.
+   * Receives notification that a new group is about to start. Increases the count if all
+   * groups are counted or the name defines the current group.
    *
    * @param event the current report event received.
    */
-  public void groupStarted(final ReportEvent event)
+  public void groupStarted (final ReportEvent event)
   {
     if (FunctionUtilities.isDefinedGroup(getParentGroup(), event))
     {
@@ -184,7 +193,7 @@ public class TotalGroupCountFunction extends GroupCountFunction
    *
    * @return the curernt group count.
    */
-  protected int getCount()
+  protected int getCount ()
   {
     if (storage == null)
     {
@@ -198,7 +207,7 @@ public class TotalGroupCountFunction extends GroupCountFunction
    *
    * @param count the curernt group count.
    */
-  protected void setCount(final int count)
+  protected void setCount (final int count)
   {
     if (storage == null)
     {
@@ -208,25 +217,25 @@ public class TotalGroupCountFunction extends GroupCountFunction
   }
 
   /**
-   * Return a completly separated copy of this function. The copy does no
-   * longer share any changeable objects with the original function.
+   * Return a completly separated copy of this function. The copy does no longer share any
+   * changeable objects with the original function.
    *
    * @return a copy of this function.
    */
-  public Expression getInstance()
+  public Expression getInstance ()
   {
     final TotalGroupCountFunction fn =
-        (TotalGroupCountFunction) super.getInstance();
+            (TotalGroupCountFunction) super.getInstance();
     fn.storage = null;
     fn.results = new ArrayList();
     return fn;
   }
 
-  private void readObject(final ObjectInputStream in)
-      throws IOException, ClassNotFoundException
+  private void readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
     this.results = new ArrayList();
   }
-  
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StyleChangeSupport.java,v 1.3 2003/08/25 14:29:33 taqua Exp $
+ * $Id: StyleChangeSupport.java,v 1.4 2004/05/07 08:14:24 mungady Exp $
  *
  * Changes
  * -------
@@ -46,18 +46,22 @@ import java.util.ArrayList;
  */
 public class StyleChangeSupport
 {
-  /** Storage for the listeners. */
+  /**
+   * Storage for the listeners.
+   */
   private ArrayList listeners;
 
-  /** The source. */
+  /**
+   * The source.
+   */
   private final ElementStyleSheet source;
 
   /**
    * Creates a new support object.
    *
-   * @param source  the source of change events.
+   * @param source the source of change events.
    */
-  public StyleChangeSupport(final ElementStyleSheet source)
+  public StyleChangeSupport (final ElementStyleSheet source)
   {
     this.source = source;
   }
@@ -65,9 +69,9 @@ public class StyleChangeSupport
   /**
    * Adds a listener.
    *
-   * @param l  the listener.
+   * @param l the listener.
    */
-  public void addListener(final StyleChangeListener l)
+  public void addListener (final StyleChangeListener l)
   {
     if (l == null)
     {
@@ -83,9 +87,9 @@ public class StyleChangeSupport
   /**
    * Removes a listener.
    *
-   * @param l  the listener.
+   * @param l the listener.
    */
-  public void removeListener(final StyleChangeListener l)
+  public void removeListener (final StyleChangeListener l)
   {
     if (l == null)
     {
@@ -101,10 +105,10 @@ public class StyleChangeSupport
   /**
    * Notifies all listeners that a style has changed.
    *
-   * @param key  the style key.
-   * @param value  the new style value.
+   * @param key   the style key.
+   * @param value the new style value.
    */
-  public void fireStyleChanged(final StyleKey key, final Object value)
+  public void fireStyleChanged (final StyleKey key, final Object value)
   {
     if (listeners == null)
     {
@@ -138,9 +142,9 @@ public class StyleChangeSupport
   /**
    * Notifies all listeners that a style has been removed.
    *
-   * @param key  the style key.
+   * @param key the style key.
    */
-  public void fireStyleRemoved(final StyleKey key)
+  public void fireStyleRemoved (final StyleKey key)
   {
     if (listeners == null)
     {

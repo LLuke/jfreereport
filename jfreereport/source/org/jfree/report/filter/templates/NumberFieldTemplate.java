@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: NumberFieldTemplate.java,v 1.4 2004/05/07 08:24:41 mungady Exp $
+ * $Id: NumberFieldTemplate.java,v 1.5 2005/01/24 23:59:48 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -52,21 +52,27 @@ import org.jfree.report.filter.StringFilter;
  * @author Thomas Morgner
  */
 public class NumberFieldTemplate extends AbstractTemplate
-    implements ReportConnectable
+        implements ReportConnectable
 {
-  /** A decimal format filter. */
+  /**
+   * A decimal format filter.
+   */
   private DecimalFormatFilter decimalFormatFilter;
 
-  /** A data-row accessor. */
+  /**
+   * A data-row accessor.
+   */
   private DataRowDataSource dataRowDataSource;
 
-  /** A string filter. */
+  /**
+   * A string filter.
+   */
   private StringFilter stringFilter;
 
   /**
    * Creates a new number field template.
    */
-  public NumberFieldTemplate()
+  public NumberFieldTemplate ()
   {
     dataRowDataSource = new DataRowDataSource();
     decimalFormatFilter = new DecimalFormatFilter();
@@ -80,7 +86,7 @@ public class NumberFieldTemplate extends AbstractTemplate
    *
    * @return The number formatter.
    */
-  public DecimalFormat getDecimalFormat()
+  public DecimalFormat getDecimalFormat ()
   {
     return (DecimalFormat) decimalFormatFilter.getFormatter();
   }
@@ -88,9 +94,9 @@ public class NumberFieldTemplate extends AbstractTemplate
   /**
    * Sets the number formatter.
    *
-   * @param decimalFormat  the number formatter.
+   * @param decimalFormat the number formatter.
    */
-  public void setDecimalFormat(final DecimalFormat decimalFormat)
+  public void setDecimalFormat (final DecimalFormat decimalFormat)
   {
     decimalFormatFilter.setFormatter(decimalFormat);
   }
@@ -100,7 +106,7 @@ public class NumberFieldTemplate extends AbstractTemplate
    *
    * @return The format string.
    */
-  public String getFormat()
+  public String getFormat ()
   {
     return decimalFormatFilter.getFormatString();
   }
@@ -108,9 +114,9 @@ public class NumberFieldTemplate extends AbstractTemplate
   /**
    * Sets the format string.
    *
-   * @param format  the format string.
+   * @param format the format string.
    */
-  public void setFormat(final String format)
+  public void setFormat (final String format)
   {
     decimalFormatFilter.setFormatString(format);
   }
@@ -120,7 +126,7 @@ public class NumberFieldTemplate extends AbstractTemplate
    *
    * @return The field name.
    */
-  public String getField()
+  public String getField ()
   {
     return dataRowDataSource.getDataSourceColumnName();
   }
@@ -128,9 +134,9 @@ public class NumberFieldTemplate extends AbstractTemplate
   /**
    * Sets the field name.
    *
-   * @param field  the field name.
+   * @param field the field name.
    */
-  public void setField(final String field)
+  public void setField (final String field)
   {
     dataRowDataSource.setDataSourceColumnName(field);
   }
@@ -140,7 +146,7 @@ public class NumberFieldTemplate extends AbstractTemplate
    *
    * @return A string.
    */
-  public String getNullValue()
+  public String getNullValue ()
   {
     return stringFilter.getNullValue();
   }
@@ -148,9 +154,9 @@ public class NumberFieldTemplate extends AbstractTemplate
   /**
    * Sets the string that represents a <code>null</code> value.
    *
-   * @param nullValue  the string that represents a <code>null</code> value.
+   * @param nullValue the string that represents a <code>null</code> value.
    */
-  public void setNullValue(final String nullValue)
+  public void setNullValue (final String nullValue)
   {
     stringFilter.setNullValue(nullValue);
   }
@@ -160,7 +166,7 @@ public class NumberFieldTemplate extends AbstractTemplate
    *
    * @return the value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return stringFilter.getValue();
   }
@@ -172,7 +178,8 @@ public class NumberFieldTemplate extends AbstractTemplate
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     final NumberFieldTemplate template = (NumberFieldTemplate) super.clone();
     template.stringFilter = (StringFilter) stringFilter.clone();
@@ -181,17 +188,17 @@ public class NumberFieldTemplate extends AbstractTemplate
     return template;
   }
 
-  public void registerReportDefinition(ReportDefinition reportDefinition)
+  public void registerReportDefinition (ReportDefinition reportDefinition)
   {
     getDataRowDataSource().registerReportDefinition(reportDefinition);
   }
 
-  public void unregisterReportDefinition(ReportDefinition reportDefinition)
+  public void unregisterReportDefinition (ReportDefinition reportDefinition)
   {
     getDataRowDataSource().unregisterReportDefinition(reportDefinition);
   }
 
-  protected DataRowDataSource getDataRowDataSource()
+  protected DataRowDataSource getDataRowDataSource ()
   {
     return dataRowDataSource;
   }

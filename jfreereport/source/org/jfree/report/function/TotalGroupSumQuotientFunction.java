@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner, David Gilbert (for Simba Management Limited)
  *                   for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotientFunction.java,v 1.7 2005/01/25 00:00:38 taqua Exp $
+ * $Id: TotalGroupSumQuotientFunction.java,v 1.8 2005/02/04 19:22:54 taqua Exp $
  *
  * Changes
  * -------
@@ -50,30 +50,27 @@ import org.jfree.report.util.Log;
 
 /**
  * A report function that calculates the quotient of two summed fields (columns) from the
- * TableModel.
- * This function produces a global total. The total sum of the group is known when the group
- * processing starts and the report is not performing a prepare-run. The sum is calculated in
- * the prepare run and recalled in the printing run.
- * <p>
- * The function can be used in two ways:
- * <ul>
- * <li>to calculate a quotient for the entire report;</li>
- * <li>to calculate a quotient within a particular group;</li>
- * </ul>
- * This function expects its input values to be either java.lang.Number instances or Strings
+ * TableModel. This function produces a global total. The total sum of the group is known
+ * when the group processing starts and the report is not performing a prepare-run. The
+ * sum is calculated in the prepare run and recalled in the printing run.
+ * <p/>
+ * The function can be used in two ways: <ul> <li>to calculate a quotient for the entire
+ * report;</li> <li>to calculate a quotient within a particular group;</li> </ul> This
+ * function expects its input values to be either java.lang.Number instances or Strings
  * that can be parsed to java.lang.Number instances using a java.text.DecimalFormat.
- * <p>
- * The function undestands tree parameters.
- * The <code>dividend</code> parameter is required and denotes the name of an ItemBand-field
- * which gets summed up as dividend. The <code>divisor</code> parameter is required and denotes
- * the name of an ItemBand-field which gets summed up as divisor.
- * <p>
- * The parameter <code>group</code> denotes the name of a group. When this group is started,
- * the counter gets reseted to null. This parameter is optional.
+ * <p/>
+ * The function undestands tree parameters. The <code>dividend</code> parameter is
+ * required and denotes the name of an ItemBand-field which gets summed up as dividend.
+ * The <code>divisor</code> parameter is required and denotes the name of an
+ * ItemBand-field which gets summed up as divisor.
+ * <p/>
+ * The parameter <code>group</code> denotes the name of a group. When this group is
+ * started, the counter gets reseted to null. This parameter is optional.
  *
  * @author Thomas Morgner
  */
-public class TotalGroupSumQuotientFunction extends AbstractFunction implements Serializable
+public class TotalGroupSumQuotientFunction extends AbstractFunction
+        implements Serializable
 {
 
   /**
@@ -81,13 +78,15 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
    */
   private static class GroupSum implements Serializable
   {
-    /** The result. */
+    /**
+     * The result.
+     */
     private BigDecimal result;
 
     /**
      * Default constructor.
      */
-    public GroupSum()
+    public GroupSum ()
     {
       result = new BigDecimal(0);
     }
@@ -95,9 +94,9 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
     /**
      * Adds a number to the result.
      *
-     * @param n  the number.
+     * @param n the number.
      */
-    public void add(final Number n)
+    public void add (final Number n)
     {
       result = result.add(new BigDecimal(n.toString()));
     }
@@ -107,25 +106,35 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
      *
      * @return the sum.
      */
-    public BigDecimal getResult()
+    public BigDecimal getResult ()
     {
       return result;
     }
   }
 
-  /** The group sums for dividend and divisor. */
+  /**
+   * The group sums for dividend and divisor.
+   */
   private transient GroupSum groupDividend;
 
-  /** The group divisor. */
+  /**
+   * The group divisor.
+   */
   private transient GroupSum groupDivisor;
 
-  /** A list of results. */
+  /**
+   * A list of results.
+   */
   private transient ArrayList dividendResults;
 
-  /** A list of divisor results. */
+  /**
+   * A list of divisor results.
+   */
   private transient ArrayList divisorResults;
 
-  /** The current index. */
+  /**
+   * The current index.
+   */
   private transient int currentIndex;
 
   private String group;
@@ -133,11 +142,10 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
   private String divisor;
 
   /**
-   * Constructs a new function.
-   * <P>
-   * Initially the function has no name...be sure to assign one before using the function.
+   * Constructs a new function. <P> Initially the function has no name...be sure to assign
+   * one before using the function.
    */
-  public TotalGroupSumQuotientFunction()
+  public TotalGroupSumQuotientFunction ()
   {
     groupDividend = new GroupSum();
     groupDivisor = new GroupSum();
@@ -148,9 +156,9 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
   /**
    * Receives notification that the report has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void reportInitialized(final ReportEvent event)
+  public void reportInitialized (final ReportEvent event)
   {
     currentIndex = -1;
 
@@ -164,9 +172,9 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
   /**
    * Receives notification that a group has started.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void groupStarted(final ReportEvent event)
+  public void groupStarted (final ReportEvent event)
   {
     if (FunctionUtilities.isDefinedGroup(getGroup(), event) == false)
     {
@@ -198,9 +206,9 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
   /**
    * Receives notification that a row of data is being processed.
    *
-   * @param event  the event.
+   * @param event the event.
    */
-  public void itemsAdvanced(final ReportEvent event)
+  public void itemsAdvanced (final ReportEvent event)
   {
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event) == false)
     {
@@ -244,31 +252,30 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
    *
    * @return the group name.
    */
-  public String getGroup()
+  public String getGroup ()
   {
     return group;
   }
 
   /**
-   * Defines the name of the group to be totalled.
-   * If the name is null, all groups are totalled.
+   * Defines the name of the group to be totalled. If the name is null, all groups are
+   * totalled.
    *
-   * @param group  the group name.
+   * @param group the group name.
    */
-  public void setGroup(final String group)
+  public void setGroup (final String group)
   {
     this.group = group;
   }
 
   /**
-   * Return the current function value.
-   * <P>
-   * The value depends (obviously) on the function implementation.   For example, a page counting
-   * function will return the current page number.
+   * Return the current function value. <P> The value depends (obviously) on the function
+   * implementation.   For example, a page counting function will return the current page
+   * number.
    *
    * @return The value of the function.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     final BigDecimal dividend = groupDividend.getResult();
     final BigDecimal divisor = groupDivisor.getResult();
@@ -280,63 +287,59 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
   }
 
   /**
-   * Returns the field used as dividend by the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Returns the field used as dividend by the function. <P> The field name corresponds to
+   * a column name in the report's TableModel.
    *
    * @return The field name.
    */
-  public String getDividend()
+  public String getDividend ()
   {
     return dividend;
   }
 
   /**
-   * Returns the field used as divisor by the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Returns the field used as divisor by the function. <P> The field name corresponds to
+   * a column name in the report's TableModel.
    *
    * @return The field name.
    */
-  public String getDivisor()
+  public String getDivisor ()
   {
     return this.divisor;
   }
 
   /**
-   * Sets the field name to be used as dividend for the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Sets the field name to be used as dividend for the function. <P> The field name
+   * corresponds to a column name in the report's TableModel.
    *
    * @param dividend the field name (null not permitted).
    */
-  public void setDividend(final String dividend)
+  public void setDividend (final String dividend)
   {
     this.dividend = dividend;
   }
 
   /**
-   * Sets the field name to be used as divisor for the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Sets the field name to be used as divisor for the function. <P> The field name
+   * corresponds to a column name in the report's TableModel.
    *
    * @param divisor the field name (null not permitted).
    */
-  public void setDivisor(final String divisor)
+  public void setDivisor (final String divisor)
   {
     this.divisor = divisor;
   }
 
   /**
-   * Return a completly separated copy of this function. The copy does no
-   * longer share any changeable objects with the original function.
+   * Return a completly separated copy of this function. The copy does no longer share any
+   * changeable objects with the original function.
    *
    * @return a copy of this function.
    */
-  public Expression getInstance()
+  public Expression getInstance ()
   {
     final TotalGroupSumQuotientFunction function =
-        (TotalGroupSumQuotientFunction) super.getInstance();
+            (TotalGroupSumQuotientFunction) super.getInstance();
     function.groupDividend = new GroupSum();
     function.groupDivisor = new GroupSum();
     function.dividendResults = new ArrayList();
@@ -344,8 +347,8 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction implements S
     return function;
   }
 
-  private void readObject(final ObjectInputStream in)
-      throws IOException, ClassNotFoundException
+  private void readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
     groupDividend = new GroupSum();

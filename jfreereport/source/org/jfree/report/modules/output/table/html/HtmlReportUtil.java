@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlReportUtil.java,v 1.2.2.1 2004/12/13 19:27:08 taqua Exp $
+ * $Id: HtmlReportUtil.java,v 1.3 2005/01/25 00:13:40 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,8 +48,7 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 
 /**
- * Utility class to provide an easy to use default implementation of
- * html exports.
+ * Utility class to provide an easy to use default implementation of html exports.
  *
  * @author Thomas Morgner
  */
@@ -57,25 +56,24 @@ public final class HtmlReportUtil
 {
   /**
    * DefaultConstructor.
-   *
    */
-  private HtmlReportUtil()
+  private HtmlReportUtil ()
   {
   }
 
   /**
    * Saves a report into a single HTML format.
    *
-   * @param report  the report.
+   * @param report   the report.
    * @param filename target file name.
-   *
    * @throws ReportProcessingException if the report processing failed.
-   * @throws java.io.IOException if there was an IOerror while processing the report.
+   * @throws java.io.IOException       if there was an IOerror while processing the
+   *                                   report.
    */
-  public static void createStreamHTML(final JFreeReport report, final String filename)
-      throws IOException, ReportProcessingException
+  public static void createStreamHTML (final JFreeReport report, final String filename)
+          throws IOException, ReportProcessingException
   {
-    final File file = new File (filename);
+    final File file = new File(filename);
     final HtmlProcessor pr = new HtmlProcessor(report);
     final OutputStream fout = new BufferedOutputStream(new FileOutputStream(file));
     pr.setFilesystem(new StreamHtmlFilesystem(fout, true, file.getParentFile().toURL()));
@@ -86,14 +84,15 @@ public final class HtmlReportUtil
   /**
    * Saves a report to HTML. The HTML file is stored in a directory.
    *
-   * @param report  the report.
+   * @param report   the report.
    * @param filename target file name.
-   *
    * @throws ReportProcessingException if the report processing failed.
-   * @throws IOException if there was an IOerror while processing the report.
+   * @throws IOException               if there was an IOerror while processing the
+   *                                   report.
    */
-  public static void createDirectoryHTML(final JFreeReport report, final String filename)
-      throws IOException, ReportProcessingException
+  public static void createDirectoryHTML (final JFreeReport report,
+                                          final String filename)
+          throws IOException, ReportProcessingException
   {
     final HtmlProcessor pr = new HtmlProcessor(report);
     pr.setFilesystem(new DirectoryHtmlFilesystem(new File(filename)));
@@ -103,14 +102,14 @@ public final class HtmlReportUtil
   /**
    * Saves a report in a ZIP file. The zip file contains a HTML document.
    *
-   * @param report  the report.
+   * @param report   the report.
    * @param filename target file name.
-   *
    * @throws ReportProcessingException if the report processing failed.
-   * @throws IOException if there was an IOerror while processing the report.
+   * @throws IOException               if there was an IOerror while processing the
+   *                                   report.
    */
-  public static void createZIPHTML(final JFreeReport report, final String filename)
-      throws IOException, ReportProcessingException
+  public static void createZIPHTML (final JFreeReport report, final String filename)
+          throws IOException, ReportProcessingException
   {
     final HtmlProcessor pr = new HtmlProcessor(report);
     final OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));

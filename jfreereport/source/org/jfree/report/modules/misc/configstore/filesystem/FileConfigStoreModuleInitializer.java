@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FileConfigStoreModuleInitializer.java,v 1.6.4.2 2004/10/11 21:00:41 taqua Exp $
+ * $Id: FileConfigStoreModuleInitializer.java,v 1.9 2005/01/25 00:08:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,59 +40,60 @@ package org.jfree.report.modules.misc.configstore.filesystem;
 
 import java.io.File;
 
+import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.ModuleInitializer;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 import org.jfree.report.util.ReportConfiguration;
-import org.jfree.base.modules.ModuleInitializer;
-import org.jfree.base.modules.ModuleInitializeException;
 
 /**
- * The initializer is used to setup the file system storage provider
- * and to register the providers at the configfactory.
- * <p>
- * The directories are specified in the report configuration at boot time.
- * If an directory name starts with "~/", the users home directory is used
- * as base directory for that string.
+ * The initializer is used to setup the file system storage provider and to register the
+ * providers at the configfactory.
+ * <p/>
+ * The directories are specified in the report configuration at boot time. If an directory
+ * name starts with "~/", the users home directory is used as base directory for that
+ * string.
  *
  * @author Thomas Morgner
  */
 public class FileConfigStoreModuleInitializer implements ModuleInitializer
 {
   /**
-   * The configuration key that specifies the base directory for
-   * the user configuration storage.
+   * The configuration key that specifies the base directory for the user configuration
+   * storage.
    */
   public static final String USER_BASEDIR_CONFIG_KEY =
-      "org.jfree.report.modules.misc.configstore.filesystem.UserTargetDir";
+          "org.jfree.report.modules.misc.configstore.filesystem.UserTargetDir";
 
   /**
-   * The configuration key that specifies the base directory for
-   * the system configuration storage.
+   * The configuration key that specifies the base directory for the system configuration
+   * storage.
    */
   public static final String SYSTEM_BASEDIR_CONFIG_KEY =
-      "org.jfree.report.modules.misc.configstore.filesystem.SystemTargetDir";
+          "org.jfree.report.modules.misc.configstore.filesystem.SystemTargetDir";
 
   /**
    * DefaultConstructor.
    */
-  public FileConfigStoreModuleInitializer()
+  public FileConfigStoreModuleInitializer ()
   {
   }
 
   /**
-   * Performs the module initialization and registers the storage providers
-   * at the config factory.
+   * Performs the module initialization and registers the storage providers at the config
+   * factory.
    *
    * @throws ModuleInitializeException if an error occures
    */
-  public void performInit() throws ModuleInitializeException
+  public void performInit ()
+          throws ModuleInitializeException
   {
     final String userBaseDirectory =
-        ReportConfiguration.getGlobalConfig().getConfigProperty
-        (USER_BASEDIR_CONFIG_KEY, "~/.jfreereport/user");
+            ReportConfiguration.getGlobalConfig().getConfigProperty
+            (USER_BASEDIR_CONFIG_KEY, "~/.jfreereport/user");
 
     final String systemBaseDirectory =
-        ReportConfiguration.getGlobalConfig().getConfigProperty
-        (SYSTEM_BASEDIR_CONFIG_KEY, "~/.jfreereport/system");
+            ReportConfiguration.getGlobalConfig().getConfigProperty
+            (SYSTEM_BASEDIR_CONFIG_KEY, "~/.jfreereport/system");
 
     final ConfigFactory factory = ConfigFactory.getInstance();
     factory.defineUserStorage(new FileConfigStorage(getStoragePath(userBaseDirectory)));
@@ -100,16 +101,18 @@ public class FileConfigStoreModuleInitializer implements ModuleInitializer
   }
 
   /**
-   * Tries to fint the specified directory and creates a new one if the directory
-   * does not yet exist. An occurence of "~/" at the beginning of the name will
-   * be replaced with the users home directory.
+   * Tries to fint the specified directory and creates a new one if the directory does not
+   * yet exist. An occurence of "~/" at the beginning of the name will be replaced with
+   * the users home directory.
    *
    * @param baseDirectory the base directory as specified in the configuration.
    * @return the file object pointing to that directory.
-   * @throws org.jfree.base.modules.ModuleInitializeException if an error occured or the directory could
-   * not be created.
+   *
+   * @throws org.jfree.base.modules.ModuleInitializeException
+   *          if an error occured or the directory could not be created.
    */
-  private File getStoragePath(String baseDirectory) throws ModuleInitializeException
+  private File getStoragePath (String baseDirectory)
+          throws ModuleInitializeException
   {
     final File baseDirectoryFile;
 
@@ -135,7 +138,7 @@ public class FileConfigStoreModuleInitializer implements ModuleInitializer
       catch (Exception e)
       {
         throw new ModuleInitializeException
-            ("Failed to create the file config storage.", e);
+                ("Failed to create the file config storage.", e);
       }
     }
 
@@ -144,16 +147,16 @@ public class FileConfigStoreModuleInitializer implements ModuleInitializer
       if (baseDirectoryFile.mkdirs() == false)
       {
         throw new ModuleInitializeException
-            ("Unable to create the specified directory.");
+                ("Unable to create the specified directory.");
       }
     }
     else
     {
       if (baseDirectoryFile.canRead() == false ||
-          baseDirectoryFile.canWrite() == false)
+              baseDirectoryFile.canWrite() == false)
       {
         throw new ModuleInitializeException
-            ("Unable to access the specified directory.");
+                ("Unable to access the specified directory.");
       }
     }
     return baseDirectoryFile;

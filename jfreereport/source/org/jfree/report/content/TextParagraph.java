@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextParagraph.java,v 1.12 2004/05/07 08:02:48 mungady Exp $
+ * $Id: TextParagraph.java,v 1.13 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -48,48 +48,58 @@ import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
 
 /**
- * A paragraph of an given text content. A paragraph consists of one or more
- * {@link TextLine}s.
- * <p>
+ * A paragraph of an given text content. A paragraph consists of one or more {@link
+ * TextLine}s.
+ * <p/>
  * Todo: Can the content size be cached?
  *
  * @author Thomas Morgner.
  */
 public strictfp class TextParagraph extends ContentContainer
 {
-  /** The reserved size. */
+  /**
+   * The reserved size.
+   */
   private final long reservedSize;
 
-  /** The reserved size. */
+  /**
+   * The reserved size.
+   */
   private final long lineHeight;
 
-  /** The reserved size. */
+  /**
+   * The reserved size.
+   */
   private final boolean trimTextContent;
 
-  /** The size calculator. */
+  /**
+   * The size calculator.
+   */
   private final SizeCalculator sizeCalculator;
 
-  /** The reserved literal that should be appended to the text. */
+  /**
+   * The reserved literal that should be appended to the text.
+   */
   private final String reservedLiteral;
 
   /**
    * Creates a new text paragraph using the specified size calculator.
    *
-   * @param calc  the size calculator.
-   * @param lineHeight the height of the lines contained in this paragraph.
-   * @param reservedLiteral the text that should be appended if the text does 
-   * not fit into the bounds
-   * @param trimTextContent defines, whether to remove whitespaces from the start
-   * and end of an line.
+   * @param calc            the size calculator.
+   * @param lineHeight      the height of the lines contained in this paragraph.
+   * @param reservedLiteral the text that should be appended if the text does not fit into
+   *                        the bounds
+   * @param trimTextContent defines, whether to remove whitespaces from the start and end
+   *                        of an line.
    */
-  public TextParagraph(final SizeCalculator calc, final long lineHeight,
-                       final String reservedLiteral, final boolean trimTextContent)
+  public TextParagraph (final SizeCalculator calc, final long lineHeight,
+                        final String reservedLiteral, final boolean trimTextContent)
   {
     super(new StrictBounds());
     this.sizeCalculator = calc;
     this.reservedLiteral = reservedLiteral;
     this.reservedSize =
-      StrictGeomUtility.toInternalValue
+    StrictGeomUtility.toInternalValue
             (getSizeCalculator().getStringWidth
             (reservedLiteral, 0, reservedLiteral.length()));
     this.lineHeight = lineHeight;
@@ -101,7 +111,7 @@ public strictfp class TextParagraph extends ContentContainer
    *
    * @return the size calculator.
    */
-  private SizeCalculator getSizeCalculator()
+  private SizeCalculator getSizeCalculator ()
   {
     return sizeCalculator;
   }
@@ -109,14 +119,15 @@ public strictfp class TextParagraph extends ContentContainer
   /**
    * Sets the content.
    *
-   * @param content  the content.
-   * @param x the x coordinates for the bounds.
-   * @param y the y coordinates for the bounds.
-   * @param width the width of the bounds.
-   * @param height the height of the bounds.
+   * @param content the content.
+   * @param x       the x coordinates for the bounds.
+   * @param y       the y coordinates for the bounds.
+   * @param width   the width of the bounds.
+   * @param height  the height of the bounds.
    */
   public void setContent
-      (final String content, final long x, final long y, final long width, final long height)
+          (final String content, final long x, final long y, final long width,
+           final long height)
   {
     if (content == null)
     {
@@ -173,23 +184,24 @@ public strictfp class TextParagraph extends ContentContainer
 
   /**
    * Breaks the text into multiple lines. The given string is broken either when a manual
-   * linebreak is encountered or when the current line's rendered width exceeds the given limit.
-   * If the text contains more than <code>maxLines</code> lines, all lines over the limit
-   * are ignored.
-   * <p>
-   * If more than one line is expected or the strictmode is enabled and there are more lines
-   * in the given text than space is available, the text is cut down to the given number of
-   * lines and the RESERVED_LITERAL is appended to signal the cut down to the user.
-   * <p>
+   * linebreak is encountered or when the current line's rendered width exceeds the given
+   * limit. If the text contains more than <code>maxLines</code> lines, all lines over the
+   * limit are ignored.
+   * <p/>
+   * If more than one line is expected or the strictmode is enabled and there are more
+   * lines in the given text than space is available, the text is cut down to the given
+   * number of lines and the RESERVED_LITERAL is appended to signal the cut down to the
+   * user.
+   * <p/>
    * The text is broken on word boundaries.
    *
-   * @param mytext  the text to be broken down
-   * @param width  the boundary on which the text is broken if no manual linebreak is encountered.
-   * @param maxLines  the number of lines to be displayed. Must be at least 1
-   *
+   * @param mytext   the text to be broken down
+   * @param width    the boundary on which the text is broken if no manual linebreak is
+   *                 encountered.
+   * @param maxLines the number of lines to be displayed. Must be at least 1
    * @return a list of lines.
    */
-  private List breakLines(final String mytext, final long width, final long maxLines)
+  private List breakLines (final String mytext, final long width, final long maxLines)
   {
     if (width <= 0)
     {
@@ -239,7 +251,7 @@ public strictfp class TextParagraph extends ContentContainer
         final String addString = mytext.substring(lineStartPos);
         if (isTrimTextContent())
         {
-          returnLines.add (addString.trim());
+          returnLines.add(addString.trim());
         }
         else
         {
@@ -258,7 +270,7 @@ public strictfp class TextParagraph extends ContentContainer
         }
         else
         {
-          returnLines.add (addString);
+          returnLines.add(addString);
         }
         return returnLines;
       }
@@ -267,7 +279,7 @@ public strictfp class TextParagraph extends ContentContainer
       final String addString = mytext.substring(lineStartPos, nextPos);
       if (isTrimTextContent())
       {
-        returnLines.add (addString.trim());
+        returnLines.add(addString.trim());
       }
       else
       {
@@ -279,24 +291,24 @@ public strictfp class TextParagraph extends ContentContainer
   }
 
   /**
-   * Defines, whether whitespaces were removed from the lines of this paragraph
-   * after performing the linebreaking.
-   *  
+   * Defines, whether whitespaces were removed from the lines of this paragraph after
+   * performing the linebreaking.
+   *
    * @return true, if whitespaces could have been removed, false otherwise.
    */
-  public boolean isTrimTextContent()
+  public boolean isTrimTextContent ()
   {
     return trimTextContent;
   }
-  
+
   /**
    * Tests, whether the given character is a whitespace (but not a breakline).
    *
    * @param c the character that should be tested.
-   * @return true, if this is a whitespace character, but not a
-   * linebreak character, false otherwise.
+   * @return true, if this is a whitespace character, but not a linebreak character, false
+   *         otherwise.
    */
-  private boolean isWhitespace(final char c)
+  private boolean isWhitespace (final char c)
   {
     if (c == '\n' || c == '\r')
     {
@@ -311,18 +323,18 @@ public strictfp class TextParagraph extends ContentContainer
   /**
    * Locates the next linebreak for the given text.
    *
-   * @param text the text that should be broken into lines
+   * @param text      the text that should be broken into lines
    * @param lineStart the position where the current line beginns
-   * @param width the maximum width for a single line
-   * @param forceEnd whether to enforce the end of the paragraph after that line
-   * @param breakit the break iterator for the text
+   * @param width     the maximum width for a single line
+   * @param forceEnd  whether to enforce the end of the paragraph after that line
+   * @param breakit   the break iterator for the text
    * @return the most suitable position for an linebreak.
    */
-  private int findNextBreak(final String text,
-                            final int lineStart,
-                            final long width,
-                            final boolean forceEnd,
-                            final WordBreakIterator breakit)
+  private int findNextBreak (final String text,
+                             final int lineStart,
+                             final long width,
+                             final boolean forceEnd,
+                             final WordBreakIterator breakit)
   {
     int startPos = lineStart;
     int endPos;
@@ -357,7 +369,7 @@ public strictfp class TextParagraph extends ContentContainer
           if (enableCharBreak)
           {
             while (StrictGeomUtility.toInternalValue
-              (getSizeCalculator().getStringWidth(text, startPos, endPos)) > width)
+                    (getSizeCalculator().getStringWidth(text, startPos, endPos)) > width)
             {
               endPos--;
             }
@@ -384,19 +396,18 @@ public strictfp class TextParagraph extends ContentContainer
 
   /**
    * Add the reserve literal to the end of the string, but make sure that as much as
-   * possible is printed in the line before the literal is finally added. So the last
-   * word is not totally lost, maybe some characters can be printed ...
+   * possible is printed in the line before the literal is finally added. So the last word
+   * is not totally lost, maybe some characters can be printed ...
    *
-   * @param base  the base string.
-   * @param lineStart  the position of the first character in the line.
-   * @param lastCheckedChar  the last character of the line, which is known to fit into the given
-   *                         width.
-   * @param width  the maximum width.
-   *
+   * @param base            the base string.
+   * @param lineStart       the position of the first character in the line.
+   * @param lastCheckedChar the last character of the line, which is known to fit into the
+   *                        given width.
+   * @param width           the maximum width.
    * @return a string with '..' appended.
    */
-  private String appendReserveLit(final String base, final int lineStart,
-                                  final int lastCheckedChar, final long width)
+  private String appendReserveLit (final String base, final int lineStart,
+                                   final int lastCheckedChar, final long width)
   {
     if (lastCheckedChar < 0)
     {
@@ -413,7 +424,7 @@ public strictfp class TextParagraph extends ContentContainer
 
     // check whether the complete line would fit into the given width
     final long toTheEnd = StrictGeomUtility.toInternalValue
-        (getSizeCalculator().getStringWidth(base, lineStart, base.length()));
+            (getSizeCalculator().getStringWidth(base, lineStart, base.length()));
     if (toTheEnd <= width)
     {
       return base.substring(lineStart);
@@ -421,7 +432,7 @@ public strictfp class TextParagraph extends ContentContainer
 
     final String baseLine = base.substring(lineStart, lastCheckedChar);
     final long filler = width - StrictGeomUtility.toInternalValue
-        (getSizeCalculator().getStringWidth(baseLine, 0, baseLine.length())) - reservedSize;
+            (getSizeCalculator().getStringWidth(baseLine, 0, baseLine.length())) - reservedSize;
 
     final int maxFillerLength = base.length() - lastCheckedChar;
     for (int i = 1; i < maxFillerLength; i++)
@@ -437,13 +448,13 @@ public strictfp class TextParagraph extends ContentContainer
   }
 
   /**
-   * Removes all whitespaces from the given String and replaces them with a space character.
+   * Removes all whitespaces from the given String and replaces them with a space
+   * character.
    *
-   * @param text  the string to process.
-   *
-   * @return  a string with all whitespace replaced by space characters.
+   * @param text the string to process.
+   * @return a string with all whitespace replaced by space characters.
    */
-  protected static String clearWhitespaces(final String text)
+  protected static String clearWhitespaces (final String text)
   {
     final char[] textdata = text.toCharArray();
     for (int i = 0; i < textdata.length; i++)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlImageMetaElement.java,v 1.4 2005/02/05 18:35:19 taqua Exp $
+ * $Id: HtmlImageMetaElement.java,v 1.5 2005/02/19 13:30:02 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -56,7 +56,7 @@ public class HtmlImageMetaElement extends HtmlMetaElement
 {
   public HtmlImageMetaElement
           (final ImageContent elementContent, final ElementStyleSheet style,
-                  final boolean usesXHTML)
+           final boolean usesXHTML)
   {
     super(elementContent, style, usesXHTML);
   }
@@ -90,8 +90,8 @@ public class HtmlImageMetaElement extends HtmlMetaElement
         if (href.getReferenceData() != null)
         {
           pout.print("\" alt=\"");
-          pout.print (HtmlCharacterEntities.getEntityParser().
-              encodeEntities(href.getReferenceData().toString()));
+          pout.print(HtmlCharacterEntities.getEntityParser().
+                  encodeEntities(href.getReferenceData().toString()));
           pout.print("\"");
         }
         if (isUsesXHTML())

@@ -1,7 +1,7 @@
 package org.jfree.report;
 
-import java.util.ResourceBundle;
 import java.io.Serializable;
+import java.util.ResourceBundle;
 
 public interface ResourceBundleFactory extends Serializable
 {

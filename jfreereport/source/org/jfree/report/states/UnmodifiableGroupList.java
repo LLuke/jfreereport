@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: UnmodifiableGroupList.java,v 1.1 2003/08/24 15:13:23 taqua Exp $
+ * $Id: UnmodifiableGroupList.java,v 1.2 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -49,12 +49,11 @@ import org.jfree.report.GroupList;
 public class UnmodifiableGroupList extends GroupList
 {
   /**
-   * Creates a new Unmodifiable GroupList by copying the contents from the given
-   * list.
+   * Creates a new Unmodifiable GroupList by copying the contents from the given list.
    *
-   * @param list  the base list.
+   * @param list the base list.
    */
-  public UnmodifiableGroupList(final GroupList list)
+  public UnmodifiableGroupList (final GroupList list)
   {
     super(list);
   }
@@ -62,11 +61,13 @@ public class UnmodifiableGroupList extends GroupList
   /**
    * Removes an object from the list.
    *
-   * @param o  the object.
+   * @param o the object.
    * @return nothing, as this method always fires a UnsupportedOperation exception.
-   * @throws java.lang.UnsupportedOperationException as this GroupList is not modifiable.
+   *
+   * @throws java.lang.UnsupportedOperationException
+   *          as this GroupList is not modifiable.
    */
-  public boolean remove(final Group o)
+  public boolean remove (final Group o)
   {
     throw new UnsupportedOperationException();
   }
@@ -74,10 +75,11 @@ public class UnmodifiableGroupList extends GroupList
   /**
    * Adds an object to the list.
    *
-   * @param o  the object (must be an instance of the Group class).
-   * @throws java.lang.UnsupportedOperationException as this GroupList is not modifiable.
+   * @param o the object (must be an instance of the Group class).
+   * @throws java.lang.UnsupportedOperationException
+   *          as this GroupList is not modifiable.
    */
-  public void add(final Group o)
+  public void add (final Group o)
   {
     throw new UnsupportedOperationException();
   }

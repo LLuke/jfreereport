@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExportPlugin.java,v 1.7 2003/11/15 18:22:28 taqua Exp $
+ * $Id: ExportPlugin.java,v 1.8 2004/05/07 14:29:21 mungady Exp $
  *
  * Changes
  * --------
@@ -45,8 +45,8 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.util.WorkerPool;
 
 /**
- * An export plug-in is a class that can work with the {@link ExportAction}
- * class to implement an export function for reports.
+ * An export plug-in is a class that can work with the {@link ExportAction} class to
+ * implement an export function for reports.
  *
  * @author Thomas Morgner.
  */
@@ -55,74 +55,73 @@ public interface ExportPlugin
   /**
    * Exports a report.
    *
-   * @param report  the report.
-   *
+   * @param report the report.
    * @return A boolean.
    */
-  public boolean performExport(JFreeReport report);
+  public boolean performExport (JFreeReport report);
 
   /**
    * Returns the display name for the export action.
    *
    * @return The display name.
    */
-  public String getDisplayName();
+  public String getDisplayName ();
 
   /**
    * Returns the short description for the export action.
    *
    * @return The short description.
    */
-  public String getShortDescription();
+  public String getShortDescription ();
 
   /**
    * Returns the small icon for the export action.
    *
    * @return The icon.
    */
-  public Icon getSmallIcon();
+  public Icon getSmallIcon ();
 
   /**
    * Returns the large icon for the export action.
    *
    * @return The icon.
    */
-  public Icon getLargeIcon();
+  public Icon getLargeIcon ();
 
   /**
    * Returns the accelerator key for the export action.
    *
    * @return The accelerator key.
    */
-  public KeyStroke getAcceleratorKey();
+  public KeyStroke getAcceleratorKey ();
 
   /**
    * Returns the mnemonic key code.
    *
    * @return The code.
    */
-  public Integer getMnemonicKey();
+  public Integer getMnemonicKey ();
 
   /**
    * Returns true if the action is separated, and false otherwise.
    *
    * @return A boolean.
    */
-  public boolean isSeparated();
+  public boolean isSeparated ();
 
   /**
    * Returns true if the action should be added to the toolbar, and false otherwise.
    *
    * @return A boolean.
    */
-  public boolean isAddToToolbar();
+  public boolean isAddToToolbar ();
 
   /**
    * Initializes the plugin to work with the given PreviewProxy.
    *
    * @param proxy the preview proxy that requested the creation of the export plugin
    */
-  public void init(PreviewProxy proxy);
+  public void init (PreviewProxy proxy);
 
   /**
    * Returns true, when this export plugin is used to configure the report or an other
@@ -130,30 +129,32 @@ public interface ExportPlugin
    *
    * @return true if this is a control plugin, false otherwise.
    */
-  public boolean isControlPlugin();
+  public boolean isControlPlugin ();
 
   /**
    * Returns an error description for the last operation.
    *
    * @return returns a error description.
    */
-  public String getFailureDescription();
+  public String getFailureDescription ();
 
   /**
-   * Defines the worker instance for that export plugin. Workers can
-   * be used to delegate tasks to an other thread. The workers are shared
-   * among all export plugins of an dialog instance.
+   * Defines the worker instance for that export plugin. Workers can be used to delegate
+   * tasks to an other thread. The workers are shared among all export plugins of an
+   * dialog instance.
    *
    * @param worker the worker pool from where to get the workers.
    */
-  public void defineWorkerPool(WorkerPool worker);
+  public void defineWorkerPool (WorkerPool worker);
 
   public boolean isEnabled ();
 
   public void setEnabled (boolean enabled);
 
   public void addPropertyChangeListener (PropertyChangeListener l);
+
   public void addPropertyChangeListener (String property, PropertyChangeListener l);
+
   public void removePropertyChangeListener (PropertyChangeListener l);
 
 }

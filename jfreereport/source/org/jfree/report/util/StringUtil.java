@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StringUtil.java,v 1.8 2003/09/15 18:26:51 taqua Exp $
+ * $Id: StringUtil.java,v 1.9 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes
  * -------
@@ -48,19 +48,19 @@ public final class StringUtil
   /**
    * Default Constructor.
    */
-  private StringUtil()
+  private StringUtil ()
   {
   }
 
   /**
-   * Helper functions to query a strings start portion. The comparison is case insensitive.
+   * Helper functions to query a strings start portion. The comparison is case
+   * insensitive.
    *
    * @param base  the base string.
-   * @param start  the starting text.
-   *
+   * @param start the starting text.
    * @return true, if the string starts with the given starting text.
    */
-  public static boolean startsWithIgnoreCase(final String base, final String start)
+  public static boolean startsWithIgnoreCase (final String base, final String start)
   {
     if (base.length() < start.length())
     {
@@ -72,12 +72,11 @@ public final class StringUtil
   /**
    * Helper functions to query a strings end portion. The comparison is case insensitive.
    *
-   * @param base  the base string.
+   * @param base the base string.
    * @param end  the ending text.
-   *
    * @return true, if the string ends with the given ending text.
    */
-  public static boolean endsWithIgnoreCase(final String base, final String end)
+  public static boolean endsWithIgnoreCase (final String base, final String end)
   {
     if (base.length() < end.length())
     {
@@ -87,10 +86,10 @@ public final class StringUtil
   }
 
   /**
-   * Parses the given string and returns the parsed integer value or
-   * the given default if the parsing failed.
+   * Parses the given string and returns the parsed integer value or the given default if
+   * the parsing failed.
    *
-   * @param value the to be parsed string
+   * @param value        the to be parsed string
    * @param defaultValue the default value
    * @return the parsed string.
    */
@@ -111,10 +110,10 @@ public final class StringUtil
   }
 
   /**
-   * Parses the given string into a boolean value. This returns true, if
-   * the string's value is "true".
-   * 
-   * @param attribute the string that should be parsed.
+   * Parses the given string into a boolean value. This returns true, if the string's
+   * value is "true".
+   *
+   * @param attribute    the string that should be parsed.
    * @param defaultValue the default value, in case the string is null.
    * @return the parsed value.
    */
@@ -130,7 +129,6 @@ public final class StringUtil
     }
     return false;
   }
-
 
 
 }

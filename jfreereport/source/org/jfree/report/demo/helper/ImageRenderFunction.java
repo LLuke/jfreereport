@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageRenderFunction.java,v 1.7 2005/01/28 19:26:48 taqua Exp $
+ * $Id: ImageRenderFunction.java,v 1.8 2005/02/22 20:18:00 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -50,15 +50,18 @@ import org.jfree.report.event.ReportEvent;
 import org.jfree.report.function.AbstractFunction;
 
 /**
- * The ImageRenderFunction creates a simple Image using a BufferedImage within a function to show
- * the use of the ImageFunctionElement. The image is created whenever a new page is started.
+ * The ImageRenderFunction creates a simple Image using a BufferedImage within a function
+ * to show the use of the ImageFunctionElement. The image is created whenever a new page
+ * is started.
  *
  * @author Thomas Morgner
  */
 public class ImageRenderFunction extends AbstractFunction
-    implements Serializable, PageEventListener
+        implements Serializable, PageEventListener
 {
-  /** The function value. */
+  /**
+   * The function value.
+   */
   private transient DefaultImageReference functionValue;
 
   /**
@@ -72,9 +75,9 @@ public class ImageRenderFunction extends AbstractFunction
   /**
    * Create a image according to the current state, simple and silly ...
    *
-   * @param event  the report event.
+   * @param event the report event.
    */
-  public void pageStarted(final ReportEvent event)
+  public void pageStarted (final ReportEvent event)
   {
     final BufferedImage image = new BufferedImage(150, 50, BufferedImage.TYPE_INT_ARGB);
     final Graphics2D g2 = image.createGraphics();
@@ -92,7 +95,7 @@ public class ImageRenderFunction extends AbstractFunction
     g2.setPaint(Color.green);
     g2.setFont(new Font("Serif", Font.PLAIN, 10));
     g2.drawString("You are viewing a graphics of JFreeReport on index "
-        + event.getState().getCurrentDisplayItem(), 10, 10);
+            + event.getState().getCurrentDisplayItem(), 10, 10);
     g2.dispose();
     functionValue = new DefaultImageReference(image);
   }
@@ -102,7 +105,7 @@ public class ImageRenderFunction extends AbstractFunction
    *
    * @param event The event.
    */
-  public void pageFinished(final ReportEvent event)
+  public void pageFinished (final ReportEvent event)
   {
   }
 
@@ -111,20 +114,19 @@ public class ImageRenderFunction extends AbstractFunction
    *
    * @return the function value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     return functionValue;
   }
 
 
   /**
-   * Receives notification that a page was canceled by the ReportProcessor.
-   * This method is called, when a page was removed from the report after
-   * it was generated.
+   * Receives notification that a page was canceled by the ReportProcessor. This method is
+   * called, when a page was removed from the report after it was generated.
    *
    * @param event The event.
    */
-  public void pageCanceled(final ReportEvent event)
+  public void pageCanceled (final ReportEvent event)
   {
     functionValue = null;
   }

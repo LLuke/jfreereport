@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   J&ouml;rg Schaible (for Elsag-Solutions AG);
  *
- * $Id: MessageFormatFilter.java,v 1.2 2005/02/04 19:22:53 taqua Exp $
+ * $Id: MessageFormatFilter.java,v 1.3 2005/02/19 20:10:25 taqua Exp $
  *
  * Changes
  * -------
@@ -45,14 +45,13 @@ import org.jfree.report.ReportDefinition;
 
 /**
  * A filter that formats values from a data source to a string representation.
- * <p>
+ * <p/>
  * This filter will format objects using a {@link java.text.MessageFormat} to create the
  * string representation for the number obtained from the datasource.
  *
- * @see java.text.MessageFormat
- *
  * @author Joerg Schaible
  * @author Thomas Morgner
+ * @see java.text.MessageFormat
  */
 public class MessageFormatFilter
         implements ReportConnectable, Serializable, DataSource
@@ -62,11 +61,9 @@ public class MessageFormatFilter
   private MessageFormatSupport messageFormatSupport;
 
   /**
-   * Default constructor.
-   * <P>
-   * Uses a general number format for the current locale.
+   * Default constructor. <P> Uses a general number format for the current locale.
    */
-  public MessageFormatFilter()
+  public MessageFormatFilter ()
   {
     messageFormatSupport = new MessageFormatSupport();
   }
@@ -82,15 +79,15 @@ public class MessageFormatFilter
   }
 
   /**
-   * Returns the formatted string. The value is read using the data source given
-   * and formated using the formatter of this object. The formating is guaranteed to
-   * completly form the object to an string or to return the defined NullValue.
-   * <p>
+   * Returns the formatted string. The value is read using the data source given and
+   * formated using the formatter of this object. The formating is guaranteed to completly
+   * form the object to an string or to return the defined NullValue.
+   * <p/>
    * If format, datasource or object are null, the NullValue is returned.
    *
    * @return The formatted value.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     if (reportDefinition == null)
     {
@@ -100,7 +97,7 @@ public class MessageFormatFilter
   }
 
 
-  public void registerReportDefinition(final ReportDefinition reportDefinition)
+  public void registerReportDefinition (final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != null)
     {
@@ -113,7 +110,7 @@ public class MessageFormatFilter
     this.reportDefinition = reportDefinition;
   }
 
-  public void unregisterReportDefinition(final ReportDefinition reportDefinition)
+  public void unregisterReportDefinition (final ReportDefinition reportDefinition)
   {
     if (this.reportDefinition != reportDefinition)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LabelElementFactory.java,v 1.7 2004/05/07 08:24:41 mungady Exp $
+ * $Id: LabelElementFactory.java,v 1.8 2005/02/19 13:29:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -45,28 +45,27 @@ import java.awt.geom.Rectangle2D;
 import org.jfree.report.Element;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.TextElement;
-import org.jfree.report.util.geom.StrictDimension;
-import org.jfree.report.util.geom.StrictPoint;
 import org.jfree.report.filter.templates.LabelTemplate;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
 
 /**
- * A factory to define LabelElements. LabelElements are considered immutable and
- * should not be modified once they are created. The label expects plain text.
+ * A factory to define LabelElements. LabelElements are considered immutable and should
+ * not be modified once they are created. The label expects plain text.
  *
  * @author Thomas Morgner
  */
 public class LabelElementFactory extends TextElementFactory
 {
-  /** The label text. */
+  /**
+   * The label text.
+   */
   private String text;
 
   /**
    * DefaultConstructor.
-   *
    */
-  public LabelElementFactory()
+  public LabelElementFactory ()
   {
   }
 
@@ -75,7 +74,7 @@ public class LabelElementFactory extends TextElementFactory
    *
    * @return the text of the label.
    */
-  public String getText()
+  public String getText ()
   {
     return text;
   }
@@ -85,7 +84,7 @@ public class LabelElementFactory extends TextElementFactory
    *
    * @param text the plain text of the label.
    */
-  public void setText(final String text)
+  public void setText (final String text)
   {
     this.text = text;
   }
@@ -93,12 +92,12 @@ public class LabelElementFactory extends TextElementFactory
   /**
    * Creates the label element.
    *
-   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
-   *
    * @return the generated label.
+   *
    * @throws IllegalStateException if the text is not defined.
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
    */
-  public Element createElement()
+  public Element createElement ()
   {
     if (getText() == null)
     {
@@ -117,57 +116,56 @@ public class LabelElementFactory extends TextElementFactory
   /**
    * Creates a new TextElement containing a label.
    *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the text color of this text element
-   * @param alignment  the horizontal text alignment.
-   * @param font the font for this element
+   * @param name      the name of the new element
+   * @param bounds    the bounds of the new element
+   * @param paint     the text color of this text element
+   * @param alignment the horizontal text alignment.
+   * @param font      the font for this element
    * @param labeltext the text to display
-   *
    * @return a report element for displaying a label (static text).
    *
-   * @throws NullPointerException if bounds, name, format or field are null
+   * @throws NullPointerException     if bounds, name, format or field are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createLabelElement(final String name,
-                                               final Rectangle2D bounds,
-                                               final Color paint,
-                                               final ElementAlignment alignment,
-                                               final FontDefinition font,
-                                               final String labeltext)
+  public static TextElement createLabelElement (final String name,
+                                                final Rectangle2D bounds,
+                                                final Color paint,
+                                                final ElementAlignment alignment,
+                                                final FontDefinition font,
+                                                final String labeltext)
   {
     return createLabelElement(name, bounds, paint, alignment,
-        ElementAlignment.TOP,
-        font, labeltext);
+            ElementAlignment.TOP,
+            font, labeltext);
   }
 
   /**
    * Creates a new {@link org.jfree.report.TextElement} containing a label.
    *
-   * @param name  the name of the new element.
-   * @param bounds  the bounds of the new element.
-   * @param paint  the text color of this text element.
-   * @param alignment  the horizontal alignment.
-   * @param valign  the vertical alignment.
-   * @param font  the font for this element.
-   * @param labeltext  the text to display.
-   *
+   * @param name      the name of the new element.
+   * @param bounds    the bounds of the new element.
+   * @param paint     the text color of this text element.
+   * @param alignment the horizontal alignment.
+   * @param valign    the vertical alignment.
+   * @param font      the font for this element.
+   * @param labeltext the text to display.
    * @return a report element for displaying a label (static text).
    *
-   * @throws NullPointerException if bounds, name, format or field are <code>null</code>.
+   * @throws NullPointerException     if bounds, name, format or field are
+   *                                  <code>null</code>.
    * @throws IllegalArgumentException if the given alignment is invalid.
    */
-  public static TextElement createLabelElement(final String name,
-                                               final Rectangle2D bounds,
-                                               final Color paint,
-                                               final ElementAlignment alignment,
-                                               final ElementAlignment valign,
-                                               final FontDefinition font,
-                                               final String labeltext)
+  public static TextElement createLabelElement (final String name,
+                                                final Rectangle2D bounds,
+                                                final Color paint,
+                                                final ElementAlignment alignment,
+                                                final ElementAlignment valign,
+                                                final FontDefinition font,
+                                                final String labeltext)
   {
     final LabelElementFactory factory = new LabelElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setName(name);
     factory.setColor(paint);
     factory.setHorizontalAlignment(alignment);

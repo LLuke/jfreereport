@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelNumberMetaElement.java,v 1.3 2005/01/25 00:16:57 taqua Exp $
+ * $Id: ExcelNumberMetaElement.java,v 1.4 2005/02/05 18:35:20 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,7 +44,8 @@ import org.jfree.report.style.ElementStyleSheet;
 
 public class ExcelNumberMetaElement extends ExcelMetaElement
 {
-  public ExcelNumberMetaElement (final RawContent elementContent, final ElementStyleSheet style)
+  public ExcelNumberMetaElement (final RawContent elementContent,
+                                 final ElementStyleSheet style)
   {
     super(elementContent, style);
   }
@@ -54,6 +55,6 @@ public class ExcelNumberMetaElement extends ExcelMetaElement
     final RawContent rc = (RawContent) getContent();
     final Number number = (Number) rc.getContent();
     cell.setCellValue(number.doubleValue());
-    
+
   }
 }

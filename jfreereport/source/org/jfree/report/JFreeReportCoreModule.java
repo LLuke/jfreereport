@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: JFreeReportCoreModule.java,v 1.5 2005/01/24 23:57:48 taqua Exp $
+ * $Id: JFreeReportCoreModule.java,v 1.6 2005/01/25 21:39:54 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,37 +43,38 @@ import java.io.InputStream;
 import org.jfree.base.modules.AbstractModule;
 import org.jfree.base.modules.ModuleInitializeException;
 import org.jfree.base.modules.SubSystem;
-import org.jfree.report.resourceloader.ImageFactory;
-import org.jfree.report.resourceloader.PNGImageFactoryModule;
-import org.jfree.report.resourceloader.GIFImageFactoryModule;
-import org.jfree.report.resourceloader.JPEGImageFactoryModule;
 import org.jfree.report.resourceloader.DrawableFactory;
+import org.jfree.report.resourceloader.GIFImageFactoryModule;
+import org.jfree.report.resourceloader.ImageFactory;
+import org.jfree.report.resourceloader.JPEGImageFactoryModule;
+import org.jfree.report.resourceloader.PNGImageFactoryModule;
 import org.jfree.report.util.Log;
 
 
 /**
- * The CoreModule is used to represent the base classes of JFreeReport
- * in a PackageManager-compatible way. Modules may request a certain
- * core-version to be present by referencing to this module.
- * 
+ * The CoreModule is used to represent the base classes of JFreeReport in a
+ * PackageManager-compatible way. Modules may request a certain core-version to be present
+ * by referencing to this module.
+ *
  * @author Thomas Morgner
  */
 public class JFreeReportCoreModule extends AbstractModule
 {
   /**
-   * Creates a new module definition based on the 'coremodule.properties'
-   * file of this package.
-   * 
+   * Creates a new module definition based on the 'coremodule.properties' file of this
+   * package.
+   *
    * @throws ModuleInitializeException if the file could not be loaded.
    */
-  public JFreeReportCoreModule() throws ModuleInitializeException
+  public JFreeReportCoreModule ()
+          throws ModuleInitializeException
   {
     final InputStream in = getClass().getResourceAsStream
-        ("coremodule.properties");
+            ("coremodule.properties");
     if (in == null)
     {
       throw new ModuleInitializeException
-          ("File 'coremodule.properties' not found in JFreeReport package.");
+              ("File 'coremodule.properties' not found in JFreeReport package.");
     }
     loadModuleInfo(in);
   }
@@ -98,7 +99,7 @@ public class JFreeReportCoreModule extends AbstractModule
     factory.registerModule(new JPEGImageFactoryModule());
     if (JFreeReportInfo.isPixieAvailable())
     {
-      Log.info ("Pixie library found. WMF file support will be available.");
+      Log.info("Pixie library found. WMF file support will be available.");
       factory.registerModule("org.jfree.report.resourceloader.WmfImageFactoryModule");
       final DrawableFactory drawableFactory = DrawableFactory.getInstance();
       drawableFactory.registerModule("org.jfree.report.resourceloader.WmfImageFactoryModule");

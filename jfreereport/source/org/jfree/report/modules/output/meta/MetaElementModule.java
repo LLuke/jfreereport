@@ -1,8 +1,8 @@
 package org.jfree.report.modules.output.meta;
 
 import org.jfree.base.modules.AbstractModule;
-import org.jfree.base.modules.SubSystem;
 import org.jfree.base.modules.ModuleInitializeException;
+import org.jfree.base.modules.SubSystem;
 
 public class MetaElementModule extends AbstractModule
 {

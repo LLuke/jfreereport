@@ -25,7 +25,7 @@
  * ---------------------------
  * (C)opyright 2000-2003, by Object Refinery Limited.
  *
- * $Id: SimpleDateFormatFilter.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: SimpleDateFormatFilter.java,v 1.3 2004/05/07 08:24:42 mungady Exp $
  *
  * Changes
  * -------
@@ -36,26 +36,25 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 
 /**
- * A filter that creates string from dates. This filter will format java.util.
- * Date objects using a java.text.SimpleDateFormat to create the string representation for
- * the date obtained from the datasource.
- * <p>
+ * A filter that creates string from dates. This filter will format java.util. Date
+ * objects using a java.text.SimpleDateFormat to create the string representation for the
+ * date obtained from the datasource.
+ * <p/>
  * If the object read from the datasource is no date, the NullValue defined by
  * setNullValue(Object) is returned.
- * <p>
+ * <p/>
  * This implementation uses a SimpleDateFormat and grants more control over the parsing
  * results.
  *
- * @see java.text.SimpleDateFormat
- *
  * @author Thomas Morgner
+ * @see java.text.SimpleDateFormat
  */
 public class SimpleDateFormatFilter extends DateFormatFilter
 {
   /**
    * DefaultConstructor.
    */
-  public SimpleDateFormatFilter()
+  public SimpleDateFormatFilter ()
   {
     setFormatter(new SimpleDateFormat());
   }
@@ -65,7 +64,7 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    *
    * @return The date format object.
    */
-  public SimpleDateFormat getSimpleDateFormat()
+  public SimpleDateFormat getSimpleDateFormat ()
   {
     return (SimpleDateFormat) getFormatter();
   }
@@ -76,7 +75,7 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    * @param format The format.
    * @throws NullPointerException if the format given is null
    */
-  public void setSimpleDateFormat(final SimpleDateFormat format)
+  public void setSimpleDateFormat (final SimpleDateFormat format)
   {
     super.setFormatter(format);
   }
@@ -87,9 +86,9 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    *
    * @param format The format.
    * @throws NullPointerException if the format given is null
-   * @throws ClassCastException if the format given is no DateFormat
+   * @throws ClassCastException   if the format given is no DateFormat
    */
-  public void setFormatter(final Format format)
+  public void setFormatter (final Format format)
   {
     final SimpleDateFormat sdfmt = (SimpleDateFormat) format;
     super.setFormatter(sdfmt);
@@ -99,10 +98,11 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    * Returns the formatString for this SimpleDateFormat. For a more detailed explaination
    * of SimpleDateFormat formatstrings see java.text.SimpleDateFormat.
    *
-   * @see java.text.SimpleDateFormat
    * @return the format string for the used DateFormat.
+   *
+   * @see java.text.SimpleDateFormat
    */
-  public String getFormatString()
+  public String getFormatString ()
   {
     return getSimpleDateFormat().toPattern();
   }
@@ -113,7 +113,7 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    * @param format the formatString
    * @throws IllegalArgumentException if the string is invalid
    */
-  public void setFormatString(final String format)
+  public void setFormatString (final String format)
   {
     if (format == null)
     {
@@ -123,13 +123,14 @@ public class SimpleDateFormatFilter extends DateFormatFilter
   }
 
   /**
-   * Returns a localized formatString for this SimpleDateFormat. For a more detailed explaination
-   * of SimpleDateFormat formatstrings see java.text.SimpleDateFormat.
+   * Returns a localized formatString for this SimpleDateFormat. For a more detailed
+   * explaination of SimpleDateFormat formatstrings see java.text.SimpleDateFormat.
+   *
+   * @return the localized format string.
    *
    * @see java.text.SimpleDateFormat
-   * @return the localized format string.
    */
-  public String getLocalizedFormatString()
+  public String getLocalizedFormatString ()
   {
     return getSimpleDateFormat().toLocalizedPattern();
   }
@@ -141,7 +142,7 @@ public class SimpleDateFormatFilter extends DateFormatFilter
    * @param format the formatString
    * @throws IllegalArgumentException if the string is invalid
    */
-  public void setLocalizedFormatString(final String format)
+  public void setLocalizedFormatString (final String format)
   {
     getSimpleDateFormat().applyLocalizedPattern(format);
   }

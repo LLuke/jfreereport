@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesWriter.java,v 1.10 2005/02/04 19:08:53 taqua Exp $
+ * $Id: TemplatesWriter.java,v 1.11 2005/02/19 13:30:04 taqua Exp $
  *
  * Changes
  * -------
@@ -55,17 +55,19 @@ import org.jfree.xml.CommentHandler;
  */
 public class TemplatesWriter extends AbstractXMLDefinitionWriter
 {
-  /** the standard templates comment hint path. */
+  /**
+   * the standard templates comment hint path.
+   */
   private static final CommentHintPath TEMPLATES_PATH = new CommentHintPath
-      (new String[]{REPORT_DEFINITION_TAG, TEMPLATES_TAG});
+          (new String[]{REPORT_DEFINITION_TAG, TEMPLATES_TAG});
 
   /**
    * Creates a new writer.
    *
-   * @param reportWriter  the report writer.
-   * @param indentLevel the current indention level.
+   * @param reportWriter the report writer.
+   * @param indentLevel  the current indention level.
    */
-  public TemplatesWriter(final ReportWriter reportWriter, final int indentLevel)
+  public TemplatesWriter (final ReportWriter reportWriter, final int indentLevel)
   {
     super(reportWriter, indentLevel);
   }
@@ -73,12 +75,12 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
   /**
    * Writes the templates (not yet supported).
    *
-   * @param writer  the character stream writer.
-   *
-   * @throws IOException if there is an I/O problem.
+   * @param writer the character stream writer.
+   * @throws IOException           if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void write(final Writer writer) throws IOException, ReportWriterException
+  public void write (final Writer writer)
+          throws IOException, ReportWriterException
   {
 
     writeComment(writer, TEMPLATES_PATH, CommentHandler.OPEN_TAG_COMMENT);
@@ -102,7 +104,7 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
     final ArrayList invalidTemplates = new ArrayList();
 
     final TemplateDescription[] td = (TemplateDescription[])
-        l.toArray(new TemplateDescription[l.size()]);
+            l.toArray(new TemplateDescription[l.size()]);
 
     for (int i = 0; i < td.length; i++)
     {
@@ -110,28 +112,28 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
       template.configure(getReportWriter().getConfiguration());
 
       final String templateExtends = (String)
-          hints.getHint(template, "ext.parser.template-reference", String.class);
+              hints.getHint(template, "ext.parser.template-reference", String.class);
       if (templateExtends == null)
       {
         // should not happen with a sane parser here ...
         Log.warn("Invalid parser hint: Template reference missing for template " +
-            template.getName());
+                template.getName());
         invalidTemplates.add(template.getName());
         continue;
       }
       if (invalidTemplates.contains(templateExtends))
       {
         Log.warn("Invalid parser hint: Template reference points to invalid template " +
-            template.getName());
+                template.getName());
         invalidTemplates.add(template.getName());
         continue;
       }
       final TemplateDescription parentTemplate = TemplatesWriter.getTemplateDescription
-          (getReportWriter(), templateExtends);
+              (getReportWriter(), templateExtends);
       if (parentTemplate == null)
       {
         Log.warn("Invalid parser hint: Template reference invalid for template " +
-            template.getName());
+                template.getName());
         invalidTemplates.add(template.getName());
         continue;
       }
@@ -140,7 +142,7 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
       final CommentHintPath templatePath = TEMPLATES_PATH.getInstance();
       templatePath.addName(template);
       final TemplateWriter templateWriter = new TemplateWriter
-          (getReportWriter(), getIndentLevel(), template, parentTemplate, templatePath);
+              (getReportWriter(), getIndentLevel(), template, parentTemplate, templatePath);
       templateWriter.write(writer);
     }
 
@@ -150,17 +152,17 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
   }
 
   /**
-   * Searches the template description that has the given name using
-   * the factories defined in the report writer.
+   * Searches the template description that has the given name using the factories defined
+   * in the report writer.
    *
    * @param writer the report writer
-   * @param name the template description name, never null
-   * @return the template description or null, if there is no such
-   * description.
+   * @param name   the template description name, never null
+   * @return the template description or null, if there is no such description.
+   *
    * @throws NullPointerException if the name is null.
    */
   public static TemplateDescription getTemplateDescription
-      (final ReportWriter writer, final String name)
+          (final ReportWriter writer, final String name)
   {
     // search by name in the parser hints ...
     if (name == null)
@@ -173,7 +175,7 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
       return null;
     }
     final List l = (List) hints.getHint
-      (writer.getReport(), "ext.parser.template-definition", List.class);
+            (writer.getReport(), "ext.parser.template-definition", List.class);
     if (l == null)
     {
       return null;
@@ -183,8 +185,8 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
       return null;
     }
 
-    final TemplateDescription[] td = 
-      (TemplateDescription[]) l.toArray(new TemplateDescription[l.size()]);
+    final TemplateDescription[] td =
+            (TemplateDescription[]) l.toArray(new TemplateDescription[l.size()]);
     for (int i = 0; i < td.length; i++)
     {
       if (td[i].getName().equals(name))

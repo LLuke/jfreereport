@@ -6,10 +6,10 @@ import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.ext.factory.elements.ElementFactoryCollector;
+import org.jfree.util.Log;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
-import org.jfree.util.Log;
 import org.xml.sax.SAXException;
 
 public class BandReadHandler extends ElementReadHandler
@@ -43,7 +43,7 @@ public class BandReadHandler extends ElementReadHandler
     }
     else if (tagName.equals("default-style"))
     {
-      Log.warn ("Tag <default-style> is deprecated. All definitions " +
+      Log.warn("Tag <default-style> is deprecated. All definitions " +
               "have been mapped into the bands primary style sheet.");
       return new StyleReadHandler(getElement().getStyle());
     }
@@ -53,7 +53,7 @@ public class BandReadHandler extends ElementReadHandler
       if (type == null)
       {
         throw new ParseException("The element's 'type' attribute is missing",
-            getRootHandler().getLocator());
+                getRootHandler().getLocator());
       }
 
       final ElementFactoryCollector fc = (ElementFactoryCollector)

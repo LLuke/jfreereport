@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AlignmentTools.java,v 1.3 2005/01/25 00:10:12 taqua Exp $
+ * $Id: AlignmentTools.java,v 1.4 2005/02/19 13:29:58 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,19 +46,19 @@ import org.jfree.report.util.geom.StrictBounds;
 
 public final class AlignmentTools
 {
-  private AlignmentTools()
+  private AlignmentTools ()
   {
   }
 
   /**
    * Translates the given element alignment into a vertical alignment object.
    *
-   * @param va the element alignment.
+   * @param va     the element alignment.
    * @param bounds the bounds of the element
    * @return the created alignment object.
    */
   public static VerticalBoundsAlignment getVerticalLayout
-    (final ElementAlignment va, final StrictBounds bounds)
+          (final ElementAlignment va, final StrictBounds bounds)
   {
     if (va.equals(ElementAlignment.TOP))
     {
@@ -77,12 +77,12 @@ public final class AlignmentTools
   /**
    * Translates the given element alignment into a horizontal alignment object.
    *
-   * @param ha the element alignment.
+   * @param ha     the element alignment.
    * @param bounds the bounds of the element
    * @return the created alignment object.
    */
   public static HorizontalBoundsAlignment getHorizontalLayout
-      (final ElementAlignment ha, final StrictBounds bounds)
+          (final ElementAlignment ha, final StrictBounds bounds)
   {
     if (ha.equals(ElementAlignment.CENTER))
     {
@@ -109,11 +109,11 @@ public final class AlignmentTools
     final Content content = e.getContent();
     final StrictBounds bounds = e.getBounds();
     final ElementAlignment va
-        = (ElementAlignment) e.getProperty(ElementStyleSheet.VALIGNMENT);
+            = (ElementAlignment) e.getProperty(ElementStyleSheet.VALIGNMENT);
     final VerticalBoundsAlignment vba = getVerticalLayout(va, bounds);
 
     final ElementAlignment ha
-        = (ElementAlignment) e.getProperty(ElementStyleSheet.ALIGNMENT);
+            = (ElementAlignment) e.getProperty(ElementStyleSheet.ALIGNMENT);
 
     final HorizontalBoundsAlignment hba = getHorizontalLayout(ha, bounds);
 

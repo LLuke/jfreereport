@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportDialog.java,v 1.8.4.6 2004/12/13 19:26:35 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.11 2005/01/25 00:06:06 taqua Exp $
  *
  * Changes
  * -------
@@ -84,8 +84,8 @@ import org.jfree.report.modules.output.table.html.HtmlProcessor;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
-import org.jfree.ui.action.ActionButton;
 import org.jfree.ui.FilesystemFilter;
+import org.jfree.ui.action.ActionButton;
 
 /**
  * A dialog that is used to perform the printing of a report into an HTML file.
@@ -94,19 +94,29 @@ import org.jfree.ui.FilesystemFilter;
  */
 public class HtmlExportDialog extends JDialog
 {
-  /** The 'HTML encoding' property key. */
+  /**
+   * The 'HTML encoding' property key.
+   */
   public static final String HTML_OUTPUT_ENCODING
-      = "org.jfree.report.modules.output.table.html.Encoding";
-  /** A default value of the 'HTML encoding' property key. */
+          = "org.jfree.report.modules.output.table.html.Encoding";
+  /**
+   * A default value of the 'HTML encoding' property key.
+   */
   public static final String HTML_OUTPUT_ENCODING_DEFAULT = "UTF-16";
 
-  /** Export to a single stream or file. */
+  /**
+   * Export to a single stream or file.
+   */
   public static final int EXPORT_STREAM = 0;
 
-  /** Export to a directory. */
+  /**
+   * Export to a directory.
+   */
   public static final int EXPORT_DIR = 1;
 
-  /** Export to a ZIP file. */
+  /**
+   * Export to a ZIP file.
+   */
   public static final int EXPORT_ZIP = 2;
 
   /**
@@ -117,7 +127,7 @@ public class HtmlExportDialog extends JDialog
     /**
      * Default constructor.
      */
-    public ActionConfirmZip()
+    public ActionConfirmZip ()
     {
       putValue(Action.NAME, getResources().getString("htmlexportdialog.confirm"));
     }
@@ -125,9 +135,9 @@ public class HtmlExportDialog extends JDialog
     /**
      * Receives notification that the action has occurred.
      *
-     * @param e  the action event.
+     * @param e the action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       if (performValidateZip())
       {
@@ -145,7 +155,7 @@ public class HtmlExportDialog extends JDialog
     /**
      * Default constructor.
      */
-    public ActionConfirmDir()
+    public ActionConfirmDir ()
     {
       putValue(Action.NAME, getResources().getString("htmlexportdialog.confirm"));
     }
@@ -153,9 +163,9 @@ public class HtmlExportDialog extends JDialog
     /**
      * Receives notification that the action has occurred.
      *
-     * @param e  the action event.
+     * @param e the action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       if (performValidateDir())
       {
@@ -173,7 +183,7 @@ public class HtmlExportDialog extends JDialog
     /**
      * Default constructor.
      */
-    public ActionConfirmStream()
+    public ActionConfirmStream ()
     {
       putValue(Action.NAME, getResources().getString("htmlexportdialog.confirm"));
     }
@@ -181,9 +191,9 @@ public class HtmlExportDialog extends JDialog
     /**
      * Receives notification that the action has occurred.
      *
-     * @param e  the action event.
+     * @param e the action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       if (performValidateStream())
       {
@@ -201,7 +211,7 @@ public class HtmlExportDialog extends JDialog
     /**
      * Default constructor.
      */
-    public ActionCancel()
+    public ActionCancel ()
     {
       putValue(Action.NAME, getResources().getString("htmlexportdialog.cancel"));
     }
@@ -209,9 +219,9 @@ public class HtmlExportDialog extends JDialog
     /**
      * Receives notification that the action has occurred.
      *
-     * @param e  the action event.
+     * @param e the action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       setConfirmed(false);
       setVisible(false);
@@ -226,7 +236,7 @@ public class HtmlExportDialog extends JDialog
     /**
      * Default constructor.
      */
-    public ActionSelectZipFile()
+    public ActionSelectZipFile ()
     {
       putValue(Action.NAME, getResources().getString("htmlexportdialog.selectZipFile"));
     }
@@ -234,9 +244,9 @@ public class HtmlExportDialog extends JDialog
     /**
      * Receives notification that the action has occurred.
      *
-     * @param e  the action event.
+     * @param e the action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       performSelectFileZip();
     }
@@ -250,7 +260,7 @@ public class HtmlExportDialog extends JDialog
     /**
      * Default constructor.
      */
-    public ActionSelectDirFile()
+    public ActionSelectDirFile ()
     {
       putValue(Action.NAME, getResources().getString("htmlexportdialog.selectDirFile"));
     }
@@ -258,9 +268,9 @@ public class HtmlExportDialog extends JDialog
     /**
      * Receives notification that the action has occurred.
      *
-     * @param e  the action event.
+     * @param e the action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       performSelectFileDir();
     }
@@ -274,7 +284,7 @@ public class HtmlExportDialog extends JDialog
     /**
      * Default constructor.
      */
-    public ActionSelectStreamFile()
+    public ActionSelectStreamFile ()
     {
       putValue(Action.NAME, getResources().getString("htmlexportdialog.selectStreamFile"));
     }
@@ -282,83 +292,125 @@ public class HtmlExportDialog extends JDialog
     /**
      * Receives notification that the action has occurred.
      *
-     * @param e  the action event.
+     * @param e the action event.
      */
-    public void actionPerformed(final ActionEvent e)
+    public void actionPerformed (final ActionEvent e)
     {
       performSelectFileStream();
     }
   }
 
-  /** Cancel action. */
+  /**
+   * Cancel action.
+   */
   private Action actionCancel;
 
-  /** Filename text field. */
+  /**
+   * Filename text field.
+   */
   private JTextField txStreamFilename;
 
-  /** ZIP filename text field. */
+  /**
+   * ZIP filename text field.
+   */
   private JTextField txZipFilename;
 
-  /** Directory filename text field. */
+  /**
+   * Directory filename text field.
+   */
   private JTextField txDirFilename;
 
-  /** ZIP data file name. */
+  /**
+   * ZIP data file name.
+   */
   private JTextField txZipDataFilename;
 
-  /** Directory data file name text field. */
+  /**
+   * Directory data file name text field.
+   */
   private JTextField txDirDataFilename;
 
-  /** Title text field. */
+  /**
+   * Title text field.
+   */
   private JTextField txTitle;
 
-  /** Author text field. */
+  /**
+   * Author text field.
+   */
   private JTextField txAuthor;
 
-  /** A combo-box for selecting the encoding. */
+  /**
+   * A combo-box for selecting the encoding.
+   */
   private JComboBox cbEncoding;
 
-  /** The encoding data model. */
+  /**
+   * The encoding data model.
+   */
   private EncodingComboBoxModel encodingModel;
 
-  /** A check-box for selecting 'strict layout'. */
+  /**
+   * A check-box for selecting 'strict layout'.
+   */
   private JCheckBox cbxStrictLayout;
 
-  /** A radio button for selecting XHTML. */
+  /**
+   * A radio button for selecting XHTML.
+   */
   private JRadioButton rbGenerateXHTML;
 
-  /** A radio button for selecting HTML4. */
+  /**
+   * A radio button for selecting HTML4.
+   */
   private JRadioButton rbGenerateHTML4;
 
-  /** A check-box for... */
+  /**
+   * A check-box for...
+   */
   private JCheckBox cbxCopyExternalReferencesZip;
 
-  /** A check-boc for... */
+  /**
+   * A check-boc for...
+   */
   private JCheckBox cbxCopyExternalReferencesDir;
 
-  /** Confirmed flag. */
+  /**
+   * Confirmed flag.
+   */
   private boolean confirmed;
 
-  /** A file chooser for a ZIP file. */
+  /**
+   * A file chooser for a ZIP file.
+   */
   private JFileChooser fileChooserZip;
 
-  /** A file chooser for a directory. */
+  /**
+   * A file chooser for a directory.
+   */
   private JFileChooser fileChooserDir;
 
-  /** A file chooser for a stream. */
+  /**
+   * A file chooser for a stream.
+   */
   private JFileChooser fileChooserStream;
 
-  /** Tabs for the export selection. */
+  /**
+   * Tabs for the export selection.
+   */
   private JTabbedPane exportSelection;
 
-  /** Localised resources. */
+  /**
+   * Localised resources.
+   */
   private ResourceBundle resources;
 
   /**
    * Creates a new HTML save dialog.
    *
-   * @param owner  the dialog owner.
+   * @param owner the dialog owner.
    */
-  public HtmlExportDialog(final Frame owner)
+  public HtmlExportDialog (final Frame owner)
   {
     super(owner);
     initConstructor();
@@ -367,9 +419,9 @@ public class HtmlExportDialog extends JDialog
   /**
    * Creates a new HTML export dialog.
    *
-   * @param owner  the dialog owner.
+   * @param owner the dialog owner.
    */
-  public HtmlExportDialog(final Dialog owner)
+  public HtmlExportDialog (final Dialog owner)
   {
     super(owner);
     initConstructor();
@@ -378,7 +430,7 @@ public class HtmlExportDialog extends JDialog
   /**
    * Creates a new HTML save dialog.  The created dialog is modal.
    */
-  public HtmlExportDialog()
+  public HtmlExportDialog ()
   {
     initConstructor();
   }
@@ -386,7 +438,7 @@ public class HtmlExportDialog extends JDialog
   /**
    * Initialisation.
    */
-  private void initConstructor()
+  private void initConstructor ()
   {
     setModal(true);
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -396,12 +448,11 @@ public class HtmlExportDialog extends JDialog
 
     addWindowListener(new WindowAdapter()
     {
-      public void windowClosing(final WindowEvent e)
+      public void windowClosing (final WindowEvent e)
       {
         getCancelAction().actionPerformed(null);
       }
-    }
-    );
+    });
   }
 
   /**
@@ -409,18 +460,18 @@ public class HtmlExportDialog extends JDialog
    *
    * @return the cancel action.
    */
-  protected Action getCancelAction()
+  protected Action getCancelAction ()
   {
     return actionCancel;
   }
 
   /**
-   * Retrieves the resources for this dialog. If the resources are not initialized,
-   * they get loaded on the first call to this method.
+   * Retrieves the resources for this dialog. If the resources are not initialized, they
+   * get loaded on the first call to this method.
    *
    * @return this frames ResourceBundle.
    */
-  protected ResourceBundle getResources()
+  protected ResourceBundle getResources ()
   {
     if (resources == null)
     {
@@ -432,7 +483,7 @@ public class HtmlExportDialog extends JDialog
   /**
    * Initializes the Swing components of this dialog.
    */
-  private void initialize()
+  private void initialize ()
   {
     actionCancel = new ActionCancel();
 
@@ -534,11 +585,11 @@ public class HtmlExportDialog extends JDialog
 
     exportSelection = new JTabbedPane();
     exportSelection.add(getResources().getString
-        ("htmlexportdialog.stream-export"), createStreamExportPanel());
+            ("htmlexportdialog.stream-export"), createStreamExportPanel());
     exportSelection.add(getResources().getString
-        ("htmlexportdialog.directory-export"), createDirExportPanel());
+            ("htmlexportdialog.directory-export"), createDirExportPanel());
     exportSelection.add(getResources().getString
-        ("htmlexportdialog.zip-export"), createZipExportPanel());
+            ("htmlexportdialog.zip-export"), createZipExportPanel());
 
     gbc = new GridBagConstraints();
     gbc.anchor = GridBagConstraints.NORTHWEST;
@@ -560,16 +611,14 @@ public class HtmlExportDialog extends JDialog
    *
    * @return The panel.
    */
-  private JPanel createDirExportPanel()
+  private JPanel createDirExportPanel ()
   {
     final JPanel contentPane = new JPanel();
     contentPane.setLayout(new GridBagLayout());
 
     final JLabel lblDirFileName = new JLabel(getResources().getString("htmlexportdialog.filename"));
-    final JLabel lblDirDataFileName = new JLabel(
-        getResources().getString("htmlexportdialog.datafilename"));
-    cbxCopyExternalReferencesDir = new JCheckBox(
-        getResources().getString("htmlexportdialog.copy-external-references"));
+    final JLabel lblDirDataFileName = new JLabel(getResources().getString("htmlexportdialog.datafilename"));
+    cbxCopyExternalReferencesDir = new JCheckBox(getResources().getString("htmlexportdialog.copy-external-references"));
 
     txDirDataFilename = new JTextField();
     txDirFilename = new JTextField();
@@ -622,7 +671,7 @@ public class HtmlExportDialog extends JDialog
     buttonPanel.add(btnCancel);
     btnConfirm.setDefaultCapable(true);
     buttonPanel.registerKeyboardAction(actionConfirm, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
-        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+            JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.NONE;
@@ -641,16 +690,14 @@ public class HtmlExportDialog extends JDialog
    *
    * @return The panel.
    */
-  private JPanel createZipExportPanel()
+  private JPanel createZipExportPanel ()
   {
     final JPanel contentPane = new JPanel();
     contentPane.setLayout(new GridBagLayout());
 
     final JLabel lblZipFileName = new JLabel(getResources().getString("htmlexportdialog.filename"));
-    final JLabel lblZipDataFileName = new JLabel(
-        getResources().getString("htmlexportdialog.datafilename"));
-    cbxCopyExternalReferencesZip = new JCheckBox(
-        getResources().getString("htmlexportdialog.copy-external-references"));
+    final JLabel lblZipDataFileName = new JLabel(getResources().getString("htmlexportdialog.datafilename"));
+    cbxCopyExternalReferencesZip = new JCheckBox(getResources().getString("htmlexportdialog.copy-external-references"));
 
     txZipDataFilename = new JTextField();
     txZipFilename = new JTextField();
@@ -703,7 +750,7 @@ public class HtmlExportDialog extends JDialog
     buttonPanel.add(btnCancel);
     btnConfirm.setDefaultCapable(true);
     buttonPanel.registerKeyboardAction(actionConfirm, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
-        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+            JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.NONE;
@@ -722,13 +769,13 @@ public class HtmlExportDialog extends JDialog
    *
    * @return The panel.
    */
-  private JPanel createStreamExportPanel()
+  private JPanel createStreamExportPanel ()
   {
     final JPanel contentPane = new JPanel();
     contentPane.setLayout(new GridBagLayout());
 
     final JLabel lblStreamFileName =
-        new JLabel(getResources().getString("htmlexportdialog.filename"));
+            new JLabel(getResources().getString("htmlexportdialog.filename"));
     txStreamFilename = new JTextField();
 
     GridBagConstraints gbc = new GridBagConstraints();
@@ -759,7 +806,7 @@ public class HtmlExportDialog extends JDialog
     buttonPanel.add(btnCancel);
     btnConfirm.setDefaultCapable(true);
     buttonPanel.registerKeyboardAction(actionConfirm, KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0),
-        JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+            JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.NONE;
@@ -778,7 +825,7 @@ public class HtmlExportDialog extends JDialog
    *
    * @return the title
    */
-  public String getHTMLTitle()
+  public String getHTMLTitle ()
   {
     return txTitle.getText();
   }
@@ -788,7 +835,7 @@ public class HtmlExportDialog extends JDialog
    *
    * @param title the title
    */
-  public void setHTMLTitle(final String title)
+  public void setHTMLTitle (final String title)
   {
     this.txTitle.setText(title);
   }
@@ -798,30 +845,30 @@ public class HtmlExportDialog extends JDialog
    *
    * @return the name of the author of this report.
    */
-  public String getAuthor()
+  public String getAuthor ()
   {
     return txAuthor.getText();
   }
 
   /**
-   * Defines the Author of the report. Any freeform text is valid. This defaults to the value of
-   * the systemProperty "user.name".
+   * Defines the Author of the report. Any freeform text is valid. This defaults to the
+   * value of the systemProperty "user.name".
    *
    * @param author the name of the author.
    */
-  public void setAuthor(final String author)
+  public void setAuthor (final String author)
   {
     this.txAuthor.setText(author);
   }
 
   /**
-   * Gets the confirmation state of the dialog. A confirmed dialog has no invalid
-   * settings and the user confirmed any resource conflicts.
+   * Gets the confirmation state of the dialog. A confirmed dialog has no invalid settings
+   * and the user confirmed any resource conflicts.
    *
    * @return true, if the dialog has been confirmed and the HTML file should be saved,
-   * false otherwise.
+   *         false otherwise.
    */
-  public boolean isConfirmed()
+  public boolean isConfirmed ()
   {
     return confirmed;
   }
@@ -831,7 +878,7 @@ public class HtmlExportDialog extends JDialog
    *
    * @param confirmed set to true, if OK was pressed, false otherwise
    */
-  protected void setConfirmed(final boolean confirmed)
+  protected void setConfirmed (final boolean confirmed)
   {
     this.confirmed = confirmed;
   }
@@ -839,7 +886,7 @@ public class HtmlExportDialog extends JDialog
   /**
    * Clears all selections and input fields.
    */
-  public void clear()
+  public void clear ()
   {
     txAuthor.setText(System.getProperty("user.name"));
     txDirFilename.setText("");
@@ -848,8 +895,7 @@ public class HtmlExportDialog extends JDialog
     txZipDataFilename.setText("");
     txStreamFilename.setText("");
     txTitle.setText("");
-    cbEncoding.setSelectedIndex(
-        encodingModel.indexOf(System.getProperty("file.encoding", "Cp1251")));
+    cbEncoding.setSelectedIndex(encodingModel.indexOf(System.getProperty("file.encoding", "Cp1251")));
     cbxCopyExternalReferencesDir.setSelected(false);
     cbxCopyExternalReferencesZip.setSelected(false);
     cbxStrictLayout.setSelected(false);
@@ -905,7 +951,7 @@ public class HtmlExportDialog extends JDialog
    *
    * @return The file name.
    */
-  public String getDirDataFilename()
+  public String getDirDataFilename ()
   {
     return txDirDataFilename.getText();
   }
@@ -913,9 +959,9 @@ public class HtmlExportDialog extends JDialog
   /**
    * Sets the directory data file name.
    *
-   * @param dirFilename  the file name.
+   * @param dirFilename the file name.
    */
-  public void setDirDataFilename(final String dirFilename)
+  public void setDirDataFilename (final String dirFilename)
   {
     this.txDirDataFilename.setText(dirFilename);
   }
@@ -925,7 +971,7 @@ public class HtmlExportDialog extends JDialog
    *
    * @return The directory file name.
    */
-  public String getDirFilename()
+  public String getDirFilename ()
   {
     return txDirFilename.getText();
   }
@@ -933,9 +979,9 @@ public class HtmlExportDialog extends JDialog
   /**
    * Sets the directory file name.
    *
-   * @param dirFilename  the file name.
+   * @param dirFilename the file name.
    */
-  public void setDirFilename(final String dirFilename)
+  public void setDirFilename (final String dirFilename)
   {
     this.txDirFilename.setText(dirFilename);
   }
@@ -945,7 +991,7 @@ public class HtmlExportDialog extends JDialog
    *
    * @return The file name.
    */
-  public String getZipFilename()
+  public String getZipFilename ()
   {
     return txZipFilename.getText();
   }
@@ -953,9 +999,9 @@ public class HtmlExportDialog extends JDialog
   /**
    * Sets the zip file name.
    *
-   * @param zipFilename  the zip file name.
+   * @param zipFilename the zip file name.
    */
-  public void setZipFilename(final String zipFilename)
+  public void setZipFilename (final String zipFilename)
   {
     this.txZipFilename.setText(zipFilename);
   }
@@ -965,7 +1011,7 @@ public class HtmlExportDialog extends JDialog
    *
    * @return The zip data file name.
    */
-  public String getZipDataFilename()
+  public String getZipDataFilename ()
   {
     return txZipDataFilename.getText();
   }
@@ -973,9 +1019,9 @@ public class HtmlExportDialog extends JDialog
   /**
    * Sets the zip data file name.
    *
-   * @param zipFilename  the file name.
+   * @param zipFilename the file name.
    */
-  public void setZipDataFilename(final String zipFilename)
+  public void setZipDataFilename (final String zipFilename)
   {
     this.txZipDataFilename.setText(zipFilename);
   }
@@ -985,7 +1031,7 @@ public class HtmlExportDialog extends JDialog
    *
    * @return The file name.
    */
-  public String getStreamFilename()
+  public String getStreamFilename ()
   {
     return txStreamFilename.getText();
   }
@@ -993,9 +1039,9 @@ public class HtmlExportDialog extends JDialog
   /**
    * Sets the stream file name.
    *
-   * @param streamFilename  the file name.
+   * @param streamFilename the file name.
    */
-  public void setStreamFilename(final String streamFilename)
+  public void setStreamFilename (final String streamFilename)
   {
     this.txStreamFilename.setText(streamFilename);
   }
@@ -1003,9 +1049,9 @@ public class HtmlExportDialog extends JDialog
   /**
    * Sets the radio buttons for XHTML or HTML4 generation.
    *
-   * @param generateXHTML  boolean.
+   * @param generateXHTML boolean.
    */
-  public void setGenerateXHTML(final boolean generateXHTML)
+  public void setGenerateXHTML (final boolean generateXHTML)
   {
     if (generateXHTML)
     {
@@ -1022,7 +1068,7 @@ public class HtmlExportDialog extends JDialog
    *
    * @return A boolean.
    */
-  public boolean isGenerateXHTML()
+  public boolean isGenerateXHTML ()
   {
     return rbGenerateXHTML.isSelected();
   }
@@ -1032,7 +1078,7 @@ public class HtmlExportDialog extends JDialog
    *
    * @return A boolean.
    */
-  public boolean isStrictLayout()
+  public boolean isStrictLayout ()
   {
     return cbxStrictLayout.isSelected();
   }
@@ -1040,9 +1086,9 @@ public class HtmlExportDialog extends JDialog
   /**
    * Sets the 'strict layout' check-box.
    *
-   * @param s  boolean.
+   * @param s boolean.
    */
-  public void setStrictLayout(final boolean s)
+  public void setStrictLayout (final boolean s)
   {
     cbxStrictLayout.setSelected(s);
   }
@@ -1052,7 +1098,7 @@ public class HtmlExportDialog extends JDialog
    *
    * @return The encoding name.
    */
-  public String getEncoding()
+  public String getEncoding ()
   {
     if (cbEncoding.getSelectedIndex() == -1)
     {
@@ -1067,9 +1113,9 @@ public class HtmlExportDialog extends JDialog
   /**
    * Sets the encoding.
    *
-   * @param encoding  the encoding name.
+   * @param encoding the encoding name.
    */
-  public void setEncoding(final String encoding)
+  public void setEncoding (final String encoding)
   {
     cbEncoding.setSelectedIndex(encodingModel.indexOf(encoding));
   }
@@ -1077,7 +1123,7 @@ public class HtmlExportDialog extends JDialog
   /**
    * Selects a file to use as target for the report processing.
    */
-  protected void performSelectFileStream()
+  protected void performSelectFileStream ()
   {
     final File file = new File(getStreamFilename());
 
@@ -1085,8 +1131,8 @@ public class HtmlExportDialog extends JDialog
     {
       fileChooserStream = new JFileChooser();
       fileChooserStream.addChoosableFileFilter
-          (new FilesystemFilter(new String[]{".html", ".htm"},
-              getResources().getString("htmlexportdialog.html-documents"), true));
+              (new FilesystemFilter(new String[]{".html", ".htm"},
+                      getResources().getString("htmlexportdialog.html-documents"), true));
       fileChooserStream.setMultiSelectionEnabled(false);
     }
 
@@ -1100,7 +1146,7 @@ public class HtmlExportDialog extends JDialog
 
       // Test if ends on html
       if ((StringUtil.endsWithIgnoreCase(selFileName, ".html") == false)
-          && (StringUtil.endsWithIgnoreCase(selFileName, ".htm") == false))
+              && (StringUtil.endsWithIgnoreCase(selFileName, ".htm") == false))
       {
         selFileName = selFileName + ".html";
       }
@@ -1111,7 +1157,7 @@ public class HtmlExportDialog extends JDialog
   /**
    * Selects a file to use as target for the report processing.
    */
-  protected void performSelectFileZip()
+  protected void performSelectFileZip ()
   {
     final File file = new File(getZipFilename());
 
@@ -1119,8 +1165,8 @@ public class HtmlExportDialog extends JDialog
     {
       fileChooserZip = new JFileChooser();
       fileChooserZip.addChoosableFileFilter
-          (new FilesystemFilter(new String[]{".zip", ".jar"},
-              getResources().getString("htmlexportdialog.zip-archives"), true));
+              (new FilesystemFilter(new String[]{".zip", ".jar"},
+                      getResources().getString("htmlexportdialog.zip-archives"), true));
       fileChooserZip.setMultiSelectionEnabled(false);
     }
 
@@ -1144,13 +1190,13 @@ public class HtmlExportDialog extends JDialog
   /**
    * Selects a file to use as target for the report processing.
    */
-  protected void performSelectFileDir()
+  protected void performSelectFileDir ()
   {
     if (fileChooserDir == null)
     {
       fileChooserDir = new JFileChooser();
       fileChooserDir.addChoosableFileFilter(new FilesystemFilter(new String[]{".html", ".htm"},
-          getResources().getString("htmlexportdialog.html-documents"), true));
+              getResources().getString("htmlexportdialog.html-documents"), true));
       fileChooserDir.setMultiSelectionEnabled(false);
     }
 
@@ -1164,7 +1210,7 @@ public class HtmlExportDialog extends JDialog
       String selFileName = selFile.getAbsolutePath();
       // Test if ends on html
       if ((StringUtil.endsWithIgnoreCase(selFileName, ".html") == false)
-          && (StringUtil.endsWithIgnoreCase(selFileName, ".htm") == false))
+              && (StringUtil.endsWithIgnoreCase(selFileName, ".htm") == false))
       {
         selFileName = selFileName + ".html";
       }
@@ -1173,20 +1219,20 @@ public class HtmlExportDialog extends JDialog
   }
 
   /**
-   * Validates the contents of the dialog's input fields. If the selected file exists, it is also
-   * checked for validity.
+   * Validates the contents of the dialog's input fields. If the selected file exists, it
+   * is also checked for validity.
    *
    * @return true, if the input is valid, false otherwise
    */
-  public boolean performValidateStream()
+  public boolean performValidateStream ()
   {
     final String filename = getStreamFilename();
     if (filename.trim().length() == 0)
     {
       JOptionPane.showMessageDialog(this,
-          getResources().getString("htmlexportdialog.targetIsEmpty"),
-          getResources().getString("htmlexportdialog.errorTitle"),
-          JOptionPane.ERROR_MESSAGE);
+              getResources().getString("htmlexportdialog.targetIsEmpty"),
+              getResources().getString("htmlexportdialog.errorTitle"),
+              JOptionPane.ERROR_MESSAGE);
       return false;
     }
     final File f = new File(filename);
@@ -1195,29 +1241,27 @@ public class HtmlExportDialog extends JDialog
       if (f.isFile() == false)
       {
         JOptionPane.showMessageDialog(this,
-            getResources().getString("htmlexportdialog.targetIsNoFile"),
-            getResources().getString("htmlexportdialog.errorTitle"),
-            JOptionPane.ERROR_MESSAGE);
+                getResources().getString("htmlexportdialog.targetIsNoFile"),
+                getResources().getString("htmlexportdialog.errorTitle"),
+                JOptionPane.ERROR_MESSAGE);
         return false;
       }
       if (f.canWrite() == false)
       {
         JOptionPane.showMessageDialog(this,
-            getResources().getString(
-                "htmlexportdialog.targetIsNotWritable"),
-            getResources().getString("htmlexportdialog.errorTitle"),
-            JOptionPane.ERROR_MESSAGE);
+                getResources().getString("htmlexportdialog.targetIsNotWritable"),
+                getResources().getString("htmlexportdialog.errorTitle"),
+                JOptionPane.ERROR_MESSAGE);
         return false;
       }
       final String key1 = "htmlexportdialog.targetOverwriteConfirmation";
       final String key2 = "htmlexportdialog.targetOverwriteTitle";
       if (JOptionPane.showConfirmDialog(this,
-          MessageFormat.format(getResources().getString(key1),
-              new Object[]{getStreamFilename()}
-          ),
-          getResources().getString(key2),
-          JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-          == JOptionPane.NO_OPTION)
+              MessageFormat.format(getResources().getString(key1),
+                      new Object[]{getStreamFilename()}),
+              getResources().getString(key2),
+              JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+              == JOptionPane.NO_OPTION)
       {
         return false;
       }
@@ -1227,20 +1271,20 @@ public class HtmlExportDialog extends JDialog
   }
 
   /**
-   * Validates the contents of the dialog's input fields. If the selected file exists, it is also
-   * checked for validity.
+   * Validates the contents of the dialog's input fields. If the selected file exists, it
+   * is also checked for validity.
    *
    * @return true, if the input is valid, false otherwise
    */
-  public boolean performValidateZip()
+  public boolean performValidateZip ()
   {
     final String filename = getZipFilename();
     if (filename.trim().length() == 0)
     {
       JOptionPane.showMessageDialog(this,
-          getResources().getString("htmlexportdialog.targetIsEmpty"),
-          getResources().getString("htmlexportdialog.errorTitle"),
-          JOptionPane.ERROR_MESSAGE);
+              getResources().getString("htmlexportdialog.targetIsEmpty"),
+              getResources().getString("htmlexportdialog.errorTitle"),
+              JOptionPane.ERROR_MESSAGE);
       return false;
     }
     final File f = new File(filename);
@@ -1249,29 +1293,27 @@ public class HtmlExportDialog extends JDialog
       if (f.isFile() == false)
       {
         JOptionPane.showMessageDialog(this,
-            getResources().getString("htmlexportdialog.targetIsNoFile"),
-            getResources().getString("htmlexportdialog.errorTitle"),
-            JOptionPane.ERROR_MESSAGE);
+                getResources().getString("htmlexportdialog.targetIsNoFile"),
+                getResources().getString("htmlexportdialog.errorTitle"),
+                JOptionPane.ERROR_MESSAGE);
         return false;
       }
       if (f.canWrite() == false)
       {
         JOptionPane.showMessageDialog(this,
-            getResources().getString(
-                "htmlexportdialog.targetIsNotWritable"),
-            getResources().getString("htmlexportdialog.errorTitle"),
-            JOptionPane.ERROR_MESSAGE);
+                getResources().getString("htmlexportdialog.targetIsNotWritable"),
+                getResources().getString("htmlexportdialog.errorTitle"),
+                JOptionPane.ERROR_MESSAGE);
         return false;
       }
       final String key1 = "htmlexportdialog.targetOverwriteConfirmation";
       final String key2 = "htmlexportdialog.targetOverwriteTitle";
       if (JOptionPane.showConfirmDialog(this,
-          MessageFormat.format(getResources().getString(key1),
-              new Object[]{getZipFilename()}
-          ),
-          getResources().getString(key2),
-          JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-          == JOptionPane.NO_OPTION)
+              MessageFormat.format(getResources().getString(key1),
+                      new Object[]{getZipFilename()}),
+              getResources().getString(key2),
+              JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+              == JOptionPane.NO_OPTION)
       {
         return false;
       }
@@ -1285,10 +1327,9 @@ public class HtmlExportDialog extends JDialog
       if (IOUtils.getInstance().isSubDirectory(baseDir, dataDir) == false)
       {
         JOptionPane.showMessageDialog(this,
-            getResources().getString(
-                "htmlexportdialog.targetPathIsAbsolute"),
-            getResources().getString("htmlexportdialog.errorTitle"),
-            JOptionPane.ERROR_MESSAGE);
+                getResources().getString("htmlexportdialog.targetPathIsAbsolute"),
+                getResources().getString("htmlexportdialog.errorTitle"),
+                JOptionPane.ERROR_MESSAGE);
         return false;
       }
     }
@@ -1301,25 +1342,25 @@ public class HtmlExportDialog extends JDialog
   }
 
   /**
-   * Opens the dialog to query all necessary input from the user.
-   * This will not start the processing, as this is done elsewhere.
-   * 
+   * Opens the dialog to query all necessary input from the user. This will not start the
+   * processing, as this is done elsewhere.
+   *
    * @param report the report that should be processed.
    * @return true, if the processing should continue, false otherwise.
    */
-  public boolean performQueryForExport(final JFreeReport report)
+  public boolean performQueryForExport (final JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
     final ConfigStorage storage = ConfigFactory.getInstance().getUserStorage();
     try
     {
       setDialogContents(storage.loadProperties
-          (ConfigFactory.encodePath(report.getName() + "_htmlexport"),
-              new Properties()));
+              (ConfigFactory.encodePath(report.getName() + "_htmlexport"),
+                      new Properties()));
     }
     catch (Exception cse)
     {
-      Log.debug ("Unable to load the defaults in HTML export dialog.");
+      Log.debug("Unable to load the defaults in HTML export dialog.");
     }
 
     setModal(true);
@@ -1333,12 +1374,12 @@ public class HtmlExportDialog extends JDialog
     try
     {
       storage.storeProperties
-          (ConfigFactory.encodePath(report.getName() + "_htmlexport"),
-              getDialogContents());
+              (ConfigFactory.encodePath(report.getName() + "_htmlexport"),
+                      getDialogContents());
     }
     catch (ConfigStoreException cse)
     {
-      Log.debug ("Unable to store the defaults in HTML export dialog.");
+      Log.debug("Unable to store the defaults in HTML export dialog.");
     }
     return true;
   }
@@ -1348,7 +1389,7 @@ public class HtmlExportDialog extends JDialog
    *
    * @return the selected Export method, one of EXPORT_STREAM, EXPORT_ZIP or EXPORT_DIR.
    */
-  public int getSelectedExportMethod()
+  public int getSelectedExportMethod ()
   {
     return exportSelection.getSelectedIndex();
   }
@@ -1356,28 +1397,28 @@ public class HtmlExportDialog extends JDialog
   /**
    * Sets the export method.
    *
-   * @param index  the method index.
+   * @param index the method index.
    */
-  public void setSelectedExportMethod(final int index)
+  public void setSelectedExportMethod (final int index)
   {
     exportSelection.setSelectedIndex(index);
   }
 
   /**
-   * Validates the contents of the dialogs input fields. If the selected file exists, it is also
-   * checked for validity.
+   * Validates the contents of the dialogs input fields. If the selected file exists, it
+   * is also checked for validity.
    *
    * @return true, if the input is valid, false otherwise
    */
-  public boolean performValidateDir()
+  public boolean performValidateDir ()
   {
     final String filename = getDirFilename();
     if (filename.trim().length() == 0)
     {
       JOptionPane.showMessageDialog(this,
-          getResources().getString("htmlexportdialog.targetIsEmpty"),
-          getResources().getString("htmlexportdialog.errorTitle"),
-          JOptionPane.ERROR_MESSAGE);
+              getResources().getString("htmlexportdialog.targetIsEmpty"),
+              getResources().getString("htmlexportdialog.errorTitle"),
+              JOptionPane.ERROR_MESSAGE);
       return false;
     }
     final File f = new File(filename);
@@ -1386,29 +1427,27 @@ public class HtmlExportDialog extends JDialog
       if (f.isFile() == false)
       {
         JOptionPane.showMessageDialog(this,
-            getResources().getString("htmlexportdialog.targetIsNoFile"),
-            getResources().getString("htmlexportdialog.errorTitle"),
-            JOptionPane.ERROR_MESSAGE);
+                getResources().getString("htmlexportdialog.targetIsNoFile"),
+                getResources().getString("htmlexportdialog.errorTitle"),
+                JOptionPane.ERROR_MESSAGE);
         return false;
       }
       if (f.canWrite() == false)
       {
         JOptionPane.showMessageDialog(this,
-            getResources().getString(
-                "htmlexportdialog.targetIsNotWritable"),
-            getResources().getString("htmlexportdialog.errorTitle"),
-            JOptionPane.ERROR_MESSAGE);
+                getResources().getString("htmlexportdialog.targetIsNotWritable"),
+                getResources().getString("htmlexportdialog.errorTitle"),
+                JOptionPane.ERROR_MESSAGE);
         return false;
       }
       final String key1 = "htmlexportdialog.targetOverwriteConfirmation";
       final String key2 = "htmlexportdialog.targetOverwriteTitle";
       if (JOptionPane.showConfirmDialog(this,
-          MessageFormat.format(getResources().getString(key1),
-              new Object[]{getDirFilename()}
-          ),
-          getResources().getString(key2),
-          JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-          == JOptionPane.NO_OPTION)
+              MessageFormat.format(getResources().getString(key1),
+                      new Object[]{getDirFilename()}),
+              getResources().getString(key2),
+              JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+              == JOptionPane.NO_OPTION)
       {
         return false;
       }
@@ -1426,10 +1465,9 @@ public class HtmlExportDialog extends JDialog
       if (dataDir.isDirectory() == false)
       {
         JOptionPane.showMessageDialog(this,
-            getResources().getString(
-                "htmlexportdialog.targetDataDirIsNoDirectory"),
-            getResources().getString("htmlexportdialog.errorTitle"),
-            JOptionPane.ERROR_MESSAGE);
+                getResources().getString("htmlexportdialog.targetDataDirIsNoDirectory"),
+                getResources().getString("htmlexportdialog.errorTitle"),
+                JOptionPane.ERROR_MESSAGE);
         return false;
 
       }
@@ -1439,12 +1477,11 @@ public class HtmlExportDialog extends JDialog
       final String key1 = "htmlexportdialog.targetCreateDataDirConfirmation";
       final String key2 = "htmlexportdialog.targetCreateDataDirTitle";
       if (JOptionPane.showConfirmDialog(this,
-          MessageFormat.format(getResources().getString(key1),
-              new Object[]{getDirFilename()}
-          ),
-          getResources().getString(key2),
-          JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
-          == JOptionPane.NO_OPTION)
+              MessageFormat.format(getResources().getString(key1),
+                      new Object[]{getDirFilename()}),
+              getResources().getString(key2),
+              JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)
+              == JOptionPane.NO_OPTION)
       {
         return false;
       }
@@ -1453,66 +1490,61 @@ public class HtmlExportDialog extends JDialog
   }
 
   /**
-   * Shows the exception dialog by using localized messages. The message base is
-   * used to construct the localisation key by appending ".title" and ".message" to the
-   * base name.
+   * Shows the exception dialog by using localized messages. The message base is used to
+   * construct the localisation key by appending ".title" and ".message" to the base
+   * name.
    *
-   * @param localisationBase  the resource key prefix.
-   * @param e  the exception.
+   * @param localisationBase the resource key prefix.
+   * @param e                the exception.
    */
-  private void showExceptionDialog(final String localisationBase, final Exception e)
+  private void showExceptionDialog (final String localisationBase, final Exception e)
   {
-    ExceptionDialog.showExceptionDialog(
-        getResources().getString(localisationBase + ".title"),
-        MessageFormat.format(
-            getResources().getString(localisationBase + ".message"),
-            new Object[]{e.getLocalizedMessage()}
-        ),
-        e);
+    ExceptionDialog.showExceptionDialog(getResources().getString(localisationBase + ".title"),
+            MessageFormat.format(getResources().getString(localisationBase + ".message"),
+                    new Object[]{e.getLocalizedMessage()}),
+            e);
   }
 
   /**
    * Initialises the Html export dialog from the settings in the report configuration.
    *
-   * @param config  the report configuration.
+   * @param config the report configuration.
    */
-  public void initFromConfiguration(final ReportConfiguration config)
+  public void initFromConfiguration (final ReportConfiguration config)
   {
     final String strict = config.getConfigProperty
-        (HtmlProcessor.CONFIGURATION_PREFIX +
-        HtmlProcessor.STRICT_LAYOUT,
-            config.getConfigProperty(TableProcessor.STRICT_LAYOUT,
-                TableProcessor.STRICT_LAYOUT_DEFAULT));
+            (HtmlProcessor.CONFIGURATION_PREFIX +
+            HtmlProcessor.STRICT_LAYOUT,
+                    config.getConfigProperty(TableProcessor.STRICT_LAYOUT,
+                            TableProcessor.STRICT_LAYOUT_DEFAULT));
     setStrictLayout(strict.equals("true"));
     final String encoding = config.getConfigProperty
-        (HtmlProcessor.CONFIGURATION_PREFIX +
-        HtmlProcessor.ENCODING, HtmlProcessor.ENCODING_DEFAULT);
+            (HtmlProcessor.CONFIGURATION_PREFIX +
+            HtmlProcessor.ENCODING, HtmlProcessor.ENCODING_DEFAULT);
     setAuthor
-        (config.getConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
-        HtmlProcessor.AUTHOR, getAuthor()));
+            (config.getConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
+            HtmlProcessor.AUTHOR, getAuthor()));
     setHTMLTitle
-        (config.getConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
-        HtmlProcessor.TITLE, getHTMLTitle()));
+            (config.getConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
+            HtmlProcessor.TITLE, getHTMLTitle()));
     encodingModel.ensureEncodingAvailable(encoding);
     setEncoding(encoding);
   }
 
   /**
-   * Stores the input from the dialog into the report configuration of the 
-   * report.
-   * 
-   * @param config the report configuration that should receive the new
-   * settings.
+   * Stores the input from the dialog into the report configuration of the report.
+   *
+   * @param config the report configuration that should receive the new settings.
    */
-  public void storeToConfiguration(final ReportConfiguration config)
+  public void storeToConfiguration (final ReportConfiguration config)
   {
     config.setConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
-        HtmlProcessor.ENCODING, getEncoding());
+            HtmlProcessor.ENCODING, getEncoding());
     config.setConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
-        HtmlProcessor.AUTHOR, getAuthor());
+            HtmlProcessor.AUTHOR, getAuthor());
     config.setConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
-        HtmlProcessor.TITLE, getHTMLTitle());
+            HtmlProcessor.TITLE, getHTMLTitle());
     config.setConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
-        HtmlProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));
+            HtmlProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AbstractTemplate.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: AbstractTemplate.java,v 1.3 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -45,22 +45,24 @@ package org.jfree.report.filter.templates;
  */
 public abstract class AbstractTemplate implements Template
 {
-  /** The template name. */
+  /**
+   * The template name.
+   */
   private String name;
 
   /**
    * Creates a new template.
    */
-  public AbstractTemplate()
+  public AbstractTemplate ()
   {
   }
 
   /**
    * Sets the template name.
    *
-   * @param name  the name (<code>null</code> not permitted).
+   * @param name the name (<code>null</code> not permitted).
    */
-  public void setName(final String name)
+  public void setName (final String name)
   {
     if (name == null)
     {
@@ -74,7 +76,7 @@ public abstract class AbstractTemplate implements Template
    *
    * @return The name.
    */
-  public String getName()
+  public String getName ()
   {
     return name;
   }
@@ -86,7 +88,8 @@ public abstract class AbstractTemplate implements Template
    *
    * @throws CloneNotSupportedException this should never happen.
    */
-  public Object clone() throws CloneNotSupportedException
+  public Object clone ()
+          throws CloneNotSupportedException
   {
     return super.clone();
   }
@@ -96,7 +99,7 @@ public abstract class AbstractTemplate implements Template
    *
    * @return A clone.
    */
-  public Template getInstance()
+  public Template getInstance ()
   {
     try
     {

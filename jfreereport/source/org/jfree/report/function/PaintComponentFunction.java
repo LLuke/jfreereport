@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.12 2005/02/04 19:22:54 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.13 2005/02/19 13:29:55 taqua Exp $
  *
  * Changes
  * -------
@@ -64,29 +64,39 @@ import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictGeomUtility;
 
 /**
- * Paints a AWT or Swing Component, fitting the component into the element bounds.
- * The component must be contained in the dataRow.
- * <p>
+ * Paints a AWT or Swing Component, fitting the component into the element bounds. The
+ * component must be contained in the dataRow.
+ * <p/>
  * In an headless environment this function wont work and will always return null.
  *
  * @author Thomas Morgner
  */
 public class PaintComponentFunction extends AbstractFunction
-    implements LayoutListener, Serializable
+        implements LayoutListener, Serializable
 {
-  /** Literal text for the 'field' property. */
+  /**
+   * Literal text for the 'field' property.
+   */
   public static final String FIELD_PROPERTY = "field";
 
-  /** Literal text for the 'field' property. */
+  /**
+   * Literal text for the 'field' property.
+   */
   public static final String ELEMENT_PROPERTY = "element";
 
-  /** Literal text for the 'scale' property. */
+  /**
+   * Literal text for the 'scale' property.
+   */
   public static final String SCALE_PROPERTY = "scale";
 
-  /** the created image, cached for getValue(). */
+  /**
+   * the created image, cached for getValue().
+   */
   private transient Image image;
 
-  /** supplies a valid peer for the draw operation. */
+  /**
+   * supplies a valid peer for the draw operation.
+   */
   private transient Frame peerSupply;
   private String element;
   private String field;
@@ -95,7 +105,7 @@ public class PaintComponentFunction extends AbstractFunction
   /**
    * DefaultConstructor.
    */
-  public PaintComponentFunction()
+  public PaintComponentFunction ()
   {
     if (isHeadless() == false)
     {
@@ -106,27 +116,25 @@ public class PaintComponentFunction extends AbstractFunction
   }
 
   /**
-   * Returns the element used by the function.
-   * <P>
-   * The element name corresponds to a element in the report. The element name must
-   * be unique, as the first occurence of the element is used.
+   * Returns the element used by the function. <P> The element name corresponds to a
+   * element in the report. The element name must be unique, as the first occurence of the
+   * element is used.
    *
    * @return The field name.
    */
-  public String getElement()
+  public String getElement ()
   {
     return element;
   }
 
   /**
-   * Sets the element name for the function.
-   * <P>
-   * The element name corresponds to a element in the report. The element name must
-   * be unique, as the first occurence of the element is used.
+   * Sets the element name for the function. <P> The element name corresponds to a element
+   * in the report. The element name must be unique, as the first occurence of the element
+   * is used.
    *
-   * @param field  the field name (null not permitted).
+   * @param field the field name (null not permitted).
    */
-  public void setElement(final String field)
+  public void setElement (final String field)
   {
     if (field == null)
     {
@@ -136,25 +144,23 @@ public class PaintComponentFunction extends AbstractFunction
   }
 
   /**
-   * Returns the field used by the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Returns the field used by the function. <P> The field name corresponds to a column
+   * name in the report's TableModel.
    *
    * @return The field name.
    */
-  public String getField()
+  public String getField ()
   {
     return field;
   }
 
   /**
-   * Sets the field name for the function.
-   * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * Sets the field name for the function. <P> The field name corresponds to a column name
+   * in the report's TableModel.
    *
-   * @param field  the field name (null not permitted).
+   * @param field the field name (null not permitted).
    */
-  public void setField(final String field)
+  public void setField (final String field)
   {
     if (field == null)
     {
@@ -168,20 +174,19 @@ public class PaintComponentFunction extends AbstractFunction
    *
    * @return true, if this is an headless environment, false otherwise.
    */
-  protected static boolean isHeadless()
+  protected static boolean isHeadless ()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        ("java.awt.headless", "false").equals("true");
+            ("java.awt.headless", "false").equals("true");
   }
 
   /**
-   * Receives notification that the band layouting has completed.
-   * <P>
-   * The event carries the current report state.
+   * Receives notification that the band layouting has completed. <P> The event carries
+   * the current report state.
    *
    * @param event The event.
    */
-  public void layoutComplete(final LayoutEvent event)
+  public void layoutComplete (final LayoutEvent event)
   {
     if (isHeadless())
     {
@@ -227,10 +232,10 @@ public class PaintComponentFunction extends AbstractFunction
       peerSupply.validate();
 
       final BufferedImage bi =
-          ImageUtils.createTransparentImage
-          ((int) (scale * dim.getWidth()), (int) (scale * dim.getHeight()));
+              ImageUtils.createTransparentImage
+              ((int) (scale * dim.getWidth()), (int) (scale * dim.getHeight()));
       final Graphics2D graph = bi.createGraphics();
-      graph.setBackground(new Color (0,0,0,0));
+      graph.setBackground(new Color(0, 0, 0, 0));
       graph.setTransform(AffineTransform.getScaleInstance(scale, scale));
       comp.paint(graph);
       graph.dispose();
@@ -241,13 +246,12 @@ public class PaintComponentFunction extends AbstractFunction
   }
 
   /**
-   * Return the current expression value.
-   * <P>
-   * The value depends (obviously) on the expression implementation.
+   * Return the current expression value. <P> The value depends (obviously) on the
+   * expression implementation.
    *
    * @return the value of the function.
    */
-  public Object getValue()
+  public Object getValue ()
   {
     if (image == null)
     {
@@ -259,36 +263,36 @@ public class PaintComponentFunction extends AbstractFunction
   }
 
   /**
-   * Define a scale factor for the created image. Using a higher scale factor
-   * will produce better results. A scale factor of 2 will double the resolution.
-   * A scale factor of 1 will create 72 dpi images.
+   * Define a scale factor for the created image. Using a higher scale factor will produce
+   * better results. A scale factor of 2 will double the resolution. A scale factor of 1
+   * will create 72 dpi images.
    *
    * @param scale the scale factor.
    */
-  public void setScale(final float scale)
+  public void setScale (final float scale)
   {
     this.scale = scale;
   }
 
   /**
-   * Gets the scale factor for the created image. Using a higher scale factor
-   * will produce better results. A scale factor of 2 will double the resolution.
-   * A scale factor of 1 will create 72 dpi images.
+   * Gets the scale factor for the created image. Using a higher scale factor will produce
+   * better results. A scale factor of 2 will double the resolution. A scale factor of 1
+   * will create 72 dpi images.
    *
    * @return the scale factor.
    */
-  public float getScale()
+  public float getScale ()
   {
     return scale;
   }
 
   /**
-   * Return a completly separated copy of this function. The copy does no
-   * longer share any changeable objects with the original function.
+   * Return a completly separated copy of this function. The copy does no longer share any
+   * changeable objects with the original function.
    *
    * @return a copy of this function.
    */
-  public Expression getInstance()
+  public Expression getInstance ()
   {
     final PaintComponentFunction pc = (PaintComponentFunction) super.getInstance();
     if (isHeadless() == false)
@@ -303,12 +307,12 @@ public class PaintComponentFunction extends AbstractFunction
    * Helper method for serialization.
    *
    * @param in the input stream from where to read the serialized object.
-   * @throws IOException when reading the stream fails.
-   * @throws ClassNotFoundException if a class definition for a serialized object
-   * could not be found.
+   * @throws IOException            when reading the stream fails.
+   * @throws ClassNotFoundException if a class definition for a serialized object could
+   *                                not be found.
    */
-  private void readObject(final ObjectInputStream in)
-      throws IOException, ClassNotFoundException
+  private void readObject (final ObjectInputStream in)
+          throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
     if (isHeadless() == false)

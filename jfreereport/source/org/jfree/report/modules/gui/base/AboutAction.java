@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AboutAction.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
+ * $Id: AboutAction.java,v 1.5 2005/01/25 00:01:05 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import org.jfree.util.ResourceBundleSupport;
 /**
  * The About action is used to show some information about the current programm, to which
  * the printpreview belongs to.
- * <p>
+ * <p/>
  * This abstract class handles the locales specific initialisation.
  *
  * @author David Gilbert
@@ -62,14 +62,14 @@ public abstract class AboutAction extends AbstractActionDowngrade
   /**
    * Constructs a new action.
    *
-   * @param resources  localised resources.
+   * @param resources localised resources.
    */
-  protected AboutAction(final ResourceBundleSupport resources)
+  protected AboutAction (final ResourceBundleSupport resources)
   {
     putValue(NAME, resources.getString("action.about.name"));
     putValue(SHORT_DESCRIPTION, resources.getString("action.about.description"));
     putValue(ActionDowngrade.MNEMONIC_KEY,
-        resources.getMnemonic("action.about.mnemonic"));
+            resources.getMnemonic("action.about.mnemonic"));
     putValue(SMALL_ICON, resources.getIcon("action.about.small-icon", false));
     putValue("ICON24", resources.getIcon("action.about.icon", true));
   }

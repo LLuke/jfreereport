@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.9 2005/01/25 00:17:49 taqua Exp $
+ * $Id: ReportGenerator.java,v 1.10 2005/02/19 13:30:03 taqua Exp $
  *
  * Changes
  * -------
@@ -49,42 +49,46 @@ import java.util.Map;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.xml.ElementDefinitionException;
-import org.jfree.xml.ParserFrontend;
 import org.jfree.xml.FrontendDefaultHandler;
+import org.jfree.xml.ParserFrontend;
 import org.jfree.xml.parser.RootXmlReadHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 
 /**
- * The reportgenerator initializes the parser and provides an interface
- * the the default parser.
- *
- * To create a report from an URL, use
- * <code>
- * ReportGenerator.getInstance().parseReport (URL myURl, URL contentBase);
- * </code>
+ * The reportgenerator initializes the parser and provides an interface the the default
+ * parser.
+ * <p/>
+ * To create a report from an URL, use <code> ReportGenerator.getInstance().parseReport
+ * (URL myURl, URL contentBase); </code>
  *
  * @author Thomas Morgner
  */
 public class ReportGenerator extends ParserFrontend
 {
-  /** Enable DTD validation of the parsed XML. */
+  /**
+   * Enable DTD validation of the parsed XML.
+   */
   public static final String PARSER_VALIDATE
-      = "org.jfree.report.modules.parser.base.Validate";
+          = "org.jfree.report.modules.parser.base.Validate";
 
-  /** disable DTD validation by default. */
+  /**
+   * disable DTD validation by default.
+   */
   public static final String PARSER_VALIDATE_DEFAULT = "true";
 
-  /** The report generator. */
+  /**
+   * The report generator.
+   */
   private static ReportGenerator generator;
 
   private HashMap helperObjects;
 
   /**
-   * Creates a new report generator. The generator uses the singleton pattern by
-   * default, so use generator.getInstance() to get the generator.
+   * Creates a new report generator. The generator uses the singleton pattern by default,
+   * so use generator.getInstance() to get the generator.
    */
-  protected ReportGenerator()
+  protected ReportGenerator ()
   {
     super(new ReportParser());
     initFromSystem();
@@ -92,10 +96,10 @@ public class ReportGenerator extends ParserFrontend
   }
 
   /**
-   * Tries to initilialize the generator by reading the system configuration.
-   * This will enable the validation feature depending on the global configuration.
+   * Tries to initilialize the generator by reading the system configuration. This will
+   * enable the validation feature depending on the global configuration.
    */
-  public void initFromSystem()
+  public void initFromSystem ()
   {
     setEntityResolver(ParserEntityResolver.getDefaultResolver());
   }
@@ -105,39 +109,38 @@ public class ReportGenerator extends ParserFrontend
    *
    * @param validate true, if the parser should validate the xml files.
    */
-  public void setValidateDTD(final boolean validate)
+  public void setValidateDTD (final boolean validate)
   {
     ReportConfiguration.getGlobalConfig().setConfigProperty
-        (PARSER_VALIDATE, String.valueOf(validate));
+            (PARSER_VALIDATE, String.valueOf(validate));
   }
 
   /**
-   * returns true, if the parser should validate the xml files against the DTD
-   * supplied with JFreeReport.
+   * returns true, if the parser should validate the xml files against the DTD supplied
+   * with JFreeReport.
    *
    * @return true, if the parser should validate, false otherwise.
    */
-  public boolean isValidateDTD()
+  public boolean isValidateDTD ()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
-        (PARSER_VALIDATE, PARSER_VALIDATE_DEFAULT).equalsIgnoreCase("true");
+            (PARSER_VALIDATE, PARSER_VALIDATE_DEFAULT).equalsIgnoreCase("true");
   }
 
 
   /**
-   * Parses a report using the given parameter as filename and the directory
-   * containing the file as content base.
+   * Parses a report using the given parameter as filename and the directory containing
+   * the file as content base.
    *
-   * @param file  the file name.
-   *
+   * @param file the file name.
    * @return the report.
    *
    * @throws java.io.IOException if an I/O error occurs.
-   * @throws org.jfree.xml.ElementDefinitionException if there is a problem parsing the
-   * report template.
+   * @throws org.jfree.xml.ElementDefinitionException
+   *                             if there is a problem parsing the report template.
    */
-  public JFreeReport parseReport(final String file)
-      throws IOException, ElementDefinitionException
+  public JFreeReport parseReport (final String file)
+          throws IOException, ElementDefinitionException
   {
     if (file == null)
     {
@@ -148,74 +151,69 @@ public class ReportGenerator extends ParserFrontend
   }
 
   /**
-   * Parses an XML file which is loaded using the given URL. All
-   * needed relative file- and resourcespecification are loaded
-   * using the URL <code>file</code> as base.
+   * Parses an XML file which is loaded using the given URL. All needed relative file- and
+   * resourcespecification are loaded using the URL <code>file</code> as base.
    *
-   * @param file  the URL for the report template file.
-   *
+   * @param file the URL for the report template file.
    * @return the report.
    *
    * @throws java.io.IOException if an I/O error occurs.
-   * @throws org.jfree.xml.ElementDefinitionException if there is a problem parsing
-   * the report template.
+   * @throws org.jfree.xml.ElementDefinitionException
+   *                             if there is a problem parsing the report template.
    */
-  public JFreeReport parseReport(final URL file)
-      throws ElementDefinitionException, IOException
+  public JFreeReport parseReport (final URL file)
+          throws ElementDefinitionException, IOException
   {
     return parseReport(file, file);
   }
 
   /**
-   * Parses an XML file which is loaded using the given URL. All
-   * needed relative file- and resourcespecification are loaded
-   * using the URL <code>contentBase</code> as base.
-   * <p>
-   * After the report is generated, the ReportDefinition-source and the
-   * contentbase are stored as string in the reportproperties.
+   * Parses an XML file which is loaded using the given URL. All needed relative file- and
+   * resourcespecification are loaded using the URL <code>contentBase</code> as base.
+   * <p/>
+   * After the report is generated, the ReportDefinition-source and the contentbase are
+   * stored as string in the reportproperties.
    *
-   * @param file  the URL for the report template file.
-   * @param contentBase  the URL for the report template content base.
-   *
+   * @param file        the URL for the report template file.
+   * @param contentBase the URL for the report template content base.
    * @return the parsed report.
    *
    * @throws java.io.IOException if an I/O error occurs.
-   * @throws org.jfree.xml.ElementDefinitionException if there is a problem parsing
-   * the report template.
+   * @throws org.jfree.xml.ElementDefinitionException
+   *                             if there is a problem parsing the report template.
    */
-  public JFreeReport parseReport(final URL file, final URL contentBase)
-      throws ElementDefinitionException, IOException
+  public JFreeReport parseReport (final URL file, final URL contentBase)
+          throws ElementDefinitionException, IOException
   {
     final JFreeReport report = (JFreeReport) parse(file, contentBase);
     report.setProperty(JFreeReport.REPORT_DEFINITION_SOURCE, file.toString());
     if (contentBase != null)
     {
       report.setProperty
-          (JFreeReport.REPORT_DEFINITION_CONTENTBASE, contentBase.toString());
+              (JFreeReport.REPORT_DEFINITION_CONTENTBASE, contentBase.toString());
     }
     else
     {
       report.setProperty
-          (JFreeReport.REPORT_DEFINITION_CONTENTBASE, file.toString());
+              (JFreeReport.REPORT_DEFINITION_CONTENTBASE, file.toString());
     }
     return report;
   }
 
   /**
-   * Parses an XML file which is loaded using the given file. All
-   * needed relative file- and resourcespecification are loaded
-   * using the parent directory of the file <code>file</code> as base.
+   * Parses an XML file which is loaded using the given file. All needed relative file-
+   * and resourcespecification are loaded using the parent directory of the file
+   * <code>file</code> as base.
    *
-   * @param file  the report template file.
-   *
+   * @param file the report template file.
    * @return the parsed report.
    *
    * @throws java.io.IOException if an I/O error occurs.
-   * @throws org.jfree.xml.ElementDefinitionException if there is a problem parsing
-   * the report template.
+   * @throws org.jfree.xml.ElementDefinitionException
+   *                             if there is a problem parsing the report template.
    */
-  public JFreeReport parseReport(final File file)
-      throws IOException, ElementDefinitionException
+  public JFreeReport parseReport (final File file)
+          throws IOException, ElementDefinitionException
   {
     if (file == null)
     {
@@ -229,26 +227,26 @@ public class ReportGenerator extends ParserFrontend
   /**
    * Parses an XML report template file.
    *
-   * @param input  the input source.
-   * @param contentBase  the content base.
-   *
+   * @param input       the input source.
+   * @param contentBase the content base.
    * @return the report.
    *
-   * @throws org.jfree.xml.ElementDefinitionException if an error occurred.
+   * @throws org.jfree.xml.ElementDefinitionException
+   *          if an error occurred.
    */
-  public JFreeReport parseReport(final InputSource input, final URL contentBase)
-      throws ElementDefinitionException
+  public JFreeReport parseReport (final InputSource input, final URL contentBase)
+          throws ElementDefinitionException
   {
     return (JFreeReport) super.parse(input, contentBase);
   }
 
   /**
-   * Returns a single shared instance of the <code>ReportGenerator</code>.
-   * This instance cannot add helper objects to configure the report parser.
+   * Returns a single shared instance of the <code>ReportGenerator</code>. This instance
+   * cannot add helper objects to configure the report parser.
    *
    * @return The shared report generator.
    */
-  public synchronized static ReportGenerator getInstance()
+  public synchronized static ReportGenerator getInstance ()
   {
     if (generator == null)
     {
@@ -258,12 +256,12 @@ public class ReportGenerator extends ParserFrontend
   }
 
   /**
-   * Returns a private (non-shared) instance of the <code>ReportGenerator</code>.
-   * Use this instance when defining helper objects.
+   * Returns a private (non-shared) instance of the <code>ReportGenerator</code>. Use this
+   * instance when defining helper objects.
    *
    * @return The shared report generator.
    */
-  public static ReportGenerator createInstance()
+  public static ReportGenerator createInstance ()
   {
     return new ReportGenerator();
   }
@@ -288,6 +286,7 @@ public class ReportGenerator extends ParserFrontend
   {
     return helperObjects.get(key);
   }
+
   /**
    * Configures the xml reader. Use this to set features or properties before the
    * documents get parsed.

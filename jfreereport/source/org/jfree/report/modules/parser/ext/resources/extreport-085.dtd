@@ -22,7 +22,7 @@
 
  -->
 <!ENTITY % orientations
-  "portrait | landscape | reverse_landscape"
+"portrait | landscape | reverse_landscape"
 > 
  
 <!--
@@ -32,25 +32,25 @@
 
 -->
 <!ENTITY % pageFormats
-  "(  PAPER10X11 | PAPER10X13 | PAPER10X14 | PAPER12X11 | PAPER15X11 | PAPER7X9 | PAPER8X10 |
-      PAPER9X11 | PAPER9X12 | A0 | A1 | A2 | A3 | A3_TRANSVERSE | A3_EXTRA | A3_EXTRATRANSVERSE |
-      A3_ROTATED | A4 | A4_TRANSVERSE | A4_EXTRA | A4_PLUS | A4_ROTATED | A4_SMALL | A5 |
-      A5_TRANSVERSE | A5_EXTRA | A5_ROTATED | A6 | A6_ROTATED | A7 | A8 | A9 | A10 |
-      ANSIC | ANSID | ANSIE | ARCHA | ARCHB | ARCHC | ARCHD | ARCHE | B0 | B1 | B2 | B3 | B4 |
-      B4_ROTATED | B5 | B5_TRANSVERSE | B5_ROTATED | B6 | B6_ROTATED | B7 | B8 | B9 | B10 |
-      C4 | C5 | C6 | COMM10 | DL | DOUBLEPOSTCARD | DOUBLEPOSTCARD_ROTATED | ENV9 | ENV10 |
-      ENV11 | ENV12 | ENV14 | ENVC0 | ENVC1 | ENVC2 | ENVC3 | ENVC4 | ENVC5 | ENVC6 | ENVC65 | ENVC7 |
-      ENVCHOU3 | ENVCHOU3_ROTATED | ENVCHOU4 | ENVCHOU4_ROTATED | ENVDL | ENVINVITE | ENVISOB4 | ENVISOB5 |
-      ENVISOB6 | ENVITALIAN | ENVKAKU2 | ENVKAKU2_ROTATED | ENVKAKU3 | ENVKAKU3_ROTATED | ENVMONARCH |
-      ENVPERSONAL | ENVPRC1 | ENVPRC1_ROTATED | ENVPRC2 | ENVPRC2_ROTATED | ENVPRC3 | ENVPRC3_ROTATED |
-      ENVPRC4 | ENVPRC4_ROTATED | ENVPRC5 | ENVPRC5_ROTATED | ENVPRC6 | ENVPRC6_ROTATED | ENVPRC7 |
-      ENVPRC7_ROTATED | ENVPRC8 | ENVPRC8_ROTATED | ENVPRC9 | ENVPRC9_ROTATED | ENVPRC10 | ENVPRC10_ROTATED |
-      ENVYOU4 | ENVYOU4_ROTATED | EXECUTIVE | FANFOLDUS | FANFOLDGERMAN | FANFOLDGERMANLEGAL |
-      FOLIO | ISOB0 | ISOB1 | ISOB2 | ISOB3 | ISOB4 | ISOB5 | ISOB5_EXTRA | ISOB6 | ISOB7 | ISOB8 | ISOB9 |
-      ISOB10 | LEDGER | LEGAL | LEGAL_EXTRA | LETTER | LETTER_TRANSVERSE | LETTER_EXTRA | LETTER_EXTRATRANSVERSE |
-      LETTER_PLUS | LETTER_ROTATED | LETTER_SMALL | MONARCH | NOTE | POSTCARD | POSTCARD_ROTATED | PRC16K |
-      PRC16K_ROTATED | PRC32K | PRC32K_ROTATED | PRC32K_BIG | PRC32K_BIGROTATED | QUARTO | STATEMENT | SUPERA |
-      SUPERB | TABLOID | TABLOIDEXTRA )"
+"(  PAPER10X11 | PAPER10X13 | PAPER10X14 | PAPER12X11 | PAPER15X11 | PAPER7X9 | PAPER8X10 |
+    PAPER9X11 | PAPER9X12 | A0 | A1 | A2 | A3 | A3_TRANSVERSE | A3_EXTRA | A3_EXTRATRANSVERSE |
+    A3_ROTATED | A4 | A4_TRANSVERSE | A4_EXTRA | A4_PLUS | A4_ROTATED | A4_SMALL | A5 |
+    A5_TRANSVERSE | A5_EXTRA | A5_ROTATED | A6 | A6_ROTATED | A7 | A8 | A9 | A10 |
+    ANSIC | ANSID | ANSIE | ARCHA | ARCHB | ARCHC | ARCHD | ARCHE | B0 | B1 | B2 | B3 | B4 |
+    B4_ROTATED | B5 | B5_TRANSVERSE | B5_ROTATED | B6 | B6_ROTATED | B7 | B8 | B9 | B10 |
+    C4 | C5 | C6 | COMM10 | DL | DOUBLEPOSTCARD | DOUBLEPOSTCARD_ROTATED | ENV9 | ENV10 |
+    ENV11 | ENV12 | ENV14 | ENVC0 | ENVC1 | ENVC2 | ENVC3 | ENVC4 | ENVC5 | ENVC6 | ENVC65 | ENVC7 |
+    ENVCHOU3 | ENVCHOU3_ROTATED | ENVCHOU4 | ENVCHOU4_ROTATED | ENVDL | ENVINVITE | ENVISOB4 | ENVISOB5 |
+    ENVISOB6 | ENVITALIAN | ENVKAKU2 | ENVKAKU2_ROTATED | ENVKAKU3 | ENVKAKU3_ROTATED | ENVMONARCH |
+    ENVPERSONAL | ENVPRC1 | ENVPRC1_ROTATED | ENVPRC2 | ENVPRC2_ROTATED | ENVPRC3 | ENVPRC3_ROTATED |
+    ENVPRC4 | ENVPRC4_ROTATED | ENVPRC5 | ENVPRC5_ROTATED | ENVPRC6 | ENVPRC6_ROTATED | ENVPRC7 |
+    ENVPRC7_ROTATED | ENVPRC8 | ENVPRC8_ROTATED | ENVPRC9 | ENVPRC9_ROTATED | ENVPRC10 | ENVPRC10_ROTATED |
+    ENVYOU4 | ENVYOU4_ROTATED | EXECUTIVE | FANFOLDUS | FANFOLDGERMAN | FANFOLDGERMANLEGAL |
+    FOLIO | ISOB0 | ISOB1 | ISOB2 | ISOB3 | ISOB4 | ISOB5 | ISOB5_EXTRA | ISOB6 | ISOB7 | ISOB8 | ISOB9 |
+    ISOB10 | LEDGER | LEGAL | LEGAL_EXTRA | LETTER | LETTER_TRANSVERSE | LETTER_EXTRA | LETTER_EXTRATRANSVERSE |
+    LETTER_PLUS | LETTER_ROTATED | LETTER_SMALL | MONARCH | NOTE | POSTCARD | POSTCARD_ROTATED | PRC16K |
+    PRC16K_ROTATED | PRC32K | PRC32K_ROTATED | PRC32K_BIG | PRC32K_BIGROTATED | QUARTO | STATEMENT | SUPERA |
+    SUPERB | TABLOID | TABLOIDEXTRA )"
 >
 
 <!--
@@ -63,7 +63,7 @@
                              styles?, templates?, report-description?,
                              functions?, data-definition?)>
 <!ATTLIST report-definition
-  name CDATA   #IMPLIED
+name CDATA   #IMPLIED
 >
 
 <!--
@@ -98,7 +98,7 @@
  -->
 <!ELEMENT stylekey-factory EMPTY>
 <!ATTLIST stylekey-factory
-  class      CDATA   #REQUIRED
+class      CDATA   #REQUIRED
 >
 
 <!--
@@ -123,7 +123,7 @@
  -->
 <!ELEMENT object-factory EMPTY>
 <!ATTLIST object-factory
-  class      CDATA   #REQUIRED
+class      CDATA   #REQUIRED
 >
 
 <!--
@@ -147,7 +147,7 @@
  -->
 <!ELEMENT datasource-factory EMPTY>
 <!ATTLIST datasource-factory
-  class      CDATA   #REQUIRED
+class      CDATA   #REQUIRED
 >
 
 <!--
@@ -167,7 +167,7 @@
  -->
 <!ELEMENT template-factory EMPTY>
 <!ATTLIST template-factory
-  class      CDATA   #REQUIRED
+class      CDATA   #REQUIRED
 >
 
 <!--
@@ -189,7 +189,7 @@
  -->
 <!ELEMENT element-factory EMPTY>
 <!ATTLIST element-factory
-  class      CDATA   #REQUIRED
+class      CDATA   #REQUIRED
 >
 
 <!--
@@ -215,16 +215,16 @@
 
 <!ELEMENT page EMPTY>
 <!ATTLIST page
-  x              CDATA            #IMPLIED
-  y              CDATA            #IMPLIED
-  width          CDATA            #IMPLIED
-  height         CDATA            #IMPLIED
-  pageformat     %pageFormats;    #IMPLIED
-  orientation    (%orientations;) #IMPLIED
-  leftmargin     CDATA            #IMPLIED
-  rightmargin    CDATA            #IMPLIED
-  topmargin      CDATA            #IMPLIED
-  bottommargin   CDATA            #IMPLIED
+x              CDATA            #IMPLIED
+y              CDATA            #IMPLIED
+width          CDATA            #IMPLIED
+height         CDATA            #IMPLIED
+pageformat     %pageFormats;    #IMPLIED
+orientation    (%orientations;) #IMPLIED
+leftmargin     CDATA            #IMPLIED
+rightmargin    CDATA            #IMPLIED
+topmargin      CDATA            #IMPLIED
+bottommargin   CDATA            #IMPLIED
 >
 
 <!--
@@ -237,7 +237,7 @@
 
 <!ELEMENT property (#PCDATA)>
 <!ATTLIST property
-  name           CDATA           #REQUIRED
+name           CDATA           #REQUIRED
 >
 
 <!--
@@ -270,7 +270,7 @@
  -->
 <!ELEMENT style  (extends*, (basic-key|compound-key)*)>
 <!ATTLIST style
-  name           CDATA           #IMPLIED
+name           CDATA           #IMPLIED
 >
 
 <!--
@@ -287,7 +287,7 @@
  -->
 <!ELEMENT extends  EMPTY>
 <!ATTLIST extends
-  name          CDATA  #REQUIRED
+name          CDATA  #REQUIRED
 >
 
 <!--
@@ -305,8 +305,8 @@
  -->
 <!ELEMENT compound-key (basic-object|compound-object)*>
 <!ATTLIST compound-key
-  name           CDATA           #IMPLIED
-  class          CDATA           #IMPLIED
+name           CDATA           #IMPLIED
+class          CDATA           #IMPLIED
 >
 
 <!--
@@ -325,8 +325,8 @@
  -->
 <!ELEMENT basic-key    (#PCDATA)>
 <!ATTLIST basic-key
-  name           CDATA           #IMPLIED
-  class          CDATA           #IMPLIED
+name           CDATA           #IMPLIED
+class          CDATA           #IMPLIED
 >
 
 <!--
@@ -353,8 +353,8 @@
  -->
 <!ELEMENT compound-object (basic-object|compound-object)*>
 <!ATTLIST compound-object
-  name           CDATA           #REQUIRED
-  class          CDATA           #IMPLIED
+name           CDATA           #REQUIRED
+class          CDATA           #IMPLIED
 >
 
 <!--
@@ -382,8 +382,8 @@
  -->
 <!ELEMENT basic-object    (#PCDATA)>
 <!ATTLIST basic-object
-  name           CDATA           #REQUIRED
-  class          CDATA           #IMPLIED
+name           CDATA           #REQUIRED
+class          CDATA           #IMPLIED
 >
 
 <!--
@@ -398,7 +398,7 @@
  -->
 <!ELEMENT templates    (template*)>
 <!ATTLIST templates
-  external       CDATA           #IMPLIED
+external       CDATA           #IMPLIED
 >
 
 <!--
@@ -417,8 +417,8 @@
  -->
 <!ELEMENT template     (basic-object|compound-object)*>
 <!ATTLIST template
-  name           CDATA           #IMPLIED
-  references     CDATA           #REQUIRED
+name           CDATA           #IMPLIED
+references     CDATA           #REQUIRED
 >
 
 <!--
@@ -459,7 +459,7 @@
 
  -->
 <!ELEMENT report-description
-  (report-header?, report-footer?, page-header?, page-footer?, watermark?, groups?, itemband?)>
+(report-header?, report-footer?, page-header?, page-footer?, watermark?, groups?, itemband?)>
 
 <!--
 
@@ -471,32 +471,32 @@
   -->
 <!ELEMENT report-header   (style?, (band | element)*)>
 <!ATTLIST report-header
-  name           CDATA           #IMPLIED
+name           CDATA           #IMPLIED
 >
 
 <!ELEMENT report-footer   (style?, (band | element)*)>
 <!ATTLIST report-footer
-  name           CDATA           #IMPLIED
+name           CDATA           #IMPLIED
 >
 
 <!ELEMENT page-header   (style?, (band | element)*)>
 <!ATTLIST page-header
-  name           CDATA           #IMPLIED
+name           CDATA           #IMPLIED
 >
 
 <!ELEMENT page-footer   (style?, (band | element)*)>
 <!ATTLIST page-footer
-  name           CDATA           #IMPLIED
+name           CDATA           #IMPLIED
 >
 
 <!ELEMENT watermark   (style?, (band | element)*)>
 <!ATTLIST watermark
-  name           CDATA           #IMPLIED
+name           CDATA           #IMPLIED
 >
 
 <!ELEMENT itemband   (style?, (band | element)*)>
 <!ATTLIST itemband
-  name           CDATA           #IMPLIED
+name           CDATA           #IMPLIED
 >
 
 <!--
@@ -516,7 +516,7 @@
  -->
 <!ELEMENT group      (fields, group-header?, group-footer?)>
 <!ATTLIST group
-  name           CDATA           #IMPLIED
+name           CDATA           #IMPLIED
 >
 
 <!--
@@ -553,17 +553,17 @@
   -->
 <!ELEMENT group-header   (style?, (band | element)*)>
 <!ATTLIST group-header
-  name           CDATA           #IMPLIED
+name           CDATA           #IMPLIED
 >
 
 <!ELEMENT group-footer   (style?, (band | element)*)>
 <!ATTLIST group-footer
-  name           CDATA           #IMPLIED
+name           CDATA           #IMPLIED
 >
 
 <!ELEMENT band  (style?, (band | element)*)>
 <!ATTLIST band
-  name           CDATA           #IMPLIED
+name           CDATA           #IMPLIED
 >
 
 <!--
@@ -579,8 +579,8 @@
   -->
 <!ELEMENT element  (style?, (template | datasource))>
 <!ATTLIST element
-  name           CDATA           #IMPLIED
-  type           CDATA           #REQUIRED
+name           CDATA           #IMPLIED
+type           CDATA           #REQUIRED
 >
 
 <!--
@@ -596,7 +596,7 @@
  -->
 <!ELEMENT datasource (datasource?,(basic-object|compound-object)*)>
 <!ATTLIST datasource
-  type          CDATA            #REQUIRED
+type          CDATA            #REQUIRED
 >
 
 <!--
@@ -628,8 +628,8 @@
 -->
 <!ELEMENT property-ref  (#PCDATA)>
 <!ATTLIST property-ref
-  name       CDATA   #REQUIRED
-  class      CDATA   #IMPLIED
+name       CDATA   #REQUIRED
+class      CDATA   #IMPLIED
 >
 
 <!--
@@ -650,9 +650,9 @@
   -->
 <!ELEMENT function   (properties?)>
 <!ATTLIST function
-  class      CDATA    #REQUIRED
-	name       CDATA    #REQUIRED
-  deplevel   CDATA    #IMPLIED
+class      CDATA    #REQUIRED
+name       CDATA    #REQUIRED
+deplevel   CDATA    #IMPLIED
 >
 
 
@@ -671,7 +671,7 @@
   -->
 <!ELEMENT expression   (properties?)>
 <!ATTLIST expression
-  class      CDATA    #REQUIRED
-	name       CDATA    #REQUIRED
-  deplevel   CDATA    #IMPLIED
+class      CDATA    #REQUIRED
+name       CDATA    #REQUIRED
+deplevel   CDATA    #IMPLIED
 >

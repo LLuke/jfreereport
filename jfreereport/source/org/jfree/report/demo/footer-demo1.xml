@@ -38,13 +38,13 @@
     <rectangle x="0" y="0" width="100%" height="100" color="#7f7fff" fill="false" draw="true"/>
     <label x="0" y="0" width="80%" height="12">Number of items displayed: </label>
     <number-field x="80%" y="0" width="20%" height="12" fieldname="itemcount"/>
-    <label x="0" y="12" width="100%" height="88" fontname="Sans-Serif" >
+    <label x="0" y="12" width="100%" height="88" fontname="Sans-Serif">
 This is just some report footer content declared in the page footer, so that it is
 printed at the bottom of the page.
 
 The grey area is the real report footer (make it white to be invisible, but do not remove it).
 The blue-bordered area is the page footer, which gets misused as a report footer.
- </label>
+    </label>
   </pagefooter>
 
   <functions>

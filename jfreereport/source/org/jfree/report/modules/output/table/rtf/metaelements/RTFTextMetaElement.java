@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFTextMetaElement.java,v 1.2.2.1 2004/12/13 19:27:11 taqua Exp $
+ * $Id: RTFTextMetaElement.java,v 1.3 2005/01/25 00:15:22 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -68,10 +68,12 @@ public class RTFTextMetaElement extends RTFMetaElement
    * Creates a iText TableCell with text content in it.
    *
    * @return the cell with the content.
-   * @throws com.lowagie.text.DocumentException if the cell could not be created.
+   *
+   * @throws com.lowagie.text.DocumentException
+   *          if the cell could not be created.
    */
-  public RtfCell getCell()
-      throws DocumentException
+  public RtfCell getCell ()
+          throws DocumentException
   {
     final RtfCell cell = new RtfCell();
     cell.setBorderWidth(0);
@@ -122,7 +124,7 @@ public class RTFTextMetaElement extends RTFMetaElement
    *
    * @param p the iText chunk, which should be formated.
    */
-  public void applyTextStyle(final Chunk p)
+  public void applyTextStyle (final Chunk p)
   {
     final FontDefinition font = getFontDefinitionProperty();
     final Color paint = (Color) getProperty(ElementStyleSheet.PAINT, Color.black);
@@ -145,5 +147,5 @@ public class RTFTextMetaElement extends RTFMetaElement
     }
     p.setFont(new Font(baseFont, font.getFontSize(), style, paint));
   }
-  
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HideArticleDetailsFunction.java,v 1.1.2.2 2004/10/13 18:42:15 taqua Exp $
+ * $Id: HideArticleDetailsFunction.java,v 1.2 2005/01/25 01:14:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -65,7 +65,7 @@ public class HideArticleDetailsFunction extends AbstractFunction
             (event.getReport().getItemBand(), "details");
     if (e == null)
     {
-      Log.warn ("HideArticleDetailsFunction: No 'detail' element found in the itemband.");
+      Log.warn("HideArticleDetailsFunction: No 'detail' element found in the itemband.");
       return;
     }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: EmptyContentReference.java,v 1.2.2.1 2004/12/13 19:27:09 taqua Exp $
+ * $Id: EmptyContentReference.java,v 1.3 2005/01/25 00:13:53 taqua Exp $
  *
  * Changes
  * -------
@@ -37,12 +37,12 @@
 package org.jfree.report.modules.output.table.html.ref;
 
 /**
- * Stores a marker, that the referenced cell is empty. HTML requires empty cells to
- * be filled with an invisible character, or the cell is ignored. Ignored cells tend
- * to destroy the table layout, so we make sure that every cell has content inside.
- * <p>
- * This reference is used to mark empty external image references, when no external
- * entity was referenced and no external content creation is allowed.
+ * Stores a marker, that the referenced cell is empty. HTML requires empty cells to be
+ * filled with an invisible character, or the cell is ignored. Ignored cells tend to
+ * destroy the table layout, so we make sure that every cell has content inside.
+ * <p/>
+ * This reference is used to mark empty external image references, when no external entity
+ * was referenced and no external content creation is allowed.
  *
  * @author Thomas Morgner
  */
@@ -51,7 +51,7 @@ public class EmptyContentReference extends HtmlReference
   /**
    * Creates a new EmptyContentHtmlReferenceData.
    */
-  public EmptyContentReference()
+  public EmptyContentReference ()
   {
     super(false);
   }
@@ -61,7 +61,7 @@ public class EmptyContentReference extends HtmlReference
    *
    * @return the empty content, '&amp;nbsp;'.
    */
-  public String getReferenceData()
+  public String getReferenceData ()
   {
     return "&nbsp;";
   }

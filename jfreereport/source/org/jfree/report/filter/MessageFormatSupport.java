@@ -64,7 +64,7 @@ public class MessageFormatSupport implements Serializable
       throw new NullPointerException("Format must not be null");
     }
     final String pattern = compiler.translateAndLookup(formatString);
-    format = new MessageFormat (pattern);
+    format = new MessageFormat(pattern);
     fields = compiler.getFields();
     this.formatString = formatString;
   }

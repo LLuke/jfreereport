@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ReportInitialisationException.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: ReportInitialisationException.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
  *
  * Changes
  * -------
@@ -50,16 +50,16 @@ public class ReportInitialisationException extends StackableException
   /**
    * Constructs an <code>Exception</code> with no specified detail message.
    */
-  public ReportInitialisationException()
+  public ReportInitialisationException ()
   {
   }
 
   /**
    * Constructs an <code>Exception</code> with the specified detail message.
    *
-   * @param s  the detail message.
+   * @param s the detail message.
    */
-  public ReportInitialisationException(final String s)
+  public ReportInitialisationException (final String s)
   {
     super(s);
   }
@@ -67,10 +67,10 @@ public class ReportInitialisationException extends StackableException
   /**
    * Constructs an <code>Exception</code> with the specified detail message.
    *
-   * @param s  the detail message.
-   * @param e  the parent exception.
+   * @param s the detail message.
+   * @param e the parent exception.
    */
-  public ReportInitialisationException(final String s, final Exception e)
+  public ReportInitialisationException (final String s, final Exception e)
   {
     super(s, e);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectWriter.java,v 1.8 2005/01/25 00:20:29 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.9 2005/02/04 19:08:53 taqua Exp $
  *
  * Changes
  * -------
@@ -60,35 +60,40 @@ import org.jfree.xml.writer.AttributeList;
  */
 public class ObjectWriter extends AbstractXMLDefinitionWriter
 {
-  /** The object description. */
+  /**
+   * The object description.
+   */
   private ObjectDescription objectDescription;
 
-  /** The object factory. */
+  /**
+   * The object factory.
+   */
   private ClassFactoryCollector cc;
 
-  /** The comment hint path object for this writer. */
+  /**
+   * The comment hint path object for this writer.
+   */
   private CommentHintPath commentHintPath;
 
 
   /**
    * Creates a new writer.
    *
-   * @param reportWriter  the report writer.
-   * @param baseObject  the base object (<code>null</code> not permitted).
-   * @param objectDescription  the object description (<code>null</code> not permitted)
-   * for the to be written object. The base object will be used to fill the object
-   * description parameters.
-   * @param indentLevel the current indention level.
-   * @param commentHintPath the comment hint path used to store additional comments.
-   * @throws ReportWriterException if no writer could be found for the given
-   * baseObject.
+   * @param reportWriter      the report writer.
+   * @param baseObject        the base object (<code>null</code> not permitted).
+   * @param objectDescription the object description (<code>null</code> not permitted) for
+   *                          the to be written object. The base object will be used to
+   *                          fill the object description parameters.
+   * @param indentLevel       the current indention level.
+   * @param commentHintPath   the comment hint path used to store additional comments.
+   * @throws ReportWriterException if no writer could be found for the given baseObject.
    */
-  public ObjectWriter(final ReportWriter reportWriter,
-                      final Object baseObject,
-                      final ObjectDescription objectDescription,
-                      final int indentLevel,
-                      final CommentHintPath commentHintPath)
-      throws ReportWriterException
+  public ObjectWriter (final ReportWriter reportWriter,
+                       final Object baseObject,
+                       final ObjectDescription objectDescription,
+                       final int indentLevel,
+                       final CommentHintPath commentHintPath)
+          throws ReportWriterException
   {
     this(reportWriter, objectDescription, indentLevel, commentHintPath);
     if (baseObject == null)
@@ -108,17 +113,18 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
   /**
    * Creates a new object writer for the given object description.
    *
-   * @param reportWriter the report writer used to write the generated description.
+   * @param reportWriter      the report writer used to write the generated description.
    * @param objectDescription the object description that should be written. It is
-   * assumed, that the object description is completly initialized for writing.
-   * @param indentLevel the current code indention level
-   * @param commentHintPath the comment hint path used to write the comments from
-   * the ext-parser.
+   *                          assumed, that the object description is completly
+   *                          initialized for writing.
+   * @param indentLevel       the current code indention level
+   * @param commentHintPath   the comment hint path used to write the comments from the
+   *                          ext-parser.
    */
-  public ObjectWriter(final ReportWriter reportWriter,
-                      final ObjectDescription objectDescription,
-                      final int indentLevel,
-                      final CommentHintPath commentHintPath)
+  public ObjectWriter (final ReportWriter reportWriter,
+                       final ObjectDescription objectDescription,
+                       final int indentLevel,
+                       final CommentHintPath commentHintPath)
   {
 
     super(reportWriter, indentLevel);
@@ -138,7 +144,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
    *
    * @return The object description.
    */
-  public ObjectDescription getObjectDescription()
+  public ObjectDescription getObjectDescription ()
   {
     return objectDescription;
   }
@@ -148,7 +154,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
    *
    * @return The object factory.
    */
-  public ClassFactoryCollector getClassFactoryCollector()
+  public ClassFactoryCollector getClassFactoryCollector ()
   {
     return cc;
   }
@@ -156,12 +162,12 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
   /**
    * Writes the description.
    *
-   * @param writer  the writer.
-   *
-   * @throws IOException if there is an I/O problem.
+   * @param writer the writer.
+   * @throws IOException           if there is an I/O problem.
    * @throws ReportWriterException if the object could not be written.
    */
-  public void write(final Writer writer) throws IOException, ReportWriterException
+  public void write (final Writer writer)
+          throws IOException, ReportWriterException
   {
     writer.flush();
     final Iterator names = objectDescription.getParameterNames();
@@ -175,11 +181,10 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
   /**
    * Returns a description of a parameter.
    *
-   * @param name  the parameter name.
-   *
+   * @param name the parameter name.
    * @return The description.
    */
-  protected ObjectDescription getParameterDescription(final String name)
+  protected ObjectDescription getParameterDescription (final String name)
   {
 
     // Try to find the object description directly ...
@@ -233,14 +238,13 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
   /**
    * Writes a parameter to XML.
    *
-   * @param writer  the writer.
-   * @param parameterName  the parameter name.
-   *
-   * @throws IOException if there is an I/O problem.
+   * @param writer        the writer.
+   * @param parameterName the parameter name.
+   * @throws IOException           if there is an I/O problem.
    * @throws ReportWriterException if transforming the report into a stream failed.
    */
-  protected void writeParameter(final Writer writer, final String parameterName)
-      throws IOException, ReportWriterException
+  protected void writeParameter (final Writer writer, final String parameterName)
+          throws IOException, ReportWriterException
   {
     final Object parameterValue = getObjectDescription().getParameter(parameterName);
     if (parameterValue == null)
@@ -254,7 +258,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     if (parameterDescription == null)
     {
       throw new ReportWriterException("Unable to get Parameter description for "
-          + getObjectDescription().getObjectClass() + " Parameter: " + parameterName);
+              + getObjectDescription().getObjectClass() + " Parameter: " + parameterName);
     }
 
     try
@@ -294,7 +298,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
       writeTag(writer, COMPOUND_OBJECT_TAG, p, OPEN);
 
       final ObjectWriter objWriter = new ObjectWriter(getReportWriter(), parameterValue,
-          parameterDescription, getIndentLevel(), path);
+              parameterDescription, getIndentLevel(), path);
       objWriter.write(writer);
 
       writeComment(writer, path, CommentHandler.CLOSE_TAG_COMMENT);
@@ -304,14 +308,14 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
   }
 
   /**
-   * Checks, whether the writer would use the default object type for the given
-   * parameter type and value.
+   * Checks, whether the writer would use the default object type for the given parameter
+   * type and value.
    *
    * @param parameter the defined parameter base type
-   * @param o the parameter value to test
+   * @param o         the parameter value to test
    * @return true, if the default parameter description would be used, false otherwise.
    */
-  private boolean isUseParameterObjectDescription(final Class parameter, final Object o)
+  private boolean isUseParameterObjectDescription (final Class parameter, final Object o)
   {
     final ClassFactoryCollector cc = getReportWriter().getClassFactoryCollector();
     ObjectDescription odObject = cc.getDescriptionForClass(o.getClass());
@@ -331,14 +335,15 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
 
   /**
-   * Returns <code>true</code> if this is a basic object, and <code>false</code> otherwise.
+   * Returns <code>true</code> if this is a basic object, and <code>false</code>
+   * otherwise.
    *
-   * @param parameters  the parameter.
-   * @param od  the descriptions.
-   *
+   * @param parameters the parameter.
+   * @param od         the descriptions.
    * @return A boolean.
    */
-  protected static boolean isBasicObject(final List parameters, final ObjectDescription od)
+  protected static boolean isBasicObject (final List parameters,
+                                          final ObjectDescription od)
   {
     if (od == null)
     {
@@ -362,11 +367,10 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
   /**
    * Returns a list of parameter names.
    *
-   * @param d  the description.
-   *
+   * @param d the description.
    * @return The list.
    */
-  protected static ArrayList getParameterNames(final ObjectDescription d)
+  protected static ArrayList getParameterNames (final ObjectDescription d)
   {
     final ArrayList list = new ArrayList();
 
@@ -380,12 +384,12 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
   }
 
   /**
-   * Returns the comment hint path object for this writer. This path is used to
-   * store comments found in the xml code.
+   * Returns the comment hint path object for this writer. This path is used to store
+   * comments found in the xml code.
    *
    * @return the comment hint path object for this writer.
    */
-  public CommentHintPath getCommentHintPath()
+  public CommentHintPath getCommentHintPath ()
   {
     return commentHintPath;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigTreeModelException.java,v 1.3 2003/11/07 18:33:52 taqua Exp $
+ * $Id: ConfigTreeModelException.java,v 1.4 2004/05/07 14:29:24 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -41,9 +41,9 @@ package org.jfree.report.modules.gui.config.model;
 import org.jfree.util.StackableException;
 
 /**
- * The ConfigTreeModelException is trown whenever an error occured during
- * an tree model operation.
- * 
+ * The ConfigTreeModelException is trown whenever an error occured during an tree model
+ * operation.
+ *
  * @author Thomas Morgner
  */
 public class ConfigTreeModelException extends StackableException
@@ -51,17 +51,17 @@ public class ConfigTreeModelException extends StackableException
   /**
    * Creates a ConfigTreeModelException with no message and no parent.
    */
-  public ConfigTreeModelException()
+  public ConfigTreeModelException ()
   {
   }
 
   /**
    * Creates an exception.
    *
-   * @param message  the exception message.
-   * @param ex  the parent exception.
+   * @param message the exception message.
+   * @param ex      the parent exception.
    */
-  public ConfigTreeModelException(final String message, final Exception ex)
+  public ConfigTreeModelException (final String message, final Exception ex)
   {
     super(message, ex);
   }
@@ -69,9 +69,9 @@ public class ConfigTreeModelException extends StackableException
   /**
    * Creates an exception.
    *
-   * @param message  the exception message.
+   * @param message the exception message.
    */
-  public ConfigTreeModelException(final String message)
+  public ConfigTreeModelException (final String message)
   {
     super(message);
   }

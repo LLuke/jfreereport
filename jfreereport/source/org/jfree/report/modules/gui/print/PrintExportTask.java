@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintExportTask.java,v 1.8.4.3 2004/12/13 21:42:48 taqua Exp $
+ * $Id: PrintExportTask.java,v 1.11 2005/01/25 00:06:55 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,30 +46,35 @@ import org.jfree.report.modules.gui.base.ReportProgressDialog;
 import org.jfree.report.util.Log;
 
 /**
- * An export task implementation that prints a report using the AWT 
- * printing API.
- * 
+ * An export task implementation that prints a report using the AWT printing API.
+ *
  * @author Thomas Morgner
  */
 public class PrintExportTask extends ExportTask
 {
-  /** The pageable that is used to create the printer content. */ 
+  /**
+   * The pageable that is used to create the printer content.
+   */
   private ReportPane pageable;
-  /** The progress dialog that is used to monitor the export progress. */
+  /**
+   * The progress dialog that is used to monitor the export progress.
+   */
   private ReportProgressDialog progressDialog;
-  /** The desired printer job name. */
+  /**
+   * The desired printer job name.
+   */
   private String jobname;
 
   /**
    * Creates a new print export task.
-   * 
-   * @param pageable the pageable that should be printed.
+   *
+   * @param pageable       the pageable that should be printed.
    * @param progressDialog the progress dialog that will monitor the progress.
-   * @param jobname the desired jobname (or null, if undefined)
+   * @param jobname        the desired jobname (or null, if undefined)
    */
-  public PrintExportTask(final ReportPane pageable,
-                         final ReportProgressDialog progressDialog,
-                         final String jobname)
+  public PrintExportTask (final ReportPane pageable,
+                          final ReportProgressDialog progressDialog,
+                          final String jobname)
   {
     if (pageable == null)
     {
@@ -81,10 +86,10 @@ public class PrintExportTask extends ExportTask
   }
 
   /**
-   * Displays the print dialog and executes the printing in a spearate thread. 
-   * This is a workaround for an java bug.
+   * Displays the print dialog and executes the printing in a spearate thread. This is a
+   * workaround for an java bug.
    */
-  protected void performExport()
+  protected void performExport ()
   {
     final PrinterJob pj = PrinterJob.getPrinterJob();
     if (jobname != null)
@@ -111,7 +116,7 @@ public class PrintExportTask extends ExportTask
 
         // printing can be done outside, as now it is safe ..
         pj.print();
-        synchronized(pageable.getReportLock())
+        synchronized (pageable.getReportLock())
         {
           pageable.setPrinting(false);
         }
@@ -119,7 +124,7 @@ public class PrintExportTask extends ExportTask
       }
       catch (Exception e)
       {
-        Log.error ("Printing export failed", e);
+        Log.error("Printing export failed", e);
         setTaskFailed(e);
       }
     }
@@ -138,7 +143,7 @@ public class PrintExportTask extends ExportTask
   /**
    * Remove all listeners and prepare the finalization.
    */
-  protected void dispose()
+  protected void dispose ()
   {
     super.dispose();
     if (progressDialog != null)
@@ -147,6 +152,6 @@ public class PrintExportTask extends ExportTask
       progressDialog.dispose();
     }
   }
-  
+
 }
 

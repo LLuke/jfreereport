@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ObjectReferenceTableModel.java,v 1.4 2003/08/25 14:29:31 taqua Exp $
+ * $Id: ObjectReferenceTableModel.java,v 1.5 2004/05/07 14:29:24 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -60,28 +60,36 @@ public class ObjectReferenceTableModel extends AbstractTableModel
    */
   private class ObjectDescriptionRow
   {
-    /** The class factory. */
+    /**
+     * The class factory.
+     */
     private final ClassFactory classFactory;
 
-    /** The object class. */
+    /**
+     * The object class.
+     */
     private final Class object;
 
-    /** The parameter name. */
+    /**
+     * The parameter name.
+     */
     private final String paramName;
 
-    /** The parameter type. */
+    /**
+     * The parameter type.
+     */
     private final Class paramType;
 
     /**
      * Creates a new row.
      *
-     * @param classFactory  the class factory.
-     * @param object  the object class.
-     * @param paramName  the parameter name.
-     * @param paramType  the parameter type.
+     * @param classFactory the class factory.
+     * @param object       the object class.
+     * @param paramName    the parameter name.
+     * @param paramType    the parameter type.
      */
-    public ObjectDescriptionRow(final ClassFactory classFactory, final Class object,
-                                final String paramName, final Class paramType)
+    public ObjectDescriptionRow (final ClassFactory classFactory, final Class object,
+                                 final String paramName, final Class paramType)
     {
       this.classFactory = classFactory;
       this.object = object;
@@ -94,7 +102,7 @@ public class ObjectReferenceTableModel extends AbstractTableModel
      *
      * @return The class factory.
      */
-    public ClassFactory getClassFactory()
+    public ClassFactory getClassFactory ()
     {
       return classFactory;
     }
@@ -104,7 +112,7 @@ public class ObjectReferenceTableModel extends AbstractTableModel
      *
      * @return The class.
      */
-    public Class getObject()
+    public Class getObject ()
     {
       return object;
     }
@@ -114,7 +122,7 @@ public class ObjectReferenceTableModel extends AbstractTableModel
      *
      * @return the parameter name.
      */
-    public String getParamName()
+    public String getParamName ()
     {
       return paramName;
     }
@@ -124,7 +132,7 @@ public class ObjectReferenceTableModel extends AbstractTableModel
      *
      * @return the parameter type.
      */
-    public Class getParamType()
+    public Class getParamType ()
     {
       return paramType;
     }
@@ -136,20 +144,19 @@ public class ObjectReferenceTableModel extends AbstractTableModel
   private class ClassNameComparator implements Comparator
   {
     /**
-     * Compares its two arguments for order.  Returns a negative integer,
-     * zero, or a positive integer as the first argument is less than, equal
-     * to, or greater than the second.<p>
+     * Compares its two arguments for order.  Returns a negative integer, zero, or a
+     * positive integer as the first argument is less than, equal to, or greater than the
+     * second.<p>
      *
      * @param o1 the first object to be compared.
      * @param o2 the second object to be compared.
+     * @return a negative integer, zero, or a positive integer as the first argument is
+     *         less than, equal to, or greater than the second.
      *
-     * @return a negative integer, zero, or a positive integer as the
-     *         first argument is less than, equal to, or greater than the second.
-     *
-     * @throws ClassCastException if the arguments' types prevent them from being compared by
-     *         this Comparator.
+     * @throws ClassCastException if the arguments' types prevent them from being compared
+     *                            by this Comparator.
      */
-    public int compare(final Object o1, final Object o2)
+    public int compare (final Object o1, final Object o2)
     {
       final Class c1 = (Class) o1;
       final Class c2 = (Class) o2;
@@ -157,24 +164,28 @@ public class ObjectReferenceTableModel extends AbstractTableModel
     }
   }
 
-  /** The table model column names. */
+  /**
+   * The table model column names.
+   */
   private static final String[] COLUMN_NAMES =
-      {
-        "object-factory",
-        "object-class",
-        "parameter-name",
-        "parameter-class"
-      };
+          {
+            "object-factory",
+            "object-class",
+            "parameter-name",
+            "parameter-class"
+          };
 
-  /** Storage for the rows. */
+  /**
+   * Storage for the rows.
+   */
   private final ArrayList rows;
 
   /**
    * Creates a new table model for a set of class factories.
    *
-   * @param cf  the class factories.
+   * @param cf the class factories.
    */
-  public ObjectReferenceTableModel(final ClassFactoryCollector cf)
+  public ObjectReferenceTableModel (final ClassFactoryCollector cf)
   {
     rows = new ArrayList();
     addClassFactoryCollector(cf);
@@ -183,9 +194,9 @@ public class ObjectReferenceTableModel extends AbstractTableModel
   /**
    * Adds a class factory collector.
    *
-   * @param cf  the class factory collector.
+   * @param cf the class factory collector.
    */
-  private void addClassFactoryCollector(final ClassFactoryCollector cf)
+  private void addClassFactoryCollector (final ClassFactoryCollector cf)
   {
     final Iterator it = cf.getFactories();
     while (it.hasNext())
@@ -205,9 +216,9 @@ public class ObjectReferenceTableModel extends AbstractTableModel
   /**
    * Adds a class factory.
    *
-   * @param cf  the class factory.
+   * @param cf the class factory.
    */
-  private void addClassFactory(final ClassFactory cf)
+  private void addClassFactory (final ClassFactory cf)
   {
     Iterator it = cf.getRegisteredClasses();
     final ArrayList factories = new ArrayList();
@@ -243,28 +254,28 @@ public class ObjectReferenceTableModel extends AbstractTableModel
   }
 
   /**
-   * Returns the number of rows in the model. A
-   * <code>JTable</code> uses this method to determine how many rows it
-   * should display.  This method should be quick, as it
-   * is called frequently during rendering.
+   * Returns the number of rows in the model. A <code>JTable</code> uses this method to
+   * determine how many rows it should display.  This method should be quick, as it is
+   * called frequently during rendering.
    *
    * @return the number of rows in the model
+   *
    * @see #getColumnCount
    */
-  public int getRowCount()
+  public int getRowCount ()
   {
     return rows.size();
   }
 
   /**
-   * Returns the number of columns in the model. A
-   * <code>JTable</code> uses this method to determine how many columns it
-   * should create and display by default.
+   * Returns the number of columns in the model. A <code>JTable</code> uses this method to
+   * determine how many columns it should create and display by default.
    *
    * @return the number of columns in the model
+   *
    * @see #getRowCount
    */
-  public int getColumnCount()
+  public int getColumnCount ()
   {
     return COLUMN_NAMES.length;
   }
@@ -272,10 +283,10 @@ public class ObjectReferenceTableModel extends AbstractTableModel
   /**
    * Returns the column name.
    *
-   * @param column  the column being queried
+   * @param column the column being queried
    * @return a string containing the default name of <code>column</code>
    */
-  public String getColumnName(final int column)
+  public String getColumnName (final int column)
   {
     return COLUMN_NAMES[column];
   }
@@ -283,10 +294,10 @@ public class ObjectReferenceTableModel extends AbstractTableModel
   /**
    * Returns <code>String.class</code> regardless of <code>columnIndex</code>.
    *
-   * @param columnIndex  the column being queried
+   * @param columnIndex the column being queried
    * @return the Object.class
    */
-  public Class getColumnClass(final int columnIndex)
+  public Class getColumnClass (final int columnIndex)
   {
     return String.class;
   }
@@ -295,12 +306,11 @@ public class ObjectReferenceTableModel extends AbstractTableModel
    * Returns the value for the cell at <code>columnIndex</code> and
    * <code>rowIndex</code>.
    *
-   * @param rowIndex  the row whose value is to be queried
-   * @param columnIndex  the column whose value is to be queried
-   *
-   * @return  the value Object at the specified cell
+   * @param rowIndex    the row whose value is to be queried
+   * @param columnIndex the column whose value is to be queried
+   * @return the value Object at the specified cell
    */
-  public Object getValueAt(final int rowIndex, final int columnIndex)
+  public Object getValueAt (final int rowIndex, final int columnIndex)
   {
     final ObjectDescriptionRow or = (ObjectDescriptionRow) rows.get(rowIndex);
     switch (columnIndex)

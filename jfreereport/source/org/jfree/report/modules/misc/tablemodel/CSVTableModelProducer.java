@@ -27,9 +27,12 @@
  *
  * Original Author:  Mimil;
  *
- * $Id: CSVTableModelProducer.java,v 1.3 2005/01/31 17:16:19 taqua Exp $
+ * $Id: CSVTableModelProducer.java,v 1.1 2005/02/19 18:37:57 taqua Exp $
  *
  * $Log: CSVTableModelProducer.java,v $
+ * Revision 1.1  2005/02/19 18:37:57  taqua
+ * CSVTableModel classes moved into modules/misc/tablemodel
+ *
  * Revision 1.3  2005/01/31 17:16:19  taqua
  * Module and JUnit updates for 0.8.5
  *
@@ -74,7 +77,7 @@ public class CSVTableModelProducer
   }
 
   public CSVTableModelProducer (final String filename)
-    throws FileNotFoundException
+          throws FileNotFoundException
   {
     this(new BufferedReader(new FileReader(filename)));
   }
@@ -100,7 +103,8 @@ public class CSVTableModelProducer
    *
    * @see this.getTableModel()
    */
-  public synchronized TableModel parse () throws IOException
+  public synchronized TableModel parse ()
+          throws IOException
   {
     if (tableModel != null)
     {
@@ -181,7 +185,8 @@ public class CSVTableModelProducer
    *
    * @return the new TableModel
    */
-  public TableModel getTableModel () throws IOException
+  public TableModel getTableModel ()
+          throws IOException
   {
     return this.parse();
   }

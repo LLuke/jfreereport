@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morger
  * Contributor(s):   Stefan Prange;
  *
- * $Id: SystemPropertyConfiguration.java,v 1.5 2003/09/15 18:26:51 taqua Exp $
+ * $Id: SystemPropertyConfiguration.java,v 1.6 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -47,11 +47,11 @@ import java.util.Enumeration;
 public class SystemPropertyConfiguration extends ReportConfiguration
 {
   /**
-   * Creates a report configuration that includes all the system properties (whether they are
-   * related to reports or not).  The parent configuration is a
+   * Creates a report configuration that includes all the system properties (whether they
+   * are related to reports or not).  The parent configuration is a
    * <code>PropertyFileReportConfiguration</code>.
    */
-  public SystemPropertyConfiguration()
+  public SystemPropertyConfiguration ()
   {
     // the configuration set of ReportConfiguration is not filled, we handle request
     // by using an own implementation...
@@ -60,27 +60,26 @@ public class SystemPropertyConfiguration extends ReportConfiguration
   /**
    * Sets a configuration property.
    *
-   * @param key  the property key.
-   * @param value  the property value.
+   * @param key   the property key.
+   * @param value the property value.
    */
-  public void setConfigProperty(final String key, final String value)
+  public void setConfigProperty (final String key, final String value)
   {
     throw new UnsupportedOperationException("The SystemPropertyConfiguration is readOnly");
   }
 
   /**
-   * Returns the configuration property with the specified key (or the specified default value
-   * if there is no such property).
-   * <p>
-   * If the property is not defined in this configuration, the code will lookup the property in
-   * the parent configuration.
+   * Returns the configuration property with the specified key (or the specified default
+   * value if there is no such property).
+   * <p/>
+   * If the property is not defined in this configuration, the code will lookup the
+   * property in the parent configuration.
    *
-   * @param key  the property key.
-   * @param defaultValue  the default value.
-   *
+   * @param key          the property key.
+   * @param defaultValue the default value.
    * @return the property value.
    */
-  public String getConfigProperty(final String key, final String defaultValue)
+  public String getConfigProperty (final String key, final String defaultValue)
   {
     try
     {
@@ -98,13 +97,14 @@ public class SystemPropertyConfiguration extends ReportConfiguration
   }
 
   /**
-   * Checks, whether the given key is locally defined in the system properties. 
-   * @see org.jfree.report.util.ReportConfiguration#isLocallyDefined(java.lang.String)
-   * 
+   * Checks, whether the given key is locally defined in the system properties.
+   *
    * @param key the key that should be checked.
    * @return true, if the key is defined in the system properties, false otherwise.
+   *
+   * @see org.jfree.report.util.ReportConfiguration#isLocallyDefined(java.lang.String)
    */
-  public boolean isLocallyDefined(final String key)
+  public boolean isLocallyDefined (final String key)
   {
     try
     {
@@ -117,13 +117,13 @@ public class SystemPropertyConfiguration extends ReportConfiguration
   }
 
   /**
-   * Returns all defined configuration properties for the report. The enumeration
-   * contains all keys of the changed properties, properties set from files or
-   * the system properties are not included.
+   * Returns all defined configuration properties for the report. The enumeration contains
+   * all keys of the changed properties, properties set from files or the system
+   * properties are not included.
    *
    * @return all defined configuration properties for the report.
    */
-  public Enumeration getConfigProperties()
+  public Enumeration getConfigProperties ()
   {
     try
     {

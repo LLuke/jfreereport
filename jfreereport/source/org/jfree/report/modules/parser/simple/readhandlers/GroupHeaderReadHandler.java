@@ -36,7 +36,7 @@ public class GroupHeaderReadHandler extends RootLevelBandReadHandler
     {
       final boolean repeatVal = ParserUtil.parseBoolean(repeat, false);
       getBand().getStyle().setBooleanStyleProperty
-          (BandStyleKeys.REPEAT_HEADER, repeatVal);
+              (BandStyleKeys.REPEAT_HEADER, repeatVal);
     }
   }
 
@@ -45,11 +45,11 @@ public class GroupHeaderReadHandler extends RootLevelBandReadHandler
     final String ownPageAttr = attr.getValue("pagebreak");
     if (ownPageAttr != null)
     {
-      Log.warn ("The 'pagebreak' attribute of the <group-header> tag is deprecated. " +
+      Log.warn("The 'pagebreak' attribute of the <group-header> tag is deprecated. " +
               "Use the 'pagebreak-before' attribute instead.");
       final boolean ownPage = ParserUtil.parseBoolean(ownPageAttr, false);
       getBand().getStyle().setBooleanStyleProperty
-          (BandStyleKeys.PAGEBREAK_BEFORE, ownPage);
+              (BandStyleKeys.PAGEBREAK_BEFORE, ownPage);
     }
   }
 }

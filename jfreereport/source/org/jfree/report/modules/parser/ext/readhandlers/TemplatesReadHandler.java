@@ -3,8 +3,8 @@ package org.jfree.report.modules.parser.ext.readhandlers;
 import java.util.ArrayList;
 
 import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
-import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollection;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
 import org.jfree.xml.parser.XmlReadHandler;
@@ -41,7 +41,7 @@ public class TemplatesReadHandler extends AbstractPropertyXmlReadHandler
       commentHintPath.addName("templates");
 
       final TemplateReadHandler readHandler = new TemplateReadHandler(true, commentHintPath);
-      templateList.add (readHandler);
+      templateList.add(readHandler);
       return readHandler;
     }
     return null;

@@ -25,7 +25,7 @@
  * ------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * $Id: NoCloseOutputStream.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
+ * $Id: NoCloseOutputStream.java,v 1.4 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes
  * -------
@@ -39,9 +39,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * A Wrapper stream that does never calls close on its parent. This implementation
- * is needed when creating ZipOutputStream, as the final ZipDirectory is written
- * when close is called on the ZipOutputSteam.
+ * A Wrapper stream that does never calls close on its parent. This implementation is
+ * needed when creating ZipOutputStream, as the final ZipDirectory is written when close
+ * is called on the ZipOutputSteam.
  *
  * @author Thomas Morgner
  */
@@ -52,7 +52,7 @@ public class NoCloseOutputStream extends FilterOutputStream
    *
    * @param out the parent stream
    */
-  public NoCloseOutputStream(final OutputStream out)
+  public NoCloseOutputStream (final OutputStream out)
   {
     super(out);
     if (out == null)
@@ -62,18 +62,18 @@ public class NoCloseOutputStream extends FilterOutputStream
   }
 
   /**
-   * Closes this output stream and releases any system resources
-   * associated with the stream, but does not close the underlying
-   * output stream.
-   * <p>
-   * The <code>close</code> method of <code>FilterOutputStream</code>
-   * calls its <code>flush</code> method.
+   * Closes this output stream and releases any system resources associated with the
+   * stream, but does not close the underlying output stream.
+   * <p/>
+   * The <code>close</code> method of <code>FilterOutputStream</code> calls its
+   * <code>flush</code> method.
    *
-   * @exception  IOException  if an I/O error occurs.
-   * @see        FilterOutputStream#flush()
-   * @see        FilterOutputStream#out
+   * @throws IOException if an I/O error occurs.
+   * @see FilterOutputStream#flush()
+   * @see FilterOutputStream#out
    */
-  public void close() throws IOException
+  public void close ()
+          throws IOException
   {
     flush();
     // do not close the parent stream ... !

@@ -10,7 +10,7 @@ public class Epson9PinPrinterDriver extends AbstractEpsonPrinterDriver
           "epson-9pin-printer-specifications.properties";
 
   public Epson9PinPrinterDriver (final OutputStream out, final int charsPerInch, final int linesPerInch,
-                  final String printerModel)
+                                 final String printerModel)
   {
     super(out, charsPerInch, linesPerInch, printerModel);
   }
@@ -104,7 +104,7 @@ public class Epson9PinPrinterDriver extends AbstractEpsonPrinterDriver
     return loadSpecificationManager();
   }
 
-  public static synchronized PrinterSpecificationManager loadSpecificationManager()
+  public static synchronized PrinterSpecificationManager loadSpecificationManager ()
   {
     if (printerSpecificationManager == null)
     {

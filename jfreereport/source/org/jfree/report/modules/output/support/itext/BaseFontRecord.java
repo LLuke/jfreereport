@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecord.java,v 1.7 2005/01/25 00:12:00 taqua Exp $
+ * $Id: BaseFontRecord.java,v 1.8 2005/02/19 15:41:23 taqua Exp $
  *
  * Changes
  * -------
@@ -43,35 +43,40 @@ package org.jfree.report.modules.output.support.itext;
 import com.lowagie.text.pdf.BaseFont;
 
 /**
- * A PDF font record. The record is used to cache the generated PDF fonts. 
- * Once created the base font record is immutable. The base font record does
- * not store font sizes.
+ * A PDF font record. The record is used to cache the generated PDF fonts. Once created
+ * the base font record is immutable. The base font record does not store font sizes.
  *
  * @author Thomas Morgner
  */
 public final class BaseFontRecord
 {
-  /** The iText base font. */
+  /**
+   * The iText base font.
+   */
   private BaseFont baseFont;
 
-  /** The logical name. */
+  /**
+   * The logical name.
+   */
   private String logicalName;
 
-  /** A flag indicating whether this font record describes an embedded PDF font. */
+  /**
+   * A flag indicating whether this font record describes an embedded PDF font.
+   */
   private boolean embedded;
 
   private transient BaseFontRecordKey key;
 
   /**
    * Creates a new font record.
-   * 
+   *
    * @param logicalName the logical iText name of the font.
-   * @param embedded a flag that defines whether this font should be embedded
-   * in the target document.
-   * @param baseFont the generated base font for the given font definition.
+   * @param embedded    a flag that defines whether this font should be embedded in the
+   *                    target document.
+   * @param baseFont    the generated base font for the given font definition.
    */
-  public BaseFontRecord(final String logicalName,
-                        final boolean embedded, final BaseFont baseFont)
+  public BaseFontRecord (final String logicalName,
+                         final boolean embedded, final BaseFont baseFont)
   {
     if (baseFont == null)
     {
@@ -91,7 +96,7 @@ public final class BaseFontRecord
    *
    * @return the font record key.
    */
-  public BaseFontRecordKey createKey()
+  public BaseFontRecordKey createKey ()
   {
     if (key == null)
     {
@@ -105,7 +110,7 @@ public final class BaseFontRecord
    *
    * @return the encoding.
    */
-  public String getEncoding()
+  public String getEncoding ()
   {
     return baseFont.getEncoding();
   }
@@ -115,7 +120,7 @@ public final class BaseFontRecord
    *
    * @return true or false.
    */
-  public boolean isEmbedded()
+  public boolean isEmbedded ()
   {
     return embedded;
   }
@@ -125,7 +130,7 @@ public final class BaseFontRecord
    *
    * @return the logical name.
    */
-  public String getLogicalName()
+  public String getLogicalName ()
   {
     return logicalName;
   }
@@ -135,7 +140,7 @@ public final class BaseFontRecord
    *
    * @return the itext BaseFont.
    */
-  public BaseFont getBaseFont()
+  public BaseFont getBaseFont ()
   {
     return baseFont;
   }
