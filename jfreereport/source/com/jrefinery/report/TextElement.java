@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: TextElement.java,v 1.19 2002/08/29 19:15:33 taqua Exp $
+ * $Id: TextElement.java,v 1.20 2002/09/05 08:31:51 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -199,7 +199,7 @@ public class TextElement extends Element
    * although you may feed a null value into the set method of this property.
    *
    * @return the null value representation for this element.
-   * @see setNullString
+   * @see #setNullString(String)
    */
   public String getNullString()
   {

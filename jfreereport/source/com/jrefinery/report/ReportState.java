@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.29 2002/08/29 19:15:33 taqua Exp $
+ * $Id: ReportState.java,v 1.30 2002/09/05 09:34:53 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -140,7 +140,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * advances to PostReportHeader<br>
    * before the print, a reportStarted event gets fired.
    */
-  public static class PreReportHeader extends ReportState
+  protected static class PreReportHeader extends ReportState
   {
     /**
      * Default constructor and the only constructor to create a state without cloning another.

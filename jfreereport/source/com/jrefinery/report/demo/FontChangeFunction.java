@@ -99,7 +99,7 @@ public class FontChangeFunction extends AbstractFunction
    * Performs the functions initialisation. The initialisation will fail, if the
    * function has no valid name or the required parameter "element" is missing.
    * <p>
-   * @see setElement
+   * @see #setElement(String)
    */
   public void initialize () throws FunctionInitializeException
   {

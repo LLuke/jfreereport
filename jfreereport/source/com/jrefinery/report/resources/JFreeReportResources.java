@@ -39,6 +39,9 @@ import java.net.URL;
 import java.util.Hashtable;
 import java.util.ListResourceBundle;
 
+/**
+ * English Language Resources
+ */
 public class JFreeReportResources extends ListResourceBundle
 {
   public JFreeReportResources ()

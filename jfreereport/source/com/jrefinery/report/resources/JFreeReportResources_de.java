@@ -29,6 +29,9 @@ package com.jrefinery.report.resources;
 
 import java.awt.event.KeyEvent;
 
+/**
+ * German Language Resources
+ */
 public class JFreeReportResources_de extends JFreeReportResources
 {
 

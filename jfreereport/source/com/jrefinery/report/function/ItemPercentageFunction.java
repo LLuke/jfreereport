@@ -43,6 +43,10 @@ import com.jrefinery.report.util.Log;
 import javax.swing.table.TableModel;
 import java.math.BigDecimal;
 
+/**
+ * Calculates the percentage value of an numeric field. The total sum is taken and divided by
+ * the number of items counted.
+ */
 public class ItemPercentageFunction extends AbstractFunction
 {
   public static final String GROUP_PROPERTY = "group";
@@ -58,7 +62,9 @@ public class ItemPercentageFunction extends AbstractFunction
   /** The datasource of the parser */
   private StaticDataSource datasource;
 
-
+  /**
+   * Creates a new ItemPercentageFunction.
+   */
   public ItemPercentageFunction ()
   {
     totalSumFunction = new TotalGroupSumFunction ();

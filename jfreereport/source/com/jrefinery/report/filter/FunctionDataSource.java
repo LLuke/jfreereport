@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionDataSource.java,v 1.10 2002/08/28 15:27:39 taqua Exp $
+ * $Id: FunctionDataSource.java,v 1.11 2002/08/31 14:00:22 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,6 @@ import com.jrefinery.report.util.Log;
  * If the function name is invalid (no function registered by that name), null is
  * returned.
  *
- * @see com.jrefinery.report.Band#populateElements
  * @deprecated use DataRowDataSource as unified access class instead
  */
 public class FunctionDataSource implements DataSource, DataRowConnectable

@@ -38,6 +38,10 @@ import javax.swing.KeyStroke;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+/**
+ * The ActionButton is used to connect an Action and its properties to an Button. This functionality
+ * is already implemented in JDK 1.3 but needed for JDK 1.2.2 compatibility.
+ */
 public class ActionButton extends JButton
 {
   private Action action;

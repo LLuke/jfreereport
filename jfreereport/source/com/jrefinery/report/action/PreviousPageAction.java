@@ -38,6 +38,11 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import java.util.ResourceBundle;
 
+/**
+ * Creates a new PreviousPageAction used by the PreviewPane to directly jump to the previous
+ * page of the report. This abstract class is used for initializing the default locales,
+ * the actual work is done in an internal subclass in PreviewFrame.
+ */
 public abstract class PreviousPageAction extends AbstractActionDowngrade
 {
   /**

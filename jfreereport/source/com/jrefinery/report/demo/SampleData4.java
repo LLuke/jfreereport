@@ -34,6 +34,9 @@ import java.awt.GraphicsEnvironment;
 import java.util.Arrays;
 import java.util.Comparator;
 
+/**
+ * A sample data source for the JFreeReport Demo Application.
+ */
 public class SampleData4 extends AbstractTableModel
 {
   private class FontComparator implements Comparator

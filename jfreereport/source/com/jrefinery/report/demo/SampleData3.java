@@ -30,6 +30,9 @@ package com.jrefinery.report.demo;
 
 import javax.swing.table.AbstractTableModel;
 
+/**
+ * A sample data source for the JFreeReport Demo Application.
+ */
 public class SampleData3 extends AbstractTableModel
 {
   /** Storage for the data. */

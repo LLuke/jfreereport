@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morger
  * Contributor(s):   Stefan Prange;
  *
- * $Id: WaitingImageObserver.java,v 1.6 2002/07/03 18:49:46 taqua Exp $
+ * $Id: WaitingImageObserver.java,v 1.7 2002/07/14 21:59:33 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -115,6 +115,9 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
     }
   }
 
+  /**
+   * Clones this WaitingImageObserver.
+   */
   public Object clone () throws CloneNotSupportedException
   {
     WaitingImageObserver obs = (WaitingImageObserver) super.clone ();

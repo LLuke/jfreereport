@@ -39,8 +39,8 @@ import java.awt.print.Paper;
 import java.lang.reflect.Field;
 
 /**
- * Page sizes defined by ADOBE:
- *
+ * The PageFormatFactory is used to create PageFormats on a higher level. The Factory contains templates
+ * for all PageSizes defined by Adobe:
  * <p>
  * <a href="http://partners.adobe.com/asn/developer/pdfs/tn/5003.PPD_Spec_v4.3.pdf">Postscript Specifications</a>
  * <p>
