@@ -36,6 +36,7 @@
  * 23-Aug-2002 : breakLines was broken, fixed and removed useless code ..
  * 23-Aug-2002 : removed the strictmode, the reserved literal is now always added
  * 26-Aug-2002 : Corrected Fontheight calculations.
+ * 02-Oct-2002 : BUG: breakLines() got a corrected word breaking (Aleksandr Gekht)
  */
 package com.jrefinery.report.targets;
 
@@ -432,7 +433,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
               if (endPos == BreakIterator.DONE)
               {
                   returnLines.add(currentLine.substring(lineStartPos));
-                  return returnLines;
+                  break;
               }
               else
               {
