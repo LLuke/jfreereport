@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.12 2002/08/16 20:13:36 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.13 2002/08/20 20:58:20 taqua Exp $
  *
  * Changes
  * -------
@@ -39,14 +39,15 @@
  *               marked deprecated. The name-attribute must not be null, or the validity check
  *               will fail.
  * 05-Jun-2002 : Updated Javadoc comments (DG);
+ * 27-Aug-2002 : Documentation and removed the deprecated functions
  */
 
 package com.jrefinery.report.function;
 
+import com.jrefinery.report.DataRow;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportState;
-import com.jrefinery.report.DataRow;
 import com.jrefinery.report.event.ReportEvent;
 
 import javax.swing.table.TableModel;
@@ -77,9 +78,9 @@ public abstract class AbstractFunction implements Function
    * <P>
    * Initially the function has no name...be sure to assign one before using the function.
    */
-  protected AbstractFunction ()
+  protected AbstractFunction()
   {
-    this.properties = new Properties ();
+    this.properties = new Properties();
   }
 
   /**
@@ -87,7 +88,7 @@ public abstract class AbstractFunction implements Function
    *
    * @return The function name.
    */
-  public String getName ()
+  public String getName()
   {
     return this.name;
   }
@@ -98,10 +99,10 @@ public abstract class AbstractFunction implements Function
    * @param name The function name (null not permitted).
    * @throws NullPointerException if the given name is null
    */
-  public void setName (String name)
+  public void setName(String name)
   {
     if (name == null)
-      throw new NullPointerException ("AbstractFunction.setName():  null not permitted.");
+      throw new NullPointerException("AbstractFunction.setName():  null not permitted.");
 
     this.name = name;
   }
@@ -116,10 +117,10 @@ public abstract class AbstractFunction implements Function
    * @throws FunctionInitializeException if the function name is not set or the call to
    * isInitialized returns false.
    */
-  public void initialize () throws FunctionInitializeException
+  public void initialize() throws FunctionInitializeException
   {
-    if (name == null) throw new FunctionInitializeException ("FunctionName is null");
-    if (!isInitialized ()) throw new FunctionInitializeException ("isInitialized failed.");
+    if (name == null) throw new FunctionInitializeException("FunctionName is null");
+    if (!isInitialized()) throw new FunctionInitializeException("isInitialized failed.");
   }
 
   /**
@@ -129,20 +130,8 @@ public abstract class AbstractFunction implements Function
    *
    * @param event Information about the event.
    */
-  public void reportStarted (ReportEvent event)
+  public void reportStarted(ReportEvent event)
   {
-    JFreeReport report = event.getReport ();
-    startReport (report);
-  }
-
-  /**
-   * Receives notification that a report is starting.
-   *
-   * @deprecated Use the ReportListener interface instead.
-   */
-  public final void startReport (JFreeReport report)
-  {
-    // do nothing
   }
 
   /**
@@ -152,20 +141,8 @@ public abstract class AbstractFunction implements Function
    *
    * @param event Information about the event.
    */
-  public void reportFinished (ReportEvent event)
+  public void reportFinished(ReportEvent event)
   {
-    JFreeReport report = event.getReport ();
-    endReport (report);
-  }
-
-  /**
-   * Receives notification that a report is ending.
-   *
-   * @deprecated Use the ReportListener interface instead.
-   */
-  public final void endReport (JFreeReport report)
-  {
-    // do nothing
   }
 
   /**
@@ -175,20 +152,8 @@ public abstract class AbstractFunction implements Function
    *
    * @param event Information about the event.
    */
-  public void pageStarted (ReportEvent event)
+  public void pageStarted(ReportEvent event)
   {
-    ReportState state = event.getState ();
-    startPage (state.getCurrentPage ());
-  }
-
-  /**
-   * Receives notification that a page is starting.
-   *
-   * @deprecated Use the ReportListener interface instead.
-   */
-  public final void startPage (int page)
-  {
-    // do nothing
   }
 
   /**
@@ -198,20 +163,8 @@ public abstract class AbstractFunction implements Function
    *
    * @param event Information about the event.
    */
-  public void pageFinished (ReportEvent event)
+  public void pageFinished(ReportEvent event)
   {
-    ReportState state = event.getState ();
-    endPage (state.getCurrentPage ());
-  }
-
-  /**
-   * Receives notification that a page is ending.
-   *
-   * @deprecated Use the ReportListener interface instead.
-   */
-  public final void endPage (int page)
-  {
-    // do nothing
   }
 
   /**
@@ -221,21 +174,8 @@ public abstract class AbstractFunction implements Function
    *
    * @param event Information about the event.
    */
-  public void groupStarted (ReportEvent event)
+  public void groupStarted(ReportEvent event)
   {
-    JFreeReport report = event.getReport ();
-    ReportState state = event.getState ();
-    startGroup (report.getGroup (state.getCurrentGroupIndex ()));
-  }
-
-  /**
-   * Receives notification that a group is starting.
-   *
-   * @deprecated Use the ReportListener interface instead.
-   */
-  public final void startGroup (Group g)
-  {
-    // do nothing
   }
 
   /**
@@ -245,22 +185,10 @@ public abstract class AbstractFunction implements Function
    *
    * @param event Information about the event.
    */
-  public void groupFinished (ReportEvent event)
+  public void groupFinished(ReportEvent event)
   {
-    JFreeReport report = event.getReport ();
-    ReportState state = event.getState ();
-    endGroup (report.getGroup (state.getCurrentGroupIndex ()));
   }
 
-  /**
-   * Receives notification that a group is ending.
-   *
-   * @deprecated Use the ReportListener interface instead.
-   */
-  public final void endGroup (Group g)
-  {
-    // do nothing
-  }
 
   /**
    * Receives notification that a row of data is being processed.
@@ -269,21 +197,8 @@ public abstract class AbstractFunction implements Function
    *
    * @param event Information about the event.
    */
-  public void itemsAdvanced (ReportEvent event)
+  public void itemsAdvanced(ReportEvent event)
   {
-    JFreeReport report = event.getReport ();
-    ReportState state = event.getState ();
-    advanceItems (report.getData (), state.getCurrentDataItem ());
-  }
-
-  /**
-   * Processes a row of data.
-   *
-   * @deprecated Use the ReportListener interface instead.
-   */
-  public final void advanceItems (TableModel data, int row)
-  {
-    // do nothing
   }
 
   /**
@@ -294,9 +209,9 @@ public abstract class AbstractFunction implements Function
    *
    * @return A clone of the function.
    */
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
-    AbstractFunction function = (AbstractFunction) super.clone ();
+    AbstractFunction function = (AbstractFunction) super.clone();
     function.properties = (Properties) properties.clone();
     return function;
   }
@@ -317,16 +232,16 @@ public abstract class AbstractFunction implements Function
    * @todo create a property query interface. Maybe the same as used in
    * JDBC (@see java.sql.PropertyInfo)?
    */
-  public void setProperties (Properties p)
+  public void setProperties(Properties p)
   {
     if (p != null)
     {
-      Enumeration names = p.keys ();
-      while (names.hasMoreElements ())
+      Enumeration names = p.keys();
+      while (names.hasMoreElements())
       {
-        String name = (String) names.nextElement ();
-        String prop = (String) p.get (name);
-        setProperty (name, prop);
+        String name = (String) names.nextElement();
+        String prop = (String) p.get(name);
+        setProperty(name, prop);
       }
     }
   }
@@ -340,9 +255,9 @@ public abstract class AbstractFunction implements Function
    *
    * @return The property value.
    */
-  public String getProperty (String name)
+  public String getProperty(String name)
   {
-    return getProperty (name, null);
+    return getProperty(name, null);
   }
 
   /**
@@ -355,9 +270,9 @@ public abstract class AbstractFunction implements Function
    *
    * @return The property value.
    */
-  public String getProperty (String name, String defaultVal)
+  public String getProperty(String name, String defaultVal)
   {
-    return properties.getProperty (name, defaultVal);
+    return properties.getProperty(name, defaultVal);
   }
 
   /**
@@ -366,12 +281,12 @@ public abstract class AbstractFunction implements Function
    * @param name The property name.
    * @param value The property value.
    */
-  public void setProperty (String name, String value)
+  public void setProperty(String name, String value)
   {
     if (value == null)
-      properties.remove (name);
+      properties.remove(name);
     else
-      properties.setProperty (name, value);
+      properties.setProperty(name, value);
   }
 
   /**
@@ -379,7 +294,7 @@ public abstract class AbstractFunction implements Function
    *
    * @deprecated initialize() is used to initialize a function.
    */
-  public boolean isInitialized ()
+  public boolean isInitialized()
   {
     return true;
   }
@@ -391,7 +306,7 @@ public abstract class AbstractFunction implements Function
    *
    * @param event The event.
    */
-  public void itemsStarted (ReportEvent event)
+  public void itemsStarted(ReportEvent event)
   {
   }
 
@@ -402,23 +317,38 @@ public abstract class AbstractFunction implements Function
    *
    * @param event The event.
    */
-  public void itemsFinished (ReportEvent event)
+  public void itemsFinished(ReportEvent event)
   {
   }
 
+  /**
+   * returns the datarow for this function. A datarow is used to query the values of functions,
+   * expressions and datasource fields in an uniform way.
+   *
+   * @returns the assigned datarow for this expression.
+   */
   public DataRow getDataRow()
   {
     return dataRow;
   }
 
+  /**
+   * Defines the datarow for this function. A datarow is used to query the values of functions,
+   * expressions and datasource fields in an uniform way.
+   *
+   * @param dataRow assignes the datarow for this expression.
+   */
   public void setDataRow(DataRow dataRow)
   {
     this.dataRow = dataRow;
   }
 
-  public Properties getProperties ()
+  /**
+   * @returns a copy of the properties defined for this function.
+   */
+  public Properties getProperties()
   {
-    Properties retval = new Properties ();
+    Properties retval = new Properties();
     retval.putAll(properties);
     return retval;
   }

@@ -28,57 +28,30 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.17 2002/08/20 20:58:20 taqua Exp $
+ * $Id: ItemHideFunction.java,v 1.1 2002/08/27 13:14:26 taqua Exp $
  *
  * Changes
  * -------
- * 18-Feb-2002 : Version 1, contributed by Thomas Morgner (DG);
- * 24-Apr-2002 : Changed the implementation to reflect the changes in Function and
- *               AbstractFunction
- * 10-May-2002 : Applied the ReportEvent interface
- * 23-Jun-2002 : Documentation
- * 17-Jul-2002 : Handle empty data source without a crashing
- * 18-Jul-2002 : Handle out-of-bounds dataquery to the tablemodel
- * 21-Jul-2002 : Corrected the out-of-bounds constraint
+ * 27-Aug-2002 : Initial version
  */
 
 package com.jrefinery.report.function;
 
-import com.jrefinery.report.Group;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.event.ReportEvent;
-import com.jrefinery.report.filter.DecimalFormatParser;
-import com.jrefinery.report.filter.NumberFormatParser;
-import com.jrefinery.report.filter.StaticDataSource;
-import com.jrefinery.report.util.Log;
 
 import java.math.BigDecimal;
 
 /**
- * A report function that calculates the sum of one field (column) from the TableModel.
- * This function produces a running total, no global total. For a global sum, use the
- * TotalGroupSumFunction function.
- * The function can be used in two ways:
- * <ul>
- * <li>to calculate a sum for the entire report;</li>
- * <li>to calculate a sum within a particular group;</li>
- * </ul>
- * This function expects its input values to be either java.lang.Number instances or Strings
- * that can be parsed to java.lang.Number instances using a java.text.DecimalFormat.
- * <p>
- * The function undestands two parameters, the <code>field</code> parameter is required and
- * denotes the name of an ItemBand-field which gets summed up.
- * <p>
- * The parameter <code>group</code> denotes the name of a group. When this group is started,
- * the counter gets reseted to null.
+ * The ItemHideFunction hides equal values in an group. Only the first changed value is printed.
+ * This function uses the property <code>element</code> to define the name of the element in the
+ * ItemBand that should be made visible or invisible by this function. The property <code>field</code>
+ * defines the field in the datasource or the expression which should be used to determine the visibility.
  */
 public class ItemHideFunction extends AbstractFunction
 {
   public static final String ELEMENT_PROPERTY = "element";
   public static final String FIELD_PROPERTY = "field";
-
-  /** Zero. */
-  private static final BigDecimal ZERO = new BigDecimal (0.0);
 
   /** The sum. */
   private Object lastObject;
@@ -89,7 +62,7 @@ public class ItemHideFunction extends AbstractFunction
    * Constructs an unnamed function. Make sure to set a Name or function initialisation
    * will fail.
    */
-  public ItemHideFunction ()
+  public ItemHideFunction()
   {
   }
 
@@ -100,43 +73,40 @@ public class ItemHideFunction extends AbstractFunction
    *
    * @param name The function name.
    */
-  public ItemHideFunction (String name)
+  public ItemHideFunction(String name)
   {
-    this ();
-    setName (name);
+    this();
+    setName(name);
   }
 
   /**
-   * Returns the group name.
+   * Returns the name of the element in the item band that should be set visible/invisible.
    *
-   * @return The group name.
+   * @return The element name.
    */
-  public String getElement ()
+  public String getElement()
   {
     return getProperty(ELEMENT_PROPERTY);
   }
 
   /**
-   * Sets the group name.
-   * <P>
-   * If a group is defined, the running total is reset to zero at the start of every instance of
-   * this group.
+   * Sets the name of the element in the item band that should be set visible/invisible.
    *
-   * @param _group The group name (null permitted).
+   * @param _element The element name (must not be null).
    */
-  public void setElement (String _element)
+  public void setElement(String _element)
   {
-    setProperty (ELEMENT_PROPERTY, _element);
+    setProperty(ELEMENT_PROPERTY, _element);
   }
 
   /**
    * Returns the field used by the function.
    * <P>
-   * The field name corresponds to a column name in the report's TableModel.
+   * The field name corresponds to a column name in the report's TableModel or to an expression.
    *
    * @return The field name.
    */
-  public String getField ()
+  public String getField()
   {
     return getProperty(FIELD_PROPERTY);
   }
@@ -148,28 +118,25 @@ public class ItemHideFunction extends AbstractFunction
    *
    * @param The field name (null not permitted).
    */
-  public void setField (String field)
+  public void setField(String field)
   {
     if (field == null)
-      throw new NullPointerException ();
+      throw new NullPointerException();
 
-    setProperty (FIELD_PROPERTY, field);
+    setProperty(FIELD_PROPERTY, field);
   }
 
   /**
    * Receives notification that a row of data is being processed.  Reads the data from the field
-   * defined for this function and adds it to the running total.
-   * <P>
-   * This function assumes that it will find an instance of the Number class in the column of the
-   * TableModel specified by the field name.
+   * defined for this function and hides the field if the value is equal to the last value and the
+   * this is not the first row of the item group.
    *
    * @param event Information about the event.
    */
-  public void itemsAdvanced (ReportEvent event)
+  public void itemsAdvanced(ReportEvent event)
   {
-    Object fieldValue = event.getDataRow ().get (getField ());
+    Object fieldValue = event.getDataRow().get(getField());
 
-    Log.debug ("ItemAdvanced:  ItemHide");
     // is visible when last and current object are not equal
     // first element in group is always visible
     if (firstInGroup == true)
@@ -179,26 +146,30 @@ public class ItemHideFunction extends AbstractFunction
     }
     else
     {
-      visible = (secureEquals (lastObject, fieldValue) == false);
+      visible = (secureEquals(lastObject, fieldValue) == false);
     }
     lastObject = fieldValue;
     Element e = event.getReport().getItemBand().getElement(getElement());
     if (e != null)
     {
-      Log.debug ("Element found and visible is set to " + visible);
       e.setVisible(visible);
     }
   }
 
-  private boolean secureEquals (Object o1, Object o2)
+  /**
+   * Compares 2 values where both values can contain null values.
+   */
+  private boolean secureEquals(Object o1, Object o2)
   {
-    Log.debug ("O1 = " + o1 + " - O2 = " + o2);
     if (o1 == null && o2 == null) return true;
     if (o1 == null) return false;
     if (o2 == null) return false;
     return o1.equals(o2);
   }
 
+  /**
+   * resets the state of the function when a new ItemGroup has started.
+   */
   public void itemsStarted(ReportEvent event)
   {
     lastObject = null;
@@ -206,34 +177,33 @@ public class ItemHideFunction extends AbstractFunction
   }
 
   /**
-   * Returns the function value, in this case the running total of a specific column in the
-   * report's TableModel.
+   * Returns the function value, in this case the visibility of the defined element.
    *
    * @return The function value.
    */
-  public Object getValue ()
+  public Object getValue()
   {
     return new Boolean(visible);
   }
 
   /**
    * Initializes the function and tests that all required properties are set. If the required
-   * field property is not set, a FunctionInitializeException is thrown.
+   * field property or the element property are not set, a FunctionInitializeException is thrown.
    *
-   * @throws FunctionInitializeException when no field is set.
+   * @throws FunctionInitializeException when no field or element is set.
    */
-  public void initialize ()
-          throws FunctionInitializeException
+  public void initialize()
+      throws FunctionInitializeException
   {
-    String fieldProp = getProperty (FIELD_PROPERTY);
+    String fieldProp = getProperty(FIELD_PROPERTY);
     if (fieldProp == null)
     {
-      throw new FunctionInitializeException ("No Such Property : field");
+      throw new FunctionInitializeException("No Such Property : field");
     }
-    String elementProp = getProperty (ELEMENT_PROPERTY);
+    String elementProp = getProperty(ELEMENT_PROPERTY);
     if (fieldProp == null)
     {
-      throw new FunctionInitializeException ("No Such Property : element");
+      throw new FunctionInitializeException("No Such Property : element");
     }
   }
 

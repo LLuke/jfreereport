@@ -1,21 +1,43 @@
-/*
- * Created by IntelliJ IDEA.
- * User: user
- * Date: 12.08.2002
- * Time: 20:53:29
- * To change template for new class use
- * Code Style | Class Templates options (Tools | IDE Options).
+/**
+ * =============================================================
+ * JFreeReport : an open source reporting class library for Java
+ * =============================================================
+ *
+ * Project Info:  http://www.object-refinery.com/jfreereport;
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ---------------------
+ * BSHExpression.java
+ * ---------------------
+ *
+ * ChangeLog
+ * ---------
+ * 12-Aug-2002 : Initial version
+ * 27-Aug-2002 : Documentation
  */
 package com.jrefinery.report.function;
 
 import bsh.Interpreter;
+import com.jrefinery.report.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-
-import com.jrefinery.report.util.Log;
 
 public class BSHExpression extends AbstractExpression
 {
@@ -33,11 +55,11 @@ public class BSHExpression extends AbstractExpression
     {
       interpreter.set("dataRow", getDataRow());
       interpreter.set("properties", getProperties());
-      return interpreter.eval ("getValue ();");
+      return interpreter.eval("getValue ();");
     }
     catch (Exception e)
     {
-      Log.error ("Evaluation error ", e);
+      Log.error("Evaluation error ", e);
     }
     return null;
   }
@@ -67,12 +89,12 @@ public class BSHExpression extends AbstractExpression
     }
     catch (Exception e)
     {
-      Log.error ("Unable to initialize the expression", e);
+      Log.error("Unable to initialize the expression", e);
       throw new FunctionInitializeException(e.getMessage());
     }
   }
 
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
     BSHExpression expression = (BSHExpression) super.clone();
     try
@@ -82,7 +104,7 @@ public class BSHExpression extends AbstractExpression
     }
     catch (FunctionInitializeException fe)
     {
-      throw new CloneNotSupportedException ();
+      throw new CloneNotSupportedException();
     }
     return expression;
   }
