@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData2.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
+ * $Id: SampleData2.java,v 1.5 2003/11/25 17:26:23 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -206,7 +206,7 @@ public class SampleData2 extends AbstractTableModel
    */
   public int getRowCount()
   {
-    return 109;
+    return 120;
   }
 
   /**
