@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionUtilities.java,v 1.3 2003/08/24 15:13:22 taqua Exp $
+ * $Id: FunctionUtilities.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------
@@ -156,5 +156,14 @@ public final class FunctionUtilities
       throw new NullPointerException("ReportEvent is null");
     }
     return (event.getState().getLevel() < 0);
+  }
+
+  public static Group getCurrentGroup (final ReportEvent event)
+  {
+    if (event == null)
+    {
+      throw new NullPointerException("ReportEvent is null");
+    }
+    return event.getReport().getGroup(event.getState().getCurrentGroupIndex());
   }
 }

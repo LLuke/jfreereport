@@ -7,6 +7,14 @@ A list of changes in recent versions:
         * BugFix: Exceptions in the repagination did not close the progress
           monitor. 
 
+        * BugFix: InternalFrames did not repaint due to a weird use of the
+          RepaintManager in the PreviewProxyBase and some other stupid bugs.
+
+        * BugFix: Non-Embeddable fonts cause no longer fatal errors. If such
+          an font is encountered, it will be included as non-embedded font.
+
+        * The element color function does not work with all bands of an report.
+         
 0.8.4-1:
         * BugFix: InternalFrame was not closed properly and caused NullPointers
           in Swing.

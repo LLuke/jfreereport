@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementColorFunction.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
+ * $Id: ElementColorFunction.java,v 1.3 2003/09/15 18:26:50 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import java.io.Serializable;
 import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.event.ReportEvent;
+import org.jfree.report.event.PageEventListener;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.SerializerHelper;
 import org.jfree.xml.factory.objects.ColorObjectDescription;
@@ -59,7 +60,8 @@ import org.jfree.xml.factory.objects.ColorObjectDescription;
  *
  * @author Thomas Morgner
  */
-public class ElementColorFunction extends AbstractFunction implements Serializable
+public class ElementColorFunction extends AbstractFunction
+    implements Serializable, PageEventListener
 {
   /** the Property key for the name of the ItemBand element. */
   public static final String ELEMENT_PROPERTY = "element";
@@ -240,6 +242,125 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
       return;
     }
     final Band b = event.getReport().getItemBand();
+    processRootBand(b);
+  }
+
+  /**
+   * Receives notification that the report has finished.
+   *
+   * @param event  the event.
+   */
+  public void reportFinished(ReportEvent event)
+  {
+    if (event.getState().isPrepareRun())
+    {
+      // dont do anything if there is no printing done ...
+      return;
+    }
+    final Band b = event.getReport().getReportFooter();
+    processRootBand(b);
+  }
+
+  /**
+   * Receives notification that the report has started.
+   *
+   * @param event  the event.
+   */
+  public void reportStarted(ReportEvent event)
+  {
+    if (event.getState().isPrepareRun())
+    {
+      // dont do anything if there is no printing done ...
+      return;
+    }
+    final Band b = event.getReport().getReportHeader();
+    processRootBand(b);
+  }
+
+  /**
+   * Receives notification that a group has started.
+   *
+   * @param event  the event.
+   */
+  public void groupStarted(ReportEvent event)
+  {
+    if (event.getState().isPrepareRun())
+    {
+      // dont do anything if there is no printing done ...
+      return;
+    }
+    final Band b = FunctionUtilities.getCurrentGroup(event).getHeader();
+    processRootBand(b);
+  }
+
+  /**
+   * Receives notification that a group has finished.
+   *
+   * @param event  the event.
+   */
+  public void groupFinished(ReportEvent event)
+  {
+    if (event.getState().isPrepareRun())
+    {
+      // dont do anything if there is no printing done ...
+      return;
+    }
+    final Band b = FunctionUtilities.getCurrentGroup(event).getFooter();
+    processRootBand(b);
+  }
+
+  /**
+   * Receives notification that a page was canceled by the ReportProcessor.
+   * This method is called, when a page was removed from the report after
+   * it was generated.
+   *
+   * @param event The event.
+   */
+  public void pageCanceled(ReportEvent event)
+  {
+    // this can be ignored, as nothing is printed here...
+  }
+
+  /**
+   * Receives notification that a page is completed.
+   *
+   * @param event The event.
+   */
+  public void pageFinished(ReportEvent event)
+  {
+    if (event.getState().isPrepareRun())
+    {
+      // dont do anything if there is no printing done ...
+      return;
+    }
+    final Band b = event.getReport().getPageFooter();
+    processRootBand(b);
+  }
+
+  /**
+   * Receives notification that a new page is being started.
+   *
+   * @param event The event.
+   */
+  public void pageStarted(ReportEvent event)
+  {
+    if (event.getState().isPrepareRun())
+    {
+      // dont do anything if there is no printing done ...
+      return;
+    }
+    final Band b = event.getReport().getPageFooter();
+    processRootBand(b);
+  }
+
+  /**
+   * Process the given band and color the named element of that band
+   * if it exists.
+   *
+   * @param b the band that should be colored.
+   */
+  private void processRootBand (final Band b)
+  {
     final Element e = FunctionUtilities.findElement(b, getElement());
     if (e == null)
     {
@@ -247,8 +368,8 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
       return;
     }
 
-    final Object o = event.getDataRow().get(getField());
     final boolean value;
+    final Object o = getDataRow().get(getField());
     if (o == null)
     {
       value = false;
@@ -265,8 +386,8 @@ public class ElementColorFunction extends AbstractFunction implements Serializab
     {
       e.getStyle().setStyleProperty(ElementStyleSheet.PAINT, elementColorFalse);
     }
-    super.itemsAdvanced(event);
   }
+
 
   /**
    * Return the current expression value.

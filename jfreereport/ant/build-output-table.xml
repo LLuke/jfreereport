@@ -28,10 +28,19 @@
   <!--                                                                -->
   <!--  Table Output base module                                      -->
   <!--                                                                -->
-  <!--  Depends on: Core task                                         -->
+  <!--  Depends on: Core task, pagelayout                             -->
   <!-- ************************************************************** -->
 
-  <target name="compile-module-output-table-base" depends="init">
+  <target name="check-module-output-support-pagelayout" depends="init">
+    <available file="${module-output-support-pagelayout-file}" property="module-output-support-pagelayout-file-present"/>
+  </target>
+
+  <target name="rebuild-module-output-support-pagelayout" unless="module-output-support-pagelayout-file-present" depends="check-module-output-support-pagelayout">
+    <dirname property="antfile.dir" file="${ant.file}"/>
+    <ant antfile="${antfile.dir}/build-output-misc.xml" target="compile-module-output-support-pagelayout"/>
+  </target>
+
+  <target name="compile-module-output-table-base" depends="init, rebuild-module-output-support-pagelayout">
     <description>
       Compiles the table output target base module.
     </description>
