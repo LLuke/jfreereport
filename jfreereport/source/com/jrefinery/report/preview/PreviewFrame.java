@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.28 2002/08/31 16:50:48 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.29 2002/09/01 15:49:31 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -451,7 +451,7 @@ public class PreviewFrame
     reportPaneHolder.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
     JScrollPane s1 = new JScrollPane(reportPaneHolder);
-    s1.setBorder(null);
+    //s1.setBorder(null);
     s1.getVerticalScrollBar().setUnitIncrement(20);
 
     JPanel scrollPaneHolder = new JPanel();
@@ -960,7 +960,7 @@ public class PreviewFrame
     ResourceBundle resources = getResources();
 
     JToolBar toolbar = new JToolBar();
-    toolbar.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 0));
+    //toolbar.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 0));
 
     toolbar.add(createButton(saveAsAction));
     toolbar.add(createButton(printAction));
