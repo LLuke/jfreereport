@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlImageCellData.java,v 1.3 2003/02/02 23:43:52 taqua Exp $
+ * $Id: HtmlImageCellData.java,v 1.4 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -43,16 +43,38 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * A wrapper for Image content within the generated HtmlTable. The image content
+ * will be inserted using a HtmlReference from the provided FileSystem.
+ */
 public class HtmlImageCellData extends HtmlCellData
 {
+  /** the imagereference used for this cell. */
   private ImageReference image;
 
+  /**
+   * Creates a new ImageCell for the given bounds and image.
+   *
+   * @param outerBounds the cell bounds.
+   * @param image the image content.
+   * @param style the assigned cell style.
+   * @param useXHTML a flag indicating whether to create XHTML instead of HTML4 code.
+   */
   public HtmlImageCellData(Rectangle2D outerBounds, ImageReference image, HtmlCellStyle style, boolean useXHTML)
   {
     super(outerBounds, style, useXHTML);
+    if (image == null) throw new NullPointerException("Image must not be null.");
     this.image = image;
   }
 
+  /**
+   * Writes the (X)HTML-Code for an Image-Content. The generated code depends
+   * on the created HTMLReference of the used FileSystem.
+   *
+   * @param pout the print writer, which receives the generated HTML-Code.
+   * @param filesystem the HTML-Filesystem used to create the ImageReference.
+   * @see HtmlFilesystem#createImageReference
+   */
   public void write(PrintWriter pout, HtmlFilesystem filesystem)
   {
     try
@@ -91,6 +113,11 @@ public class HtmlImageCellData extends HtmlCellData
     }
   }
 
+  /**
+   * Gets a flag, which indicates whether this cell contains background definitions.
+   *
+   * @return false, as this is no background cell.
+   */
   public boolean isBackground()
   {
     return false;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.7 2003/02/20 00:39:37 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.8 2003/02/22 18:52:31 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,6 @@ package com.jrefinery.report.targets.table.html;
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.util.IOUtils;
 import com.jrefinery.report.util.ImageComparator;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.NoCloseOutputStream;
 import com.jrefinery.report.util.StringUtil;
 import com.keypoint.PngEncoder;
@@ -47,10 +46,10 @@ import com.keypoint.PngEncoder;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.File;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.zip.Deflater;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlReferenceData.java,v 1.1 2003/01/27 03:20:01 taqua Exp $
+ * $Id: HtmlReferenceData.java,v 1.2 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -36,23 +36,43 @@
  */
 package com.jrefinery.report.targets.table.html;
 
+/**
+ * The base class for all HtmlReferences. HtmlReferences link the main document
+ * with the supplementary data, like images and stylesheets.
+ * <p>
+ * If the reference is external, then the referenced content is stored outside
+ * the main Html-File.
+ */
 public abstract class HtmlReferenceData
 {
+  /** A flag indicating whether this reference points to external data.  */
   private boolean external;
 
   /**
-   * A reference: a fragment which could be inserted into
-   * @param external
+   * A reference: a fragment which could be inserted into the generated HTML-Code.
+   *
+   * @param external if the generated reference points to an external resource.
    */
   protected HtmlReferenceData(boolean external)
   {
     this.external = external;
   }
 
+  /**
+   * Returns true, if this reference points to an external resource.
+   *
+   * @return true, if the reference is external, false otherwise.
+   */
   public boolean isExternal()
   {
     return external;
   }
 
+  /**
+   * Generates the reference fragment, which should be inserted into the HTML-Code.
+   * Which content is returned depends on the reference type and the target filesystem.
+   *
+   * @return the reference code, which should be inserted into the generated HTML-Code.
+   */
   public abstract String getReference();
 }

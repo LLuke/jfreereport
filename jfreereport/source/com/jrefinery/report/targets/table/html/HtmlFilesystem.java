@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlFilesystem.java,v 1.2 2003/02/02 23:43:52 taqua Exp $
+ * $Id: HtmlFilesystem.java,v 1.3 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -41,13 +41,61 @@ import com.jrefinery.report.ImageReference;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * The HtmlFilesystem provides an abstraction layer for the various storage methods
+ * implemented for the HtmlProducer.
+ * <p>
+ * <ul>
+ * <li>{@link DirectoryHtmlFilesystem}<p>
+ * Writes the generated Html-File and the supplementary data files (images and
+ * external Stylesheet definition) into a directory. The data files can be written
+ * into a separated data directory.
+ * <li>{link StreamHtmlFilesystem}<p>
+ * Writes a single generated Html-File into the supplied stream. The Stylesheet
+ * is inlined in the html file, no other external data files are generated. Images,
+ * which are loaded from an valid URL are included in the file, any other images are
+ * ignored.
+ * <li>{link ZIPHtmlFilesystem}<p>
+ * Similiar to the DirectoryHtmlFilesystem, the generated Html-File and the supplementary
+ * data files (images and external Stylesheet definition) into a directory in a ZIP-File.
+ * The data files can be written into a separated data directory within the ZIP-File.
+ */
 public interface HtmlFilesystem
 {
-  // contains the HTML file
+  /**
+   * The root stream is used to write the main HTML-File. Any external content is
+   * referenced from this file.
+   *
+   * @return the output stream of the main HTML file.
+   * @throws IOException if an IO error occured, while providing the root stream.
+   */
   public OutputStream getRootStream () throws IOException;
 
+  /**
+   * Creates a HtmlReference for ImageData. If the target filesystem does not support
+   * this reference type, return an empty content reference, but never null.
+   *
+   * @param reference the image reference containing the data.
+   * @return the generated HtmlReference, never null.
+   * @throws IOException
+   */
   public HtmlReferenceData createImageReference(ImageReference reference) throws IOException;
+
+  /**
+   * Creates a HtmlReference for StyleSheetData. If the target filesystem does not
+   * support external stylesheets, return an inline stylesheet reference.
+   *
+   * @param styleSheet the stylesheet data, which should be referenced.
+   * @return the generated HtmlReference, never null.
+   * @throws IOException
+   */
   public HtmlReferenceData createCSSReference (String styleSheet) throws IOException;
 
+  /**
+   * Close the Filesystem and write any buffered content. The filesystem will not
+   * be accessed, after close was called.
+   *
+   * @throws IOException if the close operation failed.
+   */
   public void close() throws IOException;
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.16 2003/02/20 00:39:37 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.17 2003/02/22 18:52:30 taqua Exp $
  *
  * Changes
  * -------
@@ -61,19 +61,41 @@ import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
+/**
+ * The TableProducer is responsible for creating the produced Table. After
+ * the writer has finished the band layout process, the layouted bands are
+ * forwarded into the TableProducer. The TableProducer coordinates the cell
+ * creation process and collects the generated TableCellData. The raw CellData
+ * objects are later transformed into a TableGridLayout.
+ * <p>
+ * The generated HTML code is cached and written after the last cell was created,
+ * to insert the StyleSheet into the html header.
+ */
 public class HtmlProducer extends TableProducer
 {
+  /** the printwriter for the main html file */
   private PrintWriter pout;
+  /** the report name */
   private String reportName;
+  /** the cell data factory used for creating the content cells */
   private HtmlCellDataFactory cellDataFactory;
+  /** the character entity parser converts Strings into the HTML format. */
   private static CharacterEntityParser entityParser;
+  /** the style collection is used to create the style sheet and the cell styles */
   private HtmlStyleCollection styleCollection;
+  /** the Filesystem is used to store the main html file and any external content */
   private HtmlFilesystem filesystem;
+  /** a flag indicating whether to use XHTML output */
   private boolean useXHTML;
+  /** the fileencoding for the main html file */
   private String encoding;
 
+  /** the content cache for the main html file */
   private ByteArrayOutputStream content;
+  /** a flag indicating whether this producer is open */
   private boolean isOpen;
+
+  /** the standard XHTML document type declaration and header. */
   private static final String[] XHTML_HEADER = {
        "<!DOCTYPE html",
        "     PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"",
@@ -81,6 +103,7 @@ public class HtmlProducer extends TableProducer
        "<html xmlns=\"http://www.w3.org/1999/xhtml\" >",
        "<head>"};
 
+  /** the standard HTML4 document type declaration and header. */
   private static final String[] HTML4_HEADER = {
        "<!DOCTYPE HTML ",
        "     PUBLIC \"-//W3C//DTD HTML 4.01//EN\"",
@@ -89,6 +112,15 @@ public class HtmlProducer extends TableProducer
        "<head>"};
 
 
+  /**
+   * Creates a new HTMLProducer.
+   *
+   * @param filesystem the filesystem used to store the generated content.
+   * @param reportName the report name used as file title.
+   * @param strict a flag whether to use the strict layout mode.
+   * @param useXHTML a flag whether to generate XHTML content.
+   * @param encoding the file encoding for the main HTML file.
+   */
   public HtmlProducer(HtmlFilesystem filesystem,
                       String reportName,
                       boolean strict,
@@ -110,11 +142,22 @@ public class HtmlProducer extends TableProducer
     this.encoding = encoding;
   }
 
+  /**
+   * Gets the defined file encoding for the main html file.
+   *
+   * @return the encoding.
+   */
   public String getEncoding()
   {
     return encoding;
   }
 
+  /**
+   * Gets the character entity parser for HTML content. The CharacterEntity parser
+   * translates known characters into predefined entities.
+   *
+   * @return the character entity parser instance.
+   */
   private static CharacterEntityParser getEntityParser ()
   {
     if (entityParser == null)
@@ -124,6 +167,9 @@ public class HtmlProducer extends TableProducer
     return entityParser;
   }
 
+  /**
+   * Starts the report writing and prepares the cached output stream.
+   */
   public void open()
   {
     this.content = new ByteArrayOutputStream();
@@ -155,12 +201,19 @@ public class HtmlProducer extends TableProducer
     isOpen = true;
   }
 
+  /**
+   * Closes the target and writes all generated content into the root stream of the
+   * filesystem after generating the StyleSheet information.
+   */
   public void close()
   {
     try
     {
       pout.println("</body></html>");
 
+      //
+      // Creates the stylesheets and the StyleSheet reference.
+      //
       StringBuffer cssbuffer = new StringBuffer();
 
       Enumeration styles = styleCollection.getDefinedStyles();
@@ -180,9 +233,9 @@ public class HtmlProducer extends TableProducer
       }
       HtmlReferenceData cssRef = filesystem.createCSSReference(cssbuffer.toString());
 
-
       PrintWriter writer = new PrintWriter(filesystem.getRootStream());
 
+      // write the standard headers
       if (useXHTML)
       {
         writer.print ("<?xml version=\"1.0\" encoding=\"");
@@ -202,6 +255,7 @@ public class HtmlProducer extends TableProducer
           writer.println(HTML4_HEADER[i]);
         }
       }
+      // write the generated stylesheet ...
       // is a href type ...
       if (cssRef.isExternal())
       {
@@ -224,6 +278,7 @@ public class HtmlProducer extends TableProducer
       }
       writer.flush();
 
+      // now copy all cached content into the root stream
       pout.flush();
       pout.close();
       byte[] data = content.toByteArray();
@@ -248,6 +303,9 @@ public class HtmlProducer extends TableProducer
     isOpen = false;
   }
 
+  /**
+   * End the page and generate the table for the page.
+   */
   public void endPage()
   {
     if (isDummy() == false)
@@ -258,23 +316,50 @@ public class HtmlProducer extends TableProducer
     clearCells();
   }
 
+  /**
+   * Start a new page, start a new table.
+   *
+   * @param name the page name
+   */
   public void beginPage(String name)
   {
+    pout.println ("<hr><h3>");
+    pout.println (name);
+    pout.println ("</h3><hr>");
     pout.println ("<p>");
     pout.println("<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
     //pout.println("<table border=\"2\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
   }
 
+  /**
+   * Gets the TableProducer implementation of this TableProducer.
+   *
+   * @return the TableProducers TableCellDataFactory, which is used to create
+   * the TableCellData.
+   */
   public TableCellDataFactory getCellDataFactory()
   {
     return cellDataFactory;
   }
 
+  /**
+   * Returns true, if the TableProducer is open. Only open producers
+   * are able to write TableCells or to create TableCellData from Elements.
+   *
+   * @return checks, whether the TableProducer is open.
+   */
   public boolean isOpen()
   {
     return isOpen;
   }
 
+  /**
+   * Merges the backgrounds and creates the StyleSheet information for
+   * the cell background.
+   *
+   * @param background the (unmerged) background styles.
+   * @return the background style sheet definition.
+   */
   protected String createHtmlBackgroundStyle (List background)
   {
     TableCellBackground bg = createTableCellStyle(background);
@@ -284,6 +369,11 @@ public class HtmlProducer extends TableProducer
     return styleCollection.getBackgroundStyle(bg);
   }
 
+  /**
+   * Generates and writes the HTML table specified by the given TableGridLayout.
+   *
+   * @param layout the layouted cells.
+   */
   private void generatePage (TableGridLayout layout)
   {
     pout.println();
@@ -297,6 +387,7 @@ public class HtmlProducer extends TableProducer
       for (int x = 0; x < layout.getWidth(); x++)
       {
         TableGridLayout.Element gridElement = layout.getData(x, y);
+        // no element defined for the given cell...
         if (gridElement == null)
         {
           int width = layout.getColumnEnd(x) - layout.getColumnStart(x);
@@ -306,6 +397,8 @@ public class HtmlProducer extends TableProducer
           continue;
         }
 
+        // no data cell defined, but there exists a background defintion
+        // for that cell.
         TableGridPosition gridPosition = gridElement.getRoot();
         if (gridPosition == null || gridPosition.isInvalidCell())
         {
@@ -334,12 +427,14 @@ public class HtmlProducer extends TableProducer
           continue;
         }
 
+        // a spanned field
         if (gridPosition.isOrigin(x, y) == false)
         {
           // this is a spanned field.
           continue;
         }
 
+        // real data ...
         HtmlCellData cellData = (HtmlCellData) gridPosition.getElement();
 
         pout.print("    <td style=\"width:");
@@ -402,6 +497,13 @@ public class HtmlProducer extends TableProducer
     }
   }
 
+  /**
+   * Generates the HTML output for printing the given text.
+   *
+   * @param pout the target writer
+   * @param text the text that should be printed.
+   * @param useXHTML true, if XHTML is generated, false otherwise.
+   */
   public static void printText (PrintWriter pout, String text, boolean useXHTML)
   {
     if (text.length() == 0)

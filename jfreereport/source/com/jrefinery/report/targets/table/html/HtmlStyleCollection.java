@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.6 2003/02/20 00:39:37 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.7 2003/02/22 18:52:30 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@ import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.io.ext.factory.objects.ColorObjectDescription;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.table.TableCellBackground;
-import com.jrefinery.report.util.Log;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -48,20 +47,35 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Iterator;
 
+/**
+ * The HtmlStyleCollection is used to create HtmlCellStyles and to convert these
+ * cell styles into Cascading StyleSheet code.
+ * <p>
+ * The collection reuses previously generated styles to create optimized code.
+ */
 public class HtmlStyleCollection
 {
+  /** the ObjectDescription for color objects is used to translate colors into names or RGB-values. */
   private ColorObjectDescription colorObjectDescription;
+  /** contains all generated style sheets */
   private Hashtable table;
+  /** the name counter helps to create unique names for the styles */
   private int nameCounter;
 
-
+  /**
+   * Creates a new HtmlStyleCollection.
+   */
   public HtmlStyleCollection()
   {
     this.colorObjectDescription = new ColorObjectDescription();
     this.table = new Hashtable();
   }
 
-
+  /**
+   * Create a unique name for a new style sheet.
+   *
+   * @return the generated name.
+   */
   private String createName ()
   {
     String name = "style-" + nameCounter;
@@ -70,8 +84,9 @@ public class HtmlStyleCollection
 
   }
   /**
+   * Adds the given style to the cache, if not already contained in the cache.
    *
-   * @param style
+   * @param style the generated style, that should be added to the style cache.
    */
   public String addStyle (HtmlCellStyle style)
   {
@@ -85,6 +100,12 @@ public class HtmlStyleCollection
     return name;
   }
 
+  /**
+   * Checks, whether the given style is contained in the cache.
+   *
+   * @param style the style, that should be checked.
+   * @return true, if the style is registered, false otherwise.
+   */
   public boolean isRegistered(HtmlCellStyle style)
   {
     String name = lookupName(style);
@@ -97,21 +118,45 @@ public class HtmlStyleCollection
     return true;
   }
 
+  /**
+   * Gets a enumeration of all defined styles.
+   *
+   * @return the styles as enumeration.
+   */
   public Enumeration getDefinedStyles ()
   {
     return table.keys();
   }
 
+  /**
+   * Try to find the registered name of the given style. Returns null,
+   * if the style is not registered.
+   *
+   * @param style the style, which should be looked up.
+   * @return the registered name for this style, or null, if the style is not registed.
+   * @see HtmlStyleCollection#isRegistered
+   */
   public String lookupName (HtmlCellStyle style)
   {
     return (String) table.get(style);
   }
 
+  /**
+   * Removes all registered styles.
+   */
   public void clear ()
   {
     table.clear();
   }
 
+  /**
+   * Translates the font name of the FontDefinition into the HTML-Font name.
+   * If the fontdefinition describes a logical font, then the html font name
+   * for that logical font is returned.
+   *
+   * @param font the font definition.
+   * @return the translated html font name.
+   */
   private String translateFontName (FontDefinition font)
   {
     if (font.isCourier())
@@ -129,6 +174,12 @@ public class HtmlStyleCollection
     return "'" + font.getFontName() + "'";
   }
 
+  /**
+   * Transforms the given HtmlCellStyle into a Cascading StyleSheet definition.
+   *
+   * @param style the HtmlCellStyle, that should be translated.
+   * @return the generated stylesheet definition.
+   */
   public String createStyleSheetDefinition (HtmlCellStyle style)
   {
     FontDefinition font = style.getFont();
@@ -175,6 +226,13 @@ public class HtmlStyleCollection
     return b.toString();
   };
 
+  /**
+   * Translates the JFreeReport horizontal element alignment into a
+   * HTML alignment constant.
+   *
+   * @param ea the element alignment
+   * @return the translated alignment name.
+   */
   private String translateHorizontalAlignment (ElementAlignment ea)
   {
     if (ea == ElementAlignment.RIGHT)
@@ -184,6 +242,13 @@ public class HtmlStyleCollection
     return "left";
   }
 
+  /**
+   * Translates the JFreeReport vertical element alignment into a
+   * HTML alignment constant.
+   *
+   * @param ea the element alignment
+   * @return the translated alignment name.
+   */
   private String translateVerticalAlignment (ElementAlignment ea)
   {
     if (ea == ElementAlignment.BOTTOM)
@@ -193,6 +258,14 @@ public class HtmlStyleCollection
     return "top";
   }
 
+  /**
+   * Creates the color string for the given AWT color. If the color is one of
+   * the predefined HTML colors, then the logical name is returned. For all other
+   * colors, the RGB-Tripple is returned.
+   *
+   * @param color the AWTColor that should be translated.
+   * @return the translated html color definition
+   */
   private String getColorString (Color color)
   {
     try
@@ -207,6 +280,12 @@ public class HtmlStyleCollection
     return null;
   }
 
+  /**
+   * Transforms the given TableCellBackground into a Cascading StyleSheet definition.
+   *
+   * @param bg the background definition, that should be translated.
+   * @return the generated stylesheet definition.
+   */
   public String getBackgroundStyle (TableCellBackground bg)
   {
     ArrayList style = new ArrayList();
