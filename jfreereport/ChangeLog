@@ -43,6 +43,8 @@ A list of changes in recent versions:
 
         * Refactoring: The BandLayout stuff moved into a separate package as these
           classes are used by allmost all output targets.
+          
+        * Info: The First demo has been renamed to SwingIconsDemo.
 
         * Added a main method in the JFreeReport info, so that everybody is able to
           read the library specifications without having to install or start the
@@ -61,11 +63,11 @@ A list of changes in recent versions:
           is canceled.
 
         * Added resource compare tool lists differences between the base
-	        resource class and the localized resources to help with the translation
-	        process.
+          resource class and the localized resources to help with the translation
+          process.
 
-	      * Added a line height property for text elements. This property can be used
-	        to increase the space between 2 lines.
+        * Added a line height property for text elements. This property can be used
+          to increase the space between 2 lines.
 
         * Bands now handle the object composition correctly and check for component
           loops.
@@ -99,6 +101,8 @@ A list of changes in recent versions:
         * Added support for Underlined and StrikeThrough font style.
 
         * Several new report functions added by Heiko Evermann.
+        
+        * A PaintComponentFunction can be used to create Images from AWT-Components.
 
         * Added PaintComponentFunction to create images from AWT or Swing components.
           The generated images can be used in ImageElements. 
@@ -163,6 +167,8 @@ A list of changes in recent versions:
           to create a global configuration without having to repack the jfreereport.jar file.
 
         * The FileEncodings are now selectable from the PDF- and HTML dialogs.
+	
+	* Patrice Rolland contributed a french translation
 
 0.8.0-3 : (07-Jan-2003): 
         * BugFix: Fixed the ReportStateList. Element were added at the wrong position, causing
