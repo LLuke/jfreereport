@@ -40,7 +40,7 @@
     <target name="init-jfreereport" depends="init-general"
             description="Initialise JFreeReport parameters.">
         <property name="jfreereport.name" value="jfreereport" />
-        <property name="jfreereport.version" value="0.7.7" />
+        <property name="jfreereport.version" value="0.8.0" />
     </target>
 
     <!-- Compile the JFreeReport classes -->
