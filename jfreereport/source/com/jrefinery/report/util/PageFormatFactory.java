@@ -27,6 +27,8 @@
  *
  * 27-Jul-2002 : Initial version, empty class :(
  * 26-Aug-2002 : Coded all defined Postscript-PaperFormats as defined by Adobe.
+ * 30-Aug-2002 : Added method to define the paper using a String constant refering to a constant defined
+ *               in the class.
  */
 package com.jrefinery.report.util;
 

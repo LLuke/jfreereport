@@ -27,11 +27,13 @@
  *
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *                   leonlyong;
  *
  * Changes
  * -------
  * 10-May-2002 : Initial version
  * 05-Jun-2002 : Updated Javadoc comments (DG);
+ * 30-Aug-2002 : PageFormat definition added (thanks "leonlyong")
  */
 
 package com.jrefinery.report.io;
@@ -72,7 +74,7 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
    *
    * @param handler the base handler for this report factory
    */
-  public ReportFactory (ReportDefinitionContentHandler handler)
+  public ReportFactory(ReportDefinitionContentHandler handler)
   {
     this.handler = handler;
   }
@@ -80,69 +82,69 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
   /**
    * A SAX event indicating that an element start tag has been read.
    */
-  public void startElement (String namespaceURI,
-                            String localName,
-                            String qName,
-                            Attributes atts) throws SAXException
+  public void startElement(String namespaceURI,
+                           String localName,
+                           String qName,
+                           Attributes atts) throws SAXException
   {
-    String elementName = qName.toLowerCase ().trim ();
-    if (elementName.equals (REPORT_TAG))
+    String elementName = qName.toLowerCase().trim();
+    if (elementName.equals(REPORT_TAG))
     {
-      startReport (atts);
+      startReport(atts);
     }
-    else if (elementName.equals (REPORT_HEADER_TAG) ||
-            elementName.equals (REPORT_FOOTER_TAG) ||
-            elementName.equals (PAGE_HEADER_TAG) ||
-            elementName.equals (PAGE_FOOTER_TAG) ||
-            elementName.equals (ITEMS_TAG))
+    else if (elementName.equals(REPORT_HEADER_TAG) ||
+        elementName.equals(REPORT_FOOTER_TAG) ||
+        elementName.equals(PAGE_HEADER_TAG) ||
+        elementName.equals(PAGE_FOOTER_TAG) ||
+        elementName.equals(ITEMS_TAG))
     {
       // Forward the event to the newly created
-      BandFactory bandFactory = handler.createBandFactory ();
-      handler.setExpectedHandler (bandFactory);
-      bandFactory.startElement (namespaceURI, localName, qName, atts);
+      BandFactory bandFactory = handler.createBandFactory();
+      handler.setExpectedHandler(bandFactory);
+      bandFactory.startElement(namespaceURI, localName, qName, atts);
     }
-    else if (elementName.equals (GROUPS_TAG))
+    else if (elementName.equals(GROUPS_TAG))
     {
-      startGroups (atts);
+      startGroups(atts);
     }
-    else if (elementName.equals (FUNCTIONS_TAG))
+    else if (elementName.equals(FUNCTIONS_TAG))
     {
-      startFunctions (atts);
+      startFunctions(atts);
     }
     else
     {
-      throw new SAXException ("Expected one of <report>, <groups>, <items>, <functions>");
+      throw new SAXException("Expected one of <report>, <groups>, <items>, <functions>");
     }
   }
 
   /**
    * Handle the end-tag event of sax.
    */
-  public void endElement (String namespaceURI, String localName, String qName) throws SAXException
+  public void endElement(String namespaceURI, String localName, String qName) throws SAXException
   {
-    String elementName = qName.toLowerCase ().trim ();
-    if (elementName.equals (REPORT_TAG))
+    String elementName = qName.toLowerCase().trim();
+    if (elementName.equals(REPORT_TAG))
     {
-      endReport ();
+      endReport();
     }
     else
     {
-      Log.error ("Expected </report>");
-      throw new SAXException ("Expected report end tag");
+      Log.error("Expected </report>");
+      throw new SAXException("Expected report end tag");
     }
   }
 
   /**
    * creates a new report depending on the attributes given.
    */
-  public void startReport (Attributes atts)
-          throws SAXException
+  public void startReport(Attributes atts)
+      throws SAXException
   {
-    String name = getHandler ().generateName (atts.getValue (NAME_ATT));
+    String name = getHandler().generateName(atts.getValue(NAME_ATT));
 
 
-    JFreeReport report = new JFreeReport ();
-    report.setName (name);
+    JFreeReport report = new JFreeReport();
+    report.setName(name);
 
     PageFormat format = report.getDefaultPageFormat();
     double defTopMargin = format.getImageableY();
@@ -154,18 +156,18 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
 
     defTopMargin = parseDouble(atts.getValue(TOPMARGIN_ATT), defTopMargin);
     defBottomMargin = parseDouble(atts.getValue(BOTTOMMARGIN_ATT), defBottomMargin);
-    defLeftMargin   = parseDouble(atts.getValue(LEFTMARGIN_ATT), defLeftMargin);
-    defRightMargin  = parseDouble(atts.getValue(RIGHTMARGIN_ATT), defRightMargin);
+    defLeftMargin = parseDouble(atts.getValue(LEFTMARGIN_ATT), defLeftMargin);
+    defRightMargin = parseDouble(atts.getValue(RIGHTMARGIN_ATT), defRightMargin);
 
     Paper p = format.getPaper();
     PageFormatFactory.getInstance().setBorders(p, defTopMargin, defLeftMargin, defBottomMargin, defRightMargin);
     format.setPaper(p);
     report.setDefaultPageFormat(format);
 
-    setReport (report);
+    setReport(report);
   }
 
-  private double parseDouble (String value, double defaultVal)
+  private double parseDouble(String value, double defaultVal)
   {
     if (value == null) return defaultVal;
     try
@@ -178,15 +180,14 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     }
   }
 
-  private PageFormat createPageFormat (PageFormat format, Attributes atts) throws SAXException
+  private PageFormat createPageFormat(PageFormat format, Attributes atts) throws SAXException
   {
     String pageformatName = atts.getValue(PAGEFORMAT_ATT);
 
     String orientation = atts.getValue(ORIENTATION_ATT);
     if (orientation == null)
       orientation = ORIENTATION_PORTRAIT_VAL;
-    else
-    if ((orientation.equals(ORIENTATION_LANDSCAPE_VAL) || orientation.equals(ORIENTATION_PORTRAIT_VAL)) == false)
+    else if ((orientation.equals(ORIENTATION_LANDSCAPE_VAL) || orientation.equals(ORIENTATION_PORTRAIT_VAL)) == false)
     {
       throw new SAXException("Orientation value in REPORT-Tag is invalid.");
     }
@@ -215,7 +216,7 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
           return PageFormatFactory.getInstance().createPageFormat(p, PageFormat.PORTRAIT);
       }
     }
-    Log.debug ("Returned default PAGEFORMAT");
+    Log.debug("Returned default PAGEFORMAT");
     return format;
   }
 
@@ -223,37 +224,37 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
    * creates a new group list for the report. The group factory will be the new default handler
    * for SAX Events
    */
-  public void startGroups (Attributes atts)
-          throws SAXException
+  public void startGroups(Attributes atts)
+      throws SAXException
   {
-    GroupFactory groupFactory = handler.createGroupFactory ();
-    getHandler ().setExpectedHandler (groupFactory);
+    GroupFactory groupFactory = handler.createGroupFactory();
+    getHandler().setExpectedHandler(groupFactory);
   }
 
   /**
    * creates a new function collection for the report. The FunctionFactory will be the new
    * default handler for SAX Events
    */
-  public void startFunctions (Attributes atts)
-          throws SAXException
+  public void startFunctions(Attributes atts)
+      throws SAXException
   {
-    FunctionFactory functionFactory = handler.createFunctionFactory ();
-    getHandler ().setExpectedHandler (functionFactory);
+    FunctionFactory functionFactory = handler.createFunctionFactory();
+    getHandler().setExpectedHandler(functionFactory);
   }
 
   /**
    * Finishes the report generation.
    */
-  public void endReport ()
-          throws SAXException
+  public void endReport()
+      throws SAXException
   {
-    getHandler ().setReport (report);
+    getHandler().setReport(report);
   }
 
   /**
    * returns the currently to be build report
    */
-  public JFreeReport getReport ()
+  public JFreeReport getReport()
   {
     return report;
   }
@@ -261,7 +262,7 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
   /**
    * return the current ReportDefinitionContentHandler
    */
-  public ReportDefinitionContentHandler getHandler ()
+  public ReportDefinitionContentHandler getHandler()
   {
     return handler;
   }
@@ -269,7 +270,7 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
   /**
    * returns the current band
    */
-  public Band getCurrentBand ()
+  public Band getCurrentBand()
   {
     return currentBand;
   }
@@ -277,7 +278,7 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
   /**
    * defines the current band.
    */
-  public void setCurrentBand (Band band)
+  public void setCurrentBand(Band band)
   {
     this.currentBand = band;
   }
@@ -285,7 +286,7 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
   /**
    * sets the current report
    */
-  private void setReport (JFreeReport report)
+  private void setReport(JFreeReport report)
   {
     this.report = report;
   }

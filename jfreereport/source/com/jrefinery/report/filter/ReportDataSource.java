@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDataSource.java,v 1.6 2002/08/08 15:28:43 taqua Exp $
+ * $Id: ReportDataSource.java,v 1.7 2002/08/14 21:14:09 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,8 @@ import com.jrefinery.report.DataRow;
  * A data source that returns the value of a field in the report's TableModel.
  * <P>
  * The field is identified by the column name.
+ *
+ * @deprecated use DataRowDataSource as unified access class instead
  */
 public class ReportDataSource implements DataSource, DataRowConnectable
 {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.4 2002/08/20 20:58:20 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.5 2002/08/30 11:18:37 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -43,14 +43,20 @@ import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
 
 /**
- * A function that alternates between true and false for each item within a group.
+ * A function that alternates between true and false for each item within a group. The functions
+ * value affects a defined elements visibility. If the function evaluates to true, the named element
+ * is visible, else the element is invisible.
+ * <p>
+ * Use the property <code>element</code> to name an element contained in the ItemBand whose visiblity
+ * should be affected by this function.
  */
 public class ElementVisibilitySwitchFunction extends AbstractFunction
 {
+  /** the Property key for the name of the ItemBand element. */
+  public static final String ELEMENT_PROPERTY = "element";
 
   /** The function value. */
   private boolean trigger;
-  public static final String ELEMENT_PROPERTY = "element";
 
   /**
    * Default constructor.

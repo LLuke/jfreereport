@@ -28,18 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemAvgFunction.java,v 1.1 2002/08/26 14:36:14 taqua Exp $
+ * $Id: ItemAvgFunction.java,v 1.2 2002/08/26 17:06:18 taqua Exp $
  *
  * Changes
  * -------
- * 18-Feb-2002 : Version 1, contributed by Thomas Morgner (DG);
- * 24-Apr-2002 : Changed the implementation to reflect the changes in Function and
- *               AbstractFunction
- * 10-May-2002 : Applied the ReportEvent interface
- * 23-Jun-2002 : Documentation
- * 17-Jul-2002 : Handle empty data source without a crashing
- * 18-Jul-2002 : Handle out-of-bounds dataquery to the tablemodel
- * 21-Jul-2002 : Corrected the out-of-bounds constraint
+ * 26-Aug-2002 : Initial version
+ * 31-Aug-2002 : Documentation update
  */
 
 package com.jrefinery.report.function;
@@ -54,13 +48,12 @@ import com.jrefinery.report.util.Log;
 import java.math.BigDecimal;
 
 /**
- * A report function that calculates the sum of one field (column) from the TableModel.
- * This function produces a running total, no global total. For a global sum, use the
- * TotalGroupSumFunction function.
+ * A report function that calculates the average of one field (column) from the TableModel.
+ * This function produces a running total, no global total.
  * The function can be used in two ways:
  * <ul>
- * <li>to calculate a sum for the entire report;</li>
- * <li>to calculate a sum within a particular group;</li>
+ * <li>to calculate a average value for the entire report;</li>
+ * <li>to calculate a average value within a particular group;</li>
  * </ul>
  * This function expects its input values to be either java.lang.Number instances or Strings
  * that can be parsed to java.lang.Number instances using a java.text.DecimalFormat.
@@ -77,7 +70,7 @@ public class ItemAvgFunction extends AbstractFunction
   public static final String FIELD_PROPERTY = "field";
 
   /** Zero. */
-  private static final BigDecimal ZERO = new BigDecimal (0.0);
+  private static final BigDecimal ZERO = new BigDecimal(0.0);
   private static final BigDecimal ONE = new BigDecimal(1.0);
 
   /** The sum. */
@@ -94,14 +87,14 @@ public class ItemAvgFunction extends AbstractFunction
    * Constructs an unnamed function. Make sure to set a Name or function initialisation
    * will fail.
    */
-  public ItemAvgFunction ()
+  public ItemAvgFunction()
   {
     sum = ZERO;
     itemCount = ZERO;
-    datasource = new StaticDataSource ();
-    parser = new DecimalFormatParser ();
-    parser.setNullValue (ZERO);
-    parser.setDataSource (datasource);
+    datasource = new StaticDataSource();
+    parser = new DecimalFormatParser();
+    parser.setNullValue(ZERO);
+    parser.setDataSource(datasource);
   }
 
   /**
@@ -111,10 +104,10 @@ public class ItemAvgFunction extends AbstractFunction
    *
    * @param name The function name.
    */
-  public ItemAvgFunction (String name)
+  public ItemAvgFunction(String name)
   {
-    this ();
-    setName (name);
+    this();
+    setName(name);
   }
 
   /**
@@ -125,7 +118,7 @@ public class ItemAvgFunction extends AbstractFunction
    * @param event Information about the event.
    *
    */
-  public void reportStarted (ReportEvent event)
+  public void reportStarted(ReportEvent event)
   {
     this.sum = ZERO;
     itemCount = ZERO;
@@ -137,16 +130,16 @@ public class ItemAvgFunction extends AbstractFunction
    *
    * @param event Information about the event.
    */
-  public void groupStarted (ReportEvent event)
+  public void groupStarted(ReportEvent event)
   {
-    String mygroup = getGroup ();
+    String mygroup = getGroup();
     if (mygroup == null)
     {
       return;
     }
 
-    Group group = event.getReport ().getGroup (event.getState ().getCurrentGroupIndex ());
-    if (getGroup().equals (group.getName ()))
+    Group group = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
+    if (getGroup().equals(group.getName()))
     {
       this.sum = ZERO;
       itemCount = ZERO;
@@ -158,7 +151,7 @@ public class ItemAvgFunction extends AbstractFunction
    *
    * @return The group name.
    */
-  public String getGroup ()
+  public String getGroup()
   {
     return getProperty(GROUP_PROPERTY);
   }
@@ -166,14 +159,14 @@ public class ItemAvgFunction extends AbstractFunction
   /**
    * Sets the group name.
    * <P>
-   * If a group is defined, the running total is reset to zero at the start of every instance of
+   * If a group is defined, the functions value is reset to zero at the start of every instance of
    * this group.
    *
    * @param _group The group name (null permitted).
    */
-  public void setGroup (String _group)
+  public void setGroup(String _group)
   {
-    setProperty (GROUP_PROPERTY, _group);
+    setProperty(GROUP_PROPERTY, _group);
   }
 
   /**
@@ -183,7 +176,7 @@ public class ItemAvgFunction extends AbstractFunction
    *
    * @return The field name.
    */
-  public String getField ()
+  public String getField()
   {
     return getProperty(FIELD_PROPERTY);
   }
@@ -195,46 +188,46 @@ public class ItemAvgFunction extends AbstractFunction
    *
    * @param The field name (null not permitted).
    */
-  public void setField (String field)
+  public void setField(String field)
   {
     if (field == null)
-      throw new NullPointerException ();
+      throw new NullPointerException();
 
-    setProperty (FIELD_PROPERTY, field);
+    setProperty(FIELD_PROPERTY, field);
   }
 
   /**
    * Receives notification that a row of data is being processed.  Reads the data from the field
-   * defined for this function and adds it to the running total.
+   * defined for this function and calculates the average value of all values read so far.
    * <P>
    * This function assumes that it will find an instance of the Number class in the column of the
    * TableModel specified by the field name.
    *
    * @param event Information about the event.
    */
-  public void itemsAdvanced (ReportEvent event)
+  public void itemsAdvanced(ReportEvent event)
   {
-    Object fieldValue = event.getDataRow ().get (getField ());
-    datasource.setValue (fieldValue);
-    Number n = (Number) parser.getValue ();
+    Object fieldValue = event.getDataRow().get(getField());
+    datasource.setValue(fieldValue);
+    Number n = (Number) parser.getValue();
     try
     {
-      sum = sum.add (new BigDecimal (n.doubleValue ()));
+      sum = sum.add(new BigDecimal(n.doubleValue()));
       itemCount = itemCount.add(ONE);
     }
     catch (Exception e)
     {
-      Log.error ("ItemAvgFunction.advanceItems(): problem adding number.");
+      Log.error("ItemAvgFunction.advanceItems(): problem adding number.");
     }
   }
 
   /**
-   * Returns the function value, in this case the running total of a specific column in the
+   * Returns the function value, in this case the average of all values of a specific column in the
    * report's TableModel.
    *
    * @return The function value.
    */
-  public Object getValue ()
+  public Object getValue()
   {
     return sum.divide(itemCount, BigDecimal.ROUND_HALF_DOWN);
   }
@@ -245,16 +238,14 @@ public class ItemAvgFunction extends AbstractFunction
    *
    * @throws FunctionInitializeException when no field is set.
    */
-  public void initialize ()
-          throws FunctionInitializeException
+  public void initialize()
+      throws FunctionInitializeException
   {
-    String fieldProp = getProperty (FIELD_PROPERTY);
+    String fieldProp = getProperty(FIELD_PROPERTY);
     if (fieldProp == null)
     {
-      throw new FunctionInitializeException ("No Such Property : field");
+      throw new FunctionInitializeException("No Such Property : field");
     }
-    setField (fieldProp);
-    setGroup (getProperty (GROUP_PROPERTY));
   }
 
 }

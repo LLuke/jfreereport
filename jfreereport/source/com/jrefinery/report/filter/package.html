@@ -84,7 +84,16 @@ a <code>null</code> value to the TextElement to be printed. Now the TextElement'
 will check the value, and return the predefined NullValue-String instead of <code>null</code>.
 </p>
 </ul>
+<p>
 These examples should give an idea what can be done with the filters. As filters can contain
 other filters, you are free to create any combination and put them into the elements.
+</p>
+<h2>DataRowConnectable</h2>
+<p>
+Elements are connected to the Report's DataSources using a DataRow as connector. The DataRow unifies
+the access to functions, expressions and the tablemodel. DataSources that need to access one of these
+sources should use the DataRowDataSource as primary datasource. The specialized sources for accessing
+Functions and the Reports TableModel should not be used.
+</p>
 </body>
 </html>

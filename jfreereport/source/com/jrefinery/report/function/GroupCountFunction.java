@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupCountFunction.java,v 1.5 2002/06/08 14:31:53 taqua Exp $
+ * $Id: GroupCountFunction.java,v 1.6 2002/08/20 20:58:20 taqua Exp $
  *
  * Changes
  * -------
@@ -80,6 +80,8 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
 
   /**
    * Returns the name of the group to be counted.
+   *
+   * @returns the name of the group or null, if all groups are counted
    */
   public String getGroup ()
   {
@@ -89,6 +91,8 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
   /**
    * defines the name of the group to be counted.
    * If the name is null, all groups are counted.
+   *
+   * @param group the name of the group to be counted.
    */
   public void setGroup (String group)
   {
@@ -97,6 +101,9 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
 
   /**
    * Receives notification that a new report is about to start.
+   * Resets the count.
+   *
+   * @param event the current report event received.
    */
   public void reportStarted (ReportEvent event)
   {
@@ -105,6 +112,9 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
 
   /**
    * Receives notification that a new group is about to start.
+   * Increases the count if all groups are counted or the name defines the current group.
+   *
+   * @param event the current report event received.
    */
   public void groupStarted (ReportEvent event)
   {
@@ -126,6 +136,8 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
 
   /**
    * Returns the number of groups processed so far (including the current group).
+   *
+   * @returns the number of groups processed as java.lang.Integer.
    */
   public Object getValue ()
   {

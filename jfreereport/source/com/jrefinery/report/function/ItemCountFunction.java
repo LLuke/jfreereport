@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.8 2002/08/08 15:28:43 taqua Exp $
+ * $Id: ItemCountFunction.java,v 1.9 2002/08/20 20:58:20 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
  * 05-Jun-2002 : Updated Javadoc comments (DG);
  * 18-Jul-2002 : Added system-out message ...
  * 20-Jul-2002 : removed the message leftover from last commit
+ * 08-Aug-2002 : Imports cleaned
+ * 20-Aug-2002 : Moved function configuration into function properties, removed local field "group"
  */
 
 package com.jrefinery.report.function;
@@ -64,7 +66,7 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
    * <P>
    * This constructor is intended for use by the SAX handler class only.
    */
-  public ItemCountFunction ()
+  public ItemCountFunction()
   {
   }
 
@@ -75,9 +77,9 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
    *
    * @throws NullPointerException if the name is null
    */
-  public ItemCountFunction (String name)
+  public ItemCountFunction(String name)
   {
-    setName (name);
+    setName(name);
   }
 
   /**
@@ -85,7 +87,7 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
    *
    * @param event Information about the event.
    */
-  public void reportStarted (ReportEvent event)
+  public void reportStarted(ReportEvent event)
   {
     this.count = 0;
   }
@@ -96,7 +98,7 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
    *
    * @return The group name.
    */
-  public String getGroup ()
+  public String getGroup()
   {
     return getProperty(GROUP_PROPERTY);
   }
@@ -107,9 +109,9 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
    *
    * @param group The group name.
    */
-  public void setGroup (String group)
+  public void setGroup(String group)
   {
-    setProperty (GROUP_PROPERTY, group);
+    setProperty(GROUP_PROPERTY, group);
   }
 
   /**
@@ -119,15 +121,15 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
    *
    * @param event Information about the event.
    */
-  public void groupStarted (ReportEvent event)
+  public void groupStarted(ReportEvent event)
   {
-    if (getGroup () == null)
+    if (getGroup() == null)
       return;
 
-    JFreeReport report = event.getReport ();
-    ReportState state = event.getState ();
-    Group group = report.getGroup (state.getCurrentGroupIndex ());
-    if (getGroup ().equals (group.getName ()))
+    JFreeReport report = event.getReport();
+    ReportState state = event.getState();
+    Group group = report.getGroup(state.getCurrentGroupIndex());
+    if (getGroup().equals(group.getName()))
     {
       this.count = 0;
     }
@@ -138,7 +140,7 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
    *
    * @param event Information about the event.
    */
-  public void itemsAdvanced (ReportEvent event)
+  public void itemsAdvanced(ReportEvent event)
   {
     count++;
   }
@@ -149,8 +151,8 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
    *
    * @return The item count.
    */
-  public Object getValue ()
+  public Object getValue()
   {
-    return new Integer (count);
+    return new Integer(count);
   }
 }

@@ -100,6 +100,8 @@ public class DecimalFormatFilter extends NumberFormatFilter
   /**
    * Synthesizes a pattern string that represents the current state
    * of this Format object.
+   *
+   * @returns the pattern string of the format object contained in this filter.
    */
   public String getFormatString ()
   {
@@ -127,6 +129,8 @@ public class DecimalFormatFilter extends NumberFormatFilter
   /**
    * Synthesizes a localized pattern string that represents the current state
    * of this Format object.
+   *
+   * @returns the localized pattern string of the format-object.
    */
   public String getLocalizedFormatString ()
   {

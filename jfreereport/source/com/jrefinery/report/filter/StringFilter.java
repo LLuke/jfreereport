@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringFilter.java,v 1.6 2002/07/03 18:49:48 taqua Exp $
+ * $Id: StringFilter.java,v 1.7 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,8 @@
 package com.jrefinery.report.filter;
 
 /**
- * A filter that returns the value from a data source as a String.
+ * A filter that returns the value from a data source as a String. The value is converted to an
+ * String using String.valueOf () which uses Object.toString() to convert the object into the string.
  */
 public class StringFilter implements DataFilter
 {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPropertyFunction.java,v 1.9 2002/08/19 21:17:37 taqua Exp $
+ * $Id: ReportPropertyFunction.java,v 1.10 2002/08/20 20:58:20 taqua Exp $
  *
  * Changes
  * -------
@@ -84,7 +84,7 @@ public class ReportPropertyFunction extends AbstractFunction
   }
 
   /**
-   * Receives notification that a new report is about to start.
+   * Updates the property value of this function.
    *
    * @param event The event.
    */
@@ -94,48 +94,88 @@ public class ReportPropertyFunction extends AbstractFunction
     value = state.getProperty (getField());
   }
 
+  /**
+   * Updates the property value of this function.
+   *
+   * @param event The event.
+   */
   public void reportFinished(ReportEvent event)
   {
     ReportState state = event.getState ();
     value = state.getProperty (getField());
   }
 
+  /**
+   * Updates the property value of this function.
+   *
+   * @param event The event.
+   */
   public void pageStarted(ReportEvent event)
   {
     ReportState state = event.getState ();
     value = state.getProperty (getField());
   }
 
+  /**
+   * Updates the property value of this function.
+   *
+   * @param event The event.
+   */
   public void pageFinished(ReportEvent event)
   {
     ReportState state = event.getState ();
     value = state.getProperty (getField());
   }
 
+  /**
+   * Updates the property value of this function.
+   *
+   * @param event The event.
+   */
   public void groupStarted(ReportEvent event)
   {
     ReportState state = event.getState ();
     value = state.getProperty (getField());
   }
 
+  /**
+   * Updates the property value of this function.
+   *
+   * @param event The event.
+   */
   public void groupFinished(ReportEvent event)
   {
     ReportState state = event.getState ();
     value = state.getProperty (getField());
   }
 
+  /**
+   * Updates the property value of this function.
+   *
+   * @param event The event.
+   */
   public void itemsAdvanced(ReportEvent event)
   {
     ReportState state = event.getState ();
     value = state.getProperty (getField());
   }
 
+  /**
+   * Updates the property value of this function.
+   *
+   * @param event The event.
+   */
   public void itemsStarted(ReportEvent event)
   {
     ReportState state = event.getState ();
     value = state.getProperty (getField());
   }
 
+  /**
+   * Updates the property value of this function.
+   *
+   * @param event The event.
+   */
   public void itemsFinished(ReportEvent event)
   {
     ReportState state = event.getState ();

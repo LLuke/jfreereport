@@ -41,6 +41,7 @@ import com.jrefinery.report.DataRow;
  * using the datarow given in the connectDataRow method.
  * <p>
  * @see com.jrefinery.report.function.Expression
+ * @deprecated use DataRowDataSource as unified access class instead
  */
 public class ExpressionDataSource implements DataSource, DataRowConnectable
 {
@@ -98,9 +99,10 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable
   }
 
   /**
-   * Returns the value of the expression.
+   * Returns the value of the expression. The value is evaluated from the given DataRow.
    *
    * @return The value.
+   * @throws IllegalStateException if there is no datarow connected.
    */
   public Object getValue ()
   {
@@ -113,6 +115,7 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable
 
   /**
    * @returns a clone of this ExpressionDataSource
+   * @throws CloneNotSupportedException if the cloning is not supported.
    */
   public Object clone () throws CloneNotSupportedException
   {
@@ -122,8 +125,12 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable
   /**
    * Connects the DataRowBackend with the named DataSource or DataFilter.
    * The filter is now able to query the other DataSources to compute the result.
-   *
+   * <p>
    * If there is already a datarow connected, an IllegalStateException is thrown.
+   *
+   * @throws NullPointerException if the given row is null
+   * @throws IllegalStateException if there is a datarow already connected.
+   * @param row the datarow to be connected.
    */
   public void connectDataRow (DataRow row) throws IllegalStateException
   {
@@ -135,6 +142,10 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable
   /**
    * Releases the connection to the datarow. If no datarow is connected, an
    * IllegalStateException is thrown to indicate the programming error.
+   *
+   * @throws NullPointerException if the given row is null
+   * @throws IllegalStateException if there is currently no datarow connected.
+   * @param row the datarow to be disconnected.
    */
   public void disconnectDataRow (DataRow row) throws IllegalStateException
   {

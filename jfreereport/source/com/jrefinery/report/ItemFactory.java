@@ -30,16 +30,17 @@
  * 09-Jun-2002 : Documentation
  * 30-Jun-2002 : Added Support for ImageField, ImageFunction
  * 10-Jul-2002 : Added Support for ImageURLField, ImageURLFunction
+ * 31-Aug-2002 : Replaced ReportDataSource and FunctionDataSource with DataRowDataSource
+ *               Deprecated create*Function and create*Field methods.
  */
 package com.jrefinery.report;
 
+import com.jrefinery.report.filter.DataRowDataSource;
 import com.jrefinery.report.filter.DateFormatFilter;
 import com.jrefinery.report.filter.DecimalFormatFilter;
-import com.jrefinery.report.filter.FunctionDataSource;
 import com.jrefinery.report.filter.ImageLoadFilter;
 import com.jrefinery.report.filter.ImageRefFilter;
 import com.jrefinery.report.filter.NumberFormatFilter;
-import com.jrefinery.report.filter.ReportDataSource;
 import com.jrefinery.report.filter.SimpleDateFormatFilter;
 import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.filter.URLFilter;
@@ -77,27 +78,29 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name, format or field are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createDateElement (String name,
-                                               Rectangle2D bounds,
-                                               Paint paint,
-                                               int alignment,
-                                               Font font,
-                                               String nullString,
-                                               String format,
-                                               String field)
+  public static TextElement createDateElement(String name,
+                                              Rectangle2D bounds,
+                                              Paint paint,
+                                              int alignment,
+                                              Font font,
+                                              String nullString,
+                                              String format,
+                                              String field)
   {
-    SimpleDateFormatFilter filter = new SimpleDateFormatFilter ();
-    filter.setFormatString (format);
-    filter.setDataSource (new ReportDataSource (field));
 
-    TextElement dateElement = new TextElement ();
-    dateElement.setName (name);
-    dateElement.setBounds (bounds);
-    dateElement.setPaint (paint);
-    dateElement.setAlignment (alignment);
-    dateElement.setFont (font);
-    dateElement.setNullString (nullString);
-    dateElement.setDataSource (filter);
+    SimpleDateFormatFilter filter = new SimpleDateFormatFilter();
+    filter.setFormatString(format);
+    filter.setDataSource(new DataRowDataSource(field));
+
+    TextElement dateElement = new TextElement();
+    dateElement.setName(name);
+    dateElement.setBounds(bounds);
+    dateElement.setPaint(paint);
+    dateElement.setAlignment(alignment);
+    dateElement.setFont(font);
+    dateElement.setNullString(nullString);
+    dateElement.setDataSource(filter);
+
     return dateElement;
   }
 
@@ -116,106 +119,84 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name, format or field are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createDateElement (String name,
+  public static TextElement createDateElement(String name,
+                                              Rectangle2D bounds,
+                                              Paint paint,
+                                              int alignment,
+                                              Font font,
+                                              String nullString,
+                                              DateFormat format,
+                                              String field)
+  {
+    DateFormatFilter filter = new DateFormatFilter();
+    filter.setFormatter(format);
+    filter.setDataSource(new DataRowDataSource(field));
+
+    TextElement dateElement = new TextElement();
+    dateElement.setName(name);
+    dateElement.setBounds(bounds);
+    dateElement.setPaint(paint);
+    dateElement.setAlignment(alignment);
+    dateElement.setFont(font);
+    dateElement.setNullString(nullString);
+    dateElement.setDataSource(filter);
+    return dateElement;
+  }
+
+  /**
+   * Creates a new TextElement containing a date filter structure.
+   *
+   * @param name the name of the new element
+   * @param bounds the bounds of the new element
+   * @param paint the text color of this text element
+   * @param alignment the text alignment (one of ElementConstants.LEFT,
+   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param font the font for this element
+   * @param nullString the text used when the value of this element is null
+   * @param format the SimpleDateFormat-formatstring used to format the date
+   * @param function the function name to retrieve values from
+   * @throws NullPointerException if bounds, name, format or function are null
+   * @throws IllegalArgumentException if the given alignment is invalid
+   * @deprecated use createDateElement instead, as all DataAccess has been unified
+   */
+  public static TextElement createDateFunction(String name,
+                                               Rectangle2D bounds,
+                                               Paint paint,
+                                               int alignment,
+                                               Font font,
+                                               String nullString,
+                                               String format,
+                                               String function)
+  {
+    return createDateElement(name, bounds, paint, alignment, font, nullString, format, function);
+  }
+
+  /**
+   * Creates a new TextElement containing a date filter structure.
+   *
+   * @param name the name of the new element
+   * @param bounds the bounds of the new element
+   * @param paint the text color of this text element
+   * @param alignment the text alignment (one of ElementConstants.LEFT,
+   *        ElementConstants.CENTER, ElementConstants.RIGHT
+   * @param font the font for this element
+   * @param nullString the text used when the value of this element is null
+   * @param format the SimpleDateFormat-formatstring used to format the date
+   * @param function the function name to retrieve values from
+   * @throws NullPointerException if bounds, name, format or function are null
+   * @throws IllegalArgumentException if the given alignment is invalid
+   * @deprecated use createDateElement instead, as all DataAccess has been unified
+   */
+  public static TextElement createDateFunction(String name,
                                                Rectangle2D bounds,
                                                Paint paint,
                                                int alignment,
                                                Font font,
                                                String nullString,
                                                DateFormat format,
-                                               String field)
+                                               String function)
   {
-    DateFormatFilter filter = new DateFormatFilter ();
-    filter.setFormatter (format);
-    filter.setDataSource (new ReportDataSource (field));
-
-    TextElement dateElement = new TextElement ();
-    dateElement.setName (name);
-    dateElement.setBounds (bounds);
-    dateElement.setPaint (paint);
-    dateElement.setAlignment (alignment);
-    dateElement.setFont (font);
-    dateElement.setNullString (nullString);
-    dateElement.setDataSource (filter);
-    return dateElement;
-  }
-
-  /**
-   * Creates a new TextElement containing a date filter structure.
-   *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
-   * @param font the font for this element
-   * @param nullString the text used when the value of this element is null
-   * @param format the SimpleDateFormat-formatstring used to format the date
-   * @param function the function name to retrieve values from
-   * @throws NullPointerException if bounds, name, format or function are null
-   * @throws IllegalArgumentException if the given alignment is invalid
-   */
-  public static TextElement createDateFunction (String name,
-                                                Rectangle2D bounds,
-                                                Paint paint,
-                                                int alignment,
-                                                Font font,
-                                                String nullString,
-                                                String format,
-                                                String function)
-  {
-    SimpleDateFormatFilter filter = new SimpleDateFormatFilter ();
-    filter.setFormatString (format);
-    filter.setDataSource (new FunctionDataSource (function));
-
-    TextElement dateElement = new TextElement ();
-    dateElement.setName (name);
-    dateElement.setBounds (bounds);
-    dateElement.setPaint (paint);
-    dateElement.setAlignment (alignment);
-    dateElement.setFont (font);
-    dateElement.setNullString (nullString);
-    dateElement.setDataSource (filter);
-    return dateElement;
-  }
-
-  /**
-   * Creates a new TextElement containing a date filter structure.
-   *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the text color of this text element
-   * @param alignment the text alignment (one of ElementConstants.LEFT,
-   *        ElementConstants.CENTER, ElementConstants.RIGHT
-   * @param font the font for this element
-   * @param nullString the text used when the value of this element is null
-   * @param format the SimpleDateFormat-formatstring used to format the date
-   * @param function the function name to retrieve values from
-   * @throws NullPointerException if bounds, name, format or function are null
-   * @throws IllegalArgumentException if the given alignment is invalid
-   */
-  public static TextElement createDateFunction (String name,
-                                                Rectangle2D bounds,
-                                                Paint paint,
-                                                int alignment,
-                                                Font font,
-                                                String nullString,
-                                                DateFormat format,
-                                                String function)
-  {
-    DateFormatFilter filter = new DateFormatFilter ();
-    filter.setFormatter (format);
-    filter.setDataSource (new FunctionDataSource (function));
-
-    TextElement dateElement = new TextElement ();
-    dateElement.setName (name);
-    dateElement.setBounds (bounds);
-    dateElement.setPaint (paint);
-    dateElement.setAlignment (alignment);
-    dateElement.setFont (font);
-    dateElement.setNullString (nullString);
-    dateElement.setDataSource (filter);
-    return dateElement;
+    return createDateElement(name, bounds, paint, alignment, font, nullString, format, function);
   }
 
   /**
@@ -232,27 +213,28 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createGeneralElement (String name,
-                                                  Rectangle2D bounds,
-                                                  Paint paint,
-                                                  int alignment,
-                                                  Font font,
-                                                  String nullString,
-                                                  String function)
+  public static TextElement createGeneralElement(String name,
+                                                 Rectangle2D bounds,
+                                                 Paint paint,
+                                                 int alignment,
+                                                 Font font,
+                                                 String nullString,
+                                                 String function)
   {
-    TextElement gElement = new TextElement ();
-    gElement.setName (name);
-    gElement.setBounds (bounds);
-    gElement.setPaint (paint);
-    gElement.setAlignment (alignment);
-    gElement.setFont (font);
-    gElement.setNullString (nullString);
-    gElement.setDataSource (new ReportDataSource (function));
+    TextElement gElement = new TextElement();
+    gElement.setName(name);
+    gElement.setBounds(bounds);
+    gElement.setPaint(paint);
+    gElement.setAlignment(alignment);
+    gElement.setFont(font);
+    gElement.setNullString(nullString);
+    gElement.setDataSource(new DataRowDataSource(function));
     return gElement;
   }
 
   /**
-   * Creates a new ImageElement.
+   * Creates a new ImageElement. The source URL is predefined in an StaticDataSource and will
+   * not change during the report processing.
    *
    * @param name the name of the new element
    * @param bounds the bounds of the new element
@@ -261,20 +243,40 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ImageElement createImageElement (String name,
+  public static ImageElement createImageElement(String name,
+                                                Rectangle2D bounds,
+                                                Paint paint,
+                                                URL source)
+      throws IOException
+  {
+    ImageReference reference = new ImageReference(source);
+    StaticDataSource sds = new StaticDataSource(reference);
+    ImageElement element = new ImageElement();
+    element.setName(name);
+    element.setPaint(paint);
+    element.setBounds(bounds);
+    element.setDataSource(sds);
+    return element;
+  }
+
+  /**
+   * Creates a new ImageElement, which is fed from an URL stored in the datasource.
+   *
+   * @param name the name of the new element
+   * @param bounds the bounds of the new element
+   * @param paint the color of this element (currently not used)
+   * @param source the source url from where to load the image
+   * @throws NullPointerException if bounds, name or source are null
+   * @throws IllegalArgumentException if the given alignment is invalid
+   * @deprecated use createImageURLElement instead
+   */
+  public static ImageElement createImageURLField(String name,
                                                  Rectangle2D bounds,
                                                  Paint paint,
-                                                 URL source)
-          throws IOException
+                                                 String field)
+      throws IOException
   {
-    ImageReference reference = new ImageReference (source);
-    StaticDataSource sds = new StaticDataSource (reference);
-    ImageElement element = new ImageElement ();
-    element.setName (name);
-    element.setPaint (paint);
-    element.setBounds (bounds);
-    element.setDataSource (sds);
-    return element;
+    return createImageURLElement(name, bounds, paint, field);
   }
 
   /**
@@ -287,23 +289,23 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ImageElement createImageURLField (String name,
-                                                  Rectangle2D bounds,
-                                                  Paint paint,
-                                                  String field)
-          throws IOException
+  public static ImageElement createImageURLElement(String name,
+                                                   Rectangle2D bounds,
+                                                   Paint paint,
+                                                   String field)
+      throws IOException
   {
-    URLFilter urlfilter = new URLFilter ();
-    urlfilter.setDataSource (new ReportDataSource (field));
+    URLFilter urlfilter = new URLFilter();
+    urlfilter.setDataSource(new DataRowDataSource(field));
 
-    ImageLoadFilter imagefilter = new ImageLoadFilter ();
-    imagefilter.setDataSource (urlfilter);
+    ImageLoadFilter imagefilter = new ImageLoadFilter();
+    imagefilter.setDataSource(urlfilter);
 
-    ImageElement element = new ImageElement ();
-    element.setName (name);
-    element.setPaint (paint);
-    element.setBounds (bounds);
-    element.setDataSource (imagefilter);
+    ImageElement element = new ImageElement();
+    element.setName(name);
+    element.setPaint(paint);
+    element.setBounds(bounds);
+    element.setDataSource(imagefilter);
     return element;
   }
 
@@ -316,25 +318,35 @@ public class ItemFactory
    * @param source the source url from where to load the image
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   * @deprecated use createImageURLElement instead
    */
-  public static ImageElement createImageURLFunction (String name,
+  public static ImageElement createImageURLFunction(String name,
+                                                    Rectangle2D bounds,
+                                                    Paint paint,
+                                                    String function)
+      throws IOException
+  {
+    return createImageURLElement(name, bounds, paint, function);
+  }
+
+  /**
+   * Creates a new ImageElement.
+   *
+   * @param name the name of the new element
+   * @param bounds the bounds of the new element
+   * @param paint the color of this element (currently not used)
+   * @param source the source url from where to load the image
+   * @throws NullPointerException if bounds, name or source are null
+   * @throws IllegalArgumentException if the given alignment is invalid
+   * @deprecated use createImageDataRowElement instead
+   */
+  public static ImageElement createImageFieldElement(String name,
                                                      Rectangle2D bounds,
                                                      Paint paint,
-                                                     String function)
-          throws IOException
+                                                     String field)
+      throws IOException
   {
-    URLFilter urlfilter = new URLFilter ();
-    urlfilter.setDataSource (new FunctionDataSource (function));
-
-    ImageLoadFilter imagefilter = new ImageLoadFilter ();
-    imagefilter.setDataSource (urlfilter);
-
-    ImageElement element = new ImageElement ();
-    element.setName (name);
-    element.setPaint (paint);
-    element.setBounds (bounds);
-    element.setDataSource (imagefilter);
-    return element;
+    return createImageDataRowElement(name, bounds, paint, field);
   }
 
   /**
@@ -347,20 +359,20 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static ImageElement createImageFieldElement (String name,
-                                                      Rectangle2D bounds,
-                                                      Paint paint,
-                                                      String field)
-          throws IOException
+  public static ImageElement createImageDataRowElement(String name,
+                                                       Rectangle2D bounds,
+                                                       Paint paint,
+                                                       String field)
+      throws IOException
   {
-    ImageRefFilter filter = new ImageRefFilter ();
-    filter.setDataSource (new ReportDataSource (field));
+    ImageRefFilter filter = new ImageRefFilter();
+    filter.setDataSource(new DataRowDataSource(field));
 
-    ImageElement element = new ImageElement ();
-    element.setName (name);
-    element.setPaint (paint);
-    element.setBounds (bounds);
-    element.setDataSource (filter);
+    ImageElement element = new ImageElement();
+    element.setName(name);
+    element.setPaint(paint);
+    element.setBounds(bounds);
+    element.setDataSource(filter);
     return element;
   }
 
@@ -373,22 +385,15 @@ public class ItemFactory
    * @param source the source url from where to load the image
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   * @deprecated use createImageDataRowElement instead
    */
-  public static ImageElement createImageFunctionElement (String name,
-                                                         Rectangle2D bounds,
-                                                         Paint paint,
-                                                         String function)
-          throws IOException
+  public static ImageElement createImageFunctionElement(String name,
+                                                        Rectangle2D bounds,
+                                                        Paint paint,
+                                                        String function)
+      throws IOException
   {
-    ImageRefFilter filter = new ImageRefFilter ();
-    filter.setDataSource (new FunctionDataSource(function));
-
-    ImageElement element = new ImageElement ();
-    element.setName (name);
-    element.setPaint (paint);
-    element.setBounds (bounds);
-    element.setDataSource (filter);
-    return element;
+    return createImageDataRowElement(name, bounds, paint, function);
   }
 
   /**
@@ -404,20 +409,20 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name, format or field are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createLabelElement (String name,
-                                                Rectangle2D bounds,
-                                                Paint paint,
-                                                int alignment,
-                                                Font font,
-                                                String labeltext)
+  public static TextElement createLabelElement(String name,
+                                               Rectangle2D bounds,
+                                               Paint paint,
+                                               int alignment,
+                                               Font font,
+                                               String labeltext)
   {
-    TextElement label = new TextElement ();
-    label.setName (name);
-    label.setBounds (bounds);
-    label.setPaint (paint);
-    label.setAlignment (alignment);
-    label.setFont (font);
-    label.setDataSource (new StaticDataSource (labeltext));
+    TextElement label = new TextElement();
+    label.setName(name);
+    label.setBounds(bounds);
+    label.setPaint(paint);
+    label.setAlignment(alignment);
+    label.setFont(font);
+    label.setDataSource(new StaticDataSource(labeltext));
     return label;
   }
 
@@ -431,16 +436,16 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static LineShapeElement createLineShapeElement (String name,
-                                                         Paint paint,
-                                                         Stroke stroke,
-                                                         Line2D shape)
+  public static LineShapeElement createLineShapeElement(String name,
+                                                        Paint paint,
+                                                        Stroke stroke,
+                                                        Line2D shape)
   {
-    LineShapeElement line = new LineShapeElement ();
-    line.setName (name);
-    line.setPaint (paint);
-    line.setStroke (stroke);
-    line.setShape (shape);
+    LineShapeElement line = new LineShapeElement();
+    line.setName(name);
+    line.setPaint(paint);
+    line.setStroke(stroke);
+    line.setShape(shape);
     return line;
   }
 
@@ -454,20 +459,20 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static RectangleShapeElement createRectangleShapeElement (String name,
-                                                                   Paint paint,
-                                                                   Stroke stroke,
-                                                                   Rectangle2D shape,
-                                                                   boolean shouldDraw,
-                                                                   boolean shouldFill)
+  public static RectangleShapeElement createRectangleShapeElement(String name,
+                                                                  Paint paint,
+                                                                  Stroke stroke,
+                                                                  Rectangle2D shape,
+                                                                  boolean shouldDraw,
+                                                                  boolean shouldFill)
   {
-    RectangleShapeElement line = new RectangleShapeElement ();
-    line.setName (name);
-    line.setPaint (paint);
-    line.setStroke (stroke);
-    line.setShape (shape);
-    line.setShouldDraw (shouldDraw);
-    line.setShouldFill (shouldFill);
+    RectangleShapeElement line = new RectangleShapeElement();
+    line.setName(name);
+    line.setPaint(paint);
+    line.setStroke(stroke);
+    line.setShape(shape);
+    line.setShouldDraw(shouldDraw);
+    line.setShouldFill(shouldFill);
     return line;
   }
 
@@ -487,23 +492,15 @@ public class ItemFactory
    * @throws IllegalArgumentException if the given alignment is invalid
    * @deprecated use createStringElement instead
    */
-  public static TextElement createMultilineTextElement (String name,
-                                                        Rectangle2D bounds,
-                                                        Paint paint,
-                                                        int alignment,
-                                                        Font font,
-                                                        String nullstring,
-                                                        String field)
+  public static TextElement createMultilineTextElement(String name,
+                                                       Rectangle2D bounds,
+                                                       Paint paint,
+                                                       int alignment,
+                                                       Font font,
+                                                       String nullstring,
+                                                       String field)
   {
-    TextElement text = new TextElement ();
-    text.setName (name);
-    text.setBounds (bounds);
-    text.setPaint (paint);
-    text.setAlignment (alignment);
-    text.setFont (font);
-    text.setNullString (nullstring);
-    text.setDataSource (new ReportDataSource (field));
-    return text;
+    return createStringElement(name, bounds, paint, alignment, font, nullstring, field);
   }
 
   /**
@@ -521,27 +518,27 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createNumberElement (String name,
-                                                 Rectangle2D bounds,
-                                                 Paint paint,
-                                                 int alignment,
-                                                 Font font,
-                                                 String nullString,
-                                                 NumberFormat format,
-                                                 String field)
+  public static TextElement createNumberElement(String name,
+                                                Rectangle2D bounds,
+                                                Paint paint,
+                                                int alignment,
+                                                Font font,
+                                                String nullString,
+                                                NumberFormat format,
+                                                String field)
   {
-    NumberFormatFilter filter = new NumberFormatFilter ();
-    filter.setFormatter (format);
-    filter.setDataSource (new ReportDataSource (field));
+    NumberFormatFilter filter = new NumberFormatFilter();
+    filter.setFormatter(format);
+    filter.setDataSource(new DataRowDataSource(field));
 
-    TextElement element = new TextElement ();
-    element.setName (name);
-    element.setBounds (bounds);
-    element.setPaint (paint);
-    element.setAlignment (alignment);
-    element.setFont (font);
-    element.setNullString (nullString);
-    element.setDataSource (filter);
+    TextElement element = new TextElement();
+    element.setName(name);
+    element.setBounds(bounds);
+    element.setPaint(paint);
+    element.setAlignment(alignment);
+    element.setFont(font);
+    element.setNullString(nullString);
+    element.setDataSource(filter);
     return element;
   }
 
@@ -560,27 +557,27 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createNumberElement (String name,
-                                                 Rectangle2D bounds,
-                                                 Paint paint,
-                                                 int alignment,
-                                                 Font font,
-                                                 String nullString,
-                                                 String format,
-                                                 String field)
+  public static TextElement createNumberElement(String name,
+                                                Rectangle2D bounds,
+                                                Paint paint,
+                                                int alignment,
+                                                Font font,
+                                                String nullString,
+                                                String format,
+                                                String field)
   {
-    DecimalFormatFilter filter = new DecimalFormatFilter ();
-    filter.setFormatString (format);
-    filter.setDataSource (new ReportDataSource (field));
+    DecimalFormatFilter filter = new DecimalFormatFilter();
+    filter.setFormatString(format);
+    filter.setDataSource(new DataRowDataSource(field));
 
-    TextElement element = new TextElement ();
-    element.setName (name);
-    element.setBounds (bounds);
-    element.setPaint (paint);
-    element.setAlignment (alignment);
-    element.setFont (font);
-    element.setNullString (nullString);
-    element.setDataSource (filter);
+    TextElement element = new TextElement();
+    element.setName(name);
+    element.setBounds(bounds);
+    element.setPaint(paint);
+    element.setAlignment(alignment);
+    element.setFont(font);
+    element.setNullString(nullString);
+    element.setDataSource(filter);
     return element;
   }
 
@@ -598,29 +595,18 @@ public class ItemFactory
    * @param format the DecimalFormatString used in this text field
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   * @deprecated use createNumberElement instead
    */
-  public static TextElement createNumberFunction (String name,
-                                                  Rectangle2D bounds,
-                                                  Paint paint,
-                                                  int alignment,
-                                                  Font font,
-                                                  String nullString,
-                                                  String format,
-                                                  String function)
+  public static TextElement createNumberFunction(String name,
+                                                 Rectangle2D bounds,
+                                                 Paint paint,
+                                                 int alignment,
+                                                 Font font,
+                                                 String nullString,
+                                                 String format,
+                                                 String function)
   {
-    DecimalFormatFilter filter = new DecimalFormatFilter ();
-    filter.setFormatString (format);
-    filter.setDataSource (new FunctionDataSource (function));
-
-    TextElement element = new TextElement ();
-    element.setName (name);
-    element.setBounds (bounds);
-    element.setPaint (paint);
-    element.setAlignment (alignment);
-    element.setFont (font);
-    element.setNullString (nullString);
-    element.setDataSource (filter);
-    return element;
+    return createNumberElement(name, bounds, paint, alignment, font, nullString, format, function);
   }
 
   /**
@@ -637,29 +623,18 @@ public class ItemFactory
    * @param format the NumberFormat used in this text field
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   * @deprecated use createNumberElement instead
    */
-  public static TextElement createNumberFunction (String name,
-                                                  Rectangle2D bounds,
-                                                  Paint paint,
-                                                  int alignment,
-                                                  Font font,
-                                                  String nullString,
-                                                  NumberFormat format,
-                                                  String function)
+  public static TextElement createNumberFunction(String name,
+                                                 Rectangle2D bounds,
+                                                 Paint paint,
+                                                 int alignment,
+                                                 Font font,
+                                                 String nullString,
+                                                 NumberFormat format,
+                                                 String function)
   {
-    NumberFormatFilter filter = new NumberFormatFilter ();
-    filter.setFormatter (format);
-    filter.setDataSource (new FunctionDataSource (function));
-
-    TextElement element = new TextElement ();
-    element.setName (name);
-    element.setBounds (bounds);
-    element.setPaint (paint);
-    element.setAlignment (alignment);
-    element.setFont (font);
-    element.setNullString (nullString);
-    element.setDataSource (filter);
-    return element;
+    return createNumberElement(name, bounds, paint, alignment, font, nullString, format, function);
   }
 
   /**
@@ -676,22 +651,22 @@ public class ItemFactory
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
-  public static TextElement createStringElement (String name,
-                                                 Rectangle2D bounds,
-                                                 Paint paint,
-                                                 int alignment,
-                                                 Font font,
-                                                 String nullString,
-                                                 String field)
+  public static TextElement createStringElement(String name,
+                                                Rectangle2D bounds,
+                                                Paint paint,
+                                                int alignment,
+                                                Font font,
+                                                String nullString,
+                                                String field)
   {
-    TextElement element = new TextElement ();
-    element.setName (name);
-    element.setBounds (bounds);
-    element.setPaint (paint);
-    element.setAlignment (alignment);
-    element.setFont (font);
-    element.setNullString (nullString);
-    element.setDataSource (new ReportDataSource (field));
+    TextElement element = new TextElement();
+    element.setName(name);
+    element.setBounds(bounds);
+    element.setPaint(paint);
+    element.setAlignment(alignment);
+    element.setFont(font);
+    element.setNullString(nullString);
+    element.setDataSource(new DataRowDataSource(field));
     return element;
   }
 
@@ -708,24 +683,17 @@ public class ItemFactory
    * @param function the name of the function to retrieve values from
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   * @deprecated use createStringElement instead
    */
-  public static TextElement createStringFunction (String name,
-                                                  Rectangle2D bounds,
-                                                  Paint paint,
-                                                  int alignment,
-                                                  Font font,
-                                                  String nullString,
-                                                  String function)
+  public static TextElement createStringFunction(String name,
+                                                 Rectangle2D bounds,
+                                                 Paint paint,
+                                                 int alignment,
+                                                 Font font,
+                                                 String nullString,
+                                                 String function)
   {
-    TextElement element = new TextElement ();
-    element.setName (name);
-    element.setBounds (bounds);
-    element.setPaint (paint);
-    element.setAlignment (alignment);
-    element.setFont (font);
-    element.setNullString (nullString);
-    element.setDataSource (new FunctionDataSource (function));
-    return element;
+    return createStringElement(name, bounds, paint, alignment, font, nullString, function);
   }
 
   /**
@@ -737,12 +705,12 @@ public class ItemFactory
    * @param defaultPaint the default paint for this band
    * @returns the GroupFooter
    */
-  public static Band createGroupFooter (float height, Font defaultFont, Paint defaultPaint)
+  public static Band createGroupFooter(float height, Font defaultFont, Paint defaultPaint)
   {
-    GroupFooter footer = new GroupFooter ();
-    footer.setHeight (height);
-    footer.setDefaultFont (defaultFont);
-    footer.setDefaultPaint (defaultPaint);
+    GroupFooter footer = new GroupFooter();
+    footer.setHeight(height);
+    footer.setDefaultFont(defaultFont);
+    footer.setDefaultPaint(defaultPaint);
     return footer;
   }
 
@@ -756,13 +724,13 @@ public class ItemFactory
    * @param pageBreak a flag indicating whether to do a pagebreak before this header is printed
    * @returns the GroupHeader
    */
-  public static Band createGroupHeader (float height, Font defaultFont, Paint defaultPaint, boolean pagebreak)
+  public static Band createGroupHeader(float height, Font defaultFont, Paint defaultPaint, boolean pagebreak)
   {
-    GroupHeader header = new GroupHeader ();
-    header.setHeight (height);
-    header.setDefaultFont (defaultFont);
-    header.setDefaultPaint (defaultPaint);
-    header.setPageBreakBeforePrint (pagebreak);
+    GroupHeader header = new GroupHeader();
+    header.setHeight(height);
+    header.setDefaultFont(defaultFont);
+    header.setDefaultPaint(defaultPaint);
+    header.setPageBreakBeforePrint(pagebreak);
     return header;
   }
 
@@ -777,14 +745,14 @@ public class ItemFactory
    * @param onlastpage a flag indicating whether to print this footer on the last page of the report
    * @returns the PageFooter
    */
-  public static Band createPageFooter (float height, Font defaultFont, Paint defaultPaint, boolean onfirstpage, boolean onlastpage)
+  public static Band createPageFooter(float height, Font defaultFont, Paint defaultPaint, boolean onfirstpage, boolean onlastpage)
   {
-    PageFooter footer = new PageFooter ();
-    footer.setHeight (height);
-    footer.setDefaultFont (defaultFont);
-    footer.setDefaultPaint (defaultPaint);
-    footer.setDisplayOnFirstPage (onfirstpage);
-    footer.setDisplayOnLastPage (onlastpage);
+    PageFooter footer = new PageFooter();
+    footer.setHeight(height);
+    footer.setDefaultFont(defaultFont);
+    footer.setDefaultPaint(defaultPaint);
+    footer.setDisplayOnFirstPage(onfirstpage);
+    footer.setDisplayOnLastPage(onlastpage);
     return footer;
   }
 
@@ -799,14 +767,14 @@ public class ItemFactory
    * @param onlastpage a flag indicating whether to print this footer on the last page of the report
    * @returns the PageHeader
    */
-  public static Band createPageHeader (float height, Font defaultFont, Paint defaultPaint, boolean onfirstpage, boolean onlagepage)
+  public static Band createPageHeader(float height, Font defaultFont, Paint defaultPaint, boolean onfirstpage, boolean onlagepage)
   {
-    PageHeader header = new PageHeader ();
-    header.setHeight (height);
-    header.setDefaultFont (defaultFont);
-    header.setDefaultPaint (defaultPaint);
-    header.setDisplayOnFirstPage (onfirstpage);
-    header.setDisplayOnLastPage (onlagepage);
+    PageHeader header = new PageHeader();
+    header.setHeight(height);
+    header.setDefaultFont(defaultFont);
+    header.setDefaultPaint(defaultPaint);
+    header.setDisplayOnFirstPage(onfirstpage);
+    header.setDisplayOnLastPage(onlagepage);
     return header;
   }
 
@@ -820,13 +788,13 @@ public class ItemFactory
    * @param isownpage a flag indicating whether to issue a pagebreak before the report footer is printed
    * @returns the ReportFooter
    */
-  public static Band createReportFooter (float height, Font defaultFont, Paint defaultPaint, boolean isownpage)
+  public static Band createReportFooter(float height, Font defaultFont, Paint defaultPaint, boolean isownpage)
   {
-    ReportFooter footer = new ReportFooter ();
-    footer.setHeight (height);
-    footer.setDefaultFont (defaultFont);
-    footer.setDefaultPaint (defaultPaint);
-    footer.setOwnPage (isownpage);
+    ReportFooter footer = new ReportFooter();
+    footer.setHeight(height);
+    footer.setDefaultFont(defaultFont);
+    footer.setDefaultPaint(defaultPaint);
+    footer.setOwnPage(isownpage);
     return footer;
   }
 
@@ -840,13 +808,13 @@ public class ItemFactory
    * @param isownpage a flag indicating whether to issue a pagebreak after the report header is printed
    * @returns the ReportHeader
    */
-  public static Band createReportHeader (float height, Font defaultFont, Paint defaultPaint, boolean isownpage)
+  public static Band createReportHeader(float height, Font defaultFont, Paint defaultPaint, boolean isownpage)
   {
-    ReportHeader header = new ReportHeader ();
-    header.setHeight (height);
-    header.setDefaultFont (defaultFont);
-    header.setDefaultPaint (defaultPaint);
-    header.setOwnPage (isownpage);
+    ReportHeader header = new ReportHeader();
+    header.setHeight(height);
+    header.setDefaultFont(defaultFont);
+    header.setDefaultPaint(defaultPaint);
+    header.setOwnPage(isownpage);
     return header;
   }
 
@@ -860,12 +828,12 @@ public class ItemFactory
    * @param defaultPaint the default paint for this band
    * @returns the ReportFooter
    */
-  public static Band createItemBand (float height, Font defaultFont, Paint defaultPaint)
+  public static Band createItemBand(float height, Font defaultFont, Paint defaultPaint)
   {
-    ItemBand band = new ItemBand ();
-    band.setHeight (height);
-    band.setDefaultFont (defaultFont);
-    band.setDefaultPaint (defaultPaint);
+    ItemBand band = new ItemBand();
+    band.setHeight(height);
+    band.setDefaultFont(defaultFont);
+    band.setDefaultPaint(defaultPaint);
     return band;
   }
 
@@ -881,13 +849,13 @@ public class ItemFactory
    * @param header the optional groupheader
    * @returns the ReportFooter
    */
-  public static Group createGroup (String name, List fields, GroupFooter footer, GroupHeader header)
+  public static Group createGroup(String name, List fields, GroupFooter footer, GroupHeader header)
   {
-    Group g = new Group ();
-    g.setName (name);
-    if (fields != null) g.setFields (fields);
-    if (footer != null) g.setFooter (footer);
-    if (header != null) g.setHeader (header);
+    Group g = new Group();
+    g.setName(name);
+    if (fields != null) g.setFields(fields);
+    if (footer != null) g.setFooter(footer);
+    if (header != null) g.setHeader(header);
     return g;
   }
 
@@ -906,28 +874,28 @@ public class ItemFactory
    * @param data the data for this report, which is optional at this point.
    * @returns the created report.
    */
-  public static JFreeReport createReport (String name,
-                                          ReportHeader rheader,
-                                          ReportFooter rfooter,
-                                          PageHeader pheader,
-                                          PageFooter pfooter,
-                                          GroupList groups,
-                                          ItemBand items,
-                                          FunctionCollection functions,
-                                          PageFormat pageformat,
-                                          TableModel data)
+  public static JFreeReport createReport(String name,
+                                         ReportHeader rheader,
+                                         ReportFooter rfooter,
+                                         PageHeader pheader,
+                                         PageFooter pfooter,
+                                         GroupList groups,
+                                         ItemBand items,
+                                         FunctionCollection functions,
+                                         PageFormat pageformat,
+                                         TableModel data)
   {
-    JFreeReport report = new JFreeReport ();
-    report.setName (name);
-    if (rheader != null) report.setReportHeader (rheader);
-    if (rfooter != null) report.setReportFooter (rfooter);
-    if (pheader != null) report.setPageHeader (pheader);
-    if (pfooter != null) report.setPageFooter (pfooter);
-    if (items != null) report.setItemBand (items);
-    if (functions != null) report.setFunctions (functions);
-    if (data != null) report.setData (data);
-    if (groups != null) report.setGroups (groups);
-    report.setDefaultPageFormat (pageformat);
+    JFreeReport report = new JFreeReport();
+    report.setName(name);
+    if (rheader != null) report.setReportHeader(rheader);
+    if (rfooter != null) report.setReportFooter(rfooter);
+    if (pheader != null) report.setPageHeader(pheader);
+    if (pfooter != null) report.setPageFooter(pfooter);
+    if (items != null) report.setItemBand(items);
+    if (functions != null) report.setFunctions(functions);
+    if (data != null) report.setData(data);
+    if (groups != null) report.setGroups(groups);
+    report.setDefaultPageFormat(pageformat);
     return report;
   }
 }

@@ -88,12 +88,24 @@ public interface Expression extends Cloneable
    */
   public void initialize() throws FunctionInitializeException;
 
+  /**
+   * Returns the DataRow used in this expression. The dataRow is set when the report processing starts
+   * and can be used to access the values of functions, expressions and the reports datasource.
+   *
+   * @returns the assigned DataRow for this report processing.
+   */
   public DataRow getDataRow();
 
+  /**
+   * Defines the DataRow used in this expression. The dataRow is set when the report processing starts
+   * and can be used to access the values of functions, expressions and the reports datasource.
+   *
+   * @param theDataRow the DataRow for this expression.
+   */
   public void setDataRow(DataRow theDataRow);
 
   /**
-   * Clones the expression in its current state.
+   * Clones the expression, expression should be reinitialized after the cloning.
    * <P>
    * Expression maintain no state, cloning is done at the beginning of the report processing to
    * disconnect the used expression from any other object space.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionDataSource.java,v 1.9 2002/08/22 21:08:24 taqua Exp $
+ * $Id: FunctionDataSource.java,v 1.10 2002/08/28 15:27:39 taqua Exp $
  *
  * Changes
  * -------
@@ -60,6 +60,7 @@ import com.jrefinery.report.util.Log;
  * returned.
  *
  * @see com.jrefinery.report.Band#populateElements
+ * @deprecated use DataRowDataSource as unified access class instead
  */
 public class FunctionDataSource implements DataSource, DataRowConnectable
 {
@@ -125,6 +126,10 @@ public class FunctionDataSource implements DataSource, DataRowConnectable
     return getDataRow ().get (getFunction ());
   }
 
+  /**
+   * @returns a clone of this object.
+   * @throws CloneNotSupportedException if the cloning failed.
+   */
   public Object clone () throws CloneNotSupportedException
   {
     return super.clone ();

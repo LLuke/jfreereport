@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.18 2002/08/22 19:19:27 taqua Exp $
+ * $Id: Band.java,v 1.19 2002/08/26 10:54:50 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -49,17 +49,16 @@
  * 08-Aug-2002 : Band visibility support added. Bands can be hidden using the visible-property
  * 22-Aug-2002 : Height contains now a special value (-100) to adjust the band to fit the available pageheight
  *               This is a temprary fix and gets reomved with the next layout update
+ * 31-Aug-2002 : Removed separate stoage of Function and ReportDataSource elements. This stuff was no longer
+ *                in use.
  */
 
 package com.jrefinery.report;
 
 import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.filter.DataTarget;
-import com.jrefinery.report.filter.FunctionDataSource;
-import com.jrefinery.report.filter.ReportDataSource;
 import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.targets.OutputTargetException;
-import com.jrefinery.report.util.HashNMap;
 import com.jrefinery.report.util.Log;
 
 import java.awt.Color;
@@ -105,12 +104,6 @@ public abstract class Band implements Serializable, Cloneable
   /** All the elements for this band, stored by name. */
   private List allElements;
 
-  /** Data elements for this band, stored by field name. */
-  private HashNMap dataElements;
-
-  /** Function elements for this band, stored by function name. */
-  private HashNMap functionElements;
-
   private boolean visible;
 
   /**
@@ -122,8 +115,6 @@ public abstract class Band implements Serializable, Cloneable
     setDefaultFont(DEFAULT_FONT);
     setDefaultPaint(DEFAULT_PAINT);
     allElements = new ArrayList();
-    dataElements = new HashNMap();
-    functionElements = new HashNMap();
     visible = true;
   }
 
@@ -203,22 +194,6 @@ public abstract class Band implements Serializable, Cloneable
       throw new IllegalArgumentException("Element is not valid: Valid elements need filled bounds");
 
     allElements.add(element);
-    DataSource ds = getLastDatasource(element);
-    if (ds instanceof ReportDataSource)
-    {
-      ReportDataSource rds = (ReportDataSource) ds;
-      if (rds.getField() == null)
-        throw new IllegalArgumentException("DataSource is not valid: ReportDataSources need a field set");
-      dataElements.add(rds.getField(), rds);
-    }
-    else if (ds instanceof FunctionDataSource)
-    {
-      FunctionDataSource fe = (FunctionDataSource) ds;
-      if (fe.getFunction() == null)
-        throw new IllegalArgumentException("DataSource is not valid: FunctionDataSources need a function name set");
-      functionElements.add(fe.getFunction(), fe);
-    }
-
   }
 
   /**
@@ -351,11 +326,6 @@ public abstract class Band implements Serializable, Cloneable
   {
     StringBuffer b = new StringBuffer();
     b.append(this.getClass().getName());
-    b.append("={functions=");
-    b.append(functionElements);
-    b.append(", dataelements=");
-    b.append(dataElements);
-    b.append("}");
     return b.toString();
   }
 
@@ -382,8 +352,6 @@ public abstract class Band implements Serializable, Cloneable
   {
     Band b = (Band) super.clone();
     b.allElements = new ArrayList();
-    b.dataElements = new HashNMap();
-    b.functionElements = new HashNMap();
     Iterator it = allElements.iterator();
     while (it.hasNext())
     {

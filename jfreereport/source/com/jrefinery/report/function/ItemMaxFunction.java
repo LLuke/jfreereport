@@ -28,18 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.17 2002/08/20 20:58:20 taqua Exp $
+ * $Id: ItemMaxFunction.java,v 1.1 2002/08/26 14:36:14 taqua Exp $
  *
  * Changes
  * -------
- * 18-Feb-2002 : Version 1, contributed by Thomas Morgner (DG);
- * 24-Apr-2002 : Changed the implementation to reflect the changes in Function and
- *               AbstractFunction
- * 10-May-2002 : Applied the ReportEvent interface
- * 23-Jun-2002 : Documentation
- * 17-Jul-2002 : Handle empty data source without a crashing
- * 18-Jul-2002 : Handle out-of-bounds dataquery to the tablemodel
- * 21-Jul-2002 : Corrected the out-of-bounds constraint
+ * 26-Aug-2002 : Initial version
+ * 31-Aug-2002 : Documentation update
  */
 
 package com.jrefinery.report.function;
@@ -54,13 +48,12 @@ import com.jrefinery.report.util.Log;
 import java.math.BigDecimal;
 
 /**
- * A report function that calculates the sum of one field (column) from the TableModel.
- * This function produces a running total, no global total. For a global sum, use the
- * TotalGroupSumFunction function.
+ * A report function that calculates the maximum value of one field (column) from the TableModel.
+ *
  * The function can be used in two ways:
  * <ul>
- * <li>to calculate a sum for the entire report;</li>
- * <li>to calculate a sum within a particular group;</li>
+ * <li>to calculate a maximum value for the entire report;</li>
+ * <li>to calculate a maximum value within a particular group;</li>
  * </ul>
  * This function expects its input values to be either java.lang.Number instances or Strings
  * that can be parsed to java.lang.Number instances using a java.text.DecimalFormat.
@@ -129,7 +122,7 @@ public class ItemMaxFunction extends AbstractFunction
 
   /**
    * Receives notification that a new group is about to start.  If this is the group defined for
-   * the function, then the running total is reset to zero.
+   * the function, then the maximum value is reset to zero.
    *
    * @param event Information about the event.
    */
@@ -161,7 +154,7 @@ public class ItemMaxFunction extends AbstractFunction
   /**
    * Sets the group name.
    * <P>
-   * If a group is defined, the running total is reset to zero at the start of every instance of
+   * If a group is defined, the maximum value is reset to zero at the start of every instance of
    * this group.
    *
    * @param _group The group name (null permitted).
@@ -200,10 +193,7 @@ public class ItemMaxFunction extends AbstractFunction
 
   /**
    * Receives notification that a row of data is being processed.  Reads the data from the field
-   * defined for this function and adds it to the running total.
-   * <P>
-   * This function assumes that it will find an instance of the Number class in the column of the
-   * TableModel specified by the field name.
+   * defined for this function and performs the maximum value comparison with its old value.
    *
    * @param event Information about the event.
    */
@@ -220,7 +210,7 @@ public class ItemMaxFunction extends AbstractFunction
     }
     catch (Exception e)
     {
-      Log.error ("ItemMaxFunction.advanceItems(): problem adding number.");
+      Log.error ("ItemMaxFunction.advanceItems(): problem comparing number.");
     }
   }
 

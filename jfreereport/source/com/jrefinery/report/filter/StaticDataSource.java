@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticDataSource.java,v 1.4 2002/07/03 18:49:48 taqua Exp $
+ * $Id: StaticDataSource.java,v 1.5 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes
  * -------
@@ -84,6 +84,9 @@ public class StaticDataSource implements DataSource
     return value;
   }
 
+  /**
+   * @returns a copy of this DataSource, the contained value is not cloned.
+   */
   public Object clone () throws CloneNotSupportedException
   {
     return super.clone ();

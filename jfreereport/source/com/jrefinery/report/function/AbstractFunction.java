@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.13 2002/08/20 20:58:20 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.14 2002/08/28 10:37:53 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@
  *               will fail.
  * 05-Jun-2002 : Updated Javadoc comments (DG);
  * 27-Aug-2002 : Documentation and removed the deprecated functions
+ * 31-Aug-2002 : Documentation update and removed isInitializedFunction
  */
 
 package com.jrefinery.report.function;
@@ -58,13 +59,14 @@ import java.util.Properties;
  * Base class for implementing new report functions.  Provides empty implementations of all the
  * methods in the Function interface.
  * <p>
- * All parameters are checked by the parser using the isInitialized () function.
- * If the function returns false (??? return type is void, but it throws an exception), one or
- * more properties are missing and the report parsing will be aborted. Make sure, that you fully
- * implement all validity checks using this function.
+ * The function is initialized when it gets added to the report. The method <code>initialize</code>
+ * gets called to perform the required initializations. At this point, all function properties must
+ * have been set to an valid state and the function must be named. If the initialisation fails, an
+ * FunctionInitializeException is thrown and the function get not added to the report.
  */
 public abstract class AbstractFunction implements Function
 {
+  /** The DataRow assigned within this function. */
   private DataRow dataRow;
 
   /** Storage for the function properties. */
@@ -120,7 +122,6 @@ public abstract class AbstractFunction implements Function
   public void initialize() throws FunctionInitializeException
   {
     if (name == null) throw new FunctionInitializeException("FunctionName is null");
-    if (!isInitialized()) throw new FunctionInitializeException("isInitialized failed.");
   }
 
   /**
@@ -287,16 +288,6 @@ public abstract class AbstractFunction implements Function
       properties.remove(name);
     else
       properties.setProperty(name, value);
-  }
-
-  /**
-   * returns true, to signal that this part of initialisation resulted in no error.
-   *
-   * @deprecated initialize() is used to initialize a function.
-   */
-  public boolean isInitialized()
-  {
-    return true;
   }
 
   /**

@@ -157,13 +157,16 @@ public abstract class AbstractExpression implements Expression
   }
 
   /**
-   * Sets a property for the function.
+   * Sets a property for the function. The the property value is null, the property will be removed
+   * from this expressions set of properties.
    *
    * @param name The property name.
    * @param value The property value.
+   * @throws NullPointerException if the name is null
    */
   public final void setProperty(String name, String value)
   {
+    if (name == null) throw new NullPointerException();
     if (value == null)
     {
       properties.remove(name);

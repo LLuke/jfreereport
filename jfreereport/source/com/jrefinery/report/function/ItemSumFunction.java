@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.16 2002/08/08 15:28:43 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.17 2002/08/20 20:58:20 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,9 @@
  * 17-Jul-2002 : Handle empty data source without a crashing
  * 18-Jul-2002 : Handle out-of-bounds dataquery to the tablemodel
  * 21-Jul-2002 : Corrected the out-of-bounds constraint
+ * 28-Jul-2002 : Function now uses the datarow
+ * 08-Aug-2002 : Imports cleaned
+ * 20-Aug-2002 : Moved function configuration into function properties, removed local fields "group" and "field"
  */
 
 package com.jrefinery.report.function;
