@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 7:47:41 PM
  *
- * $Id: TableProcessor.java,v 1.2 2003/01/25 20:34:11 taqua Exp $
+ * $Id: TableProcessor.java,v 1.3 2003/01/29 18:37:13 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -88,7 +88,7 @@ public abstract class TableProcessor
     w.setProducer(createProducer(true));
 
     Iterator it = startState.getLevels();
-    boolean hasNext = true;
+    boolean hasNext;
     int level = 0;
     if (it.hasNext())
     {
@@ -119,7 +119,14 @@ public abstract class TableProcessor
       if (hasNext)
       {
         level = ((Integer) it.next()).intValue();
-        state = new StartState((FinishState) state, level);
+        if (state instanceof FinishState)
+        {
+          state = new StartState((FinishState) state, level);
+        }
+        else
+        {
+          throw new IllegalStateException("Repaginate did not produce an finish state");
+        }
       }
     }
     while (hasNext == true);
@@ -132,6 +139,8 @@ public abstract class TableProcessor
 
     // part 3: (done by processing the ReportStateList:) Print the report
     StartState sretval = (StartState) retval;
+    if (sretval == null)
+      throw new IllegalStateException("Repaginate did no produce a final page state");
     sretval.resetState();
     return sretval;
   }

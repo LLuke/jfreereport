@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.37 2003/02/02 22:46:43 taqua Exp $
+ * $Id: ReportPane.java,v 1.38 2003/02/02 23:43:51 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -467,7 +467,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
 
         //double paperBorder = paperBorderPixel * zoomFactor;
 
-        Graphics2D g2 = null;
+        Graphics2D g2;
         if (realouterW > 1500 || realouterH > 1500)
         {
           graphCache = null;
@@ -590,7 +590,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
                         (innerH));
         g2.fill (unprintArea);
 */
-        Rectangle2D transPageArea = null;
+        Rectangle2D transPageArea;
         if (zoomFactor > 1.49)
         {
           transPageArea = new Rectangle2D.Double (outerX, outerY, outerW - 1, outerH - 1);

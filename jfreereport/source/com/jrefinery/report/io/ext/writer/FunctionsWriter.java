@@ -2,7 +2,7 @@
  * Date: Jan 22, 2003
  * Time: 5:33:53 PM
  *
- * $Id: FunctionsWriter.java,v 1.2 2003/01/23 18:07:46 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.3 2003/02/02 23:43:50 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -46,7 +46,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
 
 
   public void writeExpressions (Writer writer, ExpressionCollection exp)
-      throws IOException, ReportWriterException
+      throws IOException
   {
     for (int i = 0; i < exp.size(); i++)
     {

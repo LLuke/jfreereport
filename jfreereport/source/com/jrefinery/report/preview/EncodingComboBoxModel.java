@@ -2,7 +2,7 @@
  * Date: Jan 21, 2003
  * Time: 7:54:06 PM
  *
- * $Id: EncodingComboBoxModel.java,v 1.3 2003/02/02 23:43:51 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.4 2003/02/03 18:52:44 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -62,6 +62,16 @@ public class EncodingComboBoxModel implements ComboBoxModel
     {
       if (o == null) return false;
       return getClass().equals(o.getClass());
+    }
+
+    /**
+     * All comparators of this type are equal.
+     *
+     * @return
+     */
+    public int hashCode ()
+    {
+      return getClass().hashCode();
     }
   }
 

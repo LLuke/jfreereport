@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.39 2003/01/28 22:04:40 taqua Exp $
+ * $Id: Band.java,v 1.40 2003/01/29 03:12:52 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -141,11 +141,6 @@ public class Band extends Element implements Serializable, Cloneable
     return bandDefaults;
   }
 
-  public void addElement (Element element)
-  {
-    addElement(allElements.size(), element);
-  }
-
   /**
    * Adds a report element to the band.
    *
@@ -153,6 +148,16 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @throws NullPointerException if the element is <code>null</code> or contains <code>null</code>
    *                              values.
+   */
+  public void addElement (Element element)
+  {
+    addElement(allElements.size(), element);
+  }
+
+  /**
+   * todo
+   * @param position
+   * @param element
    */
   public void addElement(int position, Element element)
   {
@@ -299,7 +304,8 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Returns the element stored add the given index
+   * Returns the element stored add the given index.
+   *
    * @param index the element position within this band
    * @return the element
    * @throws IndexOutOfBoundsException if the index is invalid. 
@@ -355,7 +361,7 @@ public class Band extends Element implements Serializable, Cloneable
 
   /**
    * Returns the content type of the element. For bands, the content type is by
-   * default "X-container".
+   * default &quot;X-container&quot;.
    *
    * @return the content type
    */
@@ -365,7 +371,7 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   *
+   * todo
    * @param element
    * @return
    */

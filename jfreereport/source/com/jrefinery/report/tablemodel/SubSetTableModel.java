@@ -2,7 +2,7 @@
  * Date: Jan 26, 2003
  * Time: 3:55:42 PM
  *
- * $Id: SubSetTableModel.java,v 1.2 2003/01/29 03:13:00 taqua Exp $
+ * $Id: SubSetTableModel.java,v 1.3 2003/02/02 23:43:51 taqua Exp $
  */
 package com.jrefinery.report.tablemodel;
 
@@ -73,8 +73,8 @@ public class SubSetTableModel implements TableModel
   {
     if (start < 0) throw new IllegalArgumentException("Start < 0");
     if (end < start) throw new IllegalArgumentException("end < start");
-    if (end >= model.getRowCount()) throw new IllegalArgumentException("End >= Model.RowCount");
     if (model == null) throw new NullPointerException();
+    if (end >= model.getRowCount()) throw new IllegalArgumentException("End >= Model.RowCount");
 
     this.start = start;
     this.end = end;

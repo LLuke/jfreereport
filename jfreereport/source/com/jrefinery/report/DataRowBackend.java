@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackend.java,v 1.27 2003/01/16 15:35:31 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.28 2003/02/02 23:43:35 taqua Exp $
  *
  * Changes
  * -------
@@ -231,7 +231,7 @@ public class DataRowBackend implements Cloneable
   /** The table model (set by the report state). */
   private TableModel tablemodel;
 
-  /** all previously marked report-properties for this report */
+  /** all previously marked report-properties for this report. */
   private ReportPropertiesList reportProperties;
 
   /** The current row (set by the report state). */
@@ -240,11 +240,11 @@ public class DataRowBackend implements Cloneable
   /** Column locks. */
   private boolean[] columnlocks;
 
-  /** if true, invalid columns get printed to the logs */
+  /** if true, invalid columns get printed to the logs. */
   private boolean warnInvalidColumns;
 
   /**
-   * Creates a new DataRowBackend
+   * Creates a new DataRowBackend.
    */
   public DataRowBackend()
   {

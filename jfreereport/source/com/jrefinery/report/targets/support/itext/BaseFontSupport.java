@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontSupport.java,v 1.7 2003/01/27 03:17:43 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.1 2003/02/01 22:10:36 taqua Exp $
  *
  * Changes
  * -------
@@ -95,7 +95,6 @@ public class BaseFontSupport
     //Log.debug ("Create Font: " + font + " Encoding: " + encoding + " Embedd: " + embedFonts);
 
     // use the Java logical font name to map to a predefined iText font.
-    String fontKey = null;
     String logicalName = font.getFontName();
     boolean bold = false;
     boolean italic = false;
@@ -115,6 +114,7 @@ public class BaseFontSupport
       italic = true;
     }
 
+    String fontKey;
     if (font.isCourier())
     {
       fontKey = createCourierName(bold, italic);
@@ -240,23 +240,19 @@ public class BaseFontSupport
       return null;
     }
 
-    String fontKey = null;
+    String fontKey = filename;
 
     if (font.isBold() && font.isItalic())
     {
-      fontKey = filename + ",BoldItalic";
+      fontKey += ",BoldItalic";
     }
     else if (font.isBold())
     {
-      fontKey = filename + ",Bold";
+      fontKey += ",Bold";
     }
     else if (font.isItalic())
     {
-      fontKey = filename + ",Italic";
-    }
-    else
-    {
-      fontKey = filename;
+      fontKey += ",Italic";
     }
 
     // check if this font is in the cache ...
@@ -327,25 +323,22 @@ public class BaseFontSupport
    */
   private String createSansSerifName (boolean bold, boolean italic)
   {
-    String fontKey = null;
     if (bold && italic)
     {
-      fontKey = BaseFont.HELVETICA_BOLDOBLIQUE;
+      return BaseFont.HELVETICA_BOLDOBLIQUE;
     }
     else if (bold)
     {
-      fontKey = BaseFont.HELVETICA_BOLD;
+      return BaseFont.HELVETICA_BOLD;
     }
     else if (italic)
     {
-      fontKey = BaseFont.HELVETICA_OBLIQUE;
+      return BaseFont.HELVETICA_OBLIQUE;
     }
     else
     {
-      fontKey = BaseFont.HELVETICA;
+      return BaseFont.HELVETICA;
     }
-
-    return fontKey;
   }
 
   /**
@@ -358,24 +351,22 @@ public class BaseFontSupport
    */
   private String createSerifName (boolean bold, boolean italic)
   {
-    String fontKey = null;
     if (bold && italic)
     {
-      fontKey = BaseFont.TIMES_BOLDITALIC;
+      return BaseFont.TIMES_BOLDITALIC;
     }
     else if (bold)
     {
-      fontKey = BaseFont.TIMES_BOLD;
+      return BaseFont.TIMES_BOLD;
     }
     else if (italic)
     {
-      fontKey = BaseFont.TIMES_ITALIC;
+      return BaseFont.TIMES_ITALIC;
     }
     else
     {
-      fontKey = BaseFont.TIMES_ROMAN;
+      return BaseFont.TIMES_ROMAN;
     }
-    return fontKey;
   }
 
   /**
@@ -388,24 +379,22 @@ public class BaseFontSupport
    */
   private String createCourierName (boolean bold, boolean italic)
   {
-    String fontKey = null;
     if (bold && italic)
     {
-      fontKey = BaseFont.COURIER_BOLDOBLIQUE;
+      return BaseFont.COURIER_BOLDOBLIQUE;
     }
     else if (bold)
     {
-      fontKey = BaseFont.COURIER_BOLD;
+      return BaseFont.COURIER_BOLD;
     }
     else if (italic)
     {
-      fontKey = BaseFont.COURIER_OBLIQUE;
+      return BaseFont.COURIER_OBLIQUE;
     }
     else
     {
-      fontKey = BaseFont.COURIER;
+      return BaseFont.COURIER;
     }
-    return fontKey;
   }
 
 }

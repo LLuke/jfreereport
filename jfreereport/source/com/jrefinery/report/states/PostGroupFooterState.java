@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostGroupFooterState.java,v 1.3 2002/12/02 17:43:45 taqua Exp $
+ * $Id: PostGroupFooterState.java,v 1.4 2002/12/05 12:18:46 mungady Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ import com.jrefinery.report.Group;
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public class PostGroupFooterState extends ReportState
+public final class PostGroupFooterState extends ReportState
 {
   /**
    * Creates a new '<code>POST-GROUP-FOOTER</code>' report state.

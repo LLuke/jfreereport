@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFormatFilter.java,v 1.9 2002/12/02 17:19:48 taqua Exp $
+ * $Id: NumberFormatFilter.java,v 1.10 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes
  * -------
@@ -196,19 +196,5 @@ public class NumberFormatFilter extends FormatFilter
   public int getMinimumIntegerDigits ()
   {
     return getNumberFormat ().getMaximumFractionDigits ();
-  }
-
-  /**
-   * Returns the formatted string. The value is read using the data source given
-   * and formated using the formatter of this object. The formating is guaranteed to
-   * completly form the object to an string or to return the defined NullValue.
-   * <p>
-   * If format, datasource or object are null, the NullValue is returned.
-   *
-   * @return The formatted value.
-   */
-  public Object getValue()
-  {
-    return super.getValue();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreGroupHeaderState.java,v 1.10 2002/12/06 19:28:01 taqua Exp $
+ * $Id: PreGroupHeaderState.java,v 1.11 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ package com.jrefinery.report.states;
  *
  * @author David Gilbert
  */
-public class PreGroupHeaderState extends ReportState
+public final class PreGroupHeaderState extends ReportState
 {
   /**
    * Creates a new '<code>PRE-GROUP-HEADER</code>' state.

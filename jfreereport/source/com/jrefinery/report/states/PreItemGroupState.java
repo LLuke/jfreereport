@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreItemGroupState.java,v 1.3 2002/12/02 17:43:49 taqua Exp $
+ * $Id: PreItemGroupState.java,v 1.4 2002/12/05 12:18:46 mungady Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ package com.jrefinery.report.states;
  *
  * @author David Gilbert
  */
-public class PreItemGroupState extends ReportState
+public final class PreItemGroupState extends ReportState
 {
 
   /**

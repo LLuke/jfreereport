@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 8:59:32 PM
  *
- * $Id: CSVProcessor.java,v 1.2 2003/01/22 19:38:29 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.3 2003/02/02 23:43:51 taqua Exp $
  */
 package com.jrefinery.report.targets.csv;
 
@@ -96,7 +96,7 @@ public class CSVProcessor
     w.setWriter(new OutputStreamWriter(new NullOutputStream()));
 
     Iterator it = startState.getLevels();
-    boolean hasNext = true;
+    boolean hasNext;
     int level = 0;
     if (it.hasNext())
     {
@@ -127,7 +127,14 @@ public class CSVProcessor
       if (hasNext)
       {
         level = ((Integer) it.next()).intValue();
-        state = new StartState((FinishState) state, level);
+        if (state instanceof FinishState)
+        {
+          state = new StartState((FinishState) state, level);
+        }
+        else
+        {
+          throw new IllegalStateException("The processing did not produce an finish state");
+        }
       }
     } while (hasNext == true);
 
@@ -139,6 +146,10 @@ public class CSVProcessor
 
     // part 3: (done by processing the ReportStateList:) Print the report
     StartState sretval = (StartState) retval;
+    if (sretval == null)
+    {
+      throw new IllegalStateException("There was no valid pagination done.");
+    }
     sretval.resetState();
     return sretval;
   }

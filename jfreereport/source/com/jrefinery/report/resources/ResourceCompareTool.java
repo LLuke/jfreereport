@@ -2,7 +2,7 @@
  * Date: Feb 3, 2003
  * Time: 8:41:37 PM
  *
- * $Id$
+ * $Id: ResourceCompareTool.java,v 1.1 2003/02/03 20:34:12 taqua Exp $
  */
 package com.jrefinery.report.resources;
 
@@ -42,6 +42,8 @@ public class ResourceCompareTool
 
     Object[][] contentsRes = resources.getContents();
     Object[][] contentsComp = compare.getContents();
+    if (compare.getContents() == null)
+      throw new IllegalArgumentException("The given localisation is not a valid implementation");
 
     Hashtable baseContentTable = new Hashtable();
     Hashtable compContentTable = new Hashtable();

@@ -2,7 +2,7 @@
  * Date: Jan 9, 2003
  * Time: 9:08:15 PM
  *
- * $Id: ReportConfigHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: ReportConfigHandler.java,v 1.2 2003/02/02 23:43:49 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -218,7 +218,7 @@ public class ReportConfigHandler implements ReportDefinitionHandler
   {
     String pageformatName = atts.getValue(PAGEFORMAT_ATT);
 
-    int orientationVal = PageFormat.PORTRAIT;
+    int orientationVal;
     String orientation = atts.getValue(ORIENTATION_ATT);
     if (orientation == null)
     {

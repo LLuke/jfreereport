@@ -2,7 +2,7 @@
  * Date: Feb 1, 2003
  * Time: 9:21:29 PM
  *
- * $Id$
+ * $Id: BaseFontFactory.java,v 1.1 2003/02/01 22:10:36 taqua Exp $
  */
 package com.jrefinery.report.targets.support.itext;
 
@@ -119,7 +119,6 @@ public class BaseFontFactory extends DefaultFontMapper
         registerFontFile(files[i].toString(), encoding);
       }
     }
-    file = null;
     System.gc();
   }
 

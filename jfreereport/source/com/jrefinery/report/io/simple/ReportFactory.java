@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.2 2003/01/23 18:07:46 taqua Exp $
+ * $Id: ReportFactory.java,v 1.3 2003/02/02 23:43:50 taqua Exp $
  *
  * Changes
  * -------
@@ -313,14 +313,13 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
   {
     String pageformatName = atts.getValue(PAGEFORMAT_ATT);
 
-    int orientationVal = PageFormat.PORTRAIT;
+    int orientationVal;
     String orientation = atts.getValue(ORIENTATION_ATT);
     if (orientation == null)
     {
       orientationVal = PageFormat.PORTRAIT;
     }
-    else
-    if (orientation.equals(ORIENTATION_LANDSCAPE_VAL))
+    else if(orientation.equals(ORIENTATION_LANDSCAPE_VAL))
     {
       orientationVal = PageFormat.LANDSCAPE;
     }

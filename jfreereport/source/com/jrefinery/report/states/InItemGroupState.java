@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: InItemGroupState.java,v 1.5 2002/12/06 19:28:00 taqua Exp $
+ * $Id: InItemGroupState.java,v 1.6 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,7 @@ import com.jrefinery.report.ReportProcessingException;
  *
  * @author David Gilbert
  */
-public class InItemGroupState extends ReportState
+public final class InItemGroupState extends ReportState
 {
   /**
    * Creates a new '<code>IN-ITEM-GROUP</code>' state.

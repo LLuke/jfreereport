@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo.java,v 1.6 2003/01/14 21:04:04 taqua Exp $
+ * $Id: OpenSourceDemo.java,v 1.7 2003/02/02 23:43:49 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -68,153 +69,154 @@ import java.net.URL;
 public class OpenSourceDemo extends ApplicationFrame implements ActionListener
 {
 
-    /** The data for the report. */
-    private TableModel data;
+  /** The data for the report. */
+  private TableModel data;
 
-    /** The report (read from OpenSourceDemo.xml template). */
-    private JFreeReport report;
+  /** The report (read from OpenSourceDemo.xml template). */
+  private JFreeReport report;
 
-    /**
-     * Constructs the demo application.
-     *
-     * @param title  the frame title.
-     */
-    public OpenSourceDemo(String title)
+  /**
+   * Constructs the demo application.
+   *
+   * @param title  the frame title.
+   */
+  public OpenSourceDemo(String title)
+  {
+    super(title);
+    setJMenuBar(createMenuBar());
+    setContentPane(createContent());
+  }
+
+  /**
+   * Creates a menu bar.
+   *
+   * @return the menu bar.
+   */
+  public JMenuBar createMenuBar()
+  {
+    JMenuBar mb = new JMenuBar();
+    JMenu fileMenu = new JMenu("File");
+
+    JMenuItem previewItem = new JMenuItem("Preview Report");
+    previewItem.setActionCommand("PREVIEW");
+    previewItem.addActionListener(this);
+
+    JMenuItem exitItem = new JMenuItem("Exit");
+    exitItem.setActionCommand("EXIT");
+    exitItem.addActionListener(this);
+
+    fileMenu.add(previewItem);
+    fileMenu.addSeparator();
+    fileMenu.add(exitItem);
+    mb.add(fileMenu);
+    return mb;
+  }
+
+  /**
+   * Creates the content for the application frame.
+   *
+   * @return a panel containing the basic user interface.
+   */
+  public JPanel createContent()
+  {
+    JPanel content = new JPanel(new BorderLayout());
+    content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+    this.data = new OpenSourceProjects();
+    JTable table = new JTable(data);
+    JScrollPane scrollPane = new JScrollPane(table);
+    content.add(scrollPane);
+    return content;
+  }
+
+  /**
+   * Handles action events.
+   *
+   * @param e  the event.
+   */
+  public void actionPerformed(ActionEvent e)
+  {
+    String command = e.getActionCommand();
+    if (command.equals("PREVIEW"))
     {
-        super(title);
-        setJMenuBar(createMenuBar());
-        setContentPane(createContent());
+      previewReport();
     }
-
-    /**
-     * Creates a menu bar.
-     *
-     * @return the menu bar.
-     */
-    public JMenuBar createMenuBar()
+    else if (command.equals("EXIT"))
     {
-        JMenuBar mb = new JMenuBar();
-        JMenu fileMenu = new JMenu("File");
-
-        JMenuItem previewItem = new JMenuItem("Preview Report");
-        previewItem.setActionCommand("PREVIEW");
-        previewItem.addActionListener(this);
-
-        JMenuItem exitItem = new JMenuItem("Exit");
-        exitItem.setActionCommand("EXIT");
-        exitItem.addActionListener(this);
-
-        fileMenu.add(previewItem);
-        fileMenu.addSeparator();
-        fileMenu.add(exitItem);
-        mb.add(fileMenu);
-        return mb;
+      dispose();
+      System.exit(0);
     }
+  }
 
-    /**
-     * Creates the content for the application frame.
-     *
-     * @return a panel containing the basic user interface.
-     */
-    public JPanel createContent()
+  /**
+   * Displays a print preview screen for the sample report.
+   */
+  protected void previewReport()
+  {
+
+    try
     {
-        JPanel content = new JPanel(new BorderLayout());
-        content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-        this.data = new OpenSourceProjects();
-        JTable table = new JTable(data);
-        JScrollPane scrollPane = new JScrollPane(table);
-        content.add(scrollPane);
-        return content;
-    }
-
-    /**
-     * Handles action events.
-     *
-     * @param e  the event.
-     */
-    public void actionPerformed(ActionEvent e)
-    {
-        String command = e.getActionCommand();
-        if (command.equals("PREVIEW"))
-        {
-            previewReport();
-        }
-        else if (command.equals("EXIT"))
-        {
-            dispose();
-            System.exit(0);
-        }
-    }
-
-    /**
-     * Displays a print preview screen for the sample report.
-     */
-    protected void previewReport()
-    {
-
-      try
+      if (this.report == null)
       {
-        if (this.report == null)
-        {
-            URL in  = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
-            this.report = parseReport(in);
-            this.report.setData(this.data);
-        }
-
-        if (this.report != null)
-        {
-            PreviewFrame frame = new PreviewFrame(this.report);
-            frame.getBase().setToolbarFloatable(true);
-            frame.pack ();
-            RefineryUtilities.positionFrameRandomly(frame);
-            frame.setVisible(true);
-            frame.requestFocus();
-        }
+        URL in = getClass().getResource("/com/jrefinery/report/demo/OpenSourceDemo.xml");
+        this.report = parseReport(in);
       }
-      catch (ReportProcessingException pre)
+      if (report == null)
       {
-        Log.error ("Failed", pre);
+        JOptionPane.showMessageDialog(this, "The report definition is null");
+        return;
       }
-      // force reparsing on next preview ... for debugging ...
-      report = null;
-    }
 
-    /**
-     * Reads the report from the specified template file.
-     *
-     * @param templateURL  the template location.
-     *
-     * @return a report.
-     */
-    private JFreeReport parseReport(URL templateURL)
+      report.setData(this.data);
+      PreviewFrame frame = new PreviewFrame(this.report);
+      frame.getBase().setToolbarFloatable(true);
+      frame.pack();
+      RefineryUtilities.positionFrameRandomly(frame);
+      frame.setVisible(true);
+      frame.requestFocus();
+    }
+    catch (ReportProcessingException pre)
     {
-
-        JFreeReport result = null;
-        ReportGenerator generator = ReportGenerator.getInstance();
-        try
-        {
-            result = generator.parseReport(templateURL);
-        }
-        catch (Exception e)
-        {
-            System.out.println(e.toString());
-
-        }
-        return result;
-
+      Log.error("Failed", pre);
     }
+    // force reparsing on next preview ... for debugging ...
+    report = null;
+  }
 
-    /**
-     * Entry point for running the demo application...
-     *
-     * @param args  ignored.
-     */
-    public static void main(String[] args)
+  /**
+   * Reads the report from the specified template file.
+   *
+   * @param templateURL  the template location.
+   *
+   * @return a report.
+   */
+  private JFreeReport parseReport(URL templateURL)
+  {
+
+    JFreeReport result = null;
+    ReportGenerator generator = ReportGenerator.getInstance();
+    try
     {
-        OpenSourceDemo frame = new OpenSourceDemo("Open Source Demo");
-        frame.pack();
-        RefineryUtilities.centerFrameOnScreen(frame);
-        frame.setVisible(true);
+      result = generator.parseReport(templateURL);
     }
+    catch (Exception e)
+    {
+      Log.debug("Failed to parse the report definition", e);
+    }
+    return result;
+
+  }
+
+  /**
+   * Entry point for running the demo application...
+   *
+   * @param args  ignored.
+   */
+  public static void main(String[] args)
+  {
+    OpenSourceDemo frame = new OpenSourceDemo("Open Source Demo");
+    frame.pack();
+    RefineryUtilities.centerFrameOnScreen(frame);
+    frame.setVisible(true);
+  }
 
 }

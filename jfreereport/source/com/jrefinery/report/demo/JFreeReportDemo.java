@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.50 2003/02/01 18:27:03 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.51 2003/02/02 23:43:49 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -430,32 +430,23 @@ public class JFreeReportDemo extends JFrame
           getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
       return;
     }
+
     Log.debug ("Processing Report: " + in);
     ReportGenerator gen = ReportGenerator.getInstance();
 
-    JFreeReport report1 = null;
     try
     {
-      report1 = gen.parseReport(in, in);
-    }
-    catch (Exception ioe)
-    {
-      showExceptionDialog("report.definitionfailure", ioe);
-      return;
-    }
+      JFreeReport report1 = gen.parseReport(in, in);
+      if (report1 == null)
+      {
+        JOptionPane.showMessageDialog(this,
+            MessageFormat.format(getResources().getString("report.definitionnull"),
+                                 new Object[]{urlname}),
+            getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
+        return;
+      }
 
-    if (report1 == null)
-    {
-      JOptionPane.showMessageDialog(this,
-          MessageFormat.format(getResources().getString("report.definitionnull"),
-                               new Object[]{urlname}),
-          getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
-    }
-
-    report1.setData(data);
-
-    try
-    {
+      report1.setData(data);
       PreviewFrame frame1 = new PreviewFrame(report1);
       frame1.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
       frame1.pack();

@@ -2,21 +2,21 @@
  * Date: Feb 1, 2003
  * Time: 5:56:29 PM
  *
- * $Id$
+ * $Id: ParserEntityResolver.java,v 1.1 2003/02/01 18:30:58 taqua Exp $
  */
 package com.jrefinery.report.io;
 
 import com.jrefinery.report.util.Log;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-import org.xml.sax.ext.EntityResolver2;
+import org.xml.sax.EntityResolver;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Hashtable;
 
-public class ParserEntityResolver implements EntityResolver2
+public class ParserEntityResolver implements EntityResolver
 {
   public static final String PUBLIC_ID_SIMPLE =   "-//JFreeReport//DTD report definition//EN//simple";
   public static final String PUBLIC_ID_EXTENDED = "-//JFreeReport//DTD report definition//EN//extended";

@@ -30,7 +30,7 @@
                      based on PDFSaveDialog by Thomas Morgner, David Gilbert (for Simba Management Limited) and contributors
  * Contributor(s):
  *
- * $Id: ExcelExportDialog.java,v 1.5 2003/02/02 23:43:51 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.6 2003/02/03 18:52:44 taqua Exp $
  *
  * Changes
  * --------
@@ -592,7 +592,8 @@ public class ExcelExportDialog extends JDialog implements ExportPlugin
     {
       try
       {
-        out.close();
+        if (out != null)
+          out.close();
       }
       catch (Exception e)
       {

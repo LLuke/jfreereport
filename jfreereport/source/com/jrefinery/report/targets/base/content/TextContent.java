@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
+ * $Id: TextContent.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ public class TextContent extends ContentContainer
    * @param bounds  the bounds.
    * @param ot  the size calculator.
    *
-   * Versucht die Optimale Breite & Höhe für den darzustellenden Text zu finden
+   * Versucht die Optimale Breite & Hï¿½he fï¿½r den darzustellenden Text zu finden
    */
   public TextContent(String value, Rectangle2D bounds, SizeCalculator ot)
   {
@@ -115,7 +115,7 @@ public class TextContent extends ContentContainer
     try
     {
       BufferedReader reader = new BufferedReader(new StringReader(text));
-      String readLine = null;
+      String readLine;
       while ((readLine = reader.readLine()) != null)
       {
         lines.add(readLine);

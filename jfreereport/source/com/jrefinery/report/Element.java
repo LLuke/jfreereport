@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.20 2003/01/27 03:17:33 taqua Exp $
+ * $Id: Element.java,v 1.21 2003/02/02 23:43:35 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -50,6 +50,7 @@
  * 06-Dec-2002 : Updated Javadocs (DG);
  * 06-Dec-2002 : Also updated the docs, declared setPaint(),getPaint deprecated, removed
  *               setStyleSheet
+ * 04-Feb-2002 : removed equals method. Element equality is no longer bound to names.
  */
 
 package com.jrefinery.report;
@@ -85,7 +86,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   /** The name of the element. */
   private String name;
 
-  /** The stylesheet defines global appearance for elements */
+  /** The stylesheet defines global appearance for elements. */
   private ElementStyleSheet style;
 
   /**
@@ -222,24 +223,6 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   {
     DataSource ds = getDataSource();
     return ds.getValue();
-  }
-
-  /**
-   * Checks whether an element is equal to this element. Equality is based on names, so make
-   * sure, that you have no elements with the same name within the same band.
-   *
-   * @param o  the object to test against this element for equality.
-   *
-   * @return A boolean indicating equal or not equal.
-   */
-  public boolean equals(Object o)
-  {
-    if (o instanceof Element)
-    {
-      Element el = (Element) o;
-      return el.getName().equals(getName());
-    }
-    return false;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.22 2003/02/02 22:46:43 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.23 2003/02/03 18:52:45 taqua Exp $
  *
  * Changes
  * --------
@@ -1335,7 +1335,8 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
     {
       try
       {
-        out.close();
+        if (out != null)
+          out.close();
       }
       catch (Exception e)
       {

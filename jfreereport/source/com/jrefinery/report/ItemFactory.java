@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.29 2003/02/02 23:43:35 taqua Exp $
+ * $Id: ItemFactory.java,v 1.30 2003/02/03 18:52:16 taqua Exp $
  *
  * Changes
  * -------
@@ -247,14 +247,11 @@ public class ItemFactory
                                               DateFormat format,
                                               String field)
   {
-    DataSource ds = null;
+    DataSource ds;
     if (format instanceof SimpleDateFormat)
     {
       DateFieldTemplate dft = new DateFieldTemplate();
-      if (format != null)
-      {
-        dft.setDateFormat((SimpleDateFormat) format);
-      }
+      dft.setDateFormat((SimpleDateFormat) format);
       dft.setNullValue(nullString);
       dft.setField(field);
       ds = dft;
@@ -1065,14 +1062,11 @@ public class ItemFactory
                                                 NumberFormat format,
                                                 String field)
   {
-    DataSource ds = null;
+    DataSource ds;
     if (format instanceof DecimalFormat)
     {
       NumberFieldTemplate template = new NumberFieldTemplate ();
-      if (format != null)
-      {
-        template.setDecimalFormat((DecimalFormat) format);
-      }
+      template.setDecimalFormat((DecimalFormat) format);
       template.setNullValue(nullString);
       template.setField(field);
       ds = template;
@@ -1695,6 +1689,19 @@ public class ItemFactory
                                                      (float) bounds.getHeight()));
   }
 
+  /**
+   * todo
+   * @param name
+   * @param bounds
+   * @param color
+   * @param alignment
+   * @param valignment
+   * @param font
+   * @param nullValue
+   * @param resourceBase
+   * @param field
+   * @return
+   */
   public static TextElement createResourceElement(String name,
                                                   Rectangle2D bounds,
                                                   Color color,
@@ -1731,6 +1738,19 @@ public class ItemFactory
 
   }
 
+  /**
+   * todo 
+   * @param name
+   * @param bounds
+   * @param paint
+   * @param alignment
+   * @param valign
+   * @param font
+   * @param nullValue
+   * @param resourceBase
+   * @param resourceKey
+   * @return
+   */
   public static TextElement createResourceLabel(String name,
                                                 Rectangle2D bounds,
                                                 Color paint,

@@ -105,9 +105,9 @@ public class CharacterEntityParser
   public String decodeEntities(String value)
   {
     int parserIndex = 0;
-    int subStart = 0;
-    int subEnd = 0;
-    int subValue = 0;
+    int subStart;
+    int subEnd;
+    int subValue;
     String replaceString = null;
     StringBuffer bufValue = new StringBuffer(value);
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.8 2003/01/29 03:13:00 taqua Exp $
+ * $Id: ElementFactory.java,v 1.9 2003/02/02 23:43:50 taqua Exp $
  *
  * Changes
  * -------
@@ -192,7 +192,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
     else if (elementName.equals(GENERAL_FIELD_TAG))
     {
-      startGeneralField(atts);
+      throw new SAXException("The usage of general field is deprecated, use string field instead");
     }
     else if (elementName.equals(STRING_FIELD_TAG))
     {
@@ -323,7 +323,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
     else if (elementName.equals(GENERAL_FIELD_TAG))
     {
-      endGeneralField();
+      throw new SAXException ("The general element is deprecated, use string-field instead.");
     }
     else if (elementName.equals(STRING_FIELD_TAG))
     {
@@ -618,18 +618,6 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   }
 
   /**
-   * Creates a general element. General elements are text elements.
-   *
-   * @param atts  the attributes.
-   *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
-   */
-  protected void startGeneralField(Attributes atts) throws SAXException
-  {
-    getDataElementAttributes(atts);
-  }
-
-  /**
    * Creates a number element (a text element that displays a numerical value).
    *
    * @param atts  the attributes.
@@ -886,28 +874,6 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
         textElementColor,
         textElementAlignment,
         textElementVerticalAlignment,
-        null,
-        textElementNullString,
-        textElementSourceName);
-    FontFactory.applyFontInformation(te.getStyle(), textElementFont);
-    te.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT,
-                                   new Boolean (textElementDynamic));
-    getCurrentBand().addElement(te);
-  }
-
-  /**
-   * Ends the general element and adds it to the current band.
-   *
-   * @throws org.xml.sax.SAXException if there is a SAX problem.
-   */
-  protected void endGeneralField() throws SAXException
-  {
-    // general field is deprecated, never support deprecated elements or they live forever
-    // there can be only one :)
-    TextElement te = ItemFactory.createGeneralElement(textElementName,
-        textElementBounds,
-        textElementColor,
-        textElementAlignment,
         null,
         textElementNullString,
         textElementSourceName);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: HugeJFreeReportDemo.java,v 1.20 2002/12/09 03:56:34 taqua Exp $
+ * $Id: HugeJFreeReportDemo.java,v 1.21 2002/12/12 12:26:55 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -334,32 +334,23 @@ public class HugeJFreeReportDemo extends JFrame
           JOptionPane.ERROR_MESSAGE);
       return;
     }
-    ReportGenerator gen = ReportGenerator.getInstance ();
-
-    JFreeReport report1 = null;
     try
     {
-      report1 = gen.parseReport (in, in);
+      ReportGenerator gen = ReportGenerator.getInstance ();
 
-    }
-    catch (Exception ioe)
-    {
-      showExceptionDialog ("report.definitionfailure", ioe);
-      return;
-    }
+      JFreeReport report1 = gen.parseReport (in, in);
 
-    if (report1 == null)
-    {
-      JOptionPane.showMessageDialog (this,
-          MessageFormat.format (getResources ().getString ("report.definitionnull"),
-              new Object[]{urlname}),
-          getResources ().getString ("error"), JOptionPane.ERROR_MESSAGE);
-    }
+      if (report1 == null)
+      {
+        JOptionPane.showMessageDialog (this,
+            MessageFormat.format (getResources ().getString ("report.definitionnull"),
+                new Object[]{urlname}),
+            getResources ().getString ("error"), JOptionPane.ERROR_MESSAGE);
+        return;
+      }
 
-    report1.setData (data);
+      report1.setData (data);
 
-    try
-    {
       PreviewFrame frame1 = new PreviewFrame (report1);
       frame1.pack ();
       RefineryUtilities.positionFrameRandomly (frame1);

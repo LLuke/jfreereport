@@ -2,7 +2,7 @@
  * Date: Jan 21, 2003
  * Time: 7:48:58 PM
  *
- * $Id: CSVExportDialog.java,v 1.3 2003/02/02 23:43:50 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.4 2003/02/03 18:52:43 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -748,7 +748,8 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
     {
       try
       {
-        out.close();
+        if (out != null)
+          out.close();
       }
       catch (Exception e)
       {
@@ -789,7 +790,8 @@ public class CSVExportDialog extends JDialog implements ExportPlugin
     {
       try
       {
-        out.close();
+        if (out != null)
+          out.close();
       }
       catch (Exception e)
       {

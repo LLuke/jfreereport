@@ -2,7 +2,7 @@
  * Date: Jan 9, 2003
  * Time: 9:08:15 PM
  *
- * $Id: FunctionsHandler.java,v 1.1 2003/01/12 21:33:53 taqua Exp $
+ * $Id: FunctionsHandler.java,v 1.2 2003/01/22 19:38:24 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -111,19 +111,17 @@ public class FunctionsHandler implements ReportDefinitionHandler
   private ObjectDescription loadObjectDescription (String className)
     throws SAXException
   {
-    Class propertyClass = null;
     try
     {
-      propertyClass = Class.forName(className);
+      Class propertyClass = getClass().getClassLoader().loadClass(className);
+      ClassFactoryCollector fc =
+          (ClassFactoryCollector) getParser().getConfigurationValue(ParserConfigHandler.OBJECT_FACTORY_TAG);
+      return fc.getDescriptionForClass(propertyClass);
     }
     catch (Exception e)
     {
       throw new SAXException("Unable to load the given class.");
     }
-
-    ClassFactoryCollector fc =
-        (ClassFactoryCollector) getParser().getConfigurationValue(ParserConfigHandler.OBJECT_FACTORY_TAG);
-    return fc.getDescriptionForClass(propertyClass);
   }
 
   private Expression loadExpression (String className, String expName, int depLevel)
@@ -131,7 +129,7 @@ public class FunctionsHandler implements ReportDefinitionHandler
   {
     try
     {
-      Class fnC = Class.forName (className);
+      Class fnC = getClass().getClassLoader().loadClass(className);
       Expression retVal = (Expression) fnC.newInstance ();
       retVal.setName (expName);
       retVal.setDependencyLevel(depLevel);

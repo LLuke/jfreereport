@@ -2,7 +2,7 @@
  * Date: Jan 9, 2003
  * Time: 9:08:15 PM
  *
- * $Id: StyleSheetHandler.java,v 1.4 2003/01/23 18:07:44 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.5 2003/02/02 23:43:49 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -54,7 +54,7 @@ public class StyleSheetHandler implements ReportDefinitionHandler
       Class c = null;
       try
       {
-        c = Class.forName(className);
+        c = getClass().getClassLoader().loadClass(className);
       }
       catch (Exception e)
       {
@@ -74,7 +74,7 @@ public class StyleSheetHandler implements ReportDefinitionHandler
       Class c = null;
       try
       {
-        c = Class.forName(className);
+        c = getClass().getClassLoader().loadClass(className);
       }
       catch (Exception e)
       {

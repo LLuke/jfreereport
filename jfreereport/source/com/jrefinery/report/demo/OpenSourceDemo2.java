@@ -164,18 +164,15 @@ public class OpenSourceDemo2 extends ApplicationFrame implements ActionListener
       if (this.report == null)
       {
         this.report = createReport();
-        this.report.setData(this.data);
       }
 
-      if (this.report != null)
-      {
-        PreviewFrame frame = new PreviewFrame(this.report);
-        frame.getBase().setToolbarFloatable(true);
-        frame.pack();
-        RefineryUtilities.positionFrameRandomly(frame);
-        frame.setVisible(true);
-        frame.requestFocus();
-      }
+      report.setData(this.data);
+      PreviewFrame frame = new PreviewFrame(this.report);
+      frame.getBase().setToolbarFloatable(true);
+      frame.pack();
+      RefineryUtilities.positionFrameRandomly(frame);
+      frame.setVisible(true);
+      frame.requestFocus();
     }
     catch (ReportProcessingException pre)
     {

@@ -2,7 +2,7 @@
  * Date: Jan 7, 2003
  * Time: 5:28:29 PM
  *
- * $Id: XMLProcessor.java,v 1.2 2003/01/14 23:48:12 taqua Exp $
+ * $Id: XMLProcessor.java,v 1.3 2003/02/02 23:43:53 taqua Exp $
  */
 package com.jrefinery.report.targets.xml;
 
@@ -88,7 +88,7 @@ public class XMLProcessor
     w.setWriter(new OutputStreamWriter(new NullOutputStream()));
 
     Iterator it = startState.getLevels();
-    boolean hasNext = true;
+    boolean hasNext;
     int level = 0;
     if (it.hasNext())
     {
@@ -119,7 +119,14 @@ public class XMLProcessor
       if (hasNext)
       {
         level = ((Integer) it.next()).intValue();
-        state = new StartState((FinishState) state, level);
+        if (state instanceof FinishState)
+        {
+          state = new StartState((FinishState) state, level);
+        }
+        else
+        {
+          throw new IllegalStateException("Repaginate did not produce an finish state");
+        }
       }
     }
     while (hasNext == true);
@@ -133,6 +140,8 @@ public class XMLProcessor
     // part 3: (done by processing the ReportStateList:) Print the report
     StartState sretval = (StartState) retval;
     sretval.resetState();
+    if (sretval == null)
+      throw new IllegalStateException("Repaginate did no produce a final state");
     return sretval;
   }
 

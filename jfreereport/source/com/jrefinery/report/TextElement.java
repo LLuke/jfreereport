@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextElement.java,v 1.25 2002/12/06 17:18:56 mungady Exp $
+ * $Id: TextElement.java,v 1.26 2002/12/10 21:04:20 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -56,6 +56,7 @@ package com.jrefinery.report;
 
 import com.jrefinery.report.filter.StringFilter;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.targets.FontDefinition;
 
 import java.awt.Font;
 
@@ -138,7 +139,7 @@ public class TextElement extends Element
    */
   public void setFont(Font f)
   {
-    getStyle().setFontStyleProperty(f);
+    getStyle().setFontDefinitionProperty(new FontDefinition (f));
   }
 
   /**
@@ -149,7 +150,7 @@ public class TextElement extends Element
    */
   public Font getFont()
   {
-    return getStyle().getFontStyleProperty();
+    return getStyle().getFontDefinitionProperty().getFont();
   }
 
   /**
@@ -303,7 +304,7 @@ public class TextElement extends Element
     b.append("={ name=");
     b.append(getName());
     b.append(", font=");
-    b.append(getStyle().getFontStyleProperty());
+    b.append(getStyle().getFontDefinitionProperty());
     b.append(", text=");
     b.append(getValue());
     b.append(", getFormattedText=");

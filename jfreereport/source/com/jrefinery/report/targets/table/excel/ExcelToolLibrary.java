@@ -2,7 +2,7 @@
  * Date: Jan 25, 2003
  * Time: 1:43:19 PM
  *
- * $Id: ExcelToolLibrary.java,v 1.1 2003/01/25 20:38:33 taqua Exp $
+ * $Id: ExcelToolLibrary.java,v 1.2 2003/01/28 22:05:31 taqua Exp $
  */
 package com.jrefinery.report.targets.table.excel;
 
@@ -18,13 +18,13 @@ public class ExcelToolLibrary
 {
   private static Hashtable triplets;
 
-  private static int abs (int i)
+  private static int abs(int i)
   {
     if (i < 0) return -i;
     return i;
   }
 
-  private static long abs (long i)
+  private static long abs(long i)
   {
     if (i < 0) return -i;
     return i;
@@ -37,7 +37,7 @@ public class ExcelToolLibrary
    * trippletdifference to the other triplets. The color wins, which has the
    * smallest tripplet difference and where all tripplets are nearest to the
    * requested color. Damn, why couldn't these guys from microsoft implement
-   * a real color system.  
+   * a real color system.
    */
   public static short getNearestColor(Color awtColor)
   {
@@ -50,14 +50,13 @@ public class ExcelToolLibrary
 
     if (triplets == null)
     {
-      Log.warn ("Unable to get triplet hashtable");
+      Log.warn("Unable to get triplet hashtable");
       return color;
     }
 
     Collection keys = triplets.keySet();
     if (keys != null && keys.size() > 0)
     {
-      HSSFColor crtColor = null;
       long minDiff = Long.MAX_VALUE;
 
       // get the color without the alpha chanel
@@ -70,7 +69,7 @@ public class ExcelToolLibrary
       Enumeration elements = triplets.elements();
       while (elements.hasMoreElements())
       {
-        crtColor = (HSSFColor)elements.nextElement();
+        HSSFColor crtColor = (HSSFColor) elements.nextElement();
         short[] rgb = crtColor.getTriplet();
 
         int xlRG = rgb[0] - rgb[1];
@@ -83,7 +82,7 @@ public class ExcelToolLibrary
 
         long delta = deltaBR + deltaGB + deltaRG;
 
-        long excelColor =  (delta << 24) +
+        long excelColor = (delta << 24) +
             (rgb[0] << 16) +
             (rgb[1] << 8) +
             rgb[2];
@@ -107,8 +106,8 @@ public class ExcelToolLibrary
     return color;
   }
 
-  public static void main (String [] args)
+  public static void main(String[] args)
   {
-    getNearestColor(new Color (0x007FFF));
+    getNearestColor(new Color(0x007FFF));
   }
 }

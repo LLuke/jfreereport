@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.15 2003/01/30 00:04:53 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.16 2003/02/01 18:27:04 taqua Exp $
  *
  * Changes
  * -------
@@ -517,10 +517,8 @@ public class G2OutputTarget extends AbstractOutputTarget
    * state.
    *
    * @return the state container.
-   *
-   * @throws OutputTargetException not thrown here.
    */
-  protected G2State saveState() throws OutputTargetException
+  protected G2State saveState()
   {
     return new G2State(this);
   }

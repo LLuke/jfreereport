@@ -12,3 +12,4 @@
   - parse TTF-Files for supported Charsets/Unicode-Ranges
   - automaticly adjust encoding if nessesary
 * Formated Text support for printing (RTF, HTML)
+* Control LineSpacing for TextElements

@@ -2,7 +2,7 @@
  * Date: Jan 21, 2003
  * Time: 4:47:16 PM
  *
- * $Id: CSVTableProcessor.java,v 1.3 2003/01/29 21:57:12 taqua Exp $
+ * $Id: CSVTableProcessor.java,v 1.4 2003/02/02 23:43:52 taqua Exp $
  */
 package com.jrefinery.report.targets.table.csv;
 
@@ -47,7 +47,7 @@ public class CSVTableProcessor extends TableProcessor
 
   public TableProducer createProducer(boolean dummy)
   {
-    CSVTableProducer prod = null;
+    CSVTableProducer prod;
     if (dummy)
     {
       prod = new CSVTableProducer(new PrintWriter(new NullOutputStream()), isStrictLayout());

@@ -2,7 +2,7 @@
  * Date: Jan 22, 2003
  * Time: 6:42:09 PM
  *
- * $Id: ReportConverter.java,v 1.3 2003/01/30 22:52:40 taqua Exp $
+ * $Id: ReportConverter.java,v 1.4 2003/02/02 23:43:50 taqua Exp $
  */
 package com.jrefinery.report.io.ext.writer;
 
@@ -71,18 +71,16 @@ public class ReportConverter
   private JFreeReport parseReport(URL templateURL)
     throws IOException
   {
-    JFreeReport result = null;
-    ReportGenerator generator = ReportGenerator.getInstance();
     try
     {
-        result = generator.parseReport(templateURL);
+      ReportGenerator generator = ReportGenerator.getInstance();
+      return generator.parseReport(templateURL);
     }
     catch (Exception e)
     {
       Log.debug ("Cause: ", e);
       throw new IOException("Failed to parse the report");
     }
-    return result;
   }
 
   public void convertReport (String inName, String outFile)

@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.6 2002/12/12 12:26:57 mungady Exp $
+ * $Id: ReportStateList.java,v 1.7 2003/01/07 15:10:33 taqua Exp $
  *
  * Changes
  * -------
@@ -278,18 +278,18 @@ public class ReportStateList
     else if (size() < MASTER4_MAX)
     {
       int secPos = size() - PRIMARY_MAX;
-      MasterList master = null;
       int masterPos = getMasterPos (secPos, MASTERPOSITIONS_MED);
       if (masterPos >= masterStates4.size ())
       {
-        master = new MasterList (this, MASTERPOSITIONS_MED);
+        MasterList master = new MasterList (this, MASTERPOSITIONS_MED);
         masterStates4.add (master);
+        master.add (state);
       }
       else
       {
-        master = (MasterList) masterStates4.get (masterPos);
+        MasterList master = (MasterList) masterStates4.get (masterPos);
+        master.add (state);
       }
-      master.add (state);
       this.size++;
     }
     // all other Elements are stored into a list of 10-element weakReference
@@ -297,18 +297,18 @@ public class ReportStateList
     else
     {
       int thirdPos = size() - MASTER4_MAX;
-      MasterList master = null;
       int masterPos = getMasterPos (thirdPos, MASTERPOSITIONS_MAX);
       if (masterPos >= masterStates10.size ())
       {
-        master = new MasterList (this, MASTERPOSITIONS_MAX);
+        MasterList master = new MasterList (this, MASTERPOSITIONS_MAX);
         masterStates10.add (master);
+        master.add (state);
       }
       else
       {
-        master = (MasterList) masterStates10.get (masterPos);
+        MasterList master = (MasterList) masterStates10.get (masterPos);
+        master.add (state);
       }
-      master.add (state);
       this.size++;
     }
   }

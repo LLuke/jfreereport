@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.21 2002/12/06 17:17:54 mungady Exp $
+ * $Id: ImageReference.java,v 1.22 2002/12/07 14:58:25 taqua Exp $
  *
  * Changes:
  * --------
@@ -359,6 +359,18 @@ public class ImageReference implements Serializable, Cloneable
       return false;
     }
     return ref.url.equals(url);
+  }
+
+  /**
+   * todo
+   * @return
+   */
+  public int hashCode()
+  {
+    int result;
+    result = (image != null ? image.hashCode() : 0);
+    result = 29 * result + (url != null ? url.hashCode() : 0);
+    return result;
   }
 
   /**

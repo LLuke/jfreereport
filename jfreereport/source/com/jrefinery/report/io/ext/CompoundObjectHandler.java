@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 10:29:08 PM
  *
- * $Id: CompoundObjectHandler.java,v 1.2 2003/01/23 18:07:44 taqua Exp $
+ * $Id: CompoundObjectHandler.java,v 1.3 2003/02/02 23:43:49 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -102,7 +102,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
       {
         try
         {
-          parameter = Class.forName(overrideClassName);
+          parameter = getClass().getClassLoader().loadClass(overrideClassName);
         }
         catch (Exception e)
         {
@@ -132,7 +132,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
       {
         try
         {
-          parameter = Class.forName(overrideClassName);
+          parameter = getClass().getClassLoader().loadClass(overrideClassName);
         }
         catch (Exception e)
         {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.22 2003/01/24 16:39:03 taqua Exp $
+ * $Id: ReportGenerator.java,v 1.23 2003/02/01 18:27:03 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLClassLoader;
 
 /**
  * The reportgenerator initializes the parser and provides an interface
@@ -344,14 +343,5 @@ public class ReportGenerator
       generator = new ReportGenerator ();
     }
     return generator;
-  }
-
-  public static void main (String [] args)
-    throws Exception
-  {
-    ClassLoader cl = new URLClassLoader(new URL[0]);
-    if (cl == null) throw new NullPointerException("NoclassLoader");
-    URL url = new File("../jfreereport/jfreereport/resource/newreport/report2.xml").toURL();
-    JFreeReport report = ReportGenerator.getInstance().parseReport(url);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToXML.java,v 1.1 2003/01/07 17:34:26 taqua Exp $
+ * $Id: StraightToXML.java,v 1.2 2003/02/02 23:43:49 taqua Exp $
  *
  * Changes
  * -------
@@ -124,7 +124,8 @@ public class StraightToXML
     {
       try
       {
-        out.close();
+        if (out != null)
+          out.close();
       }
       catch (Exception e)
       {

@@ -2,7 +2,7 @@
  * Date: Jan 30, 2003
  * Time: 5:58:45 PM
  *
- * $Id: EpsonPrinterCommandSet.java,v 1.1 2003/01/30 22:58:44 taqua Exp $
+ * $Id: EpsonPrinterCommandSet.java,v 1.2 2003/02/03 18:52:46 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable.output;
 
@@ -195,7 +195,7 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
     super.setPaperSize(lines);
   }
 
-  // seitenränder horizontal in zeichen ... (== leerzeichen)
+  // seitenrï¿½nder horizontal in zeichen ... (== leerzeichen)
   public void setHorizontalBorder(int left, int right) throws IOException
   {
     getOut().write(0x1b);
@@ -205,13 +205,6 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
     getOut().write(0x51);
     getOut().write(right);
     super.setHorizontalBorder(left, right);
-  }
-
-  // vertical in 1/1440 zoll ..
-  public void setVerticalBorder(int top, int bottom) throws IOException
-  {
-    // this is not supported here ...
-    super.setVerticalBorder(top, bottom);
   }
 
   // vertical in 1/1440 inch ..
@@ -240,11 +233,29 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
 
   public void setAutoLF(boolean autoLF) throws IOException
   {
-    super.setAutoLF(autoLF);
+    // epson has no notion of auto lf, however it is configurable from
+    // the printers menu, not with control characters ...
+  }
+
+  public boolean isAutoLf()
+  {
+    return false;
   }
 
   public void setPrintQuality(boolean letterQuality) throws IOException
   {
+    if (letterQuality)
+    {
+      getOut().write(0x1b);
+      getOut().write(0x78);
+      getOut().write(0x01);
+    }
+    else
+    {
+      getOut().write(0x1b);
+      getOut().write(0x78);
+      getOut().write(0x00);
+    }
     super.setPrintQuality(letterQuality);
   }
 
@@ -274,6 +285,13 @@ public class EpsonPrinterCommandSet extends PrinterCommandSet
 
   public void startLine() throws IOException
   {
+  }
+
+  public void resetPrinter() throws IOException
+  {
+    getOut().write(0x1b);
+    getOut().write(0x40);
+    super.resetPrinter();
   }
 
   public boolean isEncodingSupported(String encoding)

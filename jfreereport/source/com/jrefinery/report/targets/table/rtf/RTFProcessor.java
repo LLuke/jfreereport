@@ -2,7 +2,7 @@
  * Date: Feb 1, 2003
  * Time: 7:52:45 PM
  *
- * $Id$
+ * $Id: RTFProcessor.java,v 1.1 2003/02/01 22:10:37 taqua Exp $
  */
 package com.jrefinery.report.targets.table.rtf;
 
@@ -37,7 +37,7 @@ public class RTFProcessor extends TableProcessor
 
   public TableProducer createProducer(boolean dummy)
   {
-    RTFProducer prod = null;
+    RTFProducer prod;
     if (dummy == true)
     {
       prod = new RTFProducer(new NullOutputStream(),

@@ -2,10 +2,13 @@
  * Date: Feb 2, 2003
  * Time: 9:51:54 PM
  *
- * $Id$
+ * $Id: ReportInterruptedException.java,v 1.1 2003/02/02 22:47:39 taqua Exp $
  */
 package com.jrefinery.report;
 
+/**
+ * todo
+ */
 public class ReportInterruptedException extends ReportProcessingException
 {
   /**

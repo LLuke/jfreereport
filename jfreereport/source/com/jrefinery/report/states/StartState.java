@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.6 2002/12/09 03:56:34 taqua Exp $
+ * $Id: StartState.java,v 1.7 2003/01/14 23:48:12 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ import java.util.Iterator;
  *
  * @author David Gilbert
  */
-public class StartState extends ReportState
+public final class StartState extends ReportState
 {
   /**
    * Creates a new <code>START</code> state for a given report.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.11 2002/12/06 19:27:28 taqua Exp $
+ * $Id: GroupList.java,v 1.12 2002/12/11 01:00:04 mungady Exp $
  *
  * Changes:
  * --------
@@ -121,6 +121,16 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
     public boolean equals (Object obj)
     {
       return (obj instanceof GroupComparator);
+    }
+
+    /**
+     * All comparators of this type are equal.
+     *
+     * @return
+     */
+    public int hashCode ()
+    {
+      return getClass().hashCode();
     }
   }
 

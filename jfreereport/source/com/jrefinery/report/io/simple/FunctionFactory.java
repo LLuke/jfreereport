@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.2 2003/01/23 18:07:46 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.3 2003/01/30 22:52:41 taqua Exp $
  *
  * Changes
  * -------
@@ -119,7 +119,8 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
     }
     else if (elementName.equals (DATAREF_TAG))
     {
-      startDataRef (atts);
+      // data ref is ignored, was specified some times ago, but never
+      // implemented and is now obsolete
     }
     else if (elementName.equals(EXPRESSION_TAG))
     {
@@ -231,18 +232,6 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   }
 
   /**
-   * starts a new data-reference. This is not implemented yet.
-   *
-   * @param atts  the element attributes.
-   *
-   * @throws org.xml.sax.SAXException if there is an error parsing the XML.
-   */
-  protected void startDataRef (Attributes atts)
-          throws SAXException
-  {
-  }
-
-  /**
    * Starts a new function collection. Function collections are already contained in
    * the report, so this function does nothing.
    *
@@ -276,7 +265,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
 
     try
     {
-      Class fnC = Class.forName (className);
+      Class fnC = getClass().getClassLoader().loadClass(className);
       setCurrentExpression ((Expression) fnC.newInstance ());
       getCurrentExpression().setName (name);
       getCurrentExpression().setDependencyLevel(depLevel);
@@ -340,7 +329,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
 
     try
     {
-      Class fnC = Class.forName (className);
+      Class fnC = getClass().getClassLoader().loadClass(className);
       setCurrentFunction ((Function) fnC.newInstance ());
       getCurrentFunction().setName (name);
       getCurrentFunction().setDependencyLevel(depLevel);
@@ -399,7 +388,7 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
     }
     else if (elementName.equals (DATAREF_TAG))
     {
-      endDataRef ();
+      // is no longer used
     }
     else if (elementName.equals (PROPERTIES_TAG))
     {
@@ -474,16 +463,6 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
           throws SAXException
   {
     getParser().popFactory().endElement(FUNCTIONS_TAG);
-  }
-
-  /**
-   * Data-refs are not yet implemented
-   *
-   * @throws org.xml.sax.SAXException if there is a problem parsing the element.
-   */
-  protected void endDataRef ()
-          throws SAXException
-  {
   }
 
   /**

@@ -25,7 +25,7 @@
  * ----------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ScrollableResultSetTableModel.java,v 1.13 2002/12/12 12:26:57 mungady Exp $
+ * $Id: ScrollableResultSetTableModel.java,v 1.1 2003/01/27 03:20:01 taqua Exp $
  *
  * Changes
  * -------
@@ -279,7 +279,7 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
     {
       try
       {
-        return Class.forName (getColumnClassName (column));
+        return getClass().getClassLoader().loadClass(getColumnClassName (column));
       }
       catch (Exception e)
       {

@@ -30,7 +30,7 @@
                      based on PDFSaveDialog by Thomas Morgner, David Gilbert (for Simba Management Limited) and contributors
  * Contributor(s):
  *
- * $Id: HtmlExportDialog.java,v 1.7 2003/02/03 18:52:45 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.8 2003/02/03 19:33:02 taqua Exp $
  *
  * Changes
  * --------
@@ -1232,7 +1232,8 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
     {
       try
       {
-        out.close();
+        if (out != null)
+          out.close();
       }
       catch (Exception e)
       {
@@ -1266,7 +1267,8 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
     {
       try
       {
-        out.close();
+        if (out != null)
+          out.close();
       }
       catch (Exception e)
       {
@@ -1370,7 +1372,6 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
   }
 
   public static void main (String [] args)
-    throws Exception
   {
     HtmlExportDialog dialog = new HtmlExportDialog();
     dialog.addWindowListener(new WindowAdapter(){

@@ -2,7 +2,7 @@
  * Date: Jan 10, 2003
  * Time: 6:53:26 PM
  *
- * $Id: BasicStyleKeyHandler.java,v 1.3 2003/01/23 18:07:44 taqua Exp $
+ * $Id: BasicStyleKeyHandler.java,v 1.4 2003/02/02 23:43:49 taqua Exp $
  */
 package com.jrefinery.report.io.ext;
 
@@ -76,7 +76,7 @@ public class BasicStyleKeyHandler implements ReportDefinitionHandler
     return key;
   }
 
-  public Object getValue () throws SAXException
+  public Object getValue ()
   {
     return keyfactory.createBasicObject(key, entityParser.decodeEntities(buffer.toString()), keyValueClass);
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreGroupFooterState.java,v 1.5 2002/12/05 12:18:46 mungady Exp $
+ * $Id: PreGroupFooterState.java,v 1.6 2002/12/06 19:28:00 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ package com.jrefinery.report.states;
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public class PreGroupFooterState extends ReportState
+public final class PreGroupFooterState extends ReportState
 {
   /**
    * Creates a new '<code>PRE-GROUP-FOOTER</code>' report state.

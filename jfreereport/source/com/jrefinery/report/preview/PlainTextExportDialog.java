@@ -2,7 +2,7 @@
  * Date: Feb 3, 2003
  * Time: 12:30:41 AM
  *
- * $Id$
+ * $Id: PlainTextExportDialog.java,v 1.1 2003/02/03 20:31:30 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -506,7 +506,7 @@ public class PlainTextExportDialog extends JDialog implements ExportPlugin
   }
 
   /**
-   * Returns the filename of the exceö file.
+   * Returns the filename of the exceï¿½ file.
    *
    * @return the name of the file where to save the excel file.
    */
@@ -694,7 +694,8 @@ public class PlainTextExportDialog extends JDialog implements ExportPlugin
     {
       try
       {
-        out.close();
+        if (out != null)
+          out.close();
       }
       catch (Exception e)
       {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.4 2003/02/01 18:27:04 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.5 2003/02/02 23:43:51 taqua Exp $
  *
  * Changes
  * -------
@@ -111,7 +111,7 @@ public class StaticLayoutManager implements BandLayoutManager
    */
   private Dimension2D getMinimumSize(Element e, Dimension2D containerBounds)
   {
-    Dimension2D retval = null;
+    Dimension2D retval;
 
     // the absolute position of the element within its parent is used
     // to calculate the maximum available space for the element.
@@ -160,7 +160,7 @@ public class StaticLayoutManager implements BandLayoutManager
    */
   private Dimension2D getPreferredSize(Element e, Dimension2D containerBounds)
   {
-    Dimension2D retval = null;
+    Dimension2D retval;
     //Log.debug (">> calculate PreferredSize: " + e);
     //Log.debug (">> calculate PreferredSize: " + containerBounds);
 

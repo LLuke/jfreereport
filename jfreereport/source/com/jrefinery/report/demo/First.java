@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: First.java,v 1.15 2003/01/14 21:03:52 taqua Exp $
+ * $Id: First.java,v 1.16 2003/01/25 02:47:09 taqua Exp $
  *
  * Changes
  * -------
@@ -179,16 +179,13 @@ public class First extends ApplicationFrame implements ActionListener
         this.report.setData(this.data);
       }
 
-      if (this.report != null)
-      {
-        PreviewFrame frame = new PreviewFrame(this.report);
-        frame.getBase().setLargeIconsEnabled(true);
-        frame.getBase().setToolbarFloatable(false);
-        frame.pack();
-        RefineryUtilities.positionFrameRandomly(frame);
-        frame.setVisible(true);
-        frame.requestFocus();
-      }
+      PreviewFrame frame = new PreviewFrame(this.report);
+      frame.getBase().setLargeIconsEnabled(true);
+      frame.getBase().setToolbarFloatable(false);
+      frame.pack();
+      RefineryUtilities.positionFrameRandomly(frame);
+      frame.setVisible(true);
+      frame.requestFocus();
     }
     catch (ReportProcessingException rpe)
     {

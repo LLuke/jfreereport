@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: ImageLoadFilter.java,v 1.11 2002/12/12 12:26:55 mungady Exp $
+ * $Id: ImageLoadFilter.java,v 1.12 2003/01/25 02:47:09 taqua Exp $
  *
  * ChangeLog
  * --------------------------------------
@@ -112,18 +112,14 @@ public class ImageLoadFilter implements DataFilter
       return null;
     }
 
-    URL url = null;
-    if (o instanceof URL)
-    {
-      url = (URL) o;
-    }
-    else
+    if (o instanceof URL == false)
     {
       return null;
     }
 
     // a valid url is found, lookup the url in the cache, maybe the image is loaded and
     // still there.
+    URL url = (URL) o;
     Object retval = imageCache.get (url);
     if (retval == null)
     {

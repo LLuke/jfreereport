@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.16 2003/01/30 00:04:53 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.17 2003/02/01 22:10:36 taqua Exp $
  *
  * Changes
  * -------
@@ -937,10 +937,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * state.
    *
    * @return the state container.
-   *
-   * @throws OutputTargetException if there is a problem with the output target.
    */
-  public Object saveState() throws OutputTargetException
+  public Object saveState()
   {
     return new PDFState(this);
   }

@@ -2,7 +2,7 @@
  * Date: Jan 18, 2003
  * Time: 8:06:54 PM
  *
- * $Id: HtmlProducer.java,v 1.13 2003/02/02 23:43:52 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.14 2003/02/03 18:52:47 taqua Exp $
  *
  * This file now produces valid HTML4
  */
@@ -385,7 +385,7 @@ public class HtmlProducer extends TableProducer
     try
     {
       BufferedReader reader = new BufferedReader(new StringReader(text));
-      String readLine = null;
+      String readLine;
       boolean flagStart = true;
       while ((readLine = reader.readLine()) != null)
       {

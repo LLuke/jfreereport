@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
+ * $Id: TextOperationModule.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
  *
  * Changes
  * -------
@@ -115,7 +115,7 @@ public class TextOperationModule extends OperationModule
 
     ElementAlignment va
         = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
-    VerticalBoundsAlignment vba = null;
+    VerticalBoundsAlignment vba;
     if (va.equals(ElementAlignment.TOP))
     {
       vba = new TopAlignment(bounds);
@@ -219,12 +219,12 @@ public class TextOperationModule extends OperationModule
    */
   public static void print (Content c)
   {
-    Log.debug ("Content = " + c + ", " + c.getBounds());
     if (c == null)
     {
-      Log.debug ("IsNull");
+      Log.debug ("Content = " + c + "IsNull");
       return;
     }
+    Log.debug ("Content = " + c + " Bounds: " + c.getBounds());
     if (c instanceof TextLine)
     {
       Log.debug ("Line: " + ((TextLine) c).getContent());

@@ -2,13 +2,12 @@
  * Date: Jan 14, 2003
  * Time: 2:32:12 PM
  *
- * $Id: TableWriter.java,v 1.5 2003/01/30 00:04:54 taqua Exp $
+ * $Id: TableWriter.java,v 1.6 2003/02/01 18:27:04 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
-import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.function.FunctionProcessingException;
@@ -176,11 +175,8 @@ public class TableWriter extends AbstractFunction
    * Prints a band.
    *
    * @param b  the band.
-   *
-   * @throws com.jrefinery.report.ReportProcessingException if the printing failed
    */
   protected void print(Band b)
-      throws ReportProcessingException
   {
     if (!isInEndPage() && (isPageEmpty == false) &&
         b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
@@ -238,19 +234,12 @@ public class TableWriter extends AbstractFunction
    */
   public void reportStarted(ReportEvent event)
   {
-    try
-    {
-      setCurrentEvent(event);
+    setCurrentEvent(event);
 
-      producer.open();
+    producer.open();
 
-      startPage();
-      print(event.getReport().getReportHeader());
-    }
-    catch (Exception e)
-    {
-      throw new FunctionProcessingException("ReportHeader Failed", e);
-    }
+    startPage();
+    print(event.getReport().getReportHeader());
   }
 
   /**
@@ -260,18 +249,11 @@ public class TableWriter extends AbstractFunction
    */
   public void reportFinished(ReportEvent event)
   {
-    try
-    {
-      isLastPageBreak = true;
-      setCurrentEvent(event);
-      print(event.getReport().getReportFooter());
-      endPage();
-      producer.close();
-    }
-    catch (Exception e)
-    {
-      throw new FunctionProcessingException("ReportFooter Failed", e);
-    }
+    isLastPageBreak = true;
+    setCurrentEvent(event);
+    print(event.getReport().getReportFooter());
+    endPage();
+    producer.close();
   }
 
   /**
@@ -282,67 +264,66 @@ public class TableWriter extends AbstractFunction
   public void pageStarted(ReportEvent event)
   {
     setCurrentEvent(event);
-    try
+    // a new page has started, so reset the cursor ...
+    setCursor(new TableWriterCursor());
+
+    String sheetName = null;
+    if (getSheetNameFunction() != null)
     {
-      // a new page has started, so reset the cursor ...
-      setCursor(new TableWriterCursor());
+      sheetName = String.valueOf(getDataRow().get(getSheetNameFunction()));
+    }
+    producer.beginPage(sheetName);
 
-      String sheetName = null;
-      if (getSheetNameFunction() != null)
-      {
-        sheetName = String.valueOf(getDataRow().get(getSheetNameFunction()));
-      }
-      producer.beginPage(sheetName);
-
-      Band b = event.getReport().getPageHeader();
-      if (event.getState().getCurrentPage() == 1)
-      {
-        if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
-        {
-          print(b);
-        }
-      }
-      else if (isLastPageBreak)
-      {
-        if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
-        {
-          print(b);
-        }
-      }
-      else
+    Band b = event.getReport().getPageHeader();
+    if (event.getState().getCurrentPage() == 1)
+    {
+      if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
       {
         print(b);
       }
-
-      /**
-       * Repeating group header are only printed while ItemElements are
-       * processed.
-       */
-      if (isInItemGroup)
+    }
+    else if (isLastPageBreak)
+    {
+      if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
       {
-        int gidx = event.getState().getCurrentGroupIndex();
-        while (gidx >= 0)
-        {
-          Group g = null;
-          if (gidx >= 0)
-          {
-            g = event.getReport().getGroup(gidx);
-          }
-          if (g.getHeader().getStyle().getBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER))
-          {
-            print(g.getHeader());
-            break;
-          }
-          else
-          {
-            gidx--;
-          }
-        }
+        print(b);
       }
     }
-    catch (Exception e)
+    else
     {
-      throw new FunctionProcessingException("PageHeader", e);
+      print(b);
+    }
+
+    /**
+     * Repeating group header are only printed while ItemElements are
+     * processed.
+     */
+    if (isInItemGroup)
+    {
+      int gidx = event.getState().getCurrentGroupIndex();
+      while (gidx >= 0)
+      {
+        Group g = null;
+        if (gidx >= 0)
+        {
+          g = event.getReport().getGroup(gidx);
+        }
+        if (g == null)
+        {
+          gidx--;
+          continue;
+        }
+
+        if (g.getHeader().getStyle().getBooleanStyleProperty(BandStyleSheet.REPEAT_HEADER))
+        {
+          print(g.getHeader());
+          break;
+        }
+        else
+        {
+          gidx--;
+        }
+      }
     }
   }
 
@@ -354,39 +335,28 @@ public class TableWriter extends AbstractFunction
   public void pageFinished(ReportEvent event)
   {
     setCurrentEvent(event);
-    try
+    Band b = event.getReport().getPageFooter();
+    if (event.getState().getCurrentPage() == 1)
     {
-      Band b = event.getReport().getPageFooter();
-      if (event.getState().getCurrentPage() == 1)
-      {
-        if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
-        {
-          print(b);
-        }
-      }
-      else
-      if (isLastPageBreak)
-      {
-        if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
-        {
-          print(b);
-        }
-      }
-      else
+      if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_FIRSTPAGE) == true)
       {
         print(b);
       }
+    }
+    else
+    if (isLastPageBreak)
+    {
+      if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.DISPLAY_ON_LASTPAGE) == true)
+      {
+        print(b);
+      }
+    }
+    else
+    {
+      print(b);
+    }
 
-      producer.endPage();
-    }
-    catch (FunctionProcessingException fe)
-    {
-      throw fe;
-    }
-    catch (Exception e)
-    {
-      throw new FunctionProcessingException("PageFinished failed", e);
-    }
+    producer.endPage();
   }
 
   /**
@@ -396,22 +366,11 @@ public class TableWriter extends AbstractFunction
    */
   public void groupStarted(ReportEvent event)
   {
-    try
-    {
-      setCurrentEvent(event);
-      int gidx = event.getState().getCurrentGroupIndex();
-      Group g = event.getReport().getGroup(gidx);
-      Band b = g.getHeader();
-      print(b);
-    }
-    catch (FunctionProcessingException fe)
-    {
-      throw fe;
-    }
-    catch (Exception e)
-    {
-      throw new FunctionProcessingException("GroupStarted failed", e);
-    }
+    setCurrentEvent(event);
+    int gidx = event.getState().getCurrentGroupIndex();
+    Group g = event.getReport().getGroup(gidx);
+    Band b = g.getHeader();
+    print(b);
   }
 
   /**
@@ -421,22 +380,11 @@ public class TableWriter extends AbstractFunction
    */
   public void groupFinished(ReportEvent event)
   {
-    try
-    {
-      setCurrentEvent(event);
-      int gidx = event.getState().getCurrentGroupIndex();
-      Group g = event.getReport().getGroup(gidx);
-      Band b = g.getFooter();
-      print(b);
-    }
-    catch (FunctionProcessingException fe)
-    {
-      throw fe;
-    }
-    catch (Exception e)
-    {
-      throw new FunctionProcessingException("GroupFinished failed", e);
-    }
+    setCurrentEvent(event);
+    int gidx = event.getState().getCurrentGroupIndex();
+    Group g = event.getReport().getGroup(gidx);
+    Band b = g.getFooter();
+    print(b);
   }
 
   /**
@@ -446,19 +394,8 @@ public class TableWriter extends AbstractFunction
    */
   public void itemsAdvanced(ReportEvent event)
   {
-    try
-    {
-      setCurrentEvent(event);
-      print(event.getReport().getItemBand());
-    }
-    catch (FunctionProcessingException fe)
-    {
-      throw fe;
-    }
-    catch (Exception e)
-    {
-      throw new FunctionProcessingException("ItemsAdvanced failed", e);
-    }
+    setCurrentEvent(event);
+    print(event.getReport().getItemBand());
   }
 
   /**

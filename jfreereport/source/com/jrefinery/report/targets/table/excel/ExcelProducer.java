@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.5 2003/01/29 21:57:13 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.6 2003/01/30 00:04:54 taqua Exp $
  *
  * Changes
  * -------
@@ -227,7 +227,6 @@ public class ExcelProducer extends TableProducer
                           TableGridPosition content,
                           TableCellBackground bg, short x, int y)
   {
-    ExcelContentCellData contentCell = null;
     if (content.getColSpan() > 1 || content.getRowSpan() > 1)
     {
       sheet.addMergedRegion(new Region(y, x,
@@ -235,7 +234,7 @@ public class ExcelProducer extends TableProducer
                                        (short)(x + content.getColSpan() - 1)));
     }
 
-    contentCell = (ExcelContentCellData) content.getElement();
+    ExcelContentCellData contentCell = (ExcelContentCellData) content.getElement();
 
     HSSFCell cell = row.createCell(x);
     HSSFCellStyle style = cellDataFactory.getStyleFactory().createCellStyle(contentCell.getExcelCellStyle(), bg);

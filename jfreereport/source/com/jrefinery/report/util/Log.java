@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.13 2002/12/11 00:41:42 mungady Exp $
+ * $Id: Log.java,v 1.14 2002/12/18 10:13:16 mungady Exp $
  *
  * Changes
  * -------
@@ -211,7 +211,8 @@ public final class Log
       String className = ReportConfiguration.getGlobalConfig().getLogTarget();
       try
       {
-        Class c = Class.forName(className);
+        Class c = ReportConfiguration.getGlobalConfig().getClass().
+            getClassLoader().loadClass(className);
         LogTarget lt = (LogTarget) c.newInstance();
         addTarget(lt);
       }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreReportFooterState.java,v 1.6 2002/12/06 19:28:02 taqua Exp $
+ * $Id: PreReportFooterState.java,v 1.7 2002/12/18 20:31:47 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ package com.jrefinery.report.states;
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public class PreReportFooterState extends ReportState
+public final class PreReportFooterState extends ReportState
 {
   /**
    * Creates a 'pre-report-footer' report state.

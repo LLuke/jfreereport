@@ -2,7 +2,7 @@
  * Date: Jan 29, 2003
  * Time: 1:49:26 PM
  *
- * $Id: PlainTextOutputTarget.java,v 1.5 2003/01/30 22:52:45 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.6 2003/02/01 18:27:04 taqua Exp $
  */
 package com.jrefinery.report.targets.pageable.output;
 
@@ -267,10 +267,8 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    * state.
    *
    * @return the state container.
-   *
-   * @throws OutputTargetException not thrown here.
    */
-  protected PlainTextState saveState() throws OutputTargetException
+  protected PlainTextState saveState()
   {
     return new PlainTextState(this);
   }

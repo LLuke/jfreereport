@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
+ * $Id: TextParagraph.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
  *
  * Changes
  * -------
@@ -113,7 +113,6 @@ public class TextParagraph extends ContentContainer
 
     double x = maxBounds.getX();
     double y = maxBounds.getY();
-    double height = maxBounds.getHeight();
     double usedHeight = 0;
 
     for (int i = 0; i < l.size(); i++)
@@ -121,7 +120,7 @@ public class TextParagraph extends ContentContainer
       // create Lines
       String lineText = (String) l.get(i);
       TextLine line = new TextLine(getSizeCalculator());
-      height = maxBounds.getHeight();
+      double height = maxBounds.getHeight();
       line.setContent(lineText, new Rectangle2D.Double(x, y + usedHeight,
                                                        maxBounds.getWidth(), height - usedHeight));
       usedHeight += line.getBounds().getHeight();
@@ -186,7 +185,7 @@ public class TextParagraph extends ContentContainer
     {
       int startPos = lineStartPos;
 
-      int endPos = 0;
+      int endPos;
       float x = 0;
       float w = width;
 
@@ -240,7 +239,7 @@ public class TextParagraph extends ContentContainer
       }
 
       // if this is the last allowed row, add the RESERVED_LITERAL to the string ..
-      if ((maxLines != 0) && (returnLines.size() == (maxLines - 1)))
+      if (returnLines.size() == (maxLines - 1))
       {
         // altered:
         returnLines.add(appendReserveLit(mytext, lineStartPos, startPos, width));

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.18 2003/02/02 22:46:44 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.19 2003/02/02 23:43:52 taqua Exp $
  *
  * Changes
  * -------
@@ -154,7 +154,7 @@ public class PageableReportProcessor
     }
     try
     {
-      Class c = Class.forName(key);
+      Class c = getClass().getClassLoader().loadClass(key);
       PageLayouter lm = (PageLayouter) c.newInstance();
       lm.setName(LAYOUTMANAGER_NAME);
       return lm;
@@ -230,7 +230,7 @@ public class PageableReportProcessor
       dummyOutput.open();
 
       Iterator it = startState.getLevels();
-      boolean hasNext = true;
+      boolean hasNext;
       int level = 0;
       if (it.hasNext())
       {
@@ -264,7 +264,14 @@ public class PageableReportProcessor
         if (hasNext)
         {
           level = ((Integer) it.next()).intValue();
-          state = new StartState((FinishState) state, level);
+          if (state instanceof FinishState)
+          {
+            state = new StartState((FinishState) state, level);
+          }
+          else
+          {
+            throw new IllegalStateException("Repaginate did not produce an finish state");
+          }
         }
       }
       while (hasNext == true);

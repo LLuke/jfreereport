@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: FinishState.java,v 1.4 2002/12/06 19:27:59 taqua Exp $
+ * $Id: FinishState.java,v 1.5 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ import com.jrefinery.report.ReportProcessingException;
  *
  * @author David Gilbert
  */
-public class FinishState extends ReportState
+public final class FinishState extends ReportState
 {
   /**
    * Creates a new 'finish' report state.

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostItemGroupState.java,v 1.3 2002/12/02 17:43:46 taqua Exp $
+ * $Id: PostItemGroupState.java,v 1.4 2002/12/05 12:18:46 mungady Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,7 @@ package com.jrefinery.report.states;
  *
  * @author David Gilbert
  */
-public class PostItemGroupState extends ReportState
+public final class PostItemGroupState extends ReportState
 {
   /**
    * Creates a new '<code>POST-ITEM-GROUP</code>' state.
