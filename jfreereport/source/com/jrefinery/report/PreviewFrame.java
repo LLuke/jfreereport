@@ -27,7 +27,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id$
+ * $Id: PreviewFrame.java,v 1.1.1.1 2002/04/25 17:02:22 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -56,9 +56,12 @@ import java.io.File;
 import java.io.OutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ResourceBundle;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.BorderFactory;
+import javax.swing.Action;
+import javax.swing.KeyStroke;
 import javax.swing.JButton;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -72,6 +75,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JFileChooser;
+import com.jrefinery.report.action.SaveAsAction;
+import com.jrefinery.report.action.PageSetupAction;
+import com.jrefinery.report.action.PrintAction;
+import com.jrefinery.report.action.CloseAction;
 import com.lowagie.text.Rectangle;
 import com.jrefinery.layout.CenterLayout;
 import com.jrefinery.ui.ExtensionFileFilter;
@@ -84,6 +91,11 @@ import com.jrefinery.report.pdf.PDFOutputTarget;
  * You can also save the report in PDF format (thanks to the iText library).
  */
 public class PreviewFrame extends JFrame implements ActionListener, PropertyChangeListener {
+
+    protected Action saveAsAction;
+    protected Action pageSetupAction;
+    protected Action printAction;
+    protected Action closeAction;
 
     /** Command for saving the report. */
     protected static final String SAVE_AS_COMMAND = "SAVE_AS";
@@ -105,14 +117,14 @@ public class PreviewFrame extends JFrame implements ActionListener, PropertyChan
 
     /** Internal reference to enable and disable this button */
     private JButton back;
-  
+
     /** Internal reference to enable and disable this button */
     private JButton forward;
-  
+
     private JButton zoomIn;
-    
+
     private JButton zoomOut;
-    
+
     /** The combobox enables a direct selection of the desired zoomFactor */
     private JComboBox zoomSelect;
 
@@ -125,16 +137,25 @@ public class PreviewFrame extends JFrame implements ActionListener, PropertyChan
     /** The preferred size of the frame. */
     protected Dimension preferredSize;
 
+    /** Locale-specific resources. */
+    protected ResourceBundle resources;
+
     /**
      * Constructs a PreviewFrame that displays the specified report, and has the specified width
      * and height (to begin with).
+     *
      * @param report The report to be displayed.
      * @param width The width of the frame.
      * @param height The height of the frame.
      */
     public PreviewFrame(JFreeReport report, int width, int height) {
 
-        super("Report Preview");
+        // get a locale-specific resource bundle...
+        String baseResourceClass = "com.jrefinery.report.resources.JFreeReportResources";
+        this.resources = ResourceBundle.getBundle(baseResourceClass);
+
+        String title = this.resources.getString("preview-frame.title");
+        this.setTitle(title);
         this.zoomIndex = DEFAULT_ZOOM_INDEX;
 
         addWindowListener(new WindowAdapter() {
@@ -143,13 +164,16 @@ public class PreviewFrame extends JFrame implements ActionListener, PropertyChan
             }
         });
 
+
+        this.createActions(resources);
+
         // set up the menu
-        JMenuBar menuBar = createMenuBar();
+        JMenuBar menuBar = createMenuBar(this.resources);
         setJMenuBar(menuBar);
 
         // set up the content with a toolbar and a report pane
         JPanel content = new JPanel(new BorderLayout());
-        JToolBar toolbar = createToolBar();
+        JToolBar toolbar = createToolBar(this.resources);
         content.add(toolbar, BorderLayout.NORTH);
 
         JPanel reportPaneHolder = new JPanel(new CenterLayout());
@@ -186,19 +210,7 @@ public class PreviewFrame extends JFrame implements ActionListener, PropertyChan
 
         String command = event.getActionCommand();
 
-        if (command.equals(SAVE_AS_COMMAND)) {
-            handleSaveAs();
-        }
-        else if (command.equals(CLOSE_COMMAND)) {
-            this.dispose();
-        }
-        else if (command.equals(PAGE_SETUP_COMMAND)) {
-            attemptPageSetup();
-        }
-        else if (command.equals(PRINT_COMMAND)) {
-            attemptPrint();
-        }
-        else if (command.equals("Back")) {
+        if (command.equals("Back")) {
             decreasePageNumber();
         }
         else if (command.equals("Forward")) {
@@ -210,7 +222,7 @@ public class PreviewFrame extends JFrame implements ActionListener, PropertyChan
         else if (command.equals("ZoomOut")) {
             decreaseZoom();
         }
-        else if (command.equals("ZoomSelect")) 
+        else if (command.equals("ZoomSelect"))
         {
           setZoomFactor (zoomSelect.getSelectedIndex ());
         }
@@ -220,7 +232,7 @@ public class PreviewFrame extends JFrame implements ActionListener, PropertyChan
     /**
      * Saves the file to PDF, reporting any exceptions to System.err.
      */
-    private void handleSaveAs() {
+    public void handleSaveAs() {
 
         try {
             doSaveAs();
@@ -248,7 +260,7 @@ public class PreviewFrame extends JFrame implements ActionListener, PropertyChan
             pf = pj.validatePage(pf);
             File selFile = fileChooser.getSelectedFile();
             String selFileName = selFile.getAbsolutePath();
-            
+
             // Test if ends of pdf
             if (selFileName.toUpperCase().endsWith(".PDF") == false)
             {
@@ -283,7 +295,8 @@ public class PreviewFrame extends JFrame implements ActionListener, PropertyChan
     public void attemptPrint() {
 
         PrinterJob pj = PrinterJob.getPrinterJob();
-        pj.setPrintable(this.reportPane);
+        pj.validatePage(reportPane.getOutputTarget().getPageFormat());
+        pj.setPrintable(this.reportPane, reportPane.getOutputTarget().getPageFormat());
         if (pj.printDialog()) {
             try {
                 pj.print();
@@ -295,63 +308,63 @@ public class PreviewFrame extends JFrame implements ActionListener, PropertyChan
 
     }
 
-    /** 
-     *Increases the page number. 
+    /**
+     *Increases the page number.
      *
      * CHANGED FUNCTION
      */
-    public void increasePageNumber() 
+    public void increasePageNumber()
     {
       int pn = reportPane.getPageNumber();
       int mp = reportPane.getCurrentPageCount ();
-    	
+
       if (pn < mp)
       {
         reportPane.setPageNumber(reportPane.getPageNumber()+1);
-    	  validate();
+          validate();
       }
-  
+
     }
 
-    /** 
-     * Decreases the page number. 
+    /**
+     * Decreases the page number.
      *
      * CHANGED FUNCTION
      */
-    public void decreasePageNumber() 
+    public void decreasePageNumber()
     {
-    	int pn = reportPane.getPageNumber();
-    	if (pn > 1)
+        int pn = reportPane.getPageNumber();
+        if (pn > 1)
       {
         reportPane.setPageNumber(pn - 1);
-    	  validate();
+          validate();
       }
     }
-  
+
     /** Increases the zoom factor for the report pane (unless it is already at maximum zoom). */
     public void increaseZoom() {
       if (zoomIndex<zoomFactors.length-1) {
         zoomIndex++;
       }
-  
+
       zoomSelect.setSelectedIndex (zoomIndex);
-  
+
       reportPane.setZoomFactor(zoomFactors[zoomIndex]);
       validate();
     }
-  
+
     /** Decreases the zoom factor for the report pane (unless it is already at the minimum zoom). */
     public void decreaseZoom() {
       if (zoomIndex>0)  {
         zoomIndex--;
       }
-  
+
       zoomSelect.setSelectedIndex (zoomIndex);
-      
+
       reportPane.setZoomFactor(zoomFactors[zoomIndex]);
       validate();
     }
-  
+
 
     /** !NEW FUNCTION */
     public void setZoomFactor (int index)
@@ -361,7 +374,7 @@ public class PreviewFrame extends JFrame implements ActionListener, PropertyChan
       zoomSelect.setSelectedIndex (zoomIndex);
       validate();
     }
-  
+
 
     /**
      * Returns the preferred size of the report preview frame - this size is set in the
@@ -372,46 +385,62 @@ public class PreviewFrame extends JFrame implements ActionListener, PropertyChan
         return preferredSize;
     }
 
+    protected void createActions(ResourceBundle resources) {
+
+        this.saveAsAction = new SaveAsAction(this, resources);
+        this.pageSetupAction = new PageSetupAction(this, resources);
+        this.printAction = new PrintAction(this, resources);
+        this.closeAction = new CloseAction(this, resources);
+
+    }
+
     /**
      * Creates and returns a menu-bar for the frame.
+     *
+     * @param resources A resource bundle containing localised resources for the menu.
      * @return A ready-made JMenuBar.
      */
-    private JMenuBar createMenuBar() {
+    private JMenuBar createMenuBar(ResourceBundle resources) {
 
         // create the menus
         JMenuBar menuBar = new JMenuBar();
 
         // first the file menu
-        JMenu fileMenu = new JMenu("File", true);
-        fileMenu.setMnemonic('F');
+        String menuName = resources.getString("menu.file.name");
+        JMenu fileMenu = new JMenu(menuName);
+        Character mnemonic = (Character)resources.getObject("menu.file.mnemonic");
+        fileMenu.setMnemonic(mnemonic.charValue());
 
-        JMenuItem saveAsItem = new JMenuItem("Save As...", 'S');
-        saveAsItem.setActionCommand(SAVE_AS_COMMAND);
-        saveAsItem.addActionListener(this);
+        JMenuItem saveAsItem = new JMenuItem(saveAsAction);
+        KeyStroke accelerator = (KeyStroke)saveAsAction.getValue(Action.ACCELERATOR_KEY);
+        saveAsItem.setAccelerator(accelerator);
         fileMenu.add(saveAsItem);
 
         fileMenu.addSeparator();
 
-        JMenuItem setupItem = new JMenuItem("Page setup...", 'A');
-        setupItem.setActionCommand(PAGE_SETUP_COMMAND);
-        setupItem.addActionListener(this);
+        JMenuItem setupItem = new JMenuItem(pageSetupAction);
+        accelerator = (KeyStroke)pageSetupAction.getValue(Action.ACCELERATOR_KEY);
+        if (accelerator!=null) setupItem.setAccelerator(accelerator);
         fileMenu.add(setupItem);
 
-        JMenuItem printItem = new JMenuItem("Print...", 'P');
-        printItem.setActionCommand(PRINT_COMMAND);
-        printItem.addActionListener(this);
+        JMenuItem printItem = new JMenuItem(printAction);
+        accelerator = (KeyStroke)printAction.getValue(Action.ACCELERATOR_KEY);
+        if (accelerator!=null) printItem.setAccelerator(accelerator);
         fileMenu.add(printItem);
 
         fileMenu.add(new JSeparator());
 
-        JMenuItem closeItem = new JMenuItem("Close", 'C');
-        closeItem.setActionCommand(CLOSE_COMMAND);
-        closeItem.addActionListener(this);
+        JMenuItem closeItem = new JMenuItem(closeAction);
+        accelerator = (KeyStroke)closeAction.getValue(Action.ACCELERATOR_KEY);
+        if (accelerator!=null) closeItem.setAccelerator(accelerator);
         fileMenu.add(closeItem);
 
         // then the help menu
-        JMenu helpMenu = new JMenu("Help");
-        helpMenu.setMnemonic('H');
+        menuName = resources.getString("menu.help.name");
+        JMenu helpMenu = new JMenu(menuName);
+        mnemonic = (Character)resources.getObject("menu.help.mnemonic");
+        helpMenu.setMnemonic(mnemonic.charValue());
+
         JMenuItem aboutItem = new JMenuItem("About...", 'A');
         aboutItem.setActionCommand("About");
         aboutItem.addActionListener(this);
@@ -427,22 +456,27 @@ public class PreviewFrame extends JFrame implements ActionListener, PropertyChan
     /**
      * Creates and returns a toolbar containing controls for print, page forward and backward, zoom
      * in and out, and an about box.
+     *
      * @return A ready-made JToolBar.
      * CHANGED FUNCTION
      */
-    private JToolBar createToolBar() {
+    private JToolBar createToolBar(ResourceBundle resources) {
 
         JToolBar toolbar = new JToolBar();
 
-        ImageIcon icon1 = secureResourceLoad ("SaveAs24.gif");
-        JButton saveAs = new JButton(icon1);
+        JButton saveAs = new JButton(saveAsAction);
+        saveAs.setText(null);
+        ImageIcon icon = (ImageIcon)saveAsAction.getValue("ICON24");
+        saveAs.setIcon(icon);
         saveAs.setActionCommand(SAVE_AS_COMMAND);
         saveAs.addActionListener(this);
         toolbar.add(saveAs);
         toolbar.addSeparator();
 
-        ImageIcon icon2 = secureResourceLoad ("Print24.gif");
-        JButton print = new JButton(icon2);
+        JButton print = new JButton(printAction);
+        print.setText(null);
+        icon = (ImageIcon)printAction.getValue("ICON24");
+        print.setIcon(icon);
         print.setActionCommand(PRINT_COMMAND);
         print.addActionListener(this);
         toolbar.add(print);
@@ -484,7 +518,7 @@ public class PreviewFrame extends JFrame implements ActionListener, PropertyChan
 
     }
 
-    
+
   /** NEW FUNCTION */
   private JComponent createZoomPane ()
   {
@@ -497,11 +531,11 @@ public class PreviewFrame extends JFrame implements ActionListener, PropertyChan
     zoomSelect.setActionCommand("ZoomSelect");
     zoomSelect.setSelectedIndex (DEFAULT_ZOOM_INDEX);
     zoomSelect.addActionListener(this);
-  
+
     JPanel zoomPane = new JPanel ();
     zoomPane.setLayout (new BorderLayout (0, 0));
     zoomPane.add (zoomSelect, BorderLayout.WEST);
-  
+
     return zoomPane;
   }
 
@@ -510,11 +544,11 @@ public class PreviewFrame extends JFrame implements ActionListener, PropertyChan
   {
     Object source = event.getSource ();
     String property = event.getPropertyName ();
-    
+
     if (property.equals (ReportPane.PAGENUMBER_PROPERTY) ||
         property.equals (ReportPane.PAGECOUNT_PROPERTY))
     {
-    	validate ();
+        validate ();
     }
     else
     if (property.equals (ReportPane.ERROR_PROPERTY))
@@ -522,9 +556,9 @@ public class PreviewFrame extends JFrame implements ActionListener, PropertyChan
       if (reportPane.hasError ())
       {
         Exception ex = reportPane.getError ();
-        JOptionPane.showMessageDialog (this, 
-          "Error" + ex.getMessage (), 
-          "Report has an error", 
+        JOptionPane.showMessageDialog (this,
+          "Error" + ex.getMessage (),
+          "Report has an error",
           JOptionPane.ERROR_MESSAGE);
       }
     }
@@ -533,27 +567,27 @@ public class PreviewFrame extends JFrame implements ActionListener, PropertyChan
   /** NEW FUNCTION */
   public void validate ()
   {
-  	int pn = reportPane.getPageNumber();
-  	int mp = reportPane.getCurrentPageCount ();
+        int pn = reportPane.getPageNumber();
+        int mp = reportPane.getCurrentPageCount ();
 
-  	if (pn < mp)
-  	{
-  		forward.setEnabled (true);
-  	}
-  	else
-  	{
-  		forward.setEnabled (false);
-  	}
-  
-  	if (pn == 1)
-  	{
-  		back.setEnabled (false);
-  	}
-  	else
-  	{
-  		back.setEnabled (true);
-  	}
-    
+        if (pn < mp)
+        {
+                forward.setEnabled (true);
+        }
+        else
+        {
+                forward.setEnabled (false);
+        }
+
+        if (pn == 1)
+        {
+                back.setEnabled (false);
+        }
+        else
+        {
+                back.setEnabled (true);
+        }
+
     if (zoomSelect.getSelectedIndex () == 0)
     {
       zoomOut.setEnabled (false);
@@ -562,7 +596,7 @@ public class PreviewFrame extends JFrame implements ActionListener, PropertyChan
     {
       zoomOut.setEnabled (true);
     }
-    
+
     if (zoomSelect.getSelectedIndex () == (zoomFactors.length - 1))
     {
       zoomIn.setEnabled (false);
@@ -578,17 +612,17 @@ public class PreviewFrame extends JFrame implements ActionListener, PropertyChan
   /** NEW FUNCTION */
   public static ImageIcon secureResourceLoad (String filename)
   {
-    
+
     URL in = ClassLoader.getSystemResource(filename);
     if (in == null)
     {
       System.out.println ("File " + filename + " is not on classpath");
-      
+
       System.out.println (System.getProperty ("java.class.path"));
-      
+
       return new ImageIcon ();
     }
     return new ImageIcon (in);
   }
-  
+
 }
