@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.40 2002/12/02 17:40:56 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.41 2002/12/03 20:31:00 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -1448,6 +1448,9 @@ public class PreviewFrame
    */
   public void dispose()
   {
+    // cleanup the report pane, removes some cached resources ...
+    reportPane.dispose();
+    pdfSaveDialog.dispose();
     super.dispose();
 
     // Silly Swing keeps at least one reference in the RepaintManager to support DoubleBuffering

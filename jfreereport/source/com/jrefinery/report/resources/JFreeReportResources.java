@@ -24,7 +24,7 @@
  * JFreeReportResources.java
  * -------------------------
  *
- * $Id: JFreeReportResources.java,v 1.28 2002/11/29 12:00:59 mungady Exp $
+ * $Id: JFreeReportResources.java,v 1.29 2002/12/02 17:42:30 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -40,6 +40,7 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.ListResourceBundle;
+import java.util.Arrays;
 
 /**
  * English Language Resources.
@@ -95,6 +96,15 @@ public class JFreeReportResources extends ListResourceBundle
     return CONTENTS;
   }
 
+  public static BufferedImage createTransparentImage (int width, int height)
+  {
+    BufferedImage img = new BufferedImage (width, height, BufferedImage.TYPE_INT_ARGB);
+    int[] data = img.getRGB(0,0, width, height, null, 0, width);
+    Arrays.fill(data, 0xff000000);
+    img.setRGB(0,0,width,height,data,0,width);
+    return img;
+  }
+
   /**
    * Attempts to load an image from classpath. If this fails, an empty
    * image icon is returned.
@@ -110,13 +120,13 @@ public class JFreeReportResources extends ListResourceBundle
     if (in == null)
     {
       Log.debug ("Unable to load file: " + filename);
-      return new ImageIcon (new BufferedImage (BufferedImage.TYPE_INT_RGB, 1, 1));
+      return new ImageIcon (createTransparentImage(1,1));
     }
     Image img = Toolkit.getDefaultToolkit ().createImage (in);
     if (img == null)
     {
       Log.warn ("Unable to instantiate the image " + filename);
-      return new ImageIcon (new BufferedImage (BufferedImage.TYPE_INT_RGB, 1, 1));
+      return new ImageIcon (createTransparentImage(1,1));
     }
     return new ImageIcon (img);
   }
@@ -222,6 +232,12 @@ public class JFreeReportResources extends ListResourceBundle
             // menu labels...
             {"menu.file.name", "File"},
             {"menu.file.mnemonic", new Character ('F')},
+
+            {"menu.navigation.name", "Navigation"},
+            {"menu.navigation.mnemonic", new Character ('N')},
+
+            {"menu.zoom.name", "Zoom"},
+            {"menu.zoom.mnemonic", new Character ('Z')},
 
             {"menu.help.name", "Help"},
             {"menu.help.mnemonic", new Character ('H')},

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.29 2002/12/02 18:55:33 taqua Exp $
+ * $Id: ReportPane.java,v 1.30 2002/12/02 20:42:55 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -506,6 +506,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
           Log.error ("PageNumber is invalid after repaginating: " + pageNumber);
         }
 
+        getProcessor().setOutputTarget(null);
         target.close();
         
         /** Paint Page Shadow */
@@ -619,6 +620,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
     try
     {
       G2OutputTarget target = new G2OutputTarget (g2, pf);
+      getProcessor().setOutputTarget(target);
       if (!isPaginated ())
       {
         repaginate ();
@@ -631,6 +633,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
 
       ReportState state = getPageStateList ().get (pageIndex);
       getProcessor().processPage (state, target);
+      getProcessor().setOutputTarget(null);
     }
     catch (ReportProcessingException rpe)
     {
@@ -754,5 +757,15 @@ public class ReportPane extends JComponent implements Printable, Pageable
   public PageableReportProcessor getProcessor()
   {
     return processor;
+  }
+
+  /** free some of the used memory */
+  public void dispose ()
+  {
+    // clean up a little bit
+    // this is safe, the report is repaginated if needed
+    setPageStateList(null);
+    // is regenerated on next repaint
+    graphCache = null;
   }
 }
