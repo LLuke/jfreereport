@@ -15,7 +15,7 @@
 
     <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="10" onfirstpage="true">
         <date-function name="date1" x="0" y="0" width="0" height="14" alignment="right" baseline="12" format="d-MMM-yyyy" function="report_date"/>
-        <line name="line1" x1="0" y1="16" x2="0" y2="16" weight="0.5"/>
+        <line name="line1" x1="0" y1="16" x2="0" y2="16" color="blue" weight="2.0"/>
     </pageheader>
 
     <pagefooter height="18">
