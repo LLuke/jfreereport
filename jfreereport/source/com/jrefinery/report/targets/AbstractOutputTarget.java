@@ -25,7 +25,7 @@
  * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: AbstractOutputTarget.java,v 1.24 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
@@ -42,9 +42,13 @@
  * 26-Aug-2002 : Corrected Fontheight calculations.
  * 02-Oct-2002 : Bug: breakLines() got a corrected word breaking (Aleksandr Gekht)
  * 06-Nov-2002 : Bug: LineBreaking again: Handled multiple linebreaks and empty lines
+ * 13-Nov-2002 : Deprecated getFontHeight() and replaced it with getLineHeight(), in the
+ *               process of aligning text positioning in print preview and PDF (DG)
+ *
  */
 package com.jrefinery.report.targets;
 
+import com.jrefinery.report.TextElement;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 
@@ -513,12 +517,23 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * 2 base lines.
    *
    * @return the font height.
+   *
+   * @deprecated replaced with getLineHeight();
    */
   protected abstract float getFontHeight();
 
   /**
-   * Draws a string inside a rectangular area (the lower edge is aligned with the baseline of
-   * the text). The text is split at the end of the line and continued in the next line.
+   * Returns the height of a line, using the current font.  This includes the ascent, descent
+   * and leading.
+   *
+   * @return the line height.
+   */
+  protected abstract float getLineHeight();
+
+  /**
+   * Draws a string inside a rectangular area define by the cursor.
+   * <P>
+   * The text is split at the end of the line and continued in the next line.
    *
    * @param text  the text.
    * @param alignment  the horizontal alignment.
@@ -533,9 +548,26 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @param text  the text to be displayed.
    * @param alignment  the alignment.
-   * @param dynamic  ??
+   * @param dynamic  if true, the band size will be increased (if required) to accommodate the
+   *                 text.
    */
   public void drawMultiLineText(String text, int alignment, boolean dynamic)
+  {
+    drawMultiLineText(text, alignment, TextElement.TOP, dynamic);
+  }
+
+  /**
+   * Draws the band onto the specified graphics device.
+   *
+   * @param text  the text to be displayed.
+   * @param horizontalAlignment  the horizontal alignment.
+   * @param verticalAlignment  the vertical alignment.
+   * @param dynamic  if true, the band size will be increased (if required) to accommodate the
+   *                 text.
+   */
+  public void drawMultiLineText(String text,
+                                int horizontalAlignment, int verticalAlignment,
+                                boolean dynamic)
   {
     // do nothing if there is nothing to print
     if (text == null)
@@ -544,53 +576,48 @@ public abstract class AbstractOutputTarget implements OutputTarget
     }
 
     Rectangle2D bounds = getCursor().getDrawBounds();
-    float fontheight = getFontHeight();
+    float lineHeight = getLineHeight();
 
     List lines = null;
     if (dynamic == true)
     {
-      // Dont define a limit for the number of lines, the size of the band is adjusted.
+      // don't define a limit for the number of lines, the size of the band is adjusted.
       lines = breakLines(text, (float) bounds.getWidth(), 0);
     }
     else
     {
-      int maxLinesToDisplay = (int) (bounds.getHeight() / fontheight);
+      int maxLinesToDisplay = (int) (bounds.getHeight() / lineHeight);
       lines = breakLines(text, (float) bounds.getWidth(), maxLinesToDisplay);
     }
 
-    float newheight = lines.size() * (fontheight);
+    float newheight = lines.size() * lineHeight;
     float oldheight = (float) bounds.getHeight();
     if (newheight > oldheight)
     {
       bounds.setRect(bounds.getX(), bounds.getY(), bounds.getWidth(), newheight);
-      getCursor().setElementBounds(bounds);
+      getCursor().setDrawBounds(bounds);
     }
 
     Rectangle2D lineBounds = new Rectangle2D.Float();
 
-    /**
-     * If this is the only line to print, always draw. This is a simplification to ease the report
-     * definition building process.
-     */
+    // if this is the only line to print, always draw. This is a simplification to ease the report
+    // definition building process
     if (lines.size() == 1)
     {
-      lineBounds.setRect((float) bounds.getX(), bounds.getY(), bounds.getWidth(), fontheight);
-      getCursor().setDrawBounds(lineBounds);
-      drawString((String) lines.get(0), alignment);
+      drawString((String) lines.get(0), horizontalAlignment, verticalAlignment);
     }
     else
     {
-      /**
-       * There is more than one line. Calculate the positions and print line for line.
-       */
+      // there is more than one line. Calculate the positions and print line for line.
+      // to-do: make this code respect vertical alignment...
       for (int linecount = 0; linecount < lines.size(); linecount++)
       {
         String line = (String) lines.get(linecount);
-        float linePos = (float) (linecount * fontheight + bounds.getY());
+        float linePos = (float) (linecount * lineHeight + bounds.getY());
 
-        lineBounds.setRect((float) bounds.getX(), linePos, bounds.getWidth(), fontheight);
+        lineBounds.setRect((float) bounds.getX(), linePos, bounds.getWidth(), lineHeight);
         getCursor().setDrawBounds(lineBounds);
-        drawString(line, alignment);
+        drawString(line, horizontalAlignment);
       }
     }
   }
