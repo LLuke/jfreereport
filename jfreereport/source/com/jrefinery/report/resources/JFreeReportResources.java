@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.48 2003/02/26 16:42:20 mungady Exp $
+ * $Id: JFreeReportResources.java,v 1.49 2003/02/27 11:50:24 mungady Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -321,6 +321,8 @@ public class JFreeReportResources extends ListResourceBundle
             {"error.printfailed.title", "Error on printing"},
             {"error.validationfailed.message", "Error while validating the user input."},
             {"error.validationfailed.title", "Error on validation"},
+
+            {"tabletarget.page", "Page {0}"},
 
             {"pdfsavedialog.dialogtitle", "Saving Report into a PDF-File ..."},
             {"pdfsavedialog.filename", "Filename"},

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.10 2003/02/24 20:14:00 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.11 2003/02/26 16:42:28 mungady Exp $
  *
  * Changes
  * -------
@@ -143,13 +143,16 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
     }
 
     dataDirectory = IOUtils.getInstance().createRelativeURL(dataDir.toURL(), baseDir.toURL());
-    if (dataDirectory.endsWith("/") == false)
+    if (dataDirectory.length () != 0) 
     {
-      this.dataDirectory = dataDirectory + "/";
-    }
-    else
-    {
-      this.dataDirectory = dataDirectory;
+      if (dataDirectory.endsWith("/") == false)
+      {
+        this.dataDirectory = dataDirectory + "/";
+      }
+      else
+      {
+        this.dataDirectory = dataDirectory;
+      }
     }
     this.usedNames = new Hashtable();
     this.usedURLs = new Hashtable();

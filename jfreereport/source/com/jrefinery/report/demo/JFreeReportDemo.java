@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.54 2003/02/25 14:10:21 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.55 2003/02/26 16:42:05 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -270,6 +270,8 @@ public class JFreeReportDemo extends JFrame
     tabbedPane.addTab("Dynamic-Demo", RefineryUtilities.createTablePanel(data2));
     tabbedPane.addTab("Band in Band Stacking", 
                       RefineryUtilities.createTablePanel(new DefaultTableModel()));
+    tabbedPane.addTab("Advanced report demo",
+                      RefineryUtilities.createTablePanel(new DefaultTableModel()));
 
     content.add(tabbedPane);
 
@@ -357,6 +359,10 @@ public class JFreeReportDemo extends JFrame
     else if (index == 9)
     {
       previewManual2();
+    }
+    else if (index == 10)
+    {
+      preview("/com/jrefinery/report/demo/advanced-report.xml", new DefaultTableModel());
     }
   }
 

@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_de.java,v 1.29 2003/02/25 18:46:10 taqua Exp $
+ * $Id: JFreeReportResources_de.java,v 1.30 2003/02/26 16:42:21 mungady Exp $
  *
  * Changes
  * -------
@@ -152,6 +152,8 @@ public class JFreeReportResources_de extends JFreeReportResources
             "Die \u00fcberpr\u00fcfung der Benutzereingaben schlug fehl."},
         {"error.validationfailed.title", "Eingabe\u00fcberpr\u00fcfung fehlgeschlagen"},
 
+        {"tabletarget.page", "Seite {0}"},
+
         {"pdfsavedialog.warningTitle", "Warnung"},
         {"pdfsavedialog.dialogtitle", "Bericht in eine PDF-Datei speichern ..."},
         {"pdfsavedialog.filename", "Dateiname"},
@@ -231,7 +233,6 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"htmlexportdialog.filename", "Dateiname"},
         {"htmlexportdialog.author", "Autor"},
         {"htmlexportdialog.title", "Titel"},
-        {"htmlexportdialog.selectFile", "Ausw\u00e4hlen"},
 
         {"htmlexportdialog.warningTitle", "Warnung"},
         {"htmlexportdialog.errorTitle", "Fehler"},

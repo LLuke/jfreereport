@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProcessor.java,v 1.10 2003/02/24 16:48:57 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.11 2003/02/26 16:42:27 mungady Exp $
  *
  * Changes
  * -------
@@ -74,9 +74,6 @@ public class HtmlProcessor extends TableProcessor
   
   /** a flag indicating whether to generate XHTML output instead of HTML4 code. */
   private boolean useXHTML;
-  
-  /** the character encoding used for the HTML-File. */
-  private String encoding;
 
   /**
    * Creates a new HtmlProcessor, which generates HTML4 output and uses the
@@ -104,30 +101,8 @@ public class HtmlProcessor extends TableProcessor
   public HtmlProcessor(JFreeReport report, boolean useXHTML) 
       throws ReportProcessingException, FunctionInitializeException
   {
-    this (report, useXHTML, System.getProperty("file.encoding", "UTF-8"));
-  }
-
-  /**
-   * Creates a new HtmlProcessor.
-   *
-   * @param report  the report that should be processed.
-   * @param useXHTML  true, if XML output should be generated, false for HTML4 compatible output.
-   * @param encoding  the file encoding, which should be used.
-   * 
-   * @throws ReportProcessingException if the report initialization failed
-   * @throws FunctionInitializeException if the table writer initialization failed.
-   * @throws NullPointerException if the specified encoding is null.
-   */
-  public HtmlProcessor(JFreeReport report, boolean useXHTML, String encoding)
-      throws ReportProcessingException, FunctionInitializeException
-  {
     super(report);
     this.useXHTML = useXHTML;
-    if (encoding == null) 
-    {
-      throw new NullPointerException();
-    }
-    this.encoding = encoding;
   }
 
   /**
@@ -173,26 +148,6 @@ public class HtmlProcessor extends TableProcessor
   }
 
   /**
-   * Gets the file encoding for the generated HTML content.
-   *
-   * @return the file encoding for the generated HTML file.
-   */
-  public String getEncoding()
-  {
-    return encoding;
-  }
-
-  /**
-   * Defines the file encoding for the generated HTML content.
-   *
-   * @param encoding the file encoding for the generated HTML file.
-   */
-  public void setEncoding(String encoding)
-  {
-    this.encoding = encoding;
-  }
-
-  /**
    * Creates a HTMLProducer. The HTMLProducer is responsible to create the table.
    *
    * @param dummy true, if dummy mode is enabled, and no writing should be done, false otherwise.
@@ -204,13 +159,13 @@ public class HtmlProcessor extends TableProcessor
     if (dummy == true)
     {
       prod = new HtmlProducer(new StreamHtmlFilesystem(new NullOutputStream()),
-                              getReport().getName(), isStrictLayout(), useXHTML, getEncoding());
+                              isStrictLayout(), useXHTML);
       prod.setDummy(true);
     }
     else
     {
-      prod = new HtmlProducer(getFilesystem(), getReport().getName(),
-                              isStrictLayout(), useXHTML, getEncoding());
+      prod = new HtmlProducer(getFilesystem(),
+                              isStrictLayout(), useXHTML);
       prod.setDummy(false);
     }
 

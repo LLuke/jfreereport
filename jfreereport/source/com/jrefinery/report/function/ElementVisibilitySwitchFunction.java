@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.13 2003/02/25 14:07:24 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.14 2003/02/28 12:02:38 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -118,7 +118,7 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
     {
       return;
     }
-
+    
     trigger = (!trigger);
     Element e = findElement(event.getReport().getItemBand());
     if (e != null)

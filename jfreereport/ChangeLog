@@ -2,6 +2,29 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+0.8.1_01 : (04-Mar-2003):
+        * BugFix: The PlainTextOutputDialog was not modal and caused trouble.
+
+        * BugFix: Adding element to a band, which already contains that element
+          caused IndexOutofBoundsExceptions.
+
+        * BugFix: The extended parser had a bug in the band handler, so that
+          elements got added twice.
+
+        * Added stricter error handling to the report processing. This can be
+          activated by setting the com.jrefinery.report.StrictErrorHandling
+          property to true. If activated, all exceptions that occur during the
+          report processing cause the report generation to fail.
+
+        * Removed the "/jfreereport.properties not found" debug message. It caused
+          confusion without supplying anything valuable.
+
+        * Updated the HTML OutputTarget so that the default Page text is printed
+          properly and Author and Title work as expected. The Html dialog is now
+          more resistent against invalid or unexpected inputs.
+
+        * Updated the README file, so that the layout restrictions are mentioned.
+          Thanks for the idea, JM Delsaux.
 
 0.8.1 : (28-Feb-2003):
         * BugFix: Corrected many bugs in the SimplePageLayouter.
@@ -168,7 +191,7 @@ A list of changes in recent versions:
 
         * The FileEncodings are now selectable from the PDF- and HTML dialogs.
 	
-	* Patrice Rolland contributed a french translation
+        * Patrice Rolland contributed a french translation
 
 0.8.0-3 : (07-Jan-2003): 
         * BugFix: Fixed the ReportStateList. Element were added at the wrong position, causing

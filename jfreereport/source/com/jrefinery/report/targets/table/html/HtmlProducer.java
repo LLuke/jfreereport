@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.19 2003/02/25 15:42:42 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.20 2003/02/26 16:42:27 mungady Exp $
  *
  * Changes
  * -------
@@ -78,9 +78,6 @@ public class HtmlProducer extends TableProducer
   /** the printwriter for the main html file. */
   private PrintWriter pout;
   
-  /** the report name. */
-  private String reportName;
-  
   /** the cell data factory used for creating the content cells. */
   private HtmlCellDataFactory cellDataFactory;
   
@@ -97,7 +94,7 @@ public class HtmlProducer extends TableProducer
   private boolean useXHTML;
   
   /** the fileencoding for the main html file. */
-  private String encoding;
+  public static final String ENCODING = "Encoding";
 
   /** the content cache for the main html file. */
   private ByteArrayOutputStream content;
@@ -126,39 +123,25 @@ public class HtmlProducer extends TableProducer
    * Creates a new HTMLProducer.
    *
    * @param filesystem the filesystem used to store the generated content.
-   * @param reportName the report name used as file title.
    * @param strict a flag whether to use the strict layout mode.
    * @param useXHTML a flag whether to generate XHTML content.
-   * @param encoding the file encoding for the main HTML file.
    */
   public HtmlProducer(HtmlFilesystem filesystem,
-                      String reportName,
                       boolean strict,
-                      boolean useXHTML,
-                      String encoding)
+                      boolean useXHTML)
   {
     super(strict);
     if (filesystem == null) 
     {
       throw new NullPointerException();
     }
-    if (reportName == null) 
-    {
-      reportName = "unnamed report";
-    }
-    if (encoding == null) 
-    {
-      throw new NullPointerException();
-    }
-    
+
     this.filesystem = filesystem;
     this.content = null;
     this.pout = null;
-    this.reportName = reportName;
     this.styleCollection = new HtmlStyleCollection();
     this.cellDataFactory = new HtmlCellDataFactory(styleCollection, useXHTML);
     this.useXHTML = useXHTML;
-    this.encoding = encoding;
   }
 
   /**
@@ -168,7 +151,7 @@ public class HtmlProducer extends TableProducer
    */
   public String getEncoding()
   {
-    return encoding;
+    return String.valueOf (getProperty(ENCODING, "UTF-8"));
   }
 
   /**
@@ -215,7 +198,8 @@ public class HtmlProducer extends TableProducer
       pout.println("\">");
     }
     pout.print("<title>");
-    pout.print(getEntityParser().encodeEntities(reportName));
+    String title = String.valueOf(getProperty(TITLE, "Untitled report"));
+    pout.print(getEntityParser().encodeEntities(title));
     pout.println("</title></head>");
     pout.println("<body>");
     isOpen = true;

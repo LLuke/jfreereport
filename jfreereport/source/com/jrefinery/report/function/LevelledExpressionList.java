@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.4 2003/02/17 16:07:17 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.5 2003/02/25 09:55:51 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,9 @@ import com.jrefinery.report.util.LevelList;
 import com.jrefinery.report.util.Log;
 
 import java.util.Iterator;
+import java.util.List;
+import java.util.Collections;
+import java.util.ArrayList;
 
 /**
  * A list of expressions/functions and associated levels.  This class listens for report events,
@@ -58,6 +61,9 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
 {
   /** A list of expressions and associated levels. */
   private LevelList expressionList;
+
+  /** error list stores the errors that occur during the event dispatching. */
+  private ArrayList errorList;
 
   /** The level. */
   private int level;
@@ -71,6 +77,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
   public LevelledExpressionList(ExpressionCollection ec, ExpressionCollection fc)
   {
     expressionList = new LevelList();
+    errorList = new ArrayList();
     initializeExpressions(ec);
     initializeFunctions(fc);
   }
@@ -84,6 +91,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    */
   public void reportStarted(ReportEvent event)
   {
+    clearError();
     Iterator it = expressionList.getLevelsDescending();
     while (it.hasNext())
     {
@@ -105,14 +113,21 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
           }
           catch (Exception ex)
           {
-            Log.error ("Function made a boo!", ex);
+            addError(ex);
           }
         }
         else
         {
-          if (e.isActive())
+          try
           {
-            e.getValue();
+            if (e.isActive())
+            {
+              e.getValue();
+            }
+          }
+          catch (Exception ex)
+          {
+            addError(ex);
           }
         }
       }
@@ -128,6 +143,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    */
   public void reportFinished(ReportEvent event)
   {
+    clearError();
     Iterator it = expressionList.getLevelsDescending();
     while (it.hasNext())
     {
@@ -149,14 +165,21 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
           }
           catch (Exception ex)
           {
-            Log.error ("Function made a boo!", ex);
+            addError(ex);
           }
         }
         else
         {
-          if (e.isActive())
+          try
           {
-            e.getValue();
+            if (e.isActive())
+            {
+              e.getValue();
+            }
+          }
+          catch (Exception ex)
+          {
+            addError(ex);
           }
         }
       }
@@ -170,6 +193,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    */
   public void pageStarted(ReportEvent event)
   {
+    clearError();
     Iterator it = expressionList.getLevelsDescending();
     while (it.hasNext())
     {
@@ -191,14 +215,21 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
           }
           catch (Exception ex)
           {
-            Log.error ("Function made a boo!", ex);
+            addError(ex);
           }
         }
         else
         {
-          if (e.isActive())
+          try
           {
-            e.getValue();
+            if (e.isActive())
+            {
+              e.getValue();
+            }
+          }
+          catch (Exception ex)
+          {
+            addError(ex);
           }
         }
       }
@@ -212,6 +243,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    */
   public void pageFinished(ReportEvent event)
   {
+    clearError();
     Iterator it = expressionList.getLevelsDescending();
     while (it.hasNext())
     {
@@ -233,14 +265,21 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
           }
           catch (Exception ex)
           {
-            Log.error ("Function made a boo!", ex);
+            addError(ex);
           }
         }
         else
         {
-          if (e.isActive())
+          try
           {
-            e.getValue();
+            if (e.isActive())
+            {
+              e.getValue();
+            }
+          }
+          catch (Exception ex)
+          {
+            addError(ex);
           }
         }
       }
@@ -277,14 +316,21 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
           }
           catch (Exception ex)
           {
-            Log.error ("Function made a boo!", ex);
+            addError(ex);
           }
         }
         else
         {
-          if (e.isActive())
+          try
           {
-            e.getValue();
+            if (e.isActive())
+            {
+              e.getValue();
+            }
+          }
+          catch (Exception ex)
+          {
+            addError(ex);
           }
         }
       }
@@ -321,14 +367,21 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
           }
           catch (Exception ex)
           {
-            Log.error ("Function made a boo!", ex);
+            addError(ex);
           }
         }
         else
         {
-          if (e.isActive())
+          try
           {
-            e.getValue();
+            if (e.isActive())
+            {
+              e.getValue();
+            }
+          }
+          catch (Exception ex)
+          {
+            addError(ex);
           }
         }
       }
@@ -365,14 +418,21 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
           }
           catch (Exception ex)
           {
-            Log.error ("Function made a boo!", ex);
+            addError(ex);
           }
         }
         else
         {
-          if (e.isActive())
+          try
           {
-            e.getValue();
+            if (e.isActive())
+            {
+              e.getValue();
+            }
+          }
+          catch (Exception ex)
+          {
+            addError(ex);
           }
         }
       }
@@ -409,14 +469,21 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
           }
           catch (Exception ex)
           {
-            Log.error ("Function made a boo!", ex);
+            addError(ex);
           }
         }
         else
         {
-          if (e.isActive())
+          try
           {
-            e.getValue();
+            if (e.isActive())
+            {
+              e.getValue();
+            }
+          }
+          catch (Exception ex)
+          {
+            addError(ex);
           }
         }
       }
@@ -453,14 +520,21 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
           }
           catch (Exception ex)
           {
-            Log.error ("Function made a boo!", ex);
+            addError(ex);
           }
         }
         else
         {
-          if (e.isActive())
+          try
           {
-            e.getValue();
+            if (e.isActive())
+            {
+              e.getValue();
+            }
+          }
+          catch (Exception ex)
+          {
+            addError(ex);
           }
         }
       }
@@ -497,7 +571,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
           }
           catch (Exception ex)
           {
-            Log.error ("Function made a boo!", ex);
+            addError(ex);
           }
         }
       }
@@ -533,7 +607,21 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
           }
           catch (Exception ex)
           {
-            Log.error ("Function made a boo!", ex);
+            addError(ex);
+          }
+        }
+        else
+        {
+          try
+          {
+            if (e.isActive())
+            {
+              e.getValue();
+            }
+          }
+          catch (Exception ex)
+          {
+            addError(ex);
           }
         }
       }
@@ -704,7 +792,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
       }
       else
       {
-        ft.expressionList.add (ex, expressionList.getLevel(i));
+        ft.expressionList.add(ex, expressionList.getLevel(i));
       }
     }
     return ft;
@@ -772,5 +860,33 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
   public Expression getExpression(int index)
   {
     return ((Expression) expressionList.get(index));
+  }
+
+  /**
+   * Returns the list of errors, that occured during the last event handling.
+   *
+   * @return the list of errors.
+   */
+  public List getErrors()
+  {
+    return Collections.unmodifiableList(errorList);
+  }
+
+  /**
+   * Adds the error to the current list of errors.
+   *
+   * @param e the new exception that occured during the event dispatching.
+   */
+  protected void addError(Exception e)
+  {
+    errorList.add(e);
+  }
+
+  /**
+   * Clears the error list.
+   */
+  protected void clearError()
+  {
+    errorList.clear();
   }
 }

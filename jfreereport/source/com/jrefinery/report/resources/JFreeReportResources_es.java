@@ -112,6 +112,8 @@ public class JFreeReportResources_es extends JFreeReportResources
             {"error.printfailed.message", "Error de impresión: {0}"},
             {"error.printfailed.title", "Error en la impresión"},
 
+            {"tabletarget.page", "Página {0}"},
+
             {"pdfsavedialog.dialogtitle", "Guardar documento en formato PDF ..."},
             {"pdfsavedialog.filename", "Nombre fichero"},
             {"pdfsavedialog.author", "Autor"},

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.42 2003/02/05 15:38:12 taqua Exp $
+ * $Id: Band.java,v 1.43 2003/02/26 16:41:38 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -69,6 +69,7 @@ import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.style.BandDefaultStyleSheet;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Dimension2D;
 import java.io.Serializable;
@@ -198,6 +199,12 @@ public class Band extends Element implements Serializable, Cloneable
     // this is the default AWT behaviour when adding Components to Container
     if (element.getParent() != null)
     {
+      if (element.getParent() == this)
+      {
+        // already a child, wont add twice ...
+        return;
+      }
+
       element.getParent().removeElement(element);
     }
 

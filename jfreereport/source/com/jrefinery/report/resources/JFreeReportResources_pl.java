@@ -118,6 +118,8 @@ public class JFreeReportResources_pl extends JFreeReportResources
                 "Podczas drukowania wyst\u0105pi\u0142 nast\u0119puj\u0105cy b\u0142\u0105d: {0}"},
             {"error.printfailed.title", "B\u0142\u0105d podczas drukowania"},
 
+            {"tabletarget.page", "Strona {0}"},
+
             {"pdfsavedialog.warningTitle", "Ostrze\u017cenie"},
             {"pdfsavedialog.dialogtitle", "Zapisywanie raportu do pliku PDF..."},
             {"pdfsavedialog.filename", "Nazwa pliku"},

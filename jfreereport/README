@@ -99,6 +99,38 @@ You can find out more about Checkstyle at:
 Checkstyle is licensed under the terms of the GNU LGPL.
 
 
+9. TABLE-BASED OUTPUTTARGETS AND PLAINTEXT-OUTPUT
+-------------------------------------------------
+
+All table based output targets (HTML, Execl, Layouted CSV) have some
+layout restrictions. These layout restrictions also apply to the
+PlainText output target:
+
+* The elements must be aligned properly, they must not overlap. When
+  overlapping, the left element gets preferred over the right element,
+  and top elements have a higher preferrence level as bottom elements.
+
+* The elements must be large enough to contain the element. This is
+  important when specifying the cell/line height, the elements height
+  must be greater than the minimum height.
+
+  For Excel/Html cells the minimum height is equal to the font height,
+  so you'll just have to make sure that the cell is able to print at
+  least one line of text.
+
+  For PlainText, the line height is defined by the LPI setting, if LPI
+  (lines per inch) is set to 10, then the minimum height of a line
+  should be 72/10 points, so specifying a element height of 8 is safe.
+  If LPI is set to 6, then the line height should be at least 72/6, so
+  a element height of 12 should be ok.
+
+* When specifying colors for the Excel target, then these colors are
+  translated into one of the predefined excel color constants. This
+  translation tries to find the nearest color, if that fails, the colors
+  could look weird. Using one of the predefined AWT colors is always safe,
+  everything else should work, but there are no guarantees.
+
+
 9. OTHER FEEDBACK
 -----------------
 For other feedback and comments, please post a message on the

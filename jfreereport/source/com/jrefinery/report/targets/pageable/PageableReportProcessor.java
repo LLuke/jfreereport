@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.27 2003/02/22 18:52:28 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.28 2003/02/27 10:35:39 mungady Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,8 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportInterruptedException;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.ReportEventException;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
@@ -207,10 +209,13 @@ public class PageableReportProcessor
     }
     ReportState rs = list.get(0);
 
-    rs = processPage(rs, getOutputTarget());
+    boolean failOnError =
+        getReport().getReportConfiguration().isStrictErrorHandling();
+
+    rs = processPage(rs, getOutputTarget(), failOnError);
     while (!rs.isFinish())
     {
-      ReportState nrs = processPage(rs, getOutputTarget());
+      ReportState nrs = processPage(rs, getOutputTarget(), failOnError);
       if ((nrs.isFinish() == false) && nrs.isProceeding(rs) == false)
       {
         throw new ReportProcessingException("Report is not proceeding");
@@ -289,10 +294,13 @@ public class PageableReportProcessor
         // inner loop: process the complete report, calculate the function values
         // for the current level. Higher level functions are not available in the
         // dataRow.
+        boolean failOnError = (level == -1) &&
+            getReport().getReportConfiguration().isStrictErrorHandling();
+
         while (!state.isFinish())
         {
           ReportState oldstate = state;
-          state = processPage(state, dummyOutput);
+          state = processPage(state, dummyOutput, failOnError);
           if (!state.isFinish())
           {
             // if the report processing is stalled, throw an exception; an infinite
@@ -369,10 +377,34 @@ public class PageableReportProcessor
    * @return The report state suitable for the next page or ReportState.FinishState.
    *
    * @throws IllegalArgumentException if the given state is a start or a finish state.
-   * @throws ReportProcessingException if there is a problem processing the report or the 
+   * @throws ReportProcessingException if there is a problem processing the report or the
    *                                   current thread has been interrupted.
    */
   public ReportState processPage(final ReportState currPage, OutputTarget out)
+      throws ReportProcessingException
+  {
+    return processPage(currPage, out, getReport().getReportConfiguration().isStrictErrorHandling());
+  }
+
+  /**
+   * Draws a single page of the report to the specified graphics device, and returns state
+   * information.  The caller should check the returned state to ensure that some progress has
+   * been made, because on some small paper sizes the report may get stuck (particularly if the
+   * header and footer are large).
+   * <p>
+   * To check the progress, use ReportState.isProceeding(oldstate).
+   *
+   * @param out The output target.
+   * @param currPage The report state at the beginning of the current page.
+   * @param failOnError if set to true, then errors in the report event handling will cause the reporting to fail.
+   *
+   * @return The report state suitable for the next page or ReportState.FinishState.
+   *
+   * @throws IllegalArgumentException if the given state is a start or a finish state.
+   * @throws ReportProcessingException if there is a problem processing the report or the 
+   *                                   current thread has been interrupted.
+   */
+  public ReportState processPage(final ReportState currPage, OutputTarget out, boolean failOnError)
       throws ReportProcessingException
   {
     if (isHandleInterruptedState() && Thread.interrupted())
@@ -433,6 +465,13 @@ public class PageableReportProcessor
       {
         PageLayouter org = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
         state = state.advance();
+        if (failOnError)
+        {
+          if (state.isErrorOccured() == true)
+          {
+            throw new ReportEventException ("Failed to dispatch an event.", state.getErrors());
+          }
+        }
         lm = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
         if (org != lm)
         {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: IOUtils.java,v 1.9 2003/02/25 15:42:47 taqua Exp $
+ * $Id: IOUtils.java,v 1.10 2003/02/26 13:58:04 mungady Exp $
  *
  * Changes
  * -------
@@ -229,6 +229,11 @@ public class IOUtils
       if (commonIndex == 0)
       {
         return url.toExternalForm();
+      }
+
+      if (url.equals(baseURL))
+      {
+        return "";
       }
 
       if (commonIndex == urlName.size())

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.16 2003/02/25 11:57:41 taqua Exp $
+ * $Id: TableProducer.java,v 1.17 2003/02/25 15:42:32 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,8 @@ package com.jrefinery.report.targets.table;
 
 import java.awt.geom.Rectangle2D;
 import java.util.List;
+import java.util.Hashtable;
+import java.util.Enumeration;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
@@ -60,11 +62,20 @@ import com.jrefinery.report.targets.style.ElementStyleSheet;
  */
 public abstract class TableProducer
 {
+  /** Literal text for the 'title' property name. */
+  public static final String TITLE = "Title";
+
+  /** Literal text for the 'author' property name. */
+  public static final String AUTHOR = "Author";
+  
   /** the grid, that stores the collected TableCellData. */
   private TableGrid grid;
   
   /** the dummy mode flag. */
   private boolean dummy;
+
+  /** Storage for the output target properties. */
+  private Hashtable properties;
 
   /**
    * Creates a new TableProducer.
@@ -74,6 +85,7 @@ public abstract class TableProducer
    */
   public TableProducer(boolean strictLayout)
   {
+    properties = new Hashtable();
     grid = new TableGrid(strictLayout);
     dummy = false;
   }
@@ -320,5 +332,93 @@ public abstract class TableProducer
   public void setDummy(boolean dummy)
   {
     this.dummy = dummy;
+  }
+
+  /**
+   * Defines a property for this output target. Properties are the standard way of configuring
+   * an output target.
+   *
+   * @param property  the name of the property to set (<code>null</code> not permitted).
+   * @param value  the value of the property.  If the value is <code>null</code>, the property is
+   * removed from the output target.
+   */
+  public void setProperty(String property, Object value)
+  {
+    if (property == null)
+    {
+      throw new NullPointerException();
+    }
+
+    if (value == null)
+    {
+      properties.remove(property);
+    }
+    else
+    {
+      properties.put(property, value);
+    }
+  }
+
+  /**
+   * Queries the property named with <code>property</code>. If the property is not found, <code>
+   * null</code> is returned.
+   *
+   * @param property the name of the property to be queried
+   *
+   * @return the value stored under the given property name
+   *
+   * @throws java.lang.NullPointerException if <code>property</code> is null
+   */
+  public Object getProperty(String property)
+  {
+    return getProperty(property, null);
+  }
+
+  /**
+   * Queries the property named with <code>property</code>. If the property is not found, the
+   * default value is returned.
+   *
+   * @param property the name of the property to be queried
+   * @param defaultValue the defaultvalue returned if there is no such property
+   *
+   * @return the value stored under the given property name
+   *
+   * @throws NullPointerException if <code>property</code> is null
+   */
+  public Object getProperty(String property, Object defaultValue)
+  {
+    if (property == null)
+    {
+      throw new NullPointerException();
+    }
+
+    Object retval = properties.get(property);
+    if (retval == null)
+    {
+      return defaultValue;
+    }
+    return retval;
+  }
+
+  /**
+   * Returns an enumeration of the property names.
+   *
+   * @return the enumeration.
+   */
+  protected Enumeration getPropertyNames()
+  {
+    return properties.keys();
+  }
+
+  /**
+   * Sets the properties from the given hashtable into the internal properties
+   * storage. All properties not contained in the given hashtable are removed.
+   *
+   * @param table the new properties collection.
+   */
+  public void setProperties (Hashtable table)
+  {
+    properties.clear();
+    properties.putAll(table);
   }
 }

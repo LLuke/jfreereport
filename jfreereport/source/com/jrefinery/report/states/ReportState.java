@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.25 2003/02/27 10:35:35 mungady Exp $
+ * $Id: ReportState.java,v 1.26 2003/02/28 12:02:39 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -69,6 +69,7 @@ import com.jrefinery.report.util.ReportProperties;
 import com.jrefinery.report.util.ReportPropertiesList;
 
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Captures state information for a report while it is in the process of being displayed or
@@ -813,4 +814,24 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     return (state.getAncestorHashcode() == getAncestorHashcode());
   }
 
+  /**
+   * Returns the errors that occured during the last event dispatching. This list
+   * gets cleared when the next event gets dispatched.
+   *
+   * @return the error list.
+   */
+  public List getErrors ()
+  {
+    return functions.getErrors();
+  }
+
+  /**
+   * Checks, whether the last report event caused errors.
+   *
+   * @return true, if there were errors recorded, false otherwise.
+   */
+  public boolean isErrorOccured ()
+  {
+    return functions.getErrors().isEmpty() == false;
+  }
 }

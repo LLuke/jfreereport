@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLProcessor.java,v 1.8 2003/02/25 15:42:44 taqua Exp $
+ * $Id: XMLProcessor.java,v 1.9 2003/02/26 13:58:04 mungady Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@ package com.jrefinery.report.targets.xml;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.ReportEventException;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
@@ -197,10 +198,19 @@ public class XMLProcessor
       // inner loop: process the complete report, calculate the function values
       // for the current level. Higher level functions are not available in the
       // dataRow.
+      boolean failOnError = (level == -1) &&
+          getReport().getReportConfiguration().isStrictErrorHandling();
       while (!state.isFinish())
       {
         ReportState oldstate = state;
         state = oldstate.copyState().advance();
+        if (failOnError)
+        {
+          if (state.isErrorOccured() == true)
+          {
+            throw new ReportEventException ("Failed to dispatch an event.", state.getErrors());
+          }
+        }
         if (!state.isFinish())
         {
           // if the report processing is stalled, throw an exception; an infinite
@@ -271,10 +281,17 @@ public class XMLProcessor
       XMLWriter w = (XMLWriter) state.getDataRow().get(XML_WRITER);
       w.setWriter(getWriter());
 
+      boolean failOnError =
+          getReport().getReportConfiguration().isStrictErrorHandling();
+
       while (!state.isFinish())
       {
         ReportState oldstate = state;
         state = oldstate.copyState().advance();
+        if (failOnError && state.isErrorOccured() == true)
+        {
+          throw new ReportEventException ("Failed to dispatch an event.", state.getErrors());
+        }
         if (!state.isFinish())
         {
           if (!state.isProceeding(oldstate))

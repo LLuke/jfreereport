@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SwingIconsDemoTableModel.java,v 1.1 2003/02/27 14:59:04 mungady Exp $
+ * $Id: SwingIconsDemoTableModel.java,v 1.2 2003/02/28 12:02:38 taqua Exp $
  *
  * Changes
  * -------
@@ -102,6 +102,7 @@ public class SwingIconsDemoTableModel extends IconTableModel
     {
       Log.warn("Failed to load the Icons", e);
     }
+    Log.debug ("Loaded: " + getRowCount() + " icons");
   }
 
   /**
@@ -125,6 +126,7 @@ public class SwingIconsDemoTableModel extends IconTableModel
           String name = getName(fullName);
           Image image = getImage(iconJar);
           Long bytes = new Long(ze.getSize());
+          Log.debug ("Add Icon: " + name);
           addIconEntry(name, category, image, bytes);
         }
         iconJar.closeEntry();

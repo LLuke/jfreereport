@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.36 2003/02/25 15:42:49 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.37 2003/02/26 13:58:05 mungady Exp $
  *
  * Changes
  * -------
@@ -304,6 +304,12 @@ public class ReportConfiguration
 
   /** The default 'disable logging' property value. */
   public static final String PRINT_OPERATION_COMMENT_DEFAULT = "false";
+
+  /** The 'disable logging' property key. */
+  public static final String STRICT_ERRORHANDLING = "com.jrefinery.report.StrictErrorHandling";
+
+  /** The default 'disable logging' property value. */
+  public static final String STRICT_ERRORHANDLING_DEFAULT = "false";
 
   /** The 'disable logging' property key. */
   public static final String WARN_INVALID_COLUMNS = "com.jrefinery.report.WarnInvalidColumns";
@@ -957,5 +963,38 @@ public class ReportConfiguration
   public void setEnableExportExcel(boolean enableExportExcel)
   {
     setConfigProperty(ENABLE_EXPORT_EXCEL, String.valueOf(enableExportExcel));
+  }
+
+  /**
+   * Checks, whether a stricter error handling is applied to the report processing.
+   * If set to true, then errors in the handling of report events will cause the report
+   * processing to fail. This is a safe-and-paranoid setting, life is simpler with
+   * this set to false. The property defaults to false, as this is the old behaviour.
+   * <p>
+   * A properly defined report should not throw exceptions, so it is safe to set this
+   * to true.
+   *
+   * @return true, if the strict handling is enabled, false otherwise.
+   */
+  public boolean isStrictErrorHandling()
+  {
+    return getConfigProperty(STRICT_ERRORHANDLING, STRICT_ERRORHANDLING_DEFAULT).equalsIgnoreCase("true");
+  }
+
+  /**
+   * Defines, whether a stricter error handling is applied to the report processing.
+   * If set to true, then errors in the handling of report events will cause the report
+   * processing to fail. This is a safe-and-paranoid setting, life is simpler with
+   * this set to false. The property defaults to false, as this is the old behaviour.
+   * <p>
+   * A properly defined report should not throw exceptions, so it is safe to set this
+   * to true.
+   *
+   * @param strictErrorHandling if set to true, then errors in the event dispatching will
+   * cause the reporting to fail.
+   */
+  public void setStrictErrorHandling(boolean strictErrorHandling)
+  {
+    setConfigProperty(STRICT_ERRORHANDLING, String.valueOf(strictErrorHandling));
   }
 }

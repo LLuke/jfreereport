@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.15 2003/02/25 09:55:54 taqua Exp $
+ * $Id: TableWriter.java,v 1.16 2003/02/25 15:42:32 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,8 @@ import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 
 import java.awt.geom.Rectangle2D;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 /**
  * The TableWriter is the content creation function used to collect the cell data.
@@ -72,6 +74,10 @@ public class TableWriter extends AbstractFunction
    */
   public static final String SHEET_NAME_FUNCTION_PROPERTY =
       "com.jrefinery.report.targets.table.TableWriter.SheetNameFunction";
+
+  /** The base class for localised resources. */
+  public static final String BASE_RESOURCE_CLASS =
+      "com.jrefinery.report.resources.JFreeReportResources";
 
   /** the layout support used for the band layout. */
   private LayoutSupport layoutSupport;
@@ -102,6 +108,9 @@ public class TableWriter extends AbstractFunction
 
   /** A flag that indicates that the current pagebreak will be the last one. */
   private boolean isLastPageBreak;
+
+  /** Locale-specific resources. */
+  private ResourceBundle resources;
 
   /**
    * Creates a new TableWriter. The dependency level is set to -1 and the maxwidth
@@ -378,6 +387,21 @@ public class TableWriter extends AbstractFunction
   }
 
   /**
+   * Retrieves the resources for this PreviewFrame. If the resources are not initialized,
+   * they get loaded on the first call to this method.
+   *
+   * @return this frames ResourceBundle.
+   */
+  public ResourceBundle getResources()
+  {
+    if (resources == null)
+    {
+      resources = ResourceBundle.getBundle(BASE_RESOURCE_CLASS);
+    }
+    return resources;
+  }
+
+  /**
    * Prints the PageHeader and all repeating group headers.
    *
    * @param event  the event.
@@ -388,7 +412,16 @@ public class TableWriter extends AbstractFunction
     // a new page has started, so reset the cursor ...
     setCursor(new TableWriterCursor());
 
-    String sheetName = null;
+    // is paginated ...
+     Object[] params = new Object[]{
+       new Integer(event.getState().getCurrentPage())
+     };
+     String sheetName =
+         MessageFormat.format(
+             getResources().getString("tabletarget.page"),
+             params
+         );
+
     if (getSheetNameFunction() != null)
     {
       sheetName = String.valueOf(getDataRow().get(getSheetNameFunction()));

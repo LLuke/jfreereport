@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.4 2003/02/25 20:15:38 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.5 2003/02/28 12:02:38 taqua Exp $
  *
  * Changes
  * --------
@@ -85,6 +85,7 @@ import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.NullOutputStream;
 import com.jrefinery.report.util.StringUtil;
 import com.jrefinery.report.util.ActionRadioButton;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.ui.ExtensionFileFilter;
 
 /**
@@ -365,6 +366,8 @@ public class PlainTextExportDialog extends JDialog implements ExportPlugin
    */
   private void init()
   {
+    setModal(true);
+    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     setTitle(getResources().getString("plain-text-exportdialog.dialogtitle"));
     fileChooser = new JFileChooser();
     fileChooser.addChoosableFileFilter(new ExtensionFileFilter("Plain text files", ".txt"));
@@ -793,8 +796,10 @@ public class PlainTextExportDialog extends JDialog implements ExportPlugin
     setVisible(true);
     if (isConfirmed() == false)
     {
+      Log.debug ("The report is not confirmed, bailing out.");
       return false;
     }
+    Log.debug ("The report is confirmed, processing report.");
     return writeReport(report);
   }
 
@@ -838,6 +843,7 @@ public class PlainTextExportDialog extends JDialog implements ExportPlugin
    */
   public boolean writeReport(JFreeReport report)
   {
+    Log.debug ("Start to write the report");
     OutputStream out = null;
     try
     {
@@ -868,6 +874,7 @@ public class PlainTextExportDialog extends JDialog implements ExportPlugin
       {
         if (out != null)
         {
+          Log.debug ("Closing the output stream");
           out.close();
         }
       }

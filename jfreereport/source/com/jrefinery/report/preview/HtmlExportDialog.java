@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited); 
  *
- * $Id: HtmlExportDialog.java,v 1.11 2003/02/25 14:45:32 mungady Exp $
+ * $Id: HtmlExportDialog.java,v 1.12 2003/02/25 20:15:36 taqua Exp $
  *
  * Changes
  * -------
@@ -82,6 +82,7 @@ import com.jrefinery.report.targets.table.html.DirectoryHtmlFilesystem;
 import com.jrefinery.report.targets.table.html.HtmlProcessor;
 import com.jrefinery.report.targets.table.html.StreamHtmlFilesystem;
 import com.jrefinery.report.targets.table.html.ZIPHtmlFilesystem;
+import com.jrefinery.report.targets.table.html.HtmlProducer;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.FilesystemFilter;
@@ -1238,6 +1239,7 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
    */
   public boolean performExport(JFreeReport report)
   {
+    setModal(true);
     initFromConfiguration(report.getReportConfiguration());
     setVisible(true);
     if (isConfirmed() == false)
@@ -1330,7 +1332,12 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
       }
     }
 
-    File dataDir = new File (f.getParentFile(), getDirDataFilename());
+    File dataDir = new File(getDirDataFilename());
+    if (dataDir.isAbsolute() == false)
+    {
+      dataDir = new File (f.getParentFile(), dataDir.getPath());
+    }
+
     if (dataDir.exists())
     {
       // dataDirectory does exist ... if no directory : fail
@@ -1379,7 +1386,9 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
       HtmlProcessor target = new HtmlProcessor(report);
       target.setFilesystem(new StreamHtmlFilesystem (out));
       target.setStrictLayout(isStrictLayout());
-      target.setEncoding(getEncoding());
+      target.setProperty(HtmlProducer.ENCODING, getEncoding());
+      target.setProperty(HtmlProducer.AUTHOR, getAuthor());
+      target.setProperty(HtmlProducer.TITLE, getHTMLTitle());
       target.setGenerateXHTML(isGenerateXHTML());
       target.processReport();
       out.close();
@@ -1423,7 +1432,9 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
       HtmlProcessor target = new HtmlProcessor(report);
       target.setFilesystem(new ZIPHtmlFilesystem (out, getZipDataFilename()));
       target.setStrictLayout(isStrictLayout());
-      target.setEncoding(getEncoding());
+      target.setProperty(HtmlProducer.ENCODING, getEncoding());
+      target.setProperty(HtmlProducer.AUTHOR, getAuthor());
+      target.setProperty(HtmlProducer.TITLE, getHTMLTitle());
       target.setGenerateXHTML(isGenerateXHTML());
       target.processReport();
       out.close();
@@ -1462,14 +1473,23 @@ public class HtmlExportDialog extends JDialog implements ExportPlugin
     try
     {
       File targetFile = new File(getDirFilename());
-      File targetDataFile = new File(targetFile.getParentFile(), getDirDataFilename());
+      File targetDataFile = new File(getDirDataFilename());
+      if (targetDataFile.isAbsolute() == false)
+      {
+        targetDataFile = new File (targetFile.getParentFile(), targetDataFile.getPath());
+      }
       if (targetDataFile.mkdirs() == false)
       {
-        throw new IOException ("Unable to create the mssing directories.");
+        if ((targetDataFile.exists() && targetDataFile.isDirectory()) == false)
+        {
+          throw new IOException ("Unable to create the mssing directories.");
+        }
       }
       DirectoryHtmlFilesystem fs = new DirectoryHtmlFilesystem(targetFile, targetDataFile);
       HtmlProcessor target = new HtmlProcessor(report);
-      target.setEncoding(getEncoding());
+      target.setProperty(HtmlProducer.ENCODING, getEncoding());
+      target.setProperty(HtmlProducer.AUTHOR, getAuthor());
+      target.setProperty(HtmlProducer.TITLE, getHTMLTitle());
       target.setStrictLayout(isStrictLayout());
       target.setGenerateXHTML(isGenerateXHTML());
       target.setFilesystem(fs);

@@ -130,7 +130,7 @@
         <mkdir dir="${projectdir}/javadoc" />
         <javadoc destdir="${projectdir}/javadoc"
                  windowtitle="JFreeReport Class Library"
-                 Overview="../source/overview.html">
+                 overview="../source/overview.html">
             <classpath refid="build.classpath" />
             <packageset dir="${projectdir}/source" defaultexcludes="yes">
                 <include name="com/jrefinery/report/**" />
@@ -191,6 +191,8 @@
         <fixcrlf srcdir="${projectdir}/distribution/source"
                  eol="crlf" eof="remove"
                  excludes="**/*.jpg **/*.gif **/*.png **/*.wmf" />
+        <fixcrlf srcdir="${projectdir}/distribution/ant"
+                 eol="crlf" eof="remove"/>
 
         <!-- make the zip file -->
         <zip zipfile="${projectdir}/${jfreereport.name}-${jfreereport.version}.zip">
@@ -254,6 +256,8 @@
         <fixcrlf srcdir="${projectdir}/distribution/source"
                  eol="lf" eof="remove"
                  excludes="**/*.jpg **/*.gif **/*.png **/*.wmf" />
+        <fixcrlf srcdir="${projectdir}/distribution/ant"
+                 eol="lf" eof="remove"/>
 
         <!-- make the tar.gz file -->
         <tar tarfile="${projectdir}/${jfreereport.name}-${jfreereport.version}.tar">
