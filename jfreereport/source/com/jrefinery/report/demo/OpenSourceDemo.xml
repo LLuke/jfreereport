@@ -82,6 +82,8 @@
     <items height="0"
            fontname="SansSerif" fontstyle="plain" fontsize="9">
 
+        <rectangle x="0" y="0" width="100%" height="100%" color="#0000FF" draw="true" fill="false"/>
+
         <string-field x="0" y="7" width="140" height="10" alignment="left"
                       fontstyle="bold" fontsize="10"
                       fieldname="Name"/>

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.33 2002/12/09 03:56:34 taqua Exp $
+ * $Id: ReportPane.java,v 1.34 2002/12/10 15:47:01 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -53,6 +53,7 @@ import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
 import com.jrefinery.report.targets.pageable.PageableReportProcessor;
 import com.jrefinery.report.targets.pageable.ReportStateList;
+import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.util.Log;
 
 import javax.swing.JComponent;
@@ -629,6 +630,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
     {
       G2OutputTarget target = new G2OutputTarget (g2, pf);
       getProcessor().setOutputTarget(target);
+      target.open();
       if (!isPaginated ())
       {
         repaginate ();
@@ -642,12 +644,16 @@ public class ReportPane extends JComponent implements Printable, Pageable
       ReportState state = getPageStateList ().get (pageIndex);
       getProcessor().processPage (state, target);
       getProcessor().setOutputTarget(null);
+      target.close();
+    }
+    catch (OutputTargetException oe)
+    {
+      Log.error ("Report generated an error", oe);
+      setError (oe);
     }
     catch (ReportProcessingException rpe)
     {
-      //Log.error ("Report generated an error", rpe);
-
-      rpe.printStackTrace ();
+      Log.error ("Report generated an error", rpe);
       setError (rpe);
     }
     return PAGE_EXISTS;

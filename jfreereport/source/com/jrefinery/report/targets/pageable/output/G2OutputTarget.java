@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.4 2002/12/11 01:10:41 mungady Exp $
+ * $Id: G2OutputTarget.java,v 1.5 2002/12/11 23:32:26 taqua Exp $
  *
  * Changes
  * -------
@@ -458,7 +458,6 @@ public class G2OutputTarget extends AbstractOutputTarget
     float baseline = (float) fm.getAscent();
     double cFact = getFont().getSize2D() / fm.getHeight();
 
-    Log.debug ("G2: " + getFont());
     g2.drawString(text, 0.0f, (float) (baseline * cFact));
   }
 
@@ -536,7 +535,6 @@ public class G2OutputTarget extends AbstractOutputTarget
     public G2SizeCalculator(Font font)
     {
       this.font = font;
-      Log.debug ("Created FontSizeCalculator for: " + font);
     }
 
     /**

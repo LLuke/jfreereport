@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.3 2002/12/07 20:53:13 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.4 2002/12/11 01:10:41 mungady Exp $
  *
  * Changes
  * -------
@@ -151,6 +151,7 @@ public class StaticLayoutManager implements BandLayoutManager
     if (e.getStyle().getBooleanStyleProperty(DYNAMIC_HEIGHT))
     {
       retval = getElementContentBounds(retval, e, containerBounds);
+      Log.debug ("Calculated for Element: " + retval);
     }
 
     return retval;
@@ -160,11 +161,11 @@ public class StaticLayoutManager implements BandLayoutManager
    * Calculation rules: Take the width of given bounds to calculate a height based
    * on the content. Then cut the content to a maybe defined max-value.
    *
-   * @param bounds  ??.
+   * @param bounds  the bounds of the element calculated so far.
    * @param e  the element.
-   * @param conBounds  ??.
+   * @param conBounds  the bounds of the surrounding container.
    *
-   * @return ??.
+   * @return the new elements dimension.
    */
   private Dimension2D getElementContentBounds (Dimension2D bounds, Element e, Rectangle2D conBounds)
   {
@@ -192,6 +193,10 @@ public class StaticLayoutManager implements BandLayoutManager
     {
       Content content = mod.createContentForElement(e, elementBounds, getOutputTarget());
       Rectangle2D contentBounds = content.getMinimumContentSize();
+      Log.debug ("Calc: ElementB.    : " + bounds);
+      Log.debug ("Calc: ContainerB.  : " + conBounds);
+      Log.debug ("Calc: ElementBounds: " + elementBounds);
+      Log.debug ("Calc: ContentBounds: " + contentBounds);
       FloatDimension retval = new FloatDimension(Math.min(w, maxSize.getWidth()),
                                 Math.min (contentBounds.getHeight(), maxSize.getHeight()));
       return retval;

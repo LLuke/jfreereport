@@ -65,16 +65,16 @@
         <label x="400" y="340" width="50" height="12" alignment="left">Total</label>
         <line x1="0" y1="353" x2="0" y2="353" weight="0.5"/>
       </groupheader>
-      <groupfooter height="145" fontname="SansSerif" fontstyle="plain" fontsize="11" pagebreak="false">
+      <groupfooter height="0" fontname="SansSerif" fontstyle="plain" fontsize="11" pagebreak="false">
         <rectangle x="0" y="0" width="100%" height="100%" color="#0000FF" draw="true" fill="false"/>
         <line x1="0" y1="10" x2="0" y2="10" weight="0.5"/>
         <label x="200" y="20" width="200" height="12" alignment="left">Total Sum of</label>
         <number-field x="400" y="20" width="70" height="12" alignment="left" format="'$' #,##0.00" fieldname="totalsum"/>
         <line x1="200" y1="34" x2="450" y2="34" weight="0.5"/>
         <line x1="200" y1="37" x2="450" y2="37" weight="0.5"/>
-        <label x="0" y="84" width="100%" height="36" alignment="left" fontname="Arial Unicode MS" dynamic="true" vertical-alignment="top"
+        <label x="0" y="84" width="100%" height="0" alignment="left" fontname="Arial Unicode MS" dynamic="true" vertical-alignment="top"
 >!We !thank you for your order and hope to see you soon again. Please pay your invoice within the next 10 days.
-(is not yet working, marked as bug)
+
 (2 blank lines)
 
 
