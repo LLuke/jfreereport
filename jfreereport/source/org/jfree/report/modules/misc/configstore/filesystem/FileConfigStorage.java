@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FileConfigStorage.java,v 1.11 2005/01/25 00:08:22 taqua Exp $
+ * $Id: FileConfigStorage.java,v 1.12 2005/02/23 21:05:21 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -130,7 +130,7 @@ public class FileConfigStorage implements ConfigStorage
   {
     if (ConfigFactory.isValidPath(configPath) == false)
     {
-      throw new IllegalArgumentException("The give path is not valid.");
+      throw new IllegalArgumentException("The given path is not valid.");
     }
     try
     {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.18 2005/02/23 19:31:32 taqua Exp $
+ * $Id: Element.java,v 1.19 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -708,6 +708,10 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    */
   protected final void connectDataSource (final DataSource ds)
   {
+    if (reportDefinition == null)
+    {
+      return;
+    }
     if (ds instanceof ReportConnectable)
     {
       final ReportConnectable rc = (ReportConnectable) ds;
@@ -727,6 +731,11 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    */
   protected final void disconnectDataSource (final DataSource ds)
   {
+    if (reportDefinition == null)
+    {
+      return;
+    }
+
     if (ds instanceof ReportConnectable)
     {
       final ReportConnectable rc = (ReportConnectable) ds;
