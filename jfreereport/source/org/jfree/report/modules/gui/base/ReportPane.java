@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.12 2003/12/21 20:51:42 taqua Exp $
+ * $Id: ReportPane.java,v 1.13 2004/03/16 15:09:24 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -675,6 +675,7 @@ public class ReportPane extends JComponent
       final int pageNumber = getPageNumber();
       if (pageNumber > 0)
       {
+        // todo: warning Not Physical page!
         final ReportState state = getPageStateList().get(pageNumber - 1);
         try
         {
@@ -724,6 +725,7 @@ public class ReportPane extends JComponent
         return NO_SUCH_PAGE;
       }
 
+      // todo: warning: Not physical page
       final ReportState state = getPageStateList().get(pageIndex);
       getProcessor().processPage(state);
       getProcessor().setOutputTarget(null);

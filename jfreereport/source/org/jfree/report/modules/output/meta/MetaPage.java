@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: MetaPage.java,v 1.1 2004/03/16 18:37:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,21 +45,21 @@ public class MetaPage
   private MetaBand[] bands;
   private boolean empty;
 
-  public MetaPage(MetaBand[] bands)
+  public MetaPage(final MetaBand[] bands)
   {
     this.bands = bands;
-    this.empty = computeEmpty(bands);
+    this.empty = isEmpty(bands);
     Log.debug (this);
   }
 
-  public static boolean computeEmpty (MetaElement[] elements)
+  public static boolean isEmpty (final MetaElement[] elements)
   {
     for (int i = 0; i < elements.length; i++)
     {
 
       if (elements[i] instanceof MetaBand)
       {
-        MetaBand b = (MetaBand) elements[i];
+        final MetaBand b = (MetaBand) elements[i];
         if (b.isSpooled() == false)
         {
           return false;
@@ -81,7 +81,7 @@ public class MetaPage
 
   public String toString ()
   {
-    StringBuffer s = new StringBuffer();
+    final StringBuffer s = new StringBuffer();
     s.append("MetaPage={size=");
     s.append(bands.length);
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.15 2003/12/21 20:51:42 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.16 2004/03/16 15:09:50 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import org.jfree.report.Band;
 import org.jfree.report.Group;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.util.Log;
 import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.event.PrepareEventListener;
 import org.jfree.report.event.ReportEvent;
@@ -643,8 +644,10 @@ public strictfp class SimplePageLayouter extends PageLayouter
     // the spooling is now slightly different ... 
     final boolean spool = true;
     final Rectangle2D bounds = doLayout(b, true);
+    Log.debug ("PageLayouter: " + bounds);
     bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(),
         bounds.getWidth(), bounds.getHeight());
+    Log.debug ("PageLayouter: " + bounds);
     return doPrint(bounds, b, spool, false);
   }
 
@@ -702,6 +705,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
           final MetaBand rootBand = producer.createBand(band, spool);
           if (rootBand != null)
           {
+            Log.error(rootBand.getBounds());
             addRootMetaBand(rootBand);
           }
           cursor.advance(height);

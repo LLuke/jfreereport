@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Content.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: Content.java,v 1.3 2004/03/16 15:09:22 taqua Exp $
  *
  * Changes
  * -------
@@ -82,24 +82,5 @@ public interface Content
    * @return the content (possibly <code>null</code>).
    */
   public Content getContentForBounds(Rectangle2D bounds);
-
-  /**
-   * Returns the number of sub-content items for this item.
-   * <P>
-   * Only subclasses of {@link org.jfree.report.content.ContentContainer} will
-   * return non-zero results.
-   *
-   * @return the number of sub-content items.
-   */
-  public int getContentPartCount();
-
-  /**
-   * Returns a sub-content item.
-   *
-   * @param part  the sub-content index (zero-based).
-   *
-   * @return the subcontent (possibly null).
-   */
-  public Content getContentPart(int part);
 
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: MetaBand.java,v 1.1 2004/03/16 18:37:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,6 +38,8 @@
 
 package org.jfree.report.modules.output.meta;
 
+import java.util.Arrays;
+
 import org.jfree.report.content.Content;
 import org.jfree.report.style.ElementStyleSheet;
 
@@ -46,14 +48,15 @@ public class MetaBand extends MetaElement
   private MetaElement[] elements;
   private boolean spooled;
 
-  public MetaBand(Content elementContent, ElementStyleSheet style, MetaElement[] elements, boolean spool)
+  public MetaBand(final Content elementContent, final ElementStyleSheet style,
+                  final MetaElement[] elements, final boolean spool)
   {
     super(elementContent, style);
     this.elements = elements;
     this.spooled = spool;
   }
 
-  public MetaElement getElementAt (int i)
+  public MetaElement getElementAt (final int i)
   {
     return elements[i];
   }
@@ -65,7 +68,7 @@ public class MetaBand extends MetaElement
 
   public MetaElement[] toArray ()
   {
-    MetaElement[] newElements = new MetaElement[elements.length];
+    final MetaElement[] newElements = new MetaElement[elements.length];
     System.arraycopy(elements, 0, newElements, 0, elements.length);
     return newElements;
   }
@@ -78,7 +81,7 @@ public class MetaBand extends MetaElement
 
   public String toString ()
   {
-    StringBuffer s = new StringBuffer();
+    final StringBuffer s = new StringBuffer();
     s.append("MetaBand={size=");
     s.append(elements.length);
     s.append(", spooled=");
@@ -96,5 +99,41 @@ public class MetaBand extends MetaElement
     }
     s.append("}");
     return s.toString();
+  }
+
+  public boolean equals (final Object o)
+  {
+    if (this == o)
+    {
+      return true;
+    }
+    if (!(o instanceof MetaBand))
+    {
+      return false;
+    }
+    if (!super.equals(o))
+    {
+      return false;
+    }
+
+    final MetaBand metaBand = (MetaBand) o;
+
+    if (spooled != metaBand.spooled)
+    {
+      return false;
+    }
+    if (!Arrays.equals(elements, metaBand.elements))
+    {
+      return false;
+    }
+
+    return true;
+  }
+
+  public int hashCode ()
+  {
+    int result = super.hashCode();
+    result = 29 * result + (spooled ? 1 : 0);
+    return result;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: MetaElement.java,v 1.1 2004/03/16 18:37:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -67,27 +67,31 @@ public class MetaElement implements Cloneable
   private ElementStyleSheet styleProperties;
   private Content elementContent;
 
-  public MetaElement(Content elementContent, ElementStyleSheet style)
+  public MetaElement(final Content elementContent, final ElementStyleSheet style)
   {
     if (elementContent == null)
     {
       throw new NullPointerException("ElementContent must not be null.");
     }
+    if (style == null)
+    {
+      throw new NullPointerException("Style is null.");
+    }
     this.styleProperties = style;
     this.elementContent = elementContent;
   }
 
-  public Object getProperty (StyleKey key)
+  public Object getProperty (final StyleKey key)
   {
     return styleProperties.getStyleProperty(key);
   }
 
-  public final boolean getBooleanProperty (StyleKey key)
+  public final boolean getBooleanProperty (final StyleKey key)
   {
     return styleProperties.getBooleanStyleProperty(key);
   }
 
-  public Object getProperty (StyleKey key, Object value)
+  public Object getProperty (final StyleKey key, final Object value)
   {
     return styleProperties.getStyleProperty(key, value);
   }
@@ -109,7 +113,7 @@ public class MetaElement implements Cloneable
 
   public String toString ()
   {
-    StringBuffer s = new StringBuffer();
+    final StringBuffer s = new StringBuffer();
     s.append("MetaElement={bounds=");
     s.append(getBounds());
     s.append(", content=");
@@ -132,9 +136,41 @@ public class MetaElement implements Cloneable
    */
   public Object clone() throws CloneNotSupportedException
   {
-    // content is immutable...
-    MetaElement e = (MetaElement) super.clone();
-    e.styleProperties = (ElementStyleSheet) styleProperties.clone();
+    // content and style is immutable...
+    final MetaElement e = (MetaElement) super.clone();
     return e;
+  }
+
+  public boolean equals (final Object o)
+  {
+    if (this == o)
+    {
+      return true;
+    }
+    if (!(o instanceof MetaElement))
+    {
+      return false;
+    }
+
+    final MetaElement element = (MetaElement) o;
+
+    if (!elementContent.equals(element.elementContent))
+    {
+      return false;
+    }
+    if (!styleProperties.equals(element.styleProperties))
+    {
+      return false;
+    }
+
+    return true;
+  }
+
+  public int hashCode ()
+  {
+    int result;
+    result = styleProperties.hashCode();
+    result = 29 * result + elementContent.hashCode();
+    return result;
   }
 }

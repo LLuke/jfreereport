@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContent.java,v 1.5 2003/09/13 15:14:40 taqua Exp $
+ * $Id: ImageContent.java,v 1.6 2004/03/16 15:09:22 taqua Exp $
  *
  * Changes
  * -------
@@ -84,28 +84,6 @@ public strictfp class ImageContent implements Content
   public ContentType getContentType()
   {
     return ContentType.IMAGE;
-  }
-
-  /**
-   * This class does not store sub-content items, so this method always returns zero.
-   *
-   * @return always zero, image content does never contains multiple parts.
-   */
-  public int getContentPartCount()
-  {
-    return 0;
-  }
-
-  /**
-   * This class does not store sub-content items, so this method always returns <code>null</code>.
-   *
-   * @param part  ignored.
-   *
-   * @return <code>null</code>.
-   */
-  public Content getContentPart(final int part)
-  {
-    return null;
   }
 
   /**

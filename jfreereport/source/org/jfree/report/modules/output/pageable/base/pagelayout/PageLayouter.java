@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.10 2003/12/21 20:51:42 taqua Exp $
+ * $Id: PageLayouter.java,v 1.11 2004/03/16 15:09:50 taqua Exp $
  *
  * Changes
  * -------
@@ -182,7 +182,7 @@ public abstract strictfp class PageLayouter extends AbstractFunction
     MetaElement[] elements = (MetaElement[]) bands.toArray
         (new MetaElement[bands.size()]);
 
-    return MetaPage.computeEmpty(elements);
+    return MetaPage.isEmpty(elements);
   }
 
   /**
@@ -565,15 +565,15 @@ public abstract strictfp class PageLayouter extends AbstractFunction
 
   private ArrayList bands = new ArrayList();
 
-  protected void addRootMetaBand (MetaBand band)
+  protected void addRootMetaBand (final MetaBand band)
   {
     bands.add (band);
   }
 
   public MetaPage getMetaPage ()
   {
-    MetaBand[] bandArray = (MetaBand[]) bands.toArray(new MetaBand[bands.size()]);
-    MetaPage p = new MetaPage(bandArray);
+    final MetaBand[] bandArray = (MetaBand[]) bands.toArray(new MetaBand[bands.size()]);
+    final MetaPage p = new MetaPage(bandArray);
     return p;
   }
 }

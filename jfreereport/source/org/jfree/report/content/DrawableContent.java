@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableContent.java,v 1.3 2003/09/09 02:29:00 taqua Exp $
+ * $Id: DrawableContent.java,v 1.4 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -145,31 +145,6 @@ public strictfp class DrawableContent implements Content
 
     return new DrawableContent(newContainer, new Point2D.Float((float) newBounds.getX(),
         (float) newBounds.getY()));
-  }
-
-  /**
-   * Returns the number of sub-content items for this item.
-   * <P>
-   * Only subclasses of {@link ContentContainer} will
-   * return non-zero results.
-   *
-   * @return the number of sub-content items.
-   */
-  public int getContentPartCount()
-  {
-    return 0;
-  }
-
-  /**
-   * Returns a sub-content item.
-   *
-   * @param part  the sub-content index (zero-based).
-   *
-   * @return the subcontent (possibly null).
-   */
-  public Content getContentPart(final int part)
-  {
-    return null;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.12 2004/03/16 15:09:50 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.13 2004/03/16 18:37:08 taqua Exp $
  *
  * Changes
  * -------
@@ -439,6 +439,7 @@ public class PageableReportProcessor
 
     for (int i = 0; i < list.size(); i++)
     {
+      // todo warning: Not physical page!
       final ReportState rs = list.get(i);
       // fire an event for every generated page. It does not really matter
       // if that policy is not very informative, it is sufficient ...
@@ -805,7 +806,6 @@ public class PageableReportProcessor
                                 final OutputTarget output)
     throws OutputTargetException
   {
-    System.out.println(page);
     for (int i = 0; i < physPage.getPageCount(); i++)
     {
       output.printPage(page, physPage, i);

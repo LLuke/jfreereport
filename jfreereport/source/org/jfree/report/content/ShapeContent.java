@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContent.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: ShapeContent.java,v 1.3 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes
  * -------
@@ -124,28 +124,6 @@ public strictfp class ShapeContent implements Content
   public Rectangle2D getMinimumContentSize()
   {
     return getBounds();
-  }
-
-  /**
-   * This class does not store sub-content items, so this method always returns zero.
-   *
-   * @return always zero, as ShapeContent does not consist of multiple content parts.
-   */
-  public int getContentPartCount()
-  {
-    return 0;
-  }
-
-  /**
-   * This class does not store sub-content items, so this method always returns <code>null</code>.
-   *
-   * @param part  ignored.
-   *
-   * @return <code>null</code>.
-   */
-  public Content getContentPart(final int part)
-  {
-    return null;
   }
 
   /**

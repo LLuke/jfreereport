@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextLine.java,v 1.6 2003/09/15 18:26:50 taqua Exp $
+ * $Id: TextLine.java,v 1.7 2004/03/16 15:09:22 taqua Exp $
  *
  * Changes
  * -------
@@ -153,28 +153,6 @@ public strictfp class TextLine implements Content
   public String getContent()
   {
     return content;
-  }
-
-  /**
-   * This class does not store sub-content items, so this method always returns zero.
-   *
-   * @return always zero, a text line is atomic.
-   */
-  public int getContentPartCount()
-  {
-    return 0;
-  }
-
-  /**
-   * This class does not store sub-content items, so this method always returns <code>null</code>.
-   *
-   * @param part  ignored.
-   *
-   * @return <code>null</code>.
-   */
-  public Content getContentPart(final int part)
-  {
-    return null;
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentContainer.java,v 1.3 2003/08/25 14:29:28 taqua Exp $
+ * $Id: ContentContainer.java,v 1.4 2003/09/13 15:14:39 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,7 @@ import java.util.ArrayList;
  *
  * @author Thomas Morgner
  */
-public strictfp class ContentContainer implements Content
+public strictfp class ContentContainer implements MultipartContent
 {
   /** Storage for the content items. */
   private final ArrayList content;

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.5 2003/08/25 14:29:31 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.6 2004/03/16 15:09:50 taqua Exp $
  *
  * Changes
  * -------
@@ -62,6 +62,7 @@ import org.jfree.report.ElementAlignment;
 import org.jfree.report.ImageContainer;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.ShapeElement;
+import org.jfree.report.util.Log;
 import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentFactory;
 import org.jfree.report.content.ContentType;
@@ -74,6 +75,7 @@ import org.jfree.report.content.ShapeContent;
 import org.jfree.report.content.ShapeContentFactoryModule;
 import org.jfree.report.content.TextContentFactoryModule;
 import org.jfree.report.content.TextLine;
+import org.jfree.report.content.MultipartContent;
 import org.jfree.report.modules.output.meta.MetaBand;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.meta.MetaPage;
@@ -108,6 +110,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
   {
     properties = new Properties();
     contentFactory = createContentFactory();
+    operationBounds = new Rectangle2D.Float();
   }
 
   /**
@@ -256,9 +259,14 @@ public abstract class AbstractOutputTarget implements OutputTarget
       if (pageBounds.intersects(bounds))
       {
         // if so, then print
+        Log.debug ("Printing .." + pageBounds + " vs . " + bounds);
         printBand(b, pageBounds.createIntersection(bounds));
       }
+      else
+      {
       // else ignore
+        Log.debug ("Ignoring .." + pageBounds + " vs . " + bounds);
+      }
     }
     endPage();
   }
@@ -284,56 +292,92 @@ public abstract class AbstractOutputTarget implements OutputTarget
       // check if bounds are within the specified page bounds
       if (bounds.intersects(elementBounds))
       {
+        Log.debug ("Prnt2: " + bounds + " vs. " + elementBounds);
         if (e instanceof MetaBand)
         {
+          Log.debug ("Band: ");
           printBand((MetaBand) e, bounds.createIntersection(elementBounds));
         }
         else
         {
+          Log.debug ("Element: ");
           printElement(e, bounds.createIntersection(elementBounds));
         }
+      }
+      else
+      {
+        Log.debug ("Igno2: " + bounds + " vs. " + elementBounds);
       }
     }
   }
 
+  // todo Change the content processing.
+  // dig into the containers and extract the root elements ..
+  // print these content objects ...
   protected void printElement (final MetaElement element, final Rectangle2D bounds)
     throws OutputTargetException
   {
-    if (element.getContent().getContentType().equals(ContentType.TEXT))
+    final Content content = element.getContent().getContentForBounds(bounds);
+    if (content != null)
     {
-      printTextElement(element, bounds);
-    }
-    else if (element.getContent().getContentType().equals(ContentType.SHAPE))
-    {
-      printShapeElement(element, bounds);
-    }
-    else if (element.getContent().getContentType().equals(ContentType.IMAGE))
-    {
-      printImageElement(element, bounds);
-    }
-    else if (element.getContent().getContentType().equals(ContentType.DRAWABLE))
-    {
-      printDrawableElement(element, bounds);
-    }
-    else if (element.getContent().getContentType().equals(ContentType.CONTAINER))
-    {
-      printContainerElement(element, bounds);
+      printContent(element, content);
     }
   }
 
-  protected void printTextElement (final MetaElement element, final Rectangle2D bounds)
+  protected void printContent (final MetaElement element, final Content content)
+          throws OutputTargetException
+  {
+    Log.debug ("CType: " + content.getContentType());
+    if (content.getContentType().equals(ContentType.TEXT))
+    {
+      printTextContent(element, content);
+    }
+    else if (element.getContent().getContentType().equals(ContentType.SHAPE))
+    {
+      printShapeContent(element, content);
+    }
+    else if (element.getContent().getContentType().equals(ContentType.IMAGE))
+    {
+      printImageContent(element, content);
+    }
+    else if (element.getContent().getContentType().equals(ContentType.DRAWABLE))
+    {
+      printDrawableContent(element, content);
+    }
+    else if (element.getContent().getContentType().equals(ContentType.CONTAINER))
+    {
+      printContainerContent(element, content);
+    }
+    else
+    {
+      Log.warn ("Unknown content");
+    }
+
+    if (content instanceof MultipartContent)
+    {
+      final MultipartContent mc = (MultipartContent) content;
+      for (int i = 0; i < mc.getContentPartCount(); i++)
+      {
+        printContent (element, mc.getContentPart(i));
+      }
+
+    }
+  }
+
+  protected void printTextContent
+          (final MetaElement element, final Content content)
     throws OutputTargetException
   {
     if (element == null)
     {
       throw new NullPointerException("element is null");
     }
+    Log.debug("Print Text Content");
     // todo
     // we assume here, that the content bounds are also defined for the global
     // range, or we have to 'adjust' them now.
     //final Rectangle2D bounds = element.getBounds();
-    final Content c = element.getContent().getContentForBounds(bounds);
-    if (c == null)
+    if (content instanceof TextLine == false)
     {
       return;
     }
@@ -343,7 +387,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
 
     // Paint
     final Paint extpaint = (Paint) element.getProperty(ElementStyleSheet.EXTPAINT);
-    if (isPaintSupported(extpaint))
+    if (extpaint != null && isPaintSupported(extpaint))
     {
       updatePaint(extpaint);
     }
@@ -353,26 +397,30 @@ public abstract class AbstractOutputTarget implements OutputTarget
       updatePaint(paint);
     }
 
+    final Rectangle2D bounds = content.getBounds();
     final ElementAlignment va
         = (ElementAlignment) element.getProperty(ElementStyleSheet.VALIGNMENT);
     final VerticalBoundsAlignment vba = AlignmentTools.getVerticalLayout(va, bounds);
     // calculate the horizontal shift ... is applied later
 
-    final Rectangle2D cBounds = c.getMinimumContentSize();
+    final Rectangle2D cBounds = content.getMinimumContentSize();
     float vbaShift = (float) cBounds.getY();
-    vbaShift = (float) vba.align(c.getMinimumContentSize()).getY() - vbaShift;
+    vbaShift = (float) vba.align(cBounds).getY() - vbaShift;
 
     final ElementAlignment ha
         = (ElementAlignment) element.getProperty(ElementStyleSheet.ALIGNMENT);
 
     final HorizontalBoundsAlignment hba = AlignmentTools.getHorizontalLayout(ha, bounds);
-    printTextContent(c, hba, vbaShift);
+    printTextLine((TextLine) content, hba, vbaShift);
   }
 
-  protected void printShapeElement (final MetaElement element, final Rectangle2D bounds)
+  protected void printShapeContent (final MetaElement element, final Content content)
       throws OutputTargetException
   {
-    final Content value = element.getContent();
+    if (content instanceof ShapeContent == false)
+    {
+      return;
+    }
     //final Rectangle2D bounds = element.getBounds();
 
     final boolean shouldDraw = element.getBooleanProperty(ShapeElement.DRAW_SHAPE);
@@ -383,12 +431,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
       return;
     }
 
-    final ShapeContent sc = (ShapeContent) value.getContentForBounds(bounds);
-    if (sc == null)
-    {
-      return;
-    }
-
+    final ShapeContent sc = (ShapeContent) content;
     setOperationBounds(AlignmentTools.computeAlignmentBounds(element));
 
     final Stroke stroke = (Stroke) element.getProperty(ElementStyleSheet.STROKE);
@@ -417,41 +460,39 @@ public abstract class AbstractOutputTarget implements OutputTarget
     }
   }
 
-  protected void printImageElement (final MetaElement element, final Rectangle2D bounds)
+  protected void printImageContent (final MetaElement element, final Content content)
       throws OutputTargetException
   {
-    final Content value = element.getContent();
-    final ImageContent ic = (ImageContent) value.getContentForBounds(bounds);
-
-    if (ic == null)
+    if (content instanceof ImageContent == false)
     {
       return;
     }
+    final ImageContent ic = (ImageContent) content;
     setOperationBounds(AlignmentTools.computeAlignmentBounds(element));
     drawImage(ic.getContent());
   }
 
 
-  protected void printDrawableElement (final MetaElement element, final Rectangle2D bounds)
+  protected void printDrawableContent (final MetaElement element, final Content content)
       throws OutputTargetException
   {
-    final Content value = element.getContent();
-    final DrawableContent content = (DrawableContent) value.getContentForBounds(bounds);
-    if (content == null)
+    if (content instanceof DrawableContent == false)
     {
       return;
     }
-    setOperationBounds(bounds);
-    drawDrawable (content.getContent());
+    final DrawableContent drawableContent = (DrawableContent) content;
+    setOperationBounds(content.getBounds());
+    drawDrawable (drawableContent.getContent());
   }
 
-  protected void printContainerElement (final MetaElement element, final Rectangle2D bounds)
+  protected void printContainerContent
+          (final MetaElement element, final Content content)
   {
   }
 
   protected Rectangle2D getOperationBounds()
   {
-    return operationBounds;
+    return operationBounds.getBounds2D();
   }
 
   /**
@@ -463,7 +504,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    */
   protected void setOperationBounds(final Rectangle2D operationBounds)
   {
-    this.operationBounds = operationBounds;
+    this.operationBounds.setRect(operationBounds);
   }
 
   protected void setPageBounds(final Rectangle2D pageBounds)
@@ -484,25 +525,15 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * @param hba  the bounds.
    * @param vbaShift  the vertical bounds alignment shifting.
    */
-  protected void printTextContent(final Content c, final HorizontalBoundsAlignment hba,
+  protected void printTextLine (final TextLine c, final HorizontalBoundsAlignment hba,
                                   final float vbaShift)
   {
-    if (c instanceof TextLine)
-    {
-      final String value = ((TextLine) c).getContent();
-      final Rectangle2D abounds = hba.align(c.getBounds());
-      abounds.setRect(abounds.getX(), abounds.getY() + vbaShift,
-          abounds.getWidth(), abounds.getHeight());
-      setOperationBounds(abounds);
-      printText(value);
-    }
-    else
-    {
-      for (int i = 0; i < c.getContentPartCount(); i++)
-      {
-        printTextContent(c.getContentPart(i), hba, vbaShift);
-      }
-    }
+    final String value = c.getContent();
+    final Rectangle2D abounds = hba.align(c.getBounds());
+    abounds.setRect(abounds.getX(), abounds.getY() + vbaShift,
+        abounds.getWidth(), abounds.getHeight());
+    setOperationBounds(abounds);
+    printText(value);
   }
 
   protected abstract void printText (String text);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: MetaBandProducer.java,v 1.1 2004/03/16 18:37:01 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,9 +49,11 @@ import org.jfree.report.ShapeElement;
 import org.jfree.report.TextElement;
 import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.content.EmptyContent;
+import org.jfree.report.content.Content;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.ElementLayoutInformation;
+import org.jfree.report.util.Log;
 
 /**
  * The MetaBandProducer is responsible for converting a report band
@@ -65,6 +67,10 @@ public class MetaBandProducer
 
   public MetaBandProducer(final LayoutSupport support)
   {
+    if (support == null)
+    {
+      throw new NullPointerException("LayoutSupport is null.");
+    }
     this.support = support;
   }
 
@@ -88,12 +94,15 @@ public class MetaBandProducer
       return null;
     }
 
+    Log.warn ("ParentX: " + parentX + " Y: " + parentY + " - " + band.getName());
+
     final ArrayList metaElements = new ArrayList();
     final Element[] elements = band.getElementArray();
     final Rectangle2D bounds = (Rectangle2D)
             band.getStyle ().getStyleProperty (ElementStyleSheet.BOUNDS);
     final int x = (int) bounds.getX () + parentX;
     final int y = (int) bounds.getY () + parentY;
+    Log.warn ("OwnX: " + x + " Y: " + y + " - " + band.getName());
 
     for (int i = 0; i < elements.length; i++)
     {
@@ -124,8 +133,9 @@ public class MetaBandProducer
     final MetaElement[] metaElementArray = (MetaElement[]) metaElements.toArray
         (new MetaElement[metaElements.size()]);
 
-    return new MetaBand(EmptyContent.getDefaultEmptyContent(), createStyleForBand(band, x, y),
-        metaElementArray, spool);
+    return new MetaBand(EmptyContent.getDefaultEmptyContent(),
+            createStyleForBand(band, parentX, parentY),
+            metaElementArray, spool);
   }
 
   /**
@@ -155,10 +165,13 @@ public class MetaBandProducer
     }
 
     final ElementStyleSheet styleSheet = createStyleForElement(e, ax, ay);
-    final ElementLayoutInformation eli = new ElementLayoutInformation
-        ((Rectangle2D) styleSheet.getStyleProperty(ElementStyleSheet.BOUNDS));
+    final Rectangle2D bounds = (Rectangle2D)
+            styleSheet.getStyleProperty(ElementStyleSheet.BOUNDS);
+    final ElementLayoutInformation eli = new ElementLayoutInformation(bounds);
+    final Content content =
+            support.getContentFactory().createContentForElement(e, eli, support);
     final MetaElement element = new MetaElement
-        (support.getContentFactory().createContentForElement(e, eli, support), styleSheet);
+        (content, styleSheet);
     return element;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: EmptyContent.java,v 1.1 2004/03/16 15:34:26 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -77,34 +77,9 @@ public class EmptyContent implements Content
    *
    * @return the content (possibly <code>null</code>).
    */
-  public Content getContentForBounds(Rectangle2D bounds)
+  public Content getContentForBounds(final Rectangle2D bounds)
   {
     return null;
-  }
-
-  /**
-   * Returns a sub-content item.
-   *
-   * @param part  the sub-content index (zero-based).
-   *
-   * @return the subcontent (possibly null).
-   */
-  public Content getContentPart(int part)
-  {
-    return null;
-  }
-
-  /**
-   * Returns the number of sub-content items for this item.
-   * <P>
-   * Only subclasses of {@link ContentContainer} will
-   * return non-zero results.
-   *
-   * @return the number of sub-content items.
-   */
-  public int getContentPartCount()
-  {
-    return 0;
   }
 
   /**

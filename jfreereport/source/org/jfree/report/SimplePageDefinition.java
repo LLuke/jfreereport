@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: SimplePageDefinition.java,v 1.1 2004/03/16 15:34:26 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -50,7 +50,7 @@ public class SimplePageDefinition implements PageDefinition
 {
   private transient PageFormat format;
 
-  public SimplePageDefinition(PageFormat format)
+  public SimplePageDefinition(final PageFormat format)
   {
     this.format = (PageFormat) format.clone();
   }
@@ -65,7 +65,7 @@ public class SimplePageDefinition implements PageDefinition
     return 1;
   }
 
-  public PageFormat getPageFormat(int pos)
+  public PageFormat getPageFormat(final int pos)
   {
     if (pos != 0)
     {
@@ -74,7 +74,7 @@ public class SimplePageDefinition implements PageDefinition
     return (PageFormat) format.clone();
   }
 
-  public Rectangle2D getPagePosition(int pos)
+  public Rectangle2D getPagePosition(final int pos)
   {
     if (pos != 0)
     {
@@ -123,7 +123,7 @@ public class SimplePageDefinition implements PageDefinition
 
   public Object clone () throws CloneNotSupportedException
   {
-    SimplePageDefinition pdef = (SimplePageDefinition) super.clone();
+    final SimplePageDefinition pdef = (SimplePageDefinition) super.clone();
     pdef.format = (PageFormat) format.clone();
     return pdef;
   }
