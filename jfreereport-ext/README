@@ -34,7 +34,7 @@ junit.jar       - The JUnit test library, available from "www.junit.org"
 log4j-1.2.3.jar - The Log4J logging framework: "jakarta.apache.org".
 JDK 1.4         - For the Java1.4 style logging, configuration and printing 
                   support
-JFreeChart-0.9.13 
+JFreeChart-1.0.0-pre2
                - for the JFreeChart demo.
 
 Servlet-Demo classes
