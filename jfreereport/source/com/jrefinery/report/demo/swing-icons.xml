@@ -52,43 +52,6 @@
   <templates>
   </templates>
 
-  <!-- ************* -->
-  <!-- * FUNCTIONS * -->
-  <!-- ************* -->
-  <functions>
-
-    <property-ref name="report.date"/>
-    
-    <function name="PageNumber" class="com.jrefinery.report.function.PageFunction">
-    </function>
-
-    <function name="GroupCount" class="com.jrefinery.report.function.ItemCountFunction">
-      <properties>
-        <property name="field">Name</property>
-        <property name="group">Category</property>
-      </properties>
-    </function>
-
-    <function name="GroupSum" class="com.jrefinery.report.function.ItemSumFunction">
-      <properties>
-        <property name="field">Size</property>
-        <property name="group">Category</property>
-      </properties>
-    </function>
-
-    <function name="OverallCount" class="com.jrefinery.report.function.ItemCountFunction">
-      <properties>
-        <property name="field">Name</property>
-      </properties>
-    </function>
-
-    <function name="OverallSum" class="com.jrefinery.report.function.ItemSumFunction">
-      <properties>
-        <property name="field">Size</property>
-      </properties>
-    </function>
-  </functions>
-
   <!-- ********************** -->
   <!-- * REPORT DESCRIPTION * -->
   <!-- ********************** -->
@@ -1026,4 +989,40 @@
     </itemband>
   </report-description>
 
+  <!-- ************* -->
+  <!-- * FUNCTIONS * -->
+  <!-- ************* -->
+  <functions>
+
+    <property-ref name="report.date"/>
+
+    <function name="PageNumber" class="com.jrefinery.report.function.PageFunction" />
+
+    <function name="GroupCount" class="com.jrefinery.report.function.ItemCountFunction">
+      <properties>
+        <property name="field">Name</property>
+        <property name="group">Category</property>
+      </properties>
+    </function>
+
+    <function name="GroupSum" class="com.jrefinery.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">Size</property>
+        <property name="group">Category</property>
+      </properties>
+    </function>
+
+    <function name="OverallCount" class="com.jrefinery.report.function.ItemCountFunction">
+      <properties>
+        <property name="field">Name</property>
+      </properties>
+    </function>
+
+    <function name="OverallSum" class="com.jrefinery.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">Size</property>
+      </properties>
+    </function>
+  </functions>
+  
 </report-definition>

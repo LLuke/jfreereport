@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.21 2003/05/02 12:40:29 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.22 2003/06/10 12:11:55 taqua Exp $
  *
  * Changes
  * -------
@@ -90,9 +90,14 @@ public class BandLayoutManagerUtil
    *                this to avoid creating unnecessary work for the garbage collector).
    *
    * @return the element bounds.
+   * @throws NullPointerException if the given element is null
    */
   public static Rectangle2D getBounds (Element e, Rectangle2D bounds)
   {
+    if (e == null)
+    {
+      throw new NullPointerException("Element is null.");
+    }
     if (bounds == null)
     {
       bounds = new Rectangle2D.Float ();
@@ -106,6 +111,7 @@ public class BandLayoutManagerUtil
    *
    * @param e  the element.
    * @param bounds  the new bounds.
+   * @throws NullPointerException if the given element or the bounds are null
    */
   public static void setBounds (Element e, Rectangle2D bounds)
   {
@@ -132,6 +138,18 @@ public class BandLayoutManagerUtil
    */
   public static Rectangle2D doLayout (Band band, LayoutSupport support, float width, float height)
   {
+    if (band == null)
+    {
+      throw new NullPointerException("Band is null");
+    }
+    if (support == null)
+    {
+      throw new NullPointerException("LayoutSupport is null");
+    }
+    if (width < 0 || height < 0)
+    {
+      throw new IllegalArgumentException("Width or height is negative.");
+    }
     BandLayoutManager lm
         = BandLayoutManagerUtil.getLayoutManager(band, support);
     // in this layouter the width of a band is always the full page width

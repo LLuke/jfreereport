@@ -376,59 +376,59 @@
         -->
         <band name="User_card">
           <element type="text/plain" name="Name_Label">
-            <template references="name-label-template"/>
             <style>
               <extends name="name-label"/>
             </style>
+            <template references="name-label-template"/>
           </element>
 
           <element type="text/plain" name="Name_Field">
-            <template references="name-field-1-template"/>
             <style>
               <extends name="name-field"/>
             </style>
+            <template references="name-field-1-template"/>
           </element>
 
           <element type="text/plain" name="Login_Label">
-            <template references="login-label-template"/>
             <style>
               <extends name="login-label"/>
             </style>
+            <template references="login-label-template"/>
           </element>
 
           <element type="text/plain" name="Login_Field">
-            <template references="login-field-1-template"/>
             <style>
               <extends name="login-field"/>
             </style>
+            <template references="login-field-1-template"/>
           </element>
 
           <element type="text/plain" name="Passwd_Label">
-            <template references="password-label-template"/>
             <style>
               <extends name="password-label"/>
             </style>
+            <template references="password-label-template"/>
           </element>
 
           <element type="text/plain" name="Passwd_Field">
-            <template references="password-field-1-template"/>
             <style>
               <extends name="password-field"/>
             </style>
+            <template references="password-field-1-template"/>
           </element>
 
           <element type="text/plain" name="CardNr_Label">
-            <template references="cardnr-label-template"/>
             <style>
               <extends name="cardnr-label"/>
             </style>
+            <template references="cardnr-label-template"/>
           </element>
 
           <element type="text/plain" name="CardNr_Field">
-            <template references="cardnr-field-1-template"/>
             <style>
               <extends name="cardnr-field"/>
             </style>
+            <template references="cardnr-field-1-template"/>
           </element>
 
           <!-- Expire date -->
@@ -458,31 +458,31 @@
         <band name="Prepaid_card">
 
           <element type="text/plain" name="Name_Label">
-            <template references="name-label-template"/>
             <style>
               <extends name="name-label"/>
             </style>
+            <template references="name-label-template"/>
           </element>
 
           <element type="text/plain" name="Name_Field">
-            <template references="name-field-1-template"/>
             <style>
               <extends name="name-field"/>
             </style>
+            <template references="name-field-1-template"/>
           </element>
 
           <element type="text/plain" name="CardNr_Label">
-            <template references="cardnr-label-template"/>
             <style>
               <extends name="cardnr-label"/>
             </style>
+            <template references="cardnr-label-template"/>
           </element>
 
           <element type="text/plain" name="CardNr_Field">
-            <template references="cardnr-field-1-template"/>
             <style>
               <extends name="cardnr-field"/>
             </style>
+            <template references="cardnr-field-1-template"/>
           </element>
 
         </band>
@@ -496,17 +496,17 @@
         -->
         <band name="Free_card">
           <element type="text/plain" name="CardNr_Label">
-            <template references="cardnr-label-template"/>
             <style>
               <extends name="cardnr-label"/>
             </style>
+            <template references="cardnr-label-template"/>
           </element>
 
           <element type="text/plain" name="CardNr_Field">
-            <template references="cardnr-field-1-template"/>
             <style>
               <extends name="cardnr-field"/>
             </style>
+            <template references="cardnr-field-1-template"/>
           </element>
 
           <!-- Expire date -->
@@ -536,45 +536,45 @@
         -->
         <band name="Account_card">
           <element type="text/plain" name="Name_Label">
-            <template references="name-label-template"/>
             <style>
               <extends name="name-label"/>
             </style>
+            <template references="name-label-template"/>
           </element>
 
           <element type="text/plain" name="Name_Field">
-            <template references="name-field-1-template"/>
             <style>
               <extends name="name-field"/>
             </style>
+            <template references="name-field-1-template"/>
           </element>
 
           <element type="text/plain" name="Login_Label">
-            <template references="login-label-template"/>
             <style>
               <extends name="login-label"/>
             </style>
+            <template references="login-label-template"/>
           </element>
 
           <element type="text/plain" name="Login_Field">
-            <template references="login-field-1-template"/>
             <style>
               <extends name="login-field"/>
             </style>
+            <template references="login-field-1-template"/>
           </element>
 
           <element type="text/plain" name="Passwd_Label">
-            <template references="password-label-template"/>
             <style>
               <extends name="password-label"/>
             </style>
+            <template references="password-label-template"/>
           </element>
 
           <element type="text/plain" name="Passwd_Field">
-            <template references="password-field-1-template"/>
             <style>
               <extends name="password-field"/>
             </style>
+            <template references="password-field-1-template"/>
           </element>
 
         </band>
@@ -675,59 +675,59 @@
         -->
         <band name="User_card">
           <element type="text/plain" name="Name_Label">
-            <template references="name-label-template"/>
             <style>
               <extends name="name-label"/>
             </style>
+            <template references="name-label-template"/>
           </element>
 
           <element type="text/plain" name="Name_Field">
-            <template references="name-field-2-template"/>
             <style>
               <extends name="name-field"/>
             </style>
+            <template references="name-field-2-template"/>
           </element>
 
           <element type="text/plain" name="Login_Label">
-            <template references="login-label-template"/>
             <style>
               <extends name="login-label"/>
             </style>
+            <template references="login-label-template"/>
           </element>
 
           <element type="text/plain" name="Login_Field">
-            <template references="login-field-2-template"/>
             <style>
               <extends name="login-field"/>
             </style>
+            <template references="login-field-2-template"/>
           </element>
 
           <element type="text/plain" name="Passwd_Label">
-            <template references="password-label-template"/>
             <style>
               <extends name="password-label"/>
             </style>
+            <template references="password-label-template"/>
           </element>
 
           <element type="text/plain" name="Passwd_Field">
-            <template references="password-field-2-template"/>
             <style>
               <extends name="password-field"/>
             </style>
+            <template references="password-field-2-template"/>
           </element>
 
           <element type="text/plain" name="CardNr_Label">
-            <template references="cardnr-label-template"/>
             <style>
               <extends name="cardnr-label"/>
             </style>
+            <template references="cardnr-label-template"/>
           </element>
 
           <element type="text/plain" name="CardNr_Field">
-            <template references="cardnr-field-2-template"/>
             <style>
               <extends name="cardnr-field"/>
             </style>
+            <template references="cardnr-field-2-template"/>
           </element>
 
           <!-- Expire date -->
@@ -756,31 +756,31 @@
         -->
         <band name="Prepaid_card">
           <element type="text/plain" name="Name_Label">
-            <template references="name-label-template"/>
             <style>
               <extends name="name-label"/>
             </style>
+            <template references="name-label-template"/>
           </element>
 
           <element type="text/plain" name="Name_Field">
-            <template references="name-field-2-template"/>
             <style>
               <extends name="name-field"/>
             </style>
+            <template references="name-field-2-template"/>
           </element>
 
           <element type="text/plain" name="CardNr_Label">
-            <template references="cardnr-label-template"/>
             <style>
               <extends name="cardnr-label"/>
             </style>
+            <template references="cardnr-label-template"/>
           </element>
 
           <element type="text/plain" name="CardNr_Field">
-            <template references="cardnr-field-2-template"/>
             <style>
               <extends name="cardnr-field"/>
             </style>
+            <template references="cardnr-field-2-template"/>
           </element>
 
         </band>
@@ -794,17 +794,17 @@
         -->
         <band name="Free_card">
           <element type="text/plain" name="CardNr_Label">
-            <template references="cardnr-label-template"/>
             <style>
               <extends name="cardnr-label"/>
             </style>
+            <template references="cardnr-label-template"/>
           </element>
 
           <element type="text/plain" name="CardNr_Field">
-            <template references="cardnr-field-2-template"/>
             <style>
               <extends name="cardnr-field"/>
             </style>
+            <template references="cardnr-field-2-template"/>
           </element>
 
           <!-- Expire date -->
@@ -834,45 +834,45 @@
         -->
         <band name="Account_card">
           <element type="text/plain" name="Name_Label">
-            <template references="name-label-template"/>
             <style>
               <extends name="name-label"/>
             </style>
+            <template references="name-label-template"/>
           </element>
 
           <element type="text/plain" name="Name_Field">
-            <template references="name-field-2-template"/>
             <style>
               <extends name="name-field"/>
             </style>
+            <template references="name-field-2-template"/>
           </element>
 
           <element type="text/plain" name="Login_Label">
-            <template references="login-label-template"/>
             <style>
               <extends name="login-label"/>
             </style>
+            <template references="login-label-template"/>
           </element>
 
           <element type="text/plain" name="Login_Field">
-            <template references="login-field-2-template"/>
             <style>
               <extends name="login-field"/>
             </style>
+            <template references="login-field-2-template"/>
           </element>
 
           <element type="text/plain" name="Passwd_Label">
-            <template references="password-label-template"/>
             <style>
               <extends name="password-label"/>
             </style>
+            <template references="password-label-template"/>
           </element>
 
           <element type="text/plain" name="Passwd_Field">
-            <template references="password-field-2-template"/>
             <style>
               <extends name="password-field"/>
             </style>
+            <template references="password-field-2-template"/>
           </element>
 
         </band>

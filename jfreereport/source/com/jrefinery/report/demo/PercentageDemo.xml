@@ -4,23 +4,6 @@
 
 <report name="Percentage Demo" pageformat="A4">
 
-  <!-- FUNCTIONS -->
-  <!-- Declares the functions used in this report. -->
-  <functions>
-
-    <expression name="Percentage"
-      class="com.jrefinery.report.function.ItemColumnQuotientExpression">
-      <properties>
-        <property name="dividend">A</property>
-        <property name="divisor">B</property>
-      </properties>
-    </expression>
-
-  </functions>
-
-  <groups>
-  </groups>
-
   <!-- REPORT HEADER -->
   <!-- This band appears once at the beginning of the report. -->
   <reportheader height="35"
@@ -54,5 +37,20 @@
       fieldname="Percentage" format="0.000%"/>
 
   </items>
+
+  <!-- FUNCTIONS -->
+  <!-- Declares the functions used in this report. -->
+  <functions>
+
+    <expression name="Percentage"
+      class="com.jrefinery.report.function.ItemColumnQuotientExpression">
+      <properties>
+        <property name="dividend">A</property>
+        <property name="divisor">B</property>
+      </properties>
+    </expression>
+
+  </functions>
+
 
 </report>
