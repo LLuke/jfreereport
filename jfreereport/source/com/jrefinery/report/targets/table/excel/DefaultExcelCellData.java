@@ -25,10 +25,10 @@
  * -------------------
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * Original Author:  Heiko Evermann
+ * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultExcelCellData.java,v 1.2 2003/01/25 20:34:12 taqua Exp $
+ * $Id: DefaultExcelCellData.java,v 1.3 2003/02/17 22:01:44 taqua Exp $
  *
  * Changes
  * -------

@@ -1,4 +1,3 @@
-
 /**
  * ========================================
  * JFreeReport : a free Java report library
@@ -30,7 +29,7 @@
  * Contributor(s):   -;
  * based on ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelCellStyleFactory.java,v 1.4 2003/01/25 20:34:12 taqua Exp $
+ * $Id: ExcelCellStyleFactory.java,v 1.5 2003/01/28 22:05:27 taqua Exp $
  *
  * Changes
  * -------
@@ -52,32 +51,67 @@ import java.awt.Color;
 import java.util.Hashtable;
 
 /**
- * This class keeps track of the cell styles that we have used so far
+ * The CellStyle factory is used to convert JFreeReport style information
+ * into excel styles. This class also keeps track of the cell styles that
+ * we have used so far, as excel has a limitation on the usable amount of
+ * defined styles. If equal styles are defined, we recycle the previously
+ * generated styles.
+ *
  * @author Heiko Evermann
  */
 public class ExcelCellStyleFactory
 {
+  /**
+   * The style carrier is used to collect and compare fore- and background
+   * style information of previously created cell styles.
+   */
   private static class StyleCarrier
   {
+    /** The foreground style */
     private ExcelDataCellStyle style;
+    /** the background style */
     private TableCellBackground background;
 
+    /**
+     * Creates a new StyleCarrier. The carrier collects background and foreground
+     * and provides a unified interface to both format informations.
+     *
+     * @param style the foreground style.
+     * @param background the background style.
+     */
     public StyleCarrier(ExcelDataCellStyle style, TableCellBackground background)
     {
       this.style = style;
       this.background = background;
     }
 
+    /**
+     * Retuns the foreground style used in this carrier.
+     *
+     * @return the foreground style.
+     */
     public ExcelDataCellStyle getStyle()
     {
       return style;
     }
 
+    /**
+     * Gets the background style information.
+     *
+     * @return the background style.
+     */
     public TableCellBackground getBackground()
     {
       return background;
     }
 
+    /**
+     * Checks for equality. The Object is equal, if the fore and
+     * the background style are equal.
+     *
+     * @param o the compared object.
+     * @return true, if both styles are equal, false otherwise.
+     */
     public boolean equals(Object o)
     {
       if (this == o) return true;
@@ -91,6 +125,11 @@ public class ExcelCellStyleFactory
       return true;
     }
 
+    /**
+     * Calculates an hashcode for the cell style carrier.
+     *
+     * @return the hashcode.
+     */
     public int hashCode()
     {
       int result;
@@ -104,17 +143,24 @@ public class ExcelCellStyleFactory
   /** White backgroud. Other backgrounds are not supported so far. */
   private static final short WHITE_INDEX = (new HSSFColor.WHITE()).getIndex();
 
+  /** POI 2_0: the data format is used to create format strings. */
   private HSSFDataFormat dataFormat;
 
 	/** The list of fonts that we have used so far */
   private HSSFCellStyle emptyCellStyle;
 
+  /** The workbook, which creates all cells and styles. */
   private HSSFWorkbook workbook;
+  /** The cache for all generated styles */
   private Hashtable styleCache;
+  /** the font factory is used to create excel fonts. */
   private ExcelFontFactory fontFactory;
 
 	/**
 	 * Constructor for ExcelCellStyleFactory.
+   *
+   * @param workbook the workbook for which the styles should be created.
+   * @throws NullPointerException if the workbook is null.
 	 */
 	public ExcelCellStyleFactory(HSSFWorkbook workbook)
   {
@@ -124,6 +170,13 @@ public class ExcelCellStyleFactory
     this.fontFactory = new ExcelFontFactory(workbook);
 	}
 
+  /**
+   * Converts the given element alignment into one of the HSSFCellStyle-constants.
+   *
+   * @param e the JFreeReport element alignment.
+   * @return the HSSFCellStyle-Alignment.
+   * @throws IllegalArgumentException if an Unknown JFreeReport alignment is given.
+   */
   protected short convertAlignment (ElementAlignment e)
   {
     if (e == ElementAlignment.LEFT) return HSSFCellStyle.ALIGN_LEFT;
@@ -136,6 +189,13 @@ public class ExcelCellStyleFactory
     throw new IllegalArgumentException("Invalid alignment");
   }
 
+  /**
+   * Tries to translate the given stroke width into one of the
+   * predefined excel border styles.
+   *
+   * @param width the AWT-Stroke-Width.
+   * @return the translated excel border width.
+   */
   protected short translateStroke (float width)
   {
     if (width == 0)
@@ -164,12 +224,18 @@ public class ExcelCellStyleFactory
     }
   }
 
-  private ExcelDataCellStyle createTextStyle (Element element)
+  /**
+   * Converts the given element and the assigned style into an excel style.
+   *
+   * @param element the element that should be converted into the excel style.
+   * @return the generated excel style, never null.
+   */
+  public ExcelDataCellStyle getExcelDataCellStyle (Element element)
   {
     ElementAlignment horizontalAlignment = (ElementAlignment)
-        element.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
+        element.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT, ElementAlignment.LEFT);
     ElementAlignment verticalAlignment = (ElementAlignment)
-        element.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
+        element.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT, ElementAlignment.TOP);
     FontDefinition awtFont = element.getStyle().getFontDefinitionProperty();
     Color color = (Color) element.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
 
@@ -181,14 +247,11 @@ public class ExcelCellStyleFactory
     return style;
   }
 
-	/**
-	 *
-	 */
-	public ExcelDataCellStyle getExcelDataCellStyle (Element element)
-  {
-    return createTextStyle(element);
-  }
-
+  /**
+   * Gets the default style, which is used for empty cells.
+   *
+   * @return the default style for empty cells.
+   */
   public HSSFCellStyle getEmptyCellStyle ()
   {
     if (emptyCellStyle == null)
@@ -201,10 +264,12 @@ public class ExcelCellStyleFactory
   }
 
   /**
-   * This needs POI 1.9, the version 1.5.1 is not able to set userdefined data
-   * formats
+   * Gets the data format implementation of HSSF.
+   * <p>
+   * This needs at least POI 1.9, the version 1.5.1 is not able to set
+   * userdefined data formats
    *
-   * @return
+   * @return the data format implementation.
    */
   public HSSFDataFormat getDataFormat ()
   {
@@ -215,6 +280,15 @@ public class ExcelCellStyleFactory
     return dataFormat;
   }
 
+  /**
+   * Creates a HSSFCellStyle based on the given ExcelDataCellStyle.
+   * If a similiar cell style was previously generated, then reuse that
+   * cached result.
+   *
+   * @param style the excel style that was used to collect the foreground cellstyle information.
+   * @param bg the background style for the table cell.
+   * @return the generated or cached HSSFCellStyle.
+   */
   public HSSFCellStyle createCellStyle (ExcelDataCellStyle style, TableCellBackground bg)
   {
     StyleCarrier carrier = new StyleCarrier(style, bg);

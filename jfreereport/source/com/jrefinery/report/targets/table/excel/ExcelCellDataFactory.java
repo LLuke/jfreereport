@@ -1,8 +1,38 @@
 /**
- * Date: Jan 15, 2003
- * Time: 5:01:29 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id: ExcelCellDataFactory.java,v 1.4 2003/01/28 22:05:27 taqua Exp $
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -------------------
+ * ExcelCellDataFactory.java
+ * -------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Heiko Evermann
+ * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
+ *
+ * $Id: ExcelCellDataFactory.java,v 1.5 2003/02/02 23:43:52 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 15-Jan-2003 : Initial version
  */
 package com.jrefinery.report.targets.table.excel;
 
@@ -20,25 +50,53 @@ import java.awt.geom.Rectangle2D;
 import java.text.ParseException;
 import java.util.Date;
 
+/**
+ * The cell data factory is responsible for converting elements into
+ * excel cell data. The element style is converted using an external
+ * style factory. This factory reuses previously defined styles if
+ * possible, to increase the file creating efficiency.
+ */
 public class ExcelCellDataFactory extends AbstractTableCellDataFactory
 {
+  /** the style factory, which is used to create the excel styles */
   private ExcelCellStyleFactory styleFactory;
 
+  /**
+   * Creates a new ExcelCellDataFactory.
+   *
+   * @param styleFactory the stylefactory for creating the cell styles.
+   */
   public ExcelCellDataFactory(ExcelCellStyleFactory styleFactory)
   {
+    if (styleFactory == null) throw new NullPointerException();
     this.styleFactory = styleFactory;
   }
 
+  /**
+   * Gets the style factory, which should be used in this factory.
+   *
+   * @return the style factory, never null.
+   */
   public ExcelCellStyleFactory getStyleFactory()
   {
     return styleFactory;
   }
 
-  public TableCellData createEmptyData ()
-  {
-    return new EmptyExcelCellData(new Rectangle2D.Float(), new ExcelDataCellStyle());
-  }
-
+  /**
+   * Creates the TableCellData for the given Element. The generated CellData
+   * should contain copies of all needed element attributes, as the element instance
+   * will be reused in the later report processing.
+   * <p>
+   * If the tablemodel does not support the element type, return null.
+   * <p>
+   * As soon as POI 2.0 gets released, this method will create advanced cell format
+   * strings based on the template system of JFreeReport.
+   *
+   * @param element the element that should be converted into TableCellData.
+   * @param bounds the elements bounds within the table. The bounds are specified
+   * in points.
+   * @return null if element type is not supported or the generated TableCellData object.
+   */
   public TableCellData createCellData (Element element, Rectangle2D bounds)
   {
     if (element.isVisible() == false)
@@ -68,10 +126,18 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
   }
 
   /**
-   * Todo A heuristic to detect and use the filters ..
-   * @param e
-   * @param bounds
-   * @return
+   * A generic content creation method, which translates shapes and strings.
+   * All other content is ignored. Suitable Shapes get transformed into
+   * background information, and strings are used to fill the cells with the
+   * report data.
+   * <p>
+   * Advanced formating can be done by using template handling methods. This
+   * requires POI 2.0
+   *
+   * @param e the element that should be converted into data or backgrounds.
+   * @param bounds the layouted bounds of the element.
+   * @return the generated data or null, if the data is not handled by this
+   * implementation.
    */
   private TableCellData handleFormats (Element e, Rectangle2D bounds)
   {
@@ -92,12 +158,16 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
   }
 
   /**
-   * Used when POI 2.0 is available ...
+   * Converts a template element into a excel data cell. Date and
+   * number templates can be handled using this implementation.
+   * <p>
+   * Uses POI 2.0 functions, so this method is not active for now ...
    *
-   * @param template
-   * @param e
-   * @param bounds
-   * @return
+   * @param template the template that was used to create the content for the element.
+   * @param e the element which contained the template.
+   * @param bounds the layouted element bounds.
+   * @return the generated content or null, if the content is not handled by
+   * this implementation.
    */
   private ExcelCellData handleTemplate (Template template, Element e, Rectangle2D bounds)
   {

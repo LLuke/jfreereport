@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.24 2003/02/04 17:56:18 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.25 2003/02/19 17:16:35 taqua Exp $
  *
  * Changes
  * --------
@@ -460,6 +460,7 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
     JLabel lblFileName = new JLabel(getResources().getString("pdfsavedialog.filename"));
     JLabel lblAuthor = new JLabel(getResources().getString("pdfsavedialog.author"));
     JLabel lblTitel = new JLabel(getResources().getString("pdfsavedialog.title"));
+    JLabel lblEncoding = new JLabel(getResources().getString("pdfsavedialog.encoding"));
     JButton btnSelect = new ActionButton(getActionSelectFile());
 
     txAuthor = new JTextField();
@@ -491,6 +492,13 @@ public class PDFSaveDialog extends JDialog implements ExportPlugin
     gbc.gridy = 2;
     gbc.insets = new Insets(1, 1, 1, 1);
     contentPane.add(lblAuthor, gbc);
+
+    gbc = new GridBagConstraints();
+    gbc.anchor = GridBagConstraints.WEST;
+    gbc.gridx = 0;
+    gbc.gridy = 3;
+    gbc.insets = new Insets(1, 1, 1, 1);
+    contentPane.add(lblEncoding, gbc);
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;

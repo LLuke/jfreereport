@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.42 2003/02/03 20:32:01 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.43 2003/02/16 19:02:38 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -317,6 +317,7 @@ public class JFreeReportResources extends ListResourceBundle
             {"pdfsavedialog.title", "Title"},
             {"pdfsavedialog.selectFile", "Select File"},
             {"pdfsavedialog.security", "Security Settings and Encryption"},
+            {"pdfsavedialog.encoding", "Encoding"},
 
             {"pdfsavedialog.securityNone", "No Security"},
             {"pdfsavedialog.security40bit", "Encrypt with 40 bit keys"},

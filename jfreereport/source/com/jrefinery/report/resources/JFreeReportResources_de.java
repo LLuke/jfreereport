@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_de.java,v 1.24 2003/02/10 19:33:47 taqua Exp $
+ * $Id: JFreeReportResources_de.java,v 1.25 2003/02/16 19:02:38 taqua Exp $
  *
  * Changes
  * -------
@@ -158,6 +158,7 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"pdfsavedialog.title", "Titel"},
         {"pdfsavedialog.selectFile", "Ausw\u00e4hlen"},
         {"pdfsavedialog.security", "Sicherheitseinstellungen und Verschl\u00fcsselung"},
+        {"pdfsavedialog.encoding", "Zeichensatz"},
 
         {"pdfsavedialog.securityNone", "Keine Sicherheit"},
         {"pdfsavedialog.security40bit", "Verschl\u00fcsselung mit 40Bit Schl\u00fcssel"},
