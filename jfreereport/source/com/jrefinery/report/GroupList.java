@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.13 2003/02/04 17:56:06 taqua Exp $
+ * $Id: GroupList.java,v 1.14 2003/02/05 15:38:12 taqua Exp $
  *
  * Changes:
  * --------
@@ -49,6 +49,8 @@ import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.Collections;
+import java.util.ArrayList;
 
 /**
  * The group list is used to store groups in a ordered way. The less specific groups are
@@ -74,6 +76,8 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
   {
     /**
      * Compares two objects (required to be instances of the Group class).
+     * The group's field lists are compared, order of the fields does not
+     * matter.
      *
      * @param o1  the first group.
      * @param o2  the second group.
@@ -85,8 +89,11 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
       Group g1 = (Group) o1;
       Group g2 = (Group) o2;
 
-      List c1 = g1.getFields ();
-      List c2 = g2.getFields ();
+      ArrayList c1 = new ArrayList (g1.getFields ());
+      ArrayList c2 = new ArrayList (g2.getFields ());
+
+      Collections.sort(c1);
+      Collections.sort(c2);
 
       int maxIdx = Math.min (c1.size (), c2.size ());
       for (int i = 0; i < maxIdx; i++)

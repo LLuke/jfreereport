@@ -1,3 +1,11 @@
+<!--
+  Report DTD for JFreeReport version 0.8.1.
+
+  ChangeLog:
+    11-Feb-2003 : Initial version
+
+-->
+
 <!ENTITY % orientations
   "portrait | landscape | reverse_landscape"
 >
@@ -216,6 +224,7 @@
 
   -->
 <!ELEMENT functions  (function | expression | data-ref | property-ref)*>
+<!ELEMENT properties  (property*)>
 
 <!--
 

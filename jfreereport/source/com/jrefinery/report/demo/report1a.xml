@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!--
-<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/extreport.dtd">
--->
+<!DOCTYPE report-definition SYSTEM "http://jfreereport.sourceforge.net/extreport.dtd">
 <!--
  This report definition was created by the ReportDefinitionWriter.
 -->
