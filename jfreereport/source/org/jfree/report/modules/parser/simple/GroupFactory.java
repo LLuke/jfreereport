@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupFactory.java,v 1.5 2003/08/24 15:08:21 taqua Exp $
+ * $Id: GroupFactory.java,v 1.6 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -147,15 +147,25 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
   protected void startGroup(final Attributes atts)
       throws SAXException
   {
-    final String groupName = getNameGenerator().generateName(atts.getValue("name"));
-
-    Group group = getReport().getGroupByName(groupName);
-    if (group == null)
+    final String groupName = atts.getValue(NAME_ATT);
+    if (groupName != null)
     {
-      group = new Group();
-      group.setName(groupName);
+      Group group = getReport().getGroupByName(groupName);
+      if (group != null)
+      {
+        setCurrentGroup(group);
+      }
+      else
+      {
+        setCurrentGroup(new Group());
+      }
     }
-    setCurrentGroup(group);
+    else
+    {
+      Group group = new Group();
+      group.setName(groupName);
+      setCurrentGroup(group);
+    }
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultTemplateCollection.java,v 1.2 2003/07/12 16:31:13 taqua Exp $
+ * $Id: DefaultTemplateCollection.java,v 1.3 2003/08/24 15:08:21 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -63,5 +63,6 @@ public class DefaultTemplateCollection extends TemplateCollection
     addTemplate(new RectangleTemplateDescription("rectangle"));
     addTemplate(new HorizontalLineTemplateDescription("horizontal-line"));
     addTemplate(new VerticalLineTemplateDescription("vertical-line"));
+    addTemplate(new DrawableFieldTemplateDescription("drawable-field"));
   }
 }

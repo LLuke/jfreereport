@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.5 2003/08/25 14:29:33 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.6 2003/09/15 18:26:51 taqua Exp $
  *
  * Changes
  * -------
@@ -63,6 +63,8 @@ import org.xml.sax.SAXException;
  */
 public class FunctionFactory extends AbstractReportDefinitionHandler implements ReportDefinitionTags
 {
+  public static final String CLASS_ATT = "class";
+
   /** The current function/expression. */
   private Expression currentFunction;
 
@@ -242,8 +244,8 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   protected void startExpression(final Attributes attr)
       throws SAXException
   {
-    final String name = getNameGenerator().generateName(attr.getValue("name"));
-    final String className = attr.getValue("class");
+    final String name = getNameGenerator().generateName(attr.getValue(NAME_ATT));
+    final String className = attr.getValue(CLASS_ATT);
     final int depLevel = ParserUtil.parseInt(attr.getValue(DEPENCY_LEVEL_ATT), 0);
 
     if (className == null)
@@ -281,9 +283,13 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
    *
    * @param attr  the element attributes.
    */
-  protected void startPropertyRef(final Attributes attr)
+  protected void startPropertyRef(final Attributes attr) throws SAXException
   {
-    currentProperty = getNameGenerator().generateName(attr.getValue("name"));
+    currentProperty = attr.getValue(NAME_ATT);
+    if (currentProperty == null)
+    {
+      throw new SAXException("Required attribute 'name' missing.");
+    }
     currentEncoding = attr.getValue(PROPERTY_ENCODING_ATT);
     if (currentEncoding == null)
     {
@@ -303,8 +309,12 @@ public class FunctionFactory extends AbstractReportDefinitionHandler implements 
   protected void startFunction(final Attributes attr)
       throws SAXException
   {
-    final String name = getNameGenerator().generateName(attr.getValue("name"));
-    final String className = attr.getValue("class");
+    final String name = attr.getValue(NAME_ATT);
+    if (name == null)
+    {
+      throw new SAXException("Required attribute 'name' missing.");
+    }
+    final String className = attr.getValue(CLASS_ATT);
     final int depLevel = ParserUtil.parseInt(attr.getValue(DEPENCY_LEVEL_ATT), 0);
 
     if (className == null)

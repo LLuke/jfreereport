@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.12 2003/10/30 22:15:38 taqua Exp $
+ * $Id: ElementFactory.java,v 1.13 2003/11/01 19:52:29 taqua Exp $
  *
  * Changes
  * -------
@@ -385,7 +385,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   private void startImageRef(final Attributes atts) throws SAXException
   {
-    final String elementName = getNameGenerator().generateName(atts.getValue("name"));
+    final String elementName = atts.getValue("name");
     final String elementSource = atts.getValue("src");
     final Boolean elementScale = parseBoolean(atts.getValue("scale"));
     final Boolean elementARatio = parseBoolean(atts.getValue("keepAspectRatio"));
@@ -418,7 +418,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   private void startImageField(final Attributes atts) throws SAXException
   {
-    final String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
+    final String elementName = atts.getValue(NAME_ATT);
     final String elementSource = atts.getValue(FIELDNAME_ATT);
 
     final Boolean elementScale = parseBoolean(atts.getValue("scale"));
@@ -450,7 +450,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   private void startImageURLField(final Attributes atts) throws SAXException
   {
-    final String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
+    final String elementName = atts.getValue(NAME_ATT);
     final String elementSource = atts.getValue(FIELDNAME_ATT);
 
     final Boolean elementScale = parseBoolean(atts.getValue("scale"));
@@ -479,7 +479,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   private void startDrawableField(final Attributes atts) throws SAXException
   {
-    final String elementName = getNameGenerator().generateName(atts.getValue(NAME_ATT));
+    final String elementName = atts.getValue(NAME_ATT);
     final String elementSource = atts.getValue(FIELDNAME_ATT);
     final Point2D absPos = getElementPosition(atts);
     final Dimension2D minSize = getElementDimension(atts);
@@ -503,7 +503,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   private void startLine(final Attributes atts) throws SAXException
   {
-    final String name = getNameGenerator().generateName(atts.getValue(NAME_ATT));
+    final String name = atts.getValue(NAME_ATT);
     final Color c = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
     final float x1 = ParserUtil.parseFloat(atts.getValue("x1"), "Element x1 not specified");
     final float y1 = ParserUtil.parseFloat(atts.getValue("y1"), "Element y1 not specified");
@@ -528,7 +528,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   private void startRectangle(final Attributes atts) throws SAXException
   {
-    final String name = getNameGenerator().generateName(atts.getValue(NAME_ATT));
+    final String name = atts.getValue(NAME_ATT);
     final Color c = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
     final Rectangle2D rect = ParserUtil.getElementPosition(atts);
     final boolean shouldDraw = ParserUtil.parseBoolean(atts.getValue("draw"), false);
@@ -644,7 +644,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
    */
   private void startShapeField(final Attributes atts) throws SAXException
   {
-    final String name = getNameGenerator().generateName(atts.getValue(NAME_ATT));
+    final String name = atts.getValue(NAME_ATT);
     final String elementSource = atts.getValue(FIELDNAME_ATT);
     final Color c = ParserUtil.parseColor(atts.getValue(COLOR_ATT));
     final Point2D absPos = getElementPosition(atts);

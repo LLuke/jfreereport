@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.5 2003/08/24 15:08:21 taqua Exp $
+ * $Id: ReportFactory.java,v 1.6 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes
  * -------
@@ -291,11 +291,14 @@ public class ReportFactory extends AbstractReportDefinitionHandler
       return;
     }
 
-    final String name = getNameGenerator().generateName(atts.getValue(NAME_ATT));
 
 
     final JFreeReport report = new JFreeReport();
-    report.setName(name);
+    final String name = atts.getValue(NAME_ATT);
+    if (name != null)
+    {
+      report.setName(name);
+    }
 
     PageFormat format = report.getDefaultPageFormat();
     float defTopMargin = (float) format.getImageableY();

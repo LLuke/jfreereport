@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableFieldElementFactory.java,v 1.6 2003/10/05 21:52:32 taqua Exp $
+ * $Id: DrawableFieldElementFactory.java,v 1.7 2003/11/01 19:52:27 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,7 @@ import org.jfree.report.DrawableElement;
 import org.jfree.report.Element;
 import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.DrawableFilter;
+import org.jfree.report.filter.templates.DrawableFieldTemplate;
 
 /**
  * The drawable field element factory can be used to create elements that display
@@ -104,10 +105,9 @@ public class DrawableFieldElementFactory extends ElementFactory
     applyElementName(element);
     applyStyle(element.getStyle());
 
-    final DataRowDataSource drds = new DataRowDataSource(getFieldname());
-    final DrawableFilter filter = new DrawableFilter();
-    filter.setDataSource(drds);
-    element.setDataSource(filter);
+    final DrawableFieldTemplate fieldTemplate = new DrawableFieldTemplate();
+    fieldTemplate.setField(getFieldname());
+    element.setDataSource(fieldTemplate);
 
     return element;
   }
