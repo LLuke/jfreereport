@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.2 2003/07/10 20:02:10 taqua Exp $
  *
  * Changes
  * -------
@@ -555,6 +555,7 @@ public class ReportConfiguration implements Configuration, Serializable
 
       final PropertyFileReportConfiguration rootProperty = new PropertyFileReportConfiguration();
       rootProperty.load("/org/jfree/report/jfreereport.properties");
+      rootProperty.load("/org/jfree/report/ext/jfreereport-ext.properties");
       globalConfig.insertConfiguration(rootProperty);
       globalConfig.insertConfiguration(PackageManager.getInstance().getPackageConfiguration());
 

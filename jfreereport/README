@@ -1,5 +1,5 @@
 **********************
-* JFREEREPORT 0.8.3d *
+* JFREEREPORT 0.8.4  *
 **********************
 
 19 Jun 2003
@@ -27,12 +27,26 @@ JFreeReport home page.
 ------------------
 JFreeReport uses several other open source libraries:
 
-JCommon - http://www.jfree.org/jcommon/index.html
-BeanShell - http://www.beanshell.org
-GnuJAXP - http://www.gnu.org/software/classpathx/jaxp
-iText - http://www.lowagie.com/iText
-POI - http://jakarta.apache.org/poi
-Pixie - http://sourceforge.net/projects/jfreereport/
+  JCommon - http://www.jfree.org/jcommon/index.html
+  Pixie - http://sourceforge.net/projects/jfreereport/
+
+If you want to use the bean shell module, you will need:
+
+  BeanShell - http://www.beanshell.org
+
+The XML parser and writer require at least an JAXP-1.1 compatible
+parser. JDK 1.4 or higher already contains a suitable parser, for
+all other JDKs you will need an additional package, for instance:
+
+  GnuJAXP - http://www.gnu.org/software/classpathx/jaxp
+
+The RTF or PDF support requires the iText library:
+
+  iText - http://www.lowagie.com/iText
+
+The Excel export requires the Apache POI library (version 1.10 or higher)
+
+  POI - http://jakarta.apache.org/poi
 
 
 4. JAVADOC HTML PAGES

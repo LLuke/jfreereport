@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtParserModule.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: ExtParserModule.java,v 1.2 2003/07/10 20:02:09 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -50,6 +50,12 @@ public class ExtParserModule  extends AbstractModule
 
   public void initialize() throws ModuleInitializeException
   {
+    if (isClassLoadable("org.xml.sax.ext.LexicalHandler") == false)
+    {
+      throw new ModuleInitializeException("Unable to load JAXP-1.1 classes. " +
+          "Check your classpath and XML parser configuration.");
+    }
+
     new ExtParserModuleInit().run();
   }
 
