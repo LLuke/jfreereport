@@ -118,6 +118,7 @@
   "(label | string-field | number-field | date-field |
 	imageref | image-field | imageurl-field | rectangle |
   resource-label | resource-field | line |
+  drawable-url-field | drawableref |
   message-field | anchor-field |
   drawable-field | shape-field | band)*">
 
@@ -659,14 +660,12 @@ later with "${property}" in any attribute value or CDATA section.
   weight               CDATA         #IMPLIED
 >
 
-<!ELEMENT message-field  EMPTY>
+<!ELEMENT message-field  (#PCDATA)>
 <!ATTLIST message-field
   %basicform;
   %position;
   %fontdef;
-  fieldname            CDATA        #REQUIRED
   nullstring           CDATA        #IMPLIED
-  format               CDATA        #REQUIRED
 >
 
 <!--

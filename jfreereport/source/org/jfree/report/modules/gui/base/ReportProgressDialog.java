@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProgressDialog.java,v 1.9 2005/01/25 21:40:16 taqua Exp $
+ * $Id: ReportProgressDialog.java,v 1.10 2005/01/30 23:37:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -94,10 +94,10 @@ public class ReportProgressDialog extends JDialog
 
     public void run ()
     {
+      final boolean maxRowChanged = (lastMaxRow != maxRow);
       updatePageMessage(page);
       updatePassMessage(pass, prepare);
       updateRowsMessage(currentRow, maxRow);
-      final boolean maxRowChanged = lastMaxRow != maxRow;
       if (maxRowChanged)
       {
         progressBar.setMaximum(maxRow);

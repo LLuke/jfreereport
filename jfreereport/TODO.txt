@@ -133,13 +133,14 @@ What changed:
 * Simple XML parser: Support for the new features has been added
   Support for Include-files added to allow to reuse common parts of the report
   definitions (like report header/footer, page header/footer, or everything else)
+* MessageFields now use a cleaner syntax to reference columns.
 
 To be implemented before the release is ready:
 * Redesign the dialogs to follow the common usability guides                     (3 days)
-* Bug: ProgressBar in the RepaginationProgressDialog is not working as expected. (1 day)
-* Verify the page-spanning printing        (? > 3 days)
-* Add support for rotated text             (?)
 * Verify the PlainText-Output target       (2 days)
+* Bug: Drawables and PDF refuse to work together. 
+* TestCases report: happy crashing!
+* Update the ANT script to reflect the new modules.
 
 What will be impossible:
 * The 'keep-together' feature is not implementable with the old engine.
@@ -147,6 +148,10 @@ What will be impossible:
   in the 'libLayout' subproject.
 * Subreports - once again the old engine would die while trying to solve that 
   problem 
+
+Next minor release:
+* Add support for rotated text             (?)
+* Verify the page-spanning printing        (? > 3 days)
 
 Known bugs:
 * Non-Area shapes, which are not instances of Line2D cannot be

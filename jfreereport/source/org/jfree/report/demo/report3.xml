@@ -47,12 +47,13 @@
         <label name="Line2" x="0" y="24" width="200" height="12" alignment="left">19a Hollow Road</label>
         <label name="Line3" x="0" y="48" width="200" height="12" alignment="left">9999 Boston</label>
         <!-- Silly demo of JFreeReports Image Capabilies. Uses WMF, JPG, GIF or PNG files as source -->
-        <imageref x="200" y="48" width="100" height="90" src="anim0002.wmf" name="logo" dynamic="false" scale="true" keepAspectRatio="false"/> 
+        <drawableref x="200" y="48" width="100" height="90" src="anim0002.wmf" name="logo"/>
         <string-field name="FName" x="0" y="84" width="200" height="12" alignment="left" fieldname="name"/>
         <string-field name="FStreet" x="0" y="96" width="200" height="12" alignment="left" fieldname="street"/>
         <string-field name="FTown" x="0" y="120" width="200" height="12" alignment="left" fieldname="town"/>
 <!--        <rectangle name="Rect" x="0" y="0" width="100%" height="100%" color="#0000FF" draw="true" fill="false"/> -->
-        <string-field name="Date" x="0" y="224" width="100%" height="12" alignment="right" fontstyle="plain" fieldname="dateexpression"/>
+        <message-field name="Date" x="0" y="224" width="100%" height="12" alignment="right" fontstyle="plain"
+          >Invoice for your order from {$(report.date), date,EEE, MMM d, yyyy}</message-field>
         <label name="Customer" x="0" y="290" width="450" height="12" alignment="left"
           fontname="Arial Unicode MS" fontstyle="plain" fontsize="11"
             >Dear customer,</label>
@@ -64,7 +65,7 @@
         <label name="LCount" x="300" y="340" width="50" height="12" alignment="left">Count</label>
         <label name="LPrice" x="350" y="340" width="50" height="12" alignment="left">Price</label>
         <label name="LTotal" x="400" y="340" width="50" height="12" alignment="left">Total</label>
-        <line name="line_end" x1="0" y1="353" x2="0" y2="353" weight="0.5"/>
+        <line name="line_end" x1="0" y1="353" x2="100%" y2="353" weight="0.5"/>
       </groupheader>
       <groupfooter height="0" fontname="SansSerif" fontstyle="plain" fontsize="11">
 <!--        <rectangle x="0" y="0" width="100%" height="100%" color="#0000FF" draw="true" fill="false"/> -->
@@ -74,7 +75,7 @@
         <line x1="200" y1="34" x2="300" y2="34" width="100%" height="0" weight="0.5"/>
         <line x1="200" y1="37" x2="300" y2="37" width="100%" height="0" weight="0.5"/>
         <label name="trace" x="0" y="84" width="100%" height="0" alignment="left" fontname="Arial Unicode MS" dynamic="true" vertical-alignment="top"
->!We !thank you for your order and hope to see you soon again. Please pay your invoice within the next 10 days.
+>We thank you for your order and hope to see you soon again. Please pay your invoice within the next 10 days.
 
 Yours sincerely,
 
@@ -103,12 +104,6 @@ John W. Who, Salesman</label>
         <property name="pattern">{0}, {1}</property>
         <property name="field[0]">name</property>
         <property name="field[1]">town</property>
-      </properties>
-    </expression>
-    <expression name="dateexpression" class="org.jfree.report.function.TextFormatExpression">
-      <properties>
-        <property name="pattern">Invoice for your order from {0, date,EEE, MMM d, yyyy}</property>
-        <property name="field[0]">report.date</property>
       </properties>
     </expression>
     <function name="totalsum" class="org.jfree.report.function.ItemSumFunction">

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ShapeContentFactoryModule.java,v 1.6 2005/02/05 18:35:17 taqua Exp $
+ * $Id: ShapeContentFactoryModule.java,v 1.7 2005/02/19 13:29:52 taqua Exp $
  *
  * Changes
  * -------
@@ -100,7 +100,11 @@ public class ShapeContentFactoryModule implements ContentFactoryModule
     {
       return EmptyContent.getDefaultEmptyContent();
     }
-    
+    final Object o = e.getValue();
+    if (o instanceof Shape == false)
+    {
+      return EmptyContent.getDefaultEmptyContent();
+    }
     final Shape value = (Shape) e.getValue();
     if (value == null)
     {

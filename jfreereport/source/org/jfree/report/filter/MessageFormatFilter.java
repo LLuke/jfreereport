@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   J&ouml;rg Schaible (for Elsag-Solutions AG);
  *
- * $Id: MessageFormatFilter.java,v 1.1 2005/01/28 19:34:09 taqua Exp $
+ * $Id: MessageFormatFilter.java,v 1.2 2005/02/04 19:22:53 taqua Exp $
  *
  * Changes
  * -------
@@ -39,21 +39,28 @@
 
 package org.jfree.report.filter;
 
-import java.text.Format;
-import java.text.MessageFormat;
+import java.io.Serializable;
+
+import org.jfree.report.ReportDefinition;
 
 /**
  * A filter that formats values from a data source to a string representation.
  * <p>
- * This filter will format objects using a {@link MessageFormat} to create the 
+ * This filter will format objects using a {@link java.text.MessageFormat} to create the
  * string representation for the number obtained from the datasource.
  *
  * @see java.text.MessageFormat
  *
+ * @author Joerg Schaible
  * @author Thomas Morgner
  */
-public class MessageFormatFilter extends FormatFilter
+public class MessageFormatFilter
+        implements ReportConnectable, Serializable, DataSource
 {
+  private transient ReportDefinition reportDefinition;
+
+  private MessageFormatSupport messageFormatSupport;
+
   /**
    * Default constructor.
    * <P>
@@ -61,48 +68,17 @@ public class MessageFormatFilter extends FormatFilter
    */
   public MessageFormatFilter()
   {
-      setMessageFormat(new MessageFormat("{0}"));
-  }
-
-  /**
-   * Sets the message format.
-   *
-   * @param mf The message format.
-   */
-  public void setMessageFormat(final MessageFormat mf)
-  {
-    setFormatter(mf);
-  }
-
-  /**
-   * Returns the message format.
-   *
-   * @return The message format.
-   */
-  public MessageFormat getMessageFormat()
-  {
-    return (MessageFormat) getFormatter();
-  }
-
-  /**
-   * Sets the formatter.
-   *
-   * @param f The format.
-   */
-  public void setFormatter(final Format f)
-  {
-    final MessageFormat fm = (MessageFormat) f;
-    super.setFormatter(fm);
+    messageFormatSupport = new MessageFormatSupport();
   }
 
   public void setFormatString (final String format)
   {
-    super.setFormatter(new MessageFormat(format));
+    messageFormatSupport.setFormatString(format);
   }
 
   public String getFormatString ()
   {
-    return getMessageFormat().toPattern();
+    return messageFormatSupport.getFormatString();
   }
 
   /**
@@ -116,31 +92,48 @@ public class MessageFormatFilter extends FormatFilter
    */
   public Object getValue()
   {
-    final Format f = getFormatter();
-    if (f == null)
+    if (reportDefinition == null)
     {
-      return getNullValue();
+      return null;
     }
+    return messageFormatSupport.performFormat(reportDefinition.getDataRow());
+  }
 
-    final DataSource ds = getDataSource();
-    if (ds == null)
-    {
-      return getNullValue();
-    }
 
-    final Object o = ds.getValue();
-    if (o == null)
+  public void registerReportDefinition(final ReportDefinition reportDefinition)
+  {
+    if (this.reportDefinition != null)
     {
-      return getNullValue();
+      throw new IllegalStateException("Already connected.");
     }
+    if (reportDefinition == null)
+    {
+      throw new NullPointerException("The given report definition is null");
+    }
+    this.reportDefinition = reportDefinition;
+  }
 
-    try
+  public void unregisterReportDefinition(final ReportDefinition reportDefinition)
+  {
+    if (this.reportDefinition != reportDefinition)
     {
-      return f.format(new Object[]{ o });
+      throw new IllegalStateException("This report definition is not registered.");
     }
-    catch (IllegalArgumentException e)
-    {
-      return getNullValue();
-    }
+    this.reportDefinition = null;
+  }
+
+  /**
+   * Clones this <code>DataSource</code>.
+   *
+   * @return the clone.
+   *
+   * @throws CloneNotSupportedException this should never happen.
+   */
+  public Object clone ()
+          throws CloneNotSupportedException
+  {
+    final MessageFormatFilter mf = (MessageFormatFilter) super.clone();
+    mf.reportDefinition = null;
+    return mf;
   }
 }

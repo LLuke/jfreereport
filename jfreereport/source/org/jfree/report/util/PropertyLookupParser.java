@@ -1,15 +1,65 @@
 package org.jfree.report.util;
 
+import java.io.Serializable;
+
 import org.jfree.report.util.beans.ConverterRegistry;
 
-public abstract class PropertyLookupParser
+public abstract class PropertyLookupParser implements Serializable
 {
   private static final int EXPECT_DOLLAR = 0;
   private static final int EXPECT_OPEN_BRACE = 1;
   private static final int EXPECT_CLOSE_BRACE = 2;
+  private char markerChar;
+  private char closingBraceChar;
+  private char openingBraceChar;
+  private char escapeChar;
 
   protected PropertyLookupParser ()
   {
+    markerChar = '$';
+    closingBraceChar = '}';
+    openingBraceChar = '{';
+    escapeChar = '\\';
+  }
+
+  public char getClosingBraceChar ()
+  {
+    return closingBraceChar;
+  }
+
+  public void setClosingBraceChar (final char closingBraceChar)
+  {
+    this.closingBraceChar = closingBraceChar;
+  }
+
+  public char getEscapeChar ()
+  {
+    return escapeChar;
+  }
+
+  public void setEscapeChar (final char escapeChar)
+  {
+    this.escapeChar = escapeChar;
+  }
+
+  public char getOpeningBraceChar ()
+  {
+    return openingBraceChar;
+  }
+
+  public void setOpeningBraceChar (final char openingBraceChar)
+  {
+    this.openingBraceChar = openingBraceChar;
+  }
+
+  public char getMarkerChar ()
+  {
+    return markerChar;
+  }
+
+  public void setMarkerChar (final char markerChar)
+  {
+    this.markerChar = markerChar;
   }
 
   public String translateAndLookup (final String value)
@@ -43,33 +93,33 @@ public abstract class PropertyLookupParser
         continue;
       }
 
-      if (state == EXPECT_DOLLAR && c == '$')
+      if (state == EXPECT_DOLLAR && c == markerChar)
       {
         state = EXPECT_OPEN_BRACE;
         continue;
       }
       if (state == EXPECT_OPEN_BRACE)
       {
-        if (c == '{')
+        if (c == openingBraceChar)
         {
           state = EXPECT_CLOSE_BRACE;
           continue;
         }
         else
         {
-          result.append('$');
+          result.append(markerChar);
           state = 0;
         }
       }
-      if (state == EXPECT_CLOSE_BRACE && c == '}')
+      if (state == EXPECT_CLOSE_BRACE && c == closingBraceChar)
       {
         final String s = lookupVariable(propertyName.toString());
         if (s == null)
         {
-          result.append('$');
-          result.append('{');
+          result.append(markerChar);
+          result.append(openingBraceChar);
           result.append(propertyName);
-          result.append('}');
+          result.append(closingBraceChar);
         }
         else
         {
@@ -80,7 +130,7 @@ public abstract class PropertyLookupParser
         continue;
       }
 
-      if (c == '\\')
+      if (c == escapeChar)
       {
         haveEscape = true;
         continue;
@@ -98,10 +148,10 @@ public abstract class PropertyLookupParser
 
     if (state >= EXPECT_OPEN_BRACE)
     {
-      result.append('$');
+      result.append(markerChar);
       if (state >= EXPECT_CLOSE_BRACE)
       {
-        result.append('{');
+        result.append(openingBraceChar);
         result.append(propertyName);
       }
     }
@@ -110,7 +160,7 @@ public abstract class PropertyLookupParser
 
   protected abstract Object performInitialLookup (String name);
 
-  private String lookupVariable (final String entity)
+  protected String lookupVariable (final String entity)
   {
     // first, split the entity into separate strings (separator is '.').
 

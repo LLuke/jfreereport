@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.14 2005/02/19 13:29:58 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.15 2005/02/19 15:41:22 taqua Exp $
  *
  * Changes
  * -------
@@ -464,7 +464,7 @@ public abstract strictfp class AbstractOutputTarget implements OutputTarget
     updateStroke(stroke);
     // Paint
     final Paint extpaint = (Paint) element.getProperty(ElementStyleSheet.EXTPAINT);
-    if (isPaintSupported(extpaint))
+    if (extpaint != null && isPaintSupported(extpaint))
     {
       updatePaint(extpaint);
     }

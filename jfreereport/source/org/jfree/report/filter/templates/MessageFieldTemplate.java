@@ -1,17 +1,13 @@
 package org.jfree.report.filter.templates;
 
-import java.text.MessageFormat;
-
-import org.jfree.report.filter.DataRowDataSource;
-import org.jfree.report.filter.StringFilter;
-import org.jfree.report.filter.MessageFormatFilter;
 import org.jfree.report.ReportDefinition;
+import org.jfree.report.filter.MessageFormatFilter;
+import org.jfree.report.filter.StringFilter;
+import org.jfree.report.filter.ReportConnectable;
 
 public class MessageFieldTemplate extends AbstractTemplate
+        implements ReportConnectable
 {
-  /** The data-row data source. */
-  private DataRowDataSource dataRowDataSource;
-
   /** A string filter. */
   private StringFilter stringFilter;
 
@@ -22,9 +18,7 @@ public class MessageFieldTemplate extends AbstractTemplate
    */
   public MessageFieldTemplate()
   {
-    dataRowDataSource = new DataRowDataSource();
     messageFormatFilter = new MessageFormatFilter();
-    messageFormatFilter.setDataSource(dataRowDataSource);
     stringFilter = new StringFilter();
     stringFilter.setDataSource(messageFormatFilter);
   }
@@ -37,36 +31,6 @@ public class MessageFieldTemplate extends AbstractTemplate
   public void setFormat (final String format)
   {
     this.messageFormatFilter.setFormatString(format);
-  }
-
-  public MessageFormat getMessageFormat ()
-  {
-    return (MessageFormat) messageFormatFilter.getFormatter();
-  }
-
-  public void setMessageFormat (final MessageFormat messageFormat)
-  {
-    messageFormatFilter.setFormatter(messageFormat);
-  }
-
-  /**
-   * Returns the field name.
-   *
-   * @return The field name.
-   */
-  public String getField()
-  {
-    return dataRowDataSource.getDataSourceColumnName();
-  }
-
-  /**
-   * Sets the field name.
-   *
-   * @param field  the field name.
-   */
-  public void setField(final String field)
-  {
-    dataRowDataSource.setDataSourceColumnName(field);
   }
 
   /**
@@ -111,22 +75,16 @@ public class MessageFieldTemplate extends AbstractTemplate
     final MessageFieldTemplate template = (MessageFieldTemplate) super.clone();
     template.stringFilter = (StringFilter) stringFilter.clone();
     template.messageFormatFilter = (MessageFormatFilter) template.stringFilter.getDataSource();
-    template.dataRowDataSource = (DataRowDataSource) template.messageFormatFilter.getDataSource();
     return template;
   }
 
   public void registerReportDefinition(final ReportDefinition reportDefinition)
   {
-    getDataRowDataSource().registerReportDefinition(reportDefinition);
+    messageFormatFilter.registerReportDefinition(reportDefinition);
   }
 
   public void unregisterReportDefinition(final ReportDefinition reportDefinition)
   {
-    getDataRowDataSource().unregisterReportDefinition(reportDefinition);
-  }
-
-  protected DataRowDataSource getDataRowDataSource()
-  {
-    return dataRowDataSource;
+    messageFormatFilter.unregisterReportDefinition(reportDefinition);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.7 2004/05/07 08:03:40 mungady Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.8 2005/01/25 22:55:39 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,8 @@ import org.jfree.report.util.ReportConfiguration;
  */
 public strictfp class DefaultSizeCalculator implements SizeCalculator
 {
+  private static final boolean VERBOSE_LOGGING = false;
+
   /**
    * A helper class that is able to detect whether the implementation is considered
    * buggy. A non-buggy implementation should show no differences between aliased-versions
@@ -105,41 +107,45 @@ public strictfp class DefaultSizeCalculator implements SizeCalculator
           font.getStringBounds(myText, 0, myText.length(), frcNoAlias).getWidth();
       isBuggyVersion = (wAlias != wNoAlias);
       final boolean buggyOverride = ReportConfiguration.getGlobalConfig().isFontRendererBuggy();
-      Log.debug("This is a buggy version of the font-renderer context: " + isBuggyVersion);
-      Log.debug("The buggy-value is defined in the configuration     : " + buggyOverride);
-      if (isBuggyVersion)
+
+      if (VERBOSE_LOGGING)
       {
-        if (isAliased())
+        Log.debug("This is a buggy version of the font-renderer context: " + isBuggyVersion);
+        Log.debug("The buggy-value is defined in the configuration     : " + buggyOverride);
+        if (isBuggyVersion)
         {
-          Log.debug("The G2OutputTarget uses Antialiasing. \n"
-              + "The FontRendererBugs should not be visible in TextAntiAliasing-Mode.\n"
-              + "If there are problems with the string-placement, please report your \n"
-              + "Operating System version and your JDK Version to "
-              + "www.object-refinery.com/jfreereport.\n");
+          if (isAliased())
+          {
+            Log.debug("The G2OutputTarget uses Antialiasing. \n"
+                + "The FontRendererBugs should not be visible in TextAntiAliasing-Mode.\n"
+                + "If there are problems with the string-placement, please report your \n"
+                + "Operating System version and your JDK Version to "
+                + "www.object-refinery.com/jfreereport.\n");
+          }
+          else
+          {
+            Log.debug("The G2OutputTarget does not use Antialiasing. \n"
+                + "Your FontRenderer is buggy (text is not displayed correctly by "
+                + "default).\n"
+                + "The system was able to detect this and tries to correct that bug. \n"
+                + "If your strings are not displayed correctly, report your Operating System "
+                + "version and your \n"
+                + "JDK Version to www.object-refinery.com/jfreereport\n");
+          }
         }
         else
         {
-          Log.debug("The G2OutputTarget does not use Antialiasing. \n"
-              + "Your FontRenderer is buggy (text is not displayed correctly by "
-              + "default).\n"
-              + "The system was able to detect this and tries to correct that bug. \n"
-              + "If your strings are not displayed correctly, report your Operating System "
-              + "version and your \n"
-              + "JDK Version to www.object-refinery.com/jfreereport\n");
+          Log.debug("Your FontRenderer seems to be ok, our tests didn't produce buggy results. \n"
+              + "If your strings are not displayed correctly, try to enable the "
+              + "configuration key \n"
+              + "\"org.jfree.report.targets.G2OutputTarget.isBuggyFRC=true\"\n"
+              + "in the file 'jfreereport.properties' or set this property as "
+              + "System-property. \n"
+              + "If the bug still remains alive, please report your Operating System version "
+              + "and your \nJDK Version to www.object-refinery.com/jfreereport.\n");
         }
+        Log.debug("If text layouting is working as expected, no further action is required.");
       }
-      else
-      {
-        Log.debug("Your FontRenderer seems to be ok, our tests didn't produce buggy results. \n"
-            + "If your strings are not displayed correctly, try to enable the "
-            + "configuration key \n"
-            + "\"org.jfree.report.targets.G2OutputTarget.isBuggyFRC=true\"\n"
-            + "in the file 'jfreereport.properties' or set this property as "
-            + "System-property. \n"
-            + "If the bug still remains alive, please report your Operating System version "
-            + "and your \nJDK Version to www.object-refinery.com/jfreereport.\n");
-      }
-      Log.debug("If text layouting is working as expected, no further action is required.");
 
       if (buggyOverride == true)
       {

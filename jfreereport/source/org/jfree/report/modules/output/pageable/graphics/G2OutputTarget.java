@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.14 2005/02/19 13:29:58 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.15 2005/02/19 15:41:22 taqua Exp $
  *
  * Changes
  * -------
@@ -462,8 +462,6 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
       final Rectangle2D newClipArea =
               new Rectangle2D.Double(0, 0, imageWidth, imageHeight);
       g2.clip(newClipArea);
-      g2.setColor(Color.green);
-      g2.fill(newClipArea);
       // normalize the image to 72 DPI
       g2.scale(imageContainer.getScaleX(), imageContainer.getScaleY());
 

@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   J&ouml;rg Schaible (for Elsag-Solutions AG);
  *
- * $Id: MessageFieldElementFactory.java,v 1.2 2005/02/04 19:22:53 taqua Exp $
+ * $Id: MessageFieldElementFactory.java,v 1.3 2005/02/19 13:29:54 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,8 +49,6 @@ import org.jfree.report.ElementAlignment;
 import org.jfree.report.TextElement;
 import org.jfree.report.filter.templates.MessageFieldTemplate;
 import org.jfree.report.style.FontDefinition;
-import org.jfree.report.util.geom.StrictDimension;
-import org.jfree.report.util.geom.StrictPoint;
 import org.jfree.ui.FloatDimension;
 
 /**
@@ -63,10 +61,11 @@ import org.jfree.ui.FloatDimension;
  *
  * @author J&ouml;rg Schaible
  */
-public class MessageFieldElementFactory extends TextFieldElementFactory
+public class MessageFieldElementFactory extends TextElementFactory
 {
   /** The message format instance used to format the text element. */
-  private MessageFormat format;
+  private String formatString;
+  private String nullString;
 
   /**
    * Creates a new message field element factory.
@@ -76,36 +75,13 @@ public class MessageFieldElementFactory extends TextFieldElementFactory
   }
 
   /**
-   * Returns the message format used for all generated text elements. The
-   * message format is shared among all generated elements.
-   *
-   * @return the message format used in this factory.
-   */
-  public MessageFormat getFormat()
-  {
-    return format;
-  }
-
-  /**
-   * Defines the message format used for all generated text elements. The format
-   * string should contain a format for the element 0. The message format is shared 
-   * among all generated elements.
-   *
-   * @param format the message format used in this factory.
-   */
-  public void setFormat(final MessageFormat format)
-  {
-    this.format = format;
-  }
-
-  /**
    * Returns the format string of the used message format.
    *
    * @return the formatstring of the number format instance.
    */
   public String getFormatString()
   {
-    return format.toPattern();
+    return formatString;
   }
 
   /**
@@ -117,7 +93,17 @@ public class MessageFieldElementFactory extends TextFieldElementFactory
    */
   public void setFormatString(final String formatString)
   {
-    setFormat(new MessageFormat(formatString));
+    this.formatString = formatString;
+  }
+
+  public String getNullString ()
+  {
+    return nullString;
+  }
+
+  public void setNullString (final String nullString)
+  {
+    this.nullString = nullString;
   }
 
   /**
@@ -131,8 +117,7 @@ public class MessageFieldElementFactory extends TextFieldElementFactory
   public Element createElement()
   {
     final MessageFieldTemplate messageFieldTemplate = new MessageFieldTemplate();
-    messageFieldTemplate.setField(getFieldname());
-    messageFieldTemplate.setMessageFormat(getFormat());
+    messageFieldTemplate.setFormat(getFormatString());
 
     final TextElement element = new TextElement();
     applyElementName(element);
@@ -152,8 +137,7 @@ public class MessageFieldElementFactory extends TextFieldElementFactory
    * @param alignment  the horizontal text alignment.
    * @param font the font for this element
    * @param nullString the text used when the value of this element is null
-   * @param field the field in the datamodel to retrieve values from
-   * @param format the MessageFormat used in this number element
+   * @param format the format string used in this message element
    *
    * @return a report element for displaying <code>Number</code> objects.
    *
@@ -166,13 +150,10 @@ public class MessageFieldElementFactory extends TextFieldElementFactory
                                                 final ElementAlignment alignment,
                                                 final FontDefinition font,
                                                 final String nullString,
-                                                final MessageFormat format,
-                                                final String field)
+                                                final String format)
   {
     return createMessageElement(name, bounds, paint, alignment,
-        ElementAlignment.TOP,
-        font, nullString,
-        format, field);
+        ElementAlignment.TOP, font, nullString, format);
   }
 
   /**
@@ -185,8 +166,7 @@ public class MessageFieldElementFactory extends TextFieldElementFactory
    * @param valign  the vertical alignment.
    * @param font  the font for this element.
    * @param nullString  the text used when the value of this element is null.
-   * @param field  the field in the datamodel to retrieve values from.
-   * @param format  the MessageFormat used in this number element.
+   * @param formatString the MessageFormat used in this number element.
    *
    * @return a report element for displaying <code>Number</code> objects.
    *
@@ -200,8 +180,7 @@ public class MessageFieldElementFactory extends TextFieldElementFactory
                                                 final ElementAlignment valign,
                                                 final FontDefinition font,
                                                 final String nullString,
-                                                final MessageFormat format,
-                                                final String field)
+                                                final String formatString)
   {
 
     final MessageFieldElementFactory factory = new MessageFieldElementFactory();
@@ -224,95 +203,7 @@ public class MessageFieldElementFactory extends TextFieldElementFactory
       factory.setEmbedFont(new Boolean(font.isEmbeddedFont()));
     }
     factory.setNullString(nullString);
-    factory.setFormat(format);
-    factory.setFieldname(field);
+    factory.setFormatString(formatString);
     return (TextElement) factory.createElement();
   }
-
-  /**
-   * Creates a new TextElement containing a message filter structure.
-   *
-   * @param name the name of the new element
-   * @param bounds the bounds of the new element
-   * @param paint the text color of this text element
-   * @param alignment  the horizontal text alignment.
-   * @param font the font for this element
-   * @param nullString the text used when the value of this element is null
-   * @param field the fieldname in the datamodel to retrieve values from
-   * @param format the MessageFormatString used in this text field
-   *
-   * @return a report element for displaying <code>Number</code> objects.
-   *
-   * @throws NullPointerException if bounds, name or function are null
-   * @throws IllegalArgumentException if the given alignment is invalid
-   */
-  public static TextElement createMessageElement(final String name,
-                                                final Rectangle2D bounds,
-                                                final Color paint,
-                                                final ElementAlignment alignment,
-                                                final FontDefinition font,
-                                                final String nullString,
-                                                final String format,
-                                                final String field)
-  {
-    return createMessageElement(name, bounds, paint, alignment,
-        null,
-        font, nullString,
-        format, field);
-  }
-
-  /**
-   * Creates a new TextElement containing a message filter structure.
-   *
-   * @param name  the name of the new element.
-   * @param bounds  the bounds of the new element.
-   * @param color the text color of the element.
-   * @param alignment  the horizontal text alignment.
-   * @param valign  the vertical alignment.
-   * @param font  the font for this element.
-   * @param nullString t he text used when the value of this element is null.
-   * @param field  the fieldname in the datamodel to retrieve values from.
-   * @param format  the MessageFormatString used in this text field.
-   *
-   * @return a report element for displaying <code>Number</code> objects.
-   *
-   * @throws NullPointerException if bounds, name or function are null
-   * @throws IllegalArgumentException if the given alignment is invalid
-   */
-  public static TextElement createMessageElement(final String name,
-                                                final Rectangle2D bounds,
-                                                final Color color,
-                                                final ElementAlignment alignment,
-                                                final ElementAlignment valign,
-                                                final FontDefinition font,
-                                                final String nullString,
-                                                final String format,
-                                                final String field)
-  {
-
-    final MessageFieldElementFactory factory = new MessageFieldElementFactory();
-    factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
-    factory.setName(name);
-    factory.setColor(color);
-    factory.setHorizontalAlignment(alignment);
-    factory.setVerticalAlignment(valign);
-
-    if (font != null)
-    {
-      factory.setFontName(font.getFontName());
-      factory.setFontSize(new Integer(font.getFontSize()));
-      factory.setBold(new Boolean(font.isBold()));
-      factory.setItalic(new Boolean(font.isItalic()));
-      factory.setEncoding(font.getFontEncoding(null));
-      factory.setUnderline(new Boolean(font.isUnderline()));
-      factory.setStrikethrough(new Boolean(font.isStrikeThrough()));
-      factory.setEmbedFont(new Boolean(font.isEmbeddedFont()));
-    }
-    factory.setNullString(nullString);
-    factory.setFormatString(format);
-    factory.setFieldname(field);
-    return (TextElement) factory.createElement();
-  }
-
 }
