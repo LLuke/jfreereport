@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementHandler.java,v 1.2 2003/07/14 19:37:54 taqua Exp $
+ * $Id: ElementHandler.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.xml.ParseException;
+import org.jfree.util.Configuration;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.19 2003/06/29 16:59:29 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -60,6 +60,9 @@ import org.jfree.report.content.ImageContentFactoryModule;
 import org.jfree.report.content.ShapeContentFactoryModule;
 import org.jfree.report.content.TextContentFactoryModule;
 import org.jfree.report.modules.output.pageable.base.physicals.LogicalPageImpl;
+import org.jfree.report.modules.output.pageable.base.LogicalPage;
+import org.jfree.report.modules.output.pageable.base.AlignedLogicalPageWrapper;
+import org.jfree.report.modules.output.pageable.base.OutputTarget;
 
 /**
  * The abstract OutputTarget implements base code for all OutputTargets. It contains
@@ -68,13 +71,13 @@ import org.jfree.report.modules.output.pageable.base.physicals.LogicalPageImpl;
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public abstract class AbstractOutputTarget implements org.jfree.report.modules.output.pageable.base.OutputTarget
+public abstract class AbstractOutputTarget implements OutputTarget
 {
   /** Storage for the output target properties. */
   private Properties properties;
 
   /** The logical page. */
-  private org.jfree.report.modules.output.pageable.base.LogicalPage logicalPage;
+  private LogicalPage logicalPage;
 
   /** The operation bounds. */
   private Rectangle2D operationBounds;
@@ -109,10 +112,10 @@ public abstract class AbstractOutputTarget implements org.jfree.report.modules.o
    *
    * @param logicalPage  the logical page.
    */
-  protected AbstractOutputTarget(final org.jfree.report.modules.output.pageable.base.LogicalPage logicalPage)
+  protected AbstractOutputTarget(final LogicalPage logicalPage)
   {
     properties = new Properties();
-    this.logicalPage = new org.jfree.report.modules.output.pageable.base.AlignedLogicalPageWrapper(logicalPage.newInstance(), this);
+    this.logicalPage = new AlignedLogicalPageWrapper(logicalPage.newInstance(), this);
     this.logicalPage.setOutputTarget(this);
     operationBounds = new Rectangle2D.Float();
 
@@ -200,7 +203,7 @@ public abstract class AbstractOutputTarget implements org.jfree.report.modules.o
    *
    * @return the logical page.
    */
-  public org.jfree.report.modules.output.pageable.base.LogicalPage getLogicalPage()
+  public LogicalPage getLogicalPage()
   {
     return logicalPage;
   }

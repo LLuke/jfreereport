@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AlignedLogicalPageWrapper.java,v 1.9 2003/06/29 16:59:28 taqua Exp $
+ * $Id: AlignedLogicalPageWrapper.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes
  * -------
@@ -173,7 +173,7 @@ public class AlignedLogicalPageWrapper implements LogicalPage
    * @param bounds  the bounds.
    * @param band  the band.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem with the output target.
+   * @throws OutputTargetException if there is a problem with the output target.
    *
    * @return a spool.
    */
@@ -188,7 +188,7 @@ public class AlignedLogicalPageWrapper implements LogicalPage
    * @param bounds  the bounds.
    * @param band  the band.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem with the output target.
+   * @throws OutputTargetException if there is a problem with the output target.
    */
   public void addBand(final Rectangle2D bounds, final Band band) throws OutputTargetException
   {

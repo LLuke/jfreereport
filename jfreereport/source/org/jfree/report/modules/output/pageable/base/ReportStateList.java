@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: ReportStateList.java,v 1.2 2003/07/14 17:37:07 taqua Exp $
  *
  * Changes
  * -------
@@ -217,8 +217,8 @@ public class ReportStateList
    *
    * @param proc the reportprocessor used to restore lost states (null not permitted).
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem with the output target.
-   * @throws java.lang.NullPointerException if the report processor is <code>null</code>.
+   * @throws OutputTargetException if there is a problem with the output target.
+   * @throws NullPointerException if the report processor is <code>null</code>.
    */
   public ReportStateList(final PageableReportProcessor proc) throws OutputTargetException
   {

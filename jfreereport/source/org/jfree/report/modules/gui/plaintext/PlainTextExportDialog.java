@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.19 2003/07/03 15:59:29 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes
  * --------
@@ -83,6 +83,7 @@ import org.jfree.report.modules.output.pageable.plaintext.EpsonPrinterCommandSet
 import org.jfree.report.modules.output.pageable.plaintext.IBMPrinterCommandSet;
 import org.jfree.report.modules.output.pageable.plaintext.PlainTextOutputTarget;
 import org.jfree.report.modules.output.pageable.plaintext.PrinterCommandSet;
+import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.util.NullOutputStream;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
@@ -950,7 +951,7 @@ public class PlainTextExportDialog extends JDialog
       target.configure(report.getReportConfiguration());
       target.setProperty(PlainTextOutputTarget.ENCODING_PROPERTY, getEncoding());
 
-      final org.jfree.report.modules.output.pageable.base.PageableReportProcessor proc = new org.jfree.report.modules.output.pageable.base.PageableReportProcessor(report);
+      final PageableReportProcessor proc = new PageableReportProcessor(report);
       proc.setHandleInterruptedState(false);
       proc.setOutputTarget(target);
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: PageLayouter.java,v 1.2 2003/07/14 20:16:05 taqua Exp $
  *
  * Changes
  * -------
@@ -245,7 +245,7 @@ public abstract class PageLayouter extends AbstractFunction
   /**
    * Sets the 'finishing page' flag.
    *
-   * @see org.jfree.report.modules.output.pageable.base.pagelayout.PageLayouter#isFinishingPage
+   * @see PageLayouter#isFinishingPage
    * @param finishingPage  the new flag value.
    */
   public void setFinishingPage(final boolean finishingPage)
@@ -271,7 +271,7 @@ public abstract class PageLayouter extends AbstractFunction
   /**
    * Sets the 'restarting page' flag.
    *
-   * @see org.jfree.report.modules.output.pageable.base.pagelayout.PageLayouter#isRestartingPage
+   * @see PageLayouter#isRestartingPage
    * @param restartingPage  sets the restarting page flag.
    */
   public void setRestartingPage(final boolean restartingPage)

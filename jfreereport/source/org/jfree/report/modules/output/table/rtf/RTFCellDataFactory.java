@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellDataFactory.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
+ * $Id: RTFCellDataFactory.java,v 1.3 2003/07/15 16:28:21 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,6 @@ import org.jfree.report.modules.output.support.itext.BaseFontSupport;
 import org.jfree.report.modules.output.support.itext.BaseFontCreateException;
 import org.jfree.report.modules.output.table.base.AbstractTableCellDataFactory;
 import org.jfree.report.modules.output.table.base.TableCellData;
-import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.Log;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: TemplatesHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -121,7 +121,7 @@ public class TemplatesHandler extends AbstractExtReportParserHandler
     // Clone the defined template ... we don't change the original ..
     template = (TemplateDescription) template.getInstance();
     template.setName(templateName);
-    getReport().getReportBuilderHints().putHint(template, "ext.parser.template-reference", references);
+    getReport().getReportBuilderHints().putHint(template.getUnconfiguredInstance(), "ext.parser.template-reference", references);
     templateFactory = new TemplateHandler(getReportParser(), TEMPLATE_TAG, template);
     getParser().pushFactory(templateFactory);
   }
@@ -152,7 +152,8 @@ public class TemplatesHandler extends AbstractExtReportParserHandler
     {
       TemplateDescription template = templateFactory.getTemplate();
       templateCollector.addTemplate(template);
-      getReport().getReportBuilderHints().addHintList(getReport(), "ext.parser.template-definition", template);
+      getReport().getReportBuilderHints().addHintList
+          (getReport(), "ext.parser.template-definition", template.getUnconfiguredInstance());
     }
     else if (tagName.equals(getFinishTag()))
     {

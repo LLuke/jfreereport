@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportBuilderHints.java,v 1.1 2003/07/14 19:38:42 taqua Exp $
+ * $Id: ReportBuilderHints.java,v 1.1 2003/07/18 18:33:01 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,10 +38,14 @@
 
 package org.jfree.report;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
+
+import org.jfree.report.util.NullOutputStream;
 
 public class ReportBuilderHints implements Serializable
 {
@@ -50,7 +54,7 @@ public class ReportBuilderHints implements Serializable
     private Object primaryKey;
     private String hintKey;
 
-    public ParserHintKey(Object primaryKey, String hintKey)
+    public ParserHintKey(Serializable primaryKey, String hintKey)
     {
       if (primaryKey == null)
       {
@@ -94,6 +98,17 @@ public class ReportBuilderHints implements Serializable
       result = 29 * result + hintKey.hashCode();
       return result;
     }
+
+    public String toString()
+    {
+      StringBuffer b = new StringBuffer();
+      b.append ("ParserHintKey={");
+      b.append (primaryKey);
+      b.append ("; ");
+      b.append (hintKey);
+      b.append ("}");
+      return b.toString();
+    }
   }
 
   private HashMap map;
@@ -103,18 +118,18 @@ public class ReportBuilderHints implements Serializable
     this.map = new HashMap();
   }
 
-  public void putHint (Object target, String hint, Object hintValue)
+  public void putHint (Serializable target, String hint, Serializable hintValue)
   {
     ParserHintKey pHint = new ParserHintKey(target, hint);
     map.put(pHint, hintValue);
   }
 
-  public Object getHint (Object target, String hint)
+  public Object getHint (Serializable target, String hint)
   {
     return map.get(new ParserHintKey(target, hint));
   }
 
-  public Object getHint (Object target, String hint, Class objectType)
+  public Object getHint (Serializable target, String hint, Class objectType)
   {
     Object o = map.get(new ParserHintKey(target, hint));
     if (o == null)
@@ -128,6 +143,20 @@ public class ReportBuilderHints implements Serializable
     return null;
   }
 
+  private void serialize (Object o)
+  {
+    try
+    {
+      ObjectOutputStream out = new ObjectOutputStream(new NullOutputStream());
+      out.writeObject(o);
+    }
+    catch (IOException ipoe)
+    {
+      ipoe.printStackTrace();
+      throw new IllegalArgumentException("Not serializable:" + o);
+    }
+  }
+
   /**
    * Adds an hint into an ArrayList. If the hint is no list hint, a
    * IllegalArgumentException is thrown. If the speocified hint value is
@@ -138,12 +167,15 @@ public class ReportBuilderHints implements Serializable
    * @param hintValue the hint value (not null)
    * @throws java.lang.IllegalArgumentException if the specified hint is no list type.
    */
-  public void addHintList (Object target, String hint, Object hintValue)
+  public void addHintList (Serializable target, String hint, Serializable hintValue)
   {
     if (hintValue == null)
     {
       throw new NullPointerException("Hintvalue is null.");
     }
+
+    serialize(target);
+    serialize(hintValue);
 
     Object o = getHint(target, hint);
     List hintList = null;
@@ -158,7 +190,7 @@ public class ReportBuilderHints implements Serializable
     else
     {
       hintList = new ArrayList();
-      putHint(target, hint, hintList);
+      putHint(target, hint, (Serializable) hintList);
     }
     if (hintList.contains(hintValue) == false)
     {

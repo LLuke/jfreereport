@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: OutputTarget.java,v 1.16 2003/06/27 18:46:25 taqua Exp $
+ * $Id: OutputTarget.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes
  * -------
@@ -100,7 +100,7 @@ public interface OutputTarget extends LayoutSupport
   /**
    * Opens the target.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is some problem opening the target.
+   * @throws OutputTargetException if there is some problem opening the target.
    */
   public void open() throws OutputTargetException;
 
@@ -128,7 +128,7 @@ public interface OutputTarget extends LayoutSupport
    * Signals that the current page is ended.  Some targets need to know when a page is finished,
    * others can simply ignore this message.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is some problem with the target.
+   * @throws OutputTargetException if there is some problem with the target.
    */
   public void endPage() throws OutputTargetException;
 
@@ -157,7 +157,7 @@ public interface OutputTarget extends LayoutSupport
    *
    * @param font  the font.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem setting the font.
+   * @throws OutputTargetException if there is a problem setting the font.
    */
   public void setFont(FontDefinition font) throws OutputTargetException;
 
@@ -175,7 +175,7 @@ public interface OutputTarget extends LayoutSupport
    *
    * @param stroke  the stroke.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem setting the stroke.
+   * @throws OutputTargetException if there is a problem setting the stroke.
    */
   public void setStroke(Stroke stroke) throws OutputTargetException;
 
@@ -191,7 +191,7 @@ public interface OutputTarget extends LayoutSupport
    *
    * @param paint The paint.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem setting the paint.
+   * @throws OutputTargetException if there is a problem setting the paint.
    */
   public void setPaint(Paint paint) throws OutputTargetException;
 
@@ -242,7 +242,7 @@ public interface OutputTarget extends LayoutSupport
    *
    * @param image The image to draw (as ImageReference for possible embedding of raw data).
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem setting the paint.
+   * @throws OutputTargetException if there is a problem setting the paint.
    */
   public void drawImage(ImageReference image) throws OutputTargetException;
 

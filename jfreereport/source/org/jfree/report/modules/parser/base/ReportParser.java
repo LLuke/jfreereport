@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.2 2003/07/14 19:37:53 taqua Exp $
+ * $Id: ReportParser.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -36,9 +36,9 @@
  */
 package org.jfree.report.modules.parser.base;
 
-import org.jfree.xml.Parser;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportBuilderHints;
+import org.jfree.xml.Parser;
 
 /**
  * The report parser initializes the parsing engine and coordinates the parsing
@@ -52,6 +52,7 @@ import org.jfree.report.ReportBuilderHints;
 public class ReportParser extends Parser
 {
   public static final String HELPER_OBJ_REPORT_NAME = "report";
+  private CommentHandler commentHandler;
 
   /**
    * Default constuctor. Initalizes the parser to use the JFreeReport parser
@@ -60,6 +61,7 @@ public class ReportParser extends Parser
   public ReportParser()
   {
     setInitialFactory(new InitialReportHandler(this));
+    commentHandler = new CommentHandler();
   }
 
   /**
@@ -104,5 +106,15 @@ public class ReportParser extends Parser
       throw new IllegalStateException("There is no report defined yet.");
     }
     return getReport().getReportBuilderHints();
+  }
+
+  public CommentHandler getCommentHandler()
+  {
+    return commentHandler;
+  }
+
+  public String getLastComment ()
+  {
+    return getCommentHandler().getLastComment();
   }
 }

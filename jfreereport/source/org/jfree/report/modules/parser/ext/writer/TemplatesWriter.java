@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesWriter.java,v 1.2 2003/07/15 16:28:22 taqua Exp $
+ * $Id: TemplatesWriter.java,v 1.3 2003/07/18 17:56:39 taqua Exp $
  *
  * Changes
  * -------
@@ -94,6 +94,8 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
     for (int i = 0; i < td.length; i++)
     {
       TemplateDescription template = td[i];
+      template.configure(getReportWriter().getConfiguration());
+
       String templateExtends = (String) hints.getHint(template, "ext.parser.template-reference", String.class);
       if (templateExtends == null)
       {
@@ -149,6 +151,7 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
     {
       if (td[i].getName().equals(name))
       {
+        td[i].configure(writer.getConfiguration());
         return td[i];
       }
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtReportHandler.java,v 1.2 2003/07/14 19:37:54 taqua Exp $
+ * $Id: ExtReportHandler.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.parser.base.IncludeParser;
 import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.modules.parser.base.ReportRootHandler;
-import org.jfree.report.ReportBuilderHints;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
 import org.jfree.report.modules.parser.ext.factory.elements.ElementFactoryCollector;
 import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactoryCollector;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: ReportConverter.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
  *
  * Changes
  * -------
@@ -57,6 +57,7 @@ import org.jfree.report.modules.parser.ext.factory.stylekey.DefaultStyleKeyFacto
 import org.jfree.report.modules.parser.ext.factory.stylekey.PageableLayoutStyleKeyFactory;
 import org.jfree.report.modules.parser.ext.factory.templates.DefaultTemplateCollection;
 import org.jfree.report.util.Log;
+import org.jfree.report.util.ReportConfiguration;
 import org.jfree.xml.factory.objects.ArrayClassFactory;
 import org.jfree.xml.factory.objects.URLClassFactory;
 import org.jfree.xml.Parser;
@@ -95,9 +96,10 @@ public class ReportConverter
     {
       throw new NullPointerException("ContentBase is null");
     }
-    report.getReportConfiguration().setConfigProperty(Parser.CONTENTBASE_KEY, contentBase.toExternalForm());
+    ReportConfiguration config = new ReportConfiguration(report.getReportConfiguration());
+    config.setConfigProperty(Parser.CONTENTBASE_KEY, contentBase.toExternalForm());
 
-    final ReportWriter writer = new ReportWriter(report, encoding);
+    final ReportWriter writer = new ReportWriter(report, encoding, config);
     writer.addClassFactoryFactory(new URLClassFactory());
     writer.addClassFactoryFactory(new DefaultClassFactory());
     writer.addClassFactoryFactory(new BandLayoutClassFactory());

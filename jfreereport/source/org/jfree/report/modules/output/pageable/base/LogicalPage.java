@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPage.java,v 1.8 2003/06/27 14:25:23 taqua Exp $
+ * $Id: LogicalPage.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes
  * -------
@@ -108,7 +108,7 @@ public interface LogicalPage
    * @param bounds  the bounds.
    * @param band  the band.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem with the output target.
+   * @throws OutputTargetException if there is a problem with the output target.
    *
    * @return a spool.
    */
@@ -120,7 +120,7 @@ public interface LogicalPage
    * @param bounds  the bounds.
    * @param band  the band.
    *
-   * @throws org.jfree.report.modules.output.pageable.base.OutputTargetException if there is a problem with the output target.
+   * @throws OutputTargetException if there is a problem with the output target.
    */
   public void addBand(Rectangle2D bounds, Band band) throws OutputTargetException;
 

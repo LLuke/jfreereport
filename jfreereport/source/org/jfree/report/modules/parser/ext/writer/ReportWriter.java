@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.2 2003/07/15 16:28:22 taqua Exp $
+ * $Id: ReportWriter.java,v 1.3 2003/07/18 17:56:39 taqua Exp $
  *
  * Changes
  * -------
@@ -55,8 +55,10 @@ import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactoryColle
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollection;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
 import org.jfree.report.util.Log;
+import org.jfree.report.util.ReportConfiguration;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
+import org.jfree.util.Configuration;
 
 /**
  * A report writer.
@@ -86,6 +88,8 @@ public class ReportWriter
   /** The encoding. */
   private String encoding;
 
+  private Configuration configuration;
+
   /**
    * Creates a new report writer for a report.
    *
@@ -93,6 +97,11 @@ public class ReportWriter
    * @param encoding  the encoding.
    */
   public ReportWriter(final JFreeReport report, final String encoding)
+  {
+    this (report, encoding, new ReportConfiguration(report.getReportConfiguration()));
+  }
+
+  public ReportWriter(final JFreeReport report, final String encoding, final Configuration config)
   {
     if (report == null)
     {
@@ -105,6 +114,7 @@ public class ReportWriter
 
     this.report = report;
     this.encoding = encoding;
+    this.configuration = config;
 
     dataSourceCollector = new DataSourceCollector();
     elementFactoryCollector = new ElementFactoryCollector();
@@ -375,4 +385,8 @@ public class ReportWriter
     writer.write(w); // we start with indentation level 0
   }
 
+  public Configuration getConfiguration()
+  {
+    return configuration;
+  }
 }

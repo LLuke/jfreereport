@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BoundsAlignment.java,v 1.10 2003/06/29 16:59:29 taqua Exp $
+ * $Id: BoundsAlignment.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes
  * -------
@@ -79,7 +79,7 @@ public abstract class BoundsAlignment
    * Aligns a rectangle with this object's reference bounds.
    * <P>
    * Subclasses determine the exact alignment behaviour (for example, the
-   * {@link org.jfree.report.modules.output.pageable.base.operations.TopAlignment}
+   * {@link TopAlignment}
    * class will align a rectangle to the top of the reference bounds).
    *
    * @param r  the rectangle to be aligned with this object's reference bounds.
