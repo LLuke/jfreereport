@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: StyleKeyFactory.java,v 1.6 2003/03/07 16:55:58 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -38,8 +38,8 @@
 
 package com.jrefinery.report.io.ext.factory.stylekey;
 
-import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.targets.style.StyleKey;
+import com.jrefinery.xml.Parser;
 
 import java.util.Iterator;
 

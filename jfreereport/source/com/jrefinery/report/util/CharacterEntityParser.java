@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CharacterEntityParser.java,v 1.6 2003/02/25 15:42:45 taqua Exp $
+ * $Id: CharacterEntityParser.java,v 1.7 2003/02/26 13:58:04 mungady Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,11 @@ package com.jrefinery.report.util;
 
 import java.util.Enumeration;
 import java.util.Properties;
+import java.io.Writer;
+import java.io.StringWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.OutputStreamWriter;
 
 /**
  * The character entity parser replaces all known occurrences of an entity
@@ -152,7 +157,7 @@ public class CharacterEntityParser
     String val = getReverse().getProperty(character);
     if (val == null)
     {
-      return character;
+      return null;
     }
     else
     {
@@ -169,13 +174,48 @@ public class CharacterEntityParser
    */
   public String encodeEntities (String value)
   {
-    StringBuffer b = new StringBuffer(value.length());
+    StringBuffer writer = new StringBuffer();
     for (int i = 0; i < value.length(); i++)
     {
       String character = String.valueOf (value.charAt(i));
-      b.append(lookupEntity(character));
+      String lookup = lookupEntity(character);
+      if (lookup == null)
+      {
+        writer.append(character);
+      }
+      else
+      {
+        writer.append(lookup);
+      }
     }
-    return b.toString();
+    return writer.toString();
+  }
+
+  /**
+   * We assume, that both writers access the same stream and that both
+   * of them are unbuffered.
+   *
+   * @param value
+   * @param writer
+   */
+  public void encodeEntities (String value, HtmlWriter writer)
+    throws IOException
+  {
+    Log.debug ("ENcoding: " + value);
+
+    for (int i = 0; i < value.length(); i++)
+    {
+      String character = String.valueOf (value.charAt(i));
+      String lookup = lookupEntity(character);
+      if (lookup == null)
+      {
+        writer.printEncoded(character);
+      }
+      else
+      {
+        writer.print(lookup);
+      }
+    }
   }
 
   /**
@@ -193,7 +233,7 @@ public class CharacterEntityParser
     String replaceString = null;
     StringBuffer bufValue = new StringBuffer(value);
 
-    while (((subStart = value.indexOf("&", parserIndex)) != -1) 
+    while (((subStart = value.indexOf("&", parserIndex)) != -1)
            && (subEnd = value.indexOf(";", parserIndex)) != -1)
     {
       parserIndex = subStart;
@@ -223,6 +263,20 @@ public class CharacterEntityParser
       value = bufValue.toString();
     }
     return bufValue.toString();
+  }
+
+  public static void main (String [] args) throws Exception
+  {
+    String test = "Test is a הצüהצü test";
+    OutputStreamWriter w = new OutputStreamWriter(System.err, "UTF-16");
+    w.write(test);
+    w.flush();
+
+    CharacterEntityParser ep = CharacterEntityParser.createHTMLEntityParser();
+    System.out.println ("First Test: " + ep.encodeEntities(test));
+    System.out.println ("Second Test: " );
+    ep.encodeEntities(test, new HtmlWriter (System.err, "UTF-16"));
+
   }
 }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableModelInfo.java,v 1.3 2002/12/11 00:41:42 mungady Exp $
+ * $Id: TableModelInfo.java,v 1.1 2003/01/27 03:20:01 taqua Exp $
  *
  * Changes
  * -------
@@ -68,15 +68,48 @@ public class TableModelInfo
       {
         Object value = mod.getValueAt(rows, i);
         Class c = mod.getColumnClass(i);
-        if (c.isAssignableFrom(value.getClass()) == false)
+        if (value == null)
         {
-          System.out.println ("ValueAt (" + rows + ", " + i + ") is not assignable from " + c);
+          System.out.println ("ValueAt (" + rows + ", " + i + ") is null");
         }
-        if (c.equals(Object.class))
+        else
         {
-          System.out.println ("ValueAt (" + rows + ", " + i + ") is in a generic column and is of "
-                              + "type " + value.getClass());
+          if (c.isAssignableFrom(value.getClass()) == false)
+          {
+            System.out.println ("ValueAt (" + rows + ", " + i + ") is not assignable from " + c);
+          }
+          if (c.equals(Object.class))
+          {
+            System.out.println ("ValueAt (" + rows + ", " + i + ") is in a generic column and is of "
+                                + "type " + value.getClass());
+          }
         }
+      }
+    }
+  }
+
+  /**
+   * Prints a table model to standard output.
+   *
+   * @param mod  the model.
+   */
+  public static void printTableModelContents (TableModel mod)
+  {
+    System.out.println ("Tablemodel contains " + mod.getRowCount() + " rows.");
+    for (int i = 0; i < mod.getColumnCount(); i++)
+    {
+      System.out.println ("Column: " + i + " Name = " + mod.getColumnName(i) + "; DataType = "
+                          + mod.getColumnClass(i));
+    }
+
+    System.out.println ("Checking the data inside");
+    for (int rows = 0; rows < mod.getRowCount(); rows++)
+    {
+      for (int i = 0; i < mod.getColumnCount(); i++)
+      {
+        Object value = mod.getValueAt(rows, i);
+        Class c = mod.getColumnClass(i);
+        System.out.println ("ValueAt (" + rows + ", " + i + ") is " + value);
       }
     }
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ObjectReferenceGenerator.java,v 1.3 2003/03/07 16:55:57 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -43,6 +43,7 @@ import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.io.ext.factory.datasource.DefaultDataSourceFactory;
 import com.jrefinery.report.io.ext.factory.templates.TemplateClassFactory;
 import com.jrefinery.report.targets.support.ReportProcessorUtil;
+import com.jrefinery.xml.factory.objects.ClassFactoryCollector;
 
 import java.net.URL;
 

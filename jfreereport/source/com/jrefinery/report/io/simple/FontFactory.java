@@ -25,7 +25,7 @@
  * ----------------
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
- * $Id: FontFactory.java,v 1.5 2003/02/25 20:15:01 taqua Exp $
+ * $Id: FontFactory.java,v 1.6 2003/02/26 13:57:58 mungady Exp $
  *
  * Changes
  * -------
@@ -35,9 +35,9 @@
  */
 package com.jrefinery.report.io.simple;
 
-import com.jrefinery.report.io.ParserUtil;
-import com.jrefinery.report.io.ReportDefinitionException;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.xml.ElementDefinitionException;
+import com.jrefinery.xml.ParserUtil;
 import org.xml.sax.Attributes;
 
 /**
@@ -432,10 +432,10 @@ public class FontFactory implements ReportDefinitionTags
    *
    * @param attr  the element attributes.
    * @param target the target element style sheet, that should receive the created font definition.
-   * @throws ReportDefinitionException if the font cannot be created.
+   * @throws ElementDefinitionException if the font cannot be created.
    */
   public void createFont (Attributes attr, ElementStyleSheet target)
-          throws ReportDefinitionException
+          throws ElementDefinitionException
   {
     // get the font name...
     String elementFontName = attr.getValue (FONT_NAME_ATT);
@@ -461,10 +461,10 @@ public class FontFactory implements ReportDefinitionTags
    *
    * @param attr  the element attributes.
    * @return the created font information.
-   * @throws ReportDefinitionException if the font cannot be created.
+   * @throws ElementDefinitionException if the font cannot be created.
    */
   public FontInformation createFont (Attributes attr)
-          throws ReportDefinitionException
+          throws ElementDefinitionException
   {
     // get the font name...
     FontInformation fi = new FontInformation();

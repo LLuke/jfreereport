@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DataSourceCollector.java,v 1.8 2003/03/07 16:55:55 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -38,8 +38,8 @@
 
 package com.jrefinery.report.io.ext.factory.datasource;
 
-import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
-import com.jrefinery.report.io.ext.factory.objects.ClassFactory;
+import com.jrefinery.xml.factory.objects.ObjectDescription;
+import com.jrefinery.xml.factory.objects.ClassFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlImageCellData.java,v 1.5 2003/02/24 16:48:56 taqua Exp $
+ * $Id: HtmlImageCellData.java,v 1.6 2003/02/26 16:42:27 mungady Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,11 @@ package com.jrefinery.report.targets.table.html;
 
 import java.awt.geom.Rectangle2D;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import com.jrefinery.report.ImageReference;
+import com.jrefinery.report.util.HtmlWriter;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.StringUtil;
 
 /**
  * A wrapper for Image content within the generated HtmlTable. The image content
@@ -81,39 +82,37 @@ public class HtmlImageCellData extends HtmlCellData
    * @param filesystem the HTML-Filesystem used to create the ImageReference.
    * @see HtmlFilesystem#createImageReference
    */
-  public void write(PrintWriter pout, HtmlFilesystem filesystem)
+  public void write(HtmlWriter pout, HtmlFilesystem filesystem)
   {
     try
     {
       HtmlReferenceData href = filesystem.createImageReference(image);
       if (href.isExternal())
       {
-        StringBuffer b = new StringBuffer();
-        b.append("<img src=\"");
-        b.append(href.getReference());
-        b.append("\" width=\"");
+        pout.print("<img src=\"");
+        pout.print(StringUtil.encodeUTF(href.getReference()));
+        pout.print("\" width=\"");
         Rectangle2D bounds = image.getBoundsScaled();
-        b.append((int) bounds.getWidth());
-        b.append("\" height=\"");
-        b.append((int) bounds.getHeight());
+        pout.write((int) bounds.getWidth());
+        pout.print("\" height=\"");
+        pout.write((int) bounds.getHeight());
         if (image.getSourceURL() != null)
         {
-          b.append("\" alt=\"");
-          b.append(image.getSourceURL());
+          pout.print("\" alt=\"");
+          HtmlProducer.getEntityParser().encodeEntities(image.getSourceURL().toString(), pout);
         }
         if (isUseXHTML())
         {
-          b.append("\" />");
+          pout.print("\" />");
         }
         else
         {
-          b.append("/>");
+          pout.print("/>");
         }
-        pout.write(b.toString());
       }
       else
       {
-        pout.write(href.getReference());
+        pout.print(StringUtil.encodeUTF(href.getReference()));
       }
     }
     catch (IOException ioe)

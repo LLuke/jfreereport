@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandFactory.java,v 1.6 2003/02/25 14:07:30 taqua Exp $
+ * $Id: BandFactory.java,v 1.7 2003/02/26 13:57:57 mungady Exp $
  *
  * Changes
  * -------
@@ -49,11 +49,12 @@ import com.jrefinery.report.PageFooter;
 import com.jrefinery.report.PageHeader;
 import com.jrefinery.report.ReportFooter;
 import com.jrefinery.report.ReportHeader;
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ParserUtil;
+import com.jrefinery.report.io.ReportParserUtil;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.xml.Parser;
+import com.jrefinery.xml.ParserUtil;
 
 /**
  * This class handles the SAX events generated for report bands.
@@ -213,13 +214,13 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
     if (valign != null)
     {
       reportHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
-          ParserUtil.parseVerticalElementAlignment(valign));
+          ReportParserUtil.parseVerticalElementAlignment(valign));
     }
     String halign = attr.getValue(ALIGNMENT_ATT);
     if (halign != null)
     {
       reportHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
-          ParserUtil.parseHorizontalElementAlignment(halign));
+          ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
     getReport ().setReportHeader (reportHeader);
@@ -257,13 +258,13 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
     if (valign != null)
     {
       reportFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
-          ParserUtil.parseVerticalElementAlignment(valign));
+          ReportParserUtil.parseVerticalElementAlignment(valign));
     }
     String halign = attr.getValue(ALIGNMENT_ATT);
     if (halign != null)
     {
       reportFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
-          ParserUtil.parseHorizontalElementAlignment(halign));
+          ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
     getReport ().setReportFooter (reportFooter);
@@ -303,13 +304,13 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
     if (valign != null)
     {
       pageHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
-          ParserUtil.parseVerticalElementAlignment(valign));
+          ReportParserUtil.parseVerticalElementAlignment(valign));
     }
     String halign = attr.getValue(ALIGNMENT_ATT);
     if (halign != null)
     {
       pageHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
-          ParserUtil.parseHorizontalElementAlignment(halign));
+          ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
     getReport ().setPageHeader (pageHeader);
@@ -349,13 +350,13 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
     if (valign != null)
     {
       pageFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
-          ParserUtil.parseVerticalElementAlignment(valign));
+          ReportParserUtil.parseVerticalElementAlignment(valign));
     }
     String halign = attr.getValue(ALIGNMENT_ATT);
     if (halign != null)
     {
       pageFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
-          ParserUtil.parseHorizontalElementAlignment(halign));
+          ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
     getReport ().setPageFooter (pageFooter);
@@ -387,13 +388,13 @@ public class BandFactory extends AbstractReportDefinitionHandler implements Repo
     if (valign != null)
     {
       items.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
-                                               ParserUtil.parseVerticalElementAlignment(valign));
+                                               ReportParserUtil.parseVerticalElementAlignment(valign));
     }
     String halign = attr.getValue(ALIGNMENT_ATT);
     if (halign != null)
     {
       items.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
-                                               ParserUtil.parseHorizontalElementAlignment(halign));
+                                               ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
     getReport ().setItemBand (items);

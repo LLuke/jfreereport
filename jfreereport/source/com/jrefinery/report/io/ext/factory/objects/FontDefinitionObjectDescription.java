@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FontDefinitionObjectDescription.java,v 1.5 2003/03/07 16:55:57 taqua Exp $
+ * $Id: FontDefinitionObjectDescription.java,v 1.6 2003/04/09 16:18:39 mungady Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -40,6 +40,8 @@ package com.jrefinery.report.io.ext.factory.objects;
 
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.xml.factory.objects.AbstractObjectDescription;
+import com.jrefinery.xml.factory.objects.ObjectFactoryException;
 
 /**
  * An object-description for a {@link FontDefinition} object.
@@ -112,7 +114,7 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
    * 
    * @return The parameter value.
    * 
-   * @throws ObjectFactoryException if there is a problem while reading the
+   * @throws com.jrefinery.xml.factory.objects.ObjectFactoryException if there is a problem while reading the
    * properties of the given object.
    */
   private int getIntegerParameter (String name)
@@ -158,7 +160,7 @@ public class FontDefinitionObjectDescription extends AbstractObjectDescription
    * 
    * @param o  the object (should be an instance of <code>FontDefinition</code>).
    * 
-   * @throws ObjectFactoryException if the object is not an instance of <code>Float</code>.
+   * @throws com.jrefinery.xml.factory.objects.ObjectFactoryException if the object is not an instance of <code>Float</code>.
    */
   public void setParameterFromObject(Object o) throws ObjectFactoryException
   {

@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.6 2003/02/25 14:07:31 taqua Exp $
+ * $Id: ReportFactory.java,v 1.7 2003/02/26 13:57:58 mungady Exp $
  *
  * Changes
  * -------
@@ -42,11 +42,11 @@ package com.jrefinery.report.io.simple;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.InitialReportHandler;
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.util.CharacterEntityParser;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.PageFormatFactory;
+import com.jrefinery.xml.Parser;
+import com.jrefinery.xml.ParserUtil;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

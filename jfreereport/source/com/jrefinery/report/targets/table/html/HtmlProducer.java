@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.22 2003/03/13 17:43:09 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.23 2003/03/18 18:28:45 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.zip.Deflater;
@@ -57,7 +59,7 @@ import com.jrefinery.report.targets.table.TableGridPosition;
 import com.jrefinery.report.targets.table.TableProducer;
 import com.jrefinery.report.util.CharacterEntityParser;
 import com.jrefinery.report.util.IOUtils;
-import com.jrefinery.report.util.LineBreakIterator;
+import com.jrefinery.report.util.HtmlWriter;
 
 /**
  * The TableProducer is responsible for creating the produced Table. After
@@ -74,7 +76,7 @@ import com.jrefinery.report.util.LineBreakIterator;
 public class HtmlProducer extends TableProducer
 {
   /** the printwriter for the main html file. */
-  private PrintWriter pout;
+  private HtmlWriter pout;
 
   /** the cell data factory used for creating the content cells. */
   private HtmlCellDataFactory cellDataFactory;
@@ -158,7 +160,7 @@ public class HtmlProducer extends TableProducer
    *
    * @return the character entity parser instance.
    */
-  private static CharacterEntityParser getEntityParser()
+  public static CharacterEntityParser getEntityParser()
   {
     if (entityParser == null)
     {
@@ -177,7 +179,7 @@ public class HtmlProducer extends TableProducer
         = new DeflaterOutputStream(content, new Deflater(Deflater.BEST_COMPRESSION));
     try
     {
-      this.pout = new PrintWriter(new OutputStreamWriter(deflaterStream, getEncoding()));
+      this.pout = new HtmlWriter(deflaterStream, false, getEncoding());
     }
     catch (IOException ioe)
     {
@@ -185,7 +187,7 @@ public class HtmlProducer extends TableProducer
     }
 
     // the style sheet definition will be inserted right before the content is written ...
-    pout.print("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=");
+    pout.print("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=\"");
     pout.print(getEncoding());
     if (useXHTML)
     {
@@ -196,10 +198,12 @@ public class HtmlProducer extends TableProducer
       pout.println("\">");
     }
     pout.print("<title>");
+    pout.flush();
     String title = String.valueOf(getProperty(TITLE, "Untitled report"));
-    pout.print(getEntityParser().encodeEntities(title));
+    pout.printEncoded(getEntityParser().encodeEntities(title));
     pout.println("</title></head>");
     pout.println("<body>");
+    pout.flush();
     isOpen = true;
   }
 
@@ -501,50 +505,6 @@ public class HtmlProducer extends TableProducer
         //Log.debug ("The Row at " + y + " was not printed");
       }
       pout.println("</tr>");
-    }
-  }
-
-  /**
-   * Generates the HTML output for printing the given text.
-   *
-   * @param pout the target writer
-   * @param text the text that should be printed.
-   * @param useXHTML true, if XHTML is generated, false otherwise.
-   */
-  public static void printText(PrintWriter pout, String text, boolean useXHTML)
-  {
-    if (text.length() == 0)
-    {
-      pout.print("");
-      return;
-    }
-
-    LineBreakIterator iterator = new LineBreakIterator(text);
-    int oldPos = 0;
-    int pos = iterator.nextWithEnd();
-    boolean flagStart = true;
-    while (pos != LineBreakIterator.DONE)
-    {
-      String readLine = text.substring(oldPos, pos);
-      oldPos = pos;
-      pos = iterator.nextWithEnd();
-
-      if (flagStart == true)
-      {
-        flagStart = false;
-      }
-      else
-      {
-        if (useXHTML)
-        {
-          pout.println("<br />&nbsp;");
-        }
-        else
-        {
-          pout.println("<br>&nbsp;");
-        }
-      }
-      pout.print(getEntityParser().encodeEntities(readLine));
     }
   }
 }

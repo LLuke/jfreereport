@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultDataSourceFactory.java,v 1.6 2003/03/07 16:55:56 taqua Exp $
+ * $Id: DefaultDataSourceFactory.java,v 1.7 2003/03/07 17:02:40 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -58,7 +58,7 @@ import com.jrefinery.report.filter.StringFilter;
 import com.jrefinery.report.filter.URLFilter;
 import com.jrefinery.report.filter.DrawableFilter;
 import com.jrefinery.report.filter.ShapeFilter;
-import com.jrefinery.report.io.ext.factory.objects.BeanObjectDescription;
+import com.jrefinery.xml.factory.objects.BeanObjectDescription;
 import com.jrefinery.report.io.ext.factory.templates.DateFieldTemplateDescription;
 import com.jrefinery.report.io.ext.factory.templates.ImageFieldTemplateDescription;
 import com.jrefinery.report.io.ext.factory.templates.ImageURLElementTemplateDescription;

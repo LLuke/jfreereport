@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceWriter.java,v 1.4 2003/02/21 11:31:13 mungady Exp $
+ * $Id: DataSourceWriter.java,v 1.5 2003/02/22 18:52:27 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@ package com.jrefinery.report.io.ext.writer;
 import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.io.ext.DataSourceHandler;
 import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
-import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
+import com.jrefinery.xml.factory.objects.ObjectDescription;
 
 import java.io.IOException;
 import java.io.Writer;

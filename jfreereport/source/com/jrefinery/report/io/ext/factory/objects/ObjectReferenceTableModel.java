@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ObjectReferenceTableModel.java,v 1.3 2003/03/07 16:55:57 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -43,6 +43,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collections;
 import java.util.Comparator;
+
+import com.jrefinery.xml.factory.objects.ObjectDescription;
+import com.jrefinery.xml.factory.objects.ClassFactory;
+import com.jrefinery.xml.factory.objects.ClassFactoryCollector;
 
 /**
  * A table model for the objects referenced by the class factories.
@@ -76,7 +80,7 @@ public class ObjectReferenceTableModel extends AbstractTableModel
      * @param paramName  the parameter name.
      * @param paramType  the parameter type.
      */
-    public ObjectDescriptionRow(ClassFactory classFactory, Class object, String paramName, 
+    public ObjectDescriptionRow(ClassFactory classFactory, Class object, String paramName,
                                 Class paramType)
     {
       this.classFactory = classFactory;

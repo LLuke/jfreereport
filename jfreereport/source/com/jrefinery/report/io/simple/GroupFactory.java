@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupFactory.java,v 1.6 2003/02/26 13:57:58 mungady Exp $
+ * $Id: GroupFactory.java,v 1.7 2003/02/26 16:42:19 mungady Exp $
  *
  * Changes
  * -------
@@ -42,12 +42,13 @@ package com.jrefinery.report.io.simple;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.GroupFooter;
 import com.jrefinery.report.GroupHeader;
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ParserUtil;
+import com.jrefinery.report.io.ReportParserUtil;
 import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.CharacterEntityParser;
+import com.jrefinery.xml.Parser;
+import com.jrefinery.xml.ParserUtil;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -198,13 +199,13 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     if (valign != null)
     {
       groupHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
-          ParserUtil.parseVerticalElementAlignment(valign));
+          ReportParserUtil.parseVerticalElementAlignment(valign));
     }
     String halign = atts.getValue(ALIGNMENT_ATT);
     if (halign != null)
     {
       groupHeader.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
-          ParserUtil.parseHorizontalElementAlignment(halign));
+          ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
     currentGroup.setHeader (groupHeader);
@@ -241,13 +242,13 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     if (valign != null)
     {
       groupFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.VALIGNMENT,
-          ParserUtil.parseVerticalElementAlignment(valign));
+          ReportParserUtil.parseVerticalElementAlignment(valign));
     }
     String halign = atts.getValue(ALIGNMENT_ATT);
     if (halign != null)
     {
       groupFooter.getBandDefaults().setStyleProperty(ElementStyleSheet.ALIGNMENT,
-          ParserUtil.parseHorizontalElementAlignment(halign));
+          ReportParserUtil.parseHorizontalElementAlignment(halign));
     }
 
     currentGroup.setFooter (groupFooter);

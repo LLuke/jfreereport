@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectWriter.java,v 1.6 2003/02/22 18:52:27 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.7 2003/04/08 14:07:55 mungady Exp $
  *
  * Changes
  * -------
@@ -39,9 +39,9 @@
 package com.jrefinery.report.io.ext.writer;
 
 import com.jrefinery.report.io.ext.CompoundObjectHandler;
-import com.jrefinery.report.io.ext.factory.objects.ClassFactoryCollector;
-import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
-import com.jrefinery.report.io.ext.factory.objects.ObjectFactoryException;
+import com.jrefinery.xml.factory.objects.ClassFactoryCollector;
+import com.jrefinery.xml.factory.objects.ObjectDescription;
+import com.jrefinery.xml.factory.objects.ObjectFactoryException;
 import com.jrefinery.report.util.Log;
 
 import java.io.IOException;

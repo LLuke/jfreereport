@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.15 2003/04/06 18:11:29 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.16 2003/04/07 18:08:06 taqua Exp $
  *
  * Changes
  * -------
@@ -96,7 +96,6 @@ import com.jrefinery.report.action.PreviousPageAction;
 import com.jrefinery.report.action.PrintAction;
 import com.jrefinery.report.action.ZoomInAction;
 import com.jrefinery.report.action.ZoomOutAction;
-import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.util.AbstractActionDowngrade;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ActionDowngrade;
@@ -107,6 +106,7 @@ import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.WindowSizeLimiter;
 import com.jrefinery.report.util.Worker;
+import com.jrefinery.xml.ParserUtil;
 import org.xml.sax.SAXException;
 
 /**

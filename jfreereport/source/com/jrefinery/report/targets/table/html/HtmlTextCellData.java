@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlTextCellData.java,v 1.4 2003/02/24 17:34:42 taqua Exp $
+ * $Id: HtmlTextCellData.java,v 1.5 2003/02/26 16:42:28 mungady Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,11 @@ package com.jrefinery.report.targets.table.html;
 
 import java.awt.geom.Rectangle2D;
 import java.io.PrintWriter;
+import java.io.IOException;
+
+import com.jrefinery.report.util.LineBreakIterator;
+import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.HtmlWriter;
 
 /**
  * A wrapper for text content within the generated HtmlTable.
@@ -74,9 +79,17 @@ public class HtmlTextCellData extends HtmlCellData
    * @param pout the print writer, which receives the generated HTML-Code.
    * @param filesystem not used.
    */
-  public void write(PrintWriter pout, HtmlFilesystem filesystem)
+  public void write(HtmlWriter pout, HtmlFilesystem filesystem)
   {
-    HtmlProducer.printText(pout, value, isUseXHTML());
+    try
+    {
+      printText(pout, value, isUseXHTML());
+    }
+    catch (IOException ioe)
+    {
+      // should not happen
+      Log.warn ("Unexpected I/O-Error", ioe);
+    }
   }
 
   /**
@@ -88,4 +101,50 @@ public class HtmlTextCellData extends HtmlCellData
   {
     return false;
   }
+
+
+  /**
+   * Generates the HTML output for printing the given text.
+   *
+   * @param pout the target writer
+   * @param text the text that should be printed.
+   * @param useXHTML true, if XHTML is generated, false otherwise.
+   */
+  public static void printText(HtmlWriter pout, String text, boolean useXHTML)
+    throws IOException
+  {
+    if (text.length() == 0)
+    {
+      return;
+    }
+
+    LineBreakIterator iterator = new LineBreakIterator(text);
+    int oldPos = 0;
+    int pos = iterator.nextWithEnd();
+    boolean flagStart = true;
+    while (pos != LineBreakIterator.DONE)
+    {
+      String readLine = text.substring(oldPos, pos);
+      oldPos = pos;
+      pos = iterator.nextWithEnd();
+
+      if (flagStart == true)
+      {
+        flagStart = false;
+      }
+      else
+      {
+        if (useXHTML)
+        {
+          pout.println("<br />&nbsp;");
+        }
+        else
+        {
+          pout.println("<br>&nbsp;");
+        }
+      }
+      HtmlProducer.getEntityParser().encodeEntities(readLine, pout);
+    }
+  }
+
 }

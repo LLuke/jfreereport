@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: AbstractTemplateDescription.java,v 1.4 2003/03/07 16:55:59 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -39,7 +39,7 @@
 package com.jrefinery.report.io.ext.factory.templates;
 
 import com.jrefinery.report.filter.templates.Template;
-import com.jrefinery.report.io.ext.factory.objects.BeanObjectDescription;
+import com.jrefinery.xml.factory.objects.BeanObjectDescription;
 
 /**
  * An abstract class for implementing the {@link TemplateDescription} interface.

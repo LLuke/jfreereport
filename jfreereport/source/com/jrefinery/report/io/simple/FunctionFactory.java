@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionFactory.java,v 1.7 2003/02/25 14:07:30 taqua Exp $
+ * $Id: FunctionFactory.java,v 1.8 2003/02/26 13:57:58 mungady Exp $
  *
  * Changes
  * -------
@@ -45,10 +45,10 @@ package com.jrefinery.report.io.simple;
 import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ParserUtil;
 import com.jrefinery.report.util.CharacterEntityParser;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.xml.Parser;
+import com.jrefinery.xml.ParserUtil;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

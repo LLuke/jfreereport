@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractReportDefinitionHandler.java,v 1.3 2003/02/25 14:07:29 taqua Exp $
+ * $Id: AbstractReportDefinitionHandler.java,v 1.4 2003/02/26 13:57:57 mungady Exp $
  *
  * Changes
  * -------
@@ -41,8 +41,8 @@ package com.jrefinery.report.io.simple;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.InitialReportHandler;
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ReportDefinitionHandler;
+import com.jrefinery.xml.ElementDefinitionHandler;
+import com.jrefinery.xml.Parser;
 import org.xml.sax.SAXException;
 
 import java.net.URL;
@@ -52,7 +52,7 @@ import java.net.URL;
  *
  * @author Thomas Morgner
  */
-public abstract class AbstractReportDefinitionHandler implements ReportDefinitionHandler
+public abstract class AbstractReportDefinitionHandler implements ElementDefinitionHandler
 {
   /** the name generator parser-property name. */
   private static final String NAME_GENERATOR = "name-generator";
@@ -86,7 +86,7 @@ public abstract class AbstractReportDefinitionHandler implements ReportDefinitio
   }
 
   /**
-   * Gets the selected finishTag for this ReportDefinitionHandler. The finish tag
+   * Gets the selected finishTag for this ElementDefinitionHandler. The finish tag
    * is used to recognize the right moment for deactivating this handler.
    *
    * @return the defined finish tag.

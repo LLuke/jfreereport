@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DefaultClassFactory.java,v 1.7 2003/03/07 16:55:57 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -39,71 +39,22 @@
 package com.jrefinery.report.io.ext.factory.objects;
 
 import com.jrefinery.report.ElementAlignment;
-import com.jrefinery.report.targets.FloatDimension;
 import com.jrefinery.report.targets.FontDefinition;
-
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.text.DateFormat;
-import java.text.DateFormatSymbols;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.Format;
-import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import com.jrefinery.xml.factory.objects.JavaBaseClassFactory;
 
 /**
- * A default implementation of the {@link ClassFactory} interface.
+ * A default implementation of the {@link com.jrefinery.xml.factory.objects.ClassFactory} interface.
  * 
  * @author Thomas Morgner
  */
-public class DefaultClassFactory extends ClassFactoryImpl
+public class DefaultClassFactory extends JavaBaseClassFactory
 {
   /**
    * Creates a new factory.
    */
   public DefaultClassFactory()
   {
-    registerClass(Dimension2D.class, new BeanObjectDescription(FloatDimension.class));
-    registerClass(Date.class, new DateObjectDescription());
-    registerClass(Boolean.TYPE, new BooleanObjectDescription());
-    registerClass(Byte.TYPE, new ByteObjectDescription());
-    registerClass(Double.TYPE, new DoubleObjectDescription());
-    registerClass(Float.TYPE, new FloatObjectDescription());
-    registerClass(Integer.TYPE, new IntegerObjectDescription());
-    registerClass(Long.TYPE, new LongObjectDescription());
-    registerClass(Short.TYPE, new ShortObjectDescription());
-    registerClass(Character.TYPE, new CharacterObjectDescription());
-    registerClass(Character.class, new CharacterObjectDescription());
-    registerClass(Boolean.class, new BooleanObjectDescription());
-    registerClass(Byte.class, new ByteObjectDescription());
-    registerClass(Double.class, new DoubleObjectDescription());
-    registerClass(Float.class, new FloatObjectDescription());
-    registerClass(Integer.class, new IntegerObjectDescription());
-    registerClass(Long.class, new LongObjectDescription());
-    registerClass(Short.class, new ShortObjectDescription());
-    registerClass(Line2D.class, new Line2DObjectDescription());
-    registerClass(Point2D.class, new Point2DObjectDescription());
-    registerClass(Rectangle2D.class, new Rectangle2DObjectDescription());
-    registerClass(String.class, new StringObjectDescription());
     registerClass(ElementAlignment.class, new AlignmentObjectDescription());
-    registerClass(Color.class, new ColorObjectDescription());
-    registerClass(BasicStroke.class, new BasicStrokeObjectDescription());
-
-    registerClass(Format.class, new ClassLoaderObjectDescription());
-    registerClass(NumberFormat.class, new BeanObjectDescription(NumberFormat.class));
-    registerClass(DecimalFormat.class, new DecimalFormatObjectDescription());
-    registerClass(DecimalFormatSymbols.class, 
-                  new BeanObjectDescription(DecimalFormatSymbols.class));
-    registerClass(DateFormat.class, new ClassLoaderObjectDescription());
-    registerClass(SimpleDateFormat.class, new BeanObjectDescription(DecimalFormatSymbols.class));
-    registerClass(DateFormatSymbols.class, new ClassLoaderObjectDescription());
-
     registerClass(FontDefinition.class, new FontDefinitionObjectDescription());
   }
 }
