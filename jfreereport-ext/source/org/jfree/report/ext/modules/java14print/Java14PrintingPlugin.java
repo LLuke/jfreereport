@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14PrintingPlugin.java,v 1.3 2003/09/09 10:27:59 taqua Exp $
+ * $Id: Java14PrintingPlugin.java,v 1.4 2003/09/21 10:50:04 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -129,6 +129,7 @@ public class Java14PrintingPlugin extends PrintingPlugin
     }
     else
     {
+      getBase().addRepaginationListener(progressDialog);
       Java14PrintExportTask task = new Java14PrintExportTask
           (progressDialog, service, getBase().getPageable(), attributes);
       delegateTask(task);
@@ -139,6 +140,7 @@ public class Java14PrintingPlugin extends PrintingPlugin
           progressDialog.setVisible(true);
         }
       }
+      getBase().removeRepaginationListener(progressDialog);
       return handleExportResult(task);
     }
   }

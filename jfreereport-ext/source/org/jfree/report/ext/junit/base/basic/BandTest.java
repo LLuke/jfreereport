@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandTest.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
+ * $Id: BandTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,10 +42,17 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.awt.Color;
+import java.awt.geom.Point2D;
 
 import junit.framework.TestCase;
 import org.jfree.report.Band;
 import org.jfree.report.Element;
+import org.jfree.report.TextElement;
+import org.jfree.report.ElementAlignment;
+import org.jfree.report.JFreeReport;
+import org.jfree.report.elementfactory.TextFieldElementFactory;
+import org.jfree.ui.FloatDimension;
 
 public class BandTest extends TestCase
 {
@@ -150,6 +157,47 @@ public class BandTest extends TestCase
     catch (IllegalArgumentException ia)
     {
     }
+
+  }
+
+  public void testRemoveElement()
+  {
+    final JFreeReport report = new JFreeReport();
+    report.setName("A Very Simple Report");
+
+
+    TextFieldElementFactory factory = new TextFieldElementFactory();
+    factory.setName("T1");
+    factory.setAbsolutePosition(new Point2D.Float(0, 0));
+    factory.setMinimumSize(new FloatDimension(150, 20));
+    factory.setColor(Color.black);
+    factory.setHorizontalAlignment(ElementAlignment.LEFT);
+    factory.setVerticalAlignment(ElementAlignment.MIDDLE);
+    factory.setNullString("-");
+    factory.setFieldname("Column1");
+
+    final Element element1 = factory.createElement();
+    report.getItemBand().addElement(element1);
+
+    factory = new TextFieldElementFactory();
+    factory.setName("T2");
+    factory.setAbsolutePosition(new Point2D.Float(200, 0));
+    factory.setMinimumSize(new FloatDimension(150, 20));
+    factory.setColor(Color.black);
+    factory.setHorizontalAlignment(ElementAlignment.LEFT);
+    factory.setVerticalAlignment(ElementAlignment.MIDDLE);
+    factory.setNullString("-");
+    factory.setFieldname("Column2");
+
+    final Element element2 = factory.createElement();
+    report.getItemBand().addElement(element2);
+
+    report.getStyleSheetCollection().debug();
+
+    report.getItemBand().removeElement(element1);
+    report.getItemBand().removeElement(element2);
+
+    report.getStyleSheetCollection().debug();
 
   }
 

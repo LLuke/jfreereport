@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupPageBreakTest.java,v 1.2 2003/07/23 16:06:25 taqua Exp $
+ * $Id: GroupPageBreakTest.java,v 1.3 2003/09/09 10:27:58 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -235,9 +235,9 @@ public class GroupPageBreakTest extends TestCase
     target.close();
   }
 
-  public void VtestGroupReport2Visual () throws Exception
+  public static void main(String[] args) throws Exception
   {
-    final JFreeReport report = getReportTest2();
+    final JFreeReport report = new GroupPageBreakTest().getReportTest2();
     report.setReportFooter(new ReportFooter());
     report.setReportHeader(new ReportHeader());
 
