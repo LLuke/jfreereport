@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StreamHtmlFilesystem.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
+ * $Id: StreamHtmlFilesystem.java,v 1.3 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
 
+import org.jfree.io.IOUtils;
 import org.jfree.report.ImageReference;
 
 /**
@@ -57,6 +58,8 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
   /** the output stream. */
   private final OutputStream root;
 
+  private final boolean allowFileSources;
+  private final URL baseURL;
   /**
    * Creates a new StreamHtmlFilesystem for the given output stream.
    *
@@ -64,8 +67,27 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
    */
   public StreamHtmlFilesystem(final OutputStream root)
   {
-    this.root = root;
+    this (root, false, null);
   }
+
+  /**
+   * Creates a new StreamHtmlFilesystem for the given output stream,
+   * which allows URLs to be located on the local filesystem.
+   *
+   * @param root the output stream for the main file.
+   */
+  public StreamHtmlFilesystem(final OutputStream root, boolean allowFiles,
+                              final URL baseURL)
+  {
+    if (root == null)
+    {
+      throw new NullPointerException("root stream is null");
+    }
+    this.root = root;
+    this.allowFileSources = allowFiles;
+    this.baseURL = baseURL;
+  }
+
 
   /**
    * The root stream is used to write the main HTML-File. Any external content is
@@ -95,17 +117,26 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
   public HtmlReferenceData createImageReference(final ImageReference reference)
       throws IOException
   {
-    if (reference.getSourceURL() == null)
+    final URL src = reference.getSourceURL();
+    if (src == null)
     {
       return new EmptyContentHtmlReferenceData();
     }
     else
     {
-      final URL src = reference.getSourceURL();
       if (src.getProtocol().equals("http") || src.getProtocol().equals("https")
-          || src.getProtocol().equals("ftp"))
+          || src.getProtocol().equals("ftp") ||
+         (isAllowFileSources() && src.getProtocol().equals("file")))
       {
-        return new ImageReferenceData(src.toExternalForm());
+        if (baseURL != null)
+        {
+          return new ImageReferenceData
+              (IOUtils.getInstance().createRelativeURL(src, baseURL));
+        }
+        else
+        {
+          return new ImageReferenceData(src.toExternalForm());
+        }
       }
     }
     return new EmptyContentHtmlReferenceData();
@@ -135,5 +166,10 @@ public class StreamHtmlFilesystem implements HtmlFilesystem
   {
     // nothing to do, closing the stream is up to the caller ...
     root.flush();
+  }
+
+  public boolean isAllowFileSources()
+  {
+    return allowFileSources;
   }
 }

@@ -25,11 +25,12 @@
  * --------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: URLFilter.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: URLFilter.java,v 1.2 2003/08/24 15:13:22 taqua Exp $
  *
  * Changes
  * -------
  * 06-Jun-2002 : Outsourced from ImageLoadFilter.
+ * 21-Nov-2003 : The base URL no longer mandatory
  */
 package org.jfree.report.filter;
 
@@ -43,6 +44,7 @@ import org.jfree.report.util.Log;
 /**
  * The URLFilter forms URLs from Strings ,Files and URLs. If an URL is relative, the
  * missing contents can be obtained by a default url, called the baseURL.
+ * <p>
  *
  * @author Thomas Morgner
  */
@@ -132,7 +134,14 @@ public class URLFilter implements DataFilter, Serializable
       }
       else if (o instanceof String)
       {
-        return new URL(getBaseURL(), (String) o);
+        if (getBaseURL() == null)
+        {
+          return new URL((String) o);
+        }
+        else
+        {
+          return new URL(getBaseURL(), (String) o);
+        }
       }
     }
     catch (MalformedURLException mfe)

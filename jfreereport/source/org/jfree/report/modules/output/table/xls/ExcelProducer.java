@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.12 2003/11/01 19:52:29 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.13 2003/11/07 18:33:56 taqua Exp $
  *
  * Changes
  * -------
@@ -161,6 +161,9 @@ public class ExcelProducer extends TableProducer
    * in the report definition. The ReportProducer has been opened before.
    * <p>
    * If the name is null, the default excel names are used as sheet names.
+   * <p>
+   * If the name is longer than 32 characters or contains illegal characters,
+   * an exception will be thrown.
    *
    * @param name the page name
    */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlImageCellData.java,v 1.7 2003/08/30 15:03:04 taqua Exp $
+ * $Id: HtmlImageCellData.java,v 1.8 2003/09/07 15:27:08 taqua Exp $
  *
  * Changes
  * -------
@@ -113,7 +113,8 @@ public class HtmlImageCellData extends HtmlCellData
       }
       else
       {
-        pout.print(HtmlEncoderUtil.encodeUTF(href.getReference()));
+        // this must not be encoded...
+        pout.print(href.getReference());
       }
     }
     catch (IOException ioe)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageReferenceData.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
+ * $Id: ImageReferenceData.java,v 1.3 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,10 @@ public class ImageReferenceData extends HtmlReferenceData
   public ImageReferenceData(final String reference)
   {
     super(true);
+    if (reference == null)
+    {
+      throw new NullPointerException("reference string is null.");
+    }
     this.reference = reference;
   }
 
