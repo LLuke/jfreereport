@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyFileReportConfiguration.java,v 1.11 2003/06/29 16:59:30 taqua Exp $
+ * $Id: PropertyFileReportConfiguration.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,8 @@ public class PropertyFileReportConfiguration extends ReportConfiguration
 {
   /**
    * Loads the properties stored in the given file. This method does nothing if
-   * the file does not exist or is unreadable.
+   * the file does not exist or is unreadable. Appends the contents of the loaded
+   * properties to the already stored contents.
    *
    * @param fileName the file name of the stored properties.
    */
@@ -58,20 +59,38 @@ public class PropertyFileReportConfiguration extends ReportConfiguration
     final InputStream in = this.getClass().getResourceAsStream(fileName);
     if (in != null)
     {
-      try
-      {
-        final BufferedInputStream bin = new BufferedInputStream(in);
-        this.getConfiguration().load(bin);
-        bin.close();
-      }
-      catch (IOException ioe)
-      {
-        Log.warn("Unable to read global configuration", ioe);
-      }
+      load(in);
     }
     else
     {
       // Log.debug ("Report configuration file not found: " + fileName);
+    }
+
+  }
+
+  /**
+   * Loads the properties stored in the given file. This method does nothing if
+   * the file does not exist or is unreadable. Appends the contents of the loaded
+   * properties to the already stored contents.
+   *
+   * @param in the input stream used to read the properties.
+   */
+  public void load (final InputStream in)
+  {
+    if (in == null)
+    {
+      throw new NullPointerException();
+    }
+
+    try
+    {
+      final BufferedInputStream bin = new BufferedInputStream(in);
+      this.getConfiguration().load(bin);
+      bin.close();
+    }
+    catch (IOException ioe)
+    {
+      Log.warn("Unable to read configuration", ioe);
     }
 
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: Module.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,8 +44,7 @@ public interface Module extends ModuleInfo
   public ModuleInfo[] getOptionalModules ();
 
   public void initialize() throws ModuleInitializeException;
-  
-  public void activate ();
+  public void configure ();
 
   public String getDescription();
   public String getProducer();

@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_nl.java,v 1.4 2003/06/29 16:59:27 taqua Exp $
+ * $Id: JFreeReportResources_nl.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  */
 package org.jfree.report.modules.gui.base.resources;
 
@@ -94,6 +94,12 @@ public class JFreeReportResources_nl extends JFreeReportResources
 
         {"menu.help.name", "Help"},
         {"menu.help.mnemonic", new Character('H')},
+
+        {"menu.navigation.name", "Navigatie"},
+        {"menu.navigation.mnemonic", new Character ('N')},
+
+        {"menu.zoom.name", "In-/Uitzoomen"},
+        {"menu.zoom.mnemonic", new Character ('Z')},
 
         {"statusline.pages", "Pagina {0} van {1}"},
         {"statusline.error", "Er is een fout ontstaan in de report generatie: {0}"},

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.38 2003/07/03 15:59:29 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes
  * --------
@@ -1455,7 +1455,9 @@ public class PDFSaveDialog extends JDialog
         + PDFOutputTarget.SECURITY_USERPASSWORD, getUserPassword()));
     setOwnerPassword(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX
         + PDFOutputTarget.SECURITY_OWNERPASSWORD, getOwnerPassword()));
-    encodingModel.ensureEncodingAvailable(config.getPdfTargetEncoding());
+
+    encodingModel.ensureEncodingAvailable(config.getConfigProperty
+        (PDFOutputTarget.PDFTARGET_ENCODING));
     setEncoding(config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX
         + PDFOutputTarget.ENCODING, getEncoding()));
   }

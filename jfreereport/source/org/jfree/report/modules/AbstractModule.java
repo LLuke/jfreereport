@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: AbstractModule.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,26 +46,61 @@ import java.util.ArrayList;
 
 public abstract class AbstractModule extends DefaultModuleInfo implements Module
 {
+  private class ReaderHelper
+  {
+    private String buffer;
+    private BufferedReader reader;
+
+    public ReaderHelper(BufferedReader reader) throws IOException
+    {
+      this.reader = reader;
+    }
+
+    public boolean hasNext () throws IOException
+    {
+      if (buffer == null)
+      {
+        buffer = readLine();
+      }
+      return buffer != null;
+    }
+
+    public String next () throws IOException
+    {
+      String line = buffer;
+      buffer = null;
+      return line;
+    }
+
+    public void pushBack (String line)
+    {
+      buffer = line;
+    }
+
+    protected String readLine () throws IOException
+    {
+      String line = reader.readLine();
+      while (line != null && (line.length() == 0 || line.startsWith("#")))
+      {
+        // empty line or comment is ignored
+        line = reader.readLine();
+      }
+      return line;
+    }
+
+    public void close() throws IOException
+    {
+      reader.close();
+    }
+  }
+
   private String name;
   private String description;
   private String producer;
 
-  private String lastLineRead;
-
   public AbstractModule()
   {
     setModuleClass(this.getClass().getName());
-  }
-
-  protected String readLine (BufferedReader reader) throws IOException
-  {
-    String line = reader.readLine();
-    while (line != null && line.length() == 0 || line.startsWith("#"))
-    {
-      // empty line or comment is ignored
-      line = reader.readLine();
-    }
-    return line;
   }
 
   protected void loadModuleInfo () throws ModuleInitializeException
@@ -78,33 +113,35 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
         throw new ModuleInitializeException
             ("File 'module.properties' not found in module package.");
       }
-      BufferedReader reader = new BufferedReader(new InputStreamReader(in, "ISO-8859-1"));
-      lastLineRead = readLine(reader);
+      ReaderHelper rh = new ReaderHelper(new BufferedReader
+          (new InputStreamReader(in, "ISO-8859-1")));
+
       ArrayList optionalModules = new ArrayList();
       ArrayList dependendModules = new ArrayList();
 
-      while (lastLineRead != null)
+      while (rh.hasNext())
       {
+        String lastLineRead = rh.next();
+        //Log.debug ("Last line read ..." + lastLineRead);
         if (lastLineRead.startsWith("module-info:"))
         {
-          readModuleInfo(reader);
+          readModuleInfo(rh);
         }
         else if (lastLineRead.startsWith("depends:"))
         {
-          dependendModules.add (readExternalModule (reader));
+          dependendModules.add (readExternalModule (rh));
         }
         else if (lastLineRead.startsWith("optional:"))
         {
-          optionalModules.add (readExternalModule(reader));
+          optionalModules.add (readExternalModule(rh));
         }
         else
         {
           // we dont understand the current line, so we skip it ...
           // should we throw a parse exception instead?
-          lastLineRead = readLine(reader);
         }
       }
-      reader.close();
+      rh.close();
 
       this.optionalModules = (ModuleInfo[])
           optionalModules.toArray(new ModuleInfo[optionalModules.size()]);
@@ -118,60 +155,67 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     }
   }
 
-  private void readModuleInfo (BufferedReader reader) throws IOException
+  private String readValue (ReaderHelper reader, String firstLine)
+    throws IOException
   {
-
-    lastLineRead = readLine(reader);
-    while (lastLineRead != null)
+    StringBuffer b = new StringBuffer();
+    while (firstLine != null && parseKey(firstLine) == null)
     {
+      if (b.length() != 0)
+      {
+        b.append("\n");
+      }
+      b.append(parseValue(firstLine.trim()));
+      firstLine = reader.next();
+    }
+    return b.toString();
+  }
+
+  private void readModuleInfo (ReaderHelper reader) throws IOException
+  {
+    while (reader.hasNext())
+    {
+      String lastLineRead = reader.next();
+      //Log.debug ("Last line read + ..." + lastLineRead);
+
       if (Character.isWhitespace(lastLineRead.charAt(0)) == false)
       {
         // break if the current character is no whitespace ...
+        reader.pushBack(lastLineRead);
         return;
       }
 
       String line = lastLineRead.trim();
       String key = parseKey(line);
-      if (key == null)
+      if (key != null)
       {
         // parse error: Non data line does not contain a colon
-        continue;
-      }
+        String b = readValue(reader, parseValue(line.trim()));
 
-      StringBuffer b = new StringBuffer();
-      while (parseKey(line) == null)
-      {
-        if (b.length() != 0)
+        if (key.equals("name"))
         {
-          b.append("\n");
+          setName(b);
         }
-        b.append(parseValue(line.trim()));
-        lastLineRead = readLine(reader);
-      }
-
-      if (key.equals("name"))
-      {
-        setName(b.toString());
-      }
-      else if (key.equals("producer"))
-      {
-        setProducer(b.toString());
-      }
-      else if (key.equals("description"))
-      {
-        setDescription(b.toString());
-      }
-      else if (key.equals("version.major"))
-      {
-        setMajorVersion(b.toString());
-      }
-      else if (key.equals("version.minor"))
-      {
-        setMinorVersion(b.toString());
-      }
-      else if (key.equals("version.patchlevel"))
-      {
-        setPatchLevel(b.toString());
+        else if (key.equals("producer"))
+        {
+          setProducer(b);
+        }
+        else if (key.equals("description"))
+        {
+          setDescription(b);
+        }
+        else if (key.equals("version.major"))
+        {
+          setMajorVersion(b);
+        }
+        else if (key.equals("version.minor"))
+        {
+          setMinorVersion(b);
+        }
+        else if (key.equals("version.patchlevel"))
+        {
+          setPatchLevel(b);
+        }
       }
     }
   }
@@ -193,57 +237,47 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     {
       return line;
     }
-    return line.substring(idx);
+    return line.substring(idx + 1);
   }
 
-  private DefaultModuleInfo readExternalModule (BufferedReader reader) throws IOException
+  private DefaultModuleInfo readExternalModule (ReaderHelper reader)
+      throws IOException
   {
     DefaultModuleInfo mi = new DefaultModuleInfo();
 
-    lastLineRead = readLine(reader);
-    while (lastLineRead != null)
+    while (reader.hasNext())
     {
+      String lastLineRead = reader.next();
+      //Log.debug ("Last line read * ..." + lastLineRead);
 
       if (Character.isWhitespace(lastLineRead.charAt(0)) == false)
       {
         // break if the current character is no whitespace ...
+        reader.pushBack(lastLineRead);
         return mi;
       }
 
       String line = lastLineRead.trim();
       String key = parseKey(line);
-      if (key == null)
+      if (key != null)
       {
-        // parse error: Non data line does not contain a colon
-        continue;
-      }
-
-      StringBuffer b = new StringBuffer();
-      while (parseKey(line) == null)
-      {
-        if (b.length() != 0)
+        String b = readValue(reader, parseValue(line));
+        if (key.equals("module"))
         {
-          b.append("\n");
+          mi.setModuleClass(b);
         }
-        b.append(parseValue(line.trim()));
-        lastLineRead = readLine(reader);
-      }
-
-      if (key.equals("module"))
-      {
-        mi.setModuleClass(b.toString());
-      }
-      else if (key.equals("version.major"))
-      {
-        mi.setMajorVersion(b.toString());
-      }
-      else if (key.equals("version.minor"))
-      {
-        mi.setMinorVersion(b.toString());
-      }
-      else if (key.equals("version.patchlevel"))
-      {
-        mi.setPatchLevel(b.toString());
+        else if (key.equals("version.major"))
+        {
+          mi.setMajorVersion(b);
+        }
+        else if (key.equals("version.minor"))
+        {
+          mi.setMinorVersion(b);
+        }
+        else if (key.equals("version.patchlevel"))
+        {
+          mi.setPatchLevel(b);
+        }
       }
     }
     return mi;
@@ -354,8 +388,17 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     }
   }
 
-  public void activate()
+  /**
+   * Configures the module by loading the configuration properties and
+   * adding them to the package configuration.
+   */
+  public void configure()
   {
-    // todo load the report configuration for the module... 
+    InputStream in = getClass().getResourceAsStream("configuration.properties");
+    if (in == null)
+    {
+      return;
+    }
+    org.jfree.report.modules.PackageManager.getInstance().getPackageConfiguration().load(in);
   }
 }

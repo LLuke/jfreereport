@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.26 2003/07/03 15:59:29 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------
@@ -91,7 +91,6 @@ import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.components.FloatingButtonEnabler;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.util.Log;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.WindowSizeLimiter;
 import org.jfree.report.util.Worker;
 import org.jfree.xml.ParserUtil;
@@ -111,6 +110,22 @@ public class PreviewProxyBase extends JComponent
 
   /** The default height of the report pane. */
   public static final int DEFAULT_REPORT_PANE_HEIGHT = 480;
+
+  /** The preferred width key. */
+  public static final String PREVIEW_PREFERRED_WIDTH
+      = "org.jfree.report.preview.PreferredWidth";
+
+  /** The preferred height key. */
+  public static final String PREVIEW_PREFERRED_HEIGHT
+      = "org.jfree.report.preview.PreferredHeight";
+
+  /** The maximum width key. */
+  public static final String PREVIEW_MAXIMUM_WIDTH
+      = "org.jfree.report.preview.MaximumWidth";
+
+  /** The maximum height key. */
+  public static final String PREVIEW_MAXIMUM_HEIGHT
+      = "org.jfree.report.preview.MaximumHeight";
 
   /**
    * A wrapper action.
@@ -797,9 +812,9 @@ public class PreviewProxyBase extends JComponent
   private void applyDefinedDimension(final JFreeReport report)
   {
     String width = report.getReportConfiguration().getConfigProperty(
-        ReportConfiguration.PREVIEW_PREFERRED_WIDTH);
+        PREVIEW_PREFERRED_WIDTH);
     String height = report.getReportConfiguration().getConfigProperty(
-        ReportConfiguration.PREVIEW_PREFERRED_HEIGHT);
+        PREVIEW_PREFERRED_HEIGHT);
 
     // only apply if both values are set.
     if (width != null && height != null)
@@ -817,9 +832,9 @@ public class PreviewProxyBase extends JComponent
     }
 
     width = report.getReportConfiguration().getConfigProperty(
-        ReportConfiguration.PREVIEW_MAXIMUM_WIDTH);
+        PREVIEW_MAXIMUM_WIDTH);
     height = report.getReportConfiguration().getConfigProperty(
-        ReportConfiguration.PREVIEW_MAXIMUM_HEIGHT);
+        PREVIEW_MAXIMUM_HEIGHT);
 
     // only apply if at least one value is set.
     if (width != null || height != null)

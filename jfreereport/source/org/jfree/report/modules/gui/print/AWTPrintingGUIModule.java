@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: AWTPrintingGUIModule.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,9 +40,17 @@ package org.jfree.report.modules.gui.print;
 
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
+import org.jfree.report.modules.gui.base.ExportPluginFactory;
+import org.jfree.report.modules.gui.csv.CSVExportPlugin;
+import org.jfree.report.util.ReportConfiguration;
 
 public class AWTPrintingGUIModule extends AbstractModule
 {
+  private static final String PRINT_ORDER_KEY = "org.jfree.report.modules.gui.print.Order";
+  private static final String PRINT_ENABLE_KEY = "org.jfree.report.modules.gui.print.Enable";
+  private static final String PAGESETUP_ORDER_KEY = "org.jfree.report.modules.gui.print.pagesetup.Order";
+  private static final String PAGESETUP_ENABLE_KEY = "org.jfree.report.modules.gui.print.pagesetup.Enable";
+
   public AWTPrintingGUIModule() throws ModuleInitializeException
   {
     loadModuleInfo();
@@ -50,5 +58,20 @@ public class AWTPrintingGUIModule extends AbstractModule
 
   public void initialize() throws ModuleInitializeException
   {
+    String printOrder = ReportConfiguration.getGlobalConfig().getConfigProperty
+        (PRINT_ORDER_KEY, "0");
+    String printEnable = ReportConfiguration.getGlobalConfig().getConfigProperty
+        (PRINT_ENABLE_KEY, "false");
+
+    ExportPluginFactory.getInstance().registerPlugin
+        (CSVExportPlugin.class, printOrder, printEnable);
+
+    String pageSetupOrder = ReportConfiguration.getGlobalConfig().getConfigProperty
+        (PAGESETUP_ORDER_KEY, "0");
+    String pageSetupEnable = ReportConfiguration.getGlobalConfig().getConfigProperty
+        (PAGESETUP_ENABLE_KEY, "false");
+
+    ExportPluginFactory.getInstance().registerPlugin
+        (CSVExportPlugin.class, pageSetupOrder, pageSetupEnable);
   }
 }

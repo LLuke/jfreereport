@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.19 2003/06/29 16:59:24 taqua Exp $
+ * $Id: BSHExpression.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -106,7 +106,7 @@ import org.jfree.report.function.Expression;
 public class BSHExpression extends AbstractExpression implements Serializable
 {
   /** The headerfile with the default initialisations.*/
-  private static final String BSHHEADERFILE =
+  public static final String BSHHEADERFILE =
       "org/jfree/report/modules/misc/beanshell/BSHExpressionHeader.txt";
 
   /** The beanshell-interpreter used to evaluate the expression. */

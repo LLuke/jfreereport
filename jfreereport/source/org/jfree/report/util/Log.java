@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.27 2003/06/29 16:59:30 taqua Exp $
+ * $Id: Log.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -96,6 +96,12 @@ public final class Log extends org.jfree.util.Log
   /** The log level for debug messages. */
   public static final int DEBUG = LogTarget.DEBUG;
 
+  /** The default log target. */
+  private static final SystemOutLogTarget DEFAULT_LOG_TARGET = new SystemOutLogTarget();
+
+  /** The JFreeReport log instance. */
+  private static Log jfreeReportLog;
+
   /**
    * Private to prevent creating instances.
    */
@@ -105,8 +111,19 @@ public final class Log extends org.jfree.util.Log
 
   static
   {
-    Log l = new Log();
-    Log.defineLog(l);
+    jfreeReportLog = new Log();
+    org.jfree.util.Log.defineLog(jfreeReportLog);
+    jfreeReportLog.addTarget(Log.DEFAULT_LOG_TARGET);
+  }
+
+  public static Log getJFreeReportLog ()
+  {
+    return jfreeReportLog;
+  }
+
+  public void init()
+  {
+    removeTarget(DEFAULT_LOG_TARGET);
 
     if (ReportConfiguration.getGlobalConfig().isDisableLogging() == false)
     {
@@ -117,7 +134,7 @@ public final class Log extends org.jfree.util.Log
         Class c = ReportConfiguration.getGlobalConfig().getClass().
             getClassLoader().loadClass(className);
         LogTarget lt = (LogTarget) c.newInstance();
-        l.addTarget(lt);
+        addTarget(lt);
       }
       catch (Exception e)
       {
@@ -125,22 +142,23 @@ public final class Log extends org.jfree.util.Log
         e.printStackTrace();
       }
     }
+
     String logLevel = ReportConfiguration.getGlobalConfig().getLogLevel();
     if (logLevel.equalsIgnoreCase("error"))
     {
-      l.setDebuglevel(ERROR);
+      setDebuglevel(ERROR);
     }
     else if (logLevel.equalsIgnoreCase("warn"))
     {
-      l.setDebuglevel(WARN);
+      setDebuglevel(WARN);
     }
     else if (logLevel.equalsIgnoreCase("info"))
     {
-      l.setDebuglevel(INFO);
+      setDebuglevel(INFO);
     }
     else if (logLevel.equalsIgnoreCase("debug"))
     {
-      l.setDebuglevel(DEBUG);
+      setDebuglevel(DEBUG);
     }
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.52 2003/06/29 16:59:30 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -45,12 +45,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
+import java.util.TreeSet;
 
+import org.jfree.report.modules.PackageManager;
 import org.jfree.util.Configuration;
 
 /**
@@ -293,41 +294,25 @@ public class ReportConfiguration implements Configuration, Serializable
   /** The G2 fontrenderer bug override. Is "false". */
   public static final String FONTRENDERER_ISBUGGY_FRC_DEFAULT = "false";
 
-  /** The preferred width key. */
-  public static final String PREVIEW_PREFERRED_WIDTH
-      = "org.jfree.report.preview.PreferredWidth";
-
-  /** The preferred height key. */
-  public static final String PREVIEW_PREFERRED_HEIGHT
-      = "org.jfree.report.preview.PreferredHeight";
-
-  /** The maximum width key. */
-  public static final String PREVIEW_MAXIMUM_WIDTH
-      = "org.jfree.report.preview.MaximumWidth";
-
-  /** The maximum height key. */
-  public static final String PREVIEW_MAXIMUM_HEIGHT
-      = "org.jfree.report.preview.MaximumHeight";
-
-  /** The 'disable logging' property key. */
+  /** The property key, which defines whether to be verbose when generating the content. */
   public static final String PRINT_OPERATION_COMMENT
       = "org.jfree.report.PrintOperationComment";
 
-  /** The default 'disable logging' property value. */
+  /** The default 'print operation comment' property value. */
   public static final String PRINT_OPERATION_COMMENT_DEFAULT = "false";
 
-  /** The 'disable logging' property key. */
+  /** The property key, which defines whether errors abort the report generation. */
   public static final String STRICT_ERRORHANDLING
       = "org.jfree.report.StrictErrorHandling";
 
-  /** The default 'disable logging' property value. */
-  public static final String STRICT_ERRORHANDLING_DEFAULT = "false";
+  /** The default 'strict errorhandling' property value. */
+  public static final String STRICT_ERRORHANDLING_DEFAULT = "true";
 
-  /** The 'disable logging' property key. */
+  /** The 'warn on invalid columns' property key. */
   public static final String WARN_INVALID_COLUMNS
       = "org.jfree.report.WarnInvalidColumns";
 
-  /** The default 'disable logging' property value. */
+  /** The default 'warn on invalid columns' property value. */
   public static final String WARN_INVALID_COLUMNS_DEFAULT = "false";
 
   /** The 'disable logging' property key. */
@@ -350,71 +335,12 @@ public class ReportConfiguration implements Configuration, Serializable
   /** The default 'log target' property value. */
   public static final String LOGTARGET_DEFAULT = SystemOutLogTarget.class.getName();
 
-  /** The 'PDF auto init' property key. */
-  public static final String PDFTARGET_AUTOINIT
-      = "org.jfree.report.modules.output.support.itext.AutoInit";
-
-  /** The default 'PDF auto init' property value. */
-  public static final String PDFTARGET_AUTOINIT_DEFAULT = "true";
-
-  /** The 'PDF embed fonts' property key. */
-  public static final String PDFTARGET_EMBED_FONTS
-      = "org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.EmbedFonts";
-
-  /** The default 'PDF embed fonts' property value. */
-  public static final String PDFTARGET_EMBED_FONTS_DEFAULT = "true";
-
-  /** The 'PDF encoding' property key. */
-  public static final String PDFTARGET_ENCODING
-      = "org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.Encoding";
-
-  /** The default 'PDF encoding' property value. */
-  public static final String PDFTARGET_ENCODING_DEFAULT = "Cp1252";
-
-  /** The 'ResultSet factory mode'. */
-  public static final String RESULTSET_FACTORY_MODE
-      = "org.jfree.report.TableFactoryMode";
-
-  /** Enable DTD validation of the parsed XML. */
-  public static final String PARSER_VALIDATE
-      = "org.jfree.report.modules.parser.base.Validate";
-
-  /** disable DTD validation by default. */
-  public static final String PARSER_VALIDATE_DEFAULT = "true";
-
   /**
    * The default resourcebundle that should be used for ResourceFileFilter.
    * This property must be applied by the parser.
    */
-  public static final String REPORT_RESOURCE_BUNDLE
+  public static final String REPORT_RESOURCE_BUNDLE_KEY
       = "org.jfree.report.ResourceBundle";
-
-  /** Enable stricter table layouting for all TableProcessors. */
-  public static final String STRICT_TABLE_LAYOUT
-      = "org.jfree.report.targets.table.StrictLayout";
-
-  /** Disable strict layout by default. */
-  public static final String STRICT_TABLE_LAYOUT_DEFAULT = "false";
-
-  /** The property that defines whether to enable PDF export in the PreviewFrame. */
-  public static final String ENABLE_EXPORT_PDF
-      = "org.jfree.report.preview.plugin.pdf";
-
-  /** The property that defines whether to enable CSV export in the PreviewFrame. */
-  public static final String ENABLE_EXPORT_CSV
-      = "org.jfree.report.preview.plugin.csv";
-
-  /** The property that defines whether to enable Html export in the PreviewFrame. */
-  public static final String ENABLE_EXPORT_HTML
-      = "org.jfree.report.preview.plugin.html";
-
-  /** The property that defines whether to enable Excel export in the PreviewFrame. */
-  public static final String ENABLE_EXPORT_EXCEL
-      = "org.jfree.report.preview.plugin.excel";
-
-  /** The property that defines whether to enable PlainText export in the PreviewFrame. */
-  public static final String ENABLE_EXPORT_PLAIN
-      = "org.jfree.report.preview.plugin.plain";
 
   /**
    * Helper method to read the platform default encoding from the VM's system properties.
@@ -573,27 +499,6 @@ public class ReportConfiguration implements Configuration, Serializable
   }
 
   /**
-   * Returns whether to search for ttf-fonts when the PDFOutputTarget is loaded.
-   *
-   * @return the PDFOutputTarget autoinitialisation value.
-   */
-  public boolean isPDFTargetAutoInit()
-  {
-    return getConfigProperty(PDFTARGET_AUTOINIT,
-        PDFTARGET_AUTOINIT_DEFAULT).equalsIgnoreCase("true");
-  }
-
-  /**
-   * Sets the PDF target auto init status.
-   *
-   * @param autoInit  the new status.
-   */
-  public void setPDFTargetAutoInit(final boolean autoInit)
-  {
-    setConfigProperty(PDFTARGET_AUTOINIT, String.valueOf(autoInit));
-  }
-
-  /**
    * Returns <code>true</code> if logging is disabled, and <code>false</code> otherwise.
    *
    * @return true, if logging is completly disabled, false otherwise.
@@ -616,26 +521,6 @@ public class ReportConfiguration implements Configuration, Serializable
   public void setDisableLogging(final boolean disableLogging)
   {
     setConfigProperty(DISABLE_LOGGING, String.valueOf(disableLogging));
-  }
-
-  /**
-   * Returns the PDF encoding property value.
-   *
-   * @return the PDF encoding property value.
-   */
-  public String getPdfTargetEncoding()
-  {
-    return getConfigProperty(PDFTARGET_ENCODING, PDFTARGET_ENCODING_DEFAULT);
-  }
-
-  /**
-   * Sets the PDF encoding property value.
-   *
-   * @param pdfTargetEncoding  the new encoding.
-   */
-  public void setPdfTargetEncoding(final String pdfTargetEncoding)
-  {
-    setConfigProperty(PDFTARGET_ENCODING, pdfTargetEncoding);
   }
 
   /**
@@ -671,6 +556,7 @@ public class ReportConfiguration implements Configuration, Serializable
       final PropertyFileReportConfiguration rootProperty = new PropertyFileReportConfiguration();
       rootProperty.load("/org/jfree/report/jfreereport.properties");
       globalConfig.insertConfiguration(rootProperty);
+      globalConfig.insertConfiguration(PackageManager.getInstance().getPackageConfiguration());
 
       final PropertyFileReportConfiguration baseProperty = new PropertyFileReportConfiguration();
       baseProperty.load("/jfreereport.properties");
@@ -679,8 +565,7 @@ public class ReportConfiguration implements Configuration, Serializable
       final SystemPropertyConfiguration systemConfig = new SystemPropertyConfiguration();
       globalConfig.insertConfiguration(systemConfig);
 
-      // todo; loadExtensions ();
-      // rootProperty.insertConfiguration();
+      PackageManager.getInstance().init();
     }
     return globalConfig;
   }
@@ -810,27 +695,6 @@ public class ReportConfiguration implements Configuration, Serializable
   }
 
   /**
-   * Returns true, if the Graphics2D should use aliasing to render text. Defaults to false.
-   *
-   * @return true, if aliasing is enabled.
-   */
-  public boolean isPDFTargetEmbedFonts()
-  {
-    return getConfigProperty(PDFTARGET_EMBED_FONTS,
-        PDFTARGET_EMBED_FONTS_DEFAULT).equalsIgnoreCase("true");
-  }
-
-  /**
-   * set to true, if the PDFOutputTarget should embed all fonts.
-   *
-   * @param embed set to true, if the PDFOutputTarget should use embedded fonts.
-   */
-  public void setPDFTargetEmbedFonts(final boolean embed)
-  {
-    setConfigProperty(PDFTARGET_EMBED_FONTS, String.valueOf(embed));
-  }
-
-  /**
    * Returns true, if the Graphics2D implementation is buggy and is not really able
    * to place/calculate the fontsizes correctly. Defaults to false. (SunJDK on Windows
    * is detected and corrected, Linux SunJDK 1.3 is buggy, but not detectable).
@@ -867,169 +731,6 @@ public class ReportConfiguration implements Configuration, Serializable
   public Enumeration getConfigProperties()
   {
     return configuration.keys();
-  }
-
-  /**
-   * Set to false, to globaly disable the xml-validation.
-   *
-   * @param validate true, if the parser should validate the xml files.
-   */
-  public void setValidateXML(final boolean validate)
-  {
-    setConfigProperty(PARSER_VALIDATE, String.valueOf(validate));
-  }
-
-  /**
-   * returns true, if the parser should validate the xml files against the DTD
-   * supplied with JFreeReport.
-   *
-   * @return true, if the parser should validate, false otherwise.
-   */
-  public boolean isValidateXML()
-  {
-    return getConfigProperty(PARSER_VALIDATE, PARSER_VALIDATE_DEFAULT).equalsIgnoreCase("true");
-  }
-
-  /**
-   * returns true, if the TableWriter should perform a stricter layout translation.
-   * When set to true, all element bounds are used to create the table. This could result
-   * in a complex layout, more suitable for printing. If set to false, only the starting
-   * bounds (the left and the upper border) are used to create the layout. This will result
-   * is lesser cells and rows, the layout will be better suitable for later processing.
-   *
-   * @return true, if strict layouting rules should be applied, false otherwise.
-   */
-  public boolean isStrictTableLayout()
-  {
-    return getConfigProperty(STRICT_TABLE_LAYOUT,
-        STRICT_TABLE_LAYOUT_DEFAULT).equalsIgnoreCase("true");
-  }
-
-  /**
-   * Defines whether strict layouting rules should be used for the TableLayouter.
-   *
-   * @param strict set to true, to use strict layouting rules, false otherwise.
-   *
-   * @see ReportConfiguration#isStrictTableLayout
-   */
-  public void setStrictTableLayout(final boolean strict)
-  {
-    setConfigProperty(STRICT_TABLE_LAYOUT, String.valueOf(strict));
-  }
-
-  /**
-   * Returns true, if the export to CSV files should be available in the preview
-   * dialog. This setting does not limit the report's ability to be exported as
-   * CSV file, it just controls whether the Export plugin will be added to the
-   * Dialog.
-   *
-   * @return true, if CSV export is enabled, false otherwise.
-   */
-  public boolean isEnableExportCSV()
-  {
-    return getConfigProperty(ENABLE_EXPORT_CSV, "false").equalsIgnoreCase("true");
-  }
-
-  /**
-   * Defines, whether the CSV export plugin will be activated in the preview dialog.
-   *
-   * @param enableExportCSV true, if the export plugin should be active, false otherwise.
-   */
-  public void setEnableExportCSV(final boolean enableExportCSV)
-  {
-    setConfigProperty(ENABLE_EXPORT_CSV, String.valueOf(enableExportCSV));
-  }
-
-  /**
-   * Returns true, if the export to HTML files should be available in the preview
-   * dialog. This setting does not limit the report's ability to be exported as
-   * HTML file, it just controls whether the Export plugin will be added to the
-   * Dialog.
-   *
-   * @return true, if HTML export is enabled, false otherwise.
-   */
-  public boolean isEnableExportHTML()
-  {
-    return getConfigProperty(ENABLE_EXPORT_HTML, "false").equalsIgnoreCase("true");
-  }
-
-  /**
-   * Defines, whether the HTML export plugin will be activated in the preview dialog.
-   *
-   * @param enableExportHTML true, if the export plugin should be active, false otherwise.
-   */
-  public void setEnableExportHTML(final boolean enableExportHTML)
-  {
-    setConfigProperty(ENABLE_EXPORT_HTML, String.valueOf(enableExportHTML));
-  }
-
-  /**
-   * Returns true, if the export to plain text files should be available in the preview
-   * dialog. This setting does not limit the report's ability to be exported as
-   * plain text file, it just controls whether the Export plugin will be added to the
-   * Dialog.
-   *
-   * @return true, if PlainText export is enabled, false otherwise.
-   */
-  public boolean isEnableExportPlain()
-  {
-    return getConfigProperty(ENABLE_EXPORT_PLAIN, "false").equalsIgnoreCase("true");
-  }
-
-  /**
-   * Defines, whether the PlainText export plugin will be activated in the preview dialog.
-   *
-   * @param enableExportPlain true, if the export plugin should be active, false otherwise.
-   */
-  public void setEnableExportPlain(final boolean enableExportPlain)
-  {
-    setConfigProperty(ENABLE_EXPORT_PLAIN, String.valueOf(enableExportPlain));
-  }
-
-  /**
-   * Returns true, if the export to PDF files should be available in the preview
-   * dialog. This setting does not limit the report's ability to be exported as
-   * PDF file, it just controls whether the Export plugin will be added to the
-   * Dialog.
-   *
-   * @return true, if PDF export is enabled, false otherwise.
-   */
-  public boolean isEnableExportPDF()
-  {
-    return getConfigProperty(ENABLE_EXPORT_PDF, "false").equalsIgnoreCase("true");
-  }
-
-  /**
-   * Defines, whether the PDF export plugin will be activated in the preview dialog.
-   *
-   * @param enableExportPDF true, if the export plugin should be active, false otherwise.
-   */
-  public void setEnableExportPDF(final boolean enableExportPDF)
-  {
-    setConfigProperty(ENABLE_EXPORT_PDF, String.valueOf(enableExportPDF));
-  }
-
-  /**
-   * Returns true, if the export to Excel files should be available in the preview
-   * dialog. This setting does not limit the report's ability to be exported as
-   * Excel file, it just controls whether the Export plugin will be added to the
-   * Dialog.
-   *
-   * @return true, if Excel export is enabled, false otherwise.
-   */
-  public boolean isEnableExportExcel()
-  {
-    return getConfigProperty(ENABLE_EXPORT_EXCEL, "false").equalsIgnoreCase("true");
-  }
-
-  /**
-   * Defines, whether the Excel export plugin will be activated in the preview dialog.
-   *
-   * @param enableExportExcel true, if the export plugin should be active, false otherwise.
-   */
-  public void setEnableExportExcel(final boolean enableExportExcel)
-  {
-    setConfigProperty(ENABLE_EXPORT_EXCEL, String.valueOf(enableExportExcel));
   }
 
   /**
@@ -1118,9 +819,9 @@ public class ReportConfiguration implements Configuration, Serializable
    */
   public Iterator findPropertyKeys(final String prefix)
   {
-    final ArrayList keys = new ArrayList();
+    final TreeSet keys = new TreeSet();
     collectPropertyKeys(prefix, this, keys);
-    return Collections.unmodifiableList(keys).iterator();
+    return Collections.unmodifiableSet(keys).iterator();
   }
 
   /**
@@ -1132,7 +833,7 @@ public class ReportConfiguration implements Configuration, Serializable
    * @param collector the target list, that should receive all valid keys.
    */
   private void collectPropertyKeys(final String prefix, final ReportConfiguration config,
-                                   final ArrayList collector)
+                                   final TreeSet collector)
   {
     final Enumeration enum = config.getConfigProperties();
     while (enum.hasMoreElements())
@@ -1140,11 +841,14 @@ public class ReportConfiguration implements Configuration, Serializable
       final String key = (String) enum.nextElement();
       if (key.startsWith(prefix))
       {
-        collector.add(key);
+        if (collector.contains(key) == false)
+        {
+          collector.add(key);
+        }
       }
     }
 
-    if (parentConfiguration != null)
+    if (config.parentConfiguration != null)
     {
       collectPropertyKeys(prefix, config.parentConfiguration, collector);
     }

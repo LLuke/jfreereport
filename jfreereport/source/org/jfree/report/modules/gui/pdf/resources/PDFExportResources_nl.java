@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PDFExportResources_nl.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -62,7 +62,7 @@ public class PDFExportResources_nl extends JFreeReportResources
   /** The resources to be localised. */
   private static final Object[][] CONTENTS =
       {
-        {"action.save-as.name", "Opslaan Als PDF..."},
+        {"action.save-as.name", "Opslaan als PDF..."},
         {"action.save-as.description", "Opslaan in PDF-formaat"},
         {"action.save-as.mnemonic", new Integer(KeyEvent.VK_L)},
 

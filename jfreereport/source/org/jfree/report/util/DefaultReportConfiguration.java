@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultReportConfiguration.java,v 1.4 2003/06/27 14:25:25 taqua Exp $
+ * $Id: DefaultReportConfiguration.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,5 @@ public class DefaultReportConfiguration extends ReportConfiguration
   {
     this.getConfiguration().put(DISABLE_LOGGING, DISABLE_LOGGING_DEFAULT);
     this.getConfiguration().put(LOGLEVEL, LOGLEVEL_DEFAULT);
-    this.getConfiguration().put(PDFTARGET_AUTOINIT, PDFTARGET_AUTOINIT_DEFAULT);
-    this.getConfiguration().put(PDFTARGET_ENCODING, PDFTARGET_ENCODING_DEFAULT);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ExtParserModule.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -50,7 +50,7 @@ public class ExtParserModule  extends AbstractModule
 
   public void initialize() throws ModuleInitializeException
   {
-    
+    new ExtParserModuleInit().run();
   }
 
 

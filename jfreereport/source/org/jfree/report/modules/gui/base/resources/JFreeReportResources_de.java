@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_de.java,v 1.34 2003/06/29 16:59:27 taqua Exp $
+ * $Id: JFreeReportResources_de.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------
@@ -108,6 +108,42 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"statusline.error", "Die ReportGenerierung ist fehlgeschlagen: {0}"},
         {"statusline.repaginate", "Erzeuge Seitenumbr\u00fcche ..."},
 
+        {"FileChooser.acceptAllFileFilterText", "Alle Dateien (*.*)"},
+        {"FileChooser.cancelButtonMnemonic", new Integer(KeyEvent.VK_A) },
+        {"FileChooser.cancelButtonText", "Abbrechen"},
+        {"FileChooser.cancelButtonToolTipText", "Bricht die Dateiauswahl ab."},
+        {"FileChooser.detailsViewButtonAccessibleName", "Details"},
+        {"FileChooser.detailsViewButtonToolTipText", "Details"},
+        {"FileChooser.directoryDescriptionText", "Ordner"},
+        {"FileChooser.fileDescriptionText", "Datei"},
+        {"FileChooser.fileNameLabelMnemonic", new Integer(KeyEvent.VK_N) },
+        {"FileChooser.fileNameLabelText", "Dateiname:"},
+        {"FileChooser.filesOfTypeLabelMnemonic", new Integer(KeyEvent.VK_T)},
+        {"FileChooser.filesOfTypeLabelText", "Dateityp:"},
+        {"FileChooser.helpButtonMnemonic", new Integer(KeyEvent.VK_H)},
+        {"FileChooser.helpButtonText", "Hilfe"},
+        {"FileChooser.helpButtonToolTipText", "Dateiauswahl-Dialog Hilfe"},
+        {"FileChooser.homeFolderAccessibleName", "Heimatverzeichnis"},
+        {"FileChooser.homeFolderToolTipText", "Heimatverzeichnis"},
+        {"FileChooser.listViewButtonAccessibleName", "Liste"},
+        {"FileChooser.listViewButtonToolTipText", "Listenansicht"},
+        {"FileChooser.lookInLabelMnemonic", new Integer(KeyEvent.VK_I)},
+        {"FileChooser.lookInLabelText", "Suche in:"},
+        {"FileChooser.newFolderAccessibleNam", "Neuer Ordner"},
+        {"FileChooser.newFolderErrorSeparator", ":"},
+        {"FileChooser.newFolderErrorText", "Fehler beim erstellen eines neuen Ordners"},
+        {"FileChooser.newFolderToolTipText", "Neuen Ordner anlegen"},
+        {"FileChooser.openButtonMnemonic", new Integer(KeyEvent.VK_O)},
+        {"FileChooser.openButtonText", "Öffnen"},
+        {"FileChooser.openButtonToolTipText", "Öffnet die ausgewählte Datei"},
+        {"FileChooser.saveButtonMnemonic", new Integer(KeyEvent.VK_S)},
+        {"FileChooser.saveButtonText", "Speichern"},
+        {"FileChooser.saveButtonToolTipText", "Speichert die ausgewählte Datei"},
+        {"FileChooser.updateButtonMnemonic", new Integer(KeyEvent.VK_U)},
+        {"FileChooser.updateButtonText", "Aktualisieren"},
+        {"FileChooser.updateButtonToolTipText", "Aktualisiert die Ordneransicht"},
+        {"FileChooser.upFolderAccessibleName", "Hoch"},
+        {"FileChooser.upFolderToolTipText", "Eine Verzeichnisebene höher"},
       };
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.34 2003/06/29 16:59:25 taqua Exp $
+ * $Id: ReportGenerator.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -62,6 +62,13 @@ import org.xml.sax.InputSource;
  */
 public class ReportGenerator extends ParserFrontend
 {
+  /** Enable DTD validation of the parsed XML. */
+  public static final String PARSER_VALIDATE
+      = "org.jfree.report.modules.parser.base.Validate";
+
+  /** disable DTD validation by default. */
+  public static final String PARSER_VALIDATE_DEFAULT = "true";
+
   /** The report generator. */
   private static ReportGenerator generator;
 
@@ -81,9 +88,32 @@ public class ReportGenerator extends ParserFrontend
    */
   public void initFromSystem()
   {
-    setValidateDTD(ReportConfiguration.getGlobalConfig().isValidateXML());
     setEntityResolver(ParserEntityResolver.getDefaultResolver());
   }
+
+  /**
+   * Set to false, to globaly disable the xml-validation.
+   *
+   * @param validate true, if the parser should validate the xml files.
+   */
+  public void setValidateDTD(final boolean validate)
+  {
+    ReportConfiguration.getGlobalConfig().setConfigProperty
+        (PARSER_VALIDATE, String.valueOf(validate));
+  }
+
+  /**
+   * returns true, if the parser should validate the xml files against the DTD
+   * supplied with JFreeReport.
+   *
+   * @return true, if the parser should validate, false otherwise.
+   */
+  public boolean isValidateDTD()
+  {
+    return ReportConfiguration.getGlobalConfig().getConfigProperty
+        (PARSER_VALIDATE, PARSER_VALIDATE_DEFAULT).equalsIgnoreCase("true");
+  }
+
 
   /**
    * Parses a report using the given parameter as filename and the directory

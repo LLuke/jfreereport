@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.27 2003/06/29 16:59:27 taqua Exp $
+ * $Id: ElementFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -650,7 +650,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     if (resourceBase == null)
     {
       final ReportConfiguration config = getReport().getReportConfiguration();
-      resourceBase = config.getConfigProperty(ReportConfiguration.REPORT_RESOURCE_BUNDLE);
+      resourceBase = config.getConfigProperty(ReportConfiguration.REPORT_RESOURCE_BUNDLE_KEY);
       if (resourceBase == null)
       {
         throw new SAXException("Resourcebase is not defined for this report. " +
@@ -678,7 +678,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     if (resourceBase == null)
     {
       final ReportConfiguration config = getReport().getReportConfiguration();
-      resourceBase = config.getConfigProperty(ReportConfiguration.REPORT_RESOURCE_BUNDLE);
+      resourceBase = config.getConfigProperty(ReportConfiguration.REPORT_RESOURCE_BUNDLE_KEY);
       if (resourceBase == null)
       {
         throw new SAXException("Resourcebase is not defined for this report. " +

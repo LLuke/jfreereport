@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResultSetTableModelFactory.java,v 1.13 2003/06/29 16:59:28 taqua Exp $
+ * $Id: ResultSetTableModelFactory.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes
  * -------
@@ -64,6 +64,10 @@ import org.jfree.report.util.ReportConfiguration;
  */
 public class ResultSetTableModelFactory
 {
+  /** The 'ResultSet factory mode'. */
+  public static final String RESULTSET_FACTORY_MODE
+      = "org.jfree.report.modules.misc.tablemodel.TableFactoryMode";
+
   /** Singleton instance of the factory. */
   private static ResultSetTableModelFactory defaultInstance;
 
@@ -97,7 +101,7 @@ public class ResultSetTableModelFactory
   {
     // Allow for override, some jdbc drivers are buggy :(
     final String prop = ReportConfiguration
-        .getGlobalConfig().getConfigProperty(ReportConfiguration.RESULTSET_FACTORY_MODE, "");
+        .getGlobalConfig().getConfigProperty(RESULTSET_FACTORY_MODE, "");
 
     if (prop.equalsIgnoreCase("simple"))
     {

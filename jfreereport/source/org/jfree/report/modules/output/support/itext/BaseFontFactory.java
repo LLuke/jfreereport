@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.17 2003/06/29 16:59:29 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -61,11 +61,37 @@ import org.jfree.report.util.StringUtil;
  */
 public class BaseFontFactory extends DefaultFontMapper
 {
+  /** The 'PDF auto init' property key. */
+  public static final String ITEXT_FONT_AUTOINIT
+      = "org.jfree.report.modules.output.support.itext.AutoInit";
+
+  /** The default 'PDF auto init' property value. */
+  public static final String ITEXT_FONT_AUTOINIT_ONINIT = "onInit";
+
+  /** The default 'PDF auto init' property value. */
+  public static final String ITEXT_FONT_AUTOINIT_LAZY = "lazy";
+
+  /** The default 'PDF auto init' property value. */
+  public static final String ITEXT_FONT_AUTOINIT_NEVER = "never";
+
+  /** The default 'PDF auto init' property value. */
+  public static final String ITEXT_FONT_AUTOINIT_DEFAULT = ITEXT_FONT_AUTOINIT_LAZY;
+
+  public static final String ITEXT_FONT_ENCODING
+      = "org.jfree.report.modules.output.support.itext.Encoding";
+
+  /** The default 'PDF encoding' property value. */
+  public static final String ITEXT_FONT_ENCODING_DEFAULT
+      = ReportConfiguration.getPlatformDefaultEncoding();
+
   /** Singleton instance of the BaseFontFactory. */
   private static BaseFontFactory fontFactory;
 
   /** Fonts stored by name. */
   private HashMap fontsByName;
+
+  /** A flag to check whether this factory is initialized. */
+  private boolean initialized;
 
   /**
    * The font path filter is used to collect font files and directories
@@ -179,6 +205,8 @@ public class BaseFontFactory extends DefaultFontMapper
       registerFontPath(new File("/usr/share/fonts"), encoding);
     }
     registerFontPath(new File(jrepath, "lib" + fs + "fonts"), encoding);
+
+    initialized = true;
   }
 
   /**
@@ -325,30 +353,73 @@ public class BaseFontFactory extends DefaultFontMapper
    */
   public String getFontfileForName(final String font)
   {
+    if (isInitialized() == false)
+    {
+      if (getPDFTargetAutoInit().equals(ITEXT_FONT_AUTOINIT_LAZY))
+      {
+        registerDefaultFontPath();
+      }
+    }
     return (String) fontsByName.get(font);
   }
 
-  /**
-   * Returns the default font encoding.
-   *
-   * @return the default font encoding.
-   */
-  public static final String getDefaultFontEncoding()
+  public boolean isInitialized()
   {
-    return ReportConfiguration.getGlobalConfig().getPdfTargetEncoding();
+    return initialized;
   }
 
   /**
-   * Initialialize the font factory when this class is loaded and the system property
-   * of  <code>"org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.AutoInit"</code> is
-   * set to <code>true</code>.
+   * Returns the BaseFont encoding property value.
+   *
+   * @return the BaseFont encoding property value.
    */
-  static
+  public static final String getDefaultFontEncoding()
   {
-    if (ReportConfiguration.getGlobalConfig().isPDFTargetAutoInit())
+    return ReportConfiguration.getGlobalConfig().getConfigProperty
+        (ITEXT_FONT_ENCODING, ITEXT_FONT_ENCODING_DEFAULT);
+  }
+
+  /**
+   * Sets the BaseFont encoding property value.
+   *
+   * @param encoding the new encoding.
+   */
+  public static final void setDefaultFontEncoding(final String encoding)
+  {
+    ReportConfiguration.getGlobalConfig().setConfigProperty
+        (ITEXT_FONT_ENCODING, encoding);
+  }
+
+
+  /**
+   * Returns whether to search for ttf-fonts when the PDFOutputTarget is loaded.
+   *
+   * @return the PDFOutputTarget autoinitialisation value.
+   */
+  public String getPDFTargetAutoInit()
+  {
+    return ReportConfiguration.getGlobalConfig().getConfigProperty
+        (ITEXT_FONT_AUTOINIT, ITEXT_FONT_AUTOINIT_DEFAULT);
+  }
+
+  /**
+   * Sets the PDF target auto init status.
+   *
+   * @param autoInit  the new status.
+   */
+  public void setPDFTargetAutoInit(final String autoInit)
+  {
+    if (autoInit != null)
     {
-      getFontFactory().registerDefaultFontPath();
+      if ((autoInit.equals(ITEXT_FONT_AUTOINIT_LAZY) == false) &&
+          (autoInit.equals(ITEXT_FONT_AUTOINIT_NEVER) == false) &&
+          (autoInit.equals(ITEXT_FONT_AUTOINIT_ONINIT) == false))
+      {
+        throw new IllegalArgumentException("Invalid autoinit value.");
+      }
     }
+    ReportConfiguration.getGlobalConfig().setConfigProperty
+        (ITEXT_FONT_AUTOINIT, String.valueOf(autoInit));
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.44 2003/06/29 16:59:29 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -110,6 +110,20 @@ import org.jfree.report.util.WaitingImageObserver;
  */
 public class PDFOutputTarget extends AbstractOutputTarget
 {
+  /** The 'PDF embed fonts' property key. */
+  public static final String PDFTARGET_EMBED_FONTS
+      = "org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.EmbedFonts";
+
+  /** The default 'PDF embed fonts' property value. */
+  public static final String PDFTARGET_EMBED_FONTS_DEFAULT = "true";
+
+  /** The 'PDF encoding' property key. */
+  public static final String PDFTARGET_ENCODING
+      = "org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.Encoding";
+
+  /** The default 'PDF encoding' property value. */
+  public static final String PDFTARGET_ENCODING_DEFAULT = "Cp1252";
+
   /** The configuration prefix. */
   public static final String CONFIGURATION_PREFIX
       = "org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.";
@@ -1208,4 +1222,50 @@ public class PDFOutputTarget extends AbstractOutputTarget
     drawable.getDrawable().draw(target, drawBounds);
     target.dispose();
   }
+
+  /**
+   * Returns the PDF encoding property value.
+   *
+   * @return the PDF encoding property value.
+   */
+  public static String getDefaultPDFEncoding()
+  {
+    return ReportConfiguration.getGlobalConfig().getConfigProperty
+        (PDFTARGET_ENCODING, PDFTARGET_ENCODING_DEFAULT);
+  }
+
+  /**
+   * Sets the PDF encoding property value.
+   *
+   * @param pdfTargetEncoding  the new encoding.
+   */
+  public static void setDefaultPDFEncoding(final String pdfTargetEncoding)
+  {
+    ReportConfiguration.getGlobalConfig().setConfigProperty
+        (PDFTARGET_ENCODING, pdfTargetEncoding);
+  }
+
+  /**
+   * Returns true, if the Graphics2D should use aliasing to render text. Defaults to false.
+   *
+   * @return true, if aliasing is enabled.
+   */
+  public static boolean isDefaultEmbedFonts()
+  {
+    return ReportConfiguration.getGlobalConfig().getConfigProperty
+        (PDFTARGET_EMBED_FONTS, PDFTARGET_EMBED_FONTS_DEFAULT).equalsIgnoreCase("true");
+  }
+
+  /**
+   * set to true, if the PDFOutputTarget should embed all fonts.
+   *
+   * @param embed set to true, if the PDFOutputTarget should use embedded fonts.
+   */
+  public static void setDefaultEmbedFonts(final boolean embed)
+  {
+    ReportConfiguration.getGlobalConfig().setConfigProperty
+        (PDFTARGET_EMBED_FONTS, String.valueOf(embed));
+  }
+
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: BaseFontModule.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -52,9 +52,20 @@ public class BaseFontModule extends AbstractModule
   {
     if (isClassLoadable("com.lowagie.text.Document") == false)
     {
-      throw new ModuleInitializeException("Unable to load iText classes.");
+      throw new ModuleInitializeException("Unable to load iText classes. " +
+          "Check your classpath configuration.");
     }
-    
+
+    /**
+     * Initialialize the font factory when this class is loaded and the system property
+     * of  <code>"org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.AutoInit"</code> is
+     * set to <code>true</code>.
+     */
+    if (BaseFontFactory.getFontFactory().getPDFTargetAutoInit().equals
+        (BaseFontFactory.ITEXT_FONT_AUTOINIT_ONINIT))
+    {
+      BaseFontFactory.getFontFactory().registerDefaultFontPath();
+    }
   }
 
 }

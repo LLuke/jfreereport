@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.22 2003/06/29 16:59:27 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * --------
@@ -519,6 +519,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
 
       //extended encoding set, contained in lib/charsets.jar
       defaultEncodings.put("Cp1250", "Windows Eastern Europe");
+      defaultEncodings.put("Cp1251", "Windows Russian (Cyrillic)");
       defaultEncodings.put("Cp1253", "Windows Greek");
       defaultEncodings.put("Cp1254", "Windows Turkish");
       defaultEncodings.put("Cp1255", "Windows Hebrew");

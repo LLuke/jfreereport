@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.19 2003/06/29 16:59:29 taqua Exp $
+ * $Id: TableProcessor.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -68,14 +68,19 @@ import org.jfree.report.util.ReportConfiguration;
  */
 public abstract class TableProcessor
 {
+  /** Enable stricter table layouting for all TableProcessors. */
+  public static final String STRICT_TABLE_LAYOUT
+      = "org.jfree.report.modules.output.table.base.StrictLayout";
+
+  /** Disable strict layout by default. */
+  public static final String STRICT_TABLE_LAYOUT_DEFAULT = "false";
+
+
   /** the function name used for the created tablewriter. */
   private static final String TABLE_WRITER = TableProcessor.class.getName() + "$table-writer";
 
   /** the report that should be processed. */
   private JFreeReport report;
-
-  /** the strict layout flag. */
-  private boolean strictLayout;
 
   /** Storage for the output target properties. */
   private Properties properties;
@@ -116,8 +121,35 @@ public abstract class TableProcessor
     this.report.addFunction(tableWriter);
 
     // initialize with the report default.
-    strictLayout = report.getReportConfiguration().isStrictTableLayout();
   }
+
+  /**
+   * returns true, if the TableWriter should perform a stricter layout translation.
+   * When set to true, all element bounds are used to create the table. This could result
+   * in a complex layout, more suitable for printing. If set to false, only the starting
+   * bounds (the left and the upper border) are used to create the layout. This will result
+   * is lesser cells and rows, the layout will be better suitable for later processing.
+   *
+   * @return true, if strict layouting rules should be applied, false otherwise.
+   */
+  public boolean isStrictLayout()
+  {
+    return report.getReportConfiguration().getConfigProperty(STRICT_TABLE_LAYOUT,
+        STRICT_TABLE_LAYOUT_DEFAULT).equalsIgnoreCase("true");
+  }
+
+  /**
+   * Defines whether strict layouting rules should be used for the TableLayouter.
+   *
+   * @param strict set to true, to use strict layouting rules, false otherwise.
+   *
+   * @see TableProcessor#isStrictLayout
+   */
+  public void setStrictLayout(final boolean strict)
+  {
+    report.getReportConfiguration().setConfigProperty(STRICT_TABLE_LAYOUT, String.valueOf(strict));
+  }
+
 
   /**
    * Returns the tablewriter function used in to create the report contents.
@@ -127,28 +159,6 @@ public abstract class TableProcessor
   protected TableWriter getTableWriter()
   {
     return tableWriter;
-  }
-
-  /**
-   * Returns the strict layout flag.
-   *
-   * @see TableGrid#isStrict
-   * @return true, if a stricter layouting algorithm should be used, false otherwise.
-   */
-  public boolean isStrictLayout()
-  {
-    return strictLayout;
-  }
-
-  /**
-   * Defines the strict layout flag.
-   *
-   * @see TableGrid#isStrict
-   * @param strictLayout true, if a stricter layouting algorithm should be used, false otherwise.
-   */
-  public void setStrictLayout(final boolean strictLayout)
-  {
-    this.strictLayout = strictLayout;
   }
 
   /**

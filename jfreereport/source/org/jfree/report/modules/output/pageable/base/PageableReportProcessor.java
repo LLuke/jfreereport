@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.45 2003/06/29 16:59:28 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes
  * -------
@@ -270,7 +270,8 @@ public class PageableReportProcessor
    * @throws org.jfree.report.ReportProcessingException if the report did not proceed and got stuck.
    * @throws org.jfree.report.EmptyReportException if the repagination returned no pages.
    */
-  public void processReport() throws ReportProcessingException, EmptyReportException
+  public void processReport()
+      throws ReportProcessingException, EmptyReportException
   {
     // do a repagination
     final ReportStateList list = repaginate();
@@ -278,20 +279,13 @@ public class PageableReportProcessor
     {
       throw new EmptyReportException("Repaginating returned no pages");
     }
-    ReportState rs = list.get(0);
 
     final boolean failOnError = getReport().getReportConfiguration().isStrictErrorHandling();
 
-    rs = processPage(rs, getOutputTarget(), failOnError);
-    ReportStateProgress progress = null;
-    while (!rs.isFinish())
+    for (int i = 0; i < list.size(); i++)
     {
-      progress = rs.createStateProgress(progress);
-      rs = processPage(rs, getOutputTarget(), failOnError);
-      if ((rs.isFinish() == false) && rs.isProceeding(progress) == false)
-      {
-        throw new ReportProcessingException("Report is not proceeding");
-      }
+      ReportState rs = list.get(i);
+      processPage(rs, getOutputTarget(), failOnError);
     }
   }
 

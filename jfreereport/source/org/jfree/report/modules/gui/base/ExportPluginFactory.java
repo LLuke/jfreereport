@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPluginFactory.java,v 1.10 2003/06/29 16:59:27 taqua Exp $
+ * $Id: ExportPluginFactory.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * --------
@@ -37,10 +37,8 @@
  */
 package org.jfree.report.modules.gui.base;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Properties;
-import java.util.StringTokenizer;
+import java.util.Arrays;
 
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
@@ -52,18 +50,109 @@ import org.jfree.report.util.ReportConfiguration;
  */
 public class ExportPluginFactory
 {
-  /** The plug-in enable prefix. */
-  public static final String PLUGIN_ENABLE_PREFIX = "org.jfree.report.preview.plugin.";
+  private static class PluginDefinition implements Comparable
+  {
+    private Class pluginClass;
+    private String preference;
+    private String enableKey;
 
+    public PluginDefinition(Class pluginClass, String preference, String enableKey)
+    {
+      this.pluginClass = pluginClass;
+      this.enableKey = enableKey;
+      this.preference = preference;
+    }
+
+    public boolean equals(Object o)
+    {
+      if (this == o) return true;
+      if (!(o instanceof PluginDefinition)) return false;
+
+      final PluginDefinition pluginDefinition = (PluginDefinition) o;
+
+      if (!pluginClass.equals(pluginDefinition.pluginClass)) return false;
+
+      return true;
+    }
+
+    public int hashCode()
+    {
+      return pluginClass.hashCode();
+    }
+
+    public Class getPluginClass()
+    {
+      return pluginClass;
+    }
+
+    public String getPreference()
+    {
+      return preference;
+    }
+
+    public String getEnableKey()
+    {
+      return enableKey;
+    }
+
+    /**
+     * Compares this object with the specified object for order.  Returns a
+     * negative integer, zero, or a positive integer as this object is less
+     * than, equal to, or greater than the specified object.<p>
+     *
+     * @param   o the Object to be compared.
+     * @return  a negative integer, zero, or a positive integer as this object
+     *		is less than, equal to, or greater than the specified object.
+     *
+     * @throws ClassCastException if the specified object's type prevents it
+     *         from being compared to this Object.
+     */
+    public int compareTo(Object o)
+    {
+      if (this == o) return 0;
+      PluginDefinition def = (PluginDefinition) o;
+      return getPreference().compareTo(def.getPreference());
+    }
+  }
+
+  private static ExportPluginFactory factory;
+
+  public static ExportPluginFactory getInstance()
+  {
+    if (factory == null)
+    {
+      factory = new ExportPluginFactory();
+    }
+    return factory;
+  }
+
+  private ArrayList exportPlugins;
+
+  protected ExportPluginFactory()
+  {
+    exportPlugins = new ArrayList();
+  }
+
+  public void registerPlugin (Class plugin, String preference, String enableKey)
+  {
+    if (ExportPlugin.class.isAssignableFrom(plugin))
+    {
+      PluginDefinition def = new PluginDefinition(plugin, preference, enableKey);
+      if (exportPlugins.contains(def) == false)
+      {
+        exportPlugins.add(def);
+      }
+    }
+  }
 
   /**
    * Loads and instatiaties an export plug-in.
    *
    * @param proxy  the preview proxy.
-   * @param className the class name of the export plugin.
+   * @param plugin the class of the export plugin.
    * @return The plug-in.
    */
-  protected ExportPlugin createPlugIn(final PreviewProxy proxy, final String className)
+  protected ExportPlugin createPlugIn(final PreviewProxy proxy, final Class plugin)
   {
     if (proxy == null)
     {
@@ -71,14 +160,13 @@ public class ExportPluginFactory
     }
     try
     {
-      final Class c = Thread.currentThread().getContextClassLoader().loadClass(className);
-      final ExportPlugin ep = (ExportPlugin) c.newInstance();
+      final ExportPlugin ep = (ExportPlugin) plugin.newInstance();
       ep.init(proxy);
       return ep;
     }
     catch (Exception e)
     {
-      Log.warn("Unable to create the export plugin: " + className, e);
+      Log.warn("Unable to create the export plugin: " + plugin.getName(), e);
       return null;
     }
   }
@@ -87,18 +175,17 @@ public class ExportPluginFactory
    * Returns true if the plug-in is enabled for a given report configuration, and false otherwise.
    *
    * @param config  the report configuration.
-   * @param plugin  the plug-in key.
+   * @param pluginKey  the plug-in enable key.
    *
    * @return A boolean.
    */
-  protected boolean isPluginEnabled(final ReportConfiguration config, final String plugin)
+  protected boolean isPluginEnabled(final ReportConfiguration config, final String pluginKey)
   {
-    return config.getConfigProperty(PLUGIN_ENABLE_PREFIX + plugin, "false").equals("true");
+    return config.getConfigProperty(pluginKey, "false").equals("true");
   }
 
   /**
    * Creates a list containing all available export plugins.
-   * todo 0.8.4 move it into the report configuration ...
    *
    * @param proxy  the preview proxy.
    * @param config  the report configuration.
@@ -107,36 +194,18 @@ public class ExportPluginFactory
    */
   public ArrayList createExportPlugIns(final PreviewProxy proxy, final ReportConfiguration config)
   {
-    final InputStream in = getClass().getResourceAsStream
-        ("/org/jfree/report/preview/previewplugins.properties");
+    PluginDefinition[] def = (PluginDefinition[])
+        exportPlugins.toArray(new PluginDefinition[exportPlugins.size()]);
 
-    final Properties prop = new Properties();
+    Arrays.sort(def);
+    ArrayList retval = new ArrayList();
 
-    try
+    for (int i = 0; i < def.length; i++)
     {
-      prop.load(in);
-    }
-    catch (Exception e)
-    {
-      Log.warn("Unable to load export plugin configuration.");
-    }
-
-    final String availablePlugins = prop.getProperty("available.plugins", "");
-    final StringTokenizer strtok = new StringTokenizer(availablePlugins, ",");
-    final ArrayList retval = new ArrayList();
-
-    while (strtok.hasMoreElements())
-    {
-      final String plugin = strtok.nextToken().trim();
-      final String pluginClass = prop.getProperty(plugin);
-      if (pluginClass == null)
+      PluginDefinition definition = def[i];
+      if (isPluginEnabled(config, definition.getEnableKey()))
       {
-        Log.warn(new org.jfree.util.Log.SimpleMessage("Plugin ", plugin, " is not defined."));
-        continue;
-      }
-      if (isPluginEnabled(config, plugin))
-      {
-        final ExportPlugin ep = createPlugIn(proxy, pluginClass);
+        final ExportPlugin ep = createPlugIn(proxy, definition.getPluginClass());
         if (ep != null)
         {
           retval.add(ep);
@@ -144,9 +213,10 @@ public class ExportPluginFactory
       }
       else
       {
-        Log.warn(new org.jfree.util.Log.SimpleMessage("Plugin ", plugin, " is not enabled."));
+        Log.warn(new Log.SimpleMessage("Plugin ", definition.getPluginClass(), " is not enabled."));
       }
     }
+    Log.debug("Export plugins loaded: ");
     return retval;
   }
 }

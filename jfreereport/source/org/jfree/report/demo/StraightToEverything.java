@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.10 2003/06/29 16:59:23 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes
  * -------
@@ -305,7 +305,7 @@ public class StraightToEverything
   public static void main(final String[] args)
   {
     ReportConfiguration.getGlobalConfig().setLogLevel("Warn");
-    ReportConfiguration.getGlobalConfig().setPDFTargetAutoInit(false);
+    // disable PDF target autoinit must be done outside ...
     try
     {
       final StraightToEverything demo = new StraightToEverything(System.getProperty("user.home")

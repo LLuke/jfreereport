@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.61 2003/06/29 19:01:18 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -254,6 +254,49 @@ public class JFreeReportResources extends ListResourceBundle
         {"statusline.pages", "Page {0} of {1}"},
         {"statusline.error", "Reportgeneration produced an error: {0}"},
         {"statusline.repaginate", "Calculating pagebreaks, please wait."},
+
+        // these are the swing default values ...
+        {"FileChooser.acceptAllFileFilterText", "All Files (*.*)"},
+        {"FileChooser.cancelButtonMnemonic", new Integer(KeyEvent.VK_C) },
+        {"FileChooser.cancelButtonText", "Cancel"},
+        {"FileChooser.cancelButtonToolTipText", "Abort file chooser dialog"},
+        {"FileChooser.detailsViewButtonAccessibleName", "Details"},
+        {"FileChooser.detailsViewButtonToolTipText", "Details"},
+        {"FileChooser.directoryDescriptionText", "Directory"},
+        {"FileChooser.fileDescriptionText", "Generic File"},
+        {"FileChooser.fileNameLabelMnemonic", new Integer(KeyEvent.VK_N) },
+        {"FileChooser.fileNameLabelText", "File name:"},
+        {"FileChooser.filesOfTypeLabelMnemonic", new Integer(KeyEvent.VK_T)},
+        {"FileChooser.filesOfTypeLabelText", "Files of type:"},
+        {"FileChooser.helpButtonMnemonic", new Integer(KeyEvent.VK_H)},
+        {"FileChooser.helpButtonText", "Help"},
+        {"FileChooser.helpButtonToolTipText", "FileChooser help"},
+        {"FileChooser.homeFolderAccessibleName", "Home"},
+        {"FileChooser.homeFolderToolTipText", "Home"},
+        {"FileChooser.listViewButtonAccessibleName", "List"},
+        {"FileChooser.listViewButtonToolTipText", "List"},
+        {"FileChooser.lookInLabelMnemonic", new Integer(KeyEvent.VK_I)},
+        {"FileChooser.lookInLabelText", "Look in:"},
+        {"FileChooser.newFolderAccessibleNam", "New Folder"},
+        {"FileChooser.newFolderErrorSeparator", ":"},
+        {"FileChooser.newFolderErrorText", "Error creating new folder"},
+        {"FileChooser.newFolderToolTipText", "Create New Folder"},
+        {"FileChooser.openButtonMnemonic", new Integer(KeyEvent.VK_O)},
+        {"FileChooser.openButtonText", "Open"},
+        {"FileChooser.openButtonToolTipText", "Open selected file"},
+        {"FileChooser.saveButtonMnemonic", new Integer(KeyEvent.VK_S)},
+        {"FileChooser.saveButtonText", "Save"},
+        {"FileChooser.saveButtonToolTipText", "Save selected file"},
+        {"FileChooser.updateButtonMnemonic", new Integer(KeyEvent.VK_U)},
+        {"FileChooser.updateButtonText", "Update"},
+        {"FileChooser.updateButtonToolTipText", "Update directory listing"},
+        {"FileChooser.upFolderAccessibleName", "Up"},
+        {"FileChooser.upFolderToolTipText", "Up One Level"},
+
+        {"OptionPane.yesButtonText", "Yes"},
+        {"OptionPane.noButtonText", "No"},
+        {"OptionPane.okButtonText", "OK"},
+        {"OptionPane.cancelButtonText", "Cancel"},
 
       };
 

@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DefaultModuleInfo.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 05.07.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules;
@@ -50,7 +50,7 @@ public class DefaultModuleInfo implements ModuleInfo
   }
 
   public DefaultModuleInfo(String moduleClass, String majorVersion,
-                    String minorVersion, String patchLevel)
+                           String minorVersion, String patchLevel)
   {
     this.moduleClass = moduleClass;
     this.majorVersion = majorVersion;
@@ -96,5 +96,56 @@ public class DefaultModuleInfo implements ModuleInfo
   protected void setPatchLevel(String patchLevel)
   {
     this.patchLevel = patchLevel;
+  }
+
+  /**
+   * Two moduleinfos are equal,if they have the same module class.
+   * @param o
+   * @return
+   */
+  public boolean equals(Object o)
+  {
+    if (this == o) return true;
+    if (!(o instanceof DefaultModuleInfo)) return false;
+
+    final ModuleInfo defaultModuleInfo = (ModuleInfo) o;
+
+    if (!moduleClass.equals(defaultModuleInfo.getModuleClass()))
+    {
+      return false;
+    }
+    return true;
+  }
+
+  public int hashCode()
+  {
+    int result;
+    result = moduleClass.hashCode();
+    return result;
+  }
+
+  public String toString ()
+  {
+    StringBuffer buffer = new StringBuffer();
+    buffer.append(getClass().getName());
+    buffer.append("={ModuleClass=");
+    buffer.append(getModuleClass());
+    if (getMajorVersion() != null)
+    {
+      buffer.append("; Version=");
+      buffer.append(getMajorVersion());
+      if (getMinorVersion() != null)
+      {
+        buffer.append("-");
+        buffer.append(getMinorVersion());
+        if (getPatchLevel() != null)
+        {
+          buffer.append("_");
+          buffer.append(getPatchLevel());
+        }
+      }
+    }
+    buffer.append("}");
+    return buffer.toString();
   }
 }
