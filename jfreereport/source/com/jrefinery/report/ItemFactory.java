@@ -25,7 +25,7 @@
  * ----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id$
+ * $Id: ItemFactory.java,v 1.19 2002/11/07 21:45:19 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,8 @@
  * 10-Jul-2002 : Added Support for ImageURLField, ImageURLFunction
  * 31-Aug-2002 : Replaced ReportDataSource and FunctionDataSource with DataRowDataSource
  *               Deprecated create*Function and create*Field methods.
+ * 28-Nov-2002 : Added vertical alignment for text elements (DG);
+ *
  */
 package com.jrefinery.report;
 
@@ -92,6 +94,7 @@ public class ItemFactory
                                               Rectangle2D bounds,
                                               Paint paint,
                                               int alignment,
+                                              int verticalAlignment,
                                               Font font,
                                               String nullString,
                                               String format,
@@ -107,6 +110,7 @@ public class ItemFactory
     dateElement.setBounds(bounds);
     dateElement.setPaint(paint);
     dateElement.setAlignment(alignment);
+    dateElement.setVerticalAlignment(verticalAlignment);
     dateElement.setFont(font);
     dateElement.setNullString(nullString);
     dateElement.setDataSource(filter);
@@ -136,6 +140,7 @@ public class ItemFactory
                                               Rectangle2D bounds,
                                               Paint paint,
                                               int alignment,
+                                              int verticalAlignment,
                                               Font font,
                                               String nullString,
                                               DateFormat format,
@@ -150,6 +155,7 @@ public class ItemFactory
     dateElement.setBounds(bounds);
     dateElement.setPaint(paint);
     dateElement.setAlignment(alignment);
+    dateElement.setVerticalAlignment(verticalAlignment);
     dateElement.setFont(font);
     dateElement.setNullString(nullString);
     dateElement.setDataSource(filter);
@@ -180,12 +186,14 @@ public class ItemFactory
                                                Rectangle2D bounds,
                                                Paint paint,
                                                int alignment,
+                                               int verticalAlignment,
                                                Font font,
                                                String nullString,
                                                String format,
                                                String function)
   {
-    return createDateElement(name, bounds, paint, alignment, font, nullString, format, function);
+    return createDateElement(name, bounds, paint, alignment, verticalAlignment,
+                             font, nullString, format, function);
   }
 
   /**
@@ -212,12 +220,14 @@ public class ItemFactory
                                                Rectangle2D bounds,
                                                Paint paint,
                                                int alignment,
+                                               int verticalAlignment,
                                                Font font,
                                                String nullString,
                                                DateFormat format,
                                                String function)
   {
-    return createDateElement(name, bounds, paint, alignment, font, nullString, format, function);
+    return createDateElement(name, bounds, paint, alignment, verticalAlignment,
+                             font, nullString, format, function);
   }
 
   /**
@@ -241,6 +251,7 @@ public class ItemFactory
                                                  Rectangle2D bounds,
                                                  Paint paint,
                                                  int alignment,
+                                                 int verticalAlignment,
                                                  Font font,
                                                  String nullString,
                                                  String function)
@@ -250,6 +261,7 @@ public class ItemFactory
     gElement.setBounds(bounds);
     gElement.setPaint(paint);
     gElement.setAlignment(alignment);
+    gElement.setVerticalAlignment(verticalAlignment);
     gElement.setFont(font);
     gElement.setNullString(nullString);
     gElement.setDataSource(new DataRowDataSource(function));
@@ -472,6 +484,7 @@ public class ItemFactory
                                                Rectangle2D bounds,
                                                Paint paint,
                                                int alignment,
+                                               int verticalAlignment,
                                                Font font,
                                                String labeltext)
   {
@@ -480,6 +493,7 @@ public class ItemFactory
     label.setBounds(bounds);
     label.setPaint(paint);
     label.setAlignment(alignment);
+    label.setVerticalAlignment(verticalAlignment);
     label.setFont(font);
     label.setDataSource(new StaticDataSource(labeltext));
     return label;
@@ -567,11 +581,13 @@ public class ItemFactory
                                                        Rectangle2D bounds,
                                                        Paint paint,
                                                        int alignment,
+                                                       int verticalAlignment,
                                                        Font font,
                                                        String nullString,
                                                        String field)
   {
-    return createStringElement(name, bounds, paint, alignment, font, nullString, field);
+    return createStringElement(name, bounds, paint, alignment, verticalAlignment,
+                               font, nullString, field);
   }
 
   /**
@@ -596,6 +612,7 @@ public class ItemFactory
                                                 Rectangle2D bounds,
                                                 Paint paint,
                                                 int alignment,
+                                                int verticalAlignment,
                                                 Font font,
                                                 String nullString,
                                                 NumberFormat format,
@@ -610,6 +627,7 @@ public class ItemFactory
     element.setBounds(bounds);
     element.setPaint(paint);
     element.setAlignment(alignment);
+    element.setVerticalAlignment(verticalAlignment);
     element.setFont(font);
     element.setNullString(nullString);
     element.setDataSource(filter);
@@ -638,6 +656,7 @@ public class ItemFactory
                                                 Rectangle2D bounds,
                                                 Paint paint,
                                                 int alignment,
+                                                int verticalAlignment,
                                                 Font font,
                                                 String nullString,
                                                 String format,
@@ -652,6 +671,7 @@ public class ItemFactory
     element.setBounds(bounds);
     element.setPaint(paint);
     element.setAlignment(alignment);
+    element.setVerticalAlignment(verticalAlignment);
     element.setFont(font);
     element.setNullString(nullString);
     element.setDataSource(filter);
@@ -682,12 +702,14 @@ public class ItemFactory
                                                  Rectangle2D bounds,
                                                  Paint paint,
                                                  int alignment,
+                                                 int verticalAlignment,
                                                  Font font,
                                                  String nullString,
                                                  String format,
                                                  String function)
   {
-    return createNumberElement(name, bounds, paint, alignment, font, nullString, format, function);
+    return createNumberElement(name, bounds, paint, alignment, verticalAlignment,
+                               font, nullString, format, function);
   }
 
   /**
@@ -714,12 +736,14 @@ public class ItemFactory
                                                  Rectangle2D bounds,
                                                  Paint paint,
                                                  int alignment,
+                                                 int verticalAlignment,
                                                  Font font,
                                                  String nullString,
                                                  NumberFormat format,
                                                  String function)
   {
-    return createNumberElement(name, bounds, paint, alignment, font, nullString, format, function);
+    return createNumberElement(name, bounds, paint, alignment, verticalAlignment,
+                               font, nullString, format, function);
   }
 
   /**
@@ -743,6 +767,7 @@ public class ItemFactory
                                                 Rectangle2D bounds,
                                                 Paint paint,
                                                 int alignment,
+                                                int verticalAlignment,
                                                 Font font,
                                                 String nullString,
                                                 String field)
@@ -752,6 +777,7 @@ public class ItemFactory
     element.setBounds(bounds);
     element.setPaint(paint);
     element.setAlignment(alignment);
+    element.setVerticalAlignment(verticalAlignment);
     element.setFont(font);
     element.setNullString(nullString);
     element.setDataSource(new DataRowDataSource(field));
@@ -781,11 +807,13 @@ public class ItemFactory
                                                  Rectangle2D bounds,
                                                  Paint paint,
                                                  int alignment,
+                                                 int verticalAlignment,
                                                  Font font,
                                                  String nullString,
                                                  String function)
   {
-    return createStringElement(name, bounds, paint, alignment, font, nullString, function);
+    return createStringElement(name, bounds, paint, alignment, verticalAlignment,
+                               font, nullString, function);
   }
 
   /**

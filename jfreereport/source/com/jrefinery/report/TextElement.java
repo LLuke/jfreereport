@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: TextElement.java,v 1.21 2002/09/05 17:25:31 taqua Exp $
+ * $Id: TextElement.java,v 1.22 2002/09/13 15:38:04 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -93,25 +93,29 @@ public class TextElement extends Element
   /** Font for displaying text. */
   private Font font;
 
-  /** Text alignment: LEFT, CENTER, RIGHT. */
-  private int alignment;
-
   /** A flag indicating whether this elements text should be underlined */
   private boolean isUnderlined;
 
   /** A flag indicating whether this elements text should be striked through.*/
   private boolean isStrikethr;
 
+  /** Text alignment: LEFT, CENTER, RIGHT. */
+  private int alignment;
+
+  /** Vertical alignment for text: TOP, MIDDLE or BOTTOM. */
+  private int verticalAlignment;
+
   /** ?? */
   private boolean dynamic;
 
   /**
-   * Constructs an element using a Rectangle2D.
+   * Creates a new text element.
    */
   public TextElement()
   {
-    stringfilter = new StringFilter();
+    this.stringfilter = new StringFilter();
     setAlignment(ElementConstants.LEFT);
+    this.verticalAlignment = ElementConstants.TOP;
     setNullString(null);
     setDynamic(false);
   }
@@ -265,25 +269,58 @@ public class TextElement extends Element
     }
     else
     {
-      throw new IllegalArgumentException("The alignment must be one of LEFT, RIGHT or CENTER");
+      throw new IllegalArgumentException("The alignment must be one of LEFT, RIGHT or CENTER.");
     }
   }
 
   /**
-   * Draws the element at its position relative to the supplied band co-ordinates.
+   * Returns the vertical alignment for this element's text.
+   * <p>
+   * This is one of <code>ElementConstants.TOP</code>, <code>ElementConstants.MIDDLE</code> or
+   * <code>ElementConstants.BOTTOM</code>.
    *
-   * @param target The output target.
-   * @param band The band.
+   * @return the alignment.
+   */
+  public int getVerticalAlignment()
+  {
+    return this.verticalAlignment;
+  }
+
+  /**
+   * Defines the vertical alignment for this element's text.
+   * <p>
+   * This is one of the constants defined in <code>ElementConstants</code>: <code>TOP</code>,
+   * <code>MIDDLE</code> or <code>RIGHT</code>.
+   *
+   * @param alignment the alignment.
+   */
+  public void setVerticalAlignment(int alignment)
+  {
+    if (alignment == TOP || alignment == BOTTOM || alignment == MIDDLE)
+    {
+      this.verticalAlignment = alignment;
+    }
+    else
+    {
+      throw new IllegalArgumentException("The alignment must be one of TOP, BOTTOM or MIDDLE.");
+    }
+  }
+
+  /**
+   * Draws the element at its position relative to the cursor for the current band.
+   *
+   * @param target  the output target.
+   * @param band  the band.
    *
    * @throws OutputTargetException if there is a problem with the target.
    */
   public void draw(OutputTarget target, Band band) throws OutputTargetException
   {
     target.setPaint(getPaint(band));
-    // set the font...
     target.setFont(getFont(band));
-    // draw the text...
-    target.drawMultiLineText(this.getFormattedText(), getAlignment(), isDynamic());
+    target.drawMultiLineText(getFormattedText(),
+                             getAlignment(), getVerticalAlignment(),
+                             isDynamic());
   }
 
   /**
