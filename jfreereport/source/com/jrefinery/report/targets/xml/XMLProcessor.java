@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLProcessor.java,v 1.10 2003/03/04 20:29:03 taqua Exp $
+ * $Id: XMLProcessor.java,v 1.11 2003/04/05 18:57:20 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.StartState;
+import com.jrefinery.report.states.ReportStateProgress;
 import com.jrefinery.report.util.NullOutputStream;
 
 import java.awt.print.PageFormat;
@@ -183,6 +184,7 @@ public class XMLProcessor
     }
 
     boolean hasNext;
+    ReportStateProgress progress = null;
     int level = ((Integer) it.next()).intValue();
     // outer loop: process all function levels
     do
@@ -191,7 +193,7 @@ public class XMLProcessor
       // The state is used later to restart the report processing.
       if (level == -1)
       {
-        retval = state.copyState();
+        retval = (ReportState) state.clone();
       }
 
       // inner loop: process the complete report, calculate the function values
@@ -201,8 +203,8 @@ public class XMLProcessor
           getReport().getReportConfiguration().isStrictErrorHandling();
       while (!state.isFinish())
       {
-        ReportState oldstate = state;
-        state = oldstate.copyState().advance();
+        progress = state.createStateProgress(progress);
+        state = state.advance();
         if (failOnError)
         {
           if (state.isErrorOccured() == true)
@@ -214,7 +216,7 @@ public class XMLProcessor
         {
           // if the report processing is stalled, throw an exception; an infinite
           // loop would be caused.
-          if (!state.isProceeding(oldstate))
+          if (!state.isProceeding(progress))
           {
             throw new ReportProcessingException("State did not proceed, bailing out!");
           }
@@ -282,18 +284,18 @@ public class XMLProcessor
 
       boolean failOnError =
           getReport().getReportConfiguration().isStrictErrorHandling();
-
+      ReportStateProgress progress = null;
       while (!state.isFinish())
       {
-        ReportState oldstate = state;
-        state = oldstate.copyState().advance();
+        progress = state.createStateProgress(progress);
+        state = state.advance();
         if (failOnError && state.isErrorOccured() == true)
         {
           throw new ReportEventException ("Failed to dispatch an event.", state.getErrors());
         }
         if (!state.isFinish())
         {
-          if (!state.isProceeding(oldstate))
+          if (!state.isProceeding(progress))
           {
             throw new ReportProcessingException("State did not proceed, bailing out!");
           }

@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.10 2003/02/10 19:33:50 taqua Exp $
+ * $Id: ReportStateList.java,v 1.11 2003/02/25 18:47:02 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package com.jrefinery.report.targets.pageable;
 
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.states.ReportState;
+import com.jrefinery.report.states.ReportStateProgress;
 import com.jrefinery.report.util.WeakReferenceList;
 
 import java.util.ArrayList;
@@ -150,9 +151,10 @@ public class ReportStateList
         throw new NullPointerException ("Master is null");
       }
       ReportState state = rootstate;
+      ReportStateProgress progress = null;
       for (int i = 0; i <= count; i++)
       {
-        ReportState oldState = state;
+        progress = state.createStateProgress(progress);
         //Log.debug("o-State: " + state.getClass());
         state = master.proc.processPage (state, master.getDummyWriter());
         set (state, i + 1);
@@ -161,7 +163,7 @@ public class ReportStateList
         {
           return state;
         }
-        if (state.isProceeding (oldState) == false)
+        if (state.isProceeding (progress) == false)
         {
           return null;
         }

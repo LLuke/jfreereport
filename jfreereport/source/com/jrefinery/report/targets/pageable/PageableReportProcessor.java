@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.34 2003/04/02 21:14:34 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.35 2003/04/05 18:57:15 taqua Exp $
  *
  * Changes
  * -------
@@ -54,6 +54,7 @@ import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.StartState;
+import com.jrefinery.report.states.ReportStateProgress;
 import com.jrefinery.report.targets.pageable.pagelayout.PageLayouter;
 import com.jrefinery.report.targets.pageable.pagelayout.SimplePageLayouter;
 import com.jrefinery.report.targets.base.event.RepaginationListener;
@@ -260,14 +261,15 @@ public class PageableReportProcessor
         getReport().getReportConfiguration().isStrictErrorHandling();
 
     rs = processPage(rs, getOutputTarget(), failOnError);
+    ReportStateProgress progress = null;
     while (!rs.isFinish())
     {
-      ReportState nrs = processPage(rs, getOutputTarget(), failOnError);
-      if ((nrs.isFinish() == false) && nrs.isProceeding(rs) == false)
+      progress = rs.createStateProgress(progress);
+      rs = processPage(rs, getOutputTarget(), failOnError);
+      if ((rs.isFinish() == false) && rs.isProceeding(progress) == false)
       {
         throw new ReportProcessingException("Report is not proceeding");
       }
-      rs = nrs;
     }
   }
 
@@ -327,6 +329,7 @@ public class PageableReportProcessor
       }
 
       boolean hasNext;
+      ReportStateProgress progress = null;
       int level = ((Integer) it.next()).intValue();
       // outer loop: process all function levels
       do
@@ -348,12 +351,13 @@ public class PageableReportProcessor
                                                   state.getCurrentDataItem(), maxRows));
 
             ReportState oldstate = state;
+            progress = state.createStateProgress(progress);
             state = processPage(state, dummyOutput, failOnError);
             if (!state.isFinish())
             {
               // if the report processing is stalled, throw an exception; an infinite
               // loop would be caused.
-              if (!state.isProceeding(oldstate))
+              if (!state.isProceeding(progress))
               {
                 throw new ReportProcessingException("State did not proceed, bailing out!");
               }
@@ -372,13 +376,13 @@ public class PageableReportProcessor
           // the expensive cloning ...
           while (!state.isFinish())
           {
-            ReportState oldstate = state;
-            state = oldstate.copyState().advance();
+            progress = state.createStateProgress(progress);
+            state = state.advance();
             if (!state.isFinish())
             {
               // if the report processing is stalled, throw an exception; an infinite
               // loop would be caused.
-              if (!state.isProceeding(oldstate))
+              if (!state.isProceeding(progress))
               {
                 throw new ReportProcessingException("State did not proceed, bailing out!");
               }

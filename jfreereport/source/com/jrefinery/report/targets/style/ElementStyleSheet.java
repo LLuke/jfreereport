@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.22 2003/04/05 18:57:19 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.23 2003/04/06 18:11:31 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.WeakHashMap;
 
 import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.targets.FontDefinition;
@@ -157,7 +156,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
 
   private ElementStyleSheet[] parents_cached;
   private ElementStyleSheet[] default_cached;
-  private WeakHashMap styleCache;
+  private HashMap styleCache;
 
   private StyleChangeSupport styleChangeSupport;
   private boolean allowCaching;
@@ -439,7 +438,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
       {
         if (styleCache == null)
         {
-          styleCache = new WeakHashMap();
+          styleCache = new HashMap();
         }
         styleCache.put(key, value);
       }
@@ -464,7 +463,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
       {
         if (styleCache == null)
         {
-          styleCache = new WeakHashMap();
+          styleCache = new HashMap();
         }
         styleCache.put(key, value);
       }
@@ -548,7 +547,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable, S
     sc.properties = (HashMap) properties.clone();
     if (styleCache != null)
     {
-      sc.styleCache = new WeakHashMap (styleCache);
+      sc.styleCache = new HashMap (styleCache);
     }
     sc.styleChangeSupport = new StyleChangeSupport(sc);
     return sc;

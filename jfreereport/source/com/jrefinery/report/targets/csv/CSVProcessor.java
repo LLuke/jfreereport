@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.10 2003/03/31 20:49:54 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.11 2003/04/05 18:57:15 taqua Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,7 @@ import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.StartState;
+import com.jrefinery.report.states.ReportStateProgress;
 import com.jrefinery.report.util.NullOutputStream;
 
 /**
@@ -250,13 +251,14 @@ public class CSVProcessor
     boolean hasNext;
     int level = ((Integer) it.next()).intValue();
     // outer loop: process all function levels
+    ReportStateProgress progress = null;
     do
     {
       // if the current level is the output-level, then save the report state.
       // The state is used later to restart the report processing.
       if (level == -1)
       {
-        retval = state.copyState();
+        retval = (ReportState) state.clone();
       }
 
       // inner loop: process the complete report, calculate the function values
@@ -267,8 +269,8 @@ public class CSVProcessor
 
       while (!state.isFinish())
       {
-        ReportState oldstate = state;
-        state = oldstate.copyState().advance();
+        progress = state.createStateProgress(progress);
+        state = state.advance();
         if (failOnError)
         {
           if (state.isErrorOccured() == true)
@@ -280,7 +282,7 @@ public class CSVProcessor
         {
           // if the report processing is stalled, throw an exception; an infinite
           // loop would be caused.
-          if (!state.isProceeding(oldstate))
+          if (!state.isProceeding(progress))
           {
             throw new ReportProcessingException("State did not proceed, bailing out!");
           }
@@ -347,17 +349,18 @@ public class CSVProcessor
 
       boolean failOnError =
           getReport().getReportConfiguration().isStrictErrorHandling();
+      ReportStateProgress progress = null;
       while (!state.isFinish())
       {
-        ReportState oldstate = state;
-        state = oldstate.copyState().advance();
+        progress = state.createStateProgress(progress);
+        state = state.advance();
         if (failOnError && state.isErrorOccured() == true)
         {
           throw new ReportEventException ("Failed to dispatch an event.", state.getErrors());
         }
         if (!state.isFinish())
         {
-          if (!state.isProceeding(oldstate))
+          if (!state.isProceeding(progress))
           {
             throw new ReportProcessingException("State did not proceed, bailing out!");
           }

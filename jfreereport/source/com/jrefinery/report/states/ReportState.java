@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.30 2003/04/05 18:57:13 taqua Exp $
+ * $Id: ReportState.java,v 1.31 2003/04/06 18:11:29 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -485,12 +485,19 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * Don't use that function to store/copy a report state for a longer storage time.
    * The next few advances may render the reportstate copy invalid.
    *
-   * @return a shallow clone of this state.
-   * @throws CloneNotSupportedException this should never happen.
+   * @return a progress object of this state.
    */
-  public ReportState copyState () throws CloneNotSupportedException
+  public ReportStateProgress createStateProgress (ReportStateProgress progress)
   {
-    return (ReportState) super.clone();
+    if (progress == null)
+    {
+      progress = new ReportStateProgress();
+    }
+    progress.setCurrentDataItem(getCurrentDataItem());
+    progress.setCurrentGroupIndex(getCurrentGroupIndex());
+    progress.setCurrentPage(getCurrentPage());
+    progress.setStateClass(this.getClass());
+    return progress;
   }
 
   /**
@@ -534,7 +541,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    *
    * @return true if some progress has been made, false otherwise.
    */
-  public boolean isProceeding (ReportState oldstate)
+  public boolean isProceeding (ReportStateProgress oldstate)
   {
     // a state is proceeding if it changed its group
     if (getCurrentGroupIndex () != oldstate.getCurrentGroupIndex ())
@@ -547,7 +554,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       return true;
     }
     // a state proceeds if it is an other class than the old state
-    if (this.getClass().equals(oldstate.getClass()) == false)
+    if (this.getClass().equals(oldstate.getStateClass()) == false)
     {
       /*
       Log.debug (new StateProceedMessage(this, oldstate,
@@ -558,7 +565,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 /*
     Log.debug (new StateProceedMessage(this, oldstate,
                                        "State did not proceed: In Group: "));
-*/                                       
+*/
     return false;
   }
 
@@ -572,7 +579,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     private ReportState currentState;
 
     /** The old state. */
-    private ReportState oldState;
+    private ReportStateProgress oldState;
 
     /** The message. */
     private String message;
@@ -584,7 +591,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
      * @param oldState  the old state.
      * @param message  the message.
      */
-    public StateProceedMessage(ReportState currentState, ReportState oldState, String message)
+    public StateProceedMessage(ReportState currentState, ReportStateProgress oldState, String message)
     {
       this.currentState = currentState;
       this.oldState = oldState;
@@ -601,7 +608,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       return message + currentState.getCurrentGroupIndex() + ", DataItem: "
                      + currentState.getCurrentDataItem() + ",Page: "
                      + currentState.getCurrentPage() + " Class: "
-                     + currentState.getClass() + "\n" 
+                     + currentState.getClass() + "\n"
                      + "Old State: " + oldState.getCurrentGroupIndex() + ", DataItem: "
                      + oldState.getCurrentDataItem() + ",Page: "
                      + oldState.getCurrentPage() + " Class: "
