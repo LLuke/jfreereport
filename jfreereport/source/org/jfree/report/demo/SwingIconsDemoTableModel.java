@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SwingIconsDemoTableModel.java,v 1.5 2005/02/23 21:04:40 taqua Exp $
+ * $Id: SwingIconsDemoTableModel.java,v 1.6 2005/03/04 12:08:16 taqua Exp $
  *
  * Changes
  * -------
@@ -82,7 +82,7 @@ public class SwingIconsDemoTableModel extends IconTableModel
       url = this.getClass().getResource("/jlfgr-1_0.jar");
       if (url == null)
       {
-        Log.warn("Unable to find jlfgr-1_0.jar\n"
+        Log.warn("Unable to find jlfgr-1_0.jar inside the classpath.\n"
                 + "Unable to load the icons.\n"
                 + "Please make sure you have the Java Look and Feel Graphics Repository in "
                 + "your classpath.\n"
@@ -91,19 +91,30 @@ public class SwingIconsDemoTableModel extends IconTableModel
         return;
       }
     }
+    readData(url);
+  }
 
+  public boolean readData (final URL url)
+  {
+    if (url == null)
+    {
+      throw new NullPointerException("URL given must not be null.");
+    }
+    clear();
     try
     {
-      //Log.debug ("Open URL: " + url, new Exception());
+      Log.debug ("Open URL: " + url);
       final InputStream in = new BufferedInputStream(url.openStream());
-      readData(in);
+      final boolean retval = readData(in);
       in.close();
+      Log.debug("Loaded: " + getRowCount() + " icons");
+      return retval;
     }
     catch (Exception e)
     {
       Log.warn("Failed to load the Icons", e);
+      return false;
     }
-    Log.debug("Loaded: " + getRowCount() + " icons");
   }
 
   /**
@@ -111,7 +122,7 @@ public class SwingIconsDemoTableModel extends IconTableModel
    *
    * @param in the input stream.
    */
-  private void readData (final InputStream in)
+  private boolean readData (final InputStream in)
   {
     try
     {
@@ -135,8 +146,10 @@ public class SwingIconsDemoTableModel extends IconTableModel
     }
     catch (IOException e)
     {
-      Log.warn("Unable to load the ICONS", e);
+      Log.warn("Unable to load the Icons", e);
+      return false;
     }
+    return true;
   }
 
   /**

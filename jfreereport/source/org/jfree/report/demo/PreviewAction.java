@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewAction.java,v 1.5 2005/01/24 23:58:36 taqua Exp $
+ * $Id: PreviewAction.java,v 1.6 2005/02/23 21:04:38 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
  */
 
 package org.jfree.report.demo;
+
+import javax.swing.Action;
 
 import org.jfree.ui.action.AbstractActionDowngrade;
 import org.jfree.ui.action.ActionDowngrade;
@@ -59,13 +61,13 @@ public abstract class PreviewAction extends AbstractActionDowngrade
    */
   public PreviewAction (final ResourceBundleSupport resources)
   {
-    this.putValue(NAME, resources.getString("action.print-preview.name"));
-    this.putValue(SHORT_DESCRIPTION, resources.getString("action.print-preview.description"));
+    this.putValue(Action.NAME, resources.getString("action.print-preview.name"));
+    this.putValue(Action.SHORT_DESCRIPTION, resources.getString("action.print-preview.description"));
     this.putValue(ActionDowngrade.MNEMONIC_KEY,
             resources.getMnemonic("action.print-preview.mnemonic"));
     this.putValue(ActionDowngrade.ACCELERATOR_KEY,
             resources.getKeyStroke("action.print-preview.accelerator"));
-    this.putValue(SMALL_ICON, resources.getIcon("action.print-preview.small-icon", false));
+    this.putValue(Action.SMALL_ICON, resources.getIcon("action.print-preview.small-icon", false));
     this.putValue("ICON24", resources.getIcon("action.print-preview.icon", false));
   }
 }

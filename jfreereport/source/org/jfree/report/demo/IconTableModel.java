@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: IconTableModel.java,v 1.6 2005/01/24 23:58:21 taqua Exp $
+ * $Id: IconTableModel.java,v 1.7 2005/02/23 21:04:37 taqua Exp $
  *
  * Changes
  * -------
@@ -81,6 +81,13 @@ public class IconTableModel extends AbstractTableModel
     item[2] = icon;
     item[3] = size;
     data.add(0, item);
+    fireTableDataChanged();
+  }
+
+  public void clear()
+  {
+    data.clear();
+    fireTableDataChanged();
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SwingIconsDemo.java,v 1.6 2005/01/24 23:58:42 taqua Exp $
+ * $Id: SwingIconsDemo.java,v 1.7 2005/02/23 21:04:40 taqua Exp $
  *
  * Changes
  * -------
@@ -41,10 +41,17 @@
 package org.jfree.report.demo;
 
 import java.awt.BorderLayout;
+import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.MessageFormat;
+import java.util.Properties;
+import javax.swing.Action;
 import javax.swing.BorderFactory;
+import javax.swing.JFileChooser;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -52,19 +59,22 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.TableModel;
 
+import org.jfree.io.FileUtilities;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.JFreeReportBoot;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.util.ImageUtils;
 import org.jfree.report.demo.helper.AbstractDemoFrame;
 import org.jfree.report.demo.helper.ImageCellRenderer;
 import org.jfree.report.modules.gui.base.PreviewFrame;
+import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
+import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
 import org.jfree.report.modules.parser.base.ReportGenerator;
-import org.jfree.report.util.Log;
-import org.jfree.report.util.ReportConfiguration;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.ui.action.AbstractFileSelectionAction;
 import org.jfree.ui.action.ActionMenuItem;
+import org.jfree.util.Log;
 import org.jfree.xml.ElementDefinitionException;
 
 /**
@@ -77,10 +87,65 @@ import org.jfree.xml.ElementDefinitionException;
  */
 public class SwingIconsDemo extends AbstractDemoFrame
 {
+  private class SelectRepositoryFileAction extends AbstractFileSelectionAction
+  {
+    private File selectedFile;
+
+    public SelectRepositoryFileAction ()
+    {
+      super(SwingIconsDemo.this);
+      putValue(Action.NAME, "Select graphics archive ..");
+      this.putValue(Action.SMALL_ICON, ImageUtils.createTransparentIcon(16, 16));
+      this.putValue("ICON24", ImageUtils.createTransparentIcon(24, 24));
+    }
+
+    /**
+     * Invoked when an action occurs.
+     */
+    public void actionPerformed (final ActionEvent e)
+    {
+      selectedFile = performSelectFile(selectedFile, JFileChooser.OPEN_DIALOG, true);
+      if (selectedFile != null)
+      {
+        if (selectedFile.exists() && selectedFile.canRead() && selectedFile.isFile())
+        {
+          try
+          {
+            loadData(selectedFile.toURL());
+          }
+          catch (MalformedURLException ex)
+          {
+            Log.warn ("Unable to form local file URL. Is there no local filesystem?");
+          }
+        }
+      }
+    }
+
+    /**
+     * Returns a descriptive text describing the file extension.
+     *
+     * @return the file description.
+     */
+    protected String getFileDescription ()
+    {
+      return "Java Look and Feel Graphics Repository";
+    }
+
+    /**
+     * Returns the file extension that should be used for the operation.
+     *
+     * @return the file extension.
+     */
+    protected String getFileExtension ()
+    {
+      return ".jar";
+    }
+  }
+
   /**
    * The data for the report.
    */
-  private TableModel data;
+  private SwingIconsDemoTableModel data;
 
   /**
    * Constructs the demo application.
@@ -89,9 +154,87 @@ public class SwingIconsDemo extends AbstractDemoFrame
    */
   public SwingIconsDemo (final String title)
   {
+    data = new SwingIconsDemoTableModel();
+
     setTitle(title);
     setJMenuBar(createMenuBar());
     setContentPane(createContent());
+
+    loadData(findDataFile());
+  }
+
+  protected void loadData(final URL sourceURL)
+  {
+    if (sourceURL != null)
+    {
+      // on success update the config path, else clear the path.
+      if (this.data.readData(sourceURL))
+      {
+        storeToConfiguration(sourceURL);
+        return;
+      }
+      else
+      {
+        final String title = "Unable to load the icons.";
+        final String message =
+                ("There was a problem while loading 'jlfgr-1_0.jar'.\n"
+                + "A URL was given, but the contents seems to be invalid.\n\n"
+                + "You may download this jar-file from: \n"
+                + "http://java.sun.com/developer/techDocs/hi/repository/");
+        JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
+      }
+    }
+    this.data.clear();
+    storeToConfiguration(null);
+  }
+
+  /**
+   * Loads the URL of the Graphics Repository from the local configuration.
+   *
+   * @return the loaded URL or null, if the configuration did not hold an entry.
+   */
+  protected URL loadFromConfiguration()
+  {
+    final String configPath = ConfigFactory.encodePath("SwingIconsDemo-TableModel");
+    final ConfigStorage cs = ConfigFactory.getInstance().getUserStorage();
+    if (cs.existsProperties(configPath) == false)
+    {
+      return null;
+    }
+    try
+    {
+      final Properties p = cs.loadProperties(configPath, null);
+      final String property = p.getProperty("repository-path");
+      if (property == null)
+      {
+        return null;
+      }
+      return new URL (property);
+    }
+    catch (Exception e)
+    {
+      return null;
+    }
+  }
+
+  protected void storeToConfiguration(final URL url)
+  {
+    final String configPath = ConfigFactory.encodePath("SwingIconsDemo-TableModel");
+    final ConfigStorage cs = ConfigFactory.getInstance().getUserStorage();
+    try
+    {
+      final Properties p = new Properties();
+      if (url != null)
+      {
+        p.setProperty("repository-path", url.toExternalForm());
+      }
+      cs.storeProperties(configPath, p);
+    }
+    catch (Exception e)
+    {
+      // ignored ..
+      Log.debug ("Unable to store the configuration.", e);
+    }
   }
 
   /**
@@ -108,6 +251,7 @@ public class SwingIconsDemo extends AbstractDemoFrame
     final JMenuItem exitItem = new ActionMenuItem(getCloseAction());
 
     fileMenu.add(previewItem);
+    fileMenu.add(new ActionMenuItem(new SelectRepositoryFileAction()));
     fileMenu.addSeparator();
     fileMenu.add(exitItem);
     mb.add(fileMenu);
@@ -123,9 +267,8 @@ public class SwingIconsDemo extends AbstractDemoFrame
   {
     final JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-    this.data = readData();
     final JTable table = new JTable(data);
-    table.setDefaultRenderer(java.awt.Image.class, new ImageCellRenderer());
+    table.setDefaultRenderer(Image.class, new ImageCellRenderer());
     table.setRowHeight(26);
     final JScrollPane scrollPane = new JScrollPane(table);
     content.add(scrollPane);
@@ -133,13 +276,63 @@ public class SwingIconsDemo extends AbstractDemoFrame
   }
 
   /**
-   * Creates a data set using Java icons.
+   * Searches for the 'jlfgr_1_0.jar' file on the classpath, in the
+   * classpath directories and the working directory. If that fails,
+   * the user is asked to choose the correct file.
    *
-   * @return the report data.
+   * @return the URL to the graphics repository.
    */
-  private TableModel readData ()
+  private URL findDataFile ()
   {
-    return new SwingIconsDemoTableModel();
+    final URL url = this.getClass().getResource("/jlfgr-1_0.jar");
+    if (url != null)
+    {
+      return url;
+    }
+    final URL urlFromConfig = loadFromConfiguration();
+    if (urlFromConfig != null)
+    {
+      return urlFromConfig;
+    }
+
+    final File localFile = new File ("jlfgr-1_0.jar");
+    if (localFile.exists() && localFile.canRead() && localFile.isFile())
+    {
+      try
+      {
+        return localFile.toURL();
+      }
+      catch (MalformedURLException e)
+      {
+        Log.warn ("Unable to form local file URL. Is there no local filesystem?");
+      }
+    }
+
+    final File classpathFile = FileUtilities.findFileOnClassPath("jlfgr-1_0.jar");
+    if (classpathFile != null)
+    {
+      if (classpathFile.exists() && classpathFile.canRead() && classpathFile.isFile())
+      {
+        try
+        {
+          return classpathFile.toURL();
+        }
+        catch (MalformedURLException e)
+        {
+          Log.warn ("Unable to form local file URL. Is there no local filesystem?");
+        }
+      }
+    }
+
+    final String title = "Unable to load the icons.";
+    final String message = ("Unable to find 'jlfgr-1_0.jar'\n"
+            + "Please make sure you have the Java Look and Feel Graphics Repository in "
+            + "in your classpath, the same directory as the JFreeReport-jar files or in "
+            + "the current working directory.\n\n"
+            + "You may download this jar-file from: \n"
+            + "http://java.sun.com/developer/techDocs/hi/repository/");
+    JOptionPane.showMessageDialog(this, message, title, JOptionPane.ERROR_MESSAGE);
+    return null;
   }
 
   /**
@@ -213,10 +406,6 @@ public class SwingIconsDemo extends AbstractDemoFrame
   {
     // initialize JFreeReport
     JFreeReportBoot.getInstance().start();
-
-    ReportConfiguration.getGlobalConfig().setLogLevel("Error");
-    // update the log system to use the new settings ...
-    Log.getJFreeReportLog().init();
 
     final SwingIconsDemo frame = new SwingIconsDemo("Swing Icons Report");
     frame.pack();

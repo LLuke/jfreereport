@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.38 2005/02/23 19:31:43 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.39 2005/03/04 13:52:07 taqua Exp $
  *
  * Changes
  * -------
@@ -907,10 +907,13 @@ public class PreviewProxyBase extends JComponent
    */
   private boolean closed;
 
+  private JPanel toolbarHolder;
   private JPanel reportPaneHolder;
   private ReportPanePropertyChangeListener reportPanePropertyChangeListener;
   private boolean progressDialogEnabled;
   private boolean progressBarEnabled;
+  private ReportControler reportControler;
+  private JComponent reportControlerComponent;
 
   /**
    * Creates a preview proxy.
@@ -978,9 +981,13 @@ public class PreviewProxyBase extends JComponent
     scrollPaneHolder.setLayout(new BorderLayout());
     scrollPaneHolder.add(s1, BorderLayout.CENTER);
     scrollPaneHolder.setDoubleBuffered(false);
-
     scrollPaneHolder.add(createStatusBar(), BorderLayout.SOUTH);
-    add(scrollPaneHolder);
+
+    toolbarHolder = new JPanel();
+    toolbarHolder.setLayout(new BorderLayout());
+    toolbarHolder.add(scrollPaneHolder, BorderLayout.CENTER);
+
+    add(toolbarHolder, BorderLayout.CENTER);
 
     zoomSelect = createZoomSelector();
   }
@@ -1055,7 +1062,7 @@ public class PreviewProxyBase extends JComponent
 
   private void closeToolbar ()
   {
-    if (toolbar.getParent() != this)
+    if (toolbar.getParent() != toolbarHolder)
     {
       // ha!, we detected that the toolbar is floating ...
       // Log.debug (currentToolbar.getParent());
@@ -1105,6 +1112,10 @@ public class PreviewProxyBase extends JComponent
     if (isPropertySet(CREATE_MENUBAR_PROPERTY, true))
     {
       proxy.setJMenuBar(createMenuBar());
+    }
+    else
+    {
+      proxy.setJMenuBar(null);
     }
   }
 
@@ -1605,6 +1616,14 @@ public class PreviewProxyBase extends JComponent
     {
       menuBar.add(createZoomMenu());
     }
+    if (reportControler != null)
+    {
+      final JMenu[] menus = reportControler.getMenus();
+      for (int i = 0; i < menus.length; i++)
+      {
+        menuBar.add(menus[i]);
+      }
+    }
     if (isMenuActionEnabled(ACTION_ABOUT_PROPERTY))
     {
       menuBar.add(createHelpMenu());
@@ -1777,6 +1796,7 @@ public class PreviewProxyBase extends JComponent
       return;
     }
 
+    toolbar.removeAll();
     final Iterator it = exportPlugIns.iterator();
     final boolean addedItem = it.hasNext();
     if (isToolbarActionEnabled(ACTION_CLOSE_PROPERTY))
@@ -2407,6 +2427,7 @@ public class PreviewProxyBase extends JComponent
    */
   public void setLockInterface (final boolean lockInterface)
   {
+    final boolean oldLockInterface = this.lockInterface;
     this.lockInterface = lockInterface;
     if (lockInterface == true)
     {
@@ -2416,6 +2437,7 @@ public class PreviewProxyBase extends JComponent
     {
       validateButtons();
     }
+    firePropertyChange("lockInterface", oldLockInterface, lockInterface);
   }
 
   /**
@@ -2481,7 +2503,7 @@ public class PreviewProxyBase extends JComponent
     if (toolbar != null)
     {
       closeToolbar();
-      remove(toolbar);
+      toolbarHolder.remove(toolbar);
     }
 
     if (isPropertySet(CREATE_TOOLBAR_PROPERTY, true))
@@ -2489,7 +2511,7 @@ public class PreviewProxyBase extends JComponent
       toolbar = createToolBar();
       toolbar.setFloatable(isToolbarFloatable());
       toolbar.addPropertyChangeListener(new ToolbarPropertyChangeListener());
-      add(toolbar, BorderLayout.NORTH);
+      toolbarHolder.add(toolbar, BorderLayout.NORTH);
     }
 
     reportPane = createReportPane(report);
@@ -2522,6 +2544,38 @@ public class PreviewProxyBase extends JComponent
     setReport(report);
   }
 
+  public void refreshControler()
+  {
+    // updates MenuBar and ToolBar ..
+    reinitialize();
+
+    // next .. update the controler component itself
+    if (reportControler != null)
+    {
+      final JComponent rcp = reportControler.getControlPanel();
+      if (reportControlerComponent != rcp)
+      {
+        if (reportControlerComponent != null)
+        {
+          remove (reportControlerComponent);
+        }
+        if (rcp != null)
+        {
+          add(rcp, BorderLayout.NORTH);
+        }
+        reportControlerComponent = rcp;
+      }
+    }
+    else
+    {
+      if (reportControlerComponent != null)
+      {
+        remove (reportControlerComponent);
+      }
+      reportControlerComponent = null;
+    }
+  }
+
   public DowngradeActionMap getCustomActionMap ()
   {
     return customActionMap;
@@ -2550,5 +2604,25 @@ public class PreviewProxyBase extends JComponent
   protected ReportProgressBar getProgressBar ()
   {
     return progressBar;
+  }
+
+  public ReportControler getReportControler ()
+  {
+    return reportControler;
+  }
+
+  public void setReportControler (final ReportControler reportControler)
+  {
+    if (this.reportControler != null)
+    {
+      this.reportControler.setPreviewBase(null);
+    }
+    this.reportControler = reportControler;
+    if (this.reportControler != null)
+    {
+      this.reportControler.setPreviewBase(this);
+    }
+    // now force an update ...
+    refreshControler();
   }
 }

@@ -150,10 +150,10 @@
           <basic-key name="alignment">center</basic-key>
           <basic-key name="font">Monospaced</basic-key>
           <basic-key name="font-size">9</basic-key>
-          <basic-key name="href-target">http://developer.java.sun.com/developer/techDocs/hi/repository/</basic-key>
+          <basic-key name="href-target">http://java.sun.com/developer/techDocs/hi/repository/</basic-key>
         </style>
         <template references="label">
-          <basic-object name="content">http://developer.java.sun.com/developer/techDocs/hi/repository/</basic-object>
+          <basic-object name="content">http://java.sun.com/developer/techDocs/hi/repository/</basic-object>
         </template>
       </element>
 

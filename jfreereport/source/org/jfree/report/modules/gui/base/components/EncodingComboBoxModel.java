@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.12 2005/01/25 00:03:28 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.13 2005/02/23 21:04:49 taqua Exp $
  *
  * Changes
  * --------
@@ -340,6 +340,14 @@ public class EncodingComboBoxModel implements ComboBoxModel
   {
     encodings.add(new EncodingCarrier(name, description));
     fireContentsChanged();
+  }
+
+  public void removeEncoding (final String name)
+  {
+    if (encodings.remove(name))
+    {
+      fireContentsChanged();
+    }
   }
 
   /**

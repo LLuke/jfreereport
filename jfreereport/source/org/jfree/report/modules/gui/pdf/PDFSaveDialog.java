@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.20 2005/03/03 21:50:42 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.21 2005/03/10 19:05:32 taqua Exp $
  *
  * Changes
  * --------
@@ -849,7 +849,16 @@ public class PDFSaveDialog extends AbstractExportDialog
     }
     else
     {
-      return encodingModel.getEncoding(cbEncoding.getSelectedIndex());
+      final String encoding = encodingModel.getEncoding(cbEncoding.getSelectedIndex());
+      if ("UTF-16".equals(encoding))
+      {
+        return "Identity-H";
+      }
+      if ("UTF-8".equals(encoding))
+      {
+        return "Identity-H";
+      }
+      return encoding;
     }
   }
 
