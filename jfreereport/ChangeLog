@@ -3,6 +3,167 @@
 ---------------
 A list of changes in recent versions:
 
+0.8.1 : (??-Feb-2003):
+        * BugFix: Corrected many bugs in the SimplePageLayouter.
+
+        * BugFix: empty ReportProperties were not marked correctly.
+
+        * BugFix: TextLine layout was inaccurate, used java.awt.Dimension instead
+          of Dimension2D.
+
+        * BugFix: Band containing other bands were not laid out correctly.
+
+        * BugFix: PreviewPane was unusable when used directly. The report was not
+          repaginated automaticly and there was no way to trigger the repagination.
+
+        * BugFix: Generated PNG files in the PDFOutputTarget no longer use the
+          Alpha-Channel as iText doesn't seem to like it.
+
+        * BugFix: The generated PDF files did not work with GhostScript.
+
+        * BugFix: The ReportFooter handling was unclean and caused trouble.
+
+        * BugFix: The PageBreak was not handled correctly, so that sometimes bands
+          got lost after a pagebreak was done.
+
+        * BugFix: Corrected layouting calculations; using double values seem to cause
+          incorrect calculations. Switched to float values everywhere.
+
+        * BugFix: BandLayoutManager illegaly modified the values from the
+          ElementStyleSheet. This caused invalid states when a band was hidden and restored.
+
+        * BugFix: The PDFOutputTarget did not handle state restoration correctly when a
+          new page was started.
+
+        * Refactoring: All tablemodel related classes moved into a spearate package.
+          The package is expected to grow heavily during the next releases.
+
+        * Refactoring: The iText font support moved into a separate package. The
+          PDFFontFactory is now known as BaseFontFactory.
+
+        * Refactoring: The BandLayout stuff moved into a separate package as these
+          classes are used by allmost all output targets.
+
+        * Added a main method in the JFreeReport info, so that everybody is able to
+          read the library specifications without having to install or start the
+          demo package.
+
+        * The order of fields in the group definition does no longer matter. Anyway,
+          all fields of the parent group must also be defined in the child group.
+
+        * Added a new event type: The LayoutEvent can be used to adjust INTERNAL values
+          after the layouting is completed. Do not use this event to modify the layout,
+          this can have funny results, but won't produce what you may expect.
+
+        * Added separate thread for the repagination process and the printing. The
+          PageableOutputTarget now check the Thread-state for interrupt events. If
+          the current thread gets interrupted, the report processing or repagination
+          is canceled.
+
+        * Added resource compare tool lists differences between the base
+	        resource class and the localized resources to help with the translation
+	        process.
+
+	      * Added a line height property for text elements. This property can be used
+	        to increase the space between 2 lines.
+
+        * Bands now handle the object composition correctly and check for component
+          loops.
+
+        * The ANT script can be used to checkout the latest sources from the anonymous
+          CVS repository on sourceforge.
+
+        * Added a generic DummyImplementation for the output targets. This should help
+          to reduce the repagination time.
+
+        * We now have a polish translation. Thanks Pjotr (pbzdyl).
+
+        * Font encoding and embedding can now defined separatly for all text elements.
+
+        * The ABSOLUTE_DIM stylekey was removed. This is now handled by specifying
+          a minimum size (and a maximum size if needed).
+
+        * Added dynamic element support for all content types. Image and shape elements
+          can be defined as dynamic elements to have their sizes adjusted according to
+          the contained content.
+
+        * New element template types: ResourceLabel and ResourceField use a string from
+          the data source to lookup a value in an assigned ResourceBundle.
+
+        * Added support for Scaling for Shape and Image elements. Scaling can be
+          configured to keep the original aspect ratio.
+
+        * The XML parser now uses local copies of the DTD to validate the document,
+          if an document type is specified in the XML definitions.
+
+        * Added support for Underlined and StrikeThrough font style.
+
+        * Several new report functions added by Heiko Evermann.
+
+        * Added PaintComponentFunction to create images from AWT or Swing components.
+          The generated images can be used in ImageElements. 
+
+        * Added a new Demo: OpenSourceDemo2.java
+
+        * The maximum band height is now limited by the page height. A band will never
+          grow over the available page size when using dynamic elements. To make a band
+          greater than the available page height, the user has to force it by defining
+          such an invalid minimum band size. This fix reduces the accidentaly generated
+          "Report-Does-Not-Proceed" Exceptions.
+
+        * Added a new Demo: LGPLDemo.java shows the automatic height limitation for oversized
+          "dynamic" elements.
+
+        * Heiko Evermann wrote an Excel-OutputTarget, which provided the base implementation
+          for several table style output targets:
+
+          Added several new OutputTargets:
+
+          - Simple XML Output
+              an educational output target to have a simple output target
+          - CSV Data-Output
+              to write the raw data from the DataRow into a CSV file
+          - CSV TableLayout Output
+              writes layouted bands and elements into a CSV file.
+          - Excel Output
+              writes Excel files using the Apache POI library.
+          - HTML Output
+              writes HTML4 and XHTML content.
+          - RTF Output
+              generates simple RTF documents
+              (implementation limited to standard fonts)
+          - PlainTextOutput
+              generates text files
+
+        * Added a new XML-parser to support extended report definitions.
+          Also implemented a writer to create XML-Definitions from JFreeReport objects.
+          The new parser can be used transparent replacement of the old implementation,
+          without any special treatment of the client application. The report definition
+          type is detected during the parsing process.
+
+        * Added a report converter to convert reports from the simple profile into
+          the extensible report definition format.
+          (com.jrefinery.report.io.ext.writer.ReportConverterGUI)
+
+        * Added a ReferenceDoc generator for the extensible report definition format:
+          (com.jrefinery.report.io.ext.ReferenceDocGenerator)
+
+        * Added support for templates to simplify the usage of DataSources and DataFilters.
+
+        * Redesigned the PreviewDialogs: All dialog implementations now share a common
+          backend. All Export-Targets are included using a PlugIn-Strucure and can
+          be activated and deactivated separatly using the ReportConfiguration.
+
+        * BugFix: Cloning was insufficient to separate functions and expression from their
+          anchestors. Added the method getInstance() to enforce a strict separation of
+          the original expression instance and the generated copy.
+
+        * Added a second properties file ("/jfreereport.properties") which overlays the
+          main property file "com/jrefinery/report/jfreereport.properties". Use this file
+          to create a global configuration without having to repack the jfreereport.jar file.
+
+        * The FileEncodings are now selectable from the PDF- and HTML dialogs.
+
 0.8.0-3 : (07-Jan-2003): 
         * BugFix: Fixed the ReportStateList. Element were added at the wrong position, causing
           NullPointerExceptions. Also fixed the dynamic element, if the element contained too much
