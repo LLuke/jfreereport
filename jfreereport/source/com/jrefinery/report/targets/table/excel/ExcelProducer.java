@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.14 2003/05/02 12:40:39 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.15 2003/05/11 13:39:19 taqua Exp $
  *
  * Changes
  * -------
@@ -296,7 +296,7 @@ public class ExcelProducer extends TableProducer
    */
   public void configure(Properties configuration)
   {
-    String mapData = configuration.getProperty("UseDataFormats", "true");
+    String mapData = configuration.getProperty(ExcelProcessor.ENHANCED_DATA_FORMAT_PROPERTY, "true");
     if (mapData.equalsIgnoreCase("true"))
     {
       cellDataFactory.setDefineDataFormats(true);

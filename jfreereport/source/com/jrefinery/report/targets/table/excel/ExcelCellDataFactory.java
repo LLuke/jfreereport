@@ -28,11 +28,12 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellDataFactory.java,v 1.10 2003/05/11 13:39:19 taqua Exp $
+ * $Id: ExcelCellDataFactory.java,v 1.11 2003/05/14 22:26:40 taqua Exp $
  *
  * Changes
  * -------
  * 15-Jan-2003 : Initial version
+ * 23-May-2003 : Enabled configurable enhanced POI cell formats.  
  */
 package com.jrefinery.report.targets.table.excel;
 
@@ -133,8 +134,8 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
    * <p>
    * If the tablemodel does not support the element type, return null.
    * <p>
-   * As soon as POI 2.0 gets released, this method will create advanced cell format
-   * strings based on the template system of JFreeReport.
+   * If the data factory is configured to return data formats, this method will
+   * create advanced cell format strings based on the template system of JFreeReport.
    *
    * @param element the element that should be converted into TableCellData.
    * @param bounds the elements bounds within the table. The bounds are specified
@@ -158,7 +159,7 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
      */
 
     DataSource ds = element.getDataSource();
-    if (ds instanceof Template)
+    if (isDefineDataFormats() && ds instanceof Template)
     {
       TableCellData retval = handleTemplate((Template) ds, element, bounds);
       if (retval != null)
@@ -231,7 +232,10 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
         DateFieldTemplate dft = (DateFieldTemplate) template;
         String value = (String) dft.getValue();
         Date date = dft.getDateFormat().parse(value);
-        ExcelDataCellStyle style = styleFactory.getExcelDataCellStyle(e, dft.getFormat());
+        String format = (String) e.getStyle().getStyleProperty
+            (ExcelProcessor.DATA_FORMAT_STRING, dft.getFormat());
+
+        ExcelDataCellStyle style = styleFactory.getExcelDataCellStyle(e, format);
         return new DateExcelCellData(bounds, style, date);
       }
       catch (ParseException pe)
@@ -246,7 +250,10 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
         NumberFieldTemplate nft = (NumberFieldTemplate) template;
         String value = (String) nft.getValue();
         Number number = nft.getDecimalFormat().parse(value);
-        ExcelDataCellStyle style = styleFactory.getExcelDataCellStyle(e, nft.getFormat());
+        String format = (String) e.getStyle().getStyleProperty
+            (ExcelProcessor.DATA_FORMAT_STRING, nft.getFormat());
+
+        ExcelDataCellStyle style = styleFactory.getExcelDataCellStyle(e, format);
         return new NumericExcelCellData(bounds, style, number);
       }
       catch (ParseException pe)

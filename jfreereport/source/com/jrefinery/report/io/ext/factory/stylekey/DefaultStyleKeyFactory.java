@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultStyleKeyFactory.java,v 1.4 2003/03/07 16:55:58 taqua Exp $
+ * $Id: DefaultStyleKeyFactory.java,v 1.5 2003/04/28 22:21:44 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -41,6 +41,7 @@ package com.jrefinery.report.io.ext.factory.stylekey;
 import com.jrefinery.report.ShapeElement;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.targets.table.excel.ExcelProcessor;
 
 /**
  * A default implementation of the {@link StyleKeyFactory} interface.
@@ -79,5 +80,6 @@ public class DefaultStyleKeyFactory extends AbstractStyleKeyFactory
     addKey(BandStyleSheet.REPEAT_HEADER);
     addKey(ShapeElement.DRAW_SHAPE);
     addKey(ShapeElement.FILL_SHAPE);
+    addKey(ExcelProcessor.DATA_FORMAT_STRING);
   }
 }

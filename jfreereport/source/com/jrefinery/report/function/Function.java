@@ -20,6 +20,27 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
+ * As a special exception, the copyright holders of JFreeReport give you
+ * permission to extend JFreeReport with independent modules that communicate with
+ * JFreeReport solely through the "Expression" or the "Function" interface, regardless
+ * of the license terms of these independent modules, and to copy and distribute the
+ * resulting combined work under terms of your choice, provided that
+ * every copy of the combined work is accompanied by a complete copy of
+ * the source code of JFreeReport (the version of JFreeReport used to produce the
+ * combined work), being distributed under the terms of the GNU Lesser General
+ * Public License plus this exception.  An independent module is a module
+ * which is not derived from or based on JFreeReport.
+ *
+ * This exception applies to the Java interfaces "Expression" and "Function"
+ * and the classes "AbstractExpression" and "AbstractFunction".
+ *
+ * Note that people who make modified versions of JFreeReport are not obligated
+ * to grant this special exception for their modified versions; it is
+ * their choice whether to do so.  The GNU Lesser General Public License gives
+ * permission to release a modified version without this exception; this
+ * exception also makes it possible to release a modified version which
+ * carries forward this exception.
+ *
  * -------------
  * Function.java
  * -------------
@@ -28,7 +49,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Function.java,v 1.13 2002/12/12 12:26:56 mungady Exp $
+ * $Id: Function.java,v 1.14 2003/05/14 22:26:38 taqua Exp $
  *
  * Changes
  * -------

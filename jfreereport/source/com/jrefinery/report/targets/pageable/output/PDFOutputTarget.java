@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.36 2003/05/09 17:12:13 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.37 2003/05/14 22:26:39 taqua Exp $
  *
  * Changes
  * -------
@@ -626,6 +626,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       setDocument(new Document(pageSize, marginLeft, marginRight, marginTop, marginBottom));
 
       writer = PdfWriter.getInstance(getDocument(), out);
+      writer.setLinearPageMode();
 
       String encrypt = (String) getProperty(SECURITY_ENCRYPTION);
 

@@ -29,11 +29,12 @@
  * Contributor(s):   Thomas Morgner; 
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelProcessor.java,v 1.8 2003/04/08 14:35:18 mungady Exp $
+ * $Id: ExcelProcessor.java,v 1.9 2003/05/11 13:39:19 taqua Exp $
  *
  * Changes
  * -------
  * 14-Jan-2003 : Initial version
+ * 23-May-2003 : Enabled configurable POI-CellData format strings.
  */
 package com.jrefinery.report.targets.table.excel;
 
@@ -44,17 +45,29 @@ import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.targets.table.TableProcessor;
 import com.jrefinery.report.targets.table.TableProducer;
+import com.jrefinery.report.targets.style.StyleKey;
 import com.jrefinery.report.util.NullOutputStream;
 
 /**
  * A report processor that coordinates the output process for generating Excel files.
  * <P>
- * The Jakarta POI library is used to write files in Excel format.
+ * The Jakarta POI library is used to write files in Excel format. If the property
+ * "EnhancedDataFormat" is set to true, this target uses the extended Cell-Data format
+ * capabilities of POI 1.10 to format the cell value as numeric or date value. An
+ * excel-specific format string can be defined for every element using the element-
+ * style key "Excel.CellDataFormat".
  * 
  * @author Heiko Evermann
  */
 public class ExcelProcessor extends TableProcessor
 {
+  /** The property key to enable the enhanced data formats of POI 1.10. */
+  public static final String ENHANCED_DATA_FORMAT_PROPERTY = "EnhancedDataFormat";
+
+  /** The StyleKey for the user defined cell data format. */
+  public static final StyleKey DATA_FORMAT_STRING =
+      StyleKey.getStyleKey("Excel.CellDataFormat", String.class);
+
   /** The output stream that is used to write the excel file. */
   private OutputStream outputStream;
 
