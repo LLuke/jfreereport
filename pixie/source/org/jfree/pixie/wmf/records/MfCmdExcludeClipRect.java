@@ -1,3 +1,38 @@
+/**
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
+ *
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ----------------
+ * MfCmdExcludeClipRect.java
+ * ----------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: MfCmdEllipse.java,v 1.2 2003/03/14 20:06:06 taqua Exp $
+ *
+ * Changes
+ * -------
+ */
 package org.jfree.pixie.wmf.records;
 
 import org.jfree.pixie.wmf.MfRecord;
@@ -46,10 +81,10 @@ public class MfCmdExcludeClipRect extends MfCmd
 
   public void setRecord (MfRecord record)
   {
-    int bottom = record.getParam (0);
-    int right = record.getParam (1);
-    int top = record.getParam (2);
-    int left = record.getParam (3);
+    int bottom = record.getParam (POS_BOTTOM);
+    int right = record.getParam (POS_RIGHT);
+    int top = record.getParam (POS_TOP);
+    int left = record.getParam (POS_LEFT);
     setBounds (left, top, right - left, bottom - top);
 
   }
@@ -58,11 +93,11 @@ public class MfCmdExcludeClipRect extends MfCmd
   public MfRecord getRecord ()
   {
     Rectangle rc = getBounds();
-    MfRecord record = new MfRecord(4);
-    record.setParam(0, (int)(rc.getY() + rc.getHeight()));
-    record.setParam(1, (int)(rc.getX() + rc.getWidth()));
-    record.setParam(2, (int)(rc.getY()));
-    record.setParam(3, (int)(rc.getX()));
+    MfRecord record = new MfRecord(RECORD_SIZE);
+    record.setParam(POS_BOTTOM, (int)(rc.getY() + rc.getHeight()));
+    record.setParam(POS_RIGHT, (int)(rc.getX() + rc.getWidth()));
+    record.setParam(POS_TOP, (int)(rc.getY()));
+    record.setParam(POS_LEFT, (int)(rc.getX()));
     return record;
   }
 

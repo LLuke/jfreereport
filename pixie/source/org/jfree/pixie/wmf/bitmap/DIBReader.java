@@ -18,18 +18,24 @@ public class DIBReader
   {
   }
 
-  public BufferedImage setRecord (org.jfree.pixie.wmf.MfRecord record)
+  public BufferedImage setRecord (MfRecord record)
+    throws IOException
+  {
+    return setRecord(record, 0);
+  }
+
+  public BufferedImage setRecord (MfRecord record, int offset)
     throws IOException
   {
     header = new BitmapHeader ();
-    header.setRecord (record);
+    header.setRecord (record, offset);
     palette = new GDIPalette ();
     palette.setNoOfColors (header.getNoOfColors());
     
     int width = header.getWidth ();
     int height = header.getHeight ();
     
-    int paletteStart = org.jfree.pixie.wmf.MfRecord.RECORD_HEADER_SIZE + header.getHeaderSize() + 4;
+    int paletteStart = MfRecord.RECORD_HEADER_SIZE + header.getHeaderSize() + 4 + offset;
     InputStream dataIn = record.getInputStream(paletteStart);
     palette.readPalette(dataIn);
     

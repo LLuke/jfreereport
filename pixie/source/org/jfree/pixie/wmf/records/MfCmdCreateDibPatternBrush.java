@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmd.java,v 1.1 2003/03/09 20:38:23 taqua Exp $
+ * $Id: MfCmdCreateDibPatternBrush.java,v 1.2 2003/03/14 20:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import org.jfree.pixie.wmf.records.MfCmd;
 import org.jfree.pixie.wmf.bitmap.DIBReader;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 // This structure should include a bitmap. This implementation does
 // not know of any bitmaps right now, so this records is ignored.
@@ -83,9 +84,9 @@ public class MfCmdCreateDibPatternBrush extends MfCmd
       DIBReader reader = new DIBReader ();
       setImage(reader.setRecord (record));
     }
-    catch (Exception e)
+    catch (IOException ioe)
     {
-      e.printStackTrace ();
+      // failed to load the bitmap ..
     }
   }
 

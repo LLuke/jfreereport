@@ -1,3 +1,38 @@
+/**
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
+ *
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ----------------
+ * MfCmdPolyPolygon.java
+ * ----------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: MfCmdArc.java,v 1.2 2003/03/14 20:06:04 taqua Exp $
+ *
+ * Changes
+ * -------
+ */
 package org.jfree.pixie.wmf.records;
 
 import org.jfree.pixie.wmf.MfDcState;
@@ -22,22 +57,28 @@ public class MfCmdPolyPolygon extends MfCmd
   private Object[] points_y; // contains int[]
   private Object[] scaled_points_x; // contains int[]
   private Object[] scaled_points_y; // contains int[]
-  private int[] count;
   private int polycount;
 
   public MfCmdPolyPolygon ()
   {
   }
 
-  public void replay (org.jfree.pixie.wmf.WmfFile file)
+  /**
+   * Replays the command on the given WmfFile.
+   *
+   * @param file the meta file.
+   */
+  public void replay (WmfFile file)
   {
     Graphics2D graph = file.getGraphics2D ();
 
-    org.jfree.pixie.wmf.MfDcState state = file.getCurrentState ();
+    MfDcState state = file.getCurrentState ();
 
     for (int i = 0; i < polycount; i++)
     {
-      Polygon polygon = new Polygon (getScaledPointsX (i), getScaledPointsY (i), getPointCount (i));
+      int[] pointsX = getScaledPointsX (i);
+      int[] pointsY = getScaledPointsY (i);
+      Polygon polygon = new Polygon (pointsX, pointsY, pointsX.length);
       if (state.getLogBrush ().isVisible ())
       {
         state.preparePaint ();
@@ -53,14 +94,25 @@ public class MfCmdPolyPolygon extends MfCmd
     }
   }
 
+  /**
+   * Creates a empty unintialized copy of this command implementation.
+   *
+   * @return a new instance of the command.
+   */
   public MfCmd getInstance ()
   {
     return new MfCmdPolyPolygon ();
   }
 
+  /**
+   * Reads the function identifier. Every record type is identified by a
+   * function number corresponding to one of the Windows GDI functions used.
+   *
+   * @return the function identifier.
+   */
   public int getFunction ()
   {
-    return org.jfree.pixie.wmf.MfType.POLY_POLYGON;
+    return MfType.POLY_POLYGON;
   }
 
   public String toString ()
@@ -74,9 +126,9 @@ public class MfCmdPolyPolygon extends MfCmd
       b.append ("  Polygon ");
       b.append (p);
 
-      int l = getPointCount (p);
       int[] points_x = getPointsX (p);
       int[] points_y = getPointsY (p);
+      int l = points_x.length;
 
       for (int i = 0; i < l; i++)
       {
@@ -94,45 +146,80 @@ public class MfCmdPolyPolygon extends MfCmd
   }
 
   /**
-   * Is not correct!
+   * Reads the command data from the given record and adjusts the internal
+   * parameters according to the data parsed.
+   * <p>
+   * After the raw record was read from the datasource, the record is parsed
+   * by the concrete implementation.
    *
+   * @param record the raw data that makes up the record.
    */
-  public void setRecord (org.jfree.pixie.wmf.MfRecord record)
+  public void setRecord (MfRecord record)
   {
-    int polycount = record.getParam (0);
-    int[] count = new int[polycount];
-    Object[] poly_points_x = new Object[polycount];
-    Object[] poly_points_y = new Object[polycount];
+    int numberOfPolygons = record.getParam (0);
+    int[] count = new int[numberOfPolygons];
+    Object[] poly_points_x = new Object[numberOfPolygons];
+    Object[] poly_points_y = new Object[numberOfPolygons];
 
-    int pointPos = 0;
+    int numberOfPointsRead = 0;
     // read the length of each polygon
-    for (int i = 0; i < polycount; i++)
+    for (int i = 0; i < numberOfPolygons; i++)
     {
-      int currentcount = record.getParam (1 + i);
-      count[i] = currentcount;
+      int numberOfPointsInPolygon = record.getParam (1 + i);
+      count[i] = numberOfPointsInPolygon;
 
       // Position of the points depends on the number of points
       // of the previous polygons
-      int[] points_x = new int[currentcount];
-      int[] points_y = new int[currentcount];
-      int readPos = pointPos * 2 + polycount;
-      for (int j = 0; j < currentcount; j++)
+      int[] points_x = new int[numberOfPointsInPolygon];
+      int[] points_y = new int[numberOfPointsInPolygon];
+      // read position is after numPolygonPointsRead + noOfPolygons + 1 (for the first parameter)
+      int readPos = numberOfPointsRead * 2 + numberOfPolygons + 1;
+      for (int j = 0; j < numberOfPointsInPolygon; j++)
       {
         points_x[j] = record.getParam ((readPos + 1) + j * 2);
         points_y[j] = record.getParam ((readPos + 2) + j * 2);
       }
       poly_points_x[i] = points_x;
       poly_points_y[i] = points_y;
-      pointPos += currentcount;
+      numberOfPointsRead += numberOfPointsInPolygon;
     }
-    setPolygonCount (polycount);
-    setPointCount (count);
+    setPolygonCount (numberOfPolygons);
     setPoints (poly_points_x, poly_points_y);
   }
 
-  public void setPointCount (int[] count)
+  /**
+   * Creates a new record based on the data stored in the MfCommand.
+   *
+   * @return the created record.
+   */
+  public MfRecord getRecord() throws RecordCreationException
   {
-    this.count = count;
+    int numberOfPolygons = getPolygonCount();
+    int pointsTotal = 0;
+    for (int i = 0; i < numberOfPolygons; i++)
+    {
+      pointsTotal += getPointsX(i).length;
+    }
+    MfRecord record = new MfRecord(1 + numberOfPolygons + pointsTotal * 2);
+    record.setParam(0, numberOfPolygons);
+
+    int numberOfPointsRead = 0;
+    for (int i = 0; i < numberOfPolygons; i++)
+    {
+      int[] x_points = getPointsX(i);
+      int[] y_points = getPointsY(i);
+      int numberOfPointsInPolygon = x_points.length;
+      record.setParam(1 + i, numberOfPointsInPolygon);
+
+      int readPos = numberOfPointsRead * 2 + numberOfPolygons + 1;
+      for (int j = 0; j < numberOfPointsInPolygon; j++)
+      {
+        record.setParam ((readPos + 1) + j * 2, x_points[i]);
+        record.setParam ((readPos + 2) + j * 2, y_points[i]);
+      }
+      numberOfPointsRead += numberOfPointsInPolygon;
+    }
+    return record;
   }
 
   public void setPoints (Object[] points_x, Object[] points_y)
@@ -163,11 +250,6 @@ public class MfCmdPolyPolygon extends MfCmd
     return (int[]) scaled_points_y[polygon];
   }
 
-  public int getPointCount (int polygon)
-  {
-    return count[polygon];
-  }
-
   public void setPolygonCount (int count)
   {
     this.polycount = count;
@@ -178,6 +260,10 @@ public class MfCmdPolyPolygon extends MfCmd
     return polycount;
   }
 
+  /**
+   * A callback function to inform the object, that the x scale has changed and the
+   * internal coordinate values have to be adjusted.
+   */
   protected void scaleXChanged ()
   {
     if (scaled_points_x == null)
@@ -191,6 +277,10 @@ public class MfCmdPolyPolygon extends MfCmd
     }
   }
 
+  /**
+   * A callback function to inform the object, that the y scale has changed and the
+   * internal coordinate values have to be adjusted.
+   */
   protected void scaleYChanged ()
   {
     if (scaled_points_y == null)

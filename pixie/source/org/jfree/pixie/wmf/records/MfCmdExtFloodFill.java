@@ -1,3 +1,38 @@
+/**
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
+ *
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ----------------
+ * MfCmdExtFloodFill.java
+ * ----------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: MfCmdEllipse.java,v 1.2 2003/03/14 20:06:06 taqua Exp $
+ *
+ * Changes
+ * -------
+ */
 package org.jfree.pixie.wmf.records;
 
 import org.jfree.pixie.wmf.GDIColor;
@@ -26,8 +61,9 @@ public class MfCmdExtFloodFill extends MfCmd
   {
   }
 
-  public void replay (org.jfree.pixie.wmf.WmfFile file)
+  public void replay (WmfFile file)
   {
+    // there is no way to implement flood fill for G2Objects ...
   }
 
   public String toString ()
@@ -47,28 +83,34 @@ public class MfCmdExtFloodFill extends MfCmd
     return new MfCmdExtFloodFill ();
   }
 
-  public void setRecord (org.jfree.pixie.wmf.MfRecord record)
+  private static final int RECORD_SIZE = 5;
+  private static final int POS_FILLTYPE = 0;
+  private static final int POS_COLOR = 1;
+  private static final int POS_Y = 3;
+  private static final int POS_X = 4;
+
+  public void setRecord (MfRecord record)
   {
-    int filltype = record.getParam (0);
-    int c = record.getLongParam (1);
-    Color color = new org.jfree.pixie.wmf.GDIColor (c);
-    int y = record.getParam (3);
-    int x = record.getParam (4);
+    int filltype = record.getParam (POS_FILLTYPE);
+    int c = record.getLongParam (POS_COLOR);
+    Color color = new GDIColor (c);
+    int y = record.getParam (POS_Y);
+    int x = record.getParam (POS_X);
     setTarget (x, y);
     setColor (color);
     setFillType (filltype);
   }
 
   /** Writer function */
-  public org.jfree.pixie.wmf.MfRecord getRecord ()
+  public MfRecord getRecord ()
   {
-    org.jfree.pixie.wmf.MfRecord record = new org.jfree.pixie.wmf.MfRecord(5);
-    record.setParam(0, getFillType());
-    record.setLongParam(1, org.jfree.pixie.wmf.GDIColor.translateColor(getColor()));
+    MfRecord record = new MfRecord(RECORD_SIZE);
+    record.setParam(POS_FILLTYPE, getFillType());
+    record.setLongParam(POS_COLOR, GDIColor.translateColor(getColor()));
     Point target = getTarget();
-    record.setParam(3, (int) target.getY());
-    record.setParam(4, (int) target.getX());
-    return null;
+    record.setParam(POS_Y, (int) target.getY());
+    record.setParam(POS_X, (int) target.getX());
+    return record;
   }
 
   public void setFillType (int filltype)
@@ -83,7 +125,7 @@ public class MfCmdExtFloodFill extends MfCmd
 
   public int getFunction ()
   {
-    return org.jfree.pixie.wmf.MfType.EXT_FLOOD_FILL;
+    return MfType.EXT_FLOOD_FILL;
   }
 
   public Point getTarget ()

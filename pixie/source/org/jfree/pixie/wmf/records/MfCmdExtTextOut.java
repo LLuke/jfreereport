@@ -1,3 +1,38 @@
+/**
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
+ *
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ----------------
+ * MfCmdExtTextOut.java
+ * ----------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: MfCmdEllipse.java,v 1.2 2003/03/14 20:06:06 taqua Exp $
+ *
+ * Changes
+ * -------
+ */
 package org.jfree.pixie.wmf.records;
 
 import org.jfree.pixie.wmf.BrushConstants;
@@ -15,119 +50,41 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 /**
+ * The ExtTextOut function draws text using the currently selected font,
+ * background color, and text color. You can optionally provide dimensions
+ * to be used for clipping, opaquing, or both.
+ * <p>
+ * META_EXTTEXTOUT
+ * <h1>NEAREST API CALL</h1>
+ * <pre>#include &lt;windows.h&gt;
+    BOOL32 ExtTextOutA
+    (
+     HDC32 hdc,
+     INT32 x,
+     INT32 y,
+     UINT32 flags,
+     const RECT32 *lprect,
+     LPCSTR str,
+     UINT32 count,
+     const INT32 *lpDx
+    );
+    </pre>
  *
-META_EXTTEXTOUT
-<h1>NEAREST API CALL</h1>
-<pre>#include &lt;windows.h&gt;
-BOOL32 ExtTextOutA
-(
- HDC32 hdc,
- INT32 x,
- INT32 y,
- UINT32 flags,
- const RECT32 *lprect,
- LPCSTR str,
- UINT32 count,
- const INT32 *lpDx
-);
-</pre>
-<h1>DESCRIPTION</h1>
-<TABLE BORDER =1>
-<TR>
-<TD>U16</TD>
-
-<TD>Value</TD>
-</TR>
-<TR>
-<TD>0</TD>
-<TD>y</TD>
-</TR>
-<TR>
-<TD>1</TD>
-<TD>x</TD>
-</TR>
-<TR>
-<TD>2</TD>
-<TD>count</TD>
-</TR>
-<TR>
-<TD>3</TD>
-<TD>flag</TD>
-</TR>
-</table>
-
-If flag & ETO_CLIPPED is true then the following parameters are...
-<table border=1>
-<TR>
-<TD>U16</TD>
-
-<TD>Value</TD>
-</TR>
-<TR>
-<TD>4</TD>
-<TD>x1</TD>
-</TR>
-<TR>
-<TD>5</TD>
-<TD>y1</TD>
-</TR>
-<TR>
-<TD>6</TD>
-<TD>x2</TD>
-</TR>
-<TR>
-<TD>7</TD>
-<TD>y2</TD>
-</TR>
-</TABLE>
-
-In either case the next parameters are
-
-<table border=1>
-<TR>
-<TD>U16</TD>
-
-<TD>Value</TD>
-</TR>
-<TR>
-<TD>next parameter, for a count of parameter[2]/2</TD>
-<TD>two chars of the string</TD>
-</TR>
-</TABLE>
-
-There may be extra parameters after the end of the string , this
-array is known as lpDx and each element is the extra distance
-from one character to the next.
-<table border=1>
-<TR>
-<TD>U16</TD>
-
-<TD>Value</TD>
-</TR>
-<TR>
-<TD>each next parameter, until the end of the record</TD>
-<TD></TD>
-</TR>
-</TABLE>
-
-count is the number of characters in the string,
-as each char is only a 8bit number, two chars exist in each
-16bit parameter entry.<br>
-
-flag is one or both of ETO_OPAQUE and ETO_CLIPPED,
-the first means that the background of the box that the text
-is typed in is OPAQUE, and the usual opaque rules apply,
-(@see MfCmdSetBkMode).
-The second means that the text is clipped to the rectangle supplied.
-x1, y1, x2 and y2, are the points of the optional clipping rectangle,
-included if flags has ETO_CLIPPED set<br>
-
-Then the string follows, and then there is an optional array of widths, each
-16bit width is the distance from one character to the next.
  */
 
 public class MfCmdExtTextOut extends MfCmd
 {
+  private static final int POS_Y = 0;
+  private static final int POS_X = 1;
+  private static final int POS_CHAR_COUNT = 2;
+  private static final int POS_FLAGS = 3;
+  private static final int POS_CLIP_X = 4;
+  private static final int POS_CLIP_Y = 5;
+  private static final int POS_CLIP_W = 6;
+  private static final int POS_CLIP_H = 7;
+  private static final int RECORD_BASE_SIZE_CLIPPED = 8;
+  private static final int RECORD_BASE_SIZE_STANDARD = 4;
+
   public static final int ETO_OPAQUE = 0x0002;
   public static final int ETO_CLIPPED = 0x0004;
   public static final int ETO_GLYPH_INDEX = 0x0010;
@@ -153,11 +110,16 @@ public class MfCmdExtTextOut extends MfCmd
   {
   }
 
-  public void replay (org.jfree.pixie.wmf.WmfFile file)
+  /**
+   * Replays the command on the given WmfFile.
+   *
+   * @param file the meta file.
+   */
+  public void replay (WmfFile file)
   {
     Graphics2D graphics = file.getGraphics2D ();
-    org.jfree.pixie.wmf.MfDcState state = file.getCurrentState ();
-    org.jfree.pixie.wmf.MfLogFont lFont = state.getLogFont ();
+    MfDcState state = file.getCurrentState ();
+    MfLogFont lFont = state.getLogFont ();
 
     state.prepareDrawText ();
     FontMetrics metrics = graphics.getFontMetrics ();
@@ -166,7 +128,7 @@ public class MfCmdExtTextOut extends MfCmd
     int x = p.x + calcDeltaX (state.getVerticalTextAlignment (), textWidth);
     int y = p.y + calcDeltaY (state.getHorizontalTextAlignment (), metrics);
 
-    if (isOpaque () || state.getBkMode () != org.jfree.pixie.wmf.BrushConstants.TRANSPARENT)
+    if (isOpaque () || state.getBkMode () != BrushConstants.TRANSPARENT)
     {
       Rectangle background = new Rectangle (x, y - metrics.getAscent (), textWidth, metrics.getHeight ());
       graphics.setColor (state.getBkColor ());
@@ -194,11 +156,11 @@ public class MfCmdExtTextOut extends MfCmd
 
   protected int calcDeltaX (int valign, int textWidth)
   {
-    if (valign == org.jfree.pixie.wmf.TextConstants.TA_LEFT)
+    if (valign == TextConstants.TA_LEFT)
     {
       return 0;
     }
-    else if (valign == org.jfree.pixie.wmf.TextConstants.TA_CENTER)
+    else if (valign == TextConstants.TA_CENTER)
     {
       return textWidth / -2;
     }
@@ -210,58 +172,69 @@ public class MfCmdExtTextOut extends MfCmd
 
   protected int calcDeltaY (int halign, FontMetrics fm)
   {
-    if (halign == org.jfree.pixie.wmf.TextConstants.TA_TOP)
+    if (halign == TextConstants.TA_TOP)
       return (fm.getAscent () * -1);
-    else if (halign == org.jfree.pixie.wmf.TextConstants.TA_BOTTOM)
+    else if (halign == TextConstants.TA_BOTTOM)
       return (fm.getDescent ());
     else
       return 0;
   }
 
+  /**
+   * Creates a empty unintialized copy of this command implementation.
+   *
+   * @return a new instance of the command.
+   */
   public MfCmd getInstance ()
   {
     return new MfCmdExtTextOut ();
   }
 
+  /**
+   * Reads the function identifier. Every record type is identified by a
+   * function number corresponding to one of the Windows GDI functions used.
+   *
+   * @return the function identifier.
+   */
   public int getFunction ()
   {
-    return org.jfree.pixie.wmf.MfType.EXT_TEXT_OUT;
+    return MfType.EXT_TEXT_OUT;
   }
 
-  public void setRecord (org.jfree.pixie.wmf.MfRecord record)
+  /**
+   * Reads the command data from the given record and adjusts the internal
+   * parameters according to the data parsed.
+   * <p>
+   * After the raw record was read from the datasource, the record is parsed
+   * by the concrete implementation.
+   *
+   * @param record the raw data that makes up the record.
+   */
+  public void setRecord (MfRecord record)
   {
-    int y = record.getParam (0);
-    int x = record.getParam (1);
-    int count = record.getParam (2);
-    int flag = record.getParam (3);
-    int parCnt = 0;
+    int y = record.getParam (POS_Y);
+    int x = record.getParam (POS_X);
+    int count = record.getParam (POS_CHAR_COUNT);
+    int flag = record.getParam (POS_FLAGS);
+    int stringOffset = 0;
 
     int cx = 0;
     int cy = 0;
     int cw = 0;
     int ch = 0;
-
     if ((flag & ETO_CLIPPED) == ETO_CLIPPED)
     {
-      cx = record.getParam (4);
-      cy = record.getParam (5);
-      cw = record.getParam (6);
-      ch = record.getParam (7);
-      parCnt = 8 * 2 + record.RECORD_HEADER_SIZE;
+      cx = record.getParam (POS_CLIP_X);
+      cy = record.getParam (POS_CLIP_Y);
+      cw = record.getParam (POS_CLIP_W);
+      ch = record.getParam (POS_CLIP_H);
+      stringOffset = RECORD_BASE_SIZE_CLIPPED;
     }
     else
     {
-      parCnt = 4 * 2 + record.RECORD_HEADER_SIZE;
+      stringOffset = RECORD_BASE_SIZE_STANDARD;
     }
-
-    byte[] data = new byte[count];
-    int len = count;
-
-    for (int i = 0; i < count; i++)
-    {
-      data[i] = (byte) record.getByte (i + parCnt);
-    }
-    String text = new String (data);
+    String text = record.getStringParam(stringOffset, count);
 
     setOrigin (x, y);
     setText (text);
@@ -269,31 +242,41 @@ public class MfCmdExtTextOut extends MfCmd
     setFlags (flag);
   }
 
-  /** Writer function */
-  public org.jfree.pixie.wmf.MfRecord getRecord ()
+  /**
+   * Creates a new record based on the data stored in the MfCommand.
+   * This writer does not write a char-spacing record.
+   *
+   * @return the created record.
+   */
+  public MfRecord getRecord ()
   {
-    int flag = getFlags();
-    int parcnt = 4;
     String text = getText();
+    int flag = getFlags();
+    int parcnt;
     if ((flag & ETO_CLIPPED) == ETO_CLIPPED)
     {
-      parcnt = 8;
+      parcnt = RECORD_BASE_SIZE_CLIPPED;
     }
-    int recordLength = (int) Math.ceil((text.length() + parcnt) / 2);
-    org.jfree.pixie.wmf.MfRecord record = new org.jfree.pixie.wmf.MfRecord(recordLength);
+    else
+    {
+      parcnt =  RECORD_BASE_SIZE_STANDARD;
+    }
+
+    int recordLength = (int) (Math.ceil(text.length() / 2) * 2) + parcnt;
+    MfRecord record = new MfRecord(recordLength);
 
     Point origin = getOrigin();
-    record.setParam(0, (int)origin.getY());
-    record.setParam(1, (int)origin.getX());
-    record.setParam(2, text.length());
-    record.setParam(3, flag);
+    record.setParam(POS_Y, (int)origin.getY());
+    record.setParam(POS_X, (int)origin.getX());
+    record.setParam(POS_CHAR_COUNT, text.length());
+    record.setParam(POS_FLAGS, flag);
     if ((flag & ETO_CLIPPED) == ETO_CLIPPED)
     {
       Rectangle rect = getClippingRect();
-      record.setParam(4, rect.x);
-      record.setParam(5, rect.y);
-      record.setParam(6, rect.width);
-      record.setParam(7, rect.height);
+      record.setParam(POS_CLIP_X, rect.x);
+      record.setParam(POS_CLIP_Y, rect.y);
+      record.setParam(POS_CLIP_W, rect.width);
+      record.setParam(POS_CLIP_H, rect.height);
     }
     record.setStringParam(parcnt, text);
     return record;

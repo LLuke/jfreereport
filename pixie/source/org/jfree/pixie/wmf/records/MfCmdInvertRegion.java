@@ -1,13 +1,51 @@
+/**
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
+ *
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ----------------
+ * MfCmdInvertRegion.java
+ * ----------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner (taquera@sherito.org);
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: MfCmd.java,v 1.2 2003/03/14 20:06:04 taqua Exp $
+ *
+ * Changes
+ * -------
+ */
 package org.jfree.pixie.wmf.records;
+
+import java.awt.Graphics2D;
+import java.awt.Color;
 
 import org.jfree.pixie.wmf.MfRecord;
 import org.jfree.pixie.wmf.MfType;
 import org.jfree.pixie.wmf.WmfFile;
+import org.jfree.pixie.wmf.MfLogRegion;
 
-//
-// Inverts the colors in the specified region
-//
-
+/**
+ * Inverts the colors in the specified region
+ */
 public class MfCmdInvertRegion extends MfCmd
 {
   private int region;
@@ -16,36 +54,56 @@ public class MfCmdInvertRegion extends MfCmd
   {
   }
 
+  /**
+   * Replays the command on the given WmfFile.
+   *
+   * @param file the meta file.
+   */
   public void replay (WmfFile file)
   {
-//    BufferedImage image = file.getImage ();
-
-    // todo implement it using a pixelgrabber ...
-    // Scalierung holen (über AffineTransform)
-    //    Graphics2D graphics = file.getGraphics2D ();
-
-
-//    int[] data = image.getRGB (source.x, source.y, source.width, source.height, null, 0, source.width);
-//    image.setRGB (dest.x, dest.y, dest.width, dest.height, data, 0, dest.width);
-    // not yet implemented!
-
+    // by filling with XOR?
+    Graphics2D g2 = (Graphics2D) file.getGraphics2D().create();
+    g2.setXORMode(Color.white);
+    MfLogRegion reg = file.getRegionObject(getRegion());
+    g2.fill(reg.getBounds());
   }
 
+  /**
+   * Creates a empty unintialized copy of this command implementation.
+   *
+   * @return a new instance of the command.
+   */
   public MfCmd getInstance ()
   {
     return new MfCmdInvertRegion ();
   }
 
+  private static final int RECORD_SIZE = 1;
+  private static final int POS_REGION = 0;
+
+  /**
+   * Reads the command data from the given record and adjusts the internal
+   * parameters according to the data parsed.
+   * <p>
+   * After the raw record was read from the datasource, the record is parsed
+   * by the concrete implementation.
+   *
+   * @param record the raw data that makes up the record.
+   */
   public void setRecord (MfRecord record)
   {
-    int region = record.getParam (0);
+    region = record.getParam (POS_REGION);
   }
 
-  /** Writer function */
+  /**
+   * Creates a new record based on the data stored in the MfCommand.
+   *
+   * @return the created record.
+   */
   public MfRecord getRecord ()
   {
-    MfRecord record = new MfRecord(1);
-    record.setParam(0, getRegion());
+    MfRecord record = new MfRecord(RECORD_SIZE);
+    record.setParam(POS_REGION, getRegion());
     return record;
   }
 
@@ -67,15 +125,29 @@ public class MfCmdInvertRegion extends MfCmd
     return b.toString ();
   }
 
+  /**
+   * Reads the function identifier. Every record type is identified by a
+   * function number corresponding to one of the Windows GDI functions used.
+   *
+   * @return the function identifier.
+   */
   public int getFunction ()
   {
     return MfType.INVERT_REGION;
   }
 
+  /**
+   * A callback function to inform the object, that the x scale has changed and the
+   * internal coordinate values have to be adjusted. Not used.
+   */
   protected void scaleXChanged ()
   {
   }
 
+  /**
+   * A callback function to inform the object, that the y scale has changed and the
+   * internal coordinate values have to be adjusted. Not used.
+   */
   protected void scaleYChanged ()
   {
   }

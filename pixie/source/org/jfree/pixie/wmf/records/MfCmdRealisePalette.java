@@ -8,6 +8,8 @@ import org.jfree.pixie.wmf.records.MfCmd;
 /**
  * Synchronizes the Metafile-Palette with the device-dependent palette
  * This is not used here, as java does use 24-Bit TrueColors to display colors.
+ * <p>
+ * The record itself is empty.
  */
 public class MfCmdRealisePalette extends MfCmd
 {
@@ -15,19 +17,46 @@ public class MfCmdRealisePalette extends MfCmd
   {
   }
 
-  public void replay (org.jfree.pixie.wmf.WmfFile file)
+  /**
+   * Replays the command on the given WmfFile.
+   *
+   * @param file the meta file.
+   */
+  public void replay (WmfFile file)
   {
-    // Not implemented!
   }
 
+  /**
+   * Creates a empty unintialized copy of this command implementation.
+   *
+   * @return a new instance of the command.
+   */
   public MfCmd getInstance ()
   {
     return new MfCmdRealisePalette ();
   }
 
-  public void setRecord (org.jfree.pixie.wmf.MfRecord record)
+  /**
+   * Reads the command data from the given record and adjusts the internal
+   * parameters according to the data parsed.
+   * <p>
+   * After the raw record was read from the datasource, the record is parsed
+   * by the concrete implementation.
+   *
+   * @param record the raw data that makes up the record.
+   */
+  public void setRecord (MfRecord record)
   {
-    System.out.println ("RealizePalette is not yet implemented.");
+  }
+
+  /**
+   * Creates a new record based on the data stored in the MfCommand.
+   *
+   * @return the created record.
+   */
+  public MfRecord getRecord() throws RecordCreationException
+  {
+    return new MfRecord(0);
   }
 
   public String toString ()
@@ -37,15 +66,29 @@ public class MfCmdRealisePalette extends MfCmd
     return b.toString ();
   }
 
+  /**
+   * Reads the function identifier. Every record type is identified by a
+   * function number corresponding to one of the Windows GDI functions used.
+   *
+   * @return the function identifier.
+   */
   public int getFunction ()
   {
-    return org.jfree.pixie.wmf.MfType.REALISE_PALETTE;
+    return MfType.REALISE_PALETTE;
   }
 
+  /**
+   * A callback function to inform the object, that the x scale has changed and the
+   * internal coordinate values have to be adjusted.
+   */
   protected void scaleXChanged ()
   {
   }
 
+  /**
+   * A callback function to inform the object, that the y scale has changed and the
+   * internal coordinate values have to be adjusted.
+   */
   protected void scaleYChanged ()
   {
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CommandFactory.java,v 1.1 2003/03/09 20:38:23 taqua Exp $
+ * $Id: CommandFactory.java,v 1.2 2003/03/14 20:06:03 taqua Exp $
  *
  * Changes
  * -------
@@ -75,7 +75,7 @@ public class CommandFactory
 
     registerCommand (new MfCmdAnimatePalette ());
     registerCommand (new MfCmdArc ());
-    registerCommand (new MfCmdBitBlt ());
+    registerCommand (new MfCmdDibBitBlt ());
     registerCommand (new MfCmdChord ());
     registerCommand (new MfCmdCreateBrush ());
     registerCommand (new MfCmdCreateDibPatternBrush ());
@@ -100,8 +100,8 @@ public class CommandFactory
     registerCommand (new MfCmdOffsetClipRgn ());
     registerCommand (new MfCmdOffsetViewportOrg ());
     registerCommand (new MfCmdOffsetWindowOrg ());
-    registerCommand (new MfCmdOldBitBlt ());
-    registerCommand (new MfCmdOldStrechBlt ());
+    registerCommand (new MfCmdBitBlt ());
+    registerCommand (new MfCmdStretchBlt ());
     registerCommand (new MfCmdPatBlt ());
     registerCommand (new MfCmdPaintRgn ());
     registerCommand (new MfCmdPie ());
@@ -137,7 +137,7 @@ public class CommandFactory
     registerCommand (new MfCmdSetViewPortOrg ());
     registerCommand (new MfCmdSetWindowExt ());
     registerCommand (new MfCmdSetWindowOrg ());
-    registerCommand (new MfCmdStretchBlt ());
+    registerCommand (new MfCmdDibStretchBlt ());
     registerCommand (new MfCmdStretchDibits ());
     registerCommand (new MfCmdTextOut ());
   }

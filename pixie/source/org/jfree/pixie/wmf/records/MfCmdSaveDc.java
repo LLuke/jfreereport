@@ -11,10 +11,7 @@ public class MfCmdSaveDc extends MfCmd
   {
   }
 
-  /**
-   * Implemented!
-   */
-  public void replay (org.jfree.pixie.wmf.WmfFile file)
+  public void replay (WmfFile file)
   {
     file.saveDCState ();
   }
@@ -24,14 +21,23 @@ public class MfCmdSaveDc extends MfCmd
     return new MfCmdSaveDc ();
   }
 
-  public void setRecord (org.jfree.pixie.wmf.MfRecord record)
+  public void setRecord (MfRecord record)
   {
-    // Save DC has no parameters
+  }
+
+  /**
+   * Creates a new record based on the data stored in the MfCommand.
+   *
+   * @return the created record.
+   */
+  public MfRecord getRecord() throws RecordCreationException
+  {
+    return new MfRecord(0);
   }
 
   public int getFunction ()
   {
-    return org.jfree.pixie.wmf.MfType.SAVE_DC;
+    return MfType.SAVE_DC;
   }
 
   public String toString ()

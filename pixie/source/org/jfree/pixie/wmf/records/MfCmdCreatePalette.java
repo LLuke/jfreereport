@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MfCmd.java,v 1.1 2003/03/09 20:38:23 taqua Exp $
+ * $Id: MfCmdCreatePalette.java,v 1.2 2003/03/14 20:06:05 taqua Exp $
  *
  * Changes
  * -------
@@ -56,13 +56,19 @@ public class MfCmdCreatePalette extends MfCmd
   private int hPalette;
   private Color[] colors;
 
+  public MfCmdCreatePalette ()
+  {
+  }
+
+  /**
+   * Reads the function identifier. Every record type is identified by a
+   * function number corresponding to one of the Windows GDI functions used.
+   *
+   * @return the function identifier.
+   */
   public int getFunction ()
   {
     return MfType.CREATE_PALETTE;
-  }
-
-  public MfCmdCreatePalette ()
-  {
   }
 
   /**
@@ -148,6 +154,11 @@ public class MfCmdCreatePalette extends MfCmd
     return b.toString ();
   }
 
+  /**
+   * Creates a empty unintialized copy of this command implementation.
+   *
+   * @return a new instance of the command.
+   */
   public MfCmd getInstance ()
   {
     return new MfCmdCreatePalette ();
