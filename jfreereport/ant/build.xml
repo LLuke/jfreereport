@@ -16,20 +16,8 @@
 
 <project name="jfreereport" default="all" basedir=".">
 
-    <!-- Read the latest sources from the CVS -->
-    <target name="cvs-checkout" description="Retrieves the latest sources from the cvs archive at sourceforge.">
-      <cvspass cvsroot=":pserver:anonymous@cvs.sourceforge.net:/cvsroot/jfreereport"
-             password=""
-        />
-      <cvs cvsRoot=":pserver:anonymous@cvs.sourceforge.net:/cvsroot/jfreereport"
-           package="jfreereport"
-           compression="true" compressionlevel="5"
-           dest="."
-        />
-    </target>
-
-    <!-- General initialisation. -->
-    <target name="init-general" description="Initialise general parameters.">
+    <!-- Initialisation. -->
+    <target name="init" description="Initialise parameters.">
         <tstamp />
         <!-- BaseDirectory is different for either cvs target and build target -->
 	<!-- base dir is set elsewhere and cannot be redefined :( -->
@@ -52,17 +40,12 @@
             <pathelement location="${libdir}/${POI-jar}" />
         </path>
 
-    </target>
-
-    <!-- JFreeReport initialisation. -->
-    <target name="init-jfreereport" depends="init-general"
-            description="Initialise JFreeReport parameters.">
         <property name="jfreereport.name" value="jfreereport" />
         <property name="jfreereport.version" value="0.8.1" />
     </target>
 
     <!-- Compile the JFreeReport classes -->
-    <target name="compile-jfreereport" depends="init-jfreereport"
+    <target name="compile" depends="init"
             description="Compile the JFreeReport source code.">
 
         <!-- create a temp build directory -->
@@ -102,7 +85,7 @@
     <!-- Compile the JFreeReport DEMO classes -->
     <!-- This target creates a jar file containing all demo classes. -->
     <!-- The core classes are contained in the JFreeReport jar. -->
-    <target name="compile-jfreereport-demo" depends="compile-jfreereport"
+    <target name="compile-demo" depends="compile"
             description="Compile the JFreeReport demo source code.">
 
         <!-- create a temporary build directory -->
@@ -142,7 +125,7 @@
     </target>
 
     <!-- Generate the JFreeReport JavaDoc HTML pages -->
-    <target name="javadoc-jfreereport" depends="init-jfreereport">
+    <target name="javadoc" depends="init">
         <delete dir="${projectdir}/javadoc" />
         <mkdir dir="${projectdir}/javadoc" />
         <javadoc destdir="${projectdir}/javadoc"
@@ -157,7 +140,7 @@
     </target>
 
     <!-- Make .zip distribution for JFreeReport -->
-    <target name="make-jfreereport-zip" depends="compile-jfreereport-demo">
+    <target name="make-zip" depends="compile-demo">
 
         <!-- make a temporary distribution directory -->
         <mkdir dir="${projectdir}/distribution" />
@@ -219,7 +202,7 @@
     </target>
 
     <!-- Make .tar.gz distribution for JFreeReport -->
-    <target name="make-jfreereport-targz" depends="compile-jfreereport-demo">
+    <target name="make-targz" depends="compile-demo">
 
         <!-- make a temporary distribution directory -->
         <mkdir dir="${projectdir}/distribution" />
@@ -285,18 +268,29 @@
 
     <!-- ALL -->
     <target name="all" 
-            depends="compile-jfreereport,compile-jfreereport-demo,javadoc-jfreereport,make-jfreereport-zip,make-jfreereport-targz"
+            depends="compile,compile-demo,javadoc,make-zip,make-targz"
             description="Compiles JFreeReport, builds the jar files, generates the Javadoc HTML pages and creates distribution files (.zip and .tar.gz).">
+    </target>
+
+    <!-- Read the latest sources from the CVS -->
+    <target name="cvs-checkout" description="Retrieves the latest sources from the cvs archive at sourceforge.">
+      <cvspass cvsroot=":pserver:anonymous@cvs.sourceforge.net:/cvsroot/jfreereport"
+             password=""
+        />
+      <cvs cvsRoot=":pserver:anonymous@cvs.sourceforge.net:/cvsroot/jfreereport"
+           package="jfreereport"
+           compression="true" compressionlevel="5"
+           dest="."
+        />
     </target>
 
     <!-- Checkout the sources from sourceforge and rebuild JFreeReport -->
     <!-- Warning: This requires a different basedir -->
     <target name="cvs-rebuild"
             depends="cvs-checkout"
-            description="Checksout the sources from sourceforge and rebuilds the sources by using the ant-script within the sources">
+            description="Checks out the sources from sourceforge and rebuilds the sources by using the ant-script within the sources">
         <property name="projectdir" value="." />
         <ant antfile="ant/build.xml" dir="jfreereport" target="all"/>
     </target>
-
 
 </project>
