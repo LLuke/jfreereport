@@ -20,7 +20,12 @@ A list of changes in recent versions:
         
         * The element color function does now work with all bands of an report.
         
-        * (ElementVisiblitySwitch function does not work correctly)
+        * The TotalItemSumFunction can be used to precompute group results.
+        
+        * Warning: (ElementVisiblitySwitch function does not work correctly; 
+          this will be fixed with version 0.8.5)
+          
+         
 0.8.4-1:
         * BugFix: InternalFrame was not closed properly and caused NullPointers
           in Swing.

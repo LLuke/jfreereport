@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupCountFunction.java,v 1.2 2003/09/08 18:11:48 taqua Exp $
+ * $Id: TotalItemCountFunction.java,v 1.1 2003/10/17 17:39:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -37,6 +37,8 @@
  */
 
 package org.jfree.report.function;
+
+import java.util.ArrayList;
 
 import org.jfree.report.event.ReportEvent;
 
@@ -49,7 +51,7 @@ import org.jfree.report.event.ReportEvent;
  * 
  * @author Thomas Morgner
  */
-public class TotalItemCountFunction extends GroupCountFunction
+public class TotalItemCountFunction extends AbstractFunction
 {
   /**
    * An internal storage to collect the total value instead of the 
@@ -86,14 +88,24 @@ public class TotalItemCountFunction extends GroupCountFunction
     }
   }
 
-  /** The storage used to save the computed total. */ 
-  private ItemCountStorage storage;
+  /** Literal text for the 'group' property. */
+  public static final String GROUP_PROPERTY = "group";
+
+  /** The group sum. */
+  private ItemCountStorage groupResult;
+
+  /** A list of results. */
+  private ArrayList results;
+
+  /** The current index. */
+  private int currentIndex;
 
   /**
    * Default constructor.
    */
   public TotalItemCountFunction()
   {
+    results = new ArrayList();
   }
 
   /**
@@ -104,7 +116,12 @@ public class TotalItemCountFunction extends GroupCountFunction
    */
   public void reportInitialized(final ReportEvent event)
   {
-    storage = null;
+    groupResult = null;
+    currentIndex = -1;
+    if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
+    {
+      results.clear();
+    }
   }
 
   /**
@@ -114,11 +131,35 @@ public class TotalItemCountFunction extends GroupCountFunction
    */
   protected int getCount()
   {
-    if (storage == null)
+    if (groupResult == null)
     {
       return 0;
     }
-    return storage.getGroupCount();
+    return groupResult.getGroupCount();
+  }
+
+  /**
+   * Receives notification that a new group is about to start.
+   * Increases the count if all groups are counted or the name defines the current group.
+   *
+   * @param event the current report event received.
+   */
+  public void groupStarted(ReportEvent event)
+  {
+    if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
+    {
+      groupResult = new ItemCountStorage();
+      results.add(groupResult);
+    }
+    else
+    {
+      if (FunctionUtilities.isLayoutLevel(event))
+      {
+        // Activate the current group, which was filled in the prepare run.
+        currentIndex += 1;
+        groupResult = (ItemCountStorage) results.get(currentIndex);
+      }
+    }
   }
 
   /**
@@ -128,10 +169,68 @@ public class TotalItemCountFunction extends GroupCountFunction
    */
   protected void setCount(final int count)
   {
-    if (storage == null)
+    if (groupResult == null)
     {
-      storage = new ItemCountStorage();
+      groupResult = new ItemCountStorage();
     }
-    storage.setGroupCount(count);
+    groupResult.setGroupCount(count);
   }
+
+  /**
+   * Returns the name of the group to be totalled.
+   *
+   * @return the group name.
+   */
+  public String getGroup()
+  {
+    return getProperty(GROUP_PROPERTY);
+  }
+
+  /**
+   * Defines the name of the group to be totalled.
+   * If the name is null, all groups are totalled.
+   *
+   * @param group  the group name.
+   */
+  public void setGroup(final String group)
+  {
+    setProperty(GROUP_PROPERTY, group);
+  }
+
+
+  /**
+   * Received notification of a move to the next row of data.  Increments the item count.
+   *
+   * @param event Information about the event.
+   */
+  public void itemsAdvanced(final ReportEvent event)
+  {
+    setCount(getCount() + 1);
+  }
+
+  /**
+   * Returns the number of items counted (so far) by the function.  This is either the number
+   * of items in the report, or the group (if a group has been defined for the function).
+   *
+   * @return The item count.
+   */
+  public Object getValue()
+  {
+    return new Integer(getCount());
+  }
+
+  /**
+   * Return a completly separated copy of this function. The copy does no
+   * longer share any changeable objects with the original function.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance()
+  {
+    final TotalItemCountFunction function = (TotalItemCountFunction) super.getInstance();
+    function.groupResult = new TotalItemCountFunction.ItemCountStorage();
+    function.results = new ArrayList();
+    return function;
+  }
+
 }
