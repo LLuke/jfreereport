@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectWriter.java,v 1.9 2003/04/24 18:08:53 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.10 2003/05/02 12:40:15 taqua Exp $
  *
  * Changes
  * -------
@@ -166,13 +166,21 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
     if (parameterDescription == null)
     {
+      parameterDescription = cc.getSuperClassObjectDescription(parameterClass, null);
+    }
+    if (parameterDescription == null)
+    {
       Object o = objectDescription.getParameter(name);
       if (o == null)
       {
         return null;
       }
-      
+
       parameterDescription = cc.getDescriptionForClass(o.getClass());
+      if (parameterDescription == null)
+      {
+        parameterDescription = cc.getSuperClassObjectDescription(o.getClass(), null);
+      }
       if (parameterDescription == null)
       {
         Log.info ("Unable to get parameter description for class: " + o.getClass());

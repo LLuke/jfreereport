@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.9 2003/04/24 18:08:53 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.10 2003/05/02 12:40:15 taqua Exp $
  *
  * Changes
  * -------
@@ -169,6 +169,10 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
         else
         {
           ObjectDescription od = cfc.getDescriptionForClass(value.getClass());
+          if (od == null)
+          {
+            od = cfc.getSuperClassObjectDescription(value.getClass(), null);
+          }
           if (od == null)
           {
             writeTag(writer, FunctionsHandler.PROPERTY_REF_TAG, "name", name, CLOSE);

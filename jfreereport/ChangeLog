@@ -65,7 +65,7 @@ A list of changes in recent versions:
 
         * The report converter GUI now displays exceptions to the user.
 
-0.8.2    : (12-Apr-2003):
+r0.8.2    : (12-Apr-2003):
         * Important: There were fixes in the shape handling and the order of the
           function events, please read the file migration.txt for detailed
           information about API changes of this release.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CompoundStyleKeyHandler.java,v 1.10 2003/04/24 18:08:49 taqua Exp $
+ * $Id: CompoundStyleKeyHandler.java,v 1.11 2003/05/02 12:40:02 taqua Exp $
  *
  * Changes
  * -------
@@ -84,6 +84,10 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
     ClassFactory fact = (ClassFactory) getParser().getConfigurationValue(
         ParserConfigHandler.OBJECT_FACTORY_TAG);
     keyObjectDescription = fact.getDescriptionForClass(getKeyValueClass());
+    if (keyObjectDescription == null)
+    {
+      keyObjectDescription = fact.getSuperClassObjectDescription(getKeyValueClass(), null);
+    }
     if (keyObjectDescription == null)
     {
       throw new SAXException("No object definition for class " + getStyleKey().getValueType());

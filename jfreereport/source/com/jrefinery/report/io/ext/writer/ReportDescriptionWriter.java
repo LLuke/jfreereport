@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionWriter.java,v 1.7 2003/04/24 18:08:53 taqua Exp $
+ * $Id: ReportDescriptionWriter.java,v 1.8 2003/05/02 12:40:17 taqua Exp $
  *
  * Changes
  * -------
@@ -255,6 +255,11 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
   {
     ObjectDescription od =
         getReportWriter().getClassFactoryCollector().getDescriptionForClass(datasource.getClass());
+    if (od == null)
+    {
+      od = getReportWriter().getClassFactoryCollector().
+          getSuperClassObjectDescription(datasource.getClass(), null);
+    }
     if (od == null)
     {
       throw new ReportWriterException("Unable to resolve DataSource: " + datasource.getClass());

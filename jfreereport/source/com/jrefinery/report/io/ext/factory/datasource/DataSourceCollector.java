@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceCollector.java,v 1.13 2003/05/11 13:39:16 taqua Exp $
+ * $Id: DataSourceCollector.java,v 1.14 2003/05/14 22:26:38 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -185,7 +185,7 @@ public class DataSourceCollector implements DataSourceFactory
         }
       }
     }
-    return null;
+    return knownSuperClass;
   }
 
   /**

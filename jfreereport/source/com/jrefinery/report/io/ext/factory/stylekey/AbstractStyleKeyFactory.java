@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractStyleKeyFactory.java,v 1.10 2003/04/24 18:08:51 taqua Exp $
+ * $Id: AbstractStyleKeyFactory.java,v 1.11 2003/05/02 12:40:11 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -146,9 +146,12 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
     ObjectDescription od = classFactory.getDescriptionForClass(c);
     if (od == null) 
     {
-      return null;
+      od = classFactory.getSuperClassObjectDescription(c, null);
+      if (od == null)
+      {
+        return null;
+      }
     }
-
     od.setParameter("value", value);
     return od.createObject();
   }

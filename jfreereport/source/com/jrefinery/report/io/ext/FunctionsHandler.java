@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsHandler.java,v 1.8 2003/04/24 18:08:49 taqua Exp $
+ * $Id: FunctionsHandler.java,v 1.9 2003/05/02 12:40:03 taqua Exp $
  *
  * Changes
  * -------
@@ -196,7 +196,12 @@ public class FunctionsHandler implements ElementDefinitionHandler
       Class propertyClass = getClass().getClassLoader().loadClass(className);
       ClassFactoryCollector fc = (ClassFactoryCollector) getParser().getConfigurationValue(
           ParserConfigHandler.OBJECT_FACTORY_TAG);
-      return fc.getDescriptionForClass(propertyClass);
+      ObjectDescription retval = fc.getDescriptionForClass(propertyClass);
+      if (retval == null)
+      {
+        retval = fc.getSuperClassObjectDescription(propertyClass, null);
+      }
+      return retval;
     }
     catch (Exception e)
     {

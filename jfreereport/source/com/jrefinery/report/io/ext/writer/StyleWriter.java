@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.13 2003/05/02 16:35:03 taqua Exp $
+ * $Id: StyleWriter.java,v 1.14 2003/05/11 13:39:17 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,6 @@ import com.jrefinery.report.targets.style.BandDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementDefaultStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.style.StyleKey;
-import com.jrefinery.report.util.Log;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.jfree.xml.factory.objects.ObjectFactoryException;
@@ -135,30 +134,33 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     {
       return od;
     }
-
-    Log.warn
+/*
+    Log.debug
         ("Unable to find object description for implemented style key class: " + o.getClass());
+*/
     od = cc.getDescriptionForClass(key.getValueType());
     if (od != null)
     {
       return od;
     }
-
-    Log.warn
+/*
+    Log.debug
         ("Unable to find object description for native style key class: " + key.getValueType());
+*/
     // search the most suitable super class object description ...
     od = cc.getSuperClassObjectDescription(o.getClass(), od);
     od = cc.getSuperClassObjectDescription(key.getValueType(), od);
+//    Log.debug ("Object description result: " + od);
     return od;
   }
 
   /**
    * Writes a stylekey.
-   * 
+   *
    * @param w  the character stream writer.
    * @param key  the key.
    * @param o  the object.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */

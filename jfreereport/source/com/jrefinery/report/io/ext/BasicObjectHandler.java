@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicObjectHandler.java,v 1.9 2003/04/24 18:08:48 taqua Exp $
+ * $Id: BasicObjectHandler.java,v 1.10 2003/05/02 12:39:57 taqua Exp $
  *
  * Changes
  * -------
@@ -109,6 +109,10 @@ public class BasicObjectHandler implements ElementDefinitionHandler
     ClassFactory fact = (ClassFactory) getParser().getConfigurationValue(
         ParserConfigHandler.OBJECT_FACTORY_TAG);
     objectDescription = fact.getDescriptionForClass(targetObject);
+    if (objectDescription == null)
+    {
+      objectDescription = fact.getSuperClassObjectDescription(targetObject, null);
+    }
     if (objectDescription == null)
     {
       throw new SAXException("No object definition for class " + targetObject);

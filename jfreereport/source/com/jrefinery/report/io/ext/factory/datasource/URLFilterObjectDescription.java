@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: URLFilterObjectDescription.java,v 1.1 2003/05/16 15:28:22 taqua Exp $
+ * $Id: URLFilterObjectDescription.java,v 1.2 2003/05/26 13:30:58 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -59,7 +59,7 @@ public class URLFilterObjectDescription extends BeanObjectDescription
   public URLFilterObjectDescription(Class className)
   {
     super(className);
-    if (URLFilter.class.isInstance(className) == false)
+    if (URLFilter.class.isAssignableFrom(className) == false)
     {
       throw new IllegalArgumentException("Given class is no instance of URLFilter.");
     }
