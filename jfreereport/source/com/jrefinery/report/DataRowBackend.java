@@ -30,6 +30,7 @@
  * 27-Jul-2002 : Inital version
  * 01-Sep-2002 : Deadlockcheck added. If a column is accessed twice within a single query, (can happen on
  *               expression evaluation), a IllegalStateException is thrown
+ * 02-Sep-2002 : Deadlock detection was no implemented correctly, fixed.
  */
 package com.jrefinery.report;
 
@@ -53,6 +54,7 @@ public class DataRowBackend implements Cloneable
     public DataRowPreview(DataRowBackend db)
     {
       this.db = db;
+      DataRowPreview.this.revalidateColumnLock();
     }
 
     public boolean isPreviewMode()
@@ -163,25 +165,31 @@ public class DataRowBackend implements Cloneable
   public void setFunctions(FunctionCollection functions)
   {
     this.functions = functions;
+    revalidateColumnLock();
   }
 
   public void setTablemodel(TableModel tablemodel)
   {
     this.tablemodel = tablemodel;
+    revalidateColumnLock();
   }
 
-  public Object get(int col)
-  {
-    if (col > getColumnCount())
-      throw new IndexOutOfBoundsException("requested " + col + " , have " + getColumnCount());
 
-    if (columnlocks[col])
-      throw new IllegalStateException("Column " + col + " already accessed. Deadlock!");
+  public Object get(int column)
+  {
+    if (column >= getColumnCount())
+      throw new IndexOutOfBoundsException("requested " + column + " , have " + getColumnCount());
+    if (column < 0) throw new IndexOutOfBoundsException("Column with negative index is invalid");
+
+    if (columnlocks[column])
+      throw new IllegalStateException("Column " + column + " already accessed. Deadlock!");
 
     Object returnValue = null;
     try
     {
-      columnlocks[col] = true;
+      Log.debug ("Locking " + column);
+      columnlocks[column] = true;
+      int col = column;
       if (col < getTableEndIndex())
       {
         // Handle Pos == BEFORE_FIRST_ROW
@@ -208,11 +216,11 @@ public class DataRowBackend implements Cloneable
         col -= getFunctionEndIndex();
         returnValue = getExpressions().getExpression(col).getValue();
       }
-      columnlocks[col] = false;
     }
     finally
     {
-      columnlocks[col] = false;
+      Log.debug ("UnLocking " + column);
+      columnlocks[column] = false;
     }
     return returnValue;
   }
@@ -234,6 +242,7 @@ public class DataRowBackend implements Cloneable
 
   public int getColumnCount()
   {
+    if (getExpressions() == null) return getFunctionEndIndex();
     return (getFunctionEndIndex() + getExpressions().size());
   }
 
@@ -328,11 +337,13 @@ public class DataRowBackend implements Cloneable
 
   private int getTableEndIndex()
   {
+    if (getTablemodel() == null) return 0;
     return getTablemodel().getColumnCount();
   }
 
   private int getFunctionEndIndex()
   {
+    if (getFunctions() == null) return getTableEndIndex();
     return getTableEndIndex() + getFunctions().size();
   }
 
@@ -345,9 +356,10 @@ public class DataRowBackend implements Cloneable
   {
     if (expressions == null) throw new NullPointerException();
     this.expressions = expressions;
+    revalidateColumnLock();
   }
 
-  private void revalidateColumnLock()
+  protected void revalidateColumnLock()
   {
     if (getColumnCount() != columnlocks.length)
     {

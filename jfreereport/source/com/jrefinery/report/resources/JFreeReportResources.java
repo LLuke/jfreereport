@@ -98,7 +98,7 @@ public class JFreeReportResources extends ListResourceBundle
   private static final Object[][] contents =
           {
             {"project.name", "JFreeReport"},
-            {"project.version", "0.7.5"},
+            {"project.version", "0.7.6"},
             {"project.info", "http://www.object-refinery.com/jfreereport/index.html"},
             {"project.copyright", "(C)opyright 2000-2002, by Simba Management Limited and Contributors"},
 
