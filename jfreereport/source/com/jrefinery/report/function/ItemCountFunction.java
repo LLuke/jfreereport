@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.13 2002/12/02 17:29:13 taqua Exp $
+ * $Id: ItemCountFunction.java,v 1.14 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
@@ -88,7 +88,7 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
   /**
    * Receives notification that a new report is about to start.  The item count is set to zero.
    *
-   * @param event Information about the event.
+   * @param event  the event.
    */
   public void reportStarted(ReportEvent event)
   {
@@ -99,7 +99,7 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
    * Returns the name of the group (possibly null) for this function.  The item count is reset
    * to zero at the start of each instance of this group.
    *
-   * @return The group name.
+   * @return the group name.
    */
   public String getGroup()
   {
