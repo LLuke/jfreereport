@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelList.java,v 1.5 2003/08/25 14:29:34 taqua Exp $
+ * $Id: LevelList.java,v 1.6 2003/09/09 02:29:13 taqua Exp $
  *
  * Changes
  * -------
@@ -157,6 +157,7 @@ public class LevelList implements Cloneable
     /**
      * Returns the data for this level as object array.
      *
+     * @param target object array that should receive the contents  
      * @return the data for this level as object array.
      */
     protected Object[] getData (Object[] target)
@@ -164,6 +165,10 @@ public class LevelList implements Cloneable
       return datalist.toArray(target);
     }
 
+    /**
+     * Returns the size if the list.
+     * @return the size.
+     */
     public int size()
     {
       return datalist.size();
@@ -254,7 +259,7 @@ public class LevelList implements Cloneable
    * Returns an iterator for all the elements at a given level.
    *
    * @param level  the level.
-   *
+   * @param target the target array that should receive the contentes
    * @return the data for the level as object array.
    */
   public Object[] getElementArrayForLevel(final int level, Object[] target)
@@ -287,6 +292,12 @@ public class LevelList implements Cloneable
     return getElementArrayForLevel(level, null);
   }
 
+  /**
+   * Returns the numer of elements registered for an certain level.
+   * 
+   * @param level the level that should be queried 
+   * @return the numer of elements in that level
+   */
   public int getElementCountForLevel (final int level)
   {
     ElementLevelList it = (ElementLevelList) iteratorCache.get(new Integer(level));

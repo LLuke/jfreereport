@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DefaultModuleEditor.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -59,17 +59,19 @@ public class DefaultModuleEditor implements ModuleEditor
 {
   private static class EnableAction implements ActionListener
   {
-    private AbstractKeyEditor editor;
+    private KeyEditor editor;
     private JCheckBox source;
 
-    public EnableAction(AbstractKeyEditor ed, JCheckBox source)
+    public EnableAction(KeyEditor ed, JCheckBox source)
     {
       this.editor = ed;
       this.source = source;
     }
 
     /**
-     * Invoked when an action occurs.
+     * Enables the checkbox from this action.
+     * 
+     * @param e not used
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -79,16 +81,16 @@ public class DefaultModuleEditor implements ModuleEditor
 
   private static class EditorCarrier
   {
-    private AbstractKeyEditor editor;
+    private KeyEditor editor;
     private JCheckBox enableBox;
 
-    public EditorCarrier(AbstractKeyEditor editor, JCheckBox enableBox)
+    public EditorCarrier(KeyEditor editor, JCheckBox enableBox)
     {
       this.editor = editor;
       this.enableBox = enableBox;
     }
 
-    public AbstractKeyEditor getEditor()
+    public KeyEditor getEditor()
     {
       return editor;
     }
@@ -196,7 +198,7 @@ public class DefaultModuleEditor implements ModuleEditor
     activeEditors = new EditorCarrier[keyNames.length];
     for (int i = 0; i < keyNames.length; i++)
     {
-      AbstractKeyEditor editor;
+      KeyEditor editor;
       String displayName = createDisplayName(keyNames[i].getKeyName());
 
       if (keyNames[i] instanceof EnumConfigDescriptionEntry)
@@ -219,7 +221,7 @@ public class DefaultModuleEditor implements ModuleEditor
       JPanel panel = new JPanel();
       panel.setLayout(new BorderLayout());
       panel.add (enableCB, BorderLayout.WEST);
-      panel.add (editor, BorderLayout.CENTER);
+      panel.add (editor.getComponent(), BorderLayout.CENTER);
 
       contentpane.add(panel);
       activeEditors[i] = new EditorCarrier(editor, enableCB);

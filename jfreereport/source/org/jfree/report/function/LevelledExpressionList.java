@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.5 2003/09/09 02:29:12 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.6 2003/09/11 22:17:09 taqua Exp $
  *
  * Changes
  * -------
@@ -74,7 +74,9 @@ public final class LevelledExpressionList implements ReportListener,
   /** The dataRow for all functions. */
   private DataRow dataRow;
 
+  /** The expressions sorted by levels. */
   private Expression[][] levelData;
+  /** all data as flat list */
   private Expression[] flatData;
 
   /** The number of functions and expressions in this list. */
@@ -106,6 +108,7 @@ public final class LevelledExpressionList implements ReportListener,
    * as the functions level is not expected to change after the function was
    * initialized.
    * 
+   * @param expressionList the level list from where to build the data.
    * @return the function levels.
    */
   private int[] buildLevels(LevelList expressionList)
@@ -833,6 +836,7 @@ public final class LevelledExpressionList implements ReportListener,
    * Initialises the expressions.
    *
    * @param expressionCollection  the expression collection.
+   * @param functionCollection the function collection.
    */
   private void initialize(final ExpressionCollection expressionCollection,
                           final ExpressionCollection functionCollection)
@@ -871,6 +875,12 @@ public final class LevelledExpressionList implements ReportListener,
     initializeFromLevelList(expressionList);
   }
 
+  /**
+   * Initializes the expression list from the given levellist.
+   * 
+   * @param expressionList the list containing the expressions and 
+   * functions.
+   */
   private void initializeFromLevelList (LevelList expressionList)
   {
     this.size = 0;

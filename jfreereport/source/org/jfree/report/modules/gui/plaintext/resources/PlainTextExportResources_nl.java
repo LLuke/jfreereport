@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: PlainTextExportResources_nl.java,v 1.5 2003/09/06 18:09:17 taqua Exp $
+ * $Id: PlainTextExportResources_nl.java,v 1.6 2003/09/08 18:39:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -102,7 +102,8 @@ public class PlainTextExportResources_nl extends JFreeReportResources
         {"error.savefailed.title", "Fout tijdens opslaan"},
         {"error.savefailed.message", "Opslaan als tekst mislukt: {0}"},
         {"plaintext-export.progressdialog.title", "Bezig te exporteren naar tekst bestand ..."},
-        {"plaintext-export.progressdialog.message", "Het rapport wordt omgezet in een tekst bestand ..."},
+        {"plaintext-export.progressdialog.message", 
+          "Het rapport wordt omgezet in een tekst bestand ..."},
 
       };
 

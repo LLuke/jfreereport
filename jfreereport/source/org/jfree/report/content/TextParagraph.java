@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
+ * $Id: TextParagraph.java,v 1.5 2003/09/11 22:17:09 taqua Exp $
  *
  * Changes
  * -------
@@ -65,6 +65,7 @@ public class TextParagraph extends ContentContainer
   /** The size calculator. */
   private final SizeCalculator sizeCalculator;
 
+  /** The reserved literal that should be appended to the text. */
   private final String reservedLiteral;
 
   /**
@@ -72,8 +73,11 @@ public class TextParagraph extends ContentContainer
    *
    * @param calc  the size calculator.
    * @param lineHeight the height of the lines contained in this paragraph.
+   * @param reservedLiteral the text that should be appended if the text does 
+   * not fit into the bounds
    */
-  public TextParagraph(final SizeCalculator calc, final float lineHeight, final String reservedLiteral)
+  public TextParagraph(final SizeCalculator calc, final float lineHeight, 
+                       final String reservedLiteral)
   {
     super(new Rectangle2D.Float());
     this.sizeCalculator = calc;

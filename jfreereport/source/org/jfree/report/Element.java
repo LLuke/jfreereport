@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.6 2003/08/25 14:29:28 taqua Exp $
+ * $Id: Element.java,v 1.7 2003/09/11 22:17:09 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -150,6 +150,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   /** the parent for the element (the band where the element is contained in). */
   private Band parent;
 
+  /** the tree lock to synchronize the element. */
   private InstanceID treeLock;
 
   /**
@@ -427,6 +428,11 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     registerStyleSheetCollection(sc);
   }
 
+  /**
+   * Returns the tree lock object for the element tree.
+   *  
+   * @return the treelock object.
+   */
   public final Object getTreeLock ()
   {
     if (getParent() != null)

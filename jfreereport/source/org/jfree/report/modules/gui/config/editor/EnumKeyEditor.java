@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EnumKeyEditor.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
+ * $Id: EnumKeyEditor.java,v 1.2 2003/09/08 18:11:48 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -59,6 +59,8 @@ public class EnumKeyEditor extends AbstractKeyEditor
      * Invoked when an item has been selected or deselected.
      * The code written for this method performs the operations
      * that need to occur when an item is selected (or deselected).
+     * 
+     * @param e not used
      */
     public void itemStateChanged(ItemEvent e)
     {

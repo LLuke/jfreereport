@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: AbstractKeyEditor.java,v 1.1 2003/08/31 19:31:22 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -51,7 +51,13 @@ import org.jfree.report.util.ImageUtils;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 
-public abstract class AbstractKeyEditor extends JComponent
+/**
+ * This key editor class is the base class for all key editor components.
+ * It provides common services usable for most key editor implementation. 
+ * 
+ * @author Thomas Morgner
+ */
+public abstract class AbstractKeyEditor extends JComponent implements KeyEditor
 {
   private static final String RESOURCE_BUNDLE =
       ConfigResources.class.getName();
@@ -163,6 +169,8 @@ public abstract class AbstractKeyEditor extends JComponent
     return config.isLocallyDefined(entry.getKeyName());
   }
 
-  public abstract void setLabelWidth (int width);
-  public abstract int getLabelWidth ();
+  public JComponent getComponent()
+  {
+    return this;
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
+ * $Id: TextContent.java,v 1.5 2003/09/11 22:17:09 taqua Exp $
  *
  * Changes
  * -------
@@ -65,6 +65,8 @@ public class TextContent extends ContentContainer
    * @param lineHeight the height of a text line
    * @param bounds  the bounds.
    * @param ot  the size calculator.
+   * @param reservedLiteral the text that should be appended if the text does
+   * not fit into the bounds
    */
   public TextContent(final String value, final float lineHeight,
                      final Rectangle2D bounds, final SizeCalculator ot,

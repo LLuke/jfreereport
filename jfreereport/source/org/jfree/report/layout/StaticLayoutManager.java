@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.4 2003/08/25 14:29:29 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.5 2003/09/11 22:17:09 taqua Exp $
  *
  * Changes
  * -------
@@ -103,6 +103,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
    *
    * @param e  the element.
    * @param containerBounds the bounds of the elements parents.
+   * @param retval a dimension object that should be filled, or null,
+   * if a new object should be created
    *
    * @return the minimum size.
    */
@@ -124,8 +126,10 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     // to calculate the maximum available space for the element.
     final Point2D absPos = (Point2D)
       e.getStyle().getStyleProperty(ABSOLUTE_POS, DEFAULT_POS);
-    float absPosX = correctRelativeValue((float) absPos.getX(), (float) containerBounds.getWidth());
-    float absPosY = correctRelativeValue((float) absPos.getY(), (float) containerBounds.getHeight());
+    float absPosX = correctRelativeValue((float) absPos.getX(), 
+        (float) containerBounds.getWidth());
+    float absPosY = correctRelativeValue((float) absPos.getY(), 
+        (float) containerBounds.getHeight());
 
     if (containerBounds.getWidth() < absPosX)
     {
@@ -172,7 +176,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     // layouting has failed, if negative values are returned ... !
     if (retval.getWidth() < 0 || retval.getHeight() < 0)
     {
-      throw new IllegalStateException("Layouting failed, computeMinimumSize returned negative values.");
+      throw new IllegalStateException
+        ("Layouting failed, computeMinimumSize returned negative values.");
     }
 
     if (isCacheable)
@@ -187,10 +192,13 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
    *
    * @param e  the element.
    * @param containerBounds  the bounds of the element's container.
+   * @param retval a dimension object that should be filled, or null,
+   * if a new object should be created
    *
    * @return the preferred size of the element.
    */
-  protected Dimension2D computePreferredSize(final Element e, final Dimension2D containerBounds, Dimension2D retval)
+  protected Dimension2D computePreferredSize(final Element e, 
+      final Dimension2D containerBounds, Dimension2D retval)
   {
     final boolean isCachable = cache.isCachable(e);
     if (isCachable)
@@ -207,8 +215,10 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     // to calculate the maximum available space for the element.
     final Point2D absPos = (Point2D)
       e.getStyle().getStyleProperty(ABSOLUTE_POS, DEFAULT_POS);
-    float absPosX = correctRelativeValue((float) absPos.getX(), (float) containerBounds.getWidth());
-    float absPosY = correctRelativeValue((float) absPos.getY(), (float) containerBounds.getHeight());
+    float absPosX = correctRelativeValue((float) absPos.getX(), 
+        (float) containerBounds.getWidth());
+    float absPosY = correctRelativeValue((float) absPos.getY(), 
+        (float) containerBounds.getHeight());
 
     if (containerBounds.getWidth() < absPosX)
     {
@@ -291,7 +301,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
   {
     synchronized (b.getTreeLock())
     {
-      final ElementLayoutInformation eli = createLayoutInformationForPreferredSize(b, containerDims);
+      final ElementLayoutInformation eli = 
+        createLayoutInformationForPreferredSize(b, containerDims);
       final Dimension2D maxSize = eli.getMaximumSize();
       final Dimension2D minSize = eli.getMinimumSize();
 
@@ -419,7 +430,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
   {
     synchronized (b.getTreeLock())
     {
-      final ElementLayoutInformation eli = createLayoutInformationForMinimumSize(b, containerBounds);
+      final ElementLayoutInformation eli = 
+        createLayoutInformationForMinimumSize(b, containerBounds);
       final Dimension2D maxSize = eli.getMaximumSize();
       final Dimension2D minSize = eli.getMinimumSize();
 
@@ -608,7 +620,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
         //Log.debug ("Bounds: Element: " + e.getName() + " Bounds: " + bounds);
         if (e instanceof Band)
         {
-          final BandLayoutManager lm = BandLayoutManagerUtil.getLayoutManager(e, getLayoutSupport());
+          final BandLayoutManager lm = 
+            BandLayoutManagerUtil.getLayoutManager(e, getLayoutSupport());
           lm.doLayout((Band) e);
         }
       }
