@@ -20,57 +20,39 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------
- * DemoDrawable.java
- * -----------------
+ * ------------------------------
+ * InvalidStyleSheetCollectionException.java
+ * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DemoDrawable.java,v 1.3 2003/04/09 16:21:34 mungady Exp $
+ * $Id$
  *
- * Changes
- * -------
- * 07-Mar-2003 : Version 1 (DG);
- * 
+ * Changes 
+ * -------------------------
+ * 19.06.2003 : Initial version
+ *  
  */
 
-package com.jrefinery.report.demo;
+package com.jrefinery.report.targets.style;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
+import org.jfree.util.StackableRuntimeException;
 
-import org.jfree.ui.Drawable;
-
-
-/**
- * A simple implementation of the Drawable interface, used for a report demonstration.
- * 
- * @author Thomas Morgner.
- */
-public class DemoDrawable implements Drawable
+public class InvalidStyleSheetCollectionException extends StackableRuntimeException
 {
-  /**
-   * Default constructor.
-   */
-  public DemoDrawable()
+  public InvalidStyleSheetCollectionException()
   {
   }
 
-  /**
-   * Draws the item.
-   * 
-   * @param graphics  the graphics implementation.
-   * @param bounds  the bounds.
-   */
-  public void draw(Graphics2D graphics, Rectangle2D bounds)
+  public InvalidStyleSheetCollectionException(String s, Exception e)
   {
-    graphics.setColor(Color.black);
-    graphics.drawString(bounds.toString(), 10, 10);
-    graphics.draw(new Rectangle2D.Double(0, 0, 452, 29));
-    graphics.draw(bounds);
+    super(s, e);
+  }
+
+  public InvalidStyleSheetCollectionException(String s)
+  {
+    super(s);
   }
 }
-
