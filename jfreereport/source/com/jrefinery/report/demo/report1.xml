@@ -69,7 +69,7 @@
           <property name="group">Continent Group</property>
         </properties>
       </function>
-      <function name="backgroundTrigger" class="com.jrefinery.report.function.ElementVisiblitySwitchFunction">
+      <function name="backgroundTrigger" class="com.jrefinery.report.function.ElementVisibilitySwitchFunction">
         <properties>
           <property name="element">background</property>
         </properties>

@@ -471,10 +471,6 @@ public class HugeJFreeReportDemo extends JFrame
     catch (Exception e)
     {
     }
-    if (System.getProperty ("com.jrefinery.report.demo.DEBUG", "false").equals ("true"))
-    {
-      Log.addTarget (new SystemOutLogTarget ());
-    }
 
     PDFOutputTarget.getFontFactory ().registerDefaultFontPath ();
 

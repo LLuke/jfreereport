@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.20 2002/06/09 22:57:43 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.21 2002/06/10 17:17:13 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -203,6 +203,7 @@ public class JFreeReportDemo extends JFrame
     tabbedPane.addTab (formExample(2), RefineryUtilities.createTablePanel (data2));
     tabbedPane.addTab (formExample(3), RefineryUtilities.createTablePanel (data3));
     tabbedPane.addTab (formExample(4), RefineryUtilities.createTablePanel (data4));
+    tabbedPane.addTab ("Manual Created Report (see Source)", RefineryUtilities.createTablePanel (data1));
 
     content.add (tabbedPane);
 
@@ -233,7 +234,6 @@ public class JFreeReportDemo extends JFrame
   private String formExample (int ex)
   {
     return MessageFormat.format(getResources().getString("example"), new Object[]{ new Integer(ex) });
-
   }
 
   /**
@@ -259,6 +259,29 @@ public class JFreeReportDemo extends JFrame
     else if (index == 3)
     {
       preview ("/com/jrefinery/report/demo/report4.xml", data4);
+    }
+    else if (index == 4)
+    {
+      previewManual ();
+    }
+  }
+
+  private void previewManual ()
+  {
+    try
+    {
+      JFreeReport report1 = new SampleReport1().createReport();
+      report1.setData (data1);
+
+      PreviewFrame frame1 = new PreviewFrame (report1);
+      frame1.pack ();
+      RefineryUtilities.positionFrameRandomly (frame1);
+      frame1.setVisible (true);
+      frame1.requestFocus ();
+    }
+    catch (Exception e)
+    {
+      showExceptionDialog("report.definitionfailure", e);
     }
   }
 
@@ -481,10 +504,6 @@ public class JFreeReportDemo extends JFrame
     }
     catch (Exception e)
     {
-    }
-    if (System.getProperty ("com.jrefinery.report.demo.DEBUG", "false").equals ("true"))
-    {
-      Log.addTarget (new SystemOutLogTarget ());
     }
 
     PDFOutputTarget.getFontFactory ().registerDefaultFontPath ();

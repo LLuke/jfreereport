@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * -----------------------
- * ElementVisiblitySwitchFunction.java
+ * ElementVisibilitySwitchFunction.java
  * -----------------------
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisiblitySwitchFunction.java,v 1.4 2002/06/05 23:21:47 mungady Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.5 2002/06/08 14:31:53 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -44,7 +44,7 @@ import com.jrefinery.report.Element;
 /**
  * A function that alternates between true and false for each item within a group.
  */
-public class ElementVisiblitySwitchFunction extends AbstractFunction
+public class ElementVisibilitySwitchFunction extends AbstractFunction
 {
 
   /** The function value. */
@@ -53,7 +53,7 @@ public class ElementVisiblitySwitchFunction extends AbstractFunction
   /**
    * Default constructor.
    */
-  public ElementVisiblitySwitchFunction ()
+  public ElementVisibilitySwitchFunction ()
   {
   }
 
