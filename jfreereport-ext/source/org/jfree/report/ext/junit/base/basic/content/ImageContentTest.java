@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentTest.java,v 1.5 2005/01/31 17:16:31 taqua Exp $
+ * $Id: ImageContentTest.java,v 1.6 2005/02/19 16:15:46 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -111,7 +111,8 @@ public class ImageContentTest extends TestCase
     final StrictDimension maxSize = new StrictDimension(100,1000);
     final ElementLayoutInformation eli = new ElementLayoutInformation(absPos, minSize, maxSize, prefSize);
     final Content c = df.createContentForElement(se, eli, new DefaultLayoutSupport());
-    assertEquals(new StrictBounds(0,0, 10, 10), c.getBounds());
+    // content size is defined by the image .. the ELI just defines the view window
+    assertEquals(new StrictBounds(0,0, 10000, 10000), c.getBounds());
 
   }
 

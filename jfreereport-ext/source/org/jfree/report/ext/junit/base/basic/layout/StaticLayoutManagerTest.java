@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManagerTest.java,v 1.4 2003/11/01 19:57:02 taqua Exp $
+ * $Id: StaticLayoutManagerTest.java,v 1.5 2005/02/19 16:15:47 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,9 +45,11 @@ import java.awt.geom.Rectangle2D;
 
 import junit.framework.TestCase;
 import org.jfree.report.Band;
+import org.jfree.report.Element;
 import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.elementfactory.StaticShapeElementFactory;
+import org.jfree.report.elementfactory.LabelElementFactory;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.layout.StaticLayoutManager;
@@ -56,6 +58,11 @@ import org.jfree.ui.FloatDimension;
 
 public class StaticLayoutManagerTest extends TestCase
 {
+  public StaticLayoutManagerTest (final String s)
+  {
+    super(s);
+  }
+
   /**
    * create a band. The band contains a rectangle shape element in that band
    * with the same boundries as the band.
@@ -161,4 +168,49 @@ public class StaticLayoutManagerTest extends TestCase
         BandLayoutManagerUtil.getBounds(bandA2.getElement("Band-A2-B2"), null));
 
   }
+
+  public void testAllElementDynamicLayout ()
+  {
+    final Element label1 = LabelElementFactory.createLabelElement
+            (null, new Rectangle2D.Float(0,0, 250, 0), null, null, null, "A very short text");
+    label1.setDynamicContent(true);
+
+    final Element label2 = LabelElementFactory.createLabelElement
+            (null, new Rectangle2D.Float(250,0, 250, 0), null, null, null,
+                    "A very short text but enough to force a line break so that " +
+                    "we can check whether the dynamic element is truely dynamic " +
+                    "or whether it is just a fake.");
+    label2.setDynamicContent(true);
+
+    final Band band = new Band ();
+    band.addElement(label1);
+    band.addElement(label2);
+
+    final StrictBounds bounds =
+            BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(),
+            500 * STRICT_FACTOR, 500 * STRICT_FACTOR);
+    assertEquals(500 * STRICT_FACTOR, bounds.getWidth());
+    assertTrue(bounds.getHeight() > 0);
+  }
+
+  public void testHalfRelativeContent ()
+  {
+    final Element fixedRect =
+            StaticShapeElementFactory.createRectangleShapeElement
+            ("fixed", null, null, new Rectangle2D.Float(0, 0, 100, 100), true, true);
+    final Element halfRect =
+            StaticShapeElementFactory.createRectangleShapeElement
+            ("half-fixed", null, null, new Rectangle2D.Float(0, 0, 100, -100), true, true);
+
+    final Band band = new Band ();
+    band.addElement(fixedRect);
+    band.addElement(halfRect);
+
+    final StrictBounds bounds =
+            BandLayoutManagerUtil.doLayout(band, new DefaultLayoutSupport(),
+            500 * STRICT_FACTOR, 500 * STRICT_FACTOR);
+    assertEquals(500 * STRICT_FACTOR, bounds.getWidth());
+    assertEquals(100 * STRICT_FACTOR, bounds.getHeight());
+  }
+
 }
