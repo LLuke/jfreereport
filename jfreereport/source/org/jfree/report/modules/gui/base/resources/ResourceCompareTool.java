@@ -24,11 +24,12 @@
  * ResourceCompareTool.java
  * ------------------------
  *
- * $Id: ResourceCompareTool.java,v 1.6 2004/05/07 14:29:47 mungady Exp $
+ * $Id: ResourceCompareTool.java,v 1.7 2005/02/23 21:04:50 taqua Exp $
  *
  * Changes
  * -------
  * 03-Feb-2003 : Initial version
+ * 31-Mar-2005 : Java 1.5 compatibility
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -132,10 +133,10 @@ public final class ResourceCompareTool
     final ArrayList wrongType = new ArrayList();
     final ArrayList invalidKey = new ArrayList();
 
-    Enumeration enum = baseContentTable.keys();
-    while (enum.hasMoreElements())
+    Enumeration enumeration = baseContentTable.keys();
+    while (enumeration.hasMoreElements())
     {
-      final String key = (String) enum.nextElement();
+      final String key = (String) enumeration.nextElement();
       final Object valueBase = baseContentTable.get(key);
       final Object valueComp = compContentTable.get(key);
       if (valueComp == null)
@@ -148,10 +149,10 @@ public final class ResourceCompareTool
       }
     }
 
-    enum = compContentTable.keys();
-    while (enum.hasMoreElements())
+    enumeration = compContentTable.keys();
+    while (enumeration.hasMoreElements())
     {
-      final String key = (String) enum.nextElement();
+      final String key = (String) enumeration.nextElement();
       final Object valueBase = baseContentTable.get(key);
       if (valueBase == null)
       {
