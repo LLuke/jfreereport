@@ -2,7 +2,7 @@
  * Date: Dec 12, 2002
  * Time: 10:09:52 PM
  *
- * $Id$
+ * $Id: FontRendererBug.java,v 1.1 2002/12/12 22:29:43 taqua Exp $
  */
 package com.jrefinery.report.ext.junit.bugs;
 
@@ -38,4 +38,5 @@ public class FontRendererBug
     Log.debug ("Text: 40: Int  : " + font.getStringBounds(myText, 0, myText.length(), frc_int));
 
   }
+
 }

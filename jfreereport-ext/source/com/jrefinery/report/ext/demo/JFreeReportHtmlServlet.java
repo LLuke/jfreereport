@@ -2,16 +2,16 @@
  * Date: Jan 24, 2003
  * Time: 11:36:44 PM
  *
- * $Id$
+ * $Id: JFreeReportHtmlServlet.java,v 1.1 2003/01/25 02:56:17 taqua Exp $
  */
 package com.jrefinery.report.ext.demo;
 
 import com.jrefinery.report.demo.FirstDemoTableModel;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.table.html.HtmlProcessor;
+import com.jrefinery.report.targets.table.html.StreamHtmlFilesystem;
+import com.jrefinery.report.util.Log;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -46,7 +46,7 @@ public class JFreeReportHtmlServlet extends HttpServlet
     {
       // this throws an exception if the report could not be parsed
       HtmlProcessor processor = new HtmlProcessor(worker.getReport());
-      processor.setWriter(response.getWriter());
+      processor.setFilesystem(new StreamHtmlFilesystem (response.getOutputStream()));
       worker.setTableProcessor(processor);
     }
     catch (Exception e)

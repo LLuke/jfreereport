@@ -2,7 +2,7 @@
  * Date: Dec 12, 2002
  * Time: 4:41:23 PM
  *
- * $Id$
+ * $Id: Layouting.java,v 1.1 2002/12/12 22:29:44 taqua Exp $
  */
 package com.jrefinery.report.ext.junit.bugs;
 
@@ -47,6 +47,7 @@ public class Layouting extends TestCase
                   fontstyle="bold" fontsize="10"
                   fieldname="Name"/>
 */
+/*
     pf.addElement (ItemFactory.createStringElement(
         "Name",
         new Rectangle2D.Float(0,7,140, 10),
@@ -55,26 +56,28 @@ public class Layouting extends TestCase
         null,
         null,
         "prop"));
-
+*/
 /*
     <string-field x="0" y="9" width="100%" height="9" alignment="right"
                   fontname="Monospaced" fontstyle="plain" fontsize="8"
                   fieldname="URL"/>
 */
-    pf.addElement (ItemFactory.createStringElement(
+    Element e = ItemFactory.createStringElement(
         "URL",
         new Rectangle2D.Float(0,9,-100, 9),
         null,
         Element.RIGHT,
         null,
         null,
-        "URL"));
+        "URL");
+    e.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean(true));
+    pf.addElement(e);
 
 /*
     <string-field x="0" y="20" width="100%" height="0" alignment="left"
                   fontname="Serif"
                   fieldname="Description" dynamic="true"/>
-*/
+
     Element e = ItemFactory.createStringElement(
         "Description",
         new Rectangle2D.Float(0,20,-100, 0),
@@ -85,7 +88,7 @@ public class Layouting extends TestCase
         "prop");
     e.getStyle().setStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT, new Boolean(true));
     pf.addElement(e);
-
+*/
     assertTrue(e.getStyle().getBooleanStyleProperty(StaticLayoutManager.DYNAMIC_HEIGHT));
 
     report = new JFreeReport();
@@ -124,7 +127,7 @@ public class Layouting extends TestCase
 
     Band myBand = new Band ();
     myBand.addElement(band);
-    myBand.getStyle().setStyleProperty(StaticLayoutManager.ABSOLUTE_DIM, new FloatDimension(-100, -100));
+    myBand.getStyle().setStyleProperty(ElementStyleSheet.MINIMUMSIZE, new FloatDimension(-100, -100));
     myBand.getStyle().setStyleProperty(StaticLayoutManager.ABSOLUTE_POS, new Point2D.Float(0, 0));
 
     // in this layouter the width of a band is always the full page width
@@ -146,6 +149,8 @@ public class Layouting extends TestCase
     lm.doLayout(band);
 
     Log.debug ("Bounds2: " + bounds);
+    Log.debug ("URL-Bounds: " + report.getPageFooter().getElement("URL").getStyle().getStyleProperty(ElementStyleSheet.BOUNDS));
+
   }
 
   protected void tearDown() throws Exception
