@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ----------------
  * ReportEvent.java
  * ----------------
- * (C)opyright 2002, by Simba Management Limited and Contributors.
+ * (C)opyright 2002, 2003 by Simba Management Limited and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportEvent.java,v 1.11 2002/12/12 12:26:55 mungady Exp $
+ * $Id: ReportEvent.java,v 1.12 2002/12/13 10:22:44 mungady Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -38,7 +38,10 @@
  * 17-Jul-2002 : Updated header and Javadocs (DG);
  * 28-Jul-2002 : Added DataRow support
  * 28-Aug-2002 : Documentation update
+ * 03-Jan-2003 : Javadoc update (DG);
+ * 
  */
+
 package com.jrefinery.report.event;
 
 import com.jrefinery.report.DataRow;
@@ -50,32 +53,30 @@ import java.util.EventObject;
 /**
  * Represents a report event.
  * <P>
- * Includes information regarding which ReportState generated the event.
+ * Includes information regarding which {@link ReportState} generated the event.
  *
  * @author Thomas Morgner
  */
 public class ReportEvent extends EventObject
 {
   /**
-   * Creates a new ReportEvent.
+   * Creates a new <code>ReportEvent</code>.
    *
-   * @param state The current state of the processed report (null not allowed).
+   * @param state  the current state of the processed report (<code>null</code> not permmitted).
    */
   public ReportEvent (ReportState state)
   {
     super (state);
     if (state == null)
     {
-     throw new NullPointerException ();
+     throw new NullPointerException ("ReportEvent(ReportState) : null not permitted.");
     }
   }
 
   /**
    * Returns the <code>ReportState</code>, which is the source of the event.
-   * <P>
-   * This function will never return <code>null</code>.
    *
-   * @return the state.
+   * @return the state (never <code>null</code>).
    */
   public ReportState getState ()
   {
@@ -95,11 +96,12 @@ public class ReportEvent extends EventObject
   }
 
   /**
-   * Returns the currently assigned dataRow for this event. The DataRow is used to access the
-   * fields of the DataSource and other Functions and Expressions within the current row of the
-   * report.
+   * Returns the currently assigned dataRow for this event. 
+   * <p>
+   * The {@link DataRow} is used to access the fields of the {@link DataSource} and other 
+   * functions and expressions within the current row of the report.
    *
-   * @return the DataRow of the report
+   * @return the data row.
    */
   public DataRow getDataRow ()
   {

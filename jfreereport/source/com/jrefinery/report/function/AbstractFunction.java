@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.23 2002/12/12 12:26:55 mungady Exp $
+ * $Id: AbstractFunction.java,v 1.24 2002/12/12 20:18:40 taqua Exp $
  *
  * Changes
  * -------
@@ -66,8 +66,9 @@ import java.util.Properties;
  */
 public abstract class AbstractFunction implements Function
 {
-  /** The DataRow assigned within this function. */
-  private DataRow dataRow;
+
+  /** The function name. */
+  private String name;
 
   /** The dependency level. */
   private int dependency;
@@ -75,13 +76,12 @@ public abstract class AbstractFunction implements Function
   /** Storage for the function properties. */
   private Properties properties;
 
-  /** The function name. */
-  private String name;
+  /** The data row. */
+  private DataRow dataRow;
 
   /**
-   * Constructs a new function.
-   * <P>
-   * Initially the function has no name...be sure to assign one before using the function.
+   * Creates an unnamed function. Make sure the name of the function is set using 
+   * {@link #setName} before the function is added to the report's function collection.
    */
   protected AbstractFunction()
   {
@@ -91,7 +91,7 @@ public abstract class AbstractFunction implements Function
   /**
    * Returns the function name.
    *
-   * @return The function name.
+   * @return the function name.
    */
   public String getName()
   {
@@ -99,10 +99,19 @@ public abstract class AbstractFunction implements Function
   }
 
   /**
-   * Sets the function name.
+   * Sets the name of the function.
+   * <P>
+   * The name should be unique among:
+   * <ul>
+   *   <li>the functions and expressions for the report;
+   *   <li>the columns in the report's <code>TableModel</code>;
+   * </ul>
+   * This allows the expression to be referenced by name from any report element.
+   * <p>
+   * You should not change the name of an expression once it has been added to the report's
+   * expression collection.
    *
-   * @param name The function name (null not permitted).
-   * @throws NullPointerException if the given name is null
+   * @param name  the name (<code>null</code> not permitted).
    */
   public void setName(String name)
   {
@@ -114,14 +123,152 @@ public abstract class AbstractFunction implements Function
   }
 
   /**
-   * Checks that the function has been correctly initialized.  If there is a problem, this method
-   * throws a FunctionInitializeException.
-   * <P>
-   * The default implementation checks that the function name is not null, and calls the
-   * isInitialized() method (now deprecated).
+   * Returns the value of a property, or <code>null</code> if no such property is defined.
    *
-   * @throws FunctionInitializeException if the function name is not set or the call to
-   * isInitialized returns false.
+   * @param name  the property name.
+   *
+   * @return the property value.
+   */
+  public String getProperty(String name)
+  {
+    return getProperty(name, null);
+  }
+
+  /**
+   * Returns the value of a property, or <code>defaultVal</code> if no such property is defined.
+   *
+   * @param name  the property name.
+   * @param defaultVal  the default value.
+   *
+   * @return the property value.
+   */
+  public String getProperty(String name, String defaultVal)
+  {
+    return properties.getProperty(name, defaultVal);
+  }
+
+  /**
+   * Returns true if this expression contains autoactive content and should be called by the system,
+   * regardless whether this expression is referenced in the datarow.
+   *
+   * @return boolean
+   */
+  public boolean isActive()
+  {
+    return getProperty(AUTOACTIVATE_PROPERTY, "false").equals("true");
+  }
+
+  /**
+   * Sets a property for the function.  If the property value is <code>null</code>, the property 
+   * will be removed from the property collection.
+   *
+   * @param name  the property name (<code>null</code> not permitted).
+   * @param value  the property value.
+   */
+  public void setProperty(String name, String value)
+  {
+    if (value == null)
+    {
+      properties.remove(name);
+    }
+    else
+    {
+      properties.setProperty(name, value);
+    }
+  }
+
+  /**
+   * @return a copy of the properties defined for this function.
+   */
+  public Properties getProperties()
+  {
+    Properties retval = new Properties();
+    retval.putAll(properties);
+    return retval;
+  }
+
+  /**
+   * Adds a property collection to the properties for this function (overwriting existing
+   * properties with the same name).
+   * <P>
+   * Function parameters are recorded as properties.  The required parameters (if any) will be 
+   * specified in the documentation for the class that implements the function.
+   *
+   * @param p  the properties.
+   */
+  public void setProperties(Properties p)
+  {
+    if (p != null)
+    {
+      Enumeration names = p.keys();
+      while (names.hasMoreElements())
+      {
+        String name = (String) names.nextElement();
+        String prop = (String) p.get(name);
+        setProperty(name, prop);
+      }
+    }
+  }
+
+  /**
+   * Returns the dependency level for the functions (controls evaluation order for expressions
+   * and functions).
+   *
+   * @return the level.
+   */
+  public int getDependencyLevel()
+  {
+    return dependency;
+  }
+
+  /**
+   * Sets the dependency level for the function.
+   * <p>
+   * The dependency level controls the order of evaluation for expressions and functions.  Higher
+   * level expressions are evaluated before lower level expressions.  Any level in the range
+   * 0 to Integer.MAX_VALUE is allowed.  Negative values are reserved for system functions 
+   * (printing and layouting).
+   * 
+   * @param level  the level (must be greater than or equal to 0).
+   */
+  public void setDependencyLevel(int level)
+  {
+    if (level < 0)
+    {
+      throw new IllegalArgumentException("AbstractFunction.setDependencyLevel(...) : negative "
+          + "dependency not allowed for user-defined functions.");
+    }
+    this.dependency = level;
+  }
+
+  /**
+   * returns the datarow for this function. A datarow is used to query the values of functions,
+   * expressions and datasource fields in an uniform way.
+   *
+   * @return the assigned datarow for this expression.
+   */
+  public DataRow getDataRow()
+  {
+    return dataRow;
+  }
+
+  /**
+   * Defines the datarow for this function. A datarow is used to query the values of functions,
+   * expressions and datasource fields in an uniform way.
+   *
+   * @param dataRow assigns the datarow for this expression.
+   */
+  public void setDataRow(DataRow dataRow)
+  {
+    this.dataRow = dataRow;
+  }
+
+  /**
+   * Checks that the function has been correctly initialized.
+   * <p>
+   * The only check performed at present is to make sure the name is not <code>null</code>.
+   *
+   * @throws FunctionInitializeException in case the function is not initialized properly.
    */
   public void initialize() throws FunctionInitializeException
   {
@@ -185,7 +332,6 @@ public abstract class AbstractFunction implements Function
   {
   }
 
-
   /**
    * Receives notification that a row of data is being processed.
    *
@@ -193,97 +339,6 @@ public abstract class AbstractFunction implements Function
    */
   public void itemsAdvanced(ReportEvent event)
   {
-  }
-
-  /**
-   * Returns a clone of the function.
-   * <P>
-   * Be aware, this does not create a deep copy. If you have complex
-   * strucures contained in objects, you have to overwrite this function.
-   *
-   * @return A clone of the function.
-   *
-   * @throws CloneNotSupportedException this should never happen.
-   */
-  public Object clone() throws CloneNotSupportedException
-  {
-    AbstractFunction function = (AbstractFunction) super.clone();
-    function.properties = (Properties) properties.clone();
-    return function;
-  }
-
-  /**
-   * Sets the properties for this function. All parameters are defined
-   * by properties. Common parameters are "field" and "group" to define
-   * the targets of the function.
-   *
-   * Every function defines its own set of properties and it is up to
-   * the report generator to fill the properties.
-   *
-   * The properties in <code>p</code> are added to the functions properties,
-   * eventually overwriting existing properties with the same name.
-   *
-   * @param p The properties.
-   */
-  public void setProperties(Properties p)
-  {
-    if (p != null)
-    {
-      Enumeration names = p.keys();
-      while (names.hasMoreElements())
-      {
-        String name = (String) names.nextElement();
-        String prop = (String) p.get(name);
-        setProperty(name, prop);
-      }
-    }
-  }
-
-  /**
-   * Returns the value of a property.
-   * <P>
-   * Returns null if no such property was found.
-   *
-   * @param name The property name.
-   *
-   * @return The property value.
-   */
-  public String getProperty(String name)
-  {
-    return getProperty(name, null);
-  }
-
-  /**
-   * Returns the value of a property.
-   * <P>
-   * If there is no property with the specified name, then the defaultVal is returned.
-   *
-   * @param name The property name.
-   * @param defaultVal The default property value.
-   *
-   * @return The property value.
-   */
-  public String getProperty(String name, String defaultVal)
-  {
-    return properties.getProperty(name, defaultVal);
-  }
-
-  /**
-   * Sets a property for the function.
-   *
-   * @param name The property name.
-   * @param value The property value.
-   */
-  public void setProperty(String name, String value)
-  {
-    if (value == null)
-    {
-      properties.remove(name);
-    }
-    else
-    {
-      properties.setProperty(name, value);
-    }
   }
 
   /**
@@ -309,75 +364,20 @@ public abstract class AbstractFunction implements Function
   }
 
   /**
-   * returns the datarow for this function. A datarow is used to query the values of functions,
-   * expressions and datasource fields in an uniform way.
+   * Clones the function.  
+   * <P>
+   * Be aware, this does not create a deep copy. If you have complex
+   * strucures contained in objects, you have to override this function.
    *
-   * @return the assigned datarow for this expression.
+   * @return a clone of this function.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
-  public DataRow getDataRow()
+  public Object clone() throws CloneNotSupportedException
   {
-    return dataRow;
+    AbstractFunction function = (AbstractFunction) super.clone();
+    function.properties = (Properties) properties.clone();
+    return function;
   }
 
-  /**
-   * Defines the datarow for this function. A datarow is used to query the values of functions,
-   * expressions and datasource fields in an uniform way.
-   *
-   * @param dataRow assigns the datarow for this expression.
-   */
-  public void setDataRow(DataRow dataRow)
-  {
-    this.dataRow = dataRow;
-  }
-
-  /**
-   * @return a copy of the properties defined for this function.
-   */
-  public Properties getProperties()
-  {
-    Properties retval = new Properties();
-    retval.putAll(properties);
-    return retval;
-  }
-
-  /**
-   * Returns true if this expression contains autoactive content and should be called by the system,
-   * regardless whether this expression is referenced in the datarow.
-   *
-   * @return boolean
-   */
-  public boolean isActive()
-  {
-    return getProperty(AUTOACTIVATE_PROPERTY, "false").equals("true");
-  }
-
-  /**
-   * The dependency level defines the level of execution for this function. Higher dependency functions
-   * are executed before lower dependency functions. For ordinary functions and expressions,
-   * the range for dependencies is defined to start from 0 (lowest dependency possible)
-   * to 2^31 (upper limit of int).
-   * <p>
-   * Levels below 0 are reserved for system-functionality (printing and layouting).
-   *
-   * @return the dependency level for this function
-   */
-  public int getDependencyLevel()
-  {
-    return dependency;
-  }
-
-  /**
-   * Sets the dependency level.
-   *
-   * @param level  the level.
-   */
-  public void setDependencyLevel(int level)
-  {
-    if (level < 0)
-    {
-      throw new IllegalArgumentException("No negative dependency allowed for user-defined "
-                                         + "expressions.");
-    }
-    this.dependency = level;
-  }
 }
