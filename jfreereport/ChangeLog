@@ -2,7 +2,65 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+
         * There are still open bugs, so expect some more updates here :)
+        + RTF Output has a memory leak
+
+0.8.3b:  (16-Jun-2003)
+        * BugFix: StyleSheets were not deeply cloned, so inherited stylesheets
+          were shared among all reports. This is fixed now.
+
+          Stylesheets can now be accessed directly using StyleSheetCollection,
+          which is maintained by the report definition object.
+
+        * BugFix: Printing in the PreviewFrame was no plugin and could not be
+          disabled.
+
+        * BugFix: On MacOS X the font path was not detected properly. MacOS
+          does not use the standard unix font path.
+
+        * BugFix: Menu accelerators were not defined in a platform independent way.
+          Systems without an CTRL key (like MacOS) were not able to use the
+          shortcuts).
+
+        * BugFix: Empty pages were not detected correctly, causing empty pages
+          to be printed at the end of the report under some circumstances.
+
+          The group footers pagebreak-after-print now works as expected.
+
+        * BugFix: Not all errors which may have occured during the function
+          processing were detected or even printed in the log.
+
+        * BugFix: The PlainTextOutputTarget computed wrong page sizes, which
+          caused errors when elements were printed at the bottom or the right
+          border of a page.
+
+        * BugFix: The TextContent removed leading whitespaces from the text.
+
+        * BugFix: The HTML-TableProcessor did not encode the generated content
+          properly. The content was completly invalid and did not conform to any
+          standard. The same bug was hidden in the ReportWriter.
+
+          Both classes are working now as expected.
+
+          Warning: UTF-16 encoded content is not readable by Mozilla or IE, both
+          browsers are not able to handle standard conforming UTF-16 correctly.
+
+        * BugFix: The report writer is now able to handle inherited stylesheets
+          correctly.
+
+        * BugFix: Null values in the element content do no longer cause the layouting
+          to fail. NullContent and empty content are handled correctly now.
+
+        * An EmptyReportException is now thrown when the report generation produced
+          no pages for the report.
+
+        * The StyleSheet interface is removed now, it was not used.
+
+        * The reference document generator now also generates documentation for the
+          DataSource factories.
+
+        * The XML parser now prints the location of the parse error on all exceptions.
 
 0.8.3a : (04-Jun-2003)
         * BugFix: Serialization works again. All functions are serializable

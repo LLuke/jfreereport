@@ -1,5 +1,5 @@
 **********************
-* JFREEREPORT 0.8.3a *
+* JFREEREPORT 0.8.3b *
 **********************
 
 04 Jun 2003
@@ -32,7 +32,6 @@ BeanShell - http://www.beanshell.org
 GnuJAXP - http://www.gnu.org/software/classpathx/jaxp
 iText - http://www.lowagie.com/iText
 POI - http://jakarta.apache.org/poi
-JUnit - http://www.junit.org
 
 
 4. JAVADOC HTML PAGES
