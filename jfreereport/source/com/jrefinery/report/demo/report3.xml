@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+	<!DOCTYPE report SYSTEM "http://jfreereport.sourceforge.net/report.dtd">
+-->
+<!--
+  Defined fields for this TableModel:
+
+  0: "name"   = String;
+  1: "street" = String;
+  2: "town"   = String;
+  3: "productcode" = String;
+  4: "productname" = String;
+  5: "count"  = Integer;
+  6: "price"  = Double;
+  7: "total"  = Double (is calculated inside the model);
+    else
+
+ -->
+<report name="Invoice" width="450" height="699">
+<!--
+  Needs some better control when to display the page header. Group should be able to declare whether a
+  pageheader should be displayed or not
+
+  <pageheader onfirstpage="false" height="17" fontname="SansSerif" fontstyle="plain" fontsize="11" baseline="11">
+    <label x="0" y="0" width="450" height="12" alignment="right">Salingers Bookstore - you'll get what you deserve</label>
+    <line  x1="0" y1="15" x2="0" y2="15" weight="0.5"/>
+  </pageheader>
+ -->
+  <groups>
+    <group name="Customer">
+      <groupheader height="355" fontname="SansSerif" fontstyle="plain" fontsize="11" baseline="11">
+        <label x="0" y="12" width="200" height="12" alignment="left">Salingers Bookstore</label>
+        <label x="0" y="24" width="200" height="12" alignment="left">19a Hollow Road</label>
+        <label x="0" y="48" width="200" height="12" alignment="left">9999 Boston</label>
+
+        <!-- Silly demo of JFreeReports Image Capabilies. Uses WMF, JPG, GIF or PNG files as source -->
+        <imageref x="200" y="48" width="200" height="180" src="anim0002.wmf" name="logo"/>
+        <string-field x="0" y="84" width="200" height="12" alignment="left" fieldname="name"/>
+        <string-field x="0" y="96" width="200" height="12" alignment="left" fieldname="street"/>
+        <string-field x="0" y="120" width="200" height="12" alignment="left" fieldname="town"/>
+
+        <date-function x="0" y="184" width="450" height="12" fontname="Monospaced" fontsize="9" alignment="right"
+                       baseline="10" format="dd.MM.yyyy" function="printdate"/>
+
+        <label x="0" y="224" width="125" height="12" alignment="left" fontstyle="bold"
+        >Invoice for your order from</label>
+        <date-function x="258" y="224" width="200" height="12" alignment="left" format="EEE, MMM d, yyyy" function="printdate"/>
+        <label x="0" y="290" width="450" height="12" alignment="left"
+        >Dear customer,</label>
+        <label x="0" y="314" width="450" height="12" alignment="left"
+        >we received your order and will deliver the following articles to your address:</label>
+        <label x="0" y="340" width="80" height="12" alignment="left">Productcode</label>
+        <label x="100" y="340" width="200" height="12" alignment="left">Product</label>
+        <label x="300" y="340" width="50" height="12" alignment="left">Count</label>
+        <label x="350" y="340" width="50" height="12" alignment="left">Price</label>
+        <label x="400" y="340" width="50" height="12" alignment="left">Total</label>
+        <line x1="0" y1="353" x2="0" y2="353" weight="0.5"/>
+      </groupheader>
+      <groupfooter height="145" fontname="SansSerif" fontstyle="plain" fontsize="11" baseline="11">
+        <line x1="0" y1="10" x2="0" y2="10" weight="0.5"/>
+        <label x="200" y="20" width="200" height="12" alignment="left">Total Sum of</label>
+        <number-function x="400" y="20" width="50" height="12" alignment="left" format="'$' #,##0.00" function="totalsum"/>
+        <line x1="200" y1="34" x2="450" y2="34" weight="0.5"/>
+        <line x1="200" y1="37" x2="450" y2="37" weight="0.5"/>
+        <label x="0" y="84" width="450" height="12" alignment="left">We thank you for your order and hope to see you soon again. </label>
+        <label x="0" y="96" width="450" height="12" alignment="left">Please pay your invoice within the next 10 days.</label>
+        <label x="0" y="114" width="450" height="12" alignment="left">Yours sincerely,</label>
+        <label x="20" y="136" width="430" height="12" alignment="left">John W. Who, Salesman</label>
+       </groupfooter>
+      <fields>
+        <field>name</field>
+        <field>street</field>
+        <field>town</field>
+      </fields>
+    </group>
+  </groups>
+  <items height="12">
+    <string-field x="0" y="0" width="50" height="12" alignment="left" fieldname="productcode"/>
+    <string-field x="70" y="0" width="230" height="12" alignment="left" fieldname="productname"/>
+    <number-field x="300" y="0" width="50" height="12" alignment="left" format="#,##0" fieldname="count"/>
+    <number-field x="350" y="0" width="50" height="12" alignment="left" format="'$' #,##0.00" fieldname="price"/>
+    <number-field x="400" y="0" width="50" height="12" alignment="left" format="'$' #,##0.00" fieldname="total"/>
+  </items>
+  <functions>
+    <function name="totalsum" class="com.jrefinery.report.function.ItemSumFunction">
+      <properties>
+        <property name="field">total</property>
+      </properties>
+    </function>
+    <function name="printdate" class="com.jrefinery.report.function.ReportPropertyFunction">
+      <properties>
+        <property name="field">report.date</property>
+      </properties>
+    </function>
+  </functions>
+</report>
