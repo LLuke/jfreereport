@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.10 2003/05/14 14:08:36 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.11 2003/05/14 22:26:39 taqua Exp $
  *
  * Changes
  * -------
@@ -135,8 +135,8 @@ public class DefaultSizeCalculator implements SizeCalculator
                    + "\"com.jrefinery.report.targets.G2OutputTarget.isBuggyFRC=true\"\n"
                    + "in the file 'jfreereport.properties' or set this property as "
                    + "System-property. \n"
-                   + "If the bug remains alive, please report your Operating System version "
-                   + "and your \n JDK Version to www.object-refinery.com/jfreereport.\n");
+                   + "If the bug still remains alive, please report your Operating System version "
+                   + "and your \nJDK Version to www.object-refinery.com/jfreereport.\n");
       }
       Log.debug ("If text layouting is working as expected, no further action is required.");
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.10 2003/04/09 15:47:31 mungady Exp $
+ * $Id: LevelledExpressionList.java,v 1.11 2003/05/07 20:27:26 taqua Exp $
  *
  * Changes
  * -------
@@ -104,7 +104,8 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
   /**
    * Receives notification that report generation has started.
    * <P>
-   * The event carries a ReportState.Started state.  Use this to initialize the report.
+   * The event carries a ReportState.Started state.
+   * Use this to prepare the report header.
    *
    * @param event  the event.
    */
@@ -152,6 +153,58 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
       }
     }
 
+  }
+
+    /**
+   * Receives notification that report generation has started.
+   * <P>
+   * The event carries a ReportState.Started state.  Use this to initialize the report.
+   *
+   * @param event  the event.
+   */
+  public void reportInitialized(ReportEvent event)
+  {
+    clearError();
+
+    for (int i = 0; i < levels.length; i++)
+    {
+      int level = levels[i];
+      if (level < getLevel())
+      {
+        break;
+      }
+      Iterator itLevel = expressionList.getElementsForLevel(level);
+      while (itLevel.hasNext())
+      {
+        Expression e = (Expression) itLevel.next();
+        if (e instanceof Function)
+        {
+          Function f = (Function) e;
+          try
+          {
+            f.reportInitialized(event);
+          }
+          catch (Exception ex)
+          {
+            addError(ex);
+          }
+        }
+        else
+        {
+          try
+          {
+            if (e.isActive())
+            {
+              e.getValue();
+            }
+          }
+          catch (Exception ex)
+          {
+            addError(ex);
+          }
+        }
+      }
+    }
   }
 
   /**

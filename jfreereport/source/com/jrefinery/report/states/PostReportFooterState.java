@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostReportFooterState.java,v 1.5 2003/02/25 18:46:47 taqua Exp $
+ * $Id: PostReportFooterState.java,v 1.6 2003/05/07 20:27:26 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@
 package com.jrefinery.report.states;
 
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.event.ReportEvent;
 
 /**
  * The report is done. No advance will be done, every call to advance will throw an
@@ -69,7 +70,7 @@ public class PostReportFooterState extends ReportState
    */
   public ReportState advance () throws ReportProcessingException
   {
-    firePrepareEvent();
+    firePrepareEvent(ReportEvent.REPORT_DONE);
 
     fireReportDoneEvent();
     return new FinishState(this);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupSumFunction.java,v 1.18 2003/03/07 18:07:48 taqua Exp $
+ * $Id: TotalGroupSumFunction.java,v 1.19 2003/04/05 18:57:11 taqua Exp $
  *
  * Changes
  * -------
@@ -145,7 +145,7 @@ public class TotalGroupSumFunction extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void reportStarted(ReportEvent event)
+  public void reportInitialized(ReportEvent event)
   {
     currentIndex = -1;
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))

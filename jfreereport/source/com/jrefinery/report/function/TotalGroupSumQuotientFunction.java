@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner, David Gilbert (for Simba Management Limited)
  *                   for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotientFunction.java,v 1.6 2003/03/07 18:07:49 taqua Exp $
+ * $Id: TotalGroupSumQuotientFunction.java,v 1.7 2003/04/05 18:57:12 taqua Exp $
  *
  * Changes
  * -------
@@ -167,7 +167,7 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void reportStarted(ReportEvent event)
+  public void reportInitialized(ReportEvent event)
   {
     currentIndex = -1;
 

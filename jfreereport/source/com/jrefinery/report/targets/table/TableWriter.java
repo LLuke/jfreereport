@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.20 2003/05/14 14:08:37 taqua Exp $
+ * $Id: TableWriter.java,v 1.21 2003/05/14 15:25:12 taqua Exp $
  *
  * Changes
  * -------
@@ -229,7 +229,7 @@ public class TableWriter extends AbstractFunction
                                           getLayoutSupport(),
                                           width,
                                           height);
-    getCurrentEvent().getState().fireLayoutCompleteEvent(band);
+    getCurrentEvent().getState().fireLayoutCompleteEvent(band, getCurrentEvent().getType());
     return bounds;
   }
 
@@ -288,8 +288,8 @@ public class TableWriter extends AbstractFunction
     inEndPage = true;
 
     ReportEvent currentEvent = getCurrentEvent();
-    ReportState cEventState = getCurrentEvent().getState();
-    cEventState.firePageStartedEvent();
+    ReportState cEventState = currentEvent.getState();
+    cEventState.firePageStartedEvent(currentEvent.getType());
     setCurrentEvent(currentEvent);
     inEndPage = false;
     isPageEmpty = true;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.25 2003/02/25 14:07:26 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.26 2003/03/07 18:07:47 taqua Exp $
  *
  * Changes
  * -------
@@ -130,7 +130,7 @@ public class ItemSumFunction extends AbstractFunction
    * @param event Information about the event.
    *
    */
-  public void reportStarted(ReportEvent event)
+  public void reportInitialized(ReportEvent event)
   {
     this.sum = ZERO;
   }

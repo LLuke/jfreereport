@@ -15,19 +15,19 @@
   </reportfooter>
 
   <!-- PAGE HEADER -->
-  <pageheader height="32" onfirstpage="true" fontname="Serif" fontstyle="bold" fontsize="10">
+  <pagefooter height="24" onfirstpage="true" onlastpage="true" fontname="Serif" fontstyle="plain" fontsize="9">
     <line x1="0" y1="30" x2="0" y2="30" weight="0.5"/>
     <label x="0" y="12" width="100%" height="20" alignment="center">PAGE HEADER</label>
     <string-field x="0" y="0" width="140" height="8" alignment="left" fieldname="Name"/>
     <number-field x="110" y="0" width="40" height="8" alignment="right" format="0" fieldname="Count1"/>
-  </pageheader>
+  </pagefooter>
 
   <!-- PAGE FOOTER -->
-  <pagefooter height="24" onfirstpage="true" onlastpage="true" fontname="Serif" fontstyle="plain" fontsize="9">
+  <pageheader height="32" onfirstpage="true" fontname="Serif" fontstyle="bold" fontsize="10">
     <line x1="0" y1="4" x2="0" y2="4" weight="0.5"/>
     <date-field fieldname="report.date" format="d-MMM-yyyy" x="0" y="4" width="100" height="18" alignment="left"/>
     <string-field fieldname="pageXofY" x="0" y="4" width="100%" height="18" alignment="right"/>
-  </pagefooter>
+  </pageheader>
 
   <!-- GROUPS -->
   <groups>

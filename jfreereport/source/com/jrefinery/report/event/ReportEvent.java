@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportEvent.java,v 1.14 2003/02/27 10:35:35 mungady Exp $
+ * $Id: ReportEvent.java,v 1.15 2003/04/05 18:57:10 taqua Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -59,18 +59,39 @@ import com.jrefinery.report.states.ReportState;
  */
 public class ReportEvent extends EventObject
 {
+  public static final int REPORT_INITIALIZED = 0x01;
+  public static final int PAGE_STARTED = 0x02;
+  public static final int REPORT_STARTED = 0x04;
+  public static final int GROUP_STARTED = 0x08;
+  public static final int ITEMS_STARTED = 0x10;
+  public static final int ITEMS_ADVANCED = 0x20;
+  public static final int ITEMS_FINISHED = 0x40;
+  public static final int GROUP_FINISHED = 0x80;
+  public static final int REPORT_FINISHED = 0x100;
+  public static final int REPORT_DONE = 0x200;
+  public static final int PAGE_FINISHED = 0x400;
+  public static final int PREPARE_EVENT = 0x2000;
+
+  private int type;
+
   /**
    * Creates a new <code>ReportEvent</code>.
    *
    * @param state  the current state of the processed report (<code>null</code> not permmitted).
    */
-  public ReportEvent (ReportState state)
+  public ReportEvent (ReportState state, int type)
   {
     super (state);
     if (state == null)
     {
      throw new NullPointerException ("ReportEvent(ReportState) : null not permitted.");
     }
+    this.type = type;
+  }
+
+  public int getType()
+  {
+    return type;
   }
 
   /**

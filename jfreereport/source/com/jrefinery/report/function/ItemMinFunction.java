@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemMinFunction.java,v 1.6 2003/02/25 14:07:26 taqua Exp $
+ * $Id: ItemMinFunction.java,v 1.7 2003/05/02 12:39:51 taqua Exp $
  *
  * Changes
  * -------
@@ -128,7 +128,7 @@ public class ItemMinFunction extends AbstractFunction
    * @param event Information about the event.
    *
    */
-  public void reportStarted(ReportEvent event)
+  public void reportInitialized(ReportEvent event)
   {
     this.min = ZERO;
   }

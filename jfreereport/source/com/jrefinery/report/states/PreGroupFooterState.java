@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreGroupFooterState.java,v 1.7 2003/02/04 17:56:21 taqua Exp $
+ * $Id: PreGroupFooterState.java,v 1.8 2003/05/07 20:27:26 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,8 @@
  */
 
 package com.jrefinery.report.states;
+
+import com.jrefinery.report.event.ReportEvent;
 
 /**
  * Fires the groupFinished Event and advances to PostGroupFooter.
@@ -66,7 +68,7 @@ public final class PreGroupFooterState extends ReportState
   {
     // There is a header and enough space to print it. The finishGroup event is
     // fired and PostGroupFooterState activated after all work is done.
-    firePrepareEvent();
+    firePrepareEvent(ReportEvent.GROUP_FINISHED);
 
     fireGroupFinishedEvent ();
     return new PostGroupFooterState (this);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.19 2003/04/08 14:41:48 mungady Exp $
+ * $Id: PageTotalFunction.java,v 1.20 2003/04/09 15:47:31 mungady Exp $
  *
  * ChangeLog
  * ---------
@@ -72,9 +72,6 @@ import com.jrefinery.report.event.ReportEvent;
  */
 public class PageTotalFunction extends PageFunction
 {
-  /** ???. */
-  private static Object o;
-
   /**
    * The current number is a shared secret over multiple report states and is shared
    * among all states of a report (if global) or all states which belong to a group.
@@ -133,6 +130,20 @@ public class PageTotalFunction extends PageFunction
   }
 
   /**
+   * Receives notification that the report has started.
+   *
+   * @param event  the event.
+   */
+  public void reportInitialized(ReportEvent event)
+  {
+    // report started is no longer the first event. PageStarted is called first!
+    if (pageStorage == null)
+    {
+      pageStorage = new PageStorage(getStartPage() - 1);
+    }
+  }
+
+  /**
    * Receives notification from the report engine that a new page is starting.  Grabs the page
    * number from the report state and stores it.
    * <p>
@@ -142,14 +153,6 @@ public class PageTotalFunction extends PageFunction
    */
   public void pageStarted(ReportEvent event)
   {
-    // report started is no longer the first event. PageStarted is called first!
-    if (pageStorage == null)
-    {
-//      Log.debug ("Report Started: PageStorage was null: " + this.hashCode());
-      o = this;
-      pageStorage = new PageStorage(getStartPage() - 1);
-    }
-
     if (event.getState().isPrepareRun() && event.getState().getLevel() < 0)
     {
       if (isGroupStarted)
@@ -161,7 +164,6 @@ public class PageTotalFunction extends PageFunction
       {
         this.setPage(getPage() + 1);
       }
-  //    Log.debug ("Stored: " + event.getState().getCurrentDisplayItem());
       groupPages.put(new Integer(event.getState().getCurrentDisplayItem()), this.pageStorage);
     }
     else
@@ -173,8 +175,6 @@ public class PageTotalFunction extends PageFunction
             groupPages.get(new Integer(event.getState().getCurrentDisplayItem()));
         if (pageStorage == null)
         {
-//          Log.error ("Current DataItem: " + event.getState().getCurrentDisplayItem() 
-//                     + " " + groupPages);
           throw new IllegalStateException("No page-storage for the current state: "
                                           + event.getState().getCurrentDataItem());
 
@@ -220,25 +220,6 @@ public class PageTotalFunction extends PageFunction
         // event
       }
     }
-  }
-
-  /**
-   * Receives notification that the report has started.
-   * <p>
-   * Note: pageStorage is a shared object for all instances contained in the
-   * start state, but reportStarted is called during the advancement. States
-   * get cloned before the advancement is done ...
-   *
-   * @param event  the event.
-   */
-  public void reportStarted(ReportEvent event)
-  {
-    /**
-    if (event.getState().isPrepareRun() && event.getState().getLevel() < 0)
-    {
-      this.groupPages.clear();
-    }
-     **/
   }
 
   /**

@@ -149,4 +149,50 @@ All element coordinates must be smaller than the available page width, or the
   repagination process will fail. So specifying x="110%" will be a killer as well
   as specifying x="1000" when the page width is smaller than or equal to 1000.
 
-      
+----------------------------------------------------------------------------------
+Changes from 0.8.2 to 0.8.3
+
+Functions, which need to initialized themself on the start of the report processing,
+  should no longer use the reportStarted() event, as this event is no longer the first
+  event in the report processing.
+
+  The defined event order is now as follows:
+
+  - ReportInitialized event
+
+  - prepareEvent (ReportStarted)
+    + pageStarted event
+  - ReportStarted event
+
+  - prepareEvent (GroupStarted)
+  - GroupStarted event
+
+  - prepareEvent (ItemsStarted)
+  - ItemsStarted event
+
+  - prepareEvent (ItemsAdvanced)
+  - ItemsAdvanced event
+
+  - prepareEvent (ItemsFinished)
+  - ItemsFinished event
+
+  - prepareEvent (GroupFinished)
+  - GroupFinished event
+
+  - prepareEvent (ReportFinished)
+  - ReportFinished event
+
+  - prepareEvent (ReportDone)
+    +PageFinished event
+  - ReportDone event
+
+  The prepare events are used to inform the listeners, that the next state is
+  about to be processed. When this event is thrown, no change was done by the
+  state yet. The main purpose of these events is to help the function to clean
+  up its internal states before the new state is beeing processed. The
+  PageLayouter functions start a new page and print their spooled bands after
+  a pagebreak was done, when this event is received.
+
+The ItemColumnQuotientFunction is now deprecated and has been replaced by the
+  ItemColumnQuotientExpression.
+

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.29 2003/04/05 18:57:10 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.30 2003/05/02 12:39:45 taqua Exp $
  *
  * Changes
  * -------
@@ -278,6 +278,17 @@ public abstract class AbstractFunction implements Function
     {
       throw new FunctionInitializeException("FunctionName is null");
     }
+  }
+
+  /**
+   * Receives notification that report generation initializes the current run.
+   * <P>
+   * The event carries a ReportState.Started state.  Use this to initialize the report.
+   *
+   * @param event The event.
+   */
+  public void reportInitialized(ReportEvent event)
+  {
   }
 
   /**

@@ -2,7 +2,7 @@
  * Date: Mar 7, 2003
  * Time: 6:36:32 PM
  *
- * $Id: TotalCalculationFunction.java,v 1.1 2003/03/07 18:59:41 taqua Exp $
+ * $Id: TotalCalculationFunction.java,v 1.2 2003/04/05 18:57:11 taqua Exp $
  */
 package com.jrefinery.report.function;
 
@@ -57,7 +57,7 @@ public class TotalCalculationFunction extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void reportStarted(ReportEvent event)
+  public void reportInitialized(ReportEvent event)
   {
     currentIndex = -1;
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))

@@ -28,13 +28,15 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreGroupHeaderState.java,v 1.13 2003/02/25 18:46:47 taqua Exp $
+ * $Id: PreGroupHeaderState.java,v 1.14 2003/05/07 20:27:26 taqua Exp $
  *
  * Changes
  * -------
  * 05-Dec-2002 : Updated Javadoc comments (DG);
  */
 package com.jrefinery.report.states;
+
+import com.jrefinery.report.event.ReportEvent;
 
 /**
  * Processes an groupheader. Activates the next group and fires the GroupStartEvent
@@ -62,7 +64,7 @@ public final class PreGroupHeaderState extends ReportState
    */
   public ReportState advance ()
   {
-    firePrepareEvent();
+    firePrepareEvent(ReportEvent.GROUP_STARTED);
 
     enterGroup ();
     // enough space, fire the events and proceed to PostGroupHeaderState

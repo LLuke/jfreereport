@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.47 2003/05/14 14:08:37 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.48 2003/05/14 15:25:12 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,6 @@ import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReportConstants;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.PrepareEventListener;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.Expression;
@@ -724,7 +723,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     {
       ReportEvent event = getCurrentEvent();
       clearCurrentEvent();
-      event.getState().fireLayoutCompleteEvent(band);
+      event.getState().fireLayoutCompleteEvent(band, event.getType());
       setCurrentEvent(event);
     }
     return bounds;

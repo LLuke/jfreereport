@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.11 2003/04/02 21:14:30 taqua Exp $
+ * $Id: PageFunction.java,v 1.12 2003/04/05 18:57:11 taqua Exp $
  *
  * Changes
  * -------
@@ -124,11 +124,9 @@ public class PageFunction extends AbstractFunction
    *
    * @param event  the event.
    */
-  public void reportStarted(ReportEvent event)
+  public void reportInitialized(ReportEvent event)
   {
-    // ReportStartEvent is called before any PageStartEvent, so we are BEFORE the first page
-    // behaviour changed: PageStarted is called before ReportStarted !
-    this.setPage(getStartPage());
+    this.setPage(getStartPage() - 1);
   }
 
   /**

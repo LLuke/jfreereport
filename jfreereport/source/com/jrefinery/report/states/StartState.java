@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.13 2003/04/09 16:16:07 mungady Exp $
+ * $Id: StartState.java,v 1.14 2003/05/07 20:27:26 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ import java.util.Iterator;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.event.ReportEvent;
 
 /**
  * The first state in the JFreeReport state transition diagram.
@@ -109,7 +110,8 @@ public final class StartState extends ReportState
     // a PropertyHandler should set the properties.
     setProperty (JFreeReport.REPORT_DATE_PROPERTY, new Date ());
 
-    firePrepareEvent();
+    fireReportInitializedEvent();
+    firePrepareEvent(ReportEvent.REPORT_STARTED);
 
     // initialise the report before any band (and especially before the pageheader) is printed.
     fireReportStartedEvent ();

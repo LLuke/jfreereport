@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupCountFunction.java,v 1.11 2002/12/12 12:26:56 mungady Exp $
+ * $Id: GroupCountFunction.java,v 1.12 2003/04/05 18:57:11 taqua Exp $
  *
  * Changes
  * -------
@@ -106,7 +106,7 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
    *
    * @param event the current report event received.
    */
-  public void reportStarted(ReportEvent event)
+  public void reportInitialized(ReportEvent event)
   {
     this.count = 0;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: LayoutEvent.java,v 1.1 2003/02/25 09:55:50 taqua Exp $
+ * $Id: LayoutEvent.java,v 1.2 2003/02/26 13:57:56 mungady Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,8 @@ import com.jrefinery.report.states.ReportState;
  */
 public class LayoutEvent extends ReportEvent
 {
+  public static final int LAYOUT_EVENT = 0x20000;
+
   /** the current band. */
   private Band layoutedBand;
 
@@ -56,9 +58,9 @@ public class LayoutEvent extends ReportEvent
    * @param state the current report state.
    * @param band the layouted band.
    */
-  public LayoutEvent(ReportState state, Band band)
+  public LayoutEvent(ReportState state, Band band, int type)
   {
-    super(state);
+    super(state, type);
 
     if (band == null)
     {

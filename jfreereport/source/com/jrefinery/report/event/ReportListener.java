@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: ReportListener.java,v 1.7 2003/02/12 09:59:47 taqua Exp $
+ * $Id: ReportListener.java,v 1.8 2003/02/17 16:06:34 taqua Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -52,9 +52,19 @@ import java.util.EventListener;
 public interface ReportListener extends EventListener
 {
   /**
-   * Receives notification that report generation has started.
+   * Receives notification that report generation initializes the current run.
    * <P>
    * The event carries a ReportState.Started state.  Use this to initialize the report.
+   *
+   * @param event The event.
+   */
+  public void reportInitialized (ReportEvent event);
+
+  /**
+   * Receives notification that report generation has started.
+   * <P>
+   * The event carries a ReportState.Started state.
+   * Use this to prepare the report header.
    *
    * @param event The event.
    */

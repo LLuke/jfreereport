@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.16 2003/04/05 18:57:11 taqua Exp $
+ * $Id: ItemCountFunction.java,v 1.17 2003/04/09 15:47:30 mungady Exp $
  *
  * Changes
  * -------
@@ -89,7 +89,7 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
    *
    * @param event  the event.
    */
-  public void reportStarted(ReportEvent event)
+  public void reportInitialized(ReportEvent event)
   {
     this.count = 0;
   }

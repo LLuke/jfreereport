@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.22 2003/04/05 18:57:19 taqua Exp $
+ * $Id: PageLayouter.java,v 1.23 2003/04/09 15:53:28 mungady Exp $
  *
  * Changes
  * -------
@@ -393,7 +393,7 @@ public abstract class PageLayouter extends AbstractFunction
     clearCurrentEvent();
 
     setRestartingPage(true);
-    event.getState().firePageStartedEvent();
+    event.getState().firePageStartedEvent(event.getType());
 
     // restore the saved original event ...
     setCurrentEvent(event);

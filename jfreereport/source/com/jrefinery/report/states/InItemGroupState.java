@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: InItemGroupState.java,v 1.7 2003/02/04 17:56:20 taqua Exp $
+ * $Id: InItemGroupState.java,v 1.8 2003/05/07 20:27:26 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package com.jrefinery.report.states;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.event.ReportEvent;
 
 /**
  * Prints the itemBand. Before the band is printed, the items are advanced and the next
@@ -78,7 +79,7 @@ public final class InItemGroupState extends ReportState
     // the band and print it. If there was not enough space, the engine will return
     // here after the pagebreak.
 
-    firePrepareEvent();
+    firePrepareEvent(ReportEvent.ITEMS_ADVANCED);
 
     advanceItem ();
 

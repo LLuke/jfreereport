@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemAvgFunction.java,v 1.8 2003/02/25 14:07:26 taqua Exp $
+ * $Id: ItemAvgFunction.java,v 1.9 2003/05/02 12:39:51 taqua Exp $
  *
  * Changes
  * -------
@@ -127,7 +127,7 @@ public class ItemAvgFunction extends AbstractFunction
    * @param event Information about the event.
    *
    */
-  public void reportStarted(ReportEvent event)
+  public void reportInitialized(ReportEvent event)
   {
     this.sum = ZERO;
     itemCount = ZERO;

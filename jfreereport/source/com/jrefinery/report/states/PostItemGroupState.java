@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PostItemGroupState.java,v 1.5 2003/02/04 17:56:21 taqua Exp $
+ * $Id: PostItemGroupState.java,v 1.6 2003/05/07 20:27:26 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,8 @@
  */
 
 package com.jrefinery.report.states;
+
+import com.jrefinery.report.event.ReportEvent;
 
 /**
  * A report state that is reached after the last row of data for one instance of the inner-most
@@ -67,7 +69,7 @@ public final class PostItemGroupState extends ReportState
    */
   public ReportState advance ()
   {
-    firePrepareEvent();
+    firePrepareEvent(ReportEvent.ITEMS_FINISHED);
 
     fireItemsFinishedEvent ();
     return new PreGroupFooterState (this);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintDynamicComponentFunction.java,v 1.7 2003/02/28 12:02:38 taqua Exp $
+ * $Id: PaintDynamicComponentFunction.java,v 1.8 2003/05/02 12:39:51 taqua Exp $
  *
  * Changes
  * -------
@@ -112,6 +112,18 @@ public class PaintDynamicComponentFunction extends AbstractFunction
    * @param event  the event.
    */
   public void reportStarted(ReportEvent event)
+  {
+    image = null;
+  }
+
+  /**
+   * Receives notification that report generation initializes the current run.
+   * <P>
+   * The event carries a ReportState.Started state.  Use this to initialize the report.
+   *
+   * @param event The event.
+   */
+  public void reportInitialized(ReportEvent event)
   {
     image = null;
   }

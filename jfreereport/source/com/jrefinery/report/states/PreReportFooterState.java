@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreReportFooterState.java,v 1.10 2003/02/17 16:07:18 taqua Exp $
+ * $Id: PreReportFooterState.java,v 1.11 2003/05/07 20:27:26 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,8 @@
  */
 
 package com.jrefinery.report.states;
+
+import com.jrefinery.report.event.ReportEvent;
 
 /**
  * At least the report has been finished. There is no more data to print, so just fire
@@ -64,7 +66,7 @@ public final class PreReportFooterState extends ReportState
    */
   public ReportState advance ()
   {
-    firePrepareEvent();
+    firePrepareEvent(ReportEvent.REPORT_FINISHED);
 
     fireReportFinishedEvent ();
     return new PostReportFooterState (this);

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreItemGroupState.java,v 1.7 2003/04/05 18:57:12 taqua Exp $
+ * $Id: PreItemGroupState.java,v 1.8 2003/05/07 20:27:26 taqua Exp $
  *
  * Changes
  * -------
@@ -37,6 +37,8 @@
  */
 
 package com.jrefinery.report.states;
+
+import com.jrefinery.report.event.ReportEvent;
 
 /**
  * Prepare to print the items. This state fires the itemStarted-Event and advances to
@@ -66,7 +68,7 @@ public final class PreItemGroupState extends ReportState
    */
   public ReportState advance ()
   {
-    firePrepareEvent();
+    firePrepareEvent(ReportEvent.ITEMS_STARTED);
 
     // inform everybody, that now items will be processed
     fireItemsStartedEvent ();
