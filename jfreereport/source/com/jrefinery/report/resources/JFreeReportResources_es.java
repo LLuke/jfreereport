@@ -23,6 +23,12 @@
  * ----------------------------
  * JFreeReportResources_es.java
  * ----------------------------
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * Original Author:  Ramon Juanes;
+ * Contributor(s):   -;
+ *
+ * $Id: JFreeReportResources_fr.java,v 1.5 2003/04/09 16:16:07 mungady Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -158,4 +164,16 @@ public class JFreeReportResources_es extends JFreeReportResources
             {"pdfsavedialog.confirm", "Aceptar"},
 
           };
+
+
+  /**
+   * Debugging method, prints all defined contents.
+   *
+   * @param args not used
+   */
+  public static void main (String [] args)
+  {
+    ResourceCompareTool.main(new String[]{"es"});
+  }
+
 }

@@ -171,4 +171,16 @@ public class JFreeReportResources_pl extends JFreeReportResources
             {"pdfsavedialog.confirm", "OK"},
 
           };
+
+
+  /**
+   * Debugging method, prints all defined contents.
+   *
+   * @param args not used
+   */
+  public static void main (String [] args)
+  {
+    ResourceCompareTool.main(new String[]{"pl"});
+  }
+
 }

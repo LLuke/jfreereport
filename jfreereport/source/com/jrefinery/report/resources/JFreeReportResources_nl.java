@@ -23,16 +23,19 @@
  * ----------------------------
  * JFreeReportResources_nl.java
  * ----------------------------
+ * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
+ * Original Author:  Hendri Smit;
+ * Contributor(s):   -;
  *
- *
+ * $Id: JFreeReportResources_fr.java,v 1.5 2003/04/09 16:16:07 mungady Exp $
  */
 package com.jrefinery.report.resources;
 
 import java.awt.event.KeyEvent;
 
 /**
- * German Language Resources.
+ * Dutch Language Resources.
  *
  * @author Hendri Smit
  */
@@ -328,7 +331,7 @@ public class JFreeReportResources_nl extends JFreeReportResources
    */
   public static void main (String [] args)
   {
-    new JFreeReportResources_de().printAll();
+    ResourceCompareTool.main(new String[]{"nl"});
   }
   
 }

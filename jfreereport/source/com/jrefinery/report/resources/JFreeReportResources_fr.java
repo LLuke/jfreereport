@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources_fr.java,v 1.4 2003/03/27 00:46:30 mimil Exp $
+ * $Id: JFreeReportResources_fr.java,v 1.5 2003/04/09 16:16:07 mungady Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -57,65 +57,39 @@ public class JFreeReportResources_fr extends JFreeReportResources
           {
             {"action.save-as.name", "Enregistrer en PDF..."},
             {"action.save-as.description", "Enregistrer au format PDF"},
-            {"action.save-as.mnemonic", new Integer (KeyEvent.VK_A)},
-            {"action.save-as.small-icon", getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
-            {"action.save-as.icon", getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
+            {"action.save-as.mnemonic", new Integer (KeyEvent.VK_P)},
 
             {"action.export-to-excel.name", "Exporter en Excel..."},
             {"action.export-to-excel.description", "Enregistrer au format MS-Excel"},
             {"action.export-to-excel.mnemonic", new Integer (KeyEvent.VK_E)},
-            // temporarily using the same icon as "Save to PDF", till we have a better one
-            {"action.export-to-excel.small-icon", 
-                getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
-            {"action.export-to-excel.icon", 
-                getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
-                
+
             {"action.export-to-html.name", "Exporter en html..."},
             {"action.export-to-html.description", "Enregistrer au format HTML"},
             {"action.export-to-html.mnemonic", new Integer (KeyEvent.VK_H)},
-            // temporarily using the same icon as "Save to PDF", till we have a better one
-            {"action.export-to-html.small-icon", 
-                getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
-            {"action.export-to-html.icon", 
-                getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
-            
+
             {"action.export-to-csv.name", "Exporter en CSV..."},
             {"action.export-to-csv.description", "Enregistrer au format CSV"},
             {"action.export-to-csv.mnemonic", new Integer (KeyEvent.VK_C)},
-            // temporarily using the same icon as "Save to PDF", till we have a better one
-            {"action.export-to-csv.small-icon", 
-                getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
-            {"action.export-to-csv.icon", 
-                getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
-                
+
             {"action.export-to-plaintext.name", "Enregistrer en text..."},
             {"action.export-to-plaintext.description", "Enregistrer au format PlainText"},
             {"action.export-to-plaintext.mnemonic", new Integer (KeyEvent.VK_T)},
-            // temporarily using the same icon as "Save to PDF", till we have a better one
-            {"action.export-to-plaintext.small-icon", 
-                getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
-            {"action.export-to-plaintext.icon", 
-                getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},    
-            
+
             {"action.page-setup.name", "Mise en page"},
             {"action.page-setup.description", "Mise en page"},
-            {"action.page-setup.small-icon",
-                getIcon ("com/jrefinery/report/resources/PageSetup16.gif")},
-            {"action.page-setup.icon", getIcon ("com/jrefinery/report/resources/PageSetup24.gif")},
+            {"action.page-setup.mnemonic", new Integer (KeyEvent.VK_M)},
 
             {"action.print.name", "Impression..."},
             {"action.print.description", "Impression du rapport"},
-            {"action.print.mnemonic", new Integer (KeyEvent.VK_P)},
-            {"action.print.small-icon", getIcon ("com/jrefinery/report/resources/Print16.gif")},
-            {"action.print.icon", getIcon ("com/jrefinery/report/resources/Print24.gif")},
+            {"action.print.mnemonic", new Integer (KeyEvent.VK_I)},
 
             {"action.close.name", "Fermer"},
             {"action.close.description", "Fermer l'aperçu avant impression"},
-            {"action.close.mnemonic", new Integer (KeyEvent.VK_C)},
+            {"action.close.mnemonic", new Integer (KeyEvent.VK_F)},
 
             {"action.gotopage.name", "Aller à la page ..."},
             {"action.gotopage.description", "Voir une page directement"},
-            {"action.gotopage.mnemonic", new Integer (KeyEvent.VK_G)},
+            {"action.gotopage.mnemonic", new Integer (KeyEvent.VK_A)},
 
             {"dialog.gotopage.message", "Entrer un numéro de page"},
             {"dialog.gotopage.title", "Aller à la page"},
@@ -123,48 +97,30 @@ public class JFreeReportResources_fr extends JFreeReportResources
             {"action.about.name", "A propos..."},
             {"action.about.description", "Information à propos de l'application"},
             {"action.about.mnemonic", new Integer (KeyEvent.VK_A)},
-            {"action.about.small-icon", getIcon ("com/jrefinery/report/resources/About16.gif")},
-            {"action.about.icon", getIcon ("com/jrefinery/report/resources/About24.gif")},
 
             {"action.firstpage.name", "Début"},
-            {"action.firstpage.mnemonic", new Integer (KeyEvent.VK_HOME)},
+//            {"action.firstpage.mnemonic", new Integer (KeyEvent.VK_HOME)},
             {"action.firstpage.description", "Aller à la première page"},
-            {"action.firstpage.small-icon",
-                getIcon ("com/jrefinery/report/resources/FirstPage16.gif")},
-            {"action.firstpage.icon", getIcon ("com/jrefinery/report/resources/FirstPage24.gif")},
 
             {"action.back.name", "Précédent"},
             {"action.back.description", "Aller à la page précédente"},
-            {"action.back.mnemonic", new Integer (KeyEvent.VK_PAGE_UP)},
-            {"action.back.small-icon", getIcon ("com/jrefinery/report/resources/Back16.gif")},
-            {"action.back.icon", getIcon ("com/jrefinery/report/resources/Back24.gif")},
+//            {"action.back.mnemonic", new Integer (KeyEvent.VK_PAGE_UP)},
 
             {"action.forward.name", "Suivant"},
             {"action.forward.description", "Aller à la page suivante"},
-            {"action.forward.mnemonic", new Integer (KeyEvent.VK_PAGE_DOWN)},
-            {"action.forward.small-icon",
-                getIcon ("com/jrefinery/report/resources/Forward16.gif")},
-            {"action.forward.icon", getIcon ("com/jrefinery/report/resources/Forward24.gif")},
+//            {"action.forward.mnemonic", new Integer (KeyEvent.VK_PAGE_DOWN)},
 
             {"action.lastpage.name", "Fin"},
             {"action.lastpage.description", "Aller à la dernière page"},
-            {"action.lastpage.mnemonic", new Integer (KeyEvent.VK_END)},
-            {"action.lastpage.small-icon",
-                getIcon ("com/jrefinery/report/resources/LastPage16.gif")},
-            {"action.lastpage.icon", getIcon ("com/jrefinery/report/resources/LastPage24.gif")},
+//            {"action.lastpage.mnemonic", new Integer (KeyEvent.VK_END)},
 
             {"action.zoomIn.name", "Agrandir"},
             {"action.zoomIn.description", "Agrandir"},
-            {"action.zoomIn.mnemonic", new Integer (KeyEvent.VK_PLUS)},
-            {"action.zoomIn.small-icon", getIcon ("com/jrefinery/report/resources/ZoomIn16.gif")},
-            {"action.zoomIn.icon", getIcon ("com/jrefinery/report/resources/ZoomIn24.gif")},
+//            {"action.zoomIn.mnemonic", new Integer (KeyEvent.VK_PLUS)},
 
             {"action.zoomOut.name", "Rétrécir"},
             {"action.zoomOut.description", "Rétrécir"},
-            {"action.zoomOut.mnemonic", new Integer (KeyEvent.VK_MINUS)},
-            {"action.zoomOut.small-icon",
-                getIcon ("com/jrefinery/report/resources/ZoomOut16.gif")},
-            {"action.zoomOut.icon", getIcon ("com/jrefinery/report/resources/ZoomOut24.gif")},
+//            {"action.zoomOut.mnemonic", new Integer (KeyEvent.VK_MINUS)},
 
             // preview frame...
             {"preview-frame.title", "Aperçu avant impression"},
@@ -180,7 +136,7 @@ public class JFreeReportResources_fr extends JFreeReportResources
             {"menu.zoom.mnemonic", new Character ('Z')},
 
             {"menu.help.name", "Aide"},
-            {"menu.help.mnemonic", new Character ('H')},
+            {"menu.help.mnemonic", new Character ('A')},
 
             {"file.save.pdfdescription", "Documents PDF"},
             {"statusline.pages", "Page {0} de {1}"},
@@ -391,5 +347,10 @@ public class JFreeReportResources_fr extends JFreeReportResources
             {"convertdialog.title", "Convertisseur de rapport"},
 
           };
+
+  public static void main (String [] args)
+  {
+    ResourceCompareTool.main(new String[]{"fr"});
+  }
 
 }

@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_de.java,v 1.30 2003/02/26 16:42:21 mungady Exp $
+ * $Id: JFreeReportResources_de.java,v 1.31 2003/03/04 20:28:54 taqua Exp $
  *
  * Changes
  * -------
@@ -356,7 +356,7 @@ public class JFreeReportResources_de extends JFreeReportResources
    */
   public static void main (String [] args)
   {
-    new JFreeReportResources_de().printAll();
+    ResourceCompareTool.main(new String[] {"de"});
   }
   
 }
