@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * -------------------
  * OpenSourceDemo.java
  * -------------------
- * (C)opyright 2002, by Simba Management Limited.
+ * (C)opyright 2002, 2003, by Simba Management Limited.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo.java,v 1.9 2003/03/18 17:14:17 taqua Exp $
+ * $Id: OpenSourceDemo.java,v 1.10 2003/03/19 10:27:28 mungady Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import java.awt.event.ActionListener;
 import java.net.URL;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -53,6 +54,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.table.TableModel;
 
 import com.jrefinery.report.JFreeReport;
@@ -88,8 +90,9 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener
   public OpenSourceDemo(String title)
   {
     super(title);
+    this.data = new OpenSourceProjects();
     setJMenuBar(createMenuBar());
-    setContentPane(createContent());
+    setContentPane(createContent()); 
   }
 
   /**
@@ -126,11 +129,26 @@ public class OpenSourceDemo extends ApplicationFrame implements ActionListener
   {
     JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
-    this.data = new OpenSourceProjects();
-    JTable table = new JTable(data);
+    
+    String d = "This demo creates a report listing some useful open source projects for Java.";
+    JTextArea textArea = new JTextArea(d);
+    textArea.setLineWrap(true);
+    textArea.setWrapStyleWord(true);
+    textArea.setEditable(false);
+    JScrollPane scroll = new JScrollPane(textArea);
+    scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    JTable table = new JTable(this.data);
     JScrollPane scrollPane = new JScrollPane(table);
+    
+    JButton previewButton = new JButton("Preview Report");
+    previewButton.setActionCommand("PREVIEW");
+    previewButton.addActionListener(this);
+    
+    content.add(scroll, BorderLayout.NORTH);
     content.add(scrollPane);
+    content.add(previewButton, BorderLayout.SOUTH);
     return content;
+
   }
 
   /**
