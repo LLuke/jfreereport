@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.24 2002/09/06 17:02:43 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.25 2002/09/08 12:38:25 taqua Exp $
  *
  * Changes
  * -------
@@ -85,34 +85,61 @@ import java.util.TreeMap;
 
 /**
  * An output target for the report engine that generates a PDF file using the iText class library
- * (see http://www.lowagie.com/itext).
+ * (see http://www.lowagie.com/iText, note that the URL is case-sensitive!).
  * <p>
- * If the systemproperty "com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT" is set to "true",
- * the PDF-FontFactory is automaticly initialized when this class is loaded. Be aware that
+ * If the system property "com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT" is set to "true",
+ * the PDF-FontFactory is automatically initialized when this class is loaded. Be aware that
  * embedding many fonts will result in larger files.
  * <p>
- * When using unicode characters, you will have to adjust the encoding of this target to
+ * When using Unicode characters, you will have to adjust the encoding of this target to
  * "Identity-H", to enable horizontal unicode printing. This will result in larger files.
+ *
+ * @author DG
  */
 public class PDFOutputTarget extends AbstractOutputTarget
 {
+  /** Literal text for the 'AllowPrinting' property name. */
   public static final String SECURITY_ALLOW_PRINTING = "AllowPrinting";
+
+  /** Literal text for the 'AllowModifyContents' property name. */
   public static final String SECURITY_ALLOW_MODIFY_CONTENTS = "AllowModifyContents";
+
+  /** Literal text for the 'AllowCopy' property name. */
   public static final String SECURITY_ALLOW_COPY = "AllowCopy";
+
+  /** Literal text for the 'AllowModifyAnnotations' property name. */
   public static final String SECURITY_ALLOW_MODIFY_ANNOTATIONS = "AllowModifyAnnotations";
+
+  /** Literal text for the 'AllowFillIn' property name. */
   public static final String SECURITY_ALLOW_FILLIN = "AllowFillIn";
+
+  /** Literal text for the 'AllowScreenReaders' property name. */
   public static final String SECURITY_ALLOW_SCREENREADERS = "AllowScreenReaders";
+
+  /** Literal text for the 'AllowAssembly' property name. */
   public static final String SECURITY_ALLOW_ASSEMBLY = "AllowAssembly";
+
+  /** Literal text for the 'AllowDegradedPrinting' property name. */
   public static final String SECURITY_ALLOW_DEGRADED_PRINTING = "AllowDegradedPrinting";
 
+  /** Literal text for the 'Encryption' property name. */
   public static final String SECURITY_ENCRYPTION = "Encryption";
+
+  /** A constant for the encryption type (40 bit). */
   public static final Boolean SECURITY_ENCRYPTION_40BIT = Boolean.FALSE;
+
+  /** A constant for the encryption type (128 bit). */
   public static final Boolean SECURITY_ENCRYPTION_128BIT = Boolean.TRUE;
 
+  /** Literal text for the 'userpassword' property name. */
   public static final String SECURITY_USERPASSWORD = "userpassword";
+
+  /** Literal text for the 'ownerpassword' property name. */
   public static final String SECURITY_OWNERPASSWORD = "ownerpassword";
 
-  private static final String CREATOR = JFreeReport.getInfo().getName() + " version " + JFreeReport.getInfo().getVersion();
+  /** A useful constant for specifying the PDF creator. */
+  private static final String CREATOR = JFreeReport.getInfo().getName() + " version "
+                                      + JFreeReport.getInfo().getVersion();
 
   /** The output stream. */
   private OutputStream out;
@@ -132,6 +159,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /** The current base font. */
   private BaseFont baseFont;
 
+  /** The AWT font. */
   private Font awtFont;
 
   /** The current font size. */
@@ -151,12 +179,12 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * values, but Adobe allows to have encryption without an owner password set.
    */
   private static final byte PDF_PASSWORD_PAD[] = {
-      (byte)0x28, (byte)0xBF, (byte)0x4E, (byte)0x5E, (byte)0x4E, (byte)0x75,
-      (byte)0x8A, (byte)0x41, (byte)0x64, (byte)0x00, (byte)0x4E, (byte)0x56,
-      (byte)0xFF, (byte)0xFA, (byte)0x01, (byte)0x08, (byte)0x2E, (byte)0x2E,
-      (byte)0x00, (byte)0xB6, (byte)0xD0, (byte)0x68, (byte)0x3E, (byte)0x80,
-      (byte)0x2F, (byte)0x0C, (byte)0xA9, (byte)0xFE, (byte)0x64, (byte)0x53,
-      (byte)0x69, (byte)0x7A};
+      (byte) 0x28, (byte) 0xBF, (byte) 0x4E, (byte) 0x5E, (byte) 0x4E, (byte) 0x75,
+      (byte) 0x8A, (byte) 0x41, (byte) 0x64, (byte) 0x00, (byte) 0x4E, (byte) 0x56,
+      (byte) 0xFF, (byte) 0xFA, (byte) 0x01, (byte) 0x08, (byte) 0x2E, (byte) 0x2E,
+      (byte) 0x00, (byte) 0xB6, (byte) 0xD0, (byte) 0x68, (byte) 0x3E, (byte) 0x80,
+      (byte) 0x2F, (byte) 0x0C, (byte) 0xA9, (byte) 0xFE, (byte) 0x64, (byte) 0x53,
+      (byte) 0x69, (byte) 0x7A};
 
   /**
    * The PDFBandCursor is used to translate between the band specific coordinate space
@@ -164,6 +192,11 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   private static class PDFBandCursor extends BandCursor
   {
+    /**
+     * Returns the translated bounds for the cursor.
+     *
+     * @return the translated bounds.
+     */
     public Rectangle2D getDrawBounds()
     {
       Rectangle2D bbounds = getBandBounds();
@@ -175,6 +208,11 @@ public class PDFOutputTarget extends AbstractOutputTarget
       return new Rectangle2D.Double(x, y, w, h);
     }
 
+    /**
+     * Sets the bounds for the cursor.
+     *
+     * @param rect  the bounds.
+     */
     public void setDrawBounds(Rectangle2D rect)
     {
       Rectangle2D bbounds = getBandBounds();
@@ -188,19 +226,34 @@ public class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * The pdf state is used to store and restore the current state of this outputtarget.
+   * The pdf state is used to store and restore the current state of this output target.
    */
   private static class PDFState
   {
+    /** The font. */
     private Font myfont;
+
+    /** The stroke. */
     private Stroke mystroke;
+
+    /** The paint. */
     private Paint mypaint;
 
+    /**
+     * Creates a new state.
+     *
+     * @param source  the source of the state information to save.
+     */
     public PDFState(PDFOutputTarget source)
     {
       save(source);
     }
 
+    /**
+     * Saves the state of the specified target.
+     *
+     * @param source  the source of the state information.
+     */
     public void save(PDFOutputTarget source)
     {
       this.myfont = source.getFont();
@@ -208,6 +261,13 @@ public class PDFOutputTarget extends AbstractOutputTarget
       this.mypaint = source.getPaint();
     }
 
+    /**
+     * Restores the state of the specified target.
+     *
+     * @param target  the target for the state information
+     *
+     * @throws OutputTargetException if there is a problem with the output target.
+     */
     public void restore(PDFOutputTarget target) throws OutputTargetException
     {
       target.setFont(myfont);
@@ -222,8 +282,12 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public static class PDFFontFactory extends DefaultFontMapper
   {
+    /** Fonts stored by name. */
     private Hashtable fontsByName;
 
+    /**
+     * Creates a new factory.
+     */
     private PDFFontFactory()
     {
       fontsByName = new Hashtable();
@@ -265,7 +329,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
         String windirs = System.getProperty("java.library.path");
         if (windirs != null)
         {
-          StringTokenizer strtok = new StringTokenizer(windirs, System.getProperty("path.separator"));
+          StringTokenizer strtok
+              = new StringTokenizer(windirs, System.getProperty("path.separator"));
           while (strtok.hasMoreTokens())
           {
             String token = strtok.nextToken();
@@ -292,6 +357,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     /**
      * Register all fonts (*.ttf files) in the given path.
+     *
+     * @param path  the path.
+     * @param encoding  the encoding.
      */
     public void registerFontPath(String path, String encoding)
     {
@@ -310,6 +378,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     /**
      * Register the font (must end this *.ttf) to the FontFactory.
+     *
+     * @param filename  the filename.
+     * @param encoding  the encoding.
      */
     public void registerFontFile(String filename, String encoding)
     {
@@ -335,6 +406,12 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     /**
      * Adds the fontname by creating the basefont object
+     *
+     * @param font  the font name.
+     * @param encoding  the encoding.
+     *
+     * @throws DocumentException ??
+     * @throws IOException ??
      */
     private void addFont(String font, String encoding)
         throws DocumentException, IOException
@@ -350,6 +427,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     /**
      * Returns all registered fonts as enumeration.
+     *
+     * @return an enumeration of the registered fonts.
      */
     public Enumeration getRegisteredFonts()
     {
@@ -357,20 +436,26 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
 
     /**
-     * Returns the font by looking up the name in the Factory.
+     * Returns the name of the font file by looking up the name.
+     *
+     * @param font  the font name
+     *
+     * @return the font file name.
      */
     public String getFontfileForName(String font)
     {
       return (String) fontsByName.get(font);
     }
 
-
   }
 
+  /** The font factory. */
   private static PDFFontFactory fontFactory;
 
   /**
-   * returns/creates the singleton font factory.
+   * Returns/creates the singleton font factory.
+   *
+   * @return the font factory.
    */
   public static PDFFontFactory getFontFactory()
   {
@@ -388,7 +473,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   static
   {
-    String prop = System.getProperty ("com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT", "false");
+    String prop = System.getProperty ("com.jrefinery.report.targets.PDFOutputTarget.AUTOINIT",
+                                      "false");
     if (prop.equalsIgnoreCase ("true"))
     {
       getFontFactory ().registerDefaultFontPath ();
@@ -397,6 +483,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   /**
    * Creates a PDFBandCursor to support coordinate space transformation.
+   *
+   * @return a cursor.
    */
   public BandCursor createCursor()
   {
@@ -406,9 +494,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /**
    * Constructs a PDFOutputTarget.
    *
-   * @param out The output stream.
-   * @param pageFormat The page format.
-   * @param embedFonts Embed fonts?
+   * @param out  the output stream.
+   * @param pageFormat  the page format.
+   * @param embedFonts  embed fonts?
    */
   public PDFOutputTarget(OutputStream out, PageFormat pageFormat, boolean embedFonts)
   {
@@ -420,13 +508,21 @@ public class PDFOutputTarget extends AbstractOutputTarget
     setFontEncoding(getDefaultFontEncoding());
   }
 
+  /**
+   * Returns the default font encoding.
+   *
+   * @return the default font encoding.
+   */
   public static final String getDefaultFontEncoding ()
   {
-    return System.getProperty("com.jrefinery.report.targets.PDFOutputTarget.ENCODING", BaseFont.WINANSI);
+    return System.getProperty("com.jrefinery.report.targets.PDFOutputTarget.ENCODING",
+                              BaseFont.WINANSI);
   }
 
   /**
    * Returns the coordinate of the left edge of the page.
+   *
+   * @return the left edge of the page.
    */
   public float getPageX()
   {
@@ -434,11 +530,13 @@ public class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Returns the coordinate of the top of the page.
+   * Returns the coordinate of the top edge of the page.
    * <P>
    * NOTE: JFreeReport works with y values increasing as you move down the page, whereas iText
    * works with y values increasing as you move up the page - this method translates the
    * iText value to match JFreeReport.
+   *
+   * @return the top edge of the page.
    */
   public float getPageY()
   {
@@ -446,7 +544,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Returns the total width of the page.
+   * Returns the page width in points (1/72 inch).
+   *
+   * @return the page width.
    */
   public float getPageWidth()
   {
@@ -454,7 +554,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Returns the total height of the page.
+   * Returns the page height in points (1/72 inch).
+   *
+   * @return the page height.
    */
   public float getPageHeight()
   {
@@ -462,8 +564,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Returns the coordinate of the left hand edge of the usable area on the page (after taking
-   * into account the left margin).
+   * Returns the left edge of the printable area of the page.  The units are points.
+   *
+   * @return the left edge of the printable area of the page.
    */
   public float getUsableX()
   {
@@ -471,8 +574,10 @@ public class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Returns the coordinate of the top edge of the usable area on the page (after taking
-   * into account the top margin and translating to JFreeReport's orientation).
+   * Returns the top edge of the printable area of the page (after taking into account the top
+   * margin and translating to JFreeReport's orientation).  The units are points.
+   *
+   * @return the top edge of the printable area of the page.
    */
   public float getUsableY()
   {
@@ -480,7 +585,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Returns the width of the usable area on the page (after taking into account margins).
+   * Returns the width (in points) of the printable area of the page.
+   *
+   * @return the width of the printable area of the page.
    */
   public float getUsableWidth()
   {
@@ -490,7 +597,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Returns the height of the usable area on the page (after taking into account margins).
+   * Returns the height (in points) of the printable area of the page.
+   *
+   * @return the height of the printable area of the page.
    */
   public float getUsableHeight()
   {
@@ -501,6 +610,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   /**
    * Returns the currently active AWT-Font.
+   *
+   * @return the current font.
    */
   public Font getFont()
   {
@@ -508,7 +619,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Returns the current fonts fontsize.
+   * Returns the current font size.
+   *
+   * @return the current font size.
    */
   public int getFontSize()
   {
@@ -533,20 +646,32 @@ public class PDFOutputTarget extends AbstractOutputTarget
   private boolean endsWithIgnoreCase(String base, String end)
   {
     if (base.length() < end.length())
+    {
       return false;
+    }
     return base.regionMatches(true, base.length() - end.length(), end, 0, end.length());
   }
 
   /**
    * Sets the current font. The font is mapped to pdf specific fonts if possible.
    * If no basefont could be created, an OutputTargetException is thrown.
+   *
+   * @param font  the new font (null not permitted).
+   *
+   * @throws OutputTargetException if there was a problem setting the font for the target.
    */
   public void setFont(Font font) throws OutputTargetException
   {
-    if (font == null) throw new NullPointerException();
+    if (font == null)
+    {
+      throw new NullPointerException();
+    }
 
     // do nothing if this font is already set
-    if (awtFont != null && awtFont.equals(font)) return;
+    if (awtFont != null && awtFont.equals(font))
+    {
+      return;
+    }
 
     this.awtFont = font;
     this.fontSize = font.getSize();
@@ -557,25 +682,22 @@ public class PDFOutputTarget extends AbstractOutputTarget
     String logicalName = font.getName();
     String encoding = getFontEncoding();
 
-    if (startsWithIgnoreCase(logicalName, "dialoginput") ||
-        startsWithIgnoreCase(logicalName, "monospaced"))
+    if (startsWithIgnoreCase(logicalName, "dialoginput")
+        || startsWithIgnoreCase(logicalName, "monospaced"))
     {
       boolean bold = false;
       boolean italic = false;
 
-      if (endsWithIgnoreCase(logicalName, "bolditalic") ||
-          (font.isBold() && font.isItalic()))
+      if (endsWithIgnoreCase(logicalName, "bolditalic") || (font.isBold() && font.isItalic()))
       {
         bold = true;
         italic = true;
       }
-      else if (endsWithIgnoreCase(logicalName, "bold") ||
-          (font.isBold()))
+      else if (endsWithIgnoreCase(logicalName, "bold") || (font.isBold()))
       {
         bold = true;
       }
-      else if (endsWithIgnoreCase(logicalName, "italic") ||
-          (font.isItalic()))
+      else if (endsWithIgnoreCase(logicalName, "italic") || (font.isItalic()))
       {
         italic = true;
       }
@@ -602,19 +724,16 @@ public class PDFOutputTarget extends AbstractOutputTarget
       boolean bold = false;
       boolean italic = false;
 
-      if (endsWithIgnoreCase(logicalName, "bolditalic") ||
-          (font.isBold() && font.isItalic()))
+      if (endsWithIgnoreCase(logicalName, "bolditalic") || (font.isBold() && font.isItalic()))
       {
         bold = true;
         italic = true;
       }
-      else if (endsWithIgnoreCase(logicalName, "bold") ||
-          (font.isBold()))
+      else if (endsWithIgnoreCase(logicalName, "bold") || (font.isBold()))
       {
         bold = true;
       }
-      else if (endsWithIgnoreCase(logicalName, "italic") ||
-          (font.isItalic()))
+      else if (endsWithIgnoreCase(logicalName, "italic") || (font.isItalic()))
       {
         italic = true;
       }
@@ -636,25 +755,22 @@ public class PDFOutputTarget extends AbstractOutputTarget
         fontKey = BaseFont.TIMES_ROMAN;
       }
     }
-    else if (startsWithIgnoreCase(logicalName, "SansSerif") ||
-        startsWithIgnoreCase(logicalName, "Dialog"))
+    else if (startsWithIgnoreCase(logicalName, "SansSerif")
+        || startsWithIgnoreCase(logicalName, "Dialog"))
     { // default, this catches Dialog and SansSerif
       boolean bold = false;
       boolean italic = false;
 
-      if (endsWithIgnoreCase(logicalName, "bolditalic") ||
-          (font.isBold() && font.isItalic()))
+      if (endsWithIgnoreCase(logicalName, "bolditalic") || (font.isBold() && font.isItalic()))
       {
         bold = true;
         italic = true;
       }
-      else if (endsWithIgnoreCase(logicalName, "bold") ||
-          (font.isBold()))
+      else if (endsWithIgnoreCase(logicalName, "bold") || (font.isBold()))
       {
         bold = true;
       }
-      else if (endsWithIgnoreCase(logicalName, "italic") ||
-          (font.isItalic()))
+      else if (endsWithIgnoreCase(logicalName, "italic") || (font.isItalic()))
       {
         italic = true;
       }
@@ -725,8 +841,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
           }
         }
         // TrueType fonts need extra handling if the font is a symbolic font.
-        if ((filename != null) &&
-            (endsWithIgnoreCase(filename, ".ttf") || endsWithIgnoreCase(filename, ".ttc")))
+        if ((filename != null)
+            && (endsWithIgnoreCase(filename, ".ttf") || endsWithIgnoreCase(filename, ".ttc")))
         {
           try
           {
@@ -777,6 +893,10 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /**
    * Draws an Image from this imageReference. The image is directly embedded into the
    * pdf file to provide the best scaling support.
+   *
+   * @param imageRef  the image reference.
+   *
+   * @throws OutputTargetException if there was a problem drawing the image to the target.
    */
   public void drawImage(ImageReference imageRef) throws OutputTargetException
   {
@@ -790,7 +910,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
       image.scaleAbsolute((float) bounds.getWidth(), (float) bounds.getHeight());
 
       if (document.add(image) == false)
+      {
         throw new OutputTargetException("Unable to add the element");
+      }
     }
     catch (BadElementException be)
     {
@@ -813,13 +935,22 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /**
    * Helperfunction to extract an image from an imagereference. If the image is contained as
    * java.awt.Image object only, the image is recoded into an PNG-Image.
+   *
+   * @param imageRef  the image reference.
+   *
+   * @return an image.
+   *
+   * @throws DocumentException ??
+   * @throws IOException ??
    */
   private Image getImage(ImageReference imageRef) throws DocumentException, IOException
   {
     try
     {
       if (imageRef.getSourceURL() != null)
+      {
         return Image.getInstance(imageRef.getSourceURL());
+      }
     }
     catch (BadElementException be)
     {
@@ -843,6 +974,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /**
    * Draws a shape at the specified location. The shape is drawn using a PathIterator. All
    * Shapes are supported. Set a stroke and a paint before drawing. The shape is not filled.
+   *
+   * @param shape  the shape to draw.
    */
   public void drawShape(Shape shape)
   {
@@ -897,6 +1030,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * Draws a shape at the specified location. The shape is drawn using a PathIterator. All
    * Shapes are supported. Set a stroke and a paint before drawing. The shape is filled using
    * the current paint and no outline is drawn.
+   *
+   * @param shape  the shape to fill.
    */
   public void fillShape(Shape shape)
   {
@@ -957,6 +1092,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   /**
    * This method is called when the page is ended.
+   *
+   * @throws OutputTargetException if there was a problem with the target.
    */
   public void endPage() throws OutputTargetException
   {
@@ -971,10 +1108,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Opens the document.  The report title and author are added to the PDF document properties.
+   * Opens the document.
    *
-   * @param title The report title.
-   * @param author The report author.
+   * @throws OutputTargetException if there is a problem with the target.
    */
   public void open() throws OutputTargetException
   {
@@ -1006,8 +1142,14 @@ public class PDFOutputTarget extends AbstractOutputTarget
       String title = (String) getProperty(TITLE);
       String author = (String) getProperty(AUTHOR);
 
-      if (title != null) document.addTitle(title);
-      if (author != null) document.addAuthor(author);
+      if (title != null)
+      {
+        document.addTitle(title);
+      }
+      if (author != null)
+      {
+        document.addAuthor(author);
+      }
       document.addCreator(CREATOR);
       document.addCreationDate();
 
@@ -1016,8 +1158,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
       Boolean encrypt = (Boolean) getProperty(SECURITY_ENCRYPTION);
       if (encrypt != null)
       {
-        if (encrypt.equals(SECURITY_ENCRYPTION_128BIT) == false &&
-            encrypt.equals(SECURITY_ENCRYPTION_40BIT) == false)
+        if (encrypt.equals(SECURITY_ENCRYPTION_128BIT) == false
+            && encrypt.equals(SECURITY_ENCRYPTION_40BIT) == false)
         {
           throw new OutputTargetException("Invalid Encryption entered");
         }
@@ -1030,7 +1172,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
         {
           ownerpasswordbytes = PDF_PASSWORD_PAD;
         }
-        writer.setEncryption(userpasswordbytes, ownerpasswordbytes, getPermissions(), encrypt.booleanValue());
+        writer.setEncryption(userpasswordbytes, ownerpasswordbytes, getPermissions(),
+                             encrypt.booleanValue());
       }
 
       this.document.open();
@@ -1054,30 +1197,60 @@ public class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Extracts the permissions for this PDF. The permissions are returned as flags in the integer value.
-   * All permissions are defined as properties which have to be set before the target is opened.
+   * Extracts the permissions for this PDF. The permissions are returned as flags in the integer
+   * value. All permissions are defined as properties which have to be set before the target is
+   * opened.
+   *
+   * @return the permissions.
    */
   protected int getPermissions()
   {
     Boolean allowPrinting = (Boolean) getProperty(SECURITY_ALLOW_PRINTING, Boolean.FALSE);
-    Boolean allowModifyContents = (Boolean) getProperty(SECURITY_ALLOW_MODIFY_CONTENTS, Boolean.FALSE);
-    Boolean allowModifyAnnotations = (Boolean) getProperty(SECURITY_ALLOW_MODIFY_ANNOTATIONS, Boolean.FALSE);
+    Boolean allowModifyContents =
+        (Boolean) getProperty(SECURITY_ALLOW_MODIFY_CONTENTS, Boolean.FALSE);
+    Boolean allowModifyAnnotations =
+        (Boolean) getProperty(SECURITY_ALLOW_MODIFY_ANNOTATIONS, Boolean.FALSE);
     Boolean allowCopy = (Boolean) getProperty(SECURITY_ALLOW_COPY, Boolean.FALSE);
     Boolean allowFillIn = (Boolean) getProperty(SECURITY_ALLOW_FILLIN, Boolean.FALSE);
-    Boolean allowScreenReaders = (Boolean) getProperty(SECURITY_ALLOW_SCREENREADERS, Boolean.FALSE);
+    Boolean allowScreenReaders =
+        (Boolean) getProperty(SECURITY_ALLOW_SCREENREADERS, Boolean.FALSE);
     Boolean allowAssembly = (Boolean) getProperty(SECURITY_ALLOW_ASSEMBLY, Boolean.FALSE);
-    Boolean allowDegradedPrinting = (Boolean) getProperty(SECURITY_ALLOW_DEGRADED_PRINTING, Boolean.FALSE);
-
+    Boolean allowDegradedPrinting =
+        (Boolean) getProperty(SECURITY_ALLOW_DEGRADED_PRINTING, Boolean.FALSE);
 
     int permissions = 0;
-    if (allowPrinting.booleanValue()) permissions |= PdfWriter.AllowPrinting;
-    if (allowModifyContents.booleanValue()) permissions |= PdfWriter.AllowModifyContents;
-    if (allowModifyAnnotations.booleanValue()) permissions |= PdfWriter.AllowModifyAnnotations;
-    if (allowCopy.booleanValue()) permissions |= PdfWriter.AllowCopy;
-    if (allowFillIn.booleanValue()) permissions |= PdfWriter.AllowFillIn;
-    if (allowScreenReaders.booleanValue()) permissions |= PdfWriter.AllowScreenReaders;
-    if (allowAssembly.booleanValue()) permissions |= PdfWriter.AllowAssembly;
-    if (allowDegradedPrinting.booleanValue()) permissions |= PdfWriter.AllowDegradedPrinting;
+    if (allowPrinting.booleanValue())
+    {
+      permissions |= PdfWriter.AllowPrinting;
+    }
+    if (allowModifyContents.booleanValue())
+    {
+      permissions |= PdfWriter.AllowModifyContents;
+    }
+    if (allowModifyAnnotations.booleanValue())
+    {
+      permissions |= PdfWriter.AllowModifyAnnotations;
+    }
+    if (allowCopy.booleanValue())
+    {
+      permissions |= PdfWriter.AllowCopy;
+    }
+    if (allowFillIn.booleanValue())
+    {
+      permissions |= PdfWriter.AllowFillIn;
+    }
+    if (allowScreenReaders.booleanValue())
+    {
+      permissions |= PdfWriter.AllowScreenReaders;
+    }
+    if (allowAssembly.booleanValue())
+    {
+      permissions |= PdfWriter.AllowAssembly;
+    }
+    if (allowDegradedPrinting.booleanValue())
+    {
+      permissions |= PdfWriter.AllowDegradedPrinting;
+    }
     return permissions;
   }
 
@@ -1093,12 +1266,10 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * Draws the band onto the specified graphics device. The Text is printed on the
    * bottom of the elements bounds.
    *
-   * @param mytext The text to be printed.
-   * @param align The vertical alignment for the text.
+   * @param text The text to be printed.
+   * @param alignment The vertical alignment for the text.
    */
-  public void drawString(
-      String text,
-      int alignment)
+  public void drawString(String text, int alignment)
   {
     Rectangle2D bounds = getCursor().getDrawBounds();
 
@@ -1143,7 +1314,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param text the text to be weighted.
    * @param lineStartPos the start position of the substring to be weighted.
    * @param endPos the position of the last characterto be included in the weightening process.
-   * @returns the width of the given string in 1/72" dpi.
+   *
+   * @return the width of the given string in 1/72" dpi.
    */
   protected float getStringBounds(String text, int lineStartPos, int endPos)
   {
@@ -1153,6 +1325,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /**
    * Returns the height of the current font. The font height specifies the distance between
    * 2 base lines.
+   *
+   * @return  the font height.
    */
   protected float getFontHeight()
   {
@@ -1163,15 +1337,26 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * Defines the stroke used to draw shapes. If the stroke is of an invalid type, an
    * OutputTargetException is thrown. Currently only BasicStroke is supported.
    *
-   * @throws OutputTargetException
+   * @param stroke  the stroke.
+   *
+   * @throws OutputTargetException if there is a problem with the target.
    */
   public void setStroke(Stroke stroke) throws OutputTargetException
   {
-    if (stroke == null) throw new NullPointerException();
-    if (stroke instanceof BasicStroke == false) throw new OutputTargetException("Unable to handle this stroke type");
+    if (stroke == null)
+    {
+      throw new NullPointerException();
+    }
+    if (stroke instanceof BasicStroke == false)
+    {
+      throw new OutputTargetException("Unable to handle this stroke type");
+    }
 
     // If this stroke is already set, do nothing
-    if (awtStroke != null && awtStroke.equals(stroke)) return;
+    if (awtStroke != null && awtStroke.equals(stroke))
+    {
+      return;
+    }
 
     this.awtStroke = stroke;
     BasicStroke bstroke = (BasicStroke) stroke;
@@ -1180,7 +1365,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Returns the currently set stroke.
+   * Returns the current stroke.
+   *
+   * @return the current stroke.
    */
   public Stroke getStroke()
   {
@@ -1191,11 +1378,16 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * Sets the paint. If the paint could not be converted into a pdf object, an OutputTargetException
    * is thrown. This implementation currently supports java.awt.Color as the only valid paint.
    *
+   * @param paint  the paint.
+   *
    * @throws OutputTargetException if the paint is invalid.
    */
   public void setPaint(Paint paint) throws OutputTargetException
   {
-    if (paint == null) throw new NullPointerException();
+    if (paint == null)
+    {
+      throw new NullPointerException();
+    }
 
     if (paint instanceof Color == false)
     {
@@ -1203,7 +1395,10 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
 
     // If this paint is already set, do nothing
-    if (awtPaint != null && awtPaint.equals(paint)) return;
+    if (awtPaint != null && awtPaint.equals(paint))
+    {
+      return;
+    }
 
     this.awtPaint = paint;
     PdfContentByte cb = this.writer.getDirectContent();
@@ -1215,6 +1410,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   /**
    * Returns the currently set paint.
+   *
+   * @return the paint.
    */
   public Paint getPaint()
   {
@@ -1224,6 +1421,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /**
    * Defines the current clipping are for the band to be drawn. This method is called by
    * the band and should not be called by other entities.
+   *
+   * @param bounds  the clip bounds.
    */
   public void setClippingArea(Rectangle2D bounds)
   {
@@ -1233,11 +1432,16 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /**
    * Restores the state of this target.
    *
+   * @param o  the state to restore.
+   *
    * @throws OutputTargetException if the given state object is not valid.
    */
   public void restoreState(Object o) throws OutputTargetException
   {
-    if (o instanceof PDFState == false) throw new OutputTargetException("Need a pdf state");
+    if (o instanceof PDFState == false)
+    {
+      throw new OutputTargetException("Need a pdf state");
+    }
     PDFState state = (PDFState) o;
     state.restore(this);
   }
@@ -1246,7 +1450,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * Saves the state of this graphics object. Use restoreState to restore a previously saved
    * state.
    *
-   * @returns the state container.
+   * @return the state container.
+   *
+   * @throws OutputTargetException if there is a problem with the output target.
    */
   public Object saveState() throws OutputTargetException
   {
@@ -1255,6 +1461,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   /**
    * returns the font encoding used in this output target.
+   *
+   * @return the font encoding.
    */
   public String getFontEncoding()
   {
@@ -1262,7 +1470,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Defines the text encoding used in this outputtarget.
+   * Defines the text encoding used in this output target.
    *
    * <ul>
    * <li>The Unicode encoding with horizontal writing is "Identity-H"
@@ -1272,10 +1480,16 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * <li>"Cp1257"
    * <li>"MacRoman"
    * </ul>
+   *
+   * @param encoding  the font encoding.
    */
   public void setFontEncoding(String encoding)
   {
-    if (encoding == null) throw new NullPointerException();
+    if (encoding == null)
+    {
+      throw new NullPointerException();
+    }
     this.encoding = encoding;
   }
+
 }

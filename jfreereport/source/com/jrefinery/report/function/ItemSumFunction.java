@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.17 2002/08/20 20:58:20 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.18 2002/08/31 14:00:22 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,8 @@
  * 21-Jul-2002 : Corrected the out-of-bounds constraint
  * 28-Jul-2002 : Function now uses the datarow
  * 08-Aug-2002 : Imports cleaned
- * 20-Aug-2002 : Moved function configuration into function properties, removed local fields "group" and "field"
+ * 20-Aug-2002 : Moved function configuration into function properties, removed local fields
+ *               "group" and "field"
  */
 
 package com.jrefinery.report.function;
@@ -73,16 +74,21 @@ import java.math.BigDecimal;
  * <p>
  * The parameter <code>group</code> denotes the name of a group. When this group is started,
  * the counter gets reseted to null.
+ *
+ * @author TM
  */
 public class ItemSumFunction extends AbstractFunction
 {
+  /** Literal text for the 'group' property. */
   public static final String GROUP_PROPERTY = "group";
+
+  /** Literal text for the 'field' property. */
   public static final String FIELD_PROPERTY = "field";
 
-  /** Zero. */
+  /** A useful constant representing zero. */
   private static final BigDecimal ZERO = new BigDecimal (0.0);
 
-  /** The sum. */
+  /** The item sum. */
   private BigDecimal sum;
 
   /** The parser for performing data conversion */
@@ -167,11 +173,11 @@ public class ItemSumFunction extends AbstractFunction
    * If a group is defined, the running total is reset to zero at the start of every instance of
    * this group.
    *
-   * @param _group The group name (null permitted).
+   * @param name  the group name (null permitted).
    */
-  public void setGroup (String _group)
+  public void setGroup (String name)
   {
-    setProperty (GROUP_PROPERTY, _group);
+    setProperty (GROUP_PROPERTY, name);
   }
 
   /**
@@ -191,13 +197,14 @@ public class ItemSumFunction extends AbstractFunction
    * <P>
    * The field name corresponds to a column name in the report's TableModel.
    *
-   * @param The field name (null not permitted).
+   * @param field  the field name (null not permitted).
    */
   public void setField (String field)
   {
     if (field == null)
+    {
       throw new NullPointerException ();
-
+    }
     setProperty (FIELD_PROPERTY, field);
   }
 

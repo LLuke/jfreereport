@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPropertyFunction.java,v 1.10 2002/08/20 20:58:20 taqua Exp $
+ * $Id: ReportPropertyFunction.java,v 1.11 2002/08/31 14:00:22 taqua Exp $
  *
  * Changes
  * -------
@@ -54,18 +54,24 @@ import com.jrefinery.report.event.ReportEvent;
  * A report function that returns a property that has been set for a report.
  * <P>
  * There are some properties that are defined for all reports: "report.name" and "report.date".
+ * <P>
  * You can add arbitrary properties to a report using the setProperty method.
+ * <P>
  * ReportProperties are now retrieved from the report state.
+ *
+ * @author DG
  */
 public class ReportPropertyFunction extends AbstractFunction
 {
 
   /** The function value. */
   private Object value;
+
+  /** Literal text for the 'reportProperty' property. */
   public static final String REPORTPROPERTY_PROPERTY = "reportProperty";
 
   /**
-   * Default constructor.
+   * Default constructor (intended for use by the SAX handler only).
    */
   public ReportPropertyFunction ()
   {
@@ -74,8 +80,8 @@ public class ReportPropertyFunction extends AbstractFunction
   /**
    * Constructs a new function.
    *
-   * @param name The function name.
-   * @param propertyName The property name.
+   * @param name  the function name.
+   * @param propertyName  the property name.
    */
   public ReportPropertyFunction (String name, String propertyName)
   {
@@ -86,7 +92,7 @@ public class ReportPropertyFunction extends AbstractFunction
   /**
    * Updates the property value of this function.
    *
-   * @param event The event.
+   * @param event  the event.
    */
   public void reportStarted (ReportEvent event)
   {
@@ -97,7 +103,7 @@ public class ReportPropertyFunction extends AbstractFunction
   /**
    * Updates the property value of this function.
    *
-   * @param event The event.
+   * @param event  the event.
    */
   public void reportFinished(ReportEvent event)
   {
@@ -108,7 +114,7 @@ public class ReportPropertyFunction extends AbstractFunction
   /**
    * Updates the property value of this function.
    *
-   * @param event The event.
+   * @param event  the event.
    */
   public void pageStarted(ReportEvent event)
   {
@@ -119,7 +125,7 @@ public class ReportPropertyFunction extends AbstractFunction
   /**
    * Updates the property value of this function.
    *
-   * @param event The event.
+   * @param event  the event.
    */
   public void pageFinished(ReportEvent event)
   {
@@ -130,7 +136,7 @@ public class ReportPropertyFunction extends AbstractFunction
   /**
    * Updates the property value of this function.
    *
-   * @param event The event.
+   * @param event  the event.
    */
   public void groupStarted(ReportEvent event)
   {
@@ -141,7 +147,7 @@ public class ReportPropertyFunction extends AbstractFunction
   /**
    * Updates the property value of this function.
    *
-   * @param event The event.
+   * @param event  the event.
    */
   public void groupFinished(ReportEvent event)
   {
@@ -152,7 +158,7 @@ public class ReportPropertyFunction extends AbstractFunction
   /**
    * Updates the property value of this function.
    *
-   * @param event The event.
+   * @param event  the event.
    */
   public void itemsAdvanced(ReportEvent event)
   {
@@ -163,7 +169,7 @@ public class ReportPropertyFunction extends AbstractFunction
   /**
    * Updates the property value of this function.
    *
-   * @param event The event.
+   * @param event  the event.
    */
   public void itemsStarted(ReportEvent event)
   {
@@ -174,7 +180,7 @@ public class ReportPropertyFunction extends AbstractFunction
   /**
    * Updates the property value of this function.
    *
-   * @param event The event.
+   * @param event  the event.
    */
   public void itemsFinished(ReportEvent event)
   {
@@ -185,7 +191,7 @@ public class ReportPropertyFunction extends AbstractFunction
   /**
    * Returns the function's value.
    *
-   * @return The function value.
+   * @return the function value.
    */
   public Object getValue ()
   {
@@ -214,15 +220,18 @@ public class ReportPropertyFunction extends AbstractFunction
   public void setField (String field)
   {
     if (field == null)
+    {
       throw new NullPointerException ();
+    }
     setProperty (REPORTPROPERTY_PROPERTY, field);
   }
 
   /**
    * Initialises the function.
+   *
+   * @throws FunctionInitializeException if the function is not fully initialised.
    */
-  public void initialize ()
-          throws FunctionInitializeException
+  public void initialize () throws FunctionInitializeException
   {
     super.initialize ();
     String fieldProp = getProperty (REPORTPROPERTY_PROPERTY);

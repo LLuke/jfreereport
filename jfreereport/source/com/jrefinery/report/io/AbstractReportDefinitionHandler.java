@@ -44,6 +44,8 @@ import java.net.URL;
 
 /**
  * Extends the SAX-DefaultHandler with ContentBase capabilities.
+ *
+ * @author TM
  */
 public abstract class AbstractReportDefinitionHandler extends DefaultHandler
 {
@@ -100,6 +102,8 @@ public abstract class AbstractReportDefinitionHandler extends DefaultHandler
    * a unique name is generating by appending a number to the prefix '@anonymous'.
    *
    * @param name The name.
+   *
+   * @return a non-null name.
    */
   protected String generateName (String name)
   {
@@ -113,6 +117,8 @@ public abstract class AbstractReportDefinitionHandler extends DefaultHandler
 
   /**
    * Returns an initialized version of the definition handler.
+   *
+   * @return a report definition handler.
    */
   public abstract AbstractReportDefinitionHandler getInstance ();
 

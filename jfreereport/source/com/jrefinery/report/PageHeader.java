@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,13 +28,14 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PageHeader.java,v 1.3 2002/05/28 19:28:22 taqua Exp $
+ * $Id: PageHeader.java,v 1.4 2002/06/04 19:20:37 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 18-Feb-2002 : Multiple changes with introduction of XML format for report definition (DG);
- * 10-May-2002 : removed all but the default constructor. Added accessor functions for all properties.
+ * 10-May-2002 : Removed all but the default constructor. Added accessor functions for all
+ *               properties.
  * 04-Jun-2002 : Documentation tags changed.
  */
 package com.jrefinery.report;
@@ -43,6 +44,8 @@ package com.jrefinery.report;
 /**
  * A report band used to print information at the top of every page in the report.  There is an
  * option to suppress the page header on the first page and the last page.
+ *
+ * @author DG
  */
 public class PageHeader extends Band
 {

@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ---------------------------
  * SimpleDateFormatParser.java
- * -----------------------
+ * ---------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  */
@@ -43,6 +43,8 @@ import java.text.SimpleDateFormat;
  * results.
  *
  * @see java.text.SimpleDateFormat
+ *
+ * @author TM
  */
 public class SimpleDateFormatParser extends DateFormatParser
 {

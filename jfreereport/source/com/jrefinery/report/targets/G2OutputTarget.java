@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.17 2002/09/06 17:02:42 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.18 2002/09/10 10:52:14 taqua Exp $
  *
  * Changes
  * -------
@@ -37,7 +37,8 @@
  * 16-May-2002 : Interface of drawShape changhed so we can draw different line width (JS)
  * 08-Jun-2002 : Documentation
  * 17-Jul-2002 : Fixed a nullpointer when an ImageReference did not contain a graphics
- * 26-Aug-2002 : Fixed drawString: Text was placed too deep, Fontheight is defined MaxAscent, not font.getFontheight()!
+ * 26-Aug-2002 : Fixed drawString: Text was placed too deep, Fontheight is defined MaxAscent,
+ *               not font.getFontheight()!
  */
 
 package com.jrefinery.report.targets;
@@ -64,17 +65,24 @@ import java.awt.print.PageFormat;
 /**
  * A report output target that uses a Graphics2D object to draw the report.  This allows reports
  * to be printed on the screen and on the printer.
+ *
+ * @author DG
  */
 public class G2OutputTarget extends AbstractOutputTarget
 {
   /** The graphics device. */
   private Graphics2D g2;
+
+  /** The saved state of the Graphics2D device. */
   private Object savedState;
 
+  /** A dummy graphics2D. */
   private static Graphics2D dummyGraphics;
 
   /**
    * Creates an empty graphics by using a 1x1 pixel buffered image.
+   *
+   * @return a Graphics2D instance.
    */
   public static Graphics2D createEmptyGraphics()
   {
@@ -87,22 +95,41 @@ public class G2OutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * a state of an Graphics2D object. This does not store clipping regions or advanced
+   * A state of a Graphics2D object. This does not store clipping regions or advanced
    * properties.
    */
   private static class G2State
   {
+    /** The paint. */
     private Paint mypaint;
+
+    /** The font. */
     private Font myfont;
+
+    /** The stroke. */
     private Stroke mystroke;
+
+    /** The transform. */
     private AffineTransform mytransform;
+
+    /** The background. */
     private Color mybackground;
 
+    /**
+     * Create a new state.
+     *
+     * @param s  the graphics device.
+     */
     public G2State(Graphics2D s)
     {
       save(s);
     }
 
+    /**
+     * Saves the state of the Graphics2D.
+     *
+     * @param source  the Graphics2D.
+     */
     public void save(Graphics2D source)
     {
       mypaint = source.getPaint();
@@ -112,21 +139,26 @@ public class G2OutputTarget extends AbstractOutputTarget
       mybackground = source.getBackground();
     }
 
-    public void restore(Graphics2D dest)
+    /**
+     * Copies the state back to the specified Graphics2D.
+     *
+     * @param target  the Graphics2D.
+     */
+    public void restore(Graphics2D target)
     {
-      dest.setStroke(mystroke);
-      dest.setFont(myfont);
-      dest.setPaint(mypaint);
-      dest.setTransform(mytransform);
-      dest.setBackground(mybackground);
+      target.setStroke(mystroke);
+      target.setFont(myfont);
+      target.setPaint(mypaint);
+      target.setTransform(mytransform);
+      target.setBackground(mybackground);
     }
   }
 
   /**
-   * Constructs an OutputTarget for drawing to a Java Graphics2D object.
+   * Constructs an output target for drawing to a Java Graphics2D object.
    *
-   * @param g2 The graphics device.
-   * @param pageFormat The page format.
+   * @param g2  the graphics device.
+   * @param pageFormat  the page format.
    */
   public G2OutputTarget(Graphics2D g2, PageFormat pageFormat)
   {
@@ -137,19 +169,24 @@ public class G2OutputTarget extends AbstractOutputTarget
   /**
    * Sets the graphics device for this output target.
    *
-   * @param g2 The graphics device.
+   * @param g2 The graphics device (null not permitted).
    */
   public void setGraphics2D(Graphics2D g2)
   {
     if (g2 == null)
+    {
       throw new NullPointerException("Graphics must not be null");
+    }
 
     this.g2 = g2;
-    g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+    g2.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
+                        RenderingHints.VALUE_FRACTIONALMETRICS_ON);
   }
 
   /**
-   * Returns the currently assigned Graphics2D object.
+   * Returns the Graphics2D object assigned to the output target.
+   *
+   * @return the Graphics2D.
    */
   public Graphics2D getGraphics2D()
   {
@@ -157,10 +194,7 @@ public class G2OutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Opens the target.
-   *
-   * @param title The report title.
-   * @param author The report author.
+   * Opens the target.  No action is required for this particular target.
    */
   public void open()
   {
@@ -168,11 +202,31 @@ public class G2OutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Closes the target.
+   * Closes the target.  No action is required for this particular target.
    */
   public void close()
   {
     // do nothing.
+  }
+
+  /**
+   * A page is starting.  This target saves the current state of the Graphics2D device.
+   *
+   * @throws OutputTargetException if there is a problem with the target.
+   */
+  public void beginPage() throws OutputTargetException
+  {
+    this.savedState = saveState();
+  }
+
+  /**
+   * A page has ended.  This target restores the state of the Graphics2D device.
+   *
+   * @throws OutputTargetException if there is a problem with the target.
+   */
+  public void endPage() throws OutputTargetException
+  {
+    restoreState(savedState);
   }
 
   /**
@@ -186,7 +240,9 @@ public class G2OutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Returns the currently set font of this Graphics2D object.
+   * Returns the current font.
+   *
+   * @return the font.
    */
   public Font getFont()
   {
@@ -204,7 +260,9 @@ public class G2OutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Returns the currently defined paint
+   * Returns the current paint.
+   *
+   * @return the paint.
    */
   public Paint getPaint()
   {
@@ -212,8 +270,30 @@ public class G2OutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * Draws a shape. The shape is drawn using Graphics2D.draw. A paint and a stroke have to be
-   * set separatly.
+   * Returns the Stroke for the Graphics2D context.
+   *
+   * @return the stroke.
+   */
+  public Stroke getStroke()
+  {
+    return g2.getStroke();
+  }
+
+  /**
+   * Sets the Stroke for the Graphics2D context.
+   *
+   * @param stroke  the stroke.
+   *
+   * @throws OutputTargetException this exception is not thrown here.
+   */
+  public void setStroke(Stroke stroke) throws OutputTargetException
+  {
+    g2.setStroke(stroke);
+  }
+
+  /**
+   * Draws a shape. The shape is drawn using Graphics2D.draw.  A paint and a stroke have to be
+   * set separately.
    * <P>
    *
    * @param shape The shape.
@@ -225,7 +305,7 @@ public class G2OutputTarget extends AbstractOutputTarget
 
   /**
    * Fills a shape. The shape is drawn using Graphics2D.draw. A paint and a stroke have to be
-   * set separatly.
+   * set separately.
    * <P>
    *
    * @param shape The shape.
@@ -236,45 +316,9 @@ public class G2OutputTarget extends AbstractOutputTarget
   }
 
   /**
-   * This method is called when the page is ended. This returns the initial transformation state
-   * of the graphics object.
-   */
-  public void endPage() throws OutputTargetException
-  {
-    restoreState(savedState);
-  }
-
-  /**
-   * Signals that the current page is ended.  Some targets need to know when a page is being started,
-   * others can simply ignore this message.
-   */
-  public void beginPage() throws OutputTargetException
-  {
-    savedState = saveState();
-  }
-
-  /**
-   * returns the Stroke for the Graphics2D context.
-   */
-  public Stroke getStroke()
-  {
-    return g2.getStroke();
-  }
-
-  /**
-   * sets the Stroke for the Graphics2D context.
-   *
-   * @throws OutputTargetException this exception is not thrown here.
-   */
-  public void setStroke(Stroke stroke) throws OutputTargetException
-  {
-    g2.setStroke(stroke);
-  }
-
-  /**
    * Draws the image contained in the given ImageReference.
    *
-   * @param the imagereference used to contain the image.
+   * @param image the image reference used to contain the image.
    */
   public void drawImage(ImageReference image)
   {
@@ -335,7 +379,8 @@ public class G2OutputTarget extends AbstractOutputTarget
     int display = getFont().canDisplayUpTo(text);
     if (display > 0 && display < text.length())
     {
-      Log.warn("Unable to display the string completely. Can display up to " + display + " chars.");
+      Log.warn("Unable to display the string completely. Can display up to " + display
+             + " chars.");
     }
     g2.drawString(text, x, baseline);
   }
@@ -343,6 +388,8 @@ public class G2OutputTarget extends AbstractOutputTarget
   /**
    * Returns the height of the current font. The font height specifies the distance between
    * 2 base lines.
+   *
+   * @return the font height.
    */
   protected float getFontHeight()
   {
@@ -353,10 +400,11 @@ public class G2OutputTarget extends AbstractOutputTarget
   /**
    * Calculates the width of the specified String in the current Graphics context.
    *
-   * @param text the text to be weighted.
+   * @param currentLine the text to be weighted.
    * @param lineStartPos the start position of the substring to be weighted.
    * @param endPos the position of the last characterto be included in the weightening process.
-   * @returns the width of the given string in 1/72" dpi.
+   *
+   * @return the width of the given string in 1/72" dpi.
    */
   public float getStringBounds(String currentLine, int lineStartPos, int endPos)
   {
@@ -373,6 +421,8 @@ public class G2OutputTarget extends AbstractOutputTarget
   /**
    * Defines the current clipping are for the band to be drawn. This method is called by
    * the band and should not be called by other entities.
+   *
+   * @param bounds  the clip bounds.
    */
   public void setClippingArea(Rectangle2D bounds)
   {
@@ -390,10 +440,17 @@ public class G2OutputTarget extends AbstractOutputTarget
 
   /**
    * Restores the state of this graphics.
+   *
+   * @param o  the state.
+   *
+   * @throws OutputTargetException if the argument is not an instance of G2State.
    */
   public void restoreState(Object o) throws OutputTargetException
   {
-    if (o instanceof G2State == false) throw new OutputTargetException("Need a g2state");
+    if (o instanceof G2State == false)
+    {
+      throw new OutputTargetException("Need a g2state");
+    }
     G2State state = (G2State) o;
     state.restore(this.getGraphics2D());
   }
@@ -402,7 +459,9 @@ public class G2OutputTarget extends AbstractOutputTarget
    * Saves the state of this graphics object. Use restoreState to restore a previously saved
    * state.
    *
-   * @returns the state container.
+   * @return the state container.
+   *
+   * @throws OutputTargetException not thrown here.
    */
   public Object saveState() throws OutputTargetException
   {

@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MultilineTextElement.java,v 1.5 2002/05/28 19:28:22 taqua Exp $
+ * $Id: MultilineTextElement.java,v 1.6 2002/06/04 21:44:34 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,8 @@ package com.jrefinery.report;
 /**
  * This elements linebreaking capabilities are fully implemented in the TextElement. To
  * get the DataElement functionality add an additional ReportDataSource to the TextElement.
+ *
+ * @author TM
  *
  * @deprecated this class is replaced by the TextElement in combination with the Filter API
  */

@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData5.java,v 1.1 2002/05/30 16:35:19 taqua Exp $
+ * $Id: SampleData5.java,v 1.2 2002/06/05 21:20:47 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -79,21 +79,35 @@ public class SampleData5 extends AbstractTableModel
 
   /**
    * Returns the name of the specified column.
+   *
+   * @param column  the column (zero-based index).
    */
-  public String getColumnName (int columnIndex)
+  public String getColumnName (int column)
   {
-    if (columnIndex == 0)
+    if (column == 0)
+    {
       return "Name";
-    else if (columnIndex == 1)
+    }
+    else if (column == 1)
+    {
       return "Color";
-    else if (columnIndex == 2)
+    }
+    else if (column == 2)
+    {
       return "Letter";
-    else if (columnIndex == 3)
+    }
+    else if (column == 3)
+    {
       return "Integer";
-    else if (columnIndex == 4)
+    }
+    else if (column == 4)
+    {
       return "Double";
+    }
     else
+    {
       return null;
+    }
   }
 
   /**

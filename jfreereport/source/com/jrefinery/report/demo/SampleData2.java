@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData2.java,v 1.4 2002/05/28 19:28:23 taqua Exp $
+ * $Id: SampleData2.java,v 1.5 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -155,26 +155,46 @@ public class SampleData2 extends AbstractTableModel
     data[97] = new Object[]{"Ninety Eight", "Blue", "D", new Integer (98), new Double (98.60)};
     data[98] = new Object[]{"Ninety Nine", "Blue", "D", new Integer (99), new Double (99.60)};
     data[99] = new Object[]{"One Hundred", "Blue", "D", new Integer (100), new Double (100.60)};
-    data[100] = new Object[]{"One Hundred and One", "Blue", "D", new Integer (101), new Double (101.60)};
-    data[101] = new Object[]{"One Hundred and Two", "Blue", "D", new Integer (102), new Double (102.60)};
-    data[102] = new Object[]{"One Hundred and Three", "Blue", "D", new Integer (103), new Double (103.60)};
-    data[103] = new Object[]{"One Hundred and Four", "Blue", "D", new Integer (104), new Double (104.60)};
-    data[104] = new Object[]{"One Hundred and Five", "Blue", "D", new Integer (105), new Double (105.60)};
-    data[105] = new Object[]{"One Hundred and Six", "Blue", "D", new Integer (106), new Double (106.60)};
-    data[106] = new Object[]{"One Hundred and Seven", "Blue", "D", new Integer (107), new Double (107.60)};
-    data[107] = new Object[]{"One Hundred and Eight", "Blue", "D", new Integer (108), new Double (108.60)};
-    data[108] = new Object[]{"One Hundred and Nine", "Blue", "D", new Integer (109), new Double (109.60)};
-    data[109] = new Object[]{"One Hundred and Ten", "Blue", "D", new Integer (110), new Double (110.60)};
-    data[110] = new Object[]{"One Hundred and Eleven", "Blue", "D", new Integer (111), new Double (111.60)};
-    data[111] = new Object[]{"One Hundred and Twelve", "Blue", "D", new Integer (112), new Double (112.60)};
-    data[112] = new Object[]{"One Hundred and Thirteen", "Blue", "D", new Integer (113), new Double (113.60)};
-    data[113] = new Object[]{"One Hundred and Fourteen", "Blue", "D", new Integer (114), new Double (114.60)};
-    data[114] = new Object[]{"One Hundred and Fifteen", "Blue", "D", new Integer (115), new Double (115.60)};
-    data[115] = new Object[]{"One Hundred and Sixteen", "Blue", "D", new Integer (116), new Double (116.60)};
-    data[116] = new Object[]{"One Hundred and Seventeen", "Blue", "D", new Integer (117), new Double (117.60)};
-    data[117] = new Object[]{"One Hundred and Eighteen", "Blue", "D", new Integer (118), new Double (118.60)};
-    data[118] = new Object[]{"One Hundred and Nineteen", "Blue", "D", new Integer (119), new Double (119.60)};
-    data[119] = new Object[]{"One Hundred and Twenty", "Blue", "D", new Integer (120), new Double (120.60)};
+    data[100] = new Object[]{"One Hundred and One", "Blue", "D",
+                             new Integer (101), new Double (101.60)};
+    data[101] = new Object[]{"One Hundred and Two", "Blue", "D",
+                             new Integer (102),  new Double (102.60)};
+    data[102] = new Object[]{"One Hundred and Three", "Blue", "D",
+                             new Integer (103), new Double (103.60)};
+    data[103] = new Object[]{"One Hundred and Four", "Blue", "D",
+                             new Integer (104), new Double (104.60)};
+    data[104] = new Object[]{"One Hundred and Five", "Blue", "D",
+                             new Integer (105), new Double (105.60)};
+    data[105] = new Object[]{"One Hundred and Six", "Blue", "D",
+                             new Integer (106), new Double (106.60)};
+    data[106] = new Object[]{"One Hundred and Seven", "Blue", "D",
+                             new Integer (107), new Double (107.60)};
+    data[107] = new Object[]{"One Hundred and Eight", "Blue", "D",
+                             new Integer (108), new Double (108.60)};
+    data[108] = new Object[]{"One Hundred and Nine", "Blue", "D",
+                             new Integer (109), new Double (109.60)};
+    data[109] = new Object[]{"One Hundred and Ten", "Blue", "D",
+                             new Integer (110), new Double (110.60)};
+    data[110] = new Object[]{"One Hundred and Eleven", "Blue", "D",
+                             new Integer (111), new Double (111.60)};
+    data[111] = new Object[]{"One Hundred and Twelve", "Blue", "D",
+                             new Integer (112), new Double (112.60)};
+    data[112] = new Object[]{"One Hundred and Thirteen", "Blue", "D",
+                             new Integer (113), new Double (113.60)};
+    data[113] = new Object[]{"One Hundred and Fourteen", "Blue", "D",
+                             new Integer (114), new Double (114.60)};
+    data[114] = new Object[]{"One Hundred and Fifteen", "Blue", "D",
+                             new Integer (115), new Double (115.60)};
+    data[115] = new Object[]{"One Hundred and Sixteen", "Blue", "D",
+                             new Integer (116), new Double (116.60)};
+    data[116] = new Object[]{"One Hundred and Seventeen", "Blue", "D",
+                             new Integer (117), new Double (117.60)};
+    data[117] = new Object[]{"One Hundred and Eighteen", "Blue", "D",
+                             new Integer (118), new Double (118.60)};
+    data[118] = new Object[]{"One Hundred and Nineteen", "Blue", "D",
+                             new Integer (119), new Double (119.60)};
+    data[119] = new Object[]{"One Hundred and Twenty", "Blue", "D",
+                             new Integer (120), new Double (120.60)};
   }
 
   /**
@@ -199,11 +219,17 @@ public class SampleData2 extends AbstractTableModel
   public Class getColumnClass (int columnIndex)
   {
     if (columnIndex == 3)
+    {
       return Integer.class;
+    }
     else if (columnIndex == 4)
+    {
       return Double.class;
+    }
     else
+    {
       return String.class;
+    }
   }
 
   /**
@@ -212,17 +238,29 @@ public class SampleData2 extends AbstractTableModel
   public String getColumnName (int columnIndex)
   {
     if (columnIndex == 0)
+    {
       return "Name";
+    }
     else if (columnIndex == 1)
+    {
       return "Color";
+    }
     else if (columnIndex == 2)
+    {
       return "Letter";
+    }
     else if (columnIndex == 3)
+    {
       return "Integer";
+    }
     else if (columnIndex == 4)
+    {
       return "Double";
+    }
     else
+    {
       return null;
+    }
   }
 
   /**

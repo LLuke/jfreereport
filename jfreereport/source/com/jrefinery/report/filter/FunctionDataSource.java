@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionDataSource.java,v 1.11 2002/08/31 14:00:22 taqua Exp $
+ * $Id: FunctionDataSource.java,v 1.12 2002/09/05 17:25:38 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@
 package com.jrefinery.report.filter;
 
 import com.jrefinery.report.DataRow;
-import com.jrefinery.report.util.Log;
 
 /**
  * The base class for a function data source. A function datasource does not query a
@@ -58,6 +57,8 @@ import com.jrefinery.report.util.Log;
  * <p>
  * If the function name is invalid (no function registered by that name), null is
  * returned.
+ *
+ * @author TM
  *
  * @deprecated use DataRowDataSource as unified access class instead
  */
@@ -72,6 +73,7 @@ public class FunctionDataSource implements DataSource, DataRowConnectable
    */
   private String function;
 
+  /** The data row. */
   private DataRow dataRow;
 
   /**
@@ -100,7 +102,10 @@ public class FunctionDataSource implements DataSource, DataRowConnectable
    */
   public void setFunction (String field)
   {
-    if (field == null) throw new NullPointerException ();
+    if (field == null)
+    {
+      throw new NullPointerException ();
+    }
     this.function = field;
   }
 
@@ -121,12 +126,15 @@ public class FunctionDataSource implements DataSource, DataRowConnectable
    */
   public Object getValue ()
   {
-    if (getDataRow () == null) throw new IllegalStateException ("No Datarow connected");
+    if (getDataRow () == null)
+    {
+      throw new IllegalStateException ("No Datarow connected");
+    }
     return getDataRow ().get (getFunction ());
   }
 
   /**
-   * @returns a clone of this object.
+   * @return a clone of this object.
    * @throws CloneNotSupportedException if the cloning failed.
    */
   public Object clone () throws CloneNotSupportedException
@@ -138,28 +146,48 @@ public class FunctionDataSource implements DataSource, DataRowConnectable
    * Connects the DataRowBackend with the named DataSource or DataFilter.
    * The filter is now able to query the other DataSources to compute the result.
    *
-   * If there is already a datarow connected, an IllegalStateException is thrown.
+   * @param row  the data row.
+   *
+   * @throws IllegalStateException if there is already a data row connected.
    */
   public void connectDataRow (DataRow row) throws IllegalStateException
   {
-    if (row == null) throw new NullPointerException ("Null-DataRowBackend cannot be set.");
-    if (dataRow != null) throw new IllegalStateException ("There is a datarow already connected for Function-Datasource " + getFunction());
+    if (row == null)
+    {
+      throw new NullPointerException ("Null-DataRowBackend cannot be set.");
+    }
+    if (dataRow != null)
+    {
+      throw new IllegalStateException ("A datarow is already connected for Function-Datasource "
+                                      + getFunction());
+    }
     dataRow = row;
   }
 
   /**
    * Releases the connection to the datarow. If no datarow is connected, an
-   * IllegalStateException is thrown to indicate the programming error.
+   *
+   * @param row  the data row.
+   *
+   * @throws IllegalStateException if there is no data row connected.
    */
   public void disconnectDataRow (DataRow row) throws IllegalStateException
   {
-    if (row == null) throw new NullPointerException ("Null-DataRowBackend cannot be disconnected.");
-    if (dataRow == null) throw new IllegalStateException ("There is no datarow connected");
+    if (row == null)
+    {
+      throw new NullPointerException ("Null-DataRowBackend cannot be disconnected.");
+    }
+    if (dataRow == null)
+    {
+      throw new IllegalStateException ("There is no datarow connected");
+    }
     dataRow = null;
   }
 
   /**
-   * returns the datarow assigned with this DataSource.
+   * Returns the data row assigned to this DataSource.
+   *
+   * @return the data row.
    */
   protected DataRow getDataRow ()
   {

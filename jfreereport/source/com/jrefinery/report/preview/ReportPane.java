@@ -1,10 +1,12 @@
 /**
  * =============================================================
- * JFreeReport - a Java report printing API;
- * =========================================
- * Version 0.50;
- * (C) Copyright 2000, Simba Management Limited;
- * Contact: David Gilbert (david.gilbert@bigfoot.com);
+ * JFreeReport : an open source reporting class library for Java
+ * =============================================================
+ *
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -14,18 +16,20 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License along with this library;
- * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- * MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
  *
- * ReportHeader.java
- * -----------------
+ * ---------------
+ * ReportPane.java
+ * ---------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.21 2002/09/06 17:02:42 taqua Exp $
+ * $Id: ReportPane.java,v 1.22 2002/09/06 19:19:02 taqua Exp $
+ *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
@@ -136,12 +140,13 @@ public class ReportPane extends JComponent implements Printable, Pageable
   private PaginateLock paginateLock = new PaginateLock ();
 
   /**
-   * Standard constructor - builds a report pane to display the specified report. An empty G2OutputTarget
-   * is created and the reports defaultPageFormat is used for printing.
+   * Standard constructor - builds a report pane to display the specified report. An empty
+   * G2OutputTarget is created and the reports defaultPageFormat is used for printing.
    *
    * @param report The report to display within the pane;
   {
-    this (report, new G2OutputTarget (G2OutputTarget.createEmptyGraphics (), report.getDefaultPageFormat ()));
+    this (report, new G2OutputTarget (G2OutputTarget.createEmptyGraphics (),
+                                      report.getDefaultPageFormat ()));
   }
    */
 
@@ -175,7 +180,9 @@ public class ReportPane extends JComponent implements Printable, Pageable
   protected void setPageStateList (ReportStateList list)
   {
     ReportStateList oldList = pageStateList;
-    if (oldList != null) oldList.clear ();
+    if (oldList != null) {
+      oldList.clear ();
+    }
 
     this.pageStateList = list;
     firePropertyChange (PAGINATED_PROPERTY, oldList == null, list == null);
@@ -223,7 +230,9 @@ public class ReportPane extends JComponent implements Printable, Pageable
   public void setPageFormat (PageFormat _pageFormat)
   {
     if (_pageFormat == null)
+    {
       throw new NullPointerException ("PageFormat must not be null");
+    }
 
     this.pageFormat = _pageFormat;
     setPageStateList (null);
@@ -235,7 +244,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
   }
 
   /**
-   * @returns the current page shown
+   * @return the current page shown
    */
   public int getPageNumber ()
   {
@@ -243,7 +252,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
   }
 
   /**
-   * @returns the page count for the current page settings.
+   * @return the page count for the current page settings.
    */
   public int getNumberOfPages ()
   {
@@ -266,7 +275,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
   /**
    * checkes whether a black border is painted around the printable page area.
    *
-   * @returns a flag indicating whether to paint the border.
+   * @return a flag indicating whether to paint the border.
    */
   public boolean isBorderPainted ()
   {
@@ -354,7 +363,8 @@ public class ReportPane extends JComponent implements Printable, Pageable
 
   /**
    * Paints the component, which means drawing the current page of the report.
-   * @param g The graphics device;
+   *
+   * @param g The graphics device.
    *
    */
   public void paintComponent (Graphics g)
@@ -562,7 +572,9 @@ public class ReportPane extends JComponent implements Printable, Pageable
       }
 
       if (pageIndex > pageCount - 1)
+      {
         return NO_SUCH_PAGE;
+      }
 
       ReportState state = (ReportState) getPageStateList ().get (pageIndex);
       state.getReport().processPage (target, state, true);

@@ -40,7 +40,8 @@ public class SampleReport1
    <pre>
    <pageheader height="18" fontname="Serif" fontstyle="plain" fontsize="10" onfirstpage="true">
    <rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0"/>
-   <date-function name="date1" x="0" y="0" width="100%" height="14" alignment="right" baseline="12" format="d-MMM-yyyy" function="report_date"/>
+   <date-function name="date1" x="0" y="0" width="100%" height="14" alignment="right"
+                  baseline="12" format="d-MMM-yyyy" function="report_date"/>
    <line name="line1" x1="0" y1="16" x2="0" y2="16" color="#CFCFCF" weight="2.0"/>
    </pageheader>
    </pre
@@ -89,7 +90,8 @@ public class SampleReport1
   /**
    <pre>
    <reportfooter height="48" fontname="Serif" fontstyle="bold" fontsize="16">
-   <label name="Label 2" x="0" y="0" width="100%" height="24" alignment="center">*** END OF REPORT ***</label>
+   <label name="Label 2" x="0" y="0" width="100%" height="24"
+          alignment="center">*** END OF REPORT ***</label>
    </reportfooter>
    </pre
    *
@@ -130,7 +132,8 @@ public class SampleReport1
   /**
    <pre>
    <reportheader height="48" fontname="Serif" fontstyle="bold" fontsize="20">
-   <label name="Label 1" x="0" y="0" width="100%" height="24" alignment="center" baseline="20">LIST OF COUNTRIES BY CONTINENT</label>
+   <label name="Label 1" x="0" y="0" width="100%" height="24" alignment="center"
+          baseline="20">LIST OF COUNTRIES BY CONTINENT</label>
    </reportheader>
    </pre
    *
@@ -162,9 +165,12 @@ public class SampleReport1
    <rectangle name="background" x="0" y="0" width="100%" height="100%" color="#DFDFDF" weight="0"/>
    <line name="top" x1="0" y1="0" x2="0" y2="0" color="#DFDFDF" weight="0.1"/>
    <line name="bottom" x1="0" y1="10" x2="0" y2="10" color="#DFDFDF" weight="0.1"/>
-   <string-field name="Country Element" x="0" y="0" width="176" height="8" alignment="left" fieldname="Country" />
-   <string-field name="Code Element" x="180" y="0" width="76" height="8" alignment="left" fieldname="ISO Code"/>
-   <number-field name="Population Element" x="260" y="0" width="76" height="8" alignment="right" format="#,##0" fieldname="Population"/>
+   <string-field name="Country Element" x="0" y="0" width="176" height="8" alignment="left"
+                 fieldname="Country" />
+   <string-field name="Code Element" x="180" y="0" width="76" height="8" alignment="left"
+                 fieldname="ISO Code"/>
+   <number-field name="Population Element" x="260" y="0" width="76" height="8" alignment="right"
+                 format="#,##0" fieldname="Population"/>
    </items>
    </pre
    */
@@ -252,7 +258,8 @@ public class SampleReport1
    <property name="group">Continent Group</property>
    </properties>
    </function>
-   <function name="backgroundTrigger" class="com.jrefinery.report.function.ElementVisibilitySwitchFunction">
+   <function name="backgroundTrigger"
+             class="com.jrefinery.report.function.ElementVisibilitySwitchFunction">
    <properties>
    <property name="element">background</property>
    </properties>
@@ -303,12 +310,15 @@ public class SampleReport1
    <group name="Continent Group">
    <groupheader height="18" fontname="Monospaced" fontstyle="bold" fontsize="9" pagebreak="false">
    <label name="Label 5" x="0" y="1" width="76" height="9" alignment="left">CONTINENT:</label>
-   <string-field name="Continent Element" x="96" y="1" width="76" height="9" alignment="left" fieldname="Continent"/>
+   <string-field name="Continent Element" x="96" y="1" width="76" height="9" alignment="left"
+                 fieldname="Continent"/>
    <line name="line1" x1="0" y1="12" x2="0" y2="12" weight="0.5"/>
    </groupheader>
    <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
-   <label name="Label 6" x="0" y="0" width="450" height="12" alignment="left" baseline="10">Population:</label>
-   <number-function x="260" y="0" width="76" height="12" alignment="right" baseline="10" format="#,##0" function="sum"/>
+   <label name="Label 6" x="0" y="0" width="450" height="12" alignment="left"
+          baseline="10">Population:</label>
+   <number-function x="260" y="0" width="76" height="12" alignment="right" baseline="10"
+                    format="#,##0" function="sum"/>
    </groupfooter>
    <fields>
    <field>Continent</field>

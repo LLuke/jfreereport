@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -32,7 +32,9 @@ package com.jrefinery.report.util;
 import java.io.Serializable;
 
 /**
- * prints all log-messages to System.out stream.
+ * Prints all log-messages to System.out stream.
+ *
+ * @author TM
  */
 public class SystemOutLogTarget implements LogTarget, Serializable
 {
@@ -46,10 +48,13 @@ public class SystemOutLogTarget implements LogTarget, Serializable
    */
   public void log (int level, String message)
   {
-    if (level > 3) level = 3;
+    if (level > 3)
+    {
+      level = 3;
+    }
     if (level <= Log.getDebugLevel ())
     {
-      System.out.println (levels[level] + message);
+      System.out.println (LEVELS[level] + message);
     }
   }
 
@@ -66,56 +71,107 @@ public class SystemOutLogTarget implements LogTarget, Serializable
    */
   public void log (int level, String message, Exception e)
   {
-    if (level > 3) level = 3;
+    if (level > 3)
+    {
+      level = 3;
+    }
     if (level <= Log.getDebugLevel ())
     {
-      System.out.println (levels[level] + message);
+      System.out.println (LEVELS[level] + message);
       e.printStackTrace (System.out);
     }
   }
 
+  /**
+   * A convenience method for logging a 'debug' message.
+   *
+   * @param message  the message.
+   */
   public void debug (String message)
   {
     log (DEBUG, message);
   }
 
+  /**
+   * A convenience method for logging a 'debug' message.
+   *
+   * @param message  the message.
+   * @param e  the exception.
+   */
   public void debug (String message, Exception e)
   {
     log (DEBUG, message, e);
   }
 
+  /**
+   * A convenience method for logging an 'info' message.
+   *
+   * @param message  the message.
+   */
   public void info (String message)
   {
     log (INFO, message);
   }
 
+  /**
+   * A convenience method for logging an 'info' message.
+   *
+   * @param message  the message.
+   * @param e  the exception.
+   */
   public void info (String message, Exception e)
   {
     log (INFO, message, e);
   }
 
+  /**
+   * A convenience method for logging a 'warning' message.
+   *
+   * @param message  the message.
+   */
   public void warn (String message)
   {
     log (WARN, message);
   }
 
+  /**
+   * A convenience method for logging a 'warning' message.
+   *
+   * @param message  the message.
+   * @param e  the exception.
+   */
   public void warn (String message, Exception e)
   {
     log (WARN, message, e);
   }
 
+  /**
+   * A convenience method for logging an 'error' message.
+   *
+   * @param message  the message.
+   */
   public void error (String message)
   {
     log (ERROR, message);
   }
 
+  /**
+   * A convenience method for logging an 'error' message.
+   *
+   * @param message  the message.
+   * @param e  the exception.
+   */
   public void error (String message, Exception e)
   {
     log (ERROR, message, e);
   }
 
+  /** The default target. */
   private static SystemOutLogTarget defaultTarget;
 
+  /**
+   * Activates the default target.
+   */
   public static void activate ()
   {
     if (defaultTarget == null)
@@ -125,6 +181,9 @@ public class SystemOutLogTarget implements LogTarget, Serializable
     }
   }
 
+  /**
+   * Deactivates the default target.
+   */
   public static void deactivate ()
   {
     if (defaultTarget != null)

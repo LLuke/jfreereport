@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -41,6 +41,8 @@ import java.text.NumberFormat;
  * setNullValue(Object) is returned.
  *
  * @see java.text.NumberFormat
+ *
+ * @author TM
  */
 public class NumberFormatParser extends FormatParser
 {
@@ -189,7 +191,9 @@ public class NumberFormatParser extends FormatParser
    * a valid value, and no parsing is required, a parser can skip the parsing process by returning
    * true in this function.
    *
-   * @returns true, if the given object is already an instance of number.
+   * @param o  the value to parse.
+   *
+   * @return true, if the given object is already an instance of number.
    */
   protected boolean isValidOutput (Object o)
   {

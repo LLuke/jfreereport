@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * --------------------------
  * OutputTargetException.java
- * -----------------------
+ * --------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * Changes
@@ -38,27 +38,51 @@ import java.io.PrintWriter;
 /**
  * An OutputTargetException is thrown if a element could not be printed in the target or
  * an TargetInternalError occured, that made proceeding impossible.
+ *
+ * @author DG
  */
 public class OutputTargetException extends Exception
 {
+  /** The parent exception. */
   private Exception parent;
 
+  /**
+   * Creates an exception.
+   *
+   * @param message  the exception message.
+   * @param ex  the parent exception.
+   */
   public OutputTargetException (String message, Exception ex)
   {
     super (message);
     parent = ex;
   }
 
+  /**
+   * Creates an exception.
+   *
+   * @param message  the exception message.
+   */
   public OutputTargetException (String message)
   {
     super (message);
   }
 
+  /**
+   * Returns the parent exception (possibly null).
+   *
+   * @return the parent exception.
+   */
   public Exception getParent ()
   {
     return parent;
   }
 
+  /**
+   * Prints the stack trace to the specified stream.
+   *
+   * @param stream  the output stream.
+   */
   public void printStackTrace (PrintStream stream)
   {
     super.printStackTrace (stream);
@@ -69,6 +93,11 @@ public class OutputTargetException extends Exception
     }
   }
 
+  /**
+   * Prints the stack trace to the specified writer.
+   *
+   * @param writer  the writer.
+   */
   public void printStackTrace (PrintWriter writer)
   {
     super.printStackTrace (writer);
@@ -78,4 +107,5 @@ public class OutputTargetException extends Exception
       getParent ().printStackTrace (writer);
     }
   }
+
 }

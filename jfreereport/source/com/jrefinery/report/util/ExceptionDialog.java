@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -210,7 +210,7 @@ public class ExceptionDialog extends JDialog
   }
 
   /**
-   * @returns the message for this exception dialog. The message is displayed on the main page.
+   * @return the message for this exception dialog. The message is displayed on the main page.
    */
   public String getMessage ()
   {
@@ -218,8 +218,9 @@ public class ExceptionDialog extends JDialog
   }
 
   /**
-   * sets the exception for this dialog. If no exception is set, the "Detail" button is disabled
-   * and the stacktrace text cleared. Else the stacktraces text is read into the detail message area.
+   * Sets the exception for this dialog. If no exception is set, the "Detail" button is disabled
+   * and the stacktrace text cleared. Else the stacktraces text is read into the detail message
+   * area.
    */
   public void setException (Exception e)
   {

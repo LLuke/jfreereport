@@ -46,6 +46,7 @@ import java.util.EventListener;
  * <P>
  * When handling these events, use the reportState to track the current changes of the report.
  *
+ * @author TM
  */
 public interface ReportListener extends EventListener
 {

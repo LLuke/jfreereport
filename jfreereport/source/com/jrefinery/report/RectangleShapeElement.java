@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * --------------------------
  * RectangleShapeElement.java
- * -----------------------
+ * --------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * Changes
@@ -40,6 +40,8 @@ import java.awt.geom.Rectangle2D;
 /**
  * A RectangleShapeElement encapsulates an Rectangle2D-Shape to display it on the report.
  * This rectangle is filled with this elements paint, but no outline is drawn.
+ *
+ * @author TM
  */
 public class RectangleShapeElement extends ShapeElement
 {
@@ -53,7 +55,9 @@ public class RectangleShapeElement extends ShapeElement
   }
 
   /**
-   * @return this elements Rectangle2D shape.
+   * Returns the rectangle.
+   *
+   * @return this element's Rectangle2D shape.
    */
   public Rectangle2D getRectangle ()
   {
@@ -92,6 +96,7 @@ public class RectangleShapeElement extends ShapeElement
    * Adjusts the shape of this element to fit the bounds.
    *
    * @param bounds the bounds of this element
+   *
    * @throws NullPointerException
    */
   public void setBounds (Rectangle2D bounds)
@@ -103,10 +108,16 @@ public class RectangleShapeElement extends ShapeElement
   /**
    * Draw the rectangle. The rectangle drawn is this elements bounds object. The bounds are
    * adjusted by the band if they contain relative values.
+   *
+   * @param target  the output target.
+   * @param band  the report band.
+   *
+   * @throws OutputTargetException if there is a problem with the target.
    */
   public void draw (OutputTarget target, Band band) throws OutputTargetException
   {
     super.setShape (target.getCursor ().getElementBounds ());
     super.draw (target, band);
   }
+
 }

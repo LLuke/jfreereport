@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------------
+ * -----------------------
  * DataRowConnectable.java
- * ---------------
+ * -----------------------
  * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSource.java,v 1.4 2002/07/03 18:49:48 taqua Exp $
+ * $Id: DataRowConnectable.java,v 1.1 2002/07/28 13:25:26 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,10 @@ package com.jrefinery.report.filter;
 import com.jrefinery.report.DataRow;
 
 /**
- * Marks data sources or filters that can be connected to the datarow. (FunctionDataSources,
+ * Marks data sources or filters that can be connected to the data row. (FunctionDataSources,
  * ReportDataSources and ExpressionDataSources).
+ *
+ * @author TM
  */
 public interface DataRowConnectable
 {
@@ -49,13 +51,19 @@ public interface DataRowConnectable
    * Connects the DataRow with the named DataSource or DataFilter.
    * The filter is now able to query the other DataSources to compute the result.
    *
-   * If there is already a datarow connected, an IllegalStateException is thrown.
+   * @param row  the data row.
+   *
+   * @throws IllegalStateException if there is already a data row connected.
    */
   public void connectDataRow (DataRow row) throws IllegalStateException;
 
   /**
-   * Releases the connection to the datarow. If no datarow is connected, an
+   * Releases the connection to the data row. If no data row is connected, an
    * IllegalStateException is thrown to indicate the programming error.
+   *
+   * @param row  the data row.
+   *
+   * @throws IllegalStateException if there is already a data row connected.
    */
   public void disconnectDataRow (DataRow row) throws IllegalStateException;
 

@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.32 2002/09/06 17:56:38 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.33 2002/09/10 10:52:13 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -55,7 +55,6 @@ import com.jrefinery.report.util.FloatingButtonEnabler;
 import com.jrefinery.report.util.ActionDowngrade;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ActionMenuItem;
-import com.jrefinery.ui.L1R2ButtonPanel;
 import com.jrefinery.ui.RefineryUtilities;
 import com.jrefinery.ui.about.AboutFrame;
 
@@ -103,10 +102,12 @@ public class JFreeReportDemo extends JFrame
 
     public void actionPerformed(ActionEvent event)
     {
-      System.out.println ("Free: " + Runtime.getRuntime().freeMemory() + " Total: " + Runtime.getRuntime().totalMemory());
+      System.out.println ("Free: " + Runtime.getRuntime().freeMemory() + " "
+                        + "Total: " + Runtime.getRuntime().totalMemory());
       System.gc();
       displayAbout();
-      System.out.println ("Free: " + Runtime.getRuntime().freeMemory() + " Total: " + Runtime.getRuntime().totalMemory());
+      System.out.println ("Free: " + Runtime.getRuntime().freeMemory() + " "
+                        + "Total: " + Runtime.getRuntime().totalMemory());
     }
   }
 
@@ -209,8 +210,10 @@ public class JFreeReportDemo extends JFrame
     tabbedPane.addTab(formExample(2), RefineryUtilities.createTablePanel(data2));
     tabbedPane.addTab(formExample(3), RefineryUtilities.createTablePanel(data3));
     tabbedPane.addTab(formExample(4), RefineryUtilities.createTablePanel(data4));
-    tabbedPane.addTab("Manual Created Report (see Source)", RefineryUtilities.createTablePanel(data1));
-    tabbedPane.addTab("Example 2 - with Image-Function", RefineryUtilities.createTablePanel(data2));
+    tabbedPane.addTab("Manual Created Report (see Source)",
+                      RefineryUtilities.createTablePanel(data1));
+    tabbedPane.addTab("Example 2 - with Image-Function",
+                      RefineryUtilities.createTablePanel(data2));
     tabbedPane.addTab("ItemHideFunction-Demo", RefineryUtilities.createTablePanel(data2));
 
     content.add(tabbedPane);
@@ -245,7 +248,8 @@ public class JFreeReportDemo extends JFrame
    */
   private String formExample(int ex)
   {
-    return MessageFormat.format(getResources().getString("example"), new Object[]{new Integer(ex)});
+    return MessageFormat.format(getResources().getString("example"),
+                                new Object[]{new Integer(ex)});
   }
 
   /**
@@ -323,7 +327,8 @@ public class JFreeReportDemo extends JFrame
     {
 
       JOptionPane.showMessageDialog(this,
-          MessageFormat.format(getResources().getString("report.definitionnotfound"), new Object[]{urlname}),
+          MessageFormat.format(getResources().getString("report.definitionnotfound"),
+                               new Object[]{urlname}),
           getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
       return;
     }
@@ -343,7 +348,8 @@ public class JFreeReportDemo extends JFrame
     if (report1 == null)
     {
       JOptionPane.showMessageDialog(this,
-          MessageFormat.format(getResources().getString("report.definitionnull"), new Object[]{urlname}),
+          MessageFormat.format(getResources().getString("report.definitionnull"),
+                               new Object[]{urlname}),
           getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 
@@ -410,7 +416,8 @@ public class JFreeReportDemo extends JFrame
   {
     if (aboutFrame == null)
     {
-      aboutFrame = new AboutFrame(getResources().getString("action.about.name"), JFreeReport.getInfo());
+      aboutFrame = new AboutFrame(getResources().getString("action.about.name"),
+                                  JFreeReport.getInfo());
 
       aboutFrame.pack();
       RefineryUtilities.centerFrameOnScreen(aboutFrame);
@@ -444,7 +451,9 @@ public class JFreeReportDemo extends JFrame
     JMenuItem printItem = new ActionMenuItem(previewAction);
     KeyStroke accelerator = (KeyStroke) previewAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
+    {
       printItem.setAccelerator(accelerator);
+    }
     fileMenu.add(printItem);
 
     fileMenu.add(new JSeparator());
@@ -536,4 +545,5 @@ public class JFreeReportDemo extends JFrame
     RefineryUtilities.centerFrameOnScreen(frame);
     frame.setVisible(true);
   }
+
 }

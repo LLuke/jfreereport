@@ -1,10 +1,12 @@
 /**
  * =============================================================
- * JFreeReport - a Java report printing API;
- * =========================================
+ * JFreeReport : an open source reporting class library for Java
+ * =============================================================
  *
- * (C) Copyright 2000, Simba Management Limited;
- * Contact: David Gilbert (david.gilbert@bigfoot.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -14,20 +16,22 @@
  * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Lesser General Public License for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License along with this library;
- * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- * MA 02111-1307, USA.
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
  *
+ * ------------------------------
  * ReportProcessingException.java
- * -----------------
+ * ------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
- * Contributor(s):   -;
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProcessor.java,v 1.11 2002/08/22 19:19:27 taqua Exp $
+ * $Id: ReportProcessor.java,v 1.12 2002/09/11 14:32:00 taqua Exp $
+ *
  * Changes
- * -------------------------
+ * -------
  * 10-May-2002 : Initial version
  * 04-Jun-2002 : Documentation
  * 09-Jul-2002 : Docs
@@ -40,31 +44,44 @@ import com.jrefinery.report.targets.OutputTargetException;
 import com.jrefinery.report.util.Log;
 
 /**
- * Processes a page of an report. This is an abstraction to protect the reportState from
+ * Processes a page of a report. This is an abstraction to protect the reportState from
  * detailed knowledge of the printing process. All printing centric state information is
  * concentrated in this class.
  * <p>
  * ToDo: Better support for layout
+ *
+ * @author TM
  */
 public class ReportProcessor implements JFreeReportConstants
 {
+  /** The cursor. */
   private Cursor cursor;
+
+  /** The output target. */
   private OutputTarget target;
+
+  /** Drawing to the output target?  Or just repaginating? */
   private boolean draw;
+
+  /** A flag that indicates the current page is done. */
   private boolean pageDone;
 
   /**
    * Creates a new ReportProcessor. The ReportProcessor will use the given output target
    * for printing. The pageFooter is used to reserve the needed space in the cursor.
+   *
+   * @param out  the output target.
+   * @param draw  the 'draw' flag.
+   * @param pageFooter  the page footer.
    */
   public ReportProcessor (OutputTarget out, boolean draw, PageFooter pageFooter)
   {
-    cursor = new Cursor (out);
-    target = out;
+    this.cursor = new Cursor (out);
+    this.target = out;
     this.draw = draw;
-    pageDone = false;
+    this.pageDone = false;
 
-    cursor.reserveSpace (pageFooter.getHeight ());
+    this.cursor.reserveSpace (pageFooter.getHeight ());
   }
 
   /**
@@ -78,8 +95,9 @@ public class ReportProcessor implements JFreeReportConstants
   }
 
   /**
-   * checks whether to draw on the output target.
-   * @returns true, if the processor should draw, false otherwise.
+   * Checks whether to draw on the output target.
+   *
+   * @return true, if the processor should draw, false otherwise.
    */
   protected boolean isDraw ()
   {
@@ -99,7 +117,9 @@ public class ReportProcessor implements JFreeReportConstants
     float dheight = 0;
 
     if (band.isVisible () == false)
+    {
       return;
+    }
 
     if (isDraw ())
     {
@@ -119,7 +139,9 @@ public class ReportProcessor implements JFreeReportConstants
     }
 
     if (dheight < band.getHeight ())
+    {
       dheight = band.getHeight ();
+    }
 
     cursor.advance (y - cursor.getY () + dheight);
   }
@@ -134,7 +156,9 @@ public class ReportProcessor implements JFreeReportConstants
   public void printReportHeader (ReportHeader reportHeader)
   {
     if (reportHeader == null)
+    {
       throw new NullPointerException ("ReportHeader must not be null");
+    }
 
     draw (reportHeader);
     pageDone = reportHeader.isOwnPage ();
@@ -151,7 +175,9 @@ public class ReportProcessor implements JFreeReportConstants
   public void printPageHeader (PageHeader pageHeader)
   {
     if (pageHeader == null)
+    {
       throw new NullPointerException ("PageHeader must not be null");
+    }
 
     draw (pageHeader);
   }
@@ -166,7 +192,9 @@ public class ReportProcessor implements JFreeReportConstants
   public void printPageFooter (PageFooter pageFooter)
   {
     if (pageFooter == null)
+    {
       throw new NullPointerException ("PageHeader must not be null");
+    }
 
     draw (pageFooter, cursor.getPageBottom ());
   }
@@ -181,7 +209,9 @@ public class ReportProcessor implements JFreeReportConstants
   public void printGroupHeader (GroupHeader groupHeader)
   {
     if (groupHeader == null)
+    {
       throw new NullPointerException ("PageHeader must not be null");
+    }
 
     if (isSpaceFor (groupHeader))
     {
@@ -199,7 +229,9 @@ public class ReportProcessor implements JFreeReportConstants
   public void printItemBand (ItemBand itemBand)
   {
     if (itemBand == null)
+    {
       throw new NullPointerException ("ItemBand must not be null");
+    }
 
     if (isSpaceFor (itemBand))
     {
@@ -217,7 +249,9 @@ public class ReportProcessor implements JFreeReportConstants
   public void printGroupFooter (GroupFooter footer)
   {
     if (footer == null)
+    {
       throw new NullPointerException ("GroupFooter must not be null");
+    }
 
     if (isSpaceFor (footer))
     {
@@ -235,7 +269,9 @@ public class ReportProcessor implements JFreeReportConstants
   public void printReportFooter (ReportFooter footer)
   {
     if (footer == null)
+    {
       throw new NullPointerException ("ReportFooter must not be null");
+    }
 
     if (isSpaceFor (footer))
     {
@@ -250,21 +286,32 @@ public class ReportProcessor implements JFreeReportConstants
    * with the exception of the pagefooter, whose space was reserved previously.
    *
    * @param band the band which is tested
+   *
+   * @return true, if there is space for the band.
+   *
    * @throws NullPointerException if the given Band is null
    */
   public boolean isSpaceFor (Band band)
   {
     if (band == null)
+    {
       throw new NullPointerException ("Band must not be null");
+    }
 
     if (isPageDone ())
+    {
       return false;
+    }
 
     if (band.isVisible () == false)
+    {
       return true;
+    }
 
     if (band.getHeight() == -100)
+    {
       return true;
+    }
 
     if (cursor.isSpaceFor (band.getHeight ()) == false)
     {
@@ -285,7 +332,9 @@ public class ReportProcessor implements JFreeReportConstants
   }
 
   /**
-   * checks whether a pagebreak should be performed before printing any other element.
+   * Checks whether a pagebreak should be performed before printing any other element.
+   *
+   * @return the 'page-done' flag.
    */
   public boolean isPageDone ()
   {

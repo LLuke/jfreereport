@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -49,6 +49,8 @@ import java.util.List;
  * <p>
  * Internally this list is organized as a list of WeakReferenceLists, where every WeakReferenceList
  * stores a certain number of page states.
+ *
+ * @author TM
  */
 public class ReportStateList
 {
@@ -65,16 +67,28 @@ public class ReportStateList
    */
   private static class MasterList extends WeakReferenceList
   {
+    /** The position. */
     private int pos;
+
+    /** The master list. */
     private ReportStateList master;
 
+    /**
+     * Creates a new master list.
+     *
+     * @param list  the list.
+     */
     public MasterList (ReportStateList list)
     {
       this.master = list;
     }
 
     /**
-     * function to restore the state of an child after the child was garbage collected.
+     * Function to restore the state of a child after the child was garbage collected.
+     *
+     * @param index  the index.
+     *
+     * @return ??
      */
     protected Object restoreChild (int index)
     {
@@ -96,8 +110,10 @@ public class ReportStateList
     }
 
     /**
-     * returns the number of children in the list. This value is a reference to the constant
+     * Returns the number of children in the list. This value is a reference to the constant
      * MASTERPOSITIONS and is defaulted to 10.
+     *
+     * @return the maximum number of children in the list.
      */
     protected int getMaxChildCount ()
     {
@@ -107,11 +123,21 @@ public class ReportStateList
     /**
      * Internal handler function restore a state. Count denotes the number of pages required
      * to be processed to restore the page, when the reportstate master is used as source element.
+     *
+     * @param count  the count.
+     * @param rootstate  the root state.
+     *
+     * @return the report state.
+     *
+     * @throws ReportProcessingException if there was a problem processing the report.
      */
     protected ReportState restoreState (int count, ReportState rootstate)
             throws ReportProcessingException
     {
-      if (rootstate == null) throw new NullPointerException ("Master is null");
+      if (rootstate == null)
+      {
+        throw new NullPointerException ("Master is null");
+      }
       ReportState state = rootstate;
 
       for (int i = 0; i <= count; i++)
@@ -141,7 +167,7 @@ public class ReportStateList
   /**
    * The number of elements in this list
    */
-  private int _size;
+  private int size;
 
   /**
    * the report used to create this list is also used to restore garbage collected states.
@@ -154,7 +180,11 @@ public class ReportStateList
   private OutputTarget target;
 
   /**
-   * returns the index of the WeakReferenceList in the master list.
+   * Returns the index of the WeakReferenceList in the master list.
+   *
+   * @param pos  the position.
+   *
+   * @return ??
    */
   private int getMasterPos (int pos)
   {
@@ -162,34 +192,50 @@ public class ReportStateList
   }
 
   /**
-   * creates a new reportstatelist. The list will be filled using the specified report
+   * Creates a new reportstatelist. The list will be filled using the specified report
    * and output target. Filling of the list is done elsewhere.
+   *
+   * @param report  the report
+   * @param out  the output target.
    *
    * @throws NullPointerException if one or both of report or outputtarget are null
    */
   public ReportStateList (JFreeReport report, OutputTarget out)
   {
-    if (report == null) throw new NullPointerException ("Report null");
-    if (out == null) throw new NullPointerException ("outputtarget null");
+    if (report == null)
+    {
+      throw new NullPointerException ("Report null");
+    }
+    if (out == null)
+    {
+      throw new NullPointerException ("outputtarget null");
+    }
     this.report = report;
     this.target = out;
     masterStates = new LinkedList ();
   }
 
   /**
-   * returns the number of elements in this list
+   * Returns the number of elements in this list.
+   *
+   * @return the number of elements in the list.
    */
   public int size ()
   {
-    return _size;
+    return this.size;
   }
 
   /**
    * Adds this report state to the end of the list.
+   *
+   * @param state  the report state.
    */
   public void add (ReportState state)
   {
-    if (state == null) throw new NullPointerException ();
+    if (state == null)
+    {
+      throw new NullPointerException ();
+    }
 
     MasterList master = null;
     if (getMasterPos (size ()) >= masterStates.size ())
@@ -203,25 +249,31 @@ public class ReportStateList
       master = (MasterList) masterStates.get (getMasterPos (size ()));
     }
     master.add (state);
-    _size++;
+    this.size++;
   }
 
   /**
-   * removes all elements in the list
+   * Removes all elements in the list
    */
   public void clear ()
   {
     masterStates.clear ();
-    _size = 0;
+    this.size = 0;
   }
 
   /**
-   * retrieves the element on position <code>index</code> in this list.
+   * Retrieves the element on position <code>index</code> in this list.
+   *
+   * @param index  the index.
+   *
+   * @return the report state.
    */
   public ReportState get (int index)
   {
     if (index >= size () || index < 0)
+    {
       throw new IndexOutOfBoundsException ();
+    }
     MasterList master = (MasterList) masterStates.get (getMasterPos (index));
     return (ReportState) master.get (index);
   }

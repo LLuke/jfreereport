@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -66,12 +66,15 @@ public class KeyedQueue implements Serializable, Cloneable
    */
   public void setLimit (int limit)
   {
-    if (limit < 1) throw new IllegalArgumentException ();
+    if (limit < 1)
+    {
+      throw new IllegalArgumentException ("Limit must be at least 1.");
+    }
     this.limit = limit;
   }
 
   /**
-   * @returns the maximal number of elements in the queue
+   * @return the maximal number of elements in the queue
    */
   public int getLimit ()
   {
@@ -84,15 +87,26 @@ public class KeyedQueue implements Serializable, Cloneable
    */
   public void put (Object key, Object ob)
   {
-    if (key == null) throw new NullPointerException ("Key must not be null");
-    if (ob == null) throw new NullPointerException ("Value must not be null");
+    if (key == null)
+    {
+      throw new NullPointerException ("Key must not be null");
+    }
+    if (ob == null)
+    {
+      throw new NullPointerException ("Value must not be null");
+    }
 
     Object oldval = table.put (key, ob);
-    if (oldval != null) list.remove (oldval);
+    if (oldval != null)
+    {
+      list.remove (oldval);
+    }
     list.add (ob);
 
     if (list.size () > getLimit ())
+    {
       removeLast ();
+    }
   }
 
   /**
@@ -100,7 +114,10 @@ public class KeyedQueue implements Serializable, Cloneable
    */
   public Object get (Object key)
   {
-    if (key == null) throw new NullPointerException ("Key must not be null");
+    if (key == null)
+    {
+      throw new NullPointerException ("Key must not be null");
+    }
 
     return table.get (key);
   }
@@ -110,7 +127,10 @@ public class KeyedQueue implements Serializable, Cloneable
    */
   public void remove (Object key)
   {
-    if (key == null) throw new NullPointerException ();
+    if (key == null)
+    {
+      throw new NullPointerException ();
+    }
     table.remove (key);
     list.remove (key);
   }

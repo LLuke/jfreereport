@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EmptyDataSource.java,v 1.4 2002/07/03 18:49:48 taqua Exp $
+ * $Id: EmptyDataSource.java,v 1.5 2002/08/28 15:27:39 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@ package com.jrefinery.report.filter;
 
 /**
  * A data source that always returns null.
+ *
+ * @author TM
  */
 public class EmptyDataSource implements DataSource
 {
@@ -56,10 +58,15 @@ public class EmptyDataSource implements DataSource
   }
 
   /**
-   * @returns a clone of this EmptyDataSource
+   * Clones the data source.
+   *
+   * @return a clone.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone () throws CloneNotSupportedException
   {
     return super.clone ();
   }
+
 }

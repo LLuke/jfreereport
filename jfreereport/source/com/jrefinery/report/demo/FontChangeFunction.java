@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -73,7 +73,10 @@ public class FontChangeFunction extends AbstractFunction
   public void itemsAdvanced (ReportEvent event)
   {
     // if this is a preparerun, nothing gets printed and so no font change is required.
-    if (event.getState ().isPrepareRun ()) return;
+    if (event.getState ().isPrepareRun ())
+    {
+      return;
+    }
 
     TableModel data = event.getReport ().getData ();
     int row = event.getState ().getCurrentDataItem ();
@@ -81,7 +84,10 @@ public class FontChangeFunction extends AbstractFunction
     // Try to get the name of the font to be set.
     // If the name is null, return without an excpetion, just do nothing.
     String fontname = (String) data.getValueAt (row, 1);
-    if (fontname == null) return;
+    if (fontname == null)
+    {
+      return;
+    }
 
     // Lookup the element by name. If there no element found, the getElement function
     // returns null, so we have to check this case.
@@ -105,7 +111,9 @@ public class FontChangeFunction extends AbstractFunction
   {
     super.initialize ();
     if (getProperty ("element") == null)
+    {
       throw new FunctionInitializeException ("Element name must be specified");
+    }
   }
 
   /**

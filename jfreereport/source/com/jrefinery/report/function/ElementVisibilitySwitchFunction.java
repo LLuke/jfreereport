@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ------------------------------------
  * ElementVisibilitySwitchFunction.java
- * -----------------------
+ * ------------------------------------
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.5 2002/08/30 11:18:37 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.6 2002/08/31 14:00:22 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -39,16 +39,17 @@
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.Element;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
 
 /**
  * A function that alternates between true and false for each item within a group. The functions
- * value affects a defined elements visibility. If the function evaluates to true, the named element
- * is visible, else the element is invisible.
+ * value affects a defined elements visibility. If the function evaluates to true, the named
+ * element is visible, else the element is invisible.
  * <p>
- * Use the property <code>element</code> to name an element contained in the ItemBand whose visiblity
- * should be affected by this function.
+ * Use the property <code>element</code> to name an element contained in the ItemBand whose
+ * visiblity should be affected by this function.
+ *
+ * @author TM
  */
 public class ElementVisibilitySwitchFunction extends AbstractFunction
 {
@@ -82,10 +83,15 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
    * Triggers the visibility of an element. If the named element was visible at the last
    * itemsAdvanced call, it gets now invisible and vice versa. This creates the effect,
    * that an element is printed every other line.
+   *
+   * @param event  the report event.
    */
   public void itemsAdvanced (ReportEvent event)
   {
-    if (event.getState ().isPrepareRun ()) return;
+    if (event.getState ().isPrepareRun ())
+    {
+      return;
+    }
 
     trigger = (!trigger);
     Element e = event.getReport ().getItemBand ().getElement (getElement ());
@@ -106,7 +112,9 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
   {
     super.initialize ();
     if (getProperty (ELEMENT_PROPERTY) == null)
+    {
       throw new FunctionInitializeException ("Element name must be specified");
+    }
   }
 
   /**
@@ -132,13 +140,18 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
   }
 
   /**
-   * @returns the visibility of the element, either Boolean.TRUE or Boolean.FALSE.
+   * @return the visibility of the element, either Boolean.TRUE or Boolean.FALSE.
    */
   public Object getValue ()
   {
     if (trigger)
+    {
       return Boolean.TRUE;
+    }
     else
+    {
       return Boolean.FALSE;
+    }
   }
+
 }

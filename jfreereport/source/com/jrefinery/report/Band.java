@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.21 2002/09/05 08:31:51 taqua Exp $
+ * $Id: Band.java,v 1.22 2002/09/06 17:02:29 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -47,17 +47,15 @@
  * 04-Jun-2002 : Public methods throw exceptions on illegal values. Documentation update.
  * 04-Jul-2002 : Serializable and Cloneable
  * 08-Aug-2002 : Band visibility support added. Bands can be hidden using the visible-property
- * 22-Aug-2002 : Height contains now a special value (-100) to adjust the band to fit the available pageheight
- *               This is a temprary fix and gets reomved with the next layout update
- * 31-Aug-2002 : Removed separate stoage of Function and ReportDataSource elements. This stuff was no longer
- *                in use.
+ * 22-Aug-2002 : Height contains now a special value (-100) to adjust the band to fit the available
+ *               pageheight.  This is a temporary fix and gets reomved with the next layout update.
+ * 31-Aug-2002 : Removed separate stoage of Function and ReportDataSource elements. This stuff was
+ *               no longer in use.
  * 05-Sep-2002 : Documentation
  */
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.filter.DataSource;
-import com.jrefinery.report.filter.DataTarget;
 import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.targets.OutputTargetException;
 import com.jrefinery.report.util.Log;
@@ -83,6 +81,8 @@ import java.util.List;
  * <p>
  * This implementation is not synchronized, to take care that you externaly synchronize
  * it when using multiple threads.
+ *
+ * @author DG
  */
 public abstract class Band implements Serializable, Cloneable
 {
@@ -105,11 +105,11 @@ public abstract class Band implements Serializable, Cloneable
   /** All the elements for this band, stored by name. */
   private List allElements;
 
+  /** A flag controlling whether or not the band is visible. */
   private boolean visible;
 
   /**
    * Constructs a new band (initially empty).
-   * @param height The height of the band.
    */
   protected Band()
   {
@@ -121,14 +121,18 @@ public abstract class Band implements Serializable, Cloneable
 
   /**
    * Returns the height of the band (in points).
-   * @return The height. */
+   *
+   * @return The height.
+   */
   public float getHeight()
   {
     return height;
   }
 
   /**
-   * defines the height of the band (in points).
+   * Defines the height of the band.
+   *
+   * @param height  the height (in points).
    */
   public void setHeight(float height)
   {
@@ -152,7 +156,10 @@ public abstract class Band implements Serializable, Cloneable
    */
   public void setDefaultFont(Font font)
   {
-    if (font == null) throw new NullPointerException();
+    if (font == null)
+    {
+      throw new NullPointerException();
+    }
     this.defaultFont = font;
   }
 
@@ -170,11 +177,15 @@ public abstract class Band implements Serializable, Cloneable
    * Sets the default paint for the band.
    *
    * @param paint The paint.
+   *
    * @throws NullPointerException if the given paint is null
    */
   public void setDefaultPaint(Paint paint)
   {
-    if (paint == null) throw new NullPointerException();
+    if (paint == null)
+    {
+      throw new NullPointerException();
+    }
     this.defaultPaint = paint;
   }
 
@@ -182,24 +193,33 @@ public abstract class Band implements Serializable, Cloneable
    * Adds an element (display item) to the band.
    *
    * @param element The element.
+   *
    * @throws NullPointerException if the Element is null or contains Null-Values.
    * @throws IllegalArgumentException if the element violates validity rules
    */
   public void addElement(Element element)
   {
     if (element == null)
+    {
       throw new NullPointerException("Cannot add null-Element");
+    }
     if (element.getName() == null)
+    {
       throw new IllegalArgumentException("Element is not valid: Valid elements need a name");
+    }
     if (element.getBounds() == null)
+    {
       throw new IllegalArgumentException("Element is not valid: Valid elements need filled bounds");
+    }
 
     allElements.add(element);
   }
 
   /**
    * Adds a collection of elements to the band.
+   *
    * @param elements The element collection.
+   *
    * @throws NullPointerException if the collection given is null
    */
   public void addElements(Collection elements)
@@ -221,15 +241,26 @@ public abstract class Band implements Serializable, Cloneable
 
   /**
    * Draws the band onto the specified output target.
+   *
    * @param target The output target.
    * @param x The x-coordinate.
    * @param y The y-coordinate.
-   * @throws NullPointerException if the target given is null
+   *
+   * @return  maxheight.
+   *
+   * @throws NullPointerException if the target given is null.
+   * @throws OutputTargetException if there is some problem with the target.
    */
   public float draw(OutputTarget target, float x, float y) throws OutputTargetException
   {
-    if (target == null) throw new NullPointerException();
-    if (isVisible() == false) return 0;
+    if (target == null)
+    {
+      throw new NullPointerException();
+    }
+    if (isVisible() == false)
+    {
+      return 0;
+    }
     float maxheight = 0;
 
     Rectangle2D bounds = new Rectangle2D.Float();
@@ -255,8 +286,8 @@ public abstract class Band implements Serializable, Cloneable
         {
           Log.error("Failed to draw band", ex);
         }
-        double eh = target.getCursor().getElementBounds().getY() +
-            target.getCursor().getElementBounds().getHeight();
+        double eh = target.getCursor().getElementBounds().getY()
+                  + target.getCursor().getElementBounds().getHeight();
         if (eh > maxheight)
         {
           maxheight = (float) eh;
@@ -268,6 +299,11 @@ public abstract class Band implements Serializable, Cloneable
 
   /**
    * Translates the elements bounds from relative values (-100 .. 0) to absolute values.
+   *
+   * @param target  the output target.
+   * @param bounds  the bounds (encoded with relative values).
+   *
+   * @return the bounds after translation to absolute values.
    */
   private Rectangle2D translateBounds(OutputTarget target, Rectangle2D bounds)
   {
@@ -282,10 +318,18 @@ public abstract class Band implements Serializable, Cloneable
   /**
    * Helperfunction:
    * Translates the elements bounds from relative values (-100 .. 0) to absolute values.
+   *
+   * @param value  the relative value.
+   * @param full  the value of 100%.
+   *
+   * @return the absolute value.
    */
   private float fixValue(double value, double full)
   {
-    if (value >= 0) return (float) value;
+    if (value >= 0)
+    {
+      return (float) value;
+    }
     float retval = (float) (value * full / -100);
     return retval;
   }
@@ -293,12 +337,18 @@ public abstract class Band implements Serializable, Cloneable
   /**
    * Returns the first element in that list which is registered by the given name
    *
-   * @returns the first element found or null if there is no such element.
-   * @throws NullPointerException if the given name is null
+   * @param name  the element name.
+   *
+   * @return the first element with the specified name, or null if there is no such element.
+   *
+   * @throws NullPointerException if the given name is null.
    */
   public Element getElement(String name)
   {
-    if (name == null) throw new NullPointerException();
+    if (name == null)
+    {
+      throw new NullPointerException();
+    }
 
     Iterator it = allElements.iterator();
     while (it.hasNext())
@@ -313,7 +363,7 @@ public abstract class Band implements Serializable, Cloneable
   }
 
   /**
-   * @returns an immutable list of all registered elements for this band.
+   * @return an immutable list of all registered elements for this band.
    */
   public List getElements()
   {
@@ -321,7 +371,7 @@ public abstract class Band implements Serializable, Cloneable
   }
 
   /**
-   * @returns a string representation of this band and all contained elements.
+   * @return a string representation of this band and all contained elements.
    */
   public String toString()
   {
@@ -333,9 +383,9 @@ public abstract class Band implements Serializable, Cloneable
   /**
    * Clones this Band and all Elements contained in this band.
    *
-   * @returns the clone of this band.
-   * @throws CloneNotSupportedException if this band or an element contained in this band does not support
-   * cloning.
+   * @return the clone of this band.
+   * @throws CloneNotSupportedException if this band or an element contained in this band does not
+   * support cloning.
    */
   public Object clone() throws CloneNotSupportedException
   {
@@ -351,9 +401,10 @@ public abstract class Band implements Serializable, Cloneable
   }
 
   /**
-   * Checks whether this band is visible. Invisible band are not printed and do not consume any height.
+   * Checks whether this band is visible. Invisible band are not printed and do not consume any
+   * height.
    *
-   * @returns true, if this band is visible.
+   * @return true, if this band is visible.
    */
   public boolean isVisible()
   {
@@ -361,7 +412,8 @@ public abstract class Band implements Serializable, Cloneable
   }
 
   /**
-   * Defines whether this band is visible. Invisible band are not printed and do not consume any height.
+   * Defines whether this band is visible. Invisible band are not printed and do not consume any
+   * height.
    *
    * @param visible set to true, to make this band visible, false otherwise.
    */
@@ -369,4 +421,5 @@ public abstract class Band implements Serializable, Cloneable
   {
     this.visible = visible;
   }
+
 }

@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -65,14 +65,15 @@ public class ResultSetTableModelFactory
    * read data from the database without caching or the need of copying the complete resultset
    * into the programms memory.
    * <p>
-   * If the resultset lacks the scollable features, the data will be copied into an DefaultTableModel
-   * and the resultset gets closed.
+   * If the resultset lacks the scollable features, the data will be copied into an
+   * DefaultTableModel and the resultset gets closed.
    */
   public CloseableTableModel createTableModel (ResultSet rs)
           throws SQLException
   {
     // Allow for override, some jdbc drivers are buggy :(
-    if (System.getProperty ("com.jrefinery.report.TableFactoryMode", "").equalsIgnoreCase ("simple"))
+    String key = "com.jrefinery.report.TableFactoryMode";
+    if (System.getProperty (key, "").equalsIgnoreCase ("simple"))
     {
       return generateDefaultTableModel (rs);
     }
@@ -135,7 +136,8 @@ public class ResultSetTableModelFactory
       }
       rows.add (column.toArray ());
     }
-    CloseableDefaultTableModel model = new CloseableDefaultTableModel ((Object[][]) rows.toArray (), header.toArray ());
+    CloseableDefaultTableModel model
+        = new CloseableDefaultTableModel ((Object[][]) rows.toArray (), header.toArray ());
     return model;
   }
 

@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -23,7 +23,7 @@
  * ----------------------
  * ActionMenuItem.java
  * ----------------------
- * 
+ *
  * ChangeLog
  * ---------
  * 30-Aug-2002 : Initial version
@@ -39,8 +39,9 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeEvent;
 
 /**
- * The ActionMenuItem is used to connect an Action and its properties to an MenuItem. This functionality
- * is already implemented in JDK 1.3 but needed for JDK 1.2.2 compatibility.
+ * The ActionMenuItem is used to connect an Action and its properties to an MenuItem.
+ * <P>
+ * This functionality is already implemented in JDK 1.3 but needed for JDK 1.2.2 compatibility.
  */
 public class ActionMenuItem extends JMenuItem
 {
@@ -62,19 +63,15 @@ public class ActionMenuItem extends JMenuItem
         {
           setEnabled(getAction().isEnabled());
         }
-        else if (event.getPropertyName().equals
-            (Action.SMALL_ICON))
+        else if (event.getPropertyName().equals(Action.SMALL_ICON))
         {
-          setIcon((Icon) getAction().getValue
-              (Action.SMALL_ICON));
+          setIcon((Icon) getAction().getValue(Action.SMALL_ICON));
         }
         else if (event.getPropertyName().equals(Action.NAME))
         {
-          setText((String) getAction().getValue
-              (Action.NAME));
+          setText((String) getAction().getValue(Action.NAME));
         }
-        else if (event.getPropertyName().equals
-            (Action.SHORT_DESCRIPTION))
+        else if (event.getPropertyName().equals(Action.SHORT_DESCRIPTION))
         {
           ActionMenuItem.this.setToolTipText((String)
               getAction().getValue(Action.SHORT_DESCRIPTION));
@@ -83,12 +80,10 @@ public class ActionMenuItem extends JMenuItem
         Action ac = getAction();
         if (event.getPropertyName().equals (ActionDowngrade.ACCELERATOR_KEY))
         {
-          KeyStroke oldVal = (KeyStroke)
-              event.getOldValue();
+          KeyStroke oldVal = (KeyStroke)event.getOldValue();
           if (oldVal != null)
           {
-            unregisterKeyboardAction
-                (oldVal);
+            unregisterKeyboardAction(oldVal);
           }
           Object o = ac.getValue(ActionDowngrade.ACCELERATOR_KEY);
           if (o instanceof KeyStroke && o != null)
@@ -152,8 +147,8 @@ public class ActionMenuItem extends JMenuItem
   }
 
   /**
-   * returns and initializes the PropertyChangehandler for this ActionMenuItem. The PropertyChangeHandler
-   * monitors the action and updates the menuitem if necessary
+   * Returns and initializes the PropertyChangehandler for this ActionMenuItem.
+   * The PropertyChangeHandler monitors the action and updates the menuitem if necessary
    */
   protected ActionEnablePropertyChangeHandler getPropertyChangeHandler ()
   {
@@ -165,8 +160,8 @@ public class ActionMenuItem extends JMenuItem
   }
 
   /**
-   * Enables and disables this button and if an action is assigned to this menuitem the propertychange is
-   * forwarded to the assigned action.
+   * Enables and disables this button and if an action is assigned to this menuitem the
+   * propertychange is forwarded to the assigned action.
    *
    * @param b the new enable-state of this menuitem
    */

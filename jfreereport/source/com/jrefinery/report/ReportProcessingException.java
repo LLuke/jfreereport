@@ -18,16 +18,18 @@
  * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA 02111-1307, USA.
  *
+ * ------------------------------
  * ReportProcessingException.java
- * -----------------
+ * ------------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportProcessingException.java,v 1.3 2002/05/28 19:28:22 taqua Exp $
+ * $Id: ReportProcessingException.java,v 1.4 2002/06/04 21:44:34 taqua Exp $
+ *
  * Changes
- * -------------------------
+ * -------
  * 18-Apr-2002 : Created the Exception to better support errorhandling. The exception
  *               is thrown if the report does not proceed while paginating. This is
  *               used to detect infinite loops on buggy report definitions.
@@ -38,6 +40,8 @@ package com.jrefinery.report;
 /**
  * A ReportProcessingException is thrown, when a Error occured, while the report is being
  * processed.
+ *
+ * @author TM
  */
 public class ReportProcessingException extends Exception
 {
@@ -50,11 +54,12 @@ public class ReportProcessingException extends Exception
 
   /**
    * Initializes the exception with the message added.
+   *
+   * @param message  the exception message.
    */
   public ReportProcessingException (String message)
   {
     super (message);
   }
-
 
 }

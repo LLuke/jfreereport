@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.32 2002/09/11 14:32:00 taqua Exp $
+ * $Id: ReportState.java,v 1.33 2002/09/11 20:23:28 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -42,12 +42,13 @@
  * 17-May-2002 : Fixed the ReportPropertyBug by adding a new state (PreReportHeader).
  *               ReportState.Start.advance has to be executed before the first page is printed.
  * 26-May-2002 : Moved ReportProperties into the state so that different runs do not affect
- *               each other. Added Property isPrepareRun() to signal whether the report is currently
- *               repaginated.
+ *               each other. Added Property isPrepareRun() to signal whether the report is
+ *               currently repaginated.
  * 11-May-2002 : A bug in the ReportPropertyHandling is fixed.
  * 24-Jun-2002 : Populate Elements must not be called before Function values are calculated.
  * 28-Jul-2002 : Added datarow support, the report is now cloned on start
- * 21-Aug-2002 : isProceeding() was buggy, did not test the reportstate correctly (returned always true)
+ * 21-Aug-2002 : isProceeding() was buggy, did not test the reportstate correctly (returned always
+ *               true)
  * 28-Aug-2002 : Downport to JDK1.2.2, added many this-references for innerclasses ...
  */
 
@@ -63,11 +64,14 @@ import java.util.Date;
  * Captures state information for a report while it is in the process of being displayed or
  * printed.  In most cases, we are interested in the report state at the end of a page, so that
  * we can begin the next page in the right manner.
+ *
+ * @author DG
  */
 public abstract class ReportState implements JFreeReportConstants, Cloneable
 {
   /**
-   * Initial state for an report. Prints the report header and proceeds to PostProcessHeader-State.<p>
+   * Initial state for an report. Prints the report header and proceeds to PostProcessHeader-State.
+   * <p>
    * alias PreReportHeader<br>
    * advances to PostReportHeader<br>
    * before the print, a reportStarted event gets fired.
@@ -76,6 +80,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   {
     /**
      * Default constructor and the only constructor to create a state without cloning another.
+     *
+     * @param report  the report.
      */
     public Start (JFreeReport report)
     {
@@ -83,7 +89,13 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     }
 
     /**
-     * The report started. Print the report header.
+     * Advances from the 'start' state to the 'pre-report-header' state.
+     * <p>
+     * Initialises the 'report.date' property, and fires a 'report-started' event.
+     *
+     * @param rpc  the report processor.
+     *
+     * @return the next state ('pre-report-header').
      */
     public ReportState advance (ReportProcessor rpc)
     {
@@ -102,9 +114,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     }
 
     /**
-     * Tests whether is state is a start-state.
+     * Returns <code>true</code> because this *is* the start state.
      *
-     * @return always true
+     * @return true
      */
     public boolean isStart ()
     {
@@ -114,6 +126,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     /**
      * Returns the corrected display item for this state. As the currentItem has not yet advanced
      * we perform a readAHead lookup when populating elements.
+     *
+     * @return true
      */
     public boolean isPrefetchState ()
     {
@@ -123,19 +137,22 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     /**
      * Sets the function collection. The functions get cloned before they
      * are assigned to this state.
+     *
+     * @param functions  the functions.
      */
-    public void setFunctions (FunctionCollection pfunctions)
+    public void setFunctions (FunctionCollection functions)
     {
-      if (pfunctions == null)
+      if (functions == null)
       {
         throw new NullPointerException ("Empty function collection?");
       }
-      super.setFunctions (pfunctions.getCopy ());
+      super.setFunctions (functions.getCopy ());
     }
   }
 
   /**
-   * Initial state for an report. Prints the report header and proceeds to PostProcessHeader-State.<p>
+   * Initial state for an report. Prints the report header and proceeds to PostProcessHeader-State.
+   * <p>
    * alias PreReportHeader<br>
    * advances to PostReportHeader<br>
    * before the print, a reportStarted event gets fired.
@@ -144,6 +161,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   {
     /**
      * Default constructor and the only constructor to create a state without cloning another.
+     *
+     * @param previousState  the previous report state.
      */
     public PreReportHeader (ReportState previousState)
     {
@@ -151,7 +170,11 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     }
 
     /**
-     * The report started. Print the report header.
+     * Advances from this state to the next.  In the process, the report header is printed.
+     *
+     * @param rpc  the report processor.
+     *
+     * @return the next state ('post-report-header').
      */
     public ReportState advance (ReportProcessor rpc)
     {
@@ -166,6 +189,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     /**
      * Returns the corrected display item for this state. As the currentItem has not yet advanced
      * we perform a readAHead lookup when populating elements.
+     *
+     * @return true
      */
     public boolean isPrefetchState ()
     {
@@ -178,6 +203,11 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   protected static class PostReportHeader extends ReportState
   {
+    /**
+     * Creates a 'post-report-header' state.
+     *
+     * @param reportstate the previous report state.
+     */
     public PostReportHeader (ReportState reportstate)
     {
       super (reportstate);
@@ -185,16 +215,21 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
     /**
      * This state does nothing and advances directly to the first PreGroupHeader.
+     *
+     * @param rpc  the report processor.
+     *
+     * @return the next state.
      */
     public ReportState advance (ReportProcessor rpc)
     {
-      //return new GroupStart (this);
       return new PreGroupHeader (this);
     }
 
     /**
      * Returns the corrected display item for this state. As the currentItem has not yet advanced
      * we perform a readAHead lookup when populating elements.
+     *
+     * @return true
      */
     public boolean isPrefetchState ()
     {
@@ -212,13 +247,26 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   protected static class PreGroupHeader extends ReportState
   {
+    /** Flag indicating whether or not the page break has been done. */
     private boolean handledPagebreak;
 
-    public PreGroupHeader (ReportState reportstate)
+    /**
+     * Creates a new 'pre-group-header' state.
+     *
+     * @param previous  the previous state.
+     */
+    public PreGroupHeader (ReportState previous)
     {
-      super (reportstate);
+      super (previous);
     }
 
+    /**
+     * Advances from this state to the next.
+     *
+     * @param rpc  the report processor.
+     *
+     * @return  the next state.
+     */
     public ReportState advance (ReportProcessor rpc)
     {
       this.enterGroup ();
@@ -229,9 +277,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
       GroupHeader header = group.getHeader ();
 
-      if (handledPagebreak == false && header.hasPageBreakBeforePrint () &&
-          ((this.getCurrentGroupIndex() == 1 && this.getCurrentPage() == 1) == false)
-      )
+      if (handledPagebreak == false && header.hasPageBreakBeforePrint ()
+                                    && ((this.getCurrentGroupIndex() == 1
+                                    && this.getCurrentPage() == 1) == false))
       {
         handledPagebreak = true;
         rpc.setPageDone ();
@@ -248,7 +296,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
           rpc.printGroupHeader (header);
           return new PostGroupHeader (this);
         }
-      else
+        else
         {
           handledPagebreak = true;
         }
@@ -264,6 +312,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     /**
      * Returns the corrected display item for this state. As the currentItem has not yet advanced
      * we perform a readAHead lookup when populating elements.
+     *
+     * @return true
      */
     public boolean isPrefetchState ()
     {
@@ -280,9 +330,15 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   protected static class PostGroupHeader extends ReportState
   {
-    public PostGroupHeader (ReportState reportstate)
+
+    /**
+     * Creates a new 'post-group-header' state.
+     *
+     * @param previous  the previous state.
+     */
+    public PostGroupHeader (ReportState previous)
     {
-      super (reportstate);
+      super (previous);
     }
 
     /**
@@ -296,8 +352,14 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     }
 
     /**
+     * Advances from this state to the next.
+     * <p>
      * If there are more groups, activate the next PreGroupHeader state, else activate
      * the PreItemGroup state.
+     *
+     * @param rpc  the report processor.
+     *
+     * @return the next state.
      */
     public ReportState advance (ReportProcessor rpc)
     {
@@ -317,6 +379,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     /**
      * Returns the corrected display item for this state. As the currentItem has not yet advanced
      * we perform a readAHead lookup when populating elements.
+     *
+     * @return true.
      */
     public boolean isPrefetchState ()
     {
@@ -330,11 +394,24 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   protected static class PreItemGroup extends ReportState
   {
-    public PreItemGroup (ReportState reportstate)
+
+    /**
+     * Creates a new 'pre-item-group' state.
+     *
+     * @param previous  the previous state.
+     */
+    public PreItemGroup (ReportState previous)
     {
-      super (reportstate);
+      super (previous);
     }
 
+    /**
+     * Advances to the next state.
+     *
+     * @param rpc  the report processor.
+     *
+     * @return the next state.
+     */
     public ReportState advance (ReportProcessor rpc)
     {
       // Inform everybody, that now items will be processed.
@@ -351,6 +428,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     /**
      * Returns the corrected display item for this state. As the currentItem has not yet advanced
      * we perform a readAHead lookup when populating elements.
+     *
+     * @return true.
      */
     public boolean isPrefetchState ()
     {
@@ -360,21 +439,35 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
   /**
    * Prints the itemBand. Before the band is printed, the items are advanced and the next
-   * data row gets activated. Before any row has been read, the currentItem state is BEFORE_FIRST_ITEM,
-   * comparable to ResultSet.isBeforeFirst () in java.sql.ResultSet.
+   * data row gets activated. Before any row has been read, the currentItem state is
+   * BEFORE_FIRST_ITEM, comparable to ResultSet.isBeforeFirst () in java.sql.ResultSet.
    * After the item has advanced and before the band is printed, the elements are populated and an
    * itemsAdvanced-Event is fired.
    * <p>
-   * If the activated Item is the last item in its group, the next state will be an PostItemGroupHeader.
-   * In the other case, the current state remains this ItemsAdvanced state.
+   * If the activated Item is the last item in its group, the next state will be an
+   * PostItemGroupHeader.  In the other case, the current state remains this ItemsAdvanced state.
    */
   protected static class InItemGroup extends ReportState
   {
-    public InItemGroup (ReportState reportstate)
+    /**
+     * Creates a new 'in-item-group' state.
+     *
+     * @param previous  the previous state.
+     */
+    public InItemGroup (ReportState previous)
     {
-      super (reportstate);
+      super (previous);
     }
 
+    /**
+     * Advances from this state to the next.
+     *
+     * @param rpc  the report processor.
+     *
+     * @return the next state.
+     *
+     * @throws ReportProcessingException if there is a problem processing the report.
+     */
     public ReportState advance (ReportProcessor rpc) throws ReportProcessingException
     {
       JFreeReport report = this.getReport ();
@@ -392,7 +485,6 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
         ReportEvent event = new ReportEvent (this);
         this.fireItemsAdvancedEvent (event);
-        //itemBand.populateElements (this);
 
         this.getDataRowConnector ().setDataRowBackend (this.getDataRowBackend ());
         rpc.printItemBand (itemBand);
@@ -401,8 +493,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
         // If the group is done, print the GroupFooter of the parent
         Group group = report.getGroup (this.getCurrentGroupIndex ());
 
-        if (group.isLastItemInGroup (this.getDataRowBackend (), this.getDataRowBackend ().previewNextRow ()))
-        //if (group.isLastItemInGroup (getReport ().getData (), getCurrentDataItem ()))
+        if (group.isLastItemInGroup (this.getDataRowBackend (),
+                                     this.getDataRowBackend ().previewNextRow ()))
         {
           return new PostItemGroup (this);
         }
@@ -417,14 +509,25 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   protected static class PostItemGroup extends ReportState
   {
-    public PostItemGroup (ReportState reportstate)
+    /**
+     * Creates a new 'post-item-group' state.
+     *
+     * @param previous  the previous state.
+     */
+    public PostItemGroup (ReportState previous)
     {
-      super (reportstate);
+      super (previous);
     }
 
     /**
+     * Advances from this state to the next.
+     * <p>
      * Just inform everybody that the itemband is no longer printed. Next state will be
      * PreGroupFooter.
+     *
+     * @param rpc  the report processor.
+     *
+     * @return the next report state.
      */
     public ReportState advance (ReportProcessor rpc)
     {
@@ -441,11 +544,23 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   protected static class PreGroupFooter extends ReportState
   {
-    public PreGroupFooter (ReportState reportstate)
+    /**
+     * Creates a new 'pre-group-footer' report state.
+     *
+     * @param previous  the previous report state.
+     */
+    public PreGroupFooter (ReportState previous)
     {
-      super (reportstate);
+      super (previous);
     }
 
+    /**
+     * Advances from this state to the next.
+     *
+     * @param rpc  the report processor.
+     *
+     * @return the next report state.
+     */
     public ReportState advance (ReportProcessor rpc)
     {
       Group group = (Group) this.getReport ().getGroup (this.getCurrentGroupIndex ());
@@ -458,8 +573,6 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
         // fired and PostGroupFooter activated after all work is done.
         ReportEvent event = new ReportEvent (this);
         this.fireGroupFinishedEvent (event);
-        //footer.populateElements (this);
-
         this.getDataRowConnector ().setDataRowBackend (this.getDataRowBackend ());
         rpc.printGroupFooter (footer);
         return new PostGroupFooter (this);
@@ -487,12 +600,21 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   protected static class PostGroupFooter extends ReportState
   {
-    public PostGroupFooter (ReportState reportstate)
+    /**
+     * Creates a new 'post-group-footer' report state.
+     *
+     * @param previous  the previous report state.
+     */
+    public PostGroupFooter (ReportState previous)
     {
-      super (reportstate);
+      super (previous);
     }
 
-    // is there a next row to read?
+    /**
+     * Is there a next row to read?
+     *
+     * @return true, if there is at least one more row to read.
+     */
     private boolean hasMoreData ()
     {
       return (this.getCurrentDataItem () < this.getReport ().getData ().getRowCount () - 1);
@@ -500,12 +622,21 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
     /**
      * Are there more groups active?
+     *
+     * @return true if this is the last group.
      */
     private boolean isLastGroup ()
     {
       return this.getCurrentGroupIndex () == BEFORE_FIRST_GROUP;
     }
 
+    /**
+     * Advances from this state to the next.
+     *
+     * @param rpc  the report processor.
+     *
+     * @return the next report state.
+     */
     public ReportState advance (ReportProcessor rpc)
     {
       // leave the current group and activate the parent group.
@@ -532,8 +663,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
           // we have more data to work on
           // If the group is done, print the GroupFooter of the parent
           Group group = this.getReport ().getGroup (this.getCurrentGroupIndex ());
-          if (group.isLastItemInGroup (this.getDataRowBackend (), this.getDataRowBackend ().previewNextRow ()))
-//          if (group.isLastItemInGroup (getReport ().getData (), getCurrentDataItem ()))
+          if (group.isLastItemInGroup (this.getDataRowBackend (),
+                                       this.getDataRowBackend ().previewNextRow ()))
           {
             // Parent is finished, print the footer
             return new PreGroupFooter (this);
@@ -560,11 +691,23 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   protected static class PreReportFooter extends ReportState
   {
-    public PreReportFooter (ReportState reportstate)
+    /**
+     * Creates a 'pre-report-footer' report state.
+     *
+     * @param previous  the previous report state.
+     */
+    public PreReportFooter (ReportState previous)
     {
-      super (reportstate);
+      super (previous);
     }
 
+    /**
+     * Advances from this state to the next.
+     *
+     * @param rpc  the report processor.
+     *
+     * @return the next report state.
+     */
     public ReportState advance (ReportProcessor rpc)
     {
       FunctionCollection functions = this.getFunctions ();
@@ -575,8 +718,6 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       {
         ReportEvent event = new ReportEvent (this);
         this.fireReportFinishedEvent (event);
-        //reportFooter.populateElements (this);
-
         this.getDataRowConnector ().setDataRowBackend (this.getDataRowBackend ());
         rpc.printReportFooter (reportFooter);
         return new Finish (this);
@@ -594,11 +735,24 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   protected static class Finish extends ReportState
   {
-    public Finish (ReportState reportstate)
+    /**
+     * Creates a new 'finish' report state.
+     *
+     * @param previous  the previous state.
+     */
+    public Finish (ReportState previous)
     {
-      super (reportstate);
+      super (previous);
     }
 
+    /**
+     * Advances from this state to the next.  Since this is the 'finish' state, this method just
+     * returns itself.
+     *
+     * @param rpc  the report processor.
+     *
+     * @return this state.
+     */
     public ReportState advance (ReportProcessor rpc)
     {
       rpc.setPageDone ();
@@ -606,6 +760,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     }
 
     /**
+     * Returns true, to indicate that this is the 'finish' state.
+     *
      * @return true, as this report is done and will no longer advance.
      */
     public boolean isFinish ()
@@ -622,28 +778,36 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   private int currentItem;
 
   /** The page that this state applies to. */
-  private int _currentPage;
+  private int currentPage;
 
   /** The current group. */
   private int currentGroupIndex;
 
   /** The functions. */
-  private FunctionCollection _functions;
+  private FunctionCollection functions;
 
   /** The report properties */
   private ReportProperties reportProperties;
 
+  /** The data row. */
   private DataRowBackend dataRow;
+
+  /** The data row connector. */
   private DataRowConnector dataRowConnector;
 
+  /** A row number that is 'before' the first row. */
   public static final int BEFORE_FIRST_ROW = -1;
+
+  /** A group number that is 'before' the first group. */
   public static final int BEFORE_FIRST_GROUP = -1;
+
+  /** The first page. */
   public static final int FIRST_PAGE = 1;
 
   /**
    * Constructs a ReportState for the specified report.
    *
-   * @param report The report.
+   * @param reportPar The report.
    */
   protected ReportState (JFreeReport reportPar)
   {
@@ -686,19 +850,32 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
-   * @returns the ReportStates DataRowConnector. The connector is used as frontend for all datarow
-   * users and provides a 777777
+   * Returns the data row connector for the report state.
+   * <p>
+   * The connector is used as frontend for all datarow users
+   *
+   * @return the data row connector.
    */
   protected DataRowConnector getDataRowConnector ()
   {
     return dataRowConnector;
   }
 
+  /**
+   * Sets the data row connector.
+   *
+   * @param dataRowConnector  the data row connector.
+   */
   private void setDataRowConnector (DataRowConnector dataRowConnector)
   {
     this.dataRowConnector = dataRowConnector;
   }
 
+  /**
+   * Returns the current data row.
+   *
+   * @return  the current data row.
+   */
   public DataRow getDataRow ()
   {
     return getDataRowConnector ();
@@ -723,12 +900,21 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     getDataRowBackend ().setCurrentRow (getCurrentDisplayItem ());
   }
 
-
+  /**
+   * Returns the data row backend.
+   *
+   * @return the data row backend.
+   */
   protected DataRowBackend getDataRowBackend ()
   {
     return dataRow;
   }
 
+  /**
+   * Sets the data row backend.
+   *
+   * @param dataRow  the data row backend.
+   */
   private void setDataRowBackend (DataRowBackend dataRow)
   {
     this.dataRow = dataRow;
@@ -736,6 +922,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
   /**
    * Returns the report this state is assigned to.
+   *
+   * @return the report.
    */
   public JFreeReport getReport ()
   {
@@ -743,28 +931,37 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
-   * The advance method is used to transform a report into a new state.
+   * The advance method performs a transition from the current report state to the next report
+   * state.  Each transition will usually involve some processing of the report.
+   *
+   * @param prc  the report processor.
+   *
+   * @return the next report state.
+   *
+   * @throws ReportProcessingException if there is a problem processing the report.
    */
   public abstract ReportState advance (ReportProcessor prc) throws ReportProcessingException;
 
   /**
-   * defines the report for this state. if the report is null, a NullPointerException is thrown.
+   * Sets the report for this state.
    *
-   * @param report the report for this state
+   * @param report  the report (null not permitted).
+   *
    * @throws NullPointerException if the given report is null
    */
-  private void setReport (JFreeReport report) throws IllegalArgumentException
+  private void setReport (JFreeReport report)
   {
     if (report == null)
     {
-      throw new NullPointerException ("An State without an report is not allowed");
+      throw new NullPointerException ("A ReportState without a report is not allowed");
     }
     this.report = report;
   }
 
   /**
    * Returns the current item (that is, the current row of the data in the TableModel).
-   * @return The current item index (corresponds to a row in the TableModel).
+   *
+   * @return The current row index.
    */
   public int getCurrentDataItem ()
   {
@@ -772,18 +969,32 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
-   * Returns the current item that sould be displayed for this state. Before any item
-   * has advanced, dataItem is -1. This function automaticly corrects the currentRow according
+   * Returns the current item that should be displayed for this state. Before any item
+   * has advanced, dataItem is -1. This function automatically corrects the currentRow according
    * to the current state of the report (if the header is processed, add +1).
+   *
+   * @return the row to use for obtaining data from the TableModel.
    */
   public final int getCurrentDisplayItem ()
   {
     if (isPrefetchState ())
+    {
       return this.currentItem + 1;
+    }
     else
+    {
       return this.currentItem;
+    }
   }
 
+  /**
+   * Returns the 'prefetch' state for this report state (defaults to false).
+   * <p>
+   * Some states will override this method and return true...in this case, any access to the
+   * report's TableModel will look to the current row + 1.
+   *
+   * @return always false (subclasses may override).
+   */
   public boolean isPrefetchState ()
   {
     return false;
@@ -792,6 +1003,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   /**
    * Sets the current item index (corresponds to a row in the TableModel).
    * This element is -1 before a row is read.
+   *
    * @param itemIndex The new item index.
    */
   public void setCurrentItem (int itemIndex)
@@ -800,27 +1012,34 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
-   * Returns the current page.
-   * @return The page that this state refers to.
+   * Returns the page number.
+   *
+   * @return the page number.
    */
   public int getCurrentPage ()
   {
-    return _currentPage;
+    return this.currentPage;
   }
 
   /**
-   * Sets the current page.
+   * Sets the current page number.
+   *
    * @param page The new page number.
    */
   public void setCurrentPage (int page)
   {
     if (page < 0)
+    {
       throw new IllegalArgumentException ("Page must be >= 0");
-    _currentPage = page;
+    }
+    this.currentPage = page;
   }
 
   /**
    * Returns the current group index.
+   * <p>
+   * This starts at zero for the item group, and increases for each higher level group.
+   *
    * @return The current group index.
    */
   public int getCurrentGroupIndex ()
@@ -830,68 +1049,108 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
   /**
    * Sets the current group index (zero is the item group).
+   *
    * @param index The new group index.
    */
   public void setCurrentGroupIndex (int index)
   {
     if (index < -1)
+    {
       throw new IllegalArgumentException ("GroupIndex must be >= 0 or BEFORE_FIRST_GROUP");
+    }
     this.currentGroupIndex = index;
   }
 
   /**
    * Returns the function collection.
+   *
+   * @return the functions.
    */
   public final FunctionCollection getFunctions ()
   {
-    return _functions;
+    return this.functions;
   }
 
   /**
    * Sets the function collection. The functions no longer get cloned before they
    * are assigned to this state.
+   *
+   * @param functions  the functions.
    */
-  public void setFunctions (FunctionCollection pfunctions)
+  public void setFunctions (FunctionCollection functions)
   {
-    if (pfunctions == null)
+    if (functions == null)
     {
       throw new NullPointerException ("Empty function collection?");
     }
-    _functions = pfunctions;
+    this.functions = functions;
   }
 
+  /**
+   * Returns the value of a property with the specified name.
+   *
+   * @param key  the property name.
+   *
+   * @return the property value.
+   */
   public Object getProperty (String key)
   {
     return reportProperties.get (key);
   }
 
+  /**
+   * Returns a property with the specified name.  If no property with the specified name is found,
+   * returns def.
+   *
+   * @param key  the property name.
+   * @param def  the default value.
+   *
+   * @return the property value.
+   */
   public Object getProperty (String key, Object def)
   {
     return reportProperties.get (key, def);
   }
 
+  /**
+   * Sets a property.
+   *
+   * @param key  the property name.
+   * @param o  the property value.
+   */
   public void setProperty (String key, Object o)
   {
     reportProperties.put (key, o);
   }
 
+  /**
+   * Returns the report properties.
+   *
+   * @return the report properties.
+   */
   public ReportProperties getProperties ()
   {
     return reportProperties;
   }
 
   /**
-   * @returns true, if this is a prepare run of the report engine. This state is used
-   * to do repagination, and is only done when the pageformat changes.
+   * Returns a flag indicating whether this is the 'prepare' run.
+   * <p>
+   * This run is used to do repagination, and is only done when the pageformat changes.
+   *
+   * @return true, if this is a prepare run of the report engine.
    */
   public boolean isPrepareRun ()
   {
-    Boolean bool = (Boolean) getProperty (JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
+    Boolean bool = (Boolean) getProperty (JFreeReportConstants.REPORT_PREPARERUN_PROPERTY,
+                                          Boolean.FALSE);
     return bool.booleanValue ();
   }
 
   /**
    * Clones the report state.
+   *
+   * @return a clone.
    */
   public Object clone ()
   {
@@ -913,8 +1172,14 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
   /**
    * This is a helper function used to detect infinite loops on report
-   * processing. Returns true, if the report did proceed over at least one
-   * element.
+   * processing. Returns true, if the report did proceed over at least one element.
+   * <p>
+   * If this method returns false, we need to bail out of processing the report because there is
+   * some problem.
+   *
+   * @param oldstate the previous state.
+   *
+   * @return true if some progress has been made, false otherwise.
    */
   public boolean isProceeding (ReportState oldstate)
   {
@@ -926,7 +1191,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     {
       return true;
     }
-    if (getCurrentPage () != oldstate.getCurrentPage () && this.getClass().equals(oldstate.getClass()))
+    if (getCurrentPage () != oldstate.getCurrentPage ()
+        && this.getClass().equals(oldstate.getClass()))
             ///*|| (oldstate.getClass ().equals (getClass ()))*/)
     {
       return true;
@@ -944,6 +1210,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
   /**
    * Tests whether this state is a defined starting point for report generation.
+   *
+   * @return false (subclasses may override).
    */
   public boolean isStart ()
   {
@@ -952,6 +1220,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
   /**
    * Tests whether this state is a defined ending point for report generation.
+   *
+   * @return false (subclasses may override).
    */
   public boolean isFinish ()
   {
@@ -983,66 +1253,112 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     getDataRowBackend ().setCurrentRow (getCurrentDisplayItem ());
   }
 
+  /**
+   * Fires a 'report-started' event.
+   *
+   * @param event the report event.
+   */
   public void fireReportStartedEvent (ReportEvent event)
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    _functions.reportStarted (event);
+    this.functions.reportStarted (event);
     getReport().getExpressions().reportStarted(event);
   }
 
+  /**
+   * Fires a 'report-finished' event.
+   *
+   * @param event the report event.
+   */
   public void fireReportFinishedEvent (ReportEvent event)
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    _functions.reportFinished (event);
+    this.functions.reportFinished (event);
     getReport().getExpressions().reportFinished(event);
   }
 
+  /**
+   * Fires a 'page-started' event.
+   *
+   * @param event the report event.
+   */
   public void firePageStartedEvent (ReportEvent event)
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    _functions.pageStarted (event);
+    this.functions.pageStarted (event);
     getReport().getExpressions().pageStarted(event);
   }
 
+  /**
+   * Fires a 'page-finished' event.
+   *
+   * @param event the report event.
+   */
   public void firePageFinishedEvent (ReportEvent event)
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    _functions.pageFinished (event);
+    this.functions.pageFinished (event);
     getReport().getExpressions().pageFinished(event);
   }
 
+  /**
+   * Fires a 'group-started' event.
+   *
+   * @param event the report event.
+   */
   public void fireGroupStartedEvent (ReportEvent event)
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    _functions.groupStarted (event);
+    this.functions.groupStarted (event);
     getReport().getExpressions().groupStarted(event);
   }
 
+  /**
+   * Fires a 'group-finished' event.
+   *
+   * @param event the report event.
+   */
   public void fireGroupFinishedEvent (ReportEvent event)
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    _functions.groupFinished (event);
+    this.functions.groupFinished (event);
     getReport().getExpressions().groupFinished(event);
   }
 
+  /**
+   * Fires an 'items-started' event.
+   *
+   * @param event the report event.
+   */
   public void fireItemsStartedEvent (ReportEvent event)
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    _functions.itemsStarted (event);
+    this.functions.itemsStarted (event);
     getReport().getExpressions().itemsStarted(event);
   }
 
+  /**
+   * Fires an 'items-finished' event.
+   *
+   * @param event the report event.
+   */
   public void fireItemsFinishedEvent (ReportEvent event)
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    _functions.itemsFinished (event);
+    this.functions.itemsFinished (event);
     getReport().getExpressions().itemsFinished(event);
   }
 
+  /**
+   * Fires an 'items-advanced' event.
+   *
+   * @param event the report event.
+   */
   public void fireItemsAdvancedEvent (ReportEvent event)
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    _functions.itemsAdvanced (event);
+    this.functions.itemsAdvanced (event);
     getReport().getExpressions().itemsAdvanced(event);
   }
+
 }

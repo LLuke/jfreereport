@@ -148,9 +148,11 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
 
     PageFormat format = report.getDefaultPageFormat();
     double defTopMargin = format.getImageableY();
-    double defBottomMargin = format.getHeight() - format.getImageableHeight() - format.getImageableY();
+    double defBottomMargin = format.getHeight() - format.getImageableHeight()
+                                                - format.getImageableY();
     double defLeftMargin = format.getImageableX();
-    double defRightMargin = format.getWidth() - format.getImageableWidth() - format.getImageableX();
+    double defRightMargin = format.getWidth() - format.getImageableWidth()
+                                              - format.getImageableX();
 
     format = createPageFormat(format, atts);
 
@@ -160,7 +162,8 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     defRightMargin = parseDouble(atts.getValue(RIGHTMARGIN_ATT), defRightMargin);
 
     Paper p = format.getPaper();
-    PageFormatFactory.getInstance().setBorders(p, defTopMargin, defLeftMargin, defBottomMargin, defRightMargin);
+    PageFormatFactory.getInstance().setBorders(p, defTopMargin, defLeftMargin,
+                                                  defBottomMargin, defRightMargin);
     format.setPaper(p);
     report.setDefaultPageFormat(format);
 
@@ -168,11 +171,15 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
   }
 
   /**
-   * Parses an String into an double value. If the parsing failed, the given default value is returned.
+   * Parses an String into an double value. If the parsing failed, the given default value is
+   * returned.
    */
   private double parseDouble(String value, double defaultVal)
   {
-    if (value == null) return defaultVal;
+    if (value == null)
+    {
+      return defaultVal;
+    }
     try
     {
       return Double.parseDouble(value);
@@ -185,9 +192,10 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
 
   /**
    * Creates the pageFormat by using the given Attributes. If an PageFormat name is given, the
-   * named PageFormat is used and the parameters width and height are ignored. If no name is defined,
-   * height and width attributes are used to create the pageformat. The attributes define the dimension
-   * of the PageFormat in points, where the printing resolution is defined at 72 pixels per inch.
+   * named PageFormat is used and the parameters width and height are ignored. If no name is
+   * defined, height and width attributes are used to create the pageformat. The attributes define
+   * the dimension of the PageFormat in points, where the printing resolution is defined at 72
+   * pixels per inch.
    */
   private PageFormat createPageFormat(PageFormat format, Attributes atts) throws SAXException
   {
@@ -195,8 +203,11 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
 
     String orientation = atts.getValue(ORIENTATION_ATT);
     if (orientation == null)
+    {
       orientation = ORIENTATION_PORTRAIT_VAL;
-    else if ((orientation.equals(ORIENTATION_LANDSCAPE_VAL) || orientation.equals(ORIENTATION_PORTRAIT_VAL)) == false)
+    }
+    else if ((orientation.equals(ORIENTATION_LANDSCAPE_VAL)
+        || orientation.equals(ORIENTATION_PORTRAIT_VAL)) == false)
     {
       throw new SAXException("Orientation value in REPORT-Tag is invalid.");
     }
@@ -204,11 +215,18 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
     if (pageformatName != null)
     {
       Paper p = PageFormatFactory.getInstance().createPaper(pageformatName);
-      if (p == null) return format;
+      if (p == null)
+      {
+        return format;
+      }
       if (orientation.equals(ORIENTATION_LANDSCAPE_VAL))
+      {
         return PageFormatFactory.getInstance().createPageFormat(p, PageFormat.LANDSCAPE);
+      }
       else
+      {
         return PageFormatFactory.getInstance().createPageFormat(p, PageFormat.PORTRAIT);
+      }
     }
     else
     {
@@ -218,11 +236,18 @@ public class ReportFactory extends DefaultHandler implements ReportDefinitionTag
         pageformatData[0] = ParserUtil.parseInt(atts.getValue(WIDTH_ATT), "No Width set");
         pageformatData[1] = ParserUtil.parseInt(atts.getValue(HEIGHT_ATT), "No Height set");
         Paper p = PageFormatFactory.getInstance().createPaper(pageformatData);
-        if (p == null) return format;
+        if (p == null)
+        {
+          return format;
+        }
         if (orientation.equals(ORIENTATION_LANDSCAPE_VAL))
+        {
           return PageFormatFactory.getInstance().createPageFormat(p, PageFormat.LANDSCAPE);
+        }
         else
+        {
           return PageFormatFactory.getInstance().createPageFormat(p, PageFormat.PORTRAIT);
+        }
       }
     }
     Log.debug("Returned default PAGEFORMAT");

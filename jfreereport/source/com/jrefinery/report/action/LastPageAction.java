@@ -34,9 +34,6 @@
 package com.jrefinery.report.action;
 
 import com.jrefinery.report.util.AbstractActionDowngrade;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import java.util.ResourceBundle;
 
 /**
@@ -44,12 +41,14 @@ import java.util.ResourceBundle;
  * page of the report. This abstract class is used for initializing the default locales,
  * the actual work is done in an internal subclass in PreviewFrame.
  *
- * @author js
+ * @author JS
  */
 public abstract class LastPageAction extends AbstractActionDowngrade
 {
   /**
    * Constructs a new action.
+   *
+   * @param resources  localised resources.
    */
   public LastPageAction (ResourceBundle resources)
   {

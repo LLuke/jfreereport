@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DataElement.java,v 1.13 2002/08/14 21:14:02 taqua Exp $
+ * $Id: DataElement.java,v 1.14 2002/09/05 08:31:51 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -55,15 +55,19 @@ import com.jrefinery.report.filter.DataRowDataSource;
  * functionality. The filter API provides the class ReportDataSource for accessing fields
  * of the report datasources current row.
  *
+ * @author DG
+ *
  * @deprecated form this element by stacking it together by using filters
  */
 public abstract class DataElement extends TextElement
 {
+  /** The data source for the element. */
   private DataRowDataSource fieldsource;
 
   /**
    * Constructs a data element using float coordinates.
    * The fieldname is initialized to an empty string.
+   *
    * @deprecated Use filters to form a data element
    */
   protected DataElement ()
@@ -78,20 +82,25 @@ public abstract class DataElement extends TextElement
   /**
    * Sets the fieldname for this element.
    *
-   * @throws NullPointerException if the field is null.
+   * @param fieldname  the field name (null not permitted).
+   *
    * @deprecated Use filters to form a data element
    */
   public void setField (String fieldname)
   {
     if (fieldname == null)
+    {
       throw new NullPointerException ("Fieldname must not be null for field " + getName ());
+    }
 
     fieldsource.setDataSourceColumnName (fieldname);
   }
 
   /**
    * Returns the name of the field in the data source that this element obtains its data from.
+   *
    * @return The field name.
+   *
    * @deprecated Use filters to form a data element
    */
   public String getField ()
@@ -100,7 +109,7 @@ public abstract class DataElement extends TextElement
   }
 
   /**
-   * @returns the reportdatasource assigned to this field. Make sure you add this to the
+   * @return the data source assigned to this field. Make sure you add this to the
    * end of the chain or you will not see any results.
    */
   protected final DataRowDataSource getReportDataSource ()
@@ -112,6 +121,8 @@ public abstract class DataElement extends TextElement
    * Clones this Element.
    *
    * @return a clone of this element.
+   *
+   * @throws CloneNotSupportedException  n.a.
    */
   public Object clone () throws CloneNotSupportedException
   {

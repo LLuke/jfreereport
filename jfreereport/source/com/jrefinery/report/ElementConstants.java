@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ElementConstants.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
+ * $Id: ElementConstants.java,v 1.5 2002/06/04 21:44:34 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,8 @@ import java.awt.Paint;
 
 /**
  * Useful constants for report elements.
+ *
+ * @author DG
  */
 public interface ElementConstants
 {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataTarget.java,v 1.4 2002/07/03 18:49:48 taqua Exp $
+ * $Id: DataTarget.java,v 1.5 2002/08/28 15:27:39 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,8 @@ import java.io.Serializable;
 /**
  * A DataTarget is a consumer in the DataProcessing chain. All Elements are DataTargets.
  * Targets query their data from assigned DataSources.
+ *
+ * @author TM
  */
 public interface DataTarget extends Serializable, Cloneable
 {
@@ -64,7 +66,9 @@ public interface DataTarget extends Serializable, Cloneable
   /**
    * Clones this datatarget.
    *
-   * @returns a clone of the datatarget.
+   * @return a clone of the datatarget.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone () throws CloneNotSupportedException;
 }

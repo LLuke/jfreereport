@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,12 +28,13 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: NumberElement.java,v 1.11 2002/08/14 21:14:05 taqua Exp $
+ * $Id: NumberElement.java,v 1.12 2002/09/05 09:34:53 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
- * 10-May-2002 : removed all but the default constructor. Added accessor functions for all properties.
+ * 10-May-2002 : Removed all but the default constructor. Added accessor functions for all
+ *               properties.
  * 20-May-2002 : Declared deprecated. This class is no longer used. The ItemFactory produces
  *               TextElements instead which get different filters attached.
  * 04-Jun-2002 : Documentation.
@@ -53,6 +54,8 @@ import java.text.NumberFormat;
  * <p>
  * To produce the same functionality use a TextElement and add a NumberFormatFilter and
  * a ReportDataSource to the element.
+ *
+ * @author DG
  *
  * @deprecated Use the TextElement with filters to form an equal functionality.
  */
@@ -74,7 +77,9 @@ public class NumberElement extends DataElement
   }
 
   /**
-   * Returns the numberformater of this element. Initialy this is a DecimalFormat.
+   * Returns the numberformater of this element. Initially this is a DecimalFormat.
+   *
+   * @return the formatter.
    */
   public NumberFormat getFormatter ()
   {
@@ -84,11 +89,15 @@ public class NumberElement extends DataElement
   /**
    * Sets the NumberFormater for this element. The formater must not be null, or a
    * NullPointerException is thrown.
+   *
+   * @param nf  the formatter.
    */
   public void setFormatter (NumberFormat nf)
   {
     if (nf == null)
+    {
       throw new NullPointerException ("NumberFormat may not be null");
+    }
 
     this.formatter.setNumberFormat (nf);
   }
@@ -97,6 +106,8 @@ public class NumberElement extends DataElement
    * Defines the numberformater for this element using a DecimalFormat and initializing it
    * with the given format string. If the format string is null, a reasonable default value
    * is choosen.
+   *
+   * @param df  the format string.
    */
   public void setDecimalFormatString (String df)
   {
@@ -112,6 +123,8 @@ public class NumberElement extends DataElement
    * Clones this Element.
    *
    * @return a clone of this element.
+   *
+   * @throws CloneNotSupportedException this should never be thrown.
    */
   public Object clone () throws CloneNotSupportedException
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSource.java,v 1.4 2002/07/03 18:49:48 taqua Exp $
+ * $Id: DataSource.java,v 1.5 2002/08/28 15:27:39 taqua Exp $
  *
  * Changes
  * -------
@@ -45,9 +45,11 @@ import java.io.Serializable;
  * data), ReportDataSources (data filled from the reports data set) or FunctionDataSource (the
  * data is filled by querying an assigned function).
  * <p>
- * All DataSources have to support the Cloneable interface so that a report can be completley cloned
- * with all assigned filters and DataSources. Reports are cloned before they are processed to remove the
- * sideeffect when having multiple report processors working on the same object.
+ * All DataSources have to support the Cloneable interface so that a report can be completley
+ * cloned with all assigned filters and DataSources. Reports are cloned before they are processed
+ * to remove the side effect when having multiple report processors working on the same object.
+ *
+ * @author TM
  */
 public interface DataSource extends Serializable, Cloneable
 {
@@ -61,7 +63,9 @@ public interface DataSource extends Serializable, Cloneable
   /**
    * Clones this datasource.
    *
-   * @returns a clone of the datasource.
+   * @return a clone of the datasource.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone () throws CloneNotSupportedException;
 

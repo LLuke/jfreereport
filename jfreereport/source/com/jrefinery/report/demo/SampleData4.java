@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -88,15 +88,23 @@ public class SampleData4 extends AbstractTableModel
 
   /**
    * Returns the name of the specified column.
+   *
+   * @param column  the column (zero-based index).
    */
-  public String getColumnName (int columnIndex)
+  public String getColumnName (int column)
   {
-    if (columnIndex == 0)
+    if (column == 0)
+    {
       return "family";
-    else if (columnIndex == 1)
+    }
+    else if (column == 1)
+    {
       return "fontname";
+    }
     else
+    {
       return "sample";
+    }
   }
 
   /**

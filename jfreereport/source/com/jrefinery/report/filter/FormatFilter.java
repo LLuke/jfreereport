@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * -----------------
  * FormatFilter.java
- * -----------------------
+ * -----------------
  * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FormatFilter.java,v 1.8 2002/08/28 15:27:39 taqua Exp $
+ * $Id: FormatFilter.java,v 1.9 2002/09/05 08:31:51 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,8 @@ import java.text.Format;
  * the defined null value is returned.
  * <p>
  * The nullValue is set to "-" by default.
+ *
+ * @author TM
  */
 public class FormatFilter implements DataFilter
 {
@@ -77,11 +79,15 @@ public class FormatFilter implements DataFilter
    * Sets the format for the filter.
    *
    * @param format The format.
+   *
    * @throws NullPointerException if the given format is null
    */
   public void setFormatter (Format format)
   {
-    if (format == null) throw new NullPointerException ();
+    if (format == null)
+    {
+      throw new NullPointerException ();
+    }
     this.format = format;
   }
 
@@ -107,13 +113,22 @@ public class FormatFilter implements DataFilter
   public Object getValue ()
   {
     Format f = getFormatter ();
-    if (f == null) return getNullValue ();
+    if (f == null)
+    {
+      return getNullValue ();
+    }
 
     DataSource ds = getDataSource ();
-    if (ds == null) return getNullValue ();
+    if (ds == null)
+    {
+      return getNullValue ();
+    }
 
     Object o = ds.getValue ();
-    if (o == null) return getNullValue ();
+    if (o == null)
+    {
+      return getNullValue ();
+    }
 
     try
     {
@@ -132,7 +147,10 @@ public class FormatFilter implements DataFilter
    */
   public void setNullValue (String nullvalue)
   {
-    if (nullvalue == null) throw new NullPointerException ();
+    if (nullvalue == null)
+    {
+      throw new NullPointerException ();
+    }
     this.nullvalue = nullvalue;
   }
 
@@ -163,19 +181,33 @@ public class FormatFilter implements DataFilter
    */
   public void setDataSource (DataSource ds)
   {
-    if (ds == null) throw new NullPointerException ();
+    if (ds == null)
+    {
+      throw new NullPointerException ();
+    }
     this.datasource = ds;
   }
 
   /**
-   * @returns a clone of this FormatFilter
+   * Clones the filter.
+   *
+   * @return a clone.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone () throws CloneNotSupportedException
   {
     FormatFilter f = (FormatFilter) super.clone ();
-    if (datasource != null) f.datasource = (DataSource) datasource.clone ();
-    if (format != null) f.format = (Format) format.clone ();
+    if (datasource != null)
+    {
+      f.datasource = (DataSource) datasource.clone ();
+    }
+    if (format != null)
+    {
+      f.format = (Format) format.clone ();
+    }
     return f;
   }
+
 }
 

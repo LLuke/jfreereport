@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------------
+ * -------------------------
  * ExpressionDataSource.java
- * ---------------
+ * -------------------------
  * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
  * Changes
@@ -41,6 +41,9 @@ import com.jrefinery.report.DataRow;
  * using the datarow given in the connectDataRow method.
  * <p>
  * @see com.jrefinery.report.function.Expression
+ *
+ * @author TM
+ *
  * @deprecated use DataRowDataSource as unified access class instead
  */
 public class ExpressionDataSource implements DataSource, DataRowConnectable
@@ -84,7 +87,10 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable
    */
   public void setExpression (String field)
   {
-    if (field == null) throw new NullPointerException ();
+    if (field == null)
+    {
+      throw new NullPointerException ();
+    }
     this.expression = field;
   }
 
@@ -114,7 +120,7 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable
   }
 
   /**
-   * @returns a clone of this ExpressionDataSource
+   * @return a clone of this ExpressionDataSource
    * @throws CloneNotSupportedException if the cloning is not supported.
    */
   public Object clone () throws CloneNotSupportedException
@@ -134,8 +140,14 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable
    */
   public void connectDataRow (DataRow row) throws IllegalStateException
   {
-    if (row == null) throw new NullPointerException ("Null-DataRowBackend cannot be set.");
-    if (dataRow != null) throw new IllegalStateException ("There is a datarow already connected");
+    if (row == null)
+    {
+      throw new NullPointerException ("Null-DataRowBackend cannot be set.");
+    }
+    if (dataRow != null)
+    {
+      throw new IllegalStateException ("There is a datarow already connected");
+    }
     dataRow = row;
   }
 
@@ -149,13 +161,19 @@ public class ExpressionDataSource implements DataSource, DataRowConnectable
    */
   public void disconnectDataRow (DataRow row) throws IllegalStateException
   {
-    if (row == null) throw new NullPointerException ("Null-DataRowBackend cannot be disconnected.");
-    if (dataRow == null) throw new IllegalStateException ("There is no datarow connected");
+    if (row == null)
+    {
+      throw new NullPointerException ("Null-DataRowBackend cannot be disconnected.");
+    }
+    if (dataRow == null)
+    {
+      throw new IllegalStateException ("There is no datarow connected");
+    }
     dataRow = null;
   }
 
   /**
-   * @returns the datarow connected with this datasource.
+   * @return the datarow connected with this datasource.
    */
   protected DataRow getDataRow ()
   {

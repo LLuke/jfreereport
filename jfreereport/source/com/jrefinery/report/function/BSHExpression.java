@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------------------
+ * ------------------
  * BSHExpression.java
- * ---------------------
+ * ------------------
  *
  * ChangeLog
  * ---------
@@ -40,12 +40,14 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 
 /**
- * The BSHExpression uses the BeanShell-Scripting framework to perform the calculation, the expression itself is contained in a function called
+ * The BSHExpression uses the BeanShell-Scripting framework to perform the calculation, the
+ * expression itself is contained in a function called
  * <p>
  * <code>Object getValue()</code>
  * <p>
- * and this function is defined in the expression property "expression". You have to overwrite the function
- * getValue() to begin and to end you expression, but you are free to add own function to the script.
+ * and this function is defined in the expression property "expression". You have to overwrite the
+ * function getValue() to begin and to end you expression, but you are free to add own function to
+ * the script.
  * <p>
  * By default, common Java core and extension packages are imported for you. They are:
  * <ul>
@@ -87,11 +89,13 @@ import java.io.Reader;
   </expression>
 </pre>
  *
+ * @author TM
  */
 public class BSHExpression extends AbstractExpression
 {
   /** The headerfile with the default initialisations.*/
-  private static final String BSHHEADERFILE = "com/jrefinery/report/function/BSHExpressionHeader.txt";
+  private static final String BSHHEADERFILE =
+      "com/jrefinery/report/function/BSHExpressionHeader.txt";
 
   /** The beanshell-interpreter used for evaluating the expression */
   private Interpreter interpreter;
@@ -105,14 +109,16 @@ public class BSHExpression extends AbstractExpression
   }
 
   /**
-   * Evaluates the defined expression. If an exception or an evaluation error occures, the evaluation
-   * returns null and the error is logged. The current datarow and a copy of the expressions properties
-   * are set to script-internal variables. Changes to the properties will not alter the expressions original
-   * properties and will be lost when the evaluation is finished.
+   * Evaluates the defined expression. If an exception or an evaluation error occures, the
+   * evaluation returns null and the error is logged. The current datarow and a copy of the
+   * expressions properties are set to script-internal variables. Changes to the properties will
+   * not alter the expressions original properties and will be lost when the evaluation is
+   * finished.
    * <p>
-   * Expressions do not maintain a state and no assumptions about the order of evaluation can be made.
+   * Expressions do not maintain a state and no assumptions about the order of evaluation can be
+   * made.
    *
-   * @returns the evaluated value or null.
+   * @return the evaluated value or null.
    */
   public Object getValue()
   {
@@ -134,7 +140,7 @@ public class BSHExpression extends AbstractExpression
    * should not call getValue() by itself, as the dataRow and the properties are not initialized
    * yet.
    * <p>
-   * Initalisations of the script can be put at the end of the script:
+   * Initialisations of the script can be put at the end of the script:
    * <pre>
    ...
    <property name="expression">
@@ -150,12 +156,20 @@ public class BSHExpression extends AbstractExpression
    </property>
    ...
    </pre>
+   *
+   * @throws FunctionInitializeException if the expression has not been initialized correctly.
    */
   public void initialize() throws FunctionInitializeException
   {
-    if (getName() == null) throw new FunctionInitializeException("No null name allowed");
+    if (getName() == null)
+    {
+      throw new FunctionInitializeException("No null name allowed");
+    }
     InputStream in = this.getClass().getClassLoader().getResourceAsStream(BSHHEADERFILE);
-    if (in == null) throw new FunctionInitializeException("Unable to locate BSHHeaderFile");
+    if (in == null)
+    {
+      throw new FunctionInitializeException("Unable to locate BSHHeaderFile");
+    }
 
     try
     {
@@ -165,12 +179,15 @@ public class BSHExpression extends AbstractExpression
       r.close();
 
       // now add the userdefined expression
-      // the expression is given in form of an function with the signature of:
+      // the expression is given in form of a function with the signature of:
       //
       // Object getValue ()
       //
       String expression = getProperty("expression");
-      if (expression == null) throw new FunctionInitializeException("No expression set");
+      if (expression == null)
+      {
+        throw new FunctionInitializeException("No expression set");
+      }
       interpreter.eval(expression);
 
     }
@@ -183,6 +200,10 @@ public class BSHExpression extends AbstractExpression
 
   /**
    * Clones the expression and reinitializes the script.
+   *
+   * @return  a clone of the expression.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone() throws CloneNotSupportedException
   {

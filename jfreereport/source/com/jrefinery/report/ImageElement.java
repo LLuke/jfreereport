@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElement.java,v 1.16 2002/09/06 17:02:29 taqua Exp $
+ * $Id: ImageElement.java,v 1.17 2002/09/08 12:38:25 taqua Exp $
  *
  * Changes:
  * --------
@@ -53,6 +53,8 @@ import com.jrefinery.report.targets.OutputTargetException;
  * ImageReference into an element.
  * <p>
  * ToDo: Better scaling
+ *
+ * @author TM
  */
 public class ImageElement extends Element
 {
@@ -68,13 +70,18 @@ public class ImageElement extends Element
    *
    * @param target The target on which to print.
    * @param band The band.
+   *
+   * @throws OutputTargetException if there is a problem with the target.
    */
   public void draw (OutputTarget target, Band band) throws OutputTargetException
   {
     // set the paint...
     target.setPaint (getPaint (band));
     ImageReference ref = (ImageReference) getValue ();
-    if (ref != null) target.drawImage (ref);
+    if (ref != null)
+    {
+      target.drawImage (ref);
+    }
   }
 
 
@@ -121,8 +128,16 @@ public class ImageElement extends Element
     return (float) getBounds ().getY ();
   }
 
+  /**
+   * Clones the element.
+   *
+   * @return a clone.
+   *
+   * @throws CloneNotSupportedException should never be thrown.
+   */
   public Object clone() throws CloneNotSupportedException
   {
     return super.clone();
   }
+
 }

@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * -------------------
  * ElementFactory.java
- * -----------------------
+ * -------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 10-May-2002 : Initial version
@@ -30,7 +30,8 @@
  * 22-May-2002 : Structured parsing functions: all tags have a startXXX and endXXX function
  * 30-Jun-2002 : Added support for ImageField, ImageFunction
  * 10-Jul-2002 : Added support for ImageURLField, ImageURLFunction
- * 31-Aug-2002 : Element-creation uses the ItemFactory, removed references to deprecated Element-types
+ * 31-Aug-2002 : Element-creation uses the ItemFactory, removed references to deprecated
+ *               Element-types
  */
 package com.jrefinery.report.io;
 
@@ -60,11 +61,12 @@ import java.net.URL;
  * at the DTD supplied in the distribution or on http://jfreereport.sourceforge.net/
  * <p>
  * This factory uses the deprecated element classes. These classes will get not extension
- * for new features and as soon as the discrepancy beween implemented and possible features
+ * for new features and as soon as the discrepancy between implemented and possible features
  * gets too huge, this parser will be discontinued.
+ *
+ * @author TM
  */
-public class ElementFactory
-    extends DefaultHandler
+public class ElementFactory extends DefaultHandler
     implements ReportDefinitionTags
 {
   /** Storage for the current CDATA */
@@ -79,19 +81,36 @@ public class ElementFactory
   /** The base handler */
   private ReportDefinitionContentHandler handler;
 
+  /** The text element name. */
   private String textElementName;
+
+  /** The text element bounds. */
   private Rectangle2D textElementBounds;
+
+  /** The text element font. */
   private Font textElementFont;
+
+  /** The text element alignment. */
   private int textElementAlignment;
+
+  /** The text element color. */
   private Paint textElementColor;
+
+  /** The text element null string. */
   private String textElementNullString;
+
+  /** The text element source name. */
   private String textElementSourceName;
+
+  /** The text element format string. */
   private String textElementFormatString;
 
   /**
    * Creates a new ElementFactory. The factory queries the current Band of the ReportFactory
    * and will add created element to this band. If unknown end-Tags are encountered, the
    * parsing for elements will stop and the previous handler will be activated.
+   *
+   * @param base  the report handler.
    */
   public ElementFactory(ReportFactory base)
   {
@@ -109,14 +128,16 @@ public class ElementFactory
    * The elements parsed in this factory denote common usecases. Element creation is
    * delegated to the ItemFactory
    *
+   * @param namespaceURI  the namespace URI.
+   * @param localName  the local name.
+   * @param qName  the element name.
+   * @param atts  the element attributes.
+   *
    * @throws SAXException if an unknown tag is encountered.
+   *
    * @see com.jrefinery.report.ItemFactory
    */
-  public void startElement(
-      String namespaceURI,
-      String localName,
-      String qName,
-      Attributes atts)
+  public void startElement(String namespaceURI, String localName, String qName, Attributes atts)
       throws SAXException
   {
     String elementName = qName.toLowerCase().trim();
@@ -188,19 +209,29 @@ public class ElementFactory
     }
   }
 
-  /** returns the current band, which receives the parsed elements */
+  /**
+   * Returns the current band, which receives the parsed elements.
+   *
+   * @return the current band.
+   */
   protected Band getCurrentBand()
   {
     return currentBand;
   }
 
-  /** removes all text from the textbuffer at the end of an CDATA section */
+  /**
+   * Removes all text from the textbuffer at the end of a CDATA section.
+   */
   protected void clearCurrentText()
   {
     this.currentText.delete(0, currentText.length());
   }
 
-  /** returns the current text of the textbuffer */
+  /**
+   * Returns the current text of the textbuffer.
+   *
+   * @return the current text.
+   */
   protected String getCurrentText()
   {
     return currentText.toString();
@@ -208,16 +239,26 @@ public class ElementFactory
 
   /**
    * Receives some (or all) of the text in the current element.
+   *
+   * @param ch  character buffer.
+   * @param start  the start index.
+   * @param length  the length of the valid character data.
    */
   public void characters(char[] ch, int start, int length)
   {
     if (this.currentText != null)
+    {
       this.currentText.append(String.copyValueOf(ch, start, length));
+    }
   }
 
   /**
-   * SAX-Handler function that is forwarded from the ReportDefinitionContentHandler.
+   * SAX handler function that is forwarded from the ReportDefinitionContentHandler.
    * If an unknown element is encountered, the previous handler gets activated.
+   *
+   * @param namespaceURI  the namespace.
+   * @param localName  the local name.
+   * @param qName  the element name.
    *
    * @throws SAXException if an unknown tag is encountered.
    */
@@ -302,7 +343,11 @@ public class ElementFactory
   /**
    * Create a ImageElement with an static ImageDataSource. The ImageData is read from
    * the supplied URL (attribute "src") in conjunction with the contentbase defined in the
-   * ReportDefintionContentHandler
+   * ReportDefintionContentHandler.
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startImageRef(Attributes atts) throws SAXException
   {
@@ -329,6 +374,10 @@ public class ElementFactory
    * Create a ImageElement with an static ImageDataSource. The ImageData is read from
    * the supplied URL (attribute "src") in conjunction with the contentbase defined in the
    * ReportDefintionContentHandler
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startImageField(Attributes atts) throws SAXException
   {
@@ -353,6 +402,10 @@ public class ElementFactory
    * Create a ImageElement with an static ImageDataSource. The ImageData is read from
    * the supplied URL (attribute "src") in conjunction with the contentbase defined in the
    * ReportDefintionContentHandler
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startImageURLField(Attributes atts) throws SAXException
   {
@@ -377,6 +430,10 @@ public class ElementFactory
    * Create a ImageElement with an static ImageDataSource. The ImageData is read from
    * the supplied URL (attribute "src") in conjunction with the contentbase defined in the
    * ReportDefintionContentHandler
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startImageFunction(Attributes atts) throws SAXException
   {
@@ -402,6 +459,10 @@ public class ElementFactory
    * Create a ImageElement with an static ImageDataSource. The ImageData is read from
    * the supplied URL (attribute "src") in conjunction with the contentbase defined in the
    * ReportDefintionContentHandler
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startImageURLFunction(Attributes atts) throws SAXException
   {
@@ -424,6 +485,10 @@ public class ElementFactory
 
   /**
    * Creates a LineShapeElement.
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startLine(Attributes atts) throws SAXException
   {
@@ -445,6 +510,10 @@ public class ElementFactory
 
   /**
    * Creates a RectangleShapeElement.
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
   protected void startRectangle(Attributes atts) throws SAXException
   {
@@ -464,10 +533,14 @@ public class ElementFactory
 
   /**
    * Creates a label element, an text element with an static datasource attached.
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void startLabel(Attributes attr) throws SAXException
+  protected void startLabel(Attributes atts) throws SAXException
   {
-    getTextElementAttributes(attr);
+    getTextElementAttributes(atts);
     clearCurrentText();
   }
 
@@ -475,83 +548,113 @@ public class ElementFactory
    * Creates a text element. In ancient times there was a difference between string elements
    * (single line) and multiline fields. This is resolved in the text element class which
    * handles all cases of printing text in reports.
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void startMultilineField(Attributes attr) throws SAXException
+  protected void startMultilineField(Attributes atts) throws SAXException
   {
-    getDataElementAttributes(attr);
+    getDataElementAttributes(atts);
   }
 
   /**
    * Creates a text element. In ancient times there was a difference between string elements
    * (single line) and multiline fields. This is resolved in the text element class which
    * handles all cases of printing text in reports.
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void startStringField(Attributes attr) throws SAXException
+  protected void startStringField(Attributes atts) throws SAXException
   {
-    getDataElementAttributes(attr);
+    getDataElementAttributes(atts);
   }
 
   /**
    * Creates a general element. General elements are text elements.
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void startGeneralField(Attributes attr) throws SAXException
+  protected void startGeneralField(Attributes atts) throws SAXException
   {
-    getDataElementAttributes(attr);
+    getDataElementAttributes(atts);
   }
 
   /**
    * Creates a number element. number elements are text elements.
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void startNumberField(Attributes attr) throws SAXException
+  protected void startNumberField(Attributes atts) throws SAXException
   {
-    getDataElementAttributes(attr);
-    textElementFormatString = attr.getValue(FORMAT_ATT);
+    getDataElementAttributes(atts);
+    textElementFormatString = atts.getValue(FORMAT_ATT);
   }
 
   /**
    * Creates a date element. date elements are text elements.
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void startDateField(Attributes attr) throws SAXException
+  protected void startDateField(Attributes atts) throws SAXException
   {
-    getDataElementAttributes(attr);
-    textElementFormatString = attr.getValue(FORMAT_ATT);
+    getDataElementAttributes(atts);
+    textElementFormatString = atts.getValue(FORMAT_ATT);
   }
 
   /**
    * Creates a number function. number functions are text elements.
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void startNumberFunction(Attributes attr)
-      throws SAXException
+  protected void startNumberFunction(Attributes atts) throws SAXException
   {
-    getFunctionElementAttributes(attr);
-    textElementFormatString = attr.getValue(FORMAT_ATT);
+    getFunctionElementAttributes(atts);
+    textElementFormatString = atts.getValue(FORMAT_ATT);
   }
 
   /**
    * Creates a date function. date functions are text elements.
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void startDateFunction(Attributes attr)
-      throws SAXException
+  protected void startDateFunction(Attributes atts) throws SAXException
   {
-    getFunctionElementAttributes(attr);
-    textElementFormatString = attr.getValue(FORMAT_ATT);
+    getFunctionElementAttributes(atts);
+    textElementFormatString = atts.getValue(FORMAT_ATT);
   }
 
   /**
    * Creates a string function. string functions are text elements.
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void startStringFunction(Attributes attr)
-      throws SAXException
+  protected void startStringFunction(Attributes atts) throws SAXException
   {
-    getFunctionElementAttributes(attr);
+    getFunctionElementAttributes(atts);
   }
 
   /**
-   * ends a label tag, sets the static text for the label which was build during the
+   * Ends a label tag, sets the static text for the label which was build during the
    * parsing. The label is added to the current band.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void endLabel()
-      throws SAXException
+  protected void endLabel() throws SAXException
   {
     TextElement te = ItemFactory.createLabelElement(textElementName,
         textElementBounds,
@@ -565,82 +668,74 @@ public class ElementFactory
   }
 
   /**
-   * ends the line element and adds it to the current band.
+   * Ends the line element and adds it to the current band.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void endLine()
-      throws SAXException
+  protected void endLine() throws SAXException
   {
   }
 
   /**
-   * ends the rectangle shape element and adds it to the current band.
+   * Ends the rectangle shape element and adds it to the current band.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void endRectangle()
-      throws SAXException
+  protected void endRectangle() throws SAXException
   {
   }
 
   /**
-   * ends the image element and adds it to the current band.
+   * Ends the image element and adds it to the current band.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void endImageField()
-      throws SAXException
+  protected void endImageField() throws SAXException
   {
   }
 
   /**
-   * ends the image element and adds it to the current band.
+   * Ends the image element and adds it to the current band.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void endImageFunction()
-      throws SAXException
+  protected void endImageFunction() throws SAXException
   {
   }
 
   /**
-   * ends the image element and adds it to the current band.
+   * Ends the image element and adds it to the current band.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void endImageURLField()
-      throws SAXException
+  protected void endImageURLField() throws SAXException
   {
   }
 
   /**
-   * ends the image element and adds it to the current band.
+   * Ends the image element and adds it to the current band.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void endImageURLFunction()
-      throws SAXException
+  protected void endImageURLFunction() throws SAXException
   {
   }
 
   /**
-   * ends the image element and adds it to the current band.
+   * Ends the image element and adds it to the current band.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void endImageRef()
-      throws SAXException
+  protected void endImageRef() throws SAXException
   {
   }
 
   /**
-   * ends the multiline text element and adds it to the current band.
+   * Ends the multiline text element and adds it to the current band.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void endMultilineField()
-      throws SAXException
-  {
-    TextElement te = ItemFactory.createStringElement(textElementName,
-        textElementBounds,
-        textElementColor,
-        textElementAlignment,
-        textElementFont,
-        textElementNullString,
-        textElementSourceName);
-    getCurrentBand().addElement(te);
-  }
-
-  /**
-   * ends the String field and adds it to the current band.
-   */
-  protected void endStringField()
-      throws SAXException
+  protected void endMultilineField() throws SAXException
   {
     TextElement te = ItemFactory.createStringElement(textElementName,
         textElementBounds,
@@ -653,10 +748,28 @@ public class ElementFactory
   }
 
   /**
-   * ends the general element and adds it to the current band.
+   * Ends the String field and adds it to the current band.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void endGeneralField()
-      throws SAXException
+  protected void endStringField() throws SAXException
+  {
+    TextElement te = ItemFactory.createStringElement(textElementName,
+        textElementBounds,
+        textElementColor,
+        textElementAlignment,
+        textElementFont,
+        textElementNullString,
+        textElementSourceName);
+    getCurrentBand().addElement(te);
+  }
+
+  /**
+   * Ends the general element and adds it to the current band.
+   *
+   * @throws SAXException if there is a SAX problem.
+   */
+  protected void endGeneralField() throws SAXException
   {
     TextElement te = ItemFactory.createGeneralElement(textElementName,
         textElementBounds,
@@ -669,10 +782,11 @@ public class ElementFactory
   }
 
   /**
-   * ends the number field and adds it to the current band.
+   * Ends the number field and adds it to the current band.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void endNumberField()
-      throws SAXException
+  protected void endNumberField() throws SAXException
   {
     TextElement te = ItemFactory.createNumberElement(textElementName,
         textElementBounds,
@@ -686,10 +800,11 @@ public class ElementFactory
   }
 
   /**
-   * ends the date field and adds it to the current band.
+   * Ends the date field and adds it to the current band.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void endDateField()
-      throws SAXException
+  protected void endDateField() throws SAXException
   {
     TextElement te = ItemFactory.createDateElement(textElementName,
         textElementBounds,
@@ -703,10 +818,11 @@ public class ElementFactory
   }
 
   /**
-   * ends the number function and adds it to the current band.
+   * Ends the number function and adds it to the current band.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void endNumberFunction()
-      throws SAXException
+  protected void endNumberFunction() throws SAXException
   {
     TextElement te = ItemFactory.createNumberElement(textElementName,
         textElementBounds,
@@ -720,10 +836,11 @@ public class ElementFactory
   }
 
   /**
-   * ends the string function and adds it to the current band.
+   * Ends the string function and adds it to the current band.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void endStringFunction()
-      throws SAXException
+  protected void endStringFunction() throws SAXException
   {
     TextElement te = ItemFactory.createStringElement(textElementName,
         textElementBounds,
@@ -736,10 +853,11 @@ public class ElementFactory
   }
 
   /**
-   * ends the date function and adds it to the current band.
+   * Ends the date function and adds it to the current band.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void endDateFunction()
-      throws SAXException
+  protected void endDateFunction() throws SAXException
   {
     TextElement te = ItemFactory.createDateElement(textElementName,
         textElementBounds,
@@ -754,10 +872,13 @@ public class ElementFactory
 
   /**
    * Reads the attributes that are common for all band-elements, as
-   * name, x, y, width, height, font, fontstyle, fontsize and alignment
+   * name, x, y, width, height, font, fontstyle, fontsize and alignment.
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void getTextElementAttributes(Attributes atts)
-      throws SAXException
+  protected void getTextElementAttributes(Attributes atts) throws SAXException
   {
     textElementName = handler.generateName(atts.getValue(NAME_ATT));
     textElementBounds = ParserUtil.getElementPosition(atts);
@@ -767,7 +888,10 @@ public class ElementFactory
   }
 
   /**
-   * parses the text alignment, which is one of "left", "center" or "right".
+   * Parses the text alignment, which is one of "left", "center" or "right".
+   *
+   * @param alignment  the alignment.
+   * @param int  the default alignment.
    */
   protected int parseTextAlignment(String alignment, int defaultAlignment)
   {
@@ -775,20 +899,29 @@ public class ElementFactory
     if (alignment != null)
     {
       if (alignment.equals("left"))
+      {
         elementAlignment = Element.LEFT;
+      }
       if (alignment.equals("center"))
+      {
         elementAlignment = Element.CENTER;
+      }
       if (alignment.equals("right"))
+      {
         elementAlignment = Element.RIGHT;
+      }
     }
     return elementAlignment;
   }
 
   /**
    * Appends all data element relevant attributes to the data element parsed
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void getDataElementAttributes(Attributes atts)
-      throws SAXException
+  protected void getDataElementAttributes(Attributes atts) throws SAXException
   {
     getTextElementAttributes(atts);
     textElementNullString = ParserUtil.parseString(atts.getValue(NULLSTRING_ATT), "-");
@@ -797,9 +930,12 @@ public class ElementFactory
 
   /**
    * Appends all function element relevant attributes to the data element parsed
+   *
+   * @param atts  the attributes.
+   *
+   * @throws SAXException if there is a SAX problem.
    */
-  protected void getFunctionElementAttributes(Attributes atts)
-      throws SAXException
+  protected void getFunctionElementAttributes(Attributes atts) throws SAXException
   {
     getTextElementAttributes(atts);
     textElementNullString = ParserUtil.parseString(atts.getValue(NULLSTRING_ATT), "-");

@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OutputTarget.java,v 1.4 2002/08/26 22:02:13 taqua Exp $
+ * $Id: OutputTarget.java,v 1.5 2002/09/01 15:49:31 taqua Exp $
  *
  * Changes
  * -------
@@ -57,245 +57,293 @@ import java.awt.print.PageFormat;
  * An interface that defines the methods that must be supported by a report output target.
  * JFreeReport currently implements two targets:  one for Graphics2D (screen and printer) and
  * one for Acrobat PDF files.
+ *
+ * @author DG
  */
 public interface OutputTarget
 {
+  /** Literal text for the 'title' property name. */
   public static final String TITLE = "title";
+
+  /** Literal text for the 'author' property name. */
   public static final String AUTHOR = "author";
 
   /**
-   * Opens the target.
+   * Returns the value of the specified property.  If the property is not found, the
+   * <code>defaultValue</code> is returned.
    *
-   * @param title The report title.
-   * @param author The report author.
-   */
-  public void open () throws OutputTargetException;
-
-  /**
-   * Defines a property for this outputtarget. Properties are the standardway of configuring
-   * an outputtarget.
+   * @param property  the property name (or key).
+   * @param defaultValue  the default value.
    *
-   * @param property the name of the property to set
-   * @param value the value of the property. If value is null, the property is removed from the
-   * OutputTarget
-   * @throws NullPointerExecption if property is null
-   */
-  public void setProperty (String property, Object value);
-
-  /**
-   * Queries the property named with <code>property</code>. If the property is not found, <code>
-   * null</code> is returned.
+   * @return the property value.
    *
-   * @returns the value stored under the given property name
-   * @param property the name of the property to be queried
-   * @throws NullPointerException if <code>property</code> is null
-   */
-  public Object getProperty (String property);
-
-  /**
-   * Queries the property named with <code>property</code>. If the property is not found, the default
-   * value is returned.
-   *
-   * @returns the value stored under the given property name
-   * @param property the name of the property to be queried
-   * @param defaultValue the defaultvalue returned if there is no such property
-   * @throws NullPointerException if <code>property</code> is null
+   * @throws NullPointerException if <code>property</code> is null.
    */
   public Object getProperty (String property, Object defaultValue);
 
   /**
+   * Defines a property for this target.
+   * <P>
+   * Properties provide a mechanism for configuring a target.  For example, you can add title and
+   * author information to a PDF report using the 'title' and 'author' properties.
+   *
+   * @param property  the property name (key).
+   * @param value  the property value (use null to remove an existing property).
+   */
+  public void setProperty (String property, Object value);
+
+  /**
+   * Opens the target.
+   *
+   * @throws OutputTargetException if there is some problem opening the target.
+   */
+  public void open () throws OutputTargetException;
+
+  /**
    * Closes the target.
+   *
+   * @throws OutputTargetException if there is some problem closing the target.
    */
   public void close () throws OutputTargetException;
 
   /**
+   * Signals that a page is being started.  Some targets need to know when a page is being started,
+   * others can simply ignore this message.
+   *
+   * @throws OutputTargetException if there is some problem with the target.
+   */
+  public void beginPage () throws OutputTargetException;
+
+  /**
+   * Signals that the current page is ended.  Some targets need to know when a page is finished,
+   * others can simply ignore this message.
+   *
+   * @throws OutputTargetException if there is some problem with the target.
+   */
+  public void endPage () throws OutputTargetException;
+
+  /**
+   * Saves this state and returns a state encapsulation suitable to be restored by restoreState().
+   *
+   * @return the state.
+   *
+   * @throws OutputTargetException if there is some problem with the target.
+   */
+  public Object saveState () throws OutputTargetException;
+
+  /**
+   * Restores a previously saved state.
+   *
+   * @param o  the state.
+   *
+   * @throws OutputTargetException if there is some problem with the target.
+   */
+  public void restoreState (Object o) throws OutputTargetException;
+
+  /**
+   * Returns the value of the specified property.  If the property is not found, <code>null</code>
+   * is returned.
+   *
+   * @param property  the property name (or key).
+   *
+   * @return the property value.
+   *
+   * @throws NullPointerException if <code>property</code> is null.
+   */
+  public Object getProperty (String property);
+
+  /**
    * Returns the page format for the target.
    *
-   * @return The page format.
+   * @return the page format.
    */
   public PageFormat getPageFormat ();
 
   /**
    * Sets the page format for the target.
    *
-   * @param format The page format.
+   * @param format  the page format.
    */
   public void setPageFormat (PageFormat format);
 
   /**
    * Returns the coordinate of the left edge of the page.
    *
-   * @return The left edge of the page.
+   * @return the left edge of the page.
    */
   public float getPageX ();
 
   /**
    * Returns the coordinate of the top edge of the page.
    *
-   * @return The top edge of the page.
+   * @return the top edge of the page.
    */
   public float getPageY ();
 
   /**
    * Returns the page width in points (1/72 inch).
    *
-   * @return The page width.
+   * @return the page width.
    */
   public float getPageWidth ();
 
   /**
    * Returns the page height in points (1/72 inch).
    *
-   * @return The page height.
+   * @return the page height.
    */
   public float getPageHeight ();
 
   /**
    * Returns the left edge of the printable area of the page.  The units are points.
    *
-   * @return The left edge of the printable area of the page.
+   * @return the left edge of the printable area of the page.
    */
   public float getUsableX ();
 
   /**
    * Returns the top edge of the printable area of the page.  The units are points.
    *
-   * @return The top edge of the printable area of the page.
+   * @return the top edge of the printable area of the page.
    */
   public float getUsableY ();
 
   /**
    * Returns the width (in points) of the printable area of the page.
    *
-   * @return The width of the printable area of the page.
+   * @return the width of the printable area of the page.
    */
   public float getUsableWidth ();
 
   /**
    * Returns the height (in points) of the printable area of the page.
    *
-   * @return The height of the printable area of the page.
+   * @return the height of the printable area of the page.
    */
   public float getUsableHeight ();
 
   /**
-   * Sets the font.
+   * Returns the current font.
    *
-   * @param font The font.
-   */
-  public void setFont (Font font) throws OutputTargetException;
-
-  /**
-   * returns the currently defined font for this Target.
+   * @return the current font.
    */
   public Font getFont ();
 
   /**
-   * Defines the current stroke for the target. The stroke is used to draw the outlines
-   * of shapes.
+   * Sets the font.
+   *
+   * @param font  the font.
+   *
+   * @throws OutputTargetException if there is a problem setting the font.
+   */
+  public void setFont (Font font) throws OutputTargetException;
+
+  /**
+   * Returns the current stroke.
+   *
+   * @return the stroke.
+   */
+  public Stroke getStroke ();
+
+  /**
+   * Defines the current stroke for the target.
+   * <P>
+   * The stroke is used to draw the outlines of shapes.
+   *
+   * @param stroke  the stroke.
+   *
+   * @throws OutputTargetException if there is a problem setting the stroke.
    */
   public void setStroke (Stroke stroke) throws OutputTargetException;
 
   /**
-   * Returns the current stroke assigned with this target.
+   * Returns the current paint.
+   *
+   * @return the paint.
    */
-  public Stroke getStroke ();
+  public Paint getPaint ();
 
   /**
    * Sets the paint.
    *
    * @param paint The paint.
+   *
+   * @throws OutputTargetException if there is a problem setting the paint.
    */
   public void setPaint (Paint paint) throws OutputTargetException;
 
   /**
-   * Returns the paint currently set for this target.
-   */
-  public Paint getPaint ();
-
-  /**
-   * defines the bounds for the current band. This will also adjust the bandBounds of the
+   * Defines the bounds for the current band. This will also adjust the bandBounds of the
    * assigned cursor.
+   *
+   * @param bounds  the bounds.
    */
   public void setClippingArea (Rectangle2D bounds);
 
   /**
    * Returns the defined bound to the current band.
+   *
+   * @return the clipping area.
    */
   public Rectangle2D getClippingArea ();
 
   /**
-   * Returns the cursor assigned with is outputtarget. The cursor is used to translate between
+   * Returns the cursor assigned to this target. The cursor is used to translate between
    * the different coordinate spaces.
+   *
+   * @return the cursor.
    */
   public BandCursor getCursor ();
 
   /**
-   * Draws a string inside a rectangular area (the lower edge is aligned with the baseline of
-   * the text).
+   * Draws a string at the current cursor position.
    *
-   * @param text The text.
-   * @param alignment The horizontal alignment.
+   * @param text  the text.
+   * @param alignment  the horizontal alignment.
    */
   public void drawString (String text, int alignment);
 
 
   /**
-   * Draws a string inside a rectangular area (the lower edge is aligned with the baseline of
-   * the text). The text is split at the end of the line and continued in the next line.
+   * Draws a string at the current cursor position. The text is split at the end of the line and
+   * continued in the next line.
    *
-   * @param text The text.
-   * @param alignment The horizontal alignment.
+   * @param text  the text.
+   * @param alignment  the horizontal alignment.
    */
-  public void drawMultiLineText (String mytext, int align);
+  public void drawMultiLineText (String text, int alignment);
 
   /**
-   * Draws a string inside a rectangular area (the lower edge is aligned with the baseline of
-   * the text). The text is split at the end of the line and continued in the next line.
+   * Draws a string at the current cursor position. The text is split at the end of the line and
+   * continued in the next line.
    *
-   * @param text The text.
-   * @param alignment The horizontal alignment.
+   * @param text  the text.
+   * @param alignment  the horizontal alignment.
+   * @param dynamic  ??
    */
-  public void drawMultiLineText (String mytext, int align, boolean dynamic);
+  public void drawMultiLineText (String text, int alignment, boolean dynamic);
 
   /**
-   * Draws a shape relative to the specified coordinates.
+   * Draws a shape relative to the current position.
    *
-   * @param shape The shape to draw.
+   * @param shape  the shape to draw.
    */
   public void drawShape (Shape shape);
 
   /**
-   * Fills the shape relative to the current position
+   * Fills the shape relative to the current position.
+   *
+   * @param shape  the shape to draw.
    */
   public void fillShape (Shape shape);
 
   /**
    * Draws a image relative to the specified coordinates.
    *
-   * @param image The image to draw as imagereference for possible embedding of rawdata.
+   * @param image The image to draw (as ImageReference for possible embedding of raw data).
+   *
+   * @throws OutputTargetException if there is a problem setting the paint.
    */
   public void drawImage (ImageReference image) throws OutputTargetException;
 
-  /**
-   * Signals that the current page is ended.  Some targets need to know when a page is finished,
-   * others can simply ignore this message.
-   */
-  public void endPage () throws OutputTargetException;
-
-  /**
-   * Signals that the current page is ended.  Some targets need to know when a page is being started,
-   * others can simply ignore this message.
-   */
-  public void beginPage () throws OutputTargetException;
-
-  /**
-   * Saves this state and returns a state encapsulation suitable to be restored by restoreState().
-   */
-  public Object saveState () throws OutputTargetException;
-
-  /**
-   * Restores a previously saved state.
-   */
-  public void restoreState (Object o) throws OutputTargetException;
 }

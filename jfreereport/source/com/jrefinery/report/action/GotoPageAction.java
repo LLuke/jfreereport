@@ -35,15 +35,14 @@
 package com.jrefinery.report.action;
 
 import com.jrefinery.report.util.AbstractActionDowngrade;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import java.util.ResourceBundle;
 
 /**
  * The GotoPageAction is used to direclty jump to a page. A simple dialog opens to
  * ask the user for the page. This is the abstract base for the action doing the
  * localisation specific initialisation.
+ *
+ * @author ??
  */
 public abstract class GotoPageAction extends AbstractActionDowngrade
 {

@@ -49,6 +49,8 @@ import java.util.EventObject;
  * Represents a report event.
  * <P>
  * Includes information regarding which ReportState generated the event.
+ *
+ * @author TM
  */
 public class ReportEvent extends EventObject
 {
@@ -63,7 +65,10 @@ public class ReportEvent extends EventObject
   public ReportEvent (ReportState state)
   {
     super (state);
-    if (state == null) throw new NullPointerException ();
+    if (state == null)
+    {
+     throw new NullPointerException ();
+    }
   }
 
   /**
@@ -95,7 +100,7 @@ public class ReportEvent extends EventObject
    * fields of the DataSource and other Functions and Expressions within the current row of the
    * report.
    *
-   * @returns the DataRow of the report
+   * @return the DataRow of the report
    */
   public DataRow getDataRow ()
   {

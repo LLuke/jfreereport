@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -103,7 +103,8 @@ public class JFreeReportResources extends ListResourceBundle
             {"project.name", "JFreeReport"},
             {"project.version", "0.7.6"},
             {"project.info", "http://www.object-refinery.com/jfreereport/index.html"},
-            {"project.copyright", "(C)opyright 2000-2002, by Simba Management Limited and Contributors"},
+            {"project.copyright",
+                "(C)opyright 2000-2002, by Simba Management Limited and Contributors"},
 
             {"action.save-as.name", "Save As..."},
             {"action.save-as.description", "Save to PDF format"},
@@ -115,7 +116,8 @@ public class JFreeReportResources extends ListResourceBundle
             {"action.page-setup.name", "Page Setup"},
             {"action.page-setup.description", "Page Setup"},
             {"action.page-setup.mnemonic", new Integer (KeyEvent.VK_G)},
-            {"action.page-setup.small-icon", getIcon ("com/jrefinery/report/resources/PageSetup16.gif")},
+            {"action.page-setup.small-icon",
+                getIcon ("com/jrefinery/report/resources/PageSetup16.gif")},
             {"action.page-setup.icon", getIcon ("com/jrefinery/report/resources/PageSetup24.gif")},
 
             {"action.print.name", "Print..."},
@@ -147,7 +149,8 @@ public class JFreeReportResources extends ListResourceBundle
             {"action.firstpage.name", "Home"},
             {"action.firstpage.mnemonic", new Integer (KeyEvent.VK_HOME)},
             {"action.firstpage.description", "Switch to the first page"},
-            {"action.firstpage.small-icon", getIcon ("com/jrefinery/report/resources/FirstPage16.gif")},
+            {"action.firstpage.small-icon",
+                getIcon ("com/jrefinery/report/resources/FirstPage16.gif")},
             {"action.firstpage.icon", getIcon ("com/jrefinery/report/resources/FirstPage24.gif")},
             {"action.firstpage.accelerator", KeyStroke.getKeyStroke (KeyEvent.VK_HOME, 0)},
 
@@ -161,14 +164,16 @@ public class JFreeReportResources extends ListResourceBundle
             {"action.forward.name", "Forward"},
             {"action.forward.description", "Switch to the next page"},
             {"action.forward.mnemonic", new Integer (KeyEvent.VK_PAGE_DOWN)},
-            {"action.forward.small-icon", getIcon ("com/jrefinery/report/resources/Forward16.gif")},
+            {"action.forward.small-icon",
+                getIcon ("com/jrefinery/report/resources/Forward16.gif")},
             {"action.forward.icon", getIcon ("com/jrefinery/report/resources/Forward24.gif")},
             {"action.forward.accelerator", KeyStroke.getKeyStroke ("PAGE_DOWN")},
 
             {"action.lastpage.name", "End"},
             {"action.lastpage.description", "Switch to the last page"},
             {"action.lastpage.mnemonic", new Integer (KeyEvent.VK_END)},
-            {"action.lastpage.small-icon", getIcon ("com/jrefinery/report/resources/LastPage16.gif")},
+            {"action.lastpage.small-icon",
+                getIcon ("com/jrefinery/report/resources/LastPage16.gif")},
             {"action.lastpage.icon", getIcon ("com/jrefinery/report/resources/LastPage24.gif")},
             {"action.lastpage.accelerator", KeyStroke.getKeyStroke (KeyEvent.VK_END, 0)},
 
@@ -182,7 +187,8 @@ public class JFreeReportResources extends ListResourceBundle
             {"action.zoomOut.name", "Zoom Out"},
             {"action.zoomOut.description", "Decrease Zoom"},
             {"action.zoomOut.mnemonic", new Integer (KeyEvent.VK_MINUS)},
-            {"action.zoomOut.small-icon", getIcon ("com/jrefinery/report/resources/ZoomOut16.gif")},
+            {"action.zoomOut.small-icon",
+                getIcon ("com/jrefinery/report/resources/ZoomOut16.gif")},
             {"action.zoomOut.icon", getIcon ("com/jrefinery/report/resources/ZoomOut24.gif")},
             {"action.zoomOut.accelerator", KeyStroke.getKeyStroke ("MINUS")},
 
@@ -227,7 +233,8 @@ public class JFreeReportResources extends ListResourceBundle
             {"pdfsavedialog.targetIsEmpty", "Please specify a filename for the pdf file."},
             {"pdfsavedialog.targetIsNoFile", "The selected target is no ordinary file."},
             {"pdfsavedialog.targetIsNotWritable", "The selected file is not writable."},
-            {"pdfsavedialog.targetOverwriteConfirmation", "The file ''{0}'' exists. Overwrite it?"},
+            {"pdfsavedialog.targetOverwriteConfirmation",
+                "The file ''{0}'' exists. Overwrite it?"},
             {"pdfsavedialog.targetOverwriteTitle", "Overwrite file?"},
 
 

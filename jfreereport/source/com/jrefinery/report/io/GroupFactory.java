@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -119,7 +119,8 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
 
   {
     // get the height...
-    float height = ParserUtil.parseFloat (attr.getValue ("height"), "Element height not specified");
+    float height = ParserUtil.parseFloat (attr.getValue ("height"),
+                                          "Element height not specified");
     boolean pageBreak = ParserUtil.parseBoolean (attr.getValue ("pagebreak"), false);
     // create the group header...
     GroupHeader groupHeader = new GroupHeader ();
@@ -139,7 +140,8 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
   protected void startGroupFooter (Attributes attr) throws SAXException
   {
     // get the height...
-    float height = ParserUtil.parseFloat (attr.getValue ("height"), "Element height not specified");
+    float height = ParserUtil.parseFloat (attr.getValue ("height"),
+                                          "Element height not specified");
 
     // get the default font...
     // create the group footer...
@@ -159,7 +161,9 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
   public void characters (char[] ch, int start, int length)
   {
     if (currentText != null)
+    {
       this.currentText.append (String.copyValueOf (ch, start, length));
+    }
   }
 
   public void endElement (String namespaceURI, String localName, String qName)
@@ -194,7 +198,8 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
     }
     else
     {
-      throw new SAXException ("Expected one of: group, groupfooter, groutheader, fields, field - but found " + elementName);
+      throw new SAXException ("Expected one of: group, groupfooter, groutheader, fields, "
+                            + "field - but found " + elementName);
     }
   }
 
@@ -237,9 +242,13 @@ public class GroupFactory extends DefaultHandler implements ReportDefinitionTags
           throws SAXException
   {
     if (currentGroup == null && this.currentGroup == null)
+    {
       throw new SAXException ("Band end before band start?");
+    }
     if (currentGroup != null && this.currentGroup != null)
+    {
       throw new SAXException ("Unable to stack a band into an other band");
+    }
 
     this.currentGroup = currentGroup;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageRefFilter.java,v 1.7 2002/08/31 14:00:22 taqua Exp $
+ * $Id: ImageRefFilter.java,v 1.8 2002/09/05 08:31:52 taqua Exp $
  *
  * Changes
  * -------
@@ -46,8 +46,10 @@ import java.awt.Image;
 
 /**
  * A filter that converts an Image to an ImageReference. The DataSource is expected to contain an
- * java.awt.Image, the image is then wrapped into an ImageReference and this ImageReference is returned
- * to the caller.
+ * java.awt.Image, the image is then wrapped into an ImageReference and this ImageReference is
+ * returned to the caller.
+ *
+ * @author TM
  */
 public class ImageRefFilter implements DataFilter
 {
@@ -91,10 +93,19 @@ public class ImageRefFilter implements DataFilter
   public Object getValue ()
   {
     DataSource ds = getDataSource ();
-    if (ds == null) return null;
+    if (ds == null)
+    {
+      return null;
+    }
     Object o = ds.getValue ();
-    if (o instanceof ImageReference) return o;
-    if (o == null || (o instanceof Image) == false) return null;
+    if (o instanceof ImageReference)
+    {
+      return o;
+    }
+    if (o == null || (o instanceof Image) == false)
+    {
+      return null;
+    }
 
     return new ImageReference ((Image) o);
   }
@@ -115,11 +126,16 @@ public class ImageRefFilter implements DataFilter
    * Clones the filter.
    *
    * @return A clone of this filter.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone () throws CloneNotSupportedException
   {
     ImageRefFilter r = (ImageRefFilter) super.clone ();
-    if (dataSource != null) r.dataSource = (DataSource) dataSource.clone ();
+    if (dataSource != null)
+    {
+      r.dataSource = (DataSource) dataSource.clone ();
+    }
     return r;
   }
 

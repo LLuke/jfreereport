@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,14 +20,14 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------
+ * -------------------------
  * ExpressionCollection.java
- * -----------
+ * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * Changes
- * ------------------------------
- * 27-Jul-2002 : Inital version
+ * -------
+ * 27-Jul-2002 : Initial version
  * 27-Aug-2002 : Documentation
  */
 package com.jrefinery.report;
@@ -49,9 +49,12 @@ import java.util.Iterator;
  * the expressions get initialized. An ExpressionCollection in this state is not able to connect
  * to an DataRow.
  * <p>
- * The second state is an immutable state of this collection, no expressions can be added or removed.
- * This ReadOnlyExpressionCollection can be created by calling getCopy() on the first-state expression
- * collection. The ReadOnlyExpressionCollection is able to connect to an DataRow.
+ * The second state is an immutable state of this collection, no expressions can be added or
+ * removed.  This ReadOnlyExpressionCollection can be created by calling getCopy() on the
+ * first-state expression collection. The ReadOnlyExpressionCollection is able to connect to a
+ * DataRow.
+ *
+ * @author TM
  */
 public class ExpressionCollection implements Cloneable, ReportListener
 {
@@ -63,6 +66,11 @@ public class ExpressionCollection implements Cloneable, ReportListener
    */
   private static class ReadOnlyExpressionCollection extends ExpressionCollection
   {
+    /**
+     * Creates a read-only expression collection.
+     *
+     * @param copy  the expression collection to copy.
+     */
     public ReadOnlyExpressionCollection(ExpressionCollection copy)
     {
       expressionPositions = copy.expressionPositions;
@@ -83,42 +91,49 @@ public class ExpressionCollection implements Cloneable, ReportListener
     }
 
     /**
-     * Adds a new Expression to the collection.
-     * Throws an IllegalStateException as this ReadOnlyExpressionCollection cannot be modified.
+     * Normally, this method adds an expression to the collection.  However, in this subclass, it
+     * throws an IllegalStateException as this collection is read-only.
      *
-     * @param f the new Expression instance.
-     * @throws ExpressionInitializeException if the Expression could not be initialized correctly
-     * @throws IllegalStateException as this is a ReadOnlyExpressionCollection
+     * @param e  the expression.
+     *
+     * @throws IllegalStateException because this collection is read-only.
+     *
+     * @throws FunctionInitializeException if the expression could not be initialized correctly.
      */
-    public void add(Expression f)
+    public void add(Expression e)
         throws FunctionInitializeException
     {
-      throw new IllegalStateException("This is a readonly collection");
+      throw new IllegalStateException("This is a read-only collection");
     }
 
     /**
-     * removes a new Expression from the collection.
-     * Throws an IllegalStateException as this ReadOnlyExpressionCollection cannot be modified.
+     * Normally, this method removes an expression from the collection.  However, in this subclass,
+     * it throws an IllegalStateException as this collection is read-only.
      *
-     * @param f the new Expression instance.
-     * @throws IllegalStateException as this is a ReadOnlyExpressionCollection
+     * @param e  the expression.
+     *
+     * @throws IllegalStateException because this collection is read-only.
      */
-    public void removeExpression(Expression f)
+    public void removeExpression(Expression e)
     {
-      throw new IllegalStateException("This is a readonly collection");
+      throw new IllegalStateException("This is a read-only collection");
     }
 
     /**
-     * Connects the given datarow to the expression collection and all expressions contained in this
-     * collection.
+     * Connects the given datarow to the expression collection and all expressions contained in
+     * this collection.
      *
-     * @param dr the datarow to be connected.
+     * @param dr  the datarow to be connected (null not permitted).
+     *
      * @throws IllegalStateException if there is a datarow already connected.
      * @throws NullPointerException if the given datarow is null.
      */
     public void connectDataRow(DataRow dr)
     {
-      if (dr == null) throw new NullPointerException();
+      if (dr == null)
+      {
+        throw new NullPointerException();
+      }
       for (int i = 0; i < expressionList.size(); i++)
       {
         Expression f = (Expression) expressionList.get(i);
@@ -134,7 +149,10 @@ public class ExpressionCollection implements Cloneable, ReportListener
      */
     public void disconnectDataRow(DataRow dr)
     {
-      if (dr == null) throw new NullPointerException("Null-DataRowBackend cannot be disconnected.");
+      if (dr == null)
+      {
+        throw new NullPointerException("Null-DataRowBackend cannot be disconnected.");
+      }
       for (int i = 0; i < expressionList.size(); i++)
       {
         Expression f = (Expression) expressionList.get(i);
@@ -150,7 +168,7 @@ public class ExpressionCollection implements Cloneable, ReportListener
   protected ArrayList expressionList;
 
   /**
-   * Creates a new empty Expression collection.
+   * Creates a new expression collection (initially empty).
    */
   public ExpressionCollection()
   {
@@ -159,8 +177,11 @@ public class ExpressionCollection implements Cloneable, ReportListener
   }
 
   /**
-   * Constructs a new Expression collection, populated with the supplied Expressions.
+   * Creates a new expression collection, populated with the supplied expressions.
    *
+   * @param expressions  a collection of expressions.
+   *
+   * @throws FunctionInitializeException if any of the expressions cannot be initialized.
    * @throws ClassCastException if the collection does not contain Expressions
    */
   public ExpressionCollection(Collection expressions)
@@ -173,6 +194,8 @@ public class ExpressionCollection implements Cloneable, ReportListener
   /**
    * Adds all expressions contained in the given collection to this expression collection.
    * The expressions get initialized during the adding process.
+   *
+   * @param expressions  the expressions to be added.
    *
    * @throws ClassCastException if the collection does not contain expressions
    * @throws FunctionInitializeException if a contained expression could not be initialized.
@@ -192,8 +215,10 @@ public class ExpressionCollection implements Cloneable, ReportListener
   }
 
   /**
-   * private add function for internal use. Add the expressions contained in the collection, but do
+   * Private add function for internal use. Add the expressions contained in the collection, but do
    * not initialize them.
+   *
+   * @param expressions  a collection of expressions.
    */
   private void privateAddAll(Collection expressions)
   {
@@ -210,10 +235,11 @@ public class ExpressionCollection implements Cloneable, ReportListener
 
   /**
    * Returns a copy of the Expression collection.
-   * This is no cloning, a fully Expressional collection is made readonly by creating a
+   *
+   * This is no cloning, a fully Expressional collection is made read only by creating a
    * ReadOnlyExpressionCollection (internal private class).
    *
-   * @returns a Expression collection that is immutable
+   * @return An immutable collection of expressions.
    */
   public ExpressionCollection getCopy()
   {
@@ -222,6 +248,11 @@ public class ExpressionCollection implements Cloneable, ReportListener
 
   /**
    * Returns the Expression with the specified name (or null).
+   *
+   * @param name  the expression name (null not permitted).
+   *
+   * @return The expression.
+   *
    * @throws NullPointerException if the name given is null
    */
   public Expression get(String name)
@@ -230,56 +261,65 @@ public class ExpressionCollection implements Cloneable, ReportListener
   }
 
   /**
-   * Adds a new Expression to the collection.
-   * The Expression is initialized before it is added to this collection.
-   * @param f the new Expression instance.
-   * @throws ExpressionInitializeException if the Expression could not be initialized correctly
+   * Adds an expression to the collection.  The expression is initialized before it is added to
+   * this collection.
+   *
+   * @param e  the expression.
+   *
+   * @throws FunctionInitializeException if the Expression could not be initialized correctly
    */
-  public void add(Expression f)
+  public void add(Expression e)
       throws FunctionInitializeException
   {
-    if (f == null)
-      throw new NullPointerException("Expression is null");
-
-    if (expressionPositions.containsKey(f.getName()))
+    if (e == null)
     {
-      removeExpression(f);
+      throw new NullPointerException("Expression is null");
     }
 
-    f.initialize();
-    privateAdd(f);
+    if (expressionPositions.containsKey(e.getName()))
+    {
+      removeExpression(e);
+    }
+
+    e.initialize();
+    privateAdd(e);
   }
 
   /**
-   * Adds a new Expression to the collection.
-   * @param f the new Expression instance.
-   * @throws NullPointerException if the given Expression is null.
-   */
-  protected void privateAdd(Expression f)
-  {
-    expressionPositions.put(f.getName(), new Integer(expressionList.size()));
-    expressionList.add(f);
-  }
-
-  /**
-   * removes the Expression from the collection.
+   * Adds an expression to the collection.
+   *
+   * @param e  the expression.
    *
    * @throws NullPointerException if the given Expression is null.
    */
-  public void removeExpression(Expression f)
+  protected void privateAdd(Expression e)
   {
-    Integer val = (Integer) expressionPositions.get(f.getName());
+    expressionPositions.put(e.getName(), new Integer(expressionList.size()));
+    expressionList.add(e);
+  }
+
+  /**
+   * Removes an expression from the collection.
+   *
+   * @param e  the expression.
+   *
+   * @throws NullPointerException if the given Expression is null.
+   */
+  public void removeExpression(Expression e)
+  {
+    Integer val = (Integer) expressionPositions.get(e.getName());
     if (val == null)
     {
       return;
     }
-    expressionPositions.remove(f.getName());
+    expressionPositions.remove(e.getName());
     expressionList.remove(val.intValue());
   }
 
   /**
-   * Returns the number of active expressions in this collection
-   * @returns the number of expressions in this collection
+   * Returns the number of active expressions in this collection.
+   *
+   * @return the number of expressions in this collection
    */
   public int size()
   {
@@ -287,9 +327,13 @@ public class ExpressionCollection implements Cloneable, ReportListener
   }
 
   /**
-   * Returns the expression on the given position in the list
+   * Returns the expression on the given position in the list.
+   *
+   * @param pos  the position in the list.
+   *
+   * @return the expression.
+   *
    * @throws IndexOutOfBoundsException if the given position is invalid
-   * @returns the expression.
    */
   public Expression getExpression(int pos)
   {
@@ -298,6 +342,10 @@ public class ExpressionCollection implements Cloneable, ReportListener
 
   /**
    * Clones this expression collection and all expressions contained in the collection.
+   *
+   * @return The clone.
+   *
+   * @throws CloneNotSupportedException should never happen.
    */
   public Object clone() throws CloneNotSupportedException
   {
@@ -319,7 +367,10 @@ public class ExpressionCollection implements Cloneable, ReportListener
    * Connects the given datarow to the expression collection and all expressions contained in this
    * collection.
    *
-   * @throws IllegalStateException as only ReadOnlyExpressionCollections can be connected to a datarow
+   * @param dr  the datarow.
+   *
+   * @throws IllegalStateException as only ReadOnlyExpressionCollections can be connected to a
+   *         datarow
    */
   public void connectDataRow(DataRow dr)
   {
@@ -327,10 +378,13 @@ public class ExpressionCollection implements Cloneable, ReportListener
   }
 
   /**
-   * Disconnects the given datarow to the expression collection and all expressions contained in this
-   * collection.
+   * Disconnects the given datarow to the expression collection and all expressions contained in
+   * this collection.
    *
-   * @throws IllegalStateException as only ReadOnlyExpressionCollections can be connected to a datarow
+   * @param dr  the datarow.
+   *
+   * @throws IllegalStateException as only ReadOnlyExpressionCollections can be connected to a
+   *         datarow
    */
   public void disconnectDataRow(DataRow dr)
   {
@@ -352,7 +406,10 @@ public class ExpressionCollection implements Cloneable, ReportListener
       Expression e = getExpression(i);
       try
       {
-        if (e.isActive()) e.getValue();
+        if (e.isActive())
+        {
+          e.getValue();
+        }
       }
       catch (Exception ex)
       {
@@ -375,7 +432,10 @@ public class ExpressionCollection implements Cloneable, ReportListener
       Expression e = getExpression(i);
       try
       {
-        if (e.isActive()) e.getValue();
+        if (e.isActive())
+        {
+          e.getValue();
+        }
       }
       catch (Exception ex)
       {
@@ -397,7 +457,10 @@ public class ExpressionCollection implements Cloneable, ReportListener
       Expression e = getExpression(i);
       try
       {
-        if (e.isActive()) e.getValue();
+        if (e.isActive())
+        {
+          e.getValue();
+        }
       }
       catch (Exception ex)
       {
@@ -419,7 +482,10 @@ public class ExpressionCollection implements Cloneable, ReportListener
       Expression e = getExpression(i);
       try
       {
-        if (e.isActive()) e.getValue();
+        if (e.isActive())
+        {
+          e.getValue();
+        }
       }
       catch (Exception ex)
       {
@@ -443,7 +509,10 @@ public class ExpressionCollection implements Cloneable, ReportListener
       Expression e = getExpression(i);
       try
       {
-        if (e.isActive()) e.getValue();
+        if (e.isActive())
+        {
+          e.getValue();
+        }
       }
       catch (Exception ex)
       {
@@ -467,7 +536,10 @@ public class ExpressionCollection implements Cloneable, ReportListener
       Expression e = getExpression(i);
       try
       {
-        if (e.isActive()) e.getValue();
+        if (e.isActive())
+        {
+          e.getValue();
+        }
       }
       catch (Exception ex)
       {
@@ -491,7 +563,10 @@ public class ExpressionCollection implements Cloneable, ReportListener
       Expression e = getExpression(i);
       try
       {
-        if (e.isActive()) e.getValue();
+        if (e.isActive())
+        {
+          e.getValue();
+        }
       }
       catch (Exception ex)
       {
@@ -515,7 +590,10 @@ public class ExpressionCollection implements Cloneable, ReportListener
       Expression e = getExpression(i);
       try
       {
-        if (e.isActive()) e.getValue();
+        if (e.isActive())
+        {
+          e.getValue();
+        }
       }
       catch (Exception ex)
       {
@@ -539,7 +617,10 @@ public class ExpressionCollection implements Cloneable, ReportListener
       Expression e = getExpression(i);
       try
       {
-        if (e.isActive()) e.getValue();
+        if (e.isActive())
+        {
+          e.getValue();
+        }
       }
       catch (Exception ex)
       {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: DataFilter.java,v 1.3 2002/06/06 16:00:58 mungady Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,8 @@ package com.jrefinery.report.filter;
  * A datafilter is a combined input-/out target. Use filters to perform stateless
  * data transformation. If you need to access the report state to perform a task,
  * use functions instead.
+ *
+ * @author TM
  */
 public interface DataFilter extends DataSource, DataTarget
 {

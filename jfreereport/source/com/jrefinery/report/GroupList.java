@@ -44,17 +44,18 @@ import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
-import java.util.Iterator;
 
 /**
  * The group list is used to store groups in a ordered way. The less specific groups are
  * guaranteed to be listed before any more specific subgroup.
  * <p>
  * Groups are ordered by comparing the declared fieldnames for the groups.
+ *
+ * @author TM
  */
 public class GroupList extends TreeSet implements Cloneable, Serializable
 {
-  // Cache. This is a set, we need list functionality, but creating Iterators is expensive.
+  /** Cache (this is a set, we need list functionality, but creating Iterators is expensive). */
   private Object[] cache;
 
   /**
@@ -86,7 +87,9 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
 
         int compare = s1.compareTo (s2);
         if (compare != 0)
+        {
           return compare;
+        }
       }
       if (c1.size () == c2.size ())
       {
@@ -103,6 +106,8 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
      * Returns true if this comparator is equal to an object.
      *
      * @param obj The object.
+     *
+     * @return a boolean indicating equality or otherwise.
      */
     public boolean equals (Object obj)
     {
@@ -122,6 +127,8 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
    * Returns the group at a position in the list.
    *
    * @param i The position index (zero-based).
+   *
+   * @return the report group.
    */
   public Group get (int i)
   {
@@ -158,6 +165,8 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
    * Adds an object to the list.
    *
    * @param o The object (must be an instance of the Group class).
+   *
+   * @return true if the list did not already contain the specified element.
    */
   public boolean add (Object o)
   {
@@ -174,15 +183,19 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
     else
     {
       if (o == null)
+      {
         throw new NullPointerException ("Try to add null");
+      }
 
       throw new ClassCastException ("Group required, was " + o.getClass ().getName ());
     }
   }
 
   /**
-   * Warning: No real cloning involved due to a bug in JDK 1.2.2; TreeSet does not clone, so we can't
-   * too.
+   * Warning: No real cloning involved due to a bug in JDK 1.2.2; TreeSet does not clone, so
+   * we can't too.
+   *
+   * @return a clone.
    */
   public Object clone ()
   {

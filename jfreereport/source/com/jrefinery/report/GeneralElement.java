@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GeneralElement.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
+ * $Id: GeneralElement.java,v 1.5 2002/06/04 21:44:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -47,6 +47,8 @@ package com.jrefinery.report;
  * <p>
  * This elements functionalty is not achived by using a plain TextElement without any
  * additional filter attached.
+ *
+ * @author DG
  *
  * @deprecated form this element by stacking it together by using filters
  */

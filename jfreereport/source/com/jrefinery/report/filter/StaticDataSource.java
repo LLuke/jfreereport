@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ---------------------
  * StaticDataSource.java
- * -----------------------
+ * ---------------------
  * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticDataSource.java,v 1.5 2002/08/08 15:28:43 taqua Exp $
+ * $Id: StaticDataSource.java,v 1.6 2002/08/31 14:00:22 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@ package com.jrefinery.report.filter;
 
 /**
  * A data source that returns a constant value.  An example is a label on a report.
+ *
+ * @author TM
  */
 public class StaticDataSource implements DataSource
 {
@@ -85,7 +87,11 @@ public class StaticDataSource implements DataSource
   }
 
   /**
-   * @returns a copy of this DataSource, the contained value is not cloned.
+   * Clones the data source, although the enclosed 'static' value is not cloned.
+   *
+   * @return a clone.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone () throws CloneNotSupportedException
   {

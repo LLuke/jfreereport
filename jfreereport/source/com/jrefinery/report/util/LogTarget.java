@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * --------------
  * LogTarget.java
- * -----------------------
+ * --------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 11-May-2002 : Initial version
@@ -32,6 +32,8 @@ package com.jrefinery.report.util;
 
 /**
  * Use the LogTarget to redirect all logging messages to a suitable consumer.
+ *
+ * @author TM
  */
 public interface LogTarget
 {
@@ -55,7 +57,8 @@ public interface LogTarget
    */
   public static final int DEBUG = 3;
 
-  public static final String[] levels =
+  /** Strings for the log levels. */
+  public static final String[] LEVELS =
           {
             "ERROR: ",
             "WARN:  ",
@@ -63,23 +66,81 @@ public interface LogTarget
             "DEBUG: "
           };
 
+  /**
+   * Logs a message at a specified log level.
+   *
+   * @param level  the log level.
+   * @param message  the log message.
+   */
   public void log (int level, String message);
 
+  /**
+   * Logs a message at a specified log level.
+   *
+   * @param level  the log level.
+   * @param message  the log message.
+   * @param e  the exception
+   */
   public void log (int level, String message, Exception e);
 
+  /**
+   * A convenience method for logging a 'debug' message.
+   *
+   * @param message  the message.
+   */
   public void debug (String message);
 
+  /**
+   * A convenience method for logging a 'debug' message.
+   *
+   * @param message  the message.
+   * @param e  the exception.
+   */
   public void debug (String message, Exception e);
 
+  /**
+   * A convenience method for logging an 'info' message.
+   *
+   * @param message  the message.
+   */
   public void info (String message);
 
+  /**
+   * A convenience method for logging an 'info' message.
+   *
+   * @param message  the message.
+   * @param e  the exception.
+   */
   public void info (String message, Exception e);
 
+  /**
+   * A convenience method for logging a 'warning' message.
+   *
+   * @param message  the message.
+   */
   public void warn (String message);
 
+  /**
+   * A convenience method for logging a 'warning' message.
+   *
+   * @param message  the message.
+   * @param e  the exception.
+   */
   public void warn (String message, Exception e);
 
+  /**
+   * A convenience method for logging an 'error' message.
+   *
+   * @param message  the message.
+   */
   public void error (String message);
 
+  /**
+   * A convenience method for logging an 'error' message.
+   *
+   * @param message  the message.
+   * @param e  the exception.
+   */
   public void error (String message, Exception e);
+
 }

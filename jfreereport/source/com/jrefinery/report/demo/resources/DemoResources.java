@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com);
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DemoResources.java,v 1.9 2002/07/28 13:25:26 taqua Exp $
+ * $Id: DemoResources.java,v 1.10 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes
  * -------
@@ -47,21 +47,25 @@ import java.awt.event.KeyEvent;
 /**
  * User interface items for the JFreeReport demonstration application.  These have been put into
  * a ResourceBundle to ease localisation of the application.
+ *
+ * @author DG
  */
 public class DemoResources extends JFreeReportResources
 {
   /**
    * Returns the contents of the resource bundle.
+   *
+   * @return an array of localised resources.
    */
   public Object[][] getContents ()
   {
-    return contents;
+    return CONTENTS;
   }
 
   /** The resources to be localised. */
-  private static final Object[][] contents = {
+  private static final Object[][] CONTENTS = {
     {"project.name", "JFreeReport"},
-    {"project.version", "0.7.5"},
+    {"project.version", "0.7.6"},
     {"project.info", "http://www.object-refinery.com/jfreereport/index.html"},
     {"project.copyright", "(C)opyright 2000-2002, by Simba Management Limited and Contributors"},
 
@@ -76,8 +80,10 @@ public class DemoResources extends JFreeReportResources
     {"action.print-preview.name", "Print Preview..."},
     {"action.print-preview.description", "Preview the report"},
     {"action.print-preview.mnemonic", new Integer (KeyEvent.VK_P)},
-    {"action.print-preview.accelerator", KeyStroke.getKeyStroke (KeyEvent.VK_P, KeyEvent.CTRL_MASK)},
-    {"action.print-preview.small-icon", getIcon ("com/jrefinery/report/resources/PrintPreview16.gif")},
+    {"action.print-preview.accelerator",
+        KeyStroke.getKeyStroke (KeyEvent.VK_P, KeyEvent.CTRL_MASK)},
+    {"action.print-preview.small-icon",
+        getIcon ("com/jrefinery/report/resources/PrintPreview16.gif")},
     {"action.print-preview.icon", getIcon ("com/jrefinery/report/resources/PrintPreview24.gif")},
 
     {"action.about.name", "About..."},
@@ -85,14 +91,13 @@ public class DemoResources extends JFreeReportResources
     {"action.about.mnemonic", new Integer (KeyEvent.VK_A)},
     {"action.about.small-icon", getIcon ("com/jrefinery/report/resources/About16.gif")},
     {"action.about.icon", getIcon ("com/jrefinery/report/resources/About24.gif")},
-//    {"action.print-preview.accelerator", KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_MASK)},
 
     {"menu.file.name", "File"},
     {"menu.file.mnemonic", new Character ('F')},
     {"menu.help.name", "Help"},
     {"menu.help.mnemonic", new Character ('H')},
     {"exitdialog.title", "Confirmation .."},
-    {"exitdialog.message", "Are you sure that you want to exit the programm?"},
+    {"exitdialog.message", "Are you sure that you want to exit the program?"},
 
 
     {"report.definitionnotfound", "ReportDefinition {0} not found in the classpath"},
@@ -102,4 +107,5 @@ public class DemoResources extends JFreeReportResources
     {"error", "Error"},
     {"example", "Example {0}"}
   };
+
 }

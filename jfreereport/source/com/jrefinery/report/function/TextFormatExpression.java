@@ -20,16 +20,16 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------------------------
+ * -------------------------
  * TextFormatExpression.java
- * ---------------------------
+ * -------------------------
  * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
 
- * $Id: TextFormatExpression.java,v 1.2 2002/08/31 14:00:22 taqua Exp $
+ * $Id: TextFormatExpression.java,v 1.3 2002/08/31 16:50:48 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * A TextFormatExpression uses an java.text.MessageFormat to concat and format one or more values
+ * A TextFormatExpression uses a java.text.MessageFormat to concat and format one or more values
  * evaluated from an expression, function or report datasource.
  * <p>
  * The TextFormatExpression uses the pattern property to define the global format-pattern used
@@ -64,17 +64,19 @@ import java.util.Iterator;
    </properties>
  </expression>
  </pre>
+ *
+ * @author TM
  */
 public class TextFormatExpression extends AbstractExpression
 {
-  /** the property key for the pattern property */
+  /** The property key for the pattern property */
   public static final String PATTERN_PROPERTY = "pattern";
 
-  /** a ordered list containing the fieldnames used in the expression */
+  /** An ordered list containing the fieldnames used in the expression. */
   private ArrayList fieldList;
 
   /**
-   * defaultconstructor, creates a new unnamed TextFormatExpression
+   * Default constructor, creates a new unnamed TextFormatExpression.
    */
   public TextFormatExpression()
   {
@@ -82,10 +84,10 @@ public class TextFormatExpression extends AbstractExpression
   }
 
   /**
-   * evaluates the expression by collecting all values defined in the fieldlist from the
+   * Evaluates the expression by collecting all values defined in the fieldlist from the
    * datarow. The collected values are then parsed and formated by the MessageFormat-object.
    *
-   * @returns a string containing the pattern inclusive the formatted values from the datarow
+   * @return a string containing the pattern inclusive the formatted values from the datarow
    */
   public Object getValue()
   {
@@ -125,7 +127,9 @@ public class TextFormatExpression extends AbstractExpression
   }
 
   /**
-   * returns the pattern defined for this expression.
+   * Returns the pattern defined for this expression.
+   *
+   * @return the pattern.
    */
   public String getPattern()
   {
@@ -133,10 +137,11 @@ public class TextFormatExpression extends AbstractExpression
   }
 
   /**
-   * defines the pattern for this expression. The pattern syntax is defined by the java.text.MessageFormat
-   * object and the given pattern string has to be valid according to the rules defined there.
+   * Defines the pattern for this expression. The pattern syntax is defined by the
+   * java.text.MessageFormat object and the given pattern string has to be valid according to
+   * the rules defined there.
    *
-   * @param pattern the pattern string
+   * @param pattern  the pattern string
    */
   public void setPattern(String pattern)
   {
@@ -144,7 +149,11 @@ public class TextFormatExpression extends AbstractExpression
   }
 
   /**
-   * @returns a copy of this expression.
+   * Clones the expression.
+   *
+   * @return a copy of this expression.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone() throws CloneNotSupportedException
   {

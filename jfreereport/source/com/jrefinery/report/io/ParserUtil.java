@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -53,7 +53,9 @@ public class ParserUtil
   public static int parseInt(String text, String message) throws SAXException
   {
     if (text == null)
+    {
       throw new SAXException(message);
+    }
 
     try
     {
@@ -73,7 +75,9 @@ public class ParserUtil
   public static float parseFloat(String text, String message) throws SAXException
   {
     if (text == null)
+    {
       throw new SAXException(message);
+    }
     try
     {
       return Float.parseFloat(text);
@@ -91,7 +95,9 @@ public class ParserUtil
   public static boolean parseBoolean(String text, boolean defaultVal)
   {
     if (text == null)
+    {
       return defaultVal;
+    }
     return text.equalsIgnoreCase("true");
   }
 
@@ -101,7 +107,9 @@ public class ParserUtil
   public static String parseString(String text, String defaultVal)
   {
     if (text == null)
+    {
       return defaultVal;
+    }
     return text;
   }
 
@@ -137,8 +145,9 @@ public class ParserUtil
   public static Paint parseColor(String color)
   {
     if (color == null)
+    {
       return Color.black;
-
+    }
     try
     {
       // get color by hex or octal value
@@ -171,7 +180,10 @@ public class ParserUtil
    */
   public static float parseRelativeFloat(String value, String exceptionMessage) throws SAXException
   {
-    if (value == null) throw new SAXException(exceptionMessage);
+    if (value == null)
+    {
+      throw new SAXException(exceptionMessage);
+    }
     String tvalue = value.trim();
     if (tvalue.endsWith("%"))
     {
@@ -192,8 +204,12 @@ public class ParserUtil
     float x = ParserUtil.parseRelativeFloat(atts.getValue("x"), "Element x not specified");
     float y = ParserUtil.parseRelativeFloat(atts.getValue("y"), "Element y not specified");
     float w = ParserUtil.parseRelativeFloat(atts.getValue("width"), "Element width not specified");
-    float h = ParserUtil.parseRelativeFloat(atts.getValue("height"), "Element height not specified");
-    if (w == 0) Log.warn("Element width is 0. Use xxx% to specify a relative width.");
+    float h = ParserUtil.parseRelativeFloat(atts.getValue("height"),
+                                            "Element height not specified");
+    if (w == 0)
+    {
+      Log.warn("Element width is 0. Use xxx% to specify a relative width.");
+    }
     Rectangle2D.Float retval = new Rectangle2D.Float(x, y, w, h);
     return retval;
   }

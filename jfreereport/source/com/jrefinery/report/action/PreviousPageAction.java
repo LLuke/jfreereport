@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -33,20 +33,21 @@
 package com.jrefinery.report.action;
 
 import com.jrefinery.report.util.AbstractActionDowngrade;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import java.util.ResourceBundle;
 
 /**
  * Creates a new PreviousPageAction used by the PreviewPane to directly jump to the previous
  * page of the report. This abstract class is used for initializing the default locales,
  * the actual work is done in an internal subclass in PreviewFrame.
+ *
+ * @author ??
  */
 public abstract class PreviousPageAction extends AbstractActionDowngrade
 {
   /**
    * Constructs a new action.
+   *
+   * @param resources  localised resources.
    */
   public PreviousPageAction (ResourceBundle resources)
   {

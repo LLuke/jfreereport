@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -36,7 +36,7 @@ import javax.swing.table.TableModel;
 public interface CloseableTableModel extends TableModel
 {
   /**
-   * If this model has an resultset assgined, close it, if this is a DefaultTableModel,
+   * If this model has an resultset assigned, close it, if this is a DefaultTableModel,
    * remove all data.
    */
   public void close ();

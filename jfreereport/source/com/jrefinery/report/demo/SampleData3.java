@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ----------------
  * SampleData3.java
- * -----------------------
+ * ----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  */
@@ -46,17 +46,28 @@ public class SampleData3 extends AbstractTableModel
   {
     data = new Object[][]
     {
-      {"Mr. Black", "1666 Pennsylvania Ave.", "012345 Washington", "01212", "Robert A. Heinlein - Starship Trooper", new Integer (1), new Double (12.49)},
-      {"Mr. Black", "1666 Pennsylvania Ave.", "012345 Washington", "01231", "Robert A. Heinlein - Glory Road", new Integer (1), new Double (12.99)},
-      {"Mr. Black", "1666 Pennsylvania Ave.", "012345 Washington", "12121", "Frank Herbert - Dune", new Integer (1), new Double (10.99)},
-      {"Mr. Black", "1666 Pennsylvania Ave.", "012345 Washington", "A1232", "Bierce Ambrose - The Devils Dictionary", new Integer (2), new Double (19.99)},
-      {"John F. Google", "12a Nowaday Road", "99999 Boston", "12333", "Samuel Adams - How to sell tea ", new Integer (100), new Double (10.99)},
-      {"John F. Google", "12a Nowaday Road", "99999 Boston", "88812", "Adam Smith - The wealth of nations", new Integer (1), new Double (49.95)},
-      {"John F. Google", "12a Nowaday Road", "99999 Boston", "33123", "D. Khan - How to conquer friends", new Integer (1), new Double (15.99)},
-      {"John F. Google", "12a Nowaday Road", "99999 Boston", "33123", "D. Khan - How to conquer friends", new Integer (1), new Double (19.49)},
-      {"Cleeve Johnson", "87 Oakham Drive", "99999 Boston", "33123", "D. Khan - How to conquer friends", new Integer (1), new Double (15.99)},
-      {"Cleeve Johnson", "87 Oakham Drive", "99999 Boston", "33123", "J. Ceaser - Choosing the right friends", new Integer (1), new Double (25.99)},
-      {"Cleeve Johnson", "87 Oakham Drive", "99999 Boston", "33123", "Galileo - When to tell the truth", new Integer (1), new Double (29.59)}
+      {"Mr. Black", "1666 Pennsylvania Ave.", "012345 Washington", "01212",
+       "Robert A. Heinlein - Starship Trooper", new Integer (1), new Double (12.49)},
+      {"Mr. Black", "1666 Pennsylvania Ave.", "012345 Washington", "01231",
+       "Robert A. Heinlein - Glory Road", new Integer (1), new Double (12.99)},
+      {"Mr. Black", "1666 Pennsylvania Ave.", "012345 Washington", "12121",
+       "Frank Herbert - Dune", new Integer (1), new Double (10.99)},
+      {"Mr. Black", "1666 Pennsylvania Ave.", "012345 Washington", "A1232",
+       "Bierce Ambrose - The Devils Dictionary", new Integer (2), new Double (19.99)},
+      {"John F. Google", "12a Nowaday Road", "99999 Boston", "12333",
+       "Samuel Adams - How to sell tea ", new Integer (100), new Double (10.99)},
+      {"John F. Google", "12a Nowaday Road", "99999 Boston", "88812",
+       "Adam Smith - The wealth of nations", new Integer (1), new Double (49.95)},
+      {"John F. Google", "12a Nowaday Road", "99999 Boston", "33123",
+       "D. Khan - How to conquer friends", new Integer (1), new Double (15.99)},
+      {"John F. Google", "12a Nowaday Road", "99999 Boston", "33123",
+       "D. Khan - How to conquer friends", new Integer (1), new Double (19.49)},
+      {"Cleeve Johnson", "87 Oakham Drive", "99999 Boston", "33123",
+       "D. Khan - How to conquer friends", new Integer (1), new Double (15.99)},
+      {"Cleeve Johnson", "87 Oakham Drive", "99999 Boston", "33123",
+       "J. Ceaser - Choosing the right friends", new Integer (1), new Double (25.99)},
+      {"Cleeve Johnson", "87 Oakham Drive", "99999 Boston", "33123",
+       "Galileo - When to tell the truth", new Integer (1), new Double (29.59)}
     };
   }
 
@@ -78,44 +89,75 @@ public class SampleData3 extends AbstractTableModel
 
   /**
    * Returns the class of the data in the specified column.
+   *
+   * @param column  the column (zero-based index).
    */
-  public Class getColumnClass (int columnIndex)
+  public Class getColumnClass (int column)
   {
-    if (columnIndex == 5)
+    if (column == 5)
+    {
       return Integer.class;
-    else if (columnIndex == 6)
+    }
+    else if (column == 6)
+    {
       return Double.class;
+    }
     else
+    {
       return String.class;
+    }
   }
 
   /**
    * Returns the name of the specified column.
+   *
+   * @param column  the column (zero-based index).
    */
-  public String getColumnName (int columnIndex)
+  public String getColumnName (int column)
   {
-    if (columnIndex == 0)
+    if (column == 0)
+    {
       return "name";
-    else if (columnIndex == 1)
+    }
+    else if (column == 1)
+    {
       return "street";
-    else if (columnIndex == 2)
+    }
+    else if (column == 2)
+    {
       return "town";
-    else if (columnIndex == 3)
+    }
+    else if (column == 3)
+    {
       return "productcode";
-    else if (columnIndex == 4)
+    }
+    else if (column == 4)
+    {
       return "productname";
-    else if (columnIndex == 5)
+    }
+    else if (column == 5)
+    {
       return "count";
-    else if (columnIndex == 6)
+    }
+    else if (column == 6)
+    {
       return "price";
-    else if (columnIndex == 7)
+    }
+    else if (column == 7)
+    {
       return "total";
+    }
     else
+    {
       return null;
+    }
   }
 
   /**
    * Returns the data value at the specified row and column.
+   *
+   * @param row  the row (zero-based index).
+   * @param column  the column (zero-based index).
    */
   public Object getValueAt (int row, int column)
   {
@@ -126,7 +168,9 @@ public class SampleData3 extends AbstractTableModel
       return new Double (i.intValue () * d.doubleValue ());
     }
     else
+    {
       return data[row][column];
+    }
   }
 
 }

@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.9 2002/08/20 20:58:20 taqua Exp $
+ * $Id: ItemCountFunction.java,v 1.10 2002/08/31 14:00:22 taqua Exp $
  *
  * Changes
  * -------
@@ -53,9 +53,12 @@ import com.jrefinery.report.event.ReportEvent;
 /**
  * A report function that counts items in a report.  If the "group" property is set, the item
  * count is reset to zero whenever the group changes.
+ *
+ * @author TM
  */
 public class ItemCountFunction extends AbstractFunction implements Cloneable
 {
+  /** Literal text for the 'group' property. */
   public static final String GROUP_PROPERTY = "group";
 
   /** The item count. */
@@ -124,7 +127,9 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
   public void groupStarted(ReportEvent event)
   {
     if (getGroup() == null)
+    {
       return;
+    }
 
     JFreeReport report = event.getReport();
     ReportState state = event.getState();

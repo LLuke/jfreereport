@@ -27,7 +27,7 @@
  *
  * Changes
  * -------
- * 23-Jun-2002 : Inital version
+ * 23-Jun-2002 : Initial version
  * 17-Jul-2002 : Handle empty data source without a crashing
  * 18-Jul-2002 : Handle out-of-bounds dataquery to the tablemodel
  * 21-Jul-2002 : Corrected the out-of-bounds constraint
@@ -44,16 +44,26 @@ import javax.swing.table.TableModel;
 import java.math.BigDecimal;
 
 /**
- * Calculates the percentage value of an numeric field. The total sum is taken and divided by
+ * Calculates the percentage value of a numeric field. The total sum is taken and divided by
  * the number of items counted.
+ *
+ * @author TM
  */
 public class ItemPercentageFunction extends AbstractFunction
 {
+  /** Literal text for the 'group' property. */
   public static final String GROUP_PROPERTY = "group";
+
+  /** Literal text for the 'field' property. */
   public static final String FIELD_PROPERTY = "field";
 
+  /** A total group sum function. */
   private TotalGroupSumFunction totalSumFunction;
+
+  /** The current value. */
   private BigDecimal currentValue;
+
+  /** A useful constant representing zero. */
   private static final BigDecimal ZERO = new BigDecimal (0.0);
 
   /** The parser for performing data conversion */
@@ -135,7 +145,10 @@ public class ItemPercentageFunction extends AbstractFunction
     int row = event.getState ().getCurrentDisplayItem ();
 
     // Handle the case when the tablemodel contains no rows
-    if (data.getRowCount () == 0) return;
+    if (data.getRowCount () == 0)
+    {
+      return;
+    }
 
     Object fieldValue = null;
     for (int c = 0; c < data.getColumnCount (); c++)
@@ -189,14 +202,18 @@ public class ItemPercentageFunction extends AbstractFunction
     BigDecimal total = (BigDecimal) totalSumFunction.getValue ();
 
     if (total.longValue () == 0)
+    {
       return null;
-
-    BigDecimal retval = currentValue.multiply (new BigDecimal (100)).divide (total, 4, BigDecimal.ROUND_HALF_UP);
+    }
+    BigDecimal retval =
+        currentValue.multiply (new BigDecimal (100)).divide (total, 4, BigDecimal.ROUND_HALF_UP);
     return retval;
   }
 
   /**
-   * Returns the name of the group to be counted.
+   * Returns the name of the group to be counted.  This is stored in the 'group' property.
+   *
+   * @return  the group name.
    */
   public String getGroup ()
   {
@@ -204,8 +221,9 @@ public class ItemPercentageFunction extends AbstractFunction
   }
 
   /**
-   * defines the name of the group to be counted.
-   * If the name is null, all groups are counted.
+   * Defines the name of the group to be counted (if the name is null, all groups are counted).
+   *
+   * @param group  the name of the group (null permitted).
    */
   public void setGroup (String group)
   {
@@ -229,12 +247,14 @@ public class ItemPercentageFunction extends AbstractFunction
    * <P>
    * The field name corresponds to a column name in the report's TableModel.
    *
-   * @param The field name (null not permitted).
+   * @param field  the field name (null not permitted).
    */
   public void setField (String field)
   {
     if (field == null)
+    {
       throw new NullPointerException ();
+    }
     setProperty (FIELD_PROPERTY, field);
   }
 
@@ -257,6 +277,8 @@ public class ItemPercentageFunction extends AbstractFunction
    * strucures contained in objects, you have to overwrite this function.
    *
    * @return A clone of the function.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone () throws CloneNotSupportedException
   {

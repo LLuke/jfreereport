@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
- * ReportFunction.java
- * -------------------
+ * -------------
+ * Function.java
+ * -------------
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Function.java,v 1.8 2002/08/16 20:13:36 taqua Exp $
+ * $Id: Function.java,v 1.9 2002/08/29 19:15:35 taqua Exp $
  *
  * Changes
  * -------
@@ -54,8 +54,17 @@ import com.jrefinery.report.event.ReportListener;
  * required to be cloneable.
  * <p>
  * Todo: Give a better overview how functions are integrated into JFreeReport.
+ *
+ * @author TM
  */
 public interface Function extends ReportListener, Expression, Cloneable
 {
+  /**
+   * Clones the function.
+   *
+   * @return a clone of the function.
+   *
+   * @throws CloneNotSupportedException this should never be thrown.
+   */
   public Object clone () throws CloneNotSupportedException;
 }

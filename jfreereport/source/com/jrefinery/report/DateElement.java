@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DateElement.java,v 1.11 2002/08/14 21:14:03 taqua Exp $
+ * $Id: DateElement.java,v 1.12 2002/09/05 08:31:51 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -50,6 +50,8 @@ import java.text.SimpleDateFormat;
 
 /**
  * A data element that handles java.util.Date objects.
+ *
+ * @author DG
  *
  * @deprecated form this element by stacking it together by using filters
  */
@@ -73,7 +75,9 @@ public class DateElement extends DataElement
   }
 
   /**
-   * sets the format of the element to SimpleDate using the given formatString.
+   * Sets the format of the element to SimpleDate using the given formatString.
+   *
+   * @param s  the format string.
    *
    * @deprecated form this element by stacking it together by using filters
    */
@@ -90,8 +94,12 @@ public class DateElement extends DataElement
   }
 
   /**
-   * @return the current formater for this element. This function will never
-   * return null.
+   * Returns the formatter for the element.
+   * <P>
+   * This function will never return null.
+   *
+   * @return the current formatter for this element.
+   *
    * @deprecated form this element by stacking it together by using filters
    */
   public DateFormat getFormatter ()
@@ -100,8 +108,11 @@ public class DateElement extends DataElement
   }
 
   /**
-   * Defines the current formater for the element. If the formater is null,
+   * Defines the current formatter for the element. If the formater is null,
    * an exception is thrown.
+   *
+   * @param format  the formatter.
+   *
    * @deprecated form this element by stacking it together by using filters
    */
   public void setFormatter (DateFormat format)
@@ -115,13 +126,18 @@ public class DateElement extends DataElement
       this.formatter.setDateFormat ((SimpleDateFormat) format);
     }
     else
-      throw new ClassCastException ("DEPRECATION: Only simple dateformat supported by default implementation");
+    {
+      throw new ClassCastException ("DEPRECATION: Only simple dateformat supported by default"
+                                   + " implementation");
+    }
   }
 
   /**
    * Clones this Element.
    *
    * @return a clone of this element.
+   *
+   * @throws CloneNotSupportedException should never happen.
    */
   public Object clone () throws CloneNotSupportedException
   {

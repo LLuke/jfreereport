@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDataSource.java,v 1.7 2002/08/14 21:14:09 taqua Exp $
+ * $Id: ReportDataSource.java,v 1.8 2002/08/31 14:00:22 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,8 @@ import com.jrefinery.report.DataRow;
  * <P>
  * The field is identified by the column name.
  *
+ * @author TM
+ *
  * @deprecated use DataRowDataSource as unified access class instead
  */
 public class ReportDataSource implements DataSource, DataRowConnectable
@@ -54,6 +56,7 @@ public class ReportDataSource implements DataSource, DataRowConnectable
   /** The field name. */
   private String fieldName;
 
+  /** The data row. */
   private DataRow dataRow;
 
   /**
@@ -82,7 +85,10 @@ public class ReportDataSource implements DataSource, DataRowConnectable
    */
   public void setField (String field)
   {
-    if (field == null) throw new NullPointerException ();
+    if (field == null)
+    {
+      throw new NullPointerException ();
+    }
     this.fieldName = field;
   }
 
@@ -110,6 +116,13 @@ public class ReportDataSource implements DataSource, DataRowConnectable
     return getDataRow ().get (getField ());
   }
 
+  /**
+   * Clones the data source.
+   *
+   * @return the clone.
+   *
+   * @throws CloneNotSupportedException this should never happen.
+   */
   public Object clone () throws CloneNotSupportedException
   {
     ReportDataSource rd = (ReportDataSource) super.clone ();
@@ -121,26 +134,48 @@ public class ReportDataSource implements DataSource, DataRowConnectable
    * Connects the DataRowBackend with the named DataSource or DataFilter.
    * The filter is now able to query the other DataSources to compute the result.
    *
-   * If there is already a datarow connected, an IllegalStateException is thrown.
+   * @param row  the data row.
+   *
+   * @throws IllegalStateException if there is already a data row connected.
    */
   public void connectDataRow (DataRow row) throws IllegalStateException
   {
-    if (row == null) throw new NullPointerException ("Null-DataRowBackend cannot be set.");
-    if (dataRow != null) throw new IllegalStateException ("There is a datarow already connected: " + getField());
+    if (row == null)
+    {
+      throw new NullPointerException ("Null-DataRowBackend cannot be set.");
+    }
+    if (dataRow != null)
+    {
+      throw new IllegalStateException ("There is a datarow already connected: " + getField());
+    }
     dataRow = row;
   }
 
   /**
-   * Releases the connection to the datarow. If no datarow is connected, an
-   * IllegalStateException is thrown to indicate the programming error.
+   * Releases the connection to the datarow.
+   *
+   * @param row  the data row.
+   *
+   * @throws IllegalStateException if no datarow is connected.
    */
   public void disconnectDataRow (DataRow row) throws IllegalStateException
   {
-    if (row == null) throw new NullPointerException ("Null-DataRowBackend cannot be disconnected.");
-    if (dataRow == null) throw new IllegalStateException ("There is no datarow connected");
+    if (row == null)
+    {
+      throw new NullPointerException ("Null-DataRowBackend cannot be disconnected.");
+    }
+    if (dataRow == null)
+    {
+      throw new IllegalStateException ("There is no datarow connected");
+    }
     dataRow = null;
   }
 
+  /**
+   * Returns the data row.
+   *
+   * @return the data row.
+   */
   protected DataRow getDataRow ()
   {
     return dataRow;

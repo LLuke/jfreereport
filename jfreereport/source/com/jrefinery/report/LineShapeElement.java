@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ---------------------
  * LineShapeElement.java
- * -----------------------
+ * ---------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  *
@@ -43,10 +43,13 @@ import java.awt.geom.Line2D;
 
 /**
  * A LineShapeElement encapsulates an Line2D-Shape to display it on the report.
+ *
+ * @author TM
  */
 public class LineShapeElement extends ShapeElement
 {
-  private boolean m_clacWidth;
+  /** A flag that controls whether the line extends for the full width of the band. */
+  private boolean fullWidth;
 
   /**
    * Creates a new LineShapeElement.
@@ -84,22 +87,27 @@ public class LineShapeElement extends ShapeElement
    */
   protected void setShape (Shape shape)
   {
-    Line2D m_line = (Line2D) ((Line2D) shape).clone ();
-    m_clacWidth = (m_line.getX1 () == m_line.getX2 ()) && (m_line.getY1 () == m_line.getY2 ());
+    Line2D line = (Line2D) ((Line2D) shape).clone ();
+    this.fullWidth = (line.getX1 () == line.getX2 ()) && (line.getY1 () == line.getY2 ());
 
-    super.setShape (m_line);
+    super.setShape (line);
   }
 
   /**
    * Draw the line. If the lines x-coordinates and the y-coordinates are equal, consider
    * this line a horizontal line and adjust the length of this line. This should be done
    * by some sort of relative addressing as in HTML with &lt;hr width="100%"&gt;
+   *
+   * @param target  the output target.
+   * @param band  the report band.
+   *
+   * @throws OutputTargetException if there is a problem with the target.
    */
   public void draw (OutputTarget target, Band band) throws OutputTargetException
   {
     Line2D l = getLine ();
 
-    if (m_clacWidth && ((float) l.getX2 ()) != target.getUsableWidth ())
+    if (fullWidth && ((float) l.getX2 ()) != target.getUsableWidth ())
     {
       l.setLine (0.0d, l.getY1 (), target.getUsableWidth (), l.getY1 ());
     }
@@ -107,7 +115,9 @@ public class LineShapeElement extends ShapeElement
   }
 
   /**
-   * debugging info. Displays the contents of this element as string.
+   * Displays the contents of this element as string (useful for debugging).
+   *
+   * @return a string.
    */
   public String toString ()
   {

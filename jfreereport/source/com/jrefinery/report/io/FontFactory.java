@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -71,8 +71,9 @@ public class FontFactory implements ReportDefinitionTags
   {
     String val = attr.getValue (name);
     if (val == null)
+    {
       return def;
-
+    }
     try
     {
       int s = Integer.parseInt (val);
@@ -121,8 +122,14 @@ public class FontFactory implements ReportDefinitionTags
     isItalic = ParserUtil.parseBoolean (attr.getValue (FS_ITALIC), isItalic);
 //    isUnderline = ParserUtil.parseBoolean (attr.getValue (FS_UNDERLINE), isUnderline);
 //    isStriked = ParserUtil.parseBoolean (attr.getValue (FS_STRIKETHR), isStriked);
-    if (isBold) fs += Font.BOLD;
-    if (isItalic) fs += Font.ITALIC;
+    if (isBold)
+    {
+      fs += Font.BOLD;
+    }
+    if (isItalic)
+    {
+      fs += Font.ITALIC;
+    }
     return fs;
   }
 
@@ -133,7 +140,8 @@ public class FontFactory implements ReportDefinitionTags
           throws ReportDefinitionException
   {
     // get the font name...
-    String elementFontName = ParserUtil.parseString (attr.getValue (FONT_NAME_ATT), defaultFontName);
+    String elementFontName = ParserUtil.parseString (attr.getValue (FONT_NAME_ATT),
+                                                     defaultFontName);
 
     // get the font style...
     int elementFontStyle = readSimpleFontStyle (attr, defaultFontStyle);
@@ -142,7 +150,9 @@ public class FontFactory implements ReportDefinitionTags
     int elementFontSize = readInt (attr, FONT_SIZE_ATT, defaultFontSize);
 
     if (elementFontName == null || elementFontStyle == -1 || elementFontSize == -1)
+    {
       throw new ReportDefinitionException ("Unable to create the font");
+    }
 
     // return the font...
     return new Font (elementFontName, elementFontStyle, elementFontSize);
@@ -167,7 +177,9 @@ public class FontFactory implements ReportDefinitionTags
 
 
     if (defaultFontName == null || defaultFontStyle == -1 || defaultFontSize == -1)
+    {
       return null;
+    }
 
     // return the font...
     return new Font (defaultFontName, defaultFontStyle, defaultFontSize);

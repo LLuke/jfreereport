@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------------
- * ExpressionDataSource.java
- * ---------------
+ * ----------------------
+ * DataRowDataSource.java
+ * ----------------------
  * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
  * Changes
@@ -35,18 +35,21 @@ package com.jrefinery.report.filter;
 import com.jrefinery.report.DataRow;
 
 /**
- * A datasource that queries the datarow for the value named by this DataSource. The DataRow
- * contains all values from the current row of the reports datasource and the current value of
+ * A DataSource that queries the datarow for the value in a named column. The DataRow
+ * contains all values from the current row of the report's TableModel and the current value of
  * the defined expressions and functions.
  * <p>
- * This class replaces the three classes: ExpressionDataSource, FunctionDataSource and ReportDataSource
+ * This class replaces the three classes: ExpressionDataSource, FunctionDataSource and
+ * ReportDataSource.
  * <p>
  * @see com.jrefinery.report.DataRow
+ *
+ * @author TM
  */
 public class DataRowDataSource implements DataSource, DataRowConnectable
 {
   /**
-   * The name of the columnname in the datasource
+   * The name of the field/expression/function referenced by this data source.
    */
   private String dataSourceColumnName;
 
@@ -74,6 +77,11 @@ public class DataRowDataSource implements DataSource, DataRowConnectable
     setDataSourceColumnName(expression);
   }
 
+  /**
+   * Returns the data source column name.
+   *
+   * @return  the column name.
+   */
   public String getDataSourceColumnName()
   {
     return dataSourceColumnName;
@@ -88,7 +96,10 @@ public class DataRowDataSource implements DataSource, DataRowConnectable
    */
   public void setDataSourceColumnName(String dataSourceColumnName)
   {
-    if (dataSourceColumnName == null) throw new NullPointerException();
+    if (dataSourceColumnName == null)
+    {
+      throw new NullPointerException();
+    }
     this.dataSourceColumnName = dataSourceColumnName;
   }
 
@@ -108,7 +119,7 @@ public class DataRowDataSource implements DataSource, DataRowConnectable
   }
 
   /**
-   * @returns a clone of this DataRowDataSource
+   * @return a clone of this DataRowDataSource
    * @throws CloneNotSupportedException if the cloning is not supported.
    */
   public Object clone () throws CloneNotSupportedException
@@ -122,14 +133,21 @@ public class DataRowDataSource implements DataSource, DataRowConnectable
    * <p>
    * If there is already a datarow connected, an IllegalStateException is thrown.
    *
+   * @param row the datarow to be connected.
+   *
    * @throws NullPointerException if the given row is null
    * @throws IllegalStateException if there is a datarow already connected.
-   * @param row the datarow to be connected.
    */
   public void connectDataRow (DataRow row) throws IllegalStateException
   {
-    if (row == null) throw new NullPointerException ("Null-DataRowBackend cannot be set.");
-    if (dataRow != null) throw new IllegalStateException ("There is a datarow already connected");
+    if (row == null)
+    {
+      throw new NullPointerException ("Null-DataRowBackend cannot be set.");
+    }
+    if (dataRow != null)
+    {
+      throw new IllegalStateException ("There is a datarow already connected");
+    }
     dataRow = row;
   }
 
@@ -143,13 +161,19 @@ public class DataRowDataSource implements DataSource, DataRowConnectable
    */
   public void disconnectDataRow (DataRow row) throws IllegalStateException
   {
-    if (row == null) throw new NullPointerException ("Null-DataRowBackend cannot be disconnected.");
-    if (dataRow == null) throw new IllegalStateException ("There is no datarow connected");
+    if (row == null)
+    {
+      throw new NullPointerException ("Null-DataRowBackend cannot be disconnected.");
+    }
+    if (dataRow == null)
+    {
+      throw new IllegalStateException ("There is no datarow connected");
+    }
     dataRow = null;
   }
 
   /**
-   * @returns the datarow connected with this datasource.
+   * @return the datarow connected with this datasource.
    */
   protected DataRow getDataRow ()
   {

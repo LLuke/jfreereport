@@ -21,9 +21,9 @@
  * Boston, MA 02111-1307, USA.
  *
  *
- * ----------------
+ * --------------------
  * FirstPageAction.java
- * ----------------
+ * --------------------
  * (C)opyright 2002, by Simba Management Limited.
  *
  * Original Author:  Joerg Schoemer;
@@ -32,7 +32,7 @@
  * Changes
  * -------
  * 29-May-2002 : Initial version
- * 05-Jun-2002 : These comments an documentation
+ * 05-Jun-2002 : These comments and documentation
  * 09-Jun-2002 : Removed the action command, actions connect directly to their source.
  * 29-Aug-2002 : Downport to JDK 1.2.2
  *
@@ -40,9 +40,6 @@
 package com.jrefinery.report.action;
 
 import com.jrefinery.report.util.AbstractActionDowngrade;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import java.util.ResourceBundle;
 
 /**
@@ -50,13 +47,15 @@ import java.util.ResourceBundle;
  * page of the report. This abstract class is used for initializing the default locales,
  * the actual work is done in an internal subclass in PreviewFrame.
  *
- * @author js
+ * @author JS
  */
 public abstract class FirstPageAction extends AbstractActionDowngrade
 {
 
   /**
    * Constructs a new action.
+   *
+   * @param resources  localised resources.
    */
   public FirstPageAction (ResourceBundle resources)
   {

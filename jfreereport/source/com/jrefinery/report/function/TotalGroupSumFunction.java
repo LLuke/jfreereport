@@ -27,7 +27,7 @@
  *
  * Changes
  * -------
- * 23-Jun-2002 : Inital version
+ * 23-Jun-2002 : Initial version
  * 17-Jul-2002 : Handle empty data source without a crashing
  * 18-Jul-2002 : Handle out-of-bounds dataquery to the tablemodel
  * 21-Jul-2002 : Corrected the out-of-bounds constraint
@@ -49,7 +49,7 @@ import java.util.ArrayList;
 /**
  * A report function that calculates the sum of one field (column) from the TableModel.
  * This function produces a global total. The total sum of the group is known when the group
- * processing starts and the report is not performing a prepare-run. The sum is calulated in
+ * processing starts and the report is not performing a prepare-run. The sum is calculated in
  * the prepare run and recalled in the printing run.
  * <p>
  * The function can be used in two ways:
@@ -65,10 +65,15 @@ import java.util.ArrayList;
  * <p>
  * The parameter <code>group</code> denotes the name of a group. When this group is started,
  * the counter gets reseted to null.
+ *
+ * @author TM
  */
 public class TotalGroupSumFunction extends AbstractFunction
 {
+  /** Literal text for the 'group' property. */
   public static final String GROUP_PROPERTY = "group";
+
+  /** Literal text for the 'field' property. */
   public static final String FIELD_PROPERTY = "field";
 
   /**
@@ -76,24 +81,39 @@ public class TotalGroupSumFunction extends AbstractFunction
    */
   private static class GroupSum
   {
+    /** The result. */
     private BigDecimal result;
 
+    /**
+     * Default constructor.
+     */
     public GroupSum()
     {
       result = new BigDecimal(0);
     }
 
+    /**
+     * Adds a number to the result.
+     *
+     * @param n  the number.
+     */
     public void add(Number n)
     {
       result = result.add(new BigDecimal(n.toString()));
     }
 
+    /**
+     * Returns the sum.
+     *
+     * @return the sum.
+     */
     public BigDecimal getResult()
     {
       return result;
     }
   }
 
+  /** A useful constant representing zero. */
   private static final BigDecimal ZERO = new BigDecimal(0.0);
 
   /** The parser for performing data conversion */
@@ -102,8 +122,13 @@ public class TotalGroupSumFunction extends AbstractFunction
   /** The datasource of the parser */
   private StaticDataSource datasource;
 
+  /** The group sum. */
   private GroupSum groupResult;
+
+  /** A list of results. */
   private ArrayList results;
+
+  /** The current index. */
   private int currentIndex;
 
   /**
@@ -213,6 +238,8 @@ public class TotalGroupSumFunction extends AbstractFunction
    * strucures contained in objects, you have to overwrite this function.
    *
    * @return A clone of the function.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone() throws CloneNotSupportedException
   {
@@ -220,7 +247,9 @@ public class TotalGroupSumFunction extends AbstractFunction
   }
 
   /**
-   * Returns the name of the group to be counted.
+   * Returns the name of the group to be totalled.
+   *
+   * @return the group name.
    */
   public String getGroup()
   {
@@ -228,8 +257,10 @@ public class TotalGroupSumFunction extends AbstractFunction
   }
 
   /**
-   * defines the name of the group to be counted.
-   * If the name is null, all groups are counted.
+   * Defines the name of the group to be totalled.
+   * If the name is null, all groups are totalled.
+   *
+   * @param group  the group name.
    */
   public void setGroup(String group)
   {
@@ -266,12 +297,14 @@ public class TotalGroupSumFunction extends AbstractFunction
    * <P>
    * The field name corresponds to a column name in the report's TableModel.
    *
-   * @param The field name (null not permitted).
+   * @param field the field name (null not permitted).
    */
   public void setField(String field)
   {
     if (field == null)
+    {
       throw new NullPointerException();
+    }
     setProperty(FIELD_PROPERTY, field);
   }
 
@@ -288,6 +321,10 @@ public class TotalGroupSumFunction extends AbstractFunction
   public void initialize() throws FunctionInitializeException
   {
     super.initialize();
-    if (getProperty(FIELD_PROPERTY) == null) throw new FunctionInitializeException("Field is required");
+    if (getProperty(FIELD_PROPERTY) == null)
+    {
+      throw new FunctionInitializeException("Field is required");
+    }
   }
+
 }

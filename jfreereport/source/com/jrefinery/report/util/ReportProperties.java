@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ---------------------
  * ReportProperties.java
- * -----------------------
+ * ---------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 26-May-2002 : Created ReportProperties as a small scale hashtable with protected string keys.
@@ -45,17 +45,17 @@ import java.util.Hashtable;
  * <p>
  * ReportProperties bound to an ReportState are not visible to the report definition (the
  * JFreeReport object), but are visible to all ReportStates of that ReportState-chain.
- * So when you add a property at the end of an report run to an ReportState, the value of
+ * So when you add a property at the end of a report run to an ReportState, the value of
  * this property will be visible to all ReportStates when the report is restarted at a certain
  * point.
  * <p>
  * ReportProperties can be seen as a stateless shared report internal storage area. All functions
- * have access to the properties by using the ReportState.getProperty() and ReportState.setProperty()
- * functions.
+ * have access to the properties by using the ReportState.getProperty() and
+ * ReportState.setProperty() functions.
  * <p>
  * JFreeReport has defined properties to publish the current state of the report:
  * <ul>
- * <li>JFreeRrport.NAME_PROPERTY = "report.name"<p>
+ * <li>JFreeReport.NAME_PROPERTY = "report.name"<p>
  * The name of the report as defined in JFreeReport.setName(). Changing this property in the
  * ReportState will not affect the ReportDefinition object.
  * <li>REPORT_DATE_PROPERTY = "report.date"<p>
@@ -64,16 +64,19 @@ import java.util.Hashtable;
  * <li>REPORT_PAGEFORMAT_PROPERTY = "report.pageformat"<p>
  * Contains the current PageFormat used for printing.
  * <li>REPORT_PAGECOUNT_PROPERTY = "report.pagecount"<p>
- * The number of pages for this report. <b>This property is not availiable in the prepare run.</b>
+ * The number of pages for this report. <b>This property is not available in the prepare run.</b>
  * <li>REPORT_PREPARERUN_PROPERTY = "report.preparerun"<p>
  * The prepare run is invoked on repagination. This run collects the restart states for every
  * page of the report. When printing or displaying selected pages of the report, these saved
  * states are used as restarting points for the report generation. The prepare-run is invoked only
  * once per PageFormat. Subsequent report printings are restarted on clones of the stored page
  * states.
+ *
+ * @author TM
  */
 public class ReportProperties implements Serializable, Cloneable
 {
+  /** Storage for the properties. */
   private Hashtable properties;
 
   /**
@@ -97,10 +100,11 @@ public class ReportProperties implements Serializable, Cloneable
   }
 
   /**
-   * retrieves the value stored for a key in this properties collection.
+   * Retrieves the value stored for a key in this properties collection.
    *
    * @param key The key as string.
-   * @returns the stored value or null, if the key does not exist in this collection.
+   *
+   * @return the stored value or null, if the key does not exist in this collection.
    */
   public Object get (String key)
   {
@@ -108,22 +112,29 @@ public class ReportProperties implements Serializable, Cloneable
   }
 
   /**
-   * retrieves the value stored for a key in this properties collection, and returning
+   * Retrieves the value stored for a key in this properties collection, and returning
    * the default value if the key was not stored in this properties collection.
    *
    * @param key The key as string.
-   * @param def the defaultvalue to be returned when the key is not stored in this properties collection.
-   * @returns the stored value or the default value, if the key does not exist in this collection.
+   * @param def the defaultvalue to be returned when the key is not stored in this properties
+   * collection.
+   *
+   * @return the stored value or the default value, if the key does not exist in this collection.
    */
   public Object get (String key, Object def)
   {
     Object o = properties.get (key);
-    if (o == null) return def;
+    if (o == null)
+    {
+      return def;
+    }
     return o;
   }
 
   /**
    * Returns all property keys as enumeration.
+   *
+   * @return an enumeration of the property keys.
    */
   public Enumeration keys ()
   {
@@ -131,7 +142,9 @@ public class ReportProperties implements Serializable, Cloneable
   }
 
   /**
-   * CopyConstructor.
+   * Copy constructor.
+   *
+   * @param props  an existing ReportProperties instance.
    */
   public ReportProperties (ReportProperties props)
   {
@@ -147,7 +160,7 @@ public class ReportProperties implements Serializable, Cloneable
   }
 
   /**
-   * removes all properties stored in this collection
+   * Removes all properties stored in this collection.
    */
   public void clear ()
   {
@@ -155,9 +168,11 @@ public class ReportProperties implements Serializable, Cloneable
   }
 
   /**
-   * checks whether the given key is stored in this collection of ReportProperties.
+   * Checks whether the given key is stored in this collection of ReportProperties.
    *
-   * @returns true, if the given key is known.
+   * @param key  the property key.
+   *
+   * @return true, if the given key is known.
    */
   public boolean containsKey (String key)
   {
@@ -165,7 +180,11 @@ public class ReportProperties implements Serializable, Cloneable
   }
 
   /**
-   * @returns a copy of this ReportProperties object
+   * Clones the properties.
+   *
+   * @return a copy of this ReportProperties object.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone () throws CloneNotSupportedException
   {

@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -70,7 +70,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
   /**
    * returns the maximum number of children in this list.
    *
-   * @returns 25
+   * @return 25
    */
   protected int getMaxChildCount ()
   {
@@ -81,7 +81,7 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
    * returns the master element of this list. The master element is the element stored by
    * a strong reference and cannot be garbage collected.
    *
-   * @returns the master element
+   * @return the master element
    */
   protected Object getMaster ()
   {
@@ -90,7 +90,8 @@ public abstract class WeakReferenceList implements Serializable, Cloneable
 
   /**
    * attempts to restore the child stored on the given index.
-   * @returns null if the child could not be restored or the restored child.
+   *
+   * @return null if the child could not be restored or the restored child.
    */
   protected abstract Object restoreChild (int index);
 

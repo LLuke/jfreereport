@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ---------------------
  * DateFormatFilter.java
- * -----------------------
+ * ---------------------
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateFormatFilter.java,v 1.5 2002/08/08 15:28:43 taqua Exp $
+ * $Id: DateFormatFilter.java,v 1.6 2002/08/28 15:27:39 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,8 @@ import java.text.Format;
  * setNullValue(Object) is returned.
  *
  * @see java.text.DateFormat
+ *
+ * @author TM
  */
 public class DateFormatFilter extends FormatFilter
 {

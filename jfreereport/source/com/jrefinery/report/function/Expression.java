@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------
+ * ---------------
  * Expression.java
- * ------------------------------
+ * ---------------
  *
  * ChangeLog
  * ------------
@@ -37,11 +37,14 @@ import java.util.Properties;
 
 /**
  * An expression is a lightweight function that does not maintain a state. Expressions are used
- * to calculate values within a single row of an report. Expressions can use a dataRow to access
+ * to calculate values within a single row of a report. Expressions can use a dataRow to access
  * other fields, expressions or functions within the current row in the report.
+ *
+ * @author TM
  */
 public interface Expression extends Cloneable
 {
+  /** Literal text for the 'autoactivate' property. */
   public static final String AUTOACTIVATE_PROPERTY = "autoactivate";
 
   /**
@@ -59,7 +62,7 @@ public interface Expression extends Cloneable
    * <P>
    * The name must not be null and must be unique within the expression group.
    *
-   * @param name The name.
+   * @param name  the name.
    */
   public void setName(String name);
 
@@ -82,13 +85,17 @@ public interface Expression extends Cloneable
   public void setProperties(Properties p);
 
   /**
-   * Returns a copy of this Expressions properties.
+   * Returns a copy of this Expression's properties.
+   *
+   * @return the properties for the expression.
    */
   public Properties getProperties();
 
   /**
-   * returns true if this expression contains autoactive content and should be called by the system,
-   * regardless whether this expression is referenced in the datarow.
+   * Returns true if this expression contains autoactive content and should be called by the
+   * system, regardless whether this expression is referenced in the datarow.
+   *
+   * @return boolean.
    */
   public boolean isActive ();
 
@@ -101,16 +108,18 @@ public interface Expression extends Cloneable
   public void initialize() throws FunctionInitializeException;
 
   /**
-   * Returns the DataRow used in this expression. The dataRow is set when the report processing starts
-   * and can be used to access the values of functions, expressions and the reports datasource.
+   * Returns the DataRow used in this expression. The dataRow is set when the report processing
+   * starts and can be used to access the values of functions, expressions and the reports
+   * datasource.
    *
-   * @returns the assigned DataRow for this report processing.
+   * @return the assigned DataRow for this report processing.
    */
   public DataRow getDataRow();
 
   /**
-   * Defines the DataRow used in this expression. The dataRow is set when the report processing starts
-   * and can be used to access the values of functions, expressions and the reports datasource.
+   * Defines the DataRow used in this expression. The dataRow is set when the report processing
+   * starts and can be used to access the values of functions, expressions and the reports
+   * datasource.
    *
    * @param theDataRow the DataRow for this expression.
    */
@@ -123,6 +132,8 @@ public interface Expression extends Cloneable
    * disconnect the used expression from any other object space.
    *
    * @return A clone of this expression.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone() throws CloneNotSupportedException;
 

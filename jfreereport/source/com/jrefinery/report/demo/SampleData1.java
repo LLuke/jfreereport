@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData1.java,v 1.3 2002/05/23 22:32:22 taqua Exp $
+ * $Id: SampleData1.java,v 1.4 2002/05/28 19:28:23 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -77,7 +77,8 @@ public class SampleData1 extends AbstractTableModel
     data[18] = new Object[]{"Sweden", "SE", "Europe", new Integer (8854322)};
     data[19] = new Object[]{"Switzerland", "CH", "Europe", new Integer (7123500)};
     data[20] = new Object[]{"Canada", "CA", "North America", new Integer (30491300)};
-    data[21] = new Object[]{"United States of America", "US", "North America", new Integer (273866000)};
+    data[21] = new Object[]{"United States of America",
+                            "US", "North America", new Integer (273866000)};
     data[22] = new Object[]{"Brazil", "BR", "South America", new Integer (165715400)};
   }
 
@@ -103,9 +104,13 @@ public class SampleData1 extends AbstractTableModel
   public Class getColumnClass (int columnIndex)
   {
     if (columnIndex == 3)
+    {
       return Integer.class;
+    }
     else
+    {
       return String.class;
+    }
   }
 
   /**
@@ -114,15 +119,25 @@ public class SampleData1 extends AbstractTableModel
   public String getColumnName (int columnIndex)
   {
     if (columnIndex == 0)
+    {
       return "Country";
+    }
     else if (columnIndex == 1)
+    {
       return "ISO Code";
+    }
     else if (columnIndex == 2)
+    {
       return "Continent";
+    }
     else if (columnIndex == 3)
+    {
       return "Population";
+    }
     else
+    {
       return null;
+    }
   }
 
   /**

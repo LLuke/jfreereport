@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,19 +28,21 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: TextElement.java,v 1.20 2002/09/05 08:31:51 taqua Exp $
+ * $Id: TextElement.java,v 1.21 2002/09/05 17:25:31 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 05-Mar-2002 : Modified constructors (DG);
- * 10-May-2002 : removed all but the default constructor. Added accessor functions for all properties.
+ * 10-May-2002 : Removed all but the default constructor. Added accessor functions for all
+ *               properties.
  * 15-May-2002 : The null value is handled specially, initiated by thomas.rynne@edftrading.com
  * 16-May-2002 : Line delimiters adjusted
  *               using protected member m_paint instead of getter methode
- * 20-May-2002 : TextElement is now line break capable. (Functionality moved from MultilineTextElement)
- *               This class is no longer abstract. The filter/datasource interfaces are used to feed
- *               and convert data.
+ * 20-May-2002 : TextElement is now line break capable. (Functionality moved from
+ *               MultilineTextElement)
+ *               This class is no longer abstract. The filter/datasource interfaces are used to
+ *               feed and convert data.
  * 24-May-2002 : BugFix: Alignment was not initialized and made pdf-printing imposible.
  * 04-Jun-2002 : Documentation.
  * 19-Jun-2002 : More documentation
@@ -80,6 +82,8 @@ import java.awt.Font;
  * a "..." is appended.
  * <p>
  * The font style flags isUnderlined and isStriketrough are not implemented in version 0.7.3
+ *
+ * @author DG
  */
 public class TextElement extends Element
 {
@@ -98,6 +102,7 @@ public class TextElement extends Element
   /** A flag indicating whether this elements text should be striked through.*/
   private boolean isStrikethr;
 
+  /** ?? */
   private boolean dynamic;
 
   /**
@@ -112,7 +117,7 @@ public class TextElement extends Element
   }
 
   /**
-   * @returns true, if the text should be printed in underline style.
+   * @return true, if the text should be printed in underline style.
    */
   public boolean isUnderlined()
   {
@@ -121,6 +126,8 @@ public class TextElement extends Element
 
   /**
    * Defines whether the text should be printed in underline style.
+   *
+   * @param b  the flag.
    */
   public void setUnderlined(boolean b)
   {
@@ -128,7 +135,7 @@ public class TextElement extends Element
   }
 
   /**
-   * @returns true, if the text should be printed in strike-though style.
+   * @return true, if the text should be printed in strike-though style.
    */
   public boolean isStrikethrough()
   {
@@ -137,6 +144,8 @@ public class TextElement extends Element
 
   /**
    * Defines whether the text should be printed in strike-though style.
+   *
+   * @param b  the flag.
    */
   public void setStrikethrough(boolean b)
   {
@@ -175,11 +184,17 @@ public class TextElement extends Element
    * If a band is defined, the function will never return null.
    * If neither the band and the element have defined a font, a
    * NullPointerException is thrown instead.
+   *
+   * @param band  the band.
+   *
+   * @return the font.
    */
   public Font getFont(Band band)
   {
     if (band == null)
+    {
       return font;
+    }
 
     Font result = this.font;
 
@@ -188,7 +203,9 @@ public class TextElement extends Element
       result = band.getDefaultFont();
     }
     if (result == null)
-      throw new NullPointerException("Neither element nor band have defined a font, this is not valid");
+    {
+      throw new NullPointerException("Neither element nor band have defined a font, invalid!");
+    }
 
     return result;
 
@@ -199,6 +216,7 @@ public class TextElement extends Element
    * although you may feed a null value into the set method of this property.
    *
    * @return the null value representation for this element.
+   *
    * @see #setNullString(String)
    */
   public String getNullString()
@@ -209,6 +227,8 @@ public class TextElement extends Element
   /**
    * Defines the null value representation for this element. If null is given, the value
    * is set to a reasonable value (this implementation sets the value to the string "null".
+   *
+   * @param s  the null string.
    */
   public void setNullString(String s)
   {
@@ -217,8 +237,10 @@ public class TextElement extends Element
   }
 
   /**
-   * Returns the text alignment for this element's text. This is one of <code>ElementConstants.LEFT</code>,
-   * <code>ElementConstants.CENTER</code> or <code>ElementConstants.RIGHT</code>.
+   * Returns the text alignment for this element's text.
+   * <p>
+   * This is one of <code>ElementConstants.LEFT</code>, <code>ElementConstants.CENTER</code> or
+   * <code>ElementConstants.RIGHT</code>.
    *
    * @return the alignment for this element
    */
@@ -228,17 +250,23 @@ public class TextElement extends Element
   }
 
   /**
-   * Defines the text alignment for this element's text. This is one of <code>ElementConstants.LEFT</code>,
-   * <code>ElementConstants.CENTER</code> or <code>ElementConstants.RIGHT</code>.
+   * Defines the text alignment for this element's text.
+   * <p>
+   * This is one of <code>ElementConstants.LEFT</code>, <code>ElementConstants.CENTER</code> or
+   * <code>ElementConstants.RIGHT</code>.
    *
-   * @param alignent the alignment for this element.
+   * @param alignment the alignment for this element.
    */
   public void setAlignment(int alignment)
   {
     if (alignment == LEFT || alignment == RIGHT || alignment == CENTER)
+    {
       this.alignment = alignment;
+    }
     else
-      throw new IllegalArgumentException("The element alignment must be one of LEFT, RIGHT or CENTER");
+    {
+      throw new IllegalArgumentException("The alignment must be one of LEFT, RIGHT or CENTER");
+    }
   }
 
   /**
@@ -246,6 +274,8 @@ public class TextElement extends Element
    *
    * @param target The output target.
    * @param band The band.
+   *
+   * @throws OutputTargetException if there is a problem with the target.
    */
   public void draw(OutputTarget target, Band band) throws OutputTargetException
   {
@@ -261,6 +291,7 @@ public class TextElement extends Element
    * can be formatted in various ways.
    *
    * @return A formatted version of the data value.
+   *
    * @deprecated this method is replaced by Element.getValue().
    */
   public String getFormattedText()
@@ -270,6 +301,8 @@ public class TextElement extends Element
 
   /**
    * Makes sure that getFormattedText is called and evaluated.
+   *
+   * @return the value for the element.
    */
   public final Object getValue()
   {
@@ -281,7 +314,7 @@ public class TextElement extends Element
    * Use this function with care, and don't depend on this too much, it gets removed as soon as the
    * layouting is implemented.
    *
-   * @returns true, if the height of this textelement should be calculated dynamicly
+   * @return true, if the height of this textelement should be calculated dynamically
    *
    */
   public boolean isDynamic()
@@ -293,7 +326,7 @@ public class TextElement extends Element
    * Use this function with care, and don't depend on this too much, it gets removed as soon as the
    * layouting is implemented.
    *
-   * @param dynamic, set to true, if the height of this textelement should be calculated dynamicly
+   * @param dynamic set to true, if the height of this textelement should be calculated dynamically
    */
   public void setDynamic(boolean dynamic)
   {
@@ -302,6 +335,8 @@ public class TextElement extends Element
 
   /**
    * Debugging: returns the String representation of this element.
+   *
+   * @return a string.
    */
   public String toString()
   {
@@ -325,6 +360,8 @@ public class TextElement extends Element
    * Clones this Element.
    *
    * @return a clone of this element.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone () throws CloneNotSupportedException
   {

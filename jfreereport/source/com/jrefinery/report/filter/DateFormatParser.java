@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ---------------------
  * DateFormatParser.java
- * -----------------------
+ * ---------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * ChangeLog
@@ -40,14 +40,13 @@ import java.util.Date;
 /**
  * Parses a String into a java.util.Date. The string is read from the given datasource
  * and then parsed by the dateformat contained in this FormatParser.
- * <p>
+ *
+ * @author TM
  */
 public class DateFormatParser extends FormatParser
 {
   /**
-   * DefaultConstructor
-   * <p>
-   * initializes this format
+   * Creates a new 'date format parser'.
    */
   public DateFormatParser ()
   {
@@ -55,9 +54,10 @@ public class DateFormatParser extends FormatParser
   }
 
   /**
-   * returns the format for this filter. The format object is returned as DateFormat.
+   * Returns the format for this filter. The format object is returned as DateFormat.
    *
-   * @param format The format.
+   * @return  the formatter.
+   *
    * @throws NullPointerException if the given format is null
    */
   public DateFormat getDateFormat ()
@@ -69,6 +69,7 @@ public class DateFormatParser extends FormatParser
    * Sets the format for the filter.
    *
    * @param format The format.
+   *
    * @throws NullPointerException if the given format is null
    */
   public void setDateFormat (DateFormat format)
@@ -80,6 +81,7 @@ public class DateFormatParser extends FormatParser
    * Sets the format for the filter. The formater is required to be of type DateFormat.
    *
    * @param format The format.
+   *
    * @throws NullPointerException if the given format is null
    * @throws ClassCastException if an invalid formater is set.
    */
@@ -96,6 +98,7 @@ public class DateFormatParser extends FormatParser
    * The null value for date format parsers is required to be either null or a java.util.Date.
    *
    * @param nullvalue the nullvalue returned when parsing failed.
+   *
    * @throws ClassCastException if the value is no date or not null.
    */
   public void setNullValue (Object nullvalue)
@@ -108,7 +111,9 @@ public class DateFormatParser extends FormatParser
    * a valid value, and no parsing is required, a parser can skip the parsing process by returning
    * true in this function.
    *
-   * @returns true, if the given value is already an instance of date.
+   * @param o  the value.
+   *
+   * @return true, if the given value is already an instance of date.
    */
   protected boolean isValidOutput (Object o)
   {

@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFunctionElement.java,v 1.10 2002/08/14 21:14:06 taqua Exp $
+ * $Id: NumberFunctionElement.java,v 1.11 2002/09/05 09:34:53 taqua Exp $
  *
  * Changes
  * -------
@@ -54,16 +54,19 @@ import java.text.NumberFormat;
  * To produce the same functionality use a TextElement and add a NumberFormatFilter and
  * a FunctionDataSource to the element.
  *
+ * @author TM
+ *
  * @deprecated Use a plain text element and add a number format filter to the element
  * and add a function datasource to the filter.
  */
 public class NumberFunctionElement extends FunctionElement
 {
+  /** The number format filter. */
   private NumberFormatFilter filter;
 
   /**
-   * Constructs a number element using float coordinates. This Element uses an DecimalFormat to transform the
-   * numbers into a string by default.
+   * Constructs a number element using float coordinates. This Element uses an DecimalFormat to
+   * transform the numbers into a string by default.
    */
   public NumberFunctionElement ()
   {
@@ -75,6 +78,8 @@ public class NumberFunctionElement extends FunctionElement
 
   /**
    * Returns the numberformater of this element. Initialy this is a DecimalFormat.
+   *
+   * @return the formatter.
    */
   public NumberFormat getFormatter ()
   {
@@ -84,11 +89,15 @@ public class NumberFunctionElement extends FunctionElement
   /**
    * Sets the NumberFormater for this element. The formater must not be null, or a
    * NullPointerException is thrown.
+   *
+   * @param nf  the formatter.
    */
   public void setFormatter (NumberFormat nf)
   {
     if (nf == null)
+    {
       throw new NullPointerException ("NumberFormat may not be null");
+    }
 
     filter.setNumberFormat (nf);
   }
@@ -97,6 +106,8 @@ public class NumberFunctionElement extends FunctionElement
    * Defines the numberformater for this element using a DecimalFormat and initializing it
    * with the given format string. If the format string is null, a reasonable default value
    * is choosen.
+   *
+   * @param df  the format string.
    */
   public void setDecimalFormatString (String df)
   {
@@ -111,6 +122,8 @@ public class NumberFunctionElement extends FunctionElement
    * Clones this Element.
    *
    * @return a clone of this element.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone () throws CloneNotSupportedException
   {
@@ -124,6 +137,5 @@ public class NumberFunctionElement extends FunctionElement
     e.filter.setDataSource (e.getFunctionDataSource ());
     return e;
   }
-
 
 }

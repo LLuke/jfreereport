@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * -----------------
  * FormatParser.java
- * -----------------------
+ * -----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * Changes
@@ -45,6 +45,8 @@ import java.text.ParseException;
  * <p>
  * What class of object is returned, is determined by the given format. If parsing failed,
  * the defined NullValue is returned.
+ *
+ * @author TM
  */
 public class FormatParser implements DataFilter
 {
@@ -72,7 +74,10 @@ public class FormatParser implements DataFilter
    */
   public void setFormatter (Format format)
   {
-    if (format == null) throw new NullPointerException ();
+    if (format == null)
+    {
+      throw new NullPointerException ();
+    }
     this.format = format;
   }
 
@@ -101,15 +106,27 @@ public class FormatParser implements DataFilter
   public Object getValue ()
   {
     Format f = getFormatter ();
-    if (f == null) return getNullValue ();
+    if (f == null)
+    {
+      return getNullValue ();
+    }
 
     DataSource ds = getDataSource ();
-    if (ds == null) return getNullValue ();
+    if (ds == null)
+    {
+      return getNullValue ();
+    }
 
     Object o = ds.getValue ();
-    if (o == null) return getNullValue ();
+    if (o == null)
+    {
+      return getNullValue ();
+    }
 
-    if (isValidOutput (o)) return o;
+    if (isValidOutput (o))
+    {
+      return o;
+    }
 
     try
     {
@@ -126,7 +143,9 @@ public class FormatParser implements DataFilter
    * a valid value, and no parsing is required, a parser can skip the parsing process by returning
    * true in this function.
    *
-   * @returns false as this class does not know anything about the format of input or result objects.
+   * @param o  the object to parse.
+   *
+   * @return false as this class does not know anything about the format of input or result objects.
    */
   protected boolean isValidOutput (Object o)
   {
@@ -150,7 +169,10 @@ public class FormatParser implements DataFilter
    */
   public void setDataSource (DataSource ds)
   {
-    if (ds == null) throw new NullPointerException ();
+    if (ds == null)
+    {
+      throw new NullPointerException ();
+    }
     this.datasource = ds;
   }
 
@@ -178,13 +200,24 @@ public class FormatParser implements DataFilter
   }
 
   /**
-   * @returns a clone of this FormatParser
+   * Clones the parser.
+   *
+   * @return a clone.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone () throws CloneNotSupportedException
   {
     FormatParser p = (FormatParser) super.clone ();
-    if (datasource != null) p.datasource = (DataSource) datasource.clone ();
-    if (format != null) p.format = (Format) format.clone ();
+    if (datasource != null)
+    {
+      p.datasource = (DataSource) datasource.clone ();
+    }
+    if (format != null)
+    {
+      p.format = (Format) format.clone ();
+    }
     return p;
   }
+
 }

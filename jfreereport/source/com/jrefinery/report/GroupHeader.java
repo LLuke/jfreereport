@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupHeader.java,v 1.6 2002/06/09 14:46:04 taqua Exp $
+ * $Id: GroupHeader.java,v 1.7 2002/08/08 15:28:38 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -42,11 +42,13 @@ package com.jrefinery.report;
 
 /**
  * A report band that appears at the beginning of each instance of a group.
+ *
+ * @author DG
  */
 public class GroupHeader extends Band
 {
   /**
-   * internal property, indicating whether a pagebreka should be triggered before this
+   * Internal property, indicating whether a pagebreak should be triggered before this
    * header is printed.
    */
   private boolean pageBreak;
@@ -69,7 +71,8 @@ public class GroupHeader extends Band
   }
 
   /**
-   * defines whether this group should trigger a pagebreak before its header is printed.
+   * Defines whether this group should trigger a pagebreak before its header is printed.
+   *
    * @param pageBreakBefore the new trigger state
    */
   public void setPageBreakBeforePrint (boolean pageBreakBefore)

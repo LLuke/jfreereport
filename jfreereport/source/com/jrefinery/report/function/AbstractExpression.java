@@ -20,12 +20,12 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------------------
+ * -----------------------
  * AbstractExpression.java
- * ---------------------
+ * -----------------------
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
- * changes
+ * Changes
  * -------
  * 12-Aug-2002 : Initial version
  * 27-Aug-2002 : Documentation
@@ -33,8 +33,6 @@
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.DataRow;
-import com.jrefinery.report.util.Log;
-
 import java.util.Enumeration;
 import java.util.Properties;
 
@@ -42,34 +40,41 @@ import java.util.Properties;
  * The abstract expression is a base class for expressions used in JFreeReport. This class provides
  * a default implementation to make own expressions easier to implement.
  * <p>
- * Expressions are stateless functions which have access to the datarow of the report. All expressions
- * are named and the defined names have to be unique within the reports expressions, functions and fields of
- * the datasource. Expressions are configured using properties.
+ * Expressions are stateless functions which have access to the datarow of the report. All
+ * expressions are named and the defined names have to be unique within the reports expressions,
+ * functions and fields of the datasource. Expressions are configured using properties.
  * <p>
  * @todo define a property query interface similiar to the JDBC-Property interface
+ *
+ * @author TM
  */
 public abstract class AbstractExpression implements Expression
 {
-  private Properties properties;
+  /** The expression name. */
   private String name;
+
+  /** Storage for the expression properties. */
+  private Properties properties;
+
+  /** The data row. */
   private DataRow dataRow;
 
   /**
-   * create an unnamed expression. Make sure the name of the expression is set using setName() before
-   * the expression is added to an expressioncollection.
+   * Creates an unnamed expression. Make sure the name of the expression is set using setName()
+   * before the expression is added to an expressioncollection.
    */
   public AbstractExpression()
   {
-    this.properties = new Properties();
     setName("");
+    this.properties = new Properties();
   }
 
   /**
-   * returns the name of the expression. Do not change the name of the expression after this expression
-   * was added to the expression collection. The name of the expression has to be unique with the scope
-   * of the reports functions, expressions and datasource fields.
+   * Returns the name of the expression. Do not change the name of the expression after this
+   * expression was added to the expression collection. The name of the expression has to be
+   * unique with the scope of the report's functions, expressions and datasource fields.
    *
-   * @returns the name of the expression.
+   * @return the name of the expression.
    */
   public String getName()
   {
@@ -77,16 +82,20 @@ public abstract class AbstractExpression implements Expression
   }
 
   /**
-   * Defines the name of the expression. Do not change the name of the expression after this expression
-   * was added to the expression collection. The name of the expression has to be unique with the scope
-   * of the reports functions, expressions and datasource fields.
+   * Defines the name of the expression. Do not change the name of the expression after this
+   * expression was added to the expression collection. The name of the expression has to be
+   * unique with the scope of the reports functions, expressions and datasource fields.
    *
-   * @returns the name of the expression.
+   * @param name  the name of the expression.
+   *
    * @throws NullPointerException if the name is null
    */
   public void setName(String name)
   {
-    if (name == null) throw new NullPointerException("Name must not be null");
+    if (name == null)
+    {
+      throw new NullPointerException("Name must not be null");
+    }
     this.name = name;
   }
 
@@ -118,7 +127,7 @@ public abstract class AbstractExpression implements Expression
   }
 
   /**
-   * @returns a copy of the properties defined for this expression.
+   * @return a copy of the properties defined for this expression.
    */
   public Properties getProperties()
   {
@@ -166,7 +175,10 @@ public abstract class AbstractExpression implements Expression
    */
   public final void setProperty(String name, String value)
   {
-    if (name == null) throw new NullPointerException();
+    if (name == null)
+    {
+      throw new NullPointerException();
+    }
     if (value == null)
     {
       properties.remove(name);
@@ -181,7 +193,7 @@ public abstract class AbstractExpression implements Expression
    * returns the datarow for this expression. A datarow is used to query the values of functions,
    * expressions and datasource fields in an uniform way.
    *
-   * @returns the assigned datarow for this expression.
+   * @return the assigned datarow for this expression.
    */
   public DataRow getDataRow()
   {
@@ -200,8 +212,12 @@ public abstract class AbstractExpression implements Expression
   }
 
   /**
-   * Clones this expression. Expressions are cloned when the report processing startes, to remove any
-   * connection to outside objects which could influence the reporting process.
+   * Clones this expression. Expressions are cloned when the report processing starts, to
+   * remove any connection to outside objects which could influence the reporting process.
+   *
+   * @return a clone of the expression.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone() throws CloneNotSupportedException
   {
@@ -211,19 +227,24 @@ public abstract class AbstractExpression implements Expression
   }
 
   /**
-   * Initializes this Expression, and throws a FunctionInitializeException if the expression has no name
-   * defined.
+   * Initializes this Expression, and throws a FunctionInitializeException if the expression has
+   * no name defined.
    *
    * @throws FunctionInitializeException if no name was defined for this function.
    */
   public void initialize() throws FunctionInitializeException
   {
-    if (getName() == null) throw new FunctionInitializeException("Name must not be null");
+    if (getName() == null)
+    {
+      throw new FunctionInitializeException("Name must not be null");
+    }
   }
 
   /**
-   * returns true if this expression contains autoactive content and should be called by the system,
+   * Returns true if this expression contains autoactive content and should be called by the system,
    * regardless whether this expression is referenced in the datarow.
+   *
+   * @return boolean
    */
   public boolean isActive()
   {

@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionElement.java,v 1.10 2002/08/08 15:28:38 taqua Exp $
+ * $Id: FunctionElement.java,v 1.11 2002/09/05 09:34:53 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,9 @@ import com.jrefinery.report.filter.FunctionDataSource;
  * This class separates the functional part (@see ReportFunction) from the presentation
  * layer.  The report-function given at construction time is used as key for the
  * function collection.
+ *
+ * @author TM
+ *
  * @deprecated form this element by stacking it together by using filters
  */
 public abstract class FunctionElement extends TextElement
@@ -90,7 +93,7 @@ public abstract class FunctionElement extends TextElement
   }
 
   /**
-   * @returns this FunctionElements root datasource. It is important, that this element
+   * @return this FunctionElements root datasource. It is important, that this element
    * is at the start of the filter queue, or the results may not be as expected.
    */
   protected final FunctionDataSource getFunctionDataSource ()
@@ -102,6 +105,8 @@ public abstract class FunctionElement extends TextElement
    * Clones this Element.
    *
    * @return a clone of this element.
+   *
+   * @throws CloneNotSupportedException should in fact never be thrown.
    */
   public Object clone () throws CloneNotSupportedException
   {

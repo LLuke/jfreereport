@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SaveAsAction.java,v 1.8 2002/08/29 19:15:34 taqua Exp $
+ * $Id: SaveAsAction.java,v 1.9 2002/08/31 16:50:48 taqua Exp $
  *
  * Changes
  * -------
@@ -43,19 +43,20 @@
 package com.jrefinery.report.action;
 
 import com.jrefinery.report.util.AbstractActionDowngrade;
-
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import java.util.ResourceBundle;
 
 /**
  * Save (to PDF) action for a print preview frame.
+ *
+ * @author DG
  */
 public abstract class SaveAsAction extends AbstractActionDowngrade
 {
 
   /**
    * Constructs a new action.
+   *
+   * @param resources  localised resources.
    */
   public SaveAsAction (ResourceBundle resources)
   {

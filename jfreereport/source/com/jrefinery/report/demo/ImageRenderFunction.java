@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -73,7 +73,8 @@ public class ImageRenderFunction extends AbstractFunction
     g2.setTransform(AffineTransform.getTranslateInstance(0, 0));
     g2.setPaint(Color.green);
     g2.setFont(new Font("Serif", Font.PLAIN, 10));
-    g2.drawString("You are viewing a graphics of JFreeReport On index " + event.getState().getCurrentDisplayItem(), 10, 10);
+    g2.drawString("You are viewing a graphics of JFreeReport on index "
+                  + event.getState().getCurrentDisplayItem(), 10, 10);
 
     functionValue = new ImageReference(image);
   }

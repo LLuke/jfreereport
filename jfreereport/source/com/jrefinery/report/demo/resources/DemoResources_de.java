@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com);
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ------------------
- * DemoResources.java
- * ------------------
+ * ---------------------
+ * DemoResources_de.java
+ * ---------------------
  * (C)opyright 2002, by Simba Management Limited.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
+ * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: DemoResources_de.java,v 1.6 2002/06/09 17:29:30 taqua Exp $
+ * $Id: DemoResources_de.java,v 1.7 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,8 @@ import java.awt.event.KeyEvent;
 /**
  * User interface items for the JFreeReport demonstration application.  These have been put into
  * a ResourceBundle to ease localisation of the application.
+ *
+ * @author TM
  */
 public class DemoResources_de extends JFreeReportResources
 {
@@ -54,11 +56,11 @@ public class DemoResources_de extends JFreeReportResources
    */
   public Object[][] getContents ()
   {
-    return contents;
+    return CONTENTS;
   }
 
   /** The resources to be localised. */
-  private static final Object[][] contents = {
+  private static final Object[][] CONTENTS = {
     // in the title pattern, leave in the '{0}' as it gets replaced with the version number
     {"main-frame.title.pattern", "JFreeReport {0} Demo"},
 
@@ -70,7 +72,8 @@ public class DemoResources_de extends JFreeReportResources
     {"action.print-preview.name", "Seitenansicht ..."},
     {"action.print-preview.description", "Den Bericht in der Seitenansicht betrachten."},
     {"action.print-preview.mnemonic", new Integer (KeyEvent.VK_P)},
-    {"action.print-preview.accelerator", KeyStroke.getKeyStroke (KeyEvent.VK_P, KeyEvent.CTRL_MASK)},
+    {"action.print-preview.accelerator",
+        KeyStroke.getKeyStroke (KeyEvent.VK_P, KeyEvent.CTRL_MASK)},
 
     {"action.about.name", "Über..."},
     {"action.about.description", "Informationen über JFreeReport"},

@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * --------------
  * URLFilter.java
- * -----------------------
+ * --------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * Changes
@@ -34,11 +34,13 @@ package com.jrefinery.report.filter;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import com.jrefinery.report.util.Log;
 
 /**
  * The URLFilter forms URLs from Strings ,Files and URLs. If an URL is relative, the
  * missing contents can be obtained by a default url, called the baseURL.
- * <p>
+ *
+ * @author TM
  */
 public class URLFilter implements DataFilter
 {
@@ -78,7 +80,10 @@ public class URLFilter implements DataFilter
    */
   public void setDataSource (DataSource ds)
   {
-    if (ds == null) throw new NullPointerException ();
+    if (ds == null)
+    {
+     throw new NullPointerException ();
+    }
 
     source = ds;
   }
@@ -96,10 +101,20 @@ public class URLFilter implements DataFilter
    */
   public Object getValue ()
   {
-    if (getDataSource () == null) return null;
+    if (getDataSource () == null)
+    {
+      return null;
+    }
+
     Object o = getDataSource ().getValue ();
-    if (o == null) return null;
-    if (o instanceof URL) return o;
+    if (o == null)
+    {
+      return null;
+    }
+    if (o instanceof URL)
+    {
+      return o;
+    }
 
     try
     {
@@ -107,7 +122,9 @@ public class URLFilter implements DataFilter
       {
         File f = (File) o;
         if (f.canRead ())
+        {
           return f.toURL ();
+        }
       }
       else if (o instanceof String)
       {
@@ -116,13 +133,14 @@ public class URLFilter implements DataFilter
     }
     catch (MalformedURLException mfe)
     {
+      Log.info("URLFilter.getValue(): MalformedURLException!");
     }
     return null;
 
   }
 
   /**
-   * @returns the base url used to complete relative urls.
+   * @return the base url used to complete relative urls.
    */
   public URL getBaseURL ()
   {
@@ -130,17 +148,30 @@ public class URLFilter implements DataFilter
   }
 
   /**
-   * defines the base url used to complete relative urls.
+   * Defines the base url used to complete relative urls.
+   *
+   * @param baseURL  the base URL.
    */
   public void setBaseURL (URL baseURL)
   {
     this.baseURL = baseURL;
   }
 
+  /**
+   * Creates a clone of the URL filter.
+   *
+   * @return A clone.
+   *
+   * @throws CloneNotSupportedException should never happen.
+   */
   public Object clone () throws CloneNotSupportedException
   {
     URLFilter f = (URLFilter) super.clone ();
-    if (source != null) f.source = (DataSource) source.clone ();
+    if (source != null)
+    {
+      f.source = (DataSource) source.clone ();
+    }
     return f;
   }
+
 }

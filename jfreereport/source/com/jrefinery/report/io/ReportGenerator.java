@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -93,7 +93,9 @@ public class ReportGenerator
   {
     String reportDtd = System.getProperty ("com.jrefinery.report.dtd");
     if (reportDtd == null)
+    {
       return;
+    }
 
     File f = new File (reportDtd);
     if (f.exists () && f.isFile () && f.canRead ())
@@ -109,7 +111,9 @@ public class ReportGenerator
   public JFreeReport parseReport (String file) throws IOException, ReportDefinitionException
   {
     if (file == null)
+    {
       throw new NullPointerException ("File may not be null");
+    }
 
     return parseReport (new File (file));
   }
@@ -137,7 +141,9 @@ public class ReportGenerator
           throws ReportDefinitionException, IOException
   {
     if (file == null)
+    {
       throw new NullPointerException ("File may not be null");
+    }
 
     BufferedInputStream bin = new BufferedInputStream (file.openStream ());
     InputSource in = new InputSource (bin);
@@ -145,7 +151,9 @@ public class ReportGenerator
     JFreeReport report = parseReport (in, contentBase);
     report.setProperty(JFreeReport.REPORT_DEFINITION_SOURCE, file.toString());
     if (contentBase != null)
+    {
       report.setProperty(JFreeReport.REPORT_DEFINITION_CONTENTBASE, contentBase.toString());
+    }
     bin.close ();
     return report;
   }
@@ -158,7 +166,9 @@ public class ReportGenerator
   public JFreeReport parseReport (File file) throws IOException, ReportDefinitionException
   {
     if (file == null)
+    {
       throw new NullPointerException ();
+    }
 
     File contentBase = file.getParentFile ();
     return parseReport (file.toURL (), contentBase.toURL ());
@@ -182,7 +192,10 @@ public class ReportGenerator
    */
   public void setDefaultHandler (AbstractReportDefinitionHandler handler)
   {
-    if (handler == null) throw new NullPointerException ();
+    if (handler == null)
+    {
+      throw new NullPointerException ();
+    }
     this.defaulthandler = handler;
   }
 

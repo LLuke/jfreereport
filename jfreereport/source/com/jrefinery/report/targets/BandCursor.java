@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ---------------
  * BandCursor.java
- * -----------------------
+ * ---------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * Changes
@@ -35,16 +35,20 @@ package com.jrefinery.report.targets;
 import java.awt.geom.Rectangle2D;
 
 /**
- * A BandCursor is used to define the bounds of the currently drawn element in the
- * current OutputTarget.
+ * A 'cursor' used to track the bounds of the current band and element for an OutputTarget.
+ *
+ * @author TM
  */
 public class BandCursor
 {
+  /** The bounds for the current band. */
   private Rectangle2D bandBounds;
+
+  /** The bounds for the current element. */
   private Rectangle2D elementBounds;
 
   /**
-   * Creates a new Cursor.
+   * Creates a new cursor.
    */
   public BandCursor()
   {
@@ -54,16 +58,22 @@ public class BandCursor
 
   /**
    * Defines the bounds for the currently drawn band.
+   *
+   * @param bounds  the bounds.
    */
   public void setBandBounds(Rectangle2D bounds)
   {
     if (bounds == null)
+    {
       throw new NullPointerException();
+    }
     this.bandBounds.setRect(bounds);
   }
 
   /**
-   * returns the bounds for the currently drawn band.
+   * Returns the bounds for the currently drawn band.
+   *
+   * @return  The bounds.
    */
   public Rectangle2D getBandBounds()
   {
@@ -73,17 +83,23 @@ public class BandCursor
   }
 
   /**
-   * defines the bounds for the currently drawn element within the defined band.
+   * Defines the bounds for the current element within the current band.
+   *
+   * @param bounds  the element bounds.
    */
   public void setElementBounds(Rectangle2D bounds)
   {
     if (bounds == null)
+    {
       throw new NullPointerException();
+    }
     this.elementBounds.setRect(bounds);
   }
 
   /**
-   * returns the bounds for the currently drawn element within the defined band.
+   * Returns the bounds for the currently drawn element within the defined band.
+   *
+   * @return The bounds.
    */
   public Rectangle2D getElementBounds()
   {
@@ -93,8 +109,12 @@ public class BandCursor
   }
 
   /**
-   * returns the translated element bounds. Some targets may have a different coordinate
-   * system and may require the translation of the coordinates into the native format.
+   * Returns the translated element bounds.
+   * <P>
+   * Some targets may have a different coordinate system and so will require translation of the
+   * coordinates into the native format.
+   *
+   * @return The bounds.
    */
   public Rectangle2D getDrawBounds()
   {
@@ -102,7 +122,9 @@ public class BandCursor
   }
 
   /**
-   * Translated values. Use this if you call an TargetInteral function
+   * Translated values. Use this if you call an TargetInteral function.
+   *
+   * @param bounds  the bounds.
    */
   public void setDrawBounds(Rectangle2D bounds)
   {

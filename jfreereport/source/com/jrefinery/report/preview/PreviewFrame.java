@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.33 2002/09/06 19:19:02 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.34 2002/09/08 12:38:25 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -43,13 +43,13 @@
  *               close behaviour unified
  *               reset the mnemonics of the toolBar buttons
  * 17-May-2002 : KeyListener for zooming and navigation
- * 26-May-2002 : Added a statusline to the report to show errors and the current and total page number.
- *               Printing supports the pageable interface.
+ * 26-May-2002 : Added a statusline to the report to show errors and the current and total page
+ *               number.  Printing supports the pageable interface.
  * 08-Jun-2002 : Documentation and the pageFormat property is removed. The pageformat is defined
  *               in the JFreeReport-object and passed to the ReportPane.
- * 06-Sep-2002 : Added Dispose on Component-hide, so that this Frame can be garbageCollected. Without this
- *               Construct, the PreviewFrame would never be GarbageCollected and would cause
- *               OutOfMemoryExceptions when the program runs a longer time.
+ * 06-Sep-2002 : Added Dispose on Component-hide, so that this Frame can be garbageCollected.
+ *               Without this Construct, the PreviewFrame would never be GarbageCollected and
+ *               would cause OutOfMemoryExceptions when the program runs a longer time.
  */
 
 package com.jrefinery.report.preview;
@@ -97,7 +97,6 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.RepaintManager;
-import javax.swing.table.DefaultTableModel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.Insets;
@@ -121,15 +120,24 @@ import java.util.ResourceBundle;
  * <P>
  * You can also save the report in PDF format (thanks to the iText library).
  * <p>
- * When including this PreviewFrame in own programms, you should override the provided
+ * When including this PreviewFrame in own programs, you should override the provided
  * createXXXAction-methods to include your customized actions.
+ *
+ * @author DG
  */
 public class PreviewFrame
     extends JFrame
     implements ActionListener, PropertyChangeListener, JFreeReportConstants
 {
+
+  /**
+   * Default 'save as' action for the frame.
+   */
   private class DefaultSaveAsAction extends SaveAsAction implements Runnable
   {
+    /**
+     * Creates a 'save as' action.
+     */
     public DefaultSaveAsAction()
     {
       super(getResources());
@@ -146,7 +154,7 @@ public class PreviewFrame
     }
 
     /**
-     * save the report to a PDF file
+     * Passes control to the frame which will present a dialog to save the report in PDF format.
      */
     public void run()
     {
@@ -154,8 +162,14 @@ public class PreviewFrame
     }
   }
 
+  /**
+   * Default 'first page' action.
+   */
   private class DefaultFirstPageAction extends FirstPageAction
   {
+    /**
+     * Creates a 'first page' action.
+     */
     public DefaultFirstPageAction()
     {
       super(getResources());
@@ -164,17 +178,25 @@ public class PreviewFrame
     /**
      * Jump to the first page of the report
      *
+     * @param e The action event.
+     *
      * @see ActionListener#actionPerformed(ActionEvent)
      */
-    public void actionPerformed(ActionEvent arg0)
+    public void actionPerformed(ActionEvent e)
     {
       firstPage();
     }
   }
 
+  /**
+   * Default 'next page' action for the frame.
+   */
   private class DefaultNextPageAction extends NextPageAction
   {
 
+    /**
+     * Creates a 'next page' action.
+     */
     public DefaultNextPageAction()
     {
       super(getResources());
@@ -182,6 +204,7 @@ public class PreviewFrame
 
     /**
      * show the next page of the report
+     * @param e The action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -189,8 +212,14 @@ public class PreviewFrame
     }
   }
 
+  /**
+   * Default 'previous page' action for the frame.
+   */
   private class DefaultPreviousPageAction extends PreviousPageAction
   {
+    /**
+     * Creates a 'previous page' action.
+     */
     public DefaultPreviousPageAction()
     {
       super(getResources());
@@ -198,6 +227,7 @@ public class PreviewFrame
 
     /**
      * show the previous page of the report.
+     * @param e The action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -205,8 +235,14 @@ public class PreviewFrame
     }
   }
 
+  /**
+   * Default 'last page' action for the frame.
+   */
   private class DefaultLastPageAction extends LastPageAction
   {
+    /**
+     * Creates a 'last page' action.
+     */
     public DefaultLastPageAction()
     {
       super(getResources());
@@ -215,17 +251,24 @@ public class PreviewFrame
     /**
      * jump to the last page of the report.
      *
+     * @param e The action event.
      * @see ActionListener#actionPerformed(ActionEvent)
      */
-    public void actionPerformed(ActionEvent arg0)
+    public void actionPerformed(ActionEvent e)
     {
       lastPage();
     }
   }
 
+  /**
+   * Default 'zoom in' action for the frame.
+   */
   private class DefaultZoomInAction extends ZoomInAction
   {
 
+    /**
+     * Creates a 'zoom in' action.
+     */
     public DefaultZoomInAction()
     {
       super(getResources());
@@ -233,6 +276,7 @@ public class PreviewFrame
 
     /**
      * increase zoom.
+     * @param e The action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -240,8 +284,14 @@ public class PreviewFrame
     }
   }
 
+  /**
+   * Default 'zoom out' action for the frame.
+   */
   private class DefaultZoomOutAction extends ZoomOutAction
   {
+    /**
+     * Creates a 'zoom out' action.
+     */
     public DefaultZoomOutAction()
     {
       super(getResources());
@@ -249,6 +299,7 @@ public class PreviewFrame
 
     /**
      * decrease zoom.
+     * @param e The action event.
      */
     public void actionPerformed(ActionEvent e)
     {
@@ -256,8 +307,14 @@ public class PreviewFrame
     }
   }
 
+  /**
+   * Default 'print' action for the frame.
+   */
   private class DefaultPrintAction extends PrintAction implements Runnable
   {
+    /**
+     * Creates a 'print' action.
+     */
     public DefaultPrintAction()
     {
       super(getResources());
@@ -279,8 +336,14 @@ public class PreviewFrame
     }
   }
 
+  /**
+   * Default 'page setup' action for the frame.
+   */
   private class DefaultPageSetupAction extends PageSetupAction implements Runnable
   {
+    /**
+     * Creates a 'page setup' action.
+     */
     public DefaultPageSetupAction()
     {
       super(getResources());
@@ -302,8 +365,14 @@ public class PreviewFrame
     }
   }
 
+  /**
+   * Default 'close' action for the frame.
+   */
   private class DefaultCloseAction extends CloseAction
   {
+    /**
+     * Creates a 'close' action.
+     */
     public DefaultCloseAction()
     {
       super(getResources());
@@ -328,15 +397,21 @@ public class PreviewFrame
     }
   }
 
+  /**
+   * Default 'about' action (does nothing).
+   */
   private class DefaultAboutAction extends AboutAction
   {
+    /**
+     * Creates an 'about' action.
+     */
     public DefaultAboutAction()
     {
       super(getResources());
     }
 
     /**
-     * Show the about box
+     * Does nothing (should show an 'about' dialog).
      *
      * @param e The action event.
      */
@@ -345,8 +420,14 @@ public class PreviewFrame
     }
   }
 
+  /**
+   * Default 'goto' action for the frame.
+   */
   private class DefaultGotoAction extends GotoPageAction
   {
+    /**
+     * Creates a 'goto' action.
+     */
     public DefaultGotoAction()
     {
       super(getResources());
@@ -364,7 +445,9 @@ public class PreviewFrame
           getResources().getString("dialog.gotopage.message"),
           JOptionPane.OK_CANCEL_OPTION);
       if (result == null)
+      {
         return;
+      }
       try
       {
         int page = Integer.parseInt(result);
@@ -379,20 +462,44 @@ public class PreviewFrame
     }
   }
 
+  /** The base class for localised resources. */
   public static final String BASE_RESOURCE_CLASS =
       "com.jrefinery.report.resources.JFreeReportResources";
 
+  /** The 'about' action. */
   private Action aboutAction;
+
+  /** The 'save as' action. */
   private Action saveAsAction;
+
+  /** The 'page setup' action. */
   private Action pageSetupAction;
+
+  /** The 'print' action. */
   private Action printAction;
+
+  /** The 'close' action. */
   private Action closeAction;
+
+  /** The 'first page' action. */
   private Action firstPageAction;
+
+  /** The 'last page' action. */
   private Action lastPageAction;
+
+  /** The 'next page' action. */
   private Action nextPageAction;
+
+  /** The 'previous page' action. */
   private Action previousPageAction;
+
+  /** The 'zoom in' action. */
   private Action zoomInAction;
+
+  /** The 'zoom out' action. */
   private Action zoomOutAction;
+
+  /** The 'goto' action. */
   private Action gotoAction;
 
   /** The available zoom factors. */
@@ -507,7 +614,7 @@ public class PreviewFrame
    * Retrieves the resources for this PreviewFrame. If the resources are not initialized,
    * they get loaded on the first call to this method.
    *
-   * @returns this frames ResourceBundle.
+   * @return this frames ResourceBundle.
    */
   public ResourceBundle getResources()
   {
@@ -745,7 +852,9 @@ public class PreviewFrame
   }
 
   /**
-   * creates the NextPageAction used in this previewframe.
+   * Creates the NextPageAction used in this previewframe.
+   *
+   * @return the 'next page' action.
    */
   protected Action createDefaultNextPageAction()
   {
@@ -753,7 +862,9 @@ public class PreviewFrame
   }
 
   /**
-   * creates the PreviousPageAction used in this previewframe.
+   * Creates the PreviousPageAction used in this previewframe.
+   *
+   * @return the 'previous page' action.
    */
   protected Action createDefaultPreviousPageAction()
   {
@@ -761,7 +872,9 @@ public class PreviewFrame
   }
 
   /**
-   * creates the ZoomInAction used in this previewframe.
+   * Creates the ZoomInAction used in this previewframe.
+   *
+   * @return the 'zoom in' action.
    */
   protected Action createDefaultZoomInAction()
   {
@@ -769,7 +882,9 @@ public class PreviewFrame
   }
 
   /**
-   * creates the ZoomOutAction used in this previewframe.
+   * Creates the ZoomOutAction used in this previewframe.
+   *
+   * @return the 'zoom out' action.
    */
   protected Action createDefaultZoomOutAction()
   {
@@ -777,7 +892,12 @@ public class PreviewFrame
   }
 
   /**
-   * creates the AboutAction used in this previewframe.
+   * Creates the AboutAction used in this previewframe.
+   * <P>
+   * If you subclass PreviewFrame, and override this method, you can display your own 'about'
+   * dialog.
+   *
+   * @return the 'about' action.
    */
   protected Action createDefaultAboutAction()
   {
@@ -785,7 +905,9 @@ public class PreviewFrame
   }
 
   /**
-   * creates the GotoPageAction used in this previewframe.
+   * Creates the GotoPageAction used in this previewframe.
+   *
+   * @return the 'goto' action.
    */
   protected Action createDefaultGotoAction()
   {
@@ -793,7 +915,9 @@ public class PreviewFrame
   }
 
   /**
-   * creates the SaveAsAction used in this previewframe.
+   * Creates the SaveAsAction used in this previewframe.
+   *
+   * @return the 'save as' action.
    */
   protected Action createDefaultSaveAsAction()
   {
@@ -802,6 +926,8 @@ public class PreviewFrame
 
   /**
    * creates the PageSetupAction used in this previewframe.
+   *
+   * @return the 'page setup' action.
    */
   protected Action createDefaultPageSetupAction()
   {
@@ -809,7 +935,9 @@ public class PreviewFrame
   }
 
   /**
-   * creates the PrintAction used in this previewframe.
+   * Creates the PrintAction used in this previewframe.
+   *
+   * @return the 'print' action.
    */
   protected Action createDefaultPrintAction()
   {
@@ -817,7 +945,9 @@ public class PreviewFrame
   }
 
   /**
-   * creates the CloseAction used in this previewframe.
+   * Creates the CloseAction used in this previewframe.
+   *
+   * @return the 'close' action.
    */
   protected Action createDefaultCloseAction()
   {
@@ -825,7 +955,9 @@ public class PreviewFrame
   }
 
   /**
-   * creates the FirstPageAction used in this previewframe.
+   * Creates the FirstPageAction used in this previewframe.
+   *
+   * @return the 'first page' action.
    */
   protected Action createDefaultFirstPageAction()
   {
@@ -833,7 +965,9 @@ public class PreviewFrame
   }
 
   /**
-   * creates the LastPageAction used in this previewframe.
+   * Creates the LastPageAction used in this previewframe.
+   *
+   * @return the 'last page' action.
    */
   protected Action createDefaultLastPageAction()
   {
@@ -841,7 +975,9 @@ public class PreviewFrame
   }
 
   /**
-   * returns the status label used to display the text
+   * Returns the status label used to display the text.
+   *
+   * @return the status label.
    */
   protected JLabel getStatus()
   {
@@ -850,6 +986,8 @@ public class PreviewFrame
 
   /**
    * Creates the statusbar for this frame. Use setStatus() to display text on the status bar.
+   *
+   * @return the status bar.
    */
   protected JPanel createStatusBar()
   {
@@ -868,6 +1006,7 @@ public class PreviewFrame
    * Creates and returns a menu-bar for the frame.
    *
    * @param resources A resource bundle containing localised resources for the menu.
+   *
    * @return A ready-made JMenuBar.
    */
   protected JMenuBar createMenuBar(ResourceBundle resources)
@@ -886,7 +1025,9 @@ public class PreviewFrame
     JMenuItem gotoItem = new ActionMenuItem(gotoAction);
     KeyStroke accelerator = (KeyStroke) gotoAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
+    {
       gotoItem.setAccelerator(accelerator);
+    }
     fileMenu.add(gotoItem);
 
     fileMenu.addSeparator();
@@ -894,7 +1035,9 @@ public class PreviewFrame
     JMenuItem saveAsItem = new ActionMenuItem(saveAsAction);
     accelerator = (KeyStroke) saveAsAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
+    {
       saveAsItem.setAccelerator(accelerator);
+    }
     fileMenu.add(saveAsItem);
 
     fileMenu.addSeparator();
@@ -902,13 +1045,17 @@ public class PreviewFrame
     JMenuItem setupItem = new ActionMenuItem(pageSetupAction);
     accelerator = (KeyStroke) pageSetupAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
+    {
       setupItem.setAccelerator(accelerator);
+    }
     fileMenu.add(setupItem);
 
     JMenuItem printItem = new ActionMenuItem(printAction);
     accelerator = (KeyStroke) printAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
+    {
       printItem.setAccelerator(accelerator);
+    }
     fileMenu.add(printItem);
 
     fileMenu.add(new JSeparator());
@@ -916,7 +1063,9 @@ public class PreviewFrame
     JMenuItem closeItem = new ActionMenuItem(closeAction);
     accelerator = (KeyStroke) closeAction.getValue(ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
+    {
       closeItem.setAccelerator(accelerator);
+    }
     fileMenu.add(closeItem);
 
     // then the help menu
@@ -938,7 +1087,11 @@ public class PreviewFrame
   }
 
   /**
-   * Creates a button using the given actions properties for the buttons initialisation.
+   * Creates a button using the given action properties for the button's initialisation.
+   *
+   * @param action  the action used to set up the button.
+   *
+   * @return a button based on the supplied action.
    */
   protected JButton createButton(Action action)
   {
@@ -961,14 +1114,13 @@ public class PreviewFrame
    * Creates and returns a toolbar containing controls for print, page forward and backward, zoom
    * in and out, and an about box.
    *
-   * @return A completly initialized JToolBar.
+   * @return A completely initialized JToolBar.
    */
   protected JToolBar createToolBar()
   {
     ResourceBundle resources = getResources();
 
     JToolBar toolbar = new JToolBar();
-    //toolbar.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 0));
 
     toolbar.add(createButton(saveAsAction));
     toolbar.add(createButton(printAction));
@@ -988,7 +1140,7 @@ public class PreviewFrame
   }
 
   /**
-   * @returns true when the toolbar is floatable
+   * @return true when the toolbar is floatable
    */
   public boolean isToolbarFloatable()
   {
@@ -997,6 +1149,8 @@ public class PreviewFrame
 
   /**
    * Defines whether the toolbar is floatable
+   *
+   * @param b  a flag that indicates whether or not the toolbar is floatable.
    */
   public void setToolbarFloatable(boolean b)
   {
@@ -1005,6 +1159,8 @@ public class PreviewFrame
 
   /**
    * Creates a panel containing a combobox with available zoom-values.
+   *
+   * @return a panel containing a combobox with zoom values.
    */
   private JComponent createZoomPane()
   {
@@ -1028,6 +1184,8 @@ public class PreviewFrame
 
   /**
    * Listen to the assigned reportPane
+   *
+   * @param event  the property change event.
    */
   public void propertyChange(PropertyChangeEvent event)
   {
@@ -1104,16 +1262,29 @@ public class PreviewFrame
     super.processWindowEvent(windowEvent);
   }
 
+  /**
+   * Returns true if large icons are enabled for the toolbar.
+   *
+   * @return true if large icons are enabled.
+   */
   public boolean isLargeIconsEnabled()
   {
     return largeIconsEnabled;
   }
 
+  /**
+   * Sets a flag that controls whether or not large icons are used in the toolbar.
+   *
+   * @param b  the new value of the flag.
+   */
   public void setLargeIconsEnabled(boolean b)
   {
     largeIconsEnabled = b;
   }
 
+  /**
+   * Disposes the preview frame.
+   */
   public void dispose ()
   {
     //Log.debug (" ------------------> FRAME DISPOSED -------------------->");

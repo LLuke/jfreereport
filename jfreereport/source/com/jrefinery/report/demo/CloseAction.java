@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ----------------
- * AboutAction.java
+ * CloseAction.java
  * ----------------
  * (C)opyright 2002, by Simba Management Limited.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: CloseAction.java,v 1.7 2002/08/29 19:15:34 taqua Exp $
+ * $Id: CloseAction.java,v 1.8 2002/08/31 16:50:48 taqua Exp $
  *
  * Changes
  * -------
@@ -41,18 +41,20 @@ package com.jrefinery.report.demo;
 
 import com.jrefinery.report.util.AbstractActionDowngrade;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import java.util.ResourceBundle;
 
 /**
  * An action for closing the demo programms frame.
+ *
+ * @author DG
  */
 public abstract class CloseAction extends AbstractActionDowngrade
 {
 
   /**
    * Constructs a new action.
+   *
+   * @param resources  localised resources.
    */
   public CloseAction (ResourceBundle resources)
   {

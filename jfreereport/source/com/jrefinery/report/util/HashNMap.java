@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -172,7 +172,7 @@ public class HashNMap implements Serializable, Cloneable
   /**
    * tests whether this map contains the given key.
    *
-   * @returns true if the key is contained in the map
+   * @return true if the key is contained in the map
    */
   public boolean containsKey (Object key)
   {
@@ -182,7 +182,7 @@ public class HashNMap implements Serializable, Cloneable
   /**
    * tests whether this map contains the given value.
    *
-   * @returns true if the value is registered in the map for an key
+   * @return true if the value is registered in the map for an key
    */
   public boolean containsValue (Object value)
   {
@@ -199,7 +199,7 @@ public class HashNMap implements Serializable, Cloneable
   /**
    * tests whether this map contains the given key or value.
    *
-   * @returns true if the key or value is contained in the map
+   * @return true if the key or value is contained in the map
    */
   public boolean contains (Object value)
   {

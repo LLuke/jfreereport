@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionCollection.java,v 1.11 2002/08/20 20:58:19 taqua Exp $
+ * $Id: FunctionCollection.java,v 1.12 2002/09/05 09:34:53 taqua Exp $
  *
  * Changes
  * -------
@@ -52,14 +52,15 @@ import java.util.Iterator;
 
 /**
  * A function collection contains all function elements of a particular report.
- * The collection and its funtions are cloned with every page to enable some
+ * The collection and its functions are cloned with every page to enable some
  * sort of caching.
  * <p>
- * Every event in JFreeReport is passed via callback to every function in the
- * collection.
+ * Every event in JFreeReport is passed via callback to every function in the collection.
  * <p>
  * A function collection gets immutable after it is passed to the report state.
  * An immutable function collection cannot have functions added or removed.
+ *
+ * @author TM
  */
 public class FunctionCollection implements Cloneable, Serializable, ReportListener
 {
@@ -73,6 +74,8 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
     /**
      * Creates a new ReadOnlyFunctionCollection based on the given FunctionCollection.
      * The new ReadOnbly-Collection cannot be modified.
+     *
+     * @param copy  the base collection.
      */
     public ReadOnlyFunctionCollection (FunctionCollection copy)
     {
@@ -94,28 +97,31 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
     }
 
     /**
-     * Adds a new function to the collection. Throws always an IllegalStateException
+     * Normally, this method adds a function to the collection. However, in this subclass it
+     * throws an IllegalStateException because this collection is read-only.
      *
-     * @param f the new function instance.
-     * @throws FunctionInitializeException if the function could not be initialized correctly
+     * @param f  the function.
+     *
      * @throws IllegalStateException as this is a ReadOnly class
+     * @throws FunctionInitializeException if the function could not be initialized correctly
      */
     public void add (Function f)
             throws FunctionInitializeException
     {
-      throw new IllegalStateException ("This is a readonly collection");
+      throw new IllegalStateException ("This is a read-only collection");
     }
 
     /**
-     * removes a Function from the collection.
-     * Throws an IllegalStateException as this ReadOnlyFunctionCollection cannot be modified.
+     * Normally, this method removes a function from the collection. However, in this subclass it
+     * throws an IllegalStateException because this collection is read-only.
      *
-     * @param f the new Expression instance.
-     * @throws IllegalStateException as this is a ReadOnlyFunctionCollection
+     * @param f  the function.
+     *
+     * @throws IllegalStateException because this collection is read-only.
      */
     public void removeFunction (Function f)
     {
-      throw new IllegalStateException ("This is a readonly collection");
+      throw new IllegalStateException ("This is a read-only collection");
     }
 
 
@@ -124,12 +130,16 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
      * collection.
      *
      * @param dr the datarow to be connected.
+     *
      * @throws IllegalStateException if there is a datarow already connected.
      * @throws NullPointerException if the given datarow is null.
      */
     public void connectDataRow (DataRow dr)
     {
-      if (dr == null) throw new NullPointerException();
+      if (dr == null)
+      {
+        throw new NullPointerException();
+      }
       for (int i = 0; i < functionList.size (); i++)
       {
         Function f = (Function) functionList.get (i);
@@ -138,16 +148,21 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
     }
 
     /**
-     * Disconnects the given datarow from the function collection and all functions contained in this
-     * collection.
+     * Disconnects the given datarow from the function collection and all functions contained
+     * in this collection.
      *
      * @param dr the datarow to be connected.
+     *
      * @throws IllegalStateException if there is a datarow already connected.
      * @throws NullPointerException if the given datarow is null.
      */
     public void disconnectDataRow (DataRow dr)
     {
-      if (dr == null) throw new NullPointerException ("Null-DataRowBackend cannot be disconnected.");
+      if (dr == null)
+      {
+        throw new NullPointerException ("FunctionCollection: "
+                                      + "Null DataRowBackend cannot be disconnected.");
+      }
       for (int i = 0; i < functionList.size(); i++)
       {
         Function f = (Function) functionList.get (i);
@@ -174,7 +189,10 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
   /**
    * Constructs a new function collection, populated with the supplied functions.
    *
-   * @throws ClassCastException if the collection does not contain Functions
+   * @param functions  the functions.
+   *
+   * @throws ClassCastException if the collection does not contain Function objects.
+   * @throws FunctionInitializeException if any of the functions cannot be initialized.
    */
   public FunctionCollection (Collection functions)
           throws FunctionInitializeException
@@ -194,10 +212,10 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
 
   /**
    * Returns a copy of the function collection.
-   * This is no cloning, a fully functional collection is made readonly by creating a
+   * This is no cloning, a fully functional collection is made read-only by creating a
    * ReadOnlyFunctionCollection (internal private class).
    *
-   * @returns a function collection that is immutable
+   * @return a function collection that is immutable.
    */
   public FunctionCollection getCopy ()
   {
@@ -206,7 +224,12 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
 
   /**
    * Returns the function with the specified name (or null).
-   * @throws NullPointerException if the name given is null
+   *
+   * @param name  the function name (null not permitted).
+   *
+   * @return The function.
+   *
+   * @throws NullPointerException if the name given is null.
    */
   public Function get (String name)
   {
@@ -216,14 +239,18 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
   /**
    * Adds a new function to the collection.
    * The function is initialized before it is added to this collection.
-   * @param f the new function instance.
-   * @throws FunctionInitializeException if the function could not be initialized correctly
+   *
+   * @param f the function.
+   *
+   * @throws FunctionInitializeException if the function could not be initialized correctly.
    */
   public void add (Function f)
           throws FunctionInitializeException
   {
     if (f == null)
+    {
       throw new NullPointerException ("Function is null");
+    }
 
     if (functionPositions.containsKey (f.getName ()))
     {
@@ -236,7 +263,9 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
 
   /**
    * Adds a new function to the collection.
-   * @param f the new function instance.
+   *
+   * @param f the function.
+   *
    * @throws NullPointerException if the given function is null.
    */
   protected void privateAdd (Function f)
@@ -246,7 +275,9 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
   }
 
   /**
-   * removes the function from the collection.
+   * Removes a function from the collection.
+   *
+   * @param f  the function to remove.
    *
    * @throws NullPointerException if the given function is null.
    */
@@ -260,7 +291,7 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
    * Notifies every function in the collection that a report is starting.  This gives each
    * function an opportunity to initialise itself for a new report.
    *
-   * @param report The report.
+   * @param event The report event.
    */
   public void reportStarted (ReportEvent event)
   {
@@ -281,7 +312,7 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
   /**
    * Notifies every function in the collection that a report is ending.
    *
-   * @param report The report.
+   * @param event The report event.
    */
   public void reportFinished (ReportEvent event)
   {
@@ -302,6 +333,8 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
 
   /**
    * Notifies every function in the collection that a page is starting.
+   *
+   * @param event The report event.
    */
   public void pageStarted (ReportEvent event)
   {
@@ -322,10 +355,9 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
   }
 
   /**
-   * Send "EndPage" to every function in this collection.
-   * <p>
-   * Function Events are sended before the function is asked to
-   * print itself.
+   * Notifies every function in the collection that a page has finished.
+   *
+   * @param event The report event.
    */
   public void pageFinished (ReportEvent event)
   {
@@ -348,7 +380,7 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
    * Notifies every function in the collection that a new group is starting.  This gives each
    * function an opportunity to reset itself, if it belongs to the group.
    *
-   * @param group The group that is starting.
+   * @param event The report event.
    */
   public void groupStarted (ReportEvent event)
   {
@@ -371,7 +403,7 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
   /**
    * Notifies every function in the collection that the current group is ending.
    *
-   * @param group The group that is ending.
+   * @param event The report event.
    */
   public void groupFinished (ReportEvent event)
   {
@@ -393,6 +425,8 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
   /**
    * Notifies every function in the collection that a new row of data is being processed.  This
    * gives each function an opportunity to update its value.
+   *
+   * @param event The report event.
    */
   public void itemsAdvanced (ReportEvent event)
   {
@@ -413,6 +447,8 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
   /**
    * Notifies every function in the collection that a new row of data is being processed.  This
    * gives each function an opportunity to update its value.
+   *
+   * @param event The report event.
    */
   public void itemsStarted (ReportEvent event)
   {
@@ -434,6 +470,8 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
   /**
    * Notifies every function in the collection that a new row of data is being processed.  This
    * gives each function an opportunity to update its value.
+   *
+   * @param event The report event.
    */
   public void itemsFinished (ReportEvent event)
   {
@@ -452,7 +490,9 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
   }
 
   /**
-   * Returns the number of active functions in this collection
+   * Returns the number of functions in this collection.
+   *
+   * @return The function count.
    */
   public int size ()
   {
@@ -460,9 +500,14 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
   }
 
   /**
-   * Returns the function on the given position in the list
+   * Returns the function at the given position in the list.
+   *
+   * @param pos  the function index (zero-based).
+   *
+   * @return the function.
+   *
    * @throws IndexOutOfBoundsException if the given position is invalid
-   * @returns the function.
+   *
    */
   public Function getFunction (int pos)
   {
@@ -471,6 +516,10 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
 
   /**
    * Clones this function collection and all functions contained in the collection.
+   *
+   * @return A clone.
+   *
+   * @throws CloneNotSupportedException should never happen.
    */
   public Object clone () throws CloneNotSupportedException
   {
@@ -484,7 +533,9 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
    * Connects the given datarow to the function collection and all functions contained in this
    * collection.
    *
-   * @throws IllegalStateException as only ReadOnlyFunctionCollections can be connected to a datarow
+   * @param dr  the data row.
+   *
+   * @throws IllegalStateException only ReadOnlyFunctionCollections can be connected to a datarow.
    */
   public void connectDataRow(DataRow dr)
   {
@@ -495,7 +546,9 @@ public class FunctionCollection implements Cloneable, Serializable, ReportListen
    * Disconnects the given datarow to the function collection and all expressions contained in this
    * collection.
    *
-   * @throws IllegalStateException as only ReadOnlyFunctionCollections can be connected to a datarow
+   * @param dr  the data row.
+   *
+   * @throws IllegalStateException only ReadOnlyFunctionCollections can be connected to a datarow.
    */
   public void disconnectDataRow(DataRow dr)
   {

@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,13 +28,14 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ShapeElement.java,v 1.15 2002/08/16 20:13:35 taqua Exp $
+ * $Id: ShapeElement.java,v 1.16 2002/08/19 21:17:29 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 05-Mar-2002 : Added paint attribute to Element.java (DG);
- * 10-May-2002 : removed all but the default constructor. Added accessor functions for all properties.
+ * 10-May-2002 : Removed all but the default constructor. Added accessor functions for all
+ *               properties.
  * 12-May-2002 : Declared abstract and moved line functionality into LineShapeElement-class
  * 16-May-2002 : using protected member m_paint instead of getter methode
  *               stroke property added (JS)
@@ -54,18 +55,24 @@ import java.awt.Stroke;
 /**
  * Used to draw shapes (typically lines and boxes) on a report band. This is the abstract
  * base class for all specialized shape elements.
+ *
+ * @author DG
  */
 public abstract class ShapeElement extends Element
 {
   /** default stroke size. */
-  public final static BasicStroke DEFAULT_STROKE = new BasicStroke (0.5f);
+  public static final BasicStroke DEFAULT_STROKE = new BasicStroke (0.5f);
 
   /** The shape to draw. */
   private Shape shape;
 
-  private Stroke m_stroke;
+  /** The stroke. */
+  private Stroke stroke;
 
+  /** Fill the shape? */
   private boolean shouldFill;
+
+  /** Draw the shape. */
   private boolean shouldDraw;
 
   /**
@@ -77,7 +84,9 @@ public abstract class ShapeElement extends Element
   }
 
   /**
-   * @return the shape to draw.
+   * Returns the shape to draw.
+   *
+   * @return the shape.
    */
   public Shape getShape ()
   {
@@ -86,18 +95,24 @@ public abstract class ShapeElement extends Element
 
   /**
    * Defines the shape to draw in this element. subclasses should not override this element
-   * directly instead they sould provide accessor functionality suitable for their shape-type.
+   * directly instead they should provide accessor functionality suitable for their shape-type.
+   *
+   * @param shape  the shape.
    */
   protected void setShape (Shape shape)
   {
     if (shape == null)
+    {
       throw new NullPointerException ("NullShape is not valid");
+    }
 
     this.shape = shape;
   }
 
   /**
-   * Debugging function.
+   * Returns a string describing the element.  Useful for debugging.
+   *
+   * @return the string.
    */
   public String toString ()
   {
@@ -120,6 +135,8 @@ public abstract class ShapeElement extends Element
    *
    * @param target The output target on which to draw.
    * @param band The band.
+   *
+   * @throws OutputTargetException if there is a problem with the target.
    */
   public void draw (OutputTarget target, Band band) throws OutputTargetException
   {
@@ -137,29 +154,34 @@ public abstract class ShapeElement extends Element
   }
 
   /**
-   * Gets the stroke.
-   * @return Returns a Stroke
+   * Returns the stroke.
+   *
+   * @return the Stroke.
    */
   public Stroke getStroke ()
   {
-    return m_stroke;
+    return this.stroke;
   }
 
   /**
    * Sets the stroke.
-   * @param stroke The stroke to set
+   *
+   * @param stroke  the stroke
    */
   public void setStroke (Stroke stroke)
   {
-    if (stroke == null) throw new NullPointerException ();
-    m_stroke = stroke;
+    if (stroke == null)
+    {
+      throw new NullPointerException ();
+    }
+    this.stroke = stroke;
   }
 
   /**
-   * specifies whether the outline of this elements shape should be printed.
+   * Specifies whether the outline of this elements shape should be printed.
    * By default this returns true.
    *
-   * @returns true if the outline should be drawn, false otherwise
+   * @return true if the outline should be drawn, false otherwise
    */
   public boolean isShouldDraw ()
   {
@@ -167,23 +189,34 @@ public abstract class ShapeElement extends Element
   }
 
   /**
-   * specifies whether the contents of this elements shape should be filled with this elements
+   * Specifies whether the contents of this elements shape should be filled with this elements
    * paint. By default this returns true.
    *
-   * @returns true if the outline should be drawn, false otherwise
+   * @return true if the outline should be drawn, false otherwise
    */
   public boolean isShouldFill ()
   {
     return shouldFill;
   }
 
+  /**
+   * Sets a flag that controls whether or not the outline of the shape is drawn.
+   *
+   * @param shouldDraw  the flag.
+   */
   public void setShouldDraw (boolean shouldDraw)
   {
     this.shouldDraw = shouldDraw;
   }
 
+  /**
+   * Sets a flag that controls whether or not the area of the shape is filled.
+   *
+   * @param shouldFill  the flag.
+   */
   public void setShouldFill (boolean shouldFill)
   {
     this.shouldFill = shouldFill;
   }
+
 }

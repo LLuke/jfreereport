@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ------------------------
  * DecimalFormatFilter.java
- * -----------------------
+ * ------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * ChangeLog
@@ -49,6 +49,8 @@ import java.text.Format;
  *
  * @see java.text.NumberFormat
  * @see java.lang.Number
+ *
+ * @author TM
  */
 public class DecimalFormatFilter extends NumberFormatFilter
 {
@@ -62,10 +64,11 @@ public class DecimalFormatFilter extends NumberFormatFilter
   }
 
   /**
-   * returns the format for the filter. The DecimalFormatParser has only DecimalFormat objects
+   * Returns the format for the filter. The DecimalFormatParser has only DecimalFormat objects
    * assigned.
    *
-   * @param format The format.
+   * @return the formatter.
+   *
    * @throws NullPointerException if the given format is null
    */
   public DecimalFormat getDecimalFormat ()
@@ -77,6 +80,7 @@ public class DecimalFormatFilter extends NumberFormatFilter
    * Sets the format for the filter.
    *
    * @param format The format.
+   *
    * @throws NullPointerException if the given format is null
    */
   public void setDecimalFormat (DecimalFormat format)
@@ -89,6 +93,7 @@ public class DecimalFormatFilter extends NumberFormatFilter
    * ClassCastException is thrown
    *
    * @param format The format.
+   *
    * @throws NullPointerException if the given format is null
    * @throws ClassCastException if the format is no decimal format
    */
@@ -101,7 +106,7 @@ public class DecimalFormatFilter extends NumberFormatFilter
    * Synthesizes a pattern string that represents the current state
    * of this Format object.
    *
-   * @returns the pattern string of the format object contained in this filter.
+   * @return the pattern string of the format object contained in this filter.
    */
   public String getFormatString ()
   {
@@ -130,7 +135,7 @@ public class DecimalFormatFilter extends NumberFormatFilter
    * Synthesizes a localized pattern string that represents the current state
    * of this Format object.
    *
-   * @returns the localized pattern string of the format-object.
+   * @return the localized pattern string of the format-object.
    */
   public String getLocalizedFormatString ()
   {
@@ -149,10 +154,11 @@ public class DecimalFormatFilter extends NumberFormatFilter
    * typical end-user desire; use setMaximumInteger if you want to set a real value.
    * For negative numbers, use a second pattern, separated by a semicolon
    *
-   * @param the format pattern for this format
+   * @param format the format pattern for this format
    */
   public void setLocalizedFormatString (String format)
   {
     getDecimalFormat ().applyLocalizedPattern (format);
   }
+
 }

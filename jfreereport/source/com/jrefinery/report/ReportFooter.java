@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportFooter.java,v 1.4 2002/05/28 19:28:22 taqua Exp $
+ * $Id: ReportFooter.java,v 1.5 2002/08/08 15:28:38 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -41,6 +41,8 @@ package com.jrefinery.report;
 
 /**
  * A report band that appears as the very last band on the report.
+ *
+ * @author DG
  */
 public class ReportFooter extends Band
 {
@@ -50,8 +52,6 @@ public class ReportFooter extends Band
 
   /**
    * Constructs a report footer containing no elements.
-   *
-   * @param height The band height (in points).
    */
   public ReportFooter ()
   {
@@ -59,6 +59,8 @@ public class ReportFooter extends Band
 
   /**
    * Returns true if the report footer should be shown on its own page.
+   *
+   * @return true if the report footer should be shown on its own page.
    */
   public boolean isOwnPage ()
   {
@@ -66,10 +68,13 @@ public class ReportFooter extends Band
   }
 
   /**
-   * defines whether the report header appears on its own page.
+   * Sets the flag that controls whether the report header appears on its own page.
+   *
+   * @param b  the flag.
    */
   public void setOwnPage (boolean b)
   {
     this.ownPage = b;
   }
+
 }

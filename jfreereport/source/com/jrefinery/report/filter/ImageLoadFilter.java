@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * --------------------
  * ImageLoadFilter.java
- * -----------------------
+ * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * ChangeLog
@@ -50,11 +50,13 @@ import java.net.URL;
  * The url is used to create a new imagereference which is returned to the caller.
  * The loaded/created imagereference is stored in an internal cache.
  * <p>
- * This filter can be used to dynamicly change images of a report, a very nice feature
+ * This filter can be used to dynamically change images of a report, a very nice feature
  * for photo albums and catalogs for instance.
  * <p>
  * This filter will return null, if something else than an URL was retrieved from the
  * assigned datasource
+ *
+ * @author TM
  */
 public class ImageLoadFilter implements DataFilter
 {
@@ -78,24 +80,34 @@ public class ImageLoadFilter implements DataFilter
   }
 
   /**
-   * creates a new ImageLoadFilter with the defined cache size.
+   * Creates a new ImageLoadFilter with the defined cache size.
+   *
+   * @param cacheSize  the cache size.
    */
-  public ImageLoadFilter (int cachesize)
+  public ImageLoadFilter (int cacheSize)
   {
-    imageCache = new KeyedQueue (cachesize);
+    imageCache = new KeyedQueue (cacheSize);
   }
 
   /**
-   * reads this filters datasource and if the source returned an URL, tries to form
+   * Reads this filter's datasource and if the source returned an URL, tries to form
    * a imagereference. If the image is loaded in a previous run and is still in the cache,
    * no new reference is created and the previously loaded reference is returned.
+   *
+   * @return  the current value for this filter.
    */
   public Object getValue ()
   {
     DataSource ds = getDataSource ();
-    if (ds == null) return null;
+    if (ds == null)
+    {
+      return null;
+    }
     Object o = ds.getValue ();
-    if (o == null) return null;
+    if (o == null)
+    {
+      return null;
+    }
 
     URL url = null;
     if (o instanceof URL)
@@ -143,20 +155,30 @@ public class ImageLoadFilter implements DataFilter
    */
   public void setDataSource (DataSource ds)
   {
-    if (ds == null) throw new NullPointerException ();
+    if (ds == null)
+    {
+      throw new NullPointerException ();
+    }
 
     source = ds;
   }
 
   /**
-   * @returns a clone of this Filter
+   * Clones the filter.
+   *
+   * @return a clone.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone () throws CloneNotSupportedException
   {
     System.out.println ("ImageLoadFilter: cloned");
     ImageLoadFilter il = (ImageLoadFilter) super.clone ();
     il.imageCache = (KeyedQueue) imageCache.clone ();
-    if (source != null) il.source = (DataSource) source.clone ();
+    if (source != null)
+    {
+      il.source = (DataSource) source.clone ();
+    }
     return il;
   }
 

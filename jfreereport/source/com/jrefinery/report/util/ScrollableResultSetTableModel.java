@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -140,7 +140,9 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   public int getRowCount ()
   {
     if (resultset == null)
+    {
       return 0;
+    }
 
     try
     {
@@ -173,7 +175,9 @@ public class ScrollableResultSetTableModel extends AbstractTableModel implements
   public int getColumnCount ()
   {
     if (resultset == null)
+    {
       return 0;
+    }
 
     if (dbmd != null)
     {

@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Group.java,v 1.13 2002/09/05 09:34:53 taqua Exp $
+ * $Id: Group.java,v 1.14 2002/09/08 13:18:56 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -44,8 +44,6 @@
 
 package com.jrefinery.report;
 
-import com.jrefinery.report.util.Log;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,9 +52,12 @@ import java.util.List;
 
 /**
  * A report group.  Reports can contain any number of groups.
- * The order of he fields is important.
+ * The order of the fields is important.
  *
  * @see GroupList
+ *
+ * @author DG
+ *
  * @todo cache the fieldname to indexPos.
  */
 public class Group implements Serializable, Cloneable
@@ -85,13 +86,17 @@ public class Group implements Serializable, Cloneable
   }
 
   /**
-   * defines the name for this group. The name must not be empty and must be uniqe within
+   * Defines the name for this group. The name must not be empty and must be unique within
    * the GroupList.
+   *
+   * @param name  the group name (null not permitted).
    */
   public void setName (String name)
   {
     if (name == null)
+    {
       throw new NullPointerException ("Name must not be null");
+    }
 
     this.name = name;
   }
@@ -122,19 +127,21 @@ public class Group implements Serializable, Cloneable
   /**
    * Sets the header for the group (null forbidden).
    *
-   * @param header The header.
+   * @param header  the header.
    */
   public void setHeader (GroupHeader header)
   {
     if (header == null)
+    {
       throw new NullPointerException ("Header must not be null");
+    }
     this.header = header;
   }
 
   /**
    * Returns the group footer.
    *
-   * @return The footer.
+   * @return the footer.
    */
   public GroupFooter getFooter ()
   {
@@ -144,20 +151,22 @@ public class Group implements Serializable, Cloneable
   /**
    * Sets the footer for the group (null forbidden).
    *
-   * @param footer The footer.
+   * @param footer  the footer.
    */
   public void setFooter (GroupFooter footer)
   {
     if (footer == null)
+    {
       throw new NullPointerException ("The footer must not be null");
+    }
     this.footer = footer;
   }
 
   /**
-   * Sets the fields for theís group. The given list should contain Strings defining the
+   * Sets the fields for this group. The given list should contain Strings defining the
    * needed fields from the data model.
    *
-   * @param c The list containing strings.
+   * @param c  the list containing strings.
    */
   public void setFields (List c)
   {
@@ -173,7 +182,7 @@ public class Group implements Serializable, Cloneable
    * Adds a field to the group.  The field names must correspond to the column names in the
    * report's TableModel.
    *
-   * @param name The field name.
+   * @param name  the field name.
    */
   public void addField (String name)
   {
@@ -181,7 +190,9 @@ public class Group implements Serializable, Cloneable
   }
 
   /**
-   * returns the list of fields for this group. Do not modify this list!
+   * Returns the list of fields for this group.
+   *
+   * @return a list (unmodifiable) of fields for the group.
    */
   public List getFields ()
   {
@@ -191,13 +202,25 @@ public class Group implements Serializable, Cloneable
   /**
    * Compares two objects without crashing if one or both are null.
    *
-   * @returns true, if both objects are null or both objects are equal, false otherwise.
+   * @param item1  the first object for comparison.
+   * @param item2  the second object for comparison.
+   *
+   * @return true, if both objects are null or both objects are equal, false otherwise.
    */
   private boolean secureEquals (Object item1, Object item2)
   {
-    if ((item1 == null) && (item2 == null)) return true;
-    if (item1 == null) return false;
-    if (item2 == null) return false;
+    if ((item1 == null) && (item2 == null))
+    {
+      return true;
+    }
+    if (item1 == null)
+    {
+      return false;
+    }
+    if (item2 == null)
+    {
+      return false;
+    }
     return item1.equals (item2);
   }
 
@@ -205,6 +228,8 @@ public class Group implements Serializable, Cloneable
    * Clones this Element.
    *
    * @return a clone of this element.
+   *
+   * @throws CloneNotSupportedException should never be thrown.
    */
   public Object clone () throws CloneNotSupportedException
   {
@@ -217,10 +242,11 @@ public class Group implements Serializable, Cloneable
 
 
   /**
-   * Returns true if the specified item is the last item in the group, and false otherwise.
-   * @param data The data.
+   * Returns true if this is the last item in the group, and false otherwise.
    *
-   * @param row The current item/row.
+   * @param lastDataRow  the last data row.
+   * @param currentDataRow   the current data row.
+   *
    * @return A flag indicating whether or not the current item is the last in its group.
    */
   public boolean isLastItemInGroup (DataRowBackend lastDataRow, DataRowBackend currentDataRow)
@@ -253,6 +279,5 @@ public class Group implements Serializable, Cloneable
       return last;
     }
   }
-
 
 }

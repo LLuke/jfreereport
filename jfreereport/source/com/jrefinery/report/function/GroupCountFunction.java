@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupCountFunction.java,v 1.6 2002/08/20 20:58:20 taqua Exp $
+ * $Id: GroupCountFunction.java,v 1.7 2002/08/31 14:00:22 taqua Exp $
  *
  * Changes
  * -------
@@ -49,11 +49,13 @@ import com.jrefinery.report.event.ReportEvent;
  * <p>
  * A group can be defined using the property "group".
  * If the group property is not set, all group starts get counted.
+ *
+ * @author DG
  */
 public class GroupCountFunction extends AbstractFunction implements Cloneable
 {
+  /** Literal text for the 'group' property. */
   public static final String GROUP_PROPERTY = "group";
-
 
   /** The number of groups. */
   private int count;
@@ -81,7 +83,7 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
   /**
    * Returns the name of the group to be counted.
    *
-   * @returns the name of the group or null, if all groups are counted
+   * @return the name of the group or null, if all groups are counted
    */
   public String getGroup ()
   {
@@ -137,7 +139,7 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
   /**
    * Returns the number of groups processed so far (including the current group).
    *
-   * @returns the number of groups processed as java.lang.Integer.
+   * @return the number of groups processed as java.lang.Integer.
    */
   public Object getValue ()
   {

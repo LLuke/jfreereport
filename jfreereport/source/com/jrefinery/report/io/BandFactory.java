@@ -44,7 +44,6 @@ import com.jrefinery.report.PageFooter;
 import com.jrefinery.report.PageHeader;
 import com.jrefinery.report.ReportFooter;
 import com.jrefinery.report.ReportHeader;
-import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -59,6 +58,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * <li>items</li>
  * </ul>
  *
+ * @author TM
  */
 public class BandFactory extends DefaultHandler implements ReportDefinitionTags
 {
@@ -81,6 +81,8 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
 
   /**
    * Initializes this BandFactory based on the data contained in the ReportFactory.
+   *
+   * @param base  the report handler.
    */
   public BandFactory (ReportFactory base)
   {
@@ -90,7 +92,9 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
   }
 
   /**
-   * returns the current report.
+   * Returns the current report.
+   *
+   * @return the report.
    */
   protected JFreeReport getReport ()
   {
@@ -99,6 +103,8 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
 
   /**
    * Returns the current band, that is being build.
+   *
+   * @return the current band.
    */
   public Band getCurrentBand ()
   {
@@ -106,7 +112,9 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
   }
 
   /**
-   * defines the current band that gets currently build.
+   * Defines the current band that gets currently build.
+   *
+   * @param band  the band.
    */
   protected void setCurrentBand (Band band)
   {
@@ -118,6 +126,11 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
    * StartTag-occurences for ReportFooter and -header, PageFooter and -header and
    * the itemBand are handled. If an unknown element is encountered, a SAXException is
    * thrown.
+   *
+   * @param namespaceURI  the namespace URI.
+   * @param localName  the local name.
+   * @param qName  the element name.
+   * @param atts  the element attributes.
    *
    * @throws SAXException if an unknown tag is encountered.
    */
@@ -152,7 +165,8 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
     }
     else
     {
-      throw new SAXException ("Expected one of: reportheader, reportfooter, pageheader, pagefooter or items");
+      throw new SAXException ("Expected one of: reportheader, reportfooter, pageheader, "
+                            + "pagefooter or items");
     }
   }
 
@@ -162,6 +176,10 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
    * EndTag-occurences for ReportFooter and -header, PageFooter and -header and
    * the itemBand are handled. If an unknown element is encountered, a SAXException is
    * thrown.
+   *
+   * @param namespaceURI  the namespace URI.
+   * @param localName  the local name.
+   * @param qName  the element name.
    *
    * @throws SAXException if an unknown tag is encountered.
    */
@@ -195,19 +213,25 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
     }
     else
     {
-      throw new SAXException ("Expected one of: reportheader, reportfooter, pageheader, pagefooter or items");
+      throw new SAXException ("Expected one of: reportheader, reportfooter, pageheader, "
+                            + "pagefooter or items");
     }
   }
 
   /**
-   * Handles the start of an reportheader definition.
+   * Handles the start of a reportheader definition.
+   *
+   * @param attr  the element attributes.
+   *
+   * @throws SAXException if there is a parsing problem.
    *
    * @see com.jrefinery.report.ReportHeader
    */
   public void startReportHeader (Attributes attr)
           throws SAXException
   {
-    float height = ParserUtil.parseFloat (attr.getValue ("height"), "Element height not specified");
+    float height = ParserUtil.parseFloat (attr.getValue ("height"),
+                                          "Element height not specified");
     boolean ownPage = ParserUtil.parseBoolean (attr.getValue ("ownpage"), false);
 
     // create the report header...
@@ -221,7 +245,11 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
   }
 
   /**
-   * Handles the start of an reportfooter definition.
+   * Handles the start of a reportfooter definition.
+   *
+   * @param attr  the element attributes.
+   *
+   * @throws SAXException if there is a parsing problem.
    *
    * @see com.jrefinery.report.ReportFooter
    */
@@ -229,7 +257,8 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
           throws SAXException
   {
     // get the height...
-    float height = ParserUtil.parseFloat (attr.getValue ("height"), "Element height not specified");
+    float height = ParserUtil.parseFloat (attr.getValue ("height"),
+                                          "Element height not specified");
     boolean ownPage = ParserUtil.parseBoolean (attr.getValue ("ownpage"), false);
 
     // create the report footer...
@@ -243,7 +272,11 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
   }
 
   /**
-   * Handles the start of an pageheader definition.
+   * Handles the start of a pageheader definition.
+   *
+   * @param attr  the element attributes.
+   *
+   * @throws SAXException if there is a parsing problem.
    *
    * @see com.jrefinery.report.PageHeader
    */
@@ -251,7 +284,8 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
           throws SAXException
   {
     // get the height...
-    float height = ParserUtil.parseFloat (attr.getValue ("height"), "Element height not specified");
+    float height = ParserUtil.parseFloat (attr.getValue ("height"),
+                                          "Element height not specified");
     boolean firstPage = ParserUtil.parseBoolean (attr.getValue ("onfirstpage"), true);
     boolean lastPage = ParserUtil.parseBoolean (attr.getValue ("onlastpage"), true);
 
@@ -267,7 +301,11 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
   }
 
   /**
-   * Handles the start of an pagefooter definition.
+   * Handles the start of a pagefooter definition.
+   *
+   * @param attr  the element attributes.
+   *
+   * @throws SAXException if there is a parsing problem.
    *
    * @see com.jrefinery.report.PageFooter
    */
@@ -275,7 +313,8 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
           throws SAXException
   {
     // get the height...
-    float height = ParserUtil.parseFloat (attr.getValue ("height"), "Element height not specified");
+    float height = ParserUtil.parseFloat (attr.getValue ("height"),
+                                          "Element height not specified");
     boolean firstPage = ParserUtil.parseBoolean (attr.getValue ("onfirstpage"), true);
     boolean lastPage = ParserUtil.parseBoolean (attr.getValue ("onlastpage"), true);
 
@@ -293,13 +332,18 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
   /**
    * Handles the start of an ItemBand definition.
    *
+   * @param attr  the element attributes.
+   *
+   * @throws SAXException if there is a parsing problem.
+   *
    * @see com.jrefinery.report.ItemBand
    */
   public void startItems (Attributes attr)
           throws SAXException
   {
     // get the height...
-    float height = ParserUtil.parseFloat (attr.getValue ("height"), "Element height not specified");
+    float height = ParserUtil.parseFloat (attr.getValue ("height"),
+                                          "Element height not specified");
     ItemBand items = new ItemBand ();
     items.setHeight (height);
     items.setDefaultFont (fontFactory.createDefaultFont (attr));
@@ -319,7 +363,7 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
   }
 
   /**
-   * Handles the end of an PageHeader definition.
+   * Handles the end of a PageHeader definition.
    *
    * @see com.jrefinery.report.PageHeader
    */
@@ -329,7 +373,7 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
   }
 
   /**
-   * Handles the end of an PageFooter definition.
+   * Handles the end of a PageFooter definition.
    *
    * @see com.jrefinery.report.PageFooter
    */
@@ -339,7 +383,7 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
   }
 
   /**
-   * Handles the end of an ReportHeader definition.
+   * Handles the end of a ReportHeader definition.
    *
    * @see com.jrefinery.report.ReportHeader
    */
@@ -349,7 +393,7 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
   }
 
   /**
-   * Handles the end of an ReportFooter definition.
+   * Handles the end of a ReportFooter definition.
    *
    * @see com.jrefinery.report.ReportFooter
    */
@@ -357,4 +401,5 @@ public class BandFactory extends DefaultHandler implements ReportDefinitionTags
   {
     handler.finishedHandler ();
   }
+
 }

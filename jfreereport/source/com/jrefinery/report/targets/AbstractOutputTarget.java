@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * -------------------------
  * AbstractOutputTarget.java
- * -----------------------
+ * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 21-May-2002 : Initial version
@@ -47,12 +47,14 @@ import java.io.StringReader;
 import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.Hashtable;
+import com.jrefinery.report.util.Log;
 
 /**
  * The abstract OutputTarget implements common code for all OutputTargets. It contains
  * functions to manage the cursor, the pageformat and the line breaking of strings.
+ *
+ * @author TM
  */
 public abstract class AbstractOutputTarget implements OutputTarget
 {
@@ -65,6 +67,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
   /** The cursor for the target. */
   private BandCursor cursor;
 
+  /** Storage for the output target properties. */
   private Hashtable properties;
 
   /**
@@ -82,17 +85,21 @@ public abstract class AbstractOutputTarget implements OutputTarget
   }
 
   /**
-   * Defines a property for this outputtarget. Properties are the standardway of configuring
+   * Defines a property for this outputtarget. Properties are the standard way of configuring
    * an outputtarget.
    *
    * @param property the name of the property to set
    * @param value the value of the property. If value is null, the property is removed from the
    * OutputTarget
-   * @throws NullPointerExecption if property is null
+   *
+   * @throws NullPointerException if property is null
    */
   public void setProperty (String property, Object value)
   {
-    if (property == null) throw new NullPointerException();
+    if (property == null)
+    {
+      throw new NullPointerException();
+    }
 
     if (value == null)
     {
@@ -108,8 +115,10 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * Queries the property named with <code>property</code>. If the property is not found, <code>
    * null</code> is returned.
    *
-   * @returns the value stored under the given property name
    * @param property the name of the property to be queried
+   *
+   * @return the value stored under the given property name
+   *
    * @throws NullPointerException if <code>property</code> is null
    */
   public Object getProperty (String property)
@@ -118,29 +127,35 @@ public abstract class AbstractOutputTarget implements OutputTarget
   }
 
   /**
-   * Queries the property named with <code>property</code>. If the property is not found, the default
-   * value is returned.
+   * Queries the property named with <code>property</code>. If the property is not found, the
+   * default value is returned.
    *
-   * @returns the value stored under the given property name
+   * @return the value stored under the given property name
    * @param property the name of the property to be queried
    * @param defaultValue the defaultvalue returned if there is no such property
    * @throws NullPointerException if <code>property</code> is null
    */
   public Object getProperty (String property, Object defaultValue)
   {
-    if (property == null) throw new NullPointerException();
+    if (property == null)
+    {
+      throw new NullPointerException();
+    }
 
     Object retval = properties.get (property);
-    if (retval == null) return defaultValue;
+    if (retval == null)
+    {
+      return defaultValue;
+    }
     return retval;
   }
-
-
 
   /**
    * Creates a new cursor for this band. The cursor is used to calculate the position of an
    * element within its band. This is basicly the same as AffineTransform.translate, but it
    * also works with the PDFOutputTarget.
+   *
+   * @return the band cursor.
    */
   protected BandCursor createCursor()
   {
@@ -164,7 +179,10 @@ public abstract class AbstractOutputTarget implements OutputTarget
    */
   public void setPageFormat(PageFormat format)
   {
-    if (format == null) throw new NullPointerException();
+    if (format == null)
+    {
+      throw new NullPointerException();
+    }
     this.pageformat = format;
   }
 
@@ -263,6 +281,8 @@ public abstract class AbstractOutputTarget implements OutputTarget
   /**
    * Defines the current clipping are for the band to be drawn. This method is called by
    * the band and should not be called by other entities.
+   *
+   * @param bounds  the clip bounds.
    */
   public void setClippingArea(Rectangle2D bounds)
   {
@@ -270,8 +290,12 @@ public abstract class AbstractOutputTarget implements OutputTarget
   }
 
   /**
-   * Returns the cursor for this outputtarget. The cursor is a readonly property. if you want
-   * to define your own cursor, override createCursor() to return an suitable instance.
+   * Returns the cursor for this output target.
+   * <p>
+   * The cursor is a readonly property. if you want to define your own cursor, override
+   * createCursor() to return an suitable instance.
+   *
+   * @return the cursor.
    */
   public BandCursor getCursor()
   {
@@ -279,8 +303,10 @@ public abstract class AbstractOutputTarget implements OutputTarget
   }
 
   /**
-   * Signals that the current page is ended.  Some targets need to know when a page is being started,
-   * others can simply ignore this message.
+   * Signals that the current page is ended.  Some targets need to know when a page is being
+   * started, others can simply ignore this message.
+   *
+   * @throws OutputTargetException if there is a problem with the target.
    */
   public void beginPage() throws OutputTargetException
   {
@@ -289,6 +315,8 @@ public abstract class AbstractOutputTarget implements OutputTarget
   /**
    * Signals that the current page is ended.  Some targets need to know when a page is finished,
    * others can simply ignore this message.
+   *
+   * @throws OutputTargetException if there is a problem with the target.
    */
   public void endPage() throws OutputTargetException
   {
@@ -304,123 +332,127 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * in the given text than space is available, the text is cut down to the given number of
    * lines and the RESERVED_LITERAL is appended to signal the cut down.
    * <p>
-   * The text is broken on word boundries.
+   * The text is broken on word boundaries.
    *
-   * @param mytext the text to be broken down
-   * @param width the boundry on which the text is broken if no manual linebreak is encountered.
-   * @param maxlines the number of lines to be displayed. If linecount is lesser than 1, an unlimited
-   * textelement is assumed and the whole string is processed without obeying to any limit.
+   * @param mytext  the text to be broken down
+   * @param width  the boundary on which the text is broken if no manual linebreak is encountered.
+   * @param maxLines  the number of lines to be displayed. If linecount is less than 1, an
+   *                 unlimited textelement is assumed and the whole string is processed without
+   *                 obeying to any limit.
+   *
+   * @return a list of lines.
    */
   protected List breakLines(String mytext, final float width, int maxLines)
-	{
-		// Correct the linecount. We display at least a single line
-		// if (linecount < 1) linecount = 1;
+  {
+      // Correct the linecount. We display at least a single line
+      // if (linecount < 1) linecount = 1;
 
-		ArrayList bareLines = new ArrayList();
-		try
-		{
-			BufferedReader reader = new BufferedReader(new StringReader(mytext));
-			String readLine = null;
-			while ((readLine=reader.readLine()) != null)
-			{
-				bareLines.add(readLine);
-			}
-			reader.close();
-		}
-		catch (IOException ioe)
-		{
-		// Will not happen
-		}
+      ArrayList bareLines = new ArrayList();
+      try
+      {
+        BufferedReader reader = new BufferedReader(new StringReader(mytext));
+        String readLine = null;
+        while ((readLine = reader.readLine()) != null)
+        {
+          bareLines.add(readLine);
+        }
+        reader.close();
+      }
+      catch (IOException ioe)
+      {
+        Log.info("This will not happen.", ioe);
+      }
 
-		/**
-		* Reserve some space for the last line if there is more than one line to display.
-		* If there is only one line, don't cut the line yet. Perhaps we intruduce the strict
-		* mode later, but without any visual editing it would be cruel to any report designer.
-		*/
-		float reserved = getStringBounds(RESERVED_LITERAL, 0, RESERVED_LITERAL.length());
+      /**
+      * Reserve some space for the last line if there is more than one line to display.
+      * If there is only one line, don't cut the line yet. Perhaps we intruduce the strict
+      * mode later, but without any visual editing it would be cruel to any report designer.
+      */
+      float reserved = getStringBounds(RESERVED_LITERAL, 0, RESERVED_LITERAL.length());
 
-		BreakIterator breakit = BreakIterator.getLineInstance();
-		ArrayList returnLines = new ArrayList();
+      BreakIterator breakit = BreakIterator.getLineInstance();
+      ArrayList returnLines = new ArrayList();
 
-		int linesToDo = bareLines.size();
+      int linesToDo = bareLines.size();
 
-		for (int i = 0; i < linesToDo; i++)
-		{
-			String currentLine = (String) bareLines.get(i);
-			breakit.setText(currentLine);
+      for (int i = 0; i < linesToDo; i++)
+      {
+          String currentLine = (String) bareLines.get(i);
+          breakit.setText(currentLine);
 
-			int lineStartPos = 0;
-			int lineLength = currentLine.length();
-			while (lineStartPos < lineLength)
-			{
-				int startPos = lineStartPos;
-				int endPos = 0;
-				float x = 0;
+          int lineStartPos = 0;
+          int lineLength = currentLine.length();
+          while (lineStartPos < lineLength)
+          {
+              int startPos = lineStartPos;
+              int endPos = 0;
+              float x = 0;
 
-				float w = width;
+              float w = width;
 
-				// add by leonlyong
-				int wordCnt=0;
+              // add by leonlyong
+              int wordCnt = 0;
 
-				while ((endPos=breakit.next()) != BreakIterator.DONE)
-				{
-					// add by leonlyong
-					wordCnt ++;
+              while ((endPos = breakit.next()) != BreakIterator.DONE)
+              {
+                  // add by leonlyong
+                  wordCnt++;
 
-					x += (float) getStringBounds(currentLine, startPos, endPos);
-					if ((maxLines != 0) && (i == (maxLines - 1)))
-					{
-						if (x >= (w - reserved))
-						{
-							break;
-						}
-					}
-					else
-					{
-						if (x >= w)
-						{
-							// add by leonlyong
-							//when the first word of the line is too big
-							if(wordCnt == 1)
-							{
-								while((float) getStringBounds(currentLine, startPos, endPos) >= w)
-								{
-									endPos --;
-								}
-								startPos = endPos;
-								endPos = breakit.previous();
-							}
+                  x += (float) getStringBounds(currentLine, startPos, endPos);
+                  if ((maxLines != 0) && (i == (maxLines - 1)))
+                  {
+                      if (x >= (w - reserved))
+                      {
+                          break;
+                      }
+                  }
+                  else
+                  {
+                      if (x >= w)
+                      {
+                          // add by leonlyong
+                          //when the first word of the line is too big
+                          if (wordCnt == 1)
+                          {
+                              while ((float) getStringBounds(currentLine, startPos, endPos) >= w)
+                              {
+                                  endPos--;
+                              }
+                              startPos = endPos;
+                              endPos = breakit.previous();
+                          }
 
-							break;
-						}
-					}
+                          break;
+                      }
+                  }
 
-					startPos = endPos;
-				}
+                  startPos = endPos;
+              }
 
-				if (endPos == BreakIterator.DONE)
-				{
-					returnLines.add(currentLine.substring(lineStartPos));
-					return returnLines;
-				}
-				else
-				{
-					// if this is the last allowed row, add the RESERVED_LITERAL to the string ..
-					if ((maxLines != 0) && (i == (maxLines - 1)))
-					{
-						returnLines.add(currentLine.substring(lineStartPos, startPos) + RESERVED_LITERAL);
-						return returnLines;
-					}
-					else
-					{
-						returnLines.add(currentLine.substring(lineStartPos, startPos));
-						lineStartPos = startPos;
-					}
-				}
-			}
-		}
-		return returnLines;
-	}
+              if (endPos == BreakIterator.DONE)
+              {
+                  returnLines.add(currentLine.substring(lineStartPos));
+                  return returnLines;
+              }
+              else
+              {
+                  // if this is the last allowed row, add the RESERVED_LITERAL to the string ..
+                  if ((maxLines != 0) && (i == (maxLines - 1)))
+                  {
+                      returnLines.add(currentLine.substring(lineStartPos, startPos)
+                                      + RESERVED_LITERAL);
+                      return returnLines;
+                  }
+                  else
+                  {
+                      returnLines.add(currentLine.substring(lineStartPos, startPos));
+                      lineStartPos = startPos;
+                  }
+              }
+          }
+      }
+      return returnLines;
+  }
 
   /**
    * Calculates the width of the specified String in the current Graphics context.
@@ -428,13 +460,16 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * @param text the text to be weighted.
    * @param lineStartPos the start position of the substring to be weighted.
    * @param endPos the position of the last characterto be included in the weightening process.
-   * @returns the width of the given string in 1/72" dpi.
+   *
+   * @return the width of the given string in 1/72" dpi.
    */
   protected abstract float getStringBounds(String text, int lineStartPos, int endPos);
 
   /**
    * Returns the height of the current font. The font height specifies the distance between
    * 2 base lines.
+   *
+   * @return the font height.
    */
   protected abstract float getFontHeight();
 
@@ -442,23 +477,28 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * Draws a string inside a rectangular area (the lower edge is aligned with the baseline of
    * the text). The text is split at the end of the line and continued in the next line.
    *
-   * @param text The text.
-   * @param alignment The horizontal alignment.
+   * @param text  the text.
+   * @param alignment  the horizontal alignment.
    */
-  public void drawMultiLineText(String mytext, int align)
+  public void drawMultiLineText(String text, int alignment)
   {
-    drawMultiLineText(mytext, align, false);
+    drawMultiLineText(text, alignment, false);
   }
 
   /**
    * Draws the band onto the specified graphics device.
-   * @param mytext The text to be displayed.
-   * @param align The alignment of a text line
+   *
+   * @param text  the text to be displayed.
+   * @param alignment  the alignment.
+   * @param dynamic  ??
    */
-  public void drawMultiLineText(String mytext, int align, boolean dynamic)
+  public void drawMultiLineText(String text, int alignment, boolean dynamic)
   {
-    // don othing if there is nothing to print
-    if (mytext == null) return;
+    // do nothing if there is nothing to print
+    if (text == null)
+    {
+      return;
+    }
 
     Rectangle2D bounds = getCursor().getDrawBounds();
     float fontheight = getFontHeight();
@@ -467,12 +507,12 @@ public abstract class AbstractOutputTarget implements OutputTarget
     if (dynamic == true)
     {
       // Dont define a limit for the number of lines, the size of the band is adjusted.
-      lines = breakLines(mytext, (float) bounds.getWidth(), 0);
+      lines = breakLines(text, (float) bounds.getWidth(), 0);
     }
     else
     {
       int maxLinesToDisplay = (int) (bounds.getHeight() / fontheight);
-      lines = breakLines(mytext, (float) bounds.getWidth(), maxLinesToDisplay);
+      lines = breakLines(text, (float) bounds.getWidth(), maxLinesToDisplay);
     }
 
     float newheight = lines.size() * (fontheight);
@@ -493,7 +533,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
     {
       lineBounds.setRect((float) bounds.getX(), bounds.getY(), bounds.getWidth(), fontheight);
       getCursor().setDrawBounds(lineBounds);
-      drawString((String) lines.get(0), align);
+      drawString((String) lines.get(0), alignment);
     }
     else
     {
@@ -507,13 +547,17 @@ public abstract class AbstractOutputTarget implements OutputTarget
 
         lineBounds.setRect((float) bounds.getX(), linePos, bounds.getWidth(), fontheight);
         getCursor().setDrawBounds(lineBounds);
-        drawString(line, align);
+        drawString(line, alignment);
       }
     }
   }
 
   /**
    * Removes all whitespaces from the given String and replaces them with a space character.
+   *
+   * @param text  the string to process.
+   *
+   * @return  a string with all whitespace replaced by space characters.
    */
   protected String clearWhitespaces(String text)
   {
@@ -527,4 +571,5 @@ public abstract class AbstractOutputTarget implements OutputTarget
     }
     return new String(textdata);
   }
+
 }

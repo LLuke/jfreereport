@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ----------------
  * ItemFactory.java
- * -----------------------
+ * ----------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 16-May-2002 : Initial version
@@ -60,6 +60,8 @@ import java.util.List;
 
 /**
  * A factory used to create elements and bands using a single line command.
+ *
+ * @author TM
  */
 public class ItemFactory
 {
@@ -75,6 +77,9 @@ public class ItemFactory
    * @param nullString the text used when the value of this element is null
    * @param format the SimpleDateFormat-formatstring used to format the date
    * @param field the fieldname to retrieve values from
+   *
+   * @return a report element for displaying a java.util.Date value.
+   *
    * @throws NullPointerException if bounds, name, format or field are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
@@ -116,6 +121,9 @@ public class ItemFactory
    * @param nullString the text used when the value of this element is null
    * @param format the SimpleDateFormat used to format the date
    * @param field the fieldname to retrieve values from
+   *
+   * @return a report element for displaying a java.util.Date value.
+   *
    * @throws NullPointerException if bounds, name, format or field are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
@@ -155,8 +163,12 @@ public class ItemFactory
    * @param nullString the text used when the value of this element is null
    * @param format the SimpleDateFormat-formatstring used to format the date
    * @param function the function name to retrieve values from
+   *
    * @throws NullPointerException if bounds, name, format or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   *
+   * @return a report element for displaying a java.util.Date function value.
+   *
    * @deprecated use createDateElement instead, as all DataAccess has been unified
    */
   public static TextElement createDateFunction(String name,
@@ -183,8 +195,12 @@ public class ItemFactory
    * @param nullString the text used when the value of this element is null
    * @param format the SimpleDateFormat-formatstring used to format the date
    * @param function the function name to retrieve values from
+   *
    * @throws NullPointerException if bounds, name, format or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   *
+   * @return a report element for displaying a java.util.Date function value.
+   *
    * @deprecated use createDateElement instead, as all DataAccess has been unified
    */
   public static TextElement createDateFunction(String name,
@@ -210,6 +226,9 @@ public class ItemFactory
    * @param font the font for this element
    * @param nullString the text used when the value of this element is null
    * @param function the function to retrieve values from
+   *
+   * @return a report element for displaying a general object.
+   *
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
@@ -240,8 +259,12 @@ public class ItemFactory
    * @param bounds the bounds of the new element
    * @param paint the color of this element (currently not used)
    * @param source the source url from where to load the image
+   *
+   * @return a report element for displaying an image.
+   *
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   * @throws IOException if there is a problem with the source URL.
    */
   public static ImageElement createImageElement(String name,
                                                 Rectangle2D bounds,
@@ -265,9 +288,14 @@ public class ItemFactory
    * @param name the name of the new element
    * @param bounds the bounds of the new element
    * @param paint the color of this element (currently not used)
-   * @param source the source url from where to load the image
+   * @param field  the name of the column/function/expression that returns the URL for the image.
+   *
+   * @return a report element for displaying an image from a URL.
+   *
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   * @throws IOException if there is a problem with the image URL.
+   *
    * @deprecated use createImageURLElement instead
    */
   public static ImageElement createImageURLField(String name,
@@ -285,9 +313,13 @@ public class ItemFactory
    * @param name the name of the new element
    * @param bounds the bounds of the new element
    * @param paint the color of this element (currently not used)
-   * @param source the source url from where to load the image
+   * @param field  the name of the column/function/expression that returns the URL for the image.
+   *
+   * @return a report element for displaying an image based on a URL.
+   *
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   * @throws IOException if there is a problem with the image URL.
    */
   public static ImageElement createImageURLElement(String name,
                                                    Rectangle2D bounds,
@@ -315,9 +347,14 @@ public class ItemFactory
    * @param name the name of the new element
    * @param bounds the bounds of the new element
    * @param paint the color of this element (currently not used)
-   * @param source the source url from where to load the image
+   * @param function the name of the function that returns the image URL.
+   *
+   * @return a report element for displaying an image based on a URL.
+   *
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   * @throws IOException if there is a problem with the image URL.
+   *
    * @deprecated use createImageURLElement instead
    */
   public static ImageElement createImageURLFunction(String name,
@@ -335,9 +372,14 @@ public class ItemFactory
    * @param name the name of the new element
    * @param bounds the bounds of the new element
    * @param paint the color of this element (currently not used)
-   * @param source the source url from where to load the image
+   * @param field  the name of the column/function/expression that returns the URL for the image.
+   *
+   * @return a report element for displaying an image.
+   *
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   * @throws IOException if there is a problem with the image URL.
+   *
    * @deprecated use createImageDataRowElement instead
    */
   public static ImageElement createImageFieldElement(String name,
@@ -355,9 +397,13 @@ public class ItemFactory
    * @param name the name of the new element
    * @param bounds the bounds of the new element
    * @param paint the color of this element (currently not used)
-   * @param source the source url from where to load the image
+   * @param field  the name of the column/function/expression that returns the URL for the image.
+   *
+   * @return a report element for displaying an image.
+   *
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   * @throws IOException if there is a problem with the image URL.
    */
   public static ImageElement createImageDataRowElement(String name,
                                                        Rectangle2D bounds,
@@ -382,9 +428,14 @@ public class ItemFactory
    * @param name the name of the new element
    * @param bounds the bounds of the new element
    * @param paint the color of this element (currently not used)
-   * @param source the source url from where to load the image
+   * @param function  the name of the function that returns the URL for the image.
+   *
+   * @return a report element for displaying an image.
+   *
    * @throws NullPointerException if bounds, name or source are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   * @throws IOException if there is a problem with the image URL.
+   *
    * @deprecated use createImageDataRowElement instead
    */
   public static ImageElement createImageFunctionElement(String name,
@@ -406,6 +457,9 @@ public class ItemFactory
    *        ElementConstants.CENTER, ElementConstants.RIGHT
    * @param font the font for this element
    * @param labeltext the text to display
+   *
+   * @return a report element for displaying a label (static text).
+   *
    * @throws NullPointerException if bounds, name, format or field are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
@@ -433,6 +487,9 @@ public class ItemFactory
    * @param paint the line color of this element
    * @param stroke the stroke of this shape. For pdf use, restrict to BasicStokes.
    * @param shape the Line2D shape
+   *
+   * @return a report element for drawing a line.
+   *
    * @throws NullPointerException if bounds, name or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
@@ -456,6 +513,11 @@ public class ItemFactory
    * @param paint the line color of this element
    * @param stroke the stroke of this shape. For pdf use, restrict to BasicStokes.
    * @param shape the Rectangle2D shape
+   * @param shouldDraw  a flag controlling whether or not the shape outline is drawn.
+   * @param shouldFill  a flag controlling whether or not the shape interior is filled.
+   *
+   * @return a report element for drawing a rectangle.
+   *
    * @throws NullPointerException if bounds, name or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
@@ -488,8 +550,12 @@ public class ItemFactory
    * @param font the font for this element
    * @param nullString the text used when the value of this element is null
    * @param field the field in the datamodel to retrieve values from
+   *
+   * @return a report element for displaying text on multiple lines.
+   *
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   *
    * @deprecated use createStringElement instead
    */
   public static TextElement createMultilineTextElement(String name,
@@ -497,10 +563,10 @@ public class ItemFactory
                                                        Paint paint,
                                                        int alignment,
                                                        Font font,
-                                                       String nullstring,
+                                                       String nullString,
                                                        String field)
   {
-    return createStringElement(name, bounds, paint, alignment, font, nullstring, field);
+    return createStringElement(name, bounds, paint, alignment, font, nullString, field);
   }
 
   /**
@@ -515,6 +581,9 @@ public class ItemFactory
    * @param nullString the text used when the value of this element is null
    * @param field the field in the datamodel to retrieve values from
    * @param format the NumberFormat used in this number element
+   *
+   * @return a report element for displaying <code>Number</code> objects.
+   *
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
@@ -554,6 +623,9 @@ public class ItemFactory
    * @param nullString the text used when the value of this element is null
    * @param field the fieldname in the datamodel to retrieve values from
    * @param format the DecimalFormatString used in this text field
+   *
+   * @return a report element for displaying <code>Number</code> objects.
+   *
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
@@ -593,8 +665,12 @@ public class ItemFactory
    * @param nullString the text used when the value of this element is null
    * @param function the function to retrieve values from
    * @param format the DecimalFormatString used in this text field
+   *
+   * @return a report element for displaying <code>Number</code> objects.
+   *
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   *
    * @deprecated use createNumberElement instead
    */
   public static TextElement createNumberFunction(String name,
@@ -621,8 +697,12 @@ public class ItemFactory
    * @param nullString the text used when the value of this element is null
    * @param function the function to retrieve values from
    * @param format the NumberFormat used in this text field
+   *
+   * @return a report element for displaying <code>Number</code> objects.
+   *
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   *
    * @deprecated use createNumberElement instead
    */
   public static TextElement createNumberFunction(String name,
@@ -648,6 +728,9 @@ public class ItemFactory
    * @param font the font for this element
    * @param nullString the text used when the value of this element is null
    * @param field the field in the datamodel to retrieve values from
+   *
+   * @return a report element for displaying <code>String</code> objects.
+   *
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
@@ -681,8 +764,12 @@ public class ItemFactory
    * @param font the font for this element
    * @param nullString the text used when the value of this element is null
    * @param function the name of the function to retrieve values from
+   *
+   * @return a report element for displaying <code>String</code> objects.
+   *
    * @throws NullPointerException if bounds, name or function are null
    * @throws IllegalArgumentException if the given alignment is invalid
+   *
    * @deprecated use createStringElement instead
    */
   public static TextElement createStringFunction(String name,
@@ -703,7 +790,8 @@ public class ItemFactory
    * @param height the height of the band in points
    * @param defaultFont the default font for this band
    * @param defaultPaint the default paint for this band
-   * @returns the GroupFooter
+   *
+   * @return the GroupFooter
    */
   public static Band createGroupFooter(float height, Font defaultFont, Paint defaultPaint)
   {
@@ -722,15 +810,17 @@ public class ItemFactory
    * @param defaultFont the default font for this band
    * @param defaultPaint the default paint for this band
    * @param pageBreak a flag indicating whether to do a pagebreak before this header is printed
-   * @returns the GroupHeader
+   *
+   * @return the GroupHeader
    */
-  public static Band createGroupHeader(float height, Font defaultFont, Paint defaultPaint, boolean pagebreak)
+  public static Band createGroupHeader(float height, Font defaultFont, Paint defaultPaint,
+                                       boolean pageBreak)
   {
     GroupHeader header = new GroupHeader();
     header.setHeight(height);
     header.setDefaultFont(defaultFont);
     header.setDefaultPaint(defaultPaint);
-    header.setPageBreakBeforePrint(pagebreak);
+    header.setPageBreakBeforePrint(pageBreak);
     return header;
   }
 
@@ -741,11 +831,15 @@ public class ItemFactory
    * @param height the height of the band in points
    * @param defaultFont the default font for this band
    * @param defaultPaint the default paint for this band
-   * @param onfirstpage a flag indicating whether to print this footer on the first page of the report
-   * @param onlastpage a flag indicating whether to print this footer on the last page of the report
-   * @returns the PageFooter
+   * @param onfirstpage a flag indicating whether to print this footer on the first page of the
+   *                    report
+   * @param onlastpage a flag indicating whether to print this footer on the last page of the
+   *                   report
+   *
+   * @return the PageFooter
    */
-  public static Band createPageFooter(float height, Font defaultFont, Paint defaultPaint, boolean onfirstpage, boolean onlastpage)
+  public static Band createPageFooter(float height, Font defaultFont, Paint defaultPaint,
+                                      boolean onfirstpage, boolean onlastpage)
   {
     PageFooter footer = new PageFooter();
     footer.setHeight(height);
@@ -763,18 +857,22 @@ public class ItemFactory
    * @param height the height of the band in points
    * @param defaultFont the default font for this band
    * @param defaultPaint the default paint for this band
-   * @param onfirstpage a flag indicating whether to print this footer on the first page of the report
-   * @param onlastpage a flag indicating whether to print this footer on the last page of the report
-   * @returns the PageHeader
+   * @param onfirstpage a flag indicating whether to print this footer on the first page of the
+   *                    report
+   * @param onlastpage a flag indicating whether to print this footer on the last page of the
+   *                   report
+   *
+   * @return the PageHeader
    */
-  public static Band createPageHeader(float height, Font defaultFont, Paint defaultPaint, boolean onfirstpage, boolean onlagepage)
+  public static Band createPageHeader(float height, Font defaultFont, Paint defaultPaint,
+                                      boolean onfirstpage, boolean onlastpage)
   {
     PageHeader header = new PageHeader();
     header.setHeight(height);
     header.setDefaultFont(defaultFont);
     header.setDefaultPaint(defaultPaint);
     header.setDisplayOnFirstPage(onfirstpage);
-    header.setDisplayOnLastPage(onlagepage);
+    header.setDisplayOnLastPage(onlastpage);
     return header;
   }
 
@@ -785,10 +883,13 @@ public class ItemFactory
    * @param height the height of the band in points
    * @param defaultFont the default font for this band
    * @param defaultPaint the default paint for this band
-   * @param isownpage a flag indicating whether to issue a pagebreak before the report footer is printed
-   * @returns the ReportFooter
+   * @param isownpage a flag indicating whether to issue a pagebreak before the report footer is
+   *                  printed
+   *
+   * @return the ReportFooter
    */
-  public static Band createReportFooter(float height, Font defaultFont, Paint defaultPaint, boolean isownpage)
+  public static Band createReportFooter(float height, Font defaultFont, Paint defaultPaint,
+                                        boolean isownpage)
   {
     ReportFooter footer = new ReportFooter();
     footer.setHeight(height);
@@ -805,10 +906,13 @@ public class ItemFactory
    * @param height the height of the band in points
    * @param defaultFont the default font for this band
    * @param defaultPaint the default paint for this band
-   * @param isownpage a flag indicating whether to issue a pagebreak after the report header is printed
-   * @returns the ReportHeader
+   * @param isownpage a flag indicating whether to issue a pagebreak after the report header is
+   *                  printed
+   *
+   * @return the ReportHeader
    */
-  public static Band createReportHeader(float height, Font defaultFont, Paint defaultPaint, boolean isownpage)
+  public static Band createReportHeader(float height, Font defaultFont, Paint defaultPaint,
+                                        boolean isownpage)
   {
     ReportHeader header = new ReportHeader();
     header.setHeight(height);
@@ -826,7 +930,8 @@ public class ItemFactory
    * @param height the height of the band in points
    * @param defaultFont the default font for this band
    * @param defaultPaint the default paint for this band
-   * @returns the ReportFooter
+   *
+   * @return the ReportFooter
    */
   public static Band createItemBand(float height, Font defaultFont, Paint defaultPaint)
   {
@@ -847,15 +952,25 @@ public class ItemFactory
    * @param fields the fields as a list of strings (optional)
    * @param footer the optional groupfooter
    * @param header the optional groupheader
-   * @returns the ReportFooter
+   *
+   * @return the ReportFooter
    */
   public static Group createGroup(String name, List fields, GroupFooter footer, GroupHeader header)
   {
     Group g = new Group();
     g.setName(name);
-    if (fields != null) g.setFields(fields);
-    if (footer != null) g.setFooter(footer);
-    if (header != null) g.setHeader(header);
+    if (fields != null)
+    {
+      g.setFields(fields);
+    }
+    if (footer != null)
+    {
+      g.setFooter(footer);
+    }
+    if (header != null)
+    {
+      g.setHeader(header);
+    }
     return g;
   }
 
@@ -872,7 +987,8 @@ public class ItemFactory
    * @param functions the optional functioncollection used in this report
    * @param pageformat the (optional) default pageformat
    * @param data the data for this report, which is optional at this point.
-   * @returns the created report.
+   *
+   * @return the created report.
    */
   public static JFreeReport createReport(String name,
                                          ReportHeader rheader,
@@ -887,15 +1003,40 @@ public class ItemFactory
   {
     JFreeReport report = new JFreeReport();
     report.setName(name);
-    if (rheader != null) report.setReportHeader(rheader);
-    if (rfooter != null) report.setReportFooter(rfooter);
-    if (pheader != null) report.setPageHeader(pheader);
-    if (pfooter != null) report.setPageFooter(pfooter);
-    if (items != null) report.setItemBand(items);
-    if (functions != null) report.setFunctions(functions);
-    if (data != null) report.setData(data);
-    if (groups != null) report.setGroups(groups);
+    if (rheader != null)
+    {
+      report.setReportHeader(rheader);
+    }
+    if (rfooter != null)
+    {
+      report.setReportFooter(rfooter);
+    }
+    if (pheader != null)
+    {
+      report.setPageHeader(pheader);
+    }
+    if (pfooter != null)
+    {
+      report.setPageFooter(pfooter);
+    }
+    if (items != null)
+    {
+      report.setItemBand(items);
+    }
+    if (functions != null)
+    {
+      report.setFunctions(functions);
+    }
+    if (data != null)
+    {
+      report.setData(data);
+    }
+    if (groups != null)
+    {
+      report.setGroups(groups);
+    }
     report.setDefaultPageFormat(pageformat);
     return report;
   }
+
 }

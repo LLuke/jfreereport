@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------
+ * --------------------------------
  * FunctionInitializeException.java
- * ----------------------
+ * --------------------------------
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
@@ -39,6 +39,8 @@ package com.jrefinery.report.function;
 
 /**
  * An exception that indicates that a function has not been correctly initialised.
+ *
+ * @author TM
  */
 public class FunctionInitializeException extends Exception
 {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: First.java,v 1.7 2002/09/05 07:58:31 mungady Exp $
+ * $Id: First.java,v 1.8 2002/09/05 08:28:40 mungady Exp $
  *
  * Changes
  * -------
@@ -158,12 +158,9 @@ public class First extends ApplicationFrame implements ActionListener
     if (f == null)
     {
       ExceptionDialog.showExceptionDialog("Unable to find jlfgr-1_0.jar",
-          "<html>Unable to load the icons.<br>" +
-          "Please make sure you have the Java Look and Feel Graphics Repository in your classpath. <br>" +
-          "<p>" +
-          "You may download this jar-file from http://developer.java.sun.com/developer/techDocs/hi/repository</html>",
-          null
-      );
+          "<html>Unable to load the icons.<br>Please make sure you have the Java Look and Feel "
+          + "Graphics Repository in your classpath.<p>You may download this jar-file from "
+          + "http://developer.java.sun.com/developer/techDocs/hi/repository</html>", null);
       return result;
     }
 
@@ -188,11 +185,9 @@ public class First extends ApplicationFrame implements ActionListener
     catch (IOException e)
     {
       ExceptionDialog.showExceptionDialog("Unable to load",
-          "<html>Unable to load the icons.<br>" +
-          "Please make sure you have the Java Look and Feel Graphics Repository in your classpath. <br>" +
-          "<p>" +
-          "You may download this jar-file from http://developer.java.sun.com/developer/techDocs/hi/repository</html>",
-          e
+          "<html>Unable to load the icons.<br>Please make sure you have the Java Look and Feel "
+          + "Graphics Repository in your classpath.<p>You may download this jar-file from "
+          + "http://developer.java.sun.com/developer/techDocs/hi/repository</html>", e
       );
     }
 
@@ -263,7 +258,8 @@ public class First extends ApplicationFrame implements ActionListener
     }
     catch (Exception e)
     {
-      ExceptionDialog.showExceptionDialog("Error on parsing", "Error while parsing " + templateURL, e);
+      ExceptionDialog.showExceptionDialog("Error on parsing",
+                                          "Error while parsing " + templateURL, e);
     }
     return result;
 
@@ -291,7 +287,8 @@ public class First extends ApplicationFrame implements ActionListener
     }
     catch (IOException e)
     {
-      ExceptionDialog.showExceptionDialog("Error on reading ZIP-File", "Error the reading an ZIP-Entry", e);
+      ExceptionDialog.showExceptionDialog("Error on reading ZIP-File",
+                                          "Error the reading an ZIP-Entry", e);
     }
     return result;
 

@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,14 +20,14 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------
+ * ---------------------
  * DataRowConnector.java
- * -----------
+ * ---------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * Changes
- * ------------------------------
- * 27-Jul-2002 : Inital version
+ * -------
+ * 27-Jul-2002 : Initial version
  */
 package com.jrefinery.report;
 
@@ -42,17 +42,25 @@ import java.util.List;
  * During report processing the report states get cloned while the elements remain uncloned.
  * The DataRowConnector connects the DataRowBackend (which contains the data) with the
  * stateless elements.
+ *
+ * @author TM
  */
 public class DataRowConnector implements DataRow
 {
+  /** The data row backend. */
   private DataRowBackend dataRow;
 
+  /**
+   * Default constructor.
+   */
   public DataRowConnector ()
   {
   }
 
   /**
-   * @returns the currently assigned DataRowBackend for this DataRowConnector
+   * Returns the assigned data row backend.
+   *
+   * @return the currently assigned DataRowBackend for this DataRowConnector.
    */
   public DataRowBackend getDataRowBackend ()
   {
@@ -60,11 +68,11 @@ public class DataRowConnector implements DataRow
   }
 
   /**
-   * Sets the datarowbackend for this DataRowConnector. The backend actually contains the data
-   * which will be queried, while this DataRowConnector is simply a proxy forwarding all requests to
-   * the Backend.
+   * Sets the data row backend for this DataRowConnector. The backend actually contains the data
+   * which will be queried, while this DataRowConnector is simply a proxy forwarding all requests
+   * to the backend.
    *
-   * @param dataRow the
+   * @param dataRow the data row backend
    */
   public void setDataRowBackend (DataRowBackend dataRow)
   {
@@ -72,8 +80,12 @@ public class DataRowConnector implements DataRow
   }
 
   /**
-   * return the value of the function,expression or column in the tablemodel using the column
+   * Return the value of the function, expression or column in the tablemodel using the column
    * number.
+   *
+   * @param col  the column, function or expression index.
+   *
+   * @return The column, function or expression value.
    */
   public Object get (int col)
   {
@@ -81,7 +93,11 @@ public class DataRowConnector implements DataRow
   }
 
   /**
-   * returns the value of the function, expression or column using its specific name.
+   * Returns the value of the column, function or expression using its name.
+   *
+   * @param col  the column, function or expression index.
+   *
+   * @return The column, function or expression value.
    */
   public Object get (String col)
   {
@@ -89,7 +105,11 @@ public class DataRowConnector implements DataRow
   }
 
   /**
-   * returns the name of the column, expression or function
+   * Returns the name of the column, function or expression.
+   *
+   * @param col  the column, function or expression index.
+   *
+   * @return The column, function or expression name.
    */
   public String getColumnName (int col)
   {
@@ -97,10 +117,12 @@ public class DataRowConnector implements DataRow
   }
 
   /**
-   * looks up the position of the column with the name <code>name</code>.
+   * Looks up the position of the column with the name <code>name</code>.
    * returns the position of the column or -1 if no columns could be retrieved.
    *
-   * @returns the column position of the column, expression or function with the given name or
+   * @param name  the column, function or expression name.
+   *
+   * @return the column position of the column, expression or function with the given name or
    * -1 if the given name does not exist in this DataRow.
    */
   public int findColumn (String name)
@@ -109,10 +131,10 @@ public class DataRowConnector implements DataRow
   }
 
   /**
-   * Returns the count of columns in this datarow. The columncount is the sum of all DataSource-Rows,
-   * all Functions and all expressions.
+   * Returns the count of columns in this datarow. The columncount is the sum of all
+   * DataSource columns, all functions and all expressions.
    *
-   * @returns the number of accessible columns in this datarow
+   * @return the number of accessible columns in this datarow
    */
   public int getColumnCount ()
   {
@@ -144,7 +166,7 @@ public class DataRowConnector implements DataRow
   /**
    * Connects the Band and all Elements within the band to this DataRow.
    *
-   * @param band the band which will be connected
+   * @param band the band which will be connected.
    */
   public void connectDataSources (Band band)
   {
@@ -210,10 +232,17 @@ public class DataRowConnector implements DataRow
    * The last datasource is used to feed data into the data processing chain.
    * The result of this computation is retrieved by the element using the
    * registered datasource to query the queue.
+   *
+   * @param e  the data target.
+   *
+   * @return The last DataSource in the chain.
    */
   public static DataSource getLastDatasource (DataTarget e)
   {
-    if (e == null) throw new NullPointerException ();
+    if (e == null)
+    {
+      throw new NullPointerException ();
+    }
     DataSource s = e.getDataSource ();
     if (s instanceof DataTarget)
     {
@@ -222,4 +251,5 @@ public class DataRowConnector implements DataRow
     }
     return s;
   }
+
 }

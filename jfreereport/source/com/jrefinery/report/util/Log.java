@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * --------
  * Log.java
- * -----------------------
+ * --------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * 11-May-2002 : Created a simple logging schema.
@@ -34,10 +34,11 @@ import java.util.Vector;
 /**
  * A simple logging facility. Create a class implementing the LogTarget interface to use
  * this feature.
+ *
+ * @author TM
  */
 public final class Log
 {
-  private boolean logSystemOut;
 
   /**
    * Loglevel ERROR
@@ -59,7 +60,10 @@ public final class Log
    */
   public static final int DEBUG = 3;
 
-  public static final String[] levels =
+  /**
+   * String representations of the log levels.
+   */
+  public static final String[] LEVELS =
           {
             "ERROR: ",
             "WARN:  ",
@@ -67,9 +71,15 @@ public final class Log
             "DEBUG: "
           };
 
+  /** The debug level. */
   private static int debuglevel = 100;
+
+  /** Storage for the log targets. */
   private static Vector logTargets = new Vector ();
 
+  /**
+   * Private to prevent creating instances.
+   */
   private Log ()
   {
   }
@@ -83,7 +93,10 @@ public final class Log
   }
 
   /**
-   * Adds a logtarget to this facillity. Logtargets get informed whenever a event occured.
+   * Adds a log target to this facility. Log targets get informed, via the LogTarget interface,
+   * whenever a message is logged with this class.
+   *
+   * @param target  the target.
    */
   public static void addTarget (LogTarget target)
   {
@@ -91,7 +104,9 @@ public final class Log
   }
 
   /**
-   * removes a logtarget from this facillity.
+   * Removes a log target from this facility.
+   *
+   * @param target  the target to remove.
    */
   public static void removeTarget (LogTarget target)
   {
@@ -99,16 +114,19 @@ public final class Log
   }
 
   /**
-   * logs an message to the main-log stream. All attached logStreams will also
+   * Logs a message to the main log stream.  All attached log targets will also
    * receive this message. If the given log-level is higher than the given debug-level
    * in the main config file, no logging will be done.
    *
-   * @param level log level of the message.
-   * @param message text to be logged.
+   * @param level  log level of the message.
+   * @param message  text to be logged.
    */
   public static void log (int level, String message)
   {
-    if (level > 3) level = 3;
+    if (level > 3)
+    {
+      level = 3;
+    }
     if (level <= debuglevel)
     {
       for (int i = 0; i < logTargets.size (); i++)
@@ -120,19 +138,22 @@ public final class Log
   }
 
   /**
-   * logs an message to the main-log stream. All attached logStreams will also
+   * Logs a message to the main log stream. All attached logTargets will also
    * receive this message. If the given log-level is higher than the given debug-level
    * in the main config file, no logging will be done.
    *
    * The exception's stacktrace will be appended to the log-stream
    *
-   * @param level log level of the message.
-   * @param message text to be logged.
-   * @param e the exception, which should be logged.
+   * @param level  log level of the message.
+   * @param message  text to be logged.
+   * @param e  the exception, which should be logged.
    */
   public static void log (int level, String message, Exception e)
   {
-    if (level > 3) level = 3;
+    if (level > 3)
+    {
+      level = 3;
+    }
     if (level <= debuglevel)
     {
       for (int i = 0; i < logTargets.size (); i++)
@@ -143,6 +164,11 @@ public final class Log
     }
   }
 
+  /**
+   * A convenience method for logging a 'debug' message.
+   *
+   * @param message  the message.
+   */
   public static void debug (String message)
   {
     for (int i = 0; i < logTargets.size (); i++)
@@ -152,6 +178,12 @@ public final class Log
     }
   }
 
+  /**
+   * A convenience method for logging a 'debug' message.
+   *
+   * @param message  the message.
+   * @param e  the exception.
+   */
   public static void debug (String message, Exception e)
   {
     for (int i = 0; i < logTargets.size (); i++)
@@ -161,6 +193,11 @@ public final class Log
     }
   }
 
+  /**
+   * A convenience method for logging an 'info' message.
+   *
+   * @param message  the message.
+   */
   public static void info (String message)
   {
     for (int i = 0; i < logTargets.size (); i++)
@@ -170,6 +207,12 @@ public final class Log
     }
   }
 
+  /**
+   * A convenience method for logging an 'info' message.
+   *
+   * @param message  the message.
+   * @param e  the exception.
+   */
   public static void info (String message, Exception e)
   {
     for (int i = 0; i < logTargets.size (); i++)
@@ -179,6 +222,11 @@ public final class Log
     }
   }
 
+  /**
+   * A convenience method for logging a 'warning' message.
+   *
+   * @param message  the message.
+   */
   public static void warn (String message)
   {
     for (int i = 0; i < logTargets.size (); i++)
@@ -188,6 +236,12 @@ public final class Log
     }
   }
 
+  /**
+   * A convenience method for logging a 'warning' message.
+   *
+   * @param message  the message.
+   * @param e  the exception.
+   */
   public static void warn (String message, Exception e)
   {
     for (int i = 0; i < logTargets.size (); i++)
@@ -197,6 +251,11 @@ public final class Log
     }
   }
 
+  /**
+   * A convenience method for logging an 'error' message.
+   *
+   * @param message  the message.
+   */
   public static void error (String message)
   {
     for (int i = 0; i < logTargets.size (); i++)
@@ -206,6 +265,12 @@ public final class Log
     }
   }
 
+  /**
+   * A convenience method for logging an 'error' message.
+   *
+   * @param message  the message.
+   * @param e  the exception.
+   */
   public static void error (String message, Exception e)
   {
     for (int i = 0; i < logTargets.size (); i++)
@@ -215,6 +280,12 @@ public final class Log
     }
   }
 
+  /**
+   * Returns the debug level.  If the log level is not less than this, then the message will be
+   * ignored.
+   *
+   * @return the debug level.
+   */
   public static int getDebugLevel ()
   {
     return debuglevel;

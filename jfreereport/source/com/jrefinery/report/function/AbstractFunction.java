@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.15 2002/08/31 14:00:22 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.16 2002/09/11 20:23:34 taqua Exp $
  *
  * Changes
  * -------
@@ -46,12 +46,7 @@
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.DataRow;
-import com.jrefinery.report.Group;
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.ReportState;
 import com.jrefinery.report.event.ReportEvent;
-
-import javax.swing.table.TableModel;
 import java.util.Enumeration;
 import java.util.Properties;
 
@@ -63,6 +58,8 @@ import java.util.Properties;
  * gets called to perform the required initializations. At this point, all function properties must
  * have been set to an valid state and the function must be named. If the initialisation fails, an
  * FunctionInitializeException is thrown and the function get not added to the report.
+ *
+ * @author TM
  */
 public abstract class AbstractFunction implements Function
 {
@@ -104,8 +101,9 @@ public abstract class AbstractFunction implements Function
   public void setName(String name)
   {
     if (name == null)
+    {
       throw new NullPointerException("AbstractFunction.setName():  null not permitted.");
-
+    }
     this.name = name;
   }
 
@@ -121,7 +119,10 @@ public abstract class AbstractFunction implements Function
    */
   public void initialize() throws FunctionInitializeException
   {
-    if (name == null) throw new FunctionInitializeException("FunctionName is null");
+    if (name == null)
+    {
+      throw new FunctionInitializeException("FunctionName is null");
+    }
   }
 
   /**
@@ -209,6 +210,8 @@ public abstract class AbstractFunction implements Function
    * strucures contained in objects, you have to overwrite this function.
    *
    * @return A clone of the function.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone() throws CloneNotSupportedException
   {
@@ -285,9 +288,13 @@ public abstract class AbstractFunction implements Function
   public void setProperty(String name, String value)
   {
     if (value == null)
+    {
       properties.remove(name);
+    }
     else
+    {
       properties.setProperty(name, value);
+    }
   }
 
   /**
@@ -316,7 +323,7 @@ public abstract class AbstractFunction implements Function
    * returns the datarow for this function. A datarow is used to query the values of functions,
    * expressions and datasource fields in an uniform way.
    *
-   * @returns the assigned datarow for this expression.
+   * @return the assigned datarow for this expression.
    */
   public DataRow getDataRow()
   {
@@ -335,7 +342,7 @@ public abstract class AbstractFunction implements Function
   }
 
   /**
-   * @returns a copy of the properties defined for this function.
+   * @return a copy of the properties defined for this function.
    */
   public Properties getProperties()
   {
@@ -345,8 +352,10 @@ public abstract class AbstractFunction implements Function
   }
 
   /**
-   * returns true if this expression contains autoactive content and should be called by the system,
+   * Returns true if this expression contains autoactive content and should be called by the system,
    * regardless whether this expression is referenced in the datarow.
+   *
+   * @return boolean
    */
   public boolean isActive()
   {

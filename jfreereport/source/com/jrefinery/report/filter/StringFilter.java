@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * -----------------
  * StringFilter.java
- * -----------------------
+ * -----------------
  * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringFilter.java,v 1.8 2002/08/31 14:00:22 taqua Exp $
+ * $Id: StringFilter.java,v 1.9 2002/09/05 08:31:52 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,10 @@ package com.jrefinery.report.filter;
 
 /**
  * A filter that returns the value from a data source as a String. The value is converted to an
- * String using String.valueOf () which uses Object.toString() to convert the object into the string.
+ * String using String.valueOf () which uses Object.toString() to convert the object into the
+ * string.
+ *
+ * @author TM
  */
 public class StringFilter implements DataFilter
 {
@@ -67,7 +70,10 @@ public class StringFilter implements DataFilter
    */
   public void setNullValue (String nullvalue)
   {
-    if (nullvalue == null) throw new NullPointerException ();
+    if (nullvalue == null)
+    {
+      throw new NullPointerException ();
+    }
     this.nullvalue = nullvalue;
   }
 
@@ -96,8 +102,14 @@ public class StringFilter implements DataFilter
       return getNullValue ();
     }
     Object o = ds.getValue ();
-    if (o == null) return getNullValue ();
-    if (o instanceof String) return (String) o;
+    if (o == null)
+    {
+      return getNullValue ();
+    }
+    if (o instanceof String)
+    {
+      return (String) o;
+    }
     return String.valueOf (o);
   }
 
@@ -118,14 +130,28 @@ public class StringFilter implements DataFilter
    */
   public void setDataSource (DataSource ds)
   {
-    if (ds == null) throw new NullPointerException ();
+    if (ds == null)
+    {
+      throw new NullPointerException ();
+    }
     source = ds;
   }
 
+  /**
+   * Clones the filter.
+   *
+   * @return a clone.
+   *
+   * @throws CloneNotSupportedException this should never happen.
+   */
   public Object clone () throws CloneNotSupportedException
   {
     StringFilter f = (StringFilter) super.clone ();
-    if (source != null) f.source = (DataSource) source.clone ();
+    if (source != null)
+    {
+      f.source = (DataSource) source.clone ();
+    }
     return f;
   }
+
 }

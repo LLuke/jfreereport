@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------
+ * -------------------------
  * WaitingImageObserver.java
- * ----------------
+ * -------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * Original Author:  Thomas Morger
  * Contributor(s):   Stefan Prange;
  *
- * $Id: WaitingImageObserver.java,v 1.7 2002/07/14 21:59:33 taqua Exp $
+ * $Id: WaitingImageObserver.java,v 1.8 2002/09/05 17:25:31 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -44,6 +44,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.Serializable;
+import com.jrefinery.report.util.Log;
 
 /**
  * This image observer blocks until the image is completly loaded. AWT
@@ -52,28 +53,47 @@ import java.io.Serializable;
  * While printing reports it is not very nice not to know whether a image
  * was completely loaded, so this observer forces the loading of the image
  * until a final state (either ALLBITS, ABORT or ERROR) is reached.
+ *
+ * @author TM
  */
 public class WaitingImageObserver implements ImageObserver, Serializable, Cloneable
 {
+  /** The lock */
   private boolean lock;
+
+  /** The image. */
   private Image image;
 
   /**
    * Creates a new ImageObserver for the given Image. The Oberver has to be started
    * by an external thread.
    *
+   * @param image  the image to observe.
+   *
    * @throws NullPointerException if the given image is null.
    */
   public WaitingImageObserver (Image image)
   {
-    if (image == null) throw new NullPointerException ();
+    if (image == null)
+    {
+      throw new NullPointerException ();
+    }
     this.image = image;
     lock = true;
   }
 
   /**
-   * Callback function used by AWT to inform that more data is availiable. The observer
+   * Callback function used by AWT to inform that more data is available. The observer
    * waits until either all data is loaded or AWT signals that the image cannot be loaded.
+   *
+   * @param img  the image.
+   * @param infoflags  various flags.
+   * @param x  the x-coordinate.
+   * @param y  the y-coordinate.
+   * @param width  the image width.
+   * @param height  the image height.
+   *
+   * @return  boolean
    */
   public boolean imageUpdate (
           Image img,
@@ -104,19 +124,26 @@ public class WaitingImageObserver implements ImageObserver, Serializable, Clonea
     while (lock)
     {
       if (g.drawImage (image, 0, 0, img.getWidth (this), img.getHeight (this), this))
+      {
         return;
+      }
       try
       {
         Thread.currentThread ().sleep (200);
       }
       catch (InterruptedException e)
       {
+        Log.info("WaitingImageObserver.waitImageLoaded(): InterruptedException thrown.", e);
       }
     }
   }
 
   /**
    * Clones this WaitingImageObserver.
+   *
+   * @return a clone.
+   *
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone () throws CloneNotSupportedException
   {

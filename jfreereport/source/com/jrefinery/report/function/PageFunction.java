@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.3 2002/05/28 19:36:41 taqua Exp $
+ * $Id: PageFunction.java,v 1.4 2002/06/05 23:21:47 mungady Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,8 @@ import com.jrefinery.report.event.ReportEvent;
 
 /**
  * A report function that counts pages.
+ *
+ * @author TM
  */
 public class PageFunction extends AbstractFunction
 {
@@ -64,7 +66,7 @@ public class PageFunction extends AbstractFunction
   /**
    * Constructs a named function.
    *
-   * @param The function name.
+   * @param name  the function name.
    */
   public PageFunction (String name)
   {
@@ -83,9 +85,9 @@ public class PageFunction extends AbstractFunction
   }
 
   /**
-   * Returns the function value.
+   * Returns the page number (function value).
    *
-   * @return The page number.
+   * @return the page number.
    */
   public Object getValue ()
   {

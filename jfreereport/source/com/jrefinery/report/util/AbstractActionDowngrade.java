@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,9 +20,9 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------
+ * ----------------------------
  * AbstractActionDowngrade.java
- * ----------------------
+ * ----------------------------
  *
  * ChangeLog
  * ---------
@@ -30,11 +30,12 @@
  */
 package com.jrefinery.report.util;
 
-import javax.swing.Action;
 import javax.swing.AbstractAction;
 
 /**
  * Defines the 2 new constants introduced by Sun in version 1.3 of the J2SDK.
+ *
+ * @author TM
  */
 public abstract class AbstractActionDowngrade extends AbstractAction implements ActionDowngrade
 {
@@ -42,11 +43,10 @@ public abstract class AbstractActionDowngrade extends AbstractAction implements 
    * The key used for storing a <code>KeyStroke</code> to be used as the
    * accelerator for the action.
    */
-  public static final String ACCELERATOR_KEY="AcceleratorKey";
+  public static final String ACCELERATOR_KEY = "AcceleratorKey";
 
   /**
-   * The key used for storing an int key code to be used as the mnemonic
-   * for the action.
+   * The key used for storing an int key code to be used as the mnemonic for the action.
    */
-  public static final String MNEMONIC_KEY="MnemonicKey";
+  public static final String MNEMONIC_KEY = "MnemonicKey";
 }

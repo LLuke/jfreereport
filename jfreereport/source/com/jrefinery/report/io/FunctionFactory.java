@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -36,7 +36,6 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.function.Expression;
-import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -100,7 +99,8 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
       startExpression (atts);
     }
     else
-      throw new SAXException ("Expected one of 'function', 'functions', 'data-ref', 'properties', 'property' tag");
+      throw new SAXException ("Expected one of 'function', 'functions', 'data-ref', 'properties', "
+                            + "'property' tag");
   }
 
   /**
@@ -120,7 +120,7 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   }
 
   /**
-   * @returns the current function to be produced
+   * @return the current function to be produced
    */
   protected Function getCurrentFunction ()
   {
@@ -137,7 +137,7 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   }
 
   /**
-   * @returns the current function to be produced
+   * @return the current function to be produced
    */
   protected Expression getCurrentExpression ()
   {
@@ -215,15 +215,18 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     }
     catch (ClassNotFoundException e)
     {
-      throw new SAXException ("Expression " + name + " class=" + className + " is not valid: ClassNotFound: " + e.getMessage ());
+      throw new SAXException ("Expression " + name + " class=" + className
+                            + " is not valid: ClassNotFound: " + e.getMessage ());
     }
     catch (IllegalAccessException e)
     {
-      throw new SAXException ("Expression " + name + " class=" + className + " is not valid: IllegalAccess: " + e.getMessage ());
+      throw new SAXException ("Expression " + name + " class=" + className
+                            + " is not valid: IllegalAccess: " + e.getMessage ());
     }
     catch (InstantiationException e)
     {
-      throw new SAXException ("Expression " + name + " class=" + className + " is not valid: Instantiation: " + e.getMessage ());
+      throw new SAXException ("Expression " + name + " class=" + className
+                            + " is not valid: Instantiation: " + e.getMessage ());
     }
   }
 
@@ -249,15 +252,18 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     }
     catch (ClassNotFoundException e)
     {
-      throw new SAXException ("Function " + name + " class=" + className + " is not valid: ClassNotFound: " + e.getMessage ());
+      throw new SAXException ("Function " + name + " class=" + className
+                            + " is not valid: ClassNotFound: " + e.getMessage ());
     }
     catch (IllegalAccessException e)
     {
-      throw new SAXException ("Function " + name + " class=" + className + " is not valid: IllegalAccess: " + e.getMessage ());
+      throw new SAXException ("Function " + name + " class=" + className
+                            + " is not valid: IllegalAccess: " + e.getMessage ());
     }
     catch (InstantiationException e)
     {
-      throw new SAXException ("Function " + name + " class=" + className + " is not valid: Instantiation: " + e.getMessage ());
+      throw new SAXException ("Function " + name + " class=" + className
+                            + " is not valid: Instantiation: " + e.getMessage ());
     }
   }
 
@@ -269,7 +275,9 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     // @todo: Parse the default entities
     // accumulate the characters in case the text is split into several chunks...
     if (this.currentText != null)
+    {
       this.currentText.append (String.copyValueOf (ch, start, length));
+    }
   }
 
   /**
@@ -365,7 +373,9 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   {
     Expression f = getCurrentExpression();
     if (f == null)
+    {
       throw new SAXException ("End properties reached without a function defined");
+    }
     f.setProperties (currentProperties);
   }
 
@@ -377,7 +387,9 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
   {
     Properties currentProps = getProperties ();
     if (currentProps == null)
+    {
       throw new SAXException ("EndProperty without properties tag?");
+    }
 
     currentProps.setProperty (currentProperty, currentText.toString ());
     currentText = null;

@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,13 +20,13 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * --------------------
  * JFreeReportInfo.java
- * -----------------------
+ * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  * Changes:
- * ------------
+ * --------
  * 10-May-2002 : Extracted from JFreeReport to declare this class public.
  * 16-May-2002 : added my name to the developer list ;-) (JS)
  */
@@ -44,6 +44,8 @@ import java.util.ResourceBundle;
 
 /**
  * Details about the JFreeReport project.
+ *
+ * @author DG
  */
 public class JFreeReportInfo extends ProjectInfo implements Cloneable
 {
@@ -79,7 +81,7 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
             {
               new Library (JCommon.INFO),
               new Library ("JUnit", "3.7.1", "IBM Public Licence", "http://www.junit.org/"),
-              new Library ("iText", "0.93b", "LGPL", "http://www.lowagie.com/iText/index.html"),
+              new Library ("iText", "0.94", "LGPL", "http://www.lowagie.com/iText/index.html"),
               new Library ("GNU JAXP", "1.0beta1", "GPL with library exception",
                       "http://www.gnu.org/software/classpathx/jaxp/"),
               new Library ("Pixie", "0.7.0", "LGPL",

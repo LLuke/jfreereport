@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -276,8 +276,9 @@ public class HugeJFreeReportDemo extends JFrame
     {
 
       JOptionPane.showMessageDialog (this,
-              MessageFormat.format (getResources ().getString ("report.definitionnotfound"), new Object[]{urlname}),
-              getResources ().getString ("error"), JOptionPane.ERROR_MESSAGE);
+          MessageFormat.format (getResources ().getString ("report.definitionnotfound"),
+             new Object[]{urlname}), getResources ().getString ("error"),
+          JOptionPane.ERROR_MESSAGE);
       return;
     }
     ReportGenerator gen = ReportGenerator.getInstance ();
@@ -297,8 +298,9 @@ public class HugeJFreeReportDemo extends JFrame
     if (report1 == null)
     {
       JOptionPane.showMessageDialog (this,
-              MessageFormat.format (getResources ().getString ("report.definitionnull"), new Object[]{urlname}),
-              getResources ().getString ("error"), JOptionPane.ERROR_MESSAGE);
+          MessageFormat.format (getResources ().getString ("report.definitionnull"),
+              new Object[]{urlname}),
+          getResources ().getString ("error"), JOptionPane.ERROR_MESSAGE);
     }
 
     report1.setData (data);
@@ -363,7 +365,8 @@ public class HugeJFreeReportDemo extends JFrame
   {
     if (aboutFrame == null)
     {
-      aboutFrame = new AboutFrame (getResources ().getString ("action.about.name"), JFreeReport.getInfo ());
+      aboutFrame = new AboutFrame (getResources ().getString ("action.about.name"),
+                                   JFreeReport.getInfo ());
 
       aboutFrame.pack ();
       RefineryUtilities.centerFrameOnScreen (aboutFrame);
@@ -396,7 +399,9 @@ public class HugeJFreeReportDemo extends JFrame
     JMenuItem printItem = new ActionMenuItem  (previewAction);
     KeyStroke accelerator = (KeyStroke) previewAction.getValue (ActionDowngrade.ACCELERATOR_KEY);
     if (accelerator != null)
+    {
       printItem.setAccelerator (accelerator);
+    }
     fileMenu.add (printItem);
 
     fileMenu.add (new JSeparator ());

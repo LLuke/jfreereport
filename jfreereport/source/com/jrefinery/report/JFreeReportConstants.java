@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportConstants.java,v 1.9 2002/06/09 14:46:04 taqua Exp $
+ * $Id: JFreeReportConstants.java,v 1.10 2002/08/20 21:13:05 taqua Exp $
  *
  * Changes
  * -------
@@ -42,18 +42,32 @@
 package com.jrefinery.report;
 
 /**
- * Some constants for JFreeReport and PreviewPane
+ * Some constants for JFreeReport and PreviewPane.
+ *
+ * @author DG
  */
 public interface JFreeReportConstants
 {
 
+  /** Report property key. */
   public static final String NAME_PROPERTY = "report.name";
+
+  /** Report property key. */
   public static final String REPORT_DATE_PROPERTY = "report.date";
+
+  /** Report property key. */
   public static final String REPORT_PAGEFORMAT_PROPERTY = "report.pageformat";
+
+  /** Report property key. */
   public static final String REPORT_PAGECOUNT_PROPERTY = "report.pagecount";
+
+  /** Report property key. */
   public static final String REPORT_PREPARERUN_PROPERTY = "report.preparerun";
 
+  /** Report property key. */
   public static final String REPORT_DEFINITION_SOURCE = "report.definition.source";
+
+  /** Report property key. */
   public static final String REPORT_DEFINITION_CONTENTBASE = "report.definition.contentbase";
 
   /** A useful constant that signals that a page is full. */

@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -85,10 +85,12 @@ public class JFreeReportResources_de extends JFreeReportResources
             {"action.forward.description", "Wechselt zur nächsten Seite"},
 
             {"action.zoomIn.name", "Vergrössern"},
-            {"action.zoomIn.description", "Zeigt die aktuelle Seite in einem grösseren Masstab an"},
+            {"action.zoomIn.description",
+                "Zeigt die aktuelle Seite in einem grösseren Masstab an"},
 
             {"action.zoomOut.name", "Verkleinern"},
-            {"action.zoomOut.description", "Zeigt die aktuelle Seite in einem kleineren Masstab an"},
+            {"action.zoomOut.description",
+                "Zeigt die aktuelle Seite in einem kleineren Masstab an"},
 
             {"preview-frame.title", "Seitenansicht"},
 
@@ -126,10 +128,14 @@ public class JFreeReportResources_de extends JFreeReportResources
             {"pdfsavedialog.ownerpasswordNoMatch", "Die Hauptkennworte stimmen nicht überein."},
 
             {"pdfsavedialog.errorTitle", "Fehler"},
-            {"pdfsavedialog.targetIsEmpty", "Bitte geben Sie einen Dateinamen für die PDF-Datei an."},
+            {"pdfsavedialog.targetIsEmpty",
+                "Bitte geben Sie einen Dateinamen für die PDF-Datei an."},
             {"pdfsavedialog.targetIsNoFile", "Der Dateiname zeigt auf keine gewöhnliche Datei."},
-            {"pdfsavedialog.targetIsNotWritable", "Sie besitzen keine ausreichenden Rechte um die ausgewählte Datei zu überschreiben."},
-            {"pdfsavedialog.targetOverwriteConfirmation", "Die Datei ''{0}'' existiert bereits. Soll diese Datei überschrieben werden?"},
+            {"pdfsavedialog.targetIsNotWritable",
+                "Sie besitzen keine ausreichenden Rechte um die ausgewählte Datei zu "
+               +"überschreiben."},
+            {"pdfsavedialog.targetOverwriteConfirmation",
+                "Die Datei ''{0}'' existiert bereits. Soll diese Datei überschrieben werden?"},
             {"pdfsavedialog.targetOverwriteTitle", "Datei überschreiben?"},
 
 

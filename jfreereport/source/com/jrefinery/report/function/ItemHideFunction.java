@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * --------------------
- * ItemSumFunction.java
- * --------------------
+ * ---------------------
+ * ItemHideFunction.java
+ * ---------------------
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemHideFunction.java,v 1.1 2002/08/27 13:14:26 taqua Exp $
+ * $Id: ItemHideFunction.java,v 1.2 2002/08/28 10:37:53 taqua Exp $
  *
  * Changes
  * -------
@@ -40,27 +40,36 @@ package com.jrefinery.report.function;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.event.ReportEvent;
 
-import java.math.BigDecimal;
-
 /**
- * The ItemHideFunction hides equal values in an group. Only the first changed value is printed.
+ * The ItemHideFunction hides equal values in a group. Only the first changed value is printed.
  * This function uses the property <code>element</code> to define the name of the element in the
- * ItemBand that should be made visible or invisible by this function. The property <code>field</code>
- * defines the field in the datasource or the expression which should be used to determine the visibility.
+ * ItemBand that should be made visible or invisible by this function.
+ * The property <code>field</code> defines the field in the datasource or the expression which
+ * should be used to determine the visibility.
+ *
+ * @author TM
  */
 public class ItemHideFunction extends AbstractFunction
 {
+  /** Literal text for the 'element' property. */
   public static final String ELEMENT_PROPERTY = "element";
+
+  /** Literal text for the 'field' property. */
   public static final String FIELD_PROPERTY = "field";
 
-  /** The sum. */
+  /** The last object. */
   private Object lastObject;
+
+  /** The 'visible' flag. */
   private boolean visible;
+
+  /** The 'first-in-group' flag. */
   private boolean firstInGroup;
 
   /**
-   * Constructs an unnamed function. Make sure to set a Name or function initialisation
-   * will fail.
+   * Constructs an unnamed function.
+   * <P>
+   * Make sure to set the function name before it is used, or function initialisation will fail.
    */
   public ItemHideFunction()
   {
@@ -92,11 +101,11 @@ public class ItemHideFunction extends AbstractFunction
   /**
    * Sets the name of the element in the item band that should be set visible/invisible.
    *
-   * @param _element The element name (must not be null).
+   * @param name  the element name (must not be null).
    */
-  public void setElement(String _element)
+  public void setElement(String name)
   {
-    setProperty(ELEMENT_PROPERTY, _element);
+    setProperty(ELEMENT_PROPERTY, name);
   }
 
   /**
@@ -116,13 +125,14 @@ public class ItemHideFunction extends AbstractFunction
    * <P>
    * The field name corresponds to a column name in the report's TableModel.
    *
-   * @param The field name (null not permitted).
+   * @param field  the field name (null not permitted).
    */
   public void setField(String field)
   {
     if (field == null)
+    {
       throw new NullPointerException();
-
+    }
     setProperty(FIELD_PROPERTY, field);
   }
 
@@ -157,18 +167,36 @@ public class ItemHideFunction extends AbstractFunction
   }
 
   /**
-   * Compares 2 values where both values can contain null values.
+   * Compares two objects where either or both objects could be null.
+   * <P>
+   * If both objects are null, this function returns <code>true</code>.
+   *
+   * @param o1  the first object.
+   * @param o2  the second object.
+   *
+   * @return true, if the two objects are equal.
    */
   private boolean secureEquals(Object o1, Object o2)
   {
-    if (o1 == null && o2 == null) return true;
-    if (o1 == null) return false;
-    if (o2 == null) return false;
+    if (o1 == null && o2 == null)
+    {
+      return true;
+    }
+    if (o1 == null)
+    {
+      return false;
+    }
+    if (o2 == null)
+    {
+      return false;
+    }
     return o1.equals(o2);
   }
 
   /**
-   * resets the state of the function when a new ItemGroup has started.
+   * Resets the state of the function when a new ItemGroup has started.
+   *
+   * @param event  the report event.
    */
   public void itemsStarted(ReportEvent event)
   {

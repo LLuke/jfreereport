@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.16 2002/09/05 09:34:53 taqua Exp $
+ * $Id: ImageReference.java,v 1.17 2002/09/06 17:02:30 taqua Exp $
  *
  * Changes:
  * --------
@@ -41,7 +41,6 @@
 
 package com.jrefinery.report;
 
-import gnu.bhresearch.pixie.wmf.WmfImageProducer;
 import gnu.bhresearch.pixie.wmf.WmfFile;
 
 import java.awt.Image;
@@ -52,12 +51,14 @@ import java.io.Serializable;
 import java.net.URL;
 
 /**
- * An image reference encapsulates the source of an image together with an
+ * An image reference encapsulates the source of an image together with a
  * <code>java.awt.Image</code>. The source is used to create a higher resolution
  * version if needed. The source file/URL may also be inlined into the output
  * target, to create better results.
  * <p>
  * An ImageReference is always used in conjunction with an ImageElement.
+ *
+ * @author TM
  */
 
 public class ImageReference implements Serializable, Cloneable
@@ -73,9 +74,7 @@ public class ImageReference implements Serializable, Cloneable
    * Creates a new ImageReference with an origin of 0,0 and the desired
    * width. The image data is read from the given URL.
    *
-   * @param url the source url. The url must be readable while generating
-   * reports.
-   * @param bounds The image size.
+   * @param url the source url. The url must be readable while generating reports.
    *
    * @throws IOException if the url could not be read.
    */
@@ -123,7 +122,10 @@ public class ImageReference implements Serializable, Cloneable
    */
   public ImageReference (Image img)
   {
-    if (img == null) throw new NullPointerException ();
+    if (img == null)
+    {
+      throw new NullPointerException ();
+    }
     this.image = img;
   }
 
@@ -160,8 +162,9 @@ public class ImageReference implements Serializable, Cloneable
   {
 
     if (surl == null)
+    {
       throw new NullPointerException ();
-
+    }
     this.url = surl;
   }
 
@@ -186,15 +189,34 @@ public class ImageReference implements Serializable, Cloneable
 
   /**
    * Checks for equality.
+   *
+   * @param o the object to test.
+   *
+   * @return true if the specified object is equal to this one.
    */
   public boolean equals (Object o)
   {
-    if (o == null) return false;
-    if (o instanceof ImageReference == false) return false;
+    if (o == null)
+    {
+      return false;
+    }
+    if (o instanceof ImageReference == false)
+    {
+      return false;
+    }
     ImageReference ref = (ImageReference) o;
-    if (ref.url == null && url == null) return true;
-    if (ref.url == null) return false;
-    if (url == null) return false;
+    if (ref.url == null && url == null)
+    {
+      return true;
+    }
+    if (ref.url == null)
+    {
+      return false;
+    }
+    if (url == null)
+    {
+      return false;
+    }
     return ref.url.equals (url);
   }
 
@@ -202,6 +224,8 @@ public class ImageReference implements Serializable, Cloneable
    * Clones this Element.
    *
    * @return a clone of this element.
+   *
+   * @throws CloneNotSupportedException this should never be thrown.
    */
   public Object clone () throws CloneNotSupportedException
   {

@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportDefinitionContentHandler.java,v 1.6 2002/08/31 16:50:48 taqua Exp $
+ * $Id: ReportDefinitionContentHandler.java,v 1.7 2002/09/08 13:18:56 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@
 package com.jrefinery.report.io;
 
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -87,8 +86,8 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   }
 
   /**
-   * returns a single instance of FontFactory which is used to create Fonts for bands and elements, where
-   * the element fonts depend on the bands font.
+   * Returns a single instance of FontFactory which is used to create Fonts for bands and
+   * elements, where the element fonts depend on the bands font.
    */
   public FontFactory getFontFactory ()
   {
@@ -100,8 +99,8 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   }
 
   /**
-   * returns the ReportFactory for this contentHandler. It is guaranteed that there is only one report factory
-   * per contentHandler.
+   * Returns the ReportFactory for this contentHandler. It is guaranteed that there is only one
+   * report factory per contentHandler.
    */
   protected ReportFactory getReportFactory ()
   {
@@ -140,7 +139,7 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
    * Returns the report for this content handler. This method will return null, until the report is
    * completly build and parsing has finished.
    *
-   * @returns the completly build report or null, if the parsing is still in progress
+   * @return the completely build report or null, if the parsing is still in progress
    */
   public JFreeReport getReport ()
   {
@@ -157,7 +156,8 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   }
 
   /**
-   * An element start tag has been reached.  The SAXEvent is forwarded to the currently active handler.
+   * An element start tag has been reached.  The SAXEvent is forwarded to the currently active
+   * handler.
    */
   public void startElement (String namespaceURI,
                             String localName,
@@ -220,7 +220,8 @@ public class ReportDefinitionContentHandler extends AbstractReportDefinitionHand
   }
 
   /**
-   * returns a new Instance of this ReportDefinitionHandler, using this implementation as prototype.
+   * Returns a new Instance of this ReportDefinitionHandler, using this implementation as
+   * prototype.
    */
   public AbstractReportDefinitionHandler getInstance ()
   {

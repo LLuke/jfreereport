@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFormatFilter.java,v 1.4 2002/06/06 21:40:40 taqua Exp $
+ * $Id: NumberFormatFilter.java,v 1.5 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,8 @@ import java.text.NumberFormat;
  * setNullValue(Object) is returned.
  *
  * @see java.text.NumberFormat
+ *
+ * @author TM
  */
 public class NumberFormatFilter extends FormatFilter
 {

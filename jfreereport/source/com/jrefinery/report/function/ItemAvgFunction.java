@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * --------------------
- * ItemSumFunction.java
+ * ItemAvgFunction.java
  * --------------------
  * (C)opyright 2000-2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemAvgFunction.java,v 1.2 2002/08/26 17:06:18 taqua Exp $
+ * $Id: ItemAvgFunction.java,v 1.3 2002/08/31 14:00:22 taqua Exp $
  *
  * Changes
  * -------
@@ -63,24 +63,33 @@ import java.math.BigDecimal;
  * <p>
  * The parameter <code>group</code> denotes the name of a group. When this group is started,
  * the counter gets reseted to null.
+ *
+ * @author TM
  */
 public class ItemAvgFunction extends AbstractFunction
 {
+  /** Literal text for the 'group' property. */
   public static final String GROUP_PROPERTY = "group";
+
+  /** Literal text for the 'field' property. */
   public static final String FIELD_PROPERTY = "field";
 
-  /** Zero. */
+  /** Useful constant for zero. */
   private static final BigDecimal ZERO = new BigDecimal(0.0);
+
+  /** Useful constant for one. */
   private static final BigDecimal ONE = new BigDecimal(1.0);
 
-  /** The sum. */
+  /** The item sum. */
   private BigDecimal sum;
+
+  /** The item count. */
   private BigDecimal itemCount;
 
   /** The parser for performing data conversion */
   private NumberFormatParser parser;
 
-  /** The datasource of the parser */
+  /** The data source of the parser */
   private StaticDataSource datasource;
 
   /**
@@ -162,11 +171,11 @@ public class ItemAvgFunction extends AbstractFunction
    * If a group is defined, the functions value is reset to zero at the start of every instance of
    * this group.
    *
-   * @param _group The group name (null permitted).
+   * @param name The group name (null permitted).
    */
-  public void setGroup(String _group)
+  public void setGroup(String name)
   {
-    setProperty(GROUP_PROPERTY, _group);
+    setProperty(GROUP_PROPERTY, name);
   }
 
   /**
@@ -186,12 +195,14 @@ public class ItemAvgFunction extends AbstractFunction
    * <P>
    * The field name corresponds to a column name in the report's TableModel.
    *
-   * @param The field name (null not permitted).
+   * @param field  the field name (null not permitted).
    */
   public void setField(String field)
   {
     if (field == null)
+    {
       throw new NullPointerException();
+    }
 
     setProperty(FIELD_PROPERTY, field);
   }

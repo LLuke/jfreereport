@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -73,8 +73,7 @@ public class ActionButton extends JButton
           setText((String) getAction().getValue
               (Action.NAME));
         }
-        else if (event.getPropertyName().equals
-            (Action.SHORT_DESCRIPTION))
+        else if (event.getPropertyName().equals(Action.SHORT_DESCRIPTION))
         {
           ActionButton.this.setToolTipText((String)
               getAction().getValue(Action.SHORT_DESCRIPTION));
@@ -177,8 +176,8 @@ public class ActionButton extends JButton
 
 
   /**
-   * returns and initializes the PropertyChangehandler for this ActionButton. The PropertyChangeHandler
-   * monitors the action and updates the button if necessary
+   * Returns and initializes the PropertyChangehandler for this ActionButton.
+   * The PropertyChangeHandler monitors the action and updates the button if necessary
    */
   protected ActionEnablePropertyChangeHandler getPropertyChangeHandler ()
   {
@@ -190,8 +189,8 @@ public class ActionButton extends JButton
   }
 
   /**
-   * Enables and disables this button and if an action is assigned to this button the propertychange is
-   * forwarded to the assigned action.
+   * Enables and disables this button and if an action is assigned to this button the
+   * propertychange is forwarded to the assigned action.
    *
    * @param b the new enable-state of this button
    */
