@@ -72,9 +72,9 @@ Using JDK 1.3 (or later) you can start the demo by running the class:
 
 For example, on Linux, the following command line will run the demo
 application (when the current working directory is
-jfreereport-0.7.0/jars):
+jfreereport-0.7.2/libs):
 
-java -classpath .:pixie.jar:jcommon-0.6.1.jar:jfreereport-0.7.2.jar:iText.jar:gnujaxp.jar com.jrefinery.report.demo.JFreeReportDemo
+java -classpath .:libs/pixie.jar:libs/jcommon-0.6.1.jar:libs/jfreereport-0.7.2.jar:libs/iText.jar:libs/gnujaxp.jar:./resources com.jrefinery.report.demo.JFreeReportDemo
 
 Depending on your system configuration and the current working
 directory, you may need to specify different paths in the above
