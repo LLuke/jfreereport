@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageLayouter.java,v 1.15 2005/01/25 00:10:30 taqua Exp $
+ * $Id: PageLayouter.java,v 1.16 2005/01/28 19:26:50 taqua Exp $
  *
  * Changes
  * -------
@@ -97,7 +97,6 @@ public abstract strictfp class PageLayouter extends AbstractFunction
     public Object clone ()
             throws CloneNotSupportedException
     {
-      // todo implement me
       return super.clone();
     }
   }
@@ -578,7 +577,10 @@ public abstract strictfp class PageLayouter extends AbstractFunction
 
   protected void addRootMetaBand (final MetaBand band)
   {
-    bands.add (band);
+    if (band.getElementCount() > 0)
+    {
+      bands.add (band);
+    }
   }
 
   public MetaPage getMetaPage ()

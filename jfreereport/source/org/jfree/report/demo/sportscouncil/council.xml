@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple"
-                        "http://jfreereport.sourceforge.net/report.dtd">
+<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple/version 0.8.5"
+                        "http://jfreereport.sourceforge.net/report-085.dtd">
 <report name="SportsCouncil" pageformat="A4" topmargin="25" leftmargin="25" bottommargin="25" rightmargin="25">
   <configuration>
     <property name="org.jfree.report.modules.output.pageable.pdf.Encoding">Identity-H</property>
@@ -18,7 +18,7 @@
 
         <band name="addressSection" x="0" y="110">
           <label x="0" y="0" width="100%" height="15" fontsize="15">About</label>
-          <line x1="0" y1="17" x2="0" y2="17" color="grey" />
+          <line x1="0" y1="17" x2="100%" y2="17" color="grey" />
 
           <band name="addressArea" x="50" y="20" height="120" fontname="Sans-Serif" fontsize="10" >
             <line x1="1" y1="0" x2="1" y2="100"/>
@@ -42,7 +42,7 @@
       <groupfooter>
         <band name="eventsFooterSection" x="0" y="20" height="50" fontsize="10" fontname="Sans-Serif" >
           <label x="0" y="0" width="100%" height="15" fontsize="15" fsbold="true" >Events</label>
-          <line x1="0" y1="17" x2="0" y2="17" color="grey" />
+          <line x1="0" y1="17" x2="100%" y2="17" color="grey" />
 
           <label x="0%" y="30" width="20%" height="10" fsbold="true">Events this year:</label>
           <number-field x="20%" y="30" width="4%" height="10" fieldname="council.yearEventCount"/>
@@ -62,7 +62,7 @@
 
         <band name="demographicsSection" x="0" y="70" fontsize="10" fontname="Sans-Serif" >
           <label x="0" y="0" width="100%" height="15" fontsize="15" fsbold="true" >Demographics</label>
-          <line x1="0" y1="17" x2="0" y2="17" color="grey" />
+          <line x1="0" y1="17" x2="100%" y2="17" color="grey" />
 
           <label x="0" y="30" width="20%" height="10" fsbold="true">Total Members:</label>
           <number-field x="20%" y="30" width="5%" height="10" fieldname="council.totalMembers-expression"/>
@@ -85,7 +85,7 @@
       <groupheader>
         <band name="leader" x="0" y="20" height="40" fontsize="10" fsbold="true" >
           <label x="0" y="0" width="100%" height="15" fontsize="15">Leadership</label>
-          <line x1="0" y1="17" x2="0" y2="17" color="grey" />
+          <line x1="0" y1="17" x2="100%" y2="17" color="grey" />
 
           <label x="0" y="20" width="25%" height="10">Name</label>
           <label x="25%" y="20" width="25%" height="10">Position</label>
@@ -95,7 +95,7 @@
 
         <band name="org" x="0" y="20" height="40" fsbold="true" >
           <label x="0" y="0" width="100%" height="15" fontsize="15">Club Sports Council Organizations</label>
-          <line x1="0" y1="17" x2="0" y2="17" color="grey" />
+          <line x1="0" y1="17" x2="100%" y2="17" color="grey" />
 
           <label x="0" y="20" width="40%" height="10">Name</label>
           <label x="40%" y="20" width="25%" height="10">Members</label>

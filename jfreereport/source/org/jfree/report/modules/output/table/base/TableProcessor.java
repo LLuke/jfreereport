@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableProcessor.java,v 1.15 2005/01/25 00:12:45 taqua Exp $
+ * $Id: TableProcessor.java,v 1.16 2005/02/04 19:22:57 taqua Exp $
  *
  * Changes
  * -------
@@ -45,9 +45,9 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
-import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.modules.output.meta.MetaBandProducer;
 import org.jfree.report.states.FinishState;
 import org.jfree.report.states.ReportState;
@@ -400,7 +400,8 @@ public abstract class TableProcessor
     final TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
     w.setTableCreator(createContentCreator());
 
-    w.setMaxWidth(getReport().getPageDefinition().getWidth());
+    w.setMaxWidth(StrictGeomUtility.toInternalValue
+            (getReport().getPageDefinition().getWidth()));
     final RepaginationState stateEvent = new RepaginationState(this, 0, 0, 0, 0, false);
 
     final int maxRows = state.getNumberOfRows();
@@ -468,7 +469,8 @@ public abstract class TableProcessor
    */
   protected void configure()
   {
-    getTableWriter().setMaxWidth(getReport().getPageDefinition().getWidth());
+    getTableWriter().setMaxWidth(StrictGeomUtility.toInternalValue
+            (getReport().getPageDefinition().getWidth()));
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemMinFunction.java,v 1.5 2005/01/25 00:00:15 taqua Exp $
+ * $Id: ItemMinFunction.java,v 1.6 2005/02/04 19:22:54 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,13 @@
  * 17-Jul-2002 : Handle empty data source without a crashing
  * 18-Jul-2002 : Handle out-of-bounds dataquery to the tablemodel
  * 21-Jul-2002 : Corrected the out-of-bounds constraint
+ * 17-Feb-2005 : Use java.util.Comparable interface instead of number for the compared
+ *               values.
  */
 
 package org.jfree.report.function;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import org.jfree.report.Group;
 import org.jfree.report.event.ReportEvent;
@@ -72,7 +73,7 @@ import org.jfree.report.util.Log;
 public class ItemMinFunction extends AbstractFunction implements Serializable
 {
   /** The minimum value. */
-  private transient BigDecimal min;
+  private transient Comparable min;
   private String group;
   private String field;
 
@@ -188,10 +189,13 @@ public class ItemMinFunction extends AbstractFunction implements Serializable
   public void itemsAdvanced(final ReportEvent event)
   {
     final Object fieldValue = event.getDataRow().get(getField());
-    final Number n = (Number) fieldValue;
+    if (fieldValue instanceof Comparable == false)
+    {
+      return;
+    }
     try
     {
-      final BigDecimal compare = new BigDecimal(n.doubleValue());
+      final Comparable compare = (Comparable) fieldValue;
       if (min == null)
       {
         min = compare;

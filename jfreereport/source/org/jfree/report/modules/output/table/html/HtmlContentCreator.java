@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.2 2005/01/25 01:25:59 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.3 2005/01/30 23:37:23 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -61,6 +61,7 @@ import org.jfree.report.modules.output.table.html.ref.HtmlReference;
 import org.jfree.report.modules.output.table.html.util.HtmlCharacterEntities;
 import org.jfree.report.modules.output.table.html.util.HtmlEncoderUtil;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.geom.StrictGeomUtility;
 
 public class HtmlContentCreator extends TableContentCreator
 {
@@ -334,7 +335,8 @@ public class HtmlContentCreator extends TableContentCreator
       // start a new row ...
       // first we check, whether this style is already collected.
       // if so, then we reuse that collected style
-      final int lastRowHeight = layout.getRowHeight(y);
+      final int lastRowHeight = (int) StrictGeomUtility.toExternalValue
+              (layout.getRowHeight(y));
       printRowStart(lastRowHeight);
 
       for (int x = 0; x < width; x++)
@@ -449,7 +451,8 @@ public class HtmlContentCreator extends TableContentCreator
     // now check, whether an equal style is already stored.
     // if so, then reference that style instead of printing the
     // whole stuff over and over again ..
-    final int width = layout.getCellWidth(rectangle.getX1(), rectangle.getX2());
+    final int width = (int) StrictGeomUtility.toExternalValue
+            (layout.getCellWidth(rectangle.getX1(), rectangle.getX2()));
 
     final String cellStyleName =
             layout.getStyleCollection().getPublicName(style);
@@ -548,7 +551,7 @@ public class HtmlContentCreator extends TableContentCreator
       pout.println("<!-- empty cell @(" + x + "," + y +")-->");
     }
 
-    final int width = layout.getCellWidth(x, x+1);
+    final int width = (int) StrictGeomUtility.toExternalValue(layout.getCellWidth(x, x+1));
     if (cellStyleName != null || isCreateBodyFragment())
     {
       pout.print("<td class=\"");

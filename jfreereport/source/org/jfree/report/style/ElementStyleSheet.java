@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.18 2005/02/04 19:22:58 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.19 2005/02/05 18:35:21 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@ import java.awt.Color;
 import java.awt.Paint;
 import java.awt.Stroke;
 import java.awt.geom.Dimension2D;
-import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -57,6 +56,7 @@ import java.util.Iterator;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.util.InstanceID;
 import org.jfree.report.util.SerializerHelper;
+import org.jfree.report.util.geom.StrictBounds;
 
 /**
  * An element style-sheet contains zero, one or many attributes that affect the appearance
@@ -118,7 +118,7 @@ public abstract class ElementStyleSheet implements Serializable, StyleChangeList
    * A key for the 'bounds' of an element.
    */
   public static final StyleKey BOUNDS =
-          StyleKey.getStyleKey("bounds", Rectangle2D.class, true, false);
+          StyleKey.getStyleKey("bounds", StrictBounds.class, true, false);
 
   /**
    * A key for an element's 'visible' flag.
@@ -513,12 +513,12 @@ public abstract class ElementStyleSheet implements Serializable, StyleChangeList
   {
     if (this.cascadeStyleSheet != null)
     {
-      cascadeStyleSheet.removeListener(this);
+      this.cascadeStyleSheet.removeListener(this);
     }
     this.cascadeStyleSheet = cascadeStyleSheet;
     if (this.cascadeStyleSheet != null)
     {
-      cascadeStyleSheet.addListener(this);
+      this.cascadeStyleSheet.addListener(this);
     }
   }
 

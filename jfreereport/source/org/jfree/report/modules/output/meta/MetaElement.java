@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaElement.java,v 1.3 2004/05/07 14:29:20 mungady Exp $
+ * $Id: MetaElement.java,v 1.4 2005/01/25 00:09:53 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,12 +38,11 @@
 
 package org.jfree.report.modules.output.meta;
 
-import java.awt.geom.Rectangle2D;
-
 import org.jfree.report.content.Content;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.style.StyleKey;
+import org.jfree.report.util.geom.StrictBounds;
 
 /**
  * Lightweight structures to carry layout information.
@@ -101,9 +100,9 @@ public class MetaElement implements Cloneable
     return elementContent;
   }
 
-  public final Rectangle2D getBounds ()
+  public final StrictBounds getBounds ()
   {
-    return (Rectangle2D) styleProperties.getStyleProperty(ElementStyleSheet.BOUNDS);
+    return (StrictBounds) styleProperties.getStyleProperty(ElementStyleSheet.BOUNDS);
   }
 
   public final FontDefinition getFontDefinitionProperty()

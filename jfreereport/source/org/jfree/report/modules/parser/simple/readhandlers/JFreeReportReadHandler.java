@@ -5,13 +5,18 @@ import java.awt.print.Paper;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.SimplePageDefinition;
+import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.common.ConfigurationReadHandler;
+import org.jfree.report.modules.parser.base.common.FunctionsReadHandler;
+import org.jfree.report.modules.parser.base.common.IncludeReadHandler;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.ParserUtil;
-import org.jfree.xml.parser.AbstractXmlReadHandler;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
 import org.xml.sax.Attributes;
@@ -33,7 +38,7 @@ import org.xml.sax.SAXException;
  * &gt;
  * </pre>
  */
-public class JFreeReportReadHandler extends AbstractXmlReadHandler
+public class JFreeReportReadHandler extends AbstractPropertyXmlReadHandler
 {
   public static final String REPORT_KEY = ReportParser.HELPER_OBJ_REPORT_NAME;
 
@@ -114,7 +119,7 @@ public class JFreeReportReadHandler extends AbstractXmlReadHandler
    * @param attrs the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes attrs)
+  protected void startParsing (final PropertyAttributes attrs)
           throws SAXException
   {
     final Object maybeReport = getRootHandler().getHelperObject(REPORT_KEY);
@@ -265,7 +270,7 @@ public class JFreeReportReadHandler extends AbstractXmlReadHandler
    *                                  if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild (final String tagName,
-                                               final Attributes atts)
+                                               final PropertyAttributes atts)
           throws XmlReaderException, SAXException
   {
     if (tagName.equals("configuration"))
@@ -308,6 +313,10 @@ public class JFreeReportReadHandler extends AbstractXmlReadHandler
     {
       return new IncludeReadHandler();
     }
+    else if (tagName.equals("parser-config"))
+    {
+      return new ParserConfigurationReadHandler();
+    }
     else
     {
       return null;
@@ -325,6 +334,13 @@ public class JFreeReportReadHandler extends AbstractXmlReadHandler
   public Object getObject ()
           throws XmlReaderException
   {
-    return getRootHandler().getHelperObject(REPORT_KEY);
+    return report;
+  }
+
+  protected void storeComments ()
+          throws SAXException
+  {
+    final CommentHintPath hintPath = new CommentHintPath(report);
+    defaultStoreComments(hintPath);
   }
 }

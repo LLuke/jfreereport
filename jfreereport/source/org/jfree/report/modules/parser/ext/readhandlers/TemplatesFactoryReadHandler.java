@@ -1,15 +1,16 @@
 package org.jfree.report.modules.parser.ext.readhandlers;
 
+import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollection;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.parser.AbstractXmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-public class TemplatesFactoryReadHandler extends AbstractXmlReadHandler
+public class TemplatesFactoryReadHandler extends AbstractPropertyXmlReadHandler
 {
   public TemplatesFactoryReadHandler ()
   {
@@ -21,7 +22,7 @@ public class TemplatesFactoryReadHandler extends AbstractXmlReadHandler
    * @param attrs the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes attrs)
+  protected void startParsing (final PropertyAttributes attrs)
           throws SAXException, XmlReaderException
   {
     final String className = attrs.getValue("class");
@@ -51,5 +52,14 @@ public class TemplatesFactoryReadHandler extends AbstractXmlReadHandler
           throws XmlReaderException
   {
     return null;
+  }
+
+  protected void storeComments ()
+          throws SAXException
+  {
+    final CommentHintPath commentHintPath = new CommentHintPath("report-definition");
+    commentHintPath.addName("parser-config");
+    commentHintPath.addName("template-factory");
+    defaultStoreComments(commentHintPath);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticShapeElementFactory.java,v 1.9 2005/01/28 19:26:48 taqua Exp $
+ * $Id: StaticShapeElementFactory.java,v 1.10 2005/02/10 14:19:45 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -308,8 +308,7 @@ public class StaticShapeElementFactory extends ShapeElementFactory
     final StaticShapeElementFactory factory = new StaticShapeElementFactory();
     factory.setName(name);
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension
-        ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setColor(paint);
     factory.setKeepAspectRatio(new Boolean(keepAspectRatio));
     factory.setScale(new Boolean(shouldScale));

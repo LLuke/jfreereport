@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVMetaBandProducer.java,v 1.3 2005/01/25 00:12:49 taqua Exp $
+ * $Id: CSVMetaBandProducer.java,v 1.4 2005/01/30 23:37:23 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,6 +42,7 @@ import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.Element;
 import org.jfree.report.TextElement;
+import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.content.Content;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.modules.output.meta.MetaElement;
@@ -63,7 +64,7 @@ public class CSVMetaBandProducer extends TableMetaBandProducer
    * @param e the element.
    * @return the table cell data element for the element.
    */
-  protected MetaElement createTextCell(final Element e, final float x, final float y)
+  protected MetaElement createTextCell(final Element e, final long x, final long y)
   {
     // we only handle plain text elements at the moment ...
     if (e.getContentType().equals(TextElement.CONTENT_TYPE) == false)
@@ -75,7 +76,7 @@ public class CSVMetaBandProducer extends TableMetaBandProducer
       return null;
     }
 
-    final Rectangle2D bounds = (Rectangle2D)
+    final StrictBounds bounds = (StrictBounds)
         e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
 
     final Content content = new RawContent (bounds, e.getValue());
@@ -87,13 +88,13 @@ public class CSVMetaBandProducer extends TableMetaBandProducer
   }
 
   protected MetaElement createDrawableCell (final Element e,
-                                            final float x, final float y)
+                                            final long x, final long y)
   {
     return null;
   }
 
   protected MetaElement createImageCell (final Element e,
-                                         final float x, final float y)
+                                         final long x, final long y)
   {
     return null;
   }

@@ -1,20 +1,19 @@
 package org.jfree.report.modules.parser.ext.readhandlers;
 
-import org.jfree.report.modules.parser.ext.factory.elements.ElementFactory;
-import org.jfree.report.modules.parser.ext.factory.elements.ElementFactoryCollector;
-import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactoryCollector;
-import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactory;
+import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.factory.objects.ClassFactory;
-import org.jfree.xml.parser.AbstractXmlReadHandler;
+import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.parser.XmlReaderException;
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-public class ClassFactoryReadHandler extends AbstractXmlReadHandler
+public class ClassFactoryReadHandler extends AbstractPropertyXmlReadHandler
 {
+  private String className;
+
   public ClassFactoryReadHandler ()
   {
   }
@@ -25,10 +24,10 @@ public class ClassFactoryReadHandler extends AbstractXmlReadHandler
    * @param attrs the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes attrs)
+  protected void startParsing (final PropertyAttributes attrs)
           throws SAXException, XmlReaderException
   {
-    final String className = attrs.getValue("class");
+    className = attrs.getValue("class");
     if (className == null)
     {
       throw new ParseException("Attribute 'class' is missing.", getRootHandler().getLocator());
@@ -40,6 +39,15 @@ public class ClassFactoryReadHandler extends AbstractXmlReadHandler
     final ClassFactory factory = (ClassFactory)
             ObjectUtilities.loadAndInstantiate(className, getClass());
     fc.addFactory(factory);
+  }
+
+  protected void storeComments ()
+          throws SAXException
+  {
+    final CommentHintPath commentHintPath = new CommentHintPath("report-definition");
+    commentHintPath.addName("parser-config");
+    commentHintPath.addName("object-factory");
+    defaultStoreComments(commentHintPath);
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ShapeContentFactoryModule.java,v 1.5 2005/02/04 19:22:51 taqua Exp $
+ * $Id: ShapeContentFactoryModule.java,v 1.6 2005/02/05 18:35:17 taqua Exp $
  *
  * Changes
  * -------
@@ -37,9 +37,6 @@
 package org.jfree.report.content;
 
 import java.awt.Shape;
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.Point2D;
 
 import org.jfree.report.Element;
 import org.jfree.report.ShapeElement;
@@ -47,6 +44,10 @@ import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.ElementLayoutInformation;
 import org.jfree.report.util.StringUtil;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictDimension;
+import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.report.util.geom.StrictPoint;
 
 /**
  * The ShapeContentFactoryModule is used to create a content wrapper for java.awt.Shape
@@ -106,20 +107,19 @@ public class ShapeContentFactoryModule implements ContentFactoryModule
       return EmptyContent.getDefaultEmptyContent();
     }
 
-    final Dimension2D iBounds = ElementLayoutInformation.unionMin
+    final StrictDimension iBounds = ElementLayoutInformation.unionMin
             (bounds.getMaximumSize(), bounds.getPreferredSize());
     if (iBounds.getWidth() == 0 && iBounds.getHeight() == 0)
     {
       return EmptyContent.getDefaultEmptyContent();
     }
-    final Point2D point = bounds.getAbsolutePosition();
+    final StrictPoint point = bounds.getAbsolutePosition();
 
     final Shape s = ShapeTransform.transformShape(value,
         e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE),
         e.getStyle().getBooleanStyleProperty(ElementStyleSheet.KEEP_ASPECT_RATIO),
-        iBounds);
-    return new ShapeContent(s, new Rectangle2D.Float
-            ((float) point.getX(), (float) point.getY(),
-             (float) iBounds.getWidth(), (float) iBounds.getHeight()));
+        StrictGeomUtility.createAWTDimension(iBounds.getWidth(), iBounds.getHeight()));
+    return new ShapeContent(s, new StrictBounds
+            (point.getX(), point.getY(), iBounds.getWidth(), iBounds.getHeight()));
   }
 }

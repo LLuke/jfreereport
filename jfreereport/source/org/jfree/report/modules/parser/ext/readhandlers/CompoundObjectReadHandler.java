@@ -9,6 +9,8 @@ import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.ElementDefinitionException;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.xml.sax.SAXException;
 import org.xml.sax.Attributes;
 
@@ -17,9 +19,10 @@ public class CompoundObjectReadHandler extends BasicObjectReadHandler
   private HashMap basicObjects;
   private HashMap compoundObjects;
 
-  public CompoundObjectReadHandler (final ObjectDescription objectDescription)
+  public CompoundObjectReadHandler (final ObjectDescription objectDescription,
+                                    final CommentHintPath commentPath)
   {
-    super(objectDescription);
+    super(objectDescription, commentPath);
     basicObjects = new HashMap();
     compoundObjects = new HashMap();
   }
@@ -62,6 +65,9 @@ public class CompoundObjectReadHandler extends BasicObjectReadHandler
       final CompoundObjectReadHandler readHandler = (CompoundObjectReadHandler) entry.getValue();
       objectDescription.setParameter(name, readHandler.getObject());
     }
+    
+    storeCloseComments();
+    storeComments();
   }
 
   /**
@@ -76,7 +82,7 @@ public class CompoundObjectReadHandler extends BasicObjectReadHandler
    *                                  if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild (final String tagName,
-                                               final Attributes atts)
+                                               final PropertyAttributes atts)
           throws XmlReaderException, SAXException
   {
     if (tagName.equals("basic-object"))
@@ -105,8 +111,10 @@ public class CompoundObjectReadHandler extends BasicObjectReadHandler
             ObjectFactoryUtility.findDescription
             (fact, getObjectDescription().getParameterDefinition(name));
 
+    final CommentHintPath path = getCommentHintPath().getInstance();
+    path.addName(name);
     final BasicObjectReadHandler readHandler =
-            new BasicObjectReadHandler(objectDescription);
+            new BasicObjectReadHandler(objectDescription, path);
     basicObjects.put(name, readHandler);
     return readHandler;
   }
@@ -125,9 +133,12 @@ public class CompoundObjectReadHandler extends BasicObjectReadHandler
     final ObjectDescription objectDescription =
             ObjectFactoryUtility.findDescription
             (fact, getObjectDescription().getParameterDefinition(name));
+    
+    final CommentHintPath path = getCommentHintPath().getInstance();
+    path.addName(name);
 
     final CompoundObjectReadHandler readHandler =
-            new CompoundObjectReadHandler(objectDescription);
+            new CompoundObjectReadHandler(objectDescription, path);
     compoundObjects.put(name, readHandler);
     return readHandler;
   }
@@ -138,7 +149,7 @@ public class CompoundObjectReadHandler extends BasicObjectReadHandler
    * @param attrs the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes attrs)
+  protected void startParsing (final PropertyAttributes attrs)
           throws SAXException, XmlReaderException
   {
     handleStartParsing(attrs);

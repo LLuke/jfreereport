@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlImageMetaElement.java,v 1.3 2005/01/25 00:13:47 taqua Exp $
+ * $Id: HtmlImageMetaElement.java,v 1.4 2005/02/05 18:35:19 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -49,6 +49,8 @@ import org.jfree.report.modules.output.table.html.util.HtmlCharacterEntities;
 import org.jfree.report.modules.output.table.html.util.HtmlEncoderUtil;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.Log;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictGeomUtility;
 
 public class HtmlImageMetaElement extends HtmlMetaElement
 {
@@ -75,12 +77,16 @@ public class HtmlImageMetaElement extends HtmlMetaElement
       final HtmlReference href = filesystem.createImageReference(image);
       if (href.isExternal())
       {
+        final StrictBounds imageArea = content.getImageArea();
+        final int imageWidth = (int) StrictGeomUtility.toExternalValue(imageArea.getWidth());
+        final int imageHeight = (int) StrictGeomUtility.toExternalValue(imageArea.getHeight());
+
         pout.print("<img src=\"");
         pout.print(href.getReferenceData());
         pout.print("\" width=\"");
-        pout.write(String.valueOf(content.getImageArea().getWidth()));
+        pout.write(String.valueOf(imageWidth));
         pout.print("\" height=\"");
-        pout.write(String.valueOf(content.getImageArea().getHeight()));
+        pout.write(String.valueOf(imageHeight));
         if (href.getReferenceData() != null)
         {
           pout.print("\" alt=\"");

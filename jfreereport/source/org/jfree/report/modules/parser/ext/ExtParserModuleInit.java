@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtParserModuleInit.java,v 1.9 2005/01/25 00:19:00 taqua Exp $
+ * $Id: ExtParserModuleInit.java,v 1.10 2005/02/04 19:08:51 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -55,7 +55,7 @@ public class ExtParserModuleInit implements ModuleInitializer
 {
   /** the Public ID for the extensible version of JFreeReport XML definitions. */
   public static final String PUBLIC_ID_EXTENDED =
-      "-//JFreeReport//DTD report definition//EN//extended";
+      "-//JFreeReport//DTD report definition//EN//extended/version 0.8.5";
 
   /**
    * Default Constructor.
@@ -74,7 +74,7 @@ public class ExtParserModuleInit implements ModuleInitializer
     final ParserEntityResolver res = ParserEntityResolver.getDefaultResolver();
 
     final URL urlExtReportDTD = res.getClass().getResource(
-        "/org/jfree/report/modules/parser/ext/resources/extreport.dtd");
+        "/org/jfree/report/modules/parser/ext/resources/extreport-085.dtd");
     res.setDTDLocation(PUBLIC_ID_EXTENDED, urlExtReportDTD);
 
     InitialReportHandler.registerHandler

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.10.2.1.2.1 2004/05/11 13:25:29 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.13 2005/01/25 00:00:40 taqua Exp $
  *
  * Changes
  * -------
@@ -38,13 +38,11 @@
 
 package org.jfree.report.layout;
 
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Rectangle2D;
-
 import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.ui.FloatDimension;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictDimension;
 
 /**
  * A collection of utility methods for use by classes that implement the BandLayoutManager
@@ -91,7 +89,7 @@ public final strictfp class BandLayoutManagerUtil
    * @return the element bounds.
    * @throws java.lang.NullPointerException if the given element is null
    */
-  public static Rectangle2D getBounds(final Element e, Rectangle2D bounds)
+  public static StrictBounds getBounds(final Element e, StrictBounds bounds)
   {
     if (e == null)
     {
@@ -99,9 +97,10 @@ public final strictfp class BandLayoutManagerUtil
     }
     if (bounds == null)
     {
-      bounds = new Rectangle2D.Float();
+      bounds = new StrictBounds();
     }
-    bounds.setRect((Rectangle2D) e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS));
+    final StrictBounds eBounds = (StrictBounds) e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+    bounds.setRect(eBounds.getX(), eBounds.getY(), eBounds.getWidth(), eBounds.getHeight());
     return bounds;
   }
 
@@ -112,9 +111,9 @@ public final strictfp class BandLayoutManagerUtil
    * @param bounds  the new bounds.
    * @throws java.lang.NullPointerException if the given element or the bounds are null
    */
-  public static void setBounds(final Element e, final Rectangle2D bounds)
+  public static void setBounds(final Element e, final StrictBounds bounds)
   {
-    e.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds.getBounds2D());
+    e.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds.clone());
   }
 
   /**
@@ -135,8 +134,8 @@ public final strictfp class BandLayoutManagerUtil
    * @return the bounds for the layouted band. The band itself got updated to
    * contain the new element bounds.
    */
-  public static Rectangle2D doLayout(final Band band, final LayoutSupport support,
-                                     final float width, final float height)
+  public static StrictBounds doLayout(final Band band, final LayoutSupport support,
+                                     final long width, final long height)
   {
     if (band == null)
     {
@@ -152,7 +151,7 @@ public final strictfp class BandLayoutManagerUtil
     }
     if (band.isVisible() == false)
     {
-      final Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, 0);
+      final StrictBounds bounds = new StrictBounds(0, 0, width, 0);
       band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
       return bounds;
     }
@@ -161,8 +160,8 @@ public final strictfp class BandLayoutManagerUtil
         = BandLayoutManagerUtil.getLayoutManager(band);
     // in this layouter the width of a band is always the full page width
     //final Dimension2D fdim = lm.minimumLayoutSize(band, new FloatDimension(width, height));
-    final Dimension2D fdim = lm.preferredLayoutSize
-      (band, new FloatDimension(width, height), support);
+    final StrictDimension fdim = lm.preferredLayoutSize
+      (band, new StrictDimension(width, height), support);
 
     // the height is redefined by the band's requirements to support
     // the dynamic elements.
@@ -170,7 +169,7 @@ public final strictfp class BandLayoutManagerUtil
     // This should always be the default, the width is given, and the height is
     // computed. We can't compute both, as this is impossible - but we can make
     // the given computation as reliable as possible.
-    final Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, (float) fdim.getHeight());
+    final StrictBounds bounds = new StrictBounds(0, 0, width, fdim.getHeight());
     band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
     lm.doLayout(band, support);
     return bounds;
@@ -192,9 +191,9 @@ public final strictfp class BandLayoutManagerUtil
    * @return the bounds for the layouted band. The band itself got updated to
    * contain the new element bounds.
    */
-  public static Rectangle2D doFixedLayout
+  public static StrictBounds doFixedLayout
                                     (final Band band, final LayoutSupport support,
-                                     final float width, final float height)
+                                     final long width, final long height)
   {
     if (band == null)
     {
@@ -211,7 +210,7 @@ public final strictfp class BandLayoutManagerUtil
     }
     if (band.isVisible() == false)
     {
-      final Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, 0);
+      final StrictBounds bounds = new StrictBounds(0, 0, width, 0);
       band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
       return bounds;
     }
@@ -219,7 +218,7 @@ public final strictfp class BandLayoutManagerUtil
     final BandLayoutManager lm
         = BandLayoutManagerUtil.getLayoutManager(band);
 
-    final Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, height);
+    final StrictBounds bounds = new StrictBounds(0, 0, width, height);
     band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);
     lm.doLayout(band, support);
     return bounds;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecordKey.java,v 1.5.4.2 2004/10/13 18:42:21 taqua Exp $
+ * $Id: BaseFontRecordKey.java,v 1.7 2005/01/25 00:12:00 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,6 @@
  */
 
 package org.jfree.report.modules.output.support.itext;
-
-
 
 /**
  * A PDF font record key. This class is immutable.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HorizontalBoundsAlignment.java,v 1.4 2003/11/01 19:52:28 taqua Exp $
+ * $Id: HorizontalBoundsAlignment.java,v 1.5 2004/05/07 12:53:06 mungady Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@
 
 package org.jfree.report.modules.output.pageable.base.operations;
 
-import java.awt.geom.Rectangle2D;
+import org.jfree.report.util.geom.StrictBounds;
 
 /**
  * An abstract base class for performing horizontal alignment.
@@ -52,7 +52,7 @@ public abstract strictfp class HorizontalBoundsAlignment extends BoundsAlignment
    *
    * @param bounds  the bounds.
    */
-  protected HorizontalBoundsAlignment(final Rectangle2D bounds)
+  protected HorizontalBoundsAlignment(final StrictBounds bounds)
   {
     super(bounds);
   }

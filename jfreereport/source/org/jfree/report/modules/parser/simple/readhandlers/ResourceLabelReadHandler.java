@@ -1,16 +1,16 @@
 package org.jfree.report.modules.parser.simple.readhandlers;
 
-import org.jfree.report.elementfactory.TextFieldElementFactory;
 import org.jfree.report.elementfactory.ResourceFieldElementFactory;
 import org.jfree.report.elementfactory.ResourceLabelElementFactory;
+import org.jfree.report.elementfactory.TextFieldElementFactory;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
+import org.jfree.report.modules.parser.base.PropertyStringReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
-import org.jfree.xml.parser.coretypes.StringReadHandler;
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ResourceLabelReadHandler extends StringFieldReadHandler
 {
-  private StringReadHandler stringReadHandler;
+  private PropertyStringReadHandler stringReadHandler;
 
   public ResourceLabelReadHandler ()
   {
@@ -20,7 +20,7 @@ public class ResourceLabelReadHandler extends StringFieldReadHandler
   protected ResourceLabelReadHandler (final TextFieldElementFactory textFieldElementFactory)
   {
     super(textFieldElementFactory);
-    stringReadHandler = new StringReadHandler();
+    stringReadHandler = new PropertyStringReadHandler(null);
   }
 
   /**
@@ -29,7 +29,7 @@ public class ResourceLabelReadHandler extends StringFieldReadHandler
    * @param atts the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes atts)
+  protected void startParsing (final PropertyAttributes atts)
           throws SAXException, XmlReaderException
   {
     super.startParsing(atts);
@@ -49,8 +49,8 @@ public class ResourceLabelReadHandler extends StringFieldReadHandler
   protected void doneParsing ()
           throws SAXException, XmlReaderException
   {
-    final String text = stringReadHandler.getResult();
     final ResourceLabelElementFactory elementFactory = (ResourceLabelElementFactory) getElementFactory();
     elementFactory.setResourceKey(stringReadHandler.getResult());
+    super.doneParsing();
   }
 }

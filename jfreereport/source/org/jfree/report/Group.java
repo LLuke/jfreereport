@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.8 2005/01/30 23:37:17 taqua Exp $
+ * $Id: Group.java,v 1.9 2005/02/04 19:22:51 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -102,8 +102,8 @@ public class Group implements Serializable, Cloneable, Comparable
    */
   public Group()
   {
-    name = ANONYMOUS_GROUP_PREFIX + super.hashCode();
-    fields = new TreeSet();
+    this.name = ANONYMOUS_GROUP_PREFIX + super.hashCode();
+    this.fields = new TreeSet();
     this.footer = new GroupFooter();
     this.header = new GroupHeader();
   }

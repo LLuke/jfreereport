@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DateFieldElementFactory.java,v 1.7 2004/05/07 08:24:41 mungady Exp $
+ * $Id: DateFieldElementFactory.java,v 1.8 2005/02/05 18:35:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,8 +51,8 @@ import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.DateFormatFilter;
 import org.jfree.report.filter.templates.DateFieldTemplate;
-import org.jfree.report.style.FontDefinition;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
 
 /**
@@ -254,8 +254,7 @@ public class DateFieldElementFactory extends TextFieldElementFactory
   {
     final DateFieldElementFactory factory = new DateFieldElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension
-        ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setName(name);
     factory.setColor(paint);
     factory.setHorizontalAlignment(alignment);
@@ -338,8 +337,7 @@ public class DateFieldElementFactory extends TextFieldElementFactory
   {
     final DateFieldElementFactory factory = new DateFieldElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension
-        ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setName(name);
     factory.setColor(paint);
     factory.setHorizontalAlignment(alignment);

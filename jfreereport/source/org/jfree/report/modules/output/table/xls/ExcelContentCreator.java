@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelContentCreator.java,v 1.3 2005/01/25 00:16:30 taqua Exp $
+ * $Id: ExcelContentCreator.java,v 1.4 2005/01/30 23:37:23 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -60,6 +60,7 @@ import org.jfree.report.modules.output.table.base.TableRectangle;
 import org.jfree.report.modules.output.table.xls.metaelements.ExcelMetaElement;
 import org.jfree.report.modules.output.table.xls.util.ExcelPrintSetupFactory;
 import org.jfree.report.util.Log;
+import org.jfree.report.util.geom.StrictGeomUtility;
 
 public class ExcelContentCreator extends TableContentCreator
 {
@@ -164,8 +165,8 @@ public class ExcelContentCreator extends TableContentCreator
     final int width = Math.max(go.getColumnCount(), layout.getColumnCount());
     for (int i = 0; i < width; i++)
     {
-      final int cellWidth = layout.getCellWidth(i , i+1);
-//      Log.debug ("CellWidth: [" + i + "] " + cellWidth);
+      final int cellWidth = (int) StrictGeomUtility.toExternalValue
+              (layout.getCellWidth(i , i+1));
       sheet.setColumnWidth((short) i, (short) (cellWidth * XFACTOR));
     }
     
@@ -174,9 +175,9 @@ public class ExcelContentCreator extends TableContentCreator
     for (int y = layoutOffset; y < height + layoutOffset; y++)
     {
       final HSSFRow row = sheet.createRow((short) y);
-      final int lastRowHeight = layout.getRowHeight(y);
+      final int lastRowHeight = (int) StrictGeomUtility.toExternalValue
+              (layout.getRowHeight(y));
       row.setHeight((short) (lastRowHeight * YFACTOR));
-//      Log.debug ("RowHeight: [" + y + "] " + lastRowHeight);
 
       for (int x = 0; x < width; x++)
       {

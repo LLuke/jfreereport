@@ -2,13 +2,14 @@ package org.jfree.report.modules.parser.ext.readhandlers;
 
 import org.jfree.report.Element;
 import org.jfree.report.filter.DataSource;
-import org.jfree.xml.parser.AbstractXmlReadHandler;
+import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-public class ElementReadHandler extends AbstractXmlReadHandler
+public class ElementReadHandler extends AbstractPropertyXmlReadHandler
 {
   private XmlReadHandler dataSourceHandler;
   private Element element;
@@ -29,7 +30,7 @@ public class ElementReadHandler extends AbstractXmlReadHandler
    * @param attrs the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes attrs)
+  protected void startParsing (final PropertyAttributes attrs)
           throws SAXException, XmlReaderException
   {
     final String name = attrs.getValue("name");
@@ -52,7 +53,7 @@ public class ElementReadHandler extends AbstractXmlReadHandler
    *                                  if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild (final String tagName,
-                                               final Attributes atts)
+                                               final PropertyAttributes atts)
           throws XmlReaderException, SAXException
   {
     if (tagName.equals("style"))
@@ -61,12 +62,16 @@ public class ElementReadHandler extends AbstractXmlReadHandler
     }
     else if (tagName.equals("datasource"))
     {
-      dataSourceHandler = new DataSourceReadHandler();
+      final CommentHintPath hintPath = new CommentHintPath (element);
+      hintPath.addName("datasource");
+      dataSourceHandler = new DataSourceReadHandler(hintPath);
       return dataSourceHandler;
     }
     else if (tagName.equals("template"))
     {
-      dataSourceHandler = new TemplateReadHandler(false);
+      final CommentHintPath hintPath = new CommentHintPath (element);
+      hintPath.addName("template");
+      dataSourceHandler = new TemplateReadHandler(false, hintPath);
       return dataSourceHandler;
     }
     return null;
@@ -101,5 +106,11 @@ public class ElementReadHandler extends AbstractXmlReadHandler
           throws XmlReaderException
   {
     return element;
+  }
+
+  protected void storeComments ()
+          throws SAXException
+  {
+    defaultStoreComments(new CommentHintPath(element));
   }
 }

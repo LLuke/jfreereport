@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ShapeFieldElementFactory.java,v 1.5 2003/10/05 21:52:32 taqua Exp $
+ * $Id: ShapeFieldElementFactory.java,v 1.6 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -140,8 +140,7 @@ public class ShapeFieldElementFactory extends ShapeElementFactory
     final ShapeFieldElementFactory factory = new ShapeFieldElementFactory();
     factory.setName(name);
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension
-        ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setColor(paint);
     factory.setKeepAspectRatio(new Boolean(keepAspectRatio));
     factory.setFieldname(fieldname);

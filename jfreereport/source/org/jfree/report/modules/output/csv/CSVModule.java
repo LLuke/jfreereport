@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CSVModule.java,v 1.5 2004/05/07 12:53:10 mungady Exp $
+ * $Id: CSVModule.java,v 1.6 2005/01/25 00:09:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -69,7 +69,7 @@ public class CSVModule extends AbstractModule
    * @throws org.jfree.base.modules.ModuleInitializeException
    *          if an error ocurred while initializing the module.
    */
-  public void initialize (SubSystem subSystem)
+  public void initialize (final SubSystem subSystem)
           throws ModuleInitializeException
   {
   }

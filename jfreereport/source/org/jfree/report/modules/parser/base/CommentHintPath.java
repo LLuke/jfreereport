@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CommentHintPath.java,v 1.5 2003/08/25 14:29:32 taqua Exp $
+ * $Id: CommentHintPath.java,v 1.7 2005/01/25 00:17:23 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -69,7 +69,6 @@ public final class CommentHintPath implements Serializable, Cloneable
   public CommentHintPath(final Object name)
   {
     this();
-
     addName(name);
   }
 

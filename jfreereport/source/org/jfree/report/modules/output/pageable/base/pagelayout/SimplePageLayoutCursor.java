@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SimplePageLayoutCursor.java,v 1.4 2003/09/13 15:14:40 taqua Exp $
+ * $Id: SimplePageLayoutCursor.java,v 1.6 2005/01/25 00:10:42 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -59,25 +59,25 @@ import java.io.Serializable;
 public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
 {
   /** The y-coordinate. */
-  private float y;
+  private long y;
 
   /** The bottom of the page. */
-  private final float pageBottom;
+  private final long pageBottom;
 
   /** The reserved space at the bottom of the page. */
-  private float reserved;
+  private long reserved;
 
   /** The space used by the pageheader. */
-  private float pageTop;
+  private long pageTop;
 
   /**
    * Constructs a new cursor.
    *
    * @param height  the logical page height.
    */
-  public SimplePageLayoutCursor(final float height)
+  public SimplePageLayoutCursor(final long height)
   {
-    y = (float) 0;
+    y = 0;
     pageBottom = height;
   }
 
@@ -88,7 +88,7 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @param reserve  the space (in points) to reserve at the bottom of the page.
    */
-  public void setReservedSpace(final float reserve)
+  public void setReservedSpace(final long reserve)
   {
     if (reserve < 0)
     {
@@ -106,7 +106,7 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @return the reserved space (in Java2D units).
    */
-  public float getReservedSpace()
+  public long getReservedSpace()
   {
     return reserved;
   }
@@ -115,7 +115,7 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
    * Adds the specified amount to the y-coordinate.
    * @param amount The amount that the cursor should advance down the page.
    */
-  public void advance(final float amount)
+  public void advance(final long amount)
   {
     if (amount < 0)
     {
@@ -131,7 +131,7 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @param amount The amount that the cursor should advance down the page.
    */
-  public void advanceTo(final float amount)
+  public void advanceTo(final long amount)
   {
     if (amount < y)
     {
@@ -147,7 +147,7 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @return A flag indicating whether or not there is room to print the band.
    */
-  public boolean isSpaceFor(final float height)
+  public boolean isSpaceFor(final long height)
   {
     return (y + height <= (pageBottom - reserved));
   }
@@ -157,7 +157,7 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @return the current y-position of this cursor.
    */
-  public float getY()
+  public long getY()
   {
     return y;
   }
@@ -167,7 +167,7 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @return the bottom border of the printable area.
    */
-  public float getPageBottom()
+  public long getPageBottom()
   {
     return pageBottom;
   }
@@ -177,7 +177,7 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @return the start of the space reserved for the page footer.
    */
-  public float getPageBottomReserved()
+  public long getPageBottomReserved()
   {
     return (pageBottom - reserved);
   }
@@ -218,7 +218,7 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @return the reserved page header space.
    */
-  public float getPageTop()
+  public long getPageTop()
   {
     return pageTop;
   }
@@ -228,7 +228,7 @@ public strictfp class SimplePageLayoutCursor implements Cloneable, Serializable
    *
    * @param pageTop the reserved page header space.
    */
-  public void setPageTop(final float pageTop)
+  public void setPageTop(final long pageTop)
   {
     this.pageTop = pageTop;
   }

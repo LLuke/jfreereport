@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayoutCollection.java,v 1.2.2.1 2004/12/13 19:27:05 taqua Exp $
+ * $Id: SheetLayoutCollection.java,v 1.3 2005/01/25 00:12:35 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -74,7 +74,7 @@ public class SheetLayoutCollection
    */
   public void addLayout(final SheetLayout bounds)
   {
-    Log.debug ("Added Sheet: " + isGlobalLayout() + ": " + bounds);
+    //Log.debug ("Added Sheet: " + isGlobalLayout() + ": " + bounds);
     if (isGlobalLayout())
     {
       globalLayout = bounds;
@@ -105,7 +105,7 @@ public class SheetLayoutCollection
    */
   public SheetLayout getLayoutForPage(final int page)
   {
-    Log.debug("Query Layout [" + isGlobalLayout() + "] for page " + page);
+    //Log.debug("Query Layout [" + isGlobalLayout() + "] for page " + page);
     if (isGlobalLayout())
     {
       if (globalLayout == null)

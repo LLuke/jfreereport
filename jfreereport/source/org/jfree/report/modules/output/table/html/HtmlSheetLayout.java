@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlSheetLayout.java,v 1.2.2.1 2004/12/13 19:27:08 taqua Exp $
+ * $Id: HtmlSheetLayout.java,v 1.3 2005/01/25 00:13:41 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -42,6 +42,7 @@ import java.awt.Color;
 import java.util.HashSet;
 
 import org.jfree.report.ElementAlignment;
+import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.report.content.Content;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.GenericObjectTable;
@@ -162,16 +163,17 @@ public strictfp class HtmlSheetLayout extends SheetLayout
   public void pageCompleted ()
   {
     super.pageCompleted();
-    final Integer[] yCuts = getYCuts();
+    final Long[] yCuts = getYCuts();
     if (yCuts.length == 0)
     {
       return;
     }
-    float beginRow = yCuts[0].floatValue();
+    long beginRow = yCuts[0].longValue();
     for (int i = 1; i < yCuts.length; i++)
     {
-      final float end = yCuts[i].floatValue();
-      styleCollection.addRowStyle(new HtmlTableRowStyle((int) (end - beginRow)));
+      final long end = yCuts[i].longValue();
+      final int height = (int) StrictGeomUtility.toExternalValue((end - beginRow));
+      styleCollection.addRowStyle(new HtmlTableRowStyle(height));
       beginRow = end;
     }
 

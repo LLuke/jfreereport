@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableCellBackground.java,v 1.15 2005/01/25 00:12:36 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.16 2005/01/30 23:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,6 @@ package org.jfree.report.modules.output.table.base;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -48,7 +47,7 @@ import org.jfree.report.Anchor;
 import org.jfree.report.content.Content;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.util.ShapeUtilities;
+import org.jfree.report.util.geom.StrictBounds;
 
 /**
  * Encapsulates all TableCellBackground informations, such as borders and background color.
@@ -257,15 +256,15 @@ public strictfp class TableCellBackground
    */
   public TableCellBackground merge(final TableCellBackground background)
   {
-    final Rectangle2D bounds = getBounds();
-    final Rectangle2D backgroundBounds = background.getBounds();
-    final Rectangle2D cellBounds = backgroundBounds.createIntersection(bounds);
+    final StrictBounds bounds = getBounds();
+    final StrictBounds backgroundBounds = background.getBounds();
+    final StrictBounds cellBounds = backgroundBounds.createIntersection(bounds);
 
     // If the given cell does not fully overlap this cell or
     // the this cell does not fully overlap the given cell
     // then do nothing ...
-    if (ShapeUtilities.contains(bounds, cellBounds) == false &&
-        ShapeUtilities.contains(cellBounds, bounds) == false)
+    if (StrictBounds.contains(bounds, cellBounds) == false &&
+        StrictBounds.contains(cellBounds, bounds) == false)
     {
       return this;
     }
@@ -288,15 +287,15 @@ public strictfp class TableCellBackground
     {
       merged.anchors.add(background.anchors);
     }
-    final double bgx1 = bounds.getX();
-    final double bgx2 = bounds.getX() + bounds.getWidth();
-    final double bgy1 = bounds.getY();
-    final double bgy2 = bounds.getY() + bounds.getHeight();
+    final long bgx1 = bounds.getX();
+    final long bgx2 = bounds.getX() + bounds.getWidth();
+    final long bgy1 = bounds.getY();
+    final long bgy2 = bounds.getY() + bounds.getHeight();
 
-    final double x1 = backgroundBounds.getX();
-    final double x2 = backgroundBounds.getX() + backgroundBounds.getWidth();
-    final double y1 = backgroundBounds.getY();
-    final double y2 = backgroundBounds.getY() + backgroundBounds.getHeight();
+    final long x1 = backgroundBounds.getX();
+    final long x2 = backgroundBounds.getX() + backgroundBounds.getWidth();
+    final long y1 = backgroundBounds.getY();
+    final long y2 = backgroundBounds.getY() + backgroundBounds.getHeight();
 
     // test TopBorder ...
     if (x1 <= bgx1 &&  x2 >= bgx2)

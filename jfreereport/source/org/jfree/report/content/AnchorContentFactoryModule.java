@@ -1,12 +1,11 @@
 package org.jfree.report.content;
 
-import java.awt.geom.Point2D;
-
 import org.jfree.report.Anchor;
 import org.jfree.report.AnchorElement;
 import org.jfree.report.Element;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.util.ElementLayoutInformation;
+import org.jfree.report.util.geom.StrictPoint;
 
 public class AnchorContentFactoryModule implements ContentFactoryModule
 {
@@ -41,21 +40,21 @@ public class AnchorContentFactoryModule implements ContentFactoryModule
                                           final LayoutSupport ot)
           throws ContentCreationException
   {
-    final Point2D absPos = bounds.getAbsolutePosition();
+    final StrictPoint absPos = bounds.getAbsolutePosition();
     final Object o = e.getValue();
-    return createAnchor(o, (float) absPos.getX(), (float) absPos.getY());
+    return createAnchor(o, absPos);
   }
 
-  public static Content createAnchor (final Object o, final float x, final float y)
+  public static Content createAnchor (final Object o, final StrictPoint position)
   {
     if (o instanceof Anchor)
     {
-      return new AnchorContent((Anchor) o, x, y);
+      return new AnchorContent((Anchor) o, position);
     }
     else if (o != null)
     {
       final Anchor a = new Anchor(String.valueOf(o));
-      return new AnchorContent(a, x, y);
+      return new AnchorContent(a, position);
     }
     else
     {

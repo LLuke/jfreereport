@@ -135,13 +135,11 @@ What changed:
   definitions (like report header/footer, page header/footer, or everything else)
 
 To be implemented before the release is ready:
-* Redesign the dialogs to follow the common usability guides
-* Bug: ProgressBar in the RepaginationProgressDialog is not working as expected.
-* Implement a ResourceNumberField, ResourceDateField and ResourceMessageField
-  for completly localizable reports.
-* Verify the page-spanning printing
-* Add support for rotated text
-* Verify the PlainText-Output target
+* Redesign the dialogs to follow the common usability guides                     (3 days)
+* Bug: ProgressBar in the RepaginationProgressDialog is not working as expected. (1 day)
+* Verify the page-spanning printing        (? > 3 days)
+* Add support for rotated text             (?)
+* Verify the PlainText-Output target       (2 days)
 
 What will be impossible:
 * The 'keep-together' feature is not implementable with the old engine.

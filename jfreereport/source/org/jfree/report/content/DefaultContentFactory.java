@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultContentFactory.java,v 1.6 2005/01/24 23:58:14 taqua Exp $
+ * $Id: DefaultContentFactory.java,v 1.7 2005/01/25 21:40:04 taqua Exp $
  *
  * Changes
  * -------
@@ -150,7 +150,7 @@ public class DefaultContentFactory implements ContentFactory
    */
   public boolean canHandleContent(final String contentType)
   {
-    for (int i = 0; i < modules.length; i++)
+    for (int i = 0; i < size; i++)
     {
       final ContentFactoryModule cfm = modules[i];
       if (cfm.canHandleContent(contentType))

@@ -4,11 +4,12 @@ import java.util.ArrayList;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.ext.factory.elements.ElementFactoryCollector;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
-import org.xml.sax.Attributes;
+import org.jfree.util.Log;
 import org.xml.sax.SAXException;
 
 public class BandReadHandler extends ElementReadHandler
@@ -33,11 +34,17 @@ public class BandReadHandler extends ElementReadHandler
    *                                  if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild (final String tagName,
-                                               final Attributes atts)
+                                               final PropertyAttributes atts)
           throws XmlReaderException, SAXException
   {
     if (tagName.equals("style"))
     {
+      return new StyleReadHandler(getElement().getStyle());
+    }
+    else if (tagName.equals("default-style"))
+    {
+      Log.warn ("Tag <default-style> is deprecated. All definitions " +
+              "have been mapped into the bands primary style sheet.");
       return new StyleReadHandler(getElement().getStyle());
     }
     else if (tagName.equals("element"))
@@ -84,5 +91,11 @@ public class BandReadHandler extends ElementReadHandler
       final ElementReadHandler readHandler = (ElementReadHandler) elementHandlers.get(i);
       band.addElement(readHandler.getElement());
     }
+  }
+
+  protected void storeComments ()
+          throws SAXException
+  {
+    //getRootHandler().
   }
 }

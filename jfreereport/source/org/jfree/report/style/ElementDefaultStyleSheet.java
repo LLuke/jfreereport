@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementDefaultStyleSheet.java,v 1.4 2004/05/07 08:14:24 mungady Exp $
+ * $Id: ElementDefaultStyleSheet.java,v 1.5 2005/01/30 23:37:25 taqua Exp $
  *
  * Changes
  * -------
@@ -39,9 +39,11 @@
 package org.jfree.report.style;
 
 import java.awt.Color;
-import java.awt.geom.Rectangle2D;
+import java.awt.Stroke;
+import java.awt.BasicStroke;
 
 import org.jfree.report.ElementAlignment;
+import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.ui.FloatDimension;
 
 /**
@@ -56,6 +58,7 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
 {
   /** The default paint. */
   public static final Color DEFAULT_PAINT = Color.black;
+  public static final Stroke DEFAULT_STROKE = new BasicStroke ();
 
   /** The default font. */
   public static final FontDefinition DEFAULT_FONT_DEFINITION = new FontDefinition("Serif", 10);
@@ -73,8 +76,9 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
     super(name);
     setStyleProperty(MINIMUMSIZE, new FloatDimension(0, 0));
     setStyleProperty(MAXIMUMSIZE, new FloatDimension(Short.MAX_VALUE, Short.MAX_VALUE));
-    setStyleProperty(BOUNDS, new Rectangle2D.Float());
+    setStyleProperty(BOUNDS, new StrictBounds());
     setStyleProperty(PAINT, DEFAULT_PAINT);
+    setStyleProperty(STROKE, DEFAULT_STROKE);
     setFontDefinitionProperty(DEFAULT_FONT_DEFINITION);
     setStyleProperty(VALIGNMENT, ElementAlignment.TOP);
     setStyleProperty(ALIGNMENT, ElementAlignment.LEFT);

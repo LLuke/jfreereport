@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple"
-                        "http://jfreereport.sourceforge.net/report.dtd">
+<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple/version 0.8.5"
+                        "http://jfreereport.sourceforge.net/report-085.dtd">
 <report name="PageFooter Demo" pageformat="A4">
   <reportheader>
     <rectangle x="0" y="0" width="100%" height="100%" color="#7fff7f" fill="true" draw="false"/>
@@ -9,7 +9,7 @@
 
   <!-- PAGE HEADER -->
   <pageheader height="32" onfirstpage="true" fontname="Serif" fontstyle="bold" fontsize="10">
-    <line x1="0" y1="30" x2="0" y2="30" weight="0.5"/>
+    <line x1="0" y1="30" x2="100%" y2="30" weight="0.5"/>
     <label x="0" y="12" width="100%" height="20" alignment="center">PAGE HEADER</label>
   </pageheader>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE report-definition
-  PUBLIC "-//JFreeReport//DTD report definition//EN//extended"
-         "http://jfreereport.sourceforge.net/extreport.dtd">
+  PUBLIC "-//JFreeReport//DTD report definition//EN//extended/version 0.8.5"
+         "http://jfreereport.sourceforge.net/extreport-085.dtd">
 <report-definition name="Business-cards">
   <parser-config>
     <object-factory class="org.jfree.report.modules.parser.ext.factory.objects.DefaultClassFactory"/>
@@ -13,7 +13,9 @@
   </parser-config>
 
   <report-config>
-    <defaultpageformat orientation="portrait" pageformat="A4" topmargin="72" bottommargin="72" leftmargin="20" rightmargin="25"/>
+    <page-definition>
+      <page orientation="portrait" pageformat="A4" topmargin="72" bottommargin="72" leftmargin="20" rightmargin="25"/>
+    </page-definition>
     <configuration>
       <property name="org.jfree.report.modules.output.pageable.pdf.Author">Darkwing Duck</property>
       <property name="org.jfree.report.modules.output.pageable.pdf.Encoding">iso-8859-15</property>
@@ -859,22 +861,22 @@ Phone: 213123123123</property-ref>
       <properties>
         <property name="field">C1_type</property>
         <property name="baseCard">C1_Root_design</property>
-        <property name="Admin">User_card</property>
-        <property name="User">User_card</property>
-        <property name="Account">Account_card</property>
-        <property name="Free">Free_card</property>
-        <property name="Prepaid">Prepaid_card</property>
+        <property name="admin">User_card</property>
+        <property name="user">User_card</property>
+        <property name="account">Account_card</property>
+        <property name="free">Free_card</property>
+        <property name="prepaid">Prepaid_card</property>
       </properties>
     </function>
     <function class="org.jfree.report.demo.cards.SelectCardFunction" name="select-right">
       <properties>
         <property name="field">C2_type</property>
         <property name="baseCard">C2_Root_design</property>
-        <property name="Admin">User_card</property>
-        <property name="User">User_card</property>
-        <property name="Account">Account_card</property>
-        <property name="Free">Free_card</property>
-        <property name="Prepaid">Prepaid_card</property>
+        <property name="admin">User_card</property>
+        <property name="user">User_card</property>
+        <property name="account">Account_card</property>
+        <property name="free">Free_card</property>
+        <property name="prepaid">Prepaid_card</property>
       </properties>
     </function>
     <expression name="C1_name_concat" class="org.jfree.report.function.TextFormatExpression">

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlMetaBandProducer.java,v 1.4 2005/01/25 21:40:34 taqua Exp $
+ * $Id: HtmlMetaBandProducer.java,v 1.5 2005/01/30 23:37:23 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -54,6 +54,8 @@ import org.jfree.report.modules.output.table.html.metaelements.HtmlImageMetaElem
 import org.jfree.report.modules.output.table.html.metaelements.HtmlTextMetaElement;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.ImageUtils;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.ui.Drawable;
 
 public class HtmlMetaBandProducer extends TableMetaBandProducer
@@ -67,21 +69,21 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
   }
 
   protected MetaElement createTextCell
-          (final Element e, final float x, final float y)
+          (final Element e, final long x, final long y)
   {
     final Object o = e.getValue();
     if (o instanceof String == false)
     {
       return null;
     }
-    final Rectangle2D rect = (Rectangle2D)
+    final StrictBounds rect = (StrictBounds)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
     return new HtmlTextMetaElement (new RawContent (rect, o),
             createStyleForTextElement(e, x, y), useXHTML);
   }
 
   protected MetaElement createImageCell
-          (final Element e, final float x, final float y)
+          (final Element e, final long x, final long y)
   {
     final Object o = e.getValue();
     if (o instanceof ImageContainer == false)
@@ -89,14 +91,14 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
       return null;
     }
 
-    final Rectangle2D rect = (Rectangle2D)
+    final StrictBounds rect = (StrictBounds)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
-    final ImageContent ic = new ImageContent((ImageContainer) o, rect.getBounds2D());
+    final ImageContent ic = new ImageContent((ImageContainer) o, (StrictBounds) rect.clone());
     return new HtmlImageMetaElement (ic, createStyleForImageElement(e, x, y), useXHTML);
   }
 
   protected MetaElement createDrawableCell
-          (final Element e, final float x, final float y)
+          (final Element e, final long x, final long y)
   {
     final Object o = e.getValue();
     if (o instanceof Drawable == false)
@@ -105,24 +107,21 @@ public class HtmlMetaBandProducer extends TableMetaBandProducer
     }
 
     final Drawable drawable = (Drawable) o;
-    final Rectangle2D rect = (Rectangle2D)
+    final StrictBounds rect = (StrictBounds)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
-    final Image image = ImageUtils.createTransparentImage
-        ((int) rect.getWidth(), (int) rect.getHeight());
+
+    final int imageWidth = (int) StrictGeomUtility.toExternalValue(rect.getWidth());
+    final int imageHeight = (int) StrictGeomUtility.toExternalValue(rect.getHeight());
+
+    final Image image = ImageUtils.createTransparentImage (imageWidth, imageHeight);
     final Graphics2D g2 = (Graphics2D) image.getGraphics();
     // the clipping bounds are a sub-area of the whole drawable
     // we only want to print a certain area ...
-    drawable.draw(g2, new Rectangle2D.Double
-        (0, 0, rect.getWidth(), rect.getHeight()));
+
+    drawable.draw(g2, new Rectangle2D.Double (0, 0, imageWidth, imageHeight));
     g2.dispose();
     final DefaultImageReference imgref = new DefaultImageReference(image);
-    final ImageContent ic = new ImageContent(imgref, rect.getBounds2D());
-    return new HtmlImageMetaElement
-            (ic, createStyleForDrawableElement(e, x, y), useXHTML);
-  }
-
-  protected MetaElement createAnchorCell (Element e, float x, float y)
-  {
-    return super.createAnchorCell(e, x, y);
+    final ImageContent ic = new ImageContent(imgref, (StrictBounds) rect.clone());
+    return new HtmlImageMetaElement (ic, createStyleForDrawableElement(e, x, y), useXHTML);
   }
 }

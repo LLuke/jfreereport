@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple"
-                        "http://jfreereport.sourceforge.net/report.dtd">
+<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple/version 0.8.5"
+                        "http://jfreereport.sourceforge.net/report-085.dtd">
 <report name="Sample Report 2"  pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
 
     <!-- REPORT HEADER -->
@@ -16,13 +16,13 @@
 
     <!-- PAGE HEADER -->
     <pageheader height="32" onfirstpage="false" fontname="Serif" fontstyle="bold" fontsize="10">
-        <line x1="0" y1="30" x2="0" y2="30" weight="0.5"/>
+        <line x1="0" y1="30" x2="100%" y2="30" weight="0.5"/>
         <label x="0" y="0" width="100%" height="20" alignment="center">PAGE HEADER</label>
     </pageheader>
 
     <!-- PAGE FOOTER -->
     <pagefooter height="24" onfirstpage="true" onlastpage="true" fontname="Serif" fontstyle="italic" fontsize="9">
-        <line x1="0" y1="4" x2="0" y2="4" weight="0.5"></line>
+        <line x1="0" y1="4" x2="100%" y2="4" weight="0.5"></line>
         <date-field fieldname="report.date"   x="0" y="4" width="100" height="18" alignment="left"/>
         <number-field fieldname="PageNumber" format="Page 0" x="0" y="4" width="100%" height="18" alignment="right"/>
     </pagefooter>
@@ -34,15 +34,15 @@
         <group name="Letter Group">
 
         <!-- GROUP HEADER -->
-            <groupheader height="20" fontname="Monospaced" fontstyle="bold" fontsize="9" pagebreak="true">
+            <groupheader height="20" fontname="Monospaced" fontstyle="bold" fontsize="9" pagebreak-before-print="true">
                 <label x="0" y="1" width="120" height="9" alignment="left">LETTER GROUP:</label>
                 <string-field x="120" y="1" width="76" height="9" alignment="left" fieldname="Letter"/>
-                <line x1="0" y1="12" x2="0" y2="12" weight="0.25"></line>
-                <line x1="0" y1="14" x2="0" y2="14" weight="0.25"></line>
+                <line x1="0" y1="12" x2="100%" y2="12" weight="0.25"></line>
+                <line x1="0" y1="14" x2="100%" y2="14" weight="0.25"></line>
             </groupheader>
             <!-- GROUP FOOTER -->
             <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
-                <label x="0" y="0" width="100%" height="12" alignment="left">Total for letter:</label>
+                <label x="0" y="0" width="276" height="12" alignment="left">Total for letter:</label>
                 <number-field fieldname="Sum2" format="#,##0.00" x="276" y="0" width="176" height="12" alignment="right"/>
             </groupfooter>
 

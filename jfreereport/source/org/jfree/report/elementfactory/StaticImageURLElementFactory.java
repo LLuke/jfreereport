@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StaticImageURLElementFactory.java,v 1.5 2003/10/05 21:52:32 taqua Exp $
+ * $Id: StaticImageURLElementFactory.java,v 1.6 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -44,6 +44,8 @@ import java.net.URL;
 
 import org.jfree.report.Element;
 import org.jfree.report.ImageElement;
+import org.jfree.report.util.geom.StrictDimension;
+import org.jfree.report.util.geom.StrictPoint;
 import org.jfree.report.filter.templates.ImageURLElementTemplate;
 import org.jfree.ui.FloatDimension;
 
@@ -205,8 +207,7 @@ public class StaticImageURLElementFactory extends ImageElementFactory
     final StaticImageURLElementFactory factory = new StaticImageURLElementFactory();
     factory.setName(name);
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension
-        ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setScale(new Boolean(scale));
     factory.setKeepAspectRatio(new Boolean(keepAspectRatio));
     factory.setContent(source.toExternalForm());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BottomAlignment.java,v 1.7 2003/11/07 18:33:54 taqua Exp $
+ * $Id: BottomAlignment.java,v 1.8 2004/05/07 12:53:06 mungady Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
 package org.jfree.report.modules.output.pageable.base.operations;
 
 import java.awt.geom.Rectangle2D;
+
+import org.jfree.report.util.geom.StrictBounds;
 
 /**
  * A utility class that can align a <code>Rectangle2D</code> to the bottom edge of its reference
@@ -53,7 +55,7 @@ public strictfp class BottomAlignment extends VerticalBoundsAlignment
    *
    * @param bounds  the reference bounds.
    */
-  public BottomAlignment(final Rectangle2D bounds)
+  public BottomAlignment(final StrictBounds bounds)
   {
     super(bounds);
   }
@@ -65,17 +67,16 @@ public strictfp class BottomAlignment extends VerticalBoundsAlignment
    *
    * @return a new rectangle resulting from the alignment operation.
    */
-  public Rectangle2D align(final Rectangle2D r)
+  public StrictBounds align(final StrictBounds r)
   {
     if (r == null)
     {
       throw new NullPointerException("BottomAlignment.align(...): null not permitted.");
     }
-    final float h = (float) Math.min (r.getHeight(), getReferenceBounds().getHeight());
-    final float y = (float) (getReferenceBounds().getY() +
-        getReferenceBounds().getHeight() - h);
-    final float x = (float) r.getX();
-    final float w = (float) r.getWidth();
+    final long h = Math.min (r.getHeight(), getReferenceBounds().getHeight());
+    final long y = (getReferenceBounds().getY() + getReferenceBounds().getHeight() - h);
+    final long x = r.getX();
+    final long w = r.getWidth();
     r.setRect(x, y, w, h);
     return r;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.18 2005/01/30 23:37:20 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.19 2005/02/04 19:22:56 taqua Exp $
  *
  * Changes
  * -------
@@ -65,9 +65,6 @@ import org.jfree.report.util.Log;
  * A report processor for Pageable OutputTargets. The processor coordinates
  * and initializes the output process for all page- and print-oriented output
  * formats.
- *
- * Todo: The PageState list will no longer be accessible from outside
- *
  *
  * @author Thomas Morgner
  */
@@ -314,7 +311,6 @@ public class PageableReportProcessor
 
     for (int i = 0; i < list.size(); i++)
     {
-      // todo warning: Not physical page!
       final ReportState rs = list.get(i);
       // fire an event for every generated page. It does not really matter
       // if that policy is not very informative, it is sufficient ...

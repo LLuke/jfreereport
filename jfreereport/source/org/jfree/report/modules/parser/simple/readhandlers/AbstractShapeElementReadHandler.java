@@ -3,9 +3,9 @@ package org.jfree.report.modules.parser.simple.readhandlers;
 import java.awt.Stroke;
 
 import org.jfree.report.elementfactory.ShapeElementFactory;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.xml.ParserUtil;
 import org.jfree.xml.parser.XmlReaderException;
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public abstract class AbstractShapeElementReadHandler extends AbstractElementReadHandler
@@ -25,7 +25,7 @@ public abstract class AbstractShapeElementReadHandler extends AbstractElementRea
    * @param atts the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes atts)
+  protected void startParsing (final PropertyAttributes atts)
           throws SAXException, XmlReaderException
   {
     super.startParsing(atts);
@@ -37,13 +37,13 @@ public abstract class AbstractShapeElementReadHandler extends AbstractElementRea
     handleColor(atts);
   }
 
-  private void handleColor (final Attributes atts)
+  private void handleColor (final PropertyAttributes atts)
   {
     final ShapeElementFactory elementFactory = (ShapeElementFactory) getElementFactory();
     elementFactory.setColor(ParserUtil.parseColor(atts.getValue("color"), null));
   }
 
-  private void handleStroke (final Attributes atts)
+  private void handleStroke (final PropertyAttributes atts)
   {
     final Stroke stroke = ParserUtil.parseStroke(atts.getValue("weight"));
     if (stroke != null)
@@ -53,7 +53,7 @@ public abstract class AbstractShapeElementReadHandler extends AbstractElementRea
     }
   }
 
-  protected void handleScale (final Attributes atts)
+  protected void handleScale (final PropertyAttributes atts)
   {
     final String booleanValue = atts.getValue(SCALE_ATT);
     if (booleanValue != null)
@@ -63,7 +63,7 @@ public abstract class AbstractShapeElementReadHandler extends AbstractElementRea
     }
   }
 
-  protected void handleKeepAspectRatio (final Attributes atts)
+  protected void handleKeepAspectRatio (final PropertyAttributes atts)
   {
     final String booleanValue = atts.getValue(KEEP_ASPECT_RATIO_ATT);
     if (booleanValue != null)
@@ -73,7 +73,7 @@ public abstract class AbstractShapeElementReadHandler extends AbstractElementRea
     }
   }
 
-  protected void handleFill (final Attributes atts)
+  protected void handleFill (final PropertyAttributes atts)
   {
     final String booleanValue = atts.getValue(FILL_ATT);
     if (booleanValue != null)
@@ -83,7 +83,7 @@ public abstract class AbstractShapeElementReadHandler extends AbstractElementRea
     }
   }
 
-  protected void handleDraw (final Attributes atts)
+  protected void handleDraw (final PropertyAttributes atts)
   {
     final String booleanValue = atts.getValue(DRAW_ATT);
     if (booleanValue != null)

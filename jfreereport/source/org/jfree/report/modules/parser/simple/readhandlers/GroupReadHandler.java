@@ -3,13 +3,15 @@ package org.jfree.report.modules.parser.simple.readhandlers;
 import org.jfree.report.Group;
 import org.jfree.report.GroupList;
 import org.jfree.report.JFreeReport;
-import org.jfree.xml.parser.AbstractXmlReadHandler;
-import org.jfree.xml.parser.XmlReaderException;
+import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.common.GroupFieldsReadHandler;
 import org.jfree.xml.parser.XmlReadHandler;
-import org.xml.sax.Attributes;
+import org.jfree.xml.parser.XmlReaderException;
 import org.xml.sax.SAXException;
 
-public class GroupReadHandler extends AbstractXmlReadHandler
+public class GroupReadHandler extends AbstractPropertyXmlReadHandler
 {
   /** Literal text for an XML report element. */
   public static final String GROUP_HEADER_TAG = "groupheader";
@@ -40,7 +42,7 @@ public class GroupReadHandler extends AbstractXmlReadHandler
    * @param attrs the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes attrs)
+  protected void startParsing (final PropertyAttributes attrs)
           throws SAXException
   {
     final String groupName = attrs.getValue(NAME_ATT);
@@ -73,7 +75,7 @@ public class GroupReadHandler extends AbstractXmlReadHandler
    *                                  if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild (final String tagName,
-                                               final Attributes atts)
+                                               final PropertyAttributes atts)
           throws XmlReaderException, SAXException
   {
     if (tagName.equals(GROUP_HEADER_TAG))
@@ -116,5 +118,12 @@ public class GroupReadHandler extends AbstractXmlReadHandler
           throws XmlReaderException
   {
     return group;
+  }
+
+  protected void storeComments ()
+          throws SAXException
+  {
+    final CommentHintPath hintPath = new CommentHintPath(group);
+    defaultStoreComments(hintPath);
   }
 }

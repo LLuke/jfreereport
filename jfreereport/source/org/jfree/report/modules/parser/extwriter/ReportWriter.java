@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.7 2005/01/25 00:20:34 taqua Exp $
+ * $Id: ReportWriter.java,v 1.8 2005/02/04 19:08:53 taqua Exp $
  *
  * Changes
  * -------
@@ -173,7 +173,12 @@ public class ReportWriter
   private void loadObjectFactories()
   {
     final ReportBuilderHints hints = getReport().getReportBuilderHints();
-    final List l = (List) 
+    if (hints == null)
+    {
+      return;
+    }
+
+    final List l = (List)
       hints.getHint(getReport(), "", List.class);
     if (l == null)
     {
@@ -192,8 +197,12 @@ public class ReportWriter
   private void loadDataSourceFactories()
   {
     final ReportBuilderHints hints = getReport().getReportBuilderHints();
-    final List l = (List) hints.getHint(getReport(),
-        "", List.class);
+    if (hints == null)
+    {
+      return;
+    }
+
+    final List l = (List) hints.getHint(getReport(), "", List.class);
     if (l == null)
     {
       return;
@@ -212,8 +221,12 @@ public class ReportWriter
   private void loadTemplateFactories()
   {
     final ReportBuilderHints hints = getReport().getReportBuilderHints();
-    final List l = (List) hints.getHint(getReport(),
-        "", List.class);
+    if (hints == null)
+    {
+      return;
+    }
+
+    final List l = (List) hints.getHint(getReport(), "", List.class);
     if (l == null)
     {
       return;
@@ -232,8 +245,12 @@ public class ReportWriter
   private void loadElementFactories()
   {
     final ReportBuilderHints hints = getReport().getReportBuilderHints();
-    final List l = (List) hints.getHint(getReport(),
-        "", List.class);
+    if (hints == null)
+    {
+      return;
+    }
+
+    final List l = (List) hints.getHint(getReport(), "", List.class);
     if (l == null)
     {
       return;
@@ -252,8 +269,12 @@ public class ReportWriter
   private void loadStyleKeyFactories()
   {
     final ReportBuilderHints hints = getReport().getReportBuilderHints();
-    final List l = (List) hints.getHint(getReport(),
-        "", List.class);
+    if (hints == null)
+    {
+      return;
+    }
+
+    final List l = (List) hints.getHint(getReport(), "", List.class);
     if (l == null)
     {
       return;

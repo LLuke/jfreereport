@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AlignedLogicalPage.java,v 1.2 2004/05/07 12:53:08 mungady Exp $
+ * $Id: AlignedLogicalPage.java,v 1.3 2005/01/25 00:09:55 taqua Exp $
  *
  * Changes
  * -------
@@ -86,7 +86,7 @@ public strictfp class AlignedLogicalPage implements LogicalPage
     {
       return value;
     }
-    return (float) Math.floor(value / boundary) * boundary;
+    return (float) (Math.floor(value / boundary) * boundary);
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextParagraph.java,v 1.11 2003/11/07 18:33:47 taqua Exp $
+ * $Id: TextParagraph.java,v 1.12 2004/05/07 08:02:48 mungady Exp $
  *
  * Changes
  * -------
@@ -38,13 +38,14 @@
  */
 package org.jfree.report.content;
 
-import java.awt.geom.Rectangle2D;
 import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.util.WordBreakIterator;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictGeomUtility;
 
 /**
  * A paragraph of an given text content. A paragraph consists of one or more
@@ -57,10 +58,10 @@ import org.jfree.report.util.WordBreakIterator;
 public strictfp class TextParagraph extends ContentContainer
 {
   /** The reserved size. */
-  private final float reservedSize;
+  private final long reservedSize;
 
   /** The reserved size. */
-  private final float lineHeight;
+  private final long lineHeight;
 
   /** The reserved size. */
   private final boolean trimTextContent;
@@ -81,14 +82,16 @@ public strictfp class TextParagraph extends ContentContainer
    * @param trimTextContent defines, whether to remove whitespaces from the start
    * and end of an line.
    */
-  public TextParagraph(final SizeCalculator calc, final float lineHeight, 
+  public TextParagraph(final SizeCalculator calc, final long lineHeight,
                        final String reservedLiteral, final boolean trimTextContent)
   {
-    super(new Rectangle2D.Float());
+    super(new StrictBounds());
     this.sizeCalculator = calc;
     this.reservedLiteral = reservedLiteral;
-    this.reservedSize = getSizeCalculator().getStringWidth
-        (reservedLiteral, 0, reservedLiteral.length());
+    this.reservedSize =
+      StrictGeomUtility.toInternalValue
+            (getSizeCalculator().getStringWidth
+            (reservedLiteral, 0, reservedLiteral.length()));
     this.lineHeight = lineHeight;
     this.trimTextContent = trimTextContent;
   }
@@ -113,7 +116,7 @@ public strictfp class TextParagraph extends ContentContainer
    * @param height the height of the bounds.
    */
   public void setContent
-      (final String content, final float x, final float y, final float width, final float height)
+      (final String content, final long x, final long y, final long width, final long height)
   {
     if (content == null)
     {
@@ -136,9 +139,11 @@ public strictfp class TextParagraph extends ContentContainer
       throw new IllegalArgumentException();
     }
 
-    float usedHeight = 0;
+    long usedHeight = 0;
 
-    final int maxLines = (int) Math.floor(height / getSizeCalculator().getLineHeight());
+    final long maxLines =
+            (height / StrictGeomUtility.toInternalValue
+            (getSizeCalculator().getLineHeight()));
 
     if (maxLines > 0)
     {
@@ -154,15 +159,6 @@ public strictfp class TextParagraph extends ContentContainer
         // create Lines
         final String lineText = (String) l.get(i);
         final TextLine line = new TextLine(getSizeCalculator(), lineHeight);
-
-/*
-        // strict assertation ... is expensive and not enabled by default ...
-        float tt = getSizeCalculator().getStringWidth(lineText, 0, lineText.length());
-        if (tt >= width)
-        {
-          throw new IllegalStateException("LineBreak failed!:" + width + " -> " + tt);
-        }
-*/
         line.setContent(lineText, x, y + usedHeight, width, height - usedHeight);
 
         usedHeight += line.getHeight();
@@ -193,7 +189,7 @@ public strictfp class TextParagraph extends ContentContainer
    *
    * @return a list of lines.
    */
-  private List breakLines(final String mytext, final float width, final int maxLines)
+  private List breakLines(final String mytext, final long width, final long maxLines)
   {
     if (width <= 0)
     {
@@ -324,13 +320,13 @@ public strictfp class TextParagraph extends ContentContainer
    */
   private int findNextBreak(final String text,
                             final int lineStart,
-                            final float width,
+                            final long width,
                             final boolean forceEnd,
                             final WordBreakIterator breakit)
   {
     int startPos = lineStart;
     int endPos;
-    float x = 0;
+    long x = 0;
     // by default, we assume, that the line contains no break-positions,
     // like whitespaces etc.
     boolean enableCharBreak = true;
@@ -341,7 +337,8 @@ public strictfp class TextParagraph extends ContentContainer
     // the end of the line has been reached.
     while (((endPos = breakit.next()) != BreakIterator.DONE))
     {
-      x += getSizeCalculator().getStringWidth(text, startPos, endPos);
+      x += StrictGeomUtility.toInternalValue
+              (getSizeCalculator().getStringWidth(text, startPos, endPos));
       if (forceEnd)
       {
         // here is the last line, check whether the reserved literal will fit
@@ -359,7 +356,8 @@ public strictfp class TextParagraph extends ContentContainer
           //when the first word of the line is too big then cut the word ...
           if (enableCharBreak)
           {
-            while (getSizeCalculator().getStringWidth(text, startPos, endPos) > width)
+            while (StrictGeomUtility.toInternalValue
+              (getSizeCalculator().getStringWidth(text, startPos, endPos)) > width)
             {
               endPos--;
             }
@@ -398,7 +396,7 @@ public strictfp class TextParagraph extends ContentContainer
    * @return a string with '..' appended.
    */
   private String appendReserveLit(final String base, final int lineStart,
-                                  final int lastCheckedChar, final float width)
+                                  final int lastCheckedChar, final long width)
   {
     if (lastCheckedChar < 0)
     {
@@ -414,21 +412,22 @@ public strictfp class TextParagraph extends ContentContainer
     }
 
     // check whether the complete line would fit into the given width
-    final float toTheEnd = getSizeCalculator().getStringWidth(base, lineStart, base.length());
+    final long toTheEnd = StrictGeomUtility.toInternalValue
+        (getSizeCalculator().getStringWidth(base, lineStart, base.length()));
     if (toTheEnd <= width)
     {
       return base.substring(lineStart);
     }
 
     final String baseLine = base.substring(lineStart, lastCheckedChar);
-    final float filler = width -
+    final long filler = width - StrictGeomUtility.toInternalValue
         (getSizeCalculator().getStringWidth(baseLine, 0, baseLine.length())) - reservedSize;
 
     final int maxFillerLength = base.length() - lastCheckedChar;
     for (int i = 1; i < maxFillerLength; i++)
     {
-      final float fillerWidth = getSizeCalculator().getStringWidth(base, lastCheckedChar,
-          lastCheckedChar + i);
+      final long fillerWidth = StrictGeomUtility.toInternalValue
+              (getSizeCalculator().getStringWidth(base, lastCheckedChar, lastCheckedChar + i));
       if (filler < fillerWidth)
       {
         return base.substring(lineStart, lastCheckedChar + i - 1) + reservedLiteral;

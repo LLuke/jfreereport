@@ -323,11 +323,11 @@ public final class BeanUtility
     return retval;
   }
 
-  public static void main (String[] args)
+  public static void main (final String[] args)
           throws IntrospectionException, BeanException
   {
-    TextFormatExpression te = new TextFormatExpression();
-    BeanUtility bu = new BeanUtility(te);
+    final TextFormatExpression te = new TextFormatExpression();
+    final BeanUtility bu = new BeanUtility(te);
     bu.setPropertyAsString("field[0]", "Hello");
   }
 }

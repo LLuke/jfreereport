@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.12 2003/12/21 20:51:41 taqua Exp $
+ * $Id: Band.java,v 1.13 2005/01/30 23:37:17 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -76,7 +76,6 @@ import org.jfree.report.layout.BandLayoutManager;
 import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.style.BandDefaultStyleSheet;
 import org.jfree.report.style.BandStyleKeys;
-import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.ElementDefaultStyleSheet;
 
 /**

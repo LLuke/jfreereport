@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TopAlignment.java,v 1.6 2003/11/07 18:33:54 taqua Exp $
+ * $Id: TopAlignment.java,v 1.7 2004/05/07 12:53:06 mungady Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@
 
 package org.jfree.report.modules.output.pageable.base.operations;
 
-import java.awt.geom.Rectangle2D;
+import org.jfree.report.util.geom.StrictBounds;
 
 /**
  * A utility class that can align a rectangle to the top edge of the reference bounds.
@@ -52,7 +52,7 @@ public strictfp class TopAlignment extends VerticalBoundsAlignment
    *
    * @param bounds  the reference bounds.
    */
-  public TopAlignment(final Rectangle2D bounds)
+  public TopAlignment(final StrictBounds bounds)
   {
     super(bounds);
   }
@@ -64,16 +64,16 @@ public strictfp class TopAlignment extends VerticalBoundsAlignment
    *
    * @return the aligned rectangle.
    */
-  public Rectangle2D align(final Rectangle2D r)
+  public StrictBounds align(final StrictBounds r)
   {
     if (r == null)
     {
       throw new NullPointerException("TopAlignment.align(...) : null not permitted.");
     }
-    final float x = (float) r.getX();
-    final float y = (float) getReferenceBounds().getY();
-    final float h = (float) Math.min (r.getHeight(), getReferenceBounds().getHeight());
-    final float w = (float) Math.min(r.getWidth(), getReferenceBounds().getWidth());
+    final long x = r.getX();
+    final long y = getReferenceBounds().getY();
+    final long h = Math.min (r.getHeight(), getReferenceBounds().getHeight());
+    final long w = Math.min(r.getWidth(), getReferenceBounds().getWidth());
 
     r.setRect(x, y, w, h);
     return r;

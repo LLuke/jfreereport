@@ -1,15 +1,13 @@
 package org.jfree.report.modules.parser.simple.readhandlers;
 
 import org.jfree.report.Band;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.ReportParserUtil;
 import org.jfree.report.modules.parser.simple.FontFactory;
 import org.jfree.report.style.BandStyleKeys;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
 import org.jfree.xml.ParserUtil;
-import org.jfree.xml.parser.AbstractXmlReadHandler;
-import org.jfree.xml.parser.XmlReaderException;
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class RootLevelBandReadHandler extends BandReadHandler
@@ -44,7 +42,7 @@ public class RootLevelBandReadHandler extends BandReadHandler
    * @param attr the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes attr)
+  protected void startParsing (final PropertyAttributes attr)
           throws SAXException
   {
     super.startParsing(attr);
@@ -69,7 +67,7 @@ public class RootLevelBandReadHandler extends BandReadHandler
     return true;
   }
 
-  private void handleHAlign (final Attributes attr)
+  private void handleHAlign (final PropertyAttributes attr)
           throws SAXException
   {
     final String halign = attr.getValue(ALIGNMENT_ATT);
@@ -80,7 +78,7 @@ public class RootLevelBandReadHandler extends BandReadHandler
     }
   }
 
-  private void handleVAlign (final Attributes attr)
+  private void handleVAlign (final PropertyAttributes attr)
           throws SAXException
   {
     final String valign = attr.getValue(VALIGNMENT_ATT);
@@ -91,7 +89,7 @@ public class RootLevelBandReadHandler extends BandReadHandler
     }
   }
 
-  protected void handleFixedPosition (final Attributes attr)
+  protected void handleFixedPosition (final PropertyAttributes attr)
           throws SAXException
   {
     final String fixedPos = attr.getValue(FIXED_POSITION_ATTRIBUTE);
@@ -104,7 +102,7 @@ public class RootLevelBandReadHandler extends BandReadHandler
     }
   }
 
-  private void handleHeight (final Attributes attr)
+  private void handleHeight (final PropertyAttributes attr)
   {
     final String height = attr.getValue(HEIGHT_ATTRIBUTE);
     if (height != null)
@@ -115,7 +113,7 @@ public class RootLevelBandReadHandler extends BandReadHandler
     }
   }
 
-  private void handleBreakBefore (final Attributes attr)
+  private void handleBreakBefore (final PropertyAttributes attr)
   {
     final String breakBeforeAttr = attr.getValue(PAGEBREAK_BEFORE_ATTR);
     if (breakBeforeAttr != null)
@@ -126,7 +124,7 @@ public class RootLevelBandReadHandler extends BandReadHandler
     }
   }
 
-  private void handleBreakAfter (final Attributes attr)
+  private void handleBreakAfter (final PropertyAttributes attr)
   {
     final String breakAfterAttr = attr.getValue(PAGEBREAK_AFTER_ATTRIBUTE);
     if (breakAfterAttr != null)

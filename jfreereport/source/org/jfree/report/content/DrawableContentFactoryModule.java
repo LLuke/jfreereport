@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableContentFactoryModule.java,v 1.7 2005/01/24 23:58:15 taqua Exp $
+ * $Id: DrawableContentFactoryModule.java,v 1.8 2005/01/25 21:40:08 taqua Exp $
  *
  * Changes
  * -------
@@ -37,13 +37,12 @@
  */
 package org.jfree.report.content;
 
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
 import org.jfree.report.Element;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.util.ElementLayoutInformation;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictDimension;
+import org.jfree.report.util.geom.StrictPoint;
 import org.jfree.ui.Drawable;
 
 /**
@@ -91,9 +90,10 @@ public strictfp class DrawableContentFactoryModule implements ContentFactoryModu
       return EmptyContent.getDefaultEmptyContent();
     }
 
-    final Point2D point = bounds.getAbsolutePosition();
-    final Dimension2D iBounds = ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
-        bounds.getPreferredSize());
+    final StrictPoint point = bounds.getAbsolutePosition();
+    final StrictDimension iBounds =
+            ElementLayoutInformation.unionMin(bounds.getMaximumSize(),
+            bounds.getPreferredSize());
     if (iBounds.getWidth() == 0 && iBounds.getHeight() == 0)
     {
       return EmptyContent.getDefaultEmptyContent();
@@ -104,10 +104,9 @@ public strictfp class DrawableContentFactoryModule implements ContentFactoryModu
     // this could be a show-stopper for WMF-Drawables, so we'll start subclassing
     // the drawable stuff soon ...
 
-    final Rectangle2D drawableBounds = new Rectangle2D.Float
-        ((float) point.getX(), (float) point.getY(),
-        (float) iBounds.getWidth(),
-        (float) iBounds.getHeight());
+    final StrictBounds drawableBounds = new StrictBounds
+        (point.getX(), point.getY(),
+        iBounds.getWidth(), iBounds.getHeight());
     return new DrawableContent(drawable, drawableBounds);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: IncludeParser.java,v 1.7 2005/02/04 19:07:12 taqua Exp $
+ * $Id: IncludeParser.java,v 1.8 2005/02/05 18:35:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -40,8 +40,7 @@ package org.jfree.report.modules.parser.base;
 
 import org.jfree.xml.FrontendDefaultHandler;
 import org.jfree.xml.parser.RootXmlReadHandler;
-import org.jfree.xml.util.ObjectFactory;
-import org.jfree.xml.util.SimpleObjectFactory;
+import org.jfree.report.JFreeReport;
 import org.xml.sax.SAXException;
 
 /**
@@ -52,15 +51,13 @@ import org.xml.sax.SAXException;
  *
  * @author Thomas Morgner
  */
-public class IncludeParser extends RootXmlReadHandler
+public class IncludeParser extends ReportParser
 {
   /** The key that indicates that this is a included parser. */
   public static final String INCLUDE_PARSING_KEY = "include-parsing";
 
   /** The parser backend that supplies the configuration. */
   private final RootXmlReadHandler backend;
-
-  private SimpleObjectFactory objectFactory;
 
   /**
    * Creates a new include parser with the given parser as backend.
@@ -69,22 +66,12 @@ public class IncludeParser extends RootXmlReadHandler
    */
   public IncludeParser(final RootXmlReadHandler backend)
   {
-    this.objectFactory = new SimpleObjectFactory();
     this.backend = backend;
     this.setConfigProperty(IncludeParser.INCLUDE_PARSING_KEY, "true");
-    this.setRootHandler(new InitialReportHandler());
-    this.setHelperObject(ReportParser.HELPER_OBJ_REPORT_NAME,
-            backend.getHelperObject(ReportParser.HELPER_OBJ_REPORT_NAME));
-  }
-
-  /**
-   * Returns the object factory.
-   *
-   * @return The object factory.
-   */
-  public ObjectFactory getFactoryLoader ()
-  {
-    return objectFactory;
+    final JFreeReport report = (JFreeReport) backend.getHelperObject
+            (ReportParser.HELPER_OBJ_REPORT_NAME);
+    this.setHelperObject(ReportParser.HELPER_OBJ_REPORT_NAME, report);
+    this.setParserHints(report.getReportBuilderHints());
   }
 
   /**

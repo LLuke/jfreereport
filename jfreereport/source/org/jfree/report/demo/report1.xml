@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple"
+<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple/version 0.8.5"
                         "http://jfreereport.sourceforge.net/report-085.dtd">
 
 <report name="Sample Report 1" orientation="portrait" pageformat="LETTER" topmargin="10" leftmargin="10" bottommargin="10" rightmargin="10">
 
+  <parser-config>
+    <property name="title">Sample report 1</property>
+  </parser-config>
   <!--
     The configuration tag can be used to define initial values for the report configuration.
     The report configuration defines several keys, which are read during the report
@@ -25,7 +28,7 @@
   </configuration>
 
   <reportheader height="90" fontname="Arial Unicode MS" fontstyle="bold" fontsize="18">
-    <label name="RH0" x="0" y="0" width="100%" height="18" fsunderline="true" alignment="center">LIST OF COUNTRIES BY CONTINENT</label>
+    <label name="RH0" x="0" y="0" width="100%" height="18" fsunderline="true" alignment="center">LIST OF COUNTRIES BY CONTINENT (${title})</label>
     <label name="RH1" x="0" y="18" width="100%" height="30" vertical-alignment="bottom" alignment="center">Sample Thai chars: &#3648;&#3614;&#3636;&#3656;&#3617;, &#3621;&#3641;&#3585;&#3588;&#3657;&#3634;</label>
   </reportheader>
 

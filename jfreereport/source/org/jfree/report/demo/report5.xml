@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple"
-                        "http://jfreereport.sourceforge.net/report.dtd">
+<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple/version 0.8.5"
+                        "http://jfreereport.sourceforge.net/report-085.dtd">
 <!-- needs a suitable tablemodel with some data -->
 <report orientation="landscape" pageformat="A4" leftmargin="10" rightmargin="10">
 
-  <reportheader height="39" fontname="Monospaced" fontstyle="bold" fontsize="24" ownpage="false">
+  <reportheader height="39" fontname="Monospaced" fontstyle="bold" fontsize="24">
     <rectangle x="0" y="0" width="100%" height="100%" draw="true" fill="true" color="#DAFAC5"/>
     <label x="0" y="0" width="100%" height="20" fontstyle="bold" color="#000000" alignment="center">Report with a heading :)</label>
   </reportheader>
@@ -53,7 +53,7 @@
   </pageheader>
 
   <pagefooter height="15" fontname="Monospaced" fontsize="6">
-    <line name="line4" x1="0" y1="0" x2="0" y2="0" weight="1" color="#c0c0c0"/>
+    <line name="line4" x1="0" y1="0" x2="100%" y2="0" weight="1" color="#c0c0c0"/>
     <date-field name="date1" x="0" y="5" width="100%" height="8" alignment="left" color="#000080" format="EEEE d MMMM yyyy" fieldname="report.date"/>
     <number-field name="pagenum1" fieldname="PageNumber" format="Pagina 0" x="0" y="5" width="100%" height="8" alignment="right" color="#000080"/>
   </pagefooter>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContent.java,v 1.9 2005/01/24 23:58:16 taqua Exp $
+ * $Id: ImageContent.java,v 1.10 2005/02/05 18:35:17 taqua Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,9 @@
  */
 package org.jfree.report.content;
 
-import java.awt.geom.Rectangle2D;
-
 import org.jfree.report.ImageContainer;
-import org.jfree.util.ShapeUtilities;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictGeomUtility;
 
 /**
  * Image content.
@@ -54,10 +53,10 @@ public strictfp class ImageContent implements Content
   private final ImageContainer reference;
 
   /** The bounds. */
-  private final Rectangle2D bounds;
+  private final StrictBounds bounds;
 
   /** The bounds of the displayed area of the image (unscaled). */
-  private final Rectangle2D imageArea;
+  private final StrictBounds imageArea;
 
   /**
    * Creates a new image content.
@@ -66,9 +65,9 @@ public strictfp class ImageContent implements Content
    * @param bounds  the content bounds.
    */
   public ImageContent(final ImageContainer ref,
-                      final Rectangle2D bounds)
+                      final StrictBounds bounds)
   {
-    this (ref, bounds, new Rectangle2D.Float
+    this (ref, bounds, StrictGeomUtility.createBounds
             (0, 0, ref.getImageWidth(), ref.getImageHeight()));
   }
 
@@ -79,16 +78,16 @@ public strictfp class ImageContent implements Content
    * @param bounds  the content bounds.
    */
   protected ImageContent(final ImageContainer ref,
-                         final Rectangle2D bounds,
-                         final Rectangle2D imageArea)
+                         final StrictBounds bounds,
+                         final StrictBounds imageArea)
   {
     if (ref == null)
     {
       throw new NullPointerException("ImageContainer must not be null for ImageContent.");
     }
     this.reference = ref;
-    this.bounds = bounds;
-    this.imageArea = imageArea;
+    this.bounds = (StrictBounds) bounds.clone();
+    this.imageArea = (StrictBounds) imageArea.clone();
 
   }
 
@@ -130,9 +129,9 @@ public strictfp class ImageContent implements Content
    *
    * @return the content bounds.
    */
-  public Rectangle2D getBounds()
+  public StrictBounds getBounds()
   {
-    return bounds.getBounds2D();
+    return (StrictBounds) bounds.clone();
   }
 
   /**
@@ -142,35 +141,35 @@ public strictfp class ImageContent implements Content
    *
    * @return the content.
    */
-  public Content getContentForBounds(final Rectangle2D bounds)
+  public Content getContentForBounds(final StrictBounds bounds)
   {
-    if (ShapeUtilities.intersects(bounds, this.bounds) == false)
+    if (StrictBounds.intersects(bounds, this.bounds) == false)
     {
       return new EmptyContent();
     }
 
-    final Rectangle2D myBounds = bounds.createIntersection(this.bounds);
+    final StrictBounds myBounds = bounds.createIntersection(this.bounds);
     return new ImageContent(reference, myBounds,
-            new Rectangle2D.Float
+            new StrictBounds
                     (mapHorizontalPointToImage(myBounds.getX() - this.bounds.getX()),
                      mapVerticalPointToImage(myBounds.getY() - this.bounds.getY()),
                      mapHorizontalPointToImage(myBounds.getWidth()),
                      mapVerticalPointToImage(myBounds.getHeight())));
   }
 
-  private float mapHorizontalPointToImage (final double px)
+  private long mapHorizontalPointToImage (final long px)
   {
-    return (float) (px * imageArea.getWidth() / bounds.getWidth());
+    return (px * imageArea.getWidth() / bounds.getWidth());
   }
 
-  private float mapVerticalPointToImage (final double px)
+  private long mapVerticalPointToImage (final long px)
   {
-    return (float) (px * imageArea.getHeight() / bounds.getHeight());
+    return (px * imageArea.getHeight() / bounds.getHeight());
   }
 
-  public Rectangle2D getImageArea ()
+  public StrictBounds getImageArea ()
   {
-    return imageArea.getBounds2D();
+    return  (StrictBounds) imageArea.clone();
   }
 
   /**
@@ -188,7 +187,7 @@ public strictfp class ImageContent implements Content
    *
    * @return the minimum content size.
    */
-  public Rectangle2D getMinimumContentSize()
+  public StrictBounds getMinimumContentSize()
   {
     return getBounds();
   }

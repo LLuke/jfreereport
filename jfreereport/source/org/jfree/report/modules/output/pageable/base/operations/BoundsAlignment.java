@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BoundsAlignment.java,v 1.6 2003/11/01 19:52:28 taqua Exp $
+ * $Id: BoundsAlignment.java,v 1.7 2004/05/07 12:53:06 mungady Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@
 
 package org.jfree.report.modules.output.pageable.base.operations;
 
-import java.awt.geom.Rectangle2D;
+import org.jfree.report.util.geom.StrictBounds;
 
 /**
  * An abstract base class for performing alignment of one <code>Rectangle2D</code> to another.
@@ -48,14 +48,14 @@ import java.awt.geom.Rectangle2D;
 public abstract strictfp class BoundsAlignment
 {
   /** The bounds against which the alignment is performed. */
-  private Rectangle2D referenceBounds;
+  private StrictBounds referenceBounds;
 
   /**
    * Creates a new alignment object.
    *
    * @param bounds  the reference bounds (alignment will be performed relative to this rectangle).
    */
-  protected BoundsAlignment(final Rectangle2D bounds)
+  protected BoundsAlignment(final StrictBounds bounds)
   {
     if (bounds == null)
     {
@@ -76,7 +76,7 @@ public abstract strictfp class BoundsAlignment
    *
    * @return the reference bounds.
    */
-  protected Rectangle2D getReferenceBounds()
+  protected StrictBounds getReferenceBounds()
   {
     return referenceBounds;
   }
@@ -92,5 +92,5 @@ public abstract strictfp class BoundsAlignment
    *
    * @return the aligned rectangle.
    */
-  public abstract Rectangle2D align(Rectangle2D r);
+  public abstract StrictBounds align(StrictBounds r);
 }

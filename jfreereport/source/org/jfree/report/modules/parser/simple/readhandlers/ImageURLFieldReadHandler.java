@@ -2,9 +2,9 @@ package org.jfree.report.modules.parser.simple.readhandlers;
 
 import org.jfree.report.elementfactory.ElementFactory;
 import org.jfree.report.elementfactory.ImageURLFieldElementFactory;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.xml.ElementDefinitionException;
 import org.jfree.xml.parser.XmlReaderException;
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class ImageURLFieldReadHandler extends AbstractImageElementReadHandler
@@ -22,14 +22,14 @@ public class ImageURLFieldReadHandler extends AbstractImageElementReadHandler
    * @param atts the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes atts)
+  protected void startParsing (final PropertyAttributes atts)
           throws SAXException, XmlReaderException
   {
     super.startParsing(atts);
     handleFieldName(atts);
   }
 
-  private void handleFieldName (final Attributes atts) throws ElementDefinitionException
+  private void handleFieldName (final PropertyAttributes atts) throws ElementDefinitionException
   {
     final String fieldName = atts.getValue("fieldname");
     if (fieldName == null)

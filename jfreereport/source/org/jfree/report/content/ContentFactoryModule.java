@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ContentFactoryModule.java,v 1.2 2003/08/24 15:13:21 taqua Exp $
+ * $Id: ContentFactoryModule.java,v 1.3 2004/05/07 08:02:48 mungady Exp $
  *
  * Changes
  * -------
@@ -71,7 +71,8 @@ public interface ContentFactoryModule
    *
    * @throws ContentCreationException if there is a problem with the Content creation.
    */
-  public Content createContentForElement(Element e, ElementLayoutInformation bounds,
+  public Content createContentForElement(Element e,
+                                         ElementLayoutInformation bounds,
                                          LayoutSupport ot)
       throws ContentCreationException;
 

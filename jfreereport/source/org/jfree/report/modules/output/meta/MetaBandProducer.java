@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: MetaBandProducer.java,v 1.6 2005/01/30 23:37:20 taqua Exp $
+ * $Id: MetaBandProducer.java,v 1.7 2005/02/05 18:35:18 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,7 +38,6 @@
 
 package org.jfree.report.modules.output.meta;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import org.jfree.report.Band;
@@ -54,6 +53,7 @@ import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.StyleSheetCarrier;
 import org.jfree.report.util.ElementLayoutInformation;
+import org.jfree.report.util.geom.StrictBounds;
 
 /**
  * The MetaBandProducer is responsible for converting a report band
@@ -100,20 +100,24 @@ public class MetaBandProducer
   }
 
   public MetaBand createBand (final Band band, final boolean spool,
-                              final int parentX, final int parentY)
+                              final long parentX, final long parentY)
       throws ContentCreationException
   {
     if (band.isVisible() == false)
     {
       return null;
     }
+    if (band.getElementCount() == 0)
+    {
+      return null;
+    }
 
     final ArrayList metaElements = new ArrayList();
     final Element[] elements = band.getElementArray();
-    final Rectangle2D bounds = (Rectangle2D)
+    final StrictBounds bounds = (StrictBounds)
             band.getStyle ().getStyleProperty (ElementStyleSheet.BOUNDS);
-    final int x = (int) bounds.getX () + parentX;
-    final int y = (int) bounds.getY () + parentY;
+    final long x = bounds.getX () + parentX;
+    final long y = bounds.getY () + parentY;
 
     for (int i = 0; i < elements.length; i++)
     {
@@ -163,7 +167,7 @@ public class MetaBandProducer
    * @throws ContentCreationException
    */
   protected MetaElement createElement
-          (final Element e, final float parentx, final float parenty)
+          (final Element e, final long parentx, final long parenty)
       throws ContentCreationException
   {
     if (support.getContentFactory().canHandleContent(e.getContentType()) == false)
@@ -176,7 +180,7 @@ public class MetaBandProducer
     }
 
     final ElementStyleSheet styleSheet = createStyleForElement(e, parentx, parenty);
-    final Rectangle2D bounds = (Rectangle2D)
+    final StrictBounds bounds = (StrictBounds)
             styleSheet.getStyleProperty(ElementStyleSheet.BOUNDS);
     final ElementLayoutInformation eli = new ElementLayoutInformation(bounds);
     final Content content =
@@ -187,7 +191,7 @@ public class MetaBandProducer
   }
 
   private ElementStyleSheet createCommonStyleForElement
-          (final Element e, final float x, final float y)
+          (final Element e, final long x, final long y)
   {
     final ElementStyleSheet elementStyle = e.getStyle();
     final ElementStyleSheet style =
@@ -206,7 +210,7 @@ public class MetaBandProducer
   }
 
   protected ElementStyleSheet createStyleForImageElement
-          (final Element e, final float x, final float y)
+          (final Element e, final long x, final long y)
   {
     final ElementStyleSheet elementStyle = e.getStyle();
     final ElementStyleSheet style = createCommonStyleForElement(e, x, y);
@@ -217,7 +221,7 @@ public class MetaBandProducer
   }
 
   protected ElementStyleSheet createStyleForShapeElement
-          (final Element e, final float x, final float y)
+          (final Element e, final long x, final long y)
   {
     final ElementStyleSheet elementStyle = e.getStyle();
     final ElementStyleSheet style = createCommonStyleForElement(e, x, y);
@@ -233,7 +237,7 @@ public class MetaBandProducer
   }
 
   protected ElementStyleSheet createStyleForDrawableElement
-          (final Element e, final float x, final float y)
+          (final Element e, final long x, final long y)
   {
     //final ElementStyleSheet elementStyle = e.getStyle();
     final ElementStyleSheet style = createCommonStyleForElement(e, x, y);
@@ -241,18 +245,20 @@ public class MetaBandProducer
   }
 
   protected ElementStyleSheet createStyleForTextElement
-          (final Element e, final float x, final float y)
+          (final Element e, final long x, final long y)
   {
     final ElementStyleSheet elementStyle = e.getStyle();
     final ElementStyleSheet style = createCommonStyleForElement(e, x, y);
     style.setFontDefinitionProperty(elementStyle.getFontDefinitionProperty());
     style.setStyleProperty(ElementStyleSheet.PAINT,
         elementStyle.getStyleProperty(ElementStyleSheet.PAINT));
+    style.setStyleProperty(ElementStyleSheet.STROKE,
+        elementStyle.getStyleProperty(ElementStyleSheet.STROKE));
     return style;
   }
 
   protected ElementStyleSheet createStyleForElement
-          (final Element e, final float x, final float y)
+          (final Element e, final long x, final long y)
   {
 
     if (e.getContentType().equals(TextElement.CONTENT_TYPE))
@@ -275,18 +281,21 @@ public class MetaBandProducer
     return createCommonStyleForElement(e, x, y);
   }
 
-  protected Rectangle2D createElementBounds (final ElementStyleSheet style,
-                                             final float x, final float y)
+  protected StrictBounds createElementBounds (final ElementStyleSheet style,
+                                             final long x, final long y)
   {
-    final Rectangle2D bounds = (Rectangle2D)
+    final StrictBounds bounds = (StrictBounds)
             style.getStyleProperty (ElementStyleSheet.BOUNDS);
 
-    return new Rectangle2D.Double (x + bounds.getX(), y + bounds.getY(),
-            bounds.getWidth(), bounds.getHeight());
+    return new StrictBounds
+            ((x + bounds.getX()),
+             (y + bounds.getY()),
+             bounds.getWidth(),
+             bounds.getHeight());
 
   }
   protected ElementStyleSheet createStyleForBand
-          (final Band band, final float x, final float y)
+          (final Band band, final long x, final long y)
   {
     final ElementStyleSheet bandStyle = band.getStyle();
     final ElementStyleSheet style =

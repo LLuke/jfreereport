@@ -1,20 +1,18 @@
 package org.jfree.report.content;
 
-import java.awt.geom.Rectangle2D;
-
 import org.jfree.report.Anchor;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictPoint;
 
 public class AnchorContent implements Content
 {
   private Anchor ancor;
-  private float x;
-  private float y;
+  private StrictPoint point;
 
-  public AnchorContent (final Anchor ancor, final float x, final float y)
+  public AnchorContent (final Anchor ancor, final StrictPoint point)
   {
     this.ancor = ancor;
-    this.x = x;
-    this.y = y;
+    this.point = (StrictPoint) point.clone();
   }
 
   /**
@@ -23,9 +21,9 @@ public class AnchorContent implements Content
    *
    * @return the bounds.
    */
-  public Rectangle2D getBounds ()
+  public StrictBounds getBounds ()
   {
-    return new Rectangle2D.Float(x, y, 0, 0);
+    return new StrictBounds(point.getX(), point.getY(), 0, 0);
   }
 
   /**
@@ -38,9 +36,9 @@ public class AnchorContent implements Content
    * @param bounds the bounds.
    * @return the content (possibly <code>null</code>).
    */
-  public Content getContentForBounds (final Rectangle2D bounds)
+  public Content getContentForBounds (final StrictBounds bounds)
   {
-    if (bounds.contains(x, y))
+    if (bounds.contains(point.getX(), point.getY()))
     {
       return this;
     }
@@ -63,7 +61,7 @@ public class AnchorContent implements Content
    *
    * @return the minimum size.
    */
-  public Rectangle2D getMinimumContentSize ()
+  public StrictBounds getMinimumContentSize ()
   {
     return getBounds();
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriterCursor.java,v 1.3.4.1 2004/12/13 19:27:06 taqua Exp $
+ * $Id: TableWriterCursor.java,v 1.5 2005/01/25 00:12:48 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,7 @@ package org.jfree.report.modules.output.table.base;
 public strictfp class TableWriterCursor
 {
   /** The y-coordinate. */
-  private float y;
+  private long y;
 
   /**
    * Default Constructor.
@@ -61,7 +61,7 @@ public strictfp class TableWriterCursor
    * Adds the specified amount to the y-coordinate.
    * @param amount The amount that the cursor should advance down the page.
    */
-  public void advance(final float amount)
+  public void advance(final long amount)
   {
     if (amount < 0)
     {
@@ -77,7 +77,7 @@ public strictfp class TableWriterCursor
    *
    * @param amount The amount that the cursor should advance down the page.
    */
-  public void advanceTo(final float amount)
+  public void advanceTo(final long amount)
   {
     if (amount < y)
     {
@@ -91,7 +91,7 @@ public strictfp class TableWriterCursor
    *
    * @return the current y-position of this cursor.
    */
-  public float getY()
+  public long getY()
   {
     return y;
   }

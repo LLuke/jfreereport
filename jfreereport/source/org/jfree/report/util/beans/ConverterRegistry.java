@@ -59,4 +59,49 @@ public final class ConverterRegistry
     }
     return null;
   }
+
+  /**
+   * Converts an object to an attribute value.
+   *
+   * @param o  the object.
+   *
+   * @return the attribute value.
+   */
+  public static String toAttributeValue (final Object o)
+  {
+    if (o == null)
+    {
+      return null;
+    }
+    final ValueConverter vc =
+            ConverterRegistry.getInstance().getValueConverter(o.getClass());
+    if (vc == null)
+    {
+      return null;
+    }
+    return vc.toAttributeValue(o);
+  }
+
+  /**
+   * Converts a string to a property value.
+   *
+   * @param s  the string.
+   *
+   * @return a property value.
+   */
+  public static Object toPropertyValue (final String s, final Class c)
+  {
+    if (s == null)
+    {
+      return null;
+    }
+    final ValueConverter vc =
+            ConverterRegistry.getInstance().getValueConverter(c);
+    if (vc == null)
+    {
+      return null;
+    }
+    return vc.toPropertyValue(s);
+  }
+
 }

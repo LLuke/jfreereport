@@ -1,23 +1,24 @@
 package org.jfree.report.modules.parser.simple.readhandlers;
 
 import java.awt.Color;
-import java.awt.Stroke;
 import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.Element;
-import org.jfree.report.ShapeElement;
 import org.jfree.report.content.ShapeTransform;
-import org.jfree.report.util.Log;
 import org.jfree.report.elementfactory.StaticShapeElementFactory;
+import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.util.Log;
+import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.xml.ParserUtil;
-import org.jfree.xml.parser.AbstractXmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-public class LineReadHandler extends AbstractXmlReadHandler
+public class LineReadHandler extends AbstractPropertyXmlReadHandler
 {
   private Element element;
   private static final String NAME_ATT = "name";
@@ -33,7 +34,7 @@ public class LineReadHandler extends AbstractXmlReadHandler
    * @param atts the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes atts)
+  protected void startParsing (final PropertyAttributes atts)
           throws SAXException, XmlReaderException
   {
     final String name = atts.getValue(NAME_ATT);
@@ -76,8 +77,8 @@ public class LineReadHandler extends AbstractXmlReadHandler
     else
     {
       // create the bounds as specified by the user
-      final Rectangle2D.Double bounds =
-              new Rectangle2D.Double(x1, y1, width, height);
+      final Rectangle2D bounds =
+              new Rectangle2D.Float(x1, y1, width, height);
       // first version of the line (not originating @(0,0))
       final Line2D line = new Line2D.Float(x1, y1, x2, y2);
       // the bounds of that line
@@ -105,5 +106,12 @@ public class LineReadHandler extends AbstractXmlReadHandler
           throws XmlReaderException
   {
     return element;
+  }
+
+  protected void storeComments ()
+          throws SAXException
+  {
+    final CommentHintPath commentHintPath = new CommentHintPath(element);
+    defaultStoreComments(commentHintPath);
   }
 }

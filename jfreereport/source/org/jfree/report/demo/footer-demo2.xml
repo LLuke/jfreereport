@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple"
-                        "http://jfreereport.sourceforge.net/report.dtd">
+<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple/version 0.8.5"
+                        "http://jfreereport.sourceforge.net/report-085.dtd">
 <report name="PageFooter Demo" pageformat="A4">
   <reportheader>
     <rectangle x="0" y="0" width="100%" height="100%" color="#7fff7f" fill="true" draw="false"/>
@@ -9,7 +9,7 @@
 
   <!-- PAGE HEADER -->
   <pageheader height="32" onfirstpage="true" fontname="Serif" fontstyle="bold" fontsize="10">
-    <line x1="0" y1="30" x2="0" y2="30" weight="0.5"/>
+    <line x1="0" y1="30" x2="100%" y2="30" weight="0.5"/>
     <label x="0" y="12" width="100%" height="20" alignment="center">PAGE HEADER</label>
   </pageheader>
 
@@ -55,13 +55,13 @@ The grey area is the real report footer (make it white to be invisible, but do n
 The blue-bordered area is the page footer, which gets misused as a report footer.
       </label>
 
-      <line x1="0" y1="52" x2="0" y2="52" weight="0.5"/>
+      <line x1="0" y1="52" x2="100%" y2="52" weight="0.5"/>
       <date-field fieldname="report.date" format="d-MMM-yyyy" x="0" y="52" width="100" height="18" alignment="left"/>
       <string-field fieldname="pageXofY" x="50%" y="52" width="50%" height="18" alignment="right"/>
     </band>
 
     <band x="0" y="0" height="24" name="page-footer-content">
-      <line x1="0" y1="4" x2="0" y2="4" weight="0.5"/>
+      <line x1="0" y1="4" x2="100%" y2="4" weight="0.5"/>
       <date-field fieldname="report.date" format="d-MMM-yyyy" x="0" y="4" width="100" height="18" alignment="left"/>
       <string-field fieldname="pageXofY" x="50%" y="4" width="50%" height="18" alignment="right"/>
     </band>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BandLayoutManager.java,v 1.4 2003/11/12 22:40:03 taqua Exp $
+ * $Id: BandLayoutManager.java,v 1.5 2004/05/07 08:03:40 mungady Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,9 @@
 
 package org.jfree.report.layout;
 
-import java.awt.geom.Dimension2D;
-
 import org.jfree.report.Band;
 import org.jfree.report.style.StyleKey;
+import org.jfree.report.util.geom.StrictDimension;
 
 /**
  * An interface that defines the methods to be supported by a band layout manager.
@@ -70,7 +69,7 @@ public interface BandLayoutManager
    *
    * @return the preferred size.
    */
-  public Dimension2D preferredLayoutSize(Band b, Dimension2D containerDims, LayoutSupport support);
+  public StrictDimension preferredLayoutSize(Band b, StrictDimension containerDims, LayoutSupport support);
 
   /**
    * Calculates the minimum layout size for a band.
@@ -81,7 +80,7 @@ public interface BandLayoutManager
    *
    * @return the minimum size.
    */
-  public Dimension2D minimumLayoutSize(Band b, Dimension2D containerDims, LayoutSupport support);
+  public StrictDimension minimumLayoutSize(Band b, StrictDimension containerDims, LayoutSupport support);
 
   /**
    * Performs the layout of a band.

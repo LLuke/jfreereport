@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLProcessor.java,v 1.4.2.1.2.1 2004/12/30 14:46:13 taqua Exp $
+ * $Id: XMLProcessor.java,v 1.10 2005/01/25 00:17:19 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ import java.util.Iterator;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.states.FinishState;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.states.ReportStateProgress;
@@ -78,10 +77,9 @@ public class XMLProcessor
    *
    * @param report the report that should be processed
    * @throws ReportProcessingException if the report could not be initialized
-   * @throws FunctionInitializeException if the writer function could not be initialized.
    */
   public XMLProcessor(final JFreeReport report)
-      throws ReportProcessingException, FunctionInitializeException
+      throws ReportProcessingException
   {
     if (report == null)
     {

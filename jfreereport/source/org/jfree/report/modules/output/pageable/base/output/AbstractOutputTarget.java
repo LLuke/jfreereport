@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.12 2005/01/30 23:37:21 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.13 2005/02/05 18:35:18 taqua Exp $
  *
  * Changes
  * -------
@@ -60,6 +60,7 @@ import java.util.Properties;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.ShapeElement;
+import org.jfree.report.content.AnchorContentFactoryModule;
 import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentFactory;
 import org.jfree.report.content.ContentType;
@@ -72,10 +73,9 @@ import org.jfree.report.content.ImageContentFactoryModule;
 import org.jfree.report.content.MultipartContent;
 import org.jfree.report.content.ShapeContent;
 import org.jfree.report.content.ShapeContentFactoryModule;
+import org.jfree.report.content.ShapeTransform;
 import org.jfree.report.content.TextContentFactoryModule;
 import org.jfree.report.content.TextLine;
-import org.jfree.report.content.AnchorContentFactoryModule;
-import org.jfree.report.content.ShapeTransform;
 import org.jfree.report.modules.output.meta.MetaBand;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.meta.MetaPage;
@@ -87,7 +87,8 @@ import org.jfree.report.modules.output.pageable.base.operations.VerticalBoundsAl
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.Log;
-import org.jfree.util.ShapeUtilities;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictGeomUtility;
 
 /**
  * The abstract OutputTarget implements base code for all pageable OutputTargets.
@@ -97,7 +98,7 @@ import org.jfree.util.ShapeUtilities;
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public abstract class AbstractOutputTarget implements OutputTarget
+public abstract strictfp class AbstractOutputTarget implements OutputTarget
 {
   /** Storage for the output target properties. */
   private final Properties properties;
@@ -105,15 +106,15 @@ public abstract class AbstractOutputTarget implements OutputTarget
   /** The content factory used to create content for this output-target. */
   private final ContentFactory contentFactory;
 
-  private Rectangle2D operationBounds;
-  private Rectangle2D pageBounds;
+  private StrictBounds operationBounds;
+  private StrictBounds pageBounds;
 
   protected AbstractOutputTarget ()
   {
     properties = new Properties();
     contentFactory = createContentFactory();
-    operationBounds = new Rectangle2D.Float();
-    pageBounds = new Rectangle2D.Float();
+    operationBounds = new StrictBounds();
+    pageBounds = new StrictBounds();
   }
 
   /**
@@ -252,16 +253,16 @@ public abstract class AbstractOutputTarget implements OutputTarget
   {
     setPageBounds(page.getPagePosition(index));
     beginPage(page, index);
-    final Rectangle2D pageBounds = getPageBounds();
+    final StrictBounds pageBounds = getInternalPageBounds();
 
     // for all stored bands
     final MetaBand[] bands = content.getBands();
     for (int i = 0; i < bands.length; i++)
     {
       final MetaBand b = bands[i];
-      final Rectangle2D bounds = b.getBounds();
+      final StrictBounds bounds = b.getBounds();
       // check if bounds are within the specified page bounds
-      if (ShapeUtilities.intersects(bounds, pageBounds))
+      if (StrictBounds.intersects(bounds, pageBounds))
       {
         // if so, then print
         printBand(b, pageBounds.createIntersection(bounds));
@@ -284,7 +285,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * @param band the band that should be printed
    * @param bounds the bounds for that band.
    */
-  protected void printBand (final MetaBand band, final Rectangle2D bounds)
+  protected void printBand (final MetaBand band, final StrictBounds bounds)
     throws OutputTargetException
   {
     printElement(band, bounds);
@@ -292,9 +293,9 @@ public abstract class AbstractOutputTarget implements OutputTarget
     for (int i = 0; i < elements.length; i++)
     {
       final MetaElement e = elements[i];
-      final Rectangle2D elementBounds = e.getBounds();
+      final StrictBounds elementBounds = e.getBounds();
       // check if bounds are within the specified page bounds
-      if (ShapeUtilities.intersects(bounds, elementBounds))
+      if (StrictBounds.intersects(bounds, elementBounds))
       {
         if (e instanceof MetaBand)
         {
@@ -312,7 +313,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
   {
   }
 
-  protected void printElement (final MetaElement element, final Rectangle2D bounds)
+  protected void printElement (final MetaElement element, final StrictBounds bounds)
     throws OutputTargetException
   {
     final String hrefTarget = (String) element.getProperty(ElementStyleSheet.HREF_TARGET);
@@ -333,10 +334,9 @@ public abstract class AbstractOutputTarget implements OutputTarget
     {
       final VerticalBoundsAlignment vba = AlignmentTools.getVerticalLayout(va, bounds);
       // calculate the horizontal shift ... is applied later
-      final Rectangle2D cBounds = content.getMinimumContentSize();
-      final Rectangle2D alignedBounds = vba.align(cBounds.getBounds2D());
-      final float vbaShift =
-              (float) (alignedBounds.getY() - cBounds.getY());
+      final StrictBounds cBounds = content.getMinimumContentSize();
+      final StrictBounds alignedBounds = vba.align((StrictBounds) cBounds.clone());
+      final long vbaShift = (alignedBounds.getY() - cBounds.getY());
       printContent(element, content, vbaShift);
     }
     else
@@ -346,7 +346,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
   }
 
   protected void printContent
-          (final MetaElement element, final Content content, final float vbaShift)
+          (final MetaElement element, final Content content, final long vbaShift)
           throws OutputTargetException
   {
     if (content.getContentType().equals(ContentType.TEXT))
@@ -392,7 +392,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
 
   protected void printTextContent
           (final MetaElement element, final Content content,
-           final float vbaShift)
+           final long vbaShift)
     throws OutputTargetException
   {
     if (element == null)
@@ -423,6 +423,8 @@ public abstract class AbstractOutputTarget implements OutputTarget
       updatePaint(paint);
     }
 
+    final Stroke stroke = (Stroke) element.getProperty(ElementStyleSheet.STROKE);
+    updateStroke(stroke);
 
     final ElementAlignment ha
         = (ElementAlignment) element.getProperty(ElementStyleSheet.ALIGNMENT);
@@ -449,8 +451,8 @@ public abstract class AbstractOutputTarget implements OutputTarget
       return;
     }
 
-    final Rectangle2D operationBounds = AlignmentTools.computeAlignmentBounds(element);
-    setOperationBounds(operationBounds);
+    final StrictBounds operationBounds = AlignmentTools.computeAlignmentBounds(element);
+    setInternalOperationBounds(operationBounds);
 
     final Stroke stroke = (Stroke) element.getProperty(ElementStyleSheet.STROKE);
     updateStroke(stroke);
@@ -467,7 +469,9 @@ public abstract class AbstractOutputTarget implements OutputTarget
     }
 
     final ShapeContent sc = (ShapeContent) content;
-    final Shape s = ShapeTransform.performCliping(sc.getShape(), operationBounds);
+    // todo: Is this correct?
+    final Rectangle2D clipBounds = getOperationBounds();
+    final Shape s = ShapeTransform.performCliping(sc.getShape(), clipBounds);
     //final Shape s = sc.getShape();
     if (shouldDraw == true)
     {
@@ -488,7 +492,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
       return;
     }
     final ImageContent ic = (ImageContent) content;
-    setOperationBounds(AlignmentTools.computeAlignmentBounds(element));
+    setInternalOperationBounds(AlignmentTools.computeAlignmentBounds(element));
     drawImage(ic);
   }
 
@@ -501,7 +505,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
       return;
     }
     final DrawableContent drawableContent = (DrawableContent) content;
-    setOperationBounds(content.getBounds());
+    setInternalOperationBounds(content.getBounds());
     drawDrawable (drawableContent);
   }
 
@@ -519,7 +523,14 @@ public abstract class AbstractOutputTarget implements OutputTarget
 
   protected Rectangle2D getOperationBounds()
   {
-    return operationBounds.getBounds2D();
+    return StrictGeomUtility.createAWTRectangle
+            (operationBounds.getX(), operationBounds.getY(),
+                    operationBounds.getWidth(), operationBounds.getHeight());
+  }
+
+  protected StrictBounds getInternalOperationBounds()
+  {
+    return operationBounds;
   }
 
   /**
@@ -529,21 +540,31 @@ public abstract class AbstractOutputTarget implements OutputTarget
    *
    * @param operationBounds the operation bounds
    */
-  protected void setOperationBounds(final Rectangle2D operationBounds)
+  protected void setInternalOperationBounds(final StrictBounds operationBounds)
   {
-    this.operationBounds.setRect(operationBounds);
+    this.operationBounds.setRect(operationBounds.getX(), operationBounds.getY(),
+            operationBounds.getWidth(), operationBounds.getHeight());
   }
 
   protected void setPageBounds(final Rectangle2D pageBounds)
   {
-    this.pageBounds.setRect(pageBounds);
+    final long x = StrictGeomUtility.toInternalValue(pageBounds.getX());
+    final long y = StrictGeomUtility.toInternalValue(pageBounds.getY());
+    final long w = StrictGeomUtility.toInternalValue(pageBounds.getWidth());
+    final long h = StrictGeomUtility.toInternalValue(pageBounds.getHeight());
+    this.pageBounds.setRect(x, y, w, h);
   }
 
   protected Rectangle2D getPageBounds()
   {
-    return pageBounds.getBounds2D();
+    return StrictGeomUtility.createAWTRectangle
+            (pageBounds.getX(), pageBounds.getY(), pageBounds.getWidth(), pageBounds.getHeight());
   }
 
+  protected StrictBounds getInternalPageBounds ()
+  {
+    return pageBounds;
+  }
   /**
    * Add a single content junk (in most cases a single line or a line fragment) to
    * the list of PhysicalOperations. This method is called recursivly for all contentparts.
@@ -553,13 +574,13 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * @param vbaShift  the vertical bounds alignment shifting.
    */
   protected void printTextLine (final TextLine c, final HorizontalBoundsAlignment hba,
-                                  final float vbaShift)
+                                  final long vbaShift)
   {
     final String value = c.getContent();
-    final Rectangle2D abounds = hba.align(c.getBounds());
+    final StrictBounds abounds = hba.align(c.getBounds());
     abounds.setRect(abounds.getX(), abounds.getY() + vbaShift,
         abounds.getWidth(), abounds.getHeight());
-    setOperationBounds(abounds);
+    setInternalOperationBounds(abounds);
     printText(value);
   }
 

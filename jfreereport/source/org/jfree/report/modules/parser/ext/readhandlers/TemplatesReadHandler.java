@@ -2,15 +2,16 @@ package org.jfree.report.modules.parser.ext.readhandlers;
 
 import java.util.ArrayList;
 
-import org.jfree.xml.parser.AbstractXmlReadHandler;
-import org.jfree.xml.parser.XmlReadHandler;
-import org.jfree.xml.parser.XmlReaderException;
+import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollection;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
-import org.xml.sax.Attributes;
+import org.jfree.xml.parser.XmlReadHandler;
+import org.jfree.xml.parser.XmlReaderException;
 import org.xml.sax.SAXException;
 
-public class TemplatesReadHandler extends AbstractXmlReadHandler
+public class TemplatesReadHandler extends AbstractPropertyXmlReadHandler
 {
   private ArrayList templateList;
 
@@ -31,12 +32,15 @@ public class TemplatesReadHandler extends AbstractXmlReadHandler
    *                                  if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild (final String tagName,
-                                               final Attributes atts)
+                                               final PropertyAttributes atts)
           throws XmlReaderException, SAXException
   {
     if (tagName.equals("template"))
     {
-      final TemplateReadHandler readHandler = new TemplateReadHandler(true);
+      final CommentHintPath commentHintPath = new CommentHintPath("report-definition");
+      commentHintPath.addName("templates");
+
+      final TemplateReadHandler readHandler = new TemplateReadHandler(true, commentHintPath);
       templateList.add (readHandler);
       return readHandler;
     }
@@ -78,5 +82,13 @@ public class TemplatesReadHandler extends AbstractXmlReadHandler
           throws XmlReaderException
   {
     return null;
+  }
+
+  protected void storeComments ()
+          throws SAXException
+  {
+    final CommentHintPath commentHintPath = new CommentHintPath("report-definition");
+    commentHintPath.addName("templates");
+    defaultStoreComments(commentHintPath);
   }
 }

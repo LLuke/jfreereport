@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.18 2005/02/04 19:07:13 taqua Exp $
+ * $Id: ReportParser.java,v 1.19 2005/02/05 18:35:20 taqua Exp $
  *
  * Changes
  * -------
@@ -62,6 +62,7 @@ public class ReportParser extends RootXmlReadHandler
   public static final String HELPER_OBJ_REPORT_NAME = "::report";
 
   private ObjectFactory objectFactory;
+  private ReportBuilderHints builderHints;
 
   /**
    * Default constuctor. Initalizes the parser to use the JFreeReport parser
@@ -71,8 +72,8 @@ public class ReportParser extends RootXmlReadHandler
   {
     objectFactory = new SimpleObjectFactory();
     setRootHandler(new InitialReportHandler());
+    builderHints = new ReportBuilderHints();
   }
-
 
   /**
    * Returns the object factory.
@@ -100,19 +101,9 @@ public class ReportParser extends RootXmlReadHandler
    *
    * @return the parsed JFreeReport instance.
    */
-  public Object getResult()
+  public Object getResult() throws SAXException
   {
     return getHelperObject(HELPER_OBJ_REPORT_NAME);
-  }
-
-  /**
-   * Returns the jfreereport instance that is currently created.
-   *
-   * @return the current JFreeReport instance.
-   */
-  public JFreeReport getReport()
-  {
-    return (JFreeReport) getResult();
   }
 
   /**
@@ -125,11 +116,16 @@ public class ReportParser extends RootXmlReadHandler
    */
   public ReportBuilderHints getParserHints()
   {
-    if (getReport() == null)
+    return builderHints;
+  }
+
+  protected void setParserHints (ReportBuilderHints hints)
+  {
+    if (hints == null)
     {
-      throw new IllegalStateException("There is no report defined yet.");
+      throw new NullPointerException();
     }
-    return getReport().getReportBuilderHints();
+    this.builderHints = hints;
   }
 
   /**
@@ -200,21 +196,18 @@ public class ReportParser extends RootXmlReadHandler
   public void fatalError(final SAXParseException e)
       throws SAXException
   {
-    if (getReport() != null)
+    final Locator locator = getLocator();
+    int column = -1;
+    int line = -1;
+    if (locator != null)
     {
-      final Locator locator = getLocator();
-      int column = -1;
-      int line = -1;
-      if (locator != null)
-      {
-        column = locator.getColumnNumber();
-        line = locator.getLineNumber();
-      }
-      final OperationResult result = new OperationResult
-          (e.getMessage(), SeverityLevel.FATAL_ERROR, line, column);
-      getParserHints().addHintList(ReportParser.class.getName(), "AllMessages", result);
-      getParserHints().addHintList(ReportParser.class.getName(), "Error", result);
+      column = locator.getColumnNumber();
+      line = locator.getLineNumber();
     }
+    final OperationResult result = new OperationResult
+        (e.getMessage(), SeverityLevel.FATAL_ERROR, line, column);
+    getParserHints().addHintList(ReportParser.class.getName(), "AllMessages", result);
+    getParserHints().addHintList(ReportParser.class.getName(), "Error", result);
     super.fatalError(e);
   }
 
@@ -235,21 +228,18 @@ public class ReportParser extends RootXmlReadHandler
   public void warning(final SAXParseException e)
       throws SAXException
   {
-    if (getReport() != null)
+    final Locator locator = getLocator();
+    int column = -1;
+    int line = -1;
+    if (locator != null)
     {
-      final Locator locator = getLocator();
-      int column = -1;
-      int line = -1;
-      if (locator != null)
-      {
-        column = locator.getColumnNumber();
-        line = locator.getLineNumber();
-      }
-      final OperationResult result = new OperationResult
-          (e.getMessage(), SeverityLevel.WARNING, line, column);
-      getParserHints().addHintList(ReportParser.class.getName(), "AllMessages", result);
-      getParserHints().addHintList(ReportParser.class.getName(), "Warning", result);
+      column = locator.getColumnNumber();
+      line = locator.getLineNumber();
     }
+    final OperationResult result = new OperationResult
+        (e.getMessage(), SeverityLevel.WARNING, line, column);
+    getParserHints().addHintList(ReportParser.class.getName(), "AllMessages", result);
+    getParserHints().addHintList(ReportParser.class.getName(), "Warning", result);
     super.warning(e);
   }
 
@@ -270,21 +260,18 @@ public class ReportParser extends RootXmlReadHandler
   public void error(final SAXParseException e)
       throws SAXException
   {
-    if (getReport() != null)
+    final Locator locator = getLocator();
+    int column = -1;
+    int line = -1;
+    if (locator != null)
     {
-      final Locator locator = getLocator();
-      int column = -1;
-      int line = -1;
-      if (locator != null)
-      {
-        column = locator.getColumnNumber();
-        line = locator.getLineNumber();
-      }
-      final OperationResult result = new OperationResult
-          (e.getMessage(), SeverityLevel.ERROR, line, column);
-      getParserHints().addHintList(ReportParser.class.getName(), "AllMessages", result);
-      getParserHints().addHintList(ReportParser.class.getName(), "Error", result);
+      column = locator.getColumnNumber();
+      line = locator.getLineNumber();
     }
+    final OperationResult result = new OperationResult
+        (e.getMessage(), SeverityLevel.ERROR, line, column);
+    getParserHints().addHintList(ReportParser.class.getName(), "AllMessages", result);
+    getParserHints().addHintList(ReportParser.class.getName(), "Error", result);
     super.error(e);
   }
 
@@ -297,20 +284,17 @@ public class ReportParser extends RootXmlReadHandler
   public void info(final String message)
       throws SAXException
   {
-    if (getReport() != null)
+    final Locator locator = getLocator();
+    int column = -1;
+    int line = -1;
+    if (locator != null)
     {
-      final Locator locator = getLocator();
-      int column = -1;
-      int line = -1;
-      if (locator != null)
-      {
-        column = locator.getColumnNumber();
-        line = locator.getLineNumber();
-      }
-      final OperationResult result = new OperationResult
-          (message, SeverityLevel.ERROR, line, column);
-      getParserHints().addHintList(ReportParser.class.getName(), "AllMessages", result);
-      getParserHints().addHintList(ReportParser.class.getName(), "Info", result);
+      column = locator.getColumnNumber();
+      line = locator.getLineNumber();
     }
+    final OperationResult result = new OperationResult
+        (message, SeverityLevel.ERROR, line, column);
+    getParserHints().addHintList(ReportParser.class.getName(), "AllMessages", result);
+    getParserHints().addHintList(ReportParser.class.getName(), "Info", result);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PageLayoutModule.java,v 1.3 2004/05/07 12:53:08 mungady Exp $
+ * $Id: PageLayoutModule.java,v 1.4 2005/01/25 00:12:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -70,7 +70,7 @@ public class PageLayoutModule extends AbstractModule
    * @throws org.jfree.base.modules.ModuleInitializeException
    *          if an error ocurred while initializing the module.
    */
-  public void initialize (SubSystem subSystem)
+  public void initialize (final SubSystem subSystem)
           throws ModuleInitializeException
   {
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AbstractTableCreator.java,v 1.2.2.1 2004/12/13 19:27:05 taqua Exp $
+ * $Id: AbstractTableCreator.java,v 1.3 2005/01/25 00:12:21 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,10 +38,9 @@
 
 package org.jfree.report.modules.output.table.base;
 
-import java.awt.geom.Rectangle2D;
-
 import org.jfree.report.modules.output.meta.MetaBand;
 import org.jfree.report.modules.output.meta.MetaElement;
+import org.jfree.report.util.geom.StrictBounds;
 
 public abstract class AbstractTableCreator implements TableCreator
 {
@@ -106,7 +105,7 @@ public abstract class AbstractTableCreator implements TableCreator
       throw new IllegalStateException("Producer already closed");
     }
 
-    final Rectangle2D bounds = band.getBounds();
+    final StrictBounds bounds = band.getBounds();
     // do nothing if the band has no height...
     if (bounds.getHeight() == 0)
     {

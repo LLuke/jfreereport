@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.11 2005/01/25 00:00:18 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.12 2005/02/04 19:22:54 taqua Exp $
  *
  * Changes
  * -------
@@ -43,12 +43,11 @@ package org.jfree.report.function;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
+import java.awt.geom.Dimension2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -61,6 +60,8 @@ import org.jfree.report.event.LayoutListener;
 import org.jfree.report.layout.BandLayoutManagerUtil;
 import org.jfree.report.util.ImageUtils;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictGeomUtility;
 
 /**
  * Paints a AWT or Swing Component, fitting the component into the element bounds.
@@ -205,27 +206,29 @@ public class PaintComponentFunction extends AbstractFunction
 
     final float scale = getScale();
 
-    final Rectangle2D bounds = BandLayoutManagerUtil.getBounds(element, null);
+    final StrictBounds strictBounds = BandLayoutManagerUtil.getBounds(element, null);
+
     // no valid layout
-    if (bounds.getWidth() <= 0 || bounds.getHeight() <= 0)
+    if (strictBounds.getWidth() <= 0 || strictBounds.getHeight() <= 0)
     {
       return;
     }
 
     final Component comp = (Component) o;
-    final Dimension dim = new Dimension((int) (bounds.getWidth()), (int) (bounds.getHeight()));
-    comp.setSize(dim);
+    final Dimension2D dim = StrictGeomUtility.createAWTDimension
+            (strictBounds.getWidth(), strictBounds.getHeight());
+    comp.setSize((int) dim.getWidth(), (int) dim.getHeight());
 
     // supplies the peer and allows drawing ...
     synchronized (peerSupply)
     {
       peerSupply.add(comp, BorderLayout.CENTER);
-      peerSupply.setSize(dim);
+      peerSupply.setSize((int) dim.getWidth(), (int) dim.getHeight());
       peerSupply.validate();
 
       final BufferedImage bi =
           ImageUtils.createTransparentImage
-          ((int) scale * dim.width, (int) scale * dim.height);
+          ((int) (scale * dim.getWidth()), (int) (scale * dim.getHeight()));
       final Graphics2D graph = bi.createGraphics();
       graph.setBackground(new Color (0,0,0,0));
       graph.setTransform(AffineTransform.getScaleInstance(scale, scale));

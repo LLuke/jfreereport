@@ -4,14 +4,18 @@ import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
 
 import org.jfree.report.elementfactory.ElementFactory;
+import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.Element;
+import org.jfree.report.util.geom.StrictDimension;
 import org.jfree.ui.FloatDimension;
 import org.jfree.xml.ParserUtil;
-import org.jfree.xml.parser.AbstractXmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-public abstract class AbstractElementReadHandler extends AbstractXmlReadHandler
+public abstract class AbstractElementReadHandler
+        extends AbstractPropertyXmlReadHandler
 {
 
   /** Literal text for an XML attribute. */
@@ -68,6 +72,7 @@ public abstract class AbstractElementReadHandler extends AbstractXmlReadHandler
   private static final String LAYOUT_CACHABLE_ATT = "layout-cachable";
   private static final String VISIBLE_ATT = "visible";
 
+  private Element element;
 
   public AbstractElementReadHandler ()
   {
@@ -81,7 +86,7 @@ public abstract class AbstractElementReadHandler extends AbstractXmlReadHandler
    * @param atts the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes atts)
+  protected void startParsing (final PropertyAttributes atts)
           throws SAXException, XmlReaderException
   {
     final ElementFactory factory = getElementFactory();
@@ -115,7 +120,7 @@ public abstract class AbstractElementReadHandler extends AbstractXmlReadHandler
    * @return the parsed element position, never null.
    * @throws SAXException if parsing the element position failed.
    */
-  protected final Point2D getElementPosition(final Attributes atts) throws SAXException
+  protected final Point2D getElementPosition(final PropertyAttributes atts) throws SAXException
   {
     final float x = ParserUtil.parseRelativeFloat(atts.getValue("x"),
         "Element x not specified");
@@ -131,13 +136,34 @@ public abstract class AbstractElementReadHandler extends AbstractXmlReadHandler
    * @return the parsed element dimensions, never null.
    * @throws SAXException if parsing the element dimensions failed.
    */
-  private Dimension2D getElementDimension(final Attributes atts) throws SAXException
+  private Dimension2D getElementDimension(final PropertyAttributes atts) throws SAXException
   {
     final float w = ParserUtil.parseRelativeFloat(atts.getValue("width"),
         "Element width not specified");
     final float h = ParserUtil.parseRelativeFloat(atts.getValue("height"),
         "Element height not specified");
     return new FloatDimension(w, h);
+  }
+
+  /**
+   * Done parsing.
+   *
+   * @throws org.xml.sax.SAXException if there is a parsing error.
+   * @throws org.jfree.xml.parser.XmlReaderException
+   *                                  if there is a reader error.
+   */
+  protected void doneParsing ()
+          throws SAXException, XmlReaderException
+  {
+    element = getElementFactory().createElement();
+    super.doneParsing();
+  }
+
+  protected void storeComments ()
+          throws SAXException
+  {
+    final CommentHintPath commentHintPath = new CommentHintPath(element);
+    defaultStoreComments(commentHintPath);
   }
 
   /**
@@ -152,6 +178,6 @@ public abstract class AbstractElementReadHandler extends AbstractXmlReadHandler
   public Object getObject ()
           throws XmlReaderException
   {
-    return getElementFactory().createElement();
+    return element;
   }
 }

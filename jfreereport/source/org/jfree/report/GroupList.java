@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: GroupList.java,v 1.6 2003/08/25 14:29:28 taqua Exp $
+ * $Id: GroupList.java,v 1.7 2005/01/30 23:37:17 taqua Exp $
  *
  * Changes:
  * --------
@@ -48,7 +48,6 @@ package org.jfree.report;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 
 import org.jfree.report.util.ReadOnlyIterator;
@@ -190,9 +189,21 @@ public class GroupList implements Cloneable, Serializable
       g.setReportDefinition(null);
     }
 
+    for (int i = 0; i < backend.size(); i++)
+    {
+      final Group compareGroup = (Group) backend.get(i);
+      // if the current group at index i is greater than the new group
+      if (compareGroup.compareTo(o) > 0)
+      {
+        // then insert the new one before the current group ..
+        backend.add(i, o);
+        o.setReportDefinition(reportDefinition);
+        return;
+      }
+    }
+    // finally, if this group is the smallest group ...
     backend.add(o);
     o.setReportDefinition(reportDefinition);
-    Collections.sort(backend);
   }
 
   /**

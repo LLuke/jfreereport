@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: EmptyContent.java,v 1.3.2.1 2004/12/13 19:26:20 taqua Exp $
+ * $Id: EmptyContent.java,v 1.4 2005/01/24 23:58:15 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,7 +38,7 @@
 
 package org.jfree.report.content;
 
-import java.awt.geom.Rectangle2D;
+import org.jfree.report.util.geom.StrictBounds;
 
 public class EmptyContent implements Content
 {
@@ -61,9 +61,9 @@ public class EmptyContent implements Content
    *
    * @return the bounds.
    */
-  public Rectangle2D getBounds()
+  public StrictBounds getBounds()
   {
-    return new Rectangle2D.Float();
+    return new StrictBounds();
   }
 
   /**
@@ -77,7 +77,7 @@ public class EmptyContent implements Content
    *
    * @return the content (possibly <code>null</code>).
    */
-  public Content getContentForBounds(final Rectangle2D bounds)
+  public Content getContentForBounds(final StrictBounds bounds)
   {
     return this;
   }
@@ -120,8 +120,8 @@ public class EmptyContent implements Content
    *
    * @return the minimum size.
    */
-  public Rectangle2D getMinimumContentSize()
+  public StrictBounds getMinimumContentSize()
   {
-    return new Rectangle2D.Float();
+    return new StrictBounds();
   }
 }

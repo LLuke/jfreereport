@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LabelElementFactory.java,v 1.6 2003/11/01 19:52:27 taqua Exp $
+ * $Id: LabelElementFactory.java,v 1.7 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -45,6 +45,8 @@ import java.awt.geom.Rectangle2D;
 import org.jfree.report.Element;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.TextElement;
+import org.jfree.report.util.geom.StrictDimension;
+import org.jfree.report.util.geom.StrictPoint;
 import org.jfree.report.filter.templates.LabelTemplate;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
@@ -165,8 +167,7 @@ public class LabelElementFactory extends TextElementFactory
   {
     final LabelElementFactory factory = new LabelElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension
-        ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setName(name);
     factory.setColor(paint);
     factory.setHorizontalAlignment(alignment);

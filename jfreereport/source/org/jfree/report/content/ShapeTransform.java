@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeTransform.java,v 1.8 2005/01/24 23:58:16 taqua Exp $
+ * $Id: ShapeTransform.java,v 1.9 2005/02/05 18:35:17 taqua Exp $
  *
  * Changes
  * -------
@@ -630,4 +630,5 @@ public final strictfp class ShapeTransform
 
     return null;
   }
+
 }

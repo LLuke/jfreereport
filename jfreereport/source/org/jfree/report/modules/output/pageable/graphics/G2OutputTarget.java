@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.12 2005/01/25 00:10:46 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.13 2005/01/25 21:40:20 taqua Exp $
  *
  * Changes
  * -------
@@ -71,6 +71,8 @@ import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.WaitingImageObserver;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.ui.Drawable;
 
 /**
@@ -281,11 +283,11 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   {
     final Rectangle2D pageBounds = page.getPagePosition(index);
     currentPageFormat = page.getPageFormat(index);
-    final Rectangle2D bounds = new Rectangle2D.Float(
-        (float) (currentPageFormat.getImageableX()),
-        (float) (currentPageFormat.getImageableY()),
-        (float) currentPageFormat.getImageableWidth() + 1,
-        (float) currentPageFormat.getImageableHeight() + 1);
+    final Rectangle2D bounds = new Rectangle2D.Double
+        ((currentPageFormat.getImageableX()),
+         (currentPageFormat.getImageableY()),
+          currentPageFormat.getImageableWidth() + 1d,
+          currentPageFormat.getImageableHeight() + 1d);
 
     g2.clip(bounds);
     g2.transform(AffineTransform.getTranslateInstance(
@@ -408,8 +410,8 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   protected void drawImage(final ImageContent content)
   {
     final ImageContainer image = content.getContent();
-    final Rectangle2D myBounds = content.getImageArea();
-    final Rectangle2D bounds = getOperationBounds();
+    final StrictBounds myBounds = content.getImageArea();
+    final StrictBounds bounds = getInternalOperationBounds();
 
     if (image instanceof LocalImageContainer)
     {
@@ -420,17 +422,16 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
         final AffineTransform transform = g2.getTransform();
         try
         {
-          final Rectangle2D.Float newClipArea =
-                  new Rectangle2D.Float(0, 0,
-                          (float) (bounds.getWidth()), (float) (bounds.getHeight()));
+          final double imageWidth = StrictGeomUtility.toExternalValue(bounds.getWidth());
+          final double imageHeight = StrictGeomUtility.toExternalValue(bounds.getHeight());
+          final Rectangle2D newClipArea =
+                  new Rectangle2D.Double(0, 0, imageWidth, imageHeight);
           g2.clip(newClipArea);
+          g2.scale(loImage.getScaleX(), loImage.getScaleY());
 
-          final float scaleX = (float) (bounds.getWidth() / myBounds.getWidth());
-          final float scaleY = (float) (bounds.getHeight() / myBounds.getHeight());
-
-          g2.transform(AffineTransform.getScaleInstance(scaleX, scaleY));
-          while (g2.drawImage(loImage.getImage(),
-              (int) -myBounds.getX(), (int) -myBounds.getY(), null) == false)
+          final int imageX = (int) StrictGeomUtility.toExternalValue(myBounds.getX());
+          final int imageY = (int) StrictGeomUtility.toExternalValue(myBounds.getY());
+          while (g2.drawImage(loImage.getImage(), -imageX, -imageY, null) == false)
           {
             final WaitingImageObserver obs = new WaitingImageObserver(loImage.getImage());
             obs.waitImageLoaded();
@@ -564,14 +565,19 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    *
    * @param bounds  the bounds.
    */
-  protected void setOperationBounds(final Rectangle2D bounds)
+  protected void setInternalOperationBounds(final StrictBounds bounds)
   {
-    final Rectangle2D oldBounds = super.getOperationBounds();
+    final StrictBounds oldBounds = super.getInternalOperationBounds();
     // undo the last bounds operation
-    g2.transform(AffineTransform.getTranslateInstance(0 - oldBounds.getX(), 0 - oldBounds.getY()));
-    super.setOperationBounds(bounds);
+
+    g2.transform(AffineTransform.getTranslateInstance
+            (0 - StrictGeomUtility.toExternalValue(oldBounds.getX()),
+             0 - StrictGeomUtility.toExternalValue(oldBounds.getY())));
+    super.setInternalOperationBounds(bounds);
     // then apply the new bounds operation
-    g2.transform(AffineTransform.getTranslateInstance(bounds.getX(), bounds.getY()));
+    g2.transform(AffineTransform.getTranslateInstance
+            (StrictGeomUtility.toExternalValue(bounds.getX()),
+             StrictGeomUtility.toExternalValue(bounds.getY())));
   }
 
   /**
@@ -581,38 +587,32 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    */
   protected void drawDrawable(final DrawableContent content)
   {
-
     // only the drawable clippingbounds region will be drawn.
     // the clipping is set to the clipping bounds of the drawable
 
     // the clipping bounds are relative to the drawable dimension,
     // they are not influenced by the drawables position on the page
     final Drawable drawable = content.getContent();
-    final Rectangle2D myBounds = content.getImageArea();
-    final Rectangle2D bounds = getOperationBounds();
+    final StrictBounds imageArea = content.getImageArea();
+    final StrictBounds bounds = getInternalOperationBounds();
 
     final Shape s = g2.getClip();
     final AffineTransform transform = g2.getTransform();
-    try
-    {
-      final Rectangle2D.Float newClipArea =
-              new Rectangle2D.Float(0, 0,
-                      (float) (bounds.getWidth()), (float) (bounds.getHeight()));
-      g2.clip(newClipArea);
 
-      final float scaleX = (float) (bounds.getWidth() / myBounds.getWidth());
-      final float scaleY = (float) (bounds.getHeight() / myBounds.getHeight());
+    final double imageWidth = StrictGeomUtility.toExternalValue(bounds.getWidth());
+    final double imageHeight = StrictGeomUtility.toExternalValue(bounds.getHeight());
+    final Rectangle2D newClipArea = new Rectangle2D.Double(0, 0, imageWidth, imageHeight);
+    g2.clip(newClipArea);
 
-      g2.transform(AffineTransform.getScaleInstance(scaleX, scaleY));
-      g2.translate(-myBounds.getX(), -myBounds.getY());
-      drawable.draw(g2, myBounds);
-    }
-    catch (Throwable th)
-    {
-      // just in case the image drawing caused trouble ..
-      Log.warn(new Log.MemoryUsageMessage("Failure at drawImage"));
-      Log.warn(th);
-    }
+    final int imageX = (int) StrictGeomUtility.toExternalValue(imageArea.getX());
+    final int imageY = (int) StrictGeomUtility.toExternalValue(imageArea.getY());
+    g2.translate(-imageX, -imageY);
+
+    final StrictBounds drawableBounds = content.getBounds();
+    final double drawableWidth = StrictGeomUtility.toExternalValue(drawableBounds.getWidth());
+    final double drawableHeight = StrictGeomUtility.toExternalValue(drawableBounds.getHeight());
+    drawable.draw(g2, new Rectangle2D.Double(0, 0, drawableWidth, drawableHeight));
+
     g2.setTransform(transform);
     g2.setClip(s);
   }

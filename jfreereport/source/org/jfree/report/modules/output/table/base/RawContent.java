@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RawContent.java,v 1.2.2.1 2004/12/13 19:27:05 taqua Exp $
+ * $Id: RawContent.java,v 1.3 2005/01/25 00:12:35 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,14 +38,13 @@
 
 package org.jfree.report.modules.output.table.base;
 
-import java.awt.geom.Rectangle2D;
-
 import org.jfree.report.content.Content;
 import org.jfree.report.content.ContentType;
+import org.jfree.report.util.geom.StrictBounds;
 
 public class RawContent implements Content
 {
-  private Rectangle2D bounds;
+  private StrictBounds bounds;
   private Object content;
 
   /**
@@ -53,9 +52,9 @@ public class RawContent implements Content
    * @param bounds the bounds, relative to the element bounds
    * @param content the content that should be encapsulated.
    */
-  public RawContent (final Rectangle2D bounds, final Object content)
+  public RawContent (final StrictBounds bounds, final Object content)
   {
-    this.bounds = bounds.getBounds2D();
+    this.bounds = (StrictBounds) bounds.clone();
     this.content = content;
   }
 
@@ -64,9 +63,9 @@ public class RawContent implements Content
    *
    * @return the bounds.
    */
-  public Rectangle2D getBounds ()
+  public StrictBounds getBounds ()
   {
-    return bounds.getBounds2D();
+    return (StrictBounds) bounds.clone();
   }
 
   /**
@@ -78,7 +77,7 @@ public class RawContent implements Content
    * @param bounds the bounds.
    * @return the content (possibly <code>null</code>).
    */
-  public Content getContentForBounds (final Rectangle2D bounds)
+  public Content getContentForBounds (final StrictBounds bounds)
   {
     return null;
   }
@@ -121,9 +120,9 @@ public class RawContent implements Content
    *
    * @return the minimum size.
    */
-  public Rectangle2D getMinimumContentSize ()
+  public StrictBounds getMinimumContentSize ()
   {
-    return bounds.getBounds2D();
+    return getBounds();
   }
 
   public Object getContent ()

@@ -1,13 +1,20 @@
 package org.jfree.report;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.awt.print.PageFormat;
 import java.awt.geom.Rectangle2D;
+import java.io.ObjectOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
+import org.jfree.report.util.SerializerHelper;
+import org.jfree.report.util.geom.StrictBounds;
 
 public class CustomPageDefinition implements PageDefinition
 {
-  private ArrayList pageBoundsList;
-  private ArrayList pageFormatList;
+  private transient ArrayList pageBoundsList;
+  private transient ArrayList pageFormatList;
   private float width;
   private float height;
 
@@ -21,10 +28,10 @@ public class CustomPageDefinition implements PageDefinition
   {
     width = Math.max(width, (float)(format.getImageableWidth() + x));
     height = Math.max(height, (float)(format.getImageableHeight() + y));
-    final Rectangle2D bounds = new Rectangle2D.Float
+    final Rectangle2D bounds = new Rectangle2D.Double
             ( x, y,
-             (float) format.getImageableWidth(),
-             (float) format.getImageableHeight());
+             format.getImageableWidth(),
+             format.getImageableHeight());
     pageBoundsList.add(bounds);
     pageFormatList.add(format.clone());
   }
@@ -72,7 +79,7 @@ public class CustomPageDefinition implements PageDefinition
   public Rectangle2D[] getPagePositions ()
   {
     final Rectangle2D[] rects =
-            new Rectangle2D.Float[pageBoundsList.size()];
+            new Rectangle2D[pageBoundsList.size()];
     for (int i = 0; i < pageBoundsList.size(); i++)
     {
       final Rectangle2D rec = (Rectangle2D) pageBoundsList.get(i);
@@ -83,7 +90,6 @@ public class CustomPageDefinition implements PageDefinition
 
   public float getWidth ()
   {
-    // todo implement me
     return width;
   }
 
@@ -100,4 +106,62 @@ public class CustomPageDefinition implements PageDefinition
     def.pageFormatList = (ArrayList) pageFormatList.clone();
     return def;
   }
+
+
+  /**
+   * deserizalize the report and restore the pageformat.
+   *
+   * @param out the objectoutput stream
+   * @throws java.io.IOException if errors occur
+   */
+  private void writeObject(final ObjectOutputStream out)
+      throws IOException
+  {
+    out.defaultWriteObject();
+    final SerializerHelper instance = SerializerHelper.getInstance();
+    final Iterator pageBoundsIterator = pageBoundsList.iterator();
+    while (pageBoundsIterator.hasNext())
+    {
+      instance.writeObject(pageBoundsIterator.next(), out);
+    }
+    out.writeObject(null);
+    final Iterator pageFormatIterator = pageFormatList.iterator();
+    while (pageFormatIterator.hasNext())
+    {
+      instance.writeObject(pageFormatIterator.next(), out);
+    }
+    out.writeObject(null);
+  }
+
+  /**
+   * resolve the pageformat, as PageFormat is not serializable.
+   *
+   * @param in  the input stream.
+   *
+   * @throws java.io.IOException if there is an IO problem.
+   * @throws ClassNotFoundException if there is a class problem.
+   */
+  private void readObject(final ObjectInputStream in)
+      throws IOException, ClassNotFoundException
+  {
+    in.defaultReadObject();
+    final SerializerHelper instance = SerializerHelper.getInstance();
+    pageBoundsList = new ArrayList();
+    Object o = instance.readObject(in);
+    while (o != null)
+    {
+      final Rectangle2D rect = (Rectangle2D) o;
+      pageBoundsList.add(rect);
+      o = instance.readObject(in);
+    }
+
+    o = instance.readObject(in);
+    while (o != null)
+    {
+      final PageFormat format = (PageFormat) o;
+      pageFormatList.add(format);
+      o = instance.readObject(in);
+    }
+  }
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelMetaBandProducer.java,v 1.4 2005/01/30 23:37:23 taqua Exp $
+ * $Id: ExcelMetaBandProducer.java,v 1.5 2005/02/05 18:35:19 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,7 +38,6 @@
 
 package org.jfree.report.modules.output.table.xls;
 
-import java.awt.geom.Rectangle2D;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -55,6 +54,7 @@ import org.jfree.report.modules.output.table.xls.metaelements.ExcelMetaElement;
 import org.jfree.report.modules.output.table.xls.metaelements.ExcelNumberMetaElement;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.Log;
+import org.jfree.report.util.geom.StrictBounds;
 
 public class ExcelMetaBandProducer
         extends TableMetaBandProducer
@@ -93,7 +93,7 @@ public class ExcelMetaBandProducer
    * @return
    */
   protected MetaElement createDrawableCell (final Element e,
-                                            final float x, final float y)
+                                            final long x, final long y)
   {
     // drawable elements are not supported...
     return null;
@@ -108,14 +108,14 @@ public class ExcelMetaBandProducer
    * @return
    */
   protected MetaElement createImageCell (final Element e,
-                                         final float x, final float y)
+                                         final long x, final long y)
   {
     // image elements are not supported...
     return null;
   }
 
   protected MetaElement createTextCell (final Element e,
-                                        final float x, final float y)
+                                        final long x, final long y)
   {
     final Object o = e.getValue();
     if (o == null)
@@ -139,20 +139,20 @@ public class ExcelMetaBandProducer
       Log.debug("Unable to create extended format cells:", pe);
     }
 
-    final Rectangle2D rect = (Rectangle2D)
+    final StrictBounds rect = (StrictBounds)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
 
     return new ExcelMetaElement(new RawContent(rect, String.valueOf(o)),
             createStyleForTextElement(e, x, y));
   }
 
-  private MetaElement createNumberCell (final Element e, final float x, final float y)
+  private MetaElement createNumberCell (final Element e, final long x, final long y)
           throws ParseException
   {
     final NumberFieldTemplate nft = (NumberFieldTemplate) e.getDataSource();
     final Number number = nft.getDecimalFormat().parse((String) nft.getValue());
 
-    final Rectangle2D rect = (Rectangle2D)
+    final StrictBounds rect = (StrictBounds)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
     final ElementStyleSheet styleSheet =
             createStyleForTextElement(e, x, y);
@@ -163,14 +163,14 @@ public class ExcelMetaBandProducer
     return new ExcelNumberMetaElement(new RawContent(rect, number), styleSheet);
   }
 
-  private MetaElement createDateCell (final Element e, final float x, final float y)
+  private MetaElement createDateCell (final Element e, final long x, final long y)
           throws ParseException
   {
     final DateFieldTemplate dft = (DateFieldTemplate) e.getDataSource();
     final String value = (String) dft.getValue();
     final Date date = dft.getDateFormat().parse(value);
 
-    final Rectangle2D rect = (Rectangle2D)
+    final StrictBounds rect = (StrictBounds)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
     final ElementStyleSheet styleSheet =
             createStyleForTextElement(e, x, y);

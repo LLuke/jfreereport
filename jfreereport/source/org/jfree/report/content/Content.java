@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: Content.java,v 1.4 2004/03/27 20:21:13 taqua Exp $
+ * $Id: Content.java,v 1.5 2004/05/07 08:02:48 mungady Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@
 
 package org.jfree.report.content;
 
-import java.awt.geom.Rectangle2D;
+import org.jfree.report.util.geom.StrictBounds;
 
 /**
  * An interface for report content.
@@ -61,14 +61,14 @@ public interface Content
    *
    * @return the bounds.
    */
-  public Rectangle2D getBounds();
+  public StrictBounds getBounds();
 
   /**
    * Returns the minimum content size.
    *
    * @return the minimum size.
    */
-  public Rectangle2D getMinimumContentSize();
+  public StrictBounds getMinimumContentSize();
 
   /**
    * Returns the content for the given bounds. The extracted content is the content
@@ -81,6 +81,6 @@ public interface Content
    *
    * @return the content (possibly <code>null</code>).
    */
-  public Content getContentForBounds(Rectangle2D bounds);
+  public Content getContentForBounds(StrictBounds bounds);
 
 }

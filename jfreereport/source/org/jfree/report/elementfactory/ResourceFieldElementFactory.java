@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ResourceFieldElementFactory.java,v 1.8 2004/05/07 08:24:41 mungady Exp $
+ * $Id: ResourceFieldElementFactory.java,v 1.9 2005/01/25 21:40:11 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -145,8 +145,7 @@ public class ResourceFieldElementFactory extends TextFieldElementFactory
   {
     final ResourceFieldElementFactory factory = new ResourceFieldElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension
-        ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setName(name);
     factory.setColor(color);
     factory.setHorizontalAlignment(alignment);

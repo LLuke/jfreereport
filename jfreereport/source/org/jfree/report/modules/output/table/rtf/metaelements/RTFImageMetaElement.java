@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFImageMetaElement.java,v 1.2.2.1 2004/12/13 19:27:11 taqua Exp $
+ * $Id: RTFImageMetaElement.java,v 1.3 2005/01/25 00:15:19 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,7 +38,6 @@
 
 package org.jfree.report.modules.output.table.rtf.metaelements;
 
-import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.net.URL;
 
@@ -53,6 +52,7 @@ import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.StringUtil;
 import org.jfree.report.util.WaitingImageObserver;
+import org.jfree.report.util.geom.StrictBounds;
 
 public class RTFImageMetaElement extends RTFMetaElement
 {
@@ -78,18 +78,18 @@ public class RTFImageMetaElement extends RTFMetaElement
    */
   private Image getImage(final ImageContent imageRef) throws DocumentException, IOException
   {
-    final Rectangle2D bounds = getBounds();
-    final Rectangle2D imageBounds = imageRef.getBounds();
+    final StrictBounds bounds = getBounds();
+    final StrictBounds imageBounds = imageRef.getBounds();
 
     if (imageRef instanceof URLImageContainer)
     {
       final URLImageContainer urlImageContainer = (URLImageContainer) imageRef;
       try
       {
-        final Rectangle2D drawArea = new Rectangle2D.Float(0, 0, (float) bounds.getWidth(),
-            (float) bounds.getHeight());
+        final StrictBounds drawArea = new StrictBounds
+                (0, 0, bounds.getWidth(), bounds.getHeight());
         if ((urlImageContainer.getSourceURL() != null)
-            && (drawArea.contains(imageBounds))
+            && (StrictBounds.contains(drawArea, imageBounds))
             && isSupportedImageFormat(urlImageContainer.getSourceURL()))
         {
           return Image.getInstance(urlImageContainer.getSourceURL());

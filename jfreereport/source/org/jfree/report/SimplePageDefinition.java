@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageDefinition.java,v 1.5 2004/05/07 07:43:53 mungady Exp $
+ * $Id: SimplePageDefinition.java,v 1.6 2005/01/24 23:57:48 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -49,9 +49,9 @@ import org.jfree.report.util.SerializerHelper;
 public class SimplePageDefinition implements PageDefinition
 {
   private transient PageFormat format;
+  private transient Rectangle2D[] pagePositions;
   private int pageCountHorizontal;
   private int pageCountVertical;
-  private Rectangle2D[] pagePositions;
 
   public SimplePageDefinition(final PageFormat format,
                               final int x, final int y)
@@ -149,7 +149,13 @@ public class SimplePageDefinition implements PageDefinition
       throws IOException
   {
     out.defaultWriteObject();
-    SerializerHelper.getInstance().writeObject(format, out);
+    final SerializerHelper instance = SerializerHelper.getInstance();
+    instance.writeObject(format, out);
+    out.writeInt(pagePositions.length);
+    for (int i = 0; i < pagePositions.length; i++)
+    {
+      instance.writeObject(pagePositions[i], out);
+    }
   }
 
   /**
@@ -164,7 +170,14 @@ public class SimplePageDefinition implements PageDefinition
       throws IOException, ClassNotFoundException
   {
     in.defaultReadObject();
-    format = (PageFormat) SerializerHelper.getInstance().readObject(in);
+    final SerializerHelper instance = SerializerHelper.getInstance();
+    format = (PageFormat) instance.readObject(in);
+    final int length = in.readInt();
+    pagePositions = new Rectangle2D[length];
+    for (int i = 0; i < length; i++)
+    {
+      pagePositions[i] = (Rectangle2D) instance.readObject(in);
+    }
   }
 
   public Object clone () throws CloneNotSupportedException

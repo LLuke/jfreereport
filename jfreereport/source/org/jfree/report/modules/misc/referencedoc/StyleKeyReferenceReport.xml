@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE report-definition
-  PUBLIC "-//JFreeReport//DTD report definition//EN//extended"
-         "http://jfreereport.sourceforge.net/extreport.dtd">
+  PUBLIC "-//JFreeReport//DTD report definition//EN//extended/version 0.8.5"
+         "http://jfreereport.sourceforge.net/extreport-085.dtd">
 <report-definition name="StyleKey Reference Report">
   <parser-config>
     <object-factory class="org.jfree.report.modules.parser.ext.factory.objects.DefaultClassFactory"/>
@@ -13,7 +13,9 @@
   </parser-config>
 
   <report-config>
-    <defaultpageformat orientation="portrait" pageformat="A4" topmargin="72" bottommargin="72" leftmargin="72" rightmargin="72"/>
+    <page-definition>
+      <page  orientation="portrait" pageformat="A4" topmargin="72" bottommargin="72" leftmargin="72" rightmargin="72"/>
+    </page-definition>
     <configuration>
       <property name="org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.Author">JFreeReport - http://www.jfree.org/jfreereport</property>
       <property name="org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget.default.Encoding">iso-8859-15</property>
@@ -29,16 +31,12 @@
           <basic-object name="height">18.0</basic-object>
           <basic-object name="width">0.0</basic-object>
         </compound-key>
-      </style>
-
-      <!-- the default band style for defines stylekeys for all child elements -->
-      <default-style>
         <basic-key name="font-bold">true</basic-key>
         <basic-key name="font-size">14</basic-key>
         <basic-key name="font">Serif</basic-key>
         <basic-key name="font-underline">true</basic-key>
         <basic-key name="font-italic">false</basic-key>
-      </default-style>
+      </style>
 
       <!-- The background element, draws the grey background box -->
       <element name="background" type="shape/generic">
@@ -111,14 +109,12 @@
               <basic-object name="height">18.0</basic-object>
               <basic-object name="width">0.0</basic-object>
             </compound-key>
-          </style>
-          <default-style>
             <basic-key name="font-bold">true</basic-key>
             <basic-key name="font-size">14</basic-key>
             <basic-key name="font">Serif</basic-key>
             <basic-key name="font-underline">false</basic-key>
             <basic-key name="font-italic">false</basic-key>
-          </default-style>
+          </style>
 
           <!-- group header -->
           <element type="text/plain">
@@ -185,14 +181,12 @@
           <basic-object name="height">12.0</basic-object>
           <basic-object name="width">0.0</basic-object>
         </compound-key>
-      </style>
-      <default-style>
         <basic-key name="font-bold">true</basic-key>
         <basic-key name="font-size">10</basic-key>
         <basic-key name="font">SansSerif</basic-key>
         <basic-key name="font-underline">false</basic-key>
         <basic-key name="font-italic">false</basic-key>
-      </default-style>
+      </style>
 
       <element type="text/plain" name="object-class">
         <style>

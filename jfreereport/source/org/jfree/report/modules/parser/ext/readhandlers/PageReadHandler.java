@@ -4,16 +4,18 @@ import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.ParserUtil;
-import org.jfree.xml.parser.AbstractXmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-public class PageReadHandler extends AbstractXmlReadHandler
+public class PageReadHandler extends AbstractPropertyXmlReadHandler
 {
 
   /** Literal text for an XML attribute. */
@@ -78,7 +80,7 @@ public class PageReadHandler extends AbstractXmlReadHandler
    * @param attrs the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes attrs)
+  protected void startParsing (final PropertyAttributes attrs)
           throws SAXException, XmlReaderException
   {
     handlePageFormat(attrs);
@@ -225,5 +227,13 @@ public class PageReadHandler extends AbstractXmlReadHandler
           throws XmlReaderException
   {
     return null;
+  }
+
+  protected void storeComments ()
+          throws SAXException
+  {
+    final Object[] serializedPageFormat = PageFormatFactory.getInstance().resolvePageFormat(pageFormat);
+    final CommentHintPath path = new CommentHintPath(serializedPageFormat);
+    defaultStoreComments(path);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.17 2005/01/24 23:57:48 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.18 2005/01/25 21:39:54 taqua Exp $
  *
  * Changes:
  * --------
@@ -37,7 +37,7 @@
  * 12-Nov-2002 : Minor changes required to use JCommon 0.7.1 (DG)
  * 06-Dec-2002 : Updated Javadocs (DG);
  * 26-Feb-2003 : Added Heiko Evermann to developer list (DG);
- *
+ * 16-Feb-2005 : Updated the contributors list.
  */
 
 package org.jfree.report;
@@ -79,7 +79,17 @@ public class JFreeReportInfo extends ProjectInfo
           new Contributor("Heiko Evermann", "-"),
           new Contributor("Piotr Bzdyl", "-"),
           new Contributor("Patrice Rolland", "-"),
-          new Contributor("Cedric Pronzato", "-")
+          new Contributor("Cedric Pronzato", "-"),
+          new Contributor("Maciej Wegorkiewicz","-"),
+          new Contributor("Michael Tennes", "-"),
+          new Contributor("Dmitri Colebatch", "dimc@users.sourceforge.net"),
+          new Contributor("J\u00d6rg Schaible", "joehni@users.sourceforge.net"),
+          new Contributor("Marc Casas", "-"),
+          new Contributor("Ramon Juanes", "-"),
+          new Contributor("Demeter F. Tamas", "-"),
+          new Contributor("Hendri Smit", "-"),
+          new Contributor("Sergey M Mozgovoi", "-"),
+          new Contributor("Thomas Dilts", "-"),
         }
     ));
 

@@ -1,13 +1,14 @@
 package org.jfree.report.modules.parser.ext.readhandlers;
 
-import org.jfree.xml.parser.AbstractXmlReadHandler;
-import org.jfree.xml.parser.XmlReaderException;
-import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.report.GroupList;
-import org.xml.sax.Attributes;
+import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.xml.parser.XmlReadHandler;
+import org.jfree.xml.parser.XmlReaderException;
 import org.xml.sax.SAXException;
 
-public class GroupsReadHandler extends AbstractXmlReadHandler
+public class GroupsReadHandler extends AbstractPropertyXmlReadHandler
 {
   private GroupList groupList;
 
@@ -28,7 +29,7 @@ public class GroupsReadHandler extends AbstractXmlReadHandler
    *                                  if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild (final String tagName,
-                                               final Attributes atts)
+                                               final PropertyAttributes atts)
           throws XmlReaderException, SAXException
   {
     if (tagName.equals("group"))
@@ -50,5 +51,13 @@ public class GroupsReadHandler extends AbstractXmlReadHandler
           throws XmlReaderException
   {
     return groupList;
+  }
+
+
+  protected void storeComments ()
+          throws SAXException
+  {
+    final CommentHintPath hintPath = new CommentHintPath(groupList);
+    defaultStoreComments(hintPath);
   }
 }

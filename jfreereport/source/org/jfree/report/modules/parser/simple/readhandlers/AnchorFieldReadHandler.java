@@ -2,9 +2,9 @@ package org.jfree.report.modules.parser.simple.readhandlers;
 
 import org.jfree.report.elementfactory.AnchorFieldElementFactory;
 import org.jfree.report.elementfactory.ElementFactory;
-import org.jfree.xml.parser.XmlReaderException;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.xml.ElementDefinitionException;
-import org.xml.sax.Attributes;
+import org.jfree.xml.parser.XmlReaderException;
 import org.xml.sax.SAXException;
 
 public class AnchorFieldReadHandler extends AbstractElementReadHandler
@@ -22,7 +22,7 @@ public class AnchorFieldReadHandler extends AbstractElementReadHandler
    * @param atts the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes atts)
+  protected void startParsing (final PropertyAttributes atts)
           throws SAXException, XmlReaderException
   {
     final String fieldName = atts.getValue("fieldname");

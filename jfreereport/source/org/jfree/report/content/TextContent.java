@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextContent.java,v 1.10 2004/03/16 15:09:22 taqua Exp $
+ * $Id: TextContent.java,v 1.11 2004/05/07 08:02:48 mungady Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,6 @@
 
 package org.jfree.report.content;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +45,7 @@ import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.util.LineBreakIterator;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.geom.StrictBounds;
 
 /**
  * A container for text content. The content will be split into paragraphs.
@@ -75,18 +75,18 @@ public strictfp class TextContent extends ContentContainer
    * @param trimTextContent defines, whether to remove whitespaces from the start
    * and end of an line.
    */
-  public TextContent(final String value, final float lineHeight,
-                     final Rectangle2D bounds, final SizeCalculator ot,
+  public TextContent(final String value, final long lineHeight,
+                     final StrictBounds bounds, final SizeCalculator ot,
                      final String reservedLiteral, final boolean trimTextContent)
   {
-    super((Rectangle2D) bounds.clone());
+    super(bounds);
     this.sizeCalculator = ot;
 
-    final float x = (float) bounds.getX();
-    final float y = (float) bounds.getY();
-    final float w = (float) bounds.getWidth();
-    final float h = (float) bounds.getHeight();
-    float usedHeight = 0;
+    final long x = bounds.getX();
+    final long y = bounds.getY();
+    final long w = bounds.getWidth();
+    final long h = bounds.getHeight();
+    long usedHeight = 0;
 
     if (w != 0)
     {

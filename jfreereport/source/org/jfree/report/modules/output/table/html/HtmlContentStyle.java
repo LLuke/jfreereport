@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentStyle.java,v 1.2.2.1 2004/12/13 19:27:08 taqua Exp $
+ * $Id: HtmlContentStyle.java,v 1.3 2005/01/25 00:13:22 taqua Exp $
  *
  * Changes
  * -------
@@ -312,14 +312,4 @@ public final class HtmlContentStyle implements HtmlStyle
     }
     return "top";
   }
-
-//  public String getName ()
-//  {
-//    return name;
-//  }
-//
-//  public void setName (final String name)
-//  {
-//    this.name = name;
-//  }
 }

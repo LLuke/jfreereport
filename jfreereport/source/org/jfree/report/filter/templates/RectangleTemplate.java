@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RectangleTemplate.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
+ * $Id: RectangleTemplate.java,v 1.5 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -39,6 +39,8 @@
 package org.jfree.report.filter.templates;
 
 import java.awt.geom.Rectangle2D;
+
+import org.jfree.report.util.geom.StrictBounds;
 
 /**
  * A template to create rectangle elements. The rectangle always has the width and
@@ -65,6 +67,6 @@ public class RectangleTemplate extends AbstractTemplate
    */
   public Object getValue()
   {
-    return new Rectangle2D.Float(0, 0, 100, 100);
+    return new StrictBounds(0, 0, 100, 100);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFMetaBandProducer.java,v 1.2.2.1 2004/12/13 19:27:10 taqua Exp $
+ * $Id: RTFMetaBandProducer.java,v 1.3 2005/01/25 00:15:16 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,6 +43,7 @@ import java.awt.geom.Rectangle2D;
 import com.lowagie.text.pdf.BaseFont;
 import org.jfree.report.Element;
 import org.jfree.report.ImageContainer;
+import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.layout.DefaultLayoutSupport;
 import org.jfree.report.modules.output.meta.MetaElement;
@@ -79,13 +80,13 @@ public class RTFMetaBandProducer extends TableMetaBandProducer
    * @return
    */
   protected MetaElement createDrawableCell (final Element e,
-                                            final float x, final float y)
+                                            final long x, final long y)
   {
     return null;
   }
 
   protected MetaElement createImageCell (final Element e,
-                                         final float x, final float y)
+                                         final long x, final long y)
   {
     final Object o = e.getValue();
     if (o instanceof ImageContainer == false)
@@ -101,7 +102,7 @@ public class RTFMetaBandProducer extends TableMetaBandProducer
   }
 
   protected MetaElement createTextCell (final Element e,
-                                        final float x, final float y)
+                                        final long x, final long y)
           throws ContentCreationException
   {
     final Object o = e.getValue();
@@ -109,7 +110,7 @@ public class RTFMetaBandProducer extends TableMetaBandProducer
     {
       return null;
     }
-    final Rectangle2D rect = (Rectangle2D)
+    final StrictBounds rect = (StrictBounds)
             e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
 
     final FontDefinition def = e.getStyle().getFontDefinitionProperty();

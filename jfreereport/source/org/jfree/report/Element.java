@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.14 2005/01/30 23:37:17 taqua Exp $
+ * $Id: Element.java,v 1.15 2005/02/04 19:22:51 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -83,7 +83,8 @@ import org.jfree.report.util.InstanceID;
  */
 public abstract class Element implements DataTarget, Serializable, Cloneable
 {
-  private static class InternalElementStyleSheetCarrier implements StyleSheetCarrier
+  private static class InternalElementStyleSheetCarrier
+          implements StyleSheetCarrier
   {
     private transient ElementStyleSheet styleSheet;
     private InternalElementStyleSheet self;

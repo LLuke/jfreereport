@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.22 2005/01/28 19:26:50 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.23 2005/01/30 23:37:21 taqua Exp $
  *
  * Changes
  * -------
@@ -45,8 +45,6 @@
  */
 
 package org.jfree.report.modules.output.pageable.base.pagelayout;
-
-import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.Band;
 import org.jfree.report.Group;
@@ -65,6 +63,8 @@ import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutDelega
 import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.style.BandStyleKeys;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictGeomUtility;
 
 /**
  * A simple page layouter.  This class replicates the 'old' behaviour of JFreeReport,
@@ -136,7 +136,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
   public static final String WATERMARK_PRINTED_KEY =
   	           "org.jfree.report.modules.pageable.base.WatermarkPrinted";
 
-  private static final float POSITION_UNDEFINED = -1;
+  private static final long POSITION_UNDEFINED = -1;
   /**
    * A flag value indicating that the current page should be finished,
    * regardless of the current state or fill level.
@@ -183,7 +183,8 @@ public strictfp class SimplePageLayouter extends PageLayouter
   public void resetCursor()
   {
     final LogicalPage lp = getLogicalPage();
-    setCursor(new SimplePageLayoutCursor(lp.getHeight()));
+    setCursor(new SimplePageLayoutCursor
+            (StrictGeomUtility.toInternalValue(lp.getHeight())));
   }
 
   /**
@@ -191,7 +192,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
    *
    * @return the cursor position.
    */
-  public float getCursorPosition()
+  public long getCursorPosition()
   {
     if (getCursor() == null)
     {
@@ -205,7 +206,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
    *
    * @param reserved the reserved space.
    */
-  public void setReservedSpace(final float reserved)
+  public void setReservedSpace(final long reserved)
   {
     if (getCursor() == null)
     {
@@ -219,7 +220,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
    *
    * @return the reserved space.
    */
-  public float getReservedSpace()
+  public long getReservedSpace()
   {
     if (getCursor() == null)
     {
@@ -237,7 +238,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
    *
    * @param topContentPosition the first content position.
    */
-  public void setTopPageContentPosition(final float topContentPosition)
+  public void setTopPageContentPosition(final long topContentPosition)
   {
     if (getCursor() == null)
     {
@@ -250,7 +251,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
    * Returns the position of the first content.
    * @return the first content position.
    */
-  public float getTopContentPosition()
+  public long getTopContentPosition()
   {
     if (getCursor() == null)
     {
@@ -600,14 +601,14 @@ public strictfp class SimplePageLayouter extends PageLayouter
 
     final Float f = (Float)
             b.getStyle().getStyleProperty(BandStyleKeys.FIXED_POSITION);
-    final float position;
+    final long position;
     if (f == null)
     {
       position = POSITION_UNDEFINED;
     }
     else
     {
-      position = f.floatValue();
+      position = StrictGeomUtility.toInternalValue(f.floatValue());
       if ((position >= getCursor().getPageBottom()) || (position < 0))
       {
         throw new IndexOutOfBoundsException("Given fixed position is invalid");
@@ -634,7 +635,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
       }
     }
 
-    final float y;
+    final long y;
     if (position == POSITION_UNDEFINED)
     {
       y = getCursor().getY();
@@ -647,7 +648,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
     // or restarted; PageHeader and PageFooter are printed out of order and
     // do not influence the reporting state
 
-    final Rectangle2D bounds = doLayout(b, true);
+    final StrictBounds bounds = doLayout(b, true);
     bounds.setRect(0, y, bounds.getWidth(), bounds.getHeight());
     final boolean retval = doPrint(bounds, b, spool, false, position);
     return retval;
@@ -672,7 +673,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
     // if there is nothing printed, then ignore everything ...
     // the spooling is now slightly different ...
     final boolean spool = true;
-    final Rectangle2D bounds = doLayout(b, true);
+    final StrictBounds bounds = doLayout(b, true);
     bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(),
         bounds.getWidth(), bounds.getHeight());
     return doPrint(bounds, b, spool, false, -1);
@@ -687,11 +688,11 @@ public strictfp class SimplePageLayouter extends PageLayouter
    *
    * @return the dimensions of the band.
    */
-  protected Rectangle2D doLayout(final Band band, final boolean fireEvent)
+  protected StrictBounds doLayout(final Band band, final boolean fireEvent)
   {
-    final float width = getLogicalPage().getWidth();
-    final float height = getCursor().getPageBottomReserved() - getCursor().getPageTop();
-    final Rectangle2D bounds = BandLayoutManagerUtil.doLayout(band,
+    final long width = StrictGeomUtility.toInternalValue(getLogicalPage().getWidth());
+    final long height = getCursor().getPageBottomReserved() - getCursor().getPageTop();
+    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(band,
         getLogicalPage().getLayoutSupport(), width, height);
 
     if (fireEvent == true)
@@ -718,14 +719,14 @@ public strictfp class SimplePageLayouter extends PageLayouter
    * @throws ReportProcessingException if the printing caused an detectable error
    * while printing the band
    */
-  protected boolean doPrint(final Rectangle2D bounds, final Band band,
+  protected boolean doPrint(final StrictBounds bounds, final Band band,
                             final boolean spool, final boolean watermark,
-                            final float position)
+                            final long position)
       throws ReportProcessingException
   {
       try
       {
-        final float height = (float) bounds.getHeight();
+        final long height = bounds.getHeight();
         // handle the end of the page
         if (isFinishingPage())
         {
@@ -796,7 +797,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
    *
    * @return true or false.
    */
-  public boolean isSpaceFor(final float height)
+  public boolean isSpaceFor(final long height)
   {
     if (isLastPageBreak && (getReport().getPageFooter().isDisplayOnLastPage() == false))
     {
@@ -806,8 +807,8 @@ public strictfp class SimplePageLayouter extends PageLayouter
     {
       final Band b = getReport().getPageFooter();
       // perform layout, but do not fire the event, as we don't print the band ...
-      final Rectangle2D rect = doLayout(b, false);
-      getCursor().setReservedSpace((float) rect.getHeight());
+      final StrictBounds rect = doLayout(b, false);
+      getCursor().setReservedSpace(rect.getHeight());
     }
     return getCursor().isSpaceFor(height);
   }
@@ -993,7 +994,8 @@ public strictfp class SimplePageLayouter extends PageLayouter
   public void setLogicalPage(final LogicalPage logicalPage)
   {
     super.setLogicalPage(logicalPage);
-    setCursor(new SimplePageLayoutCursor(getLogicalPage().getHeight()));
+    setCursor(new SimplePageLayoutCursor(StrictGeomUtility.toInternalValue
+            (getLogicalPage().getHeight())));
   }
 
   /**
@@ -1105,8 +1107,10 @@ public strictfp class SimplePageLayouter extends PageLayouter
   public boolean printWatermark(final Band watermark) throws ReportProcessingException
   {
     final LogicalPage logPage = getLogicalPage();
-    final Rectangle2D bounds  = BandLayoutManagerUtil.doFixedLayout
-        (watermark, logPage.getLayoutSupport(), logPage.getWidth(), logPage.getHeight());
+    final long width = StrictGeomUtility.toInternalValue(logPage.getWidth());
+    final long height = StrictGeomUtility.toInternalValue(logPage.getHeight());
+    final StrictBounds bounds  = BandLayoutManagerUtil.doFixedLayout
+        (watermark, logPage.getLayoutSupport(), width, height);
     final boolean retval = doPrint(bounds, watermark, true, true, -1);
     return retval;
   }

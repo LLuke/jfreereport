@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DrawableContent.java,v 1.7 2005/01/24 23:58:14 taqua Exp $
+ * $Id: DrawableContent.java,v 1.8 2005/01/25 21:40:08 taqua Exp $
  *
  * Changes
  * -------
@@ -37,11 +37,8 @@
  */
 package org.jfree.report.content;
 
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Rectangle2D;
-
+import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.ui.Drawable;
-import org.jfree.util.ShapeUtilities;
 
 /**
  * A simple wrapper around the DrawableContainer. The ContentImplementation
@@ -59,10 +56,10 @@ public strictfp class DrawableContent implements Content
 
 
   /** The bounds. */
-  private final Rectangle2D bounds;
+  private final StrictBounds bounds;
 
   /** The bounds of the displayed area of the image (unscaled). */
-  private final Rectangle2D imageArea;
+  private final StrictBounds imageArea;
 
   /**
    * Creates a new image content.
@@ -71,10 +68,10 @@ public strictfp class DrawableContent implements Content
    * @param bounds  the content bounds.
    */
   public DrawableContent(final Drawable ref,
-                         final Rectangle2D bounds)
+                         final StrictBounds bounds)
   {
-    this (ref, bounds, new Rectangle2D.Float
-            (0, 0, (float) bounds.getWidth(), (float) bounds.getHeight()));
+    this (ref, bounds, new StrictBounds
+            (0, 0, bounds.getWidth(), bounds.getHeight()));
   }
 
   /**
@@ -84,8 +81,8 @@ public strictfp class DrawableContent implements Content
    * @param bounds  the content bounds.
    */
   protected DrawableContent(final Drawable ref,
-                         final Rectangle2D bounds,
-                         final Rectangle2D imageArea)
+                         final StrictBounds bounds,
+                         final StrictBounds imageArea)
   {
     if (ref == null)
     {
@@ -114,9 +111,9 @@ public strictfp class DrawableContent implements Content
    *
    * @return the content bounds.
    */
-  public Rectangle2D getBounds()
+  public StrictBounds getBounds()
   {
-    return bounds.getBounds2D();
+    return (StrictBounds) bounds.clone();
   }
 
   /**
@@ -126,35 +123,35 @@ public strictfp class DrawableContent implements Content
    *
    * @return the content.
    */
-  public Content getContentForBounds(final Rectangle2D bounds)
+  public Content getContentForBounds(final StrictBounds bounds)
   {
-    if (ShapeUtilities.intersects(bounds, this.bounds) == false)
+    if (StrictBounds.intersects(bounds, this.bounds) == false)
     {
       return new EmptyContent();
     }
 
-    final Rectangle2D myBounds = bounds.createIntersection(this.bounds);
+    final StrictBounds myBounds = bounds.createIntersection(this.bounds);
     return new DrawableContent(drawable, myBounds,
-            new Rectangle2D.Float
+            new StrictBounds
                     (mapHorizontalPointToImage(myBounds.getX() - this.bounds.getX()),
                      mapVerticalPointToImage(myBounds.getY() - this.bounds.getY()),
                      mapHorizontalPointToImage(myBounds.getWidth()),
                      mapVerticalPointToImage(myBounds.getHeight())));
   }
 
-  private float mapHorizontalPointToImage (final double px)
+  private long mapHorizontalPointToImage (final long px)
   {
-    return (float) (px * imageArea.getWidth() / bounds.getWidth());
+    return (px * imageArea.getWidth() / bounds.getWidth());
   }
 
-  private float mapVerticalPointToImage (final double px)
+  private long mapVerticalPointToImage (final long px)
   {
-    return (float) (px * imageArea.getHeight() / bounds.getHeight());
+    return (px * imageArea.getHeight() / bounds.getHeight());
   }
 
-  public Rectangle2D getImageArea ()
+  public StrictBounds getImageArea ()
   {
-    return imageArea.getBounds2D();
+    return (StrictBounds) imageArea.clone();
   }
 
   /**
@@ -162,7 +159,7 @@ public strictfp class DrawableContent implements Content
    *
    * @return the minimum size.
    */
-  public Rectangle2D getMinimumContentSize()
+  public StrictBounds getMinimumContentSize()
   {
     return getBounds();
   }
@@ -175,10 +172,5 @@ public strictfp class DrawableContent implements Content
   public Drawable getContent()
   {
     return drawable;
-  }
-
-  public Dimension2D getDrawableSize ()
-  {
-    return null;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemMaxFunction.java,v 1.5 2005/01/25 00:00:11 taqua Exp $
+ * $Id: ItemMaxFunction.java,v 1.6 2005/02/04 19:22:54 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,6 @@
 package org.jfree.report.function;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import org.jfree.report.Group;
 import org.jfree.report.event.ReportEvent;
@@ -69,7 +68,7 @@ public class ItemMaxFunction extends AbstractFunction implements Serializable
   private String group;
   private String field;
   /** The maximum value. */
-  private transient BigDecimal max;
+  private transient Comparable max;
 
   /**
    * Constructs an unnamed function. Make sure to set a Name or function initialisation
@@ -183,11 +182,14 @@ public class ItemMaxFunction extends AbstractFunction implements Serializable
   public void itemsAdvanced(final ReportEvent event)
   {
     final Object fieldValue = event.getDataRow().get(getField());
+    if (fieldValue instanceof Comparable == false)
+    {
+      return;
+    }
 
-    final Number n = (Number) fieldValue;
     try
     {
-      final BigDecimal compare = new BigDecimal(n.doubleValue());
+      final Comparable compare = (Comparable) fieldValue;;
       if (max == null)
       {
         max = compare;

@@ -1,25 +1,39 @@
 package org.jfree.report.modules.parser.ext.readhandlers;
 
+import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.xml.ElementDefinitionException;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ObjectDescription;
-import org.jfree.xml.parser.AbstractXmlReadHandler;
-import org.jfree.xml.parser.XmlReaderException;
 import org.jfree.xml.parser.RootXmlReadHandler;
+import org.jfree.xml.parser.XmlReaderException;
 import org.jfree.xml.parser.coretypes.StringReadHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-public class BasicObjectReadHandler extends AbstractXmlReadHandler
+public class BasicObjectReadHandler extends AbstractPropertyXmlReadHandler
 {
   private ObjectDescription objectDescription;
   private StringReadHandler stringReadHandler;
   private ClassFactory classFactory;
+  private CommentHintPath commentHintPath;
 
-  public BasicObjectReadHandler (final ObjectDescription objectDescription)
+  /**
+   *
+   * @param objectDescription may be null.
+   * @param commentHintPath never null.
+   */
+  public BasicObjectReadHandler (final ObjectDescription objectDescription,
+                                 final CommentHintPath commentHintPath)
   {
     this.stringReadHandler = new StringReadHandler();
+    if (commentHintPath == null)
+    {
+      throw new NullPointerException("CommentHintPath must not be null.");
+    }
     this.objectDescription = objectDescription;
+    this.commentHintPath = commentHintPath;
   }
 
   /**
@@ -56,7 +70,7 @@ public class BasicObjectReadHandler extends AbstractXmlReadHandler
    * @param attrs the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes attrs)
+  protected void startParsing (final PropertyAttributes attrs)
           throws SAXException, XmlReaderException
   {
     handleStartParsing(attrs);
@@ -103,6 +117,12 @@ public class BasicObjectReadHandler extends AbstractXmlReadHandler
   {
     final String value = stringReadHandler.getResult();
     objectDescription.setParameter("value", value);
+    super.doneParsing();
+  }
+
+  protected CommentHintPath getCommentHintPath ()
+  {
+    return commentHintPath;
   }
 
   /**
@@ -118,5 +138,11 @@ public class BasicObjectReadHandler extends AbstractXmlReadHandler
           throws XmlReaderException
   {
     return objectDescription.createObject();
+  }
+
+  protected void storeComments ()
+          throws SAXException
+  {
+    defaultStoreComments(commentHintPath);
   }
 }

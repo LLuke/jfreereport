@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: AlignmentTools.java,v 1.2 2004/05/07 12:53:06 mungady Exp $
+ * $Id: AlignmentTools.java,v 1.3 2005/01/25 00:10:12 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,12 +38,11 @@
 
 package org.jfree.report.modules.output.pageable.base.operations;
 
-import java.awt.geom.Rectangle2D;
-
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.content.Content;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.util.geom.StrictBounds;
 
 public final class AlignmentTools
 {
@@ -59,7 +58,7 @@ public final class AlignmentTools
    * @return the created alignment object.
    */
   public static VerticalBoundsAlignment getVerticalLayout
-    (final ElementAlignment va, final Rectangle2D bounds)
+    (final ElementAlignment va, final StrictBounds bounds)
   {
     if (va.equals(ElementAlignment.TOP))
     {
@@ -83,7 +82,7 @@ public final class AlignmentTools
    * @return the created alignment object.
    */
   public static HorizontalBoundsAlignment getHorizontalLayout
-      (final ElementAlignment ha, final Rectangle2D bounds)
+      (final ElementAlignment ha, final StrictBounds bounds)
   {
     if (ha.equals(ElementAlignment.CENTER))
     {
@@ -105,10 +104,10 @@ public final class AlignmentTools
    * @param e the element that was used to create the content.
    * @return the aligned content bounds.
    */
-  public static Rectangle2D computeAlignmentBounds (final MetaElement e)
+  public static StrictBounds computeAlignmentBounds (final MetaElement e)
   {
     final Content content = e.getContent();
-    final Rectangle2D bounds = e.getBounds();
+    final StrictBounds bounds = e.getBounds();
     final ElementAlignment va
         = (ElementAlignment) e.getProperty(ElementStyleSheet.VALIGNMENT);
     final VerticalBoundsAlignment vba = getVerticalLayout(va, bounds);
@@ -118,8 +117,8 @@ public final class AlignmentTools
 
     final HorizontalBoundsAlignment hba = getHorizontalLayout(ha, bounds);
 
-    final Rectangle2D halignedBounds = hba.align(content.getBounds());
-    final Rectangle2D abounds = vba.align(halignedBounds);
+    final StrictBounds halignedBounds = hba.align(content.getBounds());
+    final StrictBounds abounds = vba.align(halignedBounds);
     return abounds;
   }
 }

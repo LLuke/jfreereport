@@ -189,4 +189,32 @@ public class TextFilePrinterDriver implements PrinterDriver
     encodingUtilities = new EncodingUtilities(encoding);
     return encodingUtilities;
   }
+
+  public char[] getEndOfLine ()
+  {
+    return endOfLine;
+  }
+
+  public void setEndOfLine (final char[] endOfLine)
+  {
+    if (endOfLine == null)
+    {
+      throw new NullPointerException();
+    }
+    this.endOfLine = endOfLine;
+  }
+
+  public char[] getEndOfPage ()
+  {
+    return endOfPage;
+  }
+
+  public void setEndOfPage (final char[] endOfPage)
+  {
+    if (endOfPage == null)
+    {
+      throw new NullPointerException();
+    }
+    this.endOfPage = endOfPage;
+  }
 }

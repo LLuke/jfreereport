@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.6.2.1.2.1 2004/04/06 14:22:38 taqua Exp $
+ * $Id: ReportGenerator.java,v 1.9 2005/01/25 00:17:49 taqua Exp $
  *
  * Changes
  * -------
@@ -42,12 +42,18 @@ package org.jfree.report.modules.parser.base;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.xml.ElementDefinitionException;
 import org.jfree.xml.ParserFrontend;
+import org.jfree.xml.FrontendDefaultHandler;
+import org.jfree.xml.parser.RootXmlReadHandler;
 import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
 
 /**
  * The reportgenerator initializes the parser and provides an interface
@@ -72,6 +78,8 @@ public class ReportGenerator extends ParserFrontend
   /** The report generator. */
   private static ReportGenerator generator;
 
+  private HashMap helperObjects;
+
   /**
    * Creates a new report generator. The generator uses the singleton pattern by
    * default, so use generator.getInstance() to get the generator.
@@ -80,6 +88,7 @@ public class ReportGenerator extends ParserFrontend
   {
     super(new ReportParser());
     initFromSystem();
+    helperObjects = new HashMap();
   }
 
   /**
@@ -235,6 +244,7 @@ public class ReportGenerator extends ParserFrontend
 
   /**
    * Returns a single shared instance of the <code>ReportGenerator</code>.
+   * This instance cannot add helper objects to configure the report parser.
    *
    * @return The shared report generator.
    */
@@ -245,5 +255,59 @@ public class ReportGenerator extends ParserFrontend
       generator = new ReportGenerator();
     }
     return generator;
+  }
+
+  /**
+   * Returns a private (non-shared) instance of the <code>ReportGenerator</code>.
+   * Use this instance when defining helper objects.
+   *
+   * @return The shared report generator.
+   */
+  public static ReportGenerator createInstance()
+  {
+    return new ReportGenerator();
+  }
+
+  public void setObject (final String key, final Object value)
+  {
+    if (key == null)
+    {
+      throw new NullPointerException();
+    }
+    if (value == null)
+    {
+      helperObjects.remove(key);
+    }
+    else
+    {
+      helperObjects.put(key, value);
+    }
+  }
+
+  public Object getObject (final String key)
+  {
+    return helperObjects.get(key);
+  }
+  /**
+   * Configures the xml reader. Use this to set features or properties before the
+   * documents get parsed.
+   *
+   * @param handler the parser implementation that will handle the SAX-Callbacks.
+   * @param reader  the xml reader that should be configured.
+   */
+  protected void configureReader (final XMLReader reader,
+                                  final FrontendDefaultHandler handler)
+  {
+    super.configureReader(reader, handler);
+    if (handler instanceof RootXmlReadHandler)
+    {
+      final RootXmlReadHandler readHandler = (RootXmlReadHandler) handler;
+      final Iterator helperObjectsIterator = helperObjects.entrySet().iterator();
+      while (helperObjectsIterator.hasNext())
+      {
+        final Map.Entry entry = (Map.Entry) helperObjectsIterator.next();
+        readHandler.setHelperObject((String) entry.getKey(), entry.getValue());
+      }
+    }
   }
 }

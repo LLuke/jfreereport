@@ -1,10 +1,10 @@
 package org.jfree.report.modules.parser.simple.readhandlers;
 
 import org.jfree.report.Band;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.style.BandStyleKeys;
 import org.jfree.util.Log;
 import org.jfree.xml.ParserUtil;
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class GroupFooterReadHandler extends RootLevelBandReadHandler
@@ -21,7 +21,7 @@ public class GroupFooterReadHandler extends RootLevelBandReadHandler
    * @param attr the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes attr)
+  protected void startParsing (final PropertyAttributes attr)
           throws SAXException
   {
     super.startParsing(attr);
@@ -29,7 +29,7 @@ public class GroupFooterReadHandler extends RootLevelBandReadHandler
     handleFixedPosition(attr);
   }
 
-  private void handlePagebreakAttr (final Attributes attr)
+  private void handlePagebreakAttr (final PropertyAttributes attr)
   {
     final String ownPageAttr = attr.getValue("pagebreak");
     if (ownPageAttr != null)

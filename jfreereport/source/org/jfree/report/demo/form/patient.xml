@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple"
-                        "http://jfreereport.sourceforge.net/report.dtd">
+<!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple/version 0.8.5"
+                        "http://jfreereport.sourceforge.net/report-085.dtd">
 
 <!-- This report only accepts A4 paper (595x842 pt) -->
 <report name="Patient treatment" orientation="portrait"
@@ -71,7 +71,7 @@
 
   <groups>
     <group name="Patient-Group">
-      <groupheader height="330" fontsize="9" vertical-alignment="bottom" pagebreak="false">
+      <groupheader height="330" fontsize="9" vertical-alignment="bottom">
         <label        x="10"  y="10" width="100" height="20" fsbold="true" fontname="SansSerif" fontsize="14" alignment="left">Patient:</label>
         <label        x="10"  y="30" width="100" height="16" fsbold="true" fontname="SansSerif" alignment="left">Name</label>
         <string-field x="120" y="30" width="200" height="16" fontname="MonoSpaced" fieldname="patient.name"/>

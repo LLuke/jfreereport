@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableWriter.java,v 1.15 2005/01/28 19:26:58 taqua Exp $
+ * $Id: TableWriter.java,v 1.16 2005/01/30 23:37:23 taqua Exp $
  *
  * Changes
  * -------
@@ -38,8 +38,6 @@
  *
  */
 package org.jfree.report.modules.output.table.base;
-
-import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.Band;
 import org.jfree.report.ReportProcessingException;
@@ -59,6 +57,7 @@ import org.jfree.report.modules.output.support.pagelayout.SimplePageLayoutWorker
 import org.jfree.report.states.ReportState;
 import org.jfree.report.style.BandStyleKeys;
 import org.jfree.report.util.Log;
+import org.jfree.report.util.geom.StrictBounds;
 
 /**
  * The TableWriter is the content creation function used to collect the cell data. After
@@ -93,9 +92,9 @@ public strictfp class TableWriter
   private TableWriterCursor cursor;
 
   /**
-   * the maximum width, required for the BandLayout.
+   * the maximum width, required for the BandLayout. (as internal value)
    */
-  private float maxWidth;
+  private long maxWidth;
 
   /**
    * the dependency level for this function, usually -1.
@@ -186,7 +185,7 @@ public strictfp class TableWriter
    *
    * @return the first content position.
    */
-  public float getTopContentPosition ()
+  public long getTopContentPosition ()
   {
     return 0;
   }
@@ -197,7 +196,7 @@ public strictfp class TableWriter
    *
    * @param topPosition the first usable position to print content.
    */
-  public void setTopPageContentPosition (final float topPosition)
+  public void setTopPageContentPosition (final long topPosition)
   {
   }
 
@@ -208,7 +207,7 @@ public strictfp class TableWriter
    *
    * @return the reserved page height.
    */
-  public float getReservedSpace ()
+  public long getReservedSpace ()
   {
     return 0;
   }
@@ -221,7 +220,7 @@ public strictfp class TableWriter
    *
    * @param reserved the reserved page height.
    */
-  public void setReservedSpace (final float reserved)
+  public void setReservedSpace (final long reserved)
   {
   }
 
@@ -231,7 +230,7 @@ public strictfp class TableWriter
    *
    * @return the cursor position.
    */
-  public float getCursorPosition ()
+  public long getCursorPosition ()
   {
     return getCursor().getY();
   }
@@ -302,12 +301,12 @@ public strictfp class TableWriter
       }
     }
 
-    final float y = getCursor().getY();
+    final long y = getCursor().getY();
     // don't save the state if the current page is currently being finished
     // or restarted; PageHeader and PageFooter are printed out of order and
     // do not influence the reporting state
 
-    final Rectangle2D bounds = doLayout(band);
+    final StrictBounds bounds = doLayout(band);
     bounds.setRect(0, y, bounds.getWidth(), bounds.getHeight());
     try
     {
@@ -390,20 +389,22 @@ public strictfp class TableWriter
 
   /**
    * Gets the maximum width available for a root band during the layouting process.
+   * The value specifies the maximum page width in the internal unit.
    *
    * @return the maximum width for a root band.
    */
-  public float getMaxWidth ()
+  public long getMaxWidth ()
   {
     return maxWidth;
   }
 
   /**
    * Defines the maximum width available for a root band during the layouting process.
+   * The value specifies the maximum page width in the internal unit.
    *
    * @param width the maximum width for a root band.
    */
-  public void setMaxWidth (final float width)
+  public void setMaxWidth (final long width)
   {
     maxWidth = width;
   }
@@ -416,14 +417,14 @@ public strictfp class TableWriter
    * @param band the band.
    * @return the dimensions of the band.
    */
-  private Rectangle2D doLayout (final Band band)
+  private StrictBounds doLayout (final Band band)
   {
     // in this layouter the width of a band is always the full page width.
     // the height is not limited ...
-    final float width = getMaxWidth();
-    final float height = Short.MAX_VALUE;
+    final long width = getMaxWidth();
+    final long height = Short.MAX_VALUE;
 
-    final Rectangle2D bounds = BandLayoutManagerUtil.doLayout(band,
+    final StrictBounds bounds = BandLayoutManagerUtil.doLayout(band,
             getLayoutSupport(),
             width,
             height);
@@ -440,13 +441,13 @@ public strictfp class TableWriter
    *               the sheet.
    * @param band   the band that should be printed.
    */
-  private void doPrint (final Rectangle2D bounds, final Band band)
+  private void doPrint (final StrictBounds bounds, final Band band)
           throws ContentCreationException, ReportProcessingException
   {
 
     final MetaBand metaBand = metaBandProducer.createBand(band, false);
     tableCreator.processBand(metaBand);
-    getCursor().advance((float) bounds.getHeight());
+    getCursor().advance(bounds.getHeight());
     // fine grained flushing ... change that?
     getCurrentEvent().getState().fireOutputCompleteEvent
             (band, getCurrentEvent().getType());

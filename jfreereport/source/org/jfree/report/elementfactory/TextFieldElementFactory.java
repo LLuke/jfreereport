@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextFieldElementFactory.java,v 1.5 2003/10/05 21:52:32 taqua Exp $
+ * $Id: TextFieldElementFactory.java,v 1.6 2004/05/07 08:24:41 mungady Exp $
  *
  * Changes
  * -------------------------
@@ -199,8 +199,7 @@ public class TextFieldElementFactory extends TextElementFactory
   {
     final TextFieldElementFactory factory = new TextFieldElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension
-        ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setName(name);
     factory.setColor(paint);
     factory.setHorizontalAlignment(alignment);

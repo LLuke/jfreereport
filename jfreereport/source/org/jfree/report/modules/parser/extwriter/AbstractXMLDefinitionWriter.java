@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.8 2005/01/25 00:20:27 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.9 2005/02/04 19:08:53 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.ReportBuilderHints;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.xml.writer.SafeTagList;
 import org.jfree.xml.writer.XMLWriterSupport;
@@ -450,8 +451,14 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
       (final Writer writer, final CommentHintPath path, final String hintName)
       throws IOException
   {
-    final String[] comment = (String[]) getReport().getReportBuilderHints().getHint
-        (path, hintName, String[].class);
+
+    final ReportBuilderHints hints = getReport().getReportBuilderHints();
+    if (hints == null)
+    {
+      return;
+    }
+
+    final String[] comment = (String[]) hints.getHint(path, hintName, String[].class);
     if (comment == null)
     {
       return;

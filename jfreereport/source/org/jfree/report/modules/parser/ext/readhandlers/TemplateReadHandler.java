@@ -1,13 +1,12 @@
 package org.jfree.report.modules.parser.ext.readhandlers;
 
-import java.util.HashMap;
-
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollection;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.parser.RootXmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class TemplateReadHandler extends CompoundObjectReadHandler
@@ -15,9 +14,10 @@ public class TemplateReadHandler extends CompoundObjectReadHandler
   private TemplateCollection templateCollection;
   private boolean nameRequired;
 
-  public TemplateReadHandler (final boolean nameRequired)
+  public TemplateReadHandler (final boolean nameRequired,
+                              final CommentHintPath commentHintPath)
   {
-    super(null);
+    super(null, commentHintPath);
     this.nameRequired = nameRequired;
   }
 
@@ -42,7 +42,7 @@ public class TemplateReadHandler extends CompoundObjectReadHandler
    * @param attrs the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes attrs)
+  protected void startParsing (final PropertyAttributes attrs)
           throws SAXException, XmlReaderException
   {
     final String templateName = attrs.getValue("name");
@@ -69,6 +69,12 @@ public class TemplateReadHandler extends CompoundObjectReadHandler
     if (templateName != null)
     {
       template.setName(templateName);
+      templateCollection.addTemplate(template);
+      // if this template is a global template, store it by its name..
+      if (nameRequired)
+      {
+        getCommentHintPath().addName(templateName);
+      }
     }
     setObjectDescription(template);
   }

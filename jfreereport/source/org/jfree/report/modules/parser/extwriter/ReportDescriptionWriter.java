@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionWriter.java,v 1.10 2005/01/30 23:37:24 taqua Exp $
+ * $Id: ReportDescriptionWriter.java,v 1.11 2005/02/04 19:08:53 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import java.util.List;
 import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.Group;
+import org.jfree.report.ReportBuilderHints;
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.EmptyDataSource;
 import org.jfree.report.filter.templates.Template;
@@ -311,15 +312,19 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 
     // seek the parent template. If that fails for any reason, we fall back to
     // the root template description, we safed earlier ...
-    final String templateExtends = (String) getReport().getReportBuilderHints().getHint
-        (element, "ext.parser.template-reference", String.class);
-    if (templateExtends != null)
+    final ReportBuilderHints hints = getReport().getReportBuilderHints();
+    if (hints != null)
     {
-      final TemplateDescription parent =
-          TemplatesWriter.getTemplateDescription(getReportWriter(), templateExtends);
-      if (parent != null)
+      final String templateExtends = (String) hints.getHint
+          (element, "ext.parser.template-reference", String.class);
+      if (templateExtends != null)
       {
-        parentTemplate = parent;
+        final TemplateDescription parent =
+            TemplatesWriter.getTemplateDescription(getReportWriter(), templateExtends);
+        if (parent != null)
+        {
+          parentTemplate = parent;
+        }
       }
     }
 

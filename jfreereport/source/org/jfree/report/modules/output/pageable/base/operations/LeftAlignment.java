@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LeftAlignment.java,v 1.6 2003/11/07 18:33:54 taqua Exp $
+ * $Id: LeftAlignment.java,v 1.7 2004/05/07 12:53:06 mungady Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@
 
 package org.jfree.report.modules.output.pageable.base.operations;
 
-import java.awt.geom.Rectangle2D;
+import org.jfree.report.util.geom.StrictBounds;
 
 /**
  * A utility class that can align a rectangle to the left edge of the current
@@ -53,7 +53,7 @@ public strictfp class LeftAlignment extends HorizontalBoundsAlignment
    *
    * @param bounds  the bounds.
    */
-  public LeftAlignment(final Rectangle2D bounds)
+  public LeftAlignment(final StrictBounds bounds)
   {
     super(bounds);
   }
@@ -65,17 +65,17 @@ public strictfp class LeftAlignment extends HorizontalBoundsAlignment
    *
    * @return the aligned rectangle.
    */
-  public Rectangle2D align(final Rectangle2D inner)
+  public StrictBounds align(final StrictBounds inner)
   {
     if (inner == null)
     {
       throw new NullPointerException("Inner Bound must not be null");
     }
 
-    final float x = (float) getReferenceBounds().getX();
-    final float y = (float) inner.getY();
-    final float w = (float) Math.min(inner.getWidth(), getReferenceBounds().getWidth());
-    final float h = (float) inner.getHeight();
+    final long x = getReferenceBounds().getX();
+    final long y = inner.getY();
+    final long w = Math.min(inner.getWidth(), getReferenceBounds().getWidth());
+    final long h = inner.getHeight();
 
     inner.setRect(x, y, w, h);
     return inner;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementLayoutInformation.java,v 1.7 2003/09/15 18:26:51 taqua Exp $
+ * $Id: ElementLayoutInformation.java,v 1.8 2004/05/07 08:14:23 mungady Exp $
  *
  * Changes
  * -------
@@ -37,11 +37,9 @@
  */
 package org.jfree.report.util;
 
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
-import org.jfree.ui.FloatDimension;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictDimension;
+import org.jfree.report.util.geom.StrictPoint;
 
 /**
  * A small carrier class to encapsulate the common layout parameters. This information is a
@@ -52,16 +50,16 @@ import org.jfree.ui.FloatDimension;
 public strictfp class ElementLayoutInformation
 {
   /** The absolute position of the element. */
-  private Point2D absolutePosition;
+  private StrictPoint absolutePosition;
 
   /** The current minimum size for the element. */
-  private Dimension2D minimumSize;
+  private StrictDimension minimumSize;
 
   /** The current maximum size for the element. */
-  private Dimension2D maximumSize;
+  private StrictDimension maximumSize;
 
   /** The current preferred size for the element. */
-  private Dimension2D preferredSize;
+  private StrictDimension preferredSize;
 
   /**
    * Creates a new instance.
@@ -73,15 +71,15 @@ public strictfp class ElementLayoutInformation
    *
    * @throws java.lang.NullPointerException if the given rectangle is null.
    */
-  public ElementLayoutInformation(final Rectangle2D rect)
+  public ElementLayoutInformation(final StrictBounds rect)
   {
     if (rect == null)
     {
       throw new NullPointerException();
     }
-    absolutePosition = new Point2D.Float((float) rect.getX(), (float) rect.getY());
-    final FloatDimension fdim =
-        new FloatDimension((float) rect.getWidth(), (float) rect.getHeight());
+    absolutePosition = new StrictPoint(rect.getX(), rect.getY());
+    final StrictDimension fdim =
+        new StrictDimension(rect.getWidth(), rect.getHeight());
     maximumSize = fdim;
     minimumSize = fdim;
     preferredSize = fdim;
@@ -97,9 +95,9 @@ public strictfp class ElementLayoutInformation
    * @param maximumSize  the maximum size for the element.
    * @throws java.lang.NullPointerException if one of the parameters is <code>null</code>.
    */
-  public ElementLayoutInformation(final Point2D absolutePosition,
-                                  final Dimension2D minimumSize,
-                                  final Dimension2D maximumSize)
+  public ElementLayoutInformation(final StrictPoint absolutePosition,
+                                  final StrictDimension minimumSize,
+                                  final StrictDimension maximumSize)
   {
     this(absolutePosition, minimumSize, maximumSize, null);
   }
@@ -117,10 +115,10 @@ public strictfp class ElementLayoutInformation
    * @throws java.lang.NullPointerException if the position or max/min size is <code>null</code>.
    *
    */
-  public ElementLayoutInformation(final Point2D absolutePosition,
-                                  final Dimension2D minimumSize,
-                                  final Dimension2D maximumSize,
-                                  final Dimension2D preferredSize)
+  public ElementLayoutInformation(final StrictPoint absolutePosition,
+                                  final StrictDimension minimumSize,
+                                  final StrictDimension maximumSize,
+                                  final StrictDimension preferredSize)
   {
     if (absolutePosition == null)
     {
@@ -134,13 +132,13 @@ public strictfp class ElementLayoutInformation
     {
       throw new NullPointerException();
     }
-    this.absolutePosition = (Point2D) absolutePosition.clone();
+    this.absolutePosition = (StrictPoint) absolutePosition.clone();
     // the minsize cannot be greater than the max size ...
     this.minimumSize = unionMin(maximumSize, minimumSize);
-    this.maximumSize = (Dimension2D) maximumSize.clone();
+    this.maximumSize = (StrictDimension) maximumSize.clone();
     if (preferredSize != null)
     {
-      this.preferredSize = (Dimension2D) preferredSize.clone();
+      this.preferredSize = (StrictDimension) preferredSize.clone();
     }
   }
 
@@ -149,9 +147,9 @@ public strictfp class ElementLayoutInformation
    *
    * @return a clone of the absolute position.
    */
-  public Point2D getAbsolutePosition()
+  public StrictPoint getAbsolutePosition()
   {
-    return (Point2D) absolutePosition.clone();
+    return (StrictPoint) absolutePosition.clone();
   }
 
   /**
@@ -159,9 +157,9 @@ public strictfp class ElementLayoutInformation
    *
    * @return a clone of the minimum size.
    */
-  public Dimension2D getMinimumSize()
+  public StrictDimension getMinimumSize()
   {
-    return (Dimension2D) minimumSize.clone();
+    return (StrictDimension) minimumSize.clone();
   }
 
   /**
@@ -169,9 +167,9 @@ public strictfp class ElementLayoutInformation
    *
    * @return a clone of the maximum size.
    */
-  public Dimension2D getMaximumSize()
+  public StrictDimension getMaximumSize()
   {
-    return (Dimension2D) maximumSize.clone();
+    return (StrictDimension) maximumSize.clone();
   }
 
   /**
@@ -179,13 +177,13 @@ public strictfp class ElementLayoutInformation
    *
    * @return a clone of the preferred size.
    */
-  public Dimension2D getPreferredSize()
+  public StrictDimension getPreferredSize()
   {
     if (preferredSize == null)
     {
       return null;
     }
-    return (Dimension2D) preferredSize.clone();
+    return (StrictDimension) preferredSize.clone();
   }
 
   /**
@@ -200,14 +198,15 @@ public strictfp class ElementLayoutInformation
    *
    * @return  the minimum dimension.
    */
-  public static Dimension2D unionMin(final Dimension2D max, final Dimension2D pref)
+  public static StrictDimension unionMin(final StrictDimension max,
+                                         final StrictDimension pref)
   {
     if (pref == null)
     {
       return max;
     }
-    return new FloatDimension((float) Math.min(pref.getWidth(), max.getWidth()),
-        (float) Math.min(pref.getHeight(), max.getHeight()));
+    return new StrictDimension(Math.min(pref.getWidth(), max.getWidth()),
+        Math.min(pref.getHeight(), max.getHeight()));
   }
 
   /**

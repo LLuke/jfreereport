@@ -3,11 +3,13 @@ package org.jfree.report.modules.parser.ext.readhandlers;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.jfree.report.JFreeReport;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactory;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.StyleKey;
 import org.jfree.report.style.StyleSheetCollection;
-import org.jfree.report.JFreeReport;
 import org.jfree.util.Configuration;
 import org.jfree.xml.ElementDefinitionException;
 import org.jfree.xml.factory.objects.ObjectDescription;
@@ -15,7 +17,6 @@ import org.jfree.xml.factory.objects.ObjectFactoryException;
 import org.jfree.xml.parser.RootXmlReadHandler;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class StyleReadHandler extends CompoundObjectReadHandler
@@ -175,7 +176,7 @@ public class StyleReadHandler extends CompoundObjectReadHandler
 
   public StyleReadHandler (final ElementStyleSheet styleSheet)
   {
-    super(new ElementStyleSheetObjectDescription());
+    super(new ElementStyleSheetObjectDescription(), new CommentHintPath());
     this.styleSheet = styleSheet;
     this.createStyle = (styleSheet == null);
   }
@@ -200,7 +201,7 @@ public class StyleReadHandler extends CompoundObjectReadHandler
    * @param attrs the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes attrs)
+  protected void startParsing (final PropertyAttributes attrs)
           throws SAXException, XmlReaderException
   {
     if (createStyle)
@@ -213,6 +214,8 @@ public class StyleReadHandler extends CompoundObjectReadHandler
       }
       styleSheet = styleSheetCollection.createStyleSheet(name);
     }
+
+    getCommentHintPath().addName(styleSheet);
     
     final ElementStyleSheetObjectDescription objectDescription =
             (ElementStyleSheetObjectDescription) getObjectDescription();
@@ -231,7 +234,7 @@ public class StyleReadHandler extends CompoundObjectReadHandler
    *                                  if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild (final String tagName,
-                                               final Attributes atts)
+                                               final PropertyAttributes atts)
           throws XmlReaderException, SAXException
   {
     if (tagName.equals("extends"))

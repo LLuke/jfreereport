@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  * Contributor(s):   J&ouml;rg Schaible (for Elsag-Solutions AG);
  *
- * $Id: MessageFieldElementFactory.java,v 1.1 2005/01/28 19:34:06 taqua Exp $
+ * $Id: MessageFieldElementFactory.java,v 1.2 2005/02/04 19:22:53 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -49,6 +49,8 @@ import org.jfree.report.ElementAlignment;
 import org.jfree.report.TextElement;
 import org.jfree.report.filter.templates.MessageFieldTemplate;
 import org.jfree.report.style.FontDefinition;
+import org.jfree.report.util.geom.StrictDimension;
+import org.jfree.report.util.geom.StrictPoint;
 import org.jfree.ui.FloatDimension;
 
 /**
@@ -204,8 +206,7 @@ public class MessageFieldElementFactory extends TextFieldElementFactory
 
     final MessageFieldElementFactory factory = new MessageFieldElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension
-        ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setName(name);
     factory.setColor(color);
     factory.setHorizontalAlignment(alignment);
@@ -291,8 +292,7 @@ public class MessageFieldElementFactory extends TextFieldElementFactory
 
     final MessageFieldElementFactory factory = new MessageFieldElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension
-        ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setName(name);
     factory.setColor(color);
     factory.setHorizontalAlignment(alignment);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: CenterAlignment.java,v 1.7 2003/11/07 18:33:54 taqua Exp $
+ * $Id: CenterAlignment.java,v 1.8 2004/05/07 14:29:49 mungady Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@
 
 package org.jfree.report.modules.output.pageable.base.operations;
 
-import java.awt.geom.Rectangle2D;
+import org.jfree.report.util.geom.StrictBounds;
 
 /**
  * A utility class that can align a rectangle to the (horizontal) center of the current
@@ -53,7 +53,7 @@ public strictfp class CenterAlignment extends HorizontalBoundsAlignment
    *
    * @param bounds  the bounds.
    */
-  public CenterAlignment(final Rectangle2D bounds)
+  public CenterAlignment(final StrictBounds bounds)
   {
     super(bounds);
   }
@@ -65,18 +65,18 @@ public strictfp class CenterAlignment extends HorizontalBoundsAlignment
    *
    * @return the aligned rectangle.
    */
-  public Rectangle2D align(final Rectangle2D inner)
+  public StrictBounds align(final StrictBounds inner)
   {
     if (inner == null)
     {
       throw new NullPointerException("Inner Bound must not be null");
     }
 
-    final float y = (float) inner.getY();
-    final float w = (float) Math.min (inner.getWidth(), getReferenceBounds().getWidth());
-    final float x = (float) (getReferenceBounds().getX()
-        + ((getReferenceBounds().getWidth() - w) / 2));
-    final float h = (float) inner.getHeight();
+    final long y = inner.getY();
+    final long w = Math.min (inner.getWidth(), getReferenceBounds().getWidth());
+    final long x = getReferenceBounds().getX() +
+            ((getReferenceBounds().getWidth() - w) / 2);
+    final long h = inner.getHeight();
     inner.setRect(x, y, w, h);
     return inner;
   }

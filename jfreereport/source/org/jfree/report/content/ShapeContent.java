@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ShapeContent.java,v 1.5 2004/05/07 08:02:48 mungady Exp $
+ * $Id: ShapeContent.java,v 1.6 2005/02/05 18:35:17 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,8 @@
 package org.jfree.report.content;
 
 import java.awt.Shape;
-import java.awt.geom.Rectangle2D;
+
+import org.jfree.report.util.geom.StrictBounds;
 
 /**
  * A report content item that encapsulates a <code>Shape</code> object.
@@ -55,7 +56,7 @@ public strictfp class ShapeContent implements Content
   private Shape shape;
 
   /** The bounds. */
-  private Rectangle2D bounds;
+  private StrictBounds bounds;
 
   /**
    * Creates a new shape content.
@@ -63,7 +64,7 @@ public strictfp class ShapeContent implements Content
    * @param s  the shape.
    * @param bounds  the bounds.
    */
-  public ShapeContent(final Shape s, final Rectangle2D bounds)
+  public ShapeContent(final Shape s, final StrictBounds bounds)
   {
     if (s == null)
     {
@@ -75,7 +76,7 @@ public strictfp class ShapeContent implements Content
     }
 
     this.shape = s;
-    this.bounds = (Rectangle2D) bounds.clone();
+    this.bounds = (StrictBounds) bounds.clone();
   }
 
   /**
@@ -104,9 +105,9 @@ public strictfp class ShapeContent implements Content
    *
    * @return the bounds.
    */
-  public Rectangle2D getBounds()
+  public StrictBounds getBounds()
   {
-    return bounds.getBounds2D();
+    return (StrictBounds) bounds.clone();
   }
 
   /**
@@ -114,7 +115,7 @@ public strictfp class ShapeContent implements Content
    *
    * @return the minimum content size.
    */
-  public Rectangle2D getMinimumContentSize()
+  public StrictBounds getMinimumContentSize()
   {
     return getBounds();
   }
@@ -126,9 +127,9 @@ public strictfp class ShapeContent implements Content
    *
    * @return the content.
    */
-  public Content getContentForBounds(final Rectangle2D bounds)
+  public Content getContentForBounds(final StrictBounds bounds)
   {
-    final Rectangle2D newBounds = bounds.createIntersection(getBounds());
+    final StrictBounds newBounds = bounds.createIntersection(getBounds());
     return new ShapeContent(getShape(), newBounds);
   }
 

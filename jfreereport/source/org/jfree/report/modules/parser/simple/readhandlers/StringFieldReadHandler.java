@@ -1,11 +1,11 @@
 package org.jfree.report.modules.parser.simple.readhandlers;
 
-import org.jfree.report.elementfactory.TextFieldElementFactory;
 import org.jfree.report.elementfactory.TextElementFactory;
-import org.jfree.xml.parser.XmlReaderException;
+import org.jfree.report.elementfactory.TextFieldElementFactory;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.xml.ElementDefinitionException;
+import org.jfree.xml.parser.XmlReaderException;
 import org.xml.sax.SAXException;
-import org.xml.sax.Attributes;
 
 public class StringFieldReadHandler extends AbstractTextElementReadHandler
 {
@@ -27,7 +27,7 @@ public class StringFieldReadHandler extends AbstractTextElementReadHandler
    * @param atts the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes atts)
+  protected void startParsing (final PropertyAttributes atts)
           throws SAXException, XmlReaderException
   {
     super.startParsing(atts);

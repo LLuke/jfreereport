@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayoutDelegate.java,v 1.12 2005/01/28 19:26:50 taqua Exp $
+ * $Id: SimplePageLayoutDelegate.java,v 1.13 2005/01/30 23:37:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -75,6 +75,7 @@ public class SimplePageLayoutDelegate implements
     public PageCarrier ()
     {
     }
+    
     /**
      * Returns the maximum page number.
      * @return the maximum page.

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.17 2005/01/30 23:37:17 taqua Exp $
+ * $Id: JFreeReport.java,v 1.18 2005/02/04 19:22:51 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -109,7 +109,7 @@ import org.jfree.report.util.ReportProperties;
  */
 public class JFreeReport implements Cloneable, Serializable, ReportDefinition
 {
-  private static class EmptyDataRow implements DataRow
+  private static class EmptyDataRow implements DataRow, Serializable
   {
     public EmptyDataRow ()
     {
@@ -247,8 +247,10 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
    * The report builder hints support writer and other report definition
    * processing tools by spicing up the report object with specific properties.
    * ReportBuilderHints do not get cloned and are removed from the clone.
+   * <p>
+   * ReportBuilderHints will not be written into serialized instances.
    */
-  private ReportBuilderHints reportBuilderHints;
+  private transient ReportBuilderHints reportBuilderHints;
 
   private ResourceBundleFactory resourceBundleFactory;
 
@@ -260,7 +262,6 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
     this.reportConfiguration = new ReportConfiguration(ReportConfiguration.getGlobalConfig());
     this.properties = new ReportProperties();
     this.styleSheetCollection = new StyleSheetCollection();
-    this.reportBuilderHints = new ReportBuilderHints();
 
     this.groups = new GroupList();
     this.reportHeader = new ReportHeader();
@@ -810,6 +811,11 @@ public class JFreeReport implements Cloneable, Serializable, ReportDefinition
   public ReportBuilderHints getReportBuilderHints()
   {
     return reportBuilderHints;
+  }
+
+  public void setReportBuilderHints (final ReportBuilderHints reportBuilderHints)
+  {
+    this.reportBuilderHints = reportBuilderHints;
   }
 
   public ResourceBundleFactory getResourceBundleFactory ()

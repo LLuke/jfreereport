@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BandDefaultStyleSheet.java,v 1.3 2004/05/07 08:14:24 mungady Exp $
+ * $Id: BandDefaultStyleSheet.java,v 1.4 2005/01/30 23:37:25 taqua Exp $
  *
  * Changes
  * -------
@@ -38,8 +38,7 @@
 
 package org.jfree.report.style;
 
-import java.awt.geom.Rectangle2D;
-
+import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.ui.FloatDimension;
 
 /**
@@ -62,7 +61,7 @@ public class BandDefaultStyleSheet extends ElementDefaultStyleSheet
     setLocked(false);
     setStyleProperty(MINIMUMSIZE, new FloatDimension(0, 0));
     setStyleProperty(MAXIMUMSIZE, new FloatDimension(Short.MAX_VALUE, Short.MAX_VALUE));
-    setStyleProperty(BOUNDS, new Rectangle2D.Float());
+    setStyleProperty(BOUNDS, new StrictBounds());
     setStyleProperty(BandStyleKeys.PAGEBREAK_AFTER, Boolean.FALSE);
     setStyleProperty(BandStyleKeys.PAGEBREAK_BEFORE, Boolean.FALSE);
     setStyleProperty(BandStyleKeys.DISPLAY_ON_FIRSTPAGE, Boolean.TRUE);

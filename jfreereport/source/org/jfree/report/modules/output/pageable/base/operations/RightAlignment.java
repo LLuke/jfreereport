@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RightAlignment.java,v 1.7 2003/11/07 18:33:54 taqua Exp $
+ * $Id: RightAlignment.java,v 1.8 2004/05/07 12:53:06 mungady Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,7 @@
 
 package org.jfree.report.modules.output.pageable.base.operations;
 
-import java.awt.geom.Rectangle2D;
+import org.jfree.report.util.geom.StrictBounds;
 
 /**
  * A utility class that can align a rectangle to the bottom edge of the current
@@ -53,7 +53,7 @@ public strictfp class RightAlignment extends HorizontalBoundsAlignment
    *
    * @param bounds  the reference bounds.
    */
-  public RightAlignment(final Rectangle2D bounds)
+  public RightAlignment(final StrictBounds bounds)
   {
     super(bounds);
   }
@@ -65,18 +65,18 @@ public strictfp class RightAlignment extends HorizontalBoundsAlignment
    *
    * @return the aligned rectangle.
    */
-  public Rectangle2D align(final Rectangle2D rect)
+  public StrictBounds align(final StrictBounds rect)
   {
     if (rect == null)
     {
       throw new NullPointerException("Rect must not be null");
     }
 
-    final float w = (float) Math.min (rect.getWidth(), getReferenceBounds().getWidth());
-    final float x = (float) (getReferenceBounds().getX() +
+    final long w = Math.min (rect.getWidth(), getReferenceBounds().getWidth());
+    final long x = (getReferenceBounds().getX() +
         getReferenceBounds().getWidth() - w);
-    final float y = (float) rect.getY();
-    final float h = (float) rect.getHeight();
+    final long y = rect.getY();
+    final long h = rect.getHeight();
     rect.setRect(x, y, w, h);
     return rect;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontModule.java,v 1.7 2003/09/09 15:52:53 taqua Exp $
+ * $Id: BaseFontModule.java,v 1.9 2005/01/25 00:11:49 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -66,7 +66,7 @@ public class BaseFontModule extends AbstractModule
    *
    * @throws ModuleInitializeException if an error occured.
    */
-  public void initialize(SubSystem subSystem) throws ModuleInitializeException
+  public void initialize(final SubSystem subSystem) throws ModuleInitializeException
   {
     if (isClassLoadable("com.lowagie.text.Document") == false)
     {

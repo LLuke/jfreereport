@@ -1,6 +1,8 @@
 package org.jfree.report.style;
 
-public interface StyleSheetCarrier extends Cloneable
+import java.io.Serializable;
+
+public interface StyleSheetCarrier extends Cloneable, Serializable
 {
   public ElementStyleSheet getStyleSheet();
   public boolean isSame (ElementStyleSheet style);

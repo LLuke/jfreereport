@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SimplePageLayoutWorker.java,v 1.3 2003/12/21 20:51:43 taqua Exp $
+ * $Id: SimplePageLayoutWorker.java,v 1.4 2004/05/07 12:53:08 mungady Exp $
  *
  * Changes 
  * -------------------------
@@ -102,7 +102,7 @@ public interface SimplePageLayoutWorker
    * 
    * @return the cursor position.
    */
-  public float getCursorPosition ();
+  public long getCursorPosition ();
   
   /**
    * Defines the reserved size for the current page. This size is not used
@@ -111,7 +111,7 @@ public interface SimplePageLayoutWorker
    * 
    * @param reserved the reserved page height.
    */
-  public void setReservedSpace (float reserved);
+  public void setReservedSpace (long reserved);
   
   /**
    * Returns the reserved size for the current page. This size is not used
@@ -120,7 +120,7 @@ public interface SimplePageLayoutWorker
    * 
    * @return the reserved page height.
    */
-  public float getReservedSpace ();
+  public long getReservedSpace ();
 
   /**
    * Marks the position of the first content after the page header.
@@ -131,13 +131,13 @@ public interface SimplePageLayoutWorker
    *
    * @param topPosition the first content position.
    */
-  public void setTopPageContentPosition (float topPosition);
+  public void setTopPageContentPosition (long topPosition);
 
   /**
    * Returns the position of the first content.
    * @return the first content position.
    */
-  public float getTopContentPosition ();
+  public long getTopContentPosition ();
 
   /**
    * Checks, whether the current page is empty. An page is empty if it does

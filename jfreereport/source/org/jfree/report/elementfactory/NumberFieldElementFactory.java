@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFieldElementFactory.java,v 1.7 2005/01/24 23:59:10 taqua Exp $
+ * $Id: NumberFieldElementFactory.java,v 1.8 2005/02/05 18:35:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -51,8 +51,8 @@ import org.jfree.report.filter.DataRowDataSource;
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.NumberFormatFilter;
 import org.jfree.report.filter.templates.NumberFieldTemplate;
-import org.jfree.report.style.FontDefinition;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
 
 /**
@@ -242,8 +242,7 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
 
     final NumberFieldElementFactory factory = new NumberFieldElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension
-        ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setName(name);
     factory.setColor(color);
     factory.setHorizontalAlignment(alignment);
@@ -329,8 +328,7 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
 
     final NumberFieldElementFactory factory = new NumberFieldElementFactory();
     factory.setAbsolutePosition(new Point2D.Double(bounds.getX(), bounds.getY()));
-    factory.setMinimumSize(new FloatDimension
-        ((float) bounds.getWidth(), (float) bounds.getHeight()));
+    factory.setMinimumSize(new FloatDimension ((float) bounds.getWidth(), (float) bounds.getHeight()));
     factory.setName(name);
     factory.setColor(color);
     factory.setHorizontalAlignment(alignment);

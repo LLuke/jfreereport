@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentFactoryModule.java,v 1.5 2003/09/15 18:26:50 taqua Exp $
+ * $Id: ImageContentFactoryModule.java,v 1.8 2005/01/24 23:58:16 taqua Exp $
  *
  * Changes
  * -------
@@ -36,16 +36,15 @@
  */
 package org.jfree.report.content;
 
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
 import org.jfree.report.Element;
 import org.jfree.report.ImageContainer;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.ElementLayoutInformation;
 import org.jfree.report.util.StringUtil;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictDimension;
+import org.jfree.report.util.geom.StrictPoint;
 
 /**
  * The ImageContentFactoryModule creates image content from the given element.
@@ -94,8 +93,8 @@ public strictfp class ImageContentFactoryModule implements ContentFactoryModule
       return EmptyContent.getDefaultEmptyContent();
     }
 
-    final Point2D point = bounds.getAbsolutePosition();
-    final Dimension2D iBounds = ElementLayoutInformation.unionMin
+    final StrictPoint point = bounds.getAbsolutePosition();
+    final StrictDimension iBounds = ElementLayoutInformation.unionMin
             (bounds.getMaximumSize(), bounds.getPreferredSize());
 
     if (iBounds.getWidth() == 0 && iBounds.getHeight() == 0)
@@ -105,8 +104,8 @@ public strictfp class ImageContentFactoryModule implements ContentFactoryModule
 
     double scaleX = ir.getScaleX();
     double scaleY = ir.getScaleY();
-    final double w = ir.getImageWidth();
-    final double h = ir.getImageHeight();
+    final long w = ir.getImageWidth();
+    final long h = ir.getImageHeight();
 
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE))
     {
@@ -130,11 +129,10 @@ public strictfp class ImageContentFactoryModule implements ContentFactoryModule
       }
     }
 
-    final Rectangle2D.Float contentBounds = new Rectangle2D.Float();
-    contentBounds.setFrame(point.getX(), point.getY(), scaleX * w, scaleY * h);
+    final StrictBounds contentBounds = new StrictBounds
+            (point.getX(), point.getY(), (long) (scaleX * w), (long) (scaleY * h));
 
-    final Rectangle2D.Float imageArea = new Rectangle2D.Float();
-    imageArea.setFrame(0, 0, w, h);
+    final StrictBounds imageArea = new StrictBounds(0, 0, w, h);
 
     final ImageContent ic = new ImageContent(ir, contentBounds, imageArea);
     return ic;

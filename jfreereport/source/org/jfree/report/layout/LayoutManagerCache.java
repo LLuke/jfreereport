@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: LayoutManagerCache.java,v 1.9 2004/05/07 08:03:40 mungady Exp $
+ * $Id: LayoutManagerCache.java,v 1.10 2005/01/25 22:55:42 taqua Exp $
  *
  * Changes
  * -------
@@ -37,19 +37,17 @@
  */
 package org.jfree.report.layout;
 
-import java.awt.geom.Dimension2D;
 import java.util.WeakHashMap;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.Log;
-import org.jfree.report.util.InstanceID;
+import org.jfree.report.util.geom.StrictDimension;
 
 /**
  * A cache for a band layout manager. This caches element bounds, not
  * elements.
- * todo: check how to improve performance or how to reuse the cached objects ...
  *
  * @author Thomas Morgner
  */
@@ -61,10 +59,10 @@ public class LayoutManagerCache
   private static class ElementCacheCarrier
   {
     /** The minimum size. */
-    private Dimension2D minSize;
+    private StrictDimension minSize;
 
     /** The preferred size. */
-    private Dimension2D prefSize;
+    private StrictDimension prefSize;
 
     /**
      * Default Constructor.
@@ -78,7 +76,7 @@ public class LayoutManagerCache
      *  
      * @return the minimum size stored in that carrier.
      */
-    public Dimension2D getMinSize()
+    public StrictDimension getMinSize()
     {
       return minSize;
     }
@@ -88,7 +86,7 @@ public class LayoutManagerCache
      *  
      * @return the preferred size stored in that carrier.
      */
-    public Dimension2D getPrefSize()
+    public StrictDimension getPrefSize()
     {
       return prefSize;
     }
@@ -98,7 +96,7 @@ public class LayoutManagerCache
      *  
      * @param dimension2D the minimum size to be stored in that carrier.
      */
-    public void setMinSize(final Dimension2D dimension2D)
+    public void setMinSize(final StrictDimension dimension2D)
     {
       minSize = dimension2D;
     }
@@ -108,7 +106,7 @@ public class LayoutManagerCache
      *  
      * @param dimension2D the minimum size stored in that carrier.
      */
-    public void setPrefSize(final Dimension2D dimension2D)
+    public void setPrefSize(final StrictDimension dimension2D)
     {
       prefSize = dimension2D;
     }
@@ -139,14 +137,14 @@ public class LayoutManagerCache
    *
    * @return The minimum size.
    */
-  public Dimension2D getMinSize(final Object e)
+  public StrictDimension getMinSize(final Object e)
   {
     final ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(e);
     if (ec == null)
     {
       return null;
     }
-    final Dimension2D dim = ec.getMinSize();
+    final StrictDimension dim = ec.getMinSize();
     if (dim != null)
     {
       getCount++;
@@ -161,14 +159,14 @@ public class LayoutManagerCache
    *
    * @return The preferred size.
    */
-  public Dimension2D getPrefSize(final Object e)
+  public StrictDimension getPrefSize(final Object e)
   {
     final ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(e);
     if (ec == null)
     {
       return null;
     }
-    final Dimension2D dim = ec.getPrefSize();
+    final StrictDimension dim = ec.getPrefSize();
     if (dim != null)
     {
       getCount++;
@@ -182,7 +180,7 @@ public class LayoutManagerCache
    * @param element  the element.
    * @param d  the minimum size.
    */
-  public void setMinSize(final Element element, final Dimension2D d)
+  public void setMinSize(final Element element, final StrictDimension d)
   {
     if (element == null)
     {
@@ -215,7 +213,7 @@ public class LayoutManagerCache
    * @param element  the element.
    * @param d  the minimum size.
    */
-  public void setPrefSize(final Element element, final Dimension2D d)
+  public void setPrefSize(final Element element, final StrictDimension d)
   {
     if (element == null)
     {

@@ -1,13 +1,15 @@
 package org.jfree.report.modules.parser.ext.readhandlers;
 
-import org.jfree.xml.parser.AbstractXmlReadHandler;
+import org.jfree.report.JFreeReport;
+import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.common.ConfigurationReadHandler;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
-import org.jfree.report.JFreeReport;
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-public class ReportConfigReadHandler extends AbstractXmlReadHandler
+public class ReportConfigReadHandler extends AbstractPropertyXmlReadHandler
 {
   public ReportConfigReadHandler ()
   {
@@ -25,7 +27,7 @@ public class ReportConfigReadHandler extends AbstractXmlReadHandler
    *                                  if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild (final String tagName,
-                                               final Attributes atts)
+                                               final PropertyAttributes atts)
           throws XmlReaderException, SAXException
   {
     if (tagName.equals("page-definition"))
@@ -54,5 +56,13 @@ public class ReportConfigReadHandler extends AbstractXmlReadHandler
           throws XmlReaderException
   {
     return null;
+  }
+
+  protected void storeComments ()
+          throws SAXException
+  {
+    final CommentHintPath path = new CommentHintPath("report-definition");
+    path.addName("report-config");
+    defaultStoreComments(path);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextContentFactoryModule.java,v 1.8 2005/01/24 23:58:18 taqua Exp $
+ * $Id: TextContentFactoryModule.java,v 1.9 2005/01/30 23:37:18 taqua Exp $
  *
  * Changes
  * -------
@@ -36,17 +36,16 @@
  */
 package org.jfree.report.content;
 
-import java.awt.geom.Dimension2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-
 import org.jfree.report.Element;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.layout.SizeCalculatorException;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.ElementLayoutInformation;
-import org.jfree.ui.FloatDimension;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictDimension;
+import org.jfree.report.util.geom.StrictPoint;
+import org.jfree.report.util.geom.StrictGeomUtility;
 
 /**
  * The TextContentFactoryModule creates plain text content from the given element.
@@ -104,20 +103,20 @@ public class TextContentFactoryModule implements ContentFactoryModule
       return EmptyContent.getDefaultEmptyContent();
     }
 
-    final Point2D point = bounds.getAbsolutePosition();
+    final StrictPoint point = bounds.getAbsolutePosition();
 
     // TextElement has a defined width (Max(MinSize, PrefSize).
     // and a maximum height (Min(MaxSize, PrefSize).
 
-    final Dimension2D prefSize = bounds.getPreferredSize();
-    double width = bounds.getMinimumSize().getWidth();
-    double height = bounds.getMaximumSize().getHeight();
+    final StrictDimension prefSize = bounds.getPreferredSize();
+    long width = bounds.getMinimumSize().getWidth();
+    long height = bounds.getMaximumSize().getHeight();
     if (prefSize != null)
     {
       width = Math.max(prefSize.getWidth(), width);
       height = Math.min(prefSize.getHeight(), height);
     }
-    final Dimension2D dim = new FloatDimension((float) width, (float) height);
+    final StrictDimension dim = new StrictDimension(width, height);
 
     if (dim.getWidth() == 0 && dim.getHeight() == 0)
     {
@@ -125,11 +124,8 @@ public class TextContentFactoryModule implements ContentFactoryModule
     }
 
     final FontDefinition f = e.getStyle().getFontDefinitionProperty();
-    final Rectangle2D tBounds = new Rectangle2D.Float
-        ((float) point.getX(),
-        (float) point.getY(),
-        (float) dim.getWidth(),
-        (float) dim.getHeight());
+    final StrictBounds tBounds = new StrictBounds
+        (point.getX(), point.getY(), dim.getWidth(), dim.getHeight());
 
     final Float lineHeight = (Float) e.getStyle().getStyleProperty(ElementStyleSheet.LINEHEIGHT);
     try
@@ -141,7 +137,7 @@ public class TextContentFactoryModule implements ContentFactoryModule
           (ElementStyleSheet.TRIM_TEXT_CONTENT);
 
       final TextContent tc = new TextContent
-          (text, lineHeight.floatValue(), tBounds,
+          (text, StrictGeomUtility.toInternalValue(lineHeight.floatValue()), tBounds,
            ot.createTextSizeCalculator(f), reservedLiteral, trimTextContent);
       return tc;
     }

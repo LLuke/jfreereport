@@ -1,25 +1,28 @@
 package org.jfree.report.modules.parser.simple.readhandlers;
 
+import java.awt.Color;
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Point2D;
-import java.awt.Color;
 import java.util.ArrayList;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
+import org.jfree.report.util.geom.StrictDimension;
 import org.jfree.report.layout.StaticLayoutManager;
+import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.ReportParserUtil;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.simple.FontFactory;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
 import org.jfree.xml.ParserUtil;
-import org.jfree.xml.parser.AbstractXmlReadHandler;
-import org.jfree.xml.parser.XmlReaderException;
 import org.jfree.xml.parser.XmlReadHandler;
+import org.jfree.xml.parser.XmlReaderException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-public class BandReadHandler extends AbstractXmlReadHandler
+public class BandReadHandler extends AbstractPropertyXmlReadHandler
 {
   /** Literal text for an XML report element. */
   public static final String LABEL_TAG = "label";
@@ -108,7 +111,7 @@ public class BandReadHandler extends AbstractXmlReadHandler
    * @param attr the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes attr)
+  protected void startParsing (final PropertyAttributes attr)
           throws SAXException
   {
     final String name = attr.getValue(NAME_ATT);
@@ -258,7 +261,7 @@ public class BandReadHandler extends AbstractXmlReadHandler
    *                                  if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild (final String tagName,
-                                               final Attributes atts)
+                                               final PropertyAttributes atts)
           throws XmlReaderException, SAXException
   {
     if (tagName.equals(LABEL_TAG))
@@ -404,5 +407,12 @@ public class BandReadHandler extends AbstractXmlReadHandler
           throws XmlReaderException
   {
     return band;
+  }
+
+  protected void storeComments ()
+          throws SAXException
+  {
+    final CommentHintPath commentHintPath = new CommentHintPath(band);
+    defaultStoreComments(commentHintPath);
   }
 }

@@ -2,21 +2,22 @@ package org.jfree.report.modules.parser.ext.readhandlers;
 
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.DataTarget;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 public class DataSourceReadHandler extends CompoundObjectReadHandler
 {
   private DataSourceReadHandler childHandler;
 
-  public DataSourceReadHandler ()
+  public DataSourceReadHandler (final CommentHintPath commentPath)
   {
-    super(null);
+    super(null, commentPath);
   }
 
   /**
@@ -25,7 +26,7 @@ public class DataSourceReadHandler extends CompoundObjectReadHandler
    * @param attrs the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes attrs)
+  protected void startParsing (final PropertyAttributes attrs)
           throws SAXException, XmlReaderException
   {
     final String typeName = attrs.getValue("type");
@@ -57,12 +58,12 @@ public class DataSourceReadHandler extends CompoundObjectReadHandler
    *                                  if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild (final String tagName,
-                                               final Attributes atts)
+                                               final PropertyAttributes atts)
           throws XmlReaderException, SAXException
   {
     if (tagName.equals("datasource"))
     {
-      childHandler = new DataSourceReadHandler();
+      childHandler = new DataSourceReadHandler(getCommentHintPath().getInstance());
       return childHandler;
     }
     return super.getHandlerForChild(tagName, atts);

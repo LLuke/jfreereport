@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TextLine.java,v 1.9 2004/05/07 08:02:49 mungady Exp $
+ * $Id: TextLine.java,v 1.10 2005/01/24 23:58:18 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,9 @@
 
 package org.jfree.report.content;
 
-import java.awt.geom.Rectangle2D;
-
 import org.jfree.report.layout.SizeCalculator;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictGeomUtility;
 
 /**
  * Represents a line of text.
@@ -56,10 +56,10 @@ public strictfp class TextLine implements Content
   private String content;
 
   /** The content bounds. */
-  private final Rectangle2D bounds;
+  private final StrictBounds bounds;
 
   /** The lineHeight defined for this line. */
-  private final float lineHeight;
+  private final long lineHeight;
 
   /**
    * Creates a new line of text.
@@ -67,9 +67,9 @@ public strictfp class TextLine implements Content
    * @param sizeCalc  the size calculator.
    * @param lineheight the line height that should be used for this text line.
    */
-  public TextLine(final SizeCalculator sizeCalc, final float lineheight)
+  public TextLine(final SizeCalculator sizeCalc, final long lineheight)
   {
-    bounds = new Rectangle2D.Float();
+    this.bounds = new StrictBounds();
     this.lineHeight = lineheight;
     this.sizeCalc = sizeCalc;
     if (sizeCalc.getLineHeight() <= 0)
@@ -89,12 +89,15 @@ public strictfp class TextLine implements Content
   }
 
   /**
-   * Returns the height of this text line.
+   * Returns the height of this text line. Remember, that this height
+   * is an internal (fixed point) value and must be corrected before used
+   * in the AWT or other output targets.
+   *
    * @return the height of the line of text.
    */
-  public float getHeight()
+  public long getHeight()
   {
-    return (float) bounds.getHeight();
+    return bounds.getHeight();
   }
 
   /**
@@ -117,8 +120,9 @@ public strictfp class TextLine implements Content
    * @param width the width of the bounds.
    * @param height the height of the bounds.
    */
-  public void setContent(final String content, final float x,
-                         final float y, float width, float height)
+  public void setContent(final String content,
+                         final long x, final long y,
+                         long width, long height)
   {
     if (x < 0)
     {
@@ -138,8 +142,10 @@ public strictfp class TextLine implements Content
     }
 
     this.content = content;
-    width = Math.min(width, getSizeCalculator().getStringWidth(content, 0, content.length()));
-    height = Math.min(height, getSizeCalculator().getLineHeight());
+    width = Math.min(width, StrictGeomUtility.toInternalValue
+            (getSizeCalculator().getStringWidth(content, 0, content.length())));
+    height = Math.min(height, StrictGeomUtility.toInternalValue
+            (getSizeCalculator().getLineHeight()));
     // apply custom lineheight if greater than the current height ...
     height = Math.max(height, lineHeight);
     bounds.setRect(x, y, width, height);
@@ -160,9 +166,9 @@ public strictfp class TextLine implements Content
    *
    * @return the bounds.
    */
-  public Rectangle2D getBounds()
+  public StrictBounds getBounds()
   {
-    return bounds.getBounds2D();
+    return (StrictBounds) bounds.clone();
   }
 
   /**
@@ -175,16 +181,16 @@ public strictfp class TextLine implements Content
    *
    * @return the content that fits the specified bounds.
    */
-  public Content getContentForBounds(final Rectangle2D bounds)
+  public Content getContentForBounds(final StrictBounds bounds)
   {
-    final Rectangle2D actBounds = this.bounds.createIntersection(bounds);
+    final StrictBounds actBounds = this.bounds.createIntersection(bounds);
     if (actBounds.getHeight() < this.bounds.getHeight())
     {
       return EmptyContent.getDefaultEmptyContent();
     }
-    final float frontW = (float) (actBounds.getX() - this.bounds.getX());
+    final long frontW = actBounds.getX() - this.bounds.getX();
     final int frontPos = calcStringLength(0, frontW);
-    final int endPos = calcStringLength(frontPos, (float) actBounds.getWidth());
+    final int endPos = calcStringLength(frontPos, actBounds.getWidth());
 
     if (frontPos == endPos)
     {
@@ -194,10 +200,8 @@ public strictfp class TextLine implements Content
 
     final TextLine line = new TextLine(getSizeCalculator(), lineHeight);
     line.setContent(content.substring(frontPos, endPos),
-        (float) actBounds.getX(),
-        (float) actBounds.getY(),
-        (float) actBounds.getWidth(),
-        (float) actBounds.getHeight());
+        actBounds.getX(), actBounds.getY(),
+        actBounds.getWidth(), actBounds.getHeight());
     return line;
   }
 
@@ -209,7 +213,7 @@ public strictfp class TextLine implements Content
    *
    * @return the number of characters that will fit within a certain width.
    */
-  private int calcStringLength(final int startPos, final float maxWidth)
+  private int calcStringLength(final int startPos, final long maxWidth)
   {
     if (maxWidth == 0.0)
     {
@@ -220,7 +224,8 @@ public strictfp class TextLine implements Content
       return 0;
     }
 
-    final float lineWidth = getSizeCalculator().getStringWidth(content, startPos, content.length());
+    final long lineWidth = StrictGeomUtility.toInternalValue
+            (getSizeCalculator().getStringWidth(content, startPos, content.length()));
     if (lineWidth <= maxWidth)
     {
       return content.length();
@@ -254,7 +259,7 @@ public strictfp class TextLine implements Content
    * @return the position, where the string width is nearest or equal to maxWidth..
    */
   private int calculateWidthPos
-      (final int lineStart, final int startPos, final int endPos, final float maxWidth)
+      (final int lineStart, final int startPos, final int endPos, final long maxWidth)
   {
     if (startPos == endPos)
     {
@@ -271,7 +276,8 @@ public strictfp class TextLine implements Content
       return endPos;
     }
 
-    final float wDelta = getSizeCalculator().getStringWidth(content, lineStart, delta);
+    final long wDelta = StrictGeomUtility.toInternalValue
+            (getSizeCalculator().getStringWidth(content, lineStart, delta));
     if (wDelta == maxWidth)
     {
       return delta;
@@ -288,7 +294,7 @@ public strictfp class TextLine implements Content
    *
    * @return the minimum size.
    */
-  public Rectangle2D getMinimumContentSize()
+  public StrictBounds getMinimumContentSize()
   {
     return getBounds();
   }

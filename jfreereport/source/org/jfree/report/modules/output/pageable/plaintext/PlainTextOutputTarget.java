@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.15 2005/01/25 00:11:17 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.16 2005/01/25 21:40:33 taqua Exp $
  *
  * Changes
  * -------
@@ -179,7 +179,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
      * @param characterWidth the character width in points (1/72 inch).
      * @param characterHeight the character height in points (1/72 inch).
      */
-    private PlainTextSizeCalculator(final float characterWidth, final float characterHeight)
+    public PlainTextSizeCalculator(final float characterWidth, final float characterHeight)
     {
       if (characterHeight <= 0)
       {
@@ -419,7 +419,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
     final Rectangle2D bounds = getOperationBounds();
 
     final float characterWidthInPoint  = (72f / driver.getCharactersPerInch());
-    final float characterHeightInPoint = (72f * driver.getLinesPerInch());
+    final float characterHeightInPoint = (72f / driver.getLinesPerInch());
 
     final int x = correctedDivisionFloor((float) bounds.getX(), characterWidthInPoint);
     final int y = correctedDivisionFloor((float) bounds.getY(), characterHeightInPoint);
@@ -529,7 +529,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
       throws OutputTargetException
   {
     final float characterWidthInPoint  = (72f / driver.getCharactersPerInch());
-    final float characterHeightInPoint = (72f * driver.getLinesPerInch());
+    final float characterHeightInPoint = (72f / driver.getLinesPerInch());
 
     return new PlainTextSizeCalculator(characterWidthInPoint, characterHeightInPoint);
   }
@@ -556,7 +556,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    */
   public float getVerticalAlignmentBorder()
   {
-    final float characterHeightInPoint = (72f * driver.getLinesPerInch());
+    final float characterHeightInPoint = (72f / driver.getLinesPerInch());
     return characterHeightInPoint;
   }
 

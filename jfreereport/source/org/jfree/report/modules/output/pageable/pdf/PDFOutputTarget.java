@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.21 2005/01/30 23:37:21 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.22 2005/02/05 18:35:18 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,6 @@ import java.awt.Graphics2D;
 import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.geom.Dimension2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
@@ -65,27 +64,27 @@ import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.lowagie.text.Anchor;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.DocWriter;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
-import com.lowagie.text.Anchor;
 import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.PdfAction;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
-import com.lowagie.text.pdf.PdfAction;
 import org.jfree.report.ImageContainer;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.LocalImageContainer;
 import org.jfree.report.PageDefinition;
 import org.jfree.report.ShapeElement;
 import org.jfree.report.URLImageContainer;
+import org.jfree.report.content.AnchorContent;
 import org.jfree.report.content.Content;
 import org.jfree.report.content.DrawableContent;
 import org.jfree.report.content.ImageContent;
-import org.jfree.report.content.AnchorContent;
 import org.jfree.report.layout.SizeCalculator;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
@@ -95,12 +94,15 @@ import org.jfree.report.modules.output.support.itext.BaseFontFactory;
 import org.jfree.report.modules.output.support.itext.BaseFontRecord;
 import org.jfree.report.modules.output.support.itext.BaseFontSupport;
 import org.jfree.report.style.ElementDefaultStyleSheet;
-import org.jfree.report.style.FontDefinition;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.KeyedQueue;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.WaitingImageObserver;
+import org.jfree.report.util.geom.StrictBounds;
+import org.jfree.report.util.geom.StrictGeomUtility;
+import org.jfree.ui.Drawable;
 
 /**
  * An output target for the report engine that generates a PDF file using the iText class library
@@ -285,7 +287,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   private PageFormat currentPageFormat;
 
   /** The internal operation bounds. */
-  private Rectangle2D internalOperationBounds;
+  private StrictBounds internalPDFOperationBounds;
 
   private KeyedQueue cachedImages;
 
@@ -311,7 +313,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   {
     this.out = out;
     this.fontSupport = new BaseFontSupport();
-    this.internalOperationBounds = new Rectangle2D.Float();
+    this.internalPDFOperationBounds = new StrictBounds();
     this.cachedImages = new KeyedQueue(20);
   }
 
@@ -394,22 +396,29 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   {
     try
     {
-      final Rectangle2D bounds = getInternalOperationBounds();
-      final Rectangle2D imageBounds = content.getBounds();
+      final StrictBounds bounds = getInternalPDFOperationBounds();
+      final StrictBounds imageBounds = content.getBounds();
 
-      final float x = (float) (bounds.getX());
-      final float y = (float) (bounds.getY());
+      final float imageX = (float) StrictGeomUtility.toExternalValue(bounds.getX());
+      final float imageY = (float) (getPageHeight() -
+              StrictGeomUtility.toExternalValue(bounds.getY()) + bounds.getHeight());
 
-      final Image image = getImage(content.getContent());
-      image.setAbsolutePosition(x, (float) (getPageHeight() - y - bounds.getHeight()));
-      image.scaleAbsolute((float) imageBounds.getWidth(), (float) imageBounds.getHeight());
+      final ImageContainer imageContent = content.getContent();
+      final Image image = getImage(imageContent);
+      image.setAbsolutePosition(imageX, imageY);
+      image.scalePercent(imageContent.getScaleX(), imageContent.getScaleY());
 
       final PdfContentByte cb = this.writer.getDirectContent();
 
-      cb.rectangle((float) (imageBounds.getX() + x),
-          (float) (getPageHeight() - imageBounds.getY() - y - bounds.getHeight()),
-          (float) imageBounds.getWidth(),
-          (float) imageBounds.getHeight());
+      final StrictBounds imageArea = content.getImageArea();
+      final float clipX = (float) StrictGeomUtility.toExternalValue
+              (imageBounds.getX() + imageArea.getX() + bounds.getX());
+      final float clipY = (float) (getPageHeight() -
+              StrictGeomUtility.toExternalValue
+              (imageBounds.getY() + imageArea.getY() + bounds.getHeight()));
+      cb.rectangle(clipX, clipY,
+          (float) StrictGeomUtility.toExternalValue(imageBounds.getWidth()),
+          (float) StrictGeomUtility.toExternalValue(imageBounds.getHeight()));
       cb.clip();
       cb.newPath();
       cb.addImage(image);
@@ -449,21 +458,14 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    */
   private Image getImage(final ImageContainer imageRef) throws DocumentException, IOException
   {
-    final Rectangle2D bounds = getInternalOperationBounds();
-    final Rectangle2D imageBounds = null;
-            //imageRef.getBoundsScaled();
-
     if (imageRef instanceof URLImageContainer)
     {
       final URLImageContainer urlImageContainer = (URLImageContainer) imageRef;
 
       try
       {
-        final Rectangle2D drawArea = new Rectangle2D.Float(0, 0, (float) bounds.getWidth(),
-            (float) bounds.getHeight());
         final URL sourceURL = urlImageContainer.getSourceURL();
-        if ((sourceURL != null) &&
-            (drawArea.contains(imageBounds)))
+        if (sourceURL != null)
         {
           Image image = (Image) cachedImages.get(sourceURL);
           if (image == null)
@@ -534,10 +536,10 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    */
   protected void drawShape(final Shape shape)
   {
-    final Rectangle2D bounds = getInternalOperationBounds();
+    final StrictBounds internalBounds = getInternalOperationBounds();
 
-    final float ycorr = (float) bounds.getY();
-    final float xcorr = (float) bounds.getX();
+    final float ycorr = (float) StrictGeomUtility.toExternalValue(internalBounds.getY());
+    final float xcorr = (float) StrictGeomUtility.toExternalValue(internalBounds.getX());
 
     final PathIterator pit = shape.getPathIterator(null);
     final PdfContentByte cb = this.writer.getDirectContent();
@@ -607,10 +609,10 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    */
   protected void fillShape(final Shape shape)
   {
-    final Rectangle2D bounds = getInternalOperationBounds();
+    final StrictBounds internalBounds = getInternalOperationBounds();
 
-    final float ycorr = (float) bounds.getY();
-    final float xcorr = (float) bounds.getX();
+    final float ycorr = (float) StrictGeomUtility.toExternalValue(internalBounds.getY());
+    final float xcorr = (float) StrictGeomUtility.toExternalValue(internalBounds.getX());
 
     final PathIterator pit = shape.getPathIterator(null);
     final PdfContentByte cb = this.writer.getDirectContent();
@@ -939,22 +941,18 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    */
   protected void printText(final String text)
   {
-    final Rectangle2D bounds = getInternalOperationBounds();
+    final StrictBounds bounds = getInternalOperationBounds();
     final int fontSize = getFont().getFontSize();
 
     final PdfContentByte cb = this.writer.getDirectContent();
     cb.beginText();
     cb.setFontAndSize(this.baseFont, fontSize);
 
-    cb.setAction(null, 0,0,0,0);
-    final float y2 = (float) (bounds.getY() +
+    final float y2 = (float) (StrictGeomUtility.toExternalValue(bounds.getY()) +
         baseFont.getFontDescriptor(BaseFont.ASCENT, fontSize));
-    cb.showTextAligned(
-        PdfContentByte.ALIGN_LEFT,
-        text,
-        (float) bounds.getX(),
-        this.getPageHeight() - y2,
-        0);
+    cb.showTextAligned( PdfContentByte.ALIGN_LEFT,
+        text, (float) StrictGeomUtility.toExternalValue(bounds.getX()),
+        this.getPageHeight() - y2, 0);
     cb.endText();
   }
 
@@ -1043,7 +1041,6 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
 
   protected boolean isPaintSupported(final Paint p)
   {
-    // todo add support for gradient paint
     return (p instanceof Color || p instanceof GradientPaint);
   }
 
@@ -1239,14 +1236,16 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @param bounds  the bounds.
    */
-  protected void setOperationBounds(final Rectangle2D bounds)
+  protected void setInternalOperationBounds(final StrictBounds bounds)
   {
-    super.setOperationBounds(bounds);
-    final Rectangle2D pageBounds = getPageBounds();
-    internalOperationBounds.setRect
-           ((float) (-pageBounds.getX() + bounds.getX() + currentPageFormat.getImageableX()),
-            (float) (-pageBounds.getY() + bounds.getY() + currentPageFormat.getImageableY()),
-            (float) bounds.getWidth(), (float) bounds.getHeight());
+    super.setInternalOperationBounds(bounds);
+    final StrictBounds pageBounds = getInternalPageBounds();
+    final long x = -pageBounds.getX() + bounds.getX() +
+            StrictGeomUtility.toInternalValue(currentPageFormat.getImageableX());
+    final long y = -pageBounds.getY() + bounds.getY() +
+            StrictGeomUtility.toInternalValue(currentPageFormat.getImageableY());
+
+    internalPDFOperationBounds.setRect (x, y, bounds.getWidth(), bounds.getHeight());
   }
 
   /**
@@ -1254,17 +1253,17 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return the internal operation bounds.
    */
-  private Rectangle2D getInternalOperationBounds()
+  private StrictBounds getInternalPDFOperationBounds()
   {
-    return internalOperationBounds.getBounds2D();
+    return internalPDFOperationBounds;
   }
 
   /**
    * Draws a drawable relative to the current position.
    *
-   * @param drawable the drawable to draw.
+   * @param content the drawable to draw.
    */
-  protected void drawDrawable(final DrawableContent drawable)
+  protected void drawDrawable(final DrawableContent content)
   {
     // only the drawable clippingbounds region will be drawn.
     // the clipping is set to the clipping bounds of the drawable
@@ -1272,24 +1271,38 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     // the clipping bounds are relative to the drawable dimension,
     // they are not influenced by the drawables position on the page
 
-    // todo ...
-    final Rectangle2D bounds = getInternalOperationBounds();
-    final float x = (float) (bounds.getX());
-    final float y = (float) (bounds.getY());
+    final StrictBounds bounds = getInternalOperationBounds();
+    final float x = (float) StrictGeomUtility.toExternalValue(bounds.getX());
+    final float y = (float) StrictGeomUtility.toExternalValue(bounds.getY());
+    final float width = (float) StrictGeomUtility.toExternalValue
+            (bounds.getWidth() + bounds.getX());
+    final float height = (float) StrictGeomUtility.toExternalValue
+            (bounds.getHeight() + bounds.getY());
+    // the graphics object has a width and a height, but no
+    // x,y position; so we have to assume (x = 0; y = 0) and
+    // make sure that the graphics is large enough to draw everything
+    final Graphics2D g2 = writer.getDirectContent().createGraphics
+            (width, height, fontSupport);
+    g2.translate(-x, -y);
 
-    final Rectangle2D clipBounds = drawable.getBounds();
+    final Drawable drawable = content.getContent();
+    final StrictBounds imageArea = content.getImageArea();
 
-    final Graphics2D target = writer.getDirectContent().createGraphics
-        ((float) clipBounds.getWidth() + x, (getPageHeight() - y), fontSupport);
+    final double imageWidth = StrictGeomUtility.toExternalValue(bounds.getWidth());
+    final double imageHeight = StrictGeomUtility.toExternalValue(bounds.getHeight());
+    final Rectangle2D newClipArea = new Rectangle2D.Double(0, 0, imageWidth, imageHeight);
+    g2.clip(newClipArea);
 
-    target.translate(x, 0);
+    final int imageX = (int) StrictGeomUtility.toExternalValue(imageArea.getX());
+    final int imageY = (int) StrictGeomUtility.toExternalValue(imageArea.getY());
+    g2.translate(-imageX, -imageY);
 
-    final Dimension2D drawableSize = drawable.getDrawableSize();
-    final Rectangle2D drawBounds = new Rectangle2D.Float(0, 0,
-        (float) drawableSize.getWidth(),
-        (float) drawableSize.getHeight());
-    drawable.getContent().draw(target, drawBounds);
-    target.dispose();
+    final StrictBounds drawableBounds = content.getBounds();
+    final double drawableWidth = StrictGeomUtility.toExternalValue(drawableBounds.getWidth());
+    final double drawableHeight = StrictGeomUtility.toExternalValue(drawableBounds.getHeight());
+    drawable.draw(g2, new Rectangle2D.Double(0, 0, drawableWidth, drawableHeight));
+
+    g2.dispose();
   }
 
   /**
@@ -1361,7 +1374,10 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
       return;
     }
     final PdfAction action = new PdfAction(target);
-    final Rectangle2D bounds = element.getBounds();
+    final StrictBounds elementBounds = element.getBounds();
+    final Rectangle2D bounds = StrictGeomUtility.createAWTRectangle
+            (elementBounds.getX(), elementBounds.getY(),
+                    elementBounds.getWidth(), elementBounds.getHeight());
     final PdfContentByte cb = this.writer.getDirectContent();
 
     final Rectangle2D pageBounds = getPageBounds();

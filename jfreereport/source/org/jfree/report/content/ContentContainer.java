@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ContentContainer.java,v 1.6 2004/05/07 08:02:49 mungady Exp $
+ * $Id: ContentContainer.java,v 1.7 2005/01/24 23:57:53 taqua Exp $
  *
  * Changes
  * -------
@@ -38,32 +38,30 @@
 
 package org.jfree.report.content;
 
-import java.awt.geom.Rectangle2D;
-
-import org.jfree.util.ShapeUtilities;
+import org.jfree.report.util.geom.StrictBounds;
 
 /**
  * A report content item that contains other report content items.
  *
  * @author Thomas Morgner
  */
-public strictfp class ContentContainer implements MultipartContent
+public class ContentContainer implements MultipartContent
 {
   /** Storage for the content items. */
   private Content[] content;
   private int size;
 
   /** The content bounds. */
-  private final Rectangle2D bounds;
+  private final StrictBounds bounds;
 
   /**
    * Creates a new content container.
    *
    * @param bounds  the content bounds.
    */
-  protected ContentContainer(final Rectangle2D bounds)
+  protected ContentContainer(final StrictBounds bounds)
   {
-    this.bounds = bounds;
+    this.bounds = (StrictBounds) bounds.clone();
   }
 
   /**
@@ -82,19 +80,9 @@ public strictfp class ContentContainer implements MultipartContent
    *
    * @return the bounds.
    */
-  public Rectangle2D getBounds()
+  public StrictBounds getBounds()
   {
-    return bounds.getBounds2D();
-  }
-
-  /**
-   * Sets the bounds of the content.
-   *
-   * @param bounds  the new bounds.
-   */
-  protected void setBounds(final Rectangle2D bounds)
-  {
-    this.bounds.setRect(bounds);
+    return (StrictBounds) bounds.clone();
   }
 
   /**
@@ -105,7 +93,7 @@ public strictfp class ContentContainer implements MultipartContent
    * @param width  the width.
    * @param height  the height.
    */
-  protected void setBounds(final float x, final float y, final float width, final float height)
+  protected void setBounds(final long x, final long y, final long width, final long height)
   {
     this.bounds.setRect(x, y, width, height);
   }
@@ -166,13 +154,13 @@ public strictfp class ContentContainer implements MultipartContent
    *
    * @return a container holding the content items.
    */
-  public Content getContentForBounds(final Rectangle2D bounds)
+  public Content getContentForBounds(final StrictBounds bounds)
   {
     ContentContainer cc = null;
     for (int i = 0; i < getContentPartCount(); i++)
     {
       final Content contentPart = getContentPart(i);
-      if (ShapeUtilities.intersects(contentPart.getBounds(), bounds) == false)
+      if (StrictBounds.intersects(contentPart.getBounds(), bounds) == false)
       {
         continue;
       }
@@ -183,7 +171,7 @@ public strictfp class ContentContainer implements MultipartContent
         continue;
       }
 
-      final Rectangle2D cbounds = retval.getBounds();
+      final StrictBounds cbounds = retval.getBounds();
       if (cbounds.getHeight() != 0 && cbounds.getWidth() != 0)
       {
         if (cc == null)
@@ -205,13 +193,13 @@ public strictfp class ContentContainer implements MultipartContent
    *
    * @return the minimum size or null, if this container has no content.
    */
-  public Rectangle2D getMinimumContentSize()
+  public StrictBounds getMinimumContentSize()
   {
-    Rectangle2D retval = null;
+    StrictBounds retval = null;
     for (int i = 0; i < getContentPartCount(); i++)
     {
       final Content contentPart = getContentPart(i);
-      final Rectangle2D minCBounds = contentPart.getMinimumContentSize();
+      final StrictBounds minCBounds = contentPart.getMinimumContentSize();
 
       if (minCBounds == null)
       {

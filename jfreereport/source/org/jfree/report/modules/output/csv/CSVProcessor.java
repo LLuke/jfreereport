@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.7.2.1.2.2 2004/12/30 14:46:12 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.11 2005/01/25 00:09:48 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,6 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.states.FinishState;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.states.ReportStateProgress;
@@ -103,10 +102,9 @@ public class CSVProcessor
    * @param report  the report to be processed.
    *
    * @throws ReportProcessingException if the report initialisation failed.
-   * @throws FunctionInitializeException if the writer initialisation failed.
    */
   public CSVProcessor(final JFreeReport report)
-      throws ReportProcessingException, FunctionInitializeException
+      throws ReportProcessingException
   {
     this(report, report.getReportConfiguration().getConfigProperty(CSV_SEPARATOR, ","));
   }
@@ -125,7 +123,7 @@ public class CSVProcessor
    * @throws ReportProcessingException if the report initialisation failed.
    */
   public CSVProcessor(final JFreeReport report, final String separator)
-      throws ReportProcessingException, FunctionInitializeException
+      throws ReportProcessingException
   {
     this(report, separator,
         report.getReportConfiguration().getConfigProperty
@@ -147,7 +145,7 @@ public class CSVProcessor
    */
   public CSVProcessor(final JFreeReport report, final String separator,
                       final boolean writeDataRowNames)
-      throws ReportProcessingException, FunctionInitializeException
+      throws ReportProcessingException
   {
     if (report == null)
     {

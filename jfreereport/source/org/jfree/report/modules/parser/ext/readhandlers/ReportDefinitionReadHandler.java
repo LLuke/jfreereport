@@ -1,20 +1,23 @@
 package org.jfree.report.modules.parser.ext.readhandlers;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactoryCollector;
-import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
-import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
-import org.jfree.report.modules.parser.ext.factory.elements.ElementFactoryCollector;
+import org.jfree.report.modules.parser.base.AbstractPropertyXmlReadHandler;
+import org.jfree.report.modules.parser.base.PropertyAttributes;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.common.FunctionsReadHandler;
+import org.jfree.report.modules.parser.base.common.IncludeReadHandler;
+import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
+import org.jfree.report.modules.parser.ext.factory.elements.ElementFactoryCollector;
+import org.jfree.report.modules.parser.ext.factory.stylekey.StyleKeyFactoryCollector;
+import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
 import org.jfree.util.ObjectUtilities;
-import org.jfree.xml.parser.AbstractXmlReadHandler;
+import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.parser.XmlReadHandler;
 import org.jfree.xml.parser.XmlReaderException;
-import org.jfree.xml.factory.objects.ClassFactoryCollector;
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-public class ReportDefinitionReadHandler extends AbstractXmlReadHandler
+public class ReportDefinitionReadHandler extends AbstractPropertyXmlReadHandler
 {
   public static final String REPORT_KEY = ReportParser.HELPER_OBJ_REPORT_NAME;
   public static final String ELEMENT_FACTORY_KEY = "::element-factory";
@@ -35,7 +38,7 @@ public class ReportDefinitionReadHandler extends AbstractXmlReadHandler
    * @param attrs the attributes.
    * @throws org.xml.sax.SAXException if there is a parsing error.
    */
-  protected void startParsing (final Attributes attrs)
+  protected void startParsing (final PropertyAttributes attrs)
           throws SAXException, XmlReaderException
   {
     final Object maybeReport = getRootHandler().getHelperObject(REPORT_KEY);
@@ -82,7 +85,7 @@ public class ReportDefinitionReadHandler extends AbstractXmlReadHandler
    *                                  if there is a reader error.
    */
   protected XmlReadHandler getHandlerForChild (final String tagName,
-                                               final Attributes atts)
+                                               final PropertyAttributes atts)
           throws XmlReaderException, SAXException
   {
     if (tagName.equals("parser-config"))
@@ -129,5 +132,11 @@ public class ReportDefinitionReadHandler extends AbstractXmlReadHandler
           throws XmlReaderException
   {
     return getRootHandler().getHelperObject(REPORT_KEY);
+  }
+
+  protected void storeComments ()
+          throws SAXException
+  {
+    defaultStoreComments(new CommentHintPath("report-definition"));
   }
 }
