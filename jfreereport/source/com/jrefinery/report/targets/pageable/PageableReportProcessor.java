@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.10 2002/12/10 21:04:38 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.11 2002/12/13 13:55:28 taqua Exp $
  *
  * Changes
  * -------
@@ -262,7 +262,9 @@ public class PageableReportProcessor
       }
       while (hasNext == true);
 
-      Log.debug (new Log.MemoryUsageMessage("DummyWriting Done"));
+      Log.debug (new Log.MemoryUsageMessage("DummyWriting Done "));
+      Log.debug (new Log.SimpleMessage("Number of pages in the list: ", new Integer(pageStates.size())));
+      Log.debug (new Log.SimpleMessage("Number of pages in the state: ", new Integer(state.getCurrentPage() - 1)));
 
       dummyOutput.close();
       // root of evilness here ... pagecount should not be handled specially ...
@@ -318,27 +320,36 @@ public class PageableReportProcessor
     {
       throw new IllegalArgumentException("No finish state for processpage allowed: ");
     }
-    
+
     ReportState state = (ReportState) currPage.clone();
     PageLayouter lm = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
     lm.setLogicalPage(out.getLogicalPage());
     lm.restoreSaveState(state);
 
+    // todo find a better way of handling the end of the report
+    // this code will definitly be affected by the Band-intenal-pagebreak code
+    // to this is non-fatal. the next redesign is planed here :)
     if (lm.isPageEnded())
     {
-      Log.info("PageEnded after Restore");
-    }
-    // Do some real work.  The report header and footer, and the page headers and footers are
-    // just decorations, as far as the report state is concerned.  The state only changes in
-    // the following code...
-    while ((lm.isPageEnded() == false) && (state.isFinish() == false))
-    {
-      PageLayouter org = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
+      Log.info("PageEnded after Restore.");
       state = state.advance();
-      lm = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
-      if (org != lm) 
+      if (state.isFinish() == false)
+        throw new ReportProcessingException("State finished page during restore");
+    }
+    else
+    {
+      // Do some real work.  The report header and footer, and the page headers and footers are
+      // just decorations, as far as the report state is concerned.  The state only changes in
+      // the following code...
+      while ((lm.isPageEnded() == false) && (state.isFinish() == false))
       {
-        throw new IllegalStateException();
+        PageLayouter org = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
+        state = state.advance();
+        lm = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
+        if (org != lm)
+        {
+          throw new IllegalStateException();
+        }
       }
     }
 

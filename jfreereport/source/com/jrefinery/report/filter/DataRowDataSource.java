@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowDataSource.java,v 1.3 2002/11/07 21:45:27 taqua Exp $
+ * $Id: DataRowDataSource.java,v 1.4 2002/12/06 17:21:42 mungady Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
 package com.jrefinery.report.filter;
 
 import com.jrefinery.report.DataRow;
+import com.jrefinery.report.util.Log;
 
 /**
  * A DataSource that can access values from the 'data-row'. The data-row contains all values from 

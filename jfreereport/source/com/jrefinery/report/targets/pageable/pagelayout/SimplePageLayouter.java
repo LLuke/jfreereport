@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.9 2002/12/13 01:26:11 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.10 2002/12/13 10:43:45 mungady Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,7 @@ import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.FunctionProcessingException;
 import com.jrefinery.report.states.ReportState;
+import com.jrefinery.report.states.PostReportFooterState;
 import com.jrefinery.report.targets.pageable.bandlayout.BandLayoutManager;
 import com.jrefinery.report.targets.pageable.bandlayout.BandLayoutManagerUtil;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
@@ -154,9 +155,9 @@ public class SimplePageLayouter extends PageLayouter
   public void reportStarted(ReportEvent event)
   {
     isInItemGroup = false;
+    setCurrentEvent(event);
     try
     {
-      setCurrentEvent(event);
       startPage(event.getState());
       printBand(getReport().getReportHeader());
     }
@@ -215,6 +216,7 @@ public class SimplePageLayouter extends PageLayouter
    */
   public void pageStarted(ReportEvent event)
   {
+    setCurrentEvent(event);
     try
     {
       // a new page has started, so reset the cursor ...
@@ -291,6 +293,7 @@ public class SimplePageLayouter extends PageLayouter
    */
   public void pageFinished(ReportEvent event)
   {
+    setCurrentEvent(event);
     try
     {
       getCursor().setReservedSpace(0);
@@ -341,10 +344,14 @@ public class SimplePageLayouter extends PageLayouter
       isLastPageBreak = true;
 
       Band b = getReport().getReportFooter();
-      printBand(b);
 
-      createSaveState(null);
-      endPage(ENDPAGE_FORCED);
+      // if the band was printed on that page without PAGEBREAK_BEFORE
+      // force the final pagebreak.
+      if (printBand(b))
+      {
+        createSaveState(null);
+        endPage(ENDPAGE_FORCED);
+      }
     }
     catch (FunctionProcessingException fe)
     {
@@ -440,21 +447,25 @@ public class SimplePageLayouter extends PageLayouter
    *
    * @param b  the band.
    *
-   * @throws ReportProcessingException ??.
+   * @throws ReportProcessingException if the printing or spooling of the band failed.
+   * @return true, if the band was printed, false if the printing was delayed to the next page
    */
-  private void printBand (Band b) throws ReportProcessingException
+  private boolean printBand (Band b) throws ReportProcessingException
   {
     if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
     {
       createSaveState(b);
       if (endPage(ENDPAGE_REQUESTED) == false)
       {
-        print(b, false);
+        // no pagebreak was done, the band was printed to an already empty page
+        return print(b, false);
       }
+      // a pagebreak was requested, printing is delayed
+      return false;
     }
     else
     {
-      print(b, false);
+      return print(b, false);
     }
   }
 
@@ -466,7 +477,7 @@ public class SimplePageLayouter extends PageLayouter
    *
    * @throws ReportProcessingException if the printing failed
    */
-  protected void print(Band b, boolean spool)
+  protected boolean print(Band b, boolean spool)
       throws ReportProcessingException
   {
     float y = getCursor().getY();
@@ -476,7 +487,7 @@ public class SimplePageLayouter extends PageLayouter
 
     Rectangle2D bounds = doLayout(b);
     bounds.setRect(0, y, bounds.getWidth(), bounds.getHeight());
-    doPrint(bounds, b, spool);
+    return doPrint(bounds, b, spool);
   }
 
   /**
@@ -486,7 +497,7 @@ public class SimplePageLayouter extends PageLayouter
    *
    * @throws ReportProcessingException if the printing failed
    */
-  protected void printBottom (Band b)
+  protected boolean printBottom (Band b)
     throws ReportProcessingException
   {
     // don't save the state if the current page is currently beeing finished
@@ -496,7 +507,7 @@ public class SimplePageLayouter extends PageLayouter
     Rectangle2D bounds = doLayout(b);
     bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(),
                    bounds.getWidth(), bounds.getHeight());
-    doPrint(bounds, b, false);
+    return doPrint(bounds, b, false);
   }
 
   /**
@@ -536,12 +547,13 @@ public class SimplePageLayouter extends PageLayouter
    * @throws ReportProcessingException if the printing caused an detectable error
    * while printing the band
    */
-  protected void doPrint(Rectangle2D bounds, Band band, boolean spool)
+  protected boolean doPrint(Rectangle2D bounds, Band band, boolean spool)
     throws ReportProcessingException
   {
     if ((spooledBand != null) && (spool == false))
     {
       getLogicalPage().replaySpool (spooledBand);
+      spooledBand = null;
     }
     try
     {
@@ -551,16 +563,19 @@ public class SimplePageLayouter extends PageLayouter
       {
         getLogicalPage().addBand(bounds, band);
         cursor.advance(height);
+        return true;
       }
       // handle a automatic pagebreak in case there is not enough space here ...
       else if ((isSpaceFor(height) == false) && (isPageEnded() == false))
       {
         createSaveState(band);
         endPage(ENDPAGE_FORCED);
+        return false;
       }
       else if (isPageEnded()) // page has ended before, but that band should be printed
       {
         createSaveState(band);
+        return false;
       }
       else
       {
@@ -573,10 +588,12 @@ public class SimplePageLayouter extends PageLayouter
           }
           else
           {
+            Log.debug ("There is a band already spooled");
             spooledBand.merge (newSpool);
           }
 
           cursor.advance(height);
+          return true;
         }
         else
         {
@@ -587,6 +604,7 @@ public class SimplePageLayouter extends PageLayouter
             createSaveState(null);
             endPage(ENDPAGE_REQUESTED);
           }
+          return true;
         }
       }
     }
@@ -695,6 +713,8 @@ public class SimplePageLayouter extends PageLayouter
       }
       return; // no state yet, maybe the first state?
     }
+
+    Log.debug ("State: " + anchestor.getCurrentPage() + " " + anchestor.getCurrentDataItem() + " " + anchestor.getDataRow());
     startPage(anchestor);
     // if there was a pagebreak_after_print, there is no band to print for now
     if (state.getBand() != null)
@@ -702,6 +722,12 @@ public class SimplePageLayouter extends PageLayouter
       print(state.getBand(), false);
     }
     clearSaveState();
+    // this is the last valid state for the reporting, force the last pagebreak ..
+    if (anchestor instanceof PostReportFooterState)
+    {
+      createSaveState(new Band());
+      endPage(ENDPAGE_FORCED);
+    }
   }
 
   /**

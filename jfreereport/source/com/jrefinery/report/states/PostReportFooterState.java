@@ -1,4 +1,5 @@
 /**
+/**
  * ========================================
  * JFreeReport : a free Java report library
  * ========================================
@@ -20,51 +21,51 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -------------------------
- * PreReportFooterState.java
- * -------------------------
+ * --------------------
+ * ReportGenerator.java
+ * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited and Contributors.
  *
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreReportFooterState.java,v 1.6 2002/12/06 19:28:02 taqua Exp $
+ * $Id: FinishState.java,v 1.5 2002/12/12 12:26:56 mungady Exp $
  *
  * Changes
  * -------
- * 05-Dec-2002 : Updated Javadocs (DG);
+ * 12-Dec-2002 : Fixed issues reported by Checkstyle (DG);
  *
  */
 
 package com.jrefinery.report.states;
 
+import com.jrefinery.report.ReportProcessingException;
+
 /**
- * At least the report has been finished. There is no more data to print, so just fire
- * that ReportFinishedEvent and advance to the state FinishState. 
+ * The report is done. No advance will be done, every call to advance will throw an
+ * ReportProcessingException.
  *
  * @author David Gilbert
- * @author Thomas Morgner
  */
-public class PreReportFooterState extends ReportState
+public class PostReportFooterState extends ReportState
 {
   /**
-   * Creates a 'pre-report-footer' report state.
+   * Creates a new 'finish' report state.
    *
-   * @param previous  the previous report state.
+   * @param previous  the previous state.
    */
-  public PreReportFooterState (ReportState previous)
+  public PostReportFooterState (ReportState previous)
   {
     super (previous);
   }
 
   /**
-   * Advances from this state to the next.
-   *
-   * @return the next report state.
+   * Advance to the FinishState. The PostReportFooterState is used to catch a
+   * continued reportfooter.
    */
-  public ReportState advance ()
+  public ReportState advance () throws ReportProcessingException
   {
-    fireReportFinishedEvent ();
-    return new PostReportFooterState (this);
+    return new FinishState(this);
   }
+
 }

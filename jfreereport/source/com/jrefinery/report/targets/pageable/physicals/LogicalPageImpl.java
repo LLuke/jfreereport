@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.11 2002/12/12 20:24:03 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.12 2002/12/16 17:31:05 mungady Exp $
  *
  * Changes
  * -------
@@ -409,6 +409,8 @@ public class LogicalPageImpl implements LogicalPage
       physicalPage[i].flush();
     }
     closed = true;
+    Log.debug ("Logical Page closed");
+
   }
 
   /**
@@ -427,6 +429,7 @@ public class LogicalPageImpl implements LogicalPage
   public void open ()
   {
     closed = false;
+    Log.debug ("Logical Page opened");
   }
 
   /**

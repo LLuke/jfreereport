@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: StraightToPDF.java,v 1.1 2002/12/13 10:27:47 mungady Exp $
+ * $Id: StraightToPDF.java,v 1.2 2002/12/13 18:38:58 taqua Exp $
  *
  * Changes
  * -------
@@ -38,19 +38,19 @@
 
 package com.jrefinery.report.demo;
 
-import java.awt.print.PageFormat;
-import java.io.OutputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.File;
-import java.net.URL;
-import javax.swing.table.TableModel;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.ReportGenerator;
 import com.jrefinery.report.targets.pageable.PageableReportProcessor;
 import com.jrefinery.report.targets.pageable.output.PDFOutputTarget;
 import com.jrefinery.report.util.ReportConfiguration;
-import com.jrefinery.report.util.ReportProperties;
+
+import javax.swing.table.TableModel;
+import java.awt.print.PageFormat;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.net.URL;
 
 /**
  * A demonstration that shows how to generate a report and save it to PDF without displaying
@@ -152,7 +152,7 @@ public class StraightToPDF
   {
     ReportConfiguration.getGlobalConfig().setDisableLogging(true);
     ReportConfiguration.getGlobalConfig().setPDFTargetAutoInit(false);
-    StraightToPDF demo = new StraightToPDF("/home/dgilbert/test99.pdf");
+    StraightToPDF demo = new StraightToPDF(System.getProperty("user.home") + "/test99.pdf");
     System.exit(0);
   }
 

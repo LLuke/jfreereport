@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowConnector.java,v 1.10 2002/12/06 17:59:21 taqua Exp $
+ * $Id: DataRowConnector.java,v 1.11 2002/12/11 01:00:04 mungady Exp $
  *
  * Changes
  * -------
@@ -308,5 +308,15 @@ public class DataRowConnector implements DataRow
       return getLastDatasource (tgt);
     }
     return s;
+  }
+
+  public String toString ()
+  {
+    if (dataRow == null)
+    {
+      return "com.jrefinery.report.DataRowConnector=Not Connected";
+    }
+    return "com.jrefinery.report.DataRowConnector=Connected:" + dataRow.getCurrentRow();
+
   }
 }
