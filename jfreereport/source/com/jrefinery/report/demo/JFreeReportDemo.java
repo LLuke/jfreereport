@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.26 2002/08/14 21:14:09 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.27 2002/08/27 13:14:26 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -40,6 +40,7 @@
  *               close behaviour unified
  * 05-Jun-2002 : Documentation
  * 10-Jun-2002 : Updated code to work with latest version of the JCommon class library;
+ * 27-Aug-2002 : Added more demos
  */
 
 package com.jrefinery.report.demo;
@@ -90,48 +91,48 @@ public class JFreeReportDemo extends JFrame
 {
   private class DemoAboutAction extends AboutAction
   {
-    public DemoAboutAction ()
+    public DemoAboutAction()
     {
-      super (getResources ());
+      super(getResources());
     }
 
-    public void actionPerformed (ActionEvent event)
+    public void actionPerformed(ActionEvent event)
     {
-      displayAbout ();
+      displayAbout();
     }
   }
 
   private class DemoPreviewAction extends PreviewAction
   {
-    public DemoPreviewAction ()
+    public DemoPreviewAction()
     {
-      super (getResources ());
+      super(getResources());
     }
 
-    public void actionPerformed (ActionEvent event)
+    public void actionPerformed(ActionEvent event)
     {
-      attemptPreview ();
+      attemptPreview();
     }
   }
 
   private class DemoCloseAction extends CloseAction
   {
-    public DemoCloseAction ()
+    public DemoCloseAction()
     {
-      super (getResources ());
+      super(getResources());
     }
 
-    public void actionPerformed (ActionEvent event)
+    public void actionPerformed(ActionEvent event)
     {
-      attemptExit ();
+      attemptExit();
     }
   }
 
   private class CloseHandler extends WindowAdapter
   {
-    public void windowClosing (WindowEvent event)
+    public void windowClosing(WindowEvent event)
     {
-      attemptExit ();
+      attemptExit();
     }
   }
 
@@ -162,7 +163,7 @@ public class JFreeReportDemo extends JFrame
 
   private ResourceBundle m_resources;
 
-  private ResourceBundle getResources ()
+  private ResourceBundle getResources()
   {
     return m_resources;
   }
@@ -170,125 +171,125 @@ public class JFreeReportDemo extends JFrame
   /**
    * Constructs a frame containing sample reports created using the JFreeReport Class Library.
    */
-  public JFreeReportDemo (ResourceBundle resources)
+  public JFreeReportDemo(ResourceBundle resources)
   {
-    setDefaultCloseOperation (DO_NOTHING_ON_CLOSE);
-    addWindowListener (new CloseHandler ());
+    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+    addWindowListener(new CloseHandler());
     m_resources = resources;
-    Object[] arguments = new Object[]{JFreeReport.getInfo ().getVersion ()};
-    String pattern = resources.getString ("main-frame.title.pattern");
-    setTitle (MessageFormat.format (pattern, arguments));
+    Object[] arguments = new Object[]{JFreeReport.getInfo().getVersion()};
+    String pattern = resources.getString("main-frame.title.pattern");
+    setTitle(MessageFormat.format(pattern, arguments));
 
     // create a couple of sample data sets
-    data1 = new SampleData1 ();
-    data2 = new SampleData2 ();
-    data3 = new SampleData3 ();
-    data4 = new SampleData4 ();
+    data1 = new SampleData1();
+    data2 = new SampleData2();
+    data3 = new SampleData3();
+    data4 = new SampleData4();
 
-    createActions ();
+    createActions();
 
     // set up the menu
-    setJMenuBar (createMenuBar ());
+    setJMenuBar(createMenuBar());
 
-    JPanel content = (JPanel) getContentPane ();
-    JToolBar toolbar = createToolBar (resources);
-    content.add (toolbar, BorderLayout.NORTH);
+    JPanel content = (JPanel) getContentPane();
+    JToolBar toolbar = createToolBar(resources);
+    content.add(toolbar, BorderLayout.NORTH);
 
-    tabbedPane = new JTabbedPane ();
-    tabbedPane.setBorder (BorderFactory.createEmptyBorder (4, 4, 4, 4));
-    tabbedPane.addTab (formExample (1), RefineryUtilities.createTablePanel (data1));
-    tabbedPane.addTab (formExample (2), RefineryUtilities.createTablePanel (data2));
-    tabbedPane.addTab (formExample (3), RefineryUtilities.createTablePanel (data3));
-    tabbedPane.addTab (formExample (4), RefineryUtilities.createTablePanel (data4));
-    tabbedPane.addTab ("Manual Created Report (see Source)", RefineryUtilities.createTablePanel (data1));
-    tabbedPane.addTab ("Example 2 - with Image-Function", RefineryUtilities.createTablePanel(data2));
-    tabbedPane.addTab ("ItemHideFunction-Demo", RefineryUtilities.createTablePanel(data2));
+    tabbedPane = new JTabbedPane();
+    tabbedPane.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+    tabbedPane.addTab(formExample(1), RefineryUtilities.createTablePanel(data1));
+    tabbedPane.addTab(formExample(2), RefineryUtilities.createTablePanel(data2));
+    tabbedPane.addTab(formExample(3), RefineryUtilities.createTablePanel(data3));
+    tabbedPane.addTab(formExample(4), RefineryUtilities.createTablePanel(data4));
+    tabbedPane.addTab("Manual Created Report (see Source)", RefineryUtilities.createTablePanel(data1));
+    tabbedPane.addTab("Example 2 - with Image-Function", RefineryUtilities.createTablePanel(data2));
+    tabbedPane.addTab("ItemHideFunction-Demo", RefineryUtilities.createTablePanel(data2));
 
-    content.add (tabbedPane);
+    content.add(tabbedPane);
 
-    L1R2ButtonPanel buttons = new L1R2ButtonPanel ("Help", "Preview", "Close");
+    L1R2ButtonPanel buttons = new L1R2ButtonPanel("Help", "Preview", "Close");
 
-    JButton helpButton = buttons.getLeftButton ();
-    helpButton.setAction (aboutAction);
-    FloatingButtonEnabler.getInstance ().addButton (helpButton);
+    JButton helpButton = buttons.getLeftButton();
+    helpButton.setAction(aboutAction);
+    FloatingButtonEnabler.getInstance().addButton(helpButton);
 
-    JButton previewButton = buttons.getRightButton1 ();
-    previewButton.setAction (previewAction);
-    FloatingButtonEnabler.getInstance ().addButton (previewButton);
+    JButton previewButton = buttons.getRightButton1();
+    previewButton.setAction(previewAction);
+    FloatingButtonEnabler.getInstance().addButton(previewButton);
 
-    JButton closeButton = buttons.getRightButton2 ();
-    closeButton.setAction (closeAction);
-    FloatingButtonEnabler.getInstance ().addButton (closeButton);
+    JButton closeButton = buttons.getRightButton2();
+    closeButton.setAction(closeAction);
+    FloatingButtonEnabler.getInstance().addButton(closeButton);
 
-    buttons.setBorder (BorderFactory.createEmptyBorder (0, 4, 4, 4));
-    content.add (buttons, BorderLayout.SOUTH);
+    buttons.setBorder(BorderFactory.createEmptyBorder(0, 4, 4, 4));
+    content.add(buttons, BorderLayout.SOUTH);
 
-    setContentPane (content);
+    setContentPane(content);
 
   }
 
   /**
    * Forms the localized example string.
    */
-  private String formExample (int ex)
+  private String formExample(int ex)
   {
-    return MessageFormat.format (getResources ().getString ("example"), new Object[]{new Integer (ex)});
+    return MessageFormat.format(getResources().getString("example"), new Object[]{new Integer(ex)});
   }
 
   /**
    * Handles a request to preview a report.  First determines which data set is visible, then
    * calls the appropriate preview method.
    */
-  public void attemptPreview ()
+  public void attemptPreview()
   {
-    int index = tabbedPane.getSelectedIndex ();
+    int index = tabbedPane.getSelectedIndex();
 
     if (index == 0)
     {
-      preview ("/com/jrefinery/report/demo/report1.xml", data1);
+      preview("/com/jrefinery/report/demo/report1.xml", data1);
     }
     else if (index == 1)
     {
-      preview ("/com/jrefinery/report/demo/report2.xml", data2);
+      preview("/com/jrefinery/report/demo/report2.xml", data2);
     }
     else if (index == 2)
     {
-      preview ("/com/jrefinery/report/demo/report3.xml", data3);
+      preview("/com/jrefinery/report/demo/report3.xml", data3);
     }
     else if (index == 3)
     {
-      preview ("/com/jrefinery/report/demo/report4.xml", data4);
+      preview("/com/jrefinery/report/demo/report4.xml", data4);
     }
     else if (index == 4)
     {
-      previewManual ();
+      previewManual();
     }
     else if (index == 5)
     {
-      preview ("/com/jrefinery/report/demo/report2a.xml", data2);
+      preview("/com/jrefinery/report/demo/report2a.xml", data2);
     }
     else if (index == 6)
     {
-      preview ("/com/jrefinery/report/demo/report2b.xml", data2);
+      preview("/com/jrefinery/report/demo/report2b.xml", data2);
     }
   }
 
-  private void previewManual ()
+  private void previewManual()
   {
     try
     {
-      JFreeReport report1 = new SampleReport1 ().createReport ();
-      report1.setData (data1);
+      JFreeReport report1 = new SampleReport1().createReport();
+      report1.setData(data1);
 
-      PreviewFrame frame1 = new PreviewFrame (report1);
-      frame1.pack ();
-      RefineryUtilities.positionFrameRandomly (frame1);
-      frame1.setVisible (true);
-      frame1.requestFocus ();
+      PreviewFrame frame1 = new PreviewFrame(report1);
+      frame1.pack();
+      RefineryUtilities.positionFrameRandomly(frame1);
+      frame1.setVisible(true);
+      frame1.requestFocus();
     }
     catch (Exception e)
     {
-      showExceptionDialog ("report.definitionfailure", e);
+      showExceptionDialog("report.definitionfailure", e);
     }
   }
 
@@ -303,45 +304,45 @@ public class JFreeReportDemo extends JFrame
    * @param urlname the filename from where to load the report
    * @param data the datamodel for the report
    */
-  public void preview (String urlname, TableModel data)
+  public void preview(String urlname, TableModel data)
   {
-    URL in = getClass ().getResource (urlname);
+    URL in = getClass().getResource(urlname);
     if (in == null)
     {
 
-      JOptionPane.showMessageDialog (this,
-              MessageFormat.format (getResources ().getString ("report.definitionnotfound"), new Object[]{urlname}),
-              getResources ().getString ("error"), JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(this,
+          MessageFormat.format(getResources().getString("report.definitionnotfound"), new Object[]{urlname}),
+          getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
       return;
     }
-    ReportGenerator gen = ReportGenerator.getInstance ();
+    ReportGenerator gen = ReportGenerator.getInstance();
 
     JFreeReport report1 = null;
     try
     {
-      report1 = gen.parseReport (in, in);
+      report1 = gen.parseReport(in, in);
 
     }
     catch (Exception ioe)
     {
-      showExceptionDialog ("report.definitionfailure", ioe);
+      showExceptionDialog("report.definitionfailure", ioe);
       return;
     }
 
     if (report1 == null)
     {
-      JOptionPane.showMessageDialog (this,
-              MessageFormat.format (getResources ().getString ("report.definitionnull"), new Object[]{urlname}),
-              getResources ().getString ("error"), JOptionPane.ERROR_MESSAGE);
+      JOptionPane.showMessageDialog(this,
+          MessageFormat.format(getResources().getString("report.definitionnull"), new Object[]{urlname}),
+          getResources().getString("error"), JOptionPane.ERROR_MESSAGE);
     }
 
-    report1.setData (data);
+    report1.setData(data);
 
-    PreviewFrame frame1 = new PreviewFrame (report1);
-    frame1.pack ();
-    RefineryUtilities.positionFrameRandomly (frame1);
-    frame1.setVisible (true);
-    frame1.requestFocus ();
+    PreviewFrame frame1 = new PreviewFrame(report1);
+    frame1.pack();
+    RefineryUtilities.positionFrameRandomly(frame1);
+    frame1.setVisible(true);
+    frame1.requestFocus();
   }
 
   /**
@@ -349,42 +350,42 @@ public class JFreeReportDemo extends JFrame
    * used to construct the localisation key by appending ".title" and ".message" to the
    * base name.
    */
-  private void showExceptionDialog (String localisationBase, Exception e)
+  private void showExceptionDialog(String localisationBase, Exception e)
   {
-    ExceptionDialog.showExceptionDialog (
-            getResources ().getString (localisationBase + ".title"),
-            MessageFormat.format (
-                    getResources ().getString (localisationBase + ".message"),
-                    new Object[]{e.getLocalizedMessage ()}
-            ),
-            e);
+    ExceptionDialog.showExceptionDialog(
+        getResources().getString(localisationBase + ".title"),
+        MessageFormat.format(
+            getResources().getString(localisationBase + ".message"),
+            new Object[]{e.getLocalizedMessage()}
+        ),
+        e);
   }
 
   /**
    * Returns the preferred size of the frame.
    */
-  public Dimension getPreferredSize ()
+  public Dimension getPreferredSize()
   {
-    return new Dimension (440, 300);
+    return new Dimension(440, 300);
   }
 
   /**
    * Exits the application, but only if the user agrees.
    */
-  public boolean attemptExit ()
+  public boolean attemptExit()
   {
     boolean close =
-            JOptionPane.showConfirmDialog (
-                    this,
-                    getResources ().getString ("exitdialog.message"),
-                    getResources ().getString ("exitdialog.title"),
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE)
-            == JOptionPane.YES_OPTION;
+        JOptionPane.showConfirmDialog(
+            this,
+            getResources().getString("exitdialog.message"),
+            getResources().getString("exitdialog.title"),
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE)
+        == JOptionPane.YES_OPTION;
     if (close)
     {
-      dispose ();
-      System.exit (0);
+      dispose();
+      System.exit(0);
     }
 
     return close;
@@ -393,61 +394,61 @@ public class JFreeReportDemo extends JFrame
   /**
    * Displays information about the application.
    */
-  public void displayAbout ()
+  public void displayAbout()
   {
     if (aboutFrame == null)
     {
-      aboutFrame = new AboutFrame (getResources ().getString ("action.about.name"), JFreeReport.getInfo ());
+      aboutFrame = new AboutFrame(getResources().getString("action.about.name"), JFreeReport.getInfo());
 
-      aboutFrame.pack ();
-      RefineryUtilities.centerFrameOnScreen (aboutFrame);
+      aboutFrame.pack();
+      RefineryUtilities.centerFrameOnScreen(aboutFrame);
     }
-    aboutFrame.setVisible (true);
-    aboutFrame.requestFocus ();
+    aboutFrame.setVisible(true);
+    aboutFrame.requestFocus();
   }
 
   /**
    * Create the actions used in the demo
    */
-  private void createActions ()
+  private void createActions()
   {
-    previewAction = new DemoPreviewAction ();
-    aboutAction = new DemoAboutAction ();
-    closeAction = new DemoCloseAction ();
+    previewAction = new DemoPreviewAction();
+    aboutAction = new DemoAboutAction();
+    closeAction = new DemoCloseAction();
   }
 
   /**
    * Creates and returns a menu-bar for the frame.
    */
-  private JMenuBar createMenuBar ()
+  private JMenuBar createMenuBar()
   {
 
     // create the menus
-    JMenuBar menuBar = new JMenuBar ();
-    menuBar.setBorder (null);
+    JMenuBar menuBar = new JMenuBar();
+    menuBar.setBorder(null);
     // first the file menu
-    JMenu fileMenu = createJMenuItem ("menu.file");
+    JMenu fileMenu = createJMenuItem("menu.file");
 
-    JMenuItem printItem = new JMenuItem (previewAction);
-    KeyStroke accelerator = (KeyStroke) previewAction.getValue (Action.ACCELERATOR_KEY);
+    JMenuItem printItem = new JMenuItem(previewAction);
+    KeyStroke accelerator = (KeyStroke) previewAction.getValue(Action.ACCELERATOR_KEY);
     if (accelerator != null)
-      printItem.setAccelerator (accelerator);
-    fileMenu.add (printItem);
+      printItem.setAccelerator(accelerator);
+    fileMenu.add(printItem);
 
-    fileMenu.add (new JSeparator ());
+    fileMenu.add(new JSeparator());
 
-    JMenuItem exitItem = new JMenuItem (closeAction);
-    fileMenu.add (exitItem);
+    JMenuItem exitItem = new JMenuItem(closeAction);
+    fileMenu.add(exitItem);
 
     // then the help menu
-    JMenu helpMenu = createJMenuItem ("menu.help");
+    JMenu helpMenu = createJMenuItem("menu.help");
 
-    JMenuItem aboutItem = new JMenuItem (aboutAction);
-    helpMenu.add (aboutItem);
+    JMenuItem aboutItem = new JMenuItem(aboutAction);
+    helpMenu.add(aboutItem);
 
     // finally, glue together the menu and return it
-    menuBar.add (fileMenu);
-    menuBar.add (helpMenu);
+    menuBar.add(fileMenu);
+    menuBar.add(helpMenu);
 
     return menuBar;
   }
@@ -455,15 +456,15 @@ public class JFreeReportDemo extends JFrame
   /**
    * Creates a JMenu which gets initialized from the current resource bundle.
    */
-  private JMenu createJMenuItem (String base)
+  private JMenu createJMenuItem(String base)
   {
-    String label = m_resources.getString (base + ".name");
-    Character mnemonic = (Character) m_resources.getObject (base + ".mnemonic");
+    String label = m_resources.getString(base + ".name");
+    Character mnemonic = (Character) m_resources.getObject(base + ".mnemonic");
 
-    JMenu menu = new JMenu (label);
+    JMenu menu = new JMenu(label);
     if (mnemonic != null)
     {
-      menu.setMnemonic (mnemonic.charValue ());
+      menu.setMnemonic(mnemonic.charValue());
     }
     return menu;
   }
@@ -472,26 +473,26 @@ public class JFreeReportDemo extends JFrame
    * Creates a new button based on the action. The button will be floating enabled,
    * so that the buttons borders are only visible when the mouse has entered the button area.
    */
-  protected JButton createButton (Action action)
+  protected JButton createButton(Action action)
   {
-    JButton button = new JButton (action);
-    button.setMargin (new Insets (0, 0, 0, 0));
-    button.setText (null);
-    FloatingButtonEnabler.getInstance ().addButton (button);
+    JButton button = new JButton(action);
+    button.setMargin(new Insets(0, 0, 0, 0));
+    button.setText(null);
+    FloatingButtonEnabler.getInstance().addButton(button);
     return button;
   }
 
   /**
    * Creates the demos toolbar
    */
-  private JToolBar createToolBar (ResourceBundle resources)
+  private JToolBar createToolBar(ResourceBundle resources)
   {
-    JToolBar toolbar = new JToolBar ();
-    toolbar.setBorder (BorderFactory.createEmptyBorder (4, 0, 4, 0));
+    JToolBar toolbar = new JToolBar();
+    toolbar.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 0));
 
-    toolbar.add (createButton (previewAction));
-    toolbar.addSeparator ();
-    toolbar.add (createButton (aboutAction));
+    toolbar.add(createButton(previewAction));
+    toolbar.addSeparator();
+    toolbar.add(createButton(aboutAction));
 
     return toolbar;
   }
@@ -502,25 +503,24 @@ public class JFreeReportDemo extends JFrame
   /**
    * The starting point for the demonstration application.
    */
-  public static void main (String[] args)
+  public static void main(String[] args)
   {
-    //Locale.setDefault (Locale.GERMAN);
     try
     {
-      UIManager.setLookAndFeel (UIManager.getSystemLookAndFeelClassName ());
+      UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     }
     catch (Exception e)
     {
     }
 
-    PDFOutputTarget.getFontFactory ().registerDefaultFontPath ();
+    PDFOutputTarget.getFontFactory().registerDefaultFontPath();
 
     String baseName = "com.jrefinery.report.demo.resources.DemoResources";
-    ResourceBundle resources = ResourceBundle.getBundle (baseName);
+    ResourceBundle resources = ResourceBundle.getBundle(baseName);
 
-    JFreeReportDemo frame = new JFreeReportDemo (resources);
-    frame.pack ();
-    RefineryUtilities.centerFrameOnScreen (frame);
-    frame.setVisible (true);
+    JFreeReportDemo frame = new JFreeReportDemo(resources);
+    frame.pack();
+    RefineryUtilities.centerFrameOnScreen(frame);
+    frame.setVisible(true);
   }
 }
