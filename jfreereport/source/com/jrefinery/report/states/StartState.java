@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.14 2003/05/07 20:27:26 taqua Exp $
+ * $Id: StartState.java,v 1.15 2003/05/16 17:26:46 taqua Exp $
  *
  * Changes
  * -------
@@ -90,8 +90,7 @@ public final class StartState extends ReportState
    */
   public StartState (FinishState fstate, int level) throws ReportProcessingException
   {
-    super (fstate);
-    resetState();
+    super (fstate, true);
     getFunctions().setLevel(level);
   }
 

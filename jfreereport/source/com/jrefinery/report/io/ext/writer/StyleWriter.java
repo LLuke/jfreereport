@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.14 2003/05/11 13:39:17 taqua Exp $
+ * $Id: StyleWriter.java,v 1.15 2003/05/27 08:32:38 taqua Exp $
  *
  * Changes
  * -------
@@ -56,38 +56,39 @@ import org.jfree.xml.factory.objects.ObjectFactoryException;
 
 /**
  * A style writer.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class StyleWriter extends AbstractXMLDefinitionWriter
 {
   /** The element style sheet. */
   private ElementStyleSheet elementStyleSheet;
-  
+
   /** The default style sheet. */
   private ElementStyleSheet defaultStyleSheet;
 
   /**
    * Creates a new writer.
-   * 
+   *
    * @param reportWriter  the report writer.
    * @param elementStyleSheet  the element style sheet.
    * @param defaultStyleSheet  the default style sheet.
    */
   public StyleWriter(ReportWriter reportWriter,
                      ElementStyleSheet elementStyleSheet,
-                     ElementStyleSheet defaultStyleSheet)
+                     ElementStyleSheet defaultStyleSheet,
+                     int indentLevel)
   {
-    super(reportWriter);
+    super(reportWriter, indentLevel);
     this.elementStyleSheet = elementStyleSheet;
     this.defaultStyleSheet = defaultStyleSheet;
   }
 
   /**
    * Writes the style.
-   * 
+   *
    * @param writer  the character stream writer.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
@@ -180,7 +181,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     }
     catch (ObjectFactoryException e)
     {
-      throw new ReportWriterException ("Unable to fill the parameters for key: " 
+      throw new ReportWriterException ("Unable to fill the parameters for key: "
                                        + key.getName(), e);
     }
 
@@ -201,7 +202,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     else
     {
       writeTag(w, StyleSheetHandler.COMPOUND_KEY_TAG, p, OPEN);
-      ObjectWriter objWriter = new ObjectWriter(getReportWriter(), o, od);
+      ObjectWriter objWriter = new ObjectWriter(getReportWriter(), o, od, getIndentLevel());
       objWriter.write(w);
       writeCloseTag(w, StyleSheetHandler.COMPOUND_KEY_TAG);
     }
@@ -209,10 +210,10 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Returns <code>true</code> if this is a basic key, and <code>false</code> otherwise.
-   * 
+   *
    * @param parameters  the parameters.
    * @param od  the object description.
-   * 
+   *
    * @return A boolean.
    */
   private boolean isBasicKey(List parameters, ObjectDescription od)
@@ -233,9 +234,9 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Returns a list of parameter names.
-   * 
+   *
    * @param d  the object description.
-   * 
+   *
    * @return The list.
    */
   private ArrayList getParameterNames (ObjectDescription d)
@@ -252,9 +253,9 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Returns <code>true</code> if the style sheet is the default, and <code>false</code> otherwise.
-   * 
+   *
    * @param es  the style sheet.
-   * 
+   *
    * @return A boolean.
    */
   private boolean isDefaultStyleSheet (ElementStyleSheet es)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesWriter.java,v 1.5 2003/02/22 18:52:27 taqua Exp $
+ * $Id: StylesWriter.java,v 1.6 2003/03/18 18:28:44 taqua Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ import com.jrefinery.report.util.Log;
 
 /**
  * A styles writer.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class StylesWriter extends AbstractXMLDefinitionWriter
@@ -69,20 +69,20 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Creates a new styles writer.
-   * 
+   *
    * @param reportWriter  the report writer.
    */
-  public StylesWriter(ReportWriter reportWriter)
+  public StylesWriter(ReportWriter reportWriter, int indentLevel)
   {
-    super(reportWriter);
+    super(reportWriter, indentLevel);
     reportStyles = new ArrayList();
   }
 
   /**
    * Writes the styles to a character stream writer.
-   * 
+   *
    * @param writer  the character stream writer.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
@@ -96,7 +96,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
       ElementStyleSheet style = (ElementStyleSheet) styles[i];
       writeTag(writer, StylesHandler.STYLE_TAG, "name", style.getName(), OPEN);
 
-      StyleWriter stW = new StyleWriter(getReportWriter(), style, null);
+      StyleWriter stW = new StyleWriter(getReportWriter(), style, null, getIndentLevel());
       stW.write(writer);
 
       writeCloseTag(writer, StylesHandler.STYLE_TAG);
@@ -106,7 +106,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Collects styles from all the bands in the report.
-   * 
+   *
    * @return The styles.
    */
   private Object[] collectStyles ()
@@ -156,7 +156,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Collects the styles from a band.
-   * 
+   *
    * @param band  the band.
    */
   private void collectStylesFromBand (Band band)
@@ -174,7 +174,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Collects the styles from an element.
-   * 
+   *
    * @param element  the element.
    */
   private void collectStylesFromElement (Element element)
@@ -192,13 +192,13 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
   /**
    * Adds a defined stylesheet to the styles collection. If the stylesheet
    * is one of the default stylesheets, then it is not collected.
-   * 
+   *
    * @param es  the element style sheet.
    */
   private void addCollectableStyleSheet (ElementStyleSheet es)
   {
     if (es == BandDefaultStyleSheet.getBandDefaultStyle())
-    {  
+    {
       return;
     }
     if (es == ElementDefaultStyleSheet.getDefaultStyle())

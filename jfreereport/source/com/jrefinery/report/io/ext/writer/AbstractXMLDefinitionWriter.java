@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.8 2003/02/22 18:52:27 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.9 2003/05/02 12:40:14 taqua Exp $
  *
  * Changes
  * -------
@@ -62,14 +62,14 @@ import com.jrefinery.report.io.ext.TemplatesHandler;
 
 /**
  * A base class for writer classes for the JFreeReport XML report files.
- * 
+ *
  * @author Thomas Morgner
  */
 public abstract class AbstractXMLDefinitionWriter
 {
   /** A constant for close. */
   public static final boolean CLOSE = true;
-  
+
   /** A constant for open. */
   public static final boolean OPEN = false;
 
@@ -78,13 +78,16 @@ public abstract class AbstractXMLDefinitionWriter
 
   /** The line separator. */
   private static String lineSeparator;
-  
+
   /** A list of safe tags. */
   private static SafeTagList safeTags;
 
+  /** The indent level for that writer. */
+  private int indentLevel;
+
   /**
-   * Returns the tags that can safely extend over several lines in the XML definition. 
-   * 
+   * Returns the tags that can safely extend over several lines in the XML definition.
+   *
    * @return The safe tags.
    */
   public static SafeTagList getSafeTags()
@@ -154,10 +157,10 @@ public abstract class AbstractXMLDefinitionWriter
 
   /**
    * Returns the line separator.
-   * 
+   *
    * @return The line separator.
    */
-  public static String getLineSeparator ()
+  public static String getLineSeparator()
   {
     if (lineSeparator == null)
     {
@@ -168,17 +171,18 @@ public abstract class AbstractXMLDefinitionWriter
 
   /**
    * Creates a new writer.
-   * 
+   *
    * @param reportWriter  the report writer.
    */
-  public AbstractXMLDefinitionWriter(ReportWriter reportWriter)
+  public AbstractXMLDefinitionWriter(ReportWriter reportWriter, int indentLevel)
   {
     this.reportWriter = reportWriter;
+    this.indentLevel = indentLevel;
   }
 
   /**
    * Returns the report writer.
-   * 
+   *
    * @return The report writer.
    */
   public ReportWriter getReportWriter()
@@ -188,24 +192,26 @@ public abstract class AbstractXMLDefinitionWriter
 
   /**
    * Returns the report.
-   * 
+   *
    * @return The report.
    */
-  public JFreeReport getReport ()
+  public JFreeReport getReport()
   {
     return getReportWriter().getReport();
   }
 
   /**
    * Writes an opening XML tag that has no attributes.
-   * 
+   *
    * @param w  the writer.
    * @param name  the tag name.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    */
-  public void writeTag (Writer w, String name) throws IOException
+  public void writeTag(Writer w, String name) throws IOException
   {
+    indent(w, OPEN_TAG_INCREASE);
+
     w.write("<");
     w.write(name);
     w.write(">");
@@ -217,14 +223,23 @@ public abstract class AbstractXMLDefinitionWriter
 
   /**
    * Writes a closing XML tag.
-   * 
+   *
    * @param w  the writer.
    * @param tag  the tag name.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    */
   public void writeCloseTag(Writer w, String tag) throws IOException
   {
+    // check whether the tag contains CData - we ma not indent such tags
+    if (getSafeTags().isSafeForOpen(tag))
+    {
+      indent(w, CLOSE_TAG_DECREASE);
+    }
+    else
+    {
+      decreaseIndent();
+    }
     w.write("</");
     w.write(tag);
     w.write(">");
@@ -236,17 +251,17 @@ public abstract class AbstractXMLDefinitionWriter
 
   /**
    * Writes an opening XML tag with an attribute/value pair.
-   * 
+   *
    * @param w  the writer.
    * @param name  the tag name.
    * @param attributeName  the attribute name.
    * @param attributeValue  the attribute value.
    * @param close  controls whether the tag is closed.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    */
-  public void writeTag (Writer w, String name, String attributeName, String attributeValue, 
-                        boolean close) throws IOException
+  public void writeTag(Writer w, String name, String attributeName, String attributeValue,
+                       boolean close) throws IOException
   {
     Properties attr = new Properties();
     attr.setProperty(attributeName, attributeValue);
@@ -255,17 +270,19 @@ public abstract class AbstractXMLDefinitionWriter
 
   /**
    * Writes an opening XML tag along with a list of attribute/value pairs.
-   * 
+   *
    * @param w  the writer.
    * @param name  the tag name.
    * @param attributes  the attributes.
    * @param close  controls whether the tag is closed.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    */
-  public void writeTag (Writer w, String name, Properties attributes, boolean close)
-    throws IOException
+  public void writeTag(Writer w, String name, Properties attributes, boolean close)
+      throws IOException
   {
+    indent(w, OPEN_TAG_INCREASE);
+
     w.write("<");
     w.write(name);
     Enumeration keys = attributes.keys();
@@ -273,11 +290,11 @@ public abstract class AbstractXMLDefinitionWriter
     {
       String key = (String) keys.nextElement();
       String value = attributes.getProperty(key);
-      w.write (" ");
-      w.write (key);
-      w.write ("=\"");
-      w.write (normalize(value));
-      w.write ("\"");
+      w.write(" ");
+      w.write(key);
+      w.write("=\"");
+      w.write(normalize(value));
+      w.write("\"");
     }
     if (close)
     {
@@ -286,6 +303,7 @@ public abstract class AbstractXMLDefinitionWriter
       {
         w.write(getLineSeparator());
       }
+      decreaseIndent();
     }
     else
     {
@@ -300,9 +318,9 @@ public abstract class AbstractXMLDefinitionWriter
   /**
    * Normalises a string, replacing certain characters with their escape sequences so that
    * the XML text is not corrupted.
-   * 
+   *
    * @param s  the string.
-   * 
+   *
    * @return The normalised string.
    */
   public static String normalize(String s)
@@ -367,17 +385,56 @@ public abstract class AbstractXMLDefinitionWriter
     return (str.toString());
   }
 
+  protected static final int OPEN_TAG_INCREASE = 1;
+  protected static final int CLOSE_TAG_DECREASE = 2;
+  protected static final int INDENT_ONLY = 3;
+
+  /**
+   * Indent the line. Called for proper indenting in various places
+   */
+  protected void indent(Writer writer, int increase) throws IOException
+  {
+    if (increase == CLOSE_TAG_DECREASE)
+    {
+      decreaseIndent();
+    }
+    for (int i = 0; i < indentLevel; i++)
+    {
+      writer.write("    "); // 4 spaces, we could also try tab, but I do not know whether this works with our XML edit pane
+    }
+    if (increase == OPEN_TAG_INCREASE)
+    {
+      increaseIndent();
+    }
+  }
+
+  public int getIndentLevel()
+  {
+    return indentLevel;
+  }
+
+  protected void increaseIndent()
+  {
+    indentLevel++;
+  }
+
+  protected void decreaseIndent()
+  {
+    indentLevel--;
+  }
+
+
   /**
    * Writes the report definition portion. Every DefinitionWriter handles one
    * or more elements of the JFreeReport object tree, DefinitionWriter traverse
    * the object tree and write the known objects or forward objects to other
    * definition writers.
-   *  
+   *
    * @param writer  the writer.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if the report serialisation failed.
    */
-  public abstract void write (Writer writer) throws IOException, ReportWriterException;
+  public abstract void write(Writer writer) throws IOException, ReportWriterException;
 
 }

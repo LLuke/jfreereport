@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.10 2003/05/02 12:40:15 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.11 2003/05/27 08:32:37 taqua Exp $
  *
  * Changes
  * -------
@@ -56,7 +56,7 @@ import org.jfree.xml.factory.objects.ObjectDescription;
 
 /**
  * An XML definition writer that outputs the functions.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class FunctionsWriter extends AbstractXMLDefinitionWriter
@@ -66,20 +66,20 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Creates a new writer.
-   * 
+   *
    * @param reportWriter  the report writer.
    */
-  public FunctionsWriter(ReportWriter reportWriter)
+  public FunctionsWriter(ReportWriter reportWriter, int indentLevel)
   {
-    super(reportWriter);
+    super(reportWriter, indentLevel);
     cfc = getReportWriter().getClassFactoryCollector();
   }
 
   /**
    * Writes the functions to XML.
-   * 
+   *
    * @param writer  the writer.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if the report function definition could not be written.
    */
@@ -97,10 +97,10 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Writes a collection of functions/expressions to XML.
-   * 
+   *
    * @param writer  the writer.
    * @param exp  the collection.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
     */
   public void writeExpressions (Writer writer, ExpressionCollection exp)
@@ -145,9 +145,9 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Writes the property references to XML.
-   * 
+   *
    * @param writer  the writer.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if the report definition could not be written.
    */
@@ -193,11 +193,11 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
 
   /**
    * Writes an object description to XML.
-   * 
+   *
    * @param writer  the writer.
    * @param od  the object description.
    * @param o  the object.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if the report definition could not be written.
    */
@@ -223,18 +223,18 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
     }
     else
     {
-      ObjectWriter objectWriter = new ObjectWriter(getReportWriter(), o, od);
+      ObjectWriter objectWriter = new ObjectWriter(getReportWriter(), o, od, getIndentLevel());
       objectWriter.write(writer);
     }
 
   }
 
   /**
-   * Returns <code>true</code> if the object description is for a basic object, and 
+   * Returns <code>true</code> if the object description is for a basic object, and
    * <code>false</code> otherwise.
-   * 
+   *
    * @param od  the object description.
-   * 
+   *
    * @return <code>true</code> or <code>false</code>.
    */
   private boolean isBasicObject(ObjectDescription od)
@@ -244,13 +244,13 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
     {
       return false;
     }
-    
+
     String param = (String) odNames.next();
     if (odNames.hasNext() == true)
     {
       return false;
     }
-    
+
     if (param.equals("value"))
     {
       if (od.getParameterDefinition("value").equals(String.class))

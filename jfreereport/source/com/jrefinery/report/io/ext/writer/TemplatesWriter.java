@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesWriter.java,v 1.3 2003/02/21 11:31:13 mungady Exp $
+ * $Id: TemplatesWriter.java,v 1.4 2003/05/02 12:40:18 taqua Exp $
  *
  * Changes
  * -------
@@ -54,9 +54,9 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
    * 
    * @param reportWriter  the report writer.
    */
-  public TemplatesWriter(ReportWriter reportWriter)
+  public TemplatesWriter(ReportWriter reportWriter, int indentLevel)
   {
-    super(reportWriter);
+    super(reportWriter, indentLevel);
   }
 
   /**
@@ -69,8 +69,10 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
    */
   public void write(Writer writer) throws IOException, ReportWriterException
   {
-    writer.write("<!-- templates are not supported by the writer. -->\n");
+    indent(writer, INDENT_ONLY);
+    writer.write("<!-- templates are not yet supported by the writer. -->\n");
     writeTag(writer, ExtReportHandler.TEMPLATES_TAG);
     writeCloseTag(writer, ExtReportHandler.TEMPLATES_TAG);
   }
 }
+;

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.27 2003/04/05 18:57:09 taqua Exp $
+ * $Id: Element.java,v 1.28 2003/05/02 12:39:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -329,13 +329,21 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   /**
    * Sets the paint for this element. The paint can be null, in this case the
    * default paint of the band used to draw this element is used.
+   * <p>
+   * The paint object must be an instance of color. Generic paints are not permitted.
    *
    * @param p  the paint for this element (null permitted).
    * 
-   * @deprecated use a stylesheet to define the paint.
+   * @deprecated use a stylesheet to define the paint. The paint object must be an
+   * instance of color.
    */
   public void setPaint(Paint p)
   {
+    if (p == null)
+    {
+      getStyle().setStyleProperty(ElementStyleSheet.PAINT, null);
+    }
+    else
     if (p instanceof Color)
     {
       getStyle().setStyleProperty(ElementStyleSheet.PAINT, p);

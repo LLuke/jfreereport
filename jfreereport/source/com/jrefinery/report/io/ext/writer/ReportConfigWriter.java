@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigWriter.java,v 1.6 2003/02/22 18:52:27 taqua Exp $
+ * $Id: ReportConfigWriter.java,v 1.7 2003/05/02 12:40:15 taqua Exp $
  *
  * Changes
  * -------
@@ -64,9 +64,9 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
    * 
    * @param reportWriter  the report writer.
    */
-  public ReportConfigWriter(ReportWriter reportWriter)
+  public ReportConfigWriter(ReportWriter reportWriter, int indentLevel)
   {
-    super(reportWriter);
+    super(reportWriter, indentLevel);
   }
 
   /**
@@ -79,7 +79,7 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
   public void write(Writer writer) throws IOException
   {
     writeTag(writer, ExtReportHandler.REPORT_CONFIG_TAG);
-    writeTag(writer, ReportConfigHandler.DEFAULT_PAGEFORMAT_TAG, 
+    writeTag(writer, ReportConfigHandler.DEFAULT_PAGEFORMAT_TAG,
              buildPageFormatProperties(), CLOSE);
     writeTag(writer, ReportConfigHandler.CONFIGURATION_TAG);
     ReportConfiguration config = getReport().getReportConfiguration();

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.38 2003/05/16 17:26:46 taqua Exp $
+ * $Id: ReportState.java,v 1.39 2003/05/26 13:30:59 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -160,12 +160,11 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
     // we have no clone-ancestor, so forget everyting
     setAncestorHashcode(this.hashCode());
-
     resetState();
   }
 
   /**
-   * Resets the state.
+   * Resets the state, so that the datarow points to the first row.
    */
   protected void resetState ()
   {
@@ -176,25 +175,46 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   }
 
   /**
+   * Constructs a ReportState from an existing ReportState and optionally resets
+   * the state.
+   *
+   * @param clone the base report state from which to initialize.
+   * @param reset true, if the state should be reseted, false otherwise.
+   */
+  protected ReportState (ReportState clone, boolean reset)
+  {
+    setReport (clone.getReport ());
+    reportProperties = clone.reportProperties;
+    numberOfRows = clone.getNumberOfRows();
+
+    setFunctions (clone.getFunctions ());
+    setDataRowConnector (clone.getDataRowConnector ());
+
+    setDataRowBackend (clone.getDataRowBackend ());
+
+    if (reset)
+    {
+      resetState();
+    }
+    else
+    {
+      setCurrentItem (clone.getCurrentDataItem ());
+      setCurrentPage (clone.getCurrentPage ());
+      setCurrentGroupIndex (clone.getCurrentGroupIndex ());
+      getDataRowBackend ().setCurrentRow (getCurrentDisplayItem ());
+    }
+    // we have no clone-ancestor, so forget everything
+    setAncestorHashcode(this.hashCode());
+  }
+
+  /**
    * Constructs a ReportState from an existing ReportState.
    *
    * @param clone  the existing state.
    */
   protected ReportState (ReportState clone)
   {
-    setReport (clone.getReport ());
-    reportProperties = clone.reportProperties;
-    numberOfRows = clone.getNumberOfRows();
-    setCurrentItem (clone.getCurrentDataItem ());
-    setCurrentPage (clone.getCurrentPage ());
-    setCurrentGroupIndex (clone.getCurrentGroupIndex ());
-    setFunctions (clone.getFunctions ());
-    setDataRowConnector (clone.getDataRowConnector ());
-
-    setDataRowBackend (clone.getDataRowBackend ());
-    getDataRowBackend ().setCurrentRow (getCurrentDisplayItem ());
-    // we have no clone-ancestor, so forget everything
-    setAncestorHashcode(this.hashCode());
+    this(clone, false);
   }
 
   /**

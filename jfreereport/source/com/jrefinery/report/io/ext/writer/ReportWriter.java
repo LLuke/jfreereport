@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.10 2003/05/02 12:40:17 taqua Exp $
+ * $Id: ReportWriter.java,v 1.11 2003/05/02 17:16:00 taqua Exp $
  *
  * Changes
  * -------
@@ -242,7 +242,7 @@ public class ReportWriter
   public void write (Writer w) throws IOException, ReportWriterException
   {
     ReportDefinitionWriter writer = new ReportDefinitionWriter(this);
-    writer.write(w);
+    writer.write(w); // we start with indentation level 0
   }
 
 }

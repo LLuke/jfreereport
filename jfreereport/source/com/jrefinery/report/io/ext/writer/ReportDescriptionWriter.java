@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionWriter.java,v 1.8 2003/05/02 12:40:17 taqua Exp $
+ * $Id: ReportDescriptionWriter.java,v 1.9 2003/05/27 08:32:37 taqua Exp $
  *
  * Changes
  * -------
@@ -75,9 +75,9 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
    * 
    * @param reportWriter  the report writer.
    */
-  public ReportDescriptionWriter(ReportWriter reportWriter)
+  public ReportDescriptionWriter(ReportWriter reportWriter, int indent)
   {
-    super(reportWriter);
+    super(reportWriter, indent);
   }
 
   /**
@@ -125,13 +125,14 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
       parentSheet = parent.getBandDefaults();
     }
 
-    StyleWriter styleWriter = new StyleWriter(getReportWriter(), band.getStyle(), parentSheet);
+    StyleWriter styleWriter =
+        new StyleWriter(getReportWriter(), band.getStyle(), parentSheet, getIndentLevel());
     styleWriter.write(writer);
     writeCloseTag(writer, ElementHandler.STYLE_TAG);
 
     writeTag(writer, BandHandler.DEFAULT_STYLE_TAG);
-    StyleWriter defaultStyleWriter = new StyleWriter(getReportWriter(), band.getBandDefaults(), 
-                                                     null);
+    StyleWriter defaultStyleWriter =
+        new StyleWriter(getReportWriter(), band.getBandDefaults(), null, getIndentLevel());
     defaultStyleWriter.write(writer);
     writeCloseTag(writer, BandHandler.DEFAULT_STYLE_TAG);
 
@@ -188,8 +189,9 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 
     writeTag(writer, ElementHandler.STYLE_TAG);
 
-    StyleWriter styleWriter = new StyleWriter(getReportWriter(), element.getStyle(), 
-                                              parent.getBandDefaults());
+    StyleWriter styleWriter =
+        new StyleWriter(getReportWriter(), element.getStyle(),
+            parent.getBandDefaults(), getIndentLevel());
     styleWriter.write(writer);
     writeCloseTag(writer, ElementHandler.STYLE_TAG);
 
@@ -235,7 +237,8 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 
     writeTag(writer, ElementHandler.TEMPLATE_TAG, p, OPEN);
 
-    ObjectWriter objectWriter = new ObjectWriter(getReportWriter(), template, td.getInstance());
+    ObjectWriter objectWriter =
+        new ObjectWriter(getReportWriter(), template, td.getInstance(), getIndentLevel());
     objectWriter.write(writer);
 
     writeCloseTag(writer, ElementHandler.TEMPLATE_TAG);
@@ -264,7 +267,8 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     {
       throw new ReportWriterException("Unable to resolve DataSource: " + datasource.getClass());
     }
-    DataSourceWriter dsWriter = new DataSourceWriter(getReportWriter(), datasource, od);
+    DataSourceWriter dsWriter =
+        new DataSourceWriter(getReportWriter(), datasource, od, getIndentLevel());
 
     DataSourceCollector dataSourceCollector = getReportWriter().getDataSourceCollector();
     String dsname = dataSourceCollector.getDataSourceName(od);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectWriter.java,v 1.10 2003/05/02 12:40:15 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.11 2003/05/27 08:32:37 taqua Exp $
  *
  * Changes
  * -------
@@ -75,9 +75,9 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
    * @param objectDescription  the object description (<code>null</code> not permitted).
    */
   public ObjectWriter(ReportWriter reportWriter, Object baseObject, 
-                      ObjectDescription objectDescription)
+                      ObjectDescription objectDescription, int indentLevel)
   {
-    super(reportWriter);
+    super(reportWriter, indentLevel);
     if (baseObject == null)
     {
       throw new NullPointerException("BaseObject is null");
@@ -244,7 +244,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
       writeTag(writer, CompoundObjectHandler.COMPOUND_OBJECT_TAG, p, OPEN);
 
       ObjectWriter objWriter = new ObjectWriter(getReportWriter(), parameterValue, 
-                                                parameterDescription);
+                                                parameterDescription, getIndentLevel());
       objWriter.write(writer);
 
       writeCloseTag(writer, CompoundObjectHandler.COMPOUND_OBJECT_TAG);

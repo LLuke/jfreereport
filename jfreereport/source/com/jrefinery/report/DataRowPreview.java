@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowPreview.java,v 1.2 2003/04/09 15:45:46 mungady Exp $
+ * $Id: DataRowPreview.java,v 1.3 2003/05/14 22:26:25 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package com.jrefinery.report;
 import javax.swing.table.TableModel;
 
 import com.jrefinery.report.function.LevelledExpressionList;
+import com.jrefinery.report.util.ReportPropertiesList;
 
 /**
  * A 'preview' data row backend. Shows how the next row would look like if there
@@ -63,12 +64,12 @@ public class DataRowPreview extends DataRowBackend
   }
 
   /**
-   * Defines the next row that should be previewed.
-   * @param row the row.
+   * Updates this instance to be a preview of the given backend.
+   * @param db the row.
    */
-  public void setPreviewRow (int row)
+  public void update (DataRowBackend db)
   {
-    super.setCurrentRow(row);
+    super.setCurrentRow(db.getCurrentRow() + 1);
   }
 
   /**
@@ -118,6 +119,16 @@ public class DataRowPreview extends DataRowBackend
    * @throws IllegalStateException as this is a readonly implementation
    */
   public void setTablemodel(TableModel tablemodel)
+  {
+    throw new IllegalStateException("This is a preview, not changable");
+  }
+
+  /**
+   * Sets the report properties.
+   *
+   * @param properties  the report properties.
+   */
+  public void setReportProperties(ReportPropertiesList properties)
   {
     throw new IllegalStateException("This is a preview, not changable");
   }

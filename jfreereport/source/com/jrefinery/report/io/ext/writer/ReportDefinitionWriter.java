@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionWriter.java,v 1.8 2003/03/19 22:12:59 taqua Exp $
+ * $Id: ReportDefinitionWriter.java,v 1.9 2003/05/02 12:40:17 taqua Exp $
  *
  * Changes
  * -------
@@ -44,25 +44,25 @@ import com.jrefinery.report.io.ParserEntityResolver;
 
 /**
  * A report definition writer.
- * 
+ *
  * @author Thomas Morgner.
  */
 public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
 {
   /**
    * Creates a new writer.
-   * 
+   *
    * @param writer  the report writer.
    */
   public ReportDefinitionWriter(ReportWriter writer)
   {
-    super(writer);
+    super(writer, 0);
   }
 
   /**
    * Writes a report definition to a character stream writer.  After the standard XML
    * header and the opening tag is written, this class delegates work to:
-   * 
+   *
    * <ul>
    * <li>{@link ParserConfigWriter} to write the parser configuration;</li>
    * <li>{@link ReportConfigWriter} to write the report configuration;</li>
@@ -71,9 +71,9 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
    * <li>{@link ReportDescriptionWriter} to write the report description;</li>
    * <li>{@link FunctionsWriter} to write the function definitions;</li>
    * </ul>
-   * 
+   *
    * @param w  the character stream writer.
-   * 
+   *
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
@@ -90,23 +90,27 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
     w.write ("-->\n");
     writeTag(w, "report-definition", "name", reportName, OPEN);
 
-    ParserConfigWriter parserConfigWriter = new ParserConfigWriter(getReportWriter());
+    ParserConfigWriter parserConfigWriter =
+        new ParserConfigWriter(getReportWriter(),getIndentLevel());
     parserConfigWriter.write(w);
 
-    ReportConfigWriter reportConfigWriter = new ReportConfigWriter(getReportWriter());
+    ReportConfigWriter reportConfigWriter =
+        new ReportConfigWriter(getReportWriter(),getIndentLevel());
     reportConfigWriter.write(w);
 
-    StylesWriter stylesWriter = new StylesWriter(getReportWriter());
+    StylesWriter stylesWriter =
+        new StylesWriter(getReportWriter(), getIndentLevel());
     stylesWriter.write(w);
 
-    TemplatesWriter templatesWriter = new TemplatesWriter(getReportWriter());
+    TemplatesWriter templatesWriter =
+        new TemplatesWriter(getReportWriter(), getIndentLevel());
     templatesWriter.write(w);
 
-    ReportDescriptionWriter reportDescriptionWriter 
-        = new ReportDescriptionWriter(getReportWriter());
+    ReportDescriptionWriter reportDescriptionWriter
+        = new ReportDescriptionWriter(getReportWriter(), getIndentLevel());
     reportDescriptionWriter.write(w);
 
-    FunctionsWriter functionsWriter = new FunctionsWriter(getReportWriter());
+    FunctionsWriter functionsWriter = new FunctionsWriter(getReportWriter(), getIndentLevel());
     functionsWriter.write(w);
 
     w.write ("</report-definition>");

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceWriter.java,v 1.7 2003/04/24 18:08:53 taqua Exp $
+ * $Id: DataSourceWriter.java,v 1.8 2003/05/02 12:40:14 taqua Exp $
  *
  * Changes
  * -------
@@ -64,9 +64,9 @@ public class DataSourceWriter extends ObjectWriter
    * @param objectDescription the object description.
    */
   public DataSourceWriter(ReportWriter reportWriter, Object baseObject, 
-                          ObjectDescription objectDescription)
+                          ObjectDescription objectDescription, int indent)
   {
-    super(reportWriter, baseObject, objectDescription);
+    super(reportWriter, baseObject, objectDescription, indent);
     dataSourceCollector = getReportWriter().getDataSourceCollector();
   }
 
@@ -97,7 +97,7 @@ public class DataSourceWriter extends ObjectWriter
       writeTag(writer, DataSourceHandler.DATASOURCE_TAG, "type", dsname, OPEN);
 
       DataSourceWriter dsWriter =
-          new DataSourceWriter(getReportWriter(), ds, dsDesc);
+          new DataSourceWriter(getReportWriter(), ds, dsDesc, getIndentLevel());
       dsWriter.write(writer);
 
       writeCloseTag(writer, DataSourceHandler.DATASOURCE_TAG);

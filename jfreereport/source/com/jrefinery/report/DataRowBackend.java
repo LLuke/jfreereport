@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackend.java,v 1.38 2003/05/02 12:39:01 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.39 2003/05/14 22:26:25 taqua Exp $
  *
  * Changes
  * -------
@@ -114,10 +114,8 @@ public class DataRowBackend implements Cloneable
     columnlocks = EMPTY_BOOLS;
     colcache = new HashMap();
     warnInvalidColumns = ReportConfiguration.getGlobalConfig().isWarnInvalidColumns();
-    tableEndIndex = -1;
-    propertiesEndIndex = -1;
-    functionsEndIndex = -1;
     lastRow = -1;
+    revalidateColumnLock();
   }
 
   /**
@@ -180,6 +178,37 @@ public class DataRowBackend implements Cloneable
    */
   public void setCurrentRow(int currentRow)
   {
+    if (currentRow < -1)
+    {
+      throw new IllegalArgumentException("CurrentRow must not be < -1");
+    }
+    if (getTablemodel() != null)
+    {
+      if (isPreviewMode())
+      {
+        if (currentRow > getTablemodel().getRowCount())
+        {
+          throw new IllegalArgumentException
+              ("CurrentRow cannot be greater than the tablemodel's rowcount");
+        }
+      }
+      else
+      {
+        if (currentRow >= getTablemodel().getRowCount())
+        {
+          throw new IllegalArgumentException
+              ("CurrentRow cannot be greater than or equal to the tablemodel's rowcount");
+        }
+      }
+    }
+    else
+    {
+      if (currentRow != -1)
+      {
+        throw new IllegalArgumentException
+            ("Without an TableModel, the currentRow must always be -1");
+      }
+    }
     this.currentRow = currentRow;
   }
 
@@ -463,7 +492,7 @@ public class DataRowBackend implements Cloneable
     {
       preview = new DataRowPreview(this);
     }
-    preview.setPreviewRow(getCurrentRow() + 1);
+    preview.update(this);
     return preview;
   }
 
@@ -474,17 +503,6 @@ public class DataRowBackend implements Cloneable
    */
   private int getTableEndIndex()
   {
-    if (tableEndIndex == -1)
-    {
-      if (getTablemodel() == null)
-      {
-        tableEndIndex = 0;
-      }
-      else
-      {
-        tableEndIndex = getTablemodel().getColumnCount();
-      }
-    }
     return tableEndIndex;
   }
 
@@ -496,17 +514,6 @@ public class DataRowBackend implements Cloneable
    */
   private int getFunctionEndIndex()
   {
-    if (functionsEndIndex == -1)
-    {
-      if (getFunctions() == null)
-      {
-        functionsEndIndex = getTableEndIndex();
-      }
-      else
-      {
-        functionsEndIndex = getTableEndIndex() + getFunctions().size();
-      }
-    }
     return functionsEndIndex;
   }
 
@@ -517,17 +524,6 @@ public class DataRowBackend implements Cloneable
    */
   private int getPropertiesEndIndex()
   {
-    if (propertiesEndIndex == -1)
-    {
-      if (getReportProperties() == null)
-      {
-        propertiesEndIndex = getFunctionEndIndex();
-      }
-      else
-      {
-        propertiesEndIndex = getFunctionEndIndex() + getReportProperties().getColumnCount();
-      }
-    }
     return propertiesEndIndex;
   }
 
@@ -536,14 +532,37 @@ public class DataRowBackend implements Cloneable
    */
   private void revalidateColumnLock()
   {
+    if (getTablemodel() == null)
+    {
+      tableEndIndex = 0;
+    }
+    else
+    {
+      tableEndIndex = getTablemodel().getColumnCount();
+    }
+
+    if (getFunctions() == null)
+    {
+      functionsEndIndex = tableEndIndex;
+    }
+    else
+    {
+      functionsEndIndex = tableEndIndex + getFunctions().size();
+    }
+
+    if (getReportProperties() == null)
+    {
+      propertiesEndIndex = functionsEndIndex;
+    }
+    else
+    {
+      propertiesEndIndex = functionsEndIndex + getReportProperties().getColumnCount();
+    }
+
     if (getColumnCount() != columnlocks.length)
     {
       columnlocks = new boolean[getColumnCount()];
     }
-
-    tableEndIndex = -1;
-    functionsEndIndex = -1;
-    propertiesEndIndex = -1;
   }
 
   /**
@@ -563,10 +582,6 @@ public class DataRowBackend implements Cloneable
    */
   public void setReportProperties(ReportPropertiesList properties)
   {
-    if (properties == null)
-    {
-      throw new NullPointerException();
-    }
     this.reportProperties = properties;
     revalidateColumnLock();
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigWriter.java,v 1.5 2003/02/22 18:52:27 taqua Exp $
+ * $Id: ParserConfigWriter.java,v 1.6 2003/05/02 12:40:15 taqua Exp $
  *
  * Changes
  * -------
@@ -58,9 +58,9 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
    * 
    * @param reportWriter  the report writer.
    */
-  public ParserConfigWriter(ReportWriter reportWriter)
+  public ParserConfigWriter(ReportWriter reportWriter, int indentLevel)
   {
-    super(reportWriter);
+    super(reportWriter, indentLevel);
   }
 
   /**
