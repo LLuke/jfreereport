@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: Spool.java,v 1.2 2002/12/03 16:31:02 mungady Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,8 @@ import com.jrefinery.report.targets.pageable.operations.PhysicalOperation;
 import java.util.ArrayList;
 
 /** 
- * ??
+ * A spool is a sequence of operations (instances of PhysicalOperation) that can be
+ * applied to an OutputTarget.
  *
  * @author Thomas Morgner.
  */
@@ -83,9 +84,9 @@ public class Spool implements Cloneable
   }
 
   /**
-   * Merges a spool with this spool.
+   * Appends the operations stored in a spool to the end of this spool's list.
    *
-   * @param spool  the spool to merge.
+   * @param spool  the spool.
    */
   public void merge(Spool spool)
   {
@@ -105,5 +106,4 @@ public class Spool implements Cloneable
     s.operations = (ArrayList) operations.clone();
     return s;
   }
-  
 }

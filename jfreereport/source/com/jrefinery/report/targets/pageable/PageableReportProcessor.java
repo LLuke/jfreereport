@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.3 2002/12/02 18:55:33 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.4 2002/12/03 16:30:56 mungady Exp $
  *
  * Changes
  * -------
@@ -154,13 +154,20 @@ public class PageableReportProcessor
   }
 
   /**
-   * Processes the report.
+   * Processes the report in two passes, the first pass calculates page boundaries and function 
+   * values, the second pass sends each page to the output target.
+   * <p>
+   * It is possible for the report processing to fail.  A common cause is that the report is
+   * designed for a certain page size, but ends up being sent to an output target with a much 
+   * smaller page size.  If the headers and footers don't leave enough room on the page for at 
+   * least one row of data to be printed, then no progress is made.  An exception will be thrown
+   * if this happens.
    *
    * @throws ReportProcessingException if the report did not proceed and got stuck.
    */
   public void processReport() throws ReportProcessingException
   {
-    // To a repagination
+    // do a repagination
     ReportStateList list = repaginate();
     if (list.size() == 0)
     {
@@ -193,7 +200,7 @@ public class PageableReportProcessor
       StartState startState = new StartState(getReport());
       ReportState state = startState;
 
-      // PrepareRuns, part 1: resolve the function depencies by running the report
+      // PrepareRuns, part 1: resolve the function dependencies by running the report
       // until all function levels are completed.
       JFreeReport report = state.getReport();
 
@@ -203,8 +210,7 @@ public class PageableReportProcessor
       state.setProperty(JFreeReportConstants.REPORT_PAGEFORMAT_PROPERTY, p);
 
       // the levels are defined from +inf to 0
-      // we dont draw and we do not collect states in a StateList yet
-
+      // we don't draw and we do not collect states in a StateList yet
       ReportStateList pageStates = null;
       OutputTarget dummyOutput = outputTarget.createDummyWriter();
       dummyOutput.configure(report.getReportConfiguration());
