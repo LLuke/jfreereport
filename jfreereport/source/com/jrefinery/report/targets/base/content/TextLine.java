@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextLine.java,v 1.8 2003/04/05 18:57:15 taqua Exp $
+ * $Id: TextLine.java,v 1.9 2003/04/06 18:11:30 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,9 @@
 
 package com.jrefinery.report.targets.base.content;
 
-import com.jrefinery.report.targets.base.layout.SizeCalculator;
-
 import java.awt.geom.Rectangle2D;
+
+import com.jrefinery.report.targets.base.layout.SizeCalculator;
 
 /**
  * Represents a line of text.
@@ -232,6 +232,10 @@ public class TextLine implements Content
    */
   private int calcStringLength (int startPos, float maxWidth)
   {
+    if (maxWidth == 0.0)
+    {
+      return 0;
+    }
     if (content.length() == 0)
     {
       return 0;
@@ -270,7 +274,7 @@ public class TextLine implements Content
    *
    * @return the position, where the string width is nearest or equal to maxWidth..
    */
-  private int calculateWidthPos (final int lineStart, int startPos, int endPos, float maxWidth)
+  private int calculateWidthPos (final int lineStart, int startPos, int endPos, final float maxWidth)
   {
     if (startPos == endPos)
     {

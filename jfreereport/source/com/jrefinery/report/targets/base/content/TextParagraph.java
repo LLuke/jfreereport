@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.14 2003/04/09 15:50:27 mungady Exp $
+ * $Id: TextParagraph.java,v 1.15 2003/04/11 14:11:47 taqua Exp $
  *
  * Changes
  * -------
@@ -100,7 +100,7 @@ public class TextParagraph extends ContentContainer
    * @param width the width of the bounds.
    * @param height the height of the bounds.
    */
-  public void setContent (String content, float x, float y, float width, float height)
+  public void setContent (String content, final float x, final float y, final float width, final float height)
   {
     if (content == null) 
     {
@@ -135,6 +135,16 @@ public class TextParagraph extends ContentContainer
         // create Lines
         String lineText = (String) l.get(i);
         TextLine line = new TextLine(getSizeCalculator(), lineHeight);
+
+        /*
+        // strict assertation ... is expensive and not enabled by default ...
+        float tt = getSizeCalculator().getStringWidth(lineText, 0, lineText.length());
+        if (tt >= width)
+        {
+          throw new IllegalStateException("LineBreak failed!:" + width + " -> " + tt);
+        }
+        */
+
         line.setContent(lineText, x, y + usedHeight, width, height - usedHeight);
 
         usedHeight += line.getHeight();
@@ -169,7 +179,7 @@ public class TextParagraph extends ContentContainer
   {
     if (width <= 0)
     {
-      throw new IllegalArgumentException("Width must not be less or equal 0, was " + width);
+      throw new IllegalArgumentException("Width must greater than 0, was " + width);
     }
 
     // a 0 maxLines is no longer allowed - to test the max size, ask the layoutmanager to
@@ -192,8 +202,18 @@ public class TextParagraph extends ContentContainer
       return returnLines;
     }
 
+
     while (lineStartPos < lineLength)
     {
+      // the whole text section contains white spaces ... must be skipped ..
+      // we can assume, that if the first character is a white space, then all
+      // characters are whitespaces, as the word break iterator searches for
+      // whitespace boundries ...
+      while ((lineStartPos < lineLength) && (Character.isWhitespace(mytext.charAt(lineStartPos))))
+      {
+        lineStartPos++;
+      }
+
       int startPos = lineStartPos;
 
       int endPos;
@@ -208,16 +228,6 @@ public class TextParagraph extends ContentContainer
       while (((endPos = breakit.next()) != BreakIterator.DONE))
       {
 
-        // the whole text section contains white spaces ... must be skipped ..
-        // we can assume, that if the first character is a white space, then all
-        // characters are whitespaces, as the word break iterator searches for
-        // whitespace boundries ...
-        if (Character.isWhitespace(mytext.charAt(startPos)))
-        {
-          startPos = endPos;
-          continue;
-        }
-
         // add by leonlyong
         wordCnt++;
 
@@ -227,6 +237,7 @@ public class TextParagraph extends ContentContainer
           // here is the last line, check whether the reserved literal will fit in here.
           if (x >= (w - reservedSize))
           {
+            // it won't fit in, so break ...
             break;
           }
         }
@@ -249,6 +260,7 @@ public class TextParagraph extends ContentContainer
             break;
           }
         }
+        // the word is complete ... check whether the next word will fit on the line.
         startPos = endPos;
       }
 
@@ -319,13 +331,13 @@ public class TextParagraph extends ContentContainer
                          - reservedSize;
 
     int maxFillerLength = base.length() - lastCheckedChar;
-    for (int i = 0; i < maxFillerLength; i++)
+    for (int i = 1; i < maxFillerLength; i++)
     {
       float fillerWidth = getSizeCalculator().getStringWidth(base, lastCheckedChar, 
                                                              lastCheckedChar + i);
       if (filler < fillerWidth)
       {
-        return base.substring(lineStart, lastCheckedChar + i) + RESERVED_LITERAL;
+        return base.substring(lineStart, lastCheckedChar + i - 1) + RESERVED_LITERAL;
       }
     }
     return baseLine + RESERVED_LITERAL;

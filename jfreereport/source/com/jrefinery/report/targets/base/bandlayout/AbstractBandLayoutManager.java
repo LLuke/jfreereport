@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.6 2003/04/11 14:11:46 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.7 2003/04/11 17:32:03 taqua Exp $
  *
  * Changes
  * -------
@@ -227,7 +227,7 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     }
     catch (Exception ex)
     {
-      Log.debug ("Exception: " + ex);
+      Log.debug ("Exception: ", ex);
       return new FloatDimension((float) Math.max (minSize.getWidth(), bounds.getWidth()),
                                 (float) Math.max (minSize.getHeight(), bounds.getHeight()));
     }
