@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemFactory.java,v 1.30 2003/02/03 18:52:16 taqua Exp $
+ * $Id: ItemFactory.java,v 1.31 2003/02/04 17:56:06 taqua Exp $
  *
  * Changes
  * -------
@@ -40,7 +40,9 @@
  * 31-Aug-2002 : Replaced ReportDataSource and FunctionDataSource with DataRowDataSource
  *               Deprecated create*Function and create*Field methods.
  * 06-Dec-2002 : Fixed issues reported by Checkstyle (DG);
- *
+ * 15-Jan-2003 : Use templates for all element datasources.
+ * 25-Jan-2003 : Added ResourceBundleElement and -Field
+ * 04-Feb-2003 : Added javaDoc for ResourceBundleElement and -Field
  */
 
 package com.jrefinery.report;
@@ -1690,17 +1692,19 @@ public class ItemFactory
   }
 
   /**
-   * todo
-   * @param name
-   * @param bounds
-   * @param color
-   * @param alignment
-   * @param valignment
-   * @param font
-   * @param nullValue
-   * @param resourceBase
-   * @param field
-   * @return
+   * creates a ResourceElement. ResourceElements resolve their value using a
+   * <code>java.util.ResourceBundle</code>.
+   *
+   * @param name the name of the element (null allowed)
+   * @param bounds the element's bounds
+   * @param color the text color of the element
+   * @param alignment the element's horizontal text alignment
+   * @param valignment the element's vertical text alignment
+   * @param font the elements font
+   * @param nullValue the text used when the value of this element is null
+   * @param field the field in the datamodel to retrieve values from
+   * @param resourceBase the classname/basename of the assigned resource bundle
+   * @return the created ResourceElement
    */
   public static TextElement createResourceElement(String name,
                                                   Rectangle2D bounds,
@@ -1739,17 +1743,19 @@ public class ItemFactory
   }
 
   /**
-   * todo 
-   * @param name
-   * @param bounds
-   * @param paint
-   * @param alignment
-   * @param valign
-   * @param font
-   * @param nullValue
-   * @param resourceBase
-   * @param resourceKey
-   * @return
+   * creates a ResourceElement. ResourceElements resolve their value using a
+   * <code>java.util.ResourceBundle</code>.
+   *
+   * @param name the name of the element (null allowed)
+   * @param bounds the element's bounds
+   * @param paint the text color of the element
+   * @param alignment the element's horizontal text alignment
+   * @param valign the element's vertical text alignment
+   * @param font the elements font
+   * @param nullValue the text used when the value of this element is null
+   * @param resourceKey the key which is used to query the resource bundle
+   * @param resourceBase the classname/basename of the assigned resource bundle
+   * @return the created ResourceElement
    */
   public static TextElement createResourceLabel(String name,
                                                 Rectangle2D bounds,

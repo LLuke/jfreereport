@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.22 2002/12/07 14:58:25 taqua Exp $
+ * $Id: ImageReference.java,v 1.23 2003/02/04 17:56:06 taqua Exp $
  *
  * Changes:
  * --------
@@ -38,7 +38,7 @@
  * 14-Jul-2002 : BugFixed: WaitingImageObserver dead-locked (bugfix by Stefan Prange)
  * 15-Jul-2002 : Fixed a bug in the constructor (DG);
  * 06-Dec-2002 : Updated Javadocs (DG);
- *
+ * 04-Feb-2002 : Implemented hashcode method.
  */
 
 package com.jrefinery.report;
@@ -362,8 +362,8 @@ public class ImageReference implements Serializable, Cloneable
   }
 
   /**
-   * todo
-   * @return
+   * compute a hashcode for this imageReference
+   * @return the hashcode
    */
   public int hashCode()
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackend.java,v 1.28 2003/02/02 23:43:35 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.29 2003/02/04 17:56:06 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
  * 15-Oct-2002 : Functions and Expressions are now contained in an LevelledExpressionList
  * 23-Oct-2002 : Added support for ReportProperty-Queries to the datarow.
  * 06-Dec-2002 : Added configurable Invalid-Column-Warning
+ * 05-Feb-2002 : Removed/Changed log statements
  */
 
 package com.jrefinery.report;
@@ -392,7 +393,7 @@ public class DataRowBackend implements Cloneable
     }
     catch (Exception e)
     {
-      Log.error("Column " + column + " caused an error on get()", e);
+      Log.error(new Log.SimpleMessage("Column " , new Integer(column), " caused an error on get()", e));
     }
     finally
     {
@@ -474,7 +475,7 @@ public class DataRowBackend implements Cloneable
     if (warnInvalidColumns)
     {
       // print an warning for the logs.
-      Log.warn("Invalid column name specified on query: " + name);
+      Log.warn(new Log.SimpleMessage("Invalid column name specified on query: ", name));
     }
     return -1;
   }
@@ -643,7 +644,6 @@ public class DataRowBackend implements Cloneable
       throw new NullPointerException();
     }
     this.reportProperties = properties;
-    Log.debug ("ReportProperties: " + properties);
     revalidateColumnLock();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowConnector.java,v 1.11 2002/12/11 01:00:04 mungady Exp $
+ * $Id: DataRowConnector.java,v 1.12 2002/12/18 20:31:38 taqua Exp $
  *
  * Changes
  * -------
@@ -36,6 +36,7 @@
  * 02-Dec-2002 : Updated connection/disconnection to support band composites.
  * 05-Dec-2002 : Updated Javadocs (DG);
  * 06-Dec-2002 : Added more exceptions when there is no backend connected.
+ * 18-Dec-2003 : Added toString() method
  */
 
 package com.jrefinery.report;

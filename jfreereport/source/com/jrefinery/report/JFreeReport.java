@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.45 2003/01/03 16:19:52 mungady Exp $
+ * $Id: JFreeReport.java,v 1.46 2003/01/14 21:02:45 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -56,8 +56,8 @@
  * 26-Jul-2002 : Removed method "isLastItemInHigherGroups()". The same functionality is implemented
  *               in Group.isLastItemInGroup()
  * 05-Dec-2002 : Updated Javadocs (DG);
- * 03-Jan-2002 : More Javadocs (DG);
- *
+ * 03-Jan-2003 : More Javadocs (DG);
+ * 05-Feb-2003 : Fixed serialisation problem 
  */
 
 package com.jrefinery.report;
@@ -68,6 +68,7 @@ import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.util.ReportConfiguration;
 import com.jrefinery.report.util.ReportProperties;
+import com.jrefinery.report.util.PageFormatFactory;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -75,6 +76,8 @@ import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -115,7 +118,8 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   private TableModel data;
 
   /** The page format for the report (determines the page size, and therefore the report width). */
-  private PageFormat defaultPageFormat;
+  private transient PageFormat defaultPageFormat;
+  private Object[] pageFormatResolve;
 
   /** Storage for arbitrary properties that a user can assign to the report. */
   private ReportProperties properties;
@@ -690,20 +694,6 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   }
 
   /**
-   * Reads an object.
-   *
-   * @param in  the input stream.
-   *
-   * @throws IOException if there is an IO problem.
-   * @throws ClassNotFoundException if there is a class problem.
-   */
-  private void readObject (java.io.ObjectInputStream in)
-          throws IOException, ClassNotFoundException
-  {
-    in.defaultReadObject ();
-  }
-
-  /**
    * Returns information about the JFreeReport class library.
    *
    * @return the information.
@@ -753,4 +743,40 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   {
     return reportConfiguration;
   }
+
+  /**
+   * deserizalize the report and restore the pageformat.
+   *
+   * @param out the objectoutput stream
+   * @throws IOException if errors occur
+   */
+  private void writeObject(ObjectOutputStream out)
+      throws IOException
+  {
+    if (defaultPageFormat != null)
+    {
+      pageFormatResolve = PageFormatFactory.getInstance().resolvePageFormat(defaultPageFormat);
+    }
+    out.defaultWriteObject();
+  }
+
+  /**
+   * resolve the pageformat, as PageFormat is not serializable.
+   *
+   * @param in  the input stream.
+   *
+   * @throws IOException if there is an IO problem.
+   * @throws ClassNotFoundException if there is a class problem.
+   */
+  private void readObject (ObjectInputStream in)
+          throws IOException, ClassNotFoundException
+  {
+    in.defaultReadObject ();
+    if (pageFormatResolve != null)
+    {
+      defaultPageFormat = PageFormatFactory.getInstance().createPageFormat(pageFormatResolve);
+    }
+  }
+
+
 }

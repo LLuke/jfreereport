@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKey.java,v 1.2 2002/12/05 12:18:05 mungady Exp $
+ * $Id: StyleKey.java,v 1.3 2002/12/06 17:37:37 mungady Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,7 @@
 
 package com.jrefinery.report.targets.style;
 
+import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.Hashtable;
 
@@ -165,5 +166,54 @@ public class StyleKey implements Serializable, Cloneable
       return (StyleKey) definedKeys.get (name);
     }
   }
-  
+
+  /**
+   * Indicates whether some other object is "equal to" this one.
+   *
+   * @param   o  the reference object with which to compare.
+   * @return  <code>true</code> if this object is the same as the obj
+   *          argument; <code>false</code> otherwise.
+   */
+  public boolean equals(Object o)
+  {
+    if (this == o) return true;
+    if (!(o instanceof StyleKey)) return false;
+
+    final StyleKey key = (StyleKey) o;
+
+    if (!name.equals(key.name)) return false;
+    if (!valueType.equals(key.valueType)) return false;
+
+    return true;
+  }
+
+  /**
+   * Returns a hash code value for the object. This method is
+   * supported for the benefit of hashtables such as those provided by
+   * <code>java.util.Hashtable</code>.
+   * <p>
+   *
+   * @return  a hash code value for this object.
+   */
+  public int hashCode()
+  {
+    int result;
+    result = name.hashCode();
+    result = 29 * result + valueType.hashCode();
+    return result;
+  }
+
+  /**
+   * Replaces the automaticly generated instance with one of the defined
+   * stylekey instances or creates a new stylekey.
+   *
+   * @return the resolved element
+   * @throws java.io.ObjectStreamException if the element could not be resolved.
+   */
+  protected Object readResolve() throws ObjectStreamException
+  {
+    StyleKey key = getStyleKey(name);
+    if (key != null) return key;
+    return getStyleKey(name, valueType);
+  }
 }

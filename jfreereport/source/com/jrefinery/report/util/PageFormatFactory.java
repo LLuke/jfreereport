@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageFormatFactory.java,v 1.13 2002/12/12 12:26:57 mungady Exp $
+ * $Id: PageFormatFactory.java,v 1.14 2003/01/30 22:52:46 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,14 @@
  */
 package com.jrefinery.report.util;
 
+import com.jrefinery.report.targets.FloatDimension;
+
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.Dimension2D;
 import java.lang.reflect.Field;
+import java.util.Hashtable;
 
 /**
  * The PageFormatFactory is used to create PageFormats on a higher level. The Factory contains
@@ -774,5 +779,29 @@ public class PageFormatFactory
   public double getBottomBorder (Paper p)
   {
     return p.getHeight() - (p.getImageableY() + p.getImageableHeight());
+  }
+
+  public Object[] resolvePageFormat (PageFormat format)
+  {
+    Integer orientation = new Integer (format.getOrientation());
+    Paper p = format.getPaper();
+    FloatDimension fdim = new FloatDimension(p.getWidth(), p.getHeight());
+    Rectangle2D rect = new Rectangle2D.Double(p.getImageableX(), p.getImageableY(),
+                                              p.getImageableWidth(), p.getImageableHeight());
+    return new Object[] { orientation, fdim, rect };
+  }
+
+  public PageFormat createPageFormat (Object[] data)
+  {
+    Integer orientation = (Integer) data[0];
+    Dimension2D dim = (Dimension2D) data[1];
+    Rectangle2D rect = (Rectangle2D) data[2];
+    Paper p = new Paper();
+    p.setSize(dim.getWidth(), dim.getHeight());
+    p.setImageableArea(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+    PageFormat format = new PageFormat();
+    format.setPaper(p);
+    format.setOrientation(orientation.intValue());
+    return format;
   }
 }

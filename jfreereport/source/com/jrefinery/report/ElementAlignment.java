@@ -33,19 +33,22 @@
  * Changes
  * -------
  * 05-Dec-2002 : Updated Javadocs (DG);
- *
+ * 05-Feb-2002 : Implemented the serializable interface.
  */
 
 package com.jrefinery.report;
 
+import com.jrefinery.report.util.ObjectStreamResolveException;
 
+import java.io.Serializable;
+import java.io.ObjectStreamException;
 
 /**
  * Represents the alignment of an element.
  *
  * @author Thomas Morgner
  */
-public class ElementAlignment
+public class ElementAlignment implements Serializable
 {
   /** A constant for left alignment. */
   public static final ElementAlignment LEFT = new ElementAlignment("LEFT", Element.LEFT);
@@ -103,4 +106,50 @@ public class ElementAlignment
   {
     return oldAlignment;
   }
+
+  public boolean equals(Object o)
+  {
+    if (this == o) return true;
+    if (!(o instanceof ElementAlignment)) return false;
+
+    final ElementAlignment alignment = (ElementAlignment) o;
+
+    if (oldAlignment != alignment.oldAlignment) return false;
+    if (!myName.equals(alignment.myName)) return false;
+
+    return true;
+  }
+
+  public int hashCode()
+  {
+    int result;
+    result = myName.hashCode();
+    result = 29 * result + oldAlignment;
+    return result;
+  }
+
+  /**
+   * Replaces the automaticly generated instance with one of the enumeration
+   * instances.
+   * @return the resolved element
+   * @throws ObjectStreamException if the element could not be resolved.
+   */
+  protected Object readResolve() throws ObjectStreamException
+  {
+    if (this.equals(ElementAlignment.LEFT))
+      return ElementAlignment.LEFT;
+    if (this.equals(ElementAlignment.RIGHT))
+      return ElementAlignment.RIGHT;
+    if (this.equals(ElementAlignment.CENTER))
+      return ElementAlignment.CENTER;
+    if (this.equals(ElementAlignment.TOP))
+      return ElementAlignment.TOP;
+    if (this.equals(ElementAlignment.BOTTOM))
+      return ElementAlignment.BOTTOM;
+    if (this.equals(ElementAlignment.MIDDLE))
+      return ElementAlignment.MIDDLE;
+    // unknown element alignment...
+    throw new ObjectStreamResolveException();
+  }
+
 }

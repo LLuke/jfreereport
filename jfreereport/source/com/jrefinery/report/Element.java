@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.21 2003/02/02 23:43:35 taqua Exp $
+ * $Id: Element.java,v 1.22 2003/02/04 17:56:06 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -50,7 +50,11 @@
  * 06-Dec-2002 : Updated Javadocs (DG);
  * 06-Dec-2002 : Also updated the docs, declared setPaint(),getPaint deprecated, removed
  *               setStyleSheet
- * 04-Feb-2002 : removed equals method. Element equality is no longer bound to names.
+ * 13-Dec-2002 : Added support for parent property
+ * 22-Jan-2003 : Paint parameter is now restricted to java.awt.Color
+ * 27-Jan-2003 : Changed ParentRegistration, now the band is responsible for setting the parent
+ *               property and the BandDefaultStyleSheet.
+ * 04-Feb-2003 : removed equals() method. Element equality is no longer bound to names.
  */
 
 package com.jrefinery.report;

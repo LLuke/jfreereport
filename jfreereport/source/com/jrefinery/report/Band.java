@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.40 2003/01/29 03:12:52 taqua Exp $
+ * $Id: Band.java,v 1.41 2003/02/04 17:56:05 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -60,6 +60,7 @@
  * 06-Dec-2002 : Documentation update.
  * 03-Jan-2002 : More Javadocs (DG);
  * 23-Jan-2003 : Bug in the clone() method, element parent was not updated.
+ * 04-Feb-2003 : fixed composition operations (add element (int idx, Element e))
  */
 
 package com.jrefinery.report;
@@ -149,19 +150,26 @@ public class Band extends Element implements Serializable, Cloneable
    * @throws NullPointerException if the element is <code>null</code> or contains <code>null</code>
    *                              values.
    */
-  public void addElement (Element element)
+  public synchronized void addElement (Element element)
   {
     addElement(allElements.size(), element);
   }
 
   /**
-   * todo
-   * @param position
-   * @param element
+   * Adds a report element to the band. The element will be inserted on the specified position.
+   *
+   * @param position the position where to insert the element
+   * @param element the element that should be added
+   * @throws NullPointerException if the given element is null
+   * @throws IllegalArgumentException if the position is invalid, either negative or
+   * greater than the number of elements in this band.
    */
-  public void addElement(int position, Element element)
+  public synchronized void addElement(int position, Element element)
   {
     if (position < 0)
+      throw new IllegalArgumentException("Position < 0");
+
+    if (position > allElements.size())
       throw new IllegalArgumentException("Position < 0");
 
     if (element == null)
@@ -183,11 +191,14 @@ public class Band extends Element implements Serializable, Cloneable
       }
     }
 
+    // remove the element from its old parent ..
+    // this is the default AWT behaviour when adding Components to Container
     if (element.getParent() != null)
     {
       element.getParent().removeElement(element);
     }
 
+    // add the element, update the childs Parent and the childs stylesheet.
     allElements.add(position, element);
     element.getStyle().addParent(getBandDefaults());
     element.setParent(this);
@@ -198,9 +209,10 @@ public class Band extends Element implements Serializable, Cloneable
    *
    * @param elements  the element collection.
    *
-   * @throws NullPointerException if the collection given is <code>null</code>.
+   * @throws NullPointerException if the collection given is <code>null</code> or
+   * the collection contains <code>null</code> elements.
    */
-  public void addElements(Collection elements)
+  public synchronized void addElements(Collection elements)
   {
     if (elements == null)
     {
@@ -369,30 +381,6 @@ public class Band extends Element implements Serializable, Cloneable
   {
     return CONTENT_TYPE;
   }
-
-  /**
-   * todo
-   * @param element
-   * @return
-   */
-  public boolean isChild (Element element)
-  {
-    for (int i = 0; i < allElements.size(); i++)
-    {
-      Element es = (Element) allElements.get(i);
-      if (es == element)
-        return true;
-
-      if (es instanceof Band)
-      {
-        Band b = (Band) es;
-        return b.isChild(element);
-      }
-    }
-    return false;
-  }
-
-
 
   /// DEPRECATED METHODS //////////////////////////////////////////////////////////////////////////
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: TextElement.java,v 1.26 2002/12/10 21:04:20 taqua Exp $
+ * $Id: TextElement.java,v 1.27 2003/02/04 17:56:07 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -50,6 +50,7 @@
  * 05-Sep-2002 : Cloning added
  * 06-Dec-2002 : Updated Javadocs (DG);
  * 10-Dec-2002 : Removed getFont(StyleSheet s) - this is handled by the stylesheet
+ * 04-Feb-2002 : Replaced deprecated FontStyle with the new FontDefinition style key
  */
 
 package com.jrefinery.report;

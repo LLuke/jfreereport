@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.12 2002/12/11 01:00:04 mungady Exp $
+ * $Id: GroupList.java,v 1.13 2003/02/04 17:56:06 taqua Exp $
  *
  * Changes:
  * --------
@@ -38,7 +38,7 @@
  *               Why would a sane programmer mess up the source like this?
  * 06-Dec-2002 : Added validity check to the group list.
  * 10-Dec-2002 : Updated Javadocs (DG);
- *
+ * 04-Feb-2003 : Implemented hashCode for GroupComparator
  */
 
 package com.jrefinery.report;
