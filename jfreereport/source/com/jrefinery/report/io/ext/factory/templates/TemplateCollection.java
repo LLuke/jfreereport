@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateCollection.java,v 1.7 2003/03/07 16:56:00 taqua Exp $
+ * $Id: TemplateCollection.java,v 1.8 2003/03/18 18:28:43 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -92,7 +92,7 @@ public class TemplateCollection
    */
   public TemplateDescription getDescription (Template template)
   {
-    Iterator enum = templates.keySet().iterator();
+    Iterator enum = templates.values().iterator();
     while (enum.hasNext())
     {
       TemplateDescription td = (TemplateDescription) enum.next();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.10 2003/03/13 17:41:58 taqua Exp $
+ * $Id: TextParagraph.java,v 1.11 2003/03/18 17:14:43 taqua Exp $
  *
  * Changes
  * -------
@@ -214,6 +214,17 @@ public class TextParagraph extends ContentContainer
       // the end of the line has been reached.
       while (((endPos = breakit.next()) != BreakIterator.DONE))
       {
+
+        // the whole text section contains white spaces ... must be skipped ..
+        // we can assume, that if the first character is a white space, then all
+        // characters are whitespaces, as the word break iterator searches for
+        // whitespace boundries ...
+        if (Character.isWhitespace(mytext.charAt(startPos)))
+        {
+          startPos = endPos;
+          continue;
+        }
+
         // add by leonlyong
         wordCnt++;
 
