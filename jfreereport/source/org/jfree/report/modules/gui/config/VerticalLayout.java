@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: VerticalLayout.java,v 1.2 2003/09/08 18:11:48 taqua Exp $
+ * $Id: VerticalLayout.java,v 1.3 2003/09/30 19:47:29 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -44,8 +44,6 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
-
-import org.jfree.report.util.Log;
 
 /**
  * A simple layout manager, which aligns all components in a vertical
@@ -120,8 +118,8 @@ public class VerticalLayout implements LayoutManager
           width = pref.width;
         }
       }
-      Log.debug ("PreferredSize in VLayout: " + new Dimension(width + ins.left + ins.right,
-          height + ins.top + ins.bottom));
+//      Log.debug ("PreferredSize in VLayout: " + new Dimension(width + ins.left + ins.right,
+//          height + ins.top + ins.bottom));
       return new Dimension(width + ins.left + ins.right,
           height + ins.top + ins.bottom);
     }

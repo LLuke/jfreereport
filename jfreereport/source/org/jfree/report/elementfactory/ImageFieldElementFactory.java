@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageFieldElementFactory.java,v 1.4 2003/08/25 14:29:28 taqua Exp $
+ * $Id: ImageFieldElementFactory.java,v 1.5 2003/10/05 21:52:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,8 +44,6 @@ import java.awt.geom.Rectangle2D;
 import org.jfree.report.Element;
 import org.jfree.report.ImageElement;
 import org.jfree.report.filter.templates.ImageFieldTemplate;
-import org.jfree.report.layout.StaticLayoutManager;
-import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
 
 /**

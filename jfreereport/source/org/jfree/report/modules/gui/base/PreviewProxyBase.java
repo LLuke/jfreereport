@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.22 2003/10/08 19:32:27 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.23 2003/10/18 20:49:17 taqua Exp $
  *
  * Changes
  * -------
@@ -57,8 +57,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.ResourceBundle;
 import java.util.List;
+import java.util.ResourceBundle;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -82,8 +82,8 @@ import javax.swing.UIManager;
 
 import org.jfree.layout.CenterLayout;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.ReportProcessingException;
 import org.jfree.report.ReportInterruptedException;
+import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.modules.gui.base.components.AbstractActionDowngrade;
 import org.jfree.report.modules.gui.base.components.ActionButton;
@@ -93,9 +93,9 @@ import org.jfree.report.modules.gui.base.components.ActionMenuItem;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.components.FloatingButtonEnabler;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
+import org.jfree.report.util.ImageUtils;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.Worker;
-import org.jfree.report.util.ImageUtils;
 import org.jfree.report.util.WorkerPool;
 import org.jfree.ui.RefineryUtilities;
 import org.jfree.xml.ParserUtil;

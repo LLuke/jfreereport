@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);;
  *
- * $Id: PrinterCommandSet.java,v 1.6 2003/09/13 15:14:41 taqua Exp $
+ * $Id: PrinterCommandSet.java,v 1.7 2003/09/14 15:43:07 taqua Exp $
  *
  * Changes
  * -------
@@ -44,10 +44,15 @@ import java.io.OutputStream;
 
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.PageFormatFactory;
+import org.jfree.report.util.Log;
 
 /**
  * Implements a printer command set for plain text output. The output is
  * not enriched with any printer specific control sequences.
+ * <p>
+ * Due to the architecture of matrix printers, the vertical borders
+ * are given in 1/1440th of an inch, while the horizontal borders are
+ * given in characters.
  *
  * @author Thomas Morgner
  */
@@ -155,8 +160,8 @@ public strictfp class PrinterCommandSet
   /** the pageformat used in this page. */
   private final PageFormat pageFormat;
 
-  /** the emptyCellCounter is used to optimize the printing. */
-  private int emptyCellCounter;
+//  /** the emptyCellCounter is used to optimize the printing. */
+//  private int emptyCellCounter;
 
   /** the encoding header, if any. */
   private byte[] encodingHeader;
@@ -186,6 +191,7 @@ public strictfp class PrinterCommandSet
     this.defaultCPI = defaultCPI;
     this.pageFormat = format;
     this.firstPage = true;
+    //setVerticalBorder();
   }
 
   /**
@@ -364,12 +370,12 @@ public strictfp class PrinterCommandSet
   }
 
   /**
-   * Defines the horizontal borders for the current paper. The borders are given
-   * in characters.
+   * Defines the vertical borders for the current paper. The vertical border
+   * is given in 1/1440 inch.
    *
-   * @param top the number of blank lines printed on the start of a page.
-   * @param bottom the number of blank lines printed at the end of a page
-   * @throws java.io.IOException if an IOException occured while updating the printer state.
+   * @param top the space on top of the page in 1/1440th of an inch.
+   * @param bottom the space at the bottom of the page in 1/1440th of an inch
+   * @throws IOException if an IOException occured while updating the printer state.
    */
   public void setVerticalBorder(final int top, final int bottom) throws IOException
   {
@@ -564,7 +570,7 @@ public strictfp class PrinterCommandSet
       setFirstPage(false);
     }
 
-    final int topBorderLines = ((getBorderTop() / 1440) / getLineSpacing());
+    final int topBorderLines = (int) ((getBorderTop() / 1440f) * getLineSpacing());
     for (int i = 0; i < topBorderLines; i++)
     {
       startLine();
@@ -608,7 +614,11 @@ public strictfp class PrinterCommandSet
    */
   public void startLine() throws IOException
   {
-    emptyCellCounter = getBorderLeft();
+    int borderLeft = getBorderLeft();
+    for (int i = 0; i < borderLeft; i++)
+    {
+      printEmptyChunk();
+    }
   }
 
   /**
@@ -618,7 +628,6 @@ public strictfp class PrinterCommandSet
    */
   public void endLine() throws IOException
   {
-    emptyCellCounter = 0;
     // CR = (ASCII #13) reset the print position to the start of the line
     // LF = (ASCII #10) scroll down a new line (? Auto-LF feature ?)
     writeControlChar(CARRIAGE_RETURN);
@@ -638,17 +647,9 @@ public strictfp class PrinterCommandSet
    */
   public void printChunk(final PlainTextPage.TextDataChunk chunk, final int x) throws IOException
   {
-    if (emptyCellCounter != 0)
-    {
-      for (int i = 0; i < emptyCellCounter; i++)
-      {
-        out.write(space);
-      }
-      emptyCellCounter = 0;
-    }
-
     if (chunk.getX() != x)
     {
+      // this is a continuation of the current text ...
       return;
     }
 
@@ -660,6 +661,7 @@ public strictfp class PrinterCommandSet
     {
       buffer.append(' ');
     }
+    // Log.debug ("Write: '" + buffer + "'");
     writeEncodedText(buffer.toString());
   }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple"
                         "http://jfreereport.sourceforge.net/report.dtd">
-<report name="Open Source Java Projects" pageformat="A4">
+<report name="Open Source Java Projects" pageformat="A4" leftmargin="72" topmargin="72" >
 
   <!-- REPORT HEADER -->
   <!-- This band appears once at the beginning of the report.  In this example, -->

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextPage.java,v 1.3 2003/08/24 15:05:18 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.4 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@ package org.jfree.report.modules.output.pageable.plaintext;
 import java.io.IOException;
 
 import org.jfree.report.style.FontDefinition;
+import org.jfree.report.util.Log;
 
 /**
  * The plain text page is used to buffer a complete page and to write the
@@ -52,7 +53,7 @@ public class PlainTextPage
   /**
    * A data carrier to collect and store text data for the output.
    */
-  protected class TextDataChunk
+  public static class TextDataChunk
   {
     /** The text that should be printed. */
     private final String text;
@@ -83,6 +84,26 @@ public class PlainTextPage
     {
       this.text = text;
       this.font = font;
+      if (x < 0)
+      {
+        throw new IllegalArgumentException();
+      }
+
+      if (y < 0)
+      {
+        throw new IllegalArgumentException();
+      }
+
+      if (w < 0)
+      {
+        throw new IllegalArgumentException();
+      }
+
+      if (w > text.length())
+      {
+        Log.debug ("X=" + x + " y=" + y + " w=" + w + " text=" + text);
+        throw new IllegalArgumentException("Size limit: " + w + " vs. " + text.length());
+      }
       this.x = x;
       this.y = y;
       this.width = w;
@@ -151,6 +172,8 @@ public class PlainTextPage
   /** the height of the page in lines. */
   private int height;
 
+  private int leftBorder;
+
   /** The encoding of the printed text. */
   private String pageEncoding;
 
@@ -158,12 +181,13 @@ public class PlainTextPage
    * Creates a new PlainTextPage with the given dimensions and the specified
    * PrinterCommandSet.
    *
+   * @param leftBorder the left border
    * @param w the number of columns on the page
    * @param h the number of rows on the page
    * @param encoding the document encoding for this page.
    * @param commandSet the commandset for printing and formating the text.
    */
-  public PlainTextPage(final int w, final int h,
+  public PlainTextPage(final int leftBorder, final int w, final int h,
                        final PrinterCommandSet commandSet, final String encoding)
   {
     if (w <= 0)
@@ -178,9 +202,11 @@ public class PlainTextPage
     {
       throw new NullPointerException("Encoding must be defined.");
     }
+    Log.debug ("Created page with " + w + ", " + h);
     pageBuffer = new TextDataChunk[w][h];
     width = w;
     height = h;
+    this.leftBorder = leftBorder;
     this.commandSet = commandSet;
     pageEncoding = encoding;
   }
@@ -201,6 +227,11 @@ public class PlainTextPage
   public int getHeight()
   {
     return height;
+  }
+
+  public int getLeftBorder()
+  {
+    return leftBorder;
   }
 
   /**
@@ -236,7 +267,6 @@ public class PlainTextPage
     {
       throw new IllegalArgumentException("Y > bufferHeight: " + text + " y=" + y + " h=" + height);
     }
-
     final TextDataChunk chunk = new TextDataChunk(text, format, x, y, w);
     for (int i = 0; i < w; i++)
     {
@@ -283,6 +313,7 @@ public class PlainTextPage
         }
         else
         {
+          //Log.debug ("Print Chunk At " + x);
           commandSet.printChunk(chunk, x);
         }
       }

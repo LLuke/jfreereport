@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StraightToEverything.java,v 1.6 2003/08/24 15:13:21 taqua Exp $
+ * $Id: StraightToEverything.java,v 1.7 2003/08/25 14:29:28 taqua Exp $
  *
  * Changes
  * -------
@@ -91,13 +91,13 @@ public class StraightToEverything
     createPDF(report, filename + ".pdf");
     try
     {
-      createCSV(report, filename + ".csv");
-      createDirectoryHTML(report, filename + ".html");
+//      createCSV(report, filename + ".csv");
+//      createDirectoryHTML(report, filename + ".html");
       createPlainText(report, filename + ".txt");
-      createRTF(report, filename + ".rtf");
-      createStreamHTML(report, filename + ".html");
-      createXLS(report, filename + ".xls");
-      createZIPHTML(report, filename + ".zip");
+//      createRTF(report, filename + ".rtf");
+//      createStreamHTML(report, filename + ".html");
+//      createXLS(report, filename + ".xls");
+//      createZIPHTML(report, filename + ".zip");
     }
     catch (Exception e)
     {
@@ -185,7 +185,8 @@ public class StraightToEverything
   {
     final PageableReportProcessor pr = new PageableReportProcessor(report);
     final OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
-    final PrinterCommandSet pc = new PrinterCommandSet(fout, report.getDefaultPageFormat(), 6, 10);
+    // cpi = 10, lpi = 6
+    final PrinterCommandSet pc = new PrinterCommandSet(fout, report.getDefaultPageFormat(), 10, 6);
     final PlainTextOutputTarget target =
         new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
     pr.setOutputTarget(target);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.8 2003/09/13 15:14:41 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.9 2003/09/15 18:26:51 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,7 @@ import org.jfree.report.modules.output.pageable.base.output.DummyOutputTarget;
 import org.jfree.report.modules.output.pageable.base.physicals.PhysicalPage;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.report.util.Log;
 
 /**
  * An outputtarget, that generates plaintext. The text can be enriched with
@@ -370,12 +371,20 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
    */
   public void beginPage(final PhysicalPage page)
   {
+    PageFormat pf = page.getPageFormat();
+    // the page must contain the space for the border, or it is invalid
+    // the left and top border is always included when performing the layout
     currentPageHeight = correctedDivisionFloor
-        ((float) page.getPageFormat().getImageableHeight(), characterHeight);
+        ((float) (pf.getImageableHeight() + pf.getImageableY()), characterHeight);
     currentPageWidth = correctedDivisionFloor
-        ((float) page.getPageFormat().getImageableWidth(), characterWidth);
+        ((float) (pf.getImageableWidth()), characterWidth);
+    int currentPageLeft = correctedDivisionFloor
+        ((float) (pf.getImageableX()), characterWidth);
 
-    this.pageBuffer = new PlainTextPage(currentPageWidth, currentPageHeight,
+//    Log.debug ("Character Height: " + characterHeight + ", " + "Character Width: " + characterWidth);
+//    Log.debug ("PF-ImgX: " + pf.getImageableX() + ", " + "PF-ImgY: " + pf.getImageableY());
+//    Log.debug ("PF-ImgW: " + pf.getImageableWidth() + ", " + "PF-ImgH: " + pf.getImageableHeight());
+    this.pageBuffer = new PlainTextPage(currentPageLeft, currentPageWidth, currentPageHeight,
         getCommandSet(), getDocumentEncoding());
     savedState = new PlainTextState(this);
   }
