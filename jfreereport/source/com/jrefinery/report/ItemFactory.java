@@ -381,7 +381,7 @@ public class ItemFactory
           throws IOException
   {
     ImageRefFilter filter = new ImageRefFilter ();
-    filter.setDataSource (new ReportDataSource (function));
+    filter.setDataSource (new FunctionDataSource(function));
 
     ImageElement element = new ImageElement ();
     element.setName (name);

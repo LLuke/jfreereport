@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionDataSource.java,v 1.6 2002/07/28 13:25:26 taqua Exp $
+ * $Id: FunctionDataSource.java,v 1.7 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,7 @@
 package com.jrefinery.report.filter;
 
 import com.jrefinery.report.DataRow;
+import com.jrefinery.report.util.Log;
 
 /**
  * The base class for a function data source. A function datasource does not query a
@@ -116,6 +117,7 @@ public class FunctionDataSource implements DataSource, DataRowConnectable
   public Object getValue ()
   {
     if (getDataRow () == null) throw new IllegalStateException ("No Datarow connected");
+    Log.debug ("GetValue of function " + getFunction());
     return getDataRow ().get (getFunction ());
   }
 
@@ -133,8 +135,10 @@ public class FunctionDataSource implements DataSource, DataRowConnectable
   public void connectDataRow (DataRow row) throws IllegalStateException
   {
     if (row == null) throw new NullPointerException ("Null-DataRowBackend cannot be set.");
-    if (dataRow != null) throw new IllegalStateException ("There is a datarow already connected");
+    if (dataRow != null) throw new IllegalStateException ("There is a datarow already connected for Function-Datasource " + getFunction());
     dataRow = row;
+
+    System.out.println ("FunctionDataSource connected: " + getFunction());
   }
 
   /**

@@ -37,10 +37,13 @@
 
 package com.jrefinery.report;
 
+import com.jrefinery.report.util.Log;
+
 import java.io.Serializable;
 import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.Iterator;
 
 /**
  * The group list is used to store groups in a ordered way. The less specific groups are
@@ -179,10 +182,18 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
   public Object clone ()
   {
     GroupList l = (GroupList) super.clone ();
-    if (l.cache != null)
+    l.clear();
+    for (int i = 0; i < size(); i++)
     {
-      l.cache = new Object[cache.length];
-      System.arraycopy (cache, 0, l.cache, 0, l.cache.length);
+      try
+      {
+        l.add (get (i).clone());
+      }
+      catch (CloneNotSupportedException ce)
+      {
+        Log.debug ("Clone error ", ce);
+        return null;
+      }
     }
     return l;
   }

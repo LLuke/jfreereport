@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.21 2002/07/28 13:25:24 taqua Exp $
+ * $Id: JFreeReport.java,v 1.22 2002/08/08 15:28:38 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -661,12 +661,12 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     {
       if (getPageHeader ().isDisplayOnFirstPage ())
       {
-        prc.printPageHeader (getPageHeader ());
+        prc.printPageHeader (state.getReport().getPageHeader ());
       }
     }
     else
     {
-      prc.printPageHeader (getPageHeader ());
+      prc.printPageHeader (state.getReport().getPageHeader ());
     }
 
     // Do some real work.  The report header and footer, and the page headers and footers are
@@ -686,12 +686,12 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     {
       if (getPageFooter ().isDisplayOnFirstPage ())
       {
-        prc.printPageFooter (getPageFooter ());
+        prc.printPageFooter (state.getReport().getPageFooter ());
       }
     }
     else
     {
-      prc.printPageFooter (getPageFooter ());
+      prc.printPageFooter (state.getReport().getPageFooter ());
     }
 
     // return the state at the end of the page...

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DateElement.java,v 1.9 2002/07/20 20:48:47 taqua Exp $
+ * $Id: DateElement.java,v 1.10 2002/08/08 15:28:37 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -119,12 +119,14 @@ public class DateElement extends DataElement
 
   public Object clone () throws CloneNotSupportedException
   {
-    DateElement e = (DateElement) super.clone ();
-    if ((e.getDataSource () instanceof DateFormatFilter) == false)
+    if ((getDataSource () instanceof DateFormatFilter) == false)
     {
       throw new CloneNotSupportedException ("Modified function element is not clonable");
     }
-    e.formatter = (DateFormatFilter) e.getDataSource ();
+    DateElement e = (DateElement) super.clone ();
+    e.formatter = (DateFormatFilter) formatter.clone();
+    e.setDataSource (e.formatter);
+    e.formatter.setDataSource (e.getReportDataSource());
     return e;
   }
 

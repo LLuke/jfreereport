@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFunctionElement.java,v 1.8 2002/07/21 13:22:26 taqua Exp $
+ * $Id: NumberFunctionElement.java,v 1.9 2002/08/08 15:28:38 taqua Exp $
  *
  * Changes
  * -------
@@ -114,8 +114,8 @@ public class NumberFunctionElement extends FunctionElement
     }
     NumberFunctionElement e = (NumberFunctionElement) super.clone ();
     e.filter = (NumberFormatFilter) filter.clone ();
-    e.setDataSource (filter);
-    e.filter.setDataSource (getFunctionDataSource ());
+    e.setDataSource (e.filter);
+    e.filter.setDataSource (e.getFunctionDataSource ());
     return e;
   }
 

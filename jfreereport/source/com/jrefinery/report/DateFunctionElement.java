@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateFunctionElement.java,v 1.8 2002/07/20 20:48:47 taqua Exp $
+ * $Id: DateFunctionElement.java,v 1.9 2002/08/08 15:28:38 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@
 package com.jrefinery.report;
 
 import com.jrefinery.report.filter.DateFormatFilter;
+import com.jrefinery.report.filter.DataSource;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -111,12 +112,14 @@ public class DateFunctionElement extends FunctionElement
 
   public Object clone () throws CloneNotSupportedException
   {
-    DateFunctionElement e = (DateFunctionElement) super.clone ();
-    if ((e.getDataSource () instanceof DateFormatFilter) == false)
+    if ((getDataSource () instanceof DateFormatFilter) == false)
     {
-      throw new CloneNotSupportedException ("Modified function element is not clonable");
+      throw new CloneNotSupportedException ("Modified function element is not clonable: " + getDataSource());
     }
-    e.formatter = (DateFormatFilter) e.getDataSource ();
+    DateFunctionElement e = (DateFunctionElement) super.clone ();
+    e.formatter = (DateFormatFilter) formatter.clone();
+    e.setDataSource (e.formatter);
+    e.formatter.setDataSource (e.getFunctionDataSource ());
     return e;
   }
 

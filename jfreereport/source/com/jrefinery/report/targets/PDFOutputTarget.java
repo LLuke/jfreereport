@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.15 2002/07/20 20:48:47 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.16 2002/08/08 12:46:56 taqua Exp $
  *
  * Changes
  * -------
@@ -733,11 +733,21 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
   }
 
-
   private Image getImage (ImageReference imageRef) throws DocumentException, IOException
   {
-    if (imageRef.getSourceURL () != null)
-      return Image.getInstance (imageRef.getSourceURL ());
+    try
+    {
+      if (imageRef.getSourceURL () != null)
+        return Image.getInstance (imageRef.getSourceURL ());
+    }
+    catch (BadElementException be)
+    {
+      Log.debug ("Caught illegal Image, will recode to PNG instead", be);
+    }
+    catch (IOException ioe)
+    {
+      Log.debug ("Unable to read the raw-data, will try to recode image-data.", ioe);
+    }
 
     if (imageRef.getImage () != null)
     {

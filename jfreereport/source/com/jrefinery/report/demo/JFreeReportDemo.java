@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.24 2002/07/22 09:01:09 mungady Exp $
+ * $Id: JFreeReportDemo.java,v 1.25 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -201,6 +201,7 @@ public class JFreeReportDemo extends JFrame
     tabbedPane.addTab (formExample (3), RefineryUtilities.createTablePanel (data3));
     tabbedPane.addTab (formExample (4), RefineryUtilities.createTablePanel (data4));
     tabbedPane.addTab ("Manual Created Report (see Source)", RefineryUtilities.createTablePanel (data1));
+    tabbedPane.addTab ("Example 2 - with Image-Function", RefineryUtilities.createTablePanel(data2));
 
     content.add (tabbedPane);
 
@@ -260,6 +261,10 @@ public class JFreeReportDemo extends JFrame
     else if (index == 4)
     {
       previewManual ();
+    }
+    else if (index == 5)
+    {
+      preview ("/com/jrefinery/report/demo/report2a.xml", data2);
     }
   }
 

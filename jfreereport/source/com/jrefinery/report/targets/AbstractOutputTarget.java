@@ -278,7 +278,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
     {
       // Will not happen
     }
-    Log.debug ("The Line count: " + bareLines.size ());
+    //Log.debug ("The Line count: " + bareLines.size ());
 
     /**
      * Reserve some space for the last line if there is more than one line to display.
@@ -339,7 +339,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
 
         if (endPos == BreakIterator.DONE || ((STRICT_MODE == false) && linesToDo == 1))
         {
-          Log.debug ("Adding : " + lineStartPos + " to End of Line: " + currentLine.substring (lineStartPos));
+//          Log.debug ("Adding : " + lineStartPos + " to End of Line: " + currentLine.substring (lineStartPos));
           returnLines.add (currentLine.substring (lineStartPos));
           lineStartPos = lineLength;
         }
@@ -348,13 +348,13 @@ public abstract class AbstractOutputTarget implements OutputTarget
 
           if (limitedMode && i == (linesToDo - 1))
           {
-            Log.debug ("Adding : " + lineStartPos + " to " + startPos + " : " + currentLine.substring (lineStartPos, startPos));
+//            Log.debug ("Adding : " + lineStartPos + " to " + startPos + " : " + currentLine.substring (lineStartPos, startPos));
             returnLines.add (currentLine.substring (lineStartPos, startPos) + RESERVED_LITERAL);
             return returnLines;
           }
           else
           {
-            Log.debug ("Adding : " + lineStartPos + " to " + startPos + " : " + currentLine.substring (lineStartPos, startPos));
+//            Log.debug ("Adding : " + lineStartPos + " to " + startPos + " : " + currentLine.substring (lineStartPos, startPos));
             returnLines.add (currentLine.substring (lineStartPos, startPos));
             lineStartPos = startPos;
           }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDataSource.java,v 1.5 2002/07/28 13:25:26 taqua Exp $
+ * $Id: ReportDataSource.java,v 1.6 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes
  * -------
@@ -124,7 +124,7 @@ public class ReportDataSource implements DataSource, DataRowConnectable
   public void connectDataRow (DataRow row) throws IllegalStateException
   {
     if (row == null) throw new NullPointerException ("Null-DataRowBackend cannot be set.");
-    if (dataRow != null) throw new IllegalStateException ("There is a datarow already connected");
+    if (dataRow != null) throw new IllegalStateException ("There is a datarow already connected: " + getField());
     dataRow = row;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: DataElement.java,v 1.11 2002/07/21 13:22:26 taqua Exp $
+ * $Id: DataElement.java,v 1.12 2002/08/08 15:28:37 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -112,7 +112,7 @@ public abstract class DataElement extends TextElement
   {
     DataElement e = (DataElement) super.clone ();
     e.fieldsource = (ReportDataSource) fieldsource.clone ();
-    e.setDataSource (fieldsource);
+    e.setDataSource (e.fieldsource);
     return e;
   }
 

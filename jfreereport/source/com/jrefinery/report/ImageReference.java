@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);Stefan Prange
  *
- * $Id: ImageReference.java,v 1.13 2002/07/20 20:48:47 taqua Exp $
+ * $Id: ImageReference.java,v 1.14 2002/08/08 15:28:38 taqua Exp $
  *
  * Changes:
  * --------
@@ -169,6 +169,8 @@ public class ImageReference implements Serializable, Cloneable
 
     buf.append ("ImageReference={ URL=");
     buf.append (getSourceURL ());
+    buf.append (", image=");
+    buf.append (getImage());
     buf.append ("}");
 
     return buf.toString ();

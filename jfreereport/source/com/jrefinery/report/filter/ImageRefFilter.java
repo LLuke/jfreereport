@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageRefFilter.java,v 1.3 2002/07/16 16:41:23 mungady Exp $
+ * $Id: ImageRefFilter.java,v 1.4 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes
  * -------
@@ -90,6 +90,7 @@ public class ImageRefFilter implements DataFilter
     DataSource ds = getDataSource ();
     if (ds == null) return null;
     Object o = ds.getValue ();
+    if (o instanceof ImageReference) return o;
     if (o == null || (o instanceof Image) == false) return null;
 
     return new ImageReference ((Image) o);
@@ -115,7 +116,7 @@ public class ImageRefFilter implements DataFilter
   public Object clone () throws CloneNotSupportedException
   {
     ImageRefFilter r = (ImageRefFilter) super.clone ();
-    r.dataSource = (DataSource) clone ();
+    r.dataSource = (DataSource) dataSource.clone ();
     return r;
   }
 

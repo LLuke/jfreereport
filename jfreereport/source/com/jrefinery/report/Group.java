@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Group.java,v 1.10 2002/07/28 13:25:24 taqua Exp $
+ * $Id: Group.java,v 1.11 2002/08/08 15:28:38 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -200,29 +200,6 @@ public class Group implements Serializable, Cloneable
     return item1.equals (item2);
   }
 
-  /**
-   * Converts a field name to a TableModel column index, by matching the field name to the column
-   * name.
-   *
-   * @param data The data.
-   * @param name The field name (or column name).
-   * @return The column index.
-   * @deprecated use the datarow
-   private int fieldNameToColumnIndex (TableModel data, String name)
-   {
-   int columns = data.getColumnCount ();
-   for (int c = 0; c < columns; c++)
-   {
-   if (name.equals (data.getColumnName (c)))
-   {
-   return c;
-   }
-   }
-   return -1;  // no field with that name
-
-   }
-   */
-
   public Object clone () throws CloneNotSupportedException
   {
     Group g = (Group) super.clone ();
@@ -232,44 +209,6 @@ public class Group implements Serializable, Cloneable
     return g;
   }
 
-  /**
-   * Returns true if the specified item is the last item in the group, and false otherwise.
-   * @param data The data.
-   *
-   * @param row The current item/row.
-   * @return A flag indicating whether or not the current item is the last in its group.
-   * @deprecated use the datarow
-   public boolean isLastItemInGroup (TableModel data, int row)
-   {
-   // return true if this is the last row in the model.
-   if (row > (data.getRowCount () - 2))
-   {
-   return true;
-   }
-   else
-   { // compare item and item+1, if any field differs, then item==last in group
-   boolean last = false;
-   Iterator iterator = fields.iterator ();
-   while (iterator.hasNext ())
-   {
-   String field = (String) iterator.next ();
-   int column = fieldNameToColumnIndex (data, field);
-   if (column == -1)
-   {
-   continue;
-   }
-
-   Object item1 = data.getValueAt (row, column);
-   Object item2 = data.getValueAt (row + 1, column);
-   if (!(secureEquals (item1, item2)))
-   {
-   return true;
-   }
-   }
-   return last;
-   }
-   }
-   */
 
   /**
    * Returns true if the specified item is the last item in the group, and false otherwise.

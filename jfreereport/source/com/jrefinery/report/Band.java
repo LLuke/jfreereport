@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.13 2002/08/08 13:40:14 taqua Exp $
+ * $Id: Band.java,v 1.14 2002/08/08 15:28:37 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -122,6 +122,7 @@ public abstract class Band implements Serializable, Cloneable
     allElements = new ArrayList ();
     dataElements = new HashNMap ();
     functionElements = new HashNMap ();
+    visible = true;
   }
 
   /**
@@ -275,11 +276,12 @@ public abstract class Band implements Serializable, Cloneable
         {
           Log.error ("Failed to draw band", ex);
         }
-        double eh = target.getCursor ().getDrawBounds ().getY () +
-                target.getCursor ().getDrawBounds ().getHeight ();
+        double eh = target.getCursor ().getElementBounds().getY () +
+                target.getCursor ().getElementBounds().getHeight ();
         if (eh > maxheight) maxheight = (float) eh;
       }
     }
+    Log.debug("MaxHeight = " + maxheight);
     return maxheight;
   }
 
@@ -374,9 +376,15 @@ public abstract class Band implements Serializable, Cloneable
   public Object clone () throws CloneNotSupportedException
   {
     Band b = (Band) super.clone ();
-    b.allElements = new ArrayList (allElements);
-    b.dataElements = (HashNMap) dataElements.clone ();
-    b.functionElements = (HashNMap) functionElements.clone ();
+    b.allElements = new ArrayList ();
+    b.dataElements = new HashNMap ();
+    b.functionElements = new HashNMap ();
+    Iterator it = allElements.iterator();
+    while (it.hasNext())
+    {
+      Element e = (Element) it.next();
+      b.addElement((Element) e.clone());
+    }
     return b;
   }
 

@@ -56,7 +56,6 @@ public class DataRowBackend implements Cloneable
 
     public int getCurrentRow ()
     {
-      System.out.println ("CUR" + db.getCurrentRow ());
       return db.getCurrentRow () + 1;
     }
 
@@ -171,18 +170,21 @@ public class DataRowBackend implements Cloneable
 
       if (getCurrentRow () < 0 || getCurrentRow () >= getTablemodel ().getRowCount ())
       {
-        System.out.println ("CurrentRow: " + getCurrentRow ());
+        System.out.println ("Is OutOfBounds => null");
         return null;
       }
       else
       {
-        System.out.println ("OK: " + this + " CurrentRow: " + getCurrentRow ());
         return getTablemodel ().getValueAt (getCurrentRow (), col);
       }
     }
 
     col -= getTablemodel ().getColumnCount ();
-    if (isPreviewMode ()) return null;
+    if (isPreviewMode ())
+    {
+      System.out.println ("Is Preview Mode => null");
+      return null;
+    }
     return getFunctions ().getFunction (col).getValue ();
   }
 
@@ -195,8 +197,10 @@ public class DataRowBackend implements Cloneable
   {
     int idx = findColumn (name);
     if (idx == -1)
+    {
+      System.out.println ("Is InvalidIndex => null");
       return null;
-
+    }
     return get (idx);
   }
 

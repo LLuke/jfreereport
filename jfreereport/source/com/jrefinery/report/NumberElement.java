@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: NumberElement.java,v 1.9 2002/07/21 13:22:26 taqua Exp $
+ * $Id: NumberElement.java,v 1.10 2002/08/08 15:28:38 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -111,8 +111,8 @@ public class NumberElement extends DataElement
   {
     NumberElement e = (NumberElement) super.clone ();
     e.formatter = (NumberFormatFilter) formatter.clone ();
-    e.setDataSource (formatter);
-    e.formatter.setDataSource (getReportDataSource ());
+    e.setDataSource (e.formatter);
+    e.formatter.setDataSource (e.getReportDataSource ());
     return e;
   }
 
