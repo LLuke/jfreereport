@@ -189,6 +189,22 @@
 
   </target>
 
-  <target name="all" depends="init, compile, javadoc, make-zip, make-targz"/>
+  <target name="maven-bundle" depends="compile" >
+    <!-- make a temporary distribution directory -->
+    <mkdir dir="distribution"/>
+    <!-- copy across Licences -->
+    <copy file="licence-LGPL.txt" tofile="distribution/LICENSE.txt"/>
+    <copy file="maven-pixie-project.xml" tofile="distribution/project.xml"/>
+    <copy file="maven-pixie-project.xml" tofile="distribution/project.xml"/>
+    <copy file="${pixie-jar-file}" tofile="distribution/${pixie-jar-file}"/>
+
+    <!-- make the jar -->
+    <jar jarfile="${pixie-bundle-file}" basedir="distribution"/>
+
+    <!-- delete the temporary distribution directory -->
+    <delete dir="distribution"/>
+  </target>
+
+  <target name="all" depends="init, compile, javadoc, make-zip, make-targz, maven-bundle"/>
 </project>
 
