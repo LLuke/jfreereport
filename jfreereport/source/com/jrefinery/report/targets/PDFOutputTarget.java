@@ -194,23 +194,47 @@ public class PDFOutputTarget extends AbstractOutputTarget
     {
       String osname = System.getProperty ("os.name");
       String jrepath = System.getProperty ("java.home");
-      registerFontPath (new File (jrepath, "lib/fonts").toString ());
+      String fontPath = null;
+      String fs = System.getProperty("file.separator");
 
-      // Assume X11 is installed in the default location.
-      registerFontPath ("/usr/X11R6/lib/X11/fonts/truetype");
-
-      // Assume windows
-      // If you are not using windows, ignore this. This just checks if a windows system
-      // directory exist and includes a font dir.
-      String windirs = System.getProperty ("java.library.path");
-      if (windirs != null)
+      System.out.println(osname);
+      if (!osname.substring(0, 7).equalsIgnoreCase("windows"))
       {
-        StringTokenizer strtok = new StringTokenizer (windirs, System.getProperty ("path.separator"));
-        while (strtok.hasMoreTokens ())
+        // Assume X11 is installed in the default location.
+        registerFontPath (new File (jrepath, "lib/fonts").toString ());
+        fontPath = "/usr/X11R6/lib/X11/fonts/truetype";
+      }
+      else 
+      {
+        // Assume windows
+        // If you are not using windows, ignore this. This just checks if a windows system
+        // directory exist and includes a font dir.
+        
+        String windirs = System.getProperty ("java.library.path");
+        if (windirs != null)
         {
-          registerFontPath (new File (strtok.nextToken (), "fonts").toString ());
+          StringTokenizer strtok = new StringTokenizer (windirs, System.getProperty ("path.separator"));
+          while (strtok.hasMoreTokens ())
+          {
+            String token = strtok.nextToken ();
+            
+            if (token.endsWith("System32")) {
+              // found windows folder ;-)
+              int lastBackslash = token.lastIndexOf(fs);
+              fontPath = token.substring(0,lastBackslash) + fs + "Fonts";
+
+              break;
+            }
+          }
         }
       }
+      
+      System.out.println("Fonts located in \"" + fontPath + "\"");
+      if (fontPath != null) 
+      {
+        registerFontPath(fontPath);
+      }
+      registerFontPath (new File (jrepath, "lib" + fs + "fonts").toString ());
     }
 
     public void registerFontPath (String path)
@@ -224,11 +248,13 @@ public class PDFOutputTarget extends AbstractOutputTarget
           registerFontFile (files[i].toString ());
         }
       }
+      file = null;
+      System.gc();
     }
 
     public void registerFontFile (String filename)
     {
-      if (filename.regionMatches (true, filename.length () - 3, "ttf", 0, 3) == false)
+      if (!filename.toLowerCase().endsWith("ttf"))
       {
         return;
       }
