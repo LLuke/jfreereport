@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElement.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: ImageElement.java,v 1.3 2002/05/16 10:20:40 mungady Exp $
  *
  * Changes:
  * --------
@@ -36,17 +36,18 @@
  * 10-May-2002 : Removed all but the default constructor. Added accessor functions for all
  *               properties (TM);
  * 16-May-2002 : Added Javadoc comments (DG);
+ * 16-May-2002 : using protected member m_paint instead of getter methode (JS)
  *
  */
 
 package com.jrefinery.report;
-
 
 /**
  * Used to draw images (Gif, JPEG, PNG or wmf) on a report band.
  * PNG Support needs JDK 1.3 or higher. This class encapsulates an
  * ImageReference into an element.
  */
+
 public class ImageElement extends Element
 {
 
@@ -56,7 +57,8 @@ public class ImageElement extends Element
   /**
    * Constructs a image element.
    */
-  public ImageElement ()
+
+  public ImageElement()
   {
   }
 
@@ -68,11 +70,15 @@ public class ImageElement extends Element
    *
    * @throws NullPointerException if the reference is null.
    */
-  public void setImageReference (ImageReference reference)
+
+  public void setImageReference(ImageReference reference)
   {
+
     if (reference == null)
-      throw new NullPointerException ("ImageElement.setImageReference: null not allowed.");
-    setBounds (reference.getBounds ());
+      throw new NullPointerException("ImageElement.setImageReference: null not allowed.");
+
+    setBounds(reference.getBounds());
+
     this.image = reference;
   }
 
@@ -81,8 +87,10 @@ public class ImageElement extends Element
    *
    * @return The image reference.
    */
-  public ImageReference getImageReference ()
+
+  public ImageReference getImageReference()
   {
+
     return image;
   }
 
@@ -94,20 +102,19 @@ public class ImageElement extends Element
    * @param bandX The x-coordinate for the element within its band.
    * @param bandY The y-coordinate for the element within its band.
    */
-  public void draw (OutputTarget target, Band band, float bandX, float bandY)
-  {
 
+  public void draw(OutputTarget target, Band band, float bandX, float bandY)
+  {
     // set the paint...
-    if (getPaint () != null)
+    if (m_paint != null)
     {
-      target.setPaint (getPaint ());
+      target.setPaint(m_paint);
+
     }
     else
     {
-      target.setPaint (band.getDefaultPaint ());
+      target.setPaint(band.getDefaultPaint());
     }
-    target.drawImage (getImageReference (), bandX, bandY);
-
+    target.drawImage(getImageReference(), bandX, bandY);
   }
-
 }
