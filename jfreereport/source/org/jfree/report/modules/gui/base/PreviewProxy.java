@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxy.java,v 1.2 2003/08/24 15:08:18 taqua Exp $
+ * $Id: PreviewProxy.java,v 1.3 2003/09/06 18:09:16 taqua Exp $
  *
  * Changes
  * --------
@@ -101,5 +101,9 @@ public interface PreviewProxy
    */
   public PreviewProxyBase getBase();
 
+  /**
+   * Shuts down the preview component. Once the component is closed, it
+   * cannot be reactivated anymore.
+   */
   public void close();
 }

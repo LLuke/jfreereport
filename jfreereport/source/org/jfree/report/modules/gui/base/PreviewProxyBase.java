@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.14 2003/09/06 18:09:16 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.15 2003/09/09 02:29:13 taqua Exp $
  *
  * Changes
  * -------
@@ -127,9 +127,11 @@ public class PreviewProxyBase extends JComponent
   public static final String PREVIEW_MAXIMUM_HEIGHT
       = "org.jfree.report.modules.gui.base.MaximumHeight";
 
+  /** A configuration key to define whether large toolbar icons are enabled. */
   public static final String LARGE_ICONS_ENABLED_PROPERTY
       = "org.jfree.report.modules.gui.base.LargeIcons";
 
+  /** A configuration key to define whether the toolbar is floatable. */
   public static final String TOOLBAR_FLOATABLE_PROPERTY
       = "org.jfree.report.modules.gui.base.ToolbarFloatable";
 
@@ -714,10 +716,13 @@ public class PreviewProxyBase extends JComponent
   /** A collection of actions, keyed by the export plugin. */
   private HashMap pluginActions;
 
+  /** The progress monitor dialog used to visualize the pagination progress. */
   private ReportProgressDialog progressDialog;
-
+  /** A flag to define whether the interface should be the locked state. */
   private boolean lockInterface;
+  /** The action concentrator used to lock or unlock the interface. */
   private ActionConcentrator zoomActionConcentrator;
+  /** A flag that defines, whether the preview component is closed. */ 
   private boolean closed;
 
 
@@ -1686,6 +1691,12 @@ public class PreviewProxyBase extends JComponent
     return closed;
   }
 
+  /**
+   * Shuts down the preview component. Once the component is closed, it
+   * cannot be reactivated anymore. Calling this method will abort all
+   * worker threads, will close the progress dialog and dispose all
+   * components.
+   */
   public void close()
   {
     closed = true;
@@ -1905,15 +1916,25 @@ public class PreviewProxyBase extends JComponent
    */
   public void updatePageFormat(final PageFormat pf)
   {
+    if (pf == null)
+    {
+      throw new NullPointerException("The given pageformat is null.");
+    }
     reportPane.setVisible(false);
     performPagination(pf);
   }
 
   /**
    * Paginates the report.
+   * 
+   * @param format the new page format for the report.
    */
   protected void performPagination(final PageFormat format)
   {
+    if (format == null)
+    {
+      throw new NullPointerException("The given pageformat is null.");
+    }
     setLockInterface(true);
     setStatusText(getResources().getString("statusline.repaginate"));
     progressDialog.setTitle(getResources().getString("statusline.repaginate"));
@@ -1969,11 +1990,26 @@ public class PreviewProxyBase extends JComponent
     }
   }
 
+  /**
+   * Checks, whether the interface is locked. A locked interface has all
+   * actions disabled and waits for a certain task to be completed. The only
+   * actions that are always enabled are teh help and the exit actions.
+   *  
+   * @return true, if the interface is in the locked state, or false otherwise.
+   */
   public boolean isLockInterface()
   {
     return lockInterface;
   }
 
+  /**
+   * Defines, whether the interface is locked. A locked interface has all
+   * actions disabled and waits for a certain task to be completed. The only
+   * actions that are always enabled are teh help and the exit actions.
+   *  
+   * @param lockInterface set to true, if the interface should be set into the 
+   * locked state, or false otherwise.
+   */
   public void setLockInterface(final boolean lockInterface)
   {
     this.lockInterface = lockInterface;
@@ -1987,11 +2023,22 @@ public class PreviewProxyBase extends JComponent
     }
   }
 
+  /**
+   * Adds a repagination listener to this component. The listener will be 
+   * informed about the pagination progress.
+   *  
+   * @param listener the listener to be added.
+   */
   public void addRepaginationListener(final RepaginationListener listener)
   {
     reportPane.addRepaginationListener(listener);
   }
 
+  /**
+   * Removes the specified repagination listener from this component.
+   * 
+   * @param listener the listener to be removed.
+   */
   public void removeRepaginationListener(final RepaginationListener listener)
   {
     reportPane.removeRepaginationListener(listener);

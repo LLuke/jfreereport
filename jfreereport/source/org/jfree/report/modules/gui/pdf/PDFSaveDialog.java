@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.9 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.10 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * --------
@@ -1340,6 +1340,13 @@ public class PDFSaveDialog extends JDialog
     return true;
   }
 
+  /**
+   * Opens the dialog to query all necessary input from the user.
+   * This will not start the processing, as this is done elsewhere.
+   * 
+   * @param report the report that should be processed.
+   * @return true, if the processing should continue, false otherwise.
+   */
   public boolean performQueryForExport(final JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());
@@ -1354,9 +1361,11 @@ public class PDFSaveDialog extends JDialog
   }
 
   /**
-   * Stores the settings from the dialog in the report configuration.
-   *
-   * @param config the report configuration.
+   * Stores the input from the dialog into the report configuration of the 
+   * report.
+   * 
+   * @param config the report configuration that should receive the new
+   * settings.
    */
   public void storeToConfiguration(final ReportConfiguration config)
   {

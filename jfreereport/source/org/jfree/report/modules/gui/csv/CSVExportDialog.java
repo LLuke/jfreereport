@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.4 2003/08/24 15:08:18 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.5 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * --------
@@ -808,11 +808,11 @@ public class CSVExportDialog extends JDialog
   }
 
   /**
-   * Shows this dialog and (if the dialog is confirmed) saves the complete report into a CSV file.
-   *
-   * @param report  the report being processed.
-   *
-   * @return true or false.
+   * Opens the dialog to query all necessary input from the user.
+   * This will not start the processing, as this is done elsewhere.
+   * 
+   * @param report the report that should be processed.
+   * @return true, if the processing should continue, false otherwise.
    */
   public boolean performQueryForExport(final JFreeReport report)
   {
@@ -848,6 +848,13 @@ public class CSVExportDialog extends JDialog
     setEncoding(encoding);
   }
 
+  /**
+   * Stores the input from the dialog into the report configuration of the 
+   * report.
+   * 
+   * @param config the report configuration that should receive the new
+   * settings.
+   */
   public void storeToConfiguration(final ReportConfiguration config)
   {
     config.setConfigProperty(CSVProcessor.CSV_SEPARATOR, getSeparatorString());

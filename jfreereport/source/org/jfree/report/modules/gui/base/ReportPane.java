@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.6 2003/08/25 14:29:29 taqua Exp $
+ * $Id: ReportPane.java,v 1.7 2003/09/09 02:29:13 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -175,6 +175,7 @@ public class ReportPane extends JComponent
 
   /** The repagination listeners. */
   private ArrayList repaginationListeners;
+  /** The registered repagination listeners as object array to gain performance. */
   private Object[] repaginationListenersCache;
 
   /**
@@ -885,7 +886,8 @@ public class ReportPane extends JComponent
   }
 
   /**
-   * Receives notification of a repagination update.
+   * Receives notification of a repagination update. This method is public
+   * as an implementation side effect.
    *
    * @param state  the state.
    */
@@ -903,6 +905,12 @@ public class ReportPane extends JComponent
     }
   }
 
+  /**
+   * Adds a repagination listener to this component. The listener will be 
+   * informed about the pagination progress.
+   *  
+   * @param listener the listener to be added.
+   */
   public void addRepaginationListener(final RepaginationListener listener)
   {
     if (listener == null)
@@ -913,6 +921,11 @@ public class ReportPane extends JComponent
     repaginationListeners.add(listener);
   }
 
+  /**
+   * Removes the specified repagination listener from this component.
+   * 
+   * @param listener the listener to be removed.
+   */
   public void removeRepaginationListener(final RepaginationListener listener)
   {
     if (listener == null)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewInternalFrame.java,v 1.5 2003/08/31 19:27:57 taqua Exp $
+ * $Id: PreviewInternalFrame.java,v 1.6 2003/09/06 18:09:16 taqua Exp $
  *
  * Changes
  * -------
@@ -154,6 +154,10 @@ public class PreviewInternalFrame extends JInternalFrame implements PreviewProxy
     super.dispose();
   }
 
+  /**
+   * Shuts down the preview component. Once the component is closed, it
+   * cannot be reactivated anymore.
+   */
   public void close()
   {
     base.close();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPluginFactory.java,v 1.10 2003/08/27 20:19:52 taqua Exp $
+ * $Id: ExportPluginFactory.java,v 1.11 2003/09/02 15:05:32 taqua Exp $
  *
  * Changes
  * --------
@@ -283,6 +283,8 @@ public final class ExportPluginFactory
    *
    * @param proxy  the preview proxy.
    * @param config  the report configuration.
+   * @param worker the woker that should be used to execute the exports, or 
+   * null, if all tasks should be executed synchronous.
    *
    * @return  The list of export plugins.
    */
@@ -292,7 +294,6 @@ public final class ExportPluginFactory
     final PluginDefinition[] def = (PluginDefinition[])
         exportPlugins.toArray(new PluginDefinition[exportPlugins.size()]);
 
-    Log.debug ("A total of " + exportPlugins.size() + " is available.");
     Arrays.sort(def);
     final ArrayList retval = new ArrayList();
 
@@ -309,16 +310,15 @@ public final class ExportPluginFactory
         }
         else
         {
-          Log.debug ("Cannot create plugin: " + definition.getPluginClass());
+          Log.warn ("Cannot create plugin: " + definition.getPluginClass());
         }
       }
       else
       {
-        Log.debug(new Log.SimpleMessage("Plugin ", definition.getPluginClass(),
+        Log.info(new Log.SimpleMessage("Plugin ", definition.getPluginClass(),
             " is not enabled."));
       }
     }
-    Log.debug ("Plugins: " + retval);
     return retval;
   }
 }

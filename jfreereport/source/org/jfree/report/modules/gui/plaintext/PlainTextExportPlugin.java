@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportPlugin.java,v 1.4 2003/09/06 18:09:17 taqua Exp $
+ * $Id: PlainTextExportPlugin.java,v 1.5 2003/09/08 18:11:49 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -67,7 +67,7 @@ public class PlainTextExportPlugin extends AbstractExportPlugin
   /** The base resource class. */
   public static final String BASE_RESOURCE_CLASS =
       PlainTextExportResources.class.getName();
-
+  /** The progress dialog that is used to monitor the export progress. */
   private final ReportProgressDialog progressDialog;
 
   /**

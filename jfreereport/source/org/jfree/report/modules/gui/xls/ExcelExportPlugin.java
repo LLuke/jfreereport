@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportPlugin.java,v 1.7 2003/09/06 18:09:17 taqua Exp $
+ * $Id: ExcelExportPlugin.java,v 1.8 2003/09/08 18:11:49 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -68,6 +68,7 @@ public class ExcelExportPlugin extends AbstractExportPlugin
   public static final String BASE_RESOURCE_CLASS =
       XLSExportResources.class.getName();
 
+  /** The progress dialog that is used to monitor the export progress. */
   private final ReportProgressDialog progressDialog;
 
   /**

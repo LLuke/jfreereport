@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintExportTask.java,v 1.3 2003/08/31 21:06:09 taqua Exp $
+ * $Id: PrintExportTask.java,v 1.4 2003/09/06 18:09:17 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,6 +48,7 @@ import org.jfree.report.util.Log;
 public class PrintExportTask extends ExportTask
 {
   private Pageable pageable;
+  /** The progress dialog that is used to monitor the export progress. */
   private ReportProgressDialog progressDialog;
 
   public PrintExportTask(Pageable pageable, ReportProgressDialog progressDialog)

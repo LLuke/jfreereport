@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportDialog.java,v 1.6 2003/08/24 15:08:19 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.7 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------
@@ -1257,6 +1257,13 @@ public class HtmlExportDialog extends JDialog
     return true;
   }
 
+  /**
+   * Opens the dialog to query all necessary input from the user.
+   * This will not start the processing, as this is done elsewhere.
+   * 
+   * @param report the report that should be processed.
+   * @return true, if the processing should continue, false otherwise.
+   */
   public boolean performQueryForExport(final JFreeReport report)
   {
     setModal(true);
@@ -1424,6 +1431,13 @@ public class HtmlExportDialog extends JDialog
     setEncoding(encoding);
   }
 
+  /**
+   * Stores the input from the dialog into the report configuration of the 
+   * report.
+   * 
+   * @param config the report configuration that should receive the new
+   * settings.
+   */
   public void storeToConfiguration(final ReportConfiguration config)
   {
     config.setConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +

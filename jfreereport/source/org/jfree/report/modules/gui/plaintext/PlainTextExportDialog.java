@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.6 2003/08/25 14:29:30 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.7 2003/08/31 19:27:57 taqua Exp $
  *
  * Changes
  * --------
@@ -864,6 +864,11 @@ public class PlainTextExportDialog extends JDialog
 
   }
 
+  /**
+   * Initialises the PDF save dialog from the settings in the report configuration.
+   *
+   * @param config  the report configuration.
+   */
   public void initFromConfiguration(final ReportConfiguration config)
   {
     setEncoding(config.getConfigProperty
@@ -891,6 +896,13 @@ public class PlainTextExportDialog extends JDialog
     }
   }
 
+  /**
+   * Stores the input from the dialog into the report configuration of the 
+   * report.
+   * 
+   * @param config the report configuration that should receive the new
+   * settings.
+   */
   public void storeToConfiguration(final ReportConfiguration config)
   {
     config.setConfigProperty(PlainTextOutputTarget.TEXT_OUTPUT_ENCODING,
@@ -902,6 +914,13 @@ public class PlainTextExportDialog extends JDialog
 
   }
 
+  /**
+   * Opens the dialog to query all necessary input from the user.
+   * This will not start the processing, as this is done elsewhere.
+   * 
+   * @param report the report that should be processed.
+   * @return true, if the processing should continue, false otherwise.
+   */
   public boolean performQueryForExport(final JFreeReport report)
   {
     initFromConfiguration(report.getReportConfiguration());

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportDialog.java,v 1.5 2003/08/24 15:08:19 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.6 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * --------
@@ -76,11 +76,11 @@ import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 
 /**
- * A dialog that is used to perform the printing of a report into an Excel file.
+ * A dialog that is used to prepare the printing of a report into an Excel file.
  * <p>
  * The main method to call the dialog is
- * {@link org.jfree.report.modules.gui.xls.ExcelExportDialog#performExport}. Given a report
- * and a pageformat, the dialog is shown and if the user approved the dialog, the excel file
+ * {@link org.jfree.report.modules.gui.xls.ExcelExportDialog#performQueryForExport(JFreeReport)}. 
+ * Given a report, the dialog is shown and if the user approved the dialog, the excel file
  * is saved using the settings made in the dialog.
  *
  * @author Heiko Evermann
@@ -526,6 +526,13 @@ public class ExcelExportDialog extends JDialog
     return true;
   }
 
+  /**
+   * Opens the dialog to query all necessary input from the user.
+   * This will not start the processing, as this is done elsewhere.
+   * 
+   * @param report the report that should be processed.
+   * @return true, if the processing should continue, false otherwise.
+   */
   public boolean performQueryForExport(final JFreeReport report)
   {
     setModal(true);
@@ -554,6 +561,13 @@ public class ExcelExportDialog extends JDialog
     setStrictLayout(strict.equals("true"));
   }
 
+  /**
+   * Stores the input from the dialog into the report configuration of the 
+   * report.
+   * 
+   * @param config the report configuration that should receive the new
+   * settings.
+   */
   public void storeToConfiguration(final ReportConfiguration config)
   {
     config.setConfigProperty(ExcelProcessor.CONFIGURATION_PREFIX +

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProgressDialog.java,v 1.1 2003/08/24 15:08:18 taqua Exp $
+ * $Id: ReportProgressDialog.java,v 1.2 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -55,25 +55,48 @@ import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 
+/**
+ * A progress monitor dialog component that visualizes the report processing
+ * progress. It will receive update events from the report processors and updates
+ * the UI according to the latest event data.
+ * <p>
+ * The progress will be computed according to the currently processed table row.
+ * This approach provides relativly accurate data, but assumes that processing
+ * all bands consumes roughly the same time.
+ * 
+ * @author Thomas Morgner
+ */
 public class ReportProgressDialog extends JDialog
     implements RepaginationListener
 {
+  /** A label that carries the global message that describes the current task. */
   private JLabel messageCarrier;
+  /** A label containing the report processing pass count. */
   private JLabel passCountMessage;
+  /** A label containing the current page. */
   private JLabel pageCountMessage;
+  /** A label containing the currently processed row. */
   private JLabel rowCountMessage;
+  /** The progress bar that is used to visualize the progress. */
   private JProgressBar progressBar;
-
+  /** The reuseable message format for the page label. */
   private MessageFormat pageMessageFormatter;
+  /** The reuseable message format for the rows label. */
   private MessageFormat rowsMessageFormatter;
+  /** The reuseable message format for the pass label. */
   private MessageFormat passMessageFormatter;
 
+  /** The last page received. */
   private int lastPage;
+  /** The last pass values received. */
   private int lastPass;
+  /** The last max-row received. */
   private int lastMaxRow;
+  /** the cached value for the max-row value as integer. */
   private Integer lastMaxRowInteger;  // this values doesnt change much, so reduce GC work
-
+  /** a text which describes the layouting process. */
   private String layoutText;
+  /** a text that describes the export phase of the report processing. */ 
   private String outputText;
 
 
@@ -111,6 +134,9 @@ public class ReportProgressDialog extends JDialog
     lastPage = -1;
   }
 
+  /**
+   * Initializes the GUI components of this dialog. 
+   */
   private void initialize()
   {
     final JPanel contentPane = new JPanel();
@@ -178,11 +204,19 @@ public class ReportProgressDialog extends JDialog
     setContentPane(contentPane);
   }
 
+  /**
+   * Returns the current message.
+   * @return the current global message.
+   */
   public String getMessage()
   {
     return messageCarrier.getText();
   }
 
+  /**
+   * Defines the current message.
+   * @param message the current global message.
+   */
   public void setMessage(final String message)
   {
     messageCarrier.setText(message);
@@ -206,6 +240,11 @@ public class ReportProgressDialog extends JDialog
     progressBar.setValue(state.getCurrentRow());
   }
 
+  /**
+   * Updates the page message label if the current page has changed.
+   * 
+   * @param page the new page parameter.
+   */
   protected void updatePageMessage(final int page)
   {
     if (lastPage != page)
@@ -216,6 +255,12 @@ public class ReportProgressDialog extends JDialog
     }
   }
 
+  /**
+   * Updates the rows message label if either the rows or maxrows changed.
+   * 
+   * @param rows the currently processed rows.
+   * @param maxRows the maximum number of rows in the report.
+   */
   protected void updateRowsMessage(final int rows, final int maxRows)
   {
     if (maxRows != lastMaxRow)
@@ -230,6 +275,14 @@ public class ReportProgressDialog extends JDialog
     rowCountMessage.setText(rowsMessageFormatter.format(parameters));
   }
 
+  /**
+   * Updates the pass message label if either the pass or prepare state changed.
+   * The pass reflects the current processing level, one level for every function
+   * dependency level. 
+   * 
+   * @param pass the current reporting pass. 
+   * @param prepare true, if the current run is a prepare run, false otherwise.
+   */
   protected void updatePassMessage(final int pass, final boolean prepare)
   {
     if (lastPass != pass)
@@ -258,53 +311,115 @@ public class ReportProgressDialog extends JDialog
     }
   }
 
+  /**
+   * Returns the current pass message component.
+   * 
+   * @return the pass message component.
+   */
   protected final JLabel getPassCountMessage()
   {
     return passCountMessage;
   }
 
+  /**
+   * Returns the current pagecount message component.
+   * 
+   * @return the page message component.
+   */
   protected final JLabel getPageCountMessage()
   {
     return pageCountMessage;
   }
 
+  /**
+   * Returns the current row message component.
+   * 
+   * @return the row message component.
+   */
   protected final JLabel getRowCountMessage()
   {
     return rowCountMessage;
   }
 
+  /**
+   * Returns the current pass message component.
+   * 
+   * @return the pass message component.
+   */
   protected final MessageFormat getPageMessageFormatter()
   {
     return pageMessageFormatter;
   }
 
+  /**
+   * Returns the current pass message component.
+   * 
+   * @return the pass message component.
+   */
   protected final MessageFormat getRowsMessageFormatter()
   {
     return rowsMessageFormatter;
   }
 
+  /**
+   * Returns the current pass message component.
+   * 
+   * @return the pass message component.
+   */
   protected final MessageFormat getPassMessageFormatter()
   {
     return passMessageFormatter;
   }
 
+  /**
+   * Returns the output text message. This text describes the export phases of 
+   * the report processing.
+   * 
+   * @return the output phase description.
+   */
   public String getOutputText()
   {
     return outputText;
   }
 
+  /**
+   * Defines the output text message. This text describes the export phases of 
+   * the report processing.
+   * 
+   * @param outputText the output message.
+   */
   public void setOutputText(final String outputText)
   {
+    if (outputText == null)
+    {
+      throw new NullPointerException("OutputText must not be null.");
+    }
     this.outputText = outputText;
   }
 
+  /**
+   * Returns the layout text. This text describes the prepare phases of 
+   * the report processing.
+   * 
+   * @return the layout text.
+   */
   public String getLayoutText()
   {
     return layoutText;
   }
 
+  /**
+   * Defines the layout text message. This text describes the prepare phases of 
+   * the report processing.
+   * 
+   * @param layoutText the layout message.
+   */
   public void setLayoutText(final String layoutText)
   {
+    if (layoutText == null)
+    {
+      throw new NullPointerException("LayoutText must not be null.");
+    }
     this.layoutText = layoutText;
   }
 

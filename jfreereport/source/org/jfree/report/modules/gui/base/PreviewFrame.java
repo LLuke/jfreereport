@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PreviewFrame.java,v 1.5 2003/08/31 19:27:57 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.6 2003/09/06 18:09:16 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -163,6 +163,10 @@ public class PreviewFrame extends JFrame implements PreviewProxy
     super.dispose();
   }
 
+  /**
+   * Shuts down the preview component. Once the component is closed, it
+   * cannot be reactivated anymore.
+   */
   public void close()
   {
     base.close();
