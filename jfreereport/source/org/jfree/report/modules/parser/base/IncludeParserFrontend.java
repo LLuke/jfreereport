@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: IncludeParserFrontend.java,v 1.5 2003/08/25 14:29:32 taqua Exp $
+ * $Id: IncludeParserFrontend.java,v 1.7 2005/01/25 00:17:38 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,6 +44,7 @@ import java.net.URL;
 import org.jfree.xml.ElementDefinitionException;
 import org.jfree.xml.Parser;
 import org.jfree.xml.ParserFrontend;
+import org.jfree.xml.FrontendDefaultHandler;
 
 /**
  * A parser front end implementation to support include statements
@@ -59,7 +60,7 @@ public class IncludeParserFrontend extends ParserFrontend
    *
    * @param parser the base parser
    */
-  public IncludeParserFrontend(final Parser parser)
+  public IncludeParserFrontend(final FrontendDefaultHandler parser)
   {
     super(new IncludeParser(parser));
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigWriter.java,v 1.5.4.3 2004/10/13 18:42:23 taqua Exp $
+ * $Id: ReportConfigWriter.java,v 1.9 2005/01/25 00:20:32 taqua Exp $
  *
  * Changes
  * -------
@@ -46,9 +46,6 @@ import java.lang.reflect.Modifier;
 import java.util.Enumeration;
 
 import org.jfree.report.modules.parser.base.CommentHintPath;
-import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
-import org.jfree.report.modules.parser.ext.ExtReportHandler;
-import org.jfree.report.modules.parser.ext.ReportConfigHandler;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.report.util.ReportConfiguration;
@@ -65,22 +62,22 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
   /** The comment hint path for all report config related parser hints. */
   private static final CommentHintPath REPORT_CONFIG_HINT_PATH =
       new CommentHintPath(new String[]
-      {ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.REPORT_CONFIG_TAG});
+      {REPORT_DEFINITION_TAG, REPORT_CONFIG_TAG});
 
   /** The comment hint path for all report config related parser hints. */
   private static final CommentHintPath CONFIGURATION_HINT_PATH =
       new CommentHintPath(new String[]
-      {ExtParserModuleInit.REPORT_DEFINITION_TAG,
-       ExtReportHandler.REPORT_CONFIG_TAG,
-       ReportConfigHandler.CONFIGURATION_TAG
+      {REPORT_DEFINITION_TAG,
+       REPORT_CONFIG_TAG,
+       CONFIGURATION_TAG
       });
 
   /** The comment hint path for all page format definition related parser hints. */
   private static final CommentHintPath DEFAULT_PAGEFORMAT_HINT_PATH =
       new CommentHintPath(new String[]
-      {ExtParserModuleInit.REPORT_DEFINITION_TAG,
-       ExtReportHandler.REPORT_CONFIG_TAG,
-       ReportConfigHandler.DEFAULT_PAGEFORMAT_TAG
+      {REPORT_DEFINITION_TAG,
+       REPORT_CONFIG_TAG,
+       DEFAULT_PAGEFORMAT_TAG
       });
 
   /**
@@ -104,17 +101,17 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
   public void write(final Writer writer) throws IOException
   {
     writeComment(writer, REPORT_CONFIG_HINT_PATH, CommentHandler.OPEN_TAG_COMMENT);
-    writeTag(writer, ExtReportHandler.REPORT_CONFIG_TAG);
+    writeTag(writer, REPORT_CONFIG_TAG);
 
     writeComment(writer, DEFAULT_PAGEFORMAT_HINT_PATH, CommentHandler.OPEN_TAG_COMMENT);
-    writeTag(writer, ReportConfigHandler.DEFAULT_PAGEFORMAT_TAG,
+    writeTag(writer, DEFAULT_PAGEFORMAT_TAG,
         buildPageFormatProperties(), CLOSE);
     final ReportConfiguration config = getReport().getReportConfiguration();
     final Enumeration properties = config.getConfigProperties();
     if (properties.hasMoreElements())
     {
       writeComment(writer, CONFIGURATION_HINT_PATH, CommentHandler.OPEN_TAG_COMMENT);
-      writeTag(writer, ReportConfigHandler.CONFIGURATION_TAG);
+      writeTag(writer, CONFIGURATION_TAG);
       while (properties.hasMoreElements())
       {
         final String key = (String) properties.nextElement();
@@ -130,11 +127,11 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
         }
       }
       writeComment(writer, CONFIGURATION_HINT_PATH, CommentHandler.CLOSE_TAG_COMMENT);
-      writeCloseTag(writer, ReportConfigHandler.CONFIGURATION_TAG);
+      writeCloseTag(writer, CONFIGURATION_TAG);
     }
 
     writeComment(writer, REPORT_CONFIG_HINT_PATH, CommentHandler.CLOSE_TAG_COMMENT);
-    writeCloseTag(writer, ExtReportHandler.REPORT_CONFIG_TAG);
+    writeCloseTag(writer, REPORT_CONFIG_TAG);
     writer.write(getLineSeparator());
   }
 
@@ -151,36 +148,36 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
 
     if (fmt.getOrientation() == PageFormat.LANDSCAPE)
     {
-      retval.setAttribute(ReportConfigHandler.ORIENTATION_ATT,
-          ReportConfigHandler.ORIENTATION_LANDSCAPE_VAL);
-      retval.setAttribute(ReportConfigHandler.TOPMARGIN_ATT, String.valueOf(borders[RIGHT_BORDER]));
-      retval.setAttribute(ReportConfigHandler.LEFTMARGIN_ATT, String.valueOf(borders[TOP_BORDER]));
-      retval.setAttribute(ReportConfigHandler.BOTTOMMARGIN_ATT,
+      retval.setAttribute(ORIENTATION_ATT,
+          ORIENTATION_LANDSCAPE_VAL);
+      retval.setAttribute(TOPMARGIN_ATT, String.valueOf(borders[RIGHT_BORDER]));
+      retval.setAttribute(LEFTMARGIN_ATT, String.valueOf(borders[TOP_BORDER]));
+      retval.setAttribute(BOTTOMMARGIN_ATT,
           String.valueOf(borders[LEFT_BORDER]));
-      retval.setAttribute(ReportConfigHandler.RIGHTMARGIN_ATT,
+      retval.setAttribute(RIGHTMARGIN_ATT,
           String.valueOf(borders[BOTTOM_BORDER]));
     }
     else if (fmt.getOrientation() == PageFormat.PORTRAIT)
     {
-      retval.setAttribute(ReportConfigHandler.ORIENTATION_ATT,
-          ReportConfigHandler.ORIENTATION_PORTRAIT_VAL);
-      retval.setAttribute(ReportConfigHandler.TOPMARGIN_ATT, String.valueOf(borders[TOP_BORDER]));
-      retval.setAttribute(ReportConfigHandler.LEFTMARGIN_ATT, String.valueOf(borders[LEFT_BORDER]));
-      retval.setAttribute(ReportConfigHandler.BOTTOMMARGIN_ATT,
+      retval.setAttribute(ORIENTATION_ATT,
+          ORIENTATION_PORTRAIT_VAL);
+      retval.setAttribute(TOPMARGIN_ATT, String.valueOf(borders[TOP_BORDER]));
+      retval.setAttribute(LEFTMARGIN_ATT, String.valueOf(borders[LEFT_BORDER]));
+      retval.setAttribute(BOTTOMMARGIN_ATT,
           String.valueOf(borders[BOTTOM_BORDER]));
-      retval.setAttribute(ReportConfigHandler.RIGHTMARGIN_ATT,
+      retval.setAttribute(RIGHTMARGIN_ATT,
           String.valueOf(borders[RIGHT_BORDER]));
     }
     else
     {
-      retval.setAttribute(ReportConfigHandler.ORIENTATION_ATT,
-          ReportConfigHandler.ORIENTATION_REVERSE_LANDSCAPE_VAL);
-      retval.setAttribute(ReportConfigHandler.TOPMARGIN_ATT, String.valueOf(borders[LEFT_BORDER]));
-      retval.setAttribute(ReportConfigHandler.LEFTMARGIN_ATT,
+      retval.setAttribute(ORIENTATION_ATT,
+          ORIENTATION_REVERSE_LANDSCAPE_VAL);
+      retval.setAttribute(TOPMARGIN_ATT, String.valueOf(borders[LEFT_BORDER]));
+      retval.setAttribute(LEFTMARGIN_ATT,
           String.valueOf(borders[BOTTOM_BORDER]));
-      retval.setAttribute(ReportConfigHandler.BOTTOMMARGIN_ATT,
+      retval.setAttribute(BOTTOMMARGIN_ATT,
           String.valueOf(borders[RIGHT_BORDER]));
-      retval.setAttribute(ReportConfigHandler.RIGHTMARGIN_ATT, String.valueOf(borders[TOP_BORDER]));
+      retval.setAttribute(RIGHTMARGIN_ATT, String.valueOf(borders[TOP_BORDER]));
     }
 
     final int w = (int) fmt.getPaper().getWidth();
@@ -189,12 +186,12 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
     final String pageDefinition = lookupPageDefinition(w, h);
     if (pageDefinition != null)
     {
-      retval.setAttribute(ReportConfigHandler.PAGEFORMAT_ATT, pageDefinition);
+      retval.setAttribute(PAGEFORMAT_ATT, pageDefinition);
     }
     else
     {
-      retval.setAttribute(ReportConfigHandler.WIDTH_ATT, String.valueOf(w));
-      retval.setAttribute(ReportConfigHandler.HEIGHT_ATT, String.valueOf(h));
+      retval.setAttribute(WIDTH_ATT, String.valueOf(w));
+      retval.setAttribute(HEIGHT_ATT, String.valueOf(h));
     }
     return retval;
   }

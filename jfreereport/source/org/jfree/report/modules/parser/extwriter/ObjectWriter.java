@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectWriter.java,v 1.5.4.3 2004/12/13 19:27:14 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.8 2005/01/25 00:20:29 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.jfree.report.modules.parser.base.CommentHintPath;
-import org.jfree.report.modules.parser.ext.CompoundObjectHandler;
 import org.jfree.report.util.Log;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.CommentHandler;
@@ -284,22 +283,22 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     if (isBasicObject(parameterNames, parameterDescription))
     {
       writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
-      writeTag(writer, CompoundObjectHandler.BASIC_OBJECT_TAG, p, OPEN);
+      writeTag(writer, BASIC_OBJECT_TAG, p, OPEN);
       writer.write(normalize((String) parameterDescription.getParameter("value")));
       writeComment(writer, path, CommentHandler.CLOSE_TAG_COMMENT);
-      writeCloseTag(writer, CompoundObjectHandler.BASIC_OBJECT_TAG);
+      writeCloseTag(writer, BASIC_OBJECT_TAG);
     }
     else
     {
       writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
-      writeTag(writer, CompoundObjectHandler.COMPOUND_OBJECT_TAG, p, OPEN);
+      writeTag(writer, COMPOUND_OBJECT_TAG, p, OPEN);
 
       final ObjectWriter objWriter = new ObjectWriter(getReportWriter(), parameterValue,
           parameterDescription, getIndentLevel(), path);
       objWriter.write(writer);
 
       writeComment(writer, path, CommentHandler.CLOSE_TAG_COMMENT);
-      writeCloseTag(writer, CompoundObjectHandler.COMPOUND_OBJECT_TAG);
+      writeCloseTag(writer, COMPOUND_OBJECT_TAG);
     }
 
   }

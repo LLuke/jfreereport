@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionWriter.java,v 1.4.4.1 2004/01/30 14:25:37 taqua Exp $
+ * $Id: ReportDefinitionWriter.java,v 1.7 2005/01/25 00:20:33 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
 {
   /** The parser hint path used to store comments and other additional information. */
   private static final CommentHintPath ROOT_HINT_PATH =
-      new CommentHintPath(ExtParserModuleInit.REPORT_DEFINITION_TAG);
+      new CommentHintPath(REPORT_DEFINITION_TAG);
 
   /**
    * Creates a new writer.
@@ -104,11 +104,11 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
 
     if (reportName != null)
     {
-      writeTag(w, ExtParserModuleInit.REPORT_DEFINITION_TAG, "name", reportName, OPEN);
+      writeTag(w, REPORT_DEFINITION_TAG, "name", reportName, OPEN);
     }
     else
     {
-      writeTag(w, ExtParserModuleInit.REPORT_DEFINITION_TAG);
+      writeTag(w, REPORT_DEFINITION_TAG);
     }
     w.write(getLineSeparator());
 

@@ -25,7 +25,7 @@
  * ----------------
  * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
- * $Id: FontFactory.java,v 1.5.2.1 2003/12/21 23:28:46 taqua Exp $
+ * $Id: FontFactory.java,v 1.8 2005/01/25 00:21:57 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,40 @@ import org.xml.sax.Attributes;
  *
  * @author Thomas Morgner
  */
-public final class FontFactory implements ReportDefinitionTags
+public final class FontFactory
 {
+
+  /** Literal text for an XML attribute. */
+  public static final String FONT_NAME_ATT = "fontname";
+
+  /** Literal text for an XML attribute. */
+  public static final String FONT_STYLE_ATT = "fontstyle";
+
+  /** Literal text for an XML attribute. */
+  public static final String FONT_SIZE_ATT = "fontsize";
+
+
+  /** Literal text for an XML attribute value. */
+  public static final String FS_BOLD = "fsbold";
+
+  /** Literal text for an XML attribute value. */
+  public static final String FS_ITALIC = "fsitalic";
+
+  /** Literal text for an XML attribute value. */
+  public static final String FS_UNDERLINE = "fsunderline";
+
+  /** Literal text for an XML attribute value. */
+  public static final String FS_STRIKETHR = "fsstrikethr";
+
+  /** Literal text for an XML attribute value. */
+  public static final String FS_EMBEDDED = "font-embedded";
+
+  /** Literal text for an XML attribute value. */
+  public static final String FS_ENCODING = "font-encoding";
+
+  /** Literal text for an XML attribute value. */
+  public static final String LINEHEIGHT = "line-height";
+  
   /**
    * The FontInformation class is used to store the font definition, until it
    * can be applied to a stylesheet. Parameters that are not defined, are null.

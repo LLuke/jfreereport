@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.6.4.1 2004/10/11 21:00:59 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.8 2005/01/25 00:20:27 taqua Exp $
  *
  * Changes
  * -------
@@ -43,21 +43,6 @@ import java.io.Writer;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.parser.base.CommentHintPath;
-import org.jfree.report.modules.parser.ext.BandHandler;
-import org.jfree.report.modules.parser.ext.CompoundObjectHandler;
-import org.jfree.report.modules.parser.ext.DataSourceHandler;
-import org.jfree.report.modules.parser.ext.ExpressionHandler;
-import org.jfree.report.modules.parser.ext.ExtReportHandler;
-import org.jfree.report.modules.parser.ext.FunctionsHandler;
-import org.jfree.report.modules.parser.ext.GroupHandler;
-import org.jfree.report.modules.parser.ext.GroupsHandler;
-import org.jfree.report.modules.parser.ext.ParserConfigHandler;
-import org.jfree.report.modules.parser.ext.PropertyHandler;
-import org.jfree.report.modules.parser.ext.ReportConfigHandler;
-import org.jfree.report.modules.parser.ext.ReportDescriptionHandler;
-import org.jfree.report.modules.parser.ext.StyleSheetHandler;
-import org.jfree.report.modules.parser.ext.StylesHandler;
-import org.jfree.report.modules.parser.ext.TemplatesHandler;
 import org.jfree.xml.writer.SafeTagList;
 import org.jfree.xml.writer.XMLWriterSupport;
 
@@ -68,6 +53,188 @@ import org.jfree.xml.writer.XMLWriterSupport;
  */
 public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
 {
+  /** the document element tag for the extended report format. */
+  public static final String REPORT_DEFINITION_TAG = "report-definition";
+
+  /** The parser config tag name. */
+  public static final String PARSER_CONFIG_TAG = "parser-config";
+
+  /** The report config tag name. */
+  public static final String REPORT_CONFIG_TAG = "report-config";
+
+  /** The styles tag name. */
+  public static final String STYLES_TAG = "styles";
+
+  /** The templates tag name. */
+  public static final String TEMPLATES_TAG = "templates";
+
+  /** The report description tag name. */
+  public static final String REPORT_DESCRIPTION_TAG = "report-description";
+
+  /** The functions tag name. */
+  public static final String FUNCTIONS_TAG = "functions";
+
+  /** The 'band' tag. */
+  public static final String BAND_TAG = "band";
+
+  /** The 'element' tag. */
+  public static final String ELEMENT_TAG = "element";
+
+  /** The text for the 'compound-object' tag. */
+  public static final String COMPOUND_OBJECT_TAG = "compound-object";
+
+  /** The text for the 'basic-object' tag. */
+  public static final String BASIC_OBJECT_TAG = "basic-object";
+
+  /** The datasource tag name. */
+  public static final String DATASOURCE_TAG = "datasource";
+
+  /** The properties tag name. */
+  public static final String PROPERTIES_TAG = "properties";
+
+  /** The name of the function tag. */
+  public static final String FUNCTION_TAG = "function";
+
+  /** The name of the expression tag. */
+  public static final String EXPRESSION_TAG = "expression";
+
+  /** The name of the 'property-ref' tag. */
+  public static final String PROPERTY_REF_TAG = "property-ref";
+
+  /** The 'fields' tag name. */
+  public static final String FIELDS_TAG = "fields";
+
+  /** The 'field' tag name. */
+  public static final String FIELD_TAG = "field";
+
+  /** The 'group-header' tag name. */
+  public static final String GROUP_HEADER_TAG = "group-header";
+
+  /** The 'group-footer' tag name. */
+  public static final String GROUP_FOOTER_TAG = "group-footer";
+
+  /** The 'group' tag name. */
+  public static final String GROUP_TAG = "group";
+
+  /** The 'stylekey-factory' tag name. */
+  public static final String STYLEKEY_FACTORY_TAG = "stylekey-factory";
+
+  /** The 'template-factory' tag name. */
+  public static final String TEMPLATE_FACTORY_TAG = "template-factory";
+
+  /** The 'object-factory' tag name. */
+  public static final String OBJECT_FACTORY_TAG = "object-factory";
+
+  /** The 'datadefinition-factory' tag name. */
+  public static final String DATADEFINITION_FACTORY_TAG = "datadefinition-factory";
+
+  /** The 'datasource-factory' tag name. */
+  public static final String DATASOURCE_FACTORY_TAG = "datasource-factory";
+
+  /** The 'element-factory' tag name. */
+  public static final String ELEMENT_FACTORY_TAG = "element-factory";
+
+  /** The class attribute name. */
+  public static final String CLASS_ATTRIBUTE = "class";
+
+  /** The 'default page format' tag name. */
+  public static final String DEFAULT_PAGEFORMAT_TAG = "defaultpageformat";
+
+  /** The 'configuration' tag name. */
+  public static final String CONFIGURATION_TAG = "configuration";
+
+  /** The 'output-config' tag name. */
+  public static final String OUTPUT_TARGET_TAG = "output-config";
+
+  /** Literal text for an XML attribute. */
+  public static final String PAGEFORMAT_ATT = "pageformat";
+
+  /** Literal text for an XML attribute. */
+  public static final String LEFTMARGIN_ATT = "leftmargin";
+
+  /** Literal text for an XML attribute. */
+  public static final String RIGHTMARGIN_ATT = "rightmargin";
+
+  /** Literal text for an XML attribute. */
+  public static final String TOPMARGIN_ATT = "topmargin";
+
+  /** Literal text for an XML attribute. */
+  public static final String BOTTOMMARGIN_ATT = "bottommargin";
+
+  /** Literal text for an XML attribute. */
+  public static final String WIDTH_ATT = "width";
+
+  /** Literal text for an XML attribute. */
+  public static final String HEIGHT_ATT = "height";
+
+  /** Literal text for an XML attribute. */
+  public static final String ORIENTATION_ATT = "orientation";
+
+  /** Literal text for an XML attribute. */
+  public static final String ORIENTATION_PORTRAIT_VAL = "portrait";
+
+  /** Literal text for an XML attribute. */
+  public static final String ORIENTATION_LANDSCAPE_VAL = "landscape";
+
+  /** Literal text for an XML attribute. */
+  public static final String ORIENTATION_REVERSE_LANDSCAPE_VAL = "reverselandscape";
+
+  /** A constant defining a style key factory parser hint. */
+  public static final String STYLEKEY_FACTORY_HINT =
+      "ext.parser.parser-config.stylekeyfactories";
+  /** A constant defining an object factory parser hint. */
+  public static final String OBJECT_FACTORY_HINT =
+      "ext.parser.parser-config.objectfactories";
+  /** A constant defining a datasource factory parser hint. */
+  public static final String DATASOURCE_FACTORY_HINT =
+      "ext.parser.parser-config.datasourcefactories";
+  /** A constant defining a template factory parser hint. */
+  public static final String TEMPLATE_FACTORY_HINT =
+      "ext.parser.parser-config.templatefactories";
+  /** A constant defining a element factory parser hint. */
+  public static final String ELEMENT_FACTORY_HINT =
+      "ext.parser.parser-config.elementfactories";
+  /** The 'report-header' tag name. */
+  public static final String REPORT_HEADER_TAG = "report-header";
+
+  /** The 'report-footer' tag name. */
+  public static final String REPORT_FOOTER_TAG = "report-footer";
+
+  /** The 'page-header' tag name. */
+  public static final String PAGE_HEADER_TAG = "page-header";
+
+  /** The 'page-footer' tag name. */
+  public static final String PAGE_FOOTER_TAG = "page-footer";
+
+  /** The 'itemband' tag name. */
+  public static final String ITEMBAND_TAG = "itemband";
+
+  /** The 'groups' tag name. */
+  public static final String GROUPS_TAG = "groups";
+
+  public static final String WATERMARK_TAG = "watermark";
+  /** The 'style' tag name. */
+  public static final String STYLE_TAG = "style";
+
+  /** The 'compound-key' tag name. */
+  public static final String COMPOUND_KEY_TAG = "compound-key";
+
+  /** The 'basic-key' tag name. */
+  public static final String BASIC_KEY_TAG = "basic-key";
+
+  /** The 'extends' tag name. */
+  public static final String EXTENDS_TAG = "extends";
+
+  /** The template tag. */
+  public static final String TEMPLATE_TAG = "template";
+
+  /** The 'property' tag name. */
+  public static final String PROPERTY_TAG = "property";
+
+  /** The 'name' attribute text. */
+  public static final String NAME_ATTR = "name";
+
+
   /** A report writer. */
   private final ReportWriter reportWriter;
 
@@ -84,63 +251,61 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
     if (safeTags == null)
     {
       safeTags = new SafeTagList();
-      safeTags.add(ExtReportHandler.DATA_DEFINITION_TAG);
-      safeTags.add(ExtReportHandler.FUNCTIONS_TAG);
-      safeTags.add(ExtReportHandler.PARSER_CONFIG_TAG);
-      safeTags.add(ExtReportHandler.REPORT_CONFIG_TAG);
-      safeTags.add(ExtReportHandler.REPORT_DEFINITION_TAG);
-      safeTags.add(ExtReportHandler.REPORT_DESCRIPTION_TAG);
-      safeTags.add(ExtReportHandler.STYLES_TAG);
-      safeTags.add(ExtReportHandler.TEMPLATES_TAG);
+      safeTags.add(FUNCTIONS_TAG);
+      safeTags.add(PARSER_CONFIG_TAG);
+      safeTags.add(REPORT_CONFIG_TAG);
+      safeTags.add(REPORT_DEFINITION_TAG);
+      safeTags.add(REPORT_DESCRIPTION_TAG);
+      safeTags.add(STYLES_TAG);
+      safeTags.add(TEMPLATES_TAG);
 
-      safeTags.add(BandHandler.BAND_TAG);
-      safeTags.add(BandHandler.DEFAULT_STYLE_TAG);
-      safeTags.add(BandHandler.ELEMENT_TAG);
+      safeTags.add(BAND_TAG);
+      safeTags.add(ELEMENT_TAG);
 
-      safeTags.add(CompoundObjectHandler.COMPOUND_OBJECT_TAG);
-      safeTags.add(CompoundObjectHandler.BASIC_OBJECT_TAG, false, true);
+      safeTags.add(COMPOUND_OBJECT_TAG);
+      safeTags.add(BASIC_OBJECT_TAG, false, true);
 
-      safeTags.add(DataSourceHandler.DATASOURCE_TAG);
+      safeTags.add(DATASOURCE_TAG);
 
-      safeTags.add(ExpressionHandler.PROPERTIES_TAG);
+      safeTags.add(PROPERTIES_TAG);
 
-      safeTags.add(FunctionsHandler.EXPRESSION_TAG);
-      safeTags.add(FunctionsHandler.FUNCTION_TAG);
-      safeTags.add(FunctionsHandler.PROPERTY_REF_TAG);
+      safeTags.add(EXPRESSION_TAG);
+      safeTags.add(FUNCTION_TAG);
+      safeTags.add(PROPERTY_REF_TAG);
 
-      safeTags.add(GroupHandler.FIELDS_TAG);
-      safeTags.add(GroupHandler.FIELD_TAG, false, true);
-      safeTags.add(GroupHandler.GROUP_FOOTER_TAG);
-      safeTags.add(GroupHandler.GROUP_HEADER_TAG);
+      safeTags.add(FIELDS_TAG);
+      safeTags.add(FIELD_TAG, false, true);
+      safeTags.add(GROUP_FOOTER_TAG);
+      safeTags.add(GROUP_HEADER_TAG);
 
-      safeTags.add(GroupsHandler.GROUP_TAG);
+      safeTags.add(GROUP_TAG);
 
-      safeTags.add(ParserConfigHandler.DATADEFINITION_FACTORY_TAG);
-      safeTags.add(ParserConfigHandler.DATASOURCE_FACTORY_TAG);
-      safeTags.add(ParserConfigHandler.ELEMENT_FACTORY_TAG);
-      safeTags.add(ParserConfigHandler.OBJECT_FACTORY_TAG);
-      safeTags.add(ParserConfigHandler.STYLEKEY_FACTORY_TAG);
-      safeTags.add(ParserConfigHandler.TEMPLATE_FACTORY_TAG);
+      safeTags.add(DATADEFINITION_FACTORY_TAG);
+      safeTags.add(DATASOURCE_FACTORY_TAG);
+      safeTags.add(ELEMENT_FACTORY_TAG);
+      safeTags.add(OBJECT_FACTORY_TAG);
+      safeTags.add(STYLEKEY_FACTORY_TAG);
+      safeTags.add(TEMPLATE_FACTORY_TAG);
 
-      safeTags.add(ReportConfigHandler.CONFIGURATION_TAG);
-      safeTags.add(ReportConfigHandler.DEFAULT_PAGEFORMAT_TAG);
-      safeTags.add(ReportConfigHandler.OUTPUT_TARGET_TAG);
+      safeTags.add(CONFIGURATION_TAG);
+      safeTags.add(DEFAULT_PAGEFORMAT_TAG);
+      safeTags.add(OUTPUT_TARGET_TAG);
 
-      safeTags.add(ReportDescriptionHandler.GROUPS_TAG);
-      safeTags.add(ReportDescriptionHandler.ITEMBAND_TAG);
-      safeTags.add(ReportDescriptionHandler.PAGE_FOOTER_TAG);
-      safeTags.add(ReportDescriptionHandler.PAGE_HEADER_TAG);
-      safeTags.add(ReportDescriptionHandler.REPORT_FOOTER_TAG);
-      safeTags.add(ReportDescriptionHandler.REPORT_HEADER_TAG);
+      safeTags.add(GROUPS_TAG);
+      safeTags.add(ITEMBAND_TAG);
+      safeTags.add(PAGE_FOOTER_TAG);
+      safeTags.add(PAGE_HEADER_TAG);
+      safeTags.add(REPORT_FOOTER_TAG);
+      safeTags.add(REPORT_HEADER_TAG);
 
-      safeTags.add(StylesHandler.STYLE_TAG);
+      safeTags.add(STYLE_TAG);
 
-      safeTags.add(StyleSheetHandler.COMPOUND_KEY_TAG);
-      safeTags.add(StyleSheetHandler.BASIC_KEY_TAG, false, true);
-      safeTags.add(StyleSheetHandler.EXTENDS_TAG);
+      safeTags.add(COMPOUND_KEY_TAG);
+      safeTags.add(BASIC_KEY_TAG, false, true);
+      safeTags.add(EXTENDS_TAG);
 
-      safeTags.add(TemplatesHandler.TEMPLATE_TAG);
-      safeTags.add(PropertyHandler.PROPERTY_TAG, false, true);
+      safeTags.add(TEMPLATE_TAG);
+      safeTags.add(PROPERTY_TAG, false, true);
     }
     return safeTags;
   }

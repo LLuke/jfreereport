@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceWriter.java,v 1.5.4.2 2004/10/13 18:42:23 taqua Exp $
+ * $Id: DataSourceWriter.java,v 1.8 2005/01/25 00:20:28 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ import java.io.Writer;
 
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.modules.parser.base.CommentHintPath;
-import org.jfree.report.modules.parser.ext.DataSourceHandler;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
 import org.jfree.xml.CommentHandler;
 import org.jfree.xml.factory.objects.ObjectDescription;
@@ -112,16 +111,16 @@ public class DataSourceWriter extends ObjectWriter
       }
 
       final CommentHintPath path = getCommentHintPath().getInstance();
-      path.addName(DataSourceHandler.DATASOURCE_TAG);
+      path.addName(DATASOURCE_TAG);
       writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
-      writeTag(writer, DataSourceHandler.DATASOURCE_TAG, "type", dsname, OPEN);
+      writeTag(writer, DATASOURCE_TAG, "type", dsname, OPEN);
 
       final DataSourceWriter dsWriter =
           new DataSourceWriter(getReportWriter(), ds, dsDesc, getIndentLevel(), path);
       dsWriter.write(writer);
 
       writeComment(writer, path, CommentHandler.CLOSE_TAG_COMMENT);
-      writeCloseTag(writer, DataSourceHandler.DATASOURCE_TAG);
+      writeCloseTag(writer, DATASOURCE_TAG);
 
     }
     else

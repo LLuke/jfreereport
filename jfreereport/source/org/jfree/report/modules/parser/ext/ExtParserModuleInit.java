@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtParserModuleInit.java,v 1.7 2003/08/25 14:29:32 taqua Exp $
+ * $Id: ExtParserModuleInit.java,v 1.9 2005/01/25 00:19:00 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,7 @@ import java.net.URL;
 
 import org.jfree.report.modules.parser.base.InitialReportHandler;
 import org.jfree.report.modules.parser.base.ParserEntityResolver;
+import org.jfree.report.modules.parser.ext.readhandlers.ReportDefinitionReadHandler;
 import org.jfree.base.modules.ModuleInitializer;
 import org.jfree.base.modules.ModuleInitializeException;
 
@@ -52,9 +53,6 @@ import org.jfree.base.modules.ModuleInitializeException;
  */
 public class ExtParserModuleInit implements ModuleInitializer
 {
-  /** the document element tag for the extended report format. */
-  public static final String REPORT_DEFINITION_TAG = "report-definition";
-
   /** the Public ID for the extensible version of JFreeReport XML definitions. */
   public static final String PUBLIC_ID_EXTENDED =
       "-//JFreeReport//DTD report definition//EN//extended";
@@ -79,7 +77,8 @@ public class ExtParserModuleInit implements ModuleInitializer
         "/org/jfree/report/modules/parser/ext/resources/extreport.dtd");
     res.setDTDLocation(PUBLIC_ID_EXTENDED, urlExtReportDTD);
 
-    InitialReportHandler.registerHandler(REPORT_DEFINITION_TAG, ExtReportHandler.class.getName());
+    InitialReportHandler.registerHandler
+            ("report-definition", ReportDefinitionReadHandler.class.getName());
 
   }
 }

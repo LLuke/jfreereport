@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.14.4.1 2004/01/30 14:25:36 taqua Exp $
+ * $Id: ReportParser.java,v 1.17 2005/01/25 00:17:50 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,10 @@ package org.jfree.report.modules.parser.base;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportBuilderHints;
-import org.jfree.xml.Parser;
+import org.jfree.xml.FrontendDefaultHandler;
+import org.jfree.xml.parser.RootXmlReadHandler;
+import org.jfree.xml.util.ObjectFactory;
+import org.jfree.xml.util.SimpleObjectFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
@@ -53,10 +56,12 @@ import org.xml.sax.SAXParseException;
  *
  * @author Thomas Morgner
  */
-public class ReportParser extends Parser
+public class ReportParser extends RootXmlReadHandler
 {
   /** The key that stores the report defintion in the helper objects collection. */
   public static final String HELPER_OBJ_REPORT_NAME = "report";
+
+  private ObjectFactory objectFactory;
 
   /**
    * Default constuctor. Initalizes the parser to use the JFreeReport parser
@@ -64,7 +69,19 @@ public class ReportParser extends Parser
    */
   public ReportParser()
   {
-    setInitialFactory(new InitialReportHandler(this));
+    objectFactory = new SimpleObjectFactory();
+    setRootHandler(new InitialReportHandler());
+  }
+
+
+  /**
+   * Returns the object factory.
+   *
+   * @return The object factory.
+   */
+  public ObjectFactory getFactoryLoader ()
+  {
+    return objectFactory;
   }
 
   /**
@@ -72,7 +89,7 @@ public class ReportParser extends Parser
    *
    * @return The instance.
    */
-  public Parser getInstance()
+  public FrontendDefaultHandler newInstance()
   {
     return new ReportParser();
   }

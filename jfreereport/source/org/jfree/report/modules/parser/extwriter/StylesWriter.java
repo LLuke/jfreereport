@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesWriter.java,v 1.7 2005/01/25 00:20:35 taqua Exp $
+ * $Id: StylesWriter.java,v 1.8 2005/01/30 23:37:24 taqua Exp $
  *
  * Changes
  * -------
@@ -46,9 +46,6 @@ import org.jfree.report.Element;
 import org.jfree.report.Group;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.parser.base.CommentHintPath;
-import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
-import org.jfree.report.modules.parser.ext.ExtReportHandler;
-import org.jfree.report.modules.parser.ext.StylesHandler;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.xml.CommentHandler;
 
@@ -62,7 +59,7 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
   /** The comment hint path used to retrieve the comments from the parser hints. */
   private static final CommentHintPath STYLES_HINT_PATH =
       new CommentHintPath(new String[]
-      {ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.STYLES_TAG});
+      {REPORT_DEFINITION_TAG, STYLES_TAG});
 
 
   /** Storage for the styles. */
@@ -100,24 +97,24 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
       return;
     }
 
-    writeTag(writer, ExtReportHandler.STYLES_TAG);
+    writeTag(writer, STYLES_TAG);
     for (int i = 0; i < styles.length; i++)
     {
       final ElementStyleSheet style = styles[i];
       final CommentHintPath stylePath = STYLES_HINT_PATH.getInstance();
       stylePath.addName(style);
       writeComment(writer, stylePath, CommentHandler.OPEN_TAG_COMMENT);
-      writeTag(writer, StylesHandler.STYLE_TAG, "name", style.getName(), OPEN);
+      writeTag(writer, STYLE_TAG, "name", style.getName(), OPEN);
 
       final StyleWriter stW = new StyleWriter
           (getReportWriter(), style, null, getIndentLevel(), stylePath);
       stW.write(writer);
 
       writeComment(writer, stylePath, CommentHandler.CLOSE_TAG_COMMENT);
-      writeCloseTag(writer, StylesHandler.STYLE_TAG);
+      writeCloseTag(writer, STYLE_TAG);
     }
     writeComment(writer, STYLES_HINT_PATH, CommentHandler.CLOSE_TAG_COMMENT);
-    writeCloseTag(writer, ExtReportHandler.STYLES_TAG);
+    writeCloseTag(writer, STYLES_TAG);
     writer.write(getLineSeparator());
   }
 

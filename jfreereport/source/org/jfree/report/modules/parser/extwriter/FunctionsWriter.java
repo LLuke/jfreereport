@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.6.4.4 2004/12/30 14:46:13 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.10 2005/01/25 00:20:29 taqua Exp $
  *
  * Changes
  * -------
@@ -45,10 +45,6 @@ import java.util.Iterator;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.ExpressionCollection;
 import org.jfree.report.modules.parser.base.CommentHintPath;
-import org.jfree.report.modules.parser.ext.ExpressionHandler;
-import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
-import org.jfree.report.modules.parser.ext.ExtReportHandler;
-import org.jfree.report.modules.parser.ext.FunctionsHandler;
 import org.jfree.report.util.ReportProperties;
 import org.jfree.report.util.beans.BeanException;
 import org.jfree.report.util.beans.BeanUtility;
@@ -66,7 +62,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
 {
   /** The comment hint path for all functions related parser hints. */
   private static final CommentHintPath FUNCTIONS_PATH = new CommentHintPath
-      (new String[]{ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.FUNCTIONS_TAG});
+      (new String[]{REPORT_DEFINITION_TAG, FUNCTIONS_TAG});
 
 
   /** The object factory. */
@@ -99,13 +95,13 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
     writeComment(writer, FUNCTIONS_PATH, CommentHandler.OPEN_TAG_COMMENT);
     if (shouldWriteFunctions())
     {
-      writeTag(writer, ExtReportHandler.FUNCTIONS_TAG);
+      writeTag(writer, FUNCTIONS_TAG);
 
       writePropertyRefs(writer);
       writeExpressions(writer, getReport().getExpressions());
 
       writeComment(writer, FUNCTIONS_PATH, CommentHandler.CLOSE_TAG_COMMENT);
-      writeCloseTag(writer, ExtReportHandler.FUNCTIONS_TAG);
+      writeCloseTag(writer, FUNCTIONS_TAG);
     }
   }
 
@@ -156,19 +152,19 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
           final AttributeList properties = new AttributeList();
           properties.setAttribute("name", expression.getName());
           properties.setAttribute("class", expression.getClass().getName());
-          writeTag(writer, FunctionsHandler.EXPRESSION_TAG, properties, CLOSE);
+          writeTag(writer, EXPRESSION_TAG, properties, CLOSE);
         }
         else
         {
           final AttributeList properties = new AttributeList();
           properties.setAttribute("name", expression.getName());
           properties.setAttribute("class", expression.getClass().getName());
-          writeTag(writer, FunctionsHandler.EXPRESSION_TAG, properties, OPEN);
+          writeTag(writer, EXPRESSION_TAG, properties, OPEN);
 
           writeExpressionParameters(writer, path, propertyNames, bu);
 
           writeComment(writer, path, CommentHandler.CLOSE_TAG_COMMENT);
-          writeCloseTag(writer, FunctionsHandler.EXPRESSION_TAG);
+          writeCloseTag(writer, EXPRESSION_TAG);
         }
 
       }
@@ -185,9 +181,9 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
       throws IOException, BeanException
   {
     final CommentHintPath propertiesPath = path.getInstance();
-    propertiesPath.addName(ExpressionHandler.PROPERTIES_TAG);
+    propertiesPath.addName(PROPERTIES_TAG);
     writeComment(writer, propertiesPath, CommentHandler.OPEN_TAG_COMMENT);
-    writeTag(writer, ExpressionHandler.PROPERTIES_TAG);
+    writeTag(writer, PROPERTIES_TAG);
 
     for (int i = 0; i < propertyNames.length; i++)
     {
@@ -206,7 +202,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
     }
 
     writeComment(writer, propertiesPath, CommentHandler.CLOSE_TAG_COMMENT);
-    writeCloseTag(writer, ExpressionHandler.PROPERTIES_TAG);
+    writeCloseTag(writer, PROPERTIES_TAG);
   }
 
   /**
@@ -235,7 +231,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
         if (value == null)
         {
           writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
-          writeTag(writer, FunctionsHandler.PROPERTY_REF_TAG, "name", name, CLOSE);
+          writeTag(writer, PROPERTY_REF_TAG, "name", name, CLOSE);
         }
         else
         {
@@ -247,7 +243,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
           if (od == null)
           {
             writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
-            writeTag(writer, FunctionsHandler.PROPERTY_REF_TAG, "name", name, CLOSE);
+            writeTag(writer, PROPERTY_REF_TAG, "name", name, CLOSE);
           }
           else
           {
@@ -256,10 +252,10 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
             properties.setAttribute("class", od.getObjectClass().getName());
 
             writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
-            writeTag(writer, FunctionsHandler.PROPERTY_REF_TAG, properties, OPEN);
+            writeTag(writer, PROPERTY_REF_TAG, properties, OPEN);
             writeObjectDescription(writer, od.getInstance(), value, path);
             writeComment(writer, path, CommentHandler.CLOSE_TAG_COMMENT);
-            writeCloseTag(writer, FunctionsHandler.PROPERTY_REF_TAG);
+            writeCloseTag(writer, PROPERTY_REF_TAG);
           }
         }
       }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: IncludeParser.java,v 1.4 2003/08/25 14:29:32 taqua Exp $
+ * $Id: IncludeParser.java,v 1.6 2005/01/25 00:17:38 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,7 +38,11 @@
 
 package org.jfree.report.modules.parser.base;
 
-import org.jfree.xml.Parser;
+import org.jfree.xml.FrontendDefaultHandler;
+import org.jfree.xml.parser.RootXmlReadHandler;
+import org.jfree.xml.util.ObjectFactory;
+import org.jfree.xml.util.SimpleObjectFactory;
+import org.xml.sax.SAXException;
 
 /**
  * The include parser is used to support include statements in
@@ -48,23 +52,36 @@ import org.jfree.xml.Parser;
  *
  * @author Thomas Morgner
  */
-public class IncludeParser extends Parser
+public class IncludeParser extends RootXmlReadHandler
 {
   /** The key that indicates that this is a included parser. */
   public static final String INCLUDE_PARSING_KEY = "include-parsing";
 
   /** The parser backend that supplies the configuration. */
-  private final Parser backend;
+  private final FrontendDefaultHandler backend;
+
+  private SimpleObjectFactory objectFactory;
 
   /**
    * Creates a new include parser with the given parser as backend.
    *
    * @param backend the backend parser that provides the configuration.
    */
-  public IncludeParser(final Parser backend)
+  public IncludeParser(final FrontendDefaultHandler backend)
   {
+    this.objectFactory = new SimpleObjectFactory();
     this.backend = backend;
     setConfigProperty(IncludeParser.INCLUDE_PARSING_KEY, "true");
+  }
+
+  /**
+   * Returns the object factory.
+   *
+   * @return The object factory.
+   */
+  public ObjectFactory getFactoryLoader ()
+  {
+    return objectFactory;
   }
 
   /**
@@ -74,7 +91,7 @@ public class IncludeParser extends Parser
    * @return the new include parser instance using the same backend as
    * this instance.
    */
-  public Parser getInstance()
+  public FrontendDefaultHandler newInstance()
   {
     return new IncludeParser(backend);
   }
@@ -85,7 +102,7 @@ public class IncludeParser extends Parser
    *
    * @return the backends result.
    */
-  public Object getResult()
+  public Object getResult() throws SAXException
   {
     return backend.getResult();
   }
@@ -122,22 +139,5 @@ public class IncludeParser extends Parser
     return super.getConfigProperty(key, backend.getConfigProperty(key, defaultValue));
   }
 
-  /**
-   * Returns a helper object which is stored on the parser. If the helper
-   * object is not defined in this object, this method will look for it
-   * in the backend.
-   * @see org.jfree.xml.Parser#getHelperObject(java.lang.String)
-   *
-   * @param key the helper object key
-   * @return the helper object or null if there is no such object stored.
-   */
-  public Object getHelperObject(final String key)
-  {
-    final Object o = super.getHelperObject(key);
-    if (o == null)
-    {
-      return backend.getHelperObject(key);
-    }
-    return o;
-  }
+
 }

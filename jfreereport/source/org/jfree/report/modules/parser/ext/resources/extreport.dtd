@@ -5,6 +5,8 @@
     11-Feb-2003 : Initial version
     05-Mar-2003 : Documentation
     20-May-2003 : Bug-Fix
+    03-Feb-2005 : Removed the 'datadefinition' stuff - it was never and will
+                  never be used.
 -->
 
 <!--
@@ -66,7 +68,7 @@
   The parser can handle more than one factory per type.
 
  -->
-<!ELEMENT parser-config ((element-factory|stylekey-factory|template-factory|datadefinition-factory|object-factory|datasource-factory)*)>
+<!ELEMENT parser-config ((element-factory|stylekey-factory|template-factory|object-factory|datasource-factory)*)>
 
 <!--
 
@@ -89,7 +91,7 @@
  -->
 <!ELEMENT stylekey-factory EMPTY>
 <!ATTLIST stylekey-factory
-  class      CDATA   #IMPLIED
+  class      CDATA   #REQUIRED
 >
 
 <!--
@@ -114,7 +116,7 @@
  -->
 <!ELEMENT object-factory EMPTY>
 <!ATTLIST object-factory
-  class      CDATA   #IMPLIED
+  class      CDATA   #REQUIRED
 >
 
 <!--
@@ -138,7 +140,7 @@
  -->
 <!ELEMENT datasource-factory EMPTY>
 <!ATTLIST datasource-factory
-  class      CDATA   #IMPLIED
+  class      CDATA   #REQUIRED
 >
 
 <!--
@@ -158,18 +160,7 @@
  -->
 <!ELEMENT template-factory EMPTY>
 <!ATTLIST template-factory
-  class      CDATA   #IMPLIED
->
-
-<!--
-
-  The data definition factory is not yet used and will be implemented in
-  version 0.8.4, when support for subreports gets implemented.
-
- -->
-<!ELEMENT datadefinition-factory EMPTY>
-<!ATTLIST datadefinition-factory
-  class      CDATA   #IMPLIED
+  class      CDATA   #REQUIRED
 >
 
 <!--
@@ -178,18 +169,20 @@
   by specifying their target content type, it is up to the factory to
   choose a suitable implementation.
 
-  At the moment (0.8.1), three element types are defined:
+  At the moment (0.8.5), five element types are defined:
 
-  text/plain    - The org.jfree.report.TextElement
-  shape/generic - The org.jfree.report.ShapeElement
-  image/generic - The org.jfree.report.ImageElement
+  text/plain        - The org.jfree.report.TextElement
+  shape/generic     - The org.jfree.report.ShapeElement
+  image/generic     - The org.jfree.report.ImageElement
+  drawable/generic  - the org.jfree.report.DrawableElement
+  X-anchor          - The org.jfree.report.AnchorElement
 
   This list is likely to grow during the next versions.
 
  -->
 <!ELEMENT element-factory EMPTY>
 <!ATTLIST element-factory
-  class      CDATA   #IMPLIED
+  class      CDATA   #REQUIRED
 >
 
 <!--
@@ -198,7 +191,7 @@
  and the default page format for the report.
 
  -->
-<!ELEMENT report-config (defaultpageformat?, configuration?)>
+<!ELEMENT report-config (page-definition?, configuration?)>
 
 <!--
 
@@ -211,8 +204,12 @@
 
   All values are defined in points (1/72 inch).
  -->
-<!ELEMENT defaultpageformat EMPTY>
-<!ATTLIST defaultpageformat
+<!ELEMENT page-definition (page, page*)>
+
+<!ELEMENT page EMPTY>
+<!ATTLIST page
+  x              CDATA            #IMPLIED
+  y              CDATA            #IMPLIED
   width          CDATA            #IMPLIED
   height         CDATA            #IMPLIED
   pageformat     %pageFormats;    #IMPLIED
@@ -238,30 +235,20 @@
 
 <!--
 
-  This is not yet used, and reserved for later definitions.
-
- -->
-<!ELEMENT data-definition EMPTY>
-
-<!--
-
   The styles section can be used to predefine stylesheets, which can
   be applied to the report elements and bands.
 
   Stylesheets can inherit values from other style sheets, the inherited
   style key definitions can be overridden by own style definitions.
 
-  External style definition are not yet implemented.
-
   The order of the styles definition is important. A style sheet cannot
   be referenced, until it is defined, so parent style sheets must be defined
   before their childs.
 
+  A global library of stylesheets can be defined using the 'include' tag.
+
  -->
 <!ELEMENT styles (style*)>
-<!ATTLIST styles
-  external       CDATA           #IMPLIED
->
 
 <!--
 
@@ -276,18 +263,6 @@
  -->
 <!ELEMENT style  (extends*, (basic-key|compound-key)*)>
 <!ATTLIST style
-  name           CDATA           #IMPLIED
->
-
-<!--
-
-  Defines a band defaul style sheet. This style sheet will automaticly added
-  as one of the parent style sheets for all elements of the band and can be
-  used to define band wide default settings.
-
- -->
-<!ELEMENT default-style  (extends*, (basic-key|compound-key)*)>
-<!ATTLIST default-style
   name           CDATA           #IMPLIED
 >
 
@@ -487,32 +462,32 @@
   "pagebreak_after_print" attribute.
 
   -->
-<!ELEMENT report-header   (style?, default-style?, (band | element)*)>
+<!ELEMENT report-header   (style?, (band | element)*)>
 <!ATTLIST report-header
   name           CDATA           #IMPLIED
 >
 
-<!ELEMENT report-footer   (style?, default-style?, (band | element)*)>
+<!ELEMENT report-footer   (style?, (band | element)*)>
 <!ATTLIST report-footer
   name           CDATA           #IMPLIED
 >
 
-<!ELEMENT page-header   (style?, default-style?, (band | element)*)>
+<!ELEMENT page-header   (style?, (band | element)*)>
 <!ATTLIST page-header
   name           CDATA           #IMPLIED
 >
 
-<!ELEMENT page-footer   (style?, default-style?, (band | element)*)>
+<!ELEMENT page-footer   (style?, (band | element)*)>
 <!ATTLIST page-footer
   name           CDATA           #IMPLIED
 >
 
-<!ELEMENT watermark   (style?, default-style?, (band | element)*)>
+<!ELEMENT watermark   (style?, (band | element)*)>
 <!ATTLIST watermark
   name           CDATA           #IMPLIED
 >
 
-<!ELEMENT itemband   (style?, default-style?, (band | element)*)>
+<!ELEMENT itemband   (style?, (band | element)*)>
 <!ATTLIST itemband
   name           CDATA           #IMPLIED
 >
@@ -569,17 +544,17 @@
   has the repeat flag set.
 
   -->
-<!ELEMENT group-header   (style?, default-style?, (band | element)*)>
+<!ELEMENT group-header   (style?, (band | element)*)>
 <!ATTLIST group-header
   name           CDATA           #IMPLIED
 >
 
-<!ELEMENT group-footer   (style?, default-style?, (band | element)*)>
+<!ELEMENT group-footer   (style?, (band | element)*)>
 <!ATTLIST group-footer
   name           CDATA           #IMPLIED
 >
 
-<!ELEMENT band  (style?, default-style?, (band | element)*)>
+<!ELEMENT band  (style?, (band | element)*)>
 <!ATTLIST band
   name           CDATA           #IMPLIED
 >
@@ -647,7 +622,6 @@
 <!ELEMENT property-ref  (#PCDATA)>
 <!ATTLIST property-ref
   name       CDATA   #REQUIRED
-  encoding   CDATA   #IMPLIED
   class      CDATA   #IMPLIED
 >
 

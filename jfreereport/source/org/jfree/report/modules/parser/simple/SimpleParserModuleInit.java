@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimpleParserModuleInit.java,v 1.7 2003/08/25 14:29:33 taqua Exp $
+ * $Id: SimpleParserModuleInit.java,v 1.9 2005/01/25 00:22:15 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,6 +42,7 @@ import java.net.URL;
 
 import org.jfree.report.modules.parser.base.InitialReportHandler;
 import org.jfree.report.modules.parser.base.ParserEntityResolver;
+import org.jfree.report.modules.parser.simple.readhandlers.JFreeReportReadHandler;
 import org.jfree.base.modules.ModuleInitializer;
 import org.jfree.base.modules.ModuleInitializeException;
 
@@ -82,6 +83,7 @@ public class SimpleParserModuleInit implements ModuleInitializer
         ("/org/jfree/report/modules/parser/simple/resources/report.dtd");
     res.setDTDLocation(PUBLIC_ID_SIMPLE, urlReportDTD);
 
-    InitialReportHandler.registerHandler(OLD_REPORT_TAG, ReportFactory.class.getName());
+    InitialReportHandler.registerHandler
+            (OLD_REPORT_TAG, JFreeReportReadHandler.class.getName());
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.5.4.2 2004/12/13 19:27:14 taqua Exp $
+ * $Id: ReportWriter.java,v 1.7 2005/01/25 00:20:34 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@ import java.util.List;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportBuilderHints;
-import org.jfree.report.modules.parser.ext.ParserConfigHandler;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceFactory;
 import org.jfree.report.modules.parser.ext.factory.elements.ElementFactory;
@@ -175,7 +174,7 @@ public class ReportWriter
   {
     final ReportBuilderHints hints = getReport().getReportBuilderHints();
     final List l = (List) 
-      hints.getHint(getReport(), ParserConfigHandler.OBJECT_FACTORY_HINT, List.class);
+      hints.getHint(getReport(), "", List.class);
     if (l == null)
     {
       return;
@@ -194,7 +193,7 @@ public class ReportWriter
   {
     final ReportBuilderHints hints = getReport().getReportBuilderHints();
     final List l = (List) hints.getHint(getReport(),
-        ParserConfigHandler.DATASOURCE_FACTORY_HINT, List.class);
+        "", List.class);
     if (l == null)
     {
       return;
@@ -214,7 +213,7 @@ public class ReportWriter
   {
     final ReportBuilderHints hints = getReport().getReportBuilderHints();
     final List l = (List) hints.getHint(getReport(),
-        ParserConfigHandler.TEMPLATE_FACTORY_HINT, List.class);
+        "", List.class);
     if (l == null)
     {
       return;
@@ -234,7 +233,7 @@ public class ReportWriter
   {
     final ReportBuilderHints hints = getReport().getReportBuilderHints();
     final List l = (List) hints.getHint(getReport(),
-        ParserConfigHandler.ELEMENT_FACTORY_HINT, List.class);
+        "", List.class);
     if (l == null)
     {
       return;
@@ -254,7 +253,7 @@ public class ReportWriter
   {
     final ReportBuilderHints hints = getReport().getReportBuilderHints();
     final List l = (List) hints.getHint(getReport(),
-        ParserConfigHandler.STYLEKEY_FACTORY_HINT, List.class);
+        "", List.class);
     if (l == null)
     {
       return;

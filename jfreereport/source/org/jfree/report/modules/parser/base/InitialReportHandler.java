@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
 
- * $Id: InitialReportHandler.java,v 1.6 2003/08/25 14:29:32 taqua Exp $
+ * $Id: InitialReportHandler.java,v 1.8 2005/01/25 00:17:38 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,10 @@ package org.jfree.report.modules.parser.base;
 
 import java.util.Hashtable;
 
-import org.jfree.xml.ElementDefinitionHandler;
-import org.jfree.xml.Parser;
+import org.jfree.xml.parser.XmlReadHandler;
+import org.jfree.xml.parser.XmlReaderException;
+import org.jfree.xml.parser.RootXmlReadHandler;
+import org.jfree.xml.ElementDefinitionException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -58,7 +60,7 @@ import org.xml.sax.SAXException;
  *
  * @author Thomas Morgner
  */
-public class InitialReportHandler implements ElementDefinitionHandler
+public class InitialReportHandler implements XmlReadHandler
 {
   /** A collection of all defined element handlers. */
   private static Hashtable definedHandlers;
@@ -109,20 +111,13 @@ public class InitialReportHandler implements ElementDefinitionHandler
     return (String) definedHandlers.get(tagname);
   }
 
-  /** the parser that is used to coordinate the report parsing process. */
-  private final Parser parser;
-
   /** THe currently processed document element tag. */
   private String activeRootTag;
 
-  /**
-   * Creates a new IntialReportHander for the given parser.
-   *
-   * @param parser the used parser for the report definition process.
-   */
-  public InitialReportHandler(final Parser parser)
+  private RootXmlReadHandler rootXmlReadHandler;
+
+  public InitialReportHandler ()
   {
-    this.parser = parser;
   }
 
   /**
@@ -132,19 +127,47 @@ public class InitialReportHandler implements ElementDefinitionHandler
    * @return the instantiated handler
    * @throws SAXException if the handler could not be loaded.
    */
-  private ReportRootHandler loadHandler(final String className) throws SAXException
+  private XmlReadHandler loadHandler(final String className) throws SAXException
   {
     try
     {
       final Class handler = Class.forName(className);
-      return (ReportRootHandler) handler.newInstance();
+      return (XmlReadHandler) handler.newInstance();
     }
     catch (Exception e)
     {
+      e.printStackTrace();
       throw new SAXException
           ("Unable to load handler. An optional handler module for " +
-          "this report definition type is missing.");
+          "this report definition type is missing. [" + className + "]");
     }
+  }
+
+  /**
+   * Returns the object for this element or null, if this element does not create an
+   * object.
+   *
+   * @return the object.
+   *
+   * @throws org.jfree.xml.parser.XmlReaderException
+   *          if there is a parsing error.
+   */
+  public Object getObject ()
+          throws XmlReaderException
+  {
+    return null;
+  }
+
+  /**
+   * Initialise.
+   *
+   * @param rootHandler the root handler.
+   * @param tagName     the tag name.
+   */
+  public void init (final RootXmlReadHandler rootHandler, final String tagName)
+  {
+    rootXmlReadHandler = rootHandler;
+    activeRootTag = tagName;
   }
 
   /**
@@ -165,11 +188,15 @@ public class InitialReportHandler implements ElementDefinitionHandler
       throw new SAXException("No handler registered for the tag '" + tagName + "'");
     }
 
-    final ReportRootHandler reportDefinitionHandler = loadHandler(activeHandler);
-    reportDefinitionHandler.init((ReportParser) getParser(), tagName);
-    getParser().pushFactory(reportDefinitionHandler);
-    activeRootTag = tagName;
-    reportDefinitionHandler.startElement(tagName, attrs);
+    final XmlReadHandler reportDefinitionHandler = loadHandler(activeHandler);
+    try
+    {
+      rootXmlReadHandler.delegate(reportDefinitionHandler, tagName, attrs);
+    }
+    catch (XmlReaderException e)
+    {
+      throw new ElementDefinitionException ("Unable to delegate parsing process.");
+    }
   }
 
   /**
@@ -202,15 +229,5 @@ public class InitialReportHandler implements ElementDefinitionHandler
       throw new SAXException("Invalid TagName: " + tagName + ", expected one of the "
           + " registered root tag names.");
     }
-  }
-
-  /**
-   * Returns the parser.
-   *
-   * @return The parser.
-   */
-  public Parser getParser()
-  {
-    return parser;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigWriter.java,v 1.5.4.1 2004/01/30 14:25:37 taqua Exp $
+ * $Id: ParserConfigWriter.java,v 1.8 2005/01/25 00:20:32 taqua Exp $
  *
  * Changes
  * -------
@@ -44,9 +44,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.jfree.report.modules.parser.base.CommentHintPath;
-import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
-import org.jfree.report.modules.parser.ext.ExtReportHandler;
-import org.jfree.report.modules.parser.ext.ParserConfigHandler;
 import org.jfree.report.util.Log;
 import org.jfree.xml.CommentHandler;
 
@@ -62,8 +59,8 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
       (
           new String[]
           {
-            ExtParserModuleInit.REPORT_DEFINITION_TAG,
-            ExtReportHandler.PARSER_CONFIG_TAG
+            REPORT_DEFINITION_TAG,
+            PARSER_CONFIG_TAG
           }
       );
 
@@ -89,21 +86,21 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
   {
     writeComment(writer, PARSER_CONFIG_PATH, CommentHandler.OPEN_TAG_COMMENT);
 
-    writeTag(writer, ExtReportHandler.PARSER_CONFIG_TAG);
+    writeTag(writer, PARSER_CONFIG_TAG);
 
-    writeFactory(writer, ParserConfigHandler.OBJECT_FACTORY_TAG,
+    writeFactory(writer, OBJECT_FACTORY_TAG,
         filterFactories(getReportWriter().getClassFactoryCollector().getFactories()));
-    writeFactory(writer, ParserConfigHandler.ELEMENT_FACTORY_TAG,
+    writeFactory(writer, ELEMENT_FACTORY_TAG,
         filterFactories(getReportWriter().getElementFactoryCollector().getFactories()));
-    writeFactory(writer, ParserConfigHandler.STYLEKEY_FACTORY_TAG,
+    writeFactory(writer, STYLEKEY_FACTORY_TAG,
         filterFactories(getReportWriter().getStyleKeyFactoryCollector().getFactories()));
-    writeFactory(writer, ParserConfigHandler.TEMPLATE_FACTORY_TAG,
+    writeFactory(writer, TEMPLATE_FACTORY_TAG,
         filterFactories(getReportWriter().getTemplateCollector().getFactories()));
-    writeFactory(writer, ParserConfigHandler.DATASOURCE_FACTORY_TAG,
+    writeFactory(writer, DATASOURCE_FACTORY_TAG,
         filterFactories(getReportWriter().getDataSourceCollector().getFactories()));
 
     writeComment(writer, PARSER_CONFIG_PATH, CommentHandler.CLOSE_TAG_COMMENT);
-    writeCloseTag(writer, ExtReportHandler.PARSER_CONFIG_TAG);
+    writeCloseTag(writer, PARSER_CONFIG_TAG);
     writer.write(getLineSeparator());
   }
 
@@ -190,7 +187,7 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
       path.addName(tagName);
       path.addName(itObject.getClass().getName());
       writeComment(w, path, CommentHandler.OPEN_TAG_COMMENT);
-      writeTag(w, tagName, ParserConfigHandler.CLASS_ATTRIBUTE, className, CLOSE);
+      writeTag(w, tagName, CLASS_ATTRIBUTE, className, CLOSE);
     }
   }
 

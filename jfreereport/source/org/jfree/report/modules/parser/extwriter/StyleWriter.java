@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.10 2005/01/25 00:20:34 taqua Exp $
+ * $Id: StyleWriter.java,v 1.11 2005/01/30 23:37:24 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@ import java.util.List;
 
 import org.jfree.report.ShapeElement;
 import org.jfree.report.modules.parser.base.CommentHintPath;
-import org.jfree.report.modules.parser.ext.StyleSheetHandler;
 import org.jfree.report.style.BandDefaultStyleSheet;
 import org.jfree.report.style.ElementDefaultStyleSheet;
 import org.jfree.report.style.ElementStyleSheet;
@@ -123,7 +122,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
         final CommentHintPath extendsPath = commentPath.getInstance();
         extendsPath.addName(parent.getName());
         writeComment(writer, extendsPath, CommentHandler.OPEN_TAG_COMMENT);
-        writeTag(writer, StyleSheetHandler.EXTENDS_TAG, "name", parent.getName(), CLOSE);
+        writeTag(writer, EXTENDS_TAG, "name", parent.getName(), CLOSE);
       }
     }
 
@@ -253,20 +252,20 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     if (isBasicKey(parameterNames, od))
     {
       writeComment(w, styleKeyPath, CommentHandler.OPEN_TAG_COMMENT);
-      writeTag(w, StyleSheetHandler.BASIC_KEY_TAG, p, OPEN);
+      writeTag(w, BASIC_KEY_TAG, p, OPEN);
       w.write(normalize((String) od.getParameter("value")));
       writeComment(w, styleKeyPath, CommentHandler.CLOSE_TAG_COMMENT);
-      writeCloseTag(w, StyleSheetHandler.BASIC_KEY_TAG);
+      writeCloseTag(w, BASIC_KEY_TAG);
     }
     else
     {
       writeComment(w, styleKeyPath, CommentHandler.OPEN_TAG_COMMENT);
-      writeTag(w, StyleSheetHandler.COMPOUND_KEY_TAG, p, OPEN);
+      writeTag(w, COMPOUND_KEY_TAG, p, OPEN);
       final ObjectWriter objWriter = new ObjectWriter
           (getReportWriter(), o, od, getIndentLevel(), styleKeyPath);
       objWriter.write(w);
       writeComment(w, styleKeyPath, CommentHandler.CLOSE_TAG_COMMENT);
-      writeCloseTag(w, StyleSheetHandler.COMPOUND_KEY_TAG);
+      writeCloseTag(w, COMPOUND_KEY_TAG);
     }
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateWriter.java,v 1.6.4.3 2004/12/13 19:27:14 taqua Exp $
+ * $Id: TemplateWriter.java,v 1.9 2005/01/25 00:20:40 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,7 +43,6 @@ import java.io.Writer;
 import java.util.Iterator;
 
 import org.jfree.report.modules.parser.base.CommentHintPath;
-import org.jfree.report.modules.parser.ext.ElementHandler;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
 import org.jfree.util.ObjectUtilities;
 import org.jfree.xml.CommentHandler;
@@ -125,7 +124,7 @@ public class TemplateWriter extends ObjectWriter
         if (tagWritten == false)
         {
           writeComment(writer, getCommentHintPath(), CommentHandler.OPEN_TAG_COMMENT);
-          writeTag(writer, ElementHandler.TEMPLATE_TAG, p, OPEN);
+          writeTag(writer, TEMPLATE_TAG, p, OPEN);
           tagWritten = true;
         }
         writeParameter(writer, name);
@@ -134,12 +133,12 @@ public class TemplateWriter extends ObjectWriter
     if (tagWritten)
     {
       writeComment(writer, getCommentHintPath(), CommentHandler.CLOSE_TAG_COMMENT);
-      writeCloseTag(writer, ElementHandler.TEMPLATE_TAG);
+      writeCloseTag(writer, TEMPLATE_TAG);
     }
     else
     {
       writeComment(writer, getCommentHintPath(), CommentHandler.OPEN_TAG_COMMENT);
-      writeTag(writer, ElementHandler.TEMPLATE_TAG, p, CLOSE);
+      writeTag(writer, TEMPLATE_TAG, p, CLOSE);
     }
   }
 

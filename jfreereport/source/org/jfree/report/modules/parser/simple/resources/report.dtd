@@ -62,7 +62,8 @@
 <!ENTITY % position
  "x           CDATA          #REQUIRED
   y           CDATA          #REQUIRED
-  width       CDATA          #REQUIRED"
+  width       CDATA          #REQUIRED
+  height      CDATA          #REQUIRED"
 >
 
 <!--
@@ -77,8 +78,13 @@
 
   -->
 <!ENTITY % basicform
-" color          CDATA          #IMPLIED
-  name           CDATA          #IMPLIED"
+" color                CDATA         #IMPLIED
+  name                 CDATA         #IMPLIED
+  dynamic              (%boolean;)   #IMPLIED
+  trim-text-content    (%boolean;)   #IMPLIED
+  visible              (%boolean;)   #IMPLIED
+  layout-cachable      (%boolean;)   #IMPLIED
+  reserved-literal     CDATA         #IMPLIED"
  >
 
 <!ENTITY % fontdef
@@ -93,18 +99,16 @@
   font-encoding  CDATA              #IMPLIED
   line-height    CDATA              #IMPLIED
 
-  alignment      (%alignmentEnum;)  #IMPLIED
+  alignment              (%alignmentEnum;)  #IMPLIED
   vertical-alignment     (%valignmentEnum;) #IMPLIED"
  >
 
-<!--
-  Removed multiline function: This element was never implemented and now all text elements
-  support linebreaks.
-  -->
+
 <!ENTITY % itemelements
   "(label | string-field | number-field | date-field |
 	imageref | image-field | imageurl-field | rectangle |
   resource-label | resource-field | line |
+  message-field | anchor-field |
   drawable-field | shape-field | band)*">
 
 
@@ -177,7 +181,9 @@
       SUPERB | TABLOID | TABLOIDEXTRA )"
 >
 
-<!ELEMENT report   (configuration?, reportheader?, reportfooter?, pageheader?, pagefooter?, watermark?, groups?, items?, functions?)>
+<!ELEMENT report   ((configuration | reportheader | reportfooter |
+                     pageheader | pagefooter | watermark | groups |
+                     items | functions | include)*)>
 
 <!ATTLIST report
   width          CDATA           #IMPLIED
@@ -189,6 +195,11 @@
   rightmargin    CDATA           #IMPLIED
   topmargin      CDATA           #IMPLIED
   bottommargin   CDATA           #IMPLIED
+>
+
+<!ELEMENT include EMPTY>
+<!ATTLIST include
+  src            CDATA           #REQUIRED
 >
 
 <!--
@@ -212,31 +223,33 @@
 
   In an header the ownpage is translated as pagebreak_after_print,
   on an footer that attribute is translated to pagebreak_before_print.
-
   -->
 <!ELEMENT reportheader ( %itemelements; )>
 <!ATTLIST reportheader
-  ownpage         (%boolean;)    #IMPLIED
-  height         CDATA           #IMPLIED
-   %basicform;
+  height           CDATA           #IMPLIED
+  fixed-position   CDATA           #IMPLIED
+  pagebreak-after  CDATA           #IMPLIED
+  %basicform;
   %fontdef;
-  fixed-position CDATA          #IMPLIED
 >
 
 <!ELEMENT reportfooter ( %itemelements; )>
 <!ATTLIST reportfooter
-  ownpage        (%boolean;)    #IMPLIED
-  height         CDATA          #IMPLIED
+  fixed-position    CDATA          #IMPLIED
+  pagebreak-before  CDATA          #IMPLIED
+  height            CDATA          #IMPLIED
   %basicform;
   %fontdef;
-  fixed-position CDATA          #IMPLIED
 >
-
 
 
 <!--
 
-  The pageheader can contain any band-element.
+  The pageheader can contain any band-element. Be aware, that the
+  page header cannot create pagebreaks. If the content in the pageheader
+  is to large for a single page (or no other content can fit on the
+  page after the pageheader has printed), the report processing will
+  fail.
 
   As with every element container you may define default font settings
   for sub elements without an own font definition.
@@ -251,6 +264,24 @@
   %fontdef;
 >
 
+<!--
+
+  The pagefooter should not contain dynamic elements. Be aware, that the
+  page header cannot create pagebreaks. If the content in the pageheader
+  is to large for a single page (or no other content can fit on the
+  page after the pageheader has printed), the report processing will
+  fail.
+
+  Dynamic elements can change their height on every event. If the element
+  changes during a pagebreak, it can happen, that there is not enough space
+  to print the contents of the element. Dynamic element can also influence
+  the page break detection in an invalid way - causing pagebreak to be
+  issued to early or to late.
+
+  As with every element container you may define default font settings
+  for sub elements without an own font definition.
+
+  -->
 <!ELEMENT pagefooter ( %itemelements; )>
 <!ATTLIST pagefooter
   onfirstpage    (%boolean;)   #IMPLIED
@@ -269,10 +300,8 @@
   -->
 <!ELEMENT groups (group*)>
 
-<!--
-  The fields are required
-  -->
-<!ELEMENT group  (groupheader?, groupfooter?, fields)>
+
+<!ELEMENT group  ((groupheader | groupfooter | fields)*)>
 <!ATTLIST group
   name           CDATA         #IMPLIED
 >
@@ -280,63 +309,79 @@
 <!--
 
   A group header is printed before a group starts. A group start
-  is invoked when one element in groupelements changes and on the
-  start of the report generation.
+  is invoked when one element that was referenced in the field list
+  changes and on the start of the report generation.
 
-  If pagebreak is set to true, a page break will be forced before
-  the group header is printed.
+  If pagebreak-before-print is set to true, a page break will be forced before
+  the group header is printed; a pagebreak-after-print does the same after
+  the group header has been printed.
 
   If repeat is set to true, this header is repeated after an pagebreak
-  if this group is still active and no other groupheader in an subgroup
-  has the repeat flag set.
+  if this group is still active. If an other groupheader in an subgroup
+  has the repeat flag set, all headers are printed in their order of
+  appearance.
 
-  The pagebreak attribute is now deprecated and is replaced by
-  pagebreak-before-print.
   -->
 <!ELEMENT groupheader ( %itemelements; )>
 <!ATTLIST groupheader
-  pagebreak                 (%boolean;)   #IMPLIED
   pagebreak-after-print     (%boolean;)   #IMPLIED
   pagebreak-before-print    (%boolean;)   #IMPLIED
   repeat                    (%boolean;)   #IMPLIED
   height                    CDATA         #IMPLIED
+  fixed-position            CDATA         #IMPLIED
   %basicform;
   %fontdef;
-  fixed-position CDATA          #IMPLIED
 >
 
 <!--
-  This pagebreak is a pagebreak before print ...
+
+  A group footer is printed when a group is finished. A group is
+  finished, when one element, that was referenced in the field list,
+  changes its value and at the end of the report generation.
+
+  If pagebreak-before-print is set to true, a page break will be forced before
+  the group footer is printed; a pagebreak-after-print does the same after
+  the group footer has been printed.
+
   -->
 <!ELEMENT groupfooter ( %itemelements; )>
 <!ATTLIST groupfooter
-  pagebreak                 (%boolean;)   #IMPLIED
   pagebreak-after-print     (%boolean;)   #IMPLIED
   pagebreak-before-print    (%boolean;)   #IMPLIED
   height                    CDATA         #IMPLIED
+  fixed-position            CDATA         #IMPLIED
   %basicform;
   %fontdef;
-  fixed-position CDATA          #IMPLIED
 >
 
 <!--
 
-  the name of the elements that have to change for
+  The name of the fields or functions that have to change for
   a group break.
 
   A report group may have more than one group element.
-  A group element may only contain Strings defining the
+  A fields list may only contain strings defining the
   names of the items which form a group. This is not
   limited to items from the data model, you may also
-  enter functions here.
+  enter expressions here.
 
   If you define a subgroup, then you'll have to include all
   fields of the parent group and at least one new field.
+  The field is not required to exist. If the field does not
+  exist during the report processing, the value 'null' is used
+  as replacement for the field's content.
 
  -->
 <!ELEMENT fields  (field*)>
 <!ELEMENT field  (#PCDATA)>
 
+<!--
+
+  The watermark element is printed before any other element is
+  printed on a new page. That band can consume the complete space
+  of the page - it will never trigger a pagebreak.
+
+ -->
 <!ELEMENT watermark   ( %itemelements; )>
 <!ATTLIST watermark
   height         CDATA          #IMPLIED
@@ -347,27 +392,55 @@
 
 <!ELEMENT items   ( %itemelements; )>
 <!ATTLIST items
-  height         CDATA          #IMPLIED
+  pagebreak-after-print     (%boolean;)   #IMPLIED
+  pagebreak-before-print    (%boolean;)   #IMPLIED
+  fixed-position            CDATA         #IMPLIED
+  height                    CDATA         #IMPLIED
   %basicform;
   %fontdef;
-  fixed-position CDATA          #IMPLIED
 >
 
 <!--
 
-  Defines a sub band.
+  Defines a sub band. Subbands cannot generate pagebreak for now.
+  These bands inherit the style properties of their parents.
+
+  If no width is specified, the width will be computed according
+  to the elements contained in that band.
 
   -->
 <!ELEMENT band ( %itemelements; )>
 <!ATTLIST band
-  x              CDATA          #REQUIRED
-  y              CDATA          #REQUIRED
+  x              CDATA          #IMPLIED
+  y              CDATA          #IMPLIED
   width          CDATA          #IMPLIED
   height         CDATA          #IMPLIED
   %basicform;
   %fontdef;
 >
 
+<!--
+  A simple label, static text that does not change. Labels define no
+  'nullstring' as their content cannot be possibly null using a valid parser.
+  -->
+<!ELEMENT label   (#PCDATA)>
+<!ATTLIST label
+  %basicform;
+  %position;
+  %fontdef;
+>
+
+<!--
+  A simple text field.
+  -->
+<!ELEMENT string-field   EMPTY>
+<!ATTLIST string-field
+  %basicform;
+  %position;
+  %fontdef;
+  fieldname   CDATA    #REQUIRED
+  nullstring  CDATA    #IMPLIED
+>
 
 <!--
 
@@ -379,14 +452,10 @@
 <!ELEMENT resource-label   (#PCDATA)>
 <!ATTLIST resource-label
   %basicform;
-  %position;
-  height         CDATA          #REQUIRED
   %fontdef;
-  nullstring     CDATA          #IMPLIED
-  dynamic        (%boolean;)    #IMPLIED
-  resource-base  CDATA          #IMPLIED
-  trim-text-content    (%boolean;)   #IMPLIED
-  reserved-literal     CDATA         #IMPLIED
+  %position;
+  nullstring           CDATA         #IMPLIED
+  resource-base        CDATA         #IMPLIED
 >
 
 <!--
@@ -398,46 +467,11 @@
 <!ELEMENT resource-field   EMPTY>
 <!ATTLIST resource-field
   %basicform;
-  %position;
-  height         CDATA          #REQUIRED
   %fontdef;
-  fieldname   CDATA    #REQUIRED
-  nullstring  CDATA    #IMPLIED
-  dynamic     (%boolean;)   #IMPLIED
-  resource-base  CDATA          #IMPLIED
-  trim-text-content    (%boolean;)   #IMPLIED
-  reserved-literal     CDATA         #IMPLIED
->
-
-<!--
-  A simple label, static text that does not change
-  -->
-<!ELEMENT label   (#PCDATA)>
-<!ATTLIST label
-  %basicform;
   %position;
-  height         CDATA          #REQUIRED
-  %fontdef;
-  nullstring     CDATA          #IMPLIED
-  dynamic        (%boolean;)    #IMPLIED
-  trim-text-content    (%boolean;)   #IMPLIED
-  reserved-literal     CDATA         #IMPLIED
->
-
-<!--
-  A simple text field
-  -->
-<!ELEMENT string-field   EMPTY>
-<!ATTLIST string-field
-  %basicform;
-  %position;
-  height         CDATA          #REQUIRED
-  %fontdef;
-  fieldname   CDATA    #REQUIRED
-  nullstring  CDATA    #IMPLIED
-  dynamic     (%boolean;)   #IMPLIED
-  trim-text-content    (%boolean;)   #IMPLIED
-  reserved-literal     CDATA         #IMPLIED
+  nullstring           CDATA         #IMPLIED
+  resource-base        CDATA         #IMPLIED
+  fieldname            CDATA         #REQUIRED
 >
 
 
@@ -445,28 +479,20 @@
 <!ATTLIST number-field
   %basicform;
   %position;
-  height         CDATA          #REQUIRED
   %fontdef;
   format		CDATA      #IMPLIED
   fieldname   CDATA    #REQUIRED
   nullstring  CDATA    #IMPLIED
-  dynamic     (%boolean;)   #IMPLIED
-  trim-text-content    (%boolean;)   #IMPLIED
-  reserved-literal     CDATA         #IMPLIED
 >
 
 <!ELEMENT date-field   EMPTY>
 <!ATTLIST date-field
   %basicform;
   %position;
-  height         CDATA          #REQUIRED
   %fontdef;
   format		           CDATA         #IMPLIED
   fieldname            CDATA         #REQUIRED
-  dynamic              (%boolean;)   #IMPLIED
   nullstring           CDATA         #IMPLIED
-  trim-text-content    (%boolean;)   #IMPLIED
-  reserved-literal     CDATA         #IMPLIED
 >
 
 
@@ -478,12 +504,13 @@
 <!ELEMENT imageref   EMPTY>
 <!ATTLIST imageref
   %position;
-  height      CDATA #REQUIRED
-  src         CDATA #REQUIRED
-  name        CDATA #IMPLIED
-  dynamic     (%boolean;)   #IMPLIED
-  scale       (%boolean;)   #IMPLIED
-  keepAspectRatio     (%boolean;)   #IMPLIED
+  name                 CDATA         #IMPLIED
+  src                  CDATA         #REQUIRED
+  dynamic              (%boolean;)   #IMPLIED
+  visible              (%boolean;)   #IMPLIED
+  layout-cachable      (%boolean;)   #IMPLIED
+  scale                (%boolean;)   #IMPLIED
+  keepAspectRatio      (%boolean;)   #IMPLIED
 >
 <!--
 
@@ -491,28 +518,16 @@
    Graphics2D-Object in the datasource.
 
   -->
-<!ELEMENT image-field   EMPTY>
+<!ELEMENT image-field  EMPTY>
 <!ATTLIST image-field
   %position;
-  height      CDATA #REQUIRED
-  fieldname   CDATA #REQUIRED
-  name        CDATA #IMPLIED
-  dynamic     (%boolean;)   #IMPLIED
-  scale       (%boolean;)   #IMPLIED
-  keepAspectRatio     (%boolean;)   #IMPLIED
->
-
-<!--
-  Not yet complete, may change ...
-
-  Field may not be dynamic, as drawables have no content size
--->
-<!ELEMENT drawable-field   EMPTY>
-<!ATTLIST drawable-field
-  %position;
-  height      CDATA #REQUIRED
-  fieldname   CDATA #REQUIRED
-  name        CDATA #IMPLIED
+  fieldname            CDATA         #REQUIRED
+  name                 CDATA         #IMPLIED
+  dynamic              (%boolean;)   #IMPLIED
+  visible              (%boolean;)   #IMPLIED
+  layout-cachable      (%boolean;)   #IMPLIED
+  scale                (%boolean;)   #IMPLIED
+  keepAspectRatio      (%boolean;)   #IMPLIED
 >
 
 <!--
@@ -524,21 +539,29 @@
 <!ELEMENT imageurl-field   EMPTY>
 <!ATTLIST imageurl-field
   %position;
-  height      CDATA #REQUIRED
-  fieldname   CDATA #REQUIRED
-  name        CDATA #IMPLIED
-  dynamic     (%boolean;)   #IMPLIED
-  scale       (%boolean;)   #IMPLIED
-  keepAspectRatio     (%boolean;)   #IMPLIED
-  dynamic        (%boolean;)    #IMPLIED
+  fieldname            CDATA         #REQUIRED
+  name                 CDATA         #IMPLIED
+  dynamic              (%boolean;)   #IMPLIED
+  visible              (%boolean;)   #IMPLIED
+  layout-cachable      (%boolean;)   #IMPLIED
+  scale                (%boolean;)   #IMPLIED
+  keepAspectRatio      (%boolean;)   #IMPLIED
 >
-
 
 <!--
 
-  Shapes
+  The rectangle is a filled rectangular area. No outline is drawn.
 
   -->
+<!ELEMENT rectangle EMPTY>
+<!ATTLIST rectangle
+  %position;
+  %basicform;
+  draw                 (%boolean;)   #IMPLIED
+  fill                 (%boolean;)   #IMPLIED
+  weight               CDATA         #IMPLIED
+>
+
 <!ELEMENT line      EMPTY>
 <!ATTLIST line
   x1        CDATA       #REQUIRED
@@ -550,22 +573,33 @@
 	weight    CDATA       #IMPLIED
 >
 
+
 <!--
-
-  The rectangle is a filled rectangular area. No outline is drawn.
-
-  -->
-<!ELEMENT rectangle EMPTY>
-<!ATTLIST rectangle
+-->
+<!ELEMENT drawable-field   EMPTY>
+<!ATTLIST drawable-field
   %position;
-  height         CDATA   #REQUIRED
-  %basicform;
-  draw     (%boolean;)   #IMPLIED
-  fill     (%boolean;)   #IMPLIED
-  weight    CDATA        #IMPLIED
-  scale       (%boolean;)   #IMPLIED
-  keepAspectRatio     (%boolean;)   #IMPLIED
+  height      CDATA #REQUIRED
+  fieldname   CDATA #REQUIRED
+  name        CDATA #IMPLIED
 >
+
+<!ELEMENT drawable-url-field   EMPTY>
+<!ATTLIST drawable-url-field
+  %position;
+  height      CDATA #REQUIRED
+  fieldname   CDATA #REQUIRED
+  name        CDATA #IMPLIED
+>
+
+<!ELEMENT drawableref   EMPTY>
+<!ATTLIST drawableref
+  %position;
+  height      CDATA #REQUIRED
+  src         CDATA #REQUIRED
+  name        CDATA #IMPLIED
+>
+
 
 <!--
 
@@ -575,14 +609,23 @@
 <!ELEMENT shape-field EMPTY>
 <!ATTLIST shape-field
   %position;
-  height         CDATA   #REQUIRED
   %basicform;
   fieldname      CDATA   #REQUIRED
-  dynamic  (%boolean;)   #IMPLIED
   draw     (%boolean;)   #IMPLIED
   fill     (%boolean;)   #IMPLIED
   weight    CDATA        #IMPLIED
 >
+
+<!ELEMENT message-field  (#PCDATA)>
+<!ATTLIST message-field
+  %basicform;
+  %position;
+  %fontdef;
+  fieldname   CDATA    #REQUIRED
+  nullstring  CDATA    #IMPLIED
+  format      CDATA    #REQUIRED
+>
+
 
 <!--
 

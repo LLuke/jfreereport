@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesWriter.java,v 1.6.4.1 2004/01/30 14:25:37 taqua Exp $
+ * $Id: TemplatesWriter.java,v 1.9 2005/01/25 00:21:28 taqua Exp $
  *
  * Changes
  * -------
@@ -44,8 +44,6 @@ import java.util.List;
 
 import org.jfree.report.ReportBuilderHints;
 import org.jfree.report.modules.parser.base.CommentHintPath;
-import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
-import org.jfree.report.modules.parser.ext.ExtReportHandler;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
 import org.jfree.report.util.Log;
 import org.jfree.xml.CommentHandler;
@@ -59,7 +57,7 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
 {
   /** the standard templates comment hint path. */
   private static final CommentHintPath TEMPLATES_PATH = new CommentHintPath
-      (new String[]{ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.TEMPLATES_TAG});
+      (new String[]{REPORT_DEFINITION_TAG, TEMPLATES_TAG});
 
   /**
    * Creates a new writer.
@@ -96,7 +94,7 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
       return;
     }
 
-    writeTag(writer, ExtReportHandler.TEMPLATES_TAG);
+    writeTag(writer, TEMPLATES_TAG);
     final ArrayList invalidTemplates = new ArrayList();
 
     final TemplateDescription[] td = (TemplateDescription[])
@@ -143,7 +141,7 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
     }
 
     writeComment(writer, TEMPLATES_PATH, CommentHandler.CLOSE_TAG_COMMENT);
-    writeCloseTag(writer, ExtReportHandler.TEMPLATES_TAG);
+    writeCloseTag(writer, TEMPLATES_TAG);
     writer.write(getLineSeparator());
   }
 
