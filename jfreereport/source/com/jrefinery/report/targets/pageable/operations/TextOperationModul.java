@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,12 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------------------
+ * -----------------------
  * TextOperationModul.java
- * ----------------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * -----------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: TextOperationModul.java,v 1.1 2002/12/02 17:56:58 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: TextOperationModul.java,v 1.2 2002/12/02 20:43:14 taqua Exp $
  *
  * Changes
  * -------
@@ -48,18 +51,44 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A collection of operations that relate to text.
+ *
+ * @author Thomas Morgner
+ */
 public class TextOperationModul extends OperationModul
 {
+  /**
+   * Default constructor.
+   */
   public TextOperationModul ()
   {
     super ("text/*");
   }
 
+  /**
+   * Creates a list of operations.
+   *
+   * @param e  the element.
+   * @param value  the content.
+   * @param bounds  the bounds.
+   *
+   * @return a list of operations.
+   */
   public List createOperations(Element e, Content value, Rectangle2D bounds)
   {
-    if (bounds == null) throw new NullPointerException("Bounds is null");
-    if (e == null) throw new NullPointerException("element is null");
-    if (value == null) throw new NullPointerException("Value is null");
+    if (bounds == null) 
+    {
+      throw new NullPointerException("Bounds is null");
+    }
+    if (e == null) 
+    {
+      throw new NullPointerException("element is null");
+    }
+    if (value == null) 
+    {
+      throw new NullPointerException("Value is null");
+    }
     Content c = value.getContentForBounds(bounds);
     print(c);
     // Font
@@ -78,7 +107,8 @@ public class TextOperationModul extends OperationModul
       cbounds = bounds;
     }
 
-    ElementAlignment va = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
+    ElementAlignment va 
+        = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.VALIGNMENT);
     VerticalBoundsAlignment vba = null;
     if (va.equals(ElementAlignment.TOP))
     {
@@ -95,8 +125,8 @@ public class TextOperationModul extends OperationModul
     // calculate the horizontal shift ... is applied later
     vba.calculateShift(cbounds);
 
-
-    ElementAlignment ha = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
+    ElementAlignment ha 
+        = (ElementAlignment) e.getStyle().getStyleProperty(ElementStyleSheet.ALIGNMENT);
     if (ha.equals(ElementAlignment.CENTER))
     {
       addContent(c, list, new CenterAlignment(bounds), vba);
@@ -113,13 +143,23 @@ public class TextOperationModul extends OperationModul
     return list;
   }
 
-  private void addContent (Content c, List list, HorizontalBoundsAlignment bounds, VerticalBoundsAlignment vba)
+  /**
+   * ??
+   *
+   * @param c  the content.
+   * @param list  ??
+   * @param bounds  the bounds.
+   * @param vba  the vertical bounds alignment.
+   */
+  private void addContent (Content c, List list, HorizontalBoundsAlignment bounds, 
+                           VerticalBoundsAlignment vba)
   {
     if (c instanceof TextLine)
     {
       String value = ((TextLine) c).getContent();
       Log.debug ("Adding Content: " + value + " -> " + bounds.align(c.getBounds()));
-      list.add (new PhysicalOperation.SetBoundsOperation (vba.applyShift (bounds.align(c.getBounds()))));
+      list.add (new PhysicalOperation.SetBoundsOperation (
+                                 vba.applyShift (bounds.align(c.getBounds()))));
       list.add (new PhysicalOperation.PrintTextOperation(value));
     }
     else

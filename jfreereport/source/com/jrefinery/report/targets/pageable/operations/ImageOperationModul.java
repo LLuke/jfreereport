@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,12 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------------------
+ * ------------------------
  * ImageOperationModul.java
- * ----------------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * ------------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id$
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: ImageOperationModul.java,v 1.1 2002/12/02 17:56:58 taqua Exp $
  *
  * Changes
  * -------
@@ -44,16 +47,32 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A collection of operations that relate to images.
+ *
+ * @author Thomas Morgner
+ */
 public class ImageOperationModul extends OperationModul
 {
+  /**
+   * Default constructor.
+   */
   public ImageOperationModul()
   {
     super("image/*");
   }
 
+  /**
+   * Creates a list of operations.
+   *
+   * @param e  the element.
+   * @param value  the content.
+   * @param bounds  the bounds.
+   *
+   * @return a list of operations.
+   */
   public List createOperations (Element e, Content value, Rectangle2D bounds)
   {
-    // Paint
     Paint paint = (Paint) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
     ImageContent ic = (ImageContent) value.getContentForBounds(bounds);
 
@@ -64,6 +83,15 @@ public class ImageOperationModul extends OperationModul
     return ops;
   }
 
+  /**
+   * ??.
+   *
+   * @param e  the element.
+   * @param bounds  the bounds.
+   * @param ot  the output target.
+   *
+   * @return the content.
+   */
   public Content createContentForElement(Element e, Rectangle2D bounds, OutputTarget ot)
   {
     ImageReference ir = (ImageReference) e.getValue();
@@ -82,8 +110,8 @@ public class ImageOperationModul extends OperationModul
       {
         scaleY = bounds.getHeight() / h;
       }
-      ir.setScaleX((float)scaleX);
-      ir.setScaleY((float)scaleY);
+      ir.setScaleX((float) scaleX);
+      ir.setScaleY((float) scaleY);
     }
     return new ImageContent(ir, bounds);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PhysicalOperation.java,v 1.1 2002/12/02 17:56:58 taqua Exp $
+ * $Id: PhysicalOperation.java,v 1.2 2002/12/04 16:27:00 mungady Exp $
  *
  * Changes
  * -------
@@ -59,7 +59,7 @@ import java.awt.geom.Rectangle2D;
 public abstract class PhysicalOperation
 {
   /**
-   * An operation that sets the font for an output target.
+   * An operation that sets the font for an OutputTarget.
    */
   public static class SetFontOperation extends PhysicalOperation
   {
@@ -97,7 +97,7 @@ public abstract class PhysicalOperation
   }
 
   /**
-   * An operation that adds a comment to an output target.  
+   * An operation that adds a comment to an OutputTarget.  
    * <p>
    * NOTE: THE CURRENT IMPLEMENTATION DOES NOTHING.
    */
@@ -134,7 +134,7 @@ public abstract class PhysicalOperation
   }
 
   /**
-   * Sets the paint for an output target.
+   * Sets the Paint for an OutputTarget.
    */
   public static class SetPaintOperation extends PhysicalOperation
   {
@@ -256,7 +256,7 @@ public abstract class PhysicalOperation
   }
 
   /**
-   * An operation that draws text on an output target.
+   * An operation that draws text on an OutputTarget.
    */
   public static class PrintTextOperation extends PhysicalOperation
   {
@@ -301,7 +301,7 @@ public abstract class PhysicalOperation
   }
 
   /**
-   * An operation that prints an Image on an output target.
+   * An operation that prints an Image on an OutputTarget.
    */
   public static class PrintImageOperation extends PhysicalOperation
   {
@@ -336,7 +336,7 @@ public abstract class PhysicalOperation
   }
 
   /**
-   * An operation that draws a Shape on an output target.
+   * An operation that draws a Shape on an OutputTarget.
    */
   public static class PrintShapeOperation extends PhysicalOperation
   {

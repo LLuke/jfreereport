@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,12 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------------------
+ * -------------------
  * OperationModul.java
- * ----------------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * -------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id$
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: OperationModul.java,v 1.1 2002/12/02 17:56:58 taqua Exp $
  *
  * Changes
  * -------
@@ -40,14 +43,30 @@ import com.jrefinery.report.targets.pageable.contents.Content;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
+/**
+ * The base class for an operation module.
+ *
+ * @author Thomas Morgner
+ */
 public abstract class OperationModul
 {
+  /** The module type. */
   private String moduleContentType;
+  
+  /** Generic? */
   private boolean generic;
 
+  /**
+   * Creates a new module.
+   *
+   * @param content  the content type (null not permitted).
+   */
   public OperationModul (String content)
   {
-    if (content == null) throw new NullPointerException();
+    if (content == null) 
+    {
+      throw new NullPointerException();
+    }
     this.moduleContentType = content;
     this.generic = false;
 
@@ -58,16 +77,34 @@ public abstract class OperationModul
     }
   }
 
+  /**
+   * Returns the module content type. 
+   *
+   * @return the type.
+   */
   public String getModuleContentType()
   {
     return moduleContentType;
   }
 
+  /**
+   * Returns the 'generic' flag.
+   *
+   * @return true or false.
+   */
   public boolean isGeneric()
   {
     return generic;
   }
 
+  /**
+   * Returns true if the module can handle the specified content type, and false 
+   * otherwise.
+   *
+   * @param contentType  the content type.
+   *
+   * @return true or false.
+   */
   public boolean canHandleContent (String contentType)
   {
     if (isGeneric())
@@ -80,8 +117,28 @@ public abstract class OperationModul
     }
   }
 
+  /**
+   * Creates a list of operations for an element.
+   *
+   * @param e  the element.
+   * @param value  the value.
+   * @param bounds  the bounds.
+   *
+   * @return the list of operations.
+   */
   public abstract List createOperations (Element e, Content value, Rectangle2D bounds);
 
+  /**
+   * Creates content for an element.
+   * 
+   * @param e  the element.
+   * @param bounds  the bounds.
+   * @param ot  the output target.
+   *
+   * @return the content.
+   *
+   * @throws OutputTargetException if there is a problem with the OutputTarget.
+   */
   public abstract Content createContentForElement(Element e, Rectangle2D bounds, OutputTarget ot)
       throws OutputTargetException;
 }
