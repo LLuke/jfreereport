@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id:$
+ * $Id: LayoutManagerCache.java,v 1.2 2002/12/03 13:49:16 mungady Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ import java.awt.geom.Dimension2D;
 import java.util.Hashtable;
 
 /**
- * A cache for a band layout manager.
+ * A cache for a band layout manager. Not very usefull yet, maybe later.
  *
  * @author Thomas Morgner
  */

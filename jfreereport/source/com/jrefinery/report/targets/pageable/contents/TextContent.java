@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.2 2002/12/02 18:55:34 taqua Exp $
+ * $Id: TextContent.java,v 1.3 2002/12/03 16:29:22 mungady Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ public class TextContent extends ContentContainer
    * Creates a new container for text.
    *
    * @param value  the text.
-   * @param bounts  the bounds.
+   * @param bounds  the bounds.
    * @param ot  the size calculator.
    *
    * Versucht die Optimale Breite & Höhe für den darzustellenden Text zu finden

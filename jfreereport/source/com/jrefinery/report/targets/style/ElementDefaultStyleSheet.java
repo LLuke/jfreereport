@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementDefaultStyleSheet.java,v 1.1 2002/12/02 17:57:07 taqua Exp $
+ * $Id: ElementDefaultStyleSheet.java,v 1.2 2002/12/05 12:18:05 mungady Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,8 @@ import java.awt.Paint;
 import java.awt.geom.Rectangle2D;
 
 /**
- * A default element style sheet.
+ * A default element style sheet. This StyleSheet defines all default attribute
+ * values for elements.
  * 
  * @author Thomas Morgner
  */
@@ -65,7 +66,7 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
   /**
    * Creates a new style sheet.
    */
-  public ElementDefaultStyleSheet()
+  protected ElementDefaultStyleSheet()
   {
     super("GlobalBand");  // should this be 'GlobalElement'??
     setStyleProperty(MINIMUMSIZE, new FloatDimension(0, 0));

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Content.java,v 1.1 2002/12/02 17:56:54 taqua Exp $
+ * $Id: Content.java,v 1.2 2002/12/03 16:29:17 mungady Exp $
  *
  * Changes
  * -------
@@ -80,7 +80,11 @@ public interface Content
   public ContentType getContentType();
   
   /**
-   * Returns the content for the given bounds.
+   * Returns the content for the given bounds. The extracted content is the content
+   * that would be displayed in the specific bounds if the content would be printed
+   * with clipping enabled at the given boundry.
+   * <p>
+   * This method returns null if there is no content in these bounds. 
    *
    * @return the content (possibly null).
    */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Content.java,v 1.1 2002/12/02 17:56:54 taqua Exp $
+ * $Id: ContentContainer.java,v 1.2 2002/12/03 16:29:18 mungady Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 /**
- * A container that contains content for a report.
+ * A container that contains generic content for a report.
  * <p>
  * Classes that implement this interface include:  TextParagraph.
  *

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandDefaultStyleSheet.java,v 1.1 2002/12/02 17:57:07 taqua Exp $
+ * $Id: BandDefaultStyleSheet.java,v 1.2 2002/12/05 12:18:04 mungady Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,8 @@ import com.jrefinery.report.targets.FloatDimension;
 import java.awt.geom.Rectangle2D;
 
 /**
- * A default band style sheet.
+ * A default band style sheet. This StyleSheet defines the default attribute
+ * values for all Bands.
  * 
  * @author Thomas Morgner
  */
@@ -55,7 +56,7 @@ public class BandDefaultStyleSheet extends BandStyleSheet
   /**
    * Creates a new default style sheet.
    */
-  public BandDefaultStyleSheet()
+  protected BandDefaultStyleSheet()
   {
     super("GlobalBand");
     setStyleProperty(MINIMUMSIZE, new FloatDimension(0, 0));

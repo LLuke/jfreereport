@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.2 2002/12/05 12:18:05 mungady Exp $
+ * $Id: ElementStyleSheet.java,v 1.3 2002/12/06 17:37:33 mungady Exp $
  *
  * Changes
  * -------
@@ -61,6 +61,8 @@ import java.util.List;
  * A style-sheet maintains a list of parent style-sheets.  If an attribute is not defined in a
  * style-sheet, the code refers to the parent style-sheets to see if the attribute is defined 
  * there.
+ * <p>
+ * All StyleSheet entries are checked against the StyleKeyDefinition for validity.
  *
  * @author Thomas Morgner
  */
@@ -159,17 +161,32 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
   }
 
   /**
-   * Adds a parent style-sheet.
+   * Adds a parent style-sheet. Parents are queried in reverse order of addition,
+   * so the last added parent is queried first.
    *
    * @param parent  the parent (null not permitted).
    */
   public void addParent(ElementStyleSheet parent)
   {
-    if (parent == null) 
+  }
+
+  /**
+   * Adds a parent style-sheet. Parents on a lower position are queried before any
+   * parent with an higher position in the list.
+   *
+   * @param parent  the parent (null not permitted).
+   * @param position the position where to insert the parent style sheet
+   *
+   * @throws NullPointerException if the given parent is null
+   * @throws IndexOutOfBoundsException if the position is invalid (pos &lt; 0 or pos &gt;= numberOfParents)
+   */
+  public void addParent (int position, ElementStyleSheet parent)
+  {
+    if (parent == null)
     {
       throw new NullPointerException("ElementStyleSheet.addParent(...): parent is null.");
     }
-    parents.add (parent);
+    parents.add (position, parent);
   }
 
   /**
@@ -184,6 +201,16 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
       throw new NullPointerException("ElementStyleSheet.removeParent(...): parent is null.");
     }
     parents.remove (parent);
+  }
+
+  /**
+   * Returns the number of parents currently added to the stylesheet.
+   * 
+   * @return the number of parents
+   */
+  public int getParentCount ()
+  {
+    return parents.size();
   }
 
   /**

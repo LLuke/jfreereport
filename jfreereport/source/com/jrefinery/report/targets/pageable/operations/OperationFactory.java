@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationFactory.java,v 1.1 2002/12/02 17:56:58 taqua Exp $
+ * $Id: OperationFactory.java,v 1.2 2002/12/05 12:05:09 mungady Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,7 @@ public class OperationFactory
   /**
    * Default constructor.
    */
-  public OperationFactory()
+  protected OperationFactory()
   {
     modules = new ArrayList();
   }
@@ -97,10 +97,12 @@ public class OperationFactory
 
   /**
    * Returns the first module in the factory that can handle the specified content.
+   * ToDo: Add better support for specific and generic content handler.
+   * Specific handler should be always preferred to more generic handlers.
    *
    * @param content  the content type.
    *
-   * @return the module (possibly null).
+   * @return the module or null if no handler is registered for that content-type.
    */
   public OperationModul getModul (String content)
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FloatDimension.java,v 1.1 2002/12/02 17:56:50 taqua Exp $
+ * $Id: FloatDimension.java,v 1.2 2002/12/05 16:55:43 mungady Exp $
  *
  * Changes
  * -------
@@ -127,8 +127,8 @@ public class FloatDimension extends Dimension2D implements Cloneable, Serializab
   /**
    * Sets the size of this <code>Dimension</code> object to the specified width and height.
    * This method is included for completeness, to parallel the
-   * {@link Component#getSize getSize} method of
-   * {@link Component}.
+   * {@link java.awt.Component#getSize getSize} method of
+   * {@link java.awt.Component}.
    * @param width  the new width for the <code>Dimension</code>
    * object
    * @param height  the new height for the <code>Dimension</code>
@@ -141,49 +141,7 @@ public class FloatDimension extends Dimension2D implements Cloneable, Serializab
   }
 
   /**
-   * Creates and returns a copy of this object.  The precise meaning
-   * of "copy" may depend on the class of the object. The general
-   * intent is that, for any object <tt>x</tt>, the expression:
-   * <blockquote>
-   * <pre>
-   * x.clone() != x</pre></blockquote>
-   * will be true, and that the expression:
-   * <blockquote>
-   * <pre>
-   * x.clone().getClass() == x.getClass()</pre></blockquote>
-   * will be <tt>true</tt>, but these are not absolute requirements.
-   * While it is typically the case that:
-   * <blockquote>
-   * <pre>
-   * x.clone().equals(x)</pre></blockquote>
-   * will be <tt>true</tt>, this is not an absolute requirement.
-   * Copying an object will typically entail creating a new instance of
-   * its class, but it also may require copying of internal data
-   * structures as well.  No constructors are called.
-   * <p>
-   * The method <tt>clone</tt> for class <tt>Object</tt> performs a
-   * specific cloning operation. First, if the class of this object does
-   * not implement the interface <tt>Cloneable</tt>, then a
-   * <tt>CloneNotSupportedException</tt> is thrown. Note that all arrays
-   * are considered to implement the interface <tt>Cloneable</tT>.
-   * Otherwise, this method creates a new instance of the class of this
-   * object and initializes all its fields with exactly the contents of
-   * the corresponding fields of this object, as if by assignment; the
-   * contents of the fields are not themselves cloned. Thus, this method
-   * performs a "shallow copy" of this object, not a "deep copy" operation.
-   * <p>
-   * The class <tt>Object</tt> does not itself implement the interface
-   * <tt>Cloneable</tt>, so calling the <tt>clone</tt> method on an object
-   * whose class is <tt>Object</tt> will result in throwing an
-   * exception at run time. The <tt>clone</tt> method is implemented by
-   * the class <tt>Object</tt> as a convenient, general utility for
-   * subclasses that implement the interface <tt>Cloneable</tt>, possibly
-   * also overriding the <tt>clone</tt> method, in which case the
-   * overriding definition can refer to this utility definition by the
-   * call:
-   * <blockquote>
-   * <pre>
-   * super.clone()</pre></blockquote>
+   * Creates and returns a copy of this object.  
    *
    * @return     a clone of this instance.
    * @exception  OutOfMemoryError            if there is not enough memory.
@@ -200,18 +158,7 @@ public class FloatDimension extends Dimension2D implements Cloneable, Serializab
    * "textually represents" this object. The result should
    * be a concise but informative representation that is easy for a
    * person to read.
-   * It is recommended that all subclasses override this method.
    * <p>
-   * The <code>toString</code> method for class <code>Object</code>
-   * returns a string consisting of the name of the class of which the
-   * object is an instance, the at-sign character `<code>@</code>', and
-   * the unsigned hexadecimal representation of the hash code of the
-   * object. In other words, this method returns a string equal to the
-   * value of:
-   * <blockquote>
-   * <pre>
-   * getClass().getName() + '@' + Integer.toHexString(hashCode())
-   * </pre></blockquote>
    *
    * @return  a string representation of the object.
    */

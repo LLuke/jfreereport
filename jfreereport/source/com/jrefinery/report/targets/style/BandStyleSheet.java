@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandStyleSheet.java,v 1.1 2002/12/02 17:57:07 taqua Exp $
+ * $Id: BandStyleSheet.java,v 1.2 2002/12/05 12:18:05 mungady Exp $
  *
  * Changes
  * -------
@@ -36,7 +36,7 @@
 package com.jrefinery.report.targets.style;
 
 /**
- * A band style sheet.
+ * A band style sheet. Defines some common StyleKeys for all Bands.
  *
  * @author Thomas Morgner
  */

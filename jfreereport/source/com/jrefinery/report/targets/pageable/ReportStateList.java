@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.2 2002/12/03 16:31:00 mungady Exp $
+ * $Id: ReportStateList.java,v 1.3 2002/12/06 20:34:12 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,11 @@ import java.util.ArrayList;
  * These ReportStates are special: they can be reproduced by calling processPage on the report.
  * <p>
  * Internally this list is organized as a list of WeakReferenceLists, where every WeakReferenceList
- * stores a certain number of page states.
+ * stores a certain number of page states. The first 20 states are stored in an ordinary
+ * list with strong-references, so these states never get GarbageCollected (and so
+ * they must never be restored by reprocessing them). The next 100 states are stored
+ * in 4-element ReferenceLists, so if a reference is lost, only 4 states have to be
+ * reprocessed. All other states are stored in 10-element lists.
  *
  * @author TM
  */
@@ -60,7 +64,9 @@ public class ReportStateList
    * not-freeable memory used by the list, but restoring a single page will require more
    * time.
    */
+  // the maxmimum masterposition size
   private static final int MASTERPOSITIONS_MAX = 10;
+  // the medium masterposition size
   private static final int MASTERPOSITIONS_MED = 4;
 
   // the max index that will be stored in the primary list

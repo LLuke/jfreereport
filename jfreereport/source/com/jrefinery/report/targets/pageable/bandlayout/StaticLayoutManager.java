@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.1 2002/12/02 17:56:54 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.2 2002/12/03 13:49:16 mungady Exp $
  *
  * Changes
  * -------
@@ -59,6 +59,12 @@ import java.awt.geom.Rectangle2D;
  * Rule: Bands can have minimum, max and pref size defined. These values are hints for
  * the layout container, no restrictions. If min and pref are '0', they are ignored.
  * MaxSize is never ignored.
+ * <p>
+ * Elements that have the "dynamic" flag set, are checked for their content-bounds.
+ * This operation is expensive, so this is only done if really needed. The dynamic
+ * flag will influence the height of an element, a valid width must be already set.
+ * <p>
+ * It is not yet tested, whether the band composition works with this layoutmanager.
  *
  * @author Thomas Morgner
  */
@@ -78,15 +84,15 @@ public class StaticLayoutManager implements BandLayoutManager
   /** The output target. */
   private OutputTarget ot;
   
-  /** A cache for element attributes. */
-  private LayoutManagerCache elementCache;
+  /** A cache for element attributes.  Not in use yet. */
+  //private LayoutManagerCache elementCache;
 
   /**
    * Creates a new layout manager.
    */
   public StaticLayoutManager()
   {
-    elementCache = new LayoutManagerCache();
+    //elementCache = new LayoutManagerCache();
   }
 
   /**
@@ -97,7 +103,7 @@ public class StaticLayoutManager implements BandLayoutManager
   public void setOutputTarget(OutputTarget ot)
   {
     this.ot = ot;
-    elementCache.flushCache();
+    //elementCache.flushCache();
   }
 
   /**
@@ -242,7 +248,13 @@ public class StaticLayoutManager implements BandLayoutManager
    */
   public Dimension2D preferredLayoutSize(Band b)
   {
-    elementCache.setCurrentBand(b);
+    // invisible bands do not need any space
+    if (b.isVisible() == false)
+    {
+      return new FloatDimension(0,0);
+    }
+
+    //elementCache.setCurrentBand(b);
 
     double height = 0;
     double width = 0;
@@ -337,7 +349,12 @@ public class StaticLayoutManager implements BandLayoutManager
    */
   public Dimension2D minimumLayoutSize(Band b)
   {
-    elementCache.setCurrentBand(b);
+    // invisible bands do not need any space
+    if (b.isVisible() == false)
+    {
+      return new FloatDimension(0,0);
+    }
+    //elementCache.setCurrentBand(b);
 
     double height = 0;
     double width = 0;
@@ -392,7 +409,7 @@ public class StaticLayoutManager implements BandLayoutManager
    */
   public void doLayout(Band b)
   {
-    elementCache.setCurrentBand(b);
+    //elementCache.setCurrentBand(b);
     Element[] elements = b.getElementArray();
     Rectangle2D parentBounds = BandLayoutManagerUtil.getBounds(b, null);
     if (parentBounds == null) 
@@ -467,8 +484,8 @@ public class StaticLayoutManager implements BandLayoutManager
    */  
   public void flushLayout()
   {
-    elementCache.flushCache();
-    elementCache.setCurrentBand(null);
+    //elementCache.flushCache();
+    //elementCache.setCurrentBand(null);
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationModul.java,v 1.1 2002/12/02 17:56:58 taqua Exp $
+ * $Id: OperationModul.java,v 1.2 2002/12/05 12:05:10 mungady Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,14 @@ import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 /**
- * The base class for an operation module.
+ * The base class for an operation module. Operation modules can be either
+ * specific modules for a certain specialized type of content ("text/plain", for instance)
+ * or a modul can be a generic handler for a certain group of content ("text/*").
+ * <p>
+ * While a generic handler may not be as performant as a specialized handler,
+ * that handler may be usefull for displaying at least some of the content.
+ * <p>
+ * todo: add support for generic handlers to the operation factory. 
  *
  * @author Thomas Morgner
  */
@@ -53,7 +60,7 @@ public abstract class OperationModul
   /** The module type. */
   private String moduleContentType;
   
-  /** Generic? */
+  /** A flag that defines that the operation modul is a generic content handler */
   private boolean generic;
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.27 2002/12/06 17:16:58 mungady Exp $
+ * $Id: Band.java,v 1.28 2002/12/06 17:52:52 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -74,6 +74,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Hashtable;
 
 /**
  * A report band contains a list of elements to be displayed, and represents one section of a
