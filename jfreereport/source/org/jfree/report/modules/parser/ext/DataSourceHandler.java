@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: DataSourceHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@ package org.jfree.report.modules.parser.ext;
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ObjectDescription;
@@ -74,10 +76,11 @@ public class DataSourceHandler extends CompoundObjectHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public DataSourceHandler(final ReportParser parser, final String finishTag, final String type)
+  public DataSourceHandler(final ReportParser parser, final String finishTag,
+                           final String type, final CommentHintPath commentKey)
       throws SAXException
   {
-    super(parser, finishTag, lookupObjectDescription(parser, type));
+    super(parser, finishTag, lookupObjectDescription(parser, type), commentKey);
   }
 
   /**
@@ -125,7 +128,9 @@ public class DataSourceHandler extends CompoundObjectHandler
     {
       throw new ParseException("The datasource type must be specified", getParser().getLocator());
     }
-    dataSourceHandler = new DataSourceHandler(getReportParser(), tagName, typeName);
+    CommentHintPath path = createCommentKey(tagName);
+    addComment(path, CommentHandler.OPEN_TAG_COMMENT);
+    dataSourceHandler = new DataSourceHandler(getReportParser(), tagName, typeName, path);
     getParser().pushFactory(dataSourceHandler);
   }
 
@@ -152,6 +157,8 @@ public class DataSourceHandler extends CompoundObjectHandler
     {
       final DataSource ds = (DataSource) dataSourceHandler.getValue();
       getTargetObjectDescription().setParameter("dataSource", ds);
+      CommentHintPath path = createCommentKey(tagName);
+      addComment(path, CommentHandler.CLOSE_TAG_COMMENT);
       dataSourceHandler = null;
     }
   }

@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: TemplateWriter.java,v 1.1 2003/07/18 18:31:30 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 17.07.2003 : Initial version
- *  
+ *
  */
 
 package org.jfree.report.modules.parser.ext.writer;
@@ -45,7 +45,8 @@ import java.util.Properties;
 
 import org.jfree.report.modules.parser.ext.ElementHandler;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
-import org.jfree.report.util.Log;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.util.ObjectUtils;
 
 public class TemplateWriter extends ObjectWriter
@@ -54,9 +55,10 @@ public class TemplateWriter extends ObjectWriter
   private TemplateDescription parent;
 
   public TemplateWriter(final ReportWriter reportWriter, final int indentLevel,
-                        final TemplateDescription template, final TemplateDescription parent)
+                        final TemplateDescription template, final TemplateDescription parent,
+                        final CommentHintPath path)
   {
-    super(reportWriter, template, indentLevel);
+    super(reportWriter, template, indentLevel, path);
     if (template == null)
     {
       throw new NullPointerException("Template is null.");
@@ -83,11 +85,15 @@ public class TemplateWriter extends ObjectWriter
   public void write(Writer writer) throws IOException, ReportWriterException
   {
     final Properties p = new Properties();
+    p.setProperty("references", parent.getName());
     if (template.getName() != null)
     {
-      p.setProperty("name", template.getName());
+      // dont copy the parent name for anonymous templates ...
+      if (template.getName().equals(parent.getName()) == false)
+      {
+        p.setProperty("name", template.getName());
+      }
     }
-    p.setProperty("references", parent.getName());
 
     boolean tagWritten = false;
 
@@ -99,6 +105,7 @@ public class TemplateWriter extends ObjectWriter
       {
         if (tagWritten == false)
         {
+          writeComment(writer, getCommentHintPath(), CommentHandler.OPEN_TAG_COMMENT);
           writeTag(writer, ElementHandler.TEMPLATE_TAG, p, OPEN);
           tagWritten = true;
         }
@@ -107,10 +114,12 @@ public class TemplateWriter extends ObjectWriter
     }
     if (tagWritten)
     {
+      writeComment(writer, getCommentHintPath(), CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(writer, ElementHandler.TEMPLATE_TAG);
     }
     else
     {
+      writeComment(writer, getCommentHintPath(), CommentHandler.OPEN_TAG_COMMENT);
       writeTag(writer, ElementHandler.TEMPLATE_TAG, p, CLOSE);
     }
   }
@@ -120,13 +129,13 @@ public class TemplateWriter extends ObjectWriter
     Object parameterObject = template.getParameter(parameterName);
     if (parameterObject == null)
     {
-      Log.debug ("Should not write: Parameter is null.");
+      //Log.debug ("Should not write: Parameter is null.");
       return false;
     }
     Object parentObject = parent.getParameter(parameterName);
     if (ObjectUtils.equalOrBothNull(parameterObject, parentObject))
     {
-      Log.debug ("Should not write: Parameter objects are equal.");
+      //Log.debug ("Should not write: Parameter objects are equal.");
       return false;
     }
     return true;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementHandler.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
+ * $Id: ElementHandler.java,v 1.4 2003/07/20 19:31:16 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,13 @@ package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.Element;
 import org.jfree.report.filter.DataSource;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.xml.ParseException;
-import org.jfree.util.Configuration;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -80,6 +81,8 @@ public class ElementHandler extends AbstractExtReportParserHandler
   /** A datasource handler. */
   private DataSourceHandler dataSourceHandler;
 
+  private CommentHintPath commentPath;
+
   /**
    * Creates a new element handler.
    *
@@ -87,9 +90,14 @@ public class ElementHandler extends AbstractExtReportParserHandler
    * @param finishTag  the finish tag.
    * @param element  the element.
    */
-  public ElementHandler(final ReportParser parser, final String finishTag, final Element element)
+  public ElementHandler(final ReportParser parser, final String finishTag,
+                        final Element element, final CommentHintPath path)
   {
     super(parser, finishTag);
+    if (path == null)
+    {
+      throw new NullPointerException("Comment hint path is not defined.");
+    }
     if (element == null)
     {
       throw new NullPointerException("Element is null");
@@ -101,6 +109,8 @@ public class ElementHandler extends AbstractExtReportParserHandler
     {
       throw new IllegalStateException("No template collector defined for this parser?");
     }
+    this.commentPath = path.getInstance();
+    this.commentPath.addName(element);
   }
 
   /**
@@ -127,9 +137,11 @@ public class ElementHandler extends AbstractExtReportParserHandler
             getParser().getLocator());
       }
       // Clone the defined template ... we don't change the original ..
-      getReport().getReportBuilderHints().putHint(getElement(), "ext.parser.template-reference", references);
+      getParserHints().putHint(getElement(), "ext.parser.template-reference", references);
       template = (TemplateDescription) template.getInstance();
-      templateFactory = new TemplateHandler(getReportParser(), TEMPLATE_TAG, template);
+      CommentHintPath commentPath = createCommentPath(TEMPLATE_TAG);
+      addComment(commentPath, CommentHandler.OPEN_TAG_COMMENT);
+      templateFactory = new TemplateHandler(getReportParser(), TEMPLATE_TAG, template, commentPath);
       getParser().pushFactory(templateFactory);
     }
     else if (tagName.equals(DATASOURCE_TAG))
@@ -140,15 +152,19 @@ public class ElementHandler extends AbstractExtReportParserHandler
         throw new ParseException("The datasource type must be specified",
             getParser().getLocator());
       }
-      dataSourceHandler = new DataSourceHandler(getReportParser(), tagName, typeName);
+      CommentHintPath path = createCommentPath(tagName);
+      dataSourceHandler = new DataSourceHandler(getReportParser(), tagName, typeName, path);
       getParser().pushFactory(dataSourceHandler);
+      addComment(path, CommentHandler.OPEN_TAG_COMMENT);
     }
     else if (tagName.equals(STYLE_TAG))
     {
+      CommentHintPath path = createCommentPath(tagName);
       final ElementStyleSheet styleSheet = element.getStyle();
       final StyleSheetHandler styleSheetFactory
-          = new StyleSheetHandler(getReportParser(), STYLE_TAG, styleSheet);
+          = new StyleSheetHandler(getReportParser(), STYLE_TAG, styleSheet, path);
       getParser().pushFactory(styleSheetFactory);
+      addComment(path, CommentHandler.OPEN_TAG_COMMENT);
     }
     else if (tagName.equals(getFinishTag()))
     {
@@ -183,17 +199,19 @@ public class ElementHandler extends AbstractExtReportParserHandler
     {
       final TemplateDescription t = templateFactory.getTemplate();
       element.setDataSource(t.createTemplate());
+      addComment(createCommentPath(tagName), CommentHandler.CLOSE_TAG_COMMENT);
       templateFactory = null;
     }
     else if (tagName.equals(DATASOURCE_TAG))
     {
       final DataSource ds = (DataSource) dataSourceHandler.getValue();
       element.setDataSource(ds);
+      addComment(createCommentPath(tagName), CommentHandler.CLOSE_TAG_COMMENT);
       dataSourceHandler = null;
     }
     else if (tagName.equals(STYLE_TAG))
     {
-      // ignore event ...
+      addComment(createCommentPath(tagName), CommentHandler.CLOSE_TAG_COMMENT);
     }
     else if (tagName.equals(getFinishTag()))
     {
@@ -215,4 +233,17 @@ public class ElementHandler extends AbstractExtReportParserHandler
   {
     return element;
   }
+
+  protected CommentHintPath getCommentPath()
+  {
+    return commentPath;
+  }
+
+  protected CommentHintPath createCommentPath (Object name)
+  {
+    CommentHintPath path = getCommentPath().getInstance();
+    path.addName(name);
+    return path;
+  }
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionWriter.java,v 1.2 2003/07/18 17:56:39 taqua Exp $
+ * $Id: ReportDescriptionWriter.java,v 1.3 2003/07/21 20:46:56 taqua Exp $
  *
  * Changes
  * -------
@@ -39,30 +39,33 @@ package org.jfree.report.modules.parser.ext.writer;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.Group;
-import org.jfree.report.GroupList;
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.filter.EmptyDataSource;
 import org.jfree.report.filter.templates.Template;
+import org.jfree.report.layout.BandLayoutManager;
+import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.BandHandler;
 import org.jfree.report.modules.parser.ext.DataSourceHandler;
 import org.jfree.report.modules.parser.ext.ElementHandler;
+import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
 import org.jfree.report.modules.parser.ext.ExtReportHandler;
 import org.jfree.report.modules.parser.ext.GroupHandler;
 import org.jfree.report.modules.parser.ext.GroupsHandler;
 import org.jfree.report.modules.parser.ext.ReportDescriptionHandler;
-import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
+import org.jfree.report.modules.parser.ext.TemplatesHandler;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
-import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
-import org.jfree.report.modules.parser.base.CommentHintPath;
-import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.style.StyleKey;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.jfree.xml.factory.objects.ObjectFactoryException;
 
@@ -77,7 +80,8 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 {
   private CommentHintPath REPORT_DESCRIPTION_HINT_PATH =
       new CommentHintPath(new String[]
-      {ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.REPORT_DESCRIPTION_TAG});
+      {ExtParserModuleInit.REPORT_DEFINITION_TAG,
+       ExtReportHandler.REPORT_DESCRIPTION_TAG});
 
 
   /**
@@ -105,25 +109,21 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     writeTag(writer, ExtReportHandler.REPORT_DESCRIPTION_TAG);
 
     writeBand(writer, ReportDescriptionHandler.REPORT_HEADER_TAG,
-        getReport().getReportHeader(), null);
+        getReport().getReportHeader(), null, REPORT_DESCRIPTION_HINT_PATH);
     writeBand(writer, ReportDescriptionHandler.REPORT_FOOTER_TAG,
-        getReport().getReportFooter(), null);
-    writeBand(writer, ReportDescriptionHandler.PAGE_HEADER_TAG, getReport().getPageHeader(), null);
-    writeBand(writer, ReportDescriptionHandler.PAGE_FOOTER_TAG, getReport().getPageFooter(), null);
+        getReport().getReportFooter(), null, REPORT_DESCRIPTION_HINT_PATH);
+    writeBand(writer, ReportDescriptionHandler.PAGE_HEADER_TAG,
+        getReport().getPageHeader(), null, REPORT_DESCRIPTION_HINT_PATH);
+    writeBand(writer, ReportDescriptionHandler.PAGE_FOOTER_TAG,
+        getReport().getPageFooter(), null, REPORT_DESCRIPTION_HINT_PATH);
     writeGroups(writer);
-    writeBand(writer, ReportDescriptionHandler.ITEMBAND_TAG, getReport().getItemBand(), null);
+    writeBand(writer, ReportDescriptionHandler.ITEMBAND_TAG,
+        getReport().getItemBand(), null, REPORT_DESCRIPTION_HINT_PATH);
 
     writeComment(writer, REPORT_DESCRIPTION_HINT_PATH, CommentHandler.CLOSE_TAG_COMMENT);
     writeCloseTag(writer, ExtReportHandler.REPORT_DESCRIPTION_TAG);
   }
 
-  private void writeBandComment (Writer writer, Band name, String hint)
-    throws IOException
-  {
-    CommentHintPath path = REPORT_DESCRIPTION_HINT_PATH.getInstance();
-    path.addName(name);
-    writeComment(writer, path, hint);
-  }
   /**
    * Writes an element for a report band.
    *
@@ -135,10 +135,19 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  private void writeBand(final Writer writer, final String tagName, final Band band, final Band parent)
+  private void writeBand(final Writer writer, final String tagName,
+                         final Band band, final Band parent, final CommentHintPath path)
       throws IOException, ReportWriterException
   {
-    writeBandComment(writer, band, CommentHandler.OPEN_TAG_COMMENT);
+    if (isBandEmpty(band))
+    {
+      return;
+    }
+
+    CommentHintPath newPath = path.getInstance();
+    newPath.addName(band);
+
+    writeComment(writer, newPath, CommentHandler.OPEN_TAG_COMMENT);
     if (band.getName().startsWith(Band.ANONYMOUS_BAND_PREFIX))
     {
       writeTag(writer, tagName);
@@ -151,6 +160,9 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     ElementStyleSheet styleSheet = band.getStyle();
     if (isStyleSheetEmpty(styleSheet) == false)
     {
+      CommentHintPath stylePath = newPath.getInstance();
+      stylePath.addName(ElementHandler.STYLE_TAG);
+      writeComment(writer, stylePath, CommentHandler.OPEN_TAG_COMMENT);
       writeTag(writer, ElementHandler.STYLE_TAG);
       ElementStyleSheet parentSheet = null;
       if (parent != null)
@@ -159,22 +171,29 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
       }
 
       final StyleWriter styleWriter =
-          new StyleWriter(getReportWriter(), band.getStyle(), parentSheet, getIndentLevel());
+          new StyleWriter(getReportWriter(), band.getStyle(), parentSheet, getIndentLevel(), stylePath);
       styleWriter.write(writer);
+      writeComment(writer, stylePath, CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(writer, ElementHandler.STYLE_TAG);
     }
 
     ElementStyleSheet bandDefaults = band.getBandDefaults();
     if (isStyleSheetEmpty(bandDefaults) == false)
     {
+      CommentHintPath defaultStylePath = newPath.getInstance();
+      defaultStylePath.addName(BandHandler.DEFAULT_STYLE_TAG);
+      writeComment(writer, defaultStylePath, CommentHandler.OPEN_TAG_COMMENT);
       writeTag(writer, BandHandler.DEFAULT_STYLE_TAG);
+
       final StyleWriter defaultStyleWriter =
-          new StyleWriter(getReportWriter(), band.getBandDefaults(), null, getIndentLevel());
+          new StyleWriter(getReportWriter(), band.getBandDefaults(), null, getIndentLevel(), defaultStylePath);
       defaultStyleWriter.write(writer);
+
+      writeComment(writer, defaultStylePath, CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(writer, BandHandler.DEFAULT_STYLE_TAG);
     }
 
-    writeDataSourceForElement(band, writer);
+    writeDataSourceForElement(band, writer, newPath);
 
     final Element[] list = band.getElementArray();
     for (int i = 0; i < list.length; i++)
@@ -182,20 +201,21 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
       if (list[i] instanceof Band)
       {
         final Band b = (Band) list[i];
-        writeBand(writer, BandHandler.BAND_TAG, b, band);
+        writeBand(writer, BandHandler.BAND_TAG, b, band, newPath);
       }
       else
       {
-        writeElement(writer, list[i], band);
+        writeElement(writer, list[i], band, newPath);
       }
     }
-    writeBandComment(writer, band, CommentHandler.CLOSE_TAG_COMMENT);
+    writeComment(writer, newPath, CommentHandler.CLOSE_TAG_COMMENT);
     writeCloseTag(writer, tagName);
   }
 
   private boolean isStyleSheetEmpty (ElementStyleSheet es)
   {
-    if (es.getParents().isEmpty() && es.getDefinedPropertyNames().hasNext() == false)
+    if (es.getParents().isEmpty() &&
+        es.getDefinedPropertyNames().hasNext() == false)
     {
       return true;
     }
@@ -211,13 +231,18 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  private void writeElement(final Writer writer, final Element element, final Band parent)
+  private void writeElement(final Writer writer, final Element element,
+                            final Band parent, final CommentHintPath path)
       throws IOException, ReportWriterException
   {
     if (parent.getElements().indexOf(element) == -1)
     {
       throw new IllegalArgumentException("The given Element is no child of the band");
     }
+
+    CommentHintPath newPath = path.getInstance();
+    newPath.addName(element);
+    writeComment(writer, newPath, CommentHandler.OPEN_TAG_COMMENT);
 
     final Properties p = new Properties();
     if (element.getName().startsWith(Element.ANONYMOUS_ELEMENT_PREFIX) == false)
@@ -230,21 +255,27 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     ElementStyleSheet styleSheet = element.getStyle();
     if (isStyleSheetEmpty(styleSheet) == false)
     {
+      CommentHintPath stylePath = newPath.getInstance();
+      stylePath.addName(ElementHandler.STYLE_TAG);
+      writeComment(writer, stylePath, CommentHandler.OPEN_TAG_COMMENT);
       writeTag(writer, ElementHandler.STYLE_TAG);
 
       final StyleWriter styleWriter =
           new StyleWriter(getReportWriter(), element.getStyle(),
-              parent.getBandDefaults(), getIndentLevel());
+              parent.getBandDefaults(), getIndentLevel(), stylePath);
       styleWriter.write(writer);
+      writeComment(writer, stylePath, CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(writer, ElementHandler.STYLE_TAG);
     }
 
-    writeDataSourceForElement(element, writer);
+    writeDataSourceForElement(element, writer, newPath);
 
+    writeComment(writer, newPath, CommentHandler.CLOSE_TAG_COMMENT);
     writeCloseTag(writer, BandHandler.ELEMENT_TAG);
   }
 
-  protected void writeDataSourceForElement (Element element, Writer writer)
+  protected void writeDataSourceForElement
+      (final Element element, final Writer writer, final CommentHintPath path)
     throws ReportWriterException, IOException
   {
     if ((element.getDataSource() instanceof EmptyDataSource))
@@ -253,7 +284,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     }
     if (element.getDataSource() instanceof Template == false)
     {
-      writeDataSource(writer, element.getDataSource());
+      writeDataSource(writer, element.getDataSource(), path);
       return;
     }
 
@@ -295,9 +326,13 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
         parentTemplate = parent;
       }
     }
+
+    CommentHintPath templatePath = path.getInstance();
+    templatePath.addName(TemplatesHandler.TEMPLATE_TAG);
+
     TemplateWriter templateWriter = new TemplateWriter
         (getReportWriter(), getIndentLevel(),
-            templateDescription, parentTemplate);
+            templateDescription, parentTemplate, templatePath);
     templateWriter.write(writer);
   }
 
@@ -310,7 +345,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if there is a problem writing the report.
    */
-  private void writeDataSource(final Writer writer, final DataSource datasource)
+  private void writeDataSource(final Writer writer, final DataSource datasource, final CommentHintPath path)
       throws IOException, ReportWriterException
   {
     ObjectDescription od =
@@ -324,8 +359,6 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     {
       throw new ReportWriterException("Unable to resolve DataSource: " + datasource.getClass());
     }
-    final DataSourceWriter dsWriter =
-        new DataSourceWriter(getReportWriter(), datasource, od, getIndentLevel());
 
     final DataSourceCollector dataSourceCollector = getReportWriter().getDataSourceCollector();
     final String dsname = dataSourceCollector.getDataSourceName(od);
@@ -334,8 +367,16 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
       throw new ReportWriterException("No name for DataSource " + datasource);
     }
 
+    CommentHintPath dataSourcePath = path.getInstance();
+    dataSourcePath.addName(DataSourceHandler.DATASOURCE_TAG);
+    writeComment(writer, dataSourcePath, CommentHandler.OPEN_TAG_COMMENT);
     writeTag(writer, DataSourceHandler.DATASOURCE_TAG, "type", dsname, OPEN);
+
+    final DataSourceWriter dsWriter =
+        new DataSourceWriter(getReportWriter(), datasource, od, getIndentLevel(), dataSourcePath);
     dsWriter.write(writer);
+
+    writeComment(writer, dataSourcePath, CommentHandler.CLOSE_TAG_COMMENT);
     writeCloseTag(writer, DataSourceHandler.DATASOURCE_TAG);
   }
 
@@ -350,47 +391,102 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
   private void writeGroups(final Writer writer)
       throws IOException, ReportWriterException
   {
-    CommentHintPath path = REPORT_DESCRIPTION_HINT_PATH.getInstance();
-    path.addName(ReportDescriptionHandler.GROUPS_TAG);
-    writeComment(writer,  path, CommentHandler.OPEN_TAG_COMMENT);
+    CommentHintPath groupsPath = REPORT_DESCRIPTION_HINT_PATH.getInstance();
+    groupsPath.addName(ReportDescriptionHandler.GROUPS_TAG);
+    writeComment(writer,  groupsPath, CommentHandler.OPEN_TAG_COMMENT);
     writeTag(writer, ReportDescriptionHandler.GROUPS_TAG);
 
-    final GroupList list = getReport().getGroups();
-    for (int i = 0; i < list.size(); i++)
+    //logComment = true;
+    int groupSize = getReport().getGroupCount();
+    for (int i = 0; i < groupSize; i++)
     {
-      final Group g = list.get(i);
-      CommentHintPath groupPath = path.getInstance();
+      final Group g = getReport().getGroup(i);
+      if (isGroupEmpty(g) == true)
+      {
+        continue;
+      }
+
+      CommentHintPath groupPath = groupsPath.getInstance();
       groupPath.addName(g);
       writeComment(writer, groupPath, CommentHandler.OPEN_TAG_COMMENT);
       writeTag(writer, GroupsHandler.GROUP_TAG, "name", g.getName(), OPEN);
 
-      CommentHintPath fieldsPath = groupPath.getInstance();
-      fieldsPath.addName(GroupHandler.FIELDS_TAG);
-      writeComment(writer, fieldsPath, CommentHandler.OPEN_TAG_COMMENT);
-      writeTag(writer, GroupHandler.FIELDS_TAG);
-
       final List fields = g.getFields();
-      for (int f = 0; f < fields.size(); f++)
+      if (fields.isEmpty() == false)
       {
-        String field = (String) fields.get(f);
-        CommentHintPath fieldPath = fieldsPath.getInstance();
-        fieldPath.addName(field);
-        writeComment(writer, fieldPath, CommentHandler.OPEN_TAG_COMMENT);
-        writeTag(writer, GroupHandler.FIELD_TAG);
-        writer.write(normalize(field));
-        writeCloseTag(writer, GroupHandler.FIELD_TAG);
-      }
-      writeComment(writer, fieldsPath, CommentHandler.CLOSE_TAG_COMMENT);
-      writeCloseTag(writer, GroupHandler.FIELDS_TAG);
+        CommentHintPath fieldsPath = groupPath.getInstance();
+        fieldsPath.addName(GroupHandler.FIELDS_TAG);
+        writeComment(writer, fieldsPath, CommentHandler.OPEN_TAG_COMMENT);
+        writeTag(writer, GroupHandler.FIELDS_TAG);
 
-      writeBand(writer, GroupHandler.GROUP_HEADER_TAG, g.getHeader(), null);
-      writeBand(writer, GroupHandler.GROUP_FOOTER_TAG, g.getFooter(), null);
+        for (int f = 0; f < fields.size(); f++)
+        {
+          String field = (String) fields.get(f);
+          CommentHintPath fieldPath = fieldsPath.getInstance();
+          fieldPath.addName(field);
+          writeComment(writer, fieldPath, CommentHandler.OPEN_TAG_COMMENT);
+          writeTag(writer, GroupHandler.FIELD_TAG);
+          writer.write(normalize(field));
+          writeCloseTag(writer, GroupHandler.FIELD_TAG);
+        }
+        writeComment(writer, fieldsPath, CommentHandler.CLOSE_TAG_COMMENT);
+        writeCloseTag(writer, GroupHandler.FIELDS_TAG);
+      }
+
+      writeBand(writer, GroupHandler.GROUP_HEADER_TAG, g.getHeader(), null, groupPath);
+      writeBand(writer, GroupHandler.GROUP_FOOTER_TAG, g.getFooter(), null, groupPath);
 
       writeComment(writer, groupPath, CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(writer, GroupsHandler.GROUP_TAG);
     }
 
-    writeComment(writer,  path, CommentHandler.CLOSE_TAG_COMMENT);
+    writeComment(writer,  groupsPath, CommentHandler.CLOSE_TAG_COMMENT);
     writeCloseTag(writer, ReportDescriptionHandler.GROUPS_TAG);
+   // logComment = false;
+  }
+
+  private boolean isGroupEmpty (Group g)
+  {
+    if (g.getFields().isEmpty() == false)
+    {
+      return false;
+    }
+    if (isBandEmpty(g.getFooter()) == false)
+    {
+      return false;
+    }
+    if (isBandEmpty(g.getHeader()) == false)
+    {
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * A band is considered empty, if it does only define the a band layoutmanager
+   * and no other style definition.
+   * @param b
+   * @return
+   */
+  private boolean isBandEmpty (Band b)
+  {
+    if (b.getElementCount() != 0)
+    {
+      return false;
+    }
+    Iterator it = b.getStyle().getDefinedPropertyNames();
+    if (it.hasNext() == false)
+    {
+      return false;
+    }
+    StyleKey o = (StyleKey) it.next();
+    if (o.equals(BandLayoutManager.LAYOUTMANAGER))
+    {
+      if (it.hasNext() == false)
+      {
+        return true;
+      }
+    }
+    return false;
   }
 }

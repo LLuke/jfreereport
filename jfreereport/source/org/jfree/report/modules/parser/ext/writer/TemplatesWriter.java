@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesWriter.java,v 1.4 2003/07/20 19:31:17 taqua Exp $
+ * $Id: TemplatesWriter.java,v 1.5 2003/07/21 20:46:56 taqua Exp $
  *
  * Changes
  * -------
@@ -126,10 +126,12 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
         invalidTemplates.add(template.getName());
         continue;
       }
-      Log.debug ("Searching template: " + templateExtends);
+      //Log.debug ("Searching template: " + templateExtends);
 
+      CommentHintPath templatePath = TEMPLATES_PATH.getInstance();
+      templatePath.addName(template);
       TemplateWriter templateWriter = new TemplateWriter
-          (getReportWriter(), getIndentLevel(), template, parentTemplate);
+          (getReportWriter(), getIndentLevel(), template, parentTemplate, templatePath);
       templateWriter.write(writer);
     }
 

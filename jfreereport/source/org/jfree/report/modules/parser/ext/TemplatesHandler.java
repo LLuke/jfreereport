@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
+ * $Id: TemplatesHandler.java,v 1.3 2003/07/20 19:31:17 taqua Exp $
  *
  * Changes
  * -------
@@ -39,9 +39,12 @@
 package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
 import org.jfree.xml.ParseException;
+import org.jfree.xml.factory.objects.ObjectDescription;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -55,6 +58,13 @@ import org.xml.sax.SAXException;
  */
 public class TemplatesHandler extends AbstractExtReportParserHandler
 {
+  private static final CommentHintPath TEMPLATES_PATH = new CommentHintPath(new String[]{
+    ExtParserModuleInit.REPORT_DEFINITION_TAG,
+    ExtReportHandler.REPORT_DESCRIPTION_TAG,
+    ExtReportHandler.TEMPLATES_TAG
+  });
+
+
   /** The template tag. */
   public static final String TEMPLATE_TAG = "template";
 
@@ -121,9 +131,20 @@ public class TemplatesHandler extends AbstractExtReportParserHandler
     // Clone the defined template ... we don't change the original ..
     template = (TemplateDescription) template.getInstance();
     template.setName(templateName);
-    getReport().getReportBuilderHints().putHint(template.getUnconfiguredInstance(), "ext.parser.template-reference", references);
-    templateFactory = new TemplateHandler(getReportParser(), TEMPLATE_TAG, template);
+    ObjectDescription unconfiguredTemplate = template.getUnconfiguredInstance();
+    getParserHints().putHint(unconfiguredTemplate, "ext.parser.template-reference", references);
+    CommentHintPath path = createPath(unconfiguredTemplate);
+    addComment(path, CommentHandler.OPEN_TAG_COMMENT);
+    templateFactory = new TemplateHandler
+        (getReportParser(), TEMPLATE_TAG, template, path);
     getParser().pushFactory(templateFactory);
+  }
+
+  private CommentHintPath createPath (ObjectDescription tdesc)
+  {
+    CommentHintPath path = TEMPLATES_PATH.getInstance();
+    path.addName(tdesc);
+    return path;
   }
 
   /**
@@ -151,9 +172,11 @@ public class TemplatesHandler extends AbstractExtReportParserHandler
     if (tagName.equals(TEMPLATE_TAG))
     {
       TemplateDescription template = templateFactory.getTemplate();
+      ObjectDescription unconfiguredTemplate = template.getUnconfiguredInstance();
+      getParserHints().addHintList (getReport(), "ext.parser.template-definition", template.getUnconfiguredInstance());
+      CommentHintPath path = createPath(unconfiguredTemplate);
+      addComment(path, CommentHandler.CLOSE_TAG_COMMENT);
       templateCollector.addTemplate(template);
-      getReport().getReportBuilderHints().addHintList
-          (getReport(), "ext.parser.template-definition", template.getUnconfiguredInstance());
     }
     else if (tagName.equals(getFinishTag()))
     {

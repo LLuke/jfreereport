@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.3 2003/07/18 17:56:39 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.4 2003/07/21 20:46:56 taqua Exp $
  *
  * Changes
  * -------
@@ -267,6 +267,7 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
     writer.write(getLineSeparator());
   }
 
+//  protected boolean logComment;
   protected void writeComment (Writer writer, CommentHintPath path, String hintName)
     throws IOException
   {
@@ -274,8 +275,10 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
         (path, hintName, String[].class);
     if (comment == null)
     {
+//      if (logComment) Log.debug ("Not writing: " + path);
       return;
     }
+//    if (logComment) Log.debug ("Writing: " + path + " Com: " + comment);
     for (int i = 0; i < comment.length; i++)
     {
       writeComment(writer, comment[i]);

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.1 2003/07/07 22:43:59 taqua Exp $
+ * $Id: Group.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -59,6 +59,7 @@ import java.util.TreeSet;
 
 import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.report.style.StyleSheetCollectionHelper;
+import org.jfree.util.ObjectUtils;
 
 /**
  * A report group.  Reports can contain any number of (nested) groups.
@@ -133,12 +134,13 @@ public class Group implements Serializable, Cloneable, Comparable
   /** The helper implementation that manages the stylesheet collection. */
   private GroupStyleSheetCollectionHelper styleSheetCollectionHelper;
 
+  public static final String ANONYMOUS_GROUP_PREFIX = "anonymousGroup@";
   /**
    * Constructs a group with no fields, and an empty header and footer.
    */
   public Group()
   {
-    name = "anonymousGroup@" + super.hashCode();
+    name = ANONYMOUS_GROUP_PREFIX + super.hashCode();
     fields = new TreeSet();
     this.styleSheetCollectionHelper = new GroupStyleSheetCollectionHelper(this);
     this.footer = new GroupFooter();
@@ -299,31 +301,6 @@ public class Group implements Serializable, Cloneable, Comparable
   }
 
   /**
-   * Compares two objects without crashing if one or both are null.
-   *
-   * @param item1  the first object for comparison.
-   * @param item2  the second object for comparison.
-   *
-   * @return true, if both objects are null or both objects are equal, false otherwise.
-   */
-  private boolean secureEquals(final Object item1, final Object item2)
-  {
-    if ((item1 == null) && (item2 == null))
-    {
-      return true;
-    }
-    if (item1 == null)
-    {
-      return false;
-    }
-    if (item2 == null)
-    {
-      return false;
-    }
-    return item1.equals(item2);
-  }
-
-  /**
    * Clones this Element.
    *
    * @return a clone of this element.
@@ -376,54 +353,13 @@ public class Group implements Serializable, Cloneable, Comparable
 
         final Object item1 = currentDataRow.get(column);
         final Object item2 = nextDataRow.get(column);
-        if (secureEquals(item1, item2) == false)
+        if (ObjectUtils.equalOrBothNull(item1, item2) == false)
         {
           return true;
         }
       }
       return false;
     }
-  }
-
-  /**
-   * Compares this group with an other object.
-   *
-   * @param o the object which should be compared with this group.
-   *
-   * @return true, if the given object is a group with the same name and fields,
-   * false otherwise
-   */
-  public boolean equals(final Object o)
-  {
-    if (this == o)
-    {
-      return true;
-    }
-    if (!(o instanceof Group))
-    {
-      return false;
-    }
-
-    final Group group = (Group) o;
-
-    if (name != null ? !name.equals(group.name) : group.name != null)
-    {
-      return false;
-    }
-    return compareTo(group) == 0;
-  }
-
-  /**
-   * Calculates the hashcode for this group.
-   *
-   * @return the hashcode.
-   */
-  public int hashCode()
-  {
-    int result;
-    result = (name != null ? name.hashCode() : 0);
-    result = 29 * result + (fields != null ? fields.hashCode() : 0);
-    return result;
   }
 
   /**
@@ -483,10 +419,10 @@ public class Group implements Serializable, Cloneable, Comparable
     b.append(getName());
     b.append("', fields=");
     b.append(fields);
-    b.append(", header=");
+/*    b.append(", header=");
     b.append(header);
     b.append(", footer=");
-    b.append(footer);
+    b.append(footer);*/
     b.append("} ");
     return b.toString();
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: TemplateHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
 package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.factory.objects.ObjectDescription;
@@ -68,6 +70,7 @@ public class TemplateHandler extends AbstractExtReportParserHandler
   /** The template description. */
   private TemplateDescription template;
 
+  private CommentHintPath commentPath;
   /**
    * Creates a new template handler. The handler will be deactivated when the
    * finishTag was reached on endElement.
@@ -76,7 +79,8 @@ public class TemplateHandler extends AbstractExtReportParserHandler
    * @param finishTag  the finish tag.
    * @param template  the template description.
    */
-  public TemplateHandler(final ReportParser parser, final String finishTag, final TemplateDescription template)
+  public TemplateHandler(final ReportParser parser, final String finishTag,
+                         final TemplateDescription template, final CommentHintPath path)
   {
     super(parser,  finishTag);
     if (template == null)
@@ -85,6 +89,7 @@ public class TemplateHandler extends AbstractExtReportParserHandler
     }
 
     this.template = template;
+    this.commentPath = path.getInstance();
   }
 
   /**
@@ -124,7 +129,10 @@ public class TemplateHandler extends AbstractExtReportParserHandler
         }
       }
 
-      basicFactory = new BasicObjectHandler(getReportParser(), tagName, parameter);
+      CommentHintPath path = commentPath.getInstance();
+      path.addName(parameterName);
+      addComment(path, CommentHandler.OPEN_TAG_COMMENT);
+      basicFactory = new BasicObjectHandler(getReportParser(), tagName, parameter, path);
       getParser().pushFactory(basicFactory);
     }
     else if (tagName.equals(COMPOUND_OBJECT_TAG))
@@ -153,7 +161,10 @@ public class TemplateHandler extends AbstractExtReportParserHandler
         }
       }
 
-      basicFactory = new CompoundObjectHandler(getReportParser(), tagName, parameter);
+      CommentHintPath path = commentPath.getInstance();
+      path.addName(parameterName);
+      addComment(path, CommentHandler.OPEN_TAG_COMMENT);
+      basicFactory = new CompoundObjectHandler(getReportParser(), tagName, parameter, path);
       getParser().pushFactory(basicFactory);
     }
     else
@@ -195,6 +206,9 @@ public class TemplateHandler extends AbstractExtReportParserHandler
         throw new ParseException("Parameter value is null", getParser().getLocator());
       }
       getTemplate().setParameter(parameterName, o);
+      CommentHintPath path = commentPath.getInstance();
+      path.addName(parameterName);
+      addComment(path, CommentHandler.CLOSE_TAG_COMMENT);
       basicFactory = null;
     }
     else if (tagName.equals(getFinishTag()))

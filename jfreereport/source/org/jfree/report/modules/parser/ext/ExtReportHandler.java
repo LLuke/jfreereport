@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtReportHandler.java,v 1.4 2003/07/20 19:31:17 taqua Exp $
+ * $Id: ExtReportHandler.java,v 1.5 2003/07/21 20:46:56 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,6 @@
 package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.util.Log;
 import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.ReportParser;
@@ -373,8 +372,6 @@ public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHan
 
   private void addComment (String tagName, String commentHint)
   {
-    Log.debug ("Adding Comments: " + createCommentHintPath(tagName));
-    Log.debug (" --------------: " + parser.getComments());
     parser.getReport().getReportBuilderHints().putHint
         (createCommentHintPath(tagName), commentHint, parser.getComments());
   }

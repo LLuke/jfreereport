@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectWriter.java,v 1.3 2003/07/14 19:37:54 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.4 2003/07/18 17:56:39 taqua Exp $
  *
  * Changes
  * -------
@@ -45,14 +45,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.CompoundObjectHandler;
 import org.jfree.report.util.Log;
 import org.jfree.util.ObjectUtils;
-import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.jfree.xml.factory.objects.ObjectFactoryException;
-import org.jfree.xml.factory.objects.URLObjectDescription;
 
 /**
  * A writer.
@@ -67,6 +67,7 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
   /** The object factory. */
   private ClassFactoryCollector cc;
 
+  private CommentHintPath commentHintPath;
 
 
   /**
@@ -77,11 +78,14 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
    * @param objectDescription  the object description (<code>null</code> not permitted).
    * @param indentLevel the current indention level.
    */
-  public ObjectWriter(final ReportWriter reportWriter, final Object baseObject,
-                      final ObjectDescription objectDescription, final int indentLevel)
+  public ObjectWriter(final ReportWriter reportWriter,
+                      final Object baseObject,
+                      final ObjectDescription objectDescription,
+                      final int indentLevel,
+                      final CommentHintPath commentHintPath)
     throws ReportWriterException
   {
-    this (reportWriter, objectDescription, indentLevel);
+    this (reportWriter, objectDescription, indentLevel, commentHintPath);
     if (baseObject == null)
     {
       throw new NullPointerException("BaseObject is null");
@@ -97,7 +101,9 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
   }
 
   public ObjectWriter(final ReportWriter reportWriter,
-                      final ObjectDescription objectDescription, final int indentLevel)
+                      final ObjectDescription objectDescription,
+                      final int indentLevel,
+                      final CommentHintPath commentHintPath)
   {
 
     super(reportWriter, indentLevel);
@@ -108,6 +114,8 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
     this.objectDescription = objectDescription;
     cc = getReportWriter().getClassFactoryCollector();
+    this.commentHintPath = commentHintPath;
+
   }
 
   /**
@@ -233,12 +241,6 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
     try
     {
-      if (parameterDescription instanceof URLObjectDescription)
-      {
-        Log.debug ("ParameterValue: " + parameterValue);
-        URLObjectDescription uod = (URLObjectDescription) parameterDescription;
-        Log.debug ("ContentBase: " + uod.getConfig().getConfigProperty(Parser.CONTENTBASE_KEY));
-      }
       parameterDescription.setParameterFromObject(parameterValue);
     }
     catch (ObjectFactoryException ofe)
@@ -253,21 +255,28 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
       p.setProperty("class", parameterValue.getClass().getName());
     }
 
+    CommentHintPath path = commentHintPath.getInstance();
+    path.addName(parameterName);
+
     final List parameterNames = getParameterNames(parameterDescription);
     if (isBasicObject(parameterNames, parameterDescription))
     {
+      writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
       writeTag(writer, CompoundObjectHandler.BASIC_OBJECT_TAG, p, OPEN);
       writer.write(normalize((String) parameterDescription.getParameter("value")));
+      writeComment(writer, path, CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(writer, CompoundObjectHandler.BASIC_OBJECT_TAG);
     }
     else
     {
+      writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
       writeTag(writer, CompoundObjectHandler.COMPOUND_OBJECT_TAG, p, OPEN);
 
       final ObjectWriter objWriter = new ObjectWriter(getReportWriter(), parameterValue,
-          parameterDescription, getIndentLevel());
+          parameterDescription, getIndentLevel(), path);
       objWriter.write(writer);
 
+      writeComment(writer, path, CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(writer, CompoundObjectHandler.COMPOUND_OBJECT_TAG);
     }
 
@@ -341,4 +350,9 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
     return list;
   }
 
+
+  public CommentHintPath getCommentHintPath()
+  {
+    return commentHintPath;
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportBuilderHints.java,v 1.2 2003/07/20 19:31:15 taqua Exp $
+ * $Id: ReportBuilderHints.java,v 1.3 2003/07/21 20:46:38 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -85,8 +85,8 @@ public class ReportBuilderHints implements Serializable
 
       final ParserHintKey parserHintKey = (ParserHintKey) o;
 
-      if (!hintKey.equals(parserHintKey.hintKey)) return false;
       if (!primaryKey.equals(parserHintKey.primaryKey)) return false;
+      if (!hintKey.equals(parserHintKey.hintKey)) return false;
 
       return true;
     }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.2 2003/07/14 19:37:54 taqua Exp $
+ * $Id: StyleWriter.java,v 1.3 2003/07/15 16:28:22 taqua Exp $
  *
  * Changes
  * -------
@@ -46,6 +46,8 @@ import java.util.Properties;
 
 import org.jfree.report.ShapeElement;
 import org.jfree.report.modules.parser.ext.StyleSheetHandler;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.style.BandDefaultStyleSheet;
 import org.jfree.report.style.ElementDefaultStyleSheet;
 import org.jfree.report.style.ElementStyleSheet;
@@ -69,6 +71,8 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
   /** The default style sheet. */
   private ElementStyleSheet defaultStyleSheet;
 
+  private CommentHintPath commentPath;
+
   /**
    * Creates a new writer.
    *
@@ -80,7 +84,8 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
   public StyleWriter(final ReportWriter reportWriter,
                      final ElementStyleSheet elementStyleSheet,
                      final ElementStyleSheet defaultStyleSheet,
-                     final int indentLevel)
+                     final int indentLevel,
+                     final CommentHintPath commentPath)
   {
     super(reportWriter, indentLevel);
     if (elementStyleSheet == null)
@@ -89,6 +94,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     }
     this.elementStyleSheet = elementStyleSheet;
     this.defaultStyleSheet = defaultStyleSheet;
+    this.commentPath = commentPath.getInstance();
   }
 
   /**
@@ -108,6 +114,9 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
       final ElementStyleSheet parent = (ElementStyleSheet) parents.get(p);
       if (isDefaultStyleSheet(parent) == false)
       {
+        CommentHintPath extendsPath = commentPath.getInstance();
+        extendsPath.addName(parent.getName());
+        writeComment(writer, extendsPath, CommentHandler.OPEN_TAG_COMMENT);
         writeTag(writer, StyleSheetHandler.EXTENDS_TAG, "name", parent.getName(), CLOSE);
       }
     }
@@ -179,7 +188,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     }
     return ObjectUtils.equalOrBothNull(odKey, odObject);
   }
-  
+
   /**
    * Writes a stylekey.
    *
@@ -217,18 +226,26 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
       p.setProperty("class", o.getClass().getName());
     }
 
+    CommentHintPath styleKeyPath = commentPath.getInstance();
+    styleKeyPath.addName(key);
+
     final List parameterNames = getParameterNames(od);
     if (isBasicKey(parameterNames, od))
     {
+      writeComment(w, styleKeyPath, CommentHandler.OPEN_TAG_COMMENT);
       writeTag(w, StyleSheetHandler.BASIC_KEY_TAG, p, OPEN);
       w.write(normalize((String) od.getParameter("value")));
+      writeComment(w, styleKeyPath, CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(w, StyleSheetHandler.BASIC_KEY_TAG);
     }
     else
     {
+      writeComment(w, styleKeyPath, CommentHandler.OPEN_TAG_COMMENT);
       writeTag(w, StyleSheetHandler.COMPOUND_KEY_TAG, p, OPEN);
-      final ObjectWriter objWriter = new ObjectWriter(getReportWriter(), o, od, getIndentLevel());
+      final ObjectWriter objWriter = new ObjectWriter
+          (getReportWriter(), o, od, getIndentLevel(), styleKeyPath);
       objWriter.write(w);
+      writeComment(w, styleKeyPath, CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(w, StyleSheetHandler.COMPOUND_KEY_TAG);
     }
   }

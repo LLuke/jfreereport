@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.4 2003/07/20 19:31:17 taqua Exp $
+ * $Id: ReportWriter.java,v 1.5 2003/07/21 20:46:56 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import java.util.List;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportBuilderHints;
+import org.jfree.report.JFreeReportConstants;
 import org.jfree.report.modules.parser.ext.ParserConfigHandler;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceFactory;
@@ -56,9 +57,11 @@ import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollection;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
+import org.jfree.util.Configuration;
+import org.jfree.xml.Parser;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
-import org.jfree.util.Configuration;
+
 
 /**
  * A report writer.
@@ -91,15 +94,27 @@ public class ReportWriter
   private Configuration configuration;
 
   /**
-   * Creates a new report writer for a report.
+   * Builds a default configuration from a given report definition object.
+   * <p>
+   * This will only create a valid definition, if the report properties were
+   * filled by the parser and contain the key <code>report.definition.contentbase</code>.
    *
-   * @param report  the report.
-   * @param encoding  the encoding.
-   * @deprecated this method does not setup the writer configuration properly.
+   * @param report the report for which to create the writer configuration.
+   * @return the generated configuration.
    */
-  public ReportWriter(final JFreeReport report, final String encoding)
+  public static Configuration createDefaultConfiguration (JFreeReport report)
   {
-    this (report, encoding, new ReportConfiguration(report.getReportConfiguration()));
+    ReportConfiguration repConf = new ReportConfiguration(report.getReportConfiguration());
+    repConf.setConfigProperty
+        (Parser.CONTENTBASE_KEY,
+            (String) report.getProperty(JFreeReportConstants.REPORT_DEFINITION_CONTENTBASE));
+    repConf.setConfigProperty
+        (JFreeReportConstants.REPORT_DEFINITION_CONTENTBASE,
+            (String) report.getProperty(JFreeReportConstants.REPORT_DEFINITION_CONTENTBASE));
+    repConf.setConfigProperty
+        (JFreeReportConstants.REPORT_DEFINITION_SOURCE,
+            (String) report.getProperty(JFreeReportConstants.REPORT_DEFINITION_SOURCE));
+    return repConf;
   }
 
   /**
@@ -118,6 +133,14 @@ public class ReportWriter
     if (encoding == null)
     {
       throw new NullPointerException("Encoding is null.");
+    }
+    if (config == null)
+    {
+      throw new NullPointerException("Configuration is null.");
+    }
+    if (config.getConfigProperty(Parser.CONTENTBASE_KEY) == null)
+    {
+      throw new IllegalStateException("This report writer configuration does not define a content base.");
     }
 
     this.report = report;
@@ -138,9 +161,9 @@ public class ReportWriter
     loadTemplateFactories();
 
     // configure all factories with the current report configuration ...
-    dataSourceCollector.configure(report.getReportConfiguration());
-    classFactoryCollector.configure(report.getReportConfiguration());
-    templateCollector.configure(report.getReportConfiguration());
+    dataSourceCollector.configure(configuration);
+    classFactoryCollector.configure(configuration);
+    templateCollector.configure(configuration);
   }
 
   private void loadObjectFactories ()

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: AbstractExtReportParserHandler.java,v 1.1 2003/07/18 18:31:25 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,8 +41,10 @@ package org.jfree.report.modules.parser.ext;
 import org.jfree.xml.ElementDefinitionHandler;
 import org.jfree.xml.Parser;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.ReportBuilderHints;
 import org.jfree.report.JFreeReport;
+import org.jfree.report.util.Log;
 
 public abstract class AbstractExtReportParserHandler
     implements ElementDefinitionHandler
@@ -93,5 +95,16 @@ public abstract class AbstractExtReportParserHandler
   public String getFinishTag()
   {
     return finishTag;
+  }
+
+  protected void addComment (CommentHintPath path, String hint)
+  {
+    String[] comments = getReportParser().getComments();
+    if (comments != null)
+    {
+      // Log.debug ("Adding Comment: " + path + " COm: " + comments);
+      getReport().getReportBuilderHints().putHint
+          (path, hint, comments);
+    }
   }
 }

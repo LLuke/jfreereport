@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CompoundStyleKeyHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: CompoundStyleKeyHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
 package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.factory.objects.ClassFactory;
 import org.jfree.xml.factory.objects.ObjectDescription;
@@ -68,6 +70,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
   /** A parameter name. */
   private String parameterName;
 
+  private CommentHintPath commentPath;
   /**
    * Creates a new handler.
    *
@@ -78,7 +81,8 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public CompoundStyleKeyHandler(final ReportParser parser, final String finishTag, final String name, final Class c)
+  public CompoundStyleKeyHandler(final ReportParser parser, final String finishTag,
+                                 final String name, final Class c)
       throws SAXException
   {
     super(parser, finishTag, name, c);
@@ -94,6 +98,16 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
       throw new ParseException("No object definition for class " + getStyleKey().getValueType(),
           getParser().getLocator());
     }
+  }
+
+  public CommentHintPath getCommentPath()
+  {
+    return commentPath;
+  }
+
+  public void setCommentPath(CommentHintPath commentPath)
+  {
+    this.commentPath = commentPath;
   }
 
   /**
@@ -142,7 +156,9 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
         }
       }
 
-      basicFactory = new BasicObjectHandler(getReportParser(), tagName, parameter);
+      CommentHintPath path = createCommentKey(parameterName);
+      addComment(path, CommentHandler.OPEN_TAG_COMMENT);
+      basicFactory = new BasicObjectHandler(getReportParser(), tagName, parameter, path);
       getParser().pushFactory(basicFactory);
     }
     else if (tagName.equals(COMPOUND_OBJECT_TAG))
@@ -172,7 +188,9 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
         }
       }
 
-      basicFactory = new CompoundObjectHandler(getReportParser(), tagName, parameter);
+      CommentHintPath path = createCommentKey(parameterName);
+      addComment(path, CommentHandler.OPEN_TAG_COMMENT);
+      basicFactory = new CompoundObjectHandler(getReportParser(), tagName, parameter, path);
       getParser().pushFactory(basicFactory);
     }
     else
@@ -182,6 +200,13 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
           + BASIC_OBJECT_TAG + ". ");
     }
 
+  }
+
+  protected CommentHintPath createCommentKey(Object name)
+  {
+    CommentHintPath path = commentPath.getInstance();
+    path.addName(name);
+    return path;
   }
 
   /**
@@ -215,6 +240,7 @@ public class CompoundStyleKeyHandler extends BasicStyleKeyHandler
         throw new ParseException("Parameter value is null", getParser().getLocator());
       }
       getKeyObjectDescription().setParameter(parameterName, o);
+      addComment(createCommentKey(parameterName), CommentHandler.CLOSE_TAG_COMMENT);
       basicFactory = null;
     }
     else if (tagName.equals(getFinishTag()))

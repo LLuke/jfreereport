@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CompoundObjectHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: CompoundObjectHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
 package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.xml.sax.Attributes;
@@ -72,9 +74,10 @@ public class CompoundObjectHandler extends BasicObjectHandler
    * @param finishTag  the finish tag.
    * @param od  the object description.
    */
-  public CompoundObjectHandler(final ReportParser parser, final String finishTag, final ObjectDescription od)
+  public CompoundObjectHandler(final ReportParser parser, final String finishTag,
+                               final ObjectDescription od, final CommentHintPath path)
   {
-    super(parser, finishTag, od);
+    super(parser, finishTag, od, path);
   }
 
   /**
@@ -86,10 +89,11 @@ public class CompoundObjectHandler extends BasicObjectHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public CompoundObjectHandler(final ReportParser parser, final String finishTag, final Class targetObject)
+  public CompoundObjectHandler(final ReportParser parser, final String finishTag,
+                               final Class targetObject, final CommentHintPath path)
       throws SAXException
   {
-    super(parser, finishTag, targetObject);
+    super(parser, finishTag, targetObject, path);
   }
 
   /**
@@ -143,7 +147,9 @@ public class CompoundObjectHandler extends BasicObjectHandler
         }
       }
 
-      basicFactory = new BasicObjectHandler(getReportParser(), tagName, parameter);
+      CommentHintPath path = createCommentKey(parameterName);
+      addComment(path, CommentHandler.OPEN_TAG_COMMENT);
+      basicFactory = new BasicObjectHandler(getReportParser(), tagName, parameter, path);
       getParser().pushFactory(basicFactory);
     }
     else if (tagName.equals(COMPOUND_OBJECT_TAG))
@@ -178,7 +184,9 @@ public class CompoundObjectHandler extends BasicObjectHandler
         }
       }
 
-      basicFactory = new CompoundObjectHandler(getReportParser(), tagName, parameter);
+      CommentHintPath path = createCommentKey(parameterName);
+      addComment(path, CommentHandler.OPEN_TAG_COMMENT);
+      basicFactory = new CompoundObjectHandler(getReportParser(), tagName, parameter, path);
       getParser().pushFactory(basicFactory);
     }
     else
@@ -227,6 +235,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
           throw new ParseException("Parameter value is null", getParser().getLocator());
         }
 
+        addComment(createCommentKey(parameterName), CommentHandler.CLOSE_TAG_COMMENT);
         getKeyObjectDescription().setParameter(parameterName, o);
         basicFactory = null;
       }
@@ -239,6 +248,7 @@ public class CompoundObjectHandler extends BasicObjectHandler
         throw new ParseException("Parameter value is null", getParser().getLocator());
       }
       getKeyObjectDescription().setParameter(parameterName, o);
+      addComment(createCommentKey(parameterName), CommentHandler.CLOSE_TAG_COMMENT);
       basicFactory = null;
     }
     else if (tagName.equals(getFinishTag()))

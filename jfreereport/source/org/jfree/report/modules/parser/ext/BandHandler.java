@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: BandHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -40,11 +40,12 @@ package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
-import org.jfree.report.modules.parser.ext.factory.elements.ElementFactoryCollector;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.report.modules.parser.ext.factory.elements.ElementFactoryCollector;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.xml.ParseException;
-import org.jfree.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -75,9 +76,10 @@ public class BandHandler extends ElementHandler
    * @param finishTag  the finish tag.
    * @param band  the band.
    */
-  public BandHandler(final ReportParser parser, final String finishTag, final Band band)
+  public BandHandler(final ReportParser parser, final String finishTag,
+                     final Band band, final CommentHintPath path)
   {
-    super(parser, finishTag, band);
+    super(parser, finishTag, band, path);
   }
 
   /**
@@ -98,7 +100,9 @@ public class BandHandler extends ElementHandler
       {
         band.setName(name);
       }
-      elementHandler = new BandHandler(getReportParser(), tagName, band);
+      CommentHintPath path = createCommentPath(band);
+      addComment(path, CommentHandler.OPEN_TAG_COMMENT);
+      elementHandler = new BandHandler(getReportParser(), tagName, band, getCommentPath());
       getParser().pushFactory(elementHandler);
       // ignore
     }
@@ -121,13 +125,19 @@ public class BandHandler extends ElementHandler
         element.setName(name);
       }
 
-      elementHandler = new ElementHandler(getReportParser(), tagName, element);
+      CommentHintPath path = createCommentPath(element);
+      addComment(path, CommentHandler.OPEN_TAG_COMMENT);
+      elementHandler = new ElementHandler(getReportParser(), tagName, element, getCommentPath());
       getParser().pushFactory(elementHandler);
     }
     else if (tagName.equals(DEFAULT_STYLE_TAG))
     {
+      CommentHintPath path = createCommentPath(tagName);
+      addComment(path, CommentHandler.OPEN_TAG_COMMENT);
+
       final ElementStyleSheet styleSheet = getBand().getBandDefaults();
-      final StyleSheetHandler styleSheetFactory = new StyleSheetHandler(getReportParser(), tagName, styleSheet);
+      final StyleSheetHandler styleSheetFactory =
+          new StyleSheetHandler(getReportParser(), tagName, styleSheet, path);
       getParser().pushFactory(styleSheetFactory);
     }
     else
@@ -159,6 +169,7 @@ public class BandHandler extends ElementHandler
     {
       if (elementHandler != null)
       {
+        addComment(createCommentPath(elementHandler.getElement()), CommentHandler.CLOSE_TAG_COMMENT);
         getBand().addElement(elementHandler.getElement());
         elementHandler = null;
       }
@@ -169,12 +180,13 @@ public class BandHandler extends ElementHandler
     }
     else if (tagName.equals(ELEMENT_TAG))
     {
+      addComment(createCommentPath(elementHandler.getElement()), CommentHandler.CLOSE_TAG_COMMENT);
       getBand().addElement(elementHandler.getElement());
       elementHandler = null;
     }
     else if (tagName.equals(DEFAULT_STYLE_TAG))
     {
-      // ignore event ...
+      addComment(createCommentPath(tagName), CommentHandler.CLOSE_TAG_COMMENT);
     }
     else
     {

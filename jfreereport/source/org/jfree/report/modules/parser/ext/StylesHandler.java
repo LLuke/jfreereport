@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesHandler.java,v 1.2 2003/07/12 16:31:13 taqua Exp $
+ * $Id: StylesHandler.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -38,7 +38,9 @@
 
 package org.jfree.report.modules.parser.ext;
 
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.xml.ParseException;
@@ -56,6 +58,13 @@ import org.xml.sax.SAXException;
  */
 public class StylesHandler extends AbstractExtReportParserHandler
 {
+  private static final CommentHintPath STYLES_PATH = new CommentHintPath(new String[]{
+    ExtParserModuleInit.REPORT_DEFINITION_TAG,
+    ExtReportHandler.REPORT_DESCRIPTION_TAG,
+    ExtReportHandler.STYLES_TAG
+  });
+
+
   /** The 'styles-collection' tag name. */
   public static final String STYLES_COLLECTION = "styles-collection";
 
@@ -99,8 +108,10 @@ public class StylesHandler extends AbstractExtReportParserHandler
       }
       styleSheet = new ElementStyleSheet(name);
 
+      CommentHintPath path = createPath(styleSheet);
+      addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       final StyleSheetHandler styleSheetFactory = new StyleSheetHandler(getReportParser(),
-          STYLE_TAG, styleSheet);
+          STYLE_TAG, styleSheet, path);
       getParser().pushFactory(styleSheetFactory);
     }
     else
@@ -134,6 +145,7 @@ public class StylesHandler extends AbstractExtReportParserHandler
   {
     if (tagName.equals(STYLE_TAG))
     {
+      addComment(createPath(styleSheet), CommentHandler.CLOSE_TAG_COMMENT);
       styleCollection.addStyleSheet(styleSheet);
     }
     else if (tagName.equals(getFinishTag()))
@@ -146,4 +158,12 @@ public class StylesHandler extends AbstractExtReportParserHandler
           + getFinishTag() + "', found : " + tagName);
     }
   }
+
+  private CommentHintPath createPath (ElementStyleSheet tdesc)
+  {
+    CommentHintPath path = STYLES_PATH.getInstance();
+    path.addName(tdesc);
+    return path;
+  }
+
 }

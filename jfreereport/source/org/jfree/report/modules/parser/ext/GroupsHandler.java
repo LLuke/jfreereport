@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupsHandler.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
+ * $Id: GroupsHandler.java,v 1.4 2003/07/21 20:46:56 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,9 @@ package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.Group;
 import org.jfree.report.GroupList;
-import org.jfree.report.modules.parser.base.ReportParser;
-import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.ReportParser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -164,8 +164,9 @@ public class GroupsHandler extends AbstractExtReportParserHandler
     path.addName(ExtReportHandler.REPORT_DESCRIPTION_TAG);
     path.addName(ReportDescriptionHandler.GROUPS_TAG);
     path.addName(name);
+    String[] comments = getReportParser().getComments();
     getReport().getReportBuilderHints().putHint
-        (path, hint, getReportParser().getComments());
+        (path, hint, comments);
   }
 
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetHandler.java,v 1.3 2003/07/14 17:37:08 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.4 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -38,6 +38,8 @@
 
 package org.jfree.report.modules.parser.ext;
 
+import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.StyleSheetCollection;
@@ -73,6 +75,8 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
   /** The style collection. */
   private StyleSheetCollection styleCollection;
 
+  private CommentHintPath commentKey;
+
   /**
    * Creates a new handler.
    *
@@ -80,7 +84,8 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
    * @param finishTag  the finish tag.
    * @param styleSheet  the style sheet.
    */
-  public StyleSheetHandler(final ReportParser parser, final String finishTag, final ElementStyleSheet styleSheet)
+  public StyleSheetHandler(final ReportParser parser, final String finishTag,
+                           final ElementStyleSheet styleSheet, final CommentHintPath path)
   {
     super(parser, finishTag);
     if (styleSheet == null)
@@ -90,6 +95,7 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
 
     this.sheet = styleSheet;
     styleCollection = getReport().getStyleSheetCollection();
+    this.commentKey = path.getInstance();
   }
 
   /**
@@ -133,6 +139,7 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
       }
 
       basicFactory = new BasicStyleKeyHandler(getReportParser(), tagName, name, c);
+      addComment(createCommentPath(basicFactory.getStyleKey()), CommentHandler.OPEN_TAG_COMMENT);
       getParser().pushFactory(basicFactory);
     }
     else if (tagName.equals(COMPOUND_KEY_TAG))
@@ -153,7 +160,11 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
         // ignore me ...
       }
 
-      basicFactory = new CompoundStyleKeyHandler(getReportParser(), tagName, name, c);
+      CompoundStyleKeyHandler factory = new CompoundStyleKeyHandler(getReportParser(), tagName, name, c);
+      CommentHintPath path = createCommentPath(factory.getStyleKey());
+      factory.setCommentPath(path);
+      addComment(path, CommentHandler.OPEN_TAG_COMMENT);
+      basicFactory = factory;
       getParser().pushFactory(basicFactory);
     }
     else if (tagName.equals(EXTENDS_TAG))
@@ -167,6 +178,7 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
           throw new ParseException("Invalid parent styleSheet, StyleSheet not defined: " + extend,
               getParser().getLocator());
         }
+        addComment(createCommentPath(extend), CommentHandler.OPEN_TAG_COMMENT);
         sheet.addParent(exSheet);
       }
       else
@@ -206,11 +218,13 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
   {
     if (tagName.equals(BASIC_KEY_TAG))
     {
+      addComment(createCommentPath(basicFactory.getStyleKey()), CommentHandler.CLOSE_TAG_COMMENT);
       sheet.setStyleProperty(basicFactory.getStyleKey(), basicFactory.getValue());
       basicFactory = null;
     }
     else if (tagName.equals(COMPOUND_KEY_TAG))
     {
+      addComment(createCommentPath(basicFactory.getStyleKey()), CommentHandler.CLOSE_TAG_COMMENT);
       sheet.setStyleProperty(basicFactory.getStyleKey(), basicFactory.getValue());
       basicFactory = null;
     }
@@ -228,5 +242,12 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
           + COMPOUND_KEY_TAG + ", "
           + getFinishTag());
     }
+  }
+
+  private CommentHintPath createCommentPath (Object name)
+  {
+    CommentHintPath path = commentKey.getInstance();
+    path.addName(name);
+    return path;
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicObjectHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: BasicObjectHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.factory.objects.ClassFactory;
@@ -67,6 +68,9 @@ public class BasicObjectHandler extends AbstractExtReportParserHandler
   /** A character entity parser. */
   private CharacterEntityParser entityParser;
 
+  private CommentHintPath commentKey;
+
+
   /**
    * Creates a new handler.
    *
@@ -74,12 +78,14 @@ public class BasicObjectHandler extends AbstractExtReportParserHandler
    * @param finishTag  the finish tag.
    * @param od  the object description.
    */
-  public BasicObjectHandler(final ReportParser parser, final String finishTag, final ObjectDescription od)
+  public BasicObjectHandler(final ReportParser parser, final String finishTag,
+                            final ObjectDescription od, final CommentHintPath commentHintPath)
   {
     super(parser, finishTag);
     this.entityParser = CharacterEntityParser.createXMLEntityParser();
     this.buffer = new StringBuffer();
     this.objectDescription = od;
+    this.commentKey = commentHintPath;
   }
 
   /**
@@ -91,16 +97,21 @@ public class BasicObjectHandler extends AbstractExtReportParserHandler
    *
    * @throws SAXException  if a parser error occurs.
    */
-  public BasicObjectHandler(final ReportParser parser, final String finishTag, final Class targetObject)
+  public BasicObjectHandler(final ReportParser parser, final String finishTag,
+                            final Class targetObject, final CommentHintPath commentHintPath)
       throws SAXException
   {
-    super(parser, finishTag);
-    this.entityParser = CharacterEntityParser.createXMLEntityParser();
-    this.buffer = new StringBuffer();
+    this (parser, finishTag, createObjectDescriptionFromObject(parser, targetObject),
+        commentHintPath);
+  }
 
-    final ClassFactory fact = (ClassFactory) getParser().getHelperObject(
+  private static ObjectDescription createObjectDescriptionFromObject
+      (ReportParser parser, Class targetObject)
+    throws ParseException
+  {
+    final ClassFactory fact = (ClassFactory) parser.getHelperObject(
         ParserConfigHandler.OBJECT_FACTORY_TAG);
-    objectDescription = fact.getDescriptionForClass(targetObject);
+    ObjectDescription objectDescription = fact.getDescriptionForClass(targetObject);
     if (objectDescription == null)
     {
       objectDescription = fact.getSuperClassObjectDescription(targetObject, null);
@@ -108,8 +119,9 @@ public class BasicObjectHandler extends AbstractExtReportParserHandler
     if (objectDescription == null)
     {
       throw new ParseException("No object definition for class " + targetObject,
-          getParser().getLocator());
+          parser.getLocator());
     }
+    return objectDescription;
   }
 
   /**
@@ -175,5 +187,17 @@ public class BasicObjectHandler extends AbstractExtReportParserHandler
   protected ObjectDescription getTargetObjectDescription()
   {
     return objectDescription;
+  }
+
+  protected CommentHintPath getCommentKey()
+  {
+    return commentKey;
+  }
+
+  protected CommentHintPath createCommentKey(Object name)
+  {
+    CommentHintPath path = commentKey.getInstance();
+    path.addName(name);
+    return path;
   }
 }

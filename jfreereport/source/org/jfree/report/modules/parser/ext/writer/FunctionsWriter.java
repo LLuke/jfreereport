@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.2 2003/07/21 20:46:56 taqua Exp $
  *
  * Changes
  * -------
@@ -220,10 +220,10 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
 
         CommentHintPath path = FUNCTIONS_PATH.getInstance();
         path.addName (name);
-        writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
 
         if (value == null)
         {
+          writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
           writeTag(writer, FunctionsHandler.PROPERTY_REF_TAG, "name", name, CLOSE);
         }
         else
@@ -235,6 +235,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
           }
           if (od == null)
           {
+            writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
             writeTag(writer, FunctionsHandler.PROPERTY_REF_TAG, "name", name, CLOSE);
           }
           else
@@ -242,8 +243,11 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
             final Properties properties = new Properties();
             properties.setProperty("name", name);
             properties.setProperty("class", od.getObjectClass().getName());
+
+            writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
             writeTag(writer, FunctionsHandler.PROPERTY_REF_TAG, properties, OPEN);
-            writeObjectDescription(writer, od.getInstance(), value);
+            writeObjectDescription(writer, od.getInstance(), value, path);
+            writeComment(writer, path, CommentHandler.CLOSE_TAG_COMMENT);
             writeCloseTag(writer, FunctionsHandler.PROPERTY_REF_TAG);
           }
         }
@@ -261,7 +265,8 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    * @throws IOException if there is an I/O problem.
    * @throws ReportWriterException if the report definition could not be written.
    */
-  private void writeObjectDescription(final Writer writer, final ObjectDescription od, final Object o)
+  private void writeObjectDescription(final Writer writer, final ObjectDescription od,
+                                      final Object o, final CommentHintPath path)
       throws IOException, ReportWriterException
   {
     try
@@ -283,7 +288,7 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
     }
     else
     {
-      final ObjectWriter objectWriter = new ObjectWriter(getReportWriter(), o, od, getIndentLevel());
+      final ObjectWriter objectWriter = new ObjectWriter(getReportWriter(), o, od, getIndentLevel(), path);
       objectWriter.write(writer);
     }
 

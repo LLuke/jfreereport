@@ -65,54 +65,101 @@
     <!-- = REPORT HEADER = -->
     <!-- ================= -->
     <report-header name="report-header-band">
-
+      <!-- Style comment a -->
       <style>
+        <!-- Style comment 1 -->
         <compound-key name="min-size">
+          <!-- Style comment 2 -->
           <basic-object name="height">112.0</basic-object>
+          <!-- Style comment 3 -->
           <basic-object name="width">0.0</basic-object>
+          <!-- Style comment 4 -->
         </compound-key>
+        <!-- Style comment 5 -->
       </style>
+      <!-- Style comment 6 -->
 
+      <!-- Style comment 7 -->
       <default-style>
+        <!-- Style comment 8 -->
         <basic-key name="font">SansSerif</basic-key>
+        <!-- Style comment 9-->
         <basic-key name="font-size">10</basic-key>
+        <!-- Style comment 10 -->
         <basic-key name="valignment">bottom</basic-key>
+        <!-- Style comment 11 -->
       </default-style>
+      <!-- Style comment 12 -->
 
+      <!-- Style comment 13 -->
       <element name="title1" type="text/plain">
+        <!-- Style comment 14 -->
         <style>
+          <!-- Style comment 15 -->
           <compound-key name="absolute_pos">
+            <!-- Style comment 16-->
             <basic-object name="x">0.0</basic-object>
+            <!-- Style comment 17-->
             <basic-object name="y">2.0</basic-object>
+            <!-- Style comment 18-->
           </compound-key>
+          <!-- Style comment 19-->
           <compound-key name="min-size">
+            <!-- Style comment 20-->
             <basic-object name="height">18.0</basic-object>
+            <!-- Style comment 21-->
             <basic-object name="width">-100.0</basic-object>
+            <!-- Style comment 22-->
           </compound-key>
+          <!-- Style comment 23-->
           <basic-key name="alignment">center</basic-key>
+          <!-- Style comment 24-->
           <basic-key name="font-size">18</basic-key>
+          <!-- Style comment 25-->
           <basic-key name="font-bold">true</basic-key>
+          <!-- Style comment 26-->
         </style>
+        <!-- Style comment 27-->
         <template references="label">
+          <!-- Style comment 28-->
           <basic-object name="content">Java Look and Feel Graphics Repository</basic-object>
+          <!-- Style comment 29-->
         </template>
+        <!-- Style comment 30-->
       </element>
+      <!-- Style comment 31-->
 
+      <!-- Style comment 32-->
       <element name="description1" type="text/plain">
+        <!-- Style comment 33 -->
         <style>
+          <!-- Style comment 34-->
           <compound-key name="absolute_pos">
+            <!-- Style comment 35-->
             <basic-object name="x">0.0</basic-object>
+            <!-- Style comment 36-->
             <basic-object name="y">32.0</basic-object>
+            <!-- Style comment 37-->
           </compound-key>
+          <!-- Style comment 38-->
           <compound-key name="min-size">
+            <!-- Style comment 39-->
             <basic-object name="height">10.0</basic-object>
+            <!-- Style comment 40-->
             <basic-object name="width">-100.0</basic-object>
+            <!-- Style comment 41-->
           </compound-key>
+          <!-- Style comment 42-->
         </style>
+        <!-- Style comment 43-->
         <template references="label">
+          <!-- Style comment 44-->
           <basic-object name="content">This report lists the icons contained in the Java Look and Feel Graphics Repository.</basic-object>
+          <!-- Style comment 45-->
         </template>
+        <!-- Style comment 46-->
       </element>
+      <!-- Style comment 47-->
 
       <element name="description2" type="text/plain">
         <style>

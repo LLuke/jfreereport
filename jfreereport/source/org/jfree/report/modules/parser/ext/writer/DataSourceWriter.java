@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: DataSourceWriter.java,v 1.2 2003/07/18 17:56:39 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,8 @@ import java.io.Writer;
 import org.jfree.report.filter.DataSource;
 import org.jfree.report.modules.parser.ext.DataSourceHandler;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.xml.factory.objects.ObjectDescription;
 
 /**
@@ -64,11 +66,14 @@ public class DataSourceWriter extends ObjectWriter
    * @param objectDescription the object description.
    * @param indent the current indention level.
    */
-  public DataSourceWriter(final ReportWriter reportWriter, final DataSource baseObject,
-                          final ObjectDescription objectDescription, final int indent)
+  public DataSourceWriter(final ReportWriter reportWriter,
+                          final DataSource baseObject,
+                          final ObjectDescription objectDescription,
+                          final int indent,
+                          final CommentHintPath commentHintPath)
     throws ReportWriterException
   {
-    super(reportWriter, baseObject, objectDescription, indent);
+    super(reportWriter, baseObject, objectDescription, indent, commentHintPath);
     if (DataSource.class.isAssignableFrom(objectDescription.getObjectClass()) == false)
     {
       throw new IllegalArgumentException("Expect a datasource description, but got "
@@ -101,12 +106,16 @@ public class DataSourceWriter extends ObjectWriter
             + ds.getClass());
       }
 
+      CommentHintPath path = getCommentHintPath().getInstance();
+      path.addName(DataSourceHandler.DATASOURCE_TAG);
+      writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
       writeTag(writer, DataSourceHandler.DATASOURCE_TAG, "type", dsname, OPEN);
 
       final DataSourceWriter dsWriter =
-          new DataSourceWriter(getReportWriter(), ds, dsDesc, getIndentLevel());
+          new DataSourceWriter(getReportWriter(), ds, dsDesc, getIndentLevel(), path);
       dsWriter.write(writer);
 
+      writeComment(writer, path, CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(writer, DataSourceHandler.DATASOURCE_TAG);
 
     }

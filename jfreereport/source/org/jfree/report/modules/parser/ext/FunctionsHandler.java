@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
+ * $Id: FunctionsHandler.java,v 1.3 2003/07/21 20:46:56 taqua Exp $
  *
  * Changes
  * -------
@@ -118,8 +118,9 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
       final int depLevel = ParserUtil.parseInt(attrs.getValue("deplevel"), 0);
 
       final Expression e = loadExpression(className, expName, depLevel);
-      addComment(e, CommentHandler.OPEN_TAG_COMMENT);
-      expressionHandler = new ExpressionHandler(getReportParser(), tagName, e, createPath(e));
+      CommentHintPath path = createPath(e);
+      addComment(path, CommentHandler.OPEN_TAG_COMMENT);
+      expressionHandler = new ExpressionHandler(getReportParser(), tagName, e, path);
       getParser().pushFactory(expressionHandler);
     }
     else if (tagName.equals(PROPERTY_REF_TAG))
@@ -137,15 +138,16 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
             getParser().getLocator());
       }
       final ObjectDescription od = loadObjectDescription(className);
+      CommentHintPath path = createPath(propertyName);
       if (isBasicObject(od))
       {
-        propertyRefHandler = new BasicObjectHandler(getReportParser(), tagName, od);
+        propertyRefHandler = new BasicObjectHandler(getReportParser(), tagName, od, path);
       }
       else
       {
-        propertyRefHandler = new CompoundObjectHandler(getReportParser(), tagName, od);
+        propertyRefHandler = new CompoundObjectHandler(getReportParser(), tagName, od, path);
       }
-      addComment(propertyName, CommentHandler.OPEN_TAG_COMMENT);
+      addComment(path, CommentHandler.OPEN_TAG_COMMENT);
       getParser().pushFactory(propertyRefHandler);
 
     }
@@ -255,7 +257,7 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
       {
         Expression expression = expressionHandler.getExpression();
         getReport().addExpression(expression);
-        addComment(expression, CommentHandler.CLOSE_TAG_COMMENT);
+        addComment(createPath(expression), CommentHandler.CLOSE_TAG_COMMENT);
         expressionHandler = null;
       }
       catch (FunctionInitializeException fe)
@@ -270,7 +272,7 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
       {
         Function expression = (Function) expressionHandler.getExpression();
         getReport().addFunction(expression);
-        addComment(expression.getName(), CommentHandler.CLOSE_TAG_COMMENT);
+        addComment(createPath(expression.getName()), CommentHandler.CLOSE_TAG_COMMENT);
         expressionHandler = null;
       }
       catch (FunctionInitializeException fe)
@@ -281,7 +283,7 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
     }
     else if (tagName.equals(PROPERTY_REF_TAG))
     {
-      addComment(propertyName, CommentHandler.CLOSE_TAG_COMMENT);
+      addComment(createPath(propertyName), CommentHandler.CLOSE_TAG_COMMENT);
       getReport().setPropertyMarked(propertyName, true);
       final Object value = propertyRefHandler.getValue();
       if ("".equals(value) == false)
@@ -345,13 +347,5 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
     path.addName(target);
     return path;
   }
-
-  private void addComment (Object target, String hintName)
-  {
-    getReport().getReportBuilderHints().putHint
-        (createPath(target), hintName, getReportParser().getComments());
-  }
-
-
 }
 

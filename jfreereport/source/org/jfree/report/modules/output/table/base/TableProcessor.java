@@ -28,18 +28,17 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.2 2003/07/10 20:02:09 taqua Exp $
+ * $Id: TableProcessor.java,v 1.3 2003/07/14 17:37:08 taqua Exp $
  *
  * Changes
  * -------
  * 18-Jan-2003 : Initial version
  * 24-Feb-2003 : Fixed Checkstyle issues (DG);
- *
+ * 23-Jul-2003 : BugFix: Did not use global properties to read the configuration
  */
 package org.jfree.report.modules.output.table.base;
 
 import java.awt.print.PageFormat;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Properties;
 
@@ -462,17 +461,13 @@ public abstract class TableProcessor
   protected void configure()
   {
     final ReportConfiguration rc = getReport().getReportConfiguration();
-    final Enumeration enum = rc.getConfigProperties();
-    final String prefix = getReportConfigurationPrefix();
+    final Iterator enum = rc.findPropertyKeys(getReportConfigurationPrefix());
 
-    while (enum.hasMoreElements())
+    int prefixLength = getReportConfigurationPrefix().length();
+    while (enum.hasNext())
     {
-      final String key = (String) enum.nextElement();
-      if (key.startsWith(prefix) == false)
-      {
-        continue;
-      }
-      final String propKey = key.substring(prefix.length());
+      final String key = (String) enum.next();
+      final String propKey = key.substring(prefixLength);
       if (getProperties().containsKey(propKey))
       {
         continue;
