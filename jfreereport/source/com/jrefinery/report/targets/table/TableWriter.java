@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 2:32:12 PM
  *
- * $Id: TableWriter.java,v 1.9 2003/02/11 20:20:20 taqua Exp $
+ * $Id: TableWriter.java,v 1.10 2003/02/12 10:00:01 taqua Exp $
  */
 package com.jrefinery.report.targets.table;
 
@@ -18,6 +18,15 @@ import com.jrefinery.report.targets.style.BandStyleSheet;
 
 import java.awt.geom.Rectangle2D;
 
+/**
+ * The TableWriter is the content creation function used to collect the cell data.
+ * After the layouting is done, the layouted bands are forwarded to the TableProducer.
+ * The virtual page has an unlimited size, only when a manual pagebreak is encountered,
+ * a new page is started.
+ * <p>
+ * This can be used to f.i. to create separate sheets in Excel-Workbooks, the detailed
+ * semantics depend on concrete implementation of the TableProducer.
+ */
 public class TableWriter extends AbstractFunction
 {
   public static final String SHEET_NAME_FUNCTION_PROPERTY =

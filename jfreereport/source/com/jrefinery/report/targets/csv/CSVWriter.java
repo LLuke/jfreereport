@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVWriter.java,v 1.4 2003/02/08 20:43:45 taqua Exp $
+ * $Id: CSVWriter.java,v 1.5 2003/02/09 18:43:05 taqua Exp $
  *
  * Changes
  * -------
@@ -49,12 +49,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- *
+ * The CSV Writer is the content creation function used to create the CSV content.
+ * This implementation does no layouting, the DataRow's raw data is written to the
+ * supplied writer.
  */
 public class CSVWriter extends AbstractFunction
 {
   /**
-   *
+   * The CSVRow is used to collect the data of a single row of data.
    */
   private static class CSVRow
   {
@@ -63,6 +65,8 @@ public class CSVWriter extends AbstractFunction
     private String lineSeparator;
 
     /**
+     * Creates a new CSVQuoter. The Quoter uses the system's default
+     * line separator.
      *
      * @param quoter
      */
@@ -74,17 +78,19 @@ public class CSVWriter extends AbstractFunction
     }
 
     /**
+     * appends the given integer value as java.lang.Integer to this row.
      *
-     * @param d
+     * @param value the appended int value
      */
-    public void append (int d)
+    public void append (int value)
     {
-      data.add (new Integer (d));
+      data.add (new Integer (value));
     }
 
     /**
+     * appends the given Object to this row.
      *
-     * @param o
+     * @param o the appended value
      */
     public void append (Object o)
     {
@@ -92,9 +98,10 @@ public class CSVWriter extends AbstractFunction
     }
 
     /**
+     * Writes the contents of the collected row, separated by colon.
      *
-     * @param w
-     * @throws IOException
+     * @param w the writer
+     * @throws IOException if an I/O error occured.
      */
     public void write (Writer w) throws IOException
     {

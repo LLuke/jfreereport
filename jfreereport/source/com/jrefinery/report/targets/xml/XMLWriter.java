@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XMLWriter.java,v 1.4 2003/02/02 23:43:53 taqua Exp $
+ * $Id: XMLWriter.java,v 1.5 2003/02/07 20:26:26 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,14 @@ import java.io.Writer;
 import java.util.List;
 
 /**
- *
+ * The XMLWriter is the content creation function used to create the XML content.
+ * This implementation does no layouting, the bands and elements are written in the
+ * defined order.
+ * <p>
+ * The xml writer is intended as simple example on how to write OutputFunctions,
+ * the XML-code generated is very simple and easy to understand. If you seek
+ * complexer XML-Outputs, have a look at the HTML-Writer, this implementation is able
+ * to write XHTML output.
  */
 public class XMLWriter extends AbstractFunction
 {
