@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: RTFProcessor.java,v 1.9 2005/01/25 00:15:16 taqua Exp $
+ * $Id: RTFProcessor.java,v 1.10 2005/02/23 21:05:36 taqua Exp $
  *
  * Changes
  * -------
@@ -58,7 +58,7 @@ public class RTFProcessor extends TableProcessor
    * the target output stream for writing the generated content.
    */
   private OutputStream outputStream;
-  public static final String CONFIG_PREFIX = "org.jfree.report.targets.table.rtf.";
+  public static final String CONFIGURATION_PREFIX = "org.jfree.report.targets.table.rtf.";
 
   /**
    * Creates a new RTF processor for the Report.
@@ -100,7 +100,7 @@ public class RTFProcessor extends TableProcessor
    */
   protected String getReportConfigurationPrefix ()
   {
-    return CONFIG_PREFIX;
+    return CONFIGURATION_PREFIX;
   }
 
   protected TableCreator createContentCreator ()

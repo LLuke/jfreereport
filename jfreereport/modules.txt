@@ -120,13 +120,13 @@ into this table. All table targets share the limitation, that no overlapping
 cells are allowed. The Excel and HTML output are examples for this export
 type.
 
-4.2.1 csv-raw-export
+4.2.1 output-csv
 
 This module contains support for exporting the datarow of reports into
 CSV files. Elements defined in the report are ignored and the raw data
 from the DataRow is written to the output stream.
 
-4.2.2 xml-raw-export
+4.2.2 output-xml
 
 This module contains support for exporting the elements of an report into
 xml files. The elements are printing in the order of definition, but no
@@ -135,7 +135,7 @@ layouting is done.
 This target was an educational example to show how to write an output target.
 It is not suitable nor intendet to be used for production systems.
 
-4.2.3 itext-basefont-support
+4.2.3 output-support-itext
 
 This module provides base services for all iText related output targets,
 like the PDF pageable target or the RTF target. This module manages the
@@ -154,15 +154,23 @@ This module contains the control code for the common pagelayouter. This
 code is responsible for translating report events into output events and
 is the base of all layout dependent output targets.
 
-4.2.5 Pageable output targets
+4.2.5 output-meta
 
-4.2.5.1 pageable-export-base
+This module contains the base classes for the meta elements. These classes
+hold the layouted content until the content creator performs the final
+output.
+
+4.2.6 Pageable output targets
+
+4.2.6.1 output-pageable-base
 
 This module contains common base classes for all pageable output targets.
 It is required by all pageable targets and by the preview components.
-It depends on the output-support-pageable module.
 
-4.2.5.2 graphics2D-pageable-export
+It depends on the output-support-pageable module and the output-meta
+module and will not work without them.
+
+4.2.6.2 output-pageable-graphics
 
 The Graphics2D support module enables JFreeReport to output the report
 content to an java.awt.Graphics2D object. The preview components and the
@@ -171,7 +179,7 @@ export your reports into an java.awt.Image.
 
 This module requires the pageable export base for work.
 
-4.2.5.3 pdf-pageable-export
+4.2.6.3 output-pageable-pdf
 
 This module provides support to generate PDF content using the iText
 library. iText supports the generation of PDF documents supporting the
@@ -180,7 +188,7 @@ PDF specification version 1.2 to 1.5.
 This module will not work, if the iText support or the pageable-export-base
 modules are missing.
 
-4.2.5.4 plaintext-pageable-export
+4.2.6.4 output-pageable-plaintext
 
 The plaintext export can be used to generate text content from an report.
 This output target has several limitations:
@@ -203,7 +211,7 @@ The plain text target is intended to be used in conjunction with matrix
 printers, if just want to get parsable (or editable) text, you should
 have a look at the html target.
 
-Images and shapes are not supported, of course.
+Images and shapes are not supported right now.
 
 In conjunction with Epson or IBM printers, it is possible to support some
 limited text formating capabilities (like bold, italic or underlined).
@@ -215,14 +223,14 @@ text formating options.
 
 The plaintext export depends on the pageable base classes, of course.
 
-4.2.6 Table based output targets
+4.2.7 Table based output targets
 
-4.2.6.1 table-export-base
+4.2.7.1 output-table-base
 
 This module contains all base classes required for the table export.
 It depends on the output-support-pageable module.
 
-4.2.6.2 csv-table-export
+4.2.7.2 output-table-csv
 
 The CSV table export layouts the report content into a tablegrid. The
 generated table is printed into the CSV file. One row of the table
@@ -230,35 +238,36 @@ results in a line in the csv file, every cell of the table will result
 in a value in the file. Cell- or Row-Spanning is not supported due to
 the limitations of the export format.
 
-This module depends on the "table-export-base".
+This module depends on the "output-table-base".
 
-4.2.6.3 html-table-export
+4.2.7.3 output-table-html
 
 The HTML taget supports the generation of XHTML1.0 or HTML4.01 content.
 Images will be included in the generated content, depending on the selected
 export type.
 
 The stream export will include images only if the image was loaded from
-an external file or http resource.
+an external file or http resource or has been specified using an
+URLImageContainer.
 
 The directory and zip export will include all images and provide an option
-to copy the image content into the target files.
+to copy all image content into the target files or directory.
 
-The module will not work, if the "table-export-base" is missing.
+The module will not work, if the "output-table-base" module is missing.
 
-4.2.6.4 rtf-table-export
+4.2.7.4 output-table-html
 
 This target is barely usable now. The RTF content creation does not yet
 support images. All generated content is held in memory and printed when
 the reporting finishes. This binds the report content to the size of the
 available memory.
 
-The module requires the "itext-basefont-support" and the "table-export-base"
+The module requires the "output-support-itext" and the "output-table-base"
 to be present.
 
-4.2.6.5 excel-table-export
+4.2.7.5 output-table-excel
 
-The excel exports writes the report content into an MS-Office Excel file.
+The excel export writes the report content into a MS-Office Excel file.
 The generated file will be compatible with Excel 97/2000.
 
 This target does not support the generation of images yet.
@@ -266,9 +275,17 @@ This target does not support the generation of images yet.
 The Apache POI library version 2.0-pre3 or higher must be present in the
 classpath as well as the "table-export-base" module.
 
+4.2.7.5 output-table-rtf
+
+The RichTextFormat export writes the report content into a RTF file.
+The file will contain a large table containing all content.
+
+iText and the output-support-itext module must be present to use this
+export method.
+
 4.3 GUI classes
 
-4.3.1 preview-base-classes
+4.3.1 gui-base
 
 This module contains base components used by most other gui classes and
 (of course) the preview components. You will need this module, if you
@@ -278,37 +295,37 @@ to provide access to their functionality.
 The module depends on the "pageable-export-base" and the
 "graphics2d-pageable-export".
 
-4.3.2 cvs-export-gui
+4.3.2 gui-csv
 
 Provides a gui for the raw and table export into CSV files. Both export
 modules and the preview-base classes must be present.
 
-4.3.3 html-export-gui
+4.3.3 gui-html
 
 Provides a gui for the HTML export. The html export module and the
 preview-base classes must be present.
 
-4.3.4 pdf-export-gui
+4.3.4 gui-pdf
 
 Provides a gui for the PDF export. The pdf-pageable-export module and the
 preview-base-module must be activated to make this module work.
 
-4.3.5 plaintext-export-gui
+4.3.5 gui-plaintext
 
 Provides a gui for the plaintext export. This module requires the
 plaintext-pageable-export and the preview-base classes to be present.
 
-4.3.6 java.awt.print-export-gui
+4.3.6 gui-print
 
 Provides support for the Java 1.2 printing API. The preview-base classes
 must be present.
 
-4.3.7 xls-export-gui
+4.3.7 gui-xls
 
 Provides a gui for the HTML export. The html export module and the
 preview-base classes must be present.
 
-4.3.8 report-config-gui
+4.3.8 gui-config
 
 This module contains an editor to create jfreereport.properties files, which
 can be used to provide a local configuration for JFreeReport. The file
@@ -319,7 +336,7 @@ each property.
 
 The preview-base must be present in the system to make this editor work.
 
-4.3.9 report-writer-gui
+4.3.9 gui-converter
 
 The report converter can be used to convert reports from the simple report
 definition format or from older JFreeReport versions to the new name space
@@ -333,7 +350,7 @@ the preview-base module.
 
 4.4 Other modules
 
-4.4.1 bean-shell-module
+4.4.1 misc-beanshell
 
 The bean-shell module provides support for the BSHExpression, which is
 an simple way of adding small scripts to the xml report definitions.
@@ -341,19 +358,19 @@ an simple way of adding small scripts to the xml report definitions.
 Users which define their reports using the API will be faster when
 implementing the expressions as own classes.
 
-This requires the beanshell classes (contained in "bsh-1.2b6.jar") to be
+This requires the beanshell classes (contained in "bsh-1.3.jar") to be
 present in the classpath.
 
-4.4.2 ext-parser-reference-doc
+4.4.2 misc-referencedoc
 
 This module provides a reference documentation for the used object
 descriptions of the extended parser. Starting the ReferenceDocGenerator
 will place the generated files into your home directory.
 
-This module depends on the ext-xml-parser, the pdf-pageable-export and the
-html-table-export modules.
+This module depends on the parser-ext, the output-pageable-pdf and the
+output-table-html modules.
 
-4.4.3 tablemodel-utility
+4.4.3 misc-tablemodel
 
 The classes contained in this module contain utility methods to ease the
 handling of tablemodels. The ResultSetTableModelFactory provides a simple
@@ -363,16 +380,16 @@ be used to verify the correctness of an tablemodel implementation.
 
 The module has no external dependencies.
 
-4.4.5 base-configstore-module
+4.4.5 misc-configstore-base
 
 The config store is used to store property files in a location independent
 way. This module contains base classes for the config store, and depends
 on no other modules.
 
-4.4.6 filesystem-configstore-module
+4.4.6 misc-configstore-filesystem
 
 The filesystem config store provides a method to write the stored property
 files into a repository located in the local filesystem.
 
-This module will not work without the "base-configstore-module".
+This module will not work without the "misc-configstore-base".
 

@@ -2,7 +2,8 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
-0.8.5:
+0.8.5: (4-Mar-2005)
+
         * The naming schema for the jar files changed to fit the common
           naming schema used in Maven and other OpenSource projects.
 
@@ -209,7 +210,11 @@ A list of changes in recent versions:
           As soon as JFreeReport-Ext is on the classpath, the resource factory
           will start to use these new image loaders.
 
-        * BarCode support has been added by Mimil.
+        * BarCode support has been added by Mimil (JFreeReport-ext).
+
+        * The servlet demos have been updated to demonstrate the use of
+          custom URLImageContainer implementations to include images in
+          StreamHtmlReports (JFreeReport-ext).
 
         * The ExportDialogs have been redesigned to behave a little bit better.
           All the annoying popup windows have been replaced by a less annyoing
