@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<chapter>
+  <title>Style Guide</title>
+
+  <section>
+    <title>Introduction</title>
+
+    <para>Whenever more than one developer comes together to work on a shared
+    project, questions of style consistency arise. As every developer has his
+    own habbit of formating code, naming methods and variables, the resulting
+    mix becomes confusing and hard to read, as soon as two incompatible styles
+    get mixed up. The only way to avoid such a chaos, is to define mandatory
+    rules, which every developer has to follow.</para>
+
+    <para>This style guide defines such a set of common style rules for
+    JFreeReport and all adjacent projects.</para>
+
+    <para>Some of the given rules are mandatory and must not be ignored or
+    violated. Other rules given in this document can be considered
+    recommendations, they should be followed as closely as possible, but can
+    be violated if there is a known (and documented) reason for it.</para>
+
+    <para>As Java is a complex language, which gives you a great freedom in
+    writing your code, there will be many fields, which remain uncovered by
+    the rules given in this document. Where ever possible, we will try to give
+    examples for such known cases to reduce the number of different variations
+    of these cases.</para>
+  </section>
+
+  <section>
+    <title>Source-Code Level</title>
+
+    <para>This source code style guide uses the same structure as the <ulink
+    url="http://java.sun.com/docs/codeconv/html/CodeConvTOC.doc.html">Java
+    StyleGuide</ulink> written by Sun. Where ever possible, we will refer to
+    the rules in that Guide.</para>
+
+    <section>
+      <title>Project Directory Structure And File Names</title>
+
+      <para>All projects should share a common structure. All files for a
+      project <emphasis>must</emphasis> reside below a single directory, which
+      <emphasis>must</emphasis> be named after the project. All Java source
+      files must be contained in a directory called "source", which must be
+      located directly under the project's root directory. Jar-Files, the
+      project might depend on, must be located inside a directory called
+      "lib", which also must be located directly under the project's root
+      directory.</para>
+
+      <para>All projects must provide ANT-build scripts, which create the
+      release distribution files. The build scripts must be self contained and
+      must not have any private dependencies outside the project's directory.
+      All external dependencies on the build script must be documented and
+      must not include non-opensource packages. Every user of the project must
+      be able to rebuild the complete project.</para>
+
+      <para>Every project should provide at least a
+      <filename>ChangeLog</filename> file, which documents the development
+      progress and a README file, which describes the purpose of the project,
+      how to get started with the files in the project and which gives
+      pointers to where to find additional documentation, if available.</para>
+
+      <para>Finally, to comply with the GLP or LGPL, every project must
+      contain a copy of its licence in the root of its project
+      directory.</para>
+    </section>
+
+    <section>
+      <title>Java File Structure</title>
+
+      <para>Each Java source file must contain a single public class or
+      interface. Every package level class should be a public class, which is
+      defined in it's own Java source file. Package protected or private outer
+      classes must not be used, every use of these classes should be replaces
+      by the use of either public outer classes or inner classes.</para>
+
+      <para>Java source files must have the following ordering:<itemizedlist>
+          <listitem>
+            <para>Beginning comment</para>
+          </listitem>
+
+          <listitem>
+            <para>Package and import statements</para>
+          </listitem>
+
+          <listitem>
+            <para>Public Class or Interface declaration</para>
+          </listitem>
+        </itemizedlist></para>
+
+      <para>All Java source files should be encoded using the ISO-8859-1
+      encoding. Non-ASCII Unicode characters should be escaped.</para>
+
+      <section>
+        <title>Beginning Comments</title>
+
+        <para>All source files must begin with a c-style comment that holds
+        the copyright and licence information, the classname, original author
+        and contributors and a ChangeLog covering the milestones in the file's
+        development history.</para>
+
+        <para>This header comment must always include a CVS-ID tag.</para>
+
+        <para><programlisting>/**
+ * ========================================
+ * &lt;project-name&gt; : &lt;a short project description&gt;
+ * ========================================
+ * * Project Info: &lt;web site of the project&gt;
+ * Project Lead: &lt;project maintainer(s)&gt;
+ *
+ * (C) Copyright 2000-2005, by &lt;copyright holder for the project or file&gt;.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ---------
+ * &lt;filename.java&gt;
+ * ---------
+ * (C) Copyright 2000-2005, by &lt;copyright holder for the project or file&gt;.
+ * 
+ * Original Author: &lt;name and email of the initial author of the class&gt;
+ * Contributor(s): &lt;list of all contributors&gt;
+ *
+ * $Id$
+ *
+ * Changes (from &lt;date of the first appearance in the project&gt;)
+ * -------------------------
+ * 08-Feb-2002 : &lt;what changed&gt;
+ */</programlisting></para>
+      </section>
+
+      <section>
+        <title>Package and Import Statements</title>
+
+        <para>The first non-comment line of the file must be the package
+        statement. No project class should be contained in the default
+        package.</para>
+
+        <para>The following package spaces should be used for the JFreeReport
+        projects:<itemizedlist>
+            <listitem>
+              <para><code>org.jfree.report</code> for the JFreeReport core
+              project</para>
+            </listitem>
+
+            <listitem>
+              <para><code>org.jfree.report</code>.ext for the JFreeReport
+              extension project</para>
+            </listitem>
+
+            <listitem>
+              <para><code>org.jfree.pixie</code> for the Pixie image
+              library</para>
+            </listitem>
+
+            <listitem>
+              <para><code>org.jfree.report.dev</code> for the JFreeReport
+              development tools</para>
+            </listitem>
+          </itemizedlist></para>
+
+        <para>Package imports (*-imports) must not be used. This method of
+        importing all classes of a certain package is dangerous, as it might
+        cause naming conflicts between two classes with the same name but from
+        different packages. Additionally, it is no longer obvious, which
+        classes get used by a certain java source file, thus making it harder
+        to track dependencies.</para>
+
+        <para>All package names must be written in lowercase ASCII-characters.
+        Although java allows almost any Unicode character in the names of
+        packages as well as in class names, the correct representation of such
+        names in the file system of the user and developers cannot be
+        guaranteed for non-ASCII names. Therefore the safest bet is, to aviod
+        such things alltogether.</para>
+
+        <para>If the IDE used for development supports it, the import
+        statements should be sorted alphabeticly in each block. Import
+        statements for the java and javax packages should be written first,
+        followed by a blank line and finally followed by all other
+        imports.</para>
+
+        <para>Example: <programlisting>package org.jfree.report;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
+import org.jfree.report.layout.BandLayoutManager;
+import org.jfree.report.layout.StaticLayoutManager;
+import org.jfree.report.style.BandDefaultStyleSheet;
+import org.jfree.report.style.BandStyleKeys;
+import org.jfree.report.style.ElementDefaultStyleSheet; </programlisting></para>
+      </section>
+
+      <section>
+        <title>Public Class or Interface declaration</title>
+
+        <para>Every Java source file must contain only one public outer scope
+        class or interface declaration.</para>
+
+        <para>Every class or interface declaration must be preceded by a
+        JavaDoc class comment describing the purpose of the class. The
+        documentation comment should contain examples on how to use that
+        class, where ever it seem applicable.</para>
+
+        <para>The class documentation must always contain an JavaDoc
+        <code>@author</code> tag.</para>
+
+        <para>The class documentation must be followed by a valid <code>public
+        class</code> or <code>interface</code> declaration.</para>
+
+        <para>If necessary, a non JavaDoc comment might follow immediatly
+        after the class declaration, describing internal details of the
+        implementation of this class.</para>
+
+        <para>The order of the class members should be as follows.
+        <orderedlist>
+            <listitem>
+              <para>Constant declarations (<code>public</code>,
+              <code>protected</code> or <code>private static final</code>
+              variables).</para>
+
+              <para>Only immutable classes should be used as constant values.
+              As only the reference to the object is declared to be final,
+              object contents can always be modified, no matter whether an
+              object h</para>
+            </listitem>
+
+            <listitem>
+              <para>Inner classes.</para>
+
+              <para>Inner classes should always be used in favor of annonymous
+              inner classes. If possible, such classes should be static, as
+              this greatly reduces the chance of creating memory leaks when
+              passing these objects around. (All non-static inner classes hold
+              an invisible reference to their outer class instance, and
+              therefore the garbage collector cannot free the outer class
+              unless all inner classes can be garbage collected.)</para>
+            </listitem>
+
+            <listitem>
+              <para>Static member variables</para>
+
+              <para>All non-final static member variables must be private. If
+              necessary, create protected accessor methods for these
+              variables. Static variables should be avoided, except for
+              Singleton implementations, as such variables make it hard to
+              trace bugs in a managed application (like Servlet or
+              EJB-Containers).</para>
+
+              <para>All access to such variables must be properly
+              synchronized.</para>
+            </listitem>
+
+            <listitem>
+              <para>Non-static member variables</para>
+
+              <para>All member variables must be private. If you need to
+              access these variables from a derived class, create protected
+              accessor methods for them.</para>
+            </listitem>
+
+            <listitem>
+              <para>Constructors</para>
+
+              <para>Every class must declare at least one constructor. The
+              default constructor should always be the first in the list of
+              constructors, even if it is private.</para>
+
+              <para>If the class is an utility class and does only contain
+              static methods, then a private default constructor should be
+              added. This prevents uncessary object creation of such
+              classes.</para>
+            </listitem>
+
+            <listitem>
+              <para>Methods</para>
+
+              <para>The methods should be grouped by functionality rather than
+              by visibility or name. The main goal should always be to make
+              the source code as readable as possible.</para>
+            </listitem>
+          </orderedlist></para>
+      </section>
+    </section>
+  </section>
+
+  <section>
+    <title>Design decisions</title>
+
+    <para></para>
+  </section>
+</chapter>
