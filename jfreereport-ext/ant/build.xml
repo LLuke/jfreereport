@@ -61,6 +61,21 @@
       </and>
     </condition>
 
+    <condition property="jfreechart.present">
+      <and>
+         <available file="${ext.libdir}/${jfreechart-jar-file}"/>
+         <available file="${ext.libdir}/${jfreechart-demo-jar-file}"/>
+
+         <available classname="org.jfree.chart.JFreeChart">
+           <classpath>
+             <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
+              <pathelement location="${ext.libdir}/${jfreechart-jar-file}"/>
+              <pathelement location="${ext.libdir}/${jfreechart-demo-jar-file}"/>
+           </classpath>
+         </available>
+      </and>
+    </condition>
+
     <condition property="log4j.present">
       <and>
          <available file="${ext.libdir}/${log4j-jar-file}"/>
@@ -83,11 +98,13 @@
         JUnit      : ${junit.present}
         Log4J      : ${log4j.present}
         Servlets   : ${servlet.present}
+        JFreeChart : ${jfreechart.present}
     </echo>
   </target>
 
   <target name="compile" depends="compile-junit,
       compile-demo,
+			compile-chart-demo,
       compile-module-ext-java14config,
       compile-module-ext-java14log,
       compile-module-ext-java14print,
@@ -177,6 +194,49 @@
 
     <!-- make the jar -->
     <jar jarfile="${jfreereport-servlet-demo-jar-file}"
+      basedir="build">
+    </jar>
+
+    <!-- delete the temp directory -->
+    <delete dir="build"/>
+  </target>
+
+  <!-- ************************************************************** -->
+  <!--                                                                -->
+  <!--  Chart demo classes                                            -->
+  <!--                                                                -->
+  <!-- ************************************************************** -->
+
+  <target name="compile-chart-demo" depends="init" if="jfreechart.present">
+    <echo>Building JFreeChart Demo</echo>
+
+    <!-- create a temp build directory -->
+    <mkdir dir="build"/>
+
+    <!-- compile the source -->
+    <javac srcdir="source"
+      destdir="build" target="${build.target}"
+      deprecation="${build.deprecation}" debug="${build.debug}" optimize="${build.optimize}">
+      <include name="org/jfree/report/ext/chartdemo/*.java"/>
+      <classpath>
+        <pathelement location="${jfreereport-dir}/${libdir}/${jcommon-jar-file}"/>
+        <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
+        <pathelement location="${jfreereport-dir}/${jfreereport-demo-jar-file}"/>
+        <pathelement location="${ext.libdir}/${jfreechart-jar-file}"/>
+      </classpath>
+    </javac>
+
+    <!-- include the report definition files -->
+    <copy todir="build/org/jfree/report/ext/chartdemo">
+      <fileset dir="source/org/jfree/report/ext/chartdemo">
+        <include name="**/*.xml"/>
+        <include name="**/*.gif"/>
+        <include name="**/*.dbf"/>
+      </fileset>
+    </copy>
+
+    <!-- make the jar -->
+    <jar jarfile="${jfreereport-chart-demo-jar-file}"
       basedir="build">
     </jar>
 
@@ -352,6 +412,7 @@
         <pathelement location="${jfreereport-dir}/${libdir}/${itext-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${jfreereport-all-jar-file}"/>
         <pathelement location="${jfreereport-dir}/${jfreereport-demo-jar-file}"/>
+        <pathelement location="${ext.libdir}/${jfreechart-jar-file}"/>
         <pathelement location="${ext.libdir}/${log4j-jar-file}"/>
         <pathelement location="${ext.libdir}/${servlet-jar-file}"/>
         <pathelement location="${ext.libdir}/${junit-jar-file}"/>
@@ -414,6 +475,7 @@
     <copy file="licence-LGPL.txt" tofile="distribution/licence-LGPL.txt"/>
 
     <!-- copy across runtime jar file -->
+    <copy file="${jfreereport-chart-demo-jar-file}" tofile="distribution/${jfreereport-chart-demo-jar-file}"/>
     <copy file="${jfreereport-servlet-demo-jar-file}" tofile="distribution/${jfreereport-servlet-demo-jar-file}"/>
     <copy file="${jfreereport-junit-jar-file}" tofile="distribution/${jfreereport-junit-jar-file}"/>
     <copy file="${module-ext-java14config-file}" tofile="distribution/${module-ext-java14config-file}"/>
@@ -478,6 +540,7 @@
     <copy file="licence-LGPL.txt" tofile="distribution/licence-LGPL.txt"/>
 
     <!-- copy across runtime jar file -->
+    <copy file="${jfreereport-chart-demo-jar-file}" tofile="distribution/${jfreereport-chart-demo-jar-file}"/>
     <copy file="${jfreereport-servlet-demo-jar-file}" tofile="distribution/${jfreereport-servlet-demo-jar-file}"/>
     <copy file="${jfreereport-junit-jar-file}" tofile="distribution/${jfreereport-junit-jar-file}"/>
     <copy file="${module-ext-java14config-file}" tofile="distribution/${module-ext-java14config-file}"/>
