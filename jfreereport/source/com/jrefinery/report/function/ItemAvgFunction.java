@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.17 2002/08/20 20:58:20 taqua Exp $
+ * $Id: ItemAvgFunction.java,v 1.1 2002/08/26 14:36:14 taqua Exp $
  *
  * Changes
  * -------
@@ -78,7 +78,7 @@ public class ItemAvgFunction extends AbstractFunction
 
   /** Zero. */
   private static final BigDecimal ZERO = new BigDecimal (0.0);
-  private static final BigDecimal ONE = new BigDecimal(1.0)
+  private static final BigDecimal ONE = new BigDecimal(1.0);
 
   /** The sum. */
   private BigDecimal sum;
