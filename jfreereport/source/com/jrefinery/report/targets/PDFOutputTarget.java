@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.33 2002/11/06 22:15:30 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.34 2002/11/25 18:12:46 taqua Exp $
  *
  * Changes
  * -------
@@ -1119,25 +1119,25 @@ public class PDFOutputTarget extends AbstractOutputTarget
       {
         case PathIterator.SEG_MOVETO:
           {
-            cb.moveTo(params[0] + xcorr, ycorr - params[1]);
+            cb.moveTo(params[0], params[1]);
             break;
           }
         case PathIterator.SEG_LINETO:
           {
-            cb.lineTo(params[0] + xcorr, ycorr - params[1]);
+            cb.lineTo(params[0], params[1]);
             break;
           }
         case PathIterator.SEG_CUBICTO:
           {
-            cb.curveTo(params[0] + xcorr, ycorr - params[1],
-                params[2] + xcorr, ycorr - params[3],
-                params[4] + xcorr, ycorr - params[5]);
+            cb.curveTo(params[0], params[1],
+                params[2], params[3],
+                params[4], params[5]);
             break;
           }
         case PathIterator.SEG_QUADTO:
           {
-            cb.curveTo(params[0] + xcorr, ycorr - params[1],
-                params[2] + xcorr, ycorr - params[3]);
+            cb.curveTo(params[0], params[1],
+                params[2], params[3]);
             break;
           }
         case PathIterator.SEG_CLOSE:
