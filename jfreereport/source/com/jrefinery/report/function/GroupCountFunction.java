@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupCountFunction.java,v 1.1 2002/05/07 14:20:07 mungady Exp $
+ * $Id: GroupCountFunction.java,v 1.2 2002/05/14 21:35:04 taqua Exp $
  *
  * Changes
  * -------
@@ -129,27 +129,6 @@ public class GroupCountFunction extends AbstractFunction implements Cloneable
   public Object getValue ()
   {
     return new Integer (count);
-  }
-
-  /**
-   * Returns a copy of this function.
-   */
-  public Object clone ()
-  {
-    Object result = null;
-
-    try
-    {
-      result = super.clone ();
-    }
-    catch (CloneNotSupportedException e)
-    {
-      // this should never happen...
-      System.err.println ("ItemCountFunction: clone not supported");
-    }
-
-    return result;
-
   }
 
   /**

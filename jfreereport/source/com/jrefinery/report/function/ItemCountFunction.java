@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemCountFunction.java,v 1.1.1.1 2002/04/25 17:02:32 taqua Exp $
+ * $Id: ItemCountFunction.java,v 1.2 2002/05/14 21:35:04 taqua Exp $
  *
  * Changes
  * -------
@@ -132,28 +132,6 @@ public class ItemCountFunction extends AbstractFunction implements Cloneable
   public Object getValue ()
   {
     return new Integer (count);
-  }
-
-  /**
-   * Returns a copy of this function.
-   */
-  public Object clone ()
-  {
-
-    Object result = null;
-
-    try
-    {
-      result = super.clone ();
-    }
-    catch (CloneNotSupportedException e)
-    {
-      // this should never happen...
-      System.err.println ("ItemCountFunction: clone not supported");
-    }
-
-    return result;
-
   }
 
   public void initialize ()

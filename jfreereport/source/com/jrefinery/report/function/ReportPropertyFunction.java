@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPropertyFunction.java,v 1.3 2002/05/16 12:44:18 mungady Exp $
+ * $Id: ReportPropertyFunction.java,v 1.4 2002/05/17 22:13:13 taqua Exp $
  *
  * Changes
  * -------
@@ -105,30 +105,6 @@ public class ReportPropertyFunction extends AbstractFunction
   public Object getValue ()
   {
     return this.value;
-  }
-
-  /**
-   * Returns a copy of this function.
-   *
-   * @return A clone of the function.
-   */
-  public Object clone ()
-  {
-
-    Object result = null;
-
-    try
-    {
-      result = super.clone ();
-    }
-    catch (CloneNotSupportedException e)
-    {
-      // this should never happen...
-      System.err.println ("ReportPropertyFunction: clone not supported");
-    }
-
-    return result;
-
   }
 
   /**

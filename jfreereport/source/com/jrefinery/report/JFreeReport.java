@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.6 2002/05/17 13:24:40 jaosch Exp $
+ * $Id: JFreeReport.java,v 1.7 2002/05/17 22:13:13 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -509,13 +509,10 @@ public class JFreeReport implements JFreeReportConstants
     int page = 1;
     ReportState rs = new ReportState.Start(this);
     ReportProcessor prc = new ReportProcessor(target, draw, getPageFooter());
+
     rs = rs.advance(prc);
-    Log.error ("1PREPROCESSPAGE: " + String.valueOf (getProperty(REPORT_DATE_PROPERTY)));
     rs = processPage(target, rs, draw);
-    Log.error ("2PREPROCESSPAGE");
     target.endPage();
-    Log.error ("3PREPROCESSPAGE");
-    Log.error ("4POSTPROCESSPAGE: " + String.valueOf (getProperty(REPORT_DATE_PROPERTY)));
 
     while (!(rs instanceof ReportState.Finish))
     {
@@ -544,24 +541,30 @@ public class JFreeReport implements JFreeReportConstants
    * @param draw A flag that indicates whether or not we are actually drawing to the graphics
    *             device.
    * @return The report state suitable for the next page or ReportState.Finish.
+   * @throws IllegalArgumentException if the given state is a start or a finish state.
    */
   public ReportState processPage(
     OutputTarget target,
     final ReportState currPage,
     boolean draw)
   {
+    if (currPage.isStart())
+    {
+      throw new IllegalArgumentException("No start state for processpage allowed");
+    }
+    if (currPage.isFinish())
+    {
+      throw new IllegalArgumentException("No finish state for processpage allowed");
+    }
     ReportState state = (ReportState) currPage.clone();
+
     int page = state.getCurrentPage();
     boolean pageDone = false;
     ReportProcessor prc = new ReportProcessor(target, draw, getPageFooter());
 
-    FunctionCollection functions = state.getFunctions();
+    // Print the pageHeader before any other item.
     ReportEvent event = new ReportEvent(this, state);
     state.firePageStartedEvent(event);
-
-    // print the page header (if there is one) and measure the page footer (if there is one)...
-    // on reportheader start
-
     getPageHeader().populateElements(state);
     if (page == 1)
     {

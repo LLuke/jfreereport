@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.5 2002/05/17 13:24:40 jaosch Exp $
+ * $Id: ReportState.java,v 1.6 2002/05/17 22:13:13 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -142,16 +142,6 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       reportHeader.populateElements(this);
       rpc.printReportHeader(reportHeader);
       return new PostReportHeader(this);
-    }
-
-    /**
-     * Tests whether is state is a start-state.
-     *
-     * @return always true
-     */
-    public boolean isStart()
-    {
-      return true;
     }
 
     /**
@@ -599,11 +589,10 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   private int currentGroupIndex;
 
   /** The functions. */
-  private FunctionCollection functions;
+  private FunctionCollection _functions;
 
   /** Band with an pending page break */
   private Band pband;
-  private Vector reportListeners;
 
   public abstract ReportState advance(ReportProcessor prc);
   public static final int BEFORE_FIRST_ROW = -1;
@@ -617,8 +606,6 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   protected ReportState(JFreeReport report)
   {
-    Log.debug(this.getClass().getName());
-    reportListeners = new Vector();
     setReport(report);
     setCurrentItem(BEFORE_FIRST_ROW);
     setCurrentPage(FIRST_PAGE);
@@ -633,8 +620,6 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   protected ReportState(ReportState clone)
   {
-    Log.debug(this.getClass().getName());
-    reportListeners = new Vector();
     setReport(clone.getReport());
     setCurrentItem(clone.getCurrentDataItem());
     setCurrentPage(clone.getCurrentPage());
@@ -648,24 +633,6 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   public JFreeReport getReport()
   {
     return report;
-  }
-
-  /**
-   * Adds an reportListener to this state. ReportListeners are not cloned. This is an
-   * internal function in the current project state.
-   */
-  public void addReportListener(ReportListener l)
-  {
-    reportListeners.add(l);
-  }
-
-  /**
-   * removes an reportListener to this state. ReportListeners are not cloned. This is an
-   * internal function in the current project state.
-   */
-  public void removeReportListener(ReportListener l)
-  {
-    reportListeners.remove(l);
   }
 
   /**
@@ -756,9 +723,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   /**
    * Returns the function collection.
    */
-  public FunctionCollection getFunctions()
+  public final FunctionCollection getFunctions()
   {
-    return this.functions;
+    return _functions;
   }
 
   /**
@@ -771,8 +738,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     {
       throw new NullPointerException("Empty function collection?");
     }
-    functions = (FunctionCollection) pfunctions.clone();
-    addReportListener(functions);
+    _functions = (FunctionCollection) pfunctions.clone();
   }
 
   /**
@@ -780,24 +746,18 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   public Object clone()
   {
-
-    ReportState result = null;
-
     try
     {
-      result = (ReportState) super.clone();
+      ReportState  result = (ReportState) super.clone();
       result.setFunctions(getFunctions());
-      System.out.println (result.getFunctions() + " vs. " + getFunctions());
-      System.out.println (result.getFunctions().hashCode() + " vs. " + getFunctions().hashCode());
+      return result;
     }
-    catch (CloneNotSupportedException e)
+    catch (CloneNotSupportedException cne)
     {
-      // this should never happen...
-
-      System.err.println("ReportState: clone not supported");
+      return null;
     }
-    return result;
   }
+
 
   /**
    * This is a helper function used to detect infinite loops on report
@@ -892,82 +852,46 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
   public void fireReportStartedEvent(ReportEvent event)
   {
-    for (int i = 0; i < reportListeners.size(); i++)
-    {
-      ReportListener l = (ReportListener) reportListeners.elementAt(i);
-      l.reportStarted(event);
-    }
+    _functions.reportStarted(event);
   }
 
   public void fireReportFinishedEvent(ReportEvent event)
   {
-    for (int i = 0; i < reportListeners.size(); i++)
-    {
-      ReportListener l = (ReportListener) reportListeners.elementAt(i);
-      l.reportFinished(event);
-    }
+    _functions.reportFinished(event);
   }
 
   public void firePageStartedEvent(ReportEvent event)
   {
-    for (int i = 0; i < reportListeners.size(); i++)
-    {
-      ReportListener l = (ReportListener) reportListeners.elementAt(i);
-      l.pageStarted(event);
-    }
+    _functions.pageStarted(event);
   }
 
   public void firePageFinishedEvent(ReportEvent event)
   {
-    for (int i = 0; i < reportListeners.size(); i++)
-    {
-      ReportListener l = (ReportListener) reportListeners.elementAt(i);
-      l.pageFinished(event);
-    }
+    _functions.pageFinished(event);
   }
 
   public void fireGroupStartedEvent(ReportEvent event)
   {
-    for (int i = 0; i < reportListeners.size(); i++)
-    {
-      ReportListener l = (ReportListener) reportListeners.elementAt(i);
-      l.groupStarted(event);
-    }
+    _functions.groupStarted(event);
   }
 
   public void fireGroupFinishedEvent(ReportEvent event)
   {
-    for (int i = 0; i < reportListeners.size(); i++)
-    {
-      ReportListener l = (ReportListener) reportListeners.elementAt(i);
-      l.groupFinished(event);
-    }
+    _functions.groupFinished(event);
   }
 
   public void fireItemsStartedEvent(ReportEvent event)
   {
-    for (int i = 0; i < reportListeners.size(); i++)
-    {
-      ReportListener l = (ReportListener) reportListeners.elementAt(i);
-      l.itemsStarted(event);
-    }
+    _functions.itemsStarted(event);
   }
 
   public void fireItemsFinishedEvent(ReportEvent event)
   {
-    for (int i = 0; i < reportListeners.size(); i++)
-    {
-      ReportListener l = (ReportListener) reportListeners.elementAt(i);
-      l.itemsFinished(event);
-    }
+    _functions.itemsFinished(event);
   }
 
   public void fireItemsAdvancedEvent(ReportEvent event)
   {
-    for (int i = 0; i < reportListeners.size(); i++)
-    {
-      ReportListener l = (ReportListener) reportListeners.elementAt(i);
-      l.itemsAdvanced(event);
-    }
+    _functions.itemsAdvanced(event);
   }
 }

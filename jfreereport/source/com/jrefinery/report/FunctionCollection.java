@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionCollection.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: FunctionCollection.java,v 1.3 2002/05/15 20:47:23 taqua Exp $
  *
  * Changes
  * -------
@@ -335,7 +335,7 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
 
   /**
    * Returns a string representation of the function collection.  Used in debugging only.
-   */
+   *
   public String toString ()
   {
 
@@ -355,7 +355,7 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
     return result.toString();
 
   }
-
+*/
   /**
    * Returns a copy of the function collection.
    */

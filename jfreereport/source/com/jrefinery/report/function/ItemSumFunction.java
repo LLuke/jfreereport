@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.3 2002/05/15 20:47:23 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.4 2002/05/17 22:13:13 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,7 @@ package com.jrefinery.report.function;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
 
 import javax.swing.table.TableModel;
@@ -84,15 +85,6 @@ public class ItemSumFunction extends AbstractFunction
   public ItemSumFunction (String name)
   {
     setName (name);
-    this.sum = ZERO;
-  }
-
-  /**
-   * Initialises the function when it is first created.  The function is also given a chance
-   * to perform initialisation every time a report starts (see the startReport() method).
-   */
-  public void initialise ()
-  {
     this.sum = ZERO;
   }
 
@@ -171,12 +163,11 @@ public class ItemSumFunction extends AbstractFunction
         }
         catch (Exception e)
         {
-          System.err.println ("ItemSumFunction.advanceItems(): problem adding number.");
+          Log.error ("ItemSumFunction.advanceItems(): problem adding number.");
         }
       }
 
     }
-
   }
 
   /**
@@ -185,28 +176,6 @@ public class ItemSumFunction extends AbstractFunction
   public Object getValue ()
   {
     return sum;
-  }
-
-  /**
-   * Returns a copy of this function.
-   */
-  public Object clone ()
-  {
-
-    Object result = null;
-
-    try
-    {
-      result = super.clone ();
-    }
-    catch (CloneNotSupportedException e)
-    {
-      // this should never happen...
-      System.err.println ("ItemSumFunction: clone not supported");
-    }
-
-    return result;
-
   }
 
   public void initialize ()

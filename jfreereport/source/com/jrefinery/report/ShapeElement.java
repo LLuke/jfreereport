@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ShapeElement.java,v 1.3 2002/05/16 13:18:36 jaosch Exp $
+ * $Id: ShapeElement.java,v 1.4 2002/05/16 15:50:05 jaosch Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -131,7 +131,6 @@ public abstract class ShapeElement extends Element
 
     Shape s = getShape();
     target.drawShape(this, bandX, bandY);
-    Log.debug(this.toString());
   }
 
   /**
