@@ -1,3 +1,5 @@
+package gnu.bhresearch.viewer;
+
 // Pixie.java - View .PXI Pixie Burry Holms Research Vector Image Binary files.
 //
 // Copyright (c) 1997-1998 David R Harris.
@@ -163,8 +165,8 @@ public class Pixie extends Applet implements Runnable
       {
         progress = bytesDone / (float) byteCount;
         fg.setColor (getForeground ());
-        fg.fillRect (0, size ().height - 4,
-                (int) (progress * size ().width), 4);
+        fg.fillRect (0, getSize ().height - 4,
+                (int) (progress * getSize ().width), 4);
       }
     }
 
@@ -187,8 +189,8 @@ public class Pixie extends Applet implements Runnable
 
   public void update (Graphics g)
   {
-    int iWidth = size ().width;
-    int iHeight = size ().height;
+    int iWidth = getSize ().width;
+    int iHeight = getSize ().height;
 
     if (fgImage == null)
     {
