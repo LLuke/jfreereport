@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: BaseFontSupport.java,v 1.13 2005/01/25 00:12:03 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.14 2005/02/19 15:41:23 taqua Exp $
  *
  * Changes
  * -------
@@ -62,12 +62,34 @@ public class BaseFontSupport implements FontMapper
   /** Storage for BaseFont objects created. */
   private final Map baseFonts;
 
+  private String defaultEncoding;
+
   /**
    * Creates a new support instance.
    */
   public BaseFontSupport()
   {
+    this(BaseFont.IDENTITY_H);
+  }
+
+  public BaseFontSupport (final String defaultEncoding)
+  {
     this.baseFonts = new WeakHashMap();
+    this.defaultEncoding = defaultEncoding;
+  }
+
+  public String getDefaultEncoding ()
+  {
+    return defaultEncoding;
+  }
+
+  public void setDefaultEncoding (final String defaultEncoding)
+  {
+    if (defaultEncoding == null)
+    {
+      throw new NullPointerException("DefaultEncoding is null.");
+    }
+    this.defaultEncoding = defaultEncoding;
   }
 
   /**
@@ -97,6 +119,10 @@ public class BaseFontSupport implements FontMapper
     if (font == null)
     {
       throw new NullPointerException("Font definition is null.");
+    }
+    if (encoding == null)
+    {
+      throw new NullPointerException("Encoding is null");
     }
 
     // use the Java logical font name to map to a predefined iText font.
@@ -431,7 +457,7 @@ public class BaseFontSupport implements FontMapper
   {
     // this has to be defined in the element, an has to set as a default...
     final boolean embed = false;
-    final String encoding = null;
+    final String encoding = getDefaultEncoding();
     final FontDefinition fdef = new FontDefinition
         (font.getName(), font.getSize(), font.isBold(), font.isItalic(),
             false, false, encoding, embed);
@@ -444,7 +470,7 @@ public class BaseFontSupport implements FontMapper
     {
       // unable to handle font creation exceptions properly, all we can
       // do is throw a runtime exception and hope the best ..
-      throw new BaseFontCreateException("Unable to create font: " + font);
+      throw new BaseFontCreateException("Unable to create font: " + font, e);
     }
   }
 

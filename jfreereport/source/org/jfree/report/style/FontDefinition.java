@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: FontDefinition.java,v 1.7 2004/03/16 15:09:56 taqua Exp $
+ * $Id: FontDefinition.java,v 1.8 2004/05/07 08:14:24 mungady Exp $
  *
  * Changes
  * -------
@@ -425,7 +425,9 @@ public class FontDefinition implements Serializable, Cloneable
   public boolean isSansSerif()
   {
     return StringUtil.startsWithIgnoreCase(fontName, "SansSerif")
-        || StringUtil.startsWithIgnoreCase(fontName, "Dialog");
+        || StringUtil.startsWithIgnoreCase(fontName, "Dialog")||
+            StringUtil.startsWithIgnoreCase(fontName, "SanSerif");
+    // is it a bug? Somewhere in the JDK this name is used (typo, but heck, we accept it anyway).
   }
 
   /**
