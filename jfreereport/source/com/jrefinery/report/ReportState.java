@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.21 2002/08/14 21:14:06 taqua Exp $
+ * $Id: ReportState.java,v 1.22 2002/08/19 21:17:29 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -649,7 +649,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     {
       throw new IllegalArgumentException("IllegalReport connected, cloning not supported");
     }
-    reportProperties = new ReportProperties (report.getProperties ());
+    reportProperties = report.getProperties ();
 
     setCurrentItem (BEFORE_FIRST_ROW);
     setCurrentPage (FIRST_PAGE);
