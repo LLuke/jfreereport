@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.17 2002/06/08 16:28:58 taqua Exp $
+ * $Id: JFreeReport.java,v 1.18 2002/06/09 14:46:04 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -49,6 +49,7 @@
  *               global initialisations can be done.
  * 05-Jun-2002 : Updated Javadoc comments (DG);
  * 08-Jun-2002 : The defaultPageFormat is now always filled (and used in PreviewFrame)
+ * 19-Jun-2002 : more documentation
  */
 
 package com.jrefinery.report;
@@ -73,6 +74,21 @@ import java.util.Iterator;
  * This class co-ordinates the process of generating a report from a TableModel.  The report is
  * made up of 'bands', which are used repeatedly as necessary to generate small sections of the
  * report.
+ * <p>
+ * Accessing the bands and the elements:
+ * <p>
+ * Elements on a band can be reached by using Band.getElement (String elementName) or
+ * by retrieving all elements using Band.getElements() and performing a search on the returned list.
+ * <p>
+ * The different band can be accessed using the main report definition class (this JFreeReport-class).
+ * <ul>
+ * <li>PageHeader and -footer can be reached by using <code>getPageHeader()</code> and <code>getPageFooter()</code>
+ * <li>ReportHeader and -footer can be reached by using <code>getReportHeader()</code> and <code>getReportFooter()</code>
+ * <li>the ItemBand is reachable with getItemBand ()
+ * <li>Groups can be queries using <code>getGroup(String groupName)</code>, groupheader and footer are accessible
+ * through the group object, so use <code>getGroup(String groupName).getGroupHeader()<code> and
+ * <code>getGroup(String groupName).getGroupFooter()<code>.
+ * </ul>
  */
 public class JFreeReport implements JFreeReportConstants
 {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: TextElement.java,v 1.10 2002/05/28 19:28:22 taqua Exp $
+ * $Id: TextElement.java,v 1.11 2002/06/04 21:44:34 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -43,6 +43,7 @@
  *               and convert data.
  * 24-May-2002 : BugFix: Alignment was not initialized and made pdf-printing imposible.
  * 04-Jun-2002 : Documentation.
+ * 19-Jun-2002 : More documentation
  */
 
 package com.jrefinery.report;
@@ -64,6 +65,19 @@ import java.awt.Font;
  * the SimpleDateFormatFilter.
  * <p>
  * For more information on filters have a look at the filter package com.jrefinery.report.filter.
+ * <p>
+ * The multiline hints apply to both known OutputTargets (G2OutputTarget & PDFOutputTarget):
+ * <p>
+ * For multiline elements you have to ensure that your elements height is at least twice the
+ * height of your font. The number of text-lines in the element is calculated by using the formula:
+ * <code>int maxLinesToDisplay = (int) (elementHeight / fontheight);</code>
+ * <p>
+ * If maxLinesToDisplay is lesser than two lines, a single line print is assumed, the text will
+ * be displayed with full length on a single line. This behaviour is backward compatiblity with
+ * the old TextElements behaviour.<br>
+ * If maxLinesToDisplay is two or more lines, the text is broken
+ * into multiple lines, and if the last line is to long to be printed, the text is shortened and
+ * a "..." is appended.
  * <p>
  * The font style flags isUnderlined and isStriketrough are not implemented in version 0.7.3
  */
