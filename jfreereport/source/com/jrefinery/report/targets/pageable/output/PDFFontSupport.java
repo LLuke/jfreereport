@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFFontSupport.java,v 1.2 2002/12/05 16:50:51 mungady Exp $
+ * $Id: PDFFontSupport.java,v 1.3 2002/12/06 20:34:15 taqua Exp $
  *
  * Changes
  * -------
@@ -115,6 +115,8 @@ public class PDFFontSupport
       throw new NullPointerException();
     }
 
+    Log.debug ("Create Font: " + font + " Encoding: " + encoding + " Embedd: " + embedFonts);
+
     // use the Java logical font name to map to a predefined iText font.
     String fontKey = null;
     String logicalName = font.getName();
@@ -156,7 +158,9 @@ public class PDFFontSupport
     // iText uses some weird mapping between IDENTY-H/V and java supported encoding, IDENTITY-H/V is
     // used to recognize TrueType fonts, but the real JavaEncoding is used to encode Type1 fonts
     String stringEncoding = encoding;
+
     // Correct the encoding for truetype fonts
+    // iText will crash if IDENTITY_H is used to create a base font ...
     if (encoding.equals(BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
     {
       stringEncoding = "iso-8859-1";

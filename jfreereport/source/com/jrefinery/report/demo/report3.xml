@@ -28,6 +28,10 @@
 
 -->
 <report name="Invoice"  pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
+  <configuration>
+    <property name="com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.Encoding">Identity-H</property>
+    <property name="com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.EmbedFonts">true</property>
+  </configuration>
 <!--
   Needs some better control when to display the page header. Group should be able to declare whether a
   pageheader should be displayed or not

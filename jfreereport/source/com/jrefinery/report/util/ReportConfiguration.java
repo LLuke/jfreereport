@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.19 2002/12/13 01:26:12 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.20 2002/12/13 14:49:20 mungady Exp $
  *
  * Changes
  * -------
@@ -324,6 +324,13 @@ public class ReportConfiguration
 
   /** The default 'PDF auto init' property value. */
   public static final String PDFTARGET_AUTOINIT_DEFAULT = "true";
+
+  /** The 'PDF embed fonts' property key. */
+  public static final String PDFTARGET_EMBED_FONTS
+      = "com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.EmbedFonts";
+
+  /** The default 'PDF embed fonts' property value. */
+  public static final String PDFTARGET_EMBED_FONTS_DEFAULT = "true";
 
   /** The 'PDF encoding' property key. */
   public static final String PDFTARGET_ENCODING
@@ -686,6 +693,27 @@ public class ReportConfiguration
   public void setG2TargetUseAliasing(boolean alias)
   {
     setConfigProperty(G2TARGET_USEALIASING, String.valueOf(alias));
+  }
+
+  /**
+   * Returns true, if the Graphics2D should use aliasing to render text. Defaults to false.
+   *
+   * @return true, if aliasing is enabled.
+   */
+  public boolean isPDFTargetEmbedFonts()
+  {
+    return getConfigProperty(PDFTARGET_EMBED_FONTS,
+        PDFTARGET_EMBED_FONTS_DEFAULT).equalsIgnoreCase("true");
+  }
+
+  /**
+   * set to true, if the PDFOutputTarget should embed all fonts.
+   *
+   * @param embed set to true, if the PDFOutputTarget should use embedded fonts.
+   */
+  public void setPDFTargetEmbedFonts(boolean embed)
+  {
+    setConfigProperty(PDFTARGET_EMBED_FONTS, String.valueOf(embed));
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.8 2002/12/11 01:10:41 mungady Exp $
+ * $Id: PDFOutputTarget.java,v 1.9 2002/12/13 10:45:59 mungady Exp $
  *
  * Changes
  * -------
@@ -113,6 +113,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
   public static final String CONFIGURATION_PREFIX
       = "com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.";
 
+  /** Literal text for the 'EmbedFonts' property name. */
+  public static final String EMBED_FONTS = "EmbedFonts";
+
   /** Literal text for the 'AllowPrinting' property name. */
   public static final String SECURITY_ALLOW_PRINTING = "AllowPrinting";
 
@@ -170,9 +173,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   /** The document writer. */
   private PdfWriter writer;
-
-  /** Embed fonts? */
-  private boolean embedFonts;
 
   /** The current base font. */
   private BaseFont baseFont;
@@ -580,6 +580,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
     this.awtFont = font;
     this.fontSize = font.getSize();
+
+    // override with current settings ... todo define on a per font base
+    fontSupport.setEmbedFonts(isEmbedFonts());
 
     this.baseFont = fontSupport.createBaseFont(font, getFontEncoding()).getBaseFont();
     if (baseFont == null)
@@ -1216,7 +1219,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   protected boolean isEmbedFonts()
   {
-    return embedFonts;
+    return getProperty(EMBED_FONTS, "false").equals("true");
   }
 
   /**
@@ -1226,7 +1229,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   protected void setEmbedFonts(boolean embedFonts)
   {
-    this.embedFonts = embedFonts;
+    setProperty(EMBED_FONTS, String.valueOf(embedFonts));
   }
 
   /**
@@ -1284,6 +1287,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     updateProperty(SECURITY_USERPASSWORD, config);
     updateProperty(AUTHOR, config);
     updateProperty(ENCODING, config);
+    updateBooleanProperty(EMBED_FONTS, config);
     updateBooleanProperty(SECURITY_ALLOW_ASSEMBLY, config);
     updateBooleanProperty(SECURITY_ALLOW_COPY, config);
     updateBooleanProperty(SECURITY_ALLOW_DEGRADED_PRINTING, config);

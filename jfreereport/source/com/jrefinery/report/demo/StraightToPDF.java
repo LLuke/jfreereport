@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: HelloWorld.java,v 1.2 2002/12/11 01:03:13 mungady Exp $
+ * $Id: StraightToPDF.java,v 1.1 2002/12/13 10:27:47 mungady Exp $
  *
  * Changes
  * -------
@@ -101,7 +101,7 @@ public class StraightToPDF
    * Saves a report to PDF format.
    *
    * @param report  the report.
-   * @param pf  the page format.
+   * @param fileName target file name.
    *
    * @return true or false.
    */
