@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: Java14PrintingPlugin.java,v 1.1 2003/07/23 16:08:10 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -51,21 +51,40 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.print.PrintingPlugin;
 
+/**
+ * A replacement to use the JDK 1.4 printing API. This class does
+ * nothing special yet.
+ * 
+ * @author Thomas Morgner
+ */
 public class Java14PrintingPlugin extends PrintingPlugin
 {
+  /** A clear text failure description for the error message of the dialog. */
   private String failureDescription;
 
+  /**
+   * Default constructor.
+   */
   public Java14PrintingPlugin()
   {
   }
 
-
+  /**
+   * Returns a description of the last error. 
+   * @see org.jfree.report.modules.gui.base.ExportPlugin#getFailureDescription()
+   * 
+   * @return the failure description.
+   */
   public String getFailureDescription()
   {
     return failureDescription;
   }
 
-  public void setFailureDescription(String failureDescription)
+  /**
+   * Sets the failure description.
+   * @param failureDescription the new failure description.
+   */
+  private void setFailureDescription(String failureDescription)
   {
     this.failureDescription = failureDescription;
   }
@@ -99,7 +118,8 @@ public class Java14PrintingPlugin extends PrintingPlugin
     try
     {
       DocPrintJob job = service.createPrintJob();
-      SimpleDoc document = new SimpleDoc(getBase().getPageable(), DocFlavor.SERVICE_FORMATTED.PAGEABLE, null);
+      SimpleDoc document = new SimpleDoc
+        (getBase().getPageable(), DocFlavor.SERVICE_FORMATTED.PAGEABLE, null);
       job.print(document, attributes);
       return true;
     }

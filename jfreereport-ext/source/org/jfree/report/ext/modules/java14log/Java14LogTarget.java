@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14LogTarget.java,v 1.1 2003/07/11 20:05:37 taqua Exp $
+ * $Id: Java14LogTarget.java,v 1.2 2003/07/23 16:06:25 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,10 @@ public class Java14LogTarget implements LogTarget
    */
   public Java14LogTarget (final Logger logger)
   {
-    if (logger == null) throw new NullPointerException("Given category is null");
+    if (logger == null)
+    { 
+      throw new NullPointerException("Given category is null");
+    }
     this.logger = logger;
   }
 

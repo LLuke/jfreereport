@@ -2,7 +2,7 @@
  * Date: Jan 31, 2003
  * Time: 4:24:01 PM
  *
- * $Id: BarcodeFilter.java,v 1.1 2003/07/11 20:05:37 taqua Exp $
+ * $Id: BarcodeFilter.java,v 1.2 2003/07/23 16:06:25 taqua Exp $
  */
 package org.jfree.report.ext.modules.barcode.base.filter;
 
@@ -38,13 +38,19 @@ public class BarcodeFilter implements DataFilter
 
   public void setBarColor(final Color barColor)
   {
-    if (barColor == null) throw new NullPointerException();
+    if (barColor == null)
+    { 
+      throw new NullPointerException();
+    }
     this.barColor = barColor;
   }
 
   public void setTextColor(final Color textColor)
   {
-    if (textColor == null) throw new NullPointerException();
+    if (textColor == null)
+    { 
+      throw new NullPointerException();
+    }
     this.textColor = textColor;
   }
 
@@ -55,7 +61,10 @@ public class BarcodeFilter implements DataFilter
 
   public void setBarcode(final Barcode barcode)
   {
-    if (barcode == null) throw new NullPointerException();
+    if (barcode == null)
+    { 
+      throw new NullPointerException();
+    }
     try
     {
       this.barcode = (Barcode) barcode.clone();
@@ -73,7 +82,10 @@ public class BarcodeFilter implements DataFilter
    */
   public Object getValue()
   {
-    if (dataSource == null) return null;
+    if (dataSource == null)
+    { 
+      return null;
+    }
     final Object o = dataSource.getValue();
     if (o instanceof String == false)
     {

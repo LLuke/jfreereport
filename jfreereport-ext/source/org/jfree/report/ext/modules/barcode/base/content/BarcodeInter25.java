@@ -112,7 +112,9 @@ public class BarcodeInter25 extends Barcode
     {
       final char c = text.charAt(k);
       if (c >= '0' && c <= '9')
+      {
         sb.append(c);
+      }
     }
     return sb.toString();
   }
@@ -223,9 +225,13 @@ public class BarcodeInter25 extends Barcode
   public Image createImageWithBarcode(final Color barColor, final Color textColor)
   {
     if (barColor == null)
+    {
       throw new NullPointerException("BarColor must not be null");
+    }
     if (textColor == null)
+    {
       throw new NullPointerException("TextColor must not be null");
+    }
 
     String fullCode = getCode();
     float textWidth = 0;
@@ -253,7 +259,9 @@ public class BarcodeInter25 extends Barcode
 
       final float baseline = getBaseline();
       if (baseline <= 0)
+      {
         textStartY = getBarHeight() - baseline;
+      }
       else
       {
         textStartY = -getFontDescent(font.getFont());
@@ -264,16 +272,24 @@ public class BarcodeInter25 extends Barcode
     if (getTextAlignment() == ElementAlignment.RIGHT)
     {
         if (textWidth > fullWidth)
+        {
           barStartX = textWidth - fullWidth;
+        }
         else
+        {
           textStartX = fullWidth - textWidth;
+        }
     }
     else if (getTextAlignment() == ElementAlignment.CENTER)
     {
         if (textWidth > fullWidth)
+        {
           barStartX = (textWidth - fullWidth) / 2;
+        }
         else
+        {
           textStartX = (fullWidth - textWidth) / 2;
+        }
     }
 
     final int imageX = (int) Math.max(fullWidth, textWidth);

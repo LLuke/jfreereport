@@ -47,9 +47,13 @@ public class Barcode128Raw extends Barcode128
     final String code = getCode();
     final int idx = code.indexOf('\uffff');
     if (idx < 0)
+    {
       return "";
+    }
     else
+    {
       return code.substring(idx + 1);
+    }
   }
 
   public String getRawText ()
@@ -57,8 +61,12 @@ public class Barcode128Raw extends Barcode128
     final String code = getCode();
     final int idx = code.indexOf('\uffff');
     if (idx >= 0)
+    {
       return code.substring(0, idx);
+    }
     else
+    {
       return code;
+    }
   }
 }

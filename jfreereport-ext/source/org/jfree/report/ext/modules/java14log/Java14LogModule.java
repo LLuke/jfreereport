@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: Java14LogModule.java,v 1.1 2003/07/11 20:05:37 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,20 +43,36 @@ import org.jfree.report.modules.ModuleInitializeException;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 
+/**
+ * The module definition for the Java1.4 log target support module.
+ * 
+ * @author Thomas Morgner
+ */
 public class Java14LogModule extends AbstractModule
 {
+  /** 
+   * DefaultConstructor. Loads the module specification.
+   * @throws ModuleInitializeException if an error occured.
+   */
   public Java14LogModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
+  /**
+   * Initalizes the module. This method is empty. 
+   * @see org.jfree.report.modules.Module#initialize()
+   * 
+   * @throws ModuleInitializeException if an error occured.
+   */
   public void initialize() throws ModuleInitializeException
   {
     if (ReportConfiguration.getGlobalConfig().isDisableLogging())
     {
       return;
     }
-    if (ReportConfiguration.getGlobalConfig().getLogTarget().equals
+    if (ReportConfiguration.getGlobalConfig().getConfigProperty
+        (ReportConfiguration.LOGTARGET, "").equals
         (Java14LogTarget.class.getName()))
     {
       Log.getJFreeReportLog().addTarget(new Java14LogTarget());

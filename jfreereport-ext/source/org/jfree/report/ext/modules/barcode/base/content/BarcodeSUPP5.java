@@ -78,7 +78,9 @@ public class BarcodeSUPP5 extends BarcodeEAN
     final String _code = getCode();
     final int[] code = new int[5];
     for (int k = 0; k < code.length; ++k)
+    {
       code[k] = _code.charAt(k) - '0';
+    }
     final byte[] bars = new byte[TOTALBARS_SUPP5];
     int pb = 0;
     final int parity = (((code[0] + code[2] + code[4]) * 3) + ((code[1] + code[3]) * 9)) % 10;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElementTest.java,v 1.4 2003/07/03 16:06:17 taqua Exp $
+ * $Id: ImageElementTest.java,v 1.1 2003/07/08 14:21:46 taqua Exp $
  *
  * Changes
  * -------
@@ -85,7 +85,9 @@ public class ImageElementTest
 
     final JFreeReport report = TestSystem.loadReport("/org/jfree/report/ext/junit/image-element.xml", mod);
     if (report == null)
+    {
       System.exit(1);
+    }
 
     report.setProperty("GraphImage", image);
     report.getProperties().setMarked("GraphImage", true);

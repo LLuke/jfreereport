@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TestShapeAndDrawableLayout.java,v 1.3 2003/07/03 16:06:17 taqua Exp $
+ * $Id: TestShapeAndDrawableLayout.java,v 1.1 2003/07/08 14:21:46 taqua Exp $
  *
  * Changes
  * -------
@@ -50,12 +50,12 @@ public class TestShapeAndDrawableLayout
     final JFreeReport report = TestSystem.loadReport("/org/jfree/report/demo/shape-and-drawable.xml",
         new DefaultTableModel());
     if (report == null)
+    {
       System.exit(1);
+    }
 
     BandLayoutManagerUtil.doLayout(report.getReportHeader(),
-        new DefaultLayoutSupport(),
-        550,
-        200);
+        new DefaultLayoutSupport(), 550, 200);
 
   }
 }

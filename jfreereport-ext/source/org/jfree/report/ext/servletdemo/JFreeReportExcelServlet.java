@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: JFreeReportExcelServlet.java,v 1.1 2003/07/03 16:10:22 taqua Exp $
+ * $Id: JFreeReportExcelServlet.java,v 1.1 2003/07/08 14:21:48 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -65,8 +65,8 @@ public class JFreeReportExcelServlet extends HttpServlet
    *
    * @param request the http request object.
    * @param response the http response object.
-   * @throws javax.servlet.ServletException if an error occured, which could not be handled internaly.
-   * @throws java.io.IOException if writing the generated contents failed.
+   * @throws ServletException if an error occured, which could not be handled internaly.
+   * @throws IOException if writing the generated contents failed.
    */
   public void doGet(final HttpServletRequest request, final HttpServletResponse response)
       throws ServletException, IOException
@@ -82,8 +82,8 @@ public class JFreeReportExcelServlet extends HttpServlet
    *
    * @param request the http request object.
    * @param response the http response object.
-   * @throws javax.servlet.ServletException if an error occured, which could not be handled internaly.
-   * @throws java.io.IOException if writing the generated contents failed.
+   * @throws ServletException if an error occured, which could not be handled internaly.
+   * @throws IOException if writing the generated contents failed.
    */
   public void doPost(final HttpServletRequest request, final HttpServletResponse response)
       throws ServletException, IOException

@@ -224,7 +224,8 @@ public class Barcode128 extends Barcode
     this.uccCode = ucc;
   }
 
-  /** Returns <CODE>true</CODE> if the next <CODE>numDigits</CODE>
+  /** 
+   * Returns <CODE>true</CODE> if the next <CODE>numDigits</CODE>
    * starting from index <CODE>textIndex</CODE> are numeric.
    * @param text the text to check
    * @param textIndex where to check from
@@ -234,12 +235,16 @@ public class Barcode128 extends Barcode
   private static boolean isNextCharsDigits(final String text, int textIndex, int numDigits)
   {
     if (textIndex + numDigits > text.length())
+    {
       return false;
+    }
     while (numDigits-- > 0)
     {
       final char c = text.charAt(textIndex++);
       if (c < '0' || c > '9')
+      {
         return false;
+      }
     }
     return true;
   }
@@ -520,9 +525,13 @@ public class Barcode128 extends Barcode
   public Image createImageWithBarcode(final Color barColor, final Color textColor)
   {
     if (barColor == null)
+    {
       throw new NullPointerException("BarColor must not be null");
+    }
     if (textColor == null)
+    {
       throw new NullPointerException("TextColor must not be null");
+    }
 
     final String fullCode = getStrippedCode();
     final String bCode = getRawText();
@@ -556,16 +565,24 @@ public class Barcode128 extends Barcode
     if (getTextAlignment() == ElementAlignment.RIGHT)
     {
       if (textWidth > fullWidth)
+      {
         barStartX = textWidth - fullWidth;
+      }
       else
+      {
         textStartX = fullWidth - textWidth;
+      }
     }
     else if (getTextAlignment() == ElementAlignment.CENTER)
     {
       if (textWidth > fullWidth)
+      {
         barStartX = (textWidth - fullWidth) / 2;
+      }
       else
+      {
         textStartX = (fullWidth - textWidth) / 2;
+      }
     }
 
     final int imageX = (int) Math.max (fullWidth, textWidth);

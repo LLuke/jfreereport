@@ -98,7 +98,9 @@ public class BarcodeUPCE extends BarcodeEAN
     final String _code = getCode();
     final int[] code = new int[_code.length()];
     for (int k = 0; k < code.length; ++k)
+    {
       code[k] = _code.charAt(k) - '0';
+    }
     final byte[] bars = new byte[TOTALBARS_UPCE];
     final boolean flip = (code[0] != 0);
     int pb = 0;

@@ -45,7 +45,10 @@ public class JMIBug
       {
         System.out.println("IdCurrencyPanel - preview(url, tableModel) - ERROR 2: the report is null.");
       }
-      if (landscape) report1.getDefaultPageFormat().setOrientation(PageFormat.LANDSCAPE);
+      if (landscape)
+      { 
+        report1.getDefaultPageFormat().setOrientation(PageFormat.LANDSCAPE);
+      }
       report1.setData(data);
 
       final PreviewFrame frame1 = new PreviewFrame(report1);

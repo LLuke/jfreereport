@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: Java14ConfigStorage.java,v 1.1 2003/07/23 16:08:10 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 23.07.2003 : Initial version
+ * 23-Jul-2003 : Initial version
  *  
  */
 

@@ -69,7 +69,9 @@ public class BarcodeEAN8 extends BarcodeEAN
     final String _code = getCode();
     final int[] code = new int[_code.length()];
     for (int k = 0; k < code.length; ++k)
+    {
       code[k] = _code.charAt(k) - '0';
+    }
     final byte[] bars = new byte[TOTALBARS_EAN8];
     int pb = 0;
     bars[pb++] = 1;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: JFreeChartModule.java,v 1.1 2003/07/11 20:05:38 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,13 +41,29 @@ package org.jfree.report.ext.modules.jfreechart;
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
 
+/**
+ * The module definition for the JFreeChart support module.
+ * This modules is just a dummy right now.
+ * 
+ * @author Thomas Morgner
+ */
 public class JFreeChartModule extends AbstractModule
 {
+  /** 
+   * DefaultConstructor. Loads the module specification.
+   * @throws ModuleInitializeException if an error occured.
+   */
   public JFreeChartModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
+  /**
+   * Initalizes the module. This method is empty. 
+   * @see org.jfree.report.modules.Module#initialize()
+   * 
+   * @throws ModuleInitializeException if an error occured.
+   */
   public void initialize() throws ModuleInitializeException
   {
   }

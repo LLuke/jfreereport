@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportPngServlet.java,v 1.1 2003/07/08 14:21:48 taqua Exp $
+ * $Id: JFreeReportPngServlet.java,v 1.2 2003/07/23 16:06:25 taqua Exp $
  *
  * Changes
  * -------
@@ -189,7 +189,8 @@ public class JFreeReportPngServlet extends HttpServlet implements SingleThreadMo
     final double width = pf.getWidth();
     final double height = pf.getHeight();
     //write the report to the temp file
-    final BufferedImage bi = new BufferedImage((int) width, (int) height, BufferedImage.TYPE_BYTE_INDEXED);
+    final BufferedImage bi = new BufferedImage
+      ((int) width, (int) height, BufferedImage.TYPE_BYTE_INDEXED);
     return bi;
   }
 

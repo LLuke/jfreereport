@@ -49,12 +49,19 @@ import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.states.ReportState;
 import org.jfree.report.util.Log;
 
+/**
+ * Tests whether report properties get lost during the report processing.
+ * 
+ * @author Thomas Morgner
+ */
 public class ReportPropertyLostBug extends TestCase
 {
+  /** The report used to perform the test. */
   private JFreeReport report;
 
   /**
    * Returns the tests as a test suite.
+   * @return the created suite
    */
   public static Test suite()
   {
@@ -63,6 +70,7 @@ public class ReportPropertyLostBug extends TestCase
 
   /**
    * Constructs a new set of tests.
+   * 
    * @param name The name of the tests.
    */
   public ReportPropertyLostBug(final String name)
@@ -72,12 +80,16 @@ public class ReportPropertyLostBug extends TestCase
 
   /**
    * Common test setup.
+   * 
+   * @throws Exception if an error occurs
    */
   protected void setUp() throws Exception
   {
     final URL url = getClass().getResource("/org/jfree/report/demo/report2.xml");
     if (url == null)
+    {
       throw new FileNotFoundException();
+    }
 
     report = ReportGenerator.getInstance().parseReport(url, url);
     report.setData(new SampleData1());
@@ -86,6 +98,8 @@ public class ReportPropertyLostBug extends TestCase
   /**
    * Check that a report property set before the report is processed is also available when
    * the report processing has started.
+   * 
+   * @throws Exception if an error occurs
    */
   public void testReportState() throws Exception
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log4JLogTarget.java,v 1.1 2003/07/08 14:21:48 taqua Exp $
+ * $Id: Log4JLogTarget.java,v 1.2 2003/07/23 16:06:25 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,10 @@ public class Log4JLogTarget implements LogTarget
    */
   public Log4JLogTarget (final Category cat)
   {
-    if (cat == null) throw new NullPointerException("Given category is null");
+    if (cat == null)
+    { 
+      throw new NullPointerException("Given category is null");
+    }
     this.cat = cat;
   }
 

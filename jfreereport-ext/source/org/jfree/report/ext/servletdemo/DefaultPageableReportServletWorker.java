@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DefaultPageableReportServletWorker.java,v 1.1 2003/07/08 14:21:48 taqua Exp $
+ * $Id: DefaultPageableReportServletWorker.java,v 1.2 2003/07/23 16:06:25 taqua Exp $
  *
  * Changes
  * -------
@@ -73,11 +73,18 @@ public class DefaultPageableReportServletWorker
    * @param data the tablemodel that should be used for the reporting.
    * @param session the current session, or null, if no session handling should be used.
    */
-  public DefaultPageableReportServletWorker(final HttpSession session, final URL report, final TableModelProvider data)
+  public DefaultPageableReportServletWorker
+    (final HttpSession session, final URL report, final TableModelProvider data)
   {
     super(session);
-    if (report == null) throw new NullPointerException();
-    if (data == null) throw new NullPointerException();
+    if (report == null)
+    { 
+      throw new NullPointerException();
+    }
+    if (data == null)
+    { 
+      throw new NullPointerException();
+    }
     this.reportDefinition = report;
     this.data = data;
   }

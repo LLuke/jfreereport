@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: Java14PrintModule.java,v 1.1 2003/07/23 16:08:10 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,16 +43,36 @@ import org.jfree.report.modules.ModuleInitializeException;
 import org.jfree.report.modules.gui.base.ExportPluginFactory;
 import org.jfree.report.util.ReportConfiguration;
 
+/**
+ * The module definition for the Java 1.4 printing support module.
+ * 
+ * @author Thomas Morgner
+ */
 public class Java14PrintModule extends AbstractModule
 {
-  private static final String PRINT_ORDER_KEY = "org.jfree.report.ext.modules.java14print.Order";
-  private static final String PRINT_ENABLE_KEY = "org.jfree.report.ext.modules.java14print.Enable";
+  /** The printing export plugin preference key. */ 
+  private static final String PRINT_ORDER_KEY =     "org.jfree.report.ext.modules.java14print.Order";
+  
+  /** The printing export plugin enable key. */
+  private static final String PRINT_ENABLE_KEY = 
+    "org.jfree.report.ext.modules.java14print.Enable";
 
+  /** 
+   * DefaultConstructor. Loads the module specification.
+   * @throws ModuleInitializeException if an error occured.
+   */
   public Java14PrintModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
+  /**
+   * Initalizes the module. The module is registered as export module to
+   * the preview components. 
+   * @see org.jfree.report.modules.Module#initialize()
+   * 
+   * @throws ModuleInitializeException if an error occured.
+   */
   public void initialize() throws ModuleInitializeException
   {
     String printOrder = ReportConfiguration.getGlobalConfig().getConfigProperty

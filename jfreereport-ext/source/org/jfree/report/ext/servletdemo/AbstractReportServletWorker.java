@@ -29,7 +29,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractReportServletWorker.java,v 1.1 2003/07/08 14:21:48 taqua Exp $
+ * $Id: AbstractReportServletWorker.java,v 1.2 2003/07/23 16:06:25 taqua Exp $
  *
  * Changes
  * -------
@@ -87,7 +87,9 @@ public abstract class AbstractReportServletWorker
       {
         report = createReport();
         if (report == null)
+        {
           throw new ReportInitialisationException("Created report is null");
+        }
 
         session.setAttribute(getPropertyPrefix() + "Report", report);
       }
@@ -96,7 +98,9 @@ public abstract class AbstractReportServletWorker
     {
       report = createReport();
       if (report == null)
+      {
         throw new ReportInitialisationException("Created report is null");
+      }
 
     }
     return report;
@@ -107,7 +111,8 @@ public abstract class AbstractReportServletWorker
    * The data model has to be assigned to the report.
    *
    * @return the initialized report definition.
-   * @throws ReportInitialisationException
+   * @throws ReportInitialisationException if an error occured during the
+   * report initialisation.
    */
   public JFreeReport getReport()
     throws ReportInitialisationException

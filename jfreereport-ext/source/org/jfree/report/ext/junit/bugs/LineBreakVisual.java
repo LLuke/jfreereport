@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineBreakVisual.java,v 1.3 2003/07/03 16:06:19 taqua Exp $
+ * $Id: LineBreakVisual.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,9 @@ public class LineBreakVisual
   {
     final JFreeReport report = TestSystem.loadReport("/org/jfree/report/ext/junit/bugs/resource/LineBreak.xml", new DefaultTableModel());
     if (report == null)
+    {
       System.exit(1);
+    }
 
     TestSystem.showPreviewFrameWExit(report, true);
   }

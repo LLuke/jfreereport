@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FnStyleSheetCollectionTest.java,v 1.1 2003/07/11 20:07:56 taqua Exp $
+ * $Id: FnStyleSheetCollectionTest.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -157,7 +157,9 @@ public class FnStyleSheetCollectionTest extends TestCase
   private void assertStylesConnected (final ElementStyleSheet es, final StyleSheetCollection sc)
   {
     if (es.isGlobalDefault())
+    {
       return;
+    }
 
     assertTrue(es.getName() + " " + es.hashCode() + " - " +
         es.getStyleSheetCollection(), es.getStyleSheetCollection() == sc);

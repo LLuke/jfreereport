@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TestSystem.java,v 1.1 2003/07/08 14:21:46 taqua Exp $
+ * $Id: TestSystem.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
  *
  * Changes
  * -------
@@ -117,7 +117,9 @@ public class TestSystem
     final SampleData2 m_dataModel = new SampleData2();
     final JFreeReport report = TestSystem.loadReport("/org/jfree/report/ext/junit/pagebreak.xml", m_dataModel);
     if (report == null)
+    {
       System.exit(1);
+    }
 
     TestSystem.showPreviewFrame(report);
   }

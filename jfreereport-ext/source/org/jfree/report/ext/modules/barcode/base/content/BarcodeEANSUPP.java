@@ -108,9 +108,13 @@ public class BarcodeEANSUPP extends Barcode
   public Image createImageWithBarcode(final Color barColor, final Color textColor)
   {
     if (barColor == null)
+    {
       throw new NullPointerException("BarColor must not be null");
+    }
     if (textColor == null)
+    {
       throw new NullPointerException("TextColor must not be null");
+    }
 
     if (supp.getFont() != null)
     {

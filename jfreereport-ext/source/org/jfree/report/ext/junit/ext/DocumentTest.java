@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DocumentTest.java,v 1.3 2003/07/03 16:06:19 taqua Exp $
+ * $Id: DocumentTest.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -56,7 +56,7 @@ public class DocumentTest
     System.out.println("Length: " + doc.getLength());
     final ElementIterator ei = new ElementIterator(doc);
     Element e = ei.next();
-    ;
+    
     while (e != null)
     {
       System.out.println(e.toString());

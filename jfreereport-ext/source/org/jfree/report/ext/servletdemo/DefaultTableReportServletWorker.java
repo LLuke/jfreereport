@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DefaultTableReportServletWorker.java,v 1.1 2003/07/08 14:21:48 taqua Exp $
+ * $Id: DefaultTableReportServletWorker.java,v 1.2 2003/07/23 16:06:25 taqua Exp $
  *
  * Changes
  * -------
@@ -72,8 +72,14 @@ public class DefaultTableReportServletWorker extends AbstractTableReportServletW
    */
   public DefaultTableReportServletWorker(final URL url, final TableModelProvider model)
   {
-    if (model == null) throw new NullPointerException();
-    if (url == null) throw new NullPointerException();
+    if (model == null)
+    { 
+      throw new NullPointerException();
+    }
+    if (url == null)
+    { 
+      throw new NullPointerException();
+    }
     this.url = url;
     this.model = model;
   }

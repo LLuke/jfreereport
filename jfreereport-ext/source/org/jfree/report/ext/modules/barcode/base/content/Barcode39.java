@@ -279,9 +279,13 @@ public class Barcode39 extends Barcode
   public Image createImageWithBarcode(final Color barColor, final Color textColor)
   {
     if (barColor == null)
+    {
       throw new NullPointerException("BarColor must not be null");
+    }
     if (textColor == null)
+    {
       throw new NullPointerException("TextColor must not be null");
+    }
 
     float textWidth = 0;
     String fullCode = getCode();
@@ -325,16 +329,24 @@ public class Barcode39 extends Barcode
     if (getTextAlignment() == ElementAlignment.CENTER)
     {
       if (textWidth > fullWidth)
+      {
         barStartX = textWidth - fullWidth;
+      }
       else
+      {
         textStartX = fullWidth - textWidth;
+      }
     }
     else if (getTextAlignment() == ElementAlignment.RIGHT)
     {
       if (textWidth > fullWidth)
+      {
         barStartX = (textWidth - fullWidth) / 2;
+      }
       else
+      {
         textStartX = (fullWidth - textWidth) / 2;
+      }
     }
 
     final Dimension2D size = getBarcodeSize();

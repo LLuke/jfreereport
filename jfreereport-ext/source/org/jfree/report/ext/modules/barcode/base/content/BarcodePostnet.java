@@ -162,9 +162,13 @@ public class BarcodePostnet extends Barcode
   public Image createImageWithBarcode(final Color barColor, final Color textColor)
   {
     if (barColor == null)
+    {
       throw new NullPointerException("BarColor must not be null");
+    }
     if (textColor == null)
+    {
       throw new NullPointerException("TextColor must not be null");
+    }
 
     final Dimension2D imageDim = getBarcodeSize();
     final BufferedImage image = new BufferedImage((int) imageDim.getWidth(),
