@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,14 +20,21 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * --------------
  * GroupList.java
- * -----------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * --------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * 11-May-2002 : Initial version
+ * Changes:
+ * --------
+ * 11-May-2002 : Version 1 (TM);
+ * 16-May-2002 : Added Javadoc comments (DG);
+ *
  */
+
 package com.jrefinery.report;
 
 import java.util.Comparator;
@@ -36,18 +43,28 @@ import java.util.TreeSet;
 
 /**
  * The group list is used to store groups in a ordered way. The less specific groups are
- * guaranteed to be proceeded before any more specific subgroup.
+ * guaranteed to be listed before any more specific subgroup.
  * <p>
  * Groups are ordered by comparing the declared fieldnames for the groups.
  */
 public class GroupList extends TreeSet
 {
-  // Cache. This is a set, we need list functionality, but creating Iterators is
-  // expensive.
+  // Cache. This is a set, we need list functionality, but creating Iterators is expensive.
   private Object[] cache;
 
+  /**
+   * A comparator that orders Group objects.
+   */
   private static class GroupComparator implements Comparator
   {
+    /**
+     * Compares two objects (required to be instances of the Group class).
+     *
+     * @param o1 The first group.
+     * @param o2 The second group.
+     *
+     * @return An integer indicating the relative ordering of the two groups.
+     */
     public int compare (Object o1, Object o2)
     {
       Group g1 = (Group) o1;
@@ -77,17 +94,30 @@ public class GroupList extends TreeSet
       return 1;
     }
 
+    /**
+     * Returns true if this comparator is equal to an object.
+     *
+     * @param obj The object.
+     */
     public boolean equals (Object obj)
     {
       return (obj instanceof GroupComparator);
     }
   }
 
+  /**
+   * Constructs a new empty group list.
+   */
   public GroupList ()
   {
     super (new GroupComparator ());
   }
 
+  /**
+   * Returns the group at a position in the list.
+   *
+   * @param i The position index (zero-based).
+   */
   public Group get (int i)
   {
     if (cache == null)
@@ -97,18 +127,33 @@ public class GroupList extends TreeSet
     return (Group) cache[i];
   }
 
+  /**
+   * Removes an object from the list.
+   *
+   * @param o The object.
+   *
+   * @return A boolean indicating whether or not the object was removed.
+   */
   public boolean remove (Object o)
   {
     cache = null;
     return super.remove (o);
   }
 
+  /**
+   * Clears the list.
+   */
   public void clear ()
   {
     super.clear ();
     cache = null;
   }
 
+  /**
+   * Adds an object to the list.
+   *
+   * @param o The object (must be an instance of the Group class).
+   */
   public boolean add (Object o)
   {
     if (o instanceof Group)
@@ -129,4 +174,5 @@ public class GroupList extends TreeSet
       throw new ClassCastException ("Group required, was " + o.getClass ().getName ());
     }
   }
+
 }

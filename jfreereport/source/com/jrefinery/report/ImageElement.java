@@ -3,8 +3,8 @@
  * JFreeReport : an open source reporting class library for Java
  * =============================================================
  *
- * Project Info:  http://www.object-refinery.com/jfreereport;
- * Project Lead:  David Gilbert (david.gilbert@jrefinery.com);
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -23,15 +23,19 @@
  * -----------------
  * ImageElement.java
  * -----------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner
- * Contributor(s):   -;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageElement.java,v 1.1.1.1 2002/04/25 17:02:24 taqua Exp $
+ * $Id: ImageElement.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
- * 24-Apr-2002 : Defines a reference to an Bitmap or Wmf-Image for the reports.
- * 10-May-2002 : removed all but the default constructor. Added accessor functions for all properties.
+ * Changes:
+ * --------
+ * 24-Apr-2002 : Defines a reference to an Bitmap or Wmf-Image for the reports (TM);
+ * 10-May-2002 : Removed all but the default constructor. Added accessor functions for all
+ *               properties (TM);
+ * 16-May-2002 : Added Javadoc comments (DG);
  *
  */
 
@@ -41,7 +45,7 @@ package com.jrefinery.report;
 /**
  * Used to draw images (Gif, JPEG, PNG or wmf) on a report band.
  * PNG Support needs JDK 1.3 or higher. This class encapsulates an
- * imagereference into an element.
+ * ImageReference into an element.
  */
 public class ImageElement extends Element
 {
@@ -51,31 +55,31 @@ public class ImageElement extends Element
 
   /**
    * Constructs a image element.
-   *
-   * @param name The name of the element.
-   * @param image The image.
    */
   public ImageElement ()
   {
   }
 
   /**
-   * sets the imagereference for this element. The bounds of this element are adjusted according
+   * Sets the ImageReference for this element. The bounds of this element are adjusted according
    * to the given ImageReference.
    *
-   * @param reference the imageReference for this element
-   * @throws NullPointerException if the reference is null
+   * @param reference The image reference for this element.
+   *
+   * @throws NullPointerException if the reference is null.
    */
   public void setImageReference (ImageReference reference)
   {
     if (reference == null)
-      throw new NullPointerException ("Reference must not be null");
+      throw new NullPointerException ("ImageElement.setImageReference: null not allowed.");
     setBounds (reference.getBounds ());
     this.image = reference;
   }
 
   /**
-   * returns this elements assigned imageReference.
+   * Returns the image reference for this element.
+   *
+   * @return The image reference.
    */
   public ImageReference getImageReference ()
   {
