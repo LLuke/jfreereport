@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.7 2003/02/17 16:07:19 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.8 2003/02/20 21:04:59 taqua Exp $
  *
  * Changes
  * -------
@@ -126,7 +126,7 @@ public class BandLayoutManagerUtil
 
     // the height is redefined by the band's requirements to support
     // the dynamic elements.
-    Log.debug ("Band Defined a MinimumSize: " + fdim);
+    //Log.debug ("Band Defined a MinimumSize: " + fdim);
     height = (float) fdim.getHeight();
     Rectangle2D bounds = new Rectangle2D.Float(0, 0, width, height);
     band.getStyle().setStyleProperty(ElementStyleSheet.BOUNDS, bounds);

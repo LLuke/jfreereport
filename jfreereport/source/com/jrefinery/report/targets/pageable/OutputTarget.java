@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: OutputTarget.java,v 1.8 2003/02/07 22:40:40 taqua Exp $
+ * $Id: OutputTarget.java,v 1.9 2003/02/09 18:43:05 taqua Exp $
  *
  * Changes
  * -------
@@ -134,13 +134,6 @@ public interface OutputTarget extends LayoutSupport
    * @throws OutputTargetException if there is some problem with the target.
    */
   public void endPage () throws OutputTargetException;
-
-  /**
-   * Restores the state from the beginning of the page.
-   *
-   * @throws OutputTargetException if there is some problem with the target.
-   */
-  public void restoreState () throws OutputTargetException;
 
   /**
    * Returns the value of the specified property.  If the property is not found, <code>null</code>

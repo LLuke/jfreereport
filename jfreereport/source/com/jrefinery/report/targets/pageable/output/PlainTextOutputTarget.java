@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PlainTextOutputTarget.java,v 1.10 2003/02/18 19:37:32 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.11 2003/02/19 15:28:15 taqua Exp $
  *
  * Changes
  * -------
@@ -448,11 +448,28 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   {
     Rectangle2D bounds = getOperationBounds();
     
-    int x = (int) Math.floor((float) bounds.getX() / characterWidth);
-    int y = (int) Math.floor((float) bounds.getY() / characterHeight);
-    int w = (int) Math.floor((float) bounds.getWidth() / characterWidth);
+    int x = correctedDivisionFloor((float) bounds.getX() , characterWidth);
+    int y = correctedDivisionFloor((float) bounds.getY() , characterHeight);
+    int w = correctedDivisionFloor((float) bounds.getWidth(), characterWidth);
+
 
     pageBuffer.addTextChunk(x, y, w, text, getFont());
+  }
+
+  private int correctedDivisionFloor (float c, float d)
+  {
+    c = c * 100;
+    d = d * 100;
+    Log.debug ("C = " + c + "; D = " + d + "; = " + Math.floor(c / d)); 
+    return (int) Math.floor(c / d);
+  }
+
+  private int correctedDivision (float c, float d)
+  {
+    c = c * 100;
+    d = d * 100;
+    Log.debug ("C = " + c + "; D = " + d + "; = " + Math.round(c / d));
+    return Math.round(c / d);
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.23 2003/02/12 13:34:46 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.24 2003/02/18 19:37:32 taqua Exp $
  *
  * Changes
  * -------
@@ -197,57 +197,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
     (byte) 0x00, (byte) 0xB6, (byte) 0xD0, (byte) 0x68, (byte) 0x3E, (byte) 0x80,
     (byte) 0x2F, (byte) 0x0C, (byte) 0xA9, (byte) 0xFE, (byte) 0x64, (byte) 0x53,
     (byte) 0x69, (byte) 0x7A};
-
-  /**
-   * The pdf state is used to store and restore the current state of this output target.
-   */
-  private static class PDFState
-  {
-    /** The font. */
-    private FontDefinition myfont;
-
-    /** The stroke. */
-    private Stroke mystroke;
-
-    /** The paint. */
-    private Paint mypaint;
-
-    /**
-     * Creates a new state.
-     *
-     * @param source  the source of the state information to save.
-     */
-    public PDFState(PDFOutputTarget source)
-    {
-      save(source);
-    }
-
-    /**
-     * Saves the state of the specified target.
-     *
-     * @param source  the source of the state information.
-     */
-    public void save(PDFOutputTarget source)
-    {
-      this.myfont = source.getFont();
-      this.mystroke = source.getStroke();
-      this.mypaint = source.getPaint();
-    }
-
-    /**
-     * Restores the state of the specified target.
-     *
-     * @param target  the target for the state information
-     *
-     * @throws OutputTargetException if there is a problem with the output target.
-     */
-    public void restore(PDFOutputTarget target) throws OutputTargetException
-    {
-      target.setFont(myfont);
-      target.setStroke(mystroke);
-      target.setPaint(mypaint);
-    }
-  }
 
   /**
    * Constructs a PDFOutputTarget.
@@ -709,16 +658,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
       getDocument().open();
 
-      try
-      {
-        setPaint(ElementDefaultStyleSheet.DEFAULT_PAINT);
-        setStroke(ShapeElement.DEFAULT_STROKE);
-        setFont(ElementDefaultStyleSheet.DEFAULT_FONT_DEFINITION);
-      }
-      catch (OutputTargetException oe)
-      {
-        Log.error("Should not happen", oe);
-      }
       //writer.getDirectContent().saveState();
     }
     catch (Exception e)
@@ -742,6 +681,18 @@ public class PDFOutputTarget extends AbstractOutputTarget
     {
       throw new IllegalStateException("Target " + hashCode() + " is not open");
     }
+
+    try
+    {
+      setPaint(ElementDefaultStyleSheet.DEFAULT_PAINT);
+      setStroke(ShapeElement.DEFAULT_STROKE);
+      setFont(ElementDefaultStyleSheet.DEFAULT_FONT_DEFINITION);
+    }
+    catch (OutputTargetException oe)
+    {
+      Log.error("Should not happen", oe);
+    }
+
     this.writer.getDirectContent().saveState();
     this.currentPageFormat = format.getPageFormat();
   }
@@ -922,27 +873,6 @@ public class PDFOutputTarget extends AbstractOutputTarget
   public Paint getPaint()
   {
     return awtPaint;
-  }
-
-  /**
-   * Restores the state of this target.
-   *
-   * @throws OutputTargetException if the given state object is not valid.
-   */
-  public void restoreState() throws OutputTargetException
-  {
-    //lastState.restore(this);
-  }
-
-  /**
-   * Saves the state of this graphics object. Use restoreState to restore a previously saved
-   * state.
-   *
-   * @return the state container.
-   */
-  public Object saveState()
-  {
-    return new PDFState(this);
   }
 
   /**
