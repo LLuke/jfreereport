@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,12 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------------------
+ * ------------------
  * TextParagraph.java
- * ----------------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * ------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: TextParagraph.java,v 1.1 2002/12/02 17:56:56 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: TextParagraph.java,v 1.2 2002/12/02 18:55:35 taqua Exp $
  *
  * Changes
  * -------
@@ -39,32 +42,69 @@ import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A content container.
+ *
+ * @author Thomas Morgner.
+ */
 public class TextParagraph extends ContentContainer
 {
   /** A literal used for lines that get shortened by the linebreak implementation. */
   public static final String RESERVED_LITERAL = "..";
+  
+  /** The reserved size. */
   private float reservedSize = 0;
 
+  /** The size calculator. */
   private SizeCalculator sizeCalculator;
 
+  /**
+   * Creates a new text paragraph using the specified size calculator.
+   *
+   * @param calc  the size calculator.
+   */
   public TextParagraph(SizeCalculator calc)
   {
     super(new Rectangle2D.Float());
     this.sizeCalculator = calc;
-    this.reservedSize = getSizeCalculator().getStringWidth(RESERVED_LITERAL, 0, RESERVED_LITERAL.length());
+    this.reservedSize = getSizeCalculator().getStringWidth(RESERVED_LITERAL, 0, 
+                                                           RESERVED_LITERAL.length());
   }
 
+  /**
+   * Returns the size calculator.
+   *
+   * @return the size calculator.
+   */
   public SizeCalculator getSizeCalculator()
   {
     return sizeCalculator;
   }
 
+  /**
+   * Sets the content.
+   *
+   * @param content  the content.
+   * @param maxBounds  the max bounds.
+   */
   public void setContent(String content, Rectangle2D maxBounds)
   {
-    if (maxBounds.getX () < 0) throw new IllegalArgumentException();
-    if (maxBounds.getY () < 0) throw new IllegalArgumentException();
-    if (maxBounds.getWidth () < 0) throw new IllegalArgumentException();
-    if (maxBounds.getHeight () < 0) throw new IllegalArgumentException();
+    if (maxBounds.getX () < 0) 
+    {
+      throw new IllegalArgumentException();
+    }
+    if (maxBounds.getY () < 0) 
+    {
+      throw new IllegalArgumentException();
+    }
+    if (maxBounds.getWidth () < 0) 
+    {
+      throw new IllegalArgumentException();
+    }
+    if (maxBounds.getHeight () < 0) 
+    {
+      throw new IllegalArgumentException();
+    }
 
     int maxLines = (int) Math.floor(maxBounds.getHeight() / getSizeCalculator().getLineHeight());
     List l = breakLines(content, (float) maxBounds.getWidth(), maxLines);
@@ -80,18 +120,22 @@ public class TextParagraph extends ContentContainer
       String lineText = (String) l.get(i);
       TextLine line = new TextLine(getSizeCalculator());
       height = maxBounds.getHeight();
-      line.setContent(lineText, new Rectangle2D.Double(x, y + usedHeight, maxBounds.getWidth(), height - usedHeight));
+      line.setContent(lineText, new Rectangle2D.Double(x, y + usedHeight, 
+                                                       maxBounds.getWidth(), height - usedHeight));
       usedHeight += line.getBounds().getHeight();
       if (line.getBounds().getHeight() > 0)
+      {
         addContentPart(line);
+      }
     }
-    setBounds(new Rectangle2D.Double(maxBounds.getX(), maxBounds.getY(), maxBounds.getWidth(), usedHeight));
+    setBounds(new Rectangle2D.Double(maxBounds.getX(), maxBounds.getY(), 
+                                     maxBounds.getWidth(), usedHeight));
   }
 
   /**
    * Breaks the text into multiple lines. The given string is broken either when a manual
-   * linebreak is encountered or when the current lines rendered width exceeds the given limit.
-   * If the text contains more than <code>linecount</code> lines, all lines over the limit
+   * linebreak is encountered or when the current line's rendered width exceeds the given limit.
+   * If the text contains more than <code>maxLines</code> lines, all lines over the limit
    * are ignored.
    * <p>
    * If more than one line is expected or the strictmode is enabled and there are more lines
@@ -108,16 +152,21 @@ public class TextParagraph extends ContentContainer
    */
   protected List breakLines(String mytext, final float width, int maxLines)
   {
-    if (width <= 0) throw new IllegalArgumentException("Width must not be less or equal 0, was " + width);
+    if (width <= 0)
+    {
+      throw new IllegalArgumentException("Width must not be less or equal 0, was " + width);
+    }
+    
     // a 0 maxLines is no longer allowed - to test the max size, ask the layoutmanager to
     // create a Max-Bounds and test that bound...
-    if (maxLines == 0) maxLines = 1;
-    /**
-     * Reserve some space for the last line if there is more than one line to display.
-     * If there is only one line, don't cut the line yet. Perhaps we intruduce the strict
-     * mode later, but without any visual editing it would be cruel to any report designer.
-     */
-
+    if (maxLines == 0)
+    {
+      maxLines = 1;
+    }
+    
+    // Reserve some space for the last line if there is more than one line to display.
+    // If there is only one line, don't cut the line yet. Perhaps we intruduce the strict
+    // mode later, but without any visual editing it would be cruel to any report designer.
     BreakIterator breakit = BreakIterator.getLineInstance();
     ArrayList returnLines = new ArrayList();
 
@@ -198,9 +247,7 @@ public class TextParagraph extends ContentContainer
       else
       {
 
-        /**
-         * End the line and restart for the next line ...
-         */
+        // End the line and restart for the next line ...
         String addString = mytext.substring(lineStartPos, startPos);
         returnLines.add(addString);
         lineStartPos = startPos;
@@ -214,17 +261,27 @@ public class TextParagraph extends ContentContainer
    * possible is printed in the line before the literal is finally added. So the last
    * word is not totally lost, maybe some characters can be printed ...
    *
-   * @param base
-   * @param lineStart
-   * @param start
-   * @param width
-   * @return
+   * @param base  the base string.
+   * @param lineStart  the position of the first character in the line.
+   * @param start  ??.
+   * @param width  the maximum width.
+   *
+   * @return a string with '..' appended.
    */
   private String appendReserveLit(String base, int lineStart, int start, float width)
   {
-    if (start < 0) throw new IllegalArgumentException("Start must not be negative");
-    if (width < 0) throw new IllegalArgumentException("Width must not be negative");
-    if (lineStart < 0) throw new IllegalArgumentException("LineStart must not be negative");
+    if (start < 0) 
+    {
+      throw new IllegalArgumentException("Start must not be negative");
+    }
+    if (width < 0) 
+    {
+      throw new IllegalArgumentException("Width must not be negative");
+    }
+    if (lineStart < 0) 
+    {
+      throw new IllegalArgumentException("LineStart must not be negative");
+    }
 
     float toTheEnd = getSizeCalculator().getStringWidth(base, lineStart, base.length());
     if (toTheEnd < width)
@@ -232,9 +289,11 @@ public class TextParagraph extends ContentContainer
       return base.substring(lineStart);
     }
 
-    float reserved = getSizeCalculator().getStringWidth(RESERVED_LITERAL, 0, RESERVED_LITERAL.length());
+    float reserved = getSizeCalculator().getStringWidth(RESERVED_LITERAL, 0, 
+                                                        RESERVED_LITERAL.length());
     String baseLine = base.substring(lineStart, start);
-    float filler = width - (getSizeCalculator().getStringWidth(baseLine, 0, baseLine.length())) - reserved;
+    float filler = width - (getSizeCalculator().getStringWidth(baseLine, 0, baseLine.length())) 
+                         - reserved;
 
     int maxFillerLength = base.length() - start;
     for (int i = 0; i < maxFillerLength; i++)

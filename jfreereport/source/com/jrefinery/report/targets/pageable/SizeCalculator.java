@@ -1,23 +1,68 @@
 /**
- * Date: Nov 20, 2002
- * Time: 5:04:04 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
+ *
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -------------------
+ * SizeCalculator.java
+ * -------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
  * $Id$
+ *
+ * Changes
+ * -------
+ * 03-Dec-2002 : Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.targets.pageable;
 
+/**
+ * The interface for an object that can calculate the width of a given string, and the 
+ * height of a line of text.  The calculations rely on state information (e.g. font size,
+ * graphics device, etc) maintained by the calculator.
+ *
+ * @author Thomas Morgner
+ */
 public interface SizeCalculator
 {
   /**
-   * Calculates the width of the specified String in the current Graphics context.
+   * Calculates the width of a String in the current Graphics context.
    *
-   * @param text the text to be weighted.
-   * @param lineStartPos the start position of the substring to be weighted.
-   * @param endPos the position of the last characterto be included in the weightening process.
+   * @param text the text.
+   * @param lineStartPos the start position of the substring to be measured.
+   * @param endPos the position of the last character to be measured.
    *
-   * @return the width of the given string in 1/72" dpi.
+   * @return the width of the string in Java2D units.
    */
   public float getStringWidth(String text, int lineStartPos, int endPos);
 
+  /**
+   * Returns the line height.  This includes the font's ascent, descent and leading.
+   *
+   * @return the line height.
+   */
   public float getLineHeight();
+
 }

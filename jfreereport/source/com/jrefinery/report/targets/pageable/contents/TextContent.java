@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,16 +20,22 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------------------
+ * ----------------
  * TextContent.java
- * ----------------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * ----------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: TextContent.java,v 1.1 2002/12/02 17:56:56 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: TextContent.java,v 1.2 2002/12/02 18:55:34 taqua Exp $
  *
  * Changes
  * -------
+ * 03-Dec-2002 : Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.targets.pageable.contents;
 
 import com.jrefinery.report.targets.pageable.SizeCalculator;
@@ -42,12 +48,22 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A container for text content.
+ *
+ * @author Thomas Morgner
+ */
 public class TextContent extends ContentContainer
 {
+  /** A size calculator. */
   private SizeCalculator sizeCalculator;
 
   /**
-   * throws ClassCastE if no string
+   * Creates a new container for text.
+   *
+   * @param value  the text.
+   * @param bounts  the bounds.
+   * @param ot  the size calculator.
    *
    * Versucht die Optimale Breite & Höhe für den darzustellenden Text zu finden
    */
@@ -68,18 +84,31 @@ public class TextContent extends ContentContainer
       for (int i = 0; i < paragraphs.size(); i++)
       {
         TextParagraph p = new TextParagraph(getSizeCalculator());
-        p.setContent((String) paragraphs.get(i), new Rectangle2D.Double(x, y + usedHeight, w, h - usedHeight));
+        p.setContent((String) paragraphs.get(i), 
+                      new Rectangle2D.Double(x, y + usedHeight, w, h - usedHeight));
         usedHeight += p.getBounds().getHeight();
         addContentPart(p);
       }
     }
   }
 
+  /**
+   * Returns the size calculator.
+   *
+   * @return the size calculator.
+   */
   public SizeCalculator getSizeCalculator()
   {
     return sizeCalculator;
   }
 
+  /**
+   * Returns the supplied text as a list of lines/paragraphs.
+   *
+   * @param text  the text.
+   *
+   * @return a list of lines/paragraphs.
+   */
   private List splitContent(String text)
   {
     List lines = new ArrayList();
@@ -99,4 +128,5 @@ public class TextContent extends ContentContainer
     }
     return lines;
   }
+  
 }

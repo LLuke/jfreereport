@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OutputTarget.java,v 1.8 2002/11/06 22:15:29 taqua Exp $
+ * $Id: OutputTarget.java,v 1.1 2002/12/02 17:56:51 taqua Exp $
  *
  * Changes
  * -------
@@ -101,6 +101,11 @@ public interface OutputTarget
    */
   public void open () throws OutputTargetException;
 
+  /**
+   * Returns true if the target is open, and false otherwise.
+   *
+   * @return true or false.
+   */
   public boolean isOpen ();
 
   /**
@@ -111,8 +116,10 @@ public interface OutputTarget
   public void close () throws OutputTargetException;
 
   /**
-   * Signals that a page is being started. Stores the state of the target to
-   * make it possible to restore the complete outputtarget.
+   * Signals that a page is being started.  Stores the state of the target to
+   * make it possible to restore the complete output target.
+   *
+   * @param page  the physical page.
    *
    * @throws OutputTargetException if there is some problem with the target.
    */
@@ -197,12 +204,17 @@ public interface OutputTarget
   public void setPaint (Paint paint) throws OutputTargetException;
 
   /**
-   * Defines the bounds for the next set of operations
+   * Defines the bounds for the next set of operations.
    *
-   * @param bounds
+   * @param bounds  the bounds.
    */
   public void setOperationBounds (Rectangle2D bounds);
 
+  /**
+   * Returns the operation bounds.
+   *
+   * @return  the bounds.
+   */
   public Rectangle2D getOperationBounds ();
 
   /**
@@ -239,16 +251,41 @@ public interface OutputTarget
    * When the dummyMode is active, everything is done as if the report should be printed,
    * so that any font calculations can be done.But DONT! Write the report , if streaming,
    * write to the NullStream, but NEVER EVER do any real output.
+   *
+   * @return a dummy output target.
    */
   public OutputTarget createDummyWriter ();
 
+  /**
+   * Configures the output target.
+   *
+   * @param config  the configuration.
+   */
   public void configure (ReportConfiguration config);
 
+  /**
+   * Returns the default layout manager.
+   *
+   * @return the default layout manager.
+   */
   public BandLayoutManager getDefaultLayoutManager ();
 
+  /**
+   * Returns the logical page.
+   *
+   * @return the logical page.
+   */
   public LogicalPage getLogicalPage();
 
-  // creates a size calculator for the current state of the outputtarget. that calculator
-  // is used to calc. the string width and line height and later maybe more ...
+  /**
+   * Creates a size calculator for the current state of the output target.  The calculator
+   * is used to calculate the string width and line height and later maybe more...
+   *
+   * @param font  the font.
+   *
+   * @return the size calculator.
+   *
+   * @throws OutputTargetException if there is a problem with the output target.
+   */
   public SizeCalculator createTextSizeCalculator(Font font) throws OutputTargetException;
 }

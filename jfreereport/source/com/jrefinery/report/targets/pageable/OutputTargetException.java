@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -25,7 +25,7 @@
  * --------------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: OutputTargetException.java,v 1.9 2002/11/07 21:45:28 taqua Exp $
+ * $Id: OutputTargetException.java,v 1.1 2002/12/02 17:56:51 taqua Exp $
  *
  * Changes
  * -------

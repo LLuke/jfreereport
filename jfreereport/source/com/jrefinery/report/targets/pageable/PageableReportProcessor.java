@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,16 +20,22 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------------------
+ * ----------------------------
  * PageableReportProcessor.java
- * ----------------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * ----------------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: PageableReportProcessor.java,v 1.2 2002/12/02 18:25:53 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: PageableReportProcessor.java,v 1.3 2002/12/02 18:55:33 taqua Exp $
  *
  * Changes
  * -------
+ * 03-Dec-2002 : Added Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.targets.pageable;
 
 import com.jrefinery.report.JFreeReport;
@@ -47,56 +53,92 @@ import com.jrefinery.report.util.Log;
 import java.awt.print.PageFormat;
 import java.util.Iterator;
 
+/**
+ * A report processor.
+ *
+ * @author Thomas Morgner
+ */
 public class PageableReportProcessor
 {
+  /** The layout manager name. */
   public static final String LAYOUTMANAGER_NAME = "pageable.layoutManager";
 
+  /** The report being processed. */
   private JFreeReport report;
+  
+  /** The output target. */
   private OutputTarget outputTarget;
 
   /**
-   * Creates a new ReportProcessor. The ReportProcessor will use the given output target
-   * for printing. The pageFooter is used to reserve the needed space in the cursor.
+   * Creates a new ReportProcessor.
    *
-   * reportPar the report which will be processed
+   * @param report  the report.
+   *
+   * @throws ReportProcessingException if the report cannot be cloned.
+   * @throws FunctionInitializeException if a function cannot be initialised.
    */
-  public PageableReportProcessor(JFreeReport reportPar)
+  public PageableReportProcessor(JFreeReport report)
     throws ReportProcessingException, FunctionInitializeException
   {
     try
     {
-      report = (JFreeReport) reportPar.clone();
+      this.report = (JFreeReport) report.clone();
     }
     catch (CloneNotSupportedException cne)
     {
       throw new ReportProcessingException("Initial Clone of Report failed");
     }
 
-    String layouter = (String) report.getProperty(LAYOUTMANAGER_NAME);
+    String layouter = (String) this.report.getProperty(LAYOUTMANAGER_NAME);
     PageLayouter lm = getLayoutManager(layouter);
-    report.addFunction(lm);
+    this.report.addFunction(lm);
   }
 
+  /**
+   * Returns the output target.
+   *
+   * @return the output target.
+   */
   public OutputTarget getOutputTarget()
   {
     return outputTarget;
   }
 
+  /**
+   * Sets the output target.
+   *
+   * @param outputTarget  the output target.
+   */
   public void setOutputTarget(OutputTarget outputTarget)
   {
     this.outputTarget = outputTarget;
   }
 
+  /**
+   * Returns the report.
+   *
+   * @return the report.
+   */
   public JFreeReport getReport()
   {
     return report;
   }
 
+  /**
+   * Returns the layout manager.
+   *
+   * @param key  the key.
+   *
+   * @return the layout manager.
+   *
+   * @throws ReportProcessingException if there is a processing error.
+   */
   private PageLayouter getLayoutManager (String key) throws ReportProcessingException
   {
     if (key == null)
+    {
       key = SimplePageLayouter.class.getName();
-
+    }
     try
     {
       Class c = Class.forName(key);
@@ -111,14 +153,12 @@ public class PageableReportProcessor
     }
   }
 
-
   /**
-   * Sends the entire report to the specified target. The report is always drawn.
+   * Processes the report.
    *
    * @throws ReportProcessingException if the report did not proceed and got stuck.
    */
-  public void processReport()
-      throws ReportProcessingException
+  public void processReport() throws ReportProcessingException
   {
     // To a repagination
     ReportStateList list = repaginate();
@@ -146,8 +186,7 @@ public class PageableReportProcessor
    *
    * @throws ReportProcessingException if there was a problem processing the report.
    */
-  public ReportStateList repaginate()
-      throws ReportProcessingException
+  public ReportStateList repaginate() throws ReportProcessingException
   {
     try
     {
@@ -189,6 +228,7 @@ public class PageableReportProcessor
         }
         catch (Exception e)
         {
+          // suppress
         }
       }
 
@@ -225,17 +265,18 @@ public class PageableReportProcessor
       }
       while (hasNext == true);
 
-      Log.debug("DummyMode done " +
-          "Free: " + Runtime.getRuntime().freeMemory() + "; " +
-          "Total: " + Runtime.getRuntime().totalMemory());
+      Log.debug("DummyMode done " 
+                + "Free: " + Runtime.getRuntime().freeMemory() + "; " 
+                + "Total: " + Runtime.getRuntime().totalMemory());
 
       dummyOutput.close();
-      Log.debug("DummyWriting Done " +
-          "Free: " + Runtime.getRuntime().freeMemory() + "; " +
-          "Total: " + Runtime.getRuntime().totalMemory());
+      Log.debug("DummyWriting Done " 
+                + "Free: " + Runtime.getRuntime().freeMemory() + "; " 
+                + "Total: " + Runtime.getRuntime().totalMemory());
       // root of evilness here ... pagecount should not be handled specially ...
 
-      state.setProperty(JFreeReportConstants.REPORT_PAGECOUNT_PROPERTY, new Integer(state.getCurrentPage() - 1));
+      state.setProperty(JFreeReportConstants.REPORT_PAGECOUNT_PROPERTY, 
+                        new Integer(state.getCurrentPage() - 1));
       state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
 
       // part 3: (done by processing the ReportStateList:) Print the report
@@ -268,21 +309,28 @@ public class PageableReportProcessor
    * @throws IllegalArgumentException if the given state is a start or a finish state.
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public ReportState processPage(final ReportState currPage, OutputTarget out) throws ReportProcessingException
+  public ReportState processPage(final ReportState currPage, OutputTarget out) 
+      throws ReportProcessingException
   {
-    if (out == null) throw new NullPointerException("OutPutTarget != null");
-    if (out.isOpen() == false) throw new IllegalStateException("OutputTarget is not open!");
-    if (currPage == null) throw new NullPointerException("State != null");
+    if (out == null) 
+    {
+      throw new NullPointerException("OutPutTarget != null");
+    }
+    if (out.isOpen() == false) 
+    {
+      throw new IllegalStateException("OutputTarget is not open!");
+    }
+    if (currPage == null) 
+    {
+      throw new NullPointerException("State != null");
+    }
 
     // just crash to make sure that FinishStates are caught outside, we cannot handle them here
     if (currPage.isFinish())
     {
       throw new IllegalArgumentException("No finish state for processpage allowed: ");
     }
-
-//    Log.info ("Start ProcessPage: " + currPage.getCurrentPage() + " -> " + currPage.getCurrentDataItem());
-//    Log.info ("Start ProcessPage: " + currPage.getClass());
-
+    
     ReportState state = (ReportState) currPage.clone();
     PageLayouter lm = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
     lm.setLogicalPage(out.getLogicalPage());
@@ -301,11 +349,15 @@ public class PageableReportProcessor
       PageLayouter org = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
       state = state.advance();
       lm = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
-      if (org != lm) throw new IllegalStateException();
+      if (org != lm) 
+      {
+        throw new IllegalStateException();
+      }
     }
 
 //    Log.info ("End ProcessPage: " + state.getCurrentPage() + " -> " + state.getCurrentDataItem());
 //    Log.info ("End ProcessPage: " + state.getClass());
     return state;
   }
+  
 }

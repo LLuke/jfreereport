@@ -1,74 +1,168 @@
 /**
- * Date: Nov 20, 2002
- * Time: 8:16:54 PM
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
- * $Id$
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -----------------
+ * ShapeContent.java
+ * -----------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: Content.java,v 1.1 2002/12/02 17:56:54 taqua Exp $
+ *
+ * Changes
+ * -------
+ * 03-Dec-2002 : Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.targets.pageable.contents;
 
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
-public class ShapeContent  implements Content
+/**
+ * Shape content.
+ *
+ * @author Thomas Morgner.
+ */
+public class ShapeContent implements Content
 {
+  /** The shape. */
   private Shape shape;
+  
+  /** The bounds. */
   private Rectangle2D bounds;
 
+  /**
+   * Creates a new shape content.
+   *
+   * @param s  the shape.
+   */
   public ShapeContent(Shape s)
   {
     this (s, s.getBounds2D());
   }
 
+  /**
+   * Creates a new shape content.
+   *
+   * @param s  the shape.
+   * @param bounds  the bounds.
+   */  
   public ShapeContent(Shape s, Rectangle2D bounds)
   {
     this.shape = s;
     this.bounds = bounds;
   }
 
-  // get all contentParts making up that content or null, if this class
-  // has no subcontents
+  /**
+   * This class does not store subcontent items, so this method always returns null.
+   *
+   * @param part  ignored.
+   *
+   * @return null.
+   */
   public Content getContentPart(int part)
   {
     return null;
   }
 
+  /**
+   * This class does not store subcontent items, so this method always returns zero.
+   *
+   * @return zero.
+   */
   public int getContentPartCount()
   {
     return 0;
   }
 
+  /**
+   * Returns the shape.
+   *
+   * @return the shape.
+   */
   public Shape getShape ()
   {
     return shape;
   }
 
-  // return a shape that starts a 0.0,0.0
+  /**
+   * Returns a shape that starts a 0.0, 0.0.
+   *
+   * @return a shape.
+   */
   public Shape getNormalizedShape ()
   {
     Rectangle2D bounds = shape.getBounds2D();
-    return AffineTransform.getTranslateInstance(0 - bounds.getX(),0 - bounds.getY()).createTransformedShape(getShape());
+    return AffineTransform.getTranslateInstance(0 - bounds.getX(),
+                                              0 - bounds.getY()).createTransformedShape(getShape());
   }
 
+  /**
+   * Returns the bounds for the content.
+   *
+   * @return the bounds.
+   */
   public Rectangle2D getBounds()
   {
     return bounds.getBounds2D();
   }
 
+  /**
+   * Returns the content type, in this case ContentType.SHAPE.
+   *
+   * @return the content type.
+   */  
   public ContentType getContentType()
   {
-    return ContentType.Shape;
+    return ContentType.SHAPE;
   }
 
+  /**
+   * Returns content that falls within the specified bounds.
+   * 
+   * @param bounds  the bounds.
+   *
+   * @return the content.
+   */
   public Content getContentForBounds(Rectangle2D bounds)
   {
     Rectangle2D newBounds = bounds.createIntersection(getBounds());
     return new ShapeContent(getShape(), newBounds);
   }
 
+  /**
+   * Returns the minimum content size.
+   *
+   * @return the minimum content size.
+   */
   public Rectangle2D getMinimumContentSize()
   {
     return getBounds();
   }
+  
 }
 

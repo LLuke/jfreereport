@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -20,90 +20,175 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ----------------------------------
+ * -------------
  * TextLine.java
- * ----------------------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * -------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
- * $Id: TextLine.java,v 1.1 2002/12/02 17:56:56 taqua Exp $
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id: TextLine.java,v 1.2 2002/12/02 18:55:34 taqua Exp $
  *
  * Changes
  * -------
+ * 03-Dec-2002 : Added Javadocs (DG);
+ *
  */
+
 package com.jrefinery.report.targets.pageable.contents;
 
 import com.jrefinery.report.targets.pageable.SizeCalculator;
 
 import java.awt.geom.Rectangle2D;
 
+/**
+ * Represents a line of text. 
+ *
+ * @author Thomas Morgner
+ */
 public class TextLine implements Content
 {
+  /** The size calculator. */
   private SizeCalculator sizeCalc;
+  
+  /** The string. */
   private String content;
+  
+  /** The content bounds. */
   private Rectangle2D bounds;
 
+  /**
+   * Creates a new line of text. 
+   *
+   * @param sizeCalc  the size calculator.
+   */
   public TextLine (SizeCalculator sizeCalc)
   {
     bounds = new Rectangle2D.Float();
     this.sizeCalc = sizeCalc;
-    if (sizeCalc.getLineHeight() == 0) throw new IllegalStateException();
+    if (sizeCalc.getLineHeight() == 0)
+    {
+      throw new IllegalStateException();
+    }
   }
 
+  /**
+   * Returns the size calculator.
+   *
+   * @return the size calculator.
+   */
   public SizeCalculator getSizeCalculator()
   {
     return sizeCalc;
   }
 
+  /**
+   * Sets the content for the line of text.
+   *
+   * @param content  the new string.
+   * @param maxBounds  the maximum bounds for the string.
+   */
   public void setContent (String content, Rectangle2D maxBounds)
   {
-    if (maxBounds.getX () < 0) throw new IllegalArgumentException();
-    if (maxBounds.getY () < 0) throw new IllegalArgumentException();
-    if (maxBounds.getWidth () < 0) throw new IllegalArgumentException();
-    if (maxBounds.getHeight () < 0) throw new IllegalArgumentException();
+    if (maxBounds.getX () < 0) 
+    {
+      throw new IllegalArgumentException();
+    }
+    if (maxBounds.getY () < 0) 
+    {
+      throw new IllegalArgumentException();
+    }
+    if (maxBounds.getWidth () < 0) 
+    {
+      throw new IllegalArgumentException();
+    }
+    if (maxBounds.getHeight () < 0) 
+    {
+      throw new IllegalArgumentException();
+    }
 
     this.content = content;
     Rectangle2D bounds = new Rectangle2D.Float();
-    double width = Math.min (maxBounds.getWidth(), getSizeCalculator().getStringWidth(content, 0, content.length()));
+    double width = Math.min (maxBounds.getWidth(), 
+                             getSizeCalculator().getStringWidth(content, 0, content.length()));
     double height = Math.min(maxBounds.getHeight(), getSizeCalculator().getLineHeight());
     bounds.setRect(maxBounds.getX(), maxBounds.getY(), width, height);
     setBounds(bounds);
   }
 
-  // get the content from all content parts
+  /**
+   * Returns the text content.
+   *
+   * @return the text.
+   */
   public String getContent()
   {
     return content;
   }
 
-  // get all contentParts making up that content or null, if this class
-  // has no subcontents
+  /**
+   * This class does not store subcontent items, so this method always returns null.
+   *
+   * @param part  ignored.
+   *
+   * @return null.
+   */
   public Content getContentPart(int part)
   {
     return null;
   }
 
+  /**
+   * This class does not store subcontent items, so this method always returns zero.
+   *
+   * @return zero.
+   */
   public int getContentPartCount()
   {
     return 0;
   }
 
+  /**
+   * Returns the bounds of the text.
+   *
+   * @return the bounds.
+   */
   public Rectangle2D getBounds()
   {
     return bounds.getBounds();
   }
 
+  /**
+   * Sets the bounds of the string.
+   *
+   * @param bounds  the bounds.
+   */
   private void setBounds(Rectangle2D bounds)
   {
     this.bounds.setRect(bounds);
   }
 
+  /**
+   * Returns the content type, in this case ContentType.TEXT.
+   *
+   * @return the content type.
+   */
   public ContentType getContentType()
   {
-    return ContentType.Text;
+    return ContentType.TEXT;
   }
 
-  // this is a single line, so either the content does fit the height, or it doesn't.
-  // in that case, return nothing at all.
+  /**
+   * Returns the content that fits in the specified bounds.
+   * <p>
+   * This is a single line, so either the content does fit the height, or it doesn't (in that 
+   * case, return nothing at all).
+   *
+   * @param bounds  the bounds.
+   *
+   * @return the content that fits the specified bounds.
+   */
   public Content getContentForBounds(Rectangle2D bounds)
   {
     Rectangle2D myBounds = getBounds();
@@ -131,9 +216,10 @@ public class TextLine implements Content
   /**
    * Calculates the last character that would fit into the given width.
    *
-   * @param startPos
-   * @param maxWidth
-   * @return
+   * @param startPos  the starting position within the string.
+   * @param maxWidth  the maximum width (in Java2D units).
+   *
+   * @return the number of characters that will fit within a certain width.
    */
   private int calcStringLength (int startPos, double maxWidth)
   {
@@ -159,31 +245,30 @@ public class TextLine implements Content
    * content in the middle and checks whether the needed position is left or right
    * of the middle. Then the search is repeated within the new search area ...
    *
-   * @param startPos
-   * @param endPos
-   * @param maxWidth
-   * @return
+   * @param lineStart  ??.
+   * @param startPos  ??.
+   * @param endPos  ??.
+   * @param maxWidth  ??.
+   *
+   * @return ??.
    */
   private int calculateWidthPos (final int lineStart, int startPos, int endPos, double maxWidth)
   {
     //Log.debug ("CalcLW: " + startPos + ", " + endPos);
-/*
-    try
-    {
-      Thread.sleep(50);
-    }
-    catch (Exception e)
-    {
-    }
-*/
     if (startPos == endPos)
     {
       return startPos;
     }
 
     int delta = ((endPos - startPos) / 2) + startPos;
-    if (delta == startPos) return startPos;
-    if (delta == endPos) return endPos;
+    if (delta == startPos) 
+    {
+      return startPos;
+    }
+    if (delta == endPos) 
+    {
+      return endPos;
+    }
 
     double wDelta = getSizeCalculator().getStringWidth(content, lineStart, delta);
     if (wDelta == maxWidth)
@@ -197,8 +282,14 @@ public class TextLine implements Content
     return calculateWidthPos(lineStart, delta, endPos, maxWidth);
   }
 
+  /**
+   * Return the minimum content size.
+   *
+   * @return the minimum size.
+   */
   public Rectangle2D getMinimumContentSize()
   {
     return getBounds();
   }
+  
 }

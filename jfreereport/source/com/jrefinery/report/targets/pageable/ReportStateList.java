@@ -1,7 +1,7 @@
 /**
- * =============================================================
- * JFreeReport : an open source reporting class library for Java
- * =============================================================
+ * ========================================
+ * JFreeReport : a free Java report library
+ * ========================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.10 2002/11/07 21:45:20 taqua Exp $
+ * $Id: ReportStateList.java,v 1.1 2002/12/02 17:56:52 taqua Exp $
  *
  * Changes
  * -------
@@ -168,15 +168,13 @@ public class ReportStateList
    */
   private List masterStates;
 
-  /**
-   * The number of elements in this list
-   */
+  /** The number of elements in this list. */
   private int size;
 
-  /**
-   * the output target that was used to create the list.
-   */
+  /** The report processor that the state list relates to. */
   private PageableReportProcessor proc;
+  
+  /** The dummy output target. */
   private OutputTarget dummyWriter;
 
   /**
@@ -195,9 +193,10 @@ public class ReportStateList
    * Creates a new reportstatelist. The list will be filled using the specified report
    * and output target. Filling of the list is done elsewhere.
    *
-   * @param proc the reportprocessor used to restore lost states
+   * @param proc the reportprocessor used to restore lost states (null not permitted).
    *
-   * @throws NullPointerException if one or both of report or outputtarget are null
+   * @throws OutputTargetException if there is a problem with the output target.
+   * @throws NullPointerException if the report processor is <code>null</code>.
    */
   public ReportStateList (PageableReportProcessor proc) throws OutputTargetException
   {
@@ -213,6 +212,11 @@ public class ReportStateList
     masterStates = new LinkedList ();
   }
 
+  /**
+   * Returns the dummy output target.
+   *
+   * @return the dummy output target.
+   */
   public OutputTarget getDummyWriter()
   {
     return dummyWriter;
@@ -241,8 +245,10 @@ public class ReportStateList
     }
 
     if (state.isFinish())
+    {
       throw new IllegalArgumentException();
-
+    }
+    
     MasterList master = null;
     if (getMasterPos (size ()) >= masterStates.size ())
     {
