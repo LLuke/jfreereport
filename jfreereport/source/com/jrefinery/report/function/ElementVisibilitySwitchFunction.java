@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.3 2002/08/19 21:17:37 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.4 2002/08/20 20:58:20 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -81,17 +81,11 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
   {
     if (event.getState ().isPrepareRun ()) return;
 
-    Log.debug ("ElementVisibilitySwitch: Active");
-
     trigger = (!trigger);
     Element e = event.getReport ().getItemBand ().getElement (getElement ());
     if (e != null)
     {
       e.setVisible (trigger);
-    }
-    else
-    {
-      Log.debug ("e is null");
     }
   }
 

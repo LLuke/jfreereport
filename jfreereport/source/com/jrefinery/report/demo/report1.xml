@@ -10,7 +10,7 @@
                 The element width of "Country Element" was unreasonably low and is now 176.
 
 -->
-<report name="Sample Report 1" width="468" height="648">
+<report name="Sample Report 1" pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
 
     <reportheader height="48" fontname="Serif" fontstyle="bold" fontsize="20">
         <label name="Label 1" x="0" y="0" width="100%" height="24" alignment="center" baseline="20">LIST OF COUNTRIES BY CONTINENT</label>

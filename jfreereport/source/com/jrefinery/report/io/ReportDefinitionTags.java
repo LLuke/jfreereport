@@ -98,4 +98,16 @@ public interface ReportDefinitionTags
   public static final String FIELDNAME_ATT = "fieldname";
   public static final String FUNCTIONNAME_ATT = "function";
   public static final String NULLSTRING_ATT = "nullstring";
+  public static final String PAGEFORMAT_ATT = "pageformat";
+  public static final String LEFTMARGIN_ATT = "leftmargin";
+  public static final String RIGHTMARGIN_ATT = "rightmargin";
+  public static final String TOPMARGIN_ATT = "topmargin";
+  public static final String BOTTOMMARGIN_ATT = "bottommargin";
+  public static final String WIDTH_ATT = "width";
+  public static final String HEIGHT_ATT = "height";
+
+  public static final String ORIENTATION_ATT = "orientation";
+  public static final String ORIENTATION_PORTRAIT_VAL = "portrait";
+  public static final String ORIENTATION_LANDSCAPE_VAL = "landscape";
+
 }

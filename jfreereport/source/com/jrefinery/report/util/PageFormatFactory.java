@@ -34,6 +34,7 @@ import javax.swing.JOptionPane;
 import java.awt.print.PageFormat;
 import java.awt.print.PrinterJob;
 import java.awt.print.Paper;
+import java.lang.reflect.Field;
 
 /**
  * Page sizes defined by ADOBE:
@@ -245,14 +246,14 @@ public class PageFormatFactory
     return singleton;
   }
 
-  public static Paper createPaper (int[] papersize)
+  public Paper createPaper (int[] papersize)
   {
     if (papersize.length != 2) throw new IllegalArgumentException("Paper must have a width and a height");
 
     return createPaper(papersize[0], papersize[1]);
   }
 
-  public static Paper createPaper (int width, int heigth)
+  public Paper createPaper (int width, int heigth)
   {
     Paper p = new Paper();
     p.setSize(width, heigth);
@@ -260,38 +261,67 @@ public class PageFormatFactory
     return p;
   }
 
-  public static void setBorders (Paper paper, double top, double left, double bottom, double right)
+  public void setBorders (Paper paper, double top, double left, double bottom, double right)
   {
-    paper.setImageableArea(top, left, paper.getWidth() - right, paper.getHeight() - bottom);
+    double w = paper.getWidth() - right - left;
+    double b = paper.getHeight() - bottom - top;
+    paper.setImageableArea(top, left, w, b);
+    Log.debug(paper.getImageableX() + ", " + paper.getImageableY() + ", " + paper.getImageableWidth() + ", " + paper.getImageableHeight());
   }
 
-  public static void setBordersInch (Paper paper, double top, double left, double bottom, double right)
+  public void setBordersInch (Paper paper, double top, double left, double bottom, double right)
   {
     setBorders(paper, convertInchToPoints(top), convertInchToPoints(left), convertInchToPoints(bottom), convertInchToPoints(right));
   }
 
-  public static void setBordersMm (Paper paper, double top, double left, double bottom, double right)
+  public void setBordersMm (Paper paper, double top, double left, double bottom, double right)
   {
     setBorders(paper, convertMmToPoints(top), convertMmToPoints(left), convertMmToPoints(bottom), convertMmToPoints(right));
   }
 
-  public static double convertInchToPoints (double points)
+  public double convertInchToPoints (double points)
   {
     return points * 72;
   }
 
-  public static double convertMmToPoints (double points)
+  public double convertMmToPoints (double points)
   {
     return points * (72d/254d);
   }
 
-  public static PageFormat createPageFormat (Paper paper, int orientation)
+  public PageFormat createPageFormat (Paper paper, int orientation)
   {
+    if (paper == null) throw new NullPointerException("Paper given must not be null");
     PageFormat pf = new PageFormat();
     pf.setPaper(paper);
     pf.setOrientation(orientation);
     return pf;
   }
 
+  public Paper createPaper (String name)
+  {
+    try
+    {
+      Field f = this.getClass().getDeclaredField(name);
+      Object o = f.get(this);
+      if (o instanceof int[] == false)
+      {
+        Log.debug ("Is no valid pageformat definition");
+        return null;
+      }
+      int[] pageformat = (int[]) o;
+      return createPaper(pageformat);
+    }
+    catch (NoSuchFieldException nfe)
+    {
+      Log.debug ("There is no pageformat " + name + " defined.");
+      return null;
+    }
+    catch (IllegalAccessException aie)
+    {
+      Log.debug ("There is no pageformat " + name + " accessible.");
+      return null;
+    }
+  }
 
 }
