@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellDataFactory.java,v 1.2 2003/02/20 00:39:37 taqua Exp $
+ * $Id: RTFCellDataFactory.java,v 1.3 2003/02/22 18:52:31 taqua Exp $
  *
  * Changes
  * -------
@@ -44,18 +44,38 @@ import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.table.AbstractTableCellDataFactory;
 import com.jrefinery.report.targets.table.TableCellData;
-import com.jrefinery.report.util.Log;
 
 import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
+/**
+ * Creates a {@link TableCellData} object from the given {@link Element}
+ * and the element's bounds. The factory handles text and image elements,
+ * shape elements get converted into background information if possible.
+ *
+ * @author Thomas Morgner
+ */
 public class RTFCellDataFactory extends AbstractTableCellDataFactory
 {
+  /** Default Constructor. */
   public RTFCellDataFactory()
   {
   }
 
+  /**
+   * Creates a {@link TableCellData} for an {@link Element}. The generated CellData
+   * should contain copies of all needed element attributes, as the element instance
+   * will be reused in the later report processing.
+   * <p>
+   * If the tablemodel does not support the element type, return <code>null</code>.
+   *
+   * @param e  the element that should be converted into TableCellData.
+   * @param rect  the element's bounds within the table (specified in points).
+   *
+   * @return The generated TableCellData object, or <code>null</code> if element type is
+   *         not supported.
+   */
   public TableCellData createCellData(Element e, Rectangle2D rect)
   {
     if (e.isVisible() == false)

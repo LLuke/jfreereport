@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFProducer.java,v 1.3 2003/02/20 00:39:37 taqua Exp $
+ * $Id: RTFProducer.java,v 1.4 2003/02/22 18:52:31 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ import com.jrefinery.report.targets.table.TableCellDataFactory;
 import com.jrefinery.report.targets.table.TableGridLayout;
 import com.jrefinery.report.targets.table.TableGridPosition;
 import com.jrefinery.report.targets.table.TableProducer;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.NoCloseOutputStream;
 import com.lowagie.text.Cell;
 import com.lowagie.text.Document;
@@ -54,33 +53,60 @@ import java.awt.Color;
 import java.io.OutputStream;
 import java.util.List;
 
+/**
+ * The TableProducer is responsible for creating the produced Table. After
+ * the writer has finished the band layout process, the layouted bands are
+ * forwarded into the TableProducer. The TableProducer coordinates the cell
+ * creation process and collects the generated TableCellData. The raw CellData
+ * objects are later transformed into a TableGridLayout.
+ */
 public class RTFProducer extends TableProducer
 {
+  /** the output stream used to write the content. */
   private OutputStream outputStream;
+  /** the iText document used for writing the content. */
   private Document document;
-  private RtfWriter writer;
+  /** the cell factory. */
   private RTFCellDataFactory cellDataFactory;
 
+  /**
+   * Creates a new RTFProducer.
+   *
+   * @param outputStream the target output stream
+   * @param strictLayout the stric layout flag.
+   * @throws NullPointerException if the outputstream is null.
+   */
   public RTFProducer(OutputStream outputStream, boolean strictLayout)
   {
     super(strictLayout);
+    if (outputStream == null) throw new NullPointerException();
     this.outputStream = outputStream;
     cellDataFactory = new RTFCellDataFactory();
   }
 
+  /**
+   * Starts the report writing and opens the RTF document for writing.
+   */
   public void open()
   {
     // rtf does not support PageFormats or other meta data...
     document = new Document();
-    writer = RtfWriter.getInstance(document, new NoCloseOutputStream (outputStream));
+    RtfWriter.getInstance(document, new NoCloseOutputStream (outputStream));
     document.open();
   }
 
+  /**
+   * Closes the report and finishs the report writing. Closes the RTF document.
+   */
   public void close()
   {
     document.close();
   }
 
+  /**
+   * Handles the end of a page and performs the table layout for the current
+   * table.
+   */
   public void endPage()
   {
     if (isDummy() == false)
@@ -97,6 +123,13 @@ public class RTFProducer extends TableProducer
     clearCells();
   }
 
+  /**
+   * Defines the cell background style for the given cell. The cell background
+   * is defined in the background list.
+   *
+   * @param cell the cell that should be defined.
+   * @param background the background definition for the cell.
+   */
   private void setCellBackgroundStyle(Cell cell, List background)
   {
     TableCellBackground bg = createTableCellStyle(background);
@@ -127,6 +160,12 @@ public class RTFProducer extends TableProducer
     }
   }
 
+  /**
+   * Generates the cell.
+   *
+   * @param layout the layouted table content.
+   * @throws DocumentException if an error occured when generating the document.
+   */
   private void generatePage (TableGridLayout layout)
     throws DocumentException
   {
@@ -197,16 +236,35 @@ public class RTFProducer extends TableProducer
     document.add(table);
   }
 
+  /**
+   * Handles the start of a new page. The page name is given as parameter.
+   * The TableWriter starts a new page whenever a manual pagebreak is found
+   * in the report definition. The ReportProducer has been opened before.
+   *
+   * @param name the page name
+   */
   public void beginPage(String name)
   {
     // ignore the event, not important ...
   }
 
+  /**
+   * Gets the TableProducer implementation of this TableProducer.
+   *
+   * @return the TableProducers TableCellDataFactory, which is used to create
+   * the TableCellData.
+   */
   public TableCellDataFactory getCellDataFactory()
   {
     return cellDataFactory;
   }
 
+  /**
+   * Returns true, if the TableProducer is open. Only open producers
+   * are able to write TableCells or to create TableCellData from Elements.
+   *
+   * @return checks, whether the TableProducer is open.
+   */
   public boolean isOpen()
   {
     if (document == null)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellStyle.java,v 1.1 2003/02/01 22:10:37 taqua Exp $
+ * $Id: RTFCellStyle.java,v 1.2 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -45,13 +45,31 @@ import com.lowagie.text.Font;
 
 import java.awt.Color;
 
+/**
+ * The RTFCellStyle is used to define the style for the generated RTF-TableCell.
+ * <p>
+ * iText only supports the predefined logical fonts for RTF documents.
+ */
 public class RTFCellStyle
 {
+  /** The used font definition. */
   private FontDefinition font;
+  /** The text color. */
   private Color fontColor;
+  /** The vertical alignment of the cell content. */
   private ElementAlignment verticalAlignment;
+  /** The horizontal alignment of the cell content. */
   private ElementAlignment horizontalAlignment;
 
+  /**
+   * Creates a new RTFCellStyle.
+   *
+   * @param font the font definition.
+   * @param fontColor the font color.
+   * @param verticalAlignment the vertical text alignment.
+   * @param horizontalAlignment the horizontal text alignment.
+   * @throws NullPointerException if any of the parameters is null.
+   */
   public RTFCellStyle(FontDefinition font, Color fontColor,
                       ElementAlignment verticalAlignment, ElementAlignment horizontalAlignment)
   {
@@ -66,26 +84,53 @@ public class RTFCellStyle
     this.horizontalAlignment = horizontalAlignment;
   }
 
+  /**
+   * Gets the font definition used in the cell.
+   *
+   * @return the font definition.
+   */
   public FontDefinition getFont()
   {
     return font;
   }
 
+  /**
+   * Gets the font color for the cell.
+   *
+   * @return the font color.
+   */
   public Color getFontColor()
   {
     return fontColor;
   }
 
+  /**
+   * Returns the cell's vertical alignment.
+   *
+   * @return the vertical alignment.
+   */
   public ElementAlignment getVerticalAlignment()
   {
     return verticalAlignment;
   }
 
+  /**
+   * Returns the cell's horizontal alignment.
+   *
+   * @return the horizontal alignment.
+   */
   public ElementAlignment getHorizontalAlignment()
   {
     return horizontalAlignment;
   }
 
+  /**
+   * Tests whether the given object is equal to this object.
+   *
+   * @param o the to be compared object.
+   * @return true, if the object is a RTFCellStyle with the same attributes as this
+   * object.
+   */
   public boolean equals(Object o)
   {
     if (this == o) return true;
@@ -116,6 +161,11 @@ public class RTFCellStyle
     return true;
   }
 
+  /**
+   * Calculates an Hashcode for this cell style.
+   *
+   * @return the hashcode.
+   */
   public int hashCode()
   {
     int result;
@@ -126,6 +176,11 @@ public class RTFCellStyle
     return result;
   }
 
+  /**
+   * Define the font for the given iText Chunk.
+   *
+   * @param p the iText chunk, which should be formated.
+   */
   public void applyTextStyle (Chunk p)
   {
     int style = Font.NORMAL;
@@ -158,6 +213,11 @@ public class RTFCellStyle
     p.setFont(new Font(family, font.getFontSize(), style, getFontColor()));
   }
 
+  /**
+   * Defines the content alignment for the given iText cell.
+   *
+   * @param cell the iText cell, that should be formated.
+   */
   public void applyAlignment (Cell cell)
   {
     if (horizontalAlignment == ElementAlignment.LEFT)

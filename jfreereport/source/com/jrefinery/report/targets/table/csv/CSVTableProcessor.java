@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProcessor.java,v 1.6 2003/02/17 22:01:40 taqua Exp $
+ * $Id: CSVTableProcessor.java,v 1.7 2003/02/24 15:06:32 mungady Exp $
  *
  * Changes
  * -------
@@ -66,7 +66,6 @@ import java.io.Writer;
  * @author Thomas Morgner
  * 
  */
-
 public class CSVTableProcessor extends TableProcessor
 {
   /** The writer used for the output. */

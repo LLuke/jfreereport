@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFImageCellData.java,v 1.4 2003/02/18 19:37:35 taqua Exp $
+ * $Id: RTFImageCellData.java,v 1.5 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -49,16 +49,35 @@ import java.awt.geom.Rectangle2D;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * A wrapper for Image content within the generated RTFTable.
+ */
 public class RTFImageCellData extends RTFCellData
 {
+  /** the imagereference used for this cell. */
   private ImageReference image;
 
+  /**
+   * Creates a new ImageCell for the given bounds and image.
+   *
+   * @param outerBounds the cell bounds.
+   * @param image the image content.
+   * @param style the assigned cell style.
+   */
   public RTFImageCellData(Rectangle2D outerBounds, ImageReference image, RTFCellStyle style)
   {
     super(outerBounds, style);
+    if (image == null) throw new NullPointerException();
     this.image = image;
   }
 
+  /**
+   * Creates a iText TableCell with image content in it. The image is
+   * recoded as PNG if necessary.
+   *
+   * @return the cell with the content.
+   * @throws DocumentException if the cell could not be created.
+   */
   public Cell getCell() throws DocumentException
   {
     try
@@ -79,6 +98,11 @@ public class RTFImageCellData extends RTFCellData
     }
   }
 
+  /**
+   * Gets a flag, which indicates whether this cell contains background definitions.
+   *
+   * @return false, as this is no background cell.
+   */
   public boolean isBackground()
   {
     return false;
@@ -86,8 +110,9 @@ public class RTFImageCellData extends RTFCellData
 
 
   /**
-   * Helperfunction to extract an image from an imagereference. If the image is contained as
-   * java.awt.Image object only, the image is recoded into an PNG-Image.
+   * Helperfunction to extract an image from an imagereference. If the image is
+   * contained as java.awt.Image object or is provided in an invalid format,
+   * the image is recoded into an PNG-Image.
    *
    * @param imageRef  the image reference.
    *
@@ -130,7 +155,13 @@ public class RTFImageCellData extends RTFCellData
     throw new DocumentException("Neither an URL nor an Image was given to paint the graphics");
   }
 
-  protected boolean isSupportedImageFormat (URL url)
+  /**
+   * Tests, whether the given image is one of the nativly supported image formats.
+   *
+   * @param url the url pointing to the image, that should be tested.
+   * @return true, if the image is a JPEG or PNG file, false otherwise.
+   */
+  private boolean isSupportedImageFormat (URL url)
   {
     String file = url.getFile();
     if (StringUtil.endsWithIgnoreCase(file, ".jpg"))

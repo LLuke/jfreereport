@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.14 2003/02/18 19:37:34 taqua Exp $
+ * $Id: TableProducer.java,v 1.15 2003/02/24 15:02:20 mungady Exp $
  *
  * Changes
  * -------
@@ -191,23 +191,6 @@ public abstract class TableProducer
       return;
     }
 
-    // this separation should not be needed
-/*
-    processBandInner(bounds, band);
-  }
-
-  private void processBandInner (Rectangle2D bounds, Band band)
-  {
-    if (bounds.getHeight() == 0)
-    {
-      return;
-    }
-    // do nothing if the band is invisble
-    if (band.isVisible() == false)
-    {
-      return;
-    }
-*/
     // handle the band itself, the band's bounds are already translated.
     processElement(bounds, band);
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellData.java,v 1.1 2003/02/01 22:10:37 taqua Exp $
+ * $Id: RTFCellData.java,v 1.2 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -42,20 +42,46 @@ import com.lowagie.text.DocumentException;
 
 import java.awt.geom.Rectangle2D;
 
+/**
+ * The RTF extension of the {@link TableCellData} base class. The cell data implementation contains
+ * the cell style for a RTF table cell.
+ *
+ * @author Thomas Morgner
+ */
 public abstract class RTFCellData extends TableCellData
 {
+  /** the cell style. */
   private RTFCellStyle style;
 
+  /**
+   * Creates a new RTFCellData with the given bounds and style.
+   *
+   * @param outerBounds the cell bounds.
+   * @param style the cell style.
+   * @throws NullPointerException if the style is null.
+   */
   public RTFCellData(Rectangle2D outerBounds, RTFCellStyle style)
   {
     super(outerBounds);
+    if (style == null) throw new NullPointerException("Style is null");
     this.style = style;
   }
 
+  /**
+   * Gets the cell style for the RTF table cell.
+   *
+   * @return the cell style.
+   */
   public RTFCellStyle getStyle()
   {
     return style;
   }
 
+  /**
+   * Creates a iText TableCell with some content in it.
+   *
+   * @return the cell with the content.
+   * @throws DocumentException if the cell could not be created.
+   */
   public abstract Cell getCell() throws DocumentException;
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFProcessor.java,v 1.2 2003/02/04 17:56:33 taqua Exp $
+ * $Id: RTFProcessor.java,v 1.3 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -45,26 +45,54 @@ import com.jrefinery.report.util.NullOutputStream;
 
 import java.io.OutputStream;
 
+/**
+ * The ExcelProcessor coordinates the output process for generating
+ * RTF files using the iText library.
+ */
 public class RTFProcessor extends TableProcessor
 {
+  /** the target output stream for writing the generated content. */
   private OutputStream outputStream;
 
+  /**
+   * Creates a new RTF processor for the Report.
+   *
+   * @param report the report that should be written as RTF.
+   * @throws ReportProcessingException if the report initialization failed
+   * @throws FunctionInitializeException if the table writer initialization failed.
+   */
   public RTFProcessor(JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
   {
     super(report);
   }
 
+  /**
+   * Gets the output stream, that should be used to write the generated content.
+   *
+   * @return the output stream.
+   */
   public OutputStream getOutputStream()
   {
     return outputStream;
   }
 
+  /**
+   * Sets the output stream, that should be used to write the generated content.
+   *
+   * @param outputStream the output stream.
+   */
   public void setOutputStream(OutputStream outputStream)
   {
     this.outputStream = outputStream;
   }
 
+  /**
+   * Creates the RTFProducer. The TableProducer is responsible to create the table.
+   *
+   * @param dummy true, if dummy mode is enabled, and no writing should be done, false otherwise.
+   * @return the created table producer, never null.
+   */
   public TableProducer createProducer(boolean dummy)
   {
     RTFProducer prod;

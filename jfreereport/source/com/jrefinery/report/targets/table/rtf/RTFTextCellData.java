@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFTextCellData.java,v 1.2 2003/02/02 23:43:53 taqua Exp $
+ * $Id: RTFTextCellData.java,v 1.3 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -43,10 +43,21 @@ import com.lowagie.text.Paragraph;
 
 import java.awt.geom.Rectangle2D;
 
+/**
+ * A wrapper for text content within the generated RTF Table.
+ */
 public class RTFTextCellData extends RTFCellData
 {
+  /** the text content that should be printed within the cell. */
   private String value;
 
+  /**
+   * Creates a new RTFTextCellData for the given content.
+   *
+   * @param outerBounds the cell bounds.
+   * @param value the text content.
+   * @param style the style definition for the cell.
+   */
   public RTFTextCellData(Rectangle2D outerBounds, String value, RTFCellStyle style)
   {
     super(outerBounds, style);
@@ -54,6 +65,12 @@ public class RTFTextCellData extends RTFCellData
     this.value = value;
   }
 
+  /**
+   * Creates a iText TableCell with text content in it. 
+   *
+   * @return the cell with the content.
+   * @throws DocumentException if the cell could not be created.
+   */
   public Cell getCell()
     throws DocumentException
   {
@@ -68,6 +85,11 @@ public class RTFTextCellData extends RTFCellData
     return cell;
   }
 
+  /**
+   * Gets a flag, which indicates whether this cell contains background definitions.
+   *
+   * @return false, as this is no background cell.
+   */
   public boolean isBackground()
   {
     return false;
