@@ -2,7 +2,7 @@
  * Date: Mar 5, 2003
  * Time: 6:38:16 PM
  *
- * $Id: DrawableContentFactoryModule.java,v 1.2 2003/03/07 16:56:01 taqua Exp $
+ * $Id: DrawableContentFactoryModule.java,v 1.3 2003/03/08 20:28:46 taqua Exp $
  */
 package com.jrefinery.report.targets.base.content;
 
@@ -11,7 +11,6 @@ import com.jrefinery.report.DrawableContainer;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.targets.base.ElementLayoutInformation;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
-import com.jrefinery.ui.Drawable;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Dimension2D;

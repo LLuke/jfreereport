@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.27 2003/02/27 10:35:40 mungady Exp $
+ * $Id: LogicalPageImpl.java,v 1.28 2003/03/07 16:56:04 taqua Exp $
  *
  * Changes
  * -------
@@ -437,6 +437,7 @@ public class LogicalPageImpl implements LogicalPage
     {
       throw new NullPointerException("No layout for element");
     }
+    Log.debug ("Element Bounds: " + bounds + " -> " + elementBounds);
     Rectangle2D drawBounds = translateSubRect(bounds, elementBounds);
     if (addOperationComments)
     {
