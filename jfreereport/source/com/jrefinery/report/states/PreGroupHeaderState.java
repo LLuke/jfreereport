@@ -25,7 +25,7 @@
  * --------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PreGroupHeaderState.java,v 1.5 2002/11/25 23:02:51 taqua Exp $
+ * $Id: PreGroupHeaderState.java,v 1.6 2002/11/25 23:20:43 taqua Exp $
  *
  * Changes
  * -------
@@ -35,7 +35,6 @@ package com.jrefinery.report.states;
 import com.jrefinery.report.ReportProcessor;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.GroupHeader;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
 
 /**
@@ -79,10 +78,8 @@ public class PreGroupHeaderState extends ReportState
     // ignore that pagebreak, it would create an empty page.
     if (handledPagebreak == false
         && header.hasPageBreakBeforePrint ()
-        && ((this.getCurrentGroupIndex() == ReportState.BEFORE_FIRST_GROUP &&
-             this.getCurrentDataItem() == ReportState.BEFORE_FIRST_ROW) == false))
+        && ((this.getCurrentGroupIndex() != 1 || this.getCurrentDataItem() != -1)))
     {
-      Log.debug ("PreGroupHeader: PageBreak");
       handledPagebreak = true;
       rpc.setPageDone ();
     }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.4 2002/11/25 23:02:51 taqua Exp $
+ * $Id: ReportState.java,v 1.5 2002/11/25 23:20:43 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -54,27 +54,19 @@
 
 package com.jrefinery.report.states;
 
+import com.jrefinery.report.DataRow;
+import com.jrefinery.report.DataRowBackend;
+import com.jrefinery.report.DataRowConnector;
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.JFreeReportConstants;
+import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.ReportProcessor;
 import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.function.LeveledExpressionList;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportProperties;
 import com.jrefinery.report.util.ReportPropertiesList;
-import com.jrefinery.report.JFreeReportConstants;
-import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.ReportProcessor;
-import com.jrefinery.report.ReportHeader;
-import com.jrefinery.report.Group;
-import com.jrefinery.report.GroupHeader;
-import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.ItemBand;
-import com.jrefinery.report.GroupFooter;
-import com.jrefinery.report.ReportFooter;
-import com.jrefinery.report.DataRowBackend;
-import com.jrefinery.report.DataRowConnector;
-import com.jrefinery.report.function.ExpressionCollection;
-import com.jrefinery.report.function.LeveledExpressionList;
-import com.jrefinery.report.DataRow;
 
-import java.util.Date;
 import java.util.Iterator;
 
 /**
@@ -497,23 +489,20 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   public boolean isProceeding (ReportState oldstate)
   {
+    // a state is proceeding if it changed its group
     if (getCurrentGroupIndex () != oldstate.getCurrentGroupIndex ())
     {
       return true;
     }
+    // a state is proceeding if it changed the current row in the datamodel
     if (getCurrentDataItem () > oldstate.getCurrentDataItem ())
     {
       return true;
     }
-    if (this.getClass().equals(oldstate.getClass()))
+    // a state proceeds if it is an other class than the old state
+    if (this.getClass().equals(oldstate.getClass()) == false)
     {
-      if (getCurrentPage () != oldstate.getCurrentPage ())
-      {
-        return true;
-      }
-    }
-    else
-    {
+      Log.debug ("State did proceed: In Group: " + getCurrentGroupIndex() + ", DataItem: " + getCurrentDataItem() + ",Page: " + getCurrentPage() + " Class: " + getClass());
       return true;
     }
 
