@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.11 2004/03/16 15:09:55 taqua Exp $
+ * $Id: ReportFactory.java,v 1.12 2004/04/15 15:14:21 taqua Exp $
  *
  * Changes
  * -------
@@ -335,7 +335,7 @@ public class ReportFactory extends AbstractReportDefinitionHandler
 
     format.setPaper(p);
     report.setPageDefinition
-            (new SimplePageDefinition (format, verticalPages, horizontalPages));
+            (new SimplePageDefinition (format, horizontalPages, verticalPages));
 
     //PageFormatFactory.logPageFormat(format);
     getParser().setHelperObject(ReportParser.HELPER_OBJ_REPORT_NAME, report);

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: AbstractOutputTarget.java,v 1.6 2004/03/16 15:09:50 taqua Exp $
+ * $Id: AbstractOutputTarget.java,v 1.7 2004/03/27 20:21:15 taqua Exp $
  *
  * Changes
  * -------
@@ -111,6 +111,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
     properties = new Properties();
     contentFactory = createContentFactory();
     operationBounds = new Rectangle2D.Float();
+    pageBounds = new Rectangle2D.Float();
   }
 
   /**
@@ -247,7 +248,8 @@ public abstract class AbstractOutputTarget implements OutputTarget
    throws OutputTargetException
   {
     beginPage(page, index);
-    setPageBounds(page.getPagePosition(index));
+    Log.debug ("Print Page " + index + "; " + getPageBounds());
+    final Rectangle2D pageBounds = getPageBounds();
 
     // for all stored bands
     final MetaBand[] bands = content.getBands();
@@ -256,7 +258,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
       final MetaBand b = bands[i];
       final Rectangle2D bounds = b.getBounds();
       // check if bounds are within the specified page bounds
-      if (pageBounds.intersects(bounds))
+      if (bounds.intersects(pageBounds))
       {
         // if so, then print
         Log.debug ("Printing .." + pageBounds + " vs . " + bounds);
@@ -265,10 +267,11 @@ public abstract class AbstractOutputTarget implements OutputTarget
       else
       {
       // else ignore
-        Log.debug ("Ignoring .." + pageBounds + " vs . " + bounds);
+       // Log.debug ("Ignoring .." + pageBounds + " vs . " + bounds);
       }
     }
     endPage();
+    Log.debug ("Done Printing Page " + index + "; " + getPageBounds());
   }
 
 
@@ -379,6 +382,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
     //final Rectangle2D bounds = element.getBounds();
     if (content instanceof TextLine == false)
     {
+      Log.debug ("No Text Line ... ignoring ..");
       return;
     }
     // Font
@@ -411,6 +415,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
         = (ElementAlignment) element.getProperty(ElementStyleSheet.ALIGNMENT);
 
     final HorizontalBoundsAlignment hba = AlignmentTools.getHorizontalLayout(ha, bounds);
+    Log.debug ("Printing Text Line ... ");
     printTextLine((TextLine) content, hba, vbaShift);
   }
 
@@ -509,12 +514,12 @@ public abstract class AbstractOutputTarget implements OutputTarget
 
   protected void setPageBounds(final Rectangle2D pageBounds)
   {
-    this.pageBounds = pageBounds;
+    this.pageBounds.setRect(pageBounds);
   }
 
   protected Rectangle2D getPageBounds()
   {
-    return pageBounds;
+    return pageBounds.getBounds2D();
   }
 
   /**
@@ -533,6 +538,7 @@ public abstract class AbstractOutputTarget implements OutputTarget
     abounds.setRect(abounds.getX(), abounds.getY() + vbaShift,
         abounds.getWidth(), abounds.getHeight());
     setOperationBounds(abounds);
+    Log.debug ("Value = " + value + "; Operation Bounds: " + abounds);
     printText(value);
   }
 

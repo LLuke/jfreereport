@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigHandler.java,v 1.10 2004/03/16 15:09:54 taqua Exp $
+ * $Id: ReportConfigHandler.java,v 1.11 2004/04/15 15:14:20 taqua Exp $
  *
  * Changes
  * -------
@@ -285,7 +285,7 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
 
     format.setPaper(p);
     report.setPageDefinition
-            (new SimplePageDefinition (format, verticalPages, horizontalPages));
+            (new SimplePageDefinition (format, horizontalPages, verticalPages));
   }
 
   /**

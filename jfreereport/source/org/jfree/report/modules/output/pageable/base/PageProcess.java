@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PageProcess.java,v 1.1 2004/04/15 15:26:36 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -124,7 +124,7 @@ public class PageProcess
     if (lastRecentlyUsedState != null)
     {
       final CacheInformation ci = (CacheInformation) lastRecentlyUsedState.get();
-      if (ci.getInitialState() == currPage)
+      if (ci != null && ci.getInitialState() == currPage)
       {
         return ci.getFinalState();
       }

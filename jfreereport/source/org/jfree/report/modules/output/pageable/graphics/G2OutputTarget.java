@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.8 2003/09/15 18:26:51 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.9 2004/03/16 15:09:51 taqua Exp $
  *
  * Changes
  * -------
@@ -211,7 +211,7 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   }
 
   private PageFormat currentPageFormat;
-  private Rectangle2D pageBounds;
+ // private Rectangle2D pageBounds;
 
   /**
    * Creates a new output target.
@@ -278,16 +278,20 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    */
   protected void beginPage(final PageDefinition page, final int index)
   {
-    pageBounds = page.getPagePosition(index);
+    final Rectangle2D pageBounds = page.getPagePosition(index);
+    setPageBounds(pageBounds);
     currentPageFormat = page.getPageFormat(index);
-    final Rectangle2D bounds = new Rectangle2D.Float((float) currentPageFormat.getImageableX(),
-        (float) currentPageFormat.getImageableY(),
+    final Rectangle2D bounds = new Rectangle2D.Float(
+        (float) (currentPageFormat.getImageableX()),
+        (float) (currentPageFormat.getImageableY()),
         (float) currentPageFormat.getImageableWidth() + 1,
         (float) currentPageFormat.getImageableHeight() + 1);
+
     g2.clip(bounds);
     g2.transform(AffineTransform.getTranslateInstance(
-        currentPageFormat.getImageableX() + pageBounds.getX(),
-        currentPageFormat.getImageableY() + pageBounds.getY()));
+        currentPageFormat.getImageableX() - (pageBounds.getX()),
+        currentPageFormat.getImageableY() - (pageBounds.getY())));
+
     savedState = saveState();
   }
 
@@ -298,11 +302,12 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    */
   protected void endPage() throws OutputTargetException
   {
-    g2.setClip(originalClip);
+    final Rectangle2D pageBounds = getPageBounds();
     g2.transform(AffineTransform.getTranslateInstance(0 - currentPageFormat.getImageableX()
-        - pageBounds.getX(),
+        + pageBounds.getX(),
         0 - currentPageFormat.getImageableY()
-        - pageBounds.getY()));
+        + pageBounds.getY()));
+    g2.setClip(originalClip);
     restoreState();
   }
 
@@ -493,15 +498,13 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
    */
   protected boolean isPaintSupported(final Paint p)
   {
-    return true;
+    return p != null;
   }
 
   /**
    * Restores the state of this graphics.
-   *
-   * @throws OutputTargetException if the argument is not an instance of G2State.
    */
-  private void restoreState() throws OutputTargetException
+  private void restoreState()
   {
     savedState.restore(this);
   }
@@ -561,6 +564,7 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
   protected void setOperationBounds(final Rectangle2D bounds)
   {
     final Rectangle2D oldBounds = super.getOperationBounds();
+    Log.debug ("Operation Bounds set to " + bounds + " ; old Bounds = " + oldBounds);
     // undo the last bounds operation
     g2.transform(AffineTransform.getTranslateInstance(0 - oldBounds.getX(), 0 - oldBounds.getY()));
     super.setOperationBounds(bounds);

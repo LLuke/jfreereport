@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MetaPage.java,v 1.1 2004/03/16 18:37:01 taqua Exp $
+ * $Id: MetaPage.java,v 1.2 2004/03/27 20:21:14 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -49,7 +49,7 @@ public class MetaPage
   {
     this.bands = bands;
     this.empty = isEmpty(bands);
-    Log.debug (this);
+    //Log.debug (this);
   }
 
   public static boolean isEmpty (final MetaElement[] elements)

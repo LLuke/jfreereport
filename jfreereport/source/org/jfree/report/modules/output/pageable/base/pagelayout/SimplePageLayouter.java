@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.16 2004/03/16 15:09:50 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.17 2004/03/27 20:21:15 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ import org.jfree.report.Band;
 import org.jfree.report.Group;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportProcessingException;
-import org.jfree.report.util.Log;
+//import org.jfree.report.util.Log;
 import org.jfree.report.content.ContentCreationException;
 import org.jfree.report.event.PrepareEventListener;
 import org.jfree.report.event.ReportEvent;
@@ -644,10 +644,8 @@ public strictfp class SimplePageLayouter extends PageLayouter
     // the spooling is now slightly different ... 
     final boolean spool = true;
     final Rectangle2D bounds = doLayout(b, true);
-    Log.debug ("PageLayouter: " + bounds);
     bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(),
         bounds.getWidth(), bounds.getHeight());
-    Log.debug ("PageLayouter: " + bounds);
     return doPrint(bounds, b, spool, false);
   }
 
@@ -665,7 +663,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
     final float width = getLogicalPage().getWidth();
     final float height = getCursor().getPageBottomReserved() - getCursor().getPageTop();
     final Rectangle2D bounds = BandLayoutManagerUtil.doLayout(band,
-        getLogicalPage().getLayoutSupport(), width,height);
+        getLogicalPage().getLayoutSupport(), width, height);
 
     if (fireEvent == true)
     {
@@ -705,7 +703,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
           final MetaBand rootBand = producer.createBand(band, spool);
           if (rootBand != null)
           {
-            Log.error(rootBand.getBounds());
+            //Log.error(rootBand.getBounds());
             addRootMetaBand(rootBand);
           }
           cursor.advance(height);
@@ -889,7 +887,8 @@ public strictfp class SimplePageLayouter extends PageLayouter
     setRestartingPage(false);
   }
 
-  private Band getBandForID (ReportDefinition def, Object id)
+  private Band getBandForID (final ReportDefinition def,
+                             final Object id)
   {
     if (def.getReportHeader().getTreeLock() == id)
     {
@@ -913,7 +912,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
     }
     for (int i = 0; i < def.getGroupCount(); i++)
     {
-      Group g = def.getGroup(i);
+      final Group g = def.getGroup(i);
       if (g.getHeader().getTreeLock() == id)
       {
         return g.getHeader();
@@ -1062,7 +1061,7 @@ public strictfp class SimplePageLayouter extends PageLayouter
     return true;
   }
 
-  public boolean printWatermark(Band watermark) throws ReportProcessingException
+  public boolean printWatermark(final Band watermark) throws ReportProcessingException
   {
     final LogicalPage logPage = getLogicalPage();
     final Rectangle2D bounds  = BandLayoutManagerUtil.doFixedLayout

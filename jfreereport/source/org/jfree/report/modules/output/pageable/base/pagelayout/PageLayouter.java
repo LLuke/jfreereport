@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.11 2004/03/16 15:09:50 taqua Exp $
+ * $Id: PageLayouter.java,v 1.12 2004/03/27 20:21:15 taqua Exp $
  *
  * Changes
  * -------
@@ -179,7 +179,7 @@ public abstract strictfp class PageLayouter extends AbstractFunction
    */
   public boolean isGeneratedPageEmpty()
   {
-    MetaElement[] elements = (MetaElement[]) bands.toArray
+    final MetaElement[] elements = (MetaElement[]) bands.toArray
         (new MetaElement[bands.size()]);
 
     return MetaPage.isEmpty(elements);

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.16 2003/12/21 20:51:43 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.17 2004/03/16 15:09:51 taqua Exp $
  *
  * Changes
  * -------
@@ -273,6 +273,12 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   /** The PDF font support. */
   private final BaseFontSupport fontSupport;
 
+  /** The current page format. */
+  private PageFormat currentPageFormat;
+
+  /** The internal operation bounds. */
+  private Rectangle2D internalOperationBounds;
+
   /**
    * A bytearray containing an empty password. iText replaces the owner password with random
    * values, but Adobe allows to have encryption without an owner password set.
@@ -295,6 +301,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   {
     this.out = out;
     this.fontSupport = new BaseFontSupport();
+    this.internalOperationBounds = new Rectangle2D.Float();
   }
 
   /**
@@ -1170,12 +1177,6 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
     return getDocument().isOpen();
   }
 
-  /** The current page format. */
-  private PageFormat currentPageFormat;
-
-  /** The internal operation bounds. */
-  private Rectangle2D internalOperationBounds;
-
   /**
    * Creates a 'size calculator' for the current state of the output target. The calculator
    * is used to calculate the string width and line height and later maybe more.
@@ -1210,9 +1211,10 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   protected void setOperationBounds(final Rectangle2D bounds)
   {
     super.setOperationBounds(bounds);
-    internalOperationBounds
-        = new Rectangle2D.Float((float) (bounds.getX() + currentPageFormat.getImageableX()),
-            (float) (bounds.getY() + currentPageFormat.getImageableY()),
+    final Rectangle2D pageBounds = getPageBounds();
+    internalOperationBounds.setRect
+           ((float) (pageBounds.getX() + bounds.getX() + currentPageFormat.getImageableX()),
+            (float) (pageBounds.getY() + bounds.getY() + currentPageFormat.getImageableY()),
             (float) bounds.getWidth(), (float) bounds.getHeight());
   }
 
@@ -1223,7 +1225,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
    */
   private Rectangle2D getInternalOperationBounds()
   {
-    return internalOperationBounds;
+    return internalOperationBounds.getBounds2D();
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: MetaBandProducer.java,v 1.1 2004/03/16 18:37:01 taqua Exp $
+ * $Id: MetaBandProducer.java,v 1.2 2004/03/27 20:21:14 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -53,7 +53,6 @@ import org.jfree.report.content.Content;
 import org.jfree.report.layout.LayoutSupport;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.ElementLayoutInformation;
-import org.jfree.report.util.Log;
 
 /**
  * The MetaBandProducer is responsible for converting a report band
@@ -94,15 +93,12 @@ public class MetaBandProducer
       return null;
     }
 
-    Log.warn ("ParentX: " + parentX + " Y: " + parentY + " - " + band.getName());
-
     final ArrayList metaElements = new ArrayList();
     final Element[] elements = band.getElementArray();
     final Rectangle2D bounds = (Rectangle2D)
             band.getStyle ().getStyleProperty (ElementStyleSheet.BOUNDS);
     final int x = (int) bounds.getX () + parentX;
     final int y = (int) bounds.getY () + parentY;
-    Log.warn ("OwnX: " + x + " Y: " + y + " - " + band.getName());
 
     for (int i = 0; i < elements.length; i++)
     {

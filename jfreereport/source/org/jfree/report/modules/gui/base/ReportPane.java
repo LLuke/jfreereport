@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPane.java,v 1.14 2004/03/27 20:21:14 taqua Exp $
+ * $Id: ReportPane.java,v 1.15 2004/04/15 15:14:19 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -64,6 +64,7 @@ import javax.swing.UIManager;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
+import org.jfree.report.PageDefinition;
 import org.jfree.report.event.RepaginationListener;
 import org.jfree.report.event.RepaginationState;
 import org.jfree.report.modules.output.pageable.base.OutputTarget;
@@ -269,16 +270,6 @@ public class ReportPane extends JComponent
   }
 
   /**
-   * Returns the page format.
-   *
-   * @return The current page format;
-   */
-  public PageFormat getPageFormat()
-  {
-    return new PageFormat();//report.getDefaultPageFormat();
-  }
-
-  /**
    * Returns the pageFormat for this Pageable Object. Currently no different pageformats
    * are supported within a single report, so this returns alway the same as getPageFormat()
    *
@@ -288,7 +279,9 @@ public class ReportPane extends JComponent
    */
   public PageFormat getPageFormat(final int page)
   {
-    return getPageFormat();
+    final JFreeReport report = getReport();
+    final PageDefinition pdef = report.getPageDefinition();
+    return pdef.getPageFormat(page % pdef.getPageCount());
   }
 
   /**
@@ -427,11 +420,27 @@ public class ReportPane extends JComponent
     zoomFactor = factor;
     graphCache = null;
 
-    final PageFormat pageFormat = getPageFormat();
+    final PageFormat pageFormat = getCurrentPageFormat();
     final int w = (int) ((pageFormat.getWidth() + PAPERBORDER_PIXEL) * zoomFactor);
     final int h = (int) ((pageFormat.getHeight() + PAPERBORDER_PIXEL) * zoomFactor);
     super.setSize(w, h);
     firePropertyChange(ZOOMFACTOR_PROPERTY, new Double(oldzoom), new Double(factor));
+  }
+
+  protected PageFormat getCurrentPageFormat ()
+  {
+
+    final PageDefinition pdef = getReport().getPageDefinition();
+    final int pageNumber;
+    if (getPageNumber() == 0)
+    {
+      pageNumber = 0;
+    }
+    else
+    {
+      pageNumber = ((getPageNumber() - 1)% pdef.getPageCount());
+    }
+    return getPageFormat(pageNumber);
   }
 
   /**
@@ -484,7 +493,7 @@ public class ReportPane extends JComponent
 
       if (graphCache == null)
       {
-        final PageFormat pageFormat = getPageFormat();
+        final PageFormat pageFormat = getCurrentPageFormat();
 
         final Dimension size = getSize();
 
@@ -544,7 +553,7 @@ public class ReportPane extends JComponent
          * set to true.
          */
         final Rectangle2D printingArea = new Rectangle2D.Float(innerX, innerY, innerW, innerH);
-
+        Log.debug ("Printing Area: " + printingArea);
         /** Paint Page Shadow */
         final Rectangle2D southborder =
             new Rectangle2D.Float(

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageDefinition.java,v 1.2 2004/03/27 20:20:49 taqua Exp $
+ * $Id: SimplePageDefinition.java,v 1.3 2004/04/15 15:13:38 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -83,7 +83,7 @@ public class SimplePageDefinition implements PageDefinition
       {
         final Rectangle2D rect =
                 new Rectangle2D.Float(pageStartX, pageStartY, width, height);
-        pagePositions[vert * pageCountVertical + hor] = rect;
+        pagePositions[vert * pageCountHorizontal + hor] = rect;
         pageStartX += width;
       }
       pageStartY += height;
