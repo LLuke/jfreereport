@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.21 2003/02/09 18:43:05 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.22 2003/02/10 19:33:51 taqua Exp $
  *
  * Changes
  * -------
@@ -719,7 +719,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
       {
         Log.error("Should not happen", oe);
       }
-      writer.getDirectContent().saveState();
+      //writer.getDirectContent().saveState();
     }
     catch (Exception e)
     {

@@ -2,7 +2,7 @@
  * Date: Jan 21, 2003
  * Time: 2:22:18 PM
  *
- * $Id: ElementLayoutInformation.java,v 1.2 2003/02/02 23:43:51 taqua Exp $
+ * $Id: ElementLayoutInformation.java,v 1.3 2003/02/08 19:32:06 taqua Exp $
  */
 package com.jrefinery.report.targets.base;
 
@@ -85,7 +85,10 @@ public class ElementLayoutInformation
     this.absolutePosition = (Point2D) absolutePosition.clone();
     this.minimumSize = (Dimension2D) minimumSize.clone();
     this.maximumSize = (Dimension2D) maximumSize.clone();
-    this.preferredSize = (Dimension2D) preferredSize.clone();
+    if (preferredSize != null)
+    {
+      this.preferredSize = (Dimension2D) preferredSize.clone();
+    }
   }
 
   /**
@@ -105,7 +108,7 @@ public class ElementLayoutInformation
    */
   public Dimension2D getMinimumSize()
   {
-    return minimumSize;
+    return (Dimension2D) minimumSize.clone();
   }
 
   /**
@@ -115,7 +118,7 @@ public class ElementLayoutInformation
    */
   public Dimension2D getMaximumSize()
   {
-    return maximumSize;
+    return (Dimension2D) maximumSize.clone();
   }
 
   /**
@@ -125,7 +128,11 @@ public class ElementLayoutInformation
    */
   public Dimension2D getPreferredSize()
   {
-    return preferredSize;
+    if (preferredSize == null)
+    {
+      return null;
+    }
+    return (Dimension2D) preferredSize.clone();
   }
 
   /**
