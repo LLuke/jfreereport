@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.16 2002/06/23 16:42:24 taqua Exp $
+ * $Id: ReportState.java,v 1.17 2002/07/20 20:48:47 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -46,13 +46,14 @@
  *               repaginated.
  * 11-May-2002 : A bug in the ReportPropertyHandling is fixed.
  * 24-Jun-2002 : Populate Elements must not be called before Function values are calculated.
- *
+ * 28-Jul-2002 : Added datarow support, the report is now cloned on start
  */
 
 package com.jrefinery.report;
 
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.util.ReportProperties;
+import com.jrefinery.report.util.Log;
 
 import java.util.Date;
 
@@ -112,9 +113,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
      * Returns the corrected display item for this state. As the currentItem has not yet advanced
      * we perform a readAHead lookup when populating elements.
      */
-    public int getCurrentDisplayItem ()
+    public boolean isPrefetchState ()
     {
-      return getCurrentDataItem () + 1;
+      return true;
     }
 
     /**
@@ -155,7 +156,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       JFreeReport report = getReport ();
 
       ReportHeader reportHeader = report.getReportHeader ();
-      reportHeader.populateElements (this);
+      //reportHeader.populateElements (this);
+      getDataRowConnector().setDataRowBackend(getDataRow());
       rpc.printReportHeader (reportHeader);
       return new PostReportHeader (this);
     }
@@ -164,9 +166,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
      * Returns the corrected display item for this state. As the currentItem has not yet advanced
      * we perform a readAHead lookup when populating elements.
      */
-    public int getCurrentDisplayItem ()
+    public boolean isPrefetchState ()
     {
-      return getCurrentDataItem () + 1;
+      return true;
     }
   }
 
@@ -193,9 +195,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
      * Returns the corrected display item for this state. As the currentItem has not yet advanced
      * we perform a readAHead lookup when populating elements.
      */
-    public int getCurrentDisplayItem ()
+    public boolean isPrefetchState ()
     {
-      return getCurrentDataItem () + 1;
+      return true;
     }
   }
 
@@ -240,7 +242,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
           // enough space, fire the events and proceed to PostGroupHeader
           ReportEvent event = new ReportEvent (this);
           fireGroupStartedEvent (event);
-          header.populateElements (this);
+          //header.populateElements (this);
+          getDataRowConnector().setDataRowBackend(getDataRow());
           rpc.printGroupHeader (header);
           return new PostGroupHeader (this);
         }
@@ -256,9 +259,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
      * Returns the corrected display item for this state. As the currentItem has not yet advanced
      * we perform a readAHead lookup when populating elements.
      */
-    public int getCurrentDisplayItem ()
+    public boolean isPrefetchState ()
     {
-      return getCurrentDataItem () + 1;
+      return true;
     }
   }
 
@@ -309,9 +312,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
      * Returns the corrected display item for this state. As the currentItem has not yet advanced
      * we perform a readAHead lookup when populating elements.
      */
-    public int getCurrentDisplayItem ()
+    public boolean isPrefetchState ()
     {
-      return getCurrentDataItem () + 1;
+      return true;
     }
   }
 
@@ -339,9 +342,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
      * Returns the corrected display item for this state. As the currentItem has not yet advanced
      * we perform a readAHead lookup when populating elements.
      */
-    public int getCurrentDisplayItem ()
+    public boolean isPrefetchState ()
     {
-      return getCurrentDataItem () + 1;
+      return true;
     }
   }
 
@@ -362,7 +365,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       super (reportstate);
     }
 
-    public ReportState advance (ReportProcessor rpc)
+    public ReportState advance (ReportProcessor rpc) throws ReportProcessingException
     {
       JFreeReport report = getReport ();
       ItemBand itemBand = report.getItemBand ();
@@ -372,6 +375,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       // here after the pagebreak.
       if (rpc.isSpaceFor (itemBand))
       {
+        System.out.println ("RS::Item::advance: - " + getDataRow().getCurrentRow());
         advanceItem ();
 
         int currItem = getCurrentDataItem ();
@@ -379,11 +383,17 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
         ReportEvent event = new ReportEvent (this);
         fireItemsAdvancedEvent (event);
-        itemBand.populateElements (this);
+        //itemBand.populateElements (this);
 
+        getDataRowConnector().setDataRowBackend(getDataRow());
         rpc.printItemBand (itemBand);
 
-        if (report.isLastItemInHigherGroups (currItem, currGroup))
+        // we have more data to work on
+        // If the group is done, print the GroupFooter of the parent
+        Group group = getReport ().getGroup (getCurrentGroupIndex ());
+
+        if (group.isLastItemInGroup (getDataRow(), getDataRow().previewNextRow()))
+        //if (group.isLastItemInGroup (getReport ().getData (), getCurrentDataItem ()))
         {
           return new PostItemGroup (this);
         }
@@ -439,8 +449,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
         // fired and PostGroupFooter activated after all work is done.
         ReportEvent event = new ReportEvent (this);
         fireGroupFinishedEvent (event);
-        footer.populateElements (this);
+        //footer.populateElements (this);
 
+        getDataRowConnector().setDataRowBackend(getDataRow());
         rpc.printGroupFooter (footer);
         return new PostGroupFooter (this);
       }
@@ -512,7 +523,8 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
           // we have more data to work on
           // If the group is done, print the GroupFooter of the parent
           Group group = getReport ().getGroup (getCurrentGroupIndex ());
-          if (group.isLastItemInGroup (getReport ().getData (), getCurrentDataItem ()))
+          if (group.isLastItemInGroup (getDataRow(), getDataRow().previewNextRow()))
+//          if (group.isLastItemInGroup (getReport ().getData (), getCurrentDataItem ()))
           {
             // Parent is finished, print the footer
             return new PreGroupFooter (this);
@@ -554,7 +566,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       {
         ReportEvent event = new ReportEvent (this);
         fireReportFinishedEvent (event);
-        reportFooter.populateElements (this);
+        //reportFooter.populateElements (this);
+
+        getDataRowConnector().setDataRowBackend(getDataRow());
         rpc.printReportFooter (reportFooter);
         return new Finish (this);
       }
@@ -610,6 +624,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   /** The report properties */
   private ReportProperties reportProperties;
 
+  private DataRowBackend dataRow;
+  private DataRowConnector dataRowConnector;
+
   public static final int BEFORE_FIRST_ROW = -1;
   public static final int BEFORE_FIRST_GROUP = -1;
   public static final int FIRST_PAGE = 1;
@@ -628,6 +645,26 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     setCurrentPage (FIRST_PAGE);
     setCurrentGroupIndex (BEFORE_FIRST_GROUP);
     setFunctions (report.getFunctions ());
+
+    DataRowConnector dc = new DataRowConnector();
+    dc.connectDataSources(getReport());
+    setDataRowConnector(dc);
+
+    DataRowBackend dr = new DataRowBackend();
+    dr.setTablemodel(getReport().getData());
+    dr.setFunctions(getFunctions());
+    dr.setCurrentRow(getCurrentDisplayItem());
+    setDataRow(dr);
+  }
+
+  public DataRowConnector getDataRowConnector ()
+  {
+    return dataRowConnector;
+  }
+
+  public void setDataRowConnector (DataRowConnector dataRowConnector)
+  {
+    this.dataRowConnector = dataRowConnector;
   }
 
   /**
@@ -643,6 +680,21 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     setCurrentPage (clone.getCurrentPage ());
     setCurrentGroupIndex (clone.getCurrentGroupIndex ());
     setFunctions (clone.getFunctions ());
+    setDataRowConnector(clone.getDataRowConnector());
+
+    setDataRow(clone.getDataRow());
+    getDataRow().setCurrentRow(getCurrentDisplayItem());
+  }
+
+
+  public DataRowBackend getDataRow ()
+  {
+    return dataRow;
+  }
+
+  private void setDataRow (DataRowBackend dataRow)
+  {
+    this.dataRow = dataRow;
   }
 
   /**
@@ -656,7 +708,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   /**
    * The advance method is used to transform a report into a new state.
    */
-  public abstract ReportState advance (ReportProcessor prc);
+  public abstract ReportState advance (ReportProcessor prc) throws ReportProcessingException;
 
   /**
    * defines the report for this state. if the report is null, a NullPointerException is thrown.
@@ -664,13 +716,21 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * @param report the report for this state
    * @throws NullPointerException if the given report is null
    */
-  private void setReport (JFreeReport report)
+  private void setReport (JFreeReport report) throws IllegalArgumentException
   {
     if (report == null)
     {
       throw new NullPointerException ("An State without an report is not allowed");
     }
-    this.report = report;
+    try
+    {
+      this.report = (JFreeReport) report.clone();
+    }
+    catch (CloneNotSupportedException cne)
+    {
+      Log.error("Error setting the report definition", cne);
+      throw new IllegalArgumentException("Error setting the report definition");
+    }
   }
 
   /**
@@ -686,11 +746,18 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    * Returns the current item that sould be displayed for this state. Before any item
    * has advanced, dataItem is -1. This function automaticly corrects the currentRow according
    * to the current state of the report (if the header is processed, add +1).
-   *
    */
-  public int getCurrentDisplayItem ()
+  public final int getCurrentDisplayItem ()
   {
-    return this.currentItem;
+    if (isPrefetchState())
+      return this.currentItem + 1;
+    else
+      return this.currentItem;
+  }
+
+  public boolean isPrefetchState ()
+  {
+    return false;
   }
 
   /**
@@ -802,7 +869,10 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     try
     {
       ReportState result = (ReportState) super.clone ();
-      result.setFunctions (getFunctions ().getCopy ());
+      FunctionCollection functions = getFunctions ().getCopy ();
+      result.setFunctions(functions);
+      result.dataRow = (DataRowBackend) dataRow.clone();
+      result.dataRow.setFunctions(functions);
       return result;
     }
     catch (CloneNotSupportedException cne)
@@ -875,6 +945,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   public void advanceItem ()
   {
     setCurrentItem (getCurrentDataItem () + 1);
+    getDataRow().setCurrentRow(getCurrentDisplayItem());
   }
 
   public void fireReportStartedEvent (ReportEvent event)

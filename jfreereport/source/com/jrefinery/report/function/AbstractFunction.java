@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.7 2002/06/08 14:31:53 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.8 2002/06/23 16:42:24 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ import java.util.Enumeration;
  * more properties are missing and the report parsing will be aborted. Make sure, that you fully
  * implement all validity checks using this function.
  */
-public abstract class AbstractFunction extends ReportListenerAdapter implements Function
+public abstract class AbstractFunction implements Function
 {
 
   /** Storage for the function properties. */
@@ -381,4 +381,25 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
     return true;
   }
 
+  /**
+   * Receives notification that a group of item bands is about to be processed.
+   * <P>
+   * The next events will be itemsAdvanced events until the itemsFinished event is raised.
+   *
+   * @param event The event.
+   */
+  public void itemsStarted (ReportEvent event)
+  {
+  }
+
+  /**
+   * Receives notification that a group of item bands has been completed.
+   * <P>
+   * The itemBand is finished, the report starts to close open groups.
+   *
+   * @param event The event.
+   */
+  public void itemsFinished (ReportEvent event)
+  {
+  }
 }

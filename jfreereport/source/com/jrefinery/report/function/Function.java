@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Function.java,v 1.4 2002/06/05 23:21:47 mungady Exp $
+ * $Id: Function.java,v 1.5 2002/06/08 14:31:53 taqua Exp $
  *
  * Changes
  * -------
@@ -57,36 +57,8 @@ import java.util.Properties;
  * <p>
  * Todo: Give a better overview how functions are integrated into JFreeReport.
  */
-public interface Function extends ReportListener, Cloneable
+public interface Function extends ReportListener, Expression, Cloneable
 {
-
-  /**
-   * Returns the name of the function.
-   * <P>
-   * Every function within a report is required to have a unique name.
-   *
-   * @return The function name.
-   */
-  public String getName ();
-
-  /**
-   * Sets the name of the function.
-   * <P>
-   * The name must not be null and must be unique within the function group.
-   *
-   * @param name The name.
-   */
-  public void setName (String name);
-
-  /**
-   * Return the current function value.
-   * <P>
-   * The value depends (obviously) on the function implementation.   For example, a page counting
-   * function will return the current page number.
-   *
-   * @return The value of the function.
-   */
-  public Object getValue ();
 
   /**
    * Clones the function in its current state.
@@ -96,20 +68,5 @@ public interface Function extends ReportListener, Cloneable
    * @return A clone of this function.
    */
   public Object clone () throws CloneNotSupportedException;
-
-  /**
-   * Set the function properties.
-   * <P>
-   * Function parameters are recorded as properties.
-   *
-   * @param p The properties.
-   */
-  public void setProperties (Properties p);
-
-  /**
-   * Checks that the function has been correctly initialized.  If there is a problem, this method
-   * throws a FunctionInitializeException.
-   */
-  public void initialize () throws FunctionInitializeException;
 
 }

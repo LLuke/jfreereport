@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.19 2002/06/23 12:25:57 taqua Exp $
+ * $Id: JFreeReport.java,v 1.20 2002/07/03 18:49:45 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -51,6 +51,8 @@
  * 08-Jun-2002 : The defaultPageFormat is now always filled (and used in PreviewFrame)
  * 19-Jun-2002 : more documentation
  * 03-Jul-2002 : Serializable and cloneable, Removed JFreeReportInfo field, it disrupts the serializable process
+ * 26-Jul-2002 : Removed method "isLastItemInHigherGroups()". The same functionality is implemented
+ *               in Group.isLastItemInGroup()
  */
 
 package com.jrefinery.report;
@@ -655,7 +657,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     // Print the pageHeader before any other item.
     ReportEvent event = new ReportEvent (state);
     state.firePageStartedEvent (event);
-    getPageHeader ().populateElements (state);
+    //getPageHeader ().populateElements (state);
     if (page == 1)
     {
       if (getPageHeader ().isDisplayOnFirstPage ())
@@ -680,7 +682,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     event = new ReportEvent (state);
     state.firePageFinishedEvent (event);
 
-    getPageFooter ().populateElements (state);
+    //getPageFooter ().populateElements (state);
     if (page == 1)
     {
       if (getPageFooter ().isDisplayOnFirstPage ())
@@ -705,34 +707,6 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     }
     state.nextPage ();
     return state;
-  }
-
-  /**
-   * Returns true if the current row is the end of a group.
-   * <p>
-   * To work as expected, this method assumes that a lower group includes all fields from an
-   * higher group.
-   *
-   * @param row The current row.
-   * @param groupIndex The current group.
-   *
-   * @return A boolean indicating whether this is the last row in this group or a higher group.
-   */
-  public boolean isLastItemInHigherGroups (int row, int groupIndex)
-  {
-    if (row == data.getRowCount () - 1)
-      return true;
-
-    boolean result = false;
-    for (int g = groupIndex; g > ReportState.BEFORE_FIRST_GROUP; g--)
-    {
-      Group group = getGroup (g);
-      if (group.isLastItemInGroup (getData (), row))
-      {
-        return true;
-      }
-    }
-    return false;
   }
 
   public Object clone () throws CloneNotSupportedException

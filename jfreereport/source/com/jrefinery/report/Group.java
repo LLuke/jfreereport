@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Group.java,v 1.8 2002/07/03 19:09:08 taqua Exp $
+ * $Id: Group.java,v 1.9 2002/07/20 20:48:47 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -38,18 +38,19 @@
  *               contain null values. Is lastItemInGroup returns always true, if the end of the
  *               data had been reached.
  * 03-Jul-2002 : Serializable and cloneable, replaces own ReadOnlyList with standard implementation
+ * 26-Jul-2002 : Introduced DataRowBackend as replacement for the raw data access
  */
 
 package com.jrefinery.report;
 
+import com.jrefinery.report.util.Log;
+
 import javax.swing.table.TableModel;
-import javax.swing.table.AbstractTableModel;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.io.Serializable;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A report group.  Reports can contain any number of groups.
@@ -176,9 +177,7 @@ public class Group implements Serializable, Cloneable
    */
   public void addField (String name)
   {
-
     fields.add (name);
-
   }
 
   /**
@@ -186,7 +185,52 @@ public class Group implements Serializable, Cloneable
    */
   public List getFields ()
   {
-    return Collections.unmodifiableList(fields);
+    return Collections.unmodifiableList (fields);
+  }
+
+  /**
+   * Compares two objects without crashing if one or both are null.
+   *
+   * @returns true, if both objects are null or both objects are equal, false otherwise.
+   */
+  private boolean secureEquals (Object item1, Object item2)
+  {
+    if ((item1 == null) && (item2 == null)) return true;
+    if (item1 == null) return false;
+    if (item2 == null) return false;
+    return item1.equals (item2);
+  }
+
+  /**
+   * Converts a field name to a TableModel column index, by matching the field name to the column
+   * name.
+   *
+   * @param data The data.
+   * @param name The field name (or column name).
+   * @return The column index.
+   * @deprecated use the datarow
+  private int fieldNameToColumnIndex (TableModel data, String name)
+  {
+    int columns = data.getColumnCount ();
+    for (int c = 0; c < columns; c++)
+    {
+      if (name.equals (data.getColumnName (c)))
+      {
+        return c;
+      }
+    }
+    return -1;  // no field with that name
+
+  }
+   */
+
+  public Object clone () throws CloneNotSupportedException
+  {
+    Group g = (Group) super.clone ();
+    g.fields = (ArrayList) fields.clone ();
+    g.footer = (GroupFooter) footer.clone ();
+    g.header = (GroupHeader) header.clone ();
+    return g;
   }
 
   /**
@@ -195,7 +239,7 @@ public class Group implements Serializable, Cloneable
    *
    * @param row The current item/row.
    * @return A flag indicating whether or not the current item is the last in its group.
-   */
+   * @deprecated use the datarow
   public boolean isLastItemInGroup (TableModel data, int row)
   {
     // return true if this is the last row in the model.
@@ -226,48 +270,47 @@ public class Group implements Serializable, Cloneable
       return last;
     }
   }
-
-  /**
-   * Compares two objects without crashing if one or both are null.
-   *
-   * @returns true, if both objects are null or both objects are equal, false otherwise.
    */
-  private boolean secureEquals (Object item1, Object item2)
-  {
-    if ((item1 == null) && (item2 == null)) return true;
-    if (item1 == null) return false;
-    if (item2 == null) return false;
-    return item1.equals (item2);
-  }
 
   /**
-   * Converts a field name to a TableModel column index, by matching the field name to the column
-   * name.
-   *
+   * Returns true if the specified item is the last item in the group, and false otherwise.
    * @param data The data.
-   * @param name The field name (or column name).
-   * @return The column index.
+   *
+   * @param row The current item/row.
+   * @return A flag indicating whether or not the current item is the last in its group.
    */
-  private int fieldNameToColumnIndex (TableModel data, String name)
+  public boolean isLastItemInGroup (DataRowBackend lastDataRow, DataRowBackend currentDataRow)
   {
-    int columns = data.getColumnCount ();
-    for (int c = 0; c < columns; c++)
+    // return true if this is the last row in the model.
+    if (currentDataRow.isLastRow ())
     {
-      if (name.equals (data.getColumnName (c)))
-      {
-        return c;
-      }
+      Log.debug ("Is lastRow!");
+      return true;
     }
-    return -1;  // no field with that name
+    else
+    { // compare item and item+1, if any field differs, then item==last in group
+      boolean last = false;
+      Iterator iterator = fields.iterator ();
+      while (iterator.hasNext ())
+      {
+        String field = (String) iterator.next ();
+        int column = currentDataRow.findColumn (field);
+        if (column == -1)
+        {
+          continue;
+        }
 
+        Object item1 = lastDataRow.get (column);
+        Object item2 = currentDataRow.get (column);
+        if (!(secureEquals (item1, item2)))
+        {
+          Log.debug ("FIELD: " + field + " is not equal !" + item1 + " vs. " + item2);
+          return true;
+        }
+      }
+      return last;
+    }
   }
 
-  public Object clone () throws CloneNotSupportedException
-  {
-    Group g = (Group) super.clone ();
-    g.fields = (ArrayList) fields.clone();
-    g.footer = (GroupFooter) footer.clone();
-    g.header = (GroupHeader) header.clone();
-    return g;
-  }
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: Band.java,v 1.10 2002/07/03 19:09:08 taqua Exp $
+ * $Id: Band.java,v 1.11 2002/07/20 20:48:47 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -246,7 +246,7 @@ public abstract class Band implements Serializable, Cloneable
    * @param row The current row.
    * @param functions The report functions.
    * @throws NullPointerException if the state given is null
-   */
+   *
   public void populateElements (ReportState state)
   {
     if (state == null) throw new NullPointerException ();
@@ -301,6 +301,7 @@ public abstract class Band implements Serializable, Cloneable
     }
 
   }
+*/
 
   /**
    * Draws the band onto the specified output target.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionCollection.java,v 1.8 2002/06/09 14:46:04 taqua Exp $
+ * $Id: FunctionCollection.java,v 1.9 2002/07/03 18:49:45 taqua Exp $
  *
  * Changes
  * -------
@@ -39,16 +39,16 @@
 package com.jrefinery.report;
 
 import com.jrefinery.report.event.ReportEvent;
-import com.jrefinery.report.event.ReportListenerAdapter;
+import com.jrefinery.report.event.ReportListener;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
-import java.io.Serializable;
 
 /**
  * A function collection contains all function elements of a particular report.
@@ -61,7 +61,7 @@ import java.io.Serializable;
  * A function collection gets immutable after it is passed to the report state.
  * An immutable function collection cannot have functions added or removed.
  */
-public class FunctionCollection extends ReportListenerAdapter implements Cloneable, Serializable
+public class FunctionCollection implements Cloneable, Serializable, ReportListener
 {
   private static class ReadOnlyFunctionCollection extends FunctionCollection
   {
@@ -156,10 +156,7 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public Function get (String name)
   {
-    Integer result = (Integer) functionPositions.get (name);
-    if (result == null) return null;
-
-    return (Function) functionList.get (result.intValue ());
+    return (Function) functionPositions.get (name);
   }
 
   /**
@@ -190,7 +187,7 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   protected void privateAdd (Function f)
   {
-    functionPositions.put (f.getName (), new Integer (functionList.size ()));
+    functionPositions.put (f.getName (), f);
     functionList.add (f);
   }
 
@@ -201,13 +198,8 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
    */
   public void removeFunction (Function f)
   {
-    Integer val = (Integer) functionPositions.get (f.getName ());
-    if (val == null)
-    {
-      return;
-    }
     functionPositions.remove (f.getName ());
-    functionList.remove (val.intValue ());
+    functionList.remove (f);
   }
 
   /**
@@ -413,11 +405,17 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
     return functionList.size ();
   }
 
+  public Function getFunction (int pos)
+  {
+    return (Function) functionList.get (pos);
+  }
+
   public Object clone () throws CloneNotSupportedException
   {
-    FunctionCollection col = (FunctionCollection) super.clone();
-    col.functionList = (ArrayList) functionList.clone();
-    col.functionPositions = (Hashtable) functionPositions.clone();
+    FunctionCollection col = (FunctionCollection) super.clone ();
+    col.functionList = (ArrayList) functionList.clone ();
+    col.functionPositions = (Hashtable) functionPositions.clone ();
     return col;
   }
+
 }

@@ -179,8 +179,11 @@ public class GroupList extends TreeSet implements Cloneable, Serializable
   public Object clone ()
   {
     GroupList l = (GroupList) super.clone();
-    l.cache = new Object[cache.length];
-    System.arraycopy(cache, 0, l.cache, 0, l.cache.length);
+    if (l.cache != null)
+    {
+      l.cache = new Object[cache.length];
+      System.arraycopy(cache, 0, l.cache, 0, l.cache.length);
+    }
     return l;
   }
 }

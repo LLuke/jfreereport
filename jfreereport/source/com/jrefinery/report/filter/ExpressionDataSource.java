@@ -20,100 +20,96 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------------------
- * ReportDataSource.java
- * ---------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
- *
- * Original Author:  Thomas Morgner;
- * Contributor(s):   David Gilbert (for Simba Management Limited);
- *
- * $Id: ReportDataSource.java,v 1.4 2002/07/03 18:49:48 taqua Exp $
+ * ---------------
+ * ExpressionDataSource.java
+ * ---------------
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
  * Changes
  * -------
- * 20-May-2002 : Initial version
- * 06-Jun-2002 : Updated Javadoc comments (DG);
+ * 27-Jul-2002 : Initial version
  *
  */
-
 package com.jrefinery.report.filter;
 
-import com.jrefinery.report.DataRowBackend;
 import com.jrefinery.report.DataRow;
 
 /**
- * A data source that returns the value of a field in the report's TableModel.
- * <P>
- * The field is identified by the column name.
+ * A datasource that queries the datarow and computes a value using an expression.
+ * Expressions are simple stateless functions which do not maintain any state and get
+ * not informed of reportstate changes. All informations for expressions are queried
+ * using the datarow given in the connectDataRow method.
  */
-public class ReportDataSource implements DataSource, DataRowConnectable
+public class ExpressionDataSource implements DataSource, DataRowConnectable
 {
-
-  /** The field name. */
-  private String fieldName;
+  /**
+   * The name of the expression as defined in the function collection for the report
+   *
+   * @see com.jrefinery.report.function.Expression#setName(String)
+   * @see com.jrefinery.report.function.Expression#getName
+   */
+  private String expression;
 
   private DataRow dataRow;
+
   /**
-   * Default constructor.
+   * Default constructor. The expression name is empty ("", not null), the value initially
+   * null.
    */
-  public ReportDataSource ()
+  public ExpressionDataSource ()
   {
+    setExpression ("");
   }
 
   /**
-   * Constructs a new report data source.
+   * Constructs a new expression data source.
    *
-   * @param field The field name.
+   * @param expression The expression.
    */
-  public ReportDataSource (String field)
+  public ExpressionDataSource (String expression)
   {
-    setField(field);
+    setExpression (expression);
   }
 
   /**
-   * Sets the field name.
-   * <P>
-   * The field name should correspond to the name of one of the columns in the report's TableModel.
+   * Sets the expression.
    *
-   * @param field The field name.
+   * @param field the name of the expression as defined in the expression collection.
    */
-  public void setField (String field)
+  public void setExpression (String field)
   {
-    if (field == null) throw new NullPointerException();
-    this.fieldName = field;
+    if (field == null) throw new NullPointerException ();
+    this.expression = field;
   }
 
   /**
-   * Returns the field name.
+   * Returns the name of the expression bound to this datasource.
    *
-   * @return The field name.
+   * @return the registered expression name
    */
-  public String getField ()
+  public String getExpression ()
   {
-    return fieldName;
+    return expression;
   }
 
   /**
-   * Returns the value of the data source.
+   * Returns the value of the expression.
    *
    * @return The value.
    */
   public Object getValue ()
   {
-    if (getDataRow() == null)
+    if (getDataRow () == null)
     {
-      throw new IllegalStateException("No DataRowBackend Connected");
+      throw new IllegalStateException ("No DataRowBackend Connected");
     }
-    return getDataRow().get(getField());
+    return getDataRow ().get (getExpression ());
   }
 
   public Object clone () throws CloneNotSupportedException
   {
-    ReportDataSource rd = (ReportDataSource) super.clone ();
-    return rd;
+    return super.clone ();
   }
-
 
   /**
    * Connects the DataRowBackend with the named DataSource or DataFilter.
@@ -123,8 +119,8 @@ public class ReportDataSource implements DataSource, DataRowConnectable
    */
   public void connectDataRow (DataRow row) throws IllegalStateException
   {
-    if (row == null) throw new NullPointerException("Null-DataRowBackend cannot be set.");
-    if (dataRow != null) throw new IllegalStateException("There is a datarow already connected");
+    if (row == null) throw new NullPointerException ("Null-DataRowBackend cannot be set.");
+    if (dataRow != null) throw new IllegalStateException ("There is a datarow already connected");
     dataRow = row;
   }
 
@@ -134,8 +130,8 @@ public class ReportDataSource implements DataSource, DataRowConnectable
    */
   public void disconnectDataRow (DataRow row) throws IllegalStateException
   {
-    if (row == null) throw new NullPointerException("Null-DataRowBackend cannot be disconnected.");
-    if (dataRow == null) throw new IllegalStateException("There is no datarow connected");
+    if (row == null) throw new NullPointerException ("Null-DataRowBackend cannot be disconnected.");
+    if (dataRow == null) throw new IllegalStateException ("There is no datarow connected");
     dataRow = null;
   }
 

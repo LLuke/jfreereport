@@ -59,7 +59,7 @@ public class JFreeReportResources extends ListResourceBundle
   public static ImageIcon getIcon(String filename)
   {
 
-    URL in = ClassLoader.getSystemResource(filename);
+    URL in = res.getClass().getClassLoader().getResource(filename);
     if (in == null)
     {
       Log.debug ("Unable to load file: " + filename);
