@@ -1,10 +1,10 @@
 <%@ page import="java.net.URL,
-                 com.jrefinery.report.ext.demo.AbstractPageableReportServletWorker,
-                 com.jrefinery.report.ext.demo.DefaultPageableReportServletWorker,
-                 com.jrefinery.report.demo.SwingIconsDemoTableModel,
-                 com.jrefinery.report.targets.pageable.output.G2OutputTarget,
-                 com.jrefinery.report.JFreeReport,
-                 com.jrefinery.report.ext.demo.DemoModelProvider"%>
+                 org.jfree.report.ext.servletdemo.AbstractPageableReportServletWorker,
+                 org.jfree.report.ext.servletdemo.DefaultPageableReportServletWorker,
+                 org.jfree.report.demo.SwingIconsDemoTableModel,
+                 org.jfree.report.modules.output.pageable.graphics.G2OutputTarget,
+                 org.jfree.report.JFreeReport,
+                 org.jfree.report.ext.servletdemo.DemoModelProvider"%>
 
 <%
   // initalize the report if not already done ...
