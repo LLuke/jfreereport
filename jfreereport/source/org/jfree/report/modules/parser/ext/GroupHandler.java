@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupHandler.java,v 1.2 2003/07/12 16:31:13 taqua Exp $
+ * $Id: GroupHandler.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,8 @@ import org.jfree.report.Group;
 import org.jfree.report.GroupFooter;
 import org.jfree.report.GroupHeader;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.util.CharacterEntityParser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -77,6 +79,8 @@ public class GroupHandler extends AbstractExtReportParserHandler
 
   /** A character entity parser. */
   private CharacterEntityParser entityParser;
+
+  private String[] fieldComments;
 
   /**
    * Creates a new handler.
@@ -116,6 +120,7 @@ public class GroupHandler extends AbstractExtReportParserHandler
       }
       bandFactory = new BandHandler(getReportParser(), tagName, band);
       getParser().pushFactory(bandFactory);
+      addComment(band, CommentHandler.OPEN_TAG_COMMENT);
     }
     else if (tagName.equals(GROUP_FOOTER_TAG))
     {
@@ -127,13 +132,15 @@ public class GroupHandler extends AbstractExtReportParserHandler
       }
       bandFactory = new BandHandler(getReportParser(), tagName, band);
       getParser().pushFactory(bandFactory);
+      addComment(band, CommentHandler.OPEN_TAG_COMMENT);
     }
     else if (tagName.equals(FIELDS_TAG))
     {
-      // unused
+      addComment(tagName, CommentHandler.OPEN_TAG_COMMENT);
     }
     else if (tagName.equals(FIELD_TAG))
     {
+      fieldComments = getReportParser().getComments();
       buffer = new StringBuffer();
     }
     else
@@ -179,18 +186,22 @@ public class GroupHandler extends AbstractExtReportParserHandler
     else if (tagName.equals(GROUP_HEADER_TAG))
     {
       group.setHeader((GroupHeader) bandFactory.getElement());
+      addComment(bandFactory.getElement(), CommentHandler.CLOSE_TAG_COMMENT);
     }
     else if (tagName.equals(GROUP_FOOTER_TAG))
     {
       group.setFooter((GroupFooter) bandFactory.getElement());
+      addComment(bandFactory.getElement(), CommentHandler.CLOSE_TAG_COMMENT);
     }
     else if (tagName.equals(FIELDS_TAG))
     {
-      // ignore ...
+      addComment(tagName, CommentHandler.CLOSE_TAG_COMMENT);
     }
     else if (tagName.equals(FIELD_TAG))
     {
-      group.addField(entityParser.decodeEntities(buffer.toString()));
+      String fieldName = entityParser.decodeEntities(buffer.toString());
+      group.addField(fieldName);
+      addFieldComment(fieldName);
       buffer = null;
     }
     else
@@ -213,4 +224,30 @@ public class GroupHandler extends AbstractExtReportParserHandler
   {
     return group;
   }
+
+  private void addFieldComment (String name)
+  {
+    CommentHintPath path = new CommentHintPath();
+    path.addName(ExtParserModuleInit.REPORT_DEFINITION_TAG);
+    path.addName(ExtReportHandler.REPORT_DESCRIPTION_TAG);
+    path.addName(ReportDescriptionHandler.GROUPS_TAG);
+    path.addName(getGroup());
+    path.addName(FIELDS_TAG);
+    path.addName(name);
+    getReport().getReportBuilderHints().putHint
+        (path, CommentHandler.OPEN_TAG_COMMENT, fieldComments);
+  }
+
+  private void addComment (Object name, String hint)
+  {
+    CommentHintPath path = new CommentHintPath();
+    path.addName(ExtParserModuleInit.REPORT_DEFINITION_TAG);
+    path.addName(ExtReportHandler.REPORT_DESCRIPTION_TAG);
+    path.addName(ReportDescriptionHandler.GROUPS_TAG);
+    path.addName(getGroup());
+    path.addName(name);
+    getReport().getReportBuilderHints().putHint
+        (path, hint, getReportParser().getComments());
+  }
+
 }

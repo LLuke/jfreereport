@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.2 2003/07/10 20:02:08 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -307,6 +307,50 @@ public class JFreeReportResources extends ListResourceBundle
         {"OptionPane.okButtonText", "OK"},
         {"OptionPane.cancelButtonText", "Cancel"},
 
+        {"ColorChooser.cancelText", "Cancel"},
+        {"ColorChooser.hsbNameText", "HSB"},
+        {"ColorChooser.hsbHueText", "H"},
+        {"ColorChooser.hsbSaturationText", "S"},
+        {"ColorChooser.hsbBrightnessText", "B"},
+        {"ColorChooser.hsbRedText", "R"},
+        {"ColorChooser.hsbGreenText", "G"},
+        {"ColorChooser.hsbBlueText", "B"},
+        {"ColorChooser.okText", "OK"},
+        {"ColorChooser.previewText", "Preview"},
+        {"ColorChooser.resetText", "Reset"},
+        {"ColorChooser.rgbNameText", "RGB"},
+        {"ColorChooser.rgbRedMnemonic", new Integer(KeyEvent.VK_R)},
+        {"ColorChooser.rgbRedText", "Red"},
+        {"ColorChooser.rgbGreenMnemonic", new Integer(KeyEvent.VK_G)},
+        {"ColorChooser.rgbGreenText", "Green"},
+        {"ColorChooser.rgbBlueMnemonic", new Integer(KeyEvent.VK_B)},
+        {"ColorChooser.rgbBlueText", "Blue"},
+        {"ColorChooser.sampleText", "Sample Text  Sample Text"},
+        {"ColorChooser.swatchesNameText", "Swatches"},
+        {"ColorChooser.swatchesRecentText", "Recent:"},
+
+        {"InternalFrameTitlePane.closeButtonAccessibleName", "Close"},
+        {"InternalFrameTitlePane.iconifyButtonAccessibleName", "Iconify"},
+        {"InternalFrameTitlePane.maximizeButtonAccessibleName", "Maximize"},
+
+        {"FormView.resetButtonText", "Reset"},
+        {"FormView.submitButtonText", "Submit Query"},
+
+        {"AbstractButton.clickText", "click"},
+
+        {"AbstractDocument.additionText", "addition"},
+        {"AbstractDocument.deletionText", "deletion"},
+        {"AbstractDocument.redoText", "Redo"},
+        {"AbstractDocument.styleChangeText", "style change"},
+        {"AbstractDocument.undoText", "Undo"},
+
+        {"AbstractUndoableEdit.redoText", "Redo"},
+        {"AbstractUndoableEdit.undoText", "Undo"},
+
+        {"ProgressMonitor.progressText", "Progress..."},
+
+        {"SplitPane.leftButtonText", "left button"},
+        {"SplitPane.rightButtonText", "right button"}
       };
 
 }

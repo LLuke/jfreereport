@@ -15,24 +15,33 @@
   <!-- * PARSER CONFIGURATION * -->
   <!-- ************************ -->
   <parser-config>
+    <!-- comment 1 -->
     <object-factory class="org.jfree.report.modules.parser.ext.factory.objects.DefaultClassFactory"/>
+    <!-- comment 2 -->
     <element-factory class="org.jfree.report.modules.parser.ext.factory.elements.DefaultElementFactory"/>
+    <!-- comment 3 -->
     <stylekey-factory class="org.jfree.report.modules.parser.ext.factory.stylekey.DefaultStyleKeyFactory"/>
+    <!-- comment 4 -->
     <stylekey-factory class="org.jfree.report.modules.parser.ext.factory.stylekey.PageableLayoutStyleKeyFactory"/>
+    <!-- comment 5 -->
     <template-factory class="org.jfree.report.modules.parser.ext.factory.templates.DefaultTemplateCollection"/>
+    <!-- comment 6 -->
     <datasource-factory class="org.jfree.report.modules.parser.ext.factory.datasource.DefaultDataSourceFactory"/>
+    <!-- comment 7 -->
   </parser-config>
 
   <!-- ************************ -->
   <!-- * REPORT CONFIGURATION * -->
   <!-- ************************ -->
   <report-config>
-    <defaultpageformat orientation="portrait" 
-                       pageformat="LETTER" 
-                       topmargin="72" 
-                       bottommargin="72" 
-                       leftmargin="72" 
-                       rightmargin="72"/>
+    <!-- comment 8 -->
+    <defaultpageformat orientation="portrait"
+      pageformat="LETTER"
+      topmargin="72"
+      bottommargin="72"
+      leftmargin="72"
+      rightmargin="72"/>
+    <!-- comment 9 -->
   </report-config>
 
   <!-- ********** -->
@@ -51,7 +60,7 @@
   <!-- * REPORT DESCRIPTION * -->
   <!-- ********************** -->
   <report-description>
-    
+
     <!-- ================= -->
     <!-- = REPORT HEADER = -->
     <!-- ================= -->
@@ -86,7 +95,6 @@
         </style>
         <template references="label">
           <basic-object name="content">Java Look and Feel Graphics Repository</basic-object>
-          <basic-object name="nullValue">null</basic-object>
         </template>
       </element>
 
@@ -103,7 +111,6 @@
         </style>
         <template references="label">
           <basic-object name="content">This report lists the icons contained in the Java Look and Feel Graphics Repository.</basic-object>
-          <basic-object name="nullValue">null</basic-object>
         </template>
       </element>
 
@@ -120,7 +127,6 @@
         </style>
         <template references="label">
           <basic-object name="content">For more information about the repository, refer to:</basic-object>
-          <basic-object name="nullValue">null</basic-object>
         </template>
       </element>
 
@@ -140,7 +146,6 @@
         </style>
         <template references="label">
           <basic-object name="content">http://developer.java.sun.com/developer/techDocs/hi/repository/</basic-object>
-          <basic-object name="nullValue">null</basic-object>
         </template>
       </element>
 
@@ -157,7 +162,6 @@
         </style>
         <template references="label">
           <basic-object name="content">The design of this report is described in the JFreeReport PDF documentation.</basic-object>
-          <basic-object name="nullValue">null</basic-object>
         </template>
       </element>
 
@@ -243,7 +247,7 @@
 
       <element name="reportTotalLabel" type="text/plain">
         <style>
-          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Float">
+          <compound-key name="absolute_pos">
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">10.0</basic-object>
           </compound-key>
@@ -256,11 +260,10 @@
         </style>
         <template references="label">
           <basic-object name="content">REPORT TOTAL:</basic-object>
-          <basic-object name="nullValue">null</basic-object>
         </template>
       </element>
- 
-      <element name="reportCountField" type="text/plain">  
+
+      <element name="reportCountField" type="text/plain">
         <style>
           <compound-key name="absolute_pos">
             <basic-object name="x">-50.0</basic-object>
@@ -273,7 +276,7 @@
           <basic-key name="alignment">center</basic-key>
           <basic-key name="valignment">bottom</basic-key>
         </style>
-        <template references="number-field"> 
+        <template references="number-field">
           <basic-object name="field">OverallCount</basic-object>
           <basic-object name="format">#0</basic-object>
           <basic-object name="nullValue">-</basic-object>
@@ -281,7 +284,7 @@
       </element>
 
       <element name="reportSumField" type="text/plain">
-        <style> 
+        <style>
           <compound-key name="absolute_pos">
             <basic-object name="x">-80.0</basic-object>
             <basic-object name="y">10.0</basic-object>
@@ -357,11 +360,10 @@
           <basic-key name="valignment">bottom</basic-key>
         </style>
         <template references="label">
-          <basic-object name="nullValue">null</basic-object>
           <basic-object name="content">Java Look and Feel Graphics Repository</basic-object>
         </template>
       </element>
-    
+
       <element type="text/plain">
         <style>
           <compound-key name="absolute_pos">
@@ -438,7 +440,7 @@
           <basic-key name="valignment">bottom</basic-key>
         </style>
         <template references="number-field">
-          <basic-object name="nullValue">hull</basic-object> 
+          <basic-object name="nullValue">hull</basic-object>
           <basic-object name="format">Page #0</basic-object>
           <basic-object name="field">PageNumber</basic-object>
         </template>
@@ -453,11 +455,16 @@
 
       <!-- category group -->
       <group name="Category">
+        <!-- group comment 1 -->
         <fields>
+          <!-- group comment 2 -->
           <field>Category</field>
+          <!-- group comment 3 -->
         </fields>
 
+        <!-- group comment 4 -->
         <group-header>
+          <!-- group header comment 1 -->
           <style>
             <compound-key name="min-size">
               <basic-object name="height">30.0</basic-object>
@@ -466,123 +473,101 @@
           </style>
           <default-style>
             <basic-key name="font-bold">true</basic-key>
-            <basic-key name="font-size">12</basic-key>  
+            <basic-key name="font-size">12</basic-key>
             <basic-key name="font">SansSerif</basic-key>
             <basic-key name="font-italic">false</basic-key>
           </default-style>
 
-          <element name="@anonymous11" type="shape/generic">
+          <element type="shape/generic">
             <style>
               <basic-key name="stroke" class="java.awt.BasicStroke">0.0</basic-key>
-              <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Float">
+              <compound-key name="absolute_pos">
                 <basic-object name="x">0.0</basic-object>
                 <basic-object name="y">0.0</basic-object>
               </compound-key>
               <basic-key name="draw-shape">false</basic-key>
-              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-                <basic-object name="height" class="java.lang.Double">-100.0</basic-object>
-                <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
+              <compound-key name="min-size">
+                <basic-object name="height">-100.0</basic-object>
+                <basic-object name="width">-100.0</basic-object>
               </compound-key>
               <basic-key name="keepAspectRatio">false</basic-key>
               <basic-key name="scale">true</basic-key>
               <basic-key name="paint">#ccccff</basic-key>
               <basic-key name="fill-shape">true</basic-key>
             </style>
-            <datasource type="StaticDataSource">
-              <compound-object name="value" class="java.awt.geom.Rectangle2D$Float">
-                <basic-object name="x">0.0</basic-object>
-                <basic-object name="height">100.0</basic-object>
-                <basic-object name="width">100.0</basic-object>
-                <basic-object name="y">0.0</basic-object>
-              </compound-object>
-            </datasource>
+            <template references="rectangle"/>
           </element>
 
-          <element name="@anonymous12" type="shape/generic">
+          <element type="shape/generic">
             <style>
               <basic-key name="stroke" class="java.awt.BasicStroke">0.5</basic-key>
-              <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Float">
+              <compound-key name="absolute_pos">
                 <basic-object name="x">0.0</basic-object>
                 <basic-object name="y">0.0</basic-object>
               </compound-key>
               <basic-key name="draw-shape">true</basic-key>
-              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-                <basic-object name="height" class="java.lang.Double">0.0</basic-object>
-                <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
+              <compound-key name="min-size">
+                <basic-object name="height">0.0</basic-object>
+                <basic-object name="width">-100.0</basic-object>
               </compound-key>
               <basic-key name="keepAspectRatio">false</basic-key>
               <basic-key name="scale">true</basic-key>
               <basic-key name="paint">black</basic-key>
               <basic-key name="fill-shape">false</basic-key>
             </style>
-            <datasource type="StaticDataSource">
-              <compound-object name="value" class="java.awt.geom.Line2D$Float">
-                <basic-object name="x2">100.0</basic-object>
-                <basic-object name="x1">0.0</basic-object>
-                <basic-object name="y2">0.0</basic-object>
-                <basic-object name="y1">0.0</basic-object>
-              </compound-object>
-            </datasource>
+            <template references="horizontal-line"/>
           </element>
 
-          <element name="@anonymous13" type="shape/generic">  
+          <element type="shape/generic">
             <style>
               <basic-key name="stroke" class="java.awt.BasicStroke">0.5</basic-key>
-              <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Float">
+              <compound-key name="absolute_pos">
                 <basic-object name="x">0.0</basic-object>
                 <basic-object name="y">30.0</basic-object>
               </compound-key>
               <basic-key name="draw-shape">true</basic-key>
-              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-                <basic-object name="height" class="java.lang.Double">0.0</basic-object>
-                <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
+              <compound-key name="min-size">
+                <basic-object name="height">0.0</basic-object>
+                <basic-object name="width">-100.0</basic-object>
               </compound-key>
               <basic-key name="keepAspectRatio">false</basic-key>
               <basic-key name="scale">true</basic-key>
               <basic-key name="paint">black</basic-key>
               <basic-key name="fill-shape">false</basic-key>
             </style>
-            <datasource type="StaticDataSource">
-              <compound-object name="value" class="java.awt.geom.Line2D$Float">
-                <basic-object name="x2">100.0</basic-object>
-                <basic-object name="x1">0.0</basic-object>
-                <basic-object name="y2">0.0</basic-object>
-                <basic-object name="y1">0.0</basic-object>
-              </compound-object>
-            </datasource>
+            <template references="horizontal-line"/>
           </element>
 
-          <element name="@anonymous14" type="text/plain">
+          <element type="text/plain">
             <style>
-              <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Float">
+              <compound-key name="absolute_pos">
                 <basic-object name="x">0.0</basic-object>
                 <basic-object name="y">3.0</basic-object>
-              </compound-key> 
+              </compound-key>
               <basic-key name="dynamic_height">false</basic-key>
-              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-                <basic-object name="height" class="java.lang.Double">12.0</basic-object>
-                <basic-object name="width" class="java.lang.Double">92.0</basic-object>
+              <compound-key name="min-size">
+                <basic-object name="height">12.0</basic-object>
+                <basic-object name="width">92.0</basic-object>
               </compound-key>
               <basic-key name="paint">black</basic-key>
-              <basic-key name="alignment">left</basic-key>  
+              <basic-key name="alignment">left</basic-key>
               <basic-key name="valignment">bottom</basic-key>
             </style>
             <template references="label">
-              <basic-object name="nullValue">null</basic-object>
               <basic-object name="content">Category:</basic-object>
             </template>
           </element>
 
-          <element name="@anonymous15" type="text/plain">
+          <element type="text/plain">
             <style>
-              <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Float">
-              <basic-object name="x">96.0</basic-object>
-              <basic-object name="y">3.0</basic-object>
+              <compound-key name="absolute_pos">
+                <basic-object name="x">96.0</basic-object>
+                <basic-object name="y">3.0</basic-object>
               </compound-key>
               <basic-key name="dynamic_height">false</basic-key>
-              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-              <basic-object name="height" class="java.lang.Double">12.0</basic-object>
-              <basic-object name="width" class="java.lang.Double">120.0</basic-object>
+              <compound-key name="min-size">
+                <basic-object name="height">12.0</basic-object>
+                <basic-object name="width">120.0</basic-object>
               </compound-key>
               <basic-key name="paint">black</basic-key>
               <basic-key name="alignment">left</basic-key>
@@ -593,91 +578,86 @@
               <basic-object name="field">Category</basic-object>
             </template>
           </element>
- 
-          <element name="@anonymous16" type="text/plain">
+
+          <element type="text/plain">
             <style>
               <basic-key name="dynamic_height">false</basic-key>
               <basic-key name="font-size">8</basic-key>
               <basic-key name="font-bold">false</basic-key>
               <basic-key name="font-italic">true</basic-key>
               <basic-key name="paint">black</basic-key>
-              <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Float">
+              <compound-key name="absolute_pos">
                 <basic-object name="x">0.0</basic-object>
                 <basic-object name="y">20.0</basic-object>
               </compound-key>
               <basic-key name="alignment">left</basic-key>
-              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-                <basic-object name="height" class="java.lang.Double">9.0</basic-object>
-                <basic-object name="width" class="java.lang.Double">-50.0</basic-object>
+              <compound-key name="min-size">
+                <basic-object name="height">9.0</basic-object>
+                <basic-object name="width">-50.0</basic-object>
               </compound-key>
               <basic-key name="valignment">bottom</basic-key>
             </style>
             <template references="label">
-              <basic-object name="nullValue">null</basic-object>
               <basic-object name="content">Name:</basic-object>
             </template>
           </element>
 
-          <element name="@anonymous17" type="text/plain">
-            <style> 
-            <basic-key name="dynamic_height">false</basic-key>
-            <basic-key name="font-size">8</basic-key>
-            <basic-key name="font-bold">false</basic-key>
-            <basic-key name="font-italic">true</basic-key>
-            <basic-key name="paint">black</basic-key>
-            <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Float">
-            <basic-object name="x">-50.0</basic-object>
-            <basic-object name="y">20.0</basic-object>
-            </compound-key>
-            <basic-key name="alignment">left</basic-key>
-            <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-            <basic-object name="height" class="java.lang.Double">9.0</basic-object>
-            <basic-object name="width" class="java.lang.Double">-30.0</basic-object>
-            </compound-key>
-            <basic-key name="valignment">bottom</basic-key>
-            </style>
-            <template references="label">
-            <basic-object name="nullValue">null</basic-object>
-            <basic-object name="content">Icon:</basic-object>
-            </template>
-          </element>
-     
-          <element name="@anonymous18" type="text/plain">
+          <element type="text/plain">
             <style>
-            <basic-key name="dynamic_height">false</basic-key>
-            <basic-key name="font-size">8</basic-key>
-            <basic-key name="font-bold">false</basic-key>
-            <basic-key name="font-italic">true</basic-key>
-            <basic-key name="paint">black</basic-key>
-            <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Float">
-            <basic-object name="x">-80.0</basic-object>
-            <basic-object name="y">20.0</basic-object>
-            </compound-key>
-            <basic-key name="alignment">right</basic-key>
-            <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-            <basic-object name="height" class="java.lang.Double">9.0</basic-object>
-            <basic-object name="width" class="java.lang.Double">-20.0</basic-object>
-            </compound-key>
-            <basic-key name="valignment">bottom</basic-key>
+              <basic-key name="dynamic_height">false</basic-key>
+              <basic-key name="font-size">8</basic-key>
+              <basic-key name="font-bold">false</basic-key>
+              <basic-key name="font-italic">true</basic-key>
+              <basic-key name="paint">black</basic-key>
+              <compound-key name="absolute_pos">
+                <basic-object name="x">-50.0</basic-object>
+                <basic-object name="y">20.0</basic-object>
+              </compound-key>
+              <basic-key name="alignment">left</basic-key>
+              <compound-key name="min-size">
+                <basic-object name="height">9.0</basic-object>
+                <basic-object name="width">-30.0</basic-object>
+              </compound-key>
+              <basic-key name="valignment">bottom</basic-key>
             </style>
             <template references="label">
-            <basic-object name="nullValue">null</basic-object>
-            <basic-object name="content">Size:</basic-object>
+              <basic-object name="content">Icon:</basic-object>
             </template>
           </element>
 
+          <element type="text/plain">
+            <style>
+              <basic-key name="dynamic_height">false</basic-key>
+              <basic-key name="font-size">8</basic-key>
+              <basic-key name="font-bold">false</basic-key>
+              <basic-key name="font-italic">true</basic-key>
+              <basic-key name="paint">black</basic-key>
+              <compound-key name="absolute_pos">
+                <basic-object name="x">-80.0</basic-object>
+                <basic-object name="y">20.0</basic-object>
+              </compound-key>
+              <basic-key name="alignment">right</basic-key>
+              <compound-key name="min-size">
+                <basic-object name="height">9.0</basic-object>
+                <basic-object name="width">-20.0</basic-object>
+              </compound-key>
+              <basic-key name="valignment">bottom</basic-key>
+            </style>
+            <template references="label">
+              <basic-object name="content">Size:</basic-object>
+            </template>
+          </element>
+          <!-- group header comment 1e -->
         </group-header>
-        
-        <group-footer name="anonymousBand@8361137">
+
+        <!-- group footer comment 2a -->
+        <group-footer>
+          <!-- group footer comment 2b -->
           <style>
-            <basic-key name="font-bold">true</basic-key>
-            <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-              <basic-object name="height" class="java.lang.Double">30.0</basic-object>
-              <basic-object name="width" class="java.lang.Double">0.0</basic-object>
+            <compound-key name="min-size">
+              <basic-object name="height">30.0</basic-object>
+              <basic-object name="width">0.0</basic-object>
             </compound-key>
-            <basic-key name="font-size">11</basic-key>
-            <basic-key name="font">SansSerif</basic-key>
-            <basic-key name="font-italic">false</basic-key>
             <basic-key name="pagebreak-before">false</basic-key>
           </style>
           <default-style>
@@ -686,60 +666,59 @@
             <basic-key name="font">SansSerif</basic-key>
             <basic-key name="font-italic">false</basic-key>
           </default-style>
-          
-          <element name="@anonymous19" type="text/plain">
+
+          <element type="text/plain">
             <style>
-              <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Float">
+              <compound-key name="absolute_pos">
                 <basic-object name="x">0.0</basic-object>
                 <basic-object name="y">5.0</basic-object>
               </compound-key>
               <basic-key name="dynamic_height">false</basic-key>
-              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-                <basic-object name="height" class="java.lang.Double">9.0</basic-object>
-                <basic-object name="width" class="java.lang.Double">100.0</basic-object>
+              <compound-key name="min-size">
+                <basic-object name="height">9.0</basic-object>
+                <basic-object name="width">100.0</basic-object>
               </compound-key>
               <basic-key name="paint">black</basic-key>
               <basic-key name="alignment">left</basic-key>
               <basic-key name="valignment">bottom</basic-key>
             </style>
             <template references="label">
-              <basic-object name="nullValue">null</basic-object>
               <basic-object name="content">Group Total:</basic-object>
             </template>
           </element>
- 
-          <element name="@anonymous1a" type="text/plain">
+
+          <element type="text/plain">
             <style>
-            <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Float">
-            <basic-object name="x">-50.0</basic-object>
-            <basic-object name="y">5.0</basic-object>
-            </compound-key>
-            <basic-key name="dynamic_height">false</basic-key>
-            <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-            <basic-object name="height" class="java.lang.Double">9.0</basic-object>
-            <basic-object name="width" class="java.lang.Double">-30.0</basic-object>
-            </compound-key>
-            <basic-key name="paint">black</basic-key>
-            <basic-key name="alignment">center</basic-key>
-            <basic-key name="valignment">bottom</basic-key>
+              <compound-key name="absolute_pos">
+                <basic-object name="x">-50.0</basic-object>
+                <basic-object name="y">5.0</basic-object>
+              </compound-key>
+              <basic-key name="dynamic_height">false</basic-key>
+              <compound-key name="min-size">
+                <basic-object name="height">9.0</basic-object>
+                <basic-object name="width">-30.0</basic-object>
+              </compound-key>
+              <basic-key name="paint">black</basic-key>
+              <basic-key name="alignment">center</basic-key>
+              <basic-key name="valignment">bottom</basic-key>
             </style>
             <template references="number-field">
-            <basic-object name="nullValue">-</basic-object>
-            <basic-object name="format">#0</basic-object>
-            <basic-object name="field">GroupCount</basic-object>
+              <basic-object name="nullValue">-</basic-object>
+              <basic-object name="format">#0</basic-object>
+              <basic-object name="field">GroupCount</basic-object>
             </template>
           </element>
-          
-          <element name="@anonymous1b" type="text/plain">
+
+          <element type="text/plain">
             <style>
-              <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Float">
+              <compound-key name="absolute_pos">
                 <basic-object name="x">-80.0</basic-object>
                 <basic-object name="y">5.0</basic-object>
               </compound-key>
               <basic-key name="dynamic_height">false</basic-key>
-              <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-                <basic-object name="height" class="java.lang.Double">9.0</basic-object>
-                <basic-object name="width" class="java.lang.Double">-20.0</basic-object>
+              <compound-key name="min-size">
+                <basic-object name="height">9.0</basic-object>
+                <basic-object name="width">-20.0</basic-object>
               </compound-key>
               <basic-key name="paint">black</basic-key>
               <basic-key name="alignment">right</basic-key>
@@ -751,21 +730,25 @@
               <basic-object name="field">GroupSum</basic-object>
             </template>
           </element>
+          <!-- group footer comment 2z -->
         </group-footer>
+        <!-- group footer comment xxad -->
       </group>
+      <!-- group comment end -->
     </groups>
+    <!-- groups comment end -->
 
     <!-- ============= -->
     <!-- = ITEM BAND = -->
     <!-- ============= -->
-    <itemband name="anonymousBand@581472">
+    <itemband>
 
       <!-- the band style -->
       <style>
         <basic-key name="font-bold">false</basic-key>
-        <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-          <basic-object name="height" class="java.lang.Double">26.0</basic-object>
-          <basic-object name="width" class="java.lang.Double">0.0</basic-object>
+        <compound-key name="min-size">
+          <basic-object name="height">26.0</basic-object>
+          <basic-object name="width">0.0</basic-object>
         </compound-key>
         <basic-key name="font-size">10</basic-key>
         <basic-key name="font">SansSerif</basic-key>
@@ -780,44 +763,37 @@
         <basic-key name="font-italic">false</basic-key>
       </default-style>
 
-      <element name="@anonymous1c" type="shape/generic">
+      <element type="shape/generic">
         <style>
           <basic-key name="stroke" class="java.awt.BasicStroke">0.1</basic-key>
-          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Float">
+          <compound-key name="absolute_pos">
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">25.0</basic-object>
           </compound-key>
           <basic-key name="draw-shape">true</basic-key>
-          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-            <basic-object name="height" class="java.lang.Double">0.0</basic-object>
-            <basic-object name="width" class="java.lang.Double">-100.0</basic-object>
+          <compound-key name="min-size">
+            <basic-object name="height">0.0</basic-object>
+            <basic-object name="width">-100.0</basic-object>
           </compound-key>
           <basic-key name="keepAspectRatio">false</basic-key>
           <basic-key name="scale">true</basic-key>
           <basic-key name="paint">#dfdfdf</basic-key>
           <basic-key name="fill-shape">false</basic-key>
         </style>
-        <datasource type="StaticDataSource">
-          <compound-object name="value" class="java.awt.geom.Line2D$Float">
-            <basic-object name="x2">100.0</basic-object>
-            <basic-object name="x1">0.0</basic-object>
-            <basic-object name="y2">0.0</basic-object>
-            <basic-object name="y1">0.0</basic-object>
-          </compound-object>
-        </datasource>
+        <template references="horizontal-line"/>
       </element>
 
       <!-- element to display the name from the TableModel -->
-      <element name="@anonymous1d" type="text/plain">
+      <element type="text/plain">
         <style>
-          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Float">
+          <compound-key name="absolute_pos">
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">8.0</basic-object>
           </compound-key>
           <basic-key name="dynamic_height">false</basic-key>
-          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-            <basic-object name="height" class="java.lang.Double">10.0</basic-object>
-            <basic-object name="width" class="java.lang.Double">-50.0</basic-object>
+          <compound-key name="min-size">
+            <basic-object name="height">10.0</basic-object>
+            <basic-object name="width">-50.0</basic-object>
           </compound-key>
           <basic-key name="paint">black</basic-key>
           <basic-key name="alignment">left</basic-key>
@@ -830,15 +806,15 @@
       </element>
 
       <!-- element to display icon from the TableModel -->
-      <element name="@anonymous1e" type="image/generic">
+      <element type="image/generic">
         <style>
-          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Float">
+          <compound-key name="absolute_pos">
             <basic-object name="x">-50.0</basic-object>
             <basic-object name="y">1.0</basic-object>
-          </compound-key> 
-          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-            <basic-object name="height" class="java.lang.Double">24.0</basic-object>
-            <basic-object name="width" class="java.lang.Double">-30.0</basic-object>
+          </compound-key>
+          <compound-key name="min-size">
+            <basic-object name="height">24.0</basic-object>
+            <basic-object name="width">-30.0</basic-object>
           </compound-key>
           <basic-key name="keepAspectRatio">true</basic-key>
           <basic-key name="dynamic_height">false</basic-key>
@@ -851,16 +827,16 @@
       </element>
 
       <!-- element to display the file size from the TableModel -->
-      <element name="@anonymous1f" type="text/plain">
+      <element type="text/plain">
         <style>
-          <compound-key name="absolute_pos" class="java.awt.geom.Point2D$Float">
+          <compound-key name="absolute_pos">
             <basic-object name="x">-80.0</basic-object>
             <basic-object name="y">8.0</basic-object>
           </compound-key>
           <basic-key name="dynamic_height">false</basic-key>
-          <compound-key name="min-size" class="org.jfree.ui.FloatDimension">
-            <basic-object name="height" class="java.lang.Double">10.0</basic-object>
-            <basic-object name="width" class="java.lang.Double">-20.0</basic-object>
+          <compound-key name="min-size">
+            <basic-object name="height">10.0</basic-object>
+            <basic-object name="width">-20.0</basic-object>
           </compound-key>
           <basic-key name="paint">black</basic-key>
           <basic-key name="alignment">right</basic-key>
@@ -879,36 +855,61 @@
   <!-- * FUNCTIONS * -->
   <!-- ************* -->
   <functions>
-
+    <!-- function comment a -->
     <property-ref name="report.date"/>
 
-    <function name="PageNumber" class="org.jfree.report.function.PageFunction" />
+    <!-- function comment b -->
+    <function name="PageNumber" class="org.jfree.report.function.PageFunction"/>
 
+    <!-- function comment c -->
     <function name="GroupCount" class="org.jfree.report.function.ItemCountFunction">
+      <!-- function comment d -->
       <properties>
+        <!-- function comment e -->
         <property name="field">Name</property>
+        <!-- function comment f -->
         <property name="group">Category</property>
+        <!-- function comment g -->
       </properties>
+      <!-- function comment h -->
     </function>
 
+    <!-- function comment i -->
     <function name="GroupSum" class="org.jfree.report.function.ItemSumFunction">
+      <!-- function comment j -->
       <properties>
+        <!-- function comment k -->
         <property name="field">Size</property>
+        <!-- function comment l -->
         <property name="group">Category</property>
+        <!-- function comment m -->
       </properties>
+      <!-- function comment n -->
     </function>
 
+    <!-- function comment o -->
     <function name="OverallCount" class="org.jfree.report.function.ItemCountFunction">
+      <!-- function comment p -->
       <properties>
+        <!-- function comment q -->
         <property name="field">Name</property>
+        <!-- function comment r -->
       </properties>
+      <!-- function comment s -->
     </function>
 
+    <!-- function comment t -->
     <function name="OverallSum" class="org.jfree.report.function.ItemSumFunction">
+      <!-- function comment u -->
       <properties>
+        <!-- function comment v -->
         <property name="field">Size</property>
+        <!-- function comment w -->
       </properties>
+      <!-- function comment x -->
     </function>
+    <!-- function comment y -->
   </functions>
-  
+
+  <!-- comment end -->
 </report-definition>

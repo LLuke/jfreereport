@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_de.java,v 1.2 2003/07/10 20:02:08 taqua Exp $
+ * $Id: JFreeReportResources_de.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -139,15 +139,66 @@ public class JFreeReportResources_de extends JFreeReportResources
         {"FileChooser.newFolderToolTipText", "Neuen Ordner anlegen"},
         {"FileChooser.openButtonMnemonic", new Integer(KeyEvent.VK_O)},
         {"FileChooser.openButtonText", "Öffnen"},
-        {"FileChooser.openButtonToolTipText", "Öffnet die ausgewählte Datei"},
+        {"FileChooser.openButtonToolTipText", "Öffnet die ausgew\u00e4hlte Datei"},
         {"FileChooser.saveButtonMnemonic", new Integer(KeyEvent.VK_S)},
         {"FileChooser.saveButtonText", "Speichern"},
-        {"FileChooser.saveButtonToolTipText", "Speichert die ausgewählte Datei"},
+        {"FileChooser.saveButtonToolTipText", "Speichert die ausgew\u00e4hlte Datei"},
         {"FileChooser.updateButtonMnemonic", new Integer(KeyEvent.VK_U)},
         {"FileChooser.updateButtonText", "Aktualisieren"},
         {"FileChooser.updateButtonToolTipText", "Aktualisiert die Ordneransicht"},
         {"FileChooser.upFolderAccessibleName", "Hoch"},
-        {"FileChooser.upFolderToolTipText", "Eine Verzeichnisebene höher"},
+        {"FileChooser.upFolderToolTipText", "Eine Verzeichnisebene h\u00f6her"},
+
+        {"OptionPane.cancelButtonText", "Abbruch"},
+        {"OptionPane.noButtonText", "Nein"},
+        {"OptionPane.okButtonText", "OK"},
+        {"OptionPane.titleText", "Eine Option ausw\u00e4hlen"},
+        {"OptionPane.yesButtonText", "Ja"},
+
+        {"ColorChooser.cancelText", "Abbruch"},
+        {"ColorChooser.hsbNameText", "HSB"},
+        {"ColorChooser.hsbHueText", "H"},
+        {"ColorChooser.hsbSaturationText", "S"},
+        {"ColorChooser.hsbBrightnessText", "B"},
+        {"ColorChooser.hsbRedText", "R"},
+        {"ColorChooser.hsbGreenText", "G"},
+        {"ColorChooser.hsbBlueText", "B"},
+        {"ColorChooser.okText", "OK"},
+        {"ColorChooser.previewText", "Vorschau"},
+        {"ColorChooser.resetText", "Reset"},
+        {"ColorChooser.rgbNameText", "RGB"},
+        {"ColorChooser.rgbRedMnemonic", new Integer(KeyEvent.VK_R)},
+        {"ColorChooser.rgbRedText", "Rot"},
+        {"ColorChooser.rgbGreenMnemonic", new Integer(KeyEvent.VK_G)},
+        {"ColorChooser.rgbGreenText", "Gr\00fcn"},
+        {"ColorChooser.rgbBlueMnemonic", new Integer(KeyEvent.VK_B)},
+        {"ColorChooser.rgbBlueText", "Blau"},
+        {"ColorChooser.sampleText", "Beispieltext Beispieltext"},
+        {"ColorChooser.swatchesNameText", "Swatches"},
+        {"ColorChooser.swatchesRecentText", "Recent:"},
+
+        {"InternalFrameTitlePane.closeButtonAccessibleName", "Schliessen"},
+        {"InternalFrameTitlePane.iconifyButtonAccessibleName", "Minimieren"},
+        {"InternalFrameTitlePane.maximizeButtonAccessibleName", "Maximieren"},
+
+        {"FormView.resetButtonText", "Reset"},
+        {"FormView.submitButtonText", "Abfrage absenden"},
+
+        {"AbstractButton.clickText", "click"},
+
+        {"AbstractDocument.additionText", "hinzuf\u00fcgen"},
+        {"AbstractDocument.deletionText", "entfernen"},
+        {"AbstractDocument.redoText", "Wiederholen"},
+        {"AbstractDocument.styleChangeText", "Formatierung \u00e4ndern"},
+        {"AbstractDocument.undoText", "R\u00fcckg\u00e4ngig"},
+
+        {"AbstractUndoableEdit.redoText", "Wiederholen"},
+        {"AbstractUndoableEdit.undoText", "R\u00fcckg\u00e4ngig"},
+
+        {"ProgressMonitor.progressText", "Fortschritt..."},
+
+        {"SplitPane.leftButtonText", "Linker Knopf"},
+        {"SplitPane.rightButtonText", "Rechter Knopf"}
       };
 
   /**

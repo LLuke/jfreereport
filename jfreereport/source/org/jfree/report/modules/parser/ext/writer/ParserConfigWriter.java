@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigWriter.java,v 1.3 2003/07/18 17:56:39 taqua Exp $
+ * $Id: ParserConfigWriter.java,v 1.4 2003/07/18 18:16:54 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,9 @@ import java.util.Iterator;
 
 import org.jfree.report.modules.parser.ext.ExtReportHandler;
 import org.jfree.report.modules.parser.ext.ParserConfigHandler;
+import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.util.Log;
 
 /**
@@ -54,6 +57,9 @@ import org.jfree.report.util.Log;
  */
 public class ParserConfigWriter extends AbstractXMLDefinitionWriter
 {
+  private static CommentHintPath PARSER_CONFIG_PATH = new CommentHintPath
+        (new String[] { ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.PARSER_CONFIG_TAG});
+
   /**
    * Creates a new writer.
    *
@@ -74,6 +80,8 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
    */
   public void write(final Writer writer) throws IOException
   {
+    writeComment(writer, PARSER_CONFIG_PATH, CommentHandler.OPEN_TAG_COMMENT);
+
     writeTag(writer, ExtReportHandler.PARSER_CONFIG_TAG);
 
     writeFactory(writer, ParserConfigHandler.OBJECT_FACTORY_TAG,
@@ -87,10 +95,17 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
     writeFactory(writer, ParserConfigHandler.DATASOURCE_FACTORY_TAG,
         filterFactories(getReportWriter().getDataSourceCollector().getFactories()));
 
+    writeComment(writer, PARSER_CONFIG_PATH, CommentHandler.CLOSE_TAG_COMMENT);
     writeCloseTag(writer, ExtReportHandler.PARSER_CONFIG_TAG);
     writer.write(getLineSeparator());
   }
 
+  /**
+   * Filters the given factories iterator and removes all duplicate entries.
+   *
+   * @param it the unfiltered factories iterator.
+   * @return a cleaned version of the iterator.
+   */
   private Iterator filterFactories (final Iterator it)
   {
     ReportWriter writer = getReportWriter();
@@ -123,6 +138,7 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
         factories.add(o);
       }
     }
+    // sort them ?
     return factories.iterator();
   }
 
@@ -153,12 +169,20 @@ public class ParserConfigWriter extends AbstractXMLDefinitionWriter
       }
       catch (Exception e)
       {
-        Log.warn("FactoryClass " + itObject.getClass()
-            + " has no default constructor. This class will be ignored");
+        StringBuffer message = new StringBuffer();
+        message.append("FactoryClass ");
+        message.append(itObject.getClass());
+        message.append(" has no default constructor. This class will be ignored");
+        writeComment(w, message.toString());
+        Log.warn(message.toString());
         continue;
       }
 
       final String className = itObject.getClass().getName();
+      CommentHintPath path = PARSER_CONFIG_PATH.getInstance();
+      path.addName(tagName);
+      path.addName(itObject.getClass().getName());
+      writeComment(w, path, CommentHandler.OPEN_TAG_COMMENT);
       writeTag(w, tagName, ParserConfigHandler.CLASS_ATTRIBUTE, className, CLOSE);
     }
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: ReportConfigHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,8 @@ import java.util.Properties;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.report.util.ReportConfiguration;
@@ -142,15 +144,19 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
   {
     if (tagName.equals(DEFAULT_PAGEFORMAT_TAG))
     {
+      addComment(tagName, CommentHandler.OPEN_TAG_COMMENT);
       handlePageFormat(attrs);
     }
     else if (tagName.equals(CONFIGURATION_TAG))
     {
-      currentPropertyFactory = new PropertyHandler(getReportParser(), CONFIGURATION_TAG);
+      addComment(tagName, CommentHandler.OPEN_TAG_COMMENT);
+      CommentHintPath path = createPath(tagName);
+      currentPropertyFactory = new PropertyHandler(getReportParser(), CONFIGURATION_TAG, path);
       getParser().pushFactory(currentPropertyFactory);
     }
     else if (tagName.equals(OUTPUT_TARGET_TAG))
     {
+      // not yet used ...
     }
     else
     {
@@ -185,6 +191,7 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
   {
     if (tagName.equals(DEFAULT_PAGEFORMAT_TAG))
     {
+      addComment(tagName, CommentHandler.CLOSE_TAG_COMMENT);
       // ignore this event ...
     }
     else if (tagName.equals(OUTPUT_TARGET_TAG))
@@ -193,6 +200,7 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
     }
     else if (tagName.equals(CONFIGURATION_TAG))
     {
+      addComment(tagName, CommentHandler.CLOSE_TAG_COMMENT);
       // add all properties of the PropertyHandler to the report configuration
       final Properties p = currentPropertyFactory.getProperties();
       final ReportConfiguration rc = getReport().getReportConfiguration();
@@ -342,6 +350,21 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
 
     Log.info("Insufficient Data to create a pageformat: Returned default.");
     return format;
+  }
+
+  private CommentHintPath createPath (String tagName)
+  {
+    CommentHintPath path = new CommentHintPath();
+    path.addName(ExtParserModuleInit.REPORT_DEFINITION_TAG);
+    path.addName(ExtReportHandler.REPORT_CONFIG_TAG);
+    path.addName(tagName);
+    return path;
+  }
+
+  private void addComment (String tagName, String hintName)
+  {
+    getReport().getReportBuilderHints().putHint
+        (createPath(tagName), hintName, getReportParser().getComments());
   }
 
 }

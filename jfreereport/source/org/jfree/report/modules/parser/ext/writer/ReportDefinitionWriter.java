@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: ReportDefinitionWriter.java,v 1.2 2003/07/18 17:56:39 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,9 @@ import java.io.IOException;
 import java.io.Writer;
 
 import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.report.JFreeReport;
 
 /**
  * A report definition writer.
@@ -49,6 +52,9 @@ import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
  */
 public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
 {
+  private static final CommentHintPath ROOT_HINT_PATH =
+      new CommentHintPath(ExtParserModuleInit.REPORT_DEFINITION_TAG);
+
   /**
    * Creates a new writer.
    *
@@ -79,23 +85,25 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
    */
   public void write(final Writer w) throws IOException, ReportWriterException
   {
-    final String reportName = getReport().getName();
+    final JFreeReport report = getReport();
+    final String reportName = report.getName();
     w.write("<?xml version=\"1.0\" encoding=\"" + getReportWriter().getEncoding() + "\"?>\n");
     w.write("<!DOCTYPE report-definition PUBLIC \"");
     w.write(ExtParserModuleInit.PUBLIC_ID_EXTENDED);
     w.write("\"\n");
     w.write("                         \"http://jfreereport.sourceforge.net/extreport.dtd\">\n");
-    w.write("<!--\n");
-    w.write(" This report definition was created by the ReportDefinitionWriter.\n");
-    w.write("-->\n");
+
+    writeComment(w, ROOT_HINT_PATH, CommentHandler.OPEN_TAG_COMMENT);
+
     if (reportName != null)
     {
-      writeTag(w, "report-definition", "name", reportName, OPEN);
+      writeTag(w, ExtParserModuleInit.REPORT_DEFINITION_TAG, "name", reportName, OPEN);
     }
     else
     {
-      writeTag(w, "report-definition");
+      writeTag(w, ExtParserModuleInit.REPORT_DEFINITION_TAG);
     }
+    w.write(getLineSeparator());
 
     final ParserConfigWriter parserConfigWriter =
         new ParserConfigWriter(getReportWriter(), getIndentLevel());
@@ -120,7 +128,10 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
     final FunctionsWriter functionsWriter = new FunctionsWriter(getReportWriter(), getIndentLevel());
     functionsWriter.write(w);
 
+    writeComment(w, ROOT_HINT_PATH, CommentHandler.CLOSE_TAG_COMMENT);
     w.write("</report-definition>");
+
+    // todo there may be a comment after the document closing tag ..
     w.write(getLineSeparator());
   }
 

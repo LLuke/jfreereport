@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigWriter.java,v 1.11 2003/06/29 16:59:27 taqua Exp $
+ * $Id: ReportConfigWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,9 @@ import java.util.Properties;
 
 import org.jfree.report.modules.parser.ext.ExtReportHandler;
 import org.jfree.report.modules.parser.ext.ReportConfigHandler;
+import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.PageFormatFactory;
 import org.jfree.report.util.ReportConfiguration;
@@ -59,6 +62,24 @@ import org.jfree.report.util.ReportConfiguration;
  */
 public class ReportConfigWriter extends AbstractXMLDefinitionWriter
 {
+  private CommentHintPath REPORT_CONFIG_HINT_PATH =
+      new CommentHintPath(new String[]
+      {ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.REPORT_CONFIG_TAG});
+
+  private CommentHintPath CONFIGURATION_HINT_PATH =
+      new CommentHintPath(new String[]
+      {ExtParserModuleInit.REPORT_DEFINITION_TAG,
+       ExtReportHandler.REPORT_CONFIG_TAG,
+       ReportConfigHandler.CONFIGURATION_TAG
+      });
+
+  private CommentHintPath DEFAULT_PAGEFORMAT_HINT_PATH =
+      new CommentHintPath(new String[]
+      {ExtParserModuleInit.REPORT_DEFINITION_TAG,
+       ExtReportHandler.REPORT_CONFIG_TAG,
+       ReportConfigHandler.DEFAULT_PAGEFORMAT_TAG
+      });
+
   /**
    * A report configuration writer.
    *
@@ -79,26 +100,39 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
    */
   public void write(final Writer writer) throws IOException
   {
+    writeComment(writer, REPORT_CONFIG_HINT_PATH, CommentHandler.OPEN_TAG_COMMENT);
     writeTag(writer, ExtReportHandler.REPORT_CONFIG_TAG);
+
+    writeComment(writer, DEFAULT_PAGEFORMAT_HINT_PATH, CommentHandler.OPEN_TAG_COMMENT);
     writeTag(writer, ReportConfigHandler.DEFAULT_PAGEFORMAT_TAG,
         buildPageFormatProperties(), CLOSE);
-    writeTag(writer, ReportConfigHandler.CONFIGURATION_TAG);
     final ReportConfiguration config = getReport().getReportConfiguration();
     final Enumeration enum = config.getConfigProperties();
-    while (enum.hasMoreElements())
+    if (enum.hasMoreElements())
     {
-      final String key = (String) enum.nextElement();
-      final String value = config.getConfigProperty(key);
-      if (value != null)
+      writeComment(writer, CONFIGURATION_HINT_PATH, CommentHandler.OPEN_TAG_COMMENT);
+      writeTag(writer, ReportConfigHandler.CONFIGURATION_TAG);
+      while (enum.hasMoreElements())
       {
-        writeTag(writer, "property", "name", key, OPEN);
-        writer.write(normalize(value));
-        writeCloseTag(writer, "property");
+        final String key = (String) enum.nextElement();
+        final String value = config.getConfigProperty(key);
+        if (value != null)
+        {
+          CommentHintPath path = CONFIGURATION_HINT_PATH.getInstance();
+          path.addName(key);
+          writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
+          writeTag(writer, "property", "name", key, OPEN);
+          writer.write(normalize(value));
+          writeCloseTag(writer, "property");
+        }
       }
+      writeComment(writer, CONFIGURATION_HINT_PATH, CommentHandler.CLOSE_TAG_COMMENT);
+      writeCloseTag(writer, ReportConfigHandler.CONFIGURATION_TAG);
     }
 
-    writeCloseTag(writer, ReportConfigHandler.CONFIGURATION_TAG);
+    writeComment(writer, REPORT_CONFIG_HINT_PATH, CommentHandler.CLOSE_TAG_COMMENT);
     writeCloseTag(writer, ExtReportHandler.REPORT_CONFIG_TAG);
+    writer.write(getLineSeparator());
   }
 
   /**

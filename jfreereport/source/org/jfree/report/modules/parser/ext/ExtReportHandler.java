@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtReportHandler.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
+ * $Id: ExtReportHandler.java,v 1.4 2003/07/20 19:31:17 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,9 @@
 package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.modules.parser.base.IncludeParser;
+import org.jfree.report.util.Log;
+import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.report.modules.parser.base.ReportRootHandler;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
@@ -114,7 +116,7 @@ public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHan
     this.parser = parser;
     this.finishTag = finishTag;
 
-    if (parser.getConfigProperty(IncludeParser.INCLUDE_PARSING_KEY, "false").equals("true"))
+    if (parser.isIncluded())
     {
       if (parser.getReport() == null)
       {
@@ -163,38 +165,47 @@ public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHan
     {
       if (updateReportName)
       {
-        parser.getReport().setName(attrs.getValue("name"));
+        addComment(tagName, CommentHandler.OPEN_TAG_COMMENT);
+        JFreeReport report = parser.getReport();
+        report.setName(attrs.getValue("name"));
       }
       // ignore it ...
     }
     else if (tagName.equals(PARSER_CONFIG_TAG))
     {
-      // create the various factories ... order does matter ...
-      getParser().pushFactory(new ParserConfigHandler(getReportParser(), tagName));
+      // creates the various factories ... order does matter ...
+      addComment(tagName, CommentHandler.OPEN_TAG_COMMENT);
+      getParser().pushFactory(new ParserConfigHandler(parser, tagName));
     }
     else if (tagName.equals(REPORT_CONFIG_TAG))
     {
-      getParser().pushFactory(new ReportConfigHandler(getReportParser(), tagName));
+      addComment(tagName, CommentHandler.OPEN_TAG_COMMENT);
+      getParser().pushFactory(new ReportConfigHandler(parser, tagName));
     }
     else if (tagName.equals(STYLES_TAG))
     {
-      getParser().pushFactory(new StylesHandler(getReportParser(), tagName));
+      addComment(tagName, CommentHandler.OPEN_TAG_COMMENT);
+      getParser().pushFactory(new StylesHandler(parser, tagName));
     }
     else if (tagName.equals(TEMPLATES_TAG))
     {
-      getParser().pushFactory(new TemplatesHandler(getReportParser(), tagName));
+      addComment(tagName, CommentHandler.OPEN_TAG_COMMENT);
+      getParser().pushFactory(new TemplatesHandler(parser, tagName));
     }
     else if (tagName.equals(FUNCTIONS_TAG))
     {
-      getParser().pushFactory(new FunctionsHandler(getReportParser(), tagName));
+      addComment(tagName, CommentHandler.OPEN_TAG_COMMENT);
+      getParser().pushFactory(new FunctionsHandler(parser, tagName));
     }
     else if (tagName.equals(DATA_DEFINITION_TAG))
     {
-      getParser().pushFactory(new DataDefinitionHandler(getReportParser(), tagName));
+      addComment(tagName, CommentHandler.OPEN_TAG_COMMENT);
+      getParser().pushFactory(new DataDefinitionHandler(parser, tagName));
     }
     else if (tagName.equals(REPORT_DESCRIPTION_TAG))
     {
-      getParser().pushFactory(new ReportDescriptionHandler(getReportParser(), tagName));
+      addComment(tagName, CommentHandler.OPEN_TAG_COMMENT);
+      getParser().pushFactory(new ReportDescriptionHandler(parser, tagName));
     }
     else
     {
@@ -309,35 +320,43 @@ public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHan
   {
     if (tagName.equals(finishTag))
     {
+      addComment(tagName, CommentHandler.CLOSE_TAG_COMMENT);
       getParser().popFactory().endElement(tagName);
     }
     else if (tagName.equals(PARSER_CONFIG_TAG))
     {
       // ignore this event ... forwarded from subFactory ...
+      addComment(tagName, CommentHandler.CLOSE_TAG_COMMENT);
     }
     else if (tagName.equals(REPORT_CONFIG_TAG))
     {
       // ignore this event ... should not happen here ...
+      addComment(tagName, CommentHandler.CLOSE_TAG_COMMENT);
     }
     else if (tagName.equals(STYLES_TAG))
     {
       // ignore this event ... should not happen here ...
+      addComment(tagName, CommentHandler.CLOSE_TAG_COMMENT);
     }
     else if (tagName.equals(TEMPLATES_TAG))
     {
       // ignore this event ... should not happen here ...
+      addComment(tagName, CommentHandler.CLOSE_TAG_COMMENT);
     }
     else if (tagName.equals(FUNCTIONS_TAG))
     {
       // ignore this event ... should not happen here ...
+      addComment(tagName, CommentHandler.CLOSE_TAG_COMMENT);
     }
     else if (tagName.equals(DATA_DEFINITION_TAG))
     {
       // ignore this event ... should not happen here ...
+      addComment(tagName, CommentHandler.CLOSE_TAG_COMMENT);
     }
     else if (tagName.equals(REPORT_DESCRIPTION_TAG))
     {
       // ignore this event ... should not happen here ...
+      addComment(tagName, CommentHandler.CLOSE_TAG_COMMENT);
     }
     else
     {
@@ -352,22 +371,32 @@ public class ExtReportHandler implements ElementDefinitionHandler, ReportRootHan
     }
   }
 
+  private void addComment (String tagName, String commentHint)
+  {
+    Log.debug ("Adding Comments: " + createCommentHintPath(tagName));
+    Log.debug (" --------------: " + parser.getComments());
+    parser.getReport().getReportBuilderHints().putHint
+        (createCommentHintPath(tagName), commentHint, parser.getComments());
+  }
+
+  private CommentHintPath createCommentHintPath (String tagName)
+  {
+    CommentHintPath path = new CommentHintPath();
+    path.addName(ExtParserModuleInit.REPORT_DEFINITION_TAG);
+    if (tagName.equals(ExtParserModuleInit.REPORT_DEFINITION_TAG))
+    {
+      return path;
+    }
+    path.addName(tagName);
+    return path;
+  }
+
   /**
    * Returns the parser.
    *
    * @return The parser.
    */
   public Parser getParser()
-  {
-    return parser;
-  }
-
-  /**
-   * Returns the parser as ReportParser reference.
-   *
-   * @return The parser.
-   */
-  private ReportParser getReportParser()
   {
     return parser;
   }

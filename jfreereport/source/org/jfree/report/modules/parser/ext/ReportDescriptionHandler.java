@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionHandler.java,v 1.2 2003/07/12 16:31:13 taqua Exp $
+ * $Id: ReportDescriptionHandler.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,8 @@ package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.Band;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -51,6 +53,7 @@ import org.xml.sax.SAXException;
  */
 public class ReportDescriptionHandler extends AbstractExtReportParserHandler
 {
+
   /** The 'report-header' tag name. */
   public static final String REPORT_HEADER_TAG = "report-header";
 
@@ -102,6 +105,7 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
       {
         band.setName(name);
       }
+      addComment(band, CommentHandler.OPEN_TAG_COMMENT);
       bandFactory = new BandHandler(getReportParser(), tagName, band);
       getParser().pushFactory(bandFactory);
     }
@@ -113,6 +117,7 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
       {
         band.setName(name);
       }
+      addComment(band, CommentHandler.OPEN_TAG_COMMENT);
       bandFactory = new BandHandler(getReportParser(), tagName, band);
       getParser().pushFactory(bandFactory);
     }
@@ -124,6 +129,7 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
       {
         band.setName(name);
       }
+      addComment(band, CommentHandler.OPEN_TAG_COMMENT);
       bandFactory = new BandHandler(getReportParser(), tagName, band);
       getParser().pushFactory(bandFactory);
     }
@@ -135,6 +141,7 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
       {
         band.setName(name);
       }
+      addComment(band, CommentHandler.OPEN_TAG_COMMENT);
       bandFactory = new BandHandler(getReportParser(), tagName, band);
       getParser().pushFactory(bandFactory);
     }
@@ -146,11 +153,13 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
       {
         band.setName(name);
       }
+      addComment(band, CommentHandler.OPEN_TAG_COMMENT);
       bandFactory = new BandHandler(getReportParser(), tagName, band);
       getParser().pushFactory(bandFactory);
     }
     else if (tagName.equals(GROUPS_TAG))
     {
+      addComment(tagName, CommentHandler.OPEN_TAG_COMMENT);
       final GroupsHandler groupFactory = new GroupsHandler(getReportParser(), tagName);
       getParser().pushFactory(groupFactory);
     }
@@ -191,22 +200,27 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
   {
     if (tagName.equals(REPORT_HEADER_TAG))
     {
+      addComment(bandFactory.getElement(), CommentHandler.CLOSE_TAG_COMMENT);
     }
     else if (tagName.equals(REPORT_FOOTER_TAG))
     {
+      addComment(bandFactory.getElement(), CommentHandler.CLOSE_TAG_COMMENT);
     }
     else if (tagName.equals(PAGE_HEADER_TAG))
     {
+      addComment(bandFactory.getElement(), CommentHandler.CLOSE_TAG_COMMENT);
     }
     else if (tagName.equals(PAGE_FOOTER_TAG))
     {
+      addComment(bandFactory.getElement(), CommentHandler.CLOSE_TAG_COMMENT);
     }
     else if (tagName.equals(ITEMBAND_TAG))
     {
+      addComment(bandFactory.getElement(), CommentHandler.CLOSE_TAG_COMMENT);
     }
     else if (tagName.equals(GROUPS_TAG))
     {
-      // groups finished, nothing to do here
+      addComment(tagName, CommentHandler.CLOSE_TAG_COMMENT);
     }
     else if (tagName.equals(getFinishTag()))
     {
@@ -224,4 +238,15 @@ public class ReportDescriptionHandler extends AbstractExtReportParserHandler
           + getFinishTag());
     }
   }
+
+  private void addComment (Object name, String hint)
+  {
+    CommentHintPath path = new CommentHintPath();
+    path.addName(ExtParserModuleInit.REPORT_DEFINITION_TAG);
+    path.addName(ExtReportHandler.REPORT_DESCRIPTION_TAG);
+    path.addName(name);
+    getReport().getReportBuilderHints().putHint
+        (path, hint, getReportParser().getComments());
+  }
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: PropertyHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@ package org.jfree.report.modules.parser.ext;
 import java.util.Properties;
 
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.util.CharacterEntityParser;
 import org.jfree.xml.ParseException;
 import org.xml.sax.Attributes;
@@ -73,17 +75,26 @@ public class PropertyHandler extends AbstractExtReportParserHandler
   /** The character entity parser. */
   private CharacterEntityParser entityParser;
 
+  /** The base of the comment hint path. */
+  private CommentHintPath base;
+
   /**
    * Creates a new property handler.
    *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    */
-  public PropertyHandler(final ReportParser parser, final String finishTag)
+  public PropertyHandler(final ReportParser parser, final String finishTag,
+                         final CommentHintPath base)
   {
     super(parser, finishTag);
     entityParser = CharacterEntityParser.createXMLEntityParser();
     properties = new Properties();
+    if (base == null)
+    {
+      throw new NullPointerException("CommentHint base must not be null.");
+    }
+    this.base = base;
   }
 
   /**
@@ -107,6 +118,11 @@ public class PropertyHandler extends AbstractExtReportParserHandler
           getParser().getLocator());
     }
     buffer = new StringBuffer();
+
+    CommentHintPath path = base.getInstance();
+    path.addName(name);
+    getReport().getReportBuilderHints().putHint
+        (path, CommentHandler.OPEN_TAG_COMMENT, getReportParser().getComments());
   }
 
   /**

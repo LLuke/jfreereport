@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.16 2003/06/29 16:59:27 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,10 @@ import java.util.Properties;
 import org.jfree.report.function.Expression;
 import org.jfree.report.function.ExpressionCollection;
 import org.jfree.report.function.Function;
+import org.jfree.report.modules.parser.base.CommentHandler;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.ExpressionHandler;
+import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
 import org.jfree.report.modules.parser.ext.ExtReportHandler;
 import org.jfree.report.modules.parser.ext.FunctionsHandler;
 import org.jfree.report.util.ReportProperties;
@@ -61,6 +64,10 @@ import org.jfree.xml.factory.objects.ObjectDescription;
  */
 public class FunctionsWriter extends AbstractXMLDefinitionWriter
 {
+  private static CommentHintPath FUNCTIONS_PATH = new CommentHintPath
+        (new String[] { ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.FUNCTIONS_TAG});
+
+
   /** The object factory. */
   private ClassFactoryCollector cfc;
 
@@ -88,13 +95,35 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
   public void write(final Writer writer)
       throws IOException, ReportWriterException
   {
-    writeTag(writer, ExtReportHandler.FUNCTIONS_TAG);
+    writeComment(writer, FUNCTIONS_PATH, CommentHandler.OPEN_TAG_COMMENT);
+    if (shouldWriteFunctions())
+    {
+      writeTag(writer, ExtReportHandler.FUNCTIONS_TAG);
 
-    writePropertyRefs(writer);
-    writeExpressions(writer, getReport().getExpressions());
-    writeExpressions(writer, getReport().getFunctions());
+      writePropertyRefs(writer);
+      writeExpressions(writer, getReport().getExpressions());
+      writeExpressions(writer, getReport().getFunctions());
 
-    writeCloseTag(writer, ExtReportHandler.FUNCTIONS_TAG);
+      writeComment(writer, FUNCTIONS_PATH, CommentHandler.CLOSE_TAG_COMMENT);
+      writeCloseTag(writer, ExtReportHandler.FUNCTIONS_TAG);
+    }
+  }
+
+  private boolean shouldWriteFunctions ()
+  {
+    if (getReport().getProperties().containsMarkedProperties())
+    {
+      return true;
+    }
+    if (getReport().getFunctions().size() != 0)
+    {
+      return true;
+    }
+    if (getReport().getExpressions().size() != 0)
+    {
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -117,6 +146,10 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
         tagName = FunctionsHandler.FUNCTION_TAG;
       }
 
+      CommentHintPath path = FUNCTIONS_PATH.getInstance();
+      path.addName (expression);
+      writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
+
       final Properties expressionProperties = expression.getProperties();
       if (expressionProperties.isEmpty())
       {
@@ -135,21 +168,31 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
         final Enumeration enum = expressionProperties.keys();
         if (enum.hasMoreElements())
         {
+          CommentHintPath propertiesPath = path.getInstance();
+          propertiesPath.addName(ExpressionHandler.PROPERTIES_TAG);
+          writeComment(writer, propertiesPath, CommentHandler.OPEN_TAG_COMMENT);
           writeTag(writer, ExpressionHandler.PROPERTIES_TAG);
+
           while (enum.hasMoreElements())
           {
             final String key = (String) enum.nextElement();
             final String value = expressionProperties.getProperty(key);
             if (value != null)
             {
+              CommentHintPath propertyPath = propertiesPath.getInstance();
+              propertyPath.addName(key);
+              writeComment(writer, propertyPath, CommentHandler.OPEN_TAG_COMMENT);
+
               writeTag(writer, "property", "name", key, OPEN);
               writer.write(normalize(value));
               writeCloseTag(writer, "property");
             }
           }
+          writeComment(writer, propertiesPath, CommentHandler.CLOSE_TAG_COMMENT);
           writeCloseTag(writer, ExpressionHandler.PROPERTIES_TAG);
         }
 
+        writeComment(writer, path, CommentHandler.CLOSE_TAG_COMMENT);
         writeCloseTag(writer, tagName);
       }
     }
@@ -174,6 +217,11 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
       if (reportProperties.isMarked(name))
       {
         final Object value = reportProperties.get(name);
+
+        CommentHintPath path = FUNCTIONS_PATH.getInstance();
+        path.addName (name);
+        writeComment(writer, path, CommentHandler.OPEN_TAG_COMMENT);
+
         if (value == null)
         {
           writeTag(writer, FunctionsHandler.PROPERTY_REF_TAG, "name", name, CLOSE);

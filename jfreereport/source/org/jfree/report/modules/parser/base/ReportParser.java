@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
+ * $Id: ReportParser.java,v 1.4 2003/07/20 19:31:16 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@ package org.jfree.report.modules.parser.base;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportBuilderHints;
 import org.jfree.xml.Parser;
+import org.xml.sax.SAXException;
+import org.xml.sax.Attributes;
 
 /**
  * The report parser initializes the parsing engine and coordinates the parsing
@@ -113,8 +115,25 @@ public class ReportParser extends Parser
     return commentHandler;
   }
 
-  public String getLastComment ()
+  public String[] getComments ()
   {
-    return getCommentHandler().getLastComment();
+    return getCommentHandler().getComments();
+  }
+
+  public boolean isIncluded ()
+  {
+    return getConfigProperty(IncludeParser.INCLUDE_PARSING_KEY, "false").equals("true");
+  }
+
+  public void endElement(String tagName, String namespace, String qName) throws SAXException
+  {
+    super.endElement(tagName, namespace, qName);
+    getCommentHandler().clearComments();
+  }
+
+  public void startElement(String tagName, String namespace, String qName, Attributes attributes) throws SAXException
+  {
+    super.startElement(tagName, namespace, qName, attributes);
+    getCommentHandler().clearComments();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesWriter.java,v 1.3 2003/07/18 17:56:39 taqua Exp $
+ * $Id: TemplatesWriter.java,v 1.4 2003/07/20 19:31:17 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,10 @@ import java.util.ArrayList;
 import org.jfree.report.ReportBuilderHints;
 import org.jfree.report.util.Log;
 import org.jfree.report.modules.parser.ext.ExtReportHandler;
+import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
 
 /**
  * A templates writer.
@@ -54,6 +57,9 @@ import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription
  */
 public class TemplatesWriter extends AbstractXMLDefinitionWriter
 {
+  private static CommentHintPath TEMPLATES_PATH = new CommentHintPath
+        (new String[] { ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.TEMPLATES_TAG});
+
   /**
    * Creates a new writer.
    *
@@ -75,6 +81,9 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
    */
   public void write(final Writer writer) throws IOException, ReportWriterException
   {
+
+    writeComment(writer, TEMPLATES_PATH, CommentHandler.OPEN_TAG_COMMENT);
+
     ReportBuilderHints hints = getReport().getReportBuilderHints();
     List l = (List) hints.getHint(getReport(), "ext.parser.template-definition", List.class);
     if (l == null)
@@ -86,7 +95,6 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
       return;
     }
 
-    Log.debug ("TemplateHints. " + l);
     writeTag(writer, ExtReportHandler.TEMPLATES_TAG);
     ArrayList invalidTemplates = new ArrayList();
 
@@ -125,7 +133,9 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
       templateWriter.write(writer);
     }
 
+    writeComment(writer, TEMPLATES_PATH, CommentHandler.CLOSE_TAG_COMMENT);
     writeCloseTag(writer, ExtReportHandler.TEMPLATES_TAG);
+    writer.write(getLineSeparator());
   }
 
   public static TemplateDescription getTemplateDescription (ReportWriter writer, String name)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: CommentHandler.java,v 1.1 2003/07/20 19:32:12 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,17 +38,22 @@
 
 package org.jfree.report.modules.parser.base;
 
-import org.xml.sax.ext.LexicalHandler;
+import java.util.ArrayList;
+
 import org.xml.sax.SAXException;
-import org.jfree.report.util.Log;
+import org.xml.sax.ext.LexicalHandler;
 
 public class CommentHandler implements LexicalHandler
 {
-  private String comment;
+  public static final String OPEN_TAG_COMMENT = "parser.comment.open";
+  public static final String CLOSE_TAG_COMMENT = "parser.comment.close";
+
+  private ArrayList comment;
   private boolean inDTD;
 
   public CommentHandler()
   {
+    comment = new ArrayList();
   }
 
   /**
@@ -164,13 +169,22 @@ public class CommentHandler implements LexicalHandler
   {
     if (inDTD == false)
     {
-      comment = new String(ch, start, length);
+      comment.add(new String(ch, start, length));
     }
     //Log.debug ("Comment: String: " + comment);
   }
 
-  public String getLastComment()
+  public String[] getComments()
   {
-    return comment;
+    if (comment.isEmpty())
+    {
+      return null;
+    }
+    return (String[]) comment.toArray(new String[comment.size()]);
+  }
+
+  public void clearComments ()
+  {
+    comment.clear();
   }
 }

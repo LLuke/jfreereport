@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportBuilderHints.java,v 1.1 2003/07/18 18:33:01 taqua Exp $
+ * $Id: ReportBuilderHints.java,v 1.2 2003/07/20 19:31:15 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -121,7 +121,14 @@ public class ReportBuilderHints implements Serializable
   public void putHint (Serializable target, String hint, Serializable hintValue)
   {
     ParserHintKey pHint = new ParserHintKey(target, hint);
-    map.put(pHint, hintValue);
+    if (hintValue == null)
+    {
+      map.remove(pHint);
+    }
+    else
+    {
+      map.put(pHint, hintValue);
+    }
   }
 
   public Object getHint (Serializable target, String hint)
@@ -169,6 +176,21 @@ public class ReportBuilderHints implements Serializable
    */
   public void addHintList (Serializable target, String hint, Serializable hintValue)
   {
+    this.addHintList(target, hint, hintValue, true);
+  }
+
+  /**
+   * Adds an hint into an ArrayList. If the hint is no list hint, a
+   * IllegalArgumentException is thrown. If the speocified hint value is
+   * already contained in that list, no action is taken.
+   *
+   * @param target the target object for which the hint is specified.
+   * @param hint the hint name
+   * @param hintValue the hint value (not null)
+   * @throws java.lang.IllegalArgumentException if the specified hint is no list type.
+   */
+  public void addHintList (Serializable target, String hint, Serializable hintValue, boolean unique)
+  {
     if (hintValue == null)
     {
       throw new NullPointerException("Hintvalue is null.");
@@ -192,7 +214,7 @@ public class ReportBuilderHints implements Serializable
       hintList = new ArrayList();
       putHint(target, hint, (Serializable) hintList);
     }
-    if (hintList.contains(hintValue) == false)
+    if (unique == false || hintList.contains(hintValue) == false)
     {
       hintList.add(hintValue);
     }

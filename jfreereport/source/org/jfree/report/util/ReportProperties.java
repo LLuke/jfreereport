@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportProperties.java,v 1.21 2003/06/29 16:59:30 taqua Exp $
+ * $Id: ReportProperties.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -244,4 +244,13 @@ public class ReportProperties implements Serializable, Cloneable
     return this.markedProperties.contains(property);
   }
 
+  /**
+   * Returns true, if there is at least one marked property.
+   *
+   * @return true, if there are some properties marked, false otherwise.
+   */
+  public boolean containsMarkedProperties ()
+  {
+    return markedProperties.isEmpty() == false;
+  }
 }

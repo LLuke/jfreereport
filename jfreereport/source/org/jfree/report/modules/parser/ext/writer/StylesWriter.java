@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: StylesWriter.java,v 1.2 2003/07/15 16:28:22 taqua Exp $
  *
  * Changes
  * -------
@@ -48,6 +48,9 @@ import org.jfree.report.Group;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.parser.ext.ExtReportHandler;
 import org.jfree.report.modules.parser.ext.StylesHandler;
+import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.style.ElementStyleSheet;
 
 /**
@@ -57,6 +60,11 @@ import org.jfree.report.style.ElementStyleSheet;
  */
 public class StylesWriter extends AbstractXMLDefinitionWriter
 {
+  private CommentHintPath STYLES_HINT_PATH =
+      new CommentHintPath(new String[]
+      {ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.STYLES_TAG});
+
+
   /** Storage for the styles. */
   private ArrayList reportStyles;
 
@@ -84,9 +92,15 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
    */
   public void write(final Writer writer) throws IOException, ReportWriterException
   {
-    final ElementStyleSheet[] styles = collectStyles();
-    writeTag(writer, ExtReportHandler.STYLES_TAG);
+    writeComment(writer, STYLES_HINT_PATH, CommentHandler.OPEN_TAG_COMMENT);
 
+    final ElementStyleSheet[] styles = collectStyles();
+    if (styles.length == 0)
+    {
+      return;
+    }
+
+    writeTag(writer, ExtReportHandler.STYLES_TAG);
     for (int i = 0; i < styles.length; i++)
     {
       final ElementStyleSheet style = styles[i];
@@ -97,7 +111,9 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
 
       writeCloseTag(writer, StylesHandler.STYLE_TAG);
     }
+    writeComment(writer, STYLES_HINT_PATH, CommentHandler.CLOSE_TAG_COMMENT);
     writeCloseTag(writer, ExtReportHandler.STYLES_TAG);
+    writer.write(getLineSeparator());
   }
 
   /**

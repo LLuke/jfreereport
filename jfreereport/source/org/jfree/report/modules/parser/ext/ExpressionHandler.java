@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: ExpressionHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -40,6 +40,8 @@ package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.function.Expression;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -62,6 +64,7 @@ public class ExpressionHandler extends AbstractExtReportParserHandler
   /** The expression. */
   private Expression expression;
 
+  private CommentHintPath path;
   /**
    * Creates a new expression handler.
    *
@@ -69,10 +72,20 @@ public class ExpressionHandler extends AbstractExtReportParserHandler
    * @param finishTag  the finish tag.
    * @param expression  the expression.
    */
-  public ExpressionHandler(final ReportParser parser, final String finishTag, final Expression expression)
+  public ExpressionHandler(final ReportParser parser, final String finishTag,
+                           final Expression expression, final CommentHintPath base)
   {
     super(parser, finishTag);
+    if (expression == null)
+    {
+      throw new NullPointerException("Expression must not be null.");
+    }
+    if (base == null)
+    {
+      throw new NullPointerException("CommentHintBase must not be null");
+    }
     this.expression = expression;
+    this.path = base;
   }
 
   /**
@@ -87,7 +100,11 @@ public class ExpressionHandler extends AbstractExtReportParserHandler
   {
     if (tagName.equals(PROPERTIES_TAG))
     {
-      propertyHandler = new PropertyHandler(getReportParser(), tagName);
+      CommentHintPath path = this.path.getInstance();
+      path.addName(tagName);
+      getReport().getReportBuilderHints().putHint
+          (path, CommentHandler.OPEN_TAG_COMMENT, getReportParser().getComments());
+      propertyHandler = new PropertyHandler(getReportParser(), tagName, path);
       getParser().pushFactory(propertyHandler);
     }
     else
@@ -121,6 +138,10 @@ public class ExpressionHandler extends AbstractExtReportParserHandler
   {
     if (tagName.equals(PROPERTIES_TAG))
     {
+      CommentHintPath path = this.path.getInstance();
+      path.addName(tagName);
+      getReport().getReportBuilderHints().putHint
+          (path, CommentHandler.CLOSE_TAG_COMMENT, getReportParser().getComments());
       expression.setProperties(propertyHandler.getProperties());
       propertyHandler = null;
     }

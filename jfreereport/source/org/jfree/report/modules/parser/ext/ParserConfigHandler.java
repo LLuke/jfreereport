@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: ParserConfigHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,8 @@
 package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceFactory;
 import org.jfree.report.modules.parser.ext.factory.elements.ElementFactory;
@@ -125,14 +127,9 @@ public class ParserConfigHandler extends AbstractExtReportParserHandler
           (StyleKeyFactoryCollector) getParser().getHelperObject(STYLEKEY_FACTORY_TAG);
 
       final StyleKeyFactory factory = (StyleKeyFactory) createFactory(className);
-      if (factory == null)
-      {
-        throw new ParseException
-            ("Unable to create Factory: " + className, getParser().getLocator());
-      }
-
       fc.addFactory(factory);
       getParserHints().addHintList(getReport(), STYLEKEY_FACTORY_HINT, className);
+      addComment(tagName, className);
     }
     else if (tagName.equals(OBJECT_FACTORY_TAG))
     {
@@ -145,6 +142,7 @@ public class ParserConfigHandler extends AbstractExtReportParserHandler
           (ClassFactoryCollector) getParser().getHelperObject(OBJECT_FACTORY_TAG);
       fc.addFactory((ClassFactory) createFactory(className));
       getParserHints().addHintList(getReport(), OBJECT_FACTORY_HINT, className);
+      addComment(tagName, className);
     }
     else if (tagName.equals(TEMPLATE_FACTORY_TAG))
     {
@@ -157,6 +155,7 @@ public class ParserConfigHandler extends AbstractExtReportParserHandler
           (TemplateCollector) getParser().getHelperObject(TEMPLATE_FACTORY_TAG);
       fc.addTemplateCollection((TemplateCollection) createFactory(className));
       getParserHints().addHintList(getReport(), TEMPLATE_FACTORY_HINT, className);
+      addComment(tagName, className);
     }
     else if (tagName.equals(DATASOURCE_FACTORY_TAG))
     {
@@ -170,6 +169,7 @@ public class ParserConfigHandler extends AbstractExtReportParserHandler
           (DataSourceCollector) getParser().getHelperObject(DATASOURCE_FACTORY_TAG);
       fc.addFactory(factory);
       getParserHints().addHintList(getReport(), DATASOURCE_FACTORY_HINT, className);
+      addComment(tagName, className);
     }
     else if (tagName.equals(ELEMENT_FACTORY_TAG))
     {
@@ -182,6 +182,7 @@ public class ParserConfigHandler extends AbstractExtReportParserHandler
           (ElementFactoryCollector) getParser().getHelperObject(ELEMENT_FACTORY_TAG);
       fc.addFactory((ElementFactory) createFactory(className));
       getParserHints().addHintList(getReport(), ELEMENT_FACTORY_HINT, className);
+      addComment(tagName, className);
     }
     else if (tagName.equals(DATADEFINITION_FACTORY_TAG))
     {
@@ -268,5 +269,14 @@ public class ParserConfigHandler extends AbstractExtReportParserHandler
     }
   }
 
-
+  private void addComment (String tagName, String className)
+  {
+    CommentHintPath path = new CommentHintPath();
+    path.addName(ExtParserModuleInit.REPORT_DEFINITION_TAG);
+    path.addName(ExtReportHandler.PARSER_CONFIG_TAG);
+    path.addName(tagName);
+    path.addName(className);
+    getReport().getReportBuilderHints().putHint
+        (path, CommentHandler.OPEN_TAG_COMMENT, getReportParser().getComments());
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Hendri Smit;
  * Contributor(s):   -;
  *
- * $Id: JFreeReportResources_nl.java,v 1.2 2003/07/10 20:02:08 taqua Exp $
+ * $Id: JFreeReportResources_nl.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
  */
 package org.jfree.report.modules.gui.base.resources;
 
@@ -107,6 +107,100 @@ public class JFreeReportResources_nl extends JFreeReportResources
         {"statusline.pages", "Pagina {0} van {1}"},
         {"statusline.error", "Er is een fout ontstaan in de report generatie: {0}"},
         {"statusline.repaginate", "Paginanummering berekenen..."},
+
+        {"FileChooser.acceptAllFileFilterText", "Alle Bestanden (*.*)"},
+        {"FileChooser.cancelButtonMnemonic", new Integer(KeyEvent.VK_C)},
+        {"FileChooser.cancelButtonText", "Annuleren"},
+        {"FileChooser.cancelButtonToolTipText", "Sluiten"},
+        {"FileChooser.detailsViewButtonAccessibleName", "Details"},
+        {"FileChooser.detailsViewButtonToolTipText", "Details"},
+        {"FileChooser.directoryDescriptionText", "Map"},
+        {"FileChooser.fileDescriptionText", "Generiek Bestand"},
+        {"FileChooser.fileNameLabelMnemonic", new Integer(KeyEvent.VK_N)},
+        {"FileChooser.fileNameLabelText", "Bestandsnaam:"},
+        {"FileChooser.filesOfTypeLabelMnemonic", new Integer(KeyEvent.VK_T)},
+        {"FileChooser.filesOfTypeLabelText", "Bestandstypen:"},
+        {"FileChooser.helpButtonMnemonic", new Integer(KeyEvent.VK_H)},
+        {"FileChooser.helpButtonText", "Help"},
+        {"FileChooser.helpButtonToolTipText", "Help"},
+        {"FileChooser.homeFolderAccessibleName", "Begin"},
+        {"FileChooser.homeFolderToolTipText", "Beginmap"},
+        {"FileChooser.listViewButtonAccessibleName", "Lijst"},
+        {"FileChooser.listViewButtonToolTipText", "Lijst"},
+        {"FileChooser.lookInLabelMnemonic", new Integer(KeyEvent.VK_I)},
+        {"FileChooser.lookInLabelText", "Zoek in:"},
+        {"FileChooser.newFolderAccessibleName", "Nieuwe Map"},
+        {"FileChooser.newFolderErrorSeparator", ": "},
+        {"FileChooser.newFolderErrorText", "Fout tijdens creëren nieuwe map"},
+        {"FileChooser.newFolderToolTipText", "Maak Nieuwe Map"},
+        {"FileChooser.openButtonMnemonic", new Integer(KeyEvent.VK_O)},
+        {"FileChooser.openButtonToolTipText", "Open geselecteerd bestand"},
+        {"FileChooser.openButtonText", "Openen"},
+        {"FileChooser.openDialogTitleText", "Openen"},
+        {"FileChooser.saveButtonMnemonic", new Integer(KeyEvent.VK_S)},
+        {"FileChooser.saveButtonText", "Opslaan"},
+        {"FileChooser.saveButtonToolTipText", "Sla geselecteerd bestand op"},
+        {"FileChooser.saveDialogTitleText", "Opslaan"},
+        {"FileChooser.updateButtonText", "Vernieuwen"},
+        {"FileChooser.updateButtonMnemonic", new Integer(KeyEvent.VK_U)},
+        {"FileChooser.updateButtonToolTipText", "Vernieuw map inhoud"},
+        {"FileChooser.upFolderAccessibleName", "Omhoog"},
+        {"FileChooser.upFolderToolTipText", "Eén niveau omhoog"},
+        {"FileChooser.other.newFolder", "NieuweMap"},
+        {"FileChooser.other.newFolder.subsequent", "NieuweMap.{0}"},
+        {"FileChooser.win32.newFolder", "Nieuwe Map"},
+        {"FileChooser.win32.newFolder.subsequent", "Nieuwe Map ({0})"},
+
+        {"OptionPane.cancelButtonText", "Annuleren"},
+        {"OptionPane.noButtonText", "Nee"},
+        {"OptionPane.okButtonText", "OK"},
+        {"OptionPane.titleText", "Selecteer een optie"},
+        {"OptionPane.yesButtonText", "Ja"},
+
+        {"ColorChooser.cancelText", "Annuleren"},
+        {"ColorChooser.hsbNameText", "HSB"},
+        {"ColorChooser.hsbHueText", "H"},
+        {"ColorChooser.hsbSaturationText", "S"},
+        {"ColorChooser.hsbBrightnessText", "B"},
+        {"ColorChooser.hsbRedText", "R"},
+        {"ColorChooser.hsbGreenText", "G"},
+        {"ColorChooser.hsbBlueText", "B"},
+        {"ColorChooser.okText", "OK"},
+        {"ColorChooser.previewText", "Voorbeeld"},
+        {"ColorChooser.resetText", "Reset"},
+        {"ColorChooser.rgbNameText", "RGB"},
+        {"ColorChooser.rgbRedMnemonic", new Integer(KeyEvent.VK_R)},
+        {"ColorChooser.rgbRedText", "Rood"},
+        {"ColorChooser.rgbGreenMnemonic", new Integer(KeyEvent.VK_G)},
+        {"ColorChooser.rgbGreenText", "Groen"},
+        {"ColorChooser.rgbBlueMnemonic", new Integer(KeyEvent.VK_B)},
+        {"ColorChooser.rgbBlueText", "Blauw"},
+        {"ColorChooser.sampleText", "Voorbeeld tekst  Voorbeeld tekst"},
+        {"ColorChooser.swatchesNameText", "Kleurenpalet"},
+        {"ColorChooser.swatchesRecentText", "Laatst gebruikt:"},
+
+        {"InternalFrameTitlePane.closeButtonAccessibleName", "Sluiten"},
+        {"InternalFrameTitlePane.iconifyButtonAccessibleName", "Iconifiseren"},
+        {"InternalFrameTitlePane.maximizeButtonAccessibleName", "Maximaliseren"},
+
+        {"FormView.resetButtonText", "Wissen"},
+        {"FormView.submitButtonText", "Versturen"},
+
+        {"AbstractButton.clickText", "klik"},
+
+        {"AbstractDocument.additionText", "toevoeging"},
+        {"AbstractDocument.deletionText", "verwijdering"},
+        {"AbstractDocument.redoText", "Opnieuw doen"},
+        {"AbstractDocument.styleChangeText", "stijl verandering"},
+        {"AbstractDocument.undoText", "Ongedaan maken"},
+
+        {"AbstractUndoableEdit.redoText", "Opnieuw doen"},
+        {"AbstractUndoableEdit.undoText", "Ongedaan maken"},
+
+        {"ProgressMonitor.progressText", "Voortgang..."},
+
+        {"SplitPane.leftButtonText", "linker knop"},
+        {"SplitPane.rightButtonText", "rechter knop"}
       };
 
   /**

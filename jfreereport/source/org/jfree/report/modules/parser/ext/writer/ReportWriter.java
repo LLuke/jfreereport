@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.3 2003/07/18 17:56:39 taqua Exp $
+ * $Id: ReportWriter.java,v 1.4 2003/07/20 19:31:17 taqua Exp $
  *
  * Changes
  * -------
@@ -95,12 +95,20 @@ public class ReportWriter
    *
    * @param report  the report.
    * @param encoding  the encoding.
+   * @deprecated this method does not setup the writer configuration properly.
    */
   public ReportWriter(final JFreeReport report, final String encoding)
   {
     this (report, encoding, new ReportConfiguration(report.getReportConfiguration()));
   }
 
+  /**
+   * Creates a new report writer for a report.
+   *
+   * @param report  the report.
+   * @param encoding  the encoding.
+   * @param config the write configuration.
+   */
   public ReportWriter(final JFreeReport report, final String encoding, final Configuration config)
   {
     if (report == null)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: FunctionsHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,8 @@ import org.jfree.report.function.Expression;
 import org.jfree.report.function.Function;
 import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.xml.ParseException;
 import org.jfree.xml.ParserUtil;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
@@ -99,44 +101,25 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
   public void startElement(final String tagName, final Attributes attrs)
       throws SAXException
   {
-    if (tagName.equals(EXPRESSION_TAG))
+    if (tagName.equals(EXPRESSION_TAG) || tagName.equals(FUNCTION_TAG))
     {
       final String className = attrs.getValue("class");
       if (className == null)
       {
-        throw new ParseException("The attribute 'class' is missing for expression",
+        throw new ParseException("The attribute 'class' is missing for " + tagName,
             getParser().getLocator());
       }
       final String expName = attrs.getValue("name");
       if (expName == null)
       {
-        throw new ParseException("The attribute 'name' is missing for expression",
+        throw new ParseException("The attribute 'name' is missing for" + tagName,
             getParser().getLocator());
       }
       final int depLevel = ParserUtil.parseInt(attrs.getValue("deplevel"), 0);
 
       final Expression e = loadExpression(className, expName, depLevel);
-      expressionHandler = new ExpressionHandler(getReportParser(), tagName, e);
-      getParser().pushFactory(expressionHandler);
-    }
-    else if (tagName.equals(FUNCTION_TAG))
-    {
-      final String className = attrs.getValue("class");
-      if (className == null)
-      {
-        throw new ParseException("The attribute 'class' is missing for function",
-            getParser().getLocator());
-      }
-      final String expName = attrs.getValue("name");
-      if (expName == null)
-      {
-        throw new ParseException("The attribute 'name' is missing for function",
-            getParser().getLocator());
-      }
-      final int depLevel = ParserUtil.parseInt(attrs.getValue("deplevel"), 0);
-
-      final Expression e = loadExpression(className, expName, depLevel);
-      expressionHandler = new ExpressionHandler(getReportParser(), tagName, e);
+      addComment(e, CommentHandler.OPEN_TAG_COMMENT);
+      expressionHandler = new ExpressionHandler(getReportParser(), tagName, e, createPath(e));
       getParser().pushFactory(expressionHandler);
     }
     else if (tagName.equals(PROPERTY_REF_TAG))
@@ -162,6 +145,7 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
       {
         propertyRefHandler = new CompoundObjectHandler(getReportParser(), tagName, od);
       }
+      addComment(propertyName, CommentHandler.OPEN_TAG_COMMENT);
       getParser().pushFactory(propertyRefHandler);
 
     }
@@ -269,7 +253,9 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
     {
       try
       {
-        getReport().addExpression(expressionHandler.getExpression());
+        Expression expression = expressionHandler.getExpression();
+        getReport().addExpression(expression);
+        addComment(expression, CommentHandler.CLOSE_TAG_COMMENT);
         expressionHandler = null;
       }
       catch (FunctionInitializeException fe)
@@ -282,7 +268,9 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
     {
       try
       {
-        getReport().addFunction((Function) expressionHandler.getExpression());
+        Function expression = (Function) expressionHandler.getExpression();
+        getReport().addFunction(expression);
+        addComment(expression.getName(), CommentHandler.CLOSE_TAG_COMMENT);
         expressionHandler = null;
       }
       catch (FunctionInitializeException fe)
@@ -293,6 +281,7 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
     }
     else if (tagName.equals(PROPERTY_REF_TAG))
     {
+      addComment(propertyName, CommentHandler.CLOSE_TAG_COMMENT);
       getReport().setPropertyMarked(propertyName, true);
       final Object value = propertyRefHandler.getValue();
       if ("".equals(value) == false)
@@ -342,6 +331,27 @@ public class FunctionsHandler extends AbstractExtReportParserHandler
     }
     return false;
   }
+
+  /**
+   *
+   * @param target
+   * @return
+   */
+  private CommentHintPath createPath (Object target)
+  {
+    CommentHintPath path = new CommentHintPath();
+    path.addName(ExtParserModuleInit.REPORT_DEFINITION_TAG);
+    path.addName(ExtReportHandler.FUNCTIONS_TAG);
+    path.addName(target);
+    return path;
+  }
+
+  private void addComment (Object target, String hintName)
+  {
+    getReport().getReportBuilderHints().putHint
+        (createPath(target), hintName, getReportParser().getComments());
+  }
+
 
 }
 

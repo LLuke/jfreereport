@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewBaseModule.java,v 1.2 2003/07/10 20:02:08 taqua Exp $
+ * $Id: PreviewBaseModule.java,v 1.3 2003/07/12 16:31:13 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,8 +38,6 @@
 
 package org.jfree.report.modules.gui.base;
 
-import java.util.ResourceBundle;
-import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 
 import org.jfree.report.modules.AbstractModule;
@@ -49,69 +47,21 @@ import org.jfree.report.util.ReportConfiguration;
 
 public class PreviewBaseModule extends AbstractModule
 {
-  private ResourceBundle resources;
   public static final String SWING_TRANSLATE_KEY =
       "org.jfree.report.modules.gui.base.SwingDialogTranslation";
 
   public PreviewBaseModule() throws ModuleInitializeException
   {
     loadModuleInfo();
-    resources = ResourceBundle.getBundle(JFreeReportResources.class.getName());
   }
 
   public void initialize() throws ModuleInitializeException
   {
     if (isTranslateSwingDialogs())
     {
-      putTranslation("FileChooser.acceptAllFileFilterText");
-      putTranslation("FileChooser.cancelButtonMnemonic");
-      putTranslation("FileChooser.cancelButtonText");
-      putTranslation("FileChooser.cancelButtonToolTipText");
-      putTranslation("FileChooser.detailsViewButtonAccessibleName");
-      putTranslation("FileChooser.detailsViewButtonToolTipText");
-      putTranslation("FileChooser.directoryDescriptionText");
-      putTranslation("FileChooser.fileDescriptionText");
-      putTranslation("FileChooser.fileNameLabelMnemonic");
-      putTranslation("FileChooser.fileNameLabelText");
-      putTranslation("FileChooser.filesOfTypeLabelMnemonic");
-      putTranslation("FileChooser.filesOfTypeLabelText");
-      putTranslation("FileChooser.helpButtonMnemonic");
-      putTranslation("FileChooser.helpButtonText");
-      putTranslation("FileChooser.helpButtonToolTipText");
-      putTranslation("FileChooser.homeFolderAccessibleName");
-      putTranslation("FileChooser.homeFolderToolTipText");
-      putTranslation("FileChooser.listViewButtonAccessibleName");
-      putTranslation("FileChooser.listViewButtonToolTipText");
-      putTranslation("FileChooser.lookInLabelMnemonic");
-      putTranslation("FileChooser.lookInLabelText");
-      putTranslation("FileChooser.newFolderAccessibleNam");
-      putTranslation("FileChooser.newFolderErrorSeparator");
-      putTranslation("FileChooser.newFolderErrorText");
-      putTranslation("FileChooser.newFolderToolTipText");
-      putTranslation("FileChooser.openButtonMnemonic");
-      putTranslation("FileChooser.openButtonText");
-      putTranslation("FileChooser.openButtonToolTipText");
-      putTranslation("FileChooser.saveButtonMnemonic");
-      putTranslation("FileChooser.saveButtonText");
-      putTranslation("FileChooser.saveButtonToolTipText");
-      putTranslation("FileChooser.updateButtonMnemonic");
-      putTranslation("FileChooser.updateButtonText");
-      putTranslation("FileChooser.updateButtonToolTipText");
-      putTranslation("FileChooser.upFolderAccessibleName");
-      putTranslation("FileChooser.upFolderToolTipText");
-      putTranslation("OptionPane.yesButtonText");
-      putTranslation("OptionPane.noButtonText");
-      putTranslation("OptionPane.okButtonText");
-      putTranslation("OptionPane.cancelButtonText");
-
+      UIManager.getDefaults().addResourceBundle
+          (JFreeReportResources.class.getName());
     }
-  }
-
-  private void putTranslation (String key)
-  {
-    Object value = resources.getObject(key);
-    UIDefaults defaults = UIManager.getDefaults();
-    defaults.put(key, value);
   }
 
   private boolean isTranslateSwingDialogs()

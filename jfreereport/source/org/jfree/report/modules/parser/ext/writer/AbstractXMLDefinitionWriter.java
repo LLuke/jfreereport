@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.2 2003/07/15 16:28:21 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.3 2003/07/18 17:56:39 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.io.Writer;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.modules.parser.base.CommentHintPath;
 import org.jfree.report.modules.parser.ext.BandHandler;
 import org.jfree.report.modules.parser.ext.CompoundObjectHandler;
 import org.jfree.report.modules.parser.ext.DataSourceHandler;
@@ -57,8 +58,6 @@ import org.jfree.report.modules.parser.ext.ReportDescriptionHandler;
 import org.jfree.report.modules.parser.ext.StyleSheetHandler;
 import org.jfree.report.modules.parser.ext.StylesHandler;
 import org.jfree.report.modules.parser.ext.TemplatesHandler;
-import org.jfree.report.ReportBuilderHints;
-import org.jfree.report.modules.parser.base.ReportParser;
 import org.jfree.xml.writer.SafeTagList;
 import org.jfree.xml.writer.XMLWriterSupport;
 
@@ -246,6 +245,41 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
     }
 
     return (str.toString());
+  }
+
+  /**
+   * Writes the given comment. This method does nothing if the comment is null.
+   *
+   * @param writer
+   * @param comment
+   * @throws IOException
+   */
+  protected void writeComment (Writer writer, String comment) throws IOException
+  {
+    if (comment == null)
+    {
+      return;
+    }
+    indent(writer, INDENT_ONLY);
+    writer.write("<!--");
+    writer.write(comment);
+    writer.write("-->");
+    writer.write(getLineSeparator());
+  }
+
+  protected void writeComment (Writer writer, CommentHintPath path, String hintName)
+    throws IOException
+  {
+    String[] comment = (String[]) getReport().getReportBuilderHints().getHint
+        (path, hintName, String[].class);
+    if (comment == null)
+    {
+      return;
+    }
+    for (int i = 0; i < comment.length; i++)
+    {
+      writeComment(writer, comment[i]);
+    }
   }
 
   /**

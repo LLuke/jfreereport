@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: ReportDescriptionWriter.java,v 1.2 2003/07/18 17:56:39 taqua Exp $
  *
  * Changes
  * -------
@@ -56,9 +56,12 @@ import org.jfree.report.modules.parser.ext.ExtReportHandler;
 import org.jfree.report.modules.parser.ext.GroupHandler;
 import org.jfree.report.modules.parser.ext.GroupsHandler;
 import org.jfree.report.modules.parser.ext.ReportDescriptionHandler;
+import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateDescription;
 import org.jfree.report.modules.parser.ext.factory.templates.TemplateCollector;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.jfree.xml.factory.objects.ObjectFactoryException;
@@ -72,6 +75,11 @@ import org.jfree.xml.factory.objects.ObjectFactoryException;
  */
 public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
 {
+  private CommentHintPath REPORT_DESCRIPTION_HINT_PATH =
+      new CommentHintPath(new String[]
+      {ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.REPORT_DESCRIPTION_TAG});
+
+
   /**
    * Creates a new report description writer.
    *
@@ -93,7 +101,9 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
    */
   public void write(final Writer writer) throws IOException, ReportWriterException
   {
+    writeComment(writer, REPORT_DESCRIPTION_HINT_PATH, CommentHandler.OPEN_TAG_COMMENT);
     writeTag(writer, ExtReportHandler.REPORT_DESCRIPTION_TAG);
+
     writeBand(writer, ReportDescriptionHandler.REPORT_HEADER_TAG,
         getReport().getReportHeader(), null);
     writeBand(writer, ReportDescriptionHandler.REPORT_FOOTER_TAG,
@@ -102,9 +112,18 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
     writeBand(writer, ReportDescriptionHandler.PAGE_FOOTER_TAG, getReport().getPageFooter(), null);
     writeGroups(writer);
     writeBand(writer, ReportDescriptionHandler.ITEMBAND_TAG, getReport().getItemBand(), null);
+
+    writeComment(writer, REPORT_DESCRIPTION_HINT_PATH, CommentHandler.CLOSE_TAG_COMMENT);
     writeCloseTag(writer, ExtReportHandler.REPORT_DESCRIPTION_TAG);
   }
 
+  private void writeBandComment (Writer writer, Band name, String hint)
+    throws IOException
+  {
+    CommentHintPath path = REPORT_DESCRIPTION_HINT_PATH.getInstance();
+    path.addName(name);
+    writeComment(writer, path, hint);
+  }
   /**
    * Writes an element for a report band.
    *
@@ -119,6 +138,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
   private void writeBand(final Writer writer, final String tagName, final Band band, final Band parent)
       throws IOException, ReportWriterException
   {
+    writeBandComment(writer, band, CommentHandler.OPEN_TAG_COMMENT);
     if (band.getName().startsWith(Band.ANONYMOUS_BAND_PREFIX))
     {
       writeTag(writer, tagName);
@@ -169,6 +189,7 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
         writeElement(writer, list[i], band);
       }
     }
+    writeBandComment(writer, band, CommentHandler.CLOSE_TAG_COMMENT);
     writeCloseTag(writer, tagName);
   }
 
@@ -329,28 +350,47 @@ public class ReportDescriptionWriter extends AbstractXMLDefinitionWriter
   private void writeGroups(final Writer writer)
       throws IOException, ReportWriterException
   {
+    CommentHintPath path = REPORT_DESCRIPTION_HINT_PATH.getInstance();
+    path.addName(ReportDescriptionHandler.GROUPS_TAG);
+    writeComment(writer,  path, CommentHandler.OPEN_TAG_COMMENT);
     writeTag(writer, ReportDescriptionHandler.GROUPS_TAG);
 
     final GroupList list = getReport().getGroups();
     for (int i = 0; i < list.size(); i++)
     {
       final Group g = list.get(i);
+      CommentHintPath groupPath = path.getInstance();
+      groupPath.addName(g);
+      writeComment(writer, groupPath, CommentHandler.OPEN_TAG_COMMENT);
       writeTag(writer, GroupsHandler.GROUP_TAG, "name", g.getName(), OPEN);
+
+      CommentHintPath fieldsPath = groupPath.getInstance();
+      fieldsPath.addName(GroupHandler.FIELDS_TAG);
+      writeComment(writer, fieldsPath, CommentHandler.OPEN_TAG_COMMENT);
       writeTag(writer, GroupHandler.FIELDS_TAG);
+
       final List fields = g.getFields();
       for (int f = 0; f < fields.size(); f++)
       {
+        String field = (String) fields.get(f);
+        CommentHintPath fieldPath = fieldsPath.getInstance();
+        fieldPath.addName(field);
+        writeComment(writer, fieldPath, CommentHandler.OPEN_TAG_COMMENT);
         writeTag(writer, GroupHandler.FIELD_TAG);
-        writer.write(normalize(String.valueOf(fields.get(f))));
+        writer.write(normalize(field));
         writeCloseTag(writer, GroupHandler.FIELD_TAG);
       }
+      writeComment(writer, fieldsPath, CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(writer, GroupHandler.FIELDS_TAG);
 
       writeBand(writer, GroupHandler.GROUP_HEADER_TAG, g.getHeader(), null);
       writeBand(writer, GroupHandler.GROUP_FOOTER_TAG, g.getFooter(), null);
 
+      writeComment(writer, groupPath, CommentHandler.CLOSE_TAG_COMMENT);
       writeCloseTag(writer, GroupsHandler.GROUP_TAG);
     }
+
+    writeComment(writer,  path, CommentHandler.CLOSE_TAG_COMMENT);
     writeCloseTag(writer, ReportDescriptionHandler.GROUPS_TAG);
   }
 }

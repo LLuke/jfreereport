@@ -529,7 +529,7 @@
  -->
 <!ELEMENT group      (fields, group-header?, group-footer?)>
 <!ATTLIST group
-  name           CDATA           #REQUIRED
+  name           CDATA           #IMPLIED
 >
 
 <!--

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupsHandler.java,v 1.2 2003/07/12 16:31:13 taqua Exp $
+ * $Id: GroupsHandler.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,8 @@ package org.jfree.report.modules.parser.ext;
 import org.jfree.report.Group;
 import org.jfree.report.GroupList;
 import org.jfree.report.modules.parser.base.ReportParser;
+import org.jfree.report.modules.parser.base.CommentHintPath;
+import org.jfree.report.modules.parser.base.CommentHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -58,7 +60,8 @@ public class GroupsHandler extends AbstractExtReportParserHandler
   public static final String GROUP_TAG = "group";
 
   /** Contains the reference to the new group. Contains null if the group is redefined. */
-  private Group newGroup;
+  private Group currentGroup;
+  private boolean isNewGroup;
 
   /**
    * Creates a new handler.
@@ -83,23 +86,25 @@ public class GroupsHandler extends AbstractExtReportParserHandler
   {
     if (tagName.equals(GROUP_TAG))
     {
-      Group group = null;
+      currentGroup = null;
       final String name = attrs.getValue("name");
       if (name != null)
       {
-        group = getReport().getGroupByName(name);
+        currentGroup = getReport().getGroupByName(name);
       }
-      if (group == null)
+      if (currentGroup == null)
       {
-        group = new Group();
+        currentGroup = new Group();
         if (name != null)
         {
-          group.setName(name);
+          currentGroup.setName(name);
         }
-        newGroup = group;
-        // the new group must be added after the group fields are defined.
+        isNewGroup = true;
+        // the new group must be added after the group fields were defined.
       }
-      final GroupHandler handler = new GroupHandler(getReportParser(), tagName, group);
+
+      addComment(currentGroup, CommentHandler.OPEN_TAG_COMMENT);
+      final GroupHandler handler = new GroupHandler(getReportParser(), tagName, currentGroup);
       getParser().pushFactory(handler);
     }
     else
@@ -138,11 +143,12 @@ public class GroupsHandler extends AbstractExtReportParserHandler
     }
     else if (tagName.equals(GROUP_TAG))
     {
-      if (newGroup != null)
+      if (isNewGroup)
       {
-        getReport().addGroup(newGroup);
-        newGroup = null;
+        getReport().addGroup(currentGroup);
       }
+      addComment(currentGroup, CommentHandler.CLOSE_TAG_COMMENT);
+      currentGroup = null;
     }
     else
     {
@@ -150,4 +156,17 @@ public class GroupsHandler extends AbstractExtReportParserHandler
           + GROUP_TAG + ", " + getFinishTag());
     }
   }
+
+  private void addComment (Object name, String hint)
+  {
+    CommentHintPath path = new CommentHintPath();
+    path.addName(ExtParserModuleInit.REPORT_DEFINITION_TAG);
+    path.addName(ExtReportHandler.REPORT_DESCRIPTION_TAG);
+    path.addName(ReportDescriptionHandler.GROUPS_TAG);
+    path.addName(name);
+    getReport().getReportBuilderHints().putHint
+        (path, hint, getReportParser().getComments());
+  }
+
+
 }
