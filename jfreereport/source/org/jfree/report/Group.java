@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: Group.java,v 1.3 2003/07/23 13:56:31 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -57,6 +57,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
+import org.jfree.report.style.InvalidStyleSheetCollectionException;
 import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.report.style.StyleSheetCollectionHelper;
 import org.jfree.util.ObjectUtils;
@@ -134,6 +135,7 @@ public class Group implements Serializable, Cloneable, Comparable
   /** The helper implementation that manages the stylesheet collection. */
   private GroupStyleSheetCollectionHelper styleSheetCollectionHelper;
 
+  /** The internal constant to mark anonymous group names. */
   public static final String ANONYMOUS_GROUP_PREFIX = "anonymousGroup@";
   /**
    * Constructs a group with no fields, and an empty header and footer.
@@ -327,7 +329,8 @@ public class Group implements Serializable, Cloneable, Comparable
    *
    * @return A flag indicating whether or not the current item is the last in its group.
    */
-  public boolean isLastItemInGroup(final DataRowBackend currentDataRow, final DataRowBackend nextDataRow)
+  public boolean isLastItemInGroup
+    (final DataRowBackend currentDataRow, final DataRowBackend nextDataRow)
   {
     // return true if this is the last row in the model.
     if (currentDataRow.isLastRow() || nextDataRow == null)
@@ -444,11 +447,12 @@ public class Group implements Serializable, Cloneable, Comparable
    * <code>InvalidStyleSheetCollectionException</code>.
    *
    * @param styleSheetCollection the stylesheet collection that should be registered.
-   * @throws org.jfree.report.style.InvalidStyleSheetCollectionException
+   * @throws InvalidStyleSheetCollectionException
    * if there is already an other stylesheet registered.
    * @throws NullPointerException if the given stylesheet collection is null.
    */
   public void registerStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
+    throws InvalidStyleSheetCollectionException
   {
     styleSheetCollectionHelper.registerStyleSheetCollection(styleSheetCollection);
   }
@@ -459,11 +463,12 @@ public class Group implements Serializable, Cloneable, Comparable
    * <code>InvalidStyleSheetCollectionException</code>
    *
    * @param styleSheetCollection the stylesheet collection that should be unregistered.
-   * @throws org.jfree.report.style.InvalidStyleSheetCollectionException
+   * @throws InvalidStyleSheetCollectionException
    * if there is an other stylesheet collection already registered with that element.
    * @throws NullPointerException if the given stylesheet collection is null.
    */
   public void unregisterStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
+    throws InvalidStyleSheetCollectionException
   {
     styleSheetCollectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }
@@ -480,10 +485,11 @@ public class Group implements Serializable, Cloneable, Comparable
    * @param sc the stylesheet collection that contains the updated information and
    * that should be assigned with that element.
    * @throws NullPointerException if the given stylesheet collection is null.
-   * @throws org.jfree.report.style.InvalidStyleSheetCollectionException
+   * @throws InvalidStyleSheetCollectionException
    * if there is an other stylesheet collection already registered with that element.
    */
   public void updateStyleSheetCollection(final StyleSheetCollection sc)
+    throws InvalidStyleSheetCollectionException
   {
     footer.updateStyleSheetCollection(sc);
     header.updateStyleSheetCollection(sc);

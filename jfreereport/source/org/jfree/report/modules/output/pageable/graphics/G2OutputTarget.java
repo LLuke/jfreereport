@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.2 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -150,7 +150,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    * A state of a Graphics2D object. This does not store clipping regions or advanced
    * properties.
    */
-  private static class G2State
+  private static final class G2State
   {
     /** The paint. */
     private Paint mypaint;
@@ -236,7 +236,8 @@ public class G2OutputTarget extends AbstractOutputTarget
    * @param physPageFormat  the page format for the physical page used to print the report.
    * @param logPageFormat  the page format for the logical page used to layout the report.
    */
-  public G2OutputTarget(final Graphics2D g2, final PageFormat physPageFormat, final PageFormat logPageFormat)
+  public G2OutputTarget(final Graphics2D g2, final PageFormat physPageFormat, 
+                        final PageFormat logPageFormat)
   {
     super(physPageFormat, logPageFormat);
     setGraphics2D(g2);
@@ -511,8 +512,9 @@ public class G2OutputTarget extends AbstractOutputTarget
     }
     if (getFont().isStrikeThrough())
     {
-      final float l = getFont().getFont().getSize2D();
-      final Line2D line = new Line2D.Float(0, l / 2, (float) getOperationBounds().getWidth(), l / 2);
+      final float fontHeight = getFont().getFont().getSize2D();
+      final Line2D line = new Line2D.Float(0, fontHeight / 2, 
+        (float) getOperationBounds().getWidth(), fontHeight / 2);
       g2.draw(line);
     }
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: RTFReportUtil.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,17 +47,24 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.function.FunctionInitializeException;
 
-public class RTFReportUtil
+public final class RTFReportUtil
 {
+  /**
+   * Default Constructor.
+   */
+  private RTFReportUtil ()
+  {
+  }
+  
   /**
    * Saves a report to rich-text format (RTF).
    *
    * @param report  the report.
    * @param filename target file name.
    *
-   * @throws org.jfree.report.ReportProcessingException if the report processing failed.
-   * @throws org.jfree.report.function.FunctionInitializeException if the initialisation of the report processor failed.
-   * @throws java.io.IOException if there was an IOerror while processing the report.
+   * @throws ReportProcessingException if the report processing failed.
+   * @throws FunctionInitializeException if the initialisation of the report processor failed.
+   * @throws IOException if there was an IOerror while processing the report.
    */
   public static void createRTF(final JFreeReport report, final String filename)
       throws IOException, ReportProcessingException, FunctionInitializeException

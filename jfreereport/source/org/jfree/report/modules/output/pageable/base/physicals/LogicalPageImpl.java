@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LogicalPageImpl.java,v 1.2 2003/07/14 20:16:05 taqua Exp $
+ * $Id: LogicalPageImpl.java,v 1.3 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -374,7 +374,8 @@ public class LogicalPageImpl implements LogicalPage
       final Element e = elements[i];
       if (e instanceof Band)
       {
-        final Rectangle2D bbounds = (Rectangle2D) e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+        final Rectangle2D bbounds = (Rectangle2D) 
+          e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
         spoolBand(translateSubRect(bounds, bbounds), (Band) e, spool);
       }
       else
@@ -395,8 +396,10 @@ public class LogicalPageImpl implements LogicalPage
    */
   private Rectangle2D translateSubRect(final Rectangle2D outer, final Rectangle2D inner)
   {
-    final float w = (float) Math.min(outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
-    final float h = (float) Math.min(outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
+    final float w = 
+      (float) Math.min(outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
+    final float h = 
+      (float) Math.min(outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
     final Rectangle2D rc = new Rectangle2D.Float(
         (float) (outer.getX() + inner.getX()),
         (float) (outer.getY() + inner.getY()),

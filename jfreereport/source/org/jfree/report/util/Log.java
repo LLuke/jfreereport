@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.3 2003/07/11 18:33:20 taqua Exp $
+ * $Id: Log.java,v 1.4 2003/07/14 17:37:08 taqua Exp $
  *
  * Changes
  * -------
@@ -117,11 +117,20 @@ public final class Log extends org.jfree.util.Log
     jfreeReportLog.setDebuglevel(DEBUG);
   }
 
+  /**
+   * Returns the JFreeReport log instance.
+   * 
+   * @return the log object.
+   */
   public static Log getJFreeReportLog ()
   {
     return jfreeReportLog;
   }
 
+  /**
+   * Initializes the log system after the log module was loaded and a log target
+   * was defined. This is the second step of the log initialisation.
+   */
   public void init()
   {
     removeTarget(DEFAULT_LOG_TARGET);

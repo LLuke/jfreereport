@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesHandler.java,v 1.4 2003/07/23 13:56:43 taqua Exp $
+ * $Id: TemplatesHandler.java,v 1.5 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -173,7 +173,8 @@ public class TemplatesHandler extends AbstractExtReportParserHandler
     {
       TemplateDescription template = templateFactory.getTemplate();
       ObjectDescription unconfiguredTemplate = template.getUnconfiguredInstance();
-      getParserHints().addHintList (getReport(), "ext.parser.template-definition", template.getUnconfiguredInstance());
+      getParserHints().addHintList 
+        (getReport(), "ext.parser.template-definition", template.getUnconfiguredInstance());
       CommentHintPath path = createPath(unconfiguredTemplate);
       addComment(path, CommentHandler.CLOSE_TAG_COMMENT);
       templateCollector.addTemplate(template);

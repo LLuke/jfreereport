@@ -26,7 +26,7 @@
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
  *
- * $Id: SampleData3.java,v 1.10 2003/06/29 16:59:23 taqua Exp $
+ * $Id: SampleData3.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  */
 package org.jfree.report.demo;
@@ -41,7 +41,7 @@ import javax.swing.table.AbstractTableModel;
 public class SampleData3 extends AbstractTableModel
 {
   /** Storage for the data. */
-  private Object data[][];
+  private Object[][] data;
 
   /**
    * Default constructor - builds a sample data source.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FileConfigStorage.java,v 1.1 2003/07/14 17:37:07 taqua Exp $
+ * $Id: FileConfigStorage.java,v 1.2 2003/07/23 16:02:20 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -54,7 +54,7 @@ import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
 public class FileConfigStorage implements ConfigStorage
 {
   private File baseDirectory;
-  private final String CONFIGHEADER = "part of the jfreereport filesystem config store";
+  private static final String CONFIGHEADER = "part of the jfreereport filesystem config store";
 
   public FileConfigStorage(File baseDirectory)
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectReferenceTableModel.java,v 1.8 2003/06/29 16:59:25 taqua Exp $
+ * $Id: ObjectReferenceTableModel.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -80,8 +80,8 @@ public class ObjectReferenceTableModel extends AbstractTableModel
      * @param paramName  the parameter name.
      * @param paramType  the parameter type.
      */
-    public ObjectDescriptionRow(final ClassFactory classFactory, final Class object, final String paramName,
-                                final Class paramType)
+    public ObjectDescriptionRow(final ClassFactory classFactory, final Class object, 
+                                final String paramName, final Class paramType)
     {
       this.classFactory = classFactory;
       this.object = object;
@@ -146,7 +146,7 @@ public class ObjectReferenceTableModel extends AbstractTableModel
      * @return a negative integer, zero, or a positive integer as the
      *         first argument is less than, equal to, or greater than the second.
      *
-     * @throws java.lang.ClassCastException if the arguments' types prevent them from being compared by
+     * @throws ClassCastException if the arguments' types prevent them from being compared by
      *         this Comparator.
      */
     public int compare(final Object o1, final Object o2)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFExportResources.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: PDFExportResources.java,v 1.2 2003/07/14 20:16:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,6 +45,10 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 public class PDFExportResources extends JFreeReportResources
 {
+  /**
+   * Default Constructor.
+   *
+   */
   public PDFExportResources()
   {
   }
@@ -66,8 +70,10 @@ public class PDFExportResources extends JFreeReportResources
         {"action.save-as.description", "Save to PDF format"},
         {"action.save-as.mnemonic", new Integer(KeyEvent.VK_A)},
         {"action.save-as.accelerator", createMenuKeystroke(KeyEvent.VK_S)},
-        {"action.save-as.small-icon", getIcon("org/jfree/report/modules/gui/base/resources/SaveAs16.gif")},
-        {"action.save-as.icon", getIcon("org/jfree/report/modules/gui/base/resources/SaveAs24.gif")},
+        {"action.save-as.small-icon", 
+          getIcon("org/jfree/report/modules/gui/base/resources/SaveAs16.gif")},
+        {"action.save-as.icon", 
+          getIcon("org/jfree/report/modules/gui/base/resources/SaveAs24.gif")},
 
         {"error.processingfailed.title", "Report processing failed"},
         {"error.processingfailed.message", "Error on processing this report: {0}"},

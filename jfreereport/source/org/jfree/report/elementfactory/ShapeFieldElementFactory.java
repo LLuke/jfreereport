@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeFieldElementFactory.java,v 1.3 2003/06/29 16:59:24 taqua Exp $
+ * $Id: ShapeFieldElementFactory.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes
  * -------------------------
- * 09.06.2003 : Initial version
+ * 09-Jun-2003 : Initial version
  *
  */
 
@@ -50,24 +50,53 @@ import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
 
+/**
+ * A factory to define Shape field elements. 
+ * 
+ * @author Thomas Morgner
+ */
 public class ShapeFieldElementFactory extends ShapeElementFactory
 {
+  /** The fieldname of the datarow from where to read the content. */
   private String fieldname;
 
+  /**
+   * DefaultConstructor.
+   *
+   */
   public ShapeFieldElementFactory()
   {
   }
 
+  /**
+   * Returns the field name from where to read the content of the element.
+   * 
+   * @return the field name.
+   */
   public String getFieldname()
   {
     return fieldname;
   }
 
-  public void setFieldname(final String fieldname)
+  /**
+   * Defines the field name from where to read the content of the element.
+   * The field name is the name of a datarow column.
+   * 
+   * @param fieldname the field name.
+   */
+  public void setFieldname(String fieldname)
   {
     this.fieldname = fieldname;
   }
 
+  /**
+   * Creates the shape field element.
+   *  
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
+   * 
+   * @return the generated shape field element
+   * @throws IllegalStateException if the fieldname is not defined.
+   */
   public Element createElement()
   {
     if (getFieldname() == null)

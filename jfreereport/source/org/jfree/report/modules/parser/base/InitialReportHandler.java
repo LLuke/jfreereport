@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
 
- * $Id: InitialReportHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: InitialReportHandler.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,7 @@ import org.xml.sax.SAXException;
  */
 public class InitialReportHandler implements ElementDefinitionHandler
 {
-  public static Hashtable definedHandlers;
+  private static Hashtable definedHandlers;
 
   public static void registerHandler (String handler, String handlerClass)
   {

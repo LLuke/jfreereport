@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.4 2003/07/21 20:46:55 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -166,7 +166,8 @@ public class JFreeReportResources extends ListResourceBundle
   {
     try
     {
-      return KeyStroke.getKeyStroke(character, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
+      return KeyStroke.getKeyStroke
+        (character, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
     }
     catch (UnsupportedOperationException he)
     {
@@ -195,21 +196,24 @@ public class JFreeReportResources extends ListResourceBundle
         {"action.about.name", "About..."},
         {"action.about.description", "Information about the application"},
         {"action.about.mnemonic", new Integer(KeyEvent.VK_A)},
-        {"action.about.small-icon", getIcon("org/jfree/report/modules/gui/base/resources/About16.gif")},
+        {"action.about.small-icon", 
+            getIcon("org/jfree/report/modules/gui/base/resources/About16.gif")},
         {"action.about.icon", getIcon("org/jfree/report/modules/gui/base/resources/About24.gif")},
 
         {"action.firstpage.name", "Home"},
         {"action.firstpage.mnemonic", new Integer(KeyEvent.VK_HOME)},
         {"action.firstpage.description", "Switch to the first page"},
         {"action.firstpage.small-icon",
-         getIcon("org/jfree/report/modules/gui/base/resources/FirstPage16.gif")},
-        {"action.firstpage.icon", getIcon("org/jfree/report/modules/gui/base/resources/FirstPage24.gif")},
+          getIcon("org/jfree/report/modules/gui/base/resources/FirstPage16.gif")},
+        {"action.firstpage.icon", 
+          getIcon("org/jfree/report/modules/gui/base/resources/FirstPage24.gif")},
         {"action.firstpage.accelerator", KeyStroke.getKeyStroke(KeyEvent.VK_HOME, 0)},
 
         {"action.back.name", "Back"},
         {"action.back.description", "Switch to the previous page"},
         {"action.back.mnemonic", new Integer(KeyEvent.VK_PAGE_UP)},
-        {"action.back.small-icon", getIcon("org/jfree/report/modules/gui/base/resources/Back16.gif")},
+        {"action.back.small-icon", 
+          getIcon("org/jfree/report/modules/gui/base/resources/Back16.gif")},
         {"action.back.icon", getIcon("org/jfree/report/modules/gui/base/resources/Back24.gif")},
         {"action.back.accelerator", KeyStroke.getKeyStroke("PAGE_UP")},
 
@@ -218,7 +222,8 @@ public class JFreeReportResources extends ListResourceBundle
         {"action.forward.mnemonic", new Integer(KeyEvent.VK_PAGE_DOWN)},
         {"action.forward.small-icon",
          getIcon("org/jfree/report/modules/gui/base/resources/Forward16.gif")},
-        {"action.forward.icon", getIcon("org/jfree/report/modules/gui/base/resources/Forward24.gif")},
+        {"action.forward.icon", 
+          getIcon("org/jfree/report/modules/gui/base/resources/Forward24.gif")},
         {"action.forward.accelerator", KeyStroke.getKeyStroke("PAGE_DOWN")},
 
         {"action.lastpage.name", "End"},
@@ -226,13 +231,15 @@ public class JFreeReportResources extends ListResourceBundle
         {"action.lastpage.mnemonic", new Integer(KeyEvent.VK_END)},
         {"action.lastpage.small-icon",
          getIcon("org/jfree/report/modules/gui/base/resources/LastPage16.gif")},
-        {"action.lastpage.icon", getIcon("org/jfree/report/modules/gui/base/resources/LastPage24.gif")},
+        {"action.lastpage.icon", 
+          getIcon("org/jfree/report/modules/gui/base/resources/LastPage24.gif")},
         {"action.lastpage.accelerator", KeyStroke.getKeyStroke(KeyEvent.VK_END, 0)},
 
         {"action.zoomIn.name", "Zoom In"},
         {"action.zoomIn.description", "Increase zoom"},
         {"action.zoomIn.mnemonic", new Integer(KeyEvent.VK_PLUS)},
-        {"action.zoomIn.small-icon", getIcon("org/jfree/report/modules/gui/base/resources/ZoomIn16.gif")},
+        {"action.zoomIn.small-icon", 
+          getIcon("org/jfree/report/modules/gui/base/resources/ZoomIn16.gif")},
         {"action.zoomIn.icon", getIcon("org/jfree/report/modules/gui/base/resources/ZoomIn24.gif")},
         {"action.zoomIn.accelerator", KeyStroke.getKeyStroke("PLUS")},
 
@@ -241,7 +248,8 @@ public class JFreeReportResources extends ListResourceBundle
         {"action.zoomOut.mnemonic", new Integer(KeyEvent.VK_MINUS)},
         {"action.zoomOut.small-icon",
          getIcon("org/jfree/report/modules/gui/base/resources/ZoomOut16.gif")},
-        {"action.zoomOut.icon", getIcon("org/jfree/report/modules/gui/base/resources/ZoomOut24.gif")},
+        {"action.zoomOut.icon", 
+          getIcon("org/jfree/report/modules/gui/base/resources/ZoomOut24.gif")},
         {"action.zoomOut.accelerator", KeyStroke.getKeyStroke("MINUS")},
 
         // preview frame...

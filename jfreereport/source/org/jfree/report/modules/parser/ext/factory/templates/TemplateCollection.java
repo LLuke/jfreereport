@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateCollection.java,v 1.3 2003/07/18 18:16:54 taqua Exp $
+ * $Id: TemplateCollection.java,v 1.4 2003/07/23 16:02:22 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -162,12 +162,21 @@ public class TemplateCollection implements Serializable
 
   public boolean equals(Object o)
   {
-    if (this == o) return true;
-    if (!(o instanceof TemplateCollection)) return false;
+    if (this == o)
+    { 
+      return true;
+    }
+    if (!(o instanceof TemplateCollection))
+    { 
+      return false;
+    }
 
     final TemplateCollection templateCollection = (TemplateCollection) o;
 
-    if (!templates.equals(templateCollection.templates)) return false;
+    if (!templates.equals(templateCollection.templates))
+    { 
+      return false;
+    }
 
     return true;
   }

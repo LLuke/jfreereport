@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: HtmlEncoderUtil.java,v 1.1 2003/07/25 00:21:43 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,8 +38,16 @@
 
 package org.jfree.report.modules.output.table.html;
 
-public class HtmlEncoderUtil
+public final class HtmlEncoderUtil
 {
+  /**
+   * DefaultConstructor.
+   *
+   */
+  private HtmlEncoderUtil()
+  {
+  }
+
   /**
    * Provides a method to encode any string into a URL-safe form.
    * Non-ASCII characters are first encoded as sequences of two or three bytes, using the

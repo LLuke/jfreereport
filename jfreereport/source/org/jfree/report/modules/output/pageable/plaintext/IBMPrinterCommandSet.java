@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: IBMPrinterCommandSet.java,v 1.2 2003/07/14 20:16:05 taqua Exp $
+ * $Id: IBMPrinterCommandSet.java,v 1.3 2003/07/25 01:06:00 taqua Exp $
  *
  * Changes
  * -------
@@ -68,7 +68,8 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @param defaultCPI the characters-per-inch for the output.
    * @param defaultLPI the lines-per-inch for the output.
    */
-  public IBMPrinterCommandSet(final OutputStream out, final PageFormat format, final int defaultCPI, final int defaultLPI)
+  public IBMPrinterCommandSet(final OutputStream out, final PageFormat format, 
+                              final int defaultCPI, final int defaultLPI)
   {
     super(out, format, defaultCPI, defaultLPI);
   }
@@ -162,7 +163,8 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
    * @param strike true, if the text should be strikethrough, false otherwise
    * @throws java.io.IOException if there was an IOError while writing the command
    */
-  public void setFontStyle(final boolean bold, final boolean italic, final boolean underline, final boolean strike)
+  public void setFontStyle(final boolean bold, final boolean italic, 
+                           final boolean underline, final boolean strike)
       throws IOException
   {
     if (isBold())
@@ -381,7 +383,7 @@ public class IBMPrinterCommandSet extends PrinterCommandSet
     {
       // check the supplied encoding ...
       // only Cp- encodings are supported ...
-      if (org.jfree.report.modules.gui.base.components.EncodingSupport.isSupportedEncoding(cp) == false)
+      if (EncodingSupport.isSupportedEncoding(cp) == false)
       {
         throw new UnsupportedEncodingException("The encoding " + cp + "is not valid");
       }

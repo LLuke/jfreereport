@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractBandLayoutManager.java,v 1.15 2003/06/29 16:59:28 taqua Exp $
+ * $Id: AbstractBandLayoutManager.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------
@@ -87,7 +87,8 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     else
     {
       // return the minimum size as fallback
-      final Dimension2D dim = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
+      final Dimension2D dim = (Dimension2D) 
+        e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
       retval = correctDimension(dim, containerBounds, null);
     }
 
@@ -141,7 +142,8 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
     else
     {
       // if prefsize is defined, return it
-      final Dimension2D d = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.PREFERREDSIZE);
+      final Dimension2D d = (Dimension2D) 
+        e.getStyle().getStyleProperty(ElementStyleSheet.PREFERREDSIZE);
       if (d != null)
       {
         retval = correctDimension(d, containerBounds, null);
@@ -244,7 +246,8 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    * @param parentDim the dimensions for the parent of the element
    * @return the created layout information.
    */
-  protected ElementLayoutInformation createLayoutInfoForDynamics(final Element e, final Dimension2D parentDim)
+  protected ElementLayoutInformation createLayoutInfoForDynamics
+    (final Element e, final Dimension2D parentDim)
   {
     final Dimension2D maxSize = correctDimension(
         (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MAXIMUMSIZE), parentDim, null
@@ -443,7 +446,8 @@ public abstract class AbstractBandLayoutManager implements BandLayoutManager
    *
    * @return the corrected dimension.
    */
-  protected Dimension2D correctDimension(final Dimension2D dim, final Dimension2D base, final Dimension2D retval)
+  protected Dimension2D correctDimension
+    (final Dimension2D dim, final Dimension2D base, final Dimension2D retval)
   {
     float newWidth = (float) dim.getWidth();
     if (dim.getWidth() < 0)

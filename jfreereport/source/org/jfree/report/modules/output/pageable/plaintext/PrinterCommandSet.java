@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);;
  *
- * $Id: PrinterCommandSet.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: PrinterCommandSet.java,v 1.2 2003/07/25 01:06:00 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import org.jfree.report.style.FontDefinition;
-import org.jfree.report.modules.gui.base.components.EncodingSupport;
 import org.jfree.report.util.PageFormatFactory;
 
 /**
@@ -179,7 +178,8 @@ public class PrinterCommandSet
    * @param defaultCPI the characters-per-inch for the output.
    * @param defaultLPI the lines-per-inch for the output.
    */
-  public PrinterCommandSet(final OutputStream out, final PageFormat format, final int defaultCPI, final int defaultLPI)
+  public PrinterCommandSet(final OutputStream out, final PageFormat format, 
+                           final int defaultCPI, final int defaultLPI)
   {
     this.out = out;
     this.defaultLPI = defaultLPI;
@@ -279,7 +279,8 @@ public class PrinterCommandSet
    * @param strike true, if the text should be strikethrough, false otherwise
    * @throws java.io.IOException if there was an IOError while writing the command
    */
-  public void setFontStyle(final boolean bold, final boolean italic, final boolean underline, final boolean strike)
+  public void setFontStyle(final boolean bold, final boolean italic, 
+                           final boolean underline, final boolean strike)
       throws IOException
   {
     this.bold = bold;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.19 2003/06/29 16:59:30 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,7 @@ public class DirectoryHtmlFilesystem implements HtmlFilesystem
   private class CounterRef
   {
     /** a counter. */
-    public int count;
+    private int count;
   }
 
   /** the root file to store the generated main html file. */

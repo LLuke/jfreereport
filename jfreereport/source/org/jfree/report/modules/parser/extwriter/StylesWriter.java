@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesWriter.java,v 1.4 2003/07/23 13:56:43 taqua Exp $
+ * $Id: StylesWriter.java,v 1.1 2003/07/23 16:02:22 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,8 @@ import org.jfree.report.style.ElementStyleSheet;
  */
 public class StylesWriter extends AbstractXMLDefinitionWriter
 {
-  private CommentHintPath STYLES_HINT_PATH =
+  /** The comment hint path used to retrieve the comments from the parser hints. */
+  private static final CommentHintPath STYLES_HINT_PATH =
       new CommentHintPath(new String[]
       {ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.STYLES_TAG});
 
@@ -87,8 +88,8 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
    *
    * @param writer  the character stream writer.
    *
-   * @throws java.io.IOException if there is an I/O problem.
-   * @throws org.jfree.report.modules.parser.extwriter.ReportWriterException if there is a problem writing the report.
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there is a problem writing the report.
    */
   public void write(final Writer writer) throws IOException, ReportWriterException
   {
@@ -109,7 +110,8 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
       writeComment(writer, stylePath, CommentHandler.OPEN_TAG_COMMENT);
       writeTag(writer, StylesHandler.STYLE_TAG, "name", style.getName(), OPEN);
 
-      final StyleWriter stW = new StyleWriter(getReportWriter(), style, null, getIndentLevel(), stylePath);
+      final StyleWriter stW = new StyleWriter
+        (getReportWriter(), style, null, getIndentLevel(), stylePath);
       stW.write(writer);
 
       writeComment(writer, stylePath, CommentHandler.CLOSE_TAG_COMMENT);

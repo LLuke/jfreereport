@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: NumberFieldElementFactory.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 06.07.2003 : Initial version
+ * 06-Jul-2003 : Initial version
  *  
  */
 
@@ -54,24 +54,55 @@ import org.jfree.report.filter.templates.NumberFieldTemplate;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
 
+/**
+ * The number format factory can be used to create numeric text elements.
+ * These text elements have special abilities to format numeric values.
+ * <p>
+ * Once the desired properties are set, the factory can be reused to create
+ * similiar text elements. 
+ *  
+ * @author Thomas Morgner
+ */
 public class NumberFieldElementFactory extends TextFieldElementFactory
 {
+  /** The number format instance used to format numeric values in the text element. */
   private NumberFormat format;
 
+  /**
+   * Creates a new number field element factory.
+   */
   public NumberFieldElementFactory()
   {
   }
 
+  /**
+   * Returns the number format used for all generated text elements. The 
+   * number format is shared among all generated elements.
+   * 
+   * @return the number format used in this factory.
+   */
   public NumberFormat getFormat()
   {
     return format;
   }
 
+  /**
+   * Defines the number format used for all generated text elements. The 
+   * number format is shared among all generated elements.
+   * 
+   * @param format the number format used in this factory.
+   */
   public void setFormat(NumberFormat format)
   {
     this.format = format;
   }
 
+  /**
+   * Returns the format string of the used number format. This method will
+   * return null, if the current number format is no instance of DecimalFormat.
+   *  
+   * @return the formatstring of the number format instance.
+   */
   public String getFormatString()
   {
     if (getFormat() instanceof DecimalFormat)
@@ -82,11 +113,25 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
     return null;
   }
 
+  /**
+   * Defines the format string of the used number format. This method will
+   * replace the number format instance of this factory.
+   *  
+   * @param formatString the formatstring of the number format instance.
+   */
   public void setFormatString(String formatString)
   {
     setFormat(new DecimalFormat(formatString));
   }
-
+  
+  /**
+   * Creates the number text element based on the defined settings.
+   * Undefined properties will not be set in the generated element.
+   *  
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
+   * 
+   * @return the generated numberic text element
+   */
   public Element createElement()
   {
     DataSource dataSource;
@@ -248,6 +293,7 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
    *
    * @param name  the name of the new element.
    * @param bounds  the bounds of the new element.
+   * @param color the text color of the element.
    * @param alignment  the horizontal text alignment.
    * @param valign  the vertical alignment.
    * @param font  the font for this element.

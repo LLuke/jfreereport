@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportDialog.java,v 1.2 2003/07/14 20:16:05 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.3 2003/07/25 01:06:00 taqua Exp $
  *
  * Changes
  * -------
@@ -80,13 +80,13 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
+import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.modules.gui.html.resources.HtmlExportResources;
 import org.jfree.report.modules.output.table.html.DirectoryHtmlFilesystem;
 import org.jfree.report.modules.output.table.html.HtmlProcessor;
 import org.jfree.report.modules.output.table.html.HtmlProducer;
 import org.jfree.report.modules.output.table.html.StreamHtmlFilesystem;
 import org.jfree.report.modules.output.table.html.ZIPHtmlFilesystem;
-import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 
@@ -734,7 +734,8 @@ public class HtmlExportDialog extends JDialog
     final JPanel contentPane = new JPanel();
     contentPane.setLayout(new GridBagLayout());
 
-    final JLabel lblStreamFileName = new JLabel(getResources().getString("htmlexportdialog.filename"));
+    final JLabel lblStreamFileName = 
+      new JLabel(getResources().getString("htmlexportdialog.filename"));
     txStreamFilename = new JTextField();
 
     GridBagConstraints gbc = new GridBagConstraints();
@@ -1046,7 +1047,8 @@ public class HtmlExportDialog extends JDialog
     if (fileChooserStream == null)
     {
       fileChooserStream = new JFileChooser();
-      fileChooserStream.addChoosableFileFilter(new org.jfree.report.modules.gui.base.components.FilesystemFilter(new String[]{".html", ".htm"},
+      fileChooserStream.addChoosableFileFilter
+        (new FilesystemFilter(new String[]{".html", ".htm"},
           getResources().getString("htmlexportdialog.html-documents"), true));
       fileChooserStream.setMultiSelectionEnabled(false);
     }
@@ -1079,7 +1081,8 @@ public class HtmlExportDialog extends JDialog
     if (fileChooserZip == null)
     {
       fileChooserZip = new JFileChooser();
-      fileChooserZip.addChoosableFileFilter(new org.jfree.report.modules.gui.base.components.FilesystemFilter(new String[]{".zip", ".jar"},
+      fileChooserZip.addChoosableFileFilter
+        (new FilesystemFilter(new String[]{".zip", ".jar"},
           getResources().getString("htmlexportdialog.zip-archives"), true));
       fileChooserZip.setMultiSelectionEnabled(false);
     }
@@ -1109,7 +1112,7 @@ public class HtmlExportDialog extends JDialog
     if (fileChooserDir == null)
     {
       fileChooserDir = new JFileChooser();
-      fileChooserDir.addChoosableFileFilter(new org.jfree.report.modules.gui.base.components.FilesystemFilter(new String[]{".html", ".htm"},
+      fileChooserDir.addChoosableFileFilter(new FilesystemFilter(new String[]{".html", ".htm"},
           getResources().getString("htmlexportdialog.html-documents"), true));
       fileChooserDir.setMultiSelectionEnabled(false);
     }

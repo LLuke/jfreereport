@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageComparator.java,v 1.8 2003/06/29 16:59:30 taqua Exp $
+ * $Id: ImageComparator.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -63,7 +63,7 @@ public class ImageComparator
   /**
    * A ImageCompareData that uses the complete image data for comparison.
    */
-  private static class CompleteImageCompareData extends ImageCompareData
+  private static final class CompleteImageCompareData extends ImageCompareData
   {
     /** The image content. */
     private byte[] image;
@@ -119,7 +119,7 @@ public class ImageComparator
    * An ImageComparator which uses precomputed Message-Digests to compare the
    * image.
    */
-  private static class DigestImageCompareData extends ImageCompareData
+  private static final class DigestImageCompareData extends ImageCompareData
   {
     /** An MD5 digest. */
     private byte[] digestMD5Data;

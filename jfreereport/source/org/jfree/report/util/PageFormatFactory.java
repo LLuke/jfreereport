@@ -25,7 +25,7 @@
  * -----------------------
  * (C)opyright 2000-2002, by Simba Management Limited.
  *
- * $Id: PageFormatFactory.java,v 1.29 2003/06/29 16:59:30 taqua Exp $
+ * $Id: PageFormatFactory.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -60,7 +60,7 @@ import java.lang.reflect.Field;
  *
  * @author Thomas Morgner
  */
-public class PageFormatFactory
+public final class PageFormatFactory
 {
 
   /** Constant for dots per inch. */
@@ -608,7 +608,8 @@ public class PageFormatFactory
    * @param bottom the border in points in the bottom
    * @param right the border in points in the right
    */
-  public void setBorders(final Paper paper, final double top, final double left, final double bottom, final double right)
+  public void setBorders(final Paper paper, final double top, 
+    final double left, final double bottom, final double right)
   {
     final double w = paper.getWidth() - (right + left);
     final double h = paper.getHeight() - (bottom + top);
@@ -625,7 +626,9 @@ public class PageFormatFactory
    * @param bottom the border in points in the bottom
    * @param right the border in points in the right
    */
-  public void setBordersInch(final Paper paper, final double top, final double left, final double bottom, final double right)
+  public void setBordersInch
+    (final Paper paper, final double top, final double left, 
+     final double bottom, final double right)
   {
     setBorders(paper, convertInchToPoints(top), convertInchToPoints(left),
         convertInchToPoints(bottom), convertInchToPoints(right));
@@ -641,7 +644,9 @@ public class PageFormatFactory
    * @param bottom the border in points in the bottom
    * @param right the border in points in the right
    */
-  public void setBordersMm(final Paper paper, final double top, final double left, final double bottom, final double right)
+  public void setBordersMm
+    (final Paper paper, final double top, final double left, 
+     final double bottom, final double right)
   {
     setBorders(paper, convertMmToPoints(top), convertMmToPoints(left),
         convertMmToPoints(bottom), convertMmToPoints(right));

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AWTPrintingGUIModule.java,v 1.2 2003/07/10 20:02:09 taqua Exp $
+ * $Id: AWTPrintingGUIModule.java,v 1.3 2003/07/23 16:02:20 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,10 +45,14 @@ import org.jfree.report.util.ReportConfiguration;
 
 public class AWTPrintingGUIModule extends AbstractModule
 {
-  private static final String PRINT_ORDER_KEY = "org.jfree.report.modules.gui.print.Order";
-  private static final String PRINT_ENABLE_KEY = "org.jfree.report.modules.gui.print.Enable";
-  private static final String PAGESETUP_ORDER_KEY = "org.jfree.report.modules.gui.print.pagesetup.Order";
-  private static final String PAGESETUP_ENABLE_KEY = "org.jfree.report.modules.gui.print.pagesetup.Enable";
+  private static final String PRINT_ORDER_KEY = 
+    "org.jfree.report.modules.gui.print.Order";
+  private static final String PRINT_ENABLE_KEY = 
+    "org.jfree.report.modules.gui.print.Enable";
+  private static final String PAGESETUP_ORDER_KEY = 
+    "org.jfree.report.modules.gui.print.pagesetup.Order";
+  private static final String PAGESETUP_ENABLE_KEY = 
+    "org.jfree.report.modules.gui.print.pagesetup.Enable";
 
   public AWTPrintingGUIModule() throws ModuleInitializeException
   {

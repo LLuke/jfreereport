@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.3 2003/07/23 16:02:20 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.4 2003/07/25 01:06:00 taqua Exp $
  *
  * Changes
  * -------
@@ -60,9 +60,9 @@ import javax.swing.JTextField;
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
+import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.modules.gui.converter.resources.ConverterResources;
 import org.jfree.report.modules.parser.extwriter.ReportConverter;
-import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.StringUtil;
 
@@ -90,6 +90,7 @@ public class ReportConverterGUI extends JFrame
   public static final String BASE_RESOURCE_CLASS =
       ConverterResources.class.getName();
 
+  /** The encoding combo box model used to select the target file encoding. */
   private EncodingComboBoxModel encodingModel;
 
   /**
@@ -271,7 +272,7 @@ public class ReportConverterGUI extends JFrame
     setContentPane(contentPane);
 
     fileChooser = new JFileChooser();
-    fileChooser.addChoosableFileFilter(new org.jfree.report.modules.gui.base.components.FilesystemFilter(new String[]{".xml"},
+    fileChooser.addChoosableFileFilter(new FilesystemFilter(new String[]{".xml"},
         "XML-Report definitions", true));
     fileChooser.setMultiSelectionEnabled(false);
 

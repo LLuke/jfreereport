@@ -21,18 +21,18 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * ImageFieldElementFactory.java
+ * ImageURLFieldElementFactory.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageURLFieldElementFactory.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: ImageURLFieldElementFactory.java,v 1.2 2003/07/23 16:02:19 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 06.07.2003 : Initial version
+ * 06-Jul-2003 : Initial version
  *  
  */
 
@@ -48,24 +48,53 @@ import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
 
+/**
+ * A factory to define ImageURLFieldElements. These elements expect an java.net.URL
+ * or an String as content and will display the image content of that URL in the report.
+ * 
+ * @author Thomas Morgner
+ */
 public class ImageURLFieldElementFactory extends ImageElementFactory
 {
+  /** The fieldname of the datarow from where to read the content. */
   private String fieldname;
 
+  /**
+   * DefaultConstructor.
+   *
+   */
   public ImageURLFieldElementFactory()
   {
   }
 
+  /**
+   * Returns the field name from where to read the content of the element.
+   * 
+   * @return the field name.
+   */
   public String getFieldname()
   {
     return fieldname;
   }
 
+  /**
+   * Defines the field name from where to read the content of the element.
+   * The field name is the name of a datarow column.
+   * 
+   * @param fieldname the field name.
+   */
   public void setFieldname(String fieldname)
   {
     this.fieldname = fieldname;
   }
 
+  /**
+   * Creates the image URL field element based on the defined properties.
+   *  
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
+   * 
+   * @return the created element.
+   */
   public Element createElement()
   {
     if (getFieldname() == null)

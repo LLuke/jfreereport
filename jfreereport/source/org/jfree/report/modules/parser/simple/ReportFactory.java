@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.2 2003/07/14 19:37:54 taqua Exp $
+ * $Id: ReportFactory.java,v 1.3 2003/07/18 17:56:39 taqua Exp $
  *
  * Changes
  * -------
@@ -155,6 +155,13 @@ public class ReportFactory extends AbstractReportDefinitionHandler
     }
   }
 
+  /**
+   * Performs the include element. This invokes a new parser run and waits until that
+   * run is finished.
+   * 
+   * @param atts the attribute set for the include tag.
+   * @throws SAXException if there is an error parsing the included fragment.
+   */
   public void handleIncludeParsing (final Attributes atts) throws SAXException
   {
     String file = atts.getValue("src");
@@ -240,6 +247,8 @@ public class ReportFactory extends AbstractReportDefinitionHandler
     }
     else if (elementName.equals("include"))
     {
+      // ignored ...
+      // @todo add include ... 
     }
     else if (elementName.equals(PROPERTY_TAG))
     {
@@ -336,6 +345,8 @@ public class ReportFactory extends AbstractReportDefinitionHandler
         PageFormatFactory.getInstance().setBorders(p, defLeftMargin, defBottomMargin,
             defRightMargin, defTopMargin);
         break;
+      default:
+        throw new IllegalStateException ("Unexpected paper orientation.");
     }
 
     format.setPaper(p);
@@ -359,7 +370,8 @@ public class ReportFactory extends AbstractReportDefinitionHandler
    *
    * @throws SAXException if there is an error parsing the report.
    */
-  private PageFormat createPageFormat(final PageFormat format, final Attributes atts) throws SAXException
+  private PageFormat createPageFormat(final PageFormat format, final Attributes atts)
+    throws SAXException
   {
     final String pageformatName = atts.getValue(PAGEFORMAT_ATT);
 
@@ -453,6 +465,12 @@ public class ReportFactory extends AbstractReportDefinitionHandler
   {
   }
 
+  /**
+   * Returns true, if this is a report definition fragment, which is included from
+   * an other report.
+   * 
+   * @return true, if this is an included report definition fragment, false otherwise.
+   */
   public boolean isIncludedParsing ()
   {
     return getParser().getConfigProperty(IncludeParser.INCLUDE_PARSING_KEY, "false").equals("true");

@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportDialog.java,v 1.2 2003/07/25 01:06:00 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.3 2003/08/10 12:18:51 hevermann Exp $
  *
  * Changes
  * --------
@@ -72,16 +72,17 @@ import javax.swing.KeyStroke;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
+import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.modules.gui.xls.resources.XLSExportResources;
 import org.jfree.report.modules.output.table.xls.ExcelProcessor;
-import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
 
 /**
  * A dialog that is used to perform the printing of a report into an Excel file.
  * <p>
- * The main method to call the dialog is {@link org.jfree.report.modules.gui.xls.ExcelExportDialog#performExport}. Given a report
+ * The main method to call the dialog is 
+ * {@link org.jfree.report.modules.gui.xls.ExcelExportDialog#performExport}. Given a report
  * and a pageformat, the dialog is shown and if the user approved the dialog, the excel file
  * is saved using the settings made in the dialog.
  *
@@ -451,7 +452,7 @@ public class ExcelExportDialog extends JDialog
     if (fileChooser == null)
     {
       fileChooser = new JFileChooser();
-      final org.jfree.report.modules.gui.base.components.FilesystemFilter filter = new org.jfree.report.modules.gui.base.components.FilesystemFilter(".xls", "Excel Documents" );
+      final FilesystemFilter filter = new FilesystemFilter(".xls", "Excel Documents" );
       fileChooser.addChoosableFileFilter(filter);
       fileChooser.setMultiSelectionEnabled(false);
     }

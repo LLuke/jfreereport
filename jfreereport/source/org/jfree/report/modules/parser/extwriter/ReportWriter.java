@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriter.java,v 1.6 2003/07/23 13:56:43 taqua Exp $
+ * $Id: ReportWriter.java,v 1.1 2003/07/23 16:02:22 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.JFreeReportConstants;
 import org.jfree.report.ReportBuilderHints;
 import org.jfree.report.modules.parser.ext.ParserConfigHandler;
 import org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector;
@@ -91,6 +90,7 @@ public class ReportWriter
   /** The encoding. */
   private String encoding;
 
+  /** The report writer configuration used during writing. */
   private Configuration configuration;
 
   /**
@@ -107,13 +107,13 @@ public class ReportWriter
     ReportConfiguration repConf = new ReportConfiguration(report.getReportConfiguration());
     repConf.setConfigProperty
         (Parser.CONTENTBASE_KEY,
-            (String) report.getProperty(JFreeReportConstants.REPORT_DEFINITION_CONTENTBASE));
+            (String) report.getProperty(JFreeReport.REPORT_DEFINITION_CONTENTBASE));
     repConf.setConfigProperty
-        (JFreeReportConstants.REPORT_DEFINITION_CONTENTBASE,
-            (String) report.getProperty(JFreeReportConstants.REPORT_DEFINITION_CONTENTBASE));
+        (JFreeReport.REPORT_DEFINITION_CONTENTBASE,
+            (String) report.getProperty(JFreeReport.REPORT_DEFINITION_CONTENTBASE));
     repConf.setConfigProperty
-        (JFreeReportConstants.REPORT_DEFINITION_SOURCE,
-            (String) report.getProperty(JFreeReportConstants.REPORT_DEFINITION_SOURCE));
+        (JFreeReport.REPORT_DEFINITION_SOURCE,
+            (String) report.getProperty(JFreeReport.REPORT_DEFINITION_SOURCE));
     return repConf;
   }
 
@@ -140,7 +140,8 @@ public class ReportWriter
     }
     if (config.getConfigProperty(Parser.CONTENTBASE_KEY) == null)
     {
-      throw new IllegalStateException("This report writer configuration does not define a content base.");
+      throw new IllegalStateException
+        ("This report writer configuration does not define a content base.");
     }
 
     this.report = report;
@@ -166,6 +167,9 @@ public class ReportWriter
     templateCollector.configure(configuration);
   }
 
+  /**
+   * Loads all object factories from the parser hints, if available.
+   */
   private void loadObjectFactories ()
   {
     ReportBuilderHints hints = getReport().getReportBuilderHints();
@@ -181,40 +185,54 @@ public class ReportWriter
     }
   }
 
+  /**
+   * Loads all datasource factories from the parser hints, if available.
+   */
   private void loadDataSourceFactories ()
   {
     ReportBuilderHints hints = getReport().getReportBuilderHints();
-    List l = (List) hints.getHint(getReport(), ParserConfigHandler.DATASOURCE_FACTORY_HINT, List.class);
+    List l = (List) hints.getHint(getReport(), 
+      ParserConfigHandler.DATASOURCE_FACTORY_HINT, List.class);
     if (l == null)
     {
       return;
     }
-    DataSourceFactory[] list = (DataSourceFactory[]) loadParserHintFactories(l, DataSourceFactory.class);
+    DataSourceFactory[] list = (DataSourceFactory[]) 
+      loadParserHintFactories(l, DataSourceFactory.class);
     for (int i = 0; i < list.length; i++)
     {
       addDataSourceFactory(list[i]);
     }
   }
-
+  
+  /**
+   * Loads all template factories from the parser hints, if available.
+   */
   private void loadTemplateFactories ()
   {
     ReportBuilderHints hints = getReport().getReportBuilderHints();
-    List l = (List) hints.getHint(getReport(), ParserConfigHandler.TEMPLATE_FACTORY_HINT, List.class);
+    List l = (List) hints.getHint(getReport(), 
+      ParserConfigHandler.TEMPLATE_FACTORY_HINT, List.class);
     if (l == null)
     {
       return;
     }
-    TemplateCollection[] list = (TemplateCollection[]) loadParserHintFactories(l, TemplateCollection.class);
+    TemplateCollection[] list = (TemplateCollection[]) 
+      loadParserHintFactories(l, TemplateCollection.class);
     for (int i = 0; i < list.length; i++)
     {
       addTemplateCollection(list[i]);
     }
   }
 
+  /**
+   * Loads all element factories from the parser hints, if available.
+   */
   private void loadElementFactories ()
   {
     ReportBuilderHints hints = getReport().getReportBuilderHints();
-    List l = (List) hints.getHint(getReport(), ParserConfigHandler.ELEMENT_FACTORY_HINT, List.class);
+    List l = (List) hints.getHint(getReport(), 
+      ParserConfigHandler.ELEMENT_FACTORY_HINT, List.class);
     if (l == null)
     {
       return;
@@ -226,10 +244,14 @@ public class ReportWriter
     }
   }
 
+  /**
+   * Loads all style key factories from the parser hints, if available.
+   */
   private void loadStyleKeyFactories ()
   {
     ReportBuilderHints hints = getReport().getReportBuilderHints();
-    List l = (List) hints.getHint(getReport(), ParserConfigHandler.STYLEKEY_FACTORY_HINT, List.class);
+    List l = (List) hints.getHint(getReport(), 
+      ParserConfigHandler.STYLEKEY_FACTORY_HINT, List.class);
     if (l == null)
     {
       return;
@@ -251,6 +273,14 @@ public class ReportWriter
     return encoding;
   }
 
+  /**
+   * Loads a set of factories from the given list of class names and checks, whether
+   * the referenced classes are assignable from the given factory type.
+   * 
+   * @param hints the list of class names to load
+   * @param factoryType the desired factory type.
+   * @return the loaded factories as object array.  
+   */
   private Object[] loadParserHintFactories (List hints, Class factoryType)
   {
     Object[] hintValues = hints.toArray();
@@ -259,7 +289,7 @@ public class ReportWriter
     {
       if (hintValues[i] instanceof String == false)
       {
-        Log.warn (new org.jfree.util.Log.SimpleMessage
+        Log.warn (new Log.SimpleMessage
             ("Invalid parser hint type for factory: ", factoryType,
                 ": Type found: ", hintValues[i]));
         continue;
@@ -270,7 +300,7 @@ public class ReportWriter
         Class c = getClass().getClassLoader().loadClass((String) hintValues[i]);
         if (factoryType.isAssignableFrom(c) == false)
         {
-          Log.warn (new org.jfree.util.Log.SimpleMessage
+          Log.warn (new Log.SimpleMessage
               ("Invalid factory type specified: Required ", factoryType,
                   " but found ", c));
           continue;
@@ -407,8 +437,8 @@ public class ReportWriter
    *
    * @param w  the character stream writer.
    *
-   * @throws java.io.IOException if there is an I/O problem.
-   * @throws org.jfree.report.modules.parser.extwriter.ReportWriterException if there is a problem writing the report.
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there is a problem writing the report.
    */
   public void write(final Writer w) throws IOException, ReportWriterException
   {
@@ -416,6 +446,10 @@ public class ReportWriter
     writer.write(w); // we start with indentation level 0
   }
 
+  /**
+   * Returns the configuration used to write the report. 
+   * @return the writer configuration.
+   */
   public Configuration getConfiguration()
   {
     return configuration;

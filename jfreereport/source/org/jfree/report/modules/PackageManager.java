@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageManager.java,v 1.5 2003/07/23 16:02:19 taqua Exp $
+ * $Id: PackageManager.java,v 1.6 2003/07/26 18:35:07 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,7 +43,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.jfree.report.JFreeReport;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.PackageConfiguration;
 import org.jfree.report.util.ReportConfiguration;
@@ -51,10 +50,13 @@ import org.jfree.report.util.ReportConfiguration;
 /**
  * This class will help to manage the extension classes of JFreeReport 0.8.4 and
  * later...
+ * <p>
+ * Todo: Write a real class documentation and add a query interface to make it 
+ * possible to check for an certain module. 
  *
  * @author Thomas Morgner
  */
-public class PackageManager
+public final class PackageManager
 {
   /** A singleton instance of the package manager. */
   private static PackageManager singleton;
@@ -73,8 +75,16 @@ public class PackageManager
     return singleton;
   }
 
+  /** 
+   * The module configuration instance that should be used to store module 
+   * properties. This separates the user defined properties from the implementation
+   * defined properties.
+   */
   private PackageConfiguration packageConfiguration;
+  
+  /** A list of all defined modules. */
   private ArrayList modules;
+  /** A list of module name definitions. */
   private ArrayList initSections;
 
   /**
@@ -87,12 +97,21 @@ public class PackageManager
     initSections = new ArrayList();
   }
 
+  /**
+   * Initializes the default module name spaces.
+   */
   public synchronized void init ()
   {
     init("org.jfree.report.modules.");
     init("org.jfree.report.ext.modules.");
   }
 
+  /**
+   * Initializes the given module prefix. The package manager will search the 
+   * report configuration for module definitions that start with that prefix.
+   * 
+   * @param modulePrefix the module prefix.
+   */
   public synchronized void init (String modulePrefix)
   {
     if (initSections.contains(modulePrefix))
@@ -115,6 +134,10 @@ public class PackageManager
     initializeModules();
   }
 
+  /**
+   * Initializes all previously uninitialized modules. Once a module is initialized,
+   * it is not re-initialized a second time.
+   */
   public synchronized void initializeModules ()
   {
     Collections.sort(modules);
@@ -137,6 +160,11 @@ public class PackageManager
     }
   }
 
+  /**
+   * Adds a module to the package manager.
+   * 
+   * @param modClass the module class
+   */
   public synchronized void addModule (String modClass)
   {
     ArrayList loadModules = new ArrayList();
@@ -152,6 +180,14 @@ public class PackageManager
     }
   }
 
+  /**
+   * Checks, whether the given module is already loaded in either the given
+   * tempModules list or the global package registry. 
+   * 
+   * @param tempModules a list of previously loaded modules.
+   * @param module the module specification that is checked.
+   * @return true, if the module is already loaded, false otherwise.
+   */
   private boolean containsModule (ArrayList tempModules, ModuleInfo module)
   {
     ModuleInfo[] mods = (ModuleInfo[])
@@ -175,6 +211,16 @@ public class PackageManager
     }
     return false;
   }
+  
+  /**
+   * Tries to load a given module and all dependent modules. If the dependency check
+   * fails for that module (or for one of the dependent modules), the loaded modules
+   * are discarded and no action is taken.
+   * 
+   * @param moduleInfo the module info of the module that should be loaded.
+   * @param modules the list of previously loaded modules for this module.
+   * @return true, if the module was loaded successfully, false otherwise.
+   */
   private boolean loadModule (ModuleInfo moduleInfo, ArrayList modules)
   {
     try
@@ -220,7 +266,8 @@ public class PackageManager
     }
     catch (ClassNotFoundException cnfe)
     {
-      Log.warn (new Log.SimpleMessage("Unresolved dependency for package: ", moduleInfo.getModuleClass()));
+      Log.warn (new Log.SimpleMessage
+        ("Unresolved dependency for package: ", moduleInfo.getModuleClass()));
       Log.debug ("ClassNotFound: ", cnfe);
       return false;
     }
@@ -231,6 +278,14 @@ public class PackageManager
     }
   }
 
+  /**
+   * Checks, whether the given module meets the requirements defined in the module
+   * information.
+   * 
+   * @param moduleRequirement the required module specification.
+   * @param module the module that should be checked against the specification.
+   * @return true, if the module meets the given specifications, false otherwise.
+   */
   private boolean acceptVersion (ModuleInfo moduleRequirement, Module module)
   {
     if (moduleRequirement.getMajorVersion() == null)
@@ -326,17 +381,10 @@ public class PackageManager
    * instances may be inserted. These inserted configuration can never override
    * the settings from this package configuration.
    *
-   * @return
+   * @return the package configuration.
    */
   public PackageConfiguration getPackageConfiguration ()
   {
     return packageConfiguration;
-  }
-
-  public static void main(String[] args)
-  {
-    new JFreeReport();
-    //ReportConfiguration.getGlobalConfig();
-    //PackageManager.getInstance().init();
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: Band.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -77,6 +77,7 @@ import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.style.BandDefaultStyleSheet;
 import org.jfree.report.style.BandStyleSheet;
 import org.jfree.report.style.ElementStyleSheet;
+import org.jfree.report.style.InvalidStyleSheetCollectionException;
 import org.jfree.report.style.StyleSheetCollection;
 
 /**
@@ -526,10 +527,11 @@ public class Band extends Element implements Serializable, Cloneable
    * @param sc the stylesheet collection that contains the updated information and
    * that should be assigned with that element.
    * @throws NullPointerException if the given stylesheet collection is null.
-   * @throws org.jfree.report.style.InvalidStyleSheetCollectionException
+   * @throws InvalidStyleSheetCollectionException
    * if there is an other stylesheet collection already registered with that element.
    */
   public void updateStyleSheetCollection(final StyleSheetCollection sc)
+    throws InvalidStyleSheetCollectionException
   {
     if (sc == null)
     {

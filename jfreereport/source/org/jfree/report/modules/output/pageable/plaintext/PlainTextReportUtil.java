@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PlainTextReportUtil.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -49,8 +49,23 @@ import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 
-public class PlainTextReportUtil
+/**
+ * An utility class to write an report into a plain text file. If you need more 
+ * control over the writing process, you will have to implement your own write
+ * method.
+ * 
+ * @author Thomas Morgner
+ */
+public final class PlainTextReportUtil
 {
+  /**
+   * Default Constructor.
+   *
+   */
+  private PlainTextReportUtil()
+  {
+  }
+  
   /**
    * Saves a report to plain text format.
    *
@@ -69,7 +84,8 @@ public class PlainTextReportUtil
     final PageableReportProcessor pr = new PageableReportProcessor(report);
     final OutputStream fout = new BufferedOutputStream(new FileOutputStream(filename));
     final PrinterCommandSet pc = new PrinterCommandSet(fout, report.getDefaultPageFormat(), 6, 10);
-    final PlainTextOutputTarget target = new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
+    final PlainTextOutputTarget target = 
+      new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
     pr.setOutputTarget(target);
     target.open();
     pr.processReport();

@@ -8,5 +8,6 @@ checkstyle.ignore.public.in.interface yes
 checkstyle.javadoc.checkUnusedThrows yes
 checkstyle.illegal.instantiations java.lang.Boolean
 checkstyle.wrap.operator ignore
-checkstyle.header.file checkstyle/fileheader.txt
+# this does not work from within eclipse ... 
+#checkstyle.header.file checkstyle/fileheader.txt
 checkstyle.require.packagehtml true

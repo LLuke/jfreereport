@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.3 2003/07/25 00:20:35 taqua Exp $
  *
  * Changes
  * -------
@@ -261,7 +261,8 @@ public class HtmlProducer extends TableProducer
       }
       catch (IOException ioe)
       {
-        throw new FunctionProcessingException("Failed to create the writer or write the header.", ioe);
+        throw new FunctionProcessingException
+          ("Failed to create the writer or write the header.", ioe);
       }
     }
   }

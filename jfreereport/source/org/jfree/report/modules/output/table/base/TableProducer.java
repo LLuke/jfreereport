@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
+ * $Id: TableProducer.java,v 1.3 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -68,6 +68,7 @@ public abstract class TableProducer
   /** Literal text for the 'author' property name. */
   public static final String AUTHOR = "Author";
 
+  /** A constant to define that this layout has not yet printed any pages. */
   private static final int BEFORE_FIRST_PAGE = -1;
 
   /** the dummy mode flag. */
@@ -82,6 +83,7 @@ public abstract class TableProducer
   /** The layout. If in dummy mode, then this contains only the Bounds. */
   private TableGridBounds gridBounds;
 
+  /** The collected grid bounds. This collection is used to store the table grid layout. */
   private TableLayoutInfo gridBoundsCollection;
 
   /** The layouted elements. Used during the non-dummy mode. */
@@ -91,12 +93,16 @@ public abstract class TableProducer
   private int page;
 
   /**
-   * Creates a new TableProducer.
+   * Creates a new TableProducer. This constructor should be used to create an
+   * producer for the repagination process. 
    *
+   * @param gridBoundsCollection the layout information implementation used to create 
+   * the table layout.  
    * @param strictLayout the strict layout flag. Set to true, to enable the strict
    * layout mode.
    */
-  public TableProducer(final TableLayoutInfo gridBoundsCollection, final boolean strictLayout)
+  public TableProducer(final TableLayoutInfo gridBoundsCollection, 
+                       final boolean strictLayout)
   {
     this.page = BEFORE_FIRST_PAGE;
     this.properties = new Properties();
@@ -105,6 +111,13 @@ public abstract class TableProducer
     this.gridBoundsCollection = gridBoundsCollection;
   }
 
+  /**
+   * Creates a new TableProducer. This constructor must be used to complete the content
+   * creation after the pagination was done.
+   *
+   * @param gridBoundsCollection the layout information implementation used to create 
+   * the table layout.  
+   */
   public TableProducer(final TableLayoutInfo gridBoundsCollection)
   {
     if (gridBoundsCollection.getPageCount() == 0)
@@ -196,6 +209,10 @@ public abstract class TableProducer
     gridBounds.clear();
   }
 
+  /**
+   * Clears the contents of the table grid. The layout itself is not cleared, only all
+   * data is removed.
+   */
   public void clearCells ()
   {
     if (isDummy() == false)
@@ -208,6 +225,12 @@ public abstract class TableProducer
     }
   }
 
+  /**
+   * Checks whether the current layout contains some content. Returns false, if the table
+   * is empty.
+   * 
+   * @return true, if there is content, false otherwise.
+   */
   public boolean isLayoutContainsContent ()
   {
     if (grid == null)
@@ -298,7 +321,8 @@ public abstract class TableProducer
       final Element e = l[i];
       if (e instanceof Band)
       {
-        final Rectangle2D bbounds = (Rectangle2D) e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
+        final Rectangle2D bbounds = (Rectangle2D) 
+          e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
         if (processBand(translateSubRect(bbounds, bounds), (Band) e) == true)
         {
           retval = true;
@@ -335,8 +359,10 @@ public abstract class TableProducer
    */
   private Rectangle2D translateSubRect(final Rectangle2D outer, final Rectangle2D inner)
   {
-    final float w = (float) Math.min(outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
-    final float h = (float) Math.min(outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
+    final float w = 
+      (float) Math.min(outer.getX() + outer.getWidth() - inner.getX(), inner.getWidth());
+    final float h = 
+      (float) Math.min(outer.getY() + outer.getHeight() - inner.getY(), inner.getHeight());
     final Rectangle2D rc = new Rectangle2D.Float(
         (float) (outer.getX() + inner.getX()),
         (float) (outer.getY() + inner.getY()),
@@ -352,7 +378,7 @@ public abstract class TableProducer
    * <p>
    * @param drawBounds  the bounds where the element should be painted in the target area.
    * @param e  the element.
-   *
+   * @return true, if the cell was added to the table content, and false otherwise.
    * @throws NullPointerException if the element has no valid layout (no BOUNDS defined).
    * Bounds are usually defined by the BandLayoutManager.
    */
@@ -517,8 +543,10 @@ public abstract class TableProducer
 
   /**
    * Returns the value of the local gridBoundsCollection's Global Layout flag.
+   * The global layout makes sure, that all pages use the same table grid layout to
+   * format their contents. This makes sure that all pages have the same look.
    * 
-   * @return
+   * @return true, if a global layout is used, false otherwise
    */
   protected boolean isGlobalLayout ()
   {
@@ -528,7 +556,7 @@ public abstract class TableProducer
   /**
    * The collected layout information.
    *
-   * @return
+   * @return the collected bounds of the table grid.
    */
   public TableLayoutInfo getGridBoundsCollection()
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportResources_fr.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: PlainTextExportResources_fr.java,v 1.2 2003/07/11 09:20:55 mimil Exp $
  *
  * Changes 
  * -------------------------
@@ -45,6 +45,9 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 public class PlainTextExportResources_fr extends JFreeReportResources
 {
+  /**
+   * Default Constructor.
+   */
   public PlainTextExportResources_fr()
   {
   }
@@ -85,7 +88,8 @@ public class PlainTextExportResources_fr extends JFreeReportResources
         {"plain-text-exportdialog.errorTitle", "Erreur"},
         {"plain-text-exportdialog.targetIsEmpty",
          "Veuillez spécifier un nom de fichier pour le fichier CSV."},
-        {"plain-text-exportdialog.targetIsNoFile", "Le fichier cible spécifié n'est pas un fichier ordinaire."},
+        {"plain-text-exportdialog.targetIsNoFile", 
+         "Le fichier cible spécifié n'est pas un fichier ordinaire."},
         {"plain-text-exportdialog.targetIsNotWritable",
          "Le fichier sélectionné est en lecture seule."},
         {"plain-text-exportdialog.targetOverwriteConfirmation",

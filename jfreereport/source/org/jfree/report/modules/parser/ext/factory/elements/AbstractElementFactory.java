@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractElementFactory.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: AbstractElementFactory.java,v 1.2 2003/07/18 18:16:46 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -109,12 +109,21 @@ public class AbstractElementFactory implements ElementFactory
 
   public boolean equals(Object o)
   {
-    if (this == o) return true;
-    if (!(o instanceof AbstractElementFactory)) return false;
+    if (this == o)
+    { 
+      return true;
+    }
+    if (!(o instanceof AbstractElementFactory))
+    { 
+      return false;
+    }
 
     final AbstractElementFactory abstractElementFactory = (AbstractElementFactory) o;
 
-    if (!elements.keySet().equals(abstractElementFactory.elements.keySet())) return false;
+    if (!elements.keySet().equals(abstractElementFactory.elements.keySet()))
+    { 
+      return false;
+    }
 
     return true;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportBuilderHints.java,v 1.3 2003/07/21 20:46:38 taqua Exp $
+ * $Id: ReportBuilderHints.java,v 1.4 2003/07/23 13:56:31 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -80,13 +80,25 @@ public class ReportBuilderHints implements Serializable
 
     public boolean equals(Object o)
     {
-      if (this == o) return true;
-      if (!(o instanceof ParserHintKey)) return false;
+      if (this == o)
+      { 
+        return true;
+      }
+      if (!(o instanceof ParserHintKey))
+      { 
+        return false;
+      }
 
       final ParserHintKey parserHintKey = (ParserHintKey) o;
 
-      if (!primaryKey.equals(parserHintKey.primaryKey)) return false;
-      if (!hintKey.equals(parserHintKey.hintKey)) return false;
+      if (!primaryKey.equals(parserHintKey.primaryKey))
+      { 
+        return false;
+      }
+      if (!hintKey.equals(parserHintKey.hintKey))
+      { 
+        return false;
+      }
 
       return true;
     }
@@ -187,6 +199,7 @@ public class ReportBuilderHints implements Serializable
    * @param target the target object for which the hint is specified.
    * @param hint the hint name
    * @param hintValue the hint value (not null)
+   * @param unique true, if the value should be unique within the list
    * @throws java.lang.IllegalArgumentException if the specified hint is no list type.
    */
   public void addHintList (Serializable target, String hint, Serializable hintValue, boolean unique)

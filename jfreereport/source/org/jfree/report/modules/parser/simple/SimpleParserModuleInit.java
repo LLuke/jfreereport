@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimpleParserModuleInit.java,v 1.3 2003/07/18 17:56:39 taqua Exp $
+ * $Id: SimpleParserModuleInit.java,v 1.4 2003/07/23 16:02:22 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,6 +45,12 @@ import org.jfree.report.modules.ModuleInitializer;
 import org.jfree.report.modules.parser.base.InitialReportHandler;
 import org.jfree.report.modules.parser.base.ParserEntityResolver;
 
+/**
+ * Handles the initalisation of the simple parser module. This contains support
+ * for the simple report definition format.
+ * 
+ * @author Thomas Morgner
+ */
 public class SimpleParserModuleInit implements ModuleInitializer
 {
 
@@ -55,10 +61,19 @@ public class SimpleParserModuleInit implements ModuleInitializer
   public static final String PUBLIC_ID_SIMPLE =
       "-//JFreeReport//DTD report definition//EN//simple";
 
+  /**
+   * DefaultConstructor. Does nothing.
+   */
   public SimpleParserModuleInit()
   {
   }
 
+  /**
+   * Initializes the simple parser and registers this handler with the parser
+   * base module.
+   * 
+   * @throws ModuleInitializeException if initializing the module failes.
+   */
   public void performInit() throws ModuleInitializeException
   {
     ParserEntityResolver res = ParserEntityResolver.getDefaultResolver();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingSupport.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: EncodingSupport.java,v 1.1 2003/07/25 01:06:49 taqua Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,15 @@ import org.jfree.util.Log;
  *
  * @author Thomas Morgner.
  */
-public class EncodingSupport
+public final class EncodingSupport
 {
+  /**
+   * Default Constructor.
+   */
+  private EncodingSupport ()
+  {
+  }
+  
   /** Storage for the known encodings. */
   private static HashMap knownEncodings;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigWriter.java,v 1.5 2003/07/21 20:46:56 taqua Exp $
+ * $Id: ParserConfigWriter.java,v 1.1 2003/07/23 16:02:22 taqua Exp $
  *
  * Changes
  * -------
@@ -57,8 +57,14 @@ import org.jfree.report.util.Log;
  */
 public class ParserConfigWriter extends AbstractXMLDefinitionWriter
 {
-  private static CommentHintPath PARSER_CONFIG_PATH = new CommentHintPath
-        (new String[] { ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.PARSER_CONFIG_TAG});
+  private static final CommentHintPath PARSER_CONFIG_PATH = new CommentHintPath
+        (
+          new String[] 
+          { 
+            ExtParserModuleInit.REPORT_DEFINITION_TAG, 
+            ExtReportHandler.PARSER_CONFIG_TAG
+          }
+         );
 
   /**
    * Creates a new writer.

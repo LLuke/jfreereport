@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ElementAlignment.java,v 1.1 2003/07/07 22:43:59 taqua Exp $
+ * $Id: ElementAlignment.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import org.jfree.report.util.ObjectStreamResolveException;
  *
  * @author Thomas Morgner
  */
-public class ElementAlignment implements Serializable
+public final class ElementAlignment implements Serializable
 {
   /** A constant for left alignment. */
   public static final ElementAlignment LEFT = new ElementAlignment("LEFT", 1);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ModuleSpecificationReader.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,7 +40,7 @@ package org.jfree.report.modules;
 
 import java.io.IOException;
 
-public class ModuleSpecificationReader
+public final class ModuleSpecificationReader
 {
   private static ModuleSpecificationReader reader;
 

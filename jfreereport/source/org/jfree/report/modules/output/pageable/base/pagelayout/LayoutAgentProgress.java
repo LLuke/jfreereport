@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutAgentProgress.java,v 1.5 2003/06/29 16:59:29 taqua Exp $
+ * $Id: LayoutAgentProgress.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ package org.jfree.report.modules.output.pageable.base.pagelayout;
  *
  * @author Thomas Morgner.
  */
-public class LayoutAgentProgress
+public final class LayoutAgentProgress
 {
   /** Indicates that the layout agent will not process the task. */
   public static final LayoutAgentProgress WONT_PROCESS = new LayoutAgentProgress("WONT_PROCESS");

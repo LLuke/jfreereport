@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverter.java,v 1.3 2003/07/20 19:31:17 taqua Exp $
+ * $Id: ReportConverter.java,v 1.1 2003/07/23 16:02:22 taqua Exp $
  *
  * Changes
  * -------
@@ -85,11 +85,12 @@ public class ReportConverter
    * @param contentBase the content base for creating relative URLs.
    * @param encoding the encoding of the generated file.
    *
-   * @throws java.io.IOException if there is an I/O problem.
-   * @throws org.jfree.report.modules.parser.extwriter.ReportWriterException if there were problems while serializing
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there were problems while serializing
    * the report definition.
    */
-  public void write(final JFreeReport report, final Writer w, final URL contentBase, final String encoding)
+  public void write(final JFreeReport report, final Writer w, 
+                    final URL contentBase, final String encoding)
       throws IOException, ReportWriterException
   {
     if (contentBase == null)
@@ -170,10 +171,11 @@ public class ReportConverter
    * @param outFile  the output report file.
    * @param encoding the encoding of the generated file.
    *
-   * @throws java.io.IOException if there is an I/O problem.
-   * @throws org.jfree.report.modules.parser.extwriter.ReportWriterException if there is a problem writing the report.
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void convertReport(final String inName, final String outFile, final String encoding)
+  public void convertReport(final String inName, final String outFile, 
+                            final String encoding)
       throws IOException, ReportWriterException
   {
     final URL reportURL = findReport(inName);
@@ -202,8 +204,8 @@ public class ReportConverter
    * @param out the output report file.
    * @param encoding the encoding of the generated file.
    *
-   * @throws java.io.IOException if there is an I/O problem.
-   * @throws org.jfree.report.modules.parser.extwriter.ReportWriterException if there is a problem writing the report.
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there is a problem writing the report.
    */
   public void convertReport(final File in, final File out, final String encoding)
       throws IOException, ReportWriterException
@@ -230,10 +232,11 @@ public class ReportConverter
    * @param w the report writer
    * @param encoding the encoding of the generated file.
    *
-   * @throws java.io.IOException if there is an I/O problem.
-   * @throws org.jfree.report.modules.parser.extwriter.ReportWriterException if there is a problem writing the report.
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there is a problem writing the report.
    */
-  public void convertReport(final URL in, final URL contentBase, final Writer w, final String encoding)
+  public void convertReport(final URL in, final URL contentBase, 
+                            final Writer w, final String encoding)
       throws IOException, ReportWriterException
   {
     if (in == null)
@@ -265,7 +268,7 @@ public class ReportConverter
    *
    * @param args  command line arguments.
    *
-   * @throws java.lang.Exception if there is any problem.
+   * @throws Exception if there is any problem.
    */
   public static void main(final String[] args)
       throws Exception

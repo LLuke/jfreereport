@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutManagerUtil.java,v 1.25 2003/06/29 16:59:28 taqua Exp $
+ * $Id: BandLayoutManagerUtil.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------
@@ -52,8 +52,15 @@ import org.jfree.ui.FloatDimension;
  *
  * @author Thomas Morgner
  */
-public class BandLayoutManagerUtil
+public final class BandLayoutManagerUtil
 {
+  /**
+   * Default constructor.
+   */
+  private BandLayoutManagerUtil()
+  {
+  }
+  
   /**
    * Returns the layout manager for an element in a report.
    *
@@ -135,7 +142,8 @@ public class BandLayoutManagerUtil
    * @return the bounds for the layouted band. The band itself got updated to
    * contain the new element bounds.
    */
-  public static Rectangle2D doLayout(final Band band, final LayoutSupport support, final float width, final float height)
+  public static Rectangle2D doLayout(final Band band, final LayoutSupport support,
+                                     final float width, final float height)
   {
     if (band == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExceptionDialog.java,v 1.18 2003/07/03 15:59:29 taqua Exp $
+ * $Id: ExceptionDialog.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------
@@ -69,7 +69,7 @@ import org.jfree.report.util.Log;
 public class ExceptionDialog extends JDialog
 {
   /** OK action. */
-  private class OKAction extends AbstractAction
+  private final class OKAction extends AbstractAction
   {
     /**
      * Default constructor.
@@ -93,7 +93,7 @@ public class ExceptionDialog extends JDialog
   /**
    * Details action.
    */
-  private class DetailsAction extends AbstractAction
+  private final class DetailsAction extends AbstractAction
   {
     /**
      * Default constructor.
@@ -231,11 +231,21 @@ public class ExceptionDialog extends JDialog
 
   }
 
+  /**
+   * Defines, whether the scroll pane of the exception stack trace area is visible.
+   * 
+   * @param b true, if the scroller should be visible, false otherwise.
+   */
   protected void setScrollerVisible (boolean b)
   {
     scroller.setVisible(b);
   }
   
+  /**
+   * Checks, whether the scroll pane of the exception stack trace area is visible.
+   * 
+   * @return true, if the scroller is visible, false otherwise.
+   */
   protected boolean isScrollerVisible ()
   {
     return scroller.isVisible();
@@ -349,7 +359,8 @@ public class ExceptionDialog extends JDialog
    * @param message  the message.
    * @param e  the exception.
    */
-  public static void showExceptionDialog(final String title, final String message, final Exception e)
+  public static void showExceptionDialog
+    (final String title, final String message, final Exception e)
   {
     if (defaultDialog == null)
     {

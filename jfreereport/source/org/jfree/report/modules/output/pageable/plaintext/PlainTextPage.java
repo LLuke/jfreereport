@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextPage.java,v 1.17 2003/06/29 16:59:29 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -78,7 +78,8 @@ public class PlainTextPage
      * @param y the row of the text
      * @param w the number of characters of the text that should be printed.
      */
-    protected TextDataChunk(final String text, final FontDefinition font, final int x, final int y, final int w)
+    protected TextDataChunk(final String text, final FontDefinition font, 
+                            final int x, final int y, final int w)
     {
       this.text = text;
       this.font = font;
@@ -162,7 +163,8 @@ public class PlainTextPage
    * @param encoding the document encoding for this page.
    * @param commandSet the commandset for printing and formating the text.
    */
-  public PlainTextPage(final int w, final int h, final PrinterCommandSet commandSet, final String encoding)
+  public PlainTextPage(final int w, final int h, 
+                       final PrinterCommandSet commandSet, final String encoding)
   {
     if (w <= 0)
     {
@@ -211,7 +213,8 @@ public class PlainTextPage
    * @param text the text that should be printed.
    * @param format the fontdefinition used to format the text.
    */
-  public void addTextChunk(final int x, final int y, final int w, final String text, final FontDefinition format)
+  public void addTextChunk(final int x, final int y, 
+                           final int w, final String text, final FontDefinition format)
   {
     if (x < 0)
     {

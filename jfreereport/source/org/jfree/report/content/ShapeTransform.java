@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeTransform.java,v 1.14 2003/06/29 16:59:28 taqua Exp $
+ * $Id: ShapeTransform.java,v 1.1 2003/07/07 22:44:03 taqua Exp $
  *
  * Changes
  * -------
@@ -48,8 +48,16 @@ import java.awt.geom.Rectangle2D;
  *
  * @author Thomas Morgner
  */
-public class ShapeTransform
+public final class ShapeTransform
 {
+  /**
+   * Default constructor.
+   *
+   */
+  private ShapeTransform ()
+  {
+  }
+  
   /**
    * Translates the given shape. The shape is translated to the origin supplied
    * in <code>point</code>. If scaling is requested, the shape will also be scaled
@@ -61,7 +69,8 @@ public class ShapeTransform
    * @param dim the target dimension.
    * @return the transformed shape
    */
-  public static Shape transformShape(Shape s, final boolean scale, final boolean keepAR, final Dimension2D dim)
+  public static Shape transformShape
+    (Shape s, final boolean scale, final boolean keepAR, final Dimension2D dim)
   {
     /**
      * Always scale to the maximum bounds ...

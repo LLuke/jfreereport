@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportResources_fr.java,v 1.3 2003/07/14 20:16:05 taqua Exp $
+ * $Id: CSVExportResources_fr.java,v 1.4 2003/07/23 16:02:20 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,6 +45,9 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 public class CSVExportResources_fr extends JFreeReportResources
 {
+  /**
+   * Default constructor.
+   */
   public CSVExportResources_fr()
   {
   }
@@ -76,7 +79,8 @@ public class CSVExportResources_fr extends JFreeReportResources
         {"csvexportdialog.errorTitle", "Erreur"},
         {"csvexportdialog.targetIsEmpty",
          "Veuillez spécifier un nom de fichier pour le fichier CSV."},
-        {"csvexportdialog.targetIsNoFile", "Le fichier cible spécifié n'est pas un fichier ordinaire."},
+        {"csvexportdialog.targetIsNoFile", 
+          "Le fichier cible spécifié n'est pas un fichier ordinaire."},
         {"csvexportdialog.targetIsNotWritable",
          "Le fichier sélectionner est en lecture seule."},
         {"csvexportdialog.targetOverwriteConfirmation",

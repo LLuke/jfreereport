@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigHandler.java,v 1.3 2003/07/21 20:46:56 taqua Exp $
+ * $Id: ReportConfigHandler.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -295,7 +295,8 @@ public class ReportConfigHandler extends AbstractExtReportParserHandler
    *
    * @throws SAXException if there is an error parsing the report.
    */
-  private PageFormat createPageFormat(final PageFormat format, final Attributes atts) throws SAXException
+  private PageFormat createPageFormat(final PageFormat format, final Attributes atts) 
+    throws SAXException
   {
     final String pageformatName = atts.getValue(PAGEFORMAT_ATT);
 

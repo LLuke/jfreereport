@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: GroupList.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: GroupList.java,v 1.3 2003/07/12 16:31:04 taqua Exp $
  *
  * Changes:
  * --------
@@ -51,6 +51,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 
+import org.jfree.report.style.InvalidStyleSheetCollectionException;
 import org.jfree.report.style.StyleSheetCollection;
 import org.jfree.report.style.StyleSheetCollectionHelper;
 import org.jfree.report.util.Log;
@@ -343,11 +344,12 @@ public class GroupList implements Cloneable, Serializable
    * <code>InvalidStyleSheetCollectionException</code>.
    *
    * @param styleSheetCollection the stylesheet collection that should be registered.
-   * @throws org.jfree.report.style.InvalidStyleSheetCollectionException
+   * @throws InvalidStyleSheetCollectionException
    * if there is already an other stylesheet registered.
    * @throws NullPointerException if the given stylesheet collection is null.
    */
   public void registerStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
+    throws InvalidStyleSheetCollectionException
   {
     styleSheetCollectionHelper.registerStyleSheetCollection(styleSheetCollection);
   }
@@ -358,10 +360,11 @@ public class GroupList implements Cloneable, Serializable
    * <code>InvalidStyleSheetCollectionException</code>
    *
    * @param styleSheetCollection the stylesheet collection that should be unregistered.
-   * @throws org.jfree.report.style.InvalidStyleSheetCollectionException
+   * @throws InvalidStyleSheetCollectionException if there is no stylesheet registered.
    * @throws NullPointerException if the given stylesheet collection is null.
    */
   public void unregisterStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
+    throws InvalidStyleSheetCollectionException
   {
     styleSheetCollectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }
@@ -378,10 +381,11 @@ public class GroupList implements Cloneable, Serializable
    * @param styleSheetCollection the stylesheet collection that contains the updated
    * information and that should be assigned with that element.
    * @throws NullPointerException if the given stylesheet collection is null.
-   * @throws org.jfree.report.style.InvalidStyleSheetCollectionException if
+   * @throws InvalidStyleSheetCollectionException if
    * there is an other stylesheet collection already registered with that element.
    */
   public void updateStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
+    throws InvalidStyleSheetCollectionException
   {
     if (cache == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.5 2003/07/15 16:28:21 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.6 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -228,7 +228,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param pageFormat  the page format.
    * @param embedFonts  embed fonts?
    */
-  public PDFOutputTarget(final OutputStream out, final PageFormat pageFormat, final boolean embedFonts)
+  public PDFOutputTarget(final OutputStream out, final PageFormat pageFormat, 
+                         final boolean embedFonts)
   {
     this(out, pageFormat, pageFormat, embedFonts);
   }
@@ -240,7 +241,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param logPage  the logical page.
    * @param embedFonts  embed the fonts?
    */
-  public PDFOutputTarget(final OutputStream out, final LogicalPage logPage, final boolean embedFonts)
+  public PDFOutputTarget(final OutputStream out, final LogicalPage logPage, 
+                         final boolean embedFonts)
   {
     super(logPage);
     this.out = out;
@@ -256,8 +258,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * @param physPageFormat  the physical page format.
    * @param embedFonts  embed the fonts?
    */
-  public PDFOutputTarget(final OutputStream out, final PageFormat logPageFormat, final PageFormat physPageFormat,
-                         final boolean embedFonts)
+  public PDFOutputTarget(final OutputStream out, final PageFormat logPageFormat, 
+                         final PageFormat physPageFormat, final boolean embedFonts)
   {
     this(out, new LogicalPageImpl(logPageFormat, physPageFormat), embedFonts);
   }
@@ -401,9 +403,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @return an image.
    *
-   * @throws com.lowagie.text.DocumentException if no PDFImageElement could be created using the given
+   * @throws DocumentException if no PDFImageElement could be created using the given
    *                           ImageReference.
-   * @throws java.io.IOException if the image could not be read.
+   * @throws IOException if the image could not be read.
    */
   private Image getImage(final ImageReference imageRef) throws DocumentException, IOException
   {
@@ -516,6 +518,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
           {
             cb.closePath();
           }
+        default:
+          throw new IllegalArgumentException("Unexpected path iterator type.");
       }
       pit.next();
     }
@@ -586,6 +590,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
           {
             cb.closePath();
           }
+        default:
+          throw new IllegalArgumentException("Unexpected path iterator type.");
       }
       pit.next();
     }
@@ -763,12 +769,14 @@ public class PDFOutputTarget extends AbstractOutputTarget
   {
     final boolean allowPrinting = getBooleanProperty(SECURITY_ALLOW_PRINTING, false);
     final boolean allowModifyContents = getBooleanProperty(SECURITY_ALLOW_MODIFY_CONTENTS, false);
-    final boolean allowModifyAnnotations = getBooleanProperty(SECURITY_ALLOW_MODIFY_ANNOTATIONS, false);
+    final boolean allowModifyAnnotations = 
+      getBooleanProperty(SECURITY_ALLOW_MODIFY_ANNOTATIONS, false);
     final boolean allowCopy = getBooleanProperty(SECURITY_ALLOW_COPY, false);
     final boolean allowFillIn = getBooleanProperty(SECURITY_ALLOW_FILLIN, false);
     final boolean allowScreenReaders = getBooleanProperty(SECURITY_ALLOW_SCREENREADERS, false);
     final boolean allowAssembly = getBooleanProperty(SECURITY_ALLOW_ASSEMBLY, false);
-    final boolean allowDegradedPrinting = getBooleanProperty(SECURITY_ALLOW_DEGRADED_PRINTING, false);
+    final boolean allowDegradedPrinting = 
+      getBooleanProperty(SECURITY_ALLOW_DEGRADED_PRINTING, false);
 
     int permissions = 0;
     if (allowPrinting)
@@ -832,7 +840,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
     cb.beginText();
     cb.setFontAndSize(this.baseFont, fontSize);
 
-    final float y2 = (float) (bounds.getY() + baseFont.getFontDescriptor(BaseFont.ASCENT, fontSize));
+    final float y2 = (float) (bounds.getY() + 
+      baseFont.getFontDescriptor(BaseFont.ASCENT, fontSize));
     cb.showTextAligned(
         PdfContentByte.ALIGN_LEFT,
         text,
@@ -1102,7 +1111,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
   /**
    * A PDF size calculator.
    */
-  private static class PDFSizeCalculator implements SizeCalculator
+  private static final class PDFSizeCalculator implements SizeCalculator
   {
     /** The base font. */
     private BaseFont baseFont;
@@ -1164,7 +1173,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(final FontDefinition font) throws OutputTargetException
+  public SizeCalculator createTextSizeCalculator(final FontDefinition font) 
+    throws OutputTargetException
   {
     try
     {
@@ -1221,8 +1231,9 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
     final Rectangle2D clipBounds = drawable.getClippingBounds();
 
-    final Graphics2D target = writer.getDirectContent().createGraphics((float) clipBounds.getWidth(),
-        (float) clipBounds.getHeight());
+    final Graphics2D target = 
+      writer.getDirectContent().createGraphics
+        ((float) clipBounds.getWidth(), (float) clipBounds.getHeight());
     target.translate(-clipBounds.getX(), -clipBounds.getY());
     target.clip(new Rectangle2D.Float(0, 0,
         (float) clipBounds.getWidth(),

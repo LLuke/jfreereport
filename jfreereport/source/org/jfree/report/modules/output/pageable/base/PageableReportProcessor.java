@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.2 2003/07/10 20:02:09 taqua Exp $
  *
  * Changes
  * -------
@@ -47,7 +47,6 @@ import java.util.Iterator;
 
 import org.jfree.report.EmptyReportException;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.JFreeReportConstants;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportInterruptedException;
 import org.jfree.report.ReportProcessingException;
@@ -94,8 +93,8 @@ public class PageableReportProcessor
    *
    * @param report  the report.
    *
-   * @throws org.jfree.report.ReportProcessingException if the report cannot be cloned.
-   * @throws org.jfree.report.function.FunctionInitializeException if a function cannot be initialised.
+   * @throws ReportProcessingException if the report cannot be cloned.
+   * @throws FunctionInitializeException if a function cannot be initialised.
    */
   public PageableReportProcessor(final JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
@@ -294,7 +293,7 @@ public class PageableReportProcessor
    *
    * @return a list of report states (one for the beginning of each page in the report).
    *
-   * @throws org.jfree.report.ReportProcessingException if there was a problem processing the report.
+   * @throws ReportProcessingException if there was a problem processing the report.
    */
   public ReportStateList repaginate() throws ReportProcessingException
   {
@@ -318,7 +317,7 @@ public class PageableReportProcessor
       // processReport() method.
 
       // during a prepare run the REPORT_PREPARERUN_PROPERTY is set to true.
-      state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
+      state.setProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
 
       // the pageformat is added to the report properties, PageFormat is not serializable,
       // so a repaginated report is no longer serializable.
@@ -327,7 +326,7 @@ public class PageableReportProcessor
       // multiple pages gets implemented. This property will be replaced by a more
       // suitable alternative.
       final PageFormat p = getOutputTarget().getLogicalPage().getPhysicalPageFormat();
-      state.setProperty(JFreeReportConstants.REPORT_PAGEFORMAT_PROPERTY, p.clone());
+      state.setProperty(JFreeReport.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
 
       // now change the writer function to be a dummy writer. We don't want any
@@ -387,7 +386,7 @@ public class PageableReportProcessor
       } while (hasNext == true);
 
       dummyOutput.close();
-      state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
+      state.setProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
 
       // finally return the saved page states.
       return pageStates;
@@ -411,7 +410,7 @@ public class PageableReportProcessor
    * @param dummyOutput a dummy output target which performs the layout calculations.
    * @param maxRows the number of rows in the report (used to estaminate the current progress).
    * @return the finish state for the report.
-   * @throws org.jfree.report.ReportProcessingException if there was a problem processing the report.
+   * @throws ReportProcessingException if there was a problem processing the report.
    */
   private ReportState processPrintedPages (ReportState state, final ReportStateList pageStates,
                                            final OutputTarget dummyOutput, final int maxRows)
@@ -519,7 +518,7 @@ public class PageableReportProcessor
    * @return The report state suitable for the next page or ReportState.FinishState.
    *
    * @throws java.lang.IllegalArgumentException if the given state is a start or a finish state.
-   * @throws org.jfree.report.ReportProcessingException if there is a problem processing the report or the
+   * @throws ReportProcessingException if there is a problem processing the report or the
    *                                   current thread has been interrupted.
    */
   public ReportState processPage(final ReportState currPage, final OutputTarget out)
@@ -543,11 +542,12 @@ public class PageableReportProcessor
    *
    * @return The report state suitable for the next page or ReportState.FinishState.
    *
-   * @throws java.lang.IllegalArgumentException if the given state is a start or a finish state.
-   * @throws org.jfree.report.ReportProcessingException if there is a problem processing the report or the
+   * @throws IllegalArgumentException if the given state is a start or a finish state.
+   * @throws ReportProcessingException if there is a problem processing the report or the
    *                                   current thread has been interrupted.
    */
-  public ReportState processPage(final ReportState currPage, final OutputTarget out, final boolean failOnError)
+  public ReportState processPage(final ReportState currPage, final OutputTarget out, 
+                                 final boolean failOnError)
       throws ReportProcessingException
   {
     ReportState state = null;

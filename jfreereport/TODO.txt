@@ -22,3 +22,15 @@
 * pluggable input support (WMF, SVG etc)
 * export to OpenOffice 
 
+PDF: Fast Web View, PDF 1.2
+Access to bean properties (Category->Description)
+Epression in group-fields dont seem to work (JMI)
+TotalGroupCount function
+Start a poll what functions are needed ...
+
+Multi-Page definition, 1 pageformat for all pages
+multiple pages (x and y), 
+a defined max width and max height (may be less than the given log page size)
+a global page header/footer for the complete log page
+several private page header/footers for every physical page
+

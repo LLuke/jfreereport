@@ -21,18 +21,18 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * StringFieldElementFactory.java
+ * TextFieldElementFactory.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: TextFieldElementFactory.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 06.07.2003 : Initial version
+ * 06-Jul-2003 : Initial version
  *  
  */
 
@@ -50,35 +50,77 @@ import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
 
+/**
+ * A factory to define text fields. Text fields read their content from the 
+ * dataRow and try to print it as plain text (using toString() if required).
+ * 
+ * @author Thomas Morgner
+ */
 public class TextFieldElementFactory extends TextElementFactory
 {
+  /** The fieldname of the datarow from where to read the content. */
   private String fieldname;
+  /** The nullstring of the text element if the translation was not found. */
   private String nullString;
 
+  /**
+   * DefaultConstructor.
+   */
   public TextFieldElementFactory()
   {
   }
 
+  /**
+   * Returns the field name from where to read the content of the element.
+   * 
+   * @return the field name.
+   */
   public String getFieldname()
   {
     return fieldname;
   }
 
+  /**
+   * Defines the field name from where to read the content of the element.
+   * The field name is the name of a datarow column.
+   * 
+   * @param fieldname the field name.
+   */
   public void setFieldname(String fieldname)
   {
     this.fieldname = fieldname;
   }
 
+  /**
+   * Returns the null string for the text element. The null string is used when no
+   * content is found for that element.
+   * 
+   * @return the null string.
+   */
   public String getNullString()
   {
     return nullString;
   }
 
+  /**
+   * Defines the null string for the text element. The null string is used when no
+   * content is found for that element. The nullstring itself can be null.
+   * 
+   * @param nullString the null string.
+   */
   public void setNullString(String nullString)
   {
     this.nullString = nullString;
   }
 
+  /**
+   * Creates the text field element.
+   *  
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
+   * 
+   * @return the generated text field element
+   * @throws IllegalStateException if the fieldname is null.
+   */
   public Element createElement()
   {
     if (getFieldname() == null)

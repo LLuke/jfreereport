@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.4 2003/07/23 13:56:43 taqua Exp $
+ * $Id: StyleWriter.java,v 1.1 2003/07/23 16:02:22 taqua Exp $
  *
  * Changes
  * -------
@@ -102,8 +102,8 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    *
    * @param writer  the character stream writer.
    *
-   * @throws java.io.IOException if there is an I/O problem.
-   * @throws org.jfree.report.modules.parser.extwriter.ReportWriterException if there is a problem writing the report.
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there is a problem writing the report.
    */
   public void write(final Writer writer) throws IOException, ReportWriterException
   {
@@ -196,8 +196,8 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
    * @param key  the key.
    * @param o  the object.
    *
-   * @throws java.io.IOException if there is an I/O problem.
-   * @throws org.jfree.report.modules.parser.extwriter.ReportWriterException if there is a problem writing the report.
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there is a problem writing the report.
    */
   private void writeKeyValue(final Writer w, final StyleKey key, final Object o)
       throws IOException, ReportWriterException

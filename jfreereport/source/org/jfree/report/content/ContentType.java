@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentType.java,v 1.4 2003/06/29 16:59:28 taqua Exp $
+ * $Id: ContentType.java,v 1.1 2003/07/07 22:44:03 taqua Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,7 @@ package org.jfree.report.content;
  *
  * @author Thomas Morgner
  */
-public class ContentType
+public final class ContentType
 {
   /** Text content type. */
   public static final ContentType TEXT = new ContentType("Text");

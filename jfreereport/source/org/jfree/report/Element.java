@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
+ * $Id: Element.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -82,6 +82,7 @@ import org.jfree.report.style.StyleSheetCollectionHelper;
  */
 public abstract class Element implements DataTarget, Serializable, Cloneable
 {
+  /** The internal constant to mark anonymous element names. */
   public static final String ANONYMOUS_ELEMENT_PREFIX = "anonymousElement@";
 
   /**
@@ -259,7 +260,8 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    */
   public boolean isVisible()
   {
-    final Boolean b = (Boolean) getStyle().getStyleProperty(ElementStyleSheet.VISIBLE, Boolean.FALSE);
+    final Boolean b = (Boolean) getStyle().getStyleProperty
+      (ElementStyleSheet.VISIBLE, Boolean.FALSE);
     return b.booleanValue();
   }
 
@@ -341,6 +343,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * @throws NullPointerException if the given stylesheet collection is null.
    */
   public void registerStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
+    throws InvalidStyleSheetCollectionException
   {
     styleSheetCollectionHelper.registerStyleSheetCollection(styleSheetCollection);
   }
@@ -356,6 +359,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * @throws NullPointerException if the given stylesheet collection is null.
    */
   public void unregisterStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
+    throws InvalidStyleSheetCollectionException
   {
     styleSheetCollectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }
@@ -402,6 +406,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * collection already registered with that element.
    */
   public void updateStyleSheetCollection(final StyleSheetCollection sc)
+    throws InvalidStyleSheetCollectionException
   {
     if (sc == null)
     {

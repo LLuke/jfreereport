@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: LabelElementFactory.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 06.07.2003 : Initial version
+ * 06-Jul-2003 : Initial version
  *  
  */
 
@@ -50,24 +50,53 @@ import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
 
+/**
+ * A factory to define LabelElements. LabelElements are considered immutable and 
+ * should not be modified once they are created. The label expects plain text.
+ * 
+ * @author Thomas Morgner
+ */
 public class LabelElementFactory extends TextElementFactory
 {
+  /** The label text. */ 
   private String text;
 
+  /**
+   * DefaultConstructor.
+   *
+   */
   public LabelElementFactory()
   {
   }
 
+  /**
+   * Returns the label text.
+   * 
+   * @return the text of the label.
+   */
   public String getText()
   {
     return text;
   }
 
+  /**
+   * Defines the text of the label.
+   * 
+   * @param text the plain text of the label.
+   */
   public void setText(String text)
   {
     this.text = text;
   }
 
+  /**
+   * Creates the label element.
+   *  
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
+   * 
+   * @return the generated label.
+   * @throws IllegalStateException if the text is not defined.
+   */
   public Element createElement()
   {
     if (getText() == null)

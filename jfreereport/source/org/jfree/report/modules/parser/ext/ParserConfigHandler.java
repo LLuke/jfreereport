@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigHandler.java,v 1.3 2003/07/21 20:46:56 taqua Exp $
+ * $Id: ParserConfigHandler.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -88,11 +88,16 @@ public class ParserConfigHandler extends AbstractExtReportParserHandler
   /** The class attribute name. */
   public static final String CLASS_ATTRIBUTE = "class";
 
-  public static final String STYLEKEY_FACTORY_HINT = "ext.parser.parser-config.stylekeyfactories";
-  public static final String OBJECT_FACTORY_HINT = "ext.parser.parser-config.objectfactories";
-  public static final String DATASOURCE_FACTORY_HINT = "ext.parser.parser-config.datasourcefactories";
-  public static final String TEMPLATE_FACTORY_HINT = "ext.parser.parser-config.templatefactories";
-  public static final String ELEMENT_FACTORY_HINT = "ext.parser.parser-config.elementfactories";
+  public static final String STYLEKEY_FACTORY_HINT = 
+    "ext.parser.parser-config.stylekeyfactories";
+  public static final String OBJECT_FACTORY_HINT = 
+    "ext.parser.parser-config.objectfactories";
+  public static final String DATASOURCE_FACTORY_HINT = 
+    "ext.parser.parser-config.datasourcefactories";
+  public static final String TEMPLATE_FACTORY_HINT = 
+    "ext.parser.parser-config.templatefactories";
+  public static final String ELEMENT_FACTORY_HINT = 
+    "ext.parser.parser-config.elementfactories";
 
   /**
    * The parser configuration handler.
@@ -252,6 +257,7 @@ public class ParserConfigHandler extends AbstractExtReportParserHandler
         || tagName.equals(ELEMENT_FACTORY_TAG)
         || tagName.equals(OBJECT_FACTORY_TAG))
     {
+      // ignored ...
     }
     else if (tagName.equals(getFinishTag()))
     {

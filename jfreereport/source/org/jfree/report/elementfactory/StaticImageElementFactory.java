@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: StaticImageElementFactory.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 06.07.2003 : Initial version
+ * 06-Jul-2003 : Initial version
  *  
  */
 
@@ -47,24 +47,50 @@ import org.jfree.report.filter.StaticDataSource;
 import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.style.ElementStyleSheet;
 
+/**
+ * A factory to create static image elements. These element contain an immutable
+ * image. The image should not be modified.
+ * 
+ * @author Thomas Morgner
+ */
 public class StaticImageElementFactory extends ImageElementFactory
 {
+  /** The image reference is the static content of the new element. */
   private ImageReference imageReference;
 
+  /**
+   * Default Constructor.
+   *
+   */
   public StaticImageElementFactory()
   {
   }
 
+  /**
+   * Returns the image reference instance of the element.
+   * 
+   * @return the image reference containing the image data.
+   */
   public ImageReference getImageReference()
   {
     return imageReference;
   }
 
+  /**
+   * Defines the image reference instance of the element.
+   * 
+   * @param imageReference the image reference containing the image data.
+   */
   public void setImageReference(ImageReference imageReference)
   {
     this.imageReference = imageReference;
   }
 
+  /**
+   * Returns the AWT-image contained in the image reference.
+   *  
+   * @return the AWT image.
+   */
   public Image getImage()
   {
     if (getImageReference() == null)
@@ -74,11 +100,24 @@ public class StaticImageElementFactory extends ImageElementFactory
     return getImageReference().getImage();
   }
 
+  /**
+   * Defines the image as AWT image. This produces an on-the-fly loaded image.
+   * 
+   * @param image the new image.
+   */
   public void setImage(Image image)
   {
     setImageReference(new ImageReference(image));
   }
 
+  /**
+   * Creates the image element.
+   *  
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
+   * 
+   * @return the generated image element.
+   * @throws IllegalStateException if the image is not defined.
+   */
   public Element createElement()
   {
     if (getImageReference() == null)

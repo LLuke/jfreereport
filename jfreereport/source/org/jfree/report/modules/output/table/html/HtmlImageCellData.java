@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlImageCellData.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: HtmlImageCellData.java,v 1.2 2003/07/25 00:20:35 taqua Exp $
  *
  * Changes
  * -------
@@ -62,8 +62,8 @@ public class HtmlImageCellData extends HtmlCellData
    * @param style the assigned cell style.
    * @param useXHTML a flag indicating whether to create XHTML instead of HTML4 code.
    */
-  public HtmlImageCellData(final Rectangle2D outerBounds, final ImageReference image, final HtmlCellStyle style,
-                           final boolean useXHTML)
+  public HtmlImageCellData(final Rectangle2D outerBounds, final ImageReference image, 
+                           final HtmlCellStyle style, final boolean useXHTML)
   {
     super(outerBounds, style, useXHTML);
     if (image == null)

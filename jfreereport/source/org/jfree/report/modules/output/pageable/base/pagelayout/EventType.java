@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventType.java,v 1.5 2003/06/29 16:59:29 taqua Exp $
+ * $Id: EventType.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,7 @@ package org.jfree.report.modules.output.pageable.base.pagelayout;
  *
  * @author Thomas Morgner
  */
-public class EventType
+public final class EventType
 {
   /** A 'page start' event. */
   public static final EventType PAGE_START = new EventType("PAGE_START");

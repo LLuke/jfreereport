@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigWriter.java,v 1.2 2003/07/21 20:46:56 taqua Exp $
+ * $Id: ReportConfigWriter.java,v 1.1 2003/07/23 16:02:22 taqua Exp $
  *
  * Changes
  * -------
@@ -62,18 +62,21 @@ import org.jfree.report.util.ReportConfiguration;
  */
 public class ReportConfigWriter extends AbstractXMLDefinitionWriter
 {
-  private CommentHintPath REPORT_CONFIG_HINT_PATH =
+  /** The comment hint path for all report config related parser hints. */
+  private static final CommentHintPath REPORT_CONFIG_HINT_PATH =
       new CommentHintPath(new String[]
       {ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.REPORT_CONFIG_TAG});
 
-  private CommentHintPath CONFIGURATION_HINT_PATH =
+  /** The comment hint path for all report config related parser hints. */
+  private static final CommentHintPath CONFIGURATION_HINT_PATH =
       new CommentHintPath(new String[]
       {ExtParserModuleInit.REPORT_DEFINITION_TAG,
        ExtReportHandler.REPORT_CONFIG_TAG,
        ReportConfigHandler.CONFIGURATION_TAG
       });
 
-  private CommentHintPath DEFAULT_PAGEFORMAT_HINT_PATH =
+  /** The comment hint path for all page format definition related parser hints. */
+  private static final CommentHintPath DEFAULT_PAGEFORMAT_HINT_PATH =
       new CommentHintPath(new String[]
       {ExtParserModuleInit.REPORT_DEFINITION_TAG,
        ExtReportHandler.REPORT_CONFIG_TAG,
@@ -227,7 +230,8 @@ public class ReportConfigWriter extends AbstractXMLDefinitionWriter
   }
 
   /**
-   * Finds the page definition from the {@link org.jfree.report.util.PageFormatFactory} class that matches the
+   * Finds the page definition from the 
+   * {@link org.jfree.report.util.PageFormatFactory} class that matches the
    * specified width and height.
    *
    * @param w  the width.

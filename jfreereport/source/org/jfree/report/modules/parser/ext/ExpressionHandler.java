@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionHandler.java,v 1.3 2003/07/21 20:46:56 taqua Exp $
+ * $Id: ExpressionHandler.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -61,16 +61,20 @@ public class ExpressionHandler extends AbstractExtReportParserHandler
   /** The property handler. */
   private PropertyHandler propertyHandler;
 
-  /** The expression. */
+  /** The expression that should be processed. */
   private Expression expression;
 
+  /** The comment hint path that should be used to store additional parser information. */
   private CommentHintPath path;
+  
   /**
    * Creates a new expression handler.
    *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param expression  the expression.
+   * @param base the comment hint path that should be used to store additional xml 
+   * informations for the writer.
    */
   public ExpressionHandler(final ReportParser parser, final String finishTag,
                            final Expression expression, final CommentHintPath base)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.3 2003/07/14 17:37:07 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,7 @@ import org.jfree.report.util.StringUtil;
  *
  * @author Thomas Morgner
  */
-public class BaseFontFactory extends DefaultFontMapper
+public final class BaseFontFactory extends DefaultFontMapper
 {
   /** The 'PDF auto init' property key. */
   public static final String ITEXT_FONT_AUTOINIT

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: IconTableModel.java,v 1.12 2003/06/29 16:59:23 taqua Exp $
+ * $Id: IconTableModel.java,v 1.1 2003/07/07 22:44:03 taqua Exp $
  *
  * Changes
  * -------
@@ -70,7 +70,8 @@ public class IconTableModel extends AbstractTableModel
    * @param icon The icon.
    * @param size The size of the icon image in bytes.
    */
-  protected void addIconEntry(final String name, final String category, final Image icon, final Long size)
+  protected void addIconEntry(final String name, final String category, 
+                              final Image icon, final Long size)
   {
     final Object[] item = new Object[4];
     item[0] = name;

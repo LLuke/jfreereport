@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PackageState.java,v 1.1 2003/07/10 20:05:59 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -141,7 +141,7 @@ public class PackageState implements Comparable
    *
    * @param   o the Object to be compared.
    * @return  a negative integer, zero, or a positive integer as this object
-   *		is less than, equal to, or greater than the specified object.
+   *          is less than, equal to, or greater than the specified object.
    *
    * @throws ClassCastException if the specified object's type prevents it
    *         from being compared to this Object.

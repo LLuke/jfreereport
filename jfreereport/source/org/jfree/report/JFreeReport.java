@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.3 2003/07/12 16:31:04 taqua Exp $
+ * $Id: JFreeReport.java,v 1.4 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -68,7 +68,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Iterator;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -113,8 +112,27 @@ import org.jfree.report.util.SerializerHelper;
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public class JFreeReport implements JFreeReportConstants, Cloneable, Serializable
+public class JFreeReport implements Cloneable, Serializable
 {
+
+  /** Key for the 'report name' property. */
+  public static final String NAME_PROPERTY = "report.name";
+
+  /** Key for the 'report date' property. */
+  public static final String REPORT_DATE_PROPERTY = "report.date";
+
+  /** Key for the 'report page format' property. */
+  public static final String REPORT_PAGEFORMAT_PROPERTY = "report.pageformat";
+
+  /** Key for the 'report prepare run' property. */
+  public static final String REPORT_PREPARERUN_PROPERTY = "report.preparerun";
+
+  /** Key for the 'report definition source' property. */
+  public static final String REPORT_DEFINITION_SOURCE = "report.definition.source";
+
+  /** Key for the 'report definition content base' property. */
+  public static final String REPORT_DEFINITION_CONTENTBASE = "report.definition.contentbase";
+  
   /** Information about the JFreeReport class library. */
   private static JFreeReportInfo info;
 
@@ -193,91 +211,6 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     this.functions = new ExpressionCollection();
     this.expressions = new ExpressionCollection();
     setDefaultPageFormat(null);
-  }
-
-  /**
-   * Constructs a report with the specified attributes.
-   *
-   * @param name  the name of the report.
-   * @param reportHeader  the report header <i>not null</i>.
-   * @param reportFooter  the report footer <i>not null</i>.
-   * @param pageHeader  the page header <i>not null</i>.
-   * @param pageFooter  the page footer <i>not null</i>.
-   * @param itemBand  the item band <i>not null</i>.
-   * @param groups  the report groups <i>not null</i>.
-   * @param functions  the report functions.
-   * @param data  the data for the report <i>not null</i>.
-   * @param defaultPageFormat  the default page format.
-   *
-   * @throws NullPointerException if one of the <i>not null</i>-parameters is null.
-   * @throws FunctionInitializeException if any of the functions cannot be initialized.
-   */
-  public JFreeReport(
-      final String name,
-      final ReportHeader reportHeader,
-      final ReportFooter reportFooter,
-      final PageHeader pageHeader,
-      final PageFooter pageFooter,
-      final ItemBand itemBand,
-      final GroupList groups,
-      final Collection functions,
-      final TableModel data,
-      final PageFormat defaultPageFormat)
-      throws FunctionInitializeException
-  {
-    this();
-    setName(name);
-    setReportHeader(reportHeader);
-    setReportFooter(reportFooter);
-    setPageHeader(pageHeader);
-    setPageFooter(pageFooter);
-    setData(data);
-    setDefaultPageFormat(defaultPageFormat);
-
-    setItemBand(itemBand);
-    setGroups(groups);
-
-    // store the functions in a Map using the function name as the key.
-
-    setFunctions(new ExpressionCollection(functions));
-  }
-
-  /**
-   * Constructs a report with the specified attributes.
-   *
-   * @param name  the name of the report.
-   * @param reportHeader  the report header <i>not null</i>.
-   * @param reportFooter  the report footer <i>not null</i>.
-   * @param pageHeader  the page header <i>not null</i>.
-   * @param pageFooter  the page footer <i>not null</i>.
-   * @param itemBand  the item band <i>not null</i>.
-   * @param groups  the report groups <i>not null</i>.
-   * @param functions  the report functions.
-   * @param expressions  the report expressions.
-   * @param data  the data for the report <i>not null</i>.
-   * @param defaultPageFormat  the default page format.
-   *
-   * @throws NullPointerException if one of the <i>not null</i>-parameters is null.
-   * @throws FunctionInitializeException if any of the functions cannot be initialized.
-   * <!-- changed expressions to fit functions parameter -->
-   */
-  public JFreeReport(
-      final String name,
-      final ReportHeader reportHeader,
-      final ReportFooter reportFooter,
-      final PageHeader pageHeader,
-      final PageFooter pageFooter,
-      final ItemBand itemBand,
-      final GroupList groups,
-      final Collection functions,
-      final TableModel data,
-      final PageFormat defaultPageFormat,
-      final Collection expressions)
-      throws FunctionInitializeException
-  {
-    this(name, reportHeader, reportFooter, pageHeader, pageFooter, itemBand,
-        groups, functions, data, defaultPageFormat);
-    setExpressions(new ExpressionCollection(expressions));
   }
 
   /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontSupport.java,v 1.2 2003/07/14 20:16:06 taqua Exp $
+ * $Id: BaseFontSupport.java,v 1.3 2003/07/23 13:56:42 taqua Exp $
  *
  * Changes
  * -------
@@ -88,7 +88,8 @@ public class BaseFontSupport
    *
    * @throws BaseFontCreateException if there was a problem setting the font for the target.
    */
-  public BaseFontRecord createBaseFont(final FontDefinition font, final String encoding, final boolean embedded)
+  public BaseFontRecord createBaseFont(final FontDefinition font, 
+                                       final String encoding, final boolean embedded)
       throws BaseFontCreateException
   {
     if (font == null)
@@ -314,7 +315,8 @@ public class BaseFontSupport
    */
   private BaseFontRecord getFromCache(final String fontKey, final String encoding)
   {
-    final BaseFontRecord r = (BaseFontRecord) baseFonts.get(new BaseFontRecordKey(fontKey, encoding));
+    final BaseFontRecord r = 
+      (BaseFontRecord) baseFonts.get(new BaseFontRecordKey(fontKey, encoding));
     return r;
   }
 

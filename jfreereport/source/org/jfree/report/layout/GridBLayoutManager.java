@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GridBLayoutManager.java,v 1.4 2003/06/29 16:59:28 taqua Exp $
+ * $Id: GridBLayoutManager.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------
@@ -78,6 +78,7 @@ public class GridBLayoutManager extends AbstractBandLayoutManager
     // calculate absolute width
     for (int i = 0; i < elements.length; i++)
     {
+      // todo ...
     }
     return null;
   }
@@ -94,7 +95,7 @@ public class GridBLayoutManager extends AbstractBandLayoutManager
   {
     // Check the position of the elements inside and calculate the minimum width
     // needed to display all elements
-    final Element[] elements = b.getElementArray();
+    // final Element[] elements = b.getElementArray();
     return null;
   }
 

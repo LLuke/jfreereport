@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.3 2003/07/14 17:37:08 taqua Exp $
+ * $Id: TableProcessor.java,v 1.4 2003/07/23 13:56:42 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.JFreeReportConstants;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.function.FunctionInitializeException;
@@ -197,7 +196,7 @@ public abstract class TableProcessor
     // processReport() method.
 
     // during a prepare run the REPORT_PREPARERUN_PROPERTY is set to true.
-    state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
+    state.setProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
 
     // the pageformat is added to the report properties, PageFormat is not serializable,
     // so a repaginated report is no longer serializable.
@@ -206,7 +205,7 @@ public abstract class TableProcessor
     // multiple pages gets implemented. This property will be replaced by a more
     // suitable alternative.
     final PageFormat p = report.getDefaultPageFormat();
-    state.setProperty(JFreeReportConstants.REPORT_PAGEFORMAT_PROPERTY, p.clone());
+    state.setProperty(JFreeReport.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
     // now change the writer function to be a dummy writer. We don't want any
     // output in the prepare runs.
@@ -289,7 +288,7 @@ public abstract class TableProcessor
     state.setProperty(JFreeReportConstants.REPORT_PAGECOUNT_PROPERTY,
                       new Integer(state.getCurrentPage() - 1));
     */
-    state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
+    state.setProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
 
     // finally prepeare the returned start state.
     final StartState sretval = (StartState) retval;
@@ -349,6 +348,7 @@ public abstract class TableProcessor
   /**
    * Creates a TableProducer. The TableProducer is responsible to create the table.
    *
+   * @param gridLayoutBounds the grid layout that contain the bounds from the pagination run.
    * @return the created table producer, never null.
    */
   protected abstract TableProducer createProducer(TableLayoutInfo gridLayoutBounds);

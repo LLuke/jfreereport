@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableModelInfo.java,v 1.5 2003/06/29 16:59:28 taqua Exp $
+ * $Id: TableModelInfo.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes
  * -------
@@ -45,8 +45,16 @@ import javax.swing.table.TableModel;
  *
  * @author Thomas Morgner
  */
-public class TableModelInfo
+public final class TableModelInfo
 {
+  /**
+   * DefaultConstructor.
+   *
+   */
+  private TableModelInfo ()
+  {
+  }
+  
   /**
    * Prints a table model to standard output.
    *
@@ -110,7 +118,7 @@ public class TableModelInfo
       for (int i = 0; i < mod.getColumnCount(); i++)
       {
         final Object value = mod.getValueAt(rows, i);
-        final Class c = mod.getColumnClass(i);
+        //final Class c = mod.getColumnClass(i);
         System.out.println("ValueAt (" + rows + ", " + i + ") is " + value);
       }
     }

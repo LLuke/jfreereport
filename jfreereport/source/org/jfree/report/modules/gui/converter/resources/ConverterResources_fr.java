@@ -50,7 +50,8 @@ public class ConverterResources_fr extends JFreeReportResources
 
         {"convertdialog.targetIsEmpty", "Le fichier cible n'est pas spécifié"},
         {"convertdialog.errorTitle", "Erreur"},
-        {"convertdialog.targetIsNoFile", "Le fichier cible spécifié n'est pas un fichier ordinaire."},
+        {"convertdialog.targetIsNoFile", 
+          "Le fichier cible spécifié n'est pas un fichier ordinaire."},
         {"convertdialog.targetIsNotWritable", "Le fichier sélectionner est en lecture seule."},
         {"convertdialog.targetOverwriteConfirmation",
          "Le fichier ''{0}'' existe. Voulez vous l'écraser?"},
@@ -58,7 +59,8 @@ public class ConverterResources_fr extends JFreeReportResources
         {"convertdialog.encoding", "Encodage"},
         {"convertdialog.targetFile", "Fichier cible"},
         {"convertdialog.sourceIsEmpty", "Le fichier source n'est pas spécifié"},
-        {"convertdialog.sourceIsNoFile", "Le fichier source spécifié n'est pas un fichier ordinaire."},
+        {"convertdialog.sourceIsNoFile", 
+          "Le fichier source spécifié n'est pas un fichier ordinaire."},
         {"convertdialog.sourceIsNotReadable", "Le fichier source n'est pas lisible."},
         {"convertdialog.sourceFile", "Fichier source"},
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFExportResources_fr.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: PDFExportResources_fr.java,v 1.2 2003/07/11 09:20:55 mimil Exp $
  *
  * Changes 
  * -------------------------
@@ -45,6 +45,10 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 public class PDFExportResources_fr extends JFreeReportResources
 {
+  /**
+   * Default Constructor.
+   *
+   */
   public PDFExportResources_fr()
   {
   }
@@ -100,7 +104,8 @@ public class PDFExportResources_fr extends JFreeReportResources
         {"pdfsavedialog.warningTitle", "Attention"},
         {"pdfsavedialog.errorTitle", "Erreur"},
         {"pdfsavedialog.targetIsEmpty", "Veuillez spécifier un chemin pour le PDF."},
-        {"pdfsavedialog.targetIsNoFile", "Le fichier cible spécifié n'est pas un fichier ordinaire."},
+        {"pdfsavedialog.targetIsNoFile", 
+           "Le fichier cible spécifié n'est pas un fichier ordinaire."},
         {"pdfsavedialog.targetIsNotWritable", "Le fichier sélectionné est en lecture seule."},
         {"pdfsavedialog.targetOverwriteConfirmation",
          "Le fichier ''{0}'' existe. Voulez vous l'écraser?"},

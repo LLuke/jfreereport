@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StringUtil.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: StringUtil.java,v 1.2 2003/07/25 00:20:35 taqua Exp $
  *
  * Changes
  * -------
@@ -43,8 +43,15 @@ package org.jfree.report.util;
  *
  * @author Thomas Morgner
  */
-public class StringUtil
+public final class StringUtil
 {
+  /**
+   * Default Constructor.
+   */
+  private StringUtil ()
+  {
+  }
+  
   /**
    * Helper functions to query a strings start portion. The comparison is case insensitive.
    *

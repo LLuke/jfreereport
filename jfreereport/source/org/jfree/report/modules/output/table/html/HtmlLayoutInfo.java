@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: HtmlLayoutInfo.java,v 1.1 2003/07/14 17:40:06 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -43,7 +43,6 @@ import org.jfree.report.modules.output.table.base.TableLayoutInfo;
 public class HtmlLayoutInfo extends TableLayoutInfo
 {
   private HtmlStyleCollection styleCollection;
-  private boolean useXHTML;
 
   public HtmlLayoutInfo(boolean globalLayout)
   {

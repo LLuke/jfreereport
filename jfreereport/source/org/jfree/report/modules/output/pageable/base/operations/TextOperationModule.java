@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextOperationModule.java,v 1.16 2003/06/29 16:59:29 taqua Exp $
+ * $Id: TextOperationModule.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -75,8 +75,8 @@ public class TextOperationModule extends OperationModule
    * @param value  the content.
    * @param bounds  the bounds.
    */
-  public void createOperations(final PhysicalOperationsCollector col, final Element e, final Content value,
-                               final Rectangle2D bounds)
+  public void createOperations(final PhysicalOperationsCollector col, final Element e, 
+                               final Content value, final Rectangle2D bounds)
   {
     if (bounds == null)
     {

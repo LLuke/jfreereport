@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKey.java,v 1.9 2003/06/29 16:59:29 taqua Exp $
+ * $Id: StyleKey.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -54,7 +54,7 @@ import java.util.Hashtable;
  *
  * @author Thomas Morgner
  */
-public class StyleKey implements Serializable, Cloneable
+public final class StyleKey implements Serializable, Cloneable
 {
   /** Shared storage for the defined keys. */
   private static Hashtable definedKeys;

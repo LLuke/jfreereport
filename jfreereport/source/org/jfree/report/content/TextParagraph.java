@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextParagraph.java,v 1.24 2003/07/03 15:59:29 taqua Exp $
+ * $Id: TextParagraph.java,v 1.1 2003/07/07 22:44:03 taqua Exp $
  *
  * Changes
  * -------
@@ -355,7 +355,8 @@ public class TextParagraph extends ContentContainer
    *
    * @return a string with '..' appended.
    */
-  private String appendReserveLit(final String base, final int lineStart, final int lastCheckedChar, final float width)
+  private String appendReserveLit(final String base, final int lineStart, 
+                                  final int lastCheckedChar, final float width)
   {
     if (lastCheckedChar < 0)
     {
@@ -378,8 +379,8 @@ public class TextParagraph extends ContentContainer
     }
 
     final String baseLine = base.substring(lineStart, lastCheckedChar);
-    final float filler = width - (getSizeCalculator().getStringWidth(baseLine, 0, baseLine.length()))
-        - reservedSize;
+    final float filler = width - 
+      (getSizeCalculator().getStringWidth (baseLine, 0, baseLine.length())) - reservedSize;
 
     final int maxFillerLength = base.length() - lastCheckedChar;
     for (int i = 1; i < maxFillerLength; i++)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ResourceLabelTemplate.java,v 1.7 2003/06/29 16:59:24 taqua Exp $
+ * $Id: ResourceLabelTemplate.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes (from 18-Feb-2003)
  * -------------------------
@@ -92,6 +92,7 @@ public class ResourceLabelTemplate extends AbstractTemplate
    * @param resourceClassName  the class name.
    *
    * @throws MissingResourceException if the resource is missing.
+   * @throws NullPointerException if the resource class name is null.
    */
   public void setResourceClassName(final String resourceClassName)
       throws MissingResourceException

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.4 2003/07/23 16:02:20 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.5 2003/07/25 01:06:00 taqua Exp $
  *
  * Changes
  * --------
@@ -83,10 +83,10 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.modules.gui.base.components.ActionButton;
 import org.jfree.report.modules.gui.base.components.EncodingComboBoxModel;
 import org.jfree.report.modules.gui.base.components.ExceptionDialog;
+import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.modules.gui.pdf.resources.PDFExportResources;
 import org.jfree.report.modules.output.pageable.base.PageableReportProcessor;
 import org.jfree.report.modules.output.pageable.pdf.PDFOutputTarget;
-import org.jfree.report.modules.gui.base.components.FilesystemFilter;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
@@ -1208,7 +1208,7 @@ public class PDFSaveDialog extends JDialog
     if (fileChooser == null)
     {
       fileChooser = new JFileChooser();
-      final org.jfree.report.modules.gui.base.components.FilesystemFilter filter = new org.jfree.report.modules.gui.base.components.FilesystemFilter(".pdf", "PDF Documents");
+      final FilesystemFilter filter = new FilesystemFilter(".pdf", "PDF Documents");
       fileChooser.addChoosableFileFilter(filter);
       fileChooser.setMultiSelectionEnabled(false);
     }
@@ -1472,7 +1472,8 @@ public class PDFSaveDialog extends JDialog
    *
    * @return true or false.
    */
-  private boolean parseBoolean(final String key, final ReportConfiguration config, final boolean orgVal)
+  private boolean parseBoolean(final String key, final ReportConfiguration config, 
+                               final boolean orgVal)
   {
     final String val = config.getConfigProperty(PDFOutputTarget.CONFIGURATION_PREFIX + key,
         String.valueOf(orgVal));

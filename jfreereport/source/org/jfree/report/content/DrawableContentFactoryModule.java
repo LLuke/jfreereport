@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DrawableContentFactoryModule.java,v 1.10 2003/06/29 16:59:28 taqua Exp $
+ * $Id: DrawableContentFactoryModule.java,v 1.1 2003/07/07 22:44:03 taqua Exp $
  *
  * Changes
  * -------
@@ -103,7 +103,8 @@ public class DrawableContentFactoryModule implements ContentFactoryModule
     final Rectangle2D drawableBounds = new Rectangle2D.Float(0, 0,
         (float) iBounds.getWidth(),
         (float) iBounds.getHeight());
-    final DrawableContainer con = new DrawableContainer(drawable.getDrawable(), iBounds, drawableBounds);
+    final DrawableContainer con = new DrawableContainer
+      (drawable.getDrawable(), iBounds, drawableBounds);
     return new DrawableContent(con, point);
   }
 }

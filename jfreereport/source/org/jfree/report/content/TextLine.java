@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextLine.java,v 1.14 2003/06/29 16:59:28 taqua Exp $
+ * $Id: TextLine.java,v 1.1 2003/07/07 22:44:03 taqua Exp $
  *
  * Changes
  * -------
@@ -117,7 +117,8 @@ public class TextLine implements Content
    * @param width the width of the bounds.
    * @param height the height of the bounds.
    */
-  public void setContent(final String content, final float x, final float y, float width, float height)
+  public void setContent(final String content, final float x, 
+                         final float y, float width, float height)
   {
     if (x < 0)
     {

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.45 2003/06/29 16:59:28 taqua Exp $
+ * $Id: ReportState.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -62,7 +62,6 @@ import org.jfree.report.DataRow;
 import org.jfree.report.DataRowBackend;
 import org.jfree.report.DataRowConnector;
 import org.jfree.report.JFreeReport;
-import org.jfree.report.JFreeReportConstants;
 import org.jfree.report.ReportDefinition;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.LayoutEvent;
@@ -83,7 +82,7 @@ import org.jfree.report.util.ReportPropertiesList;
  * @author David Gilbert
  * @author Thomas Morgner
  */
-public abstract class ReportState implements JFreeReportConstants, Cloneable
+public abstract class ReportState implements Cloneable
 {
   /** The report that the state belongs to. */
   private ReportDefinition report;
@@ -500,7 +499,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   public boolean isPrepareRun()
   {
-    final Boolean bool = (Boolean) getProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY,
+    final Boolean bool = (Boolean) getProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY,
         Boolean.FALSE);
     return bool.booleanValue();
   }
@@ -596,53 +595,53 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
     return false;
   }
 
-  /**
-   * LogHelper. The Message is created when the toString() method is called.
-   * If logging is disabled, no toString() gets called and no resources are wasted.
-   */
-  private static class StateProceedMessage
-  {
-    /** The current state. */
-    private ReportState currentState;
-
-    /** The old state. */
-    private ReportStateProgress oldState;
-
-    /** The message. */
-    private String message;
-
-    /**
-     * Creates a new message.
-     *
-     * @param currentState  the current state.
-     * @param oldState  the old state.
-     * @param message  the message.
-     */
-    public StateProceedMessage(final ReportState currentState, final ReportStateProgress oldState,
-                               final String message)
-    {
-      this.currentState = currentState;
-      this.oldState = oldState;
-      this.message = message;
-    }
-
-    /**
-     * Returns a string representation of the object.
-     *
-     * @return the string.
-     */
-    public String toString()
-    {
-      return message + currentState.getCurrentGroupIndex() + ", DataItem: "
-          + currentState.getCurrentDataItem() + ",Page: "
-          + currentState.getCurrentPage() + " Class: "
-          + currentState.getClass() + "\n"
-          + "Old State: " + oldState.getCurrentGroupIndex() + ", DataItem: "
-          + oldState.getCurrentDataItem() + ",Page: "
-          + oldState.getCurrentPage() + " Class: "
-          + oldState.getClass() + "\n";
-    }
-  }
+//  /**
+//   * LogHelper. The Message is created when the toString() method is called.
+//   * If logging is disabled, no toString() gets called and no resources are wasted.
+//   */
+//  private static class StateProceedMessage
+//  {
+//    /** The current state. */
+//    private ReportState currentState;
+//
+//    /** The old state. */
+//    private ReportStateProgress oldState;
+//
+//    /** The message. */
+//    private String message;
+//
+//    /**
+//     * Creates a new message.
+//     *
+//     * @param currentState  the current state.
+//     * @param oldState  the old state.
+//     * @param message  the message.
+//     */
+//    public StateProceedMessage(final ReportState currentState, final ReportStateProgress oldState,
+//                               final String message)
+//    {
+//      this.currentState = currentState;
+//      this.oldState = oldState;
+//      this.message = message;
+//    }
+//
+//    /**
+//     * Returns a string representation of the object.
+//     *
+//     * @return the string.
+//     */
+//    public String toString()
+//    {
+//      return message + currentState.getCurrentGroupIndex() + ", DataItem: "
+//          + currentState.getCurrentDataItem() + ",Page: "
+//          + currentState.getCurrentPage() + " Class: "
+//          + currentState.getClass() + "\n"
+//          + "Old State: " + oldState.getCurrentGroupIndex() + ", DataItem: "
+//          + oldState.getCurrentDataItem() + ",Page: "
+//          + oldState.getCurrentPage() + " Class: "
+//          + oldState.getClass() + "\n";
+//    }
+//  }
 
   /**
    * Advances the current page by one.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportPluginFactory.java,v 1.3 2003/07/14 17:37:07 taqua Exp $
+ * $Id: ExportPluginFactory.java,v 1.4 2003/07/23 16:02:19 taqua Exp $
  *
  * Changes
  * --------
@@ -77,12 +77,21 @@ public class ExportPluginFactory
 
     public boolean equals(Object o)
     {
-      if (this == o) return true;
-      if (!(o instanceof PluginDefinition)) return false;
+      if (this == o)
+      { 
+        return true;
+      }
+      if (!(o instanceof PluginDefinition))
+      { 
+        return false;
+      }
 
       final PluginDefinition pluginDefinition = (PluginDefinition) o;
 
-      if (!pluginClass.equals(pluginDefinition.pluginClass)) return false;
+      if (!pluginClass.equals(pluginDefinition.pluginClass))
+      {
+        return false;
+      }
 
       return true;
     }
@@ -114,14 +123,17 @@ public class ExportPluginFactory
      *
      * @param   o the Object to be compared.
      * @return  a negative integer, zero, or a positive integer as this object
-     *		is less than, equal to, or greater than the specified object.
+     *          is less than, equal to, or greater than the specified object.
      *
      * @throws ClassCastException if the specified object's type prevents it
      *         from being compared to this Object.
      */
     public int compareTo(Object o)
     {
-      if (this == o) return 0;
+      if (this == o)
+      { 
+        return 0;
+      }
       PluginDefinition def = (PluginDefinition) o;
       return getPreference().compareTo(def.getPreference());
     }
@@ -225,7 +237,8 @@ public class ExportPluginFactory
       }
       else
       {
-        Log.debug(new Log.SimpleMessage("Plugin ", definition.getPluginClass(), " is not enabled."));
+        Log.debug(new Log.SimpleMessage("Plugin ", definition.getPluginClass(), 
+                  " is not enabled."));
       }
     }
     return retval;

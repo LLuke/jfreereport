@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeOperationModule.java,v 1.15 2003/06/29 16:59:29 taqua Exp $
+ * $Id: ShapeOperationModule.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -75,8 +75,8 @@ public class ShapeOperationModule extends OperationModule
    * @param bounds  the bounds.
    *
    */
-  public void createOperations(final PhysicalOperationsCollector col, final Element e, final Content value,
-                               final Rectangle2D bounds)
+  public void createOperations(final PhysicalOperationsCollector col, final Element e, 
+                               final Content value, final Rectangle2D bounds)
   {
     final Stroke stroke = (Stroke) e.getStyle().getStyleProperty(ElementStyleSheet.STROKE);
     final Color paint = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);

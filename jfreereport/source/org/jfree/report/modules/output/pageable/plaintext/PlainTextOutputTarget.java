@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.2 2003/07/14 20:16:05 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.3 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -106,7 +106,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    * A state of a Graphics2D object. This does not store clipping regions or advanced
    * properties.
    */
-  private static class PlainTextState
+  private static final class PlainTextState
   {
     /** The paint. */
     private Paint mypaint;
@@ -158,7 +158,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    * The PlainTextSizeCalculator is used to calculate the dimensions
    * of an PlainText string.
    */
-  private static class PlainTextSizeCalculator implements SizeCalculator
+  private static final class PlainTextSizeCalculator implements SizeCalculator
   {
     /** the current character width. */
     private float characterWidth;
@@ -566,6 +566,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
   /**
    * Returns the plain text encoding property value.
    *
+   * @param config the report configuration from where to read the encoding property.
    * @return the plain text encoding property value.
    */
   public static String getTextTargetEncoding(ReportConfiguration config)
@@ -588,7 +589,8 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    *
    * @throws OutputTargetException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(final FontDefinition font) throws OutputTargetException
+  public SizeCalculator createTextSizeCalculator(final FontDefinition font) 
+    throws OutputTargetException
   {
     return new PlainTextSizeCalculator(characterWidth, characterHeight);
   }
@@ -653,7 +655,7 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    * Defines the document encoding for the plain text output.
    * The specified encoding must be supported by the assigned PrinterCommandSet.
    *
-   * @param documentEncoding
+   * @param documentEncoding the character encoding of the target text.
    */
   public void setDocumentEncoding(final String documentEncoding)
   {
@@ -667,7 +669,8 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     }
     else
     {
-      throw new IllegalArgumentException("This encoding is not supported by the printer. : " + documentEncoding);
+      throw new IllegalArgumentException
+        ("This encoding is not supported by the printer. : " + documentEncoding);
     }
   }
 }

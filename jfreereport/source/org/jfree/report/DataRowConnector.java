@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowConnector.java,v 1.1 2003/07/07 22:43:59 taqua Exp $
+ * $Id: DataRowConnector.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
  *
  * Changes
  * -------
@@ -240,7 +240,8 @@ public class DataRowConnector implements DataRow
    * @param report  the report which will be disconnected from this DataRow.
    * @param con  the connector.
    */
-  public static void disconnectDataSources(final ReportDefinition report, final DataRowConnector con)
+  public static void disconnectDataSources
+    (final ReportDefinition report, final DataRowConnector con)
   {
     disconnectDataSources(report.getPageFooter(), con);
     disconnectDataSources(report.getPageHeader(), con);

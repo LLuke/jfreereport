@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceWriter.java,v 1.3 2003/07/23 13:56:43 taqua Exp $
+ * $Id: DataSourceWriter.java,v 1.1 2003/07/23 16:02:22 taqua Exp $
  *
  * Changes
  * -------
@@ -88,8 +88,8 @@ public class DataSourceWriter extends ObjectWriter
    * @param writer  the writer.
    * @param name  the name.
    *
-   * @throws java.io.IOException if there is an I/O problem.
-   * @throws org.jfree.report.modules.parser.extwriter.ReportWriterException if the report definition could not be written.
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if the report definition could not be written.
    */
   protected void writeParameter(final Writer writer, final String name)
       throws IOException, ReportWriterException

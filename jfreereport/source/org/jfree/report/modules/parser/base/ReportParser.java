@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.5 2003/07/21 20:46:56 taqua Exp $
+ * $Id: ReportParser.java,v 1.6 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -131,7 +131,8 @@ public class ReportParser extends Parser
     getCommentHandler().clearComments();
   }
 
-  public void startElement(String tagName, String namespace, String qName, Attributes attributes) throws SAXException
+  public void startElement(String tagName, String namespace, 
+                           String qName, Attributes attributes) throws SAXException
   {
     super.startElement(tagName, namespace, qName, attributes);
     getCommentHandler().clearComments();

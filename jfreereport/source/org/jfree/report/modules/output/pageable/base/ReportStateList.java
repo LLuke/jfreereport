@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.2 2003/07/14 17:37:07 taqua Exp $
+ * $Id: ReportStateList.java,v 1.3 2003/07/20 19:31:15 taqua Exp $
  *
  * Changes
  * -------
@@ -89,7 +89,7 @@ public class ReportStateList
    * Internal WeakReferenceList that is capable to restore its elements. The elements in
    * this list are page start report states.
    */
-  private static class MasterList extends WeakReferenceList
+  private static final class MasterList extends WeakReferenceList
   {
     /** The master list. */
     private ReportStateList master;
@@ -141,7 +141,7 @@ public class ReportStateList
      *
      * @return the report state.
      *
-     * @throws org.jfree.report.ReportProcessingException if there was a problem processing the report.
+     * @throws ReportProcessingException if there was a problem processing the report.
      */
     protected ReportState restoreState(final int count, final ReportState rootstate)
         throws ReportProcessingException

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.2 2003/07/25 01:06:01 taqua Exp $
  *
  * Changes
  * -------
@@ -579,6 +579,12 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     return defaultValue;
   }
 
+  /**
+   * Puts an object into the cache (if caching is enabled).
+   * 
+   * @param key the stylekey for that object
+   * @param value the object.
+   */
   private void putInCache (StyleKey key, Object value)
   {
     if (isAllowCaching())
@@ -695,6 +701,9 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     }
   }
 
+  /**
+   * Creates the cached object array for the default element style sheets.
+   */
   private void defaultToCache ()
   {
     if (defaultCached == null)
@@ -704,6 +713,10 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     }
   }
 
+  /**
+   * Creates the cached object array for the parent element style sheets.
+   *
+   */
   private void parentsToCache ()
   {
     if (parentsCached == null)
@@ -939,6 +952,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @throws NullPointerException if the given stylesheet collection is null.
    */
   public void registerStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
+    throws InvalidStyleSheetCollectionException
   {
     collectionHelper.registerStyleSheetCollection(styleSheetCollection);
   }
@@ -954,6 +968,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    * @throws NullPointerException if the given stylesheet collection is null.
    */
   public void unregisterStyleSheetCollection(final StyleSheetCollection styleSheetCollection)
+    throws InvalidStyleSheetCollectionException
   {
     collectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultModuleInfo.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: DefaultModuleInfo.java,v 1.2 2003/07/10 20:02:08 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -105,8 +105,14 @@ public class DefaultModuleInfo implements ModuleInfo
    */
   public boolean equals(Object o)
   {
-    if (this == o) return true;
-    if (!(o instanceof DefaultModuleInfo)) return false;
+    if (this == o) 
+    {
+      return true;
+    }
+    if (!(o instanceof DefaultModuleInfo))
+    { 
+      return false;
+    }
 
     final ModuleInfo defaultModuleInfo = (ModuleInfo) o;
 

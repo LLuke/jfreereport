@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellStyle.java,v 1.9 2003/06/29 16:59:30 taqua Exp $
+ * $Id: RTFCellStyle.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -62,7 +62,8 @@ public class RTFCellStyle
    * @param horizontalAlignment the horizontal text alignment.
    * @throws NullPointerException if one of the alignment parameters is null.
    */
-  public RTFCellStyle(final ElementAlignment verticalAlignment, final ElementAlignment horizontalAlignment)
+  public RTFCellStyle(final ElementAlignment verticalAlignment, 
+                      final ElementAlignment horizontalAlignment)
   {
     if (verticalAlignment == null)
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.2 2003/07/20 19:31:15 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.3 2003/07/23 16:02:20 taqua Exp $
  *
  * Changes
  * --------
@@ -926,8 +926,9 @@ public class PlainTextExportDialog extends JDialog
           return new EpsonPrinterCommandSet(out, report.getDefaultPageFormat(), getCharsPerInch(),
               getLinesPerInch());
         }
+      default:
+        throw new IllegalArgumentException();
     }
-    throw new IllegalArgumentException();
   }
 
   /**
@@ -947,7 +948,8 @@ public class PlainTextExportDialog extends JDialog
           new FileOutputStream(
               new File(getFilename())));
       final PrinterCommandSet pc = getPrinterCommandSet(out, report);
-      final PlainTextOutputTarget target = new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
+      final PlainTextOutputTarget target = 
+        new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
       target.configure(report.getReportConfiguration());
       target.setProperty(PlainTextOutputTarget.ENCODING_PROPERTY, getEncoding());
 

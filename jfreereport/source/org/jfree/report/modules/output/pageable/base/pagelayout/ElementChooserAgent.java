@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementChooserAgent.java,v 1.5 2003/06/29 16:59:29 taqua Exp $
+ * $Id: ElementChooserAgent.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -44,7 +44,7 @@ package org.jfree.report.modules.output.pageable.base.pagelayout;
 public class ElementChooserAgent extends LayoutAgent
 {
   /** ??. */
-  private static final String CHOOSING_DONE = ElementChooserAgent.class.getName();
+  //private static final String CHOOSING_DONE = ElementChooserAgent.class.getName();
 
   /**
    * Default constructor.
@@ -62,6 +62,7 @@ public class ElementChooserAgent extends LayoutAgent
    */
   public LayoutAgentProgress processTask(final LayoutTask task)
   {
+/*    
     final EventType type = task.getEventType();
     if (type == EventType.PAGE_START)
     {
@@ -84,6 +85,7 @@ public class ElementChooserAgent extends LayoutAgent
     else if (type == EventType.ITEM_ADVANCE)
     {
     }
+    */
     return LayoutAgentProgress.WONT_PROCESS;
   }
 

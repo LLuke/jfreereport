@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: ElementFactory.java,v 1.2 2003/07/23 16:02:19 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -43,78 +43,172 @@ import java.awt.geom.Point2D;
 
 import org.jfree.report.Element;
 
+/**
+ * The class element factory is the base class for all Element Factories.
+ * Element factories can be used to create predefined element types. The
+ * properties allow null values, if a property is null, it will not be
+ * defined. Undefined properties can inherit their values from the element's 
+ * parent bands.  
+ *  
+ * @author Thomas Morgner
+ */
 public abstract class ElementFactory
 {
+  /** The name of the new element. */
   private String name;
+  /** The elements minimum size. */
   private Dimension2D minimumSize;
+  /** The elements maximum size. */
   private Dimension2D maximumSize;
+  /** The elements preferred size. */
   private Dimension2D preferredSize;
+  /** The elements absolute position. */
   private Point2D absolutePosition;
+  /** The elements dynamic content height flag. */
   private Boolean dynamicHeight;
 
+  /**
+   * Default Constructor.
+   */
   public ElementFactory()
   {
   }
 
+  /**
+   * Returns the name of the new element. 
+   * 
+   * @return the name of the element.
+   */
   public String getName()
   {
     return name;
   }
 
+  /**
+   * Defines the name of the element. If the name is null, the default (anonymous)
+   * name will be used.
+   * 
+   * @param name the element name.
+   */
   public void setName(final String name)
   {
     this.name = name;
   }
 
+  /**
+   * Returns the element's minimum size. Whether this property is used during the
+   * layouting depends on the layout manager implementation of the container.
+   * 
+   * @return the element's minimum size. 
+   */
   public Dimension2D getMinimumSize()
   {
     return minimumSize;
   }
 
+  /**
+   * Defines the element's minimum size. Whether this property is used during the
+   * layouting depends on the layout manager implementation of the container.
+   * 
+   * @param minimumSize the element's minimum size. 
+   */
   public void setMinimumSize(final Dimension2D minimumSize)
   {
     this.minimumSize = minimumSize;
   }
 
+  /**
+   * Returns the element's maximum size. Whether this property is used during the
+   * layouting depends on the layout manager implementation of the container.
+   * 
+   * @return the element's maximum size. 
+   */
   public Dimension2D getMaximumSize()
   {
     return maximumSize;
   }
 
+  /**
+   * Defines the element's maximum size. Whether this property is used during the
+   * layouting depends on the layout manager implementation of the container.
+   * 
+   * @param maximumSize the element's maximum size. 
+   */
   public void setMaximumSize(final Dimension2D maximumSize)
   {
     this.maximumSize = maximumSize;
   }
 
+  /**
+   * Returns the element's preferred size. Whether this property is used during the
+   * layouting depends on the layout manager implementation of the container.
+   * 
+   * @return the element's preferred size. 
+   */
   public Dimension2D getPreferredSize()
   {
     return preferredSize;
   }
 
+  /**
+   * Returns the element's preferred size. Whether this property is used during the
+   * layouting depends on the layout manager implementation of the container.
+   * 
+   * @param preferredSize the element's preferred size. 
+   */
   public void setPreferredSize(final Dimension2D preferredSize)
   {
     this.preferredSize = preferredSize;
   }
 
+  /**
+   * Returns the element's absolute position. Whether this property is used during the
+   * layouting depends on the layout manager implementation of the container.
+   * 
+   * @return the element's absolute position. 
+   */
   public Point2D getAbsolutePosition()
   {
     return absolutePosition;
   }
 
+  /**
+   * Returns the element's absolute position. Whether this property is used during the
+   * layouting depends on the layout manager implementation of the container.
+   * 
+   * @param absolutePosition the element's absolute position. 
+   */
   public void setAbsolutePosition(final Point2D absolutePosition)
   {
     this.absolutePosition = absolutePosition;
   }
 
+  /**
+   * Defines whether the element's height should be adjusted automaticly. This feature
+   * is expensive and be used with care. Set the value to null, to declare that the
+   * dynamic feature is undefined.
+   * 
+   * @return the state of the dynamic feature or null, if the feature is undefined.
+   */
   public Boolean getDynamicHeight()
   {
     return dynamicHeight;
   }
 
+  /**
+   * Defines the state of the element's dynamic content height feature.
+   *  
+   * @param dynamicHeight the new value of the elements dynamic height feature.
+   */
   public void setDynamicHeight(final Boolean dynamicHeight)
   {
     this.dynamicHeight = dynamicHeight;
   }
 
+  /**
+   * Creates a new instance of the element.
+   * 
+   * @return the newly generated instance of the element.
+   */
   public abstract Element createElement();
 }

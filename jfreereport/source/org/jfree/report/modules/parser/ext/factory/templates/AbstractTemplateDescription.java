@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractTemplateDescription.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: AbstractTemplateDescription.java,v 1.2 2003/07/18 17:56:39 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -101,13 +101,35 @@ public abstract class AbstractTemplateDescription
 
   public boolean equals(Object o)
   {
-    if (this == o) return true;
-    if (!(o instanceof AbstractTemplateDescription)) return false;
-    if (!super.equals(o)) return false;
+    if (this == o)
+    { 
+      return true;
+    }
+    if (!(o instanceof AbstractTemplateDescription))
+    { 
+      return false;
+    }
+    if (!super.equals(o))
+    { 
+      return false;
+    }
 
     final AbstractTemplateDescription abstractTemplateDescription = (AbstractTemplateDescription) o;
 
-    if (name != null ? !name.equals(abstractTemplateDescription.name) : abstractTemplateDescription.name != null) return false;
+    if (name != null)
+    {
+      if (!name.equals(abstractTemplateDescription.name))
+      {
+        return false;
+      }
+    }
+    else
+    {
+      if (abstractTemplateDescription.name != null)
+      { 
+        return false;
+      }
+    }
 
     return true;
   }

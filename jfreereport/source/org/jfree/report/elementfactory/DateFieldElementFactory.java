@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DateFieldElementFactory.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: DateFieldElementFactory.java,v 1.2 2003/07/14 17:37:07 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 06.07.2003 : Initial version
+ * 06-Jul-2003 : Initial version
  *  
  */
 
@@ -54,24 +54,55 @@ import org.jfree.report.filter.templates.DateFieldTemplate;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
 
+/**
+ * The date format factory can be used to create date/time text elements.
+ * These text elements have special abilities to format date/time values.
+ * <p>
+ * Once the desired properties are set, the factory can be reused to create
+ * similiar text elements. 
+ *  
+ * @author Thomas Morgner
+ */
 public class DateFieldElementFactory extends TextFieldElementFactory
 {
+  /** The date format instance used to format date values in the text element. */
   private DateFormat format;
 
+  /**
+   * Creates a new date field element factory.
+   */
   public DateFieldElementFactory()
   {
   }
 
+  /**
+   * Returns the date format used for all generated text elements. The 
+   * date format is shared among all generated elements.
+   * 
+   * @return the date format used in this factory.
+   */
   public DateFormat getFormat()
   {
     return format;
   }
 
+  /**
+   * Defines the date format used for all generated text elements. The 
+   * date format is shared among all generated elements.
+   * 
+   * @param format the date format used in this factory.
+   */
   public void setFormat(DateFormat format)
   {
     this.format = format;
   }
 
+  /**
+   * Returns the format string of the used date format. This method will
+   * return null, if the current date format is no instance of SimpleDateFormat.
+   *  
+   * @return the formatstring of the date format instance.
+   */
   public String getFormatString()
   {
     if (getFormat() instanceof SimpleDateFormat)
@@ -82,6 +113,13 @@ public class DateFieldElementFactory extends TextFieldElementFactory
     return null;
   }
 
+  /**
+   * Defines the format string of the used date format. This method will
+   * replace the date format instance of this factory. If the format string
+   * is null, the default format string of the current locale is used. 
+   *  
+   * @param formatString the formatstring of the date format instance.
+   */
   public void setFormatString(String formatString)
   {
     if (formatString == null)
@@ -94,6 +132,14 @@ public class DateFieldElementFactory extends TextFieldElementFactory
     }
   }
 
+  /**
+   * Creates the date text element based on the defined settings.
+   * Undefined properties will not be set in the generated element.
+   *  
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
+   * 
+   * @return the generated date text element
+   */
   public Element createElement()
   {
     DataSource dataSource;

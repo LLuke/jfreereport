@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ResourceLabelElementFactory.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 06.07.2003 : Initial version
+ * 06-Jul-2003 : Initial version
  *  
  */
 
@@ -50,46 +50,101 @@ import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.ui.FloatDimension;
 
+/**
+ * A factory to define translateable LabelElements. LabelElements are considered 
+ * immutable and should not be modified once they are created. The label expects 
+ * plain text. The content of the label will be translated using an assigned 
+ * resource bundle.
+ * 
+ * @author Thomas Morgner
+ */
 public class ResourceLabelElementFactory extends TextElementFactory
 {
+  /** The resource base from which to read the translations. */ 
   private String resourceBase;
+  
+  /** The nullstring of the text element if the translation was not found. */
   private String nullString;
+  /** The resource key which is used to retrieve the translation. */
   private String resourceKey;
 
+  /**
+   * DefaultConstructor.
+   */
   public ResourceLabelElementFactory()
   {
   }
 
+  /**
+   * Returns the base name of the resource bundle used to translate the content later.
+   * 
+   * @return the resource bundle name of the element.
+   */
   public String getResourceBase()
   {
     return resourceBase;
   }
 
+  /**
+   * Defines the base name of the resource bundle used to translate the content later.
+   * 
+   * @param resourceBase the resource bundle name of the element.
+   */
   public void setResourceBase(String resourceBase)
   {
     this.resourceBase = resourceBase;
   }
 
+  /**
+   * Returns the null string for the text element. The null string is used when no
+   * content is found for that element.
+   * 
+   * @return the null string.
+   */
   public String getNullString()
   {
     return nullString;
   }
 
+  /**
+   * Defines the null string for the text element. The null string is used when no
+   * content is found for that element. The nullstring itself can be null.
+   * 
+   * @param nullString the null string.
+   */
   public void setNullString(String nullString)
   {
     this.nullString = nullString;
   }
 
+  /**
+   * Returns the resource key that contains the label text.
+   * 
+   * @return the label resource bundle key.
+   */
   public String getResourceKey()
   {
     return resourceKey;
   }
 
+  /**
+   * Defines the resource key, which will be used to read the translated label text.
+   * 
+   * @param resourceKey the resource bundle key.
+   */
   public void setResourceKey(String resourceKey)
   {
     this.resourceKey = resourceKey;
   }
 
+  /**
+   * Generates the element based on the defined properties.
+   *  
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
+   * @return the generated element.
+   * @throws NullPointerException if the resource class name is null.
+   * @throws IllegalStateException if the resource key is not defined.
+   */
   public Element createElement()
   {
     if (getResourceKey() == null)
@@ -126,6 +181,7 @@ public class ResourceLabelElementFactory extends TextElementFactory
    * @param font  the font for this element.
    * @param resourceKey the key which is used to query the resource bundle
    * @param resourceBase the classname/basename of the assigned resource bundle
+   * @param nullValue the null string of the text element (can be null).
    * @return the created ResourceElement
    */
   public static TextElement createResourceLabel(final String name,

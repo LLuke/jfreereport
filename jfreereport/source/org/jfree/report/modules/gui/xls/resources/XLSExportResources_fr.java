@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: XLSExportResources_fr.java,v 1.2 2003/07/11 09:20:55 mimil Exp $
+ * $Id: XLSExportResources_fr.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,6 +45,10 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 public class XLSExportResources_fr extends JFreeReportResources
 {
+  /**
+   * Default Constructor.
+   *
+   */
   public XLSExportResources_fr()
   {
   }
@@ -81,7 +85,8 @@ public class XLSExportResources_fr extends JFreeReportResources
         {"excelexportdialog.errorTitle", "Erreur"},
         {"excelexportdialog.targetIsEmpty",
          "Veuillez spécifier un nom de fichier pour le fichier Excel."},
-        {"excelexportdialog.targetIsNoFile", "Le fichier cible spécifié n'est pas un fichier ordinaire."},
+        {"excelexportdialog.targetIsNoFile", 
+         "Le fichier cible spécifié n'est pas un fichier ordinaire."},
         {"excelexportdialog.targetIsNotWritable",
          "Le fichier sélectionner est en lecture seule."},
         {"excelexportdialog.targetOverwriteConfirmation",

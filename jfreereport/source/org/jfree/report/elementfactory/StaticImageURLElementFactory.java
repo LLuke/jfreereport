@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: StaticImageURLElementFactory.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 06.07.2003 : Initial version
+ * 06-Jul-2003 : Initial version
  *  
  */
 
@@ -49,15 +49,36 @@ import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
 
+/**
+ * A factory to create an image element that loads its image from an
+ * static URL. The content string may contain a relative URL if an valid
+ * base URL is given.
+ * 
+ * @author Thomas Morgner
+ */
 public class StaticImageURLElementFactory extends ImageElementFactory
 {
+  /** The content URL (may be a relative URL). */
   private String content;
+  /** The base URL for relative content URLs. */
   private URL baseURL;
 
+  /**
+   * Default-Constructor.
+   *
+   */
   public StaticImageURLElementFactory()
   {
   }
 
+  /**
+   * Creates the image URL element.
+   *   
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
+   * 
+   * @return the generated element.
+   * @throws IllegalStateException if the content is not defined.
+   */
   public Element createElement()
   {
     if (getContent() == null)
@@ -87,21 +108,44 @@ public class StaticImageURLElementFactory extends ImageElementFactory
     return element;
   }
 
+  /**
+   * Returns the content part of the URL. This string may contain a relative URL,
+   * if the base URL is defined.
+   * 
+   * @return the content part of the URL.
+   */
   public String getContent()
   {
     return content;
   }
 
+  /**
+   * Defines the content part of the URL. This string may contain a relative URL,
+   * if the base URL is defined.
+   * 
+   * @param content the content part of the URL.
+   */
   public void setContent(String content)
   {
     this.content = content;
   }
 
+  /**
+   * Returns the BaseURL. The base URL is used to build the complete URL if the
+   * content url is relative.
+   * 
+   * @return the base URL.
+   */
   public URL getBaseURL()
   {
     return baseURL;
   }
 
+  /**
+   * Defines the base URL.
+   * 
+   * @param baseURL the base URL.
+   */
   public void setBaseURL(URL baseURL)
   {
     this.baseURL = baseURL;

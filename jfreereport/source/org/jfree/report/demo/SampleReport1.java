@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SampleReport1.java,v 1.23 2003/06/29 16:59:23 taqua Exp $
+ * $Id: SampleReport1.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes:
  * --------
@@ -42,8 +42,6 @@ package org.jfree.report.demo;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -428,30 +426,20 @@ public class SampleReport1
   {
   }
 
+  /**
+   * Runs this report and shows a preview dialog.
+   * 
+   * @param args the arguments (ignored).
+   * @throws Exception if an error occurs (default: print a stack trace)
+   */
   public static void main (String [] args) throws Exception
   {
     JFreeReport report = new SampleReport1().createReport();
     report.setData(new SampleData1());
-    /*
-    Log.debug ("" + report.getItemBand().getElementCount());
-    Element[] e = report.getItemBand().getElementArray();
-    for (int i = 0; i < e.length; i++)
-    {
-      Log.debug (e[i].toString());
-    }
-    */
+
     PreviewDialog dialog = new PreviewDialog(report);
+    dialog.setModal(true);
     dialog.pack();
-    dialog.addWindowListener(new WindowAdapter() {
-      /**
-       * Invoked when a window is in the process of being closed.
-       * The close operation can be overridden at this point.
-       */
-      public void windowClosing(WindowEvent e)
-      {
-        System.exit(0);
-      }
-    });
     dialog.setVisible(true);
   }
 }

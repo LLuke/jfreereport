@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DefaultSizeCalculator.java,v 1.17 2003/07/03 15:59:29 taqua Exp $
+ * $Id: DefaultSizeCalculator.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------
@@ -101,7 +101,8 @@ public class DefaultSizeCalculator implements SizeCalculator
       final String myText = "A simple text with some characters to calculate the length.";
 
       final double wAlias = font.getStringBounds(myText, 0, myText.length(), frcAlias).getWidth();
-      final double wNoAlias = font.getStringBounds(myText, 0, myText.length(), frcNoAlias).getWidth();
+      final double wNoAlias = 
+        font.getStringBounds(myText, 0, myText.length(), frcNoAlias).getWidth();
       isBuggyVersion = (wAlias != wNoAlias);
       final boolean buggyOverride = ReportConfiguration.getGlobalConfig().isFontRendererBuggy();
       Log.debug("This is a buggy version of the font-renderer context: " + isBuggyVersion);

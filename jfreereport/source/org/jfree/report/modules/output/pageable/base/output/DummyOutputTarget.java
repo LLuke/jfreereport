@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DummyOutputTarget.java,v 1.2 2003/07/14 20:16:05 taqua Exp $
+ * $Id: DummyOutputTarget.java,v 1.3 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -69,7 +69,7 @@ public class DummyOutputTarget extends AbstractOutputTarget
    * A state of a Graphics2D object. This does not store clipping regions or advanced
    * properties.
    */
-  private static class OutputTargetState
+  private static final class OutputTargetState
   {
     /** The paint. */
     private Paint mypaint;
@@ -338,9 +338,10 @@ public class DummyOutputTarget extends AbstractOutputTarget
    *
    * @return the size calculator.
    *
-   * @throws org.jfree.report.layout.SizeCalculatorException if there is a problem with the output target.
+   * @throws SizeCalculatorException if there is a problem with the output target.
    */
-  public SizeCalculator createTextSizeCalculator(final FontDefinition font) throws SizeCalculatorException
+  public SizeCalculator createTextSizeCalculator(final FontDefinition font) 
+    throws SizeCalculatorException
   {
     return backend.createTextSizeCalculator(font);
   }

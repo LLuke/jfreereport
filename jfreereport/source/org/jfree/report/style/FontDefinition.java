@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FontDefinition.java,v 1.12 2003/06/29 16:59:28 taqua Exp $
+ * $Id: FontDefinition.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -109,8 +109,10 @@ public class FontDefinition implements Serializable, Cloneable
    * @param encoding the default text encoding that should be used with this font.
    * @param embedded whether this font should be embedded in the target document.
    */
-  public FontDefinition(final String fontName, final int fontSize, final boolean bold, final boolean italic,
-                        final boolean underline, final boolean strikeThrough, final String encoding, final boolean embedded)
+  public FontDefinition(final String fontName, final int fontSize, 
+                        final boolean bold, final boolean italic,
+                        final boolean underline, final boolean strikeThrough, 
+                        final String encoding, final boolean embedded)
   {
     if (fontName == null)
     {
@@ -142,8 +144,9 @@ public class FontDefinition implements Serializable, Cloneable
    * @param strikeThrough  true, if the font should be drawn with strikethrough style,
    *                       false otherwise
    */
-  public FontDefinition(final String fontName, final int fontSize, final boolean bold, final boolean italic,
-                        final boolean underline, final boolean strikeThrough)
+  public FontDefinition(final String fontName, final int fontSize, final boolean bold, 
+                        final boolean italic, final boolean underline, 
+                        final boolean strikeThrough)
   {
     this(fontName, fontSize, bold, italic, underline, strikeThrough, null, false);
   }
@@ -245,9 +248,8 @@ public class FontDefinition implements Serializable, Cloneable
    * Creates and returns a copy of this object.
    *
    * @return     a clone of this instance.
-   * @exception  java.lang.OutOfMemoryError            if there is not enough memory.
-   * @throws     java.lang.CloneNotSupportedException  if a error occured during cloning .
-   * @see        java.lang.Cloneable
+   * @throws CloneNotSupportedException  if a error occured during cloning .
+   * @see java.lang.Cloneable
    */
   public Object clone() throws CloneNotSupportedException
   {

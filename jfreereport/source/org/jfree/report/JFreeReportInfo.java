@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportInfo.java,v 1.2 2003/07/11 18:33:20 taqua Exp $
+ * $Id: JFreeReportInfo.java,v 1.3 2003/07/25 00:20:26 taqua Exp $
  *
  * Changes:
  * --------
@@ -95,6 +95,13 @@ public class JFreeReportInfo extends ProjectInfo implements Cloneable
     ));
   }
 
+  /**
+   * Tries to read the licence text from jcommon. This method does not reference
+   * jcommon directly, as this would increase the size of that class file.
+   *  
+   * @see org.jfree.ui.about.ProjectInfo#getLicenceText()
+   * @return the licence text for this project.
+   */
   public String getLicenceText()
   {
     try

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionWriter.java,v 1.3 2003/07/21 20:46:56 taqua Exp $
+ * $Id: ReportDefinitionWriter.java,v 1.1 2003/07/23 16:02:22 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import org.jfree.report.modules.parser.ext.ExtParserModuleInit;
  */
 public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
 {
+  /** The parser hint path used to store comments and other additional information. */
   private static final CommentHintPath ROOT_HINT_PATH =
       new CommentHintPath(ExtParserModuleInit.REPORT_DEFINITION_TAG);
 
@@ -70,18 +71,24 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
    * header and the opening tag is written, this class delegates work to:
    *
    * <ul>
-   * <li>{@link org.jfree.report.modules.parser.extwriter.ParserConfigWriter} to write the parser configuration;</li>
-   * <li>{@link org.jfree.report.modules.parser.extwriter.ReportConfigWriter} to write the report configuration;</li>
-   * <li>{@link org.jfree.report.modules.parser.extwriter.StylesWriter} to write the styles;</li>
-   * <li>{@link org.jfree.report.modules.parser.extwriter.TemplatesWriter} to write the templates;</li>
-   * <li>{@link org.jfree.report.modules.parser.extwriter.ReportDescriptionWriter} to write the report description;</li>
-   * <li>{@link org.jfree.report.modules.parser.extwriter.FunctionsWriter} to write the function definitions;</li>
+   * <li>{@link org.jfree.report.modules.parser.extwriter.ParserConfigWriter} 
+   * to write the parser configuration;</li>
+   * <li>{@link org.jfree.report.modules.parser.extwriter.ReportConfigWriter} 
+   * to write the report configuration;</li>
+   * <li>{@link org.jfree.report.modules.parser.extwriter.StylesWriter} 
+   * to write the styles;</li>
+   * <li>{@link org.jfree.report.modules.parser.extwriter.TemplatesWriter} 
+   * to write the templates;</li>
+   * <li>{@link org.jfree.report.modules.parser.extwriter.ReportDescriptionWriter} 
+   * to write the report description;</li>
+   * <li>{@link org.jfree.report.modules.parser.extwriter.FunctionsWriter} 
+   * to write the function definitions;</li>
    * </ul>
    *
    * @param w  the character stream writer.
    *
-   * @throws java.io.IOException if there is an I/O problem.
-   * @throws org.jfree.report.modules.parser.extwriter.ReportWriterException if there is a problem writing the report.
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there is a problem writing the report.
    */
   public void write(final Writer w) throws IOException, ReportWriterException
   {
@@ -125,7 +132,8 @@ public class ReportDefinitionWriter extends AbstractXMLDefinitionWriter
         = new ReportDescriptionWriter(getReportWriter(), getIndentLevel());
     reportDescriptionWriter.write(w);
 
-    final FunctionsWriter functionsWriter = new FunctionsWriter(getReportWriter(), getIndentLevel());
+    final FunctionsWriter functionsWriter = 
+      new FunctionsWriter(getReportWriter(), getIndentLevel());
     functionsWriter.write(w);
 
     writeComment(w, ROOT_HINT_PATH, CommentHandler.CLOSE_TAG_COMMENT);

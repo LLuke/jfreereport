@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractStyleKeyFactory.java,v 1.2 2003/07/18 18:16:54 taqua Exp $
+ * $Id: AbstractStyleKeyFactory.java,v 1.3 2003/07/23 16:02:22 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -101,7 +101,8 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
    *
    * @return The object.
    */
-  public Object createBasicObject(final StyleKey k, final String value, final Class c, final ClassFactory fc)
+  public Object createBasicObject(final StyleKey k, final String value, 
+                                  final Class c, final ClassFactory fc)
   {
     if (k == null)
     {
@@ -176,12 +177,21 @@ public abstract class AbstractStyleKeyFactory implements StyleKeyFactory
 
   public boolean equals(Object o)
   {
-    if (this == o) return true;
-    if (!(o instanceof AbstractStyleKeyFactory)) return false;
+    if (this == o)
+    { 
+      return true;
+    }
+    if (!(o instanceof AbstractStyleKeyFactory))
+    { 
+      return false;
+    }
 
     final AbstractStyleKeyFactory abstractStyleKeyFactory = (AbstractStyleKeyFactory) o;
 
-    if (!knownKeys.equals(abstractStyleKeyFactory.knownKeys)) return false;
+    if (!knownKeys.equals(abstractStyleKeyFactory.knownKeys))
+    { 
+      return false;
+    }
 
     return true;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Spool.java,v 1.13 2003/06/29 16:59:28 taqua Exp $
+ * $Id: Spool.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes
  * -------
@@ -109,7 +109,7 @@ public class Spool implements Cloneable, PhysicalOperationsCollector
    *
    * @return the clone.
    *
-   * @throws java.lang.CloneNotSupportedException if cloning is not supported.
+   * @throws CloneNotSupportedException if cloning is not supported.
    */
   public Object clone() throws CloneNotSupportedException
   {

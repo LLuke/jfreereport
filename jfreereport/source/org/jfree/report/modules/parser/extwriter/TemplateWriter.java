@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateWriter.java,v 1.2 2003/07/23 13:56:43 taqua Exp $
+ * $Id: TemplateWriter.java,v 1.1 2003/07/23 16:02:22 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -80,7 +80,7 @@ public class TemplateWriter extends ObjectWriter
    * @param writer  the writer.
    *
    * @throws java.io.IOException if there is an I/O problem.
-   * @throws org.jfree.report.modules.parser.extwriter.ReportWriterException if the report serialisation failed.
+   * @throws ReportWriterException if the report serialisation failed.
    */
   public void write(Writer writer) throws IOException, ReportWriterException
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementLayoutInformation.java,v 1.14 2003/06/29 16:59:28 taqua Exp $
+ * $Id: ElementLayoutInformation.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -80,7 +80,8 @@ public class ElementLayoutInformation
       throw new NullPointerException();
     }
     absolutePosition = new Point2D.Float((float) rect.getX(), (float) rect.getY());
-    final FloatDimension fdim = new FloatDimension((float) rect.getWidth(), (float) rect.getHeight());
+    final FloatDimension fdim = 
+      new FloatDimension((float) rect.getWidth(), (float) rect.getHeight());
     maximumSize = fdim;
     minimumSize = fdim;
     preferredSize = fdim;

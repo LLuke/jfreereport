@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BSHExpression.java,v 1.2 2003/07/10 20:02:09 taqua Exp $
+ * $Id: BSHExpression.java,v 1.3 2003/07/23 16:02:20 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -143,7 +143,8 @@ public class BSHExpression extends AbstractExpression implements Serializable
     catch (Exception e)
     {
       e.printStackTrace();
-      Log.error(new org.jfree.util.Log.SimpleMessage("Evaluation error: ", e.getClass(), " - ", e.getMessage()));
+      Log.error(new Log.SimpleMessage("Evaluation error: ", 
+          e.getClass(), " - ", e.getMessage()));
       throw new NullPointerException();
     }
     //return null;
@@ -171,7 +172,7 @@ public class BSHExpression extends AbstractExpression implements Serializable
    ...
    </pre>
    *
-   * @throws org.jfree.report.function.FunctionInitializeException if the expression has not been initialized correctly.
+   * @throws FunctionInitializeException if the expression has not been initialized correctly.
    */
   public void initialize() throws FunctionInitializeException
   {
@@ -218,7 +219,7 @@ public class BSHExpression extends AbstractExpression implements Serializable
    *
    * @return  a clone of the expression.
    *
-   * @throws java.lang.CloneNotSupportedException this should never happen.
+   * @throws CloneNotSupportedException this should never happen.
    */
   public Object clone() throws CloneNotSupportedException
   {

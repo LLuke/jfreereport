@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetHandler.java,v 1.4 2003/07/18 17:56:38 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.5 2003/07/23 13:56:43 taqua Exp $
  *
  * Changes
  * -------
@@ -126,7 +126,8 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
         }
         catch (ClassNotFoundException cnfe)
         {
-          throw new ParseException("The specified class for key " + name + " was not valid: " + className,
+          throw new ParseException
+            ("The specified class for key " + name + " was not valid: " + className,
               getParser().getLocator());
         }
         catch (Exception e)
@@ -160,7 +161,8 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
         // ignore me ...
       }
 
-      CompoundStyleKeyHandler factory = new CompoundStyleKeyHandler(getReportParser(), tagName, name, c);
+      CompoundStyleKeyHandler factory = 
+        new CompoundStyleKeyHandler(getReportParser(), tagName, name, c);
       CommentHintPath path = createCommentPath(factory.getStyleKey());
       factory.setCommentPath(path);
       addComment(path, CommentHandler.OPEN_TAG_COMMENT);
@@ -230,6 +232,7 @@ public class StyleSheetHandler extends AbstractExtReportParserHandler
     }
     else if (tagName.equals(EXTENDS_TAG))
     {
+      // ignored ...
     }
     else if (tagName.equals(getFinishTag()))
     {

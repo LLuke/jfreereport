@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyHandler.java,v 1.3 2003/07/21 20:46:56 taqua Exp $
+ * $Id: PropertyHandler.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -83,6 +83,7 @@ public class PropertyHandler extends AbstractExtReportParserHandler
    *
    * @param parser  the parser.
    * @param finishTag  the finish tag.
+   * @param base the base comment hint path to store the extra parser information.
    */
   public PropertyHandler(final ReportParser parser, final String finishTag,
                          final CommentHintPath base)

@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: XLSReportUtil.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 05.07.2003 : Initial version
+ * 05-Jul-2003 : Initial version
  *  
  */
 
@@ -47,8 +47,22 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.function.FunctionInitializeException;
 
-public class XLSReportUtil
-{
+/**
+ * Utility class to provide an easy to use default implementation of
+ * excel exports.
+ * 
+ * @author Thomas Morgner
+ */
+public final class XLSReportUtil
+{  
+  /**
+   * DefaultConstructor.
+   *
+   */
+  private XLSReportUtil ()
+  {
+  }
+
   /**
    * Saves a report to Excel format.
    *

@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ImageFieldElementFactory.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 06.07.2003 : Initial version
+ * 06-Jul-2003 : Initial version
  *  
  */
 
@@ -48,24 +48,54 @@ import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
 
+/**
+ * A factory to define ImageFieldElements. These elements expect an java.awt.Image
+ * or an ImageReference instance as content and will display the content in the report.
+ * 
+ * @author Thomas Morgner
+ */
 public class ImageFieldElementFactory extends ImageElementFactory
 {
+  /** The fieldname of the datarow from where to read the content. */
   private String fieldname;
 
+  /**
+   * DefaultConstructor.
+   *
+   */
   public ImageFieldElementFactory()
   {
   }
 
+  /**
+   * Returns the field name from where to read the content of the element.
+   * 
+   * @return the field name.
+   */
   public String getFieldname()
   {
     return fieldname;
   }
 
+  /**
+   * Defines the field name from where to read the content of the element.
+   * The field name is the name of a datarow column.
+   * 
+   * @param fieldname the field name.
+   */
   public void setFieldname(String fieldname)
   {
     this.fieldname = fieldname;
   }
 
+  /**
+   * Creates the image element based on the defined properties.
+   *  
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
+   * 
+   * @return the created image element.
+   * @throws IllegalStateException if the fieldname is not set.
+   */
   public Element createElement()
   {
     if (getFieldname() == null)

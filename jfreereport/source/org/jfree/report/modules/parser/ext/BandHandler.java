@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandHandler.java,v 1.3 2003/07/23 13:56:42 taqua Exp $
+ * $Id: BandHandler.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -169,7 +169,8 @@ public class BandHandler extends ElementHandler
     {
       if (elementHandler != null)
       {
-        addComment(createCommentPath(elementHandler.getElement()), CommentHandler.CLOSE_TAG_COMMENT);
+        addComment(createCommentPath(elementHandler.getElement()), 
+                                     CommentHandler.CLOSE_TAG_COMMENT);
         getBand().addElement(elementHandler.getElement());
         elementHandler = null;
       }

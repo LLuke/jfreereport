@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelList.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
+ * $Id: LevelList.java,v 1.2 2003/07/18 17:56:39 taqua Exp $
  *
  * Changes
  * -------
@@ -69,7 +69,7 @@ public class LevelList implements Cloneable
   /**
    * A comparator for levels in descending order.
    */
-  private static class DescendingComparator implements Comparator
+  private static final class DescendingComparator implements Comparator
   {
     /**
      * Default constructor.
@@ -187,7 +187,7 @@ public class LevelList implements Cloneable
   /**
    * An list that caches all elements for a certain level.
    */
-  private static class ElementLevelList
+  private static final class ElementLevelList
   {
     /** The level list. */
     private ArrayList datalist;
@@ -458,11 +458,21 @@ public class LevelList implements Cloneable
     iteratorSetDesc = null;
   }
 
+  /**
+   * Returns all stored objects as object array.  
+   * 
+   * @return all elements as object array. 
+   */
   protected Object[] getRawElements ()
   {
     return elements.toArray(new Object[elements.size()]);
   }
 
+  /**
+   * Returns all active levels as java.lang.Integer array.  
+   * 
+   * @return all levels as Integer array. 
+   */
   protected Integer[] getRawLevels ()
   {
     return (Integer[]) levels.toArray(new Integer[levels.size()]);

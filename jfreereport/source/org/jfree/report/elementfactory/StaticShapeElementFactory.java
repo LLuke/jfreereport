@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticShapeElementFactory.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
+ * $Id: StaticShapeElementFactory.java,v 1.2 2003/07/14 17:37:07 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -53,27 +53,69 @@ import org.jfree.report.layout.StaticLayoutManager;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.ui.FloatDimension;
 
+/**
+ * A factory to produce static shape elements. The shapes must not contain negative
+ * coordinates and should start at (0,0). The factory does not scale shapes which have
+ * a negative width or height. This behaviour was valid for JFreeReport versions up to
+ * version 0.8.3 and is highly dangerous. 
+ * <p>
+ * The shape is considered immutable. 
+ * <p>
+ * The static utility methods provided in that class try to map negative values of 
+ * lines and rectangles in the createLineShapeElement and createRectangleElement to
+ * preserve the old behaviour. 
+ * <p>
+ * The static method 
+ * {@link StaticShapeElementFactory#createShapeElement(String, Color, Stroke, Shape, 
+ * boolean, boolean)} extracts the bounds from the given shape and performs an tranlate
+ * transform to map the shape to the coordinate (0,0).   
+ * 
+ * @author Thomas Morgner
+ */
 public class StaticShapeElementFactory extends ShapeElementFactory
 {
+  /** The shape that should be the content of the element. */
   private Shape shape;
 
+  /**
+   * Default Constructor.
+   */
   public StaticShapeElementFactory()
   {
   }
 
+  /**
+   * Returns the shape object used as content of the new elements.
+   *  
+   * @return the shape content.
+   */
   public Shape getShape()
   {
     return shape;
   }
 
+  /**
+   * Defines the shape object used as content of the new elements.
+   *  
+   * @param shape the shape content.
+   */
   public void setShape(final Shape shape)
   {
     if (shape == null)
+    {
       throw new NullPointerException();
+    }
 
     this.shape = shape;
   }
 
+  /**
+   * Generates a new shape element.
+   *  
+   * @see org.jfree.report.elementfactory.ElementFactory#createElement()
+   * 
+   * @return the generated element.
+   */
   public Element createElement()
   {
     final ShapeElement e = new ShapeElement();
@@ -110,7 +152,7 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    *
    * @return a report element for drawing a line.
    *
-   * @throws NullPointerException if bounds, name or shape are null
+   * @throws NullPointerException if bounds or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
   public static ShapeElement createLineShapeElement(final String name,
@@ -160,7 +202,7 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    *
    * @return a report element for drawing a line.
    *
-   * @throws NullPointerException if bounds, name or shape are null
+   * @throws NullPointerException if bounds or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
   public static ShapeElement createShapeElement(final String name,
@@ -211,7 +253,7 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    *
    * @return a report element for drawing a line.
    *
-   * @throws NullPointerException if bounds, name or shape are null
+   * @throws NullPointerException if bounds or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
   public static ShapeElement createShapeElement(final String name,
@@ -242,7 +284,7 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    *
    * @return a report element for drawing a line.
    *
-   * @throws NullPointerException if bounds, name or shape are null
+   * @throws NullPointerException if bounds or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
   public static ShapeElement createShapeElement(final String name,
@@ -283,7 +325,7 @@ public class StaticShapeElementFactory extends ShapeElementFactory
    *
    * @return a report element for drawing a rectangle.
    *
-   * @throws NullPointerException if bounds, name or shape are null
+   * @throws NullPointerException if bounds or shape are null
    * @throws IllegalArgumentException if the given alignment is invalid
    */
   public static ShapeElement createRectangleShapeElement(final String name,

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: SampleData6.java,v 1.10 2003/06/29 16:59:23 taqua Exp $
+ * $Id: SampleData6.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -155,8 +155,9 @@ public class SampleData6 extends AbstractTableModel
         return new Integer(1);
       case 4:
         return new Double(1.1);
+      default:
+        throw new IllegalArgumentException("Unexcpected column.");
     }
-    return null;
   }
 
 }

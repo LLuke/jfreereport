@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractXMLDefinitionWriter.java,v 1.5 2003/07/23 13:56:43 taqua Exp $
+ * $Id: AbstractXMLDefinitionWriter.java,v 1.1 2003/07/23 16:02:22 taqua Exp $
  *
  * Changes
  * -------
@@ -293,8 +293,8 @@ public abstract class AbstractXMLDefinitionWriter extends XMLWriterSupport
    *
    * @param writer  the writer.
    *
-   * @throws java.io.IOException if there is an I/O problem.
-   * @throws org.jfree.report.modules.parser.extwriter.ReportWriterException if the report serialisation failed.
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if the report serialisation failed.
    */
   public abstract void write(Writer writer) throws IOException, ReportWriterException;
 

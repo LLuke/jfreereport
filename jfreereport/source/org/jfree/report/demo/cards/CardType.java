@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CardType.java,v 1.4 2003/06/29 16:59:23 taqua Exp $
+ * $Id: CardType.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,7 @@ package org.jfree.report.demo.cards;
  *
  * @author Thomas Morgner.
  */
-public class CardType
+public final class CardType
 {
   /** An 'account' card. */
   public static final CardType ACCOUNT = new CardType("Account");

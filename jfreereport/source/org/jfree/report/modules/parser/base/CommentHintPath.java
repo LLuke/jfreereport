@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: CommentHintPath.java,v 1.1 2003/07/21 20:47:49 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -84,12 +84,21 @@ public final class CommentHintPath implements Serializable, Cloneable
 
   public boolean equals(Object o)
   {
-    if (this == o) return true;
-    if (!(o instanceof CommentHintPath)) return false;
+    if (this == o)
+    { 
+      return true;
+    }
+    if (!(o instanceof CommentHintPath))
+    { 
+      return false;
+    }
 
     final CommentHintPath commentHintPath = (CommentHintPath) o;
 
-    if (!nameElements.equals(commentHintPath.nameElements)) return false;
+    if (!nameElements.equals(commentHintPath.nameElements))
+    { 
+      return false;
+    }
 
     return true;
   }

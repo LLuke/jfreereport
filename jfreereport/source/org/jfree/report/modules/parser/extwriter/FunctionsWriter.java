@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsWriter.java,v 1.3 2003/07/23 13:56:43 taqua Exp $
+ * $Id: FunctionsWriter.java,v 1.1 2003/07/23 16:02:22 taqua Exp $
  *
  * Changes
  * -------
@@ -64,7 +64,8 @@ import org.jfree.xml.factory.objects.ObjectDescription;
  */
 public class FunctionsWriter extends AbstractXMLDefinitionWriter
 {
-  private static CommentHintPath FUNCTIONS_PATH = new CommentHintPath
+  /** The comment hint path for all functions related parser hints. */
+  private static final CommentHintPath FUNCTIONS_PATH = new CommentHintPath
         (new String[] { ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.FUNCTIONS_TAG});
 
 
@@ -88,8 +89,8 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    *
    * @param writer  the writer.
    *
-   * @throws java.io.IOException if there is an I/O problem.
-   * @throws org.jfree.report.modules.parser.extwriter.ReportWriterException if the report function definition
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if the report function definition
    * could not be written.
    */
   public void write(final Writer writer)
@@ -203,8 +204,8 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    *
    * @param writer  the writer.
    *
-   * @throws java.io.IOException if there is an I/O problem.
-   * @throws org.jfree.report.modules.parser.extwriter.ReportWriterException if the report definition could not be written.
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if the report definition could not be written.
    */
   private void writePropertyRefs(final Writer writer)
       throws IOException, ReportWriterException
@@ -262,8 +263,8 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
    * @param od  the object description.
    * @param o  the object.
    *
-   * @throws java.io.IOException if there is an I/O problem.
-   * @throws org.jfree.report.modules.parser.extwriter.ReportWriterException if the report definition could not be written.
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if the report definition could not be written.
    */
   private void writeObjectDescription(final Writer writer, final ObjectDescription od,
                                       final Object o, final CommentHintPath path)
@@ -288,7 +289,8 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
     }
     else
     {
-      final ObjectWriter objectWriter = new ObjectWriter(getReportWriter(), o, od, getIndentLevel(), path);
+      final ObjectWriter objectWriter = 
+        new ObjectWriter(getReportWriter(), o, od, getIndentLevel(), path);
       objectWriter.write(writer);
     }
 

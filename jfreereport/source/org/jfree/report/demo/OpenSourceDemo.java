@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OpenSourceDemo.java,v 1.18 2003/06/29 16:59:23 taqua Exp $
+ * $Id: OpenSourceDemo.java,v 1.1 2003/07/07 22:44:03 taqua Exp $
  *
  * Changes
  * -------
@@ -121,7 +121,7 @@ public class OpenSourceDemo extends AbstractDemoFrame
     final JPanel content = new JPanel(new BorderLayout());
     content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
-    final String d = "This demo creates a report listing some useful open source projects for Java.";
+    final String d = "This demo creates a report listing some useful open " +                     "source projects for Java.";
     final JTextArea textArea = new JTextArea(d);
     textArea.setLineWrap(true);
     textArea.setWrapStyleWord(true);

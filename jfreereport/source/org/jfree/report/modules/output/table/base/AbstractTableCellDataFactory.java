@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractTableCellDataFactory.java,v 1.14 2003/06/29 16:59:29 taqua Exp $
+ * $Id: AbstractTableCellDataFactory.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -96,13 +96,15 @@ public abstract class AbstractTableCellDataFactory implements TableCellDataFacto
    * @return the generated {@link TableCellBackground} or <code>null</code> if the background
    *         shape is not supported.
    */
-  public TableCellBackground createBackground(final Element e, final Shape shape, final Rectangle2D bounds)
+  public TableCellBackground createBackground
+    (final Element e, final Shape shape, final Rectangle2D bounds)
   {
     TableCellBackground bg = null;
 
     final Color color = (Color) e.getStyle().getStyleProperty(ElementStyleSheet.PAINT);
     final Point2D point = new Point2D.Float((float) bounds.getX(), (float) bounds.getY());
-    final Dimension2D dim = new FloatDimension((float) bounds.getWidth(), (float) bounds.getHeight());
+    final Dimension2D dim = new FloatDimension
+      ((float) bounds.getWidth(), (float) bounds.getHeight());
 
     final Shape s = ShapeTransform.transformShape(
         shape,
@@ -117,7 +119,8 @@ public abstract class AbstractTableCellDataFactory implements TableCellDataFacto
 
     if (e.getStyle().getBooleanStyleProperty(ShapeElement.DRAW_SHAPE))
     {
-      final BasicStroke stroke = (BasicStroke) e.getStyle().getStyleProperty(ElementStyleSheet.STROKE);
+      final BasicStroke stroke = (BasicStroke) 
+        e.getStyle().getStyleProperty(ElementStyleSheet.STROKE);
       final float width = stroke.getLineWidth();
 
 

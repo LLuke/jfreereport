@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesWriter.java,v 1.6 2003/07/23 13:56:43 taqua Exp $
+ * $Id: TemplatesWriter.java,v 1.1 2003/07/23 16:02:22 taqua Exp $
  *
  * Changes
  * -------
@@ -57,7 +57,7 @@ import org.jfree.report.util.Log;
  */
 public class TemplatesWriter extends AbstractXMLDefinitionWriter
 {
-  private static CommentHintPath TEMPLATES_PATH = new CommentHintPath
+  private static final CommentHintPath TEMPLATES_PATH = new CommentHintPath
         (new String[] { ExtParserModuleInit.REPORT_DEFINITION_TAG, ExtReportHandler.TEMPLATES_TAG});
 
   /**
@@ -76,8 +76,8 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
    *
    * @param writer  the character stream writer.
    *
-   * @throws java.io.IOException if there is an I/O problem.
-   * @throws org.jfree.report.modules.parser.extwriter.ReportWriterException if there is a problem writing the report.
+   * @throws IOException if there is an I/O problem.
+   * @throws ReportWriterException if there is a problem writing the report.
    */
   public void write(final Writer writer) throws IOException, ReportWriterException
   {
@@ -98,23 +98,28 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
     writeTag(writer, ExtReportHandler.TEMPLATES_TAG);
     ArrayList invalidTemplates = new ArrayList();
 
-    TemplateDescription td[] = (TemplateDescription[]) l.toArray(new TemplateDescription[l.size()]);
+    TemplateDescription[] td = (TemplateDescription[]) 
+      l.toArray(new TemplateDescription[l.size()]);
+      
     for (int i = 0; i < td.length; i++)
     {
       TemplateDescription template = td[i];
       template.configure(getReportWriter().getConfiguration());
 
-      String templateExtends = (String) hints.getHint(template, "ext.parser.template-reference", String.class);
+      String templateExtends = (String) 
+        hints.getHint(template, "ext.parser.template-reference", String.class);
       if (templateExtends == null)
       {
         // should not happen with a sane parser here ...
-        Log.warn ("Invalid parser hint: Template reference missing for template " + template.getName());
+        Log.warn ("Invalid parser hint: Template reference missing for template " + 
+                  template.getName());
         invalidTemplates.add(template.getName());
         continue;
       }
       if (invalidTemplates.contains(templateExtends))
       {
-        Log.warn ("Invalid parser hint: Template reference points to invalid template " + template.getName());
+        Log.warn ("Invalid parser hint: Template reference points to invalid template " + 
+                  template.getName());
         invalidTemplates.add(template.getName());
         continue;
       }
@@ -122,7 +127,8 @@ public class TemplatesWriter extends AbstractXMLDefinitionWriter
           (getReportWriter(), templateExtends);
       if (parentTemplate == null)
       {
-        Log.warn ("Invalid parser hint: Template reference invalid for template " + template.getName());
+        Log.warn ("Invalid parser hint: Template reference invalid for template " + 
+                  template.getName());
         invalidTemplates.add(template.getName());
         continue;
       }

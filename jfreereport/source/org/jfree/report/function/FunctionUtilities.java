@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionUtilities.java,v 1.7 2003/06/29 16:59:24 taqua Exp $
+ * $Id: FunctionUtilities.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------
@@ -47,8 +47,16 @@ import org.jfree.report.event.ReportEvent;
  *
  * @author Thomas Morgner.
  */
-public class FunctionUtilities
+public final class FunctionUtilities
 {
+  
+  /**
+   * Default Constructor. 
+   */
+  private FunctionUtilities()
+  {
+  }
+
   /**
    * Try to find the defined element in the last active root-band.
    *

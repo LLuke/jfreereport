@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.3 2003/07/18 17:56:39 taqua Exp $
+ * $Id: ElementFactory.java,v 1.4 2003/07/23 16:02:22 taqua Exp $
  *
  * Changes
  * -------
@@ -93,6 +93,7 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   /** The current band, where created elements are added to. */
   private Band currentBand;
 
+  /** The current text element factory used to produce the next element. */
   private TextElementFactory textElementFactory;
 
   /** The character entity parser. */
@@ -464,6 +465,13 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     getCurrentBand().addElement(element);
   }
 
+  /**
+   * Parses the element position.
+   * 
+   * @param atts the attribute set containing the "x" and "y" attributes.
+   * @return the parsed element position, never null.
+   * @throws SAXException if parsing the element position failed.
+   */
   private Point2D getElementPosition (final Attributes atts) throws SAXException
   {
     float x = ParserUtil.parseRelativeFloat(atts.getValue("x"),
@@ -473,6 +481,13 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     return new Point2D.Float(x,y);
   }
 
+  /**
+   * Parses the element dimension.
+   * 
+   * @param atts the attribute set containing the "width" and "height" attributes.
+   * @return the parsed element dimensions, never null.
+   * @throws SAXException if parsing the element dimensions failed.
+   */
   private Dimension2D getElementDimension (final Attributes atts) throws SAXException
   {
     float w = ParserUtil.parseRelativeFloat(atts.getValue("width"),
@@ -482,7 +497,16 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     return new FloatDimension(w, h);
   }
 
-  private void parseSimpleFontStyle (final String fontStyle, final TextElementFactory target)
+  /**
+   * Parses a simple font style for text elements. These styles contain "bold", "italic"
+   * and "bold-italic". The style constants are included for compatibility with older 
+   * releases and should no longer be used. Use the boolean flags instead.
+   * 
+   * @param fontStyle the font style string.
+   * @param target the text element factory that should receive the parsed values.
+   */
+  private void parseSimpleFontStyle 
+    (final String fontStyle, final TextElementFactory target)
   {
     if (fontStyle != null)
     {
@@ -509,6 +533,13 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
   }
 
+  /**
+   * Translates an boolean string ("true" or "false") into the corresponding 
+   * Boolean object.
+   * 
+   * @param value the string that represents the boolean.
+   * @return Boolean.TRUE or Boolean.FALSE
+   */
   private Boolean parseBoolean (String value)
   {
     if (value == null)
@@ -739,11 +770,11 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
   }
 
   /**
-   * Reads the attributes that are base for all band-elements, as
+   * Reads the attributes that are base for all text-elements, as
    * name, x, y, width, height, font, fontstyle, fontsize and alignment.
    *
    * @param atts  the attributes.
-   *
+   * @param factory the text element factory that should produce the text element.
    * @throws SAXException if there is a SAX problem.
    */
   private void getTextElementAttributes
@@ -773,6 +804,14 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
 
   }
 
+  /**
+   * Reads the attributes that are base for all text-field elements, as
+   * name, x, y, width, height, font, fontstyle, fontsize and alignment.
+   *
+   * @param atts  the attributes.
+   * @param factory the text element factory that should produce the text element.
+   * @throws SAXException if there is a SAX problem.
+   */
   private void getTextFieldElementAttributes
       (final Attributes atts, TextFieldElementFactory factory) throws SAXException
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateCollector.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: TemplateCollector.java,v 1.2 2003/07/18 18:16:54 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -157,13 +157,25 @@ public class TemplateCollector extends TemplateCollection
 
   public boolean equals(Object o)
   {
-    if (this == o) return true;
-    if (!(o instanceof TemplateCollector)) return false;
-    if (!super.equals(o)) return false;
+    if (this == o)
+    {
+      return true;
+    }
+    if (!(o instanceof TemplateCollector))
+    { 
+      return false;
+    }
+    if (!super.equals(o))
+    { 
+      return false;
+    }
 
     final TemplateCollector templateCollector = (TemplateCollector) o;
 
-    if (!factories.equals(templateCollector.factories)) return false;
+    if (!factories.equals(templateCollector.factories))
+    { 
+      return false;
+    }
 
     return true;
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: CSVReportUtil.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -47,8 +47,15 @@ import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.function.FunctionInitializeException;
 
-public class CSVReportUtil
+public final class CSVReportUtil
 {
+  /**
+   * DefaultConstructor.
+   *
+   */
+  private CSVReportUtil ()
+  {
+  }
   /**
    * Saves a report to CSV format.
    *

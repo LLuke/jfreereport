@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContent.java,v 1.18 2003/06/29 16:59:28 taqua Exp $
+ * $Id: TextContent.java,v 1.1 2003/07/07 22:44:03 taqua Exp $
  *
  * Changes
  * -------
@@ -66,7 +66,8 @@ public class TextContent extends ContentContainer
    * @param bounds  the bounds.
    * @param ot  the size calculator.
    */
-  public TextContent(final String value, final float lineHeight, final Rectangle2D bounds, final SizeCalculator ot)
+  public TextContent(final String value, final float lineHeight, 
+                     final Rectangle2D bounds, final SizeCalculator ot)
   {
     super((Rectangle2D) bounds.clone());
     this.sizeCalculator = ot;

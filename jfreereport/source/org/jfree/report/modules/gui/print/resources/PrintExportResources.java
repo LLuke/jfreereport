@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PrintExportResources.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
+ * $Id: PrintExportResources.java,v 1.2 2003/07/14 20:16:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,6 +45,10 @@ import org.jfree.report.modules.gui.base.resources.ResourceCompareTool;
 
 public class PrintExportResources extends JFreeReportResources
 {
+  /**
+   * Default Constructor.
+   *
+   */
   public PrintExportResources()
   {
   }
@@ -66,14 +70,16 @@ public class PrintExportResources extends JFreeReportResources
         {"action.page-setup.description", "Page Setup"},
         {"action.page-setup.mnemonic", new Integer(KeyEvent.VK_G)},
         {"action.page-setup.small-icon",
-         getIcon("org/jfree/report/modules/gui/base/resources/PageSetup16.gif")},
-        {"action.page-setup.icon", getIcon("org/jfree/report/modules/gui/base/resources/PageSetup24.gif")},
+          getIcon("org/jfree/report/modules/gui/base/resources/PageSetup16.gif")},
+        {"action.page-setup.icon", 
+          getIcon("org/jfree/report/modules/gui/base/resources/PageSetup24.gif")},
 
         {"action.print.name", "Print..."},
         {"action.print.description", "Print report"},
         {"action.print.mnemonic", new Integer(KeyEvent.VK_P)},
         {"action.print.accelerator", createMenuKeystroke(KeyEvent.VK_P)},
-        {"action.print.small-icon", getIcon("org/jfree/report/modules/gui/base/resources/Print16.gif")},
+        {"action.print.small-icon", 
+          getIcon("org/jfree/report/modules/gui/base/resources/Print16.gif")},
         {"action.print.icon", getIcon("org/jfree/report/modules/gui/base/resources/Print24.gif")},
 
         {"error.printfailed.message", "Error on printing the report: {0}"},

@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.3 2003/07/14 17:37:08 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,7 @@ import java.util.Properties;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFPrintSetup;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -235,6 +236,58 @@ public class ExcelProducer extends TableProducer
   }
 
   /**
+   * Parses the defined paper size for the excel sheets. The paper size can
+   * be defined using the report configuration properties. 
+   * 
+   * @return the parsed HSSF paper size constant or -1 if undefined.
+   */
+  private short parsePaperSize (HSSFPrintSetup printSetup)
+  {
+    String paper = getProperty("Paper");
+    if (paper == null)
+    {
+      return -1;
+    }
+    if (paper.equalsIgnoreCase("A4"))
+    {
+      return printSetup.A4_PAPERSIZE;
+    }
+    if (paper.equalsIgnoreCase("A5"))
+    {
+      return printSetup.A5_PAPERSIZE;
+    }
+    if (paper.equalsIgnoreCase("ENVELOPE_10"))
+    {
+      return printSetup.ENVELOPE_10_PAPERSIZE;
+    }
+    if (paper.equalsIgnoreCase("ENVELOPE_CS"))
+    {
+      return printSetup.ENVELOPE_CS_PAPERSIZE;
+    }
+    if (paper.equalsIgnoreCase("ENVELOPE_DL"))
+    {
+      return printSetup.ENVELOPE_DL_PAPERSIZE;
+    }
+    if (paper.equalsIgnoreCase("ENVELOPE_MONARCH"))
+    {
+      return printSetup.ENVELOPE_MONARCH_PAPERSIZE;
+    }
+    if (paper.equalsIgnoreCase("EXECUTIVE"))
+    {
+      return printSetup.EXECUTIVE_PAPERSIZE;
+    }
+    if (paper.equalsIgnoreCase("LEGAL"))
+    {
+      return printSetup.LEGAL_PAPERSIZE;
+    }
+    if (paper.equalsIgnoreCase("LETTER"))
+    {
+      return printSetup.LETTER_PAPERSIZE;
+    }
+    return -1;
+  }
+
+  /**
    * Generate the XLS data structure.
    *
    * @param layout the layouted sheet.
@@ -247,6 +300,13 @@ public class ExcelProducer extends TableProducer
       sheet.setColumnWidth((short) (i), (short) (width * XFACTOR));
     }
 
+    HSSFPrintSetup printSetup = sheet.getPrintSetup();
+    short paperFormat = parsePaperSize(printSetup);
+    if (paperFormat != -1)
+    {
+      printSetup.setPaperSize( paperFormat );
+    }
+        
     int startY = layoutRowCount;
 
     for (int y = 0; y < layout.getHeight(); y++)

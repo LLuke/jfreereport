@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportGUIModule.java,v 1.2 2003/07/10 20:02:09 taqua Exp $
+ * $Id: PlainTextExportGUIModule.java,v 1.3 2003/07/23 16:02:20 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -58,6 +58,7 @@ public class PlainTextExportGUIModule extends AbstractModule
     String order = ReportConfiguration.getGlobalConfig().getConfigProperty
         (ORDER_KEY, "0");
 
-    ExportPluginFactory.getInstance().registerPlugin(PlainTextExportPlugin.class, order, ENABLE_KEY);
+    ExportPluginFactory.getInstance().registerPlugin
+      (PlainTextExportPlugin.class, order, ENABLE_KEY);
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ZIPHtmlFilesystem.java,v 1.21 2003/06/29 16:59:30 taqua Exp $
+ * $Id: ZIPHtmlFilesystem.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -76,7 +76,7 @@ public class ZIPHtmlFilesystem implements HtmlFilesystem
   private class CounterRef
   {
     /** a counter. */
-    public int count;
+    private int count;
   }
 
   /** The name of the data directory within the ZIP-file. */

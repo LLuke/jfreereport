@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.39 2003/06/29 16:59:28 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------
@@ -80,6 +80,7 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
   /** A key for the absolute position of an element. */
   public static final StyleKey ABSOLUTE_POS = StyleKey.getStyleKey("absolute_pos", Point2D.class);
 
+  /** The default position. */
   private static final Point2D DEFAULT_POS = new Point2D.Float (0,0);
 
   /** A cache. */
@@ -134,7 +135,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     else
     {
       // return the minimum size as fallback
-      final Dimension2D dim = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
+      final Dimension2D dim = (Dimension2D) 
+        e.getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE);
       retval = correctDimension(dim, containerBounds, null);
     }
 
@@ -205,7 +207,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
     else
     {
       // if prefsize is defined, return it
-      final Dimension2D d = (Dimension2D) e.getStyle().getStyleProperty(ElementStyleSheet.PREFERREDSIZE);
+      final Dimension2D d = (Dimension2D) 
+        e.getStyle().getStyleProperty(ElementStyleSheet.PREFERREDSIZE);
       if (d != null)
       {
         retval = correctDimension(d, containerBounds, null);
@@ -465,7 +468,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       final boolean staticHeight = isElementStaticHeight(e);
       if (staticWidth == false || staticHeight == false)
       {
-        absPos = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS, DEFAULT_POS), base, absPos);
+        absPos = correctPoint((Point2D) 
+          e.getStyle().getStyleProperty(ABSOLUTE_POS, DEFAULT_POS), base, absPos);
         // check whether the element would be visible .. if not visible, then
         // dont do anything ...
         if (absPos.getX() > base.getWidth() || absPos.getY() > base.getHeight())
@@ -543,8 +547,8 @@ public class StaticLayoutManager extends AbstractBandLayoutManager
       {
         continue;
       }
-      absPos = correctPoint((Point2D) e.getStyle().getStyleProperty(ABSOLUTE_POS, DEFAULT_POS), parentDim,
-          absPos);
+      absPos = correctPoint((Point2D) 
+        e.getStyle().getStyleProperty(ABSOLUTE_POS, DEFAULT_POS), parentDim, absPos);
       // check whether the element would be visible .. if not visible, then
       // dont do anything ...
       if (absPos.getX() > parentDim.getWidth() || absPos.getY() > parentDim.getHeight())

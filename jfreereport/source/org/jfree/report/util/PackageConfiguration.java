@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PackageConfiguration.java,v 1.1 2003/07/10 20:17:03 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,8 +38,16 @@
 
 package org.jfree.report.util;
 
+/**
+ * The PackageConfiguration handles the module level configuration.
+ * 
+ * @author Thomas Morgner
+ */
 public class PackageConfiguration extends PropertyFileReportConfiguration
 {
+  /**
+   * DefaultConstructor. Creates a new package configuration.
+   */
   public PackageConfiguration()
   {
   }

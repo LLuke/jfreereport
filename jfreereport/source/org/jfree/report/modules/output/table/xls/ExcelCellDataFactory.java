@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellDataFactory.java,v 1.16 2003/06/29 16:59:29 taqua Exp $
+ * $Id: ExcelCellDataFactory.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -217,7 +217,8 @@ public class ExcelCellDataFactory extends AbstractTableCellDataFactory
    * @return the generated content or null, if the content is not handled by
    * this implementation.
    */
-  private ExcelCellData handleTemplate(final Template template, final Element e, final Rectangle2D bounds)
+  private ExcelCellData handleTemplate(final Template template, final Element e, 
+                                       final Rectangle2D bounds)
   {
 
     /**

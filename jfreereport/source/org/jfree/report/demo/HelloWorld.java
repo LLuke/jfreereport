@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: HelloWorld.java,v 1.10 2003/06/29 16:59:23 taqua Exp $
+ * $Id: HelloWorld.java,v 1.1 2003/07/07 22:44:03 taqua Exp $
  *
  * Changes
  * -------
@@ -163,7 +163,8 @@ public class HelloWorld
    */
   public static void main(final String[] args)
   {
-    final HelloWorld app = new HelloWorld();
+    //final HelloWorld app = 
+    new HelloWorld();
   }
 
 }

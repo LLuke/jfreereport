@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.3 2003/07/23 13:56:42 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.4 2003/07/23 16:02:21 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,7 @@ import java.awt.geom.Rectangle2D;
 
 import org.jfree.report.Band;
 import org.jfree.report.Group;
-import org.jfree.report.JFreeReportConstants;
+import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.event.PrepareEventListener;
 import org.jfree.report.event.ReportEvent;
@@ -133,7 +133,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
   private static class PageCarrier
   {
     /** stores the last page number of the report processing. */
-    public int maxPages;
+    private int maxPages;
   }
 
   /** the page carrier for this pagelayouter contains the number of the last page. */
@@ -481,7 +481,7 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
       currentEffectiveGroupIndex -= 1;
 
       final Object prepareRun =
-          event.getState().getProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY,
+          event.getState().getProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY,
               Boolean.FALSE);
       if (prepareRun.equals(Boolean.TRUE))
       {

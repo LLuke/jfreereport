@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVProcessor.java,v 1.16 2003/06/29 16:59:28 taqua Exp $
+ * $Id: CSVProcessor.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,6 @@ import java.io.Writer;
 import java.util.Iterator;
 
 import org.jfree.report.JFreeReport;
-import org.jfree.report.JFreeReportConstants;
 import org.jfree.report.ReportEventException;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.function.FunctionInitializeException;
@@ -143,7 +142,8 @@ public class CSVProcessor
    * @throws ReportProcessingException if the report initialisation failed.
    * @throws FunctionInitializeException if the writer initialization failed.
    */
-  public CSVProcessor(final JFreeReport report, final String separator, final boolean writeDataRowNames)
+  public CSVProcessor(final JFreeReport report, final String separator, 
+                      final boolean writeDataRowNames)
       throws ReportProcessingException, FunctionInitializeException
   {
     if (report == null)
@@ -225,7 +225,7 @@ public class CSVProcessor
     // processReport() method.
 
     // during a prepare run the REPORT_PREPARERUN_PROPERTY is set to true.
-    state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
+    state.setProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY, Boolean.TRUE);
 
     // the pageformat is added to the report properties, PageFormat is not serializable,
     // so a repaginated report is no longer serializable.
@@ -234,7 +234,7 @@ public class CSVProcessor
     // multiple pages gets implemented. This property will be replaced by a more
     // suitable alternative.
     final PageFormat p = getReport().getDefaultPageFormat();
-    state.setProperty(JFreeReportConstants.REPORT_PAGEFORMAT_PROPERTY, p.clone());
+    state.setProperty(JFreeReport.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
     // now change the writer function to be a dummy writer. We don't want any
     // output in the prepare runs.
@@ -316,7 +316,7 @@ public class CSVProcessor
     state.setProperty(JFreeReportConstants.REPORT_PAGECOUNT_PROPERTY,
                       new Integer(state.getCurrentPage() - 1));
     */
-    state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
+    state.setProperty(JFreeReport.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
 
     // finally prepeare the returned start state.
     final StartState sretval = (StartState) retval;

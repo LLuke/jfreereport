@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DrawableContainer.java,v 1.1 2003/07/07 22:43:59 taqua Exp $
+ * $Id: DrawableContainer.java,v 1.2 2003/07/09 10:55:36 mungady Exp $
  *
  * Changes
  * -------
@@ -83,7 +83,8 @@ public class DrawableContainer
    * @param drawableSize  the size.
    * @param clippingBounds  the clipping region.
    */
-  public DrawableContainer(final Drawable drawable, final Dimension2D drawableSize, final Rectangle2D clippingBounds)
+  public DrawableContainer
+    (final Drawable drawable, final Dimension2D drawableSize, final Rectangle2D clippingBounds)
   {
     this.drawable = drawable;
     this.drawableSize = drawableSize;

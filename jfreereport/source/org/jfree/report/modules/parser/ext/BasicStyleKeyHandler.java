@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicStyleKeyHandler.java,v 1.2 2003/07/14 17:37:08 taqua Exp $
+ * $Id: BasicStyleKeyHandler.java,v 1.3 2003/07/18 17:56:38 taqua Exp $
  *
  * Changes
  * -------
@@ -87,7 +87,8 @@ public class BasicStyleKeyHandler extends AbstractExtReportParserHandler
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */
-  public BasicStyleKeyHandler(final ReportParser parser, final String finishTag, final String name, final Class c)
+  public BasicStyleKeyHandler(final ReportParser parser, final String finishTag, 
+                              final String name, final Class c)
       throws SAXException
   {
     super(parser, finishTag);

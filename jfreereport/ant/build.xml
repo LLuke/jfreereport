@@ -28,8 +28,8 @@
     <tempfile property="resolve.tmp" prefix="jfreereport-build-" suffix="-tmp.properties"/>
 
     <echo file="${resolve.tmp}">#
-# temporary build property file for ${module}
-module-file=$${module-${module}-file}
+      # temporary build property file for ${module}
+      module-file=$${module-${module}-file}
     </echo>
     <property file="${resolve.tmp}"/>
     <delete file="${resolve.tmp}"/>
@@ -50,6 +50,132 @@ module-file=$${module-${module}-file}
   </target>
   -->
 
+  <!-- Generate the JFreeReport JavaDoc HTML pages -->
+  <target name="javadoc" depends="init">
+    <delete dir="javadoc"/>
+    <mkdir dir="javadoc"/>
+    <javadoc destdir="javadoc"
+      windowtitle="JFreeReport Class Library"
+      overview="source/overview.html">
+      <classpath>
+        <pathelement location="${libdir}/${jcommon-jar-file}" />
+        <pathelement location="${libdir}/${jaxp-jar-file}" />
+        <pathelement location="${libdir}/${beanshell-jar-file}" />
+        <pathelement location="${libdir}/${itext-jar-file}" />
+        <pathelement location="${libdir}/${pixie-jar-file}" />
+        <pathelement location="${libdir}/${jakarta-poi-jar-file}"/>
+      </classpath>
+      <packageset dir="source" defaultexcludes="yes">
+        <include name="org/jfree/report/**"/>
+      </packageset>
+    </javadoc>
+  </target>
+
+  <target name="create-dist-dir" depends="build-all">
+    <!-- make a temporary distribution directory -->
+    <mkdir dir="distribution"/>
+
+    <!-- copy across README -->
+    <copy file="README" tofile="distribution/README"/>
+
+    <!-- copy across ChangeLog -->
+    <copy file="ChangeLog" tofile="distribution/ChangeLog"/>
+
+    <!-- copy across LICENCE -->
+    <copy file="licence-LGPL.txt" tofile="distribution/licence-LGPL.txt"/>
+
+    <!-- copy across migration.txt -->
+    <copy file="migration.txt" tofile="distribution/migration.txt"/>
+
+    <!-- copy across source files -->
+    <copy todir="distribution/source">
+      <fileset dir="source"/>
+    </copy>
+
+    <!-- copy across resource files (example PDFs) -->
+    <copy todir="distribution/resource">
+      <fileset dir="resource"/>
+    </copy>
+
+    <!-- copy across lib files -->
+    <copy todir="distribution/lib">
+      <fileset dir="lib"/>
+    </copy>
+
+    <!-- copy across ant build file (this file) -->
+    <copy todir="distribution/ant">
+      <fileset dir="ant"/>
+    </copy>
+
+    <!-- copy across checkstyle property file -->
+    <copy todir="distribution/checkstyle">
+      <fileset dir="checkstyle"/>
+    </copy>
+
+    <!-- copy across runtime jar files -->
+    <copy todir="distribution">
+      <fileset dir=".">
+        <include name="${jfreereport.name}-${jfreereport.version}-*.jar"/>
+      </fileset>
+    </copy>
+
+  </target>
+
+  <target name="remove-dist-dir">
+
+    <!-- delete the temporary distribution directory -->
+    <delete dir="distribution"/>
+
+  </target>
+  <!-- Make .zip distribution for JFreeReport -->
+  <target name="make-zip">
+
+    <antcall target="create-dist-dir"/>
+
+    <!-- convert end-of-line characters in text files -->
+    <!-- end of file does not need to be marked, and causes trouble if it is -->
+    <fixcrlf srcdir="distribution/source"
+      eol="crlf" eof="remove"
+      excludes="**/*.jpg **/*.gif **/*.png **/*.wmf"/>
+    <fixcrlf srcdir="distribution/ant"
+      eol="crlf" eof="remove"/>
+
+    <!-- make the zip file -->
+    <zip zipfile="${jfreereport.name}-${jfreereport.version}.zip">
+      <zipfileset dir="distribution"
+        prefix="${jfreereport.name}-${jfreereport.version}"/>
+    </zip>
+
+    <antcall target="remove-dist-dir"/>
+
+  </target>
+
+  <!-- Make .tar.gz distribution for JFreeReport -->
+  <target name="make-targz" depends="build-all">
+
+    <antcall target="create-dist-dir"/>
+
+    <!-- convert end-of-line characters in text files -->
+    <fixcrlf srcdir="distribution/source"
+      eol="lf" eof="remove"
+      excludes="**/*.jpg **/*.gif **/*.png **/*.wmf"/>
+    <fixcrlf srcdir="distribution/ant"
+      eol="lf" eof="remove"/>
+
+    <!-- make the tar.gz file -->
+    <tar tarfile="${jfreereport.name}-${jfreereport.version}.tar">
+      <tarfileset dir="distribution"
+        prefix="${jfreereport.name}-${jfreereport.version}"/>
+    </tar>
+    <gzip zipfile="${jfreereport.name}-${jfreereport.version}.tar.gz"
+      src="${jfreereport.name}-${jfreereport.version}.tar"/>
+    <delete file="${jfreereport.name}-${jfreereport.version}.tar"/>
+
+    <antcall target="remove-dist-dir"/>
+
+  </target>
+
+
   <!-- core tasks                              -->
   <!-- These tasks are needed for all modules  -->
   <!-- ......................................  -->
@@ -57,7 +183,11 @@ module-file=$${module-${module}-file}
     We assume that at least a JDK 1.2.2 is installed.
   </description>
 
-  <target name="all">
+  <target name="all" depends="build-all, javadoc, make-targz, make-zip">
+
+  </target>
+
+  <target name="build-all">
     <dirname property="antfile.dir" file="${ant.file}"/>
     <ant antfile="${antfile.dir}/build-core.xml" target="all"/>
     <ant antfile="${antfile.dir}/build-misc.xml" target="all"/>
@@ -67,6 +197,7 @@ module-file=$${module-${module}-file}
     <ant antfile="${antfile.dir}/build-parser.xml" target="all"/>
     <ant antfile="${antfile.dir}/build-reference.xml" target="all"/>
     <ant antfile="${antfile.dir}/build-gui.xml" target="all"/>
+    <ant antfile="${antfile.dir}/build-all.xml" target="all"/>
     <ant antfile="${antfile.dir}/build-demo.xml" target="all"/>
   </target>
 

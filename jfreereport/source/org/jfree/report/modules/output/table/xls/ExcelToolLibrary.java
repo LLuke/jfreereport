@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelToolLibrary.java,v 1.10 2003/06/29 16:59:30 taqua Exp $
+ * $Id: ExcelToolLibrary.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -52,8 +52,16 @@ import org.jfree.report.util.Log;
  *
  * @author Heiko Evermann
  */
-public class ExcelToolLibrary
+public final class ExcelToolLibrary
 {
+  /**
+   * DefaultConstructor.
+   *
+   */
+  private ExcelToolLibrary()
+  {
+  }
+
   /** the pre-defined excel color triplets. */
   private static Hashtable triplets;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PaintComponentFunction.java,v 1.2 2003/07/18 17:56:38 taqua Exp $
+ * $Id: PaintComponentFunction.java,v 1.3 2003/07/23 16:02:19 taqua Exp $
  *
  * Changes
  * -------
@@ -156,6 +156,11 @@ public class PaintComponentFunction extends AbstractFunction
     setProperty(FIELD_PROPERTY, field);
   }
 
+  /**
+   * Tests, whether the report generation is executed in an headless environment.
+   * 
+   * @return true, if this is an headless environment, false otherwise.
+   */
   protected boolean isHeadless ()
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
@@ -172,7 +177,9 @@ public class PaintComponentFunction extends AbstractFunction
   public void layoutComplete(final LayoutEvent event)
   {
     if (isHeadless())
+    {
       return;
+    }
 
     // the current value in the dataRow is no AWT-Component ...
     final Object o = getDataRow().get(getField());

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FloatingButtonEnabler.java,v 1.13 2003/06/29 16:59:30 taqua Exp $
+ * $Id: FloatingButtonEnabler.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.components;
@@ -43,7 +43,7 @@ import javax.swing.AbstractButton;
  *
  * @author Thomas Morgner
  */
-public class FloatingButtonEnabler extends MouseAdapter
+public final class FloatingButtonEnabler extends MouseAdapter
 {
   /** A single instance. */
   private static FloatingButtonEnabler singleton;

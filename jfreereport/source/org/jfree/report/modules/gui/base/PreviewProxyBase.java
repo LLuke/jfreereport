@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.5 2003/07/23 16:02:19 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.6 2003/07/25 01:06:00 taqua Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,6 @@ import org.jfree.report.modules.gui.base.components.ExceptionDialog;
 import org.jfree.report.modules.gui.base.components.FloatingButtonEnabler;
 import org.jfree.report.modules.gui.base.resources.JFreeReportResources;
 import org.jfree.report.util.Log;
-import org.jfree.report.modules.gui.base.components.WindowSizeLimiter;
 import org.jfree.report.util.Worker;
 import org.jfree.xml.ParserUtil;
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.15 2003/07/03 15:59:28 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * --------
@@ -95,7 +95,8 @@ public class CSVExportDialog extends JDialog
   public static final String CSV_OUTPUT_ENCODING
       = "org.jfree.report.modules.gui.csv.Encoding";
   /** A default value of the 'CSV encoding' property key. */
-  public static final String CSV_OUTPUT_ENCODING_DEFAULT = ReportConfiguration.getPlatformDefaultEncoding();
+  public static final String CSV_OUTPUT_ENCODING_DEFAULT = 
+    ReportConfiguration.getPlatformDefaultEncoding();
 
 
   /**
@@ -425,7 +426,8 @@ public class CSVExportDialog extends JDialog
     final JPanel exportTypePanel = new JPanel();
     exportTypePanel.setLayout(new GridBagLayout());
 
-    final TitledBorder tb = new TitledBorder(getResources().getString("csvexportdialog.exporttype"));
+    final TitledBorder tb = 
+      new TitledBorder(getResources().getString("csvexportdialog.exporttype"));
     exportTypePanel.setBorder(tb);
 
     rbExportData = new JRadioButton(getResources().getString("csvexportdialog.export.data"));
@@ -468,7 +470,8 @@ public class CSVExportDialog extends JDialog
     final JPanel separatorPanel = new JPanel();
     separatorPanel.setLayout(new GridBagLayout());
 
-    final TitledBorder tb = new TitledBorder(getResources().getString("csvexportdialog.separatorchar"));
+    final TitledBorder tb = 
+      new TitledBorder(getResources().getString("csvexportdialog.separatorchar"));
     separatorPanel.setBorder(tb);
 
     rbSeparatorTab = new JRadioButton(getResources().getString("csvexportdialog.separator.tab"));
