@@ -24,7 +24,7 @@
  * AbstractActionDowngrade.java
  * ----------------------------
  *
- * $Id$
+ * $Id: AbstractActionDowngrade.java,v 1.4 2002/11/07 21:45:28 taqua Exp $
  *
  * Changes
  * -------
@@ -33,6 +33,9 @@
 package com.jrefinery.report.util;
 
 import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
+import java.awt.image.BufferedImage;
+import java.util.Arrays;
 
 /**
  * Defines the 2 new constants introduced by Sun in version 1.3 of the J2SDK.
@@ -41,14 +44,22 @@ import javax.swing.AbstractAction;
  */
 public abstract class AbstractActionDowngrade extends AbstractAction implements ActionDowngrade
 {
-  /**
-   * The key used for storing a <code>KeyStroke</code> to be used as the
-   * accelerator for the action.
-   */
-  public static final String ACCELERATOR_KEY = "AcceleratorKey";
+  public static BufferedImage createTransparentImage (int width, int height)
+  {
+    BufferedImage img = new BufferedImage (width, height, BufferedImage.TYPE_INT_ARGB);
+    int[] data = img.getRGB(0,0, width, height, null, 0, width);
+    Arrays.fill(data, 0x00000000);
+    img.setRGB(0,0,width,height,data,0,width);
+    return img;
+  }
 
   /**
-   * The key used for storing an int key code to be used as the mnemonic for the action.
+   * Defines an <code>Action</code> object with a default
+   * description string and default icon.
    */
-  public static final String MNEMONIC_KEY = "MnemonicKey";
+  public AbstractActionDowngrade()
+  {
+    putValue (SMALL_ICON, new ImageIcon (createTransparentImage(16,16)));
+    putValue ("ICON24", new ImageIcon (createTransparentImage(16,16)));
+  }
 }
