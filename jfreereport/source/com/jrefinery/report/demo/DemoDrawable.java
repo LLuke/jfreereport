@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AboutAction.java,v 1.13 2003/02/02 23:43:48 taqua Exp $
+ * $Id: DemoDrawable.java,v 1.3 2003/04/09 16:21:34 mungady Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
-import com.jrefinery.ui.Drawable;
+import org.jfree.ui.Drawable;
+
 
 /**
  * A simple implementation of the Drawable interface, used for a report demonstration.

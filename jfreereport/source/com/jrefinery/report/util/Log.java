@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.21 2003/04/23 17:13:44 taqua Exp $
+ * $Id: Log.java,v 1.22 2003/04/24 18:08:58 taqua Exp $
  *
  * Changes
  * -------
@@ -104,6 +104,7 @@ public final class Log extends org.jfree.util.Log
 
   static
   {
+    System.out.println ("Logging initialisiert ...");
     Log l = new Log();
     Log.defineLog(l);
 
@@ -146,5 +147,122 @@ public final class Log extends org.jfree.util.Log
     }
   }
 
+  /**
+   * A convenience method for logging a 'debug' message.
+   *
+   * @param message  the message.
+   */
+  public static void debug (Object message)
+  {
+    log (LogTarget.DEBUG, message);
+  }
 
+  /**
+   * A convenience method for logging a 'debug' message.
+   *
+   * @param message  the message.
+   * @param e  the exception.
+   */
+  public static void debug (Object message, Exception e)
+  {
+    log (LogTarget.DEBUG, message, e);
+  }
+
+  /**
+   * A convenience method for logging an 'info' message.
+   *
+   * @param message  the message.
+   */
+  public static void info (Object message)
+  {
+    log (LogTarget.INFO, message);
+  }
+
+  /**
+   * A convenience method for logging an 'info' message.
+   *
+   * @param message  the message.
+   * @param e  the exception.
+   */
+  public static void info (Object message, Exception e)
+  {
+    log (LogTarget.INFO, message, e);
+  }
+
+  /**
+   * A convenience method for logging a 'warning' message.
+   *
+   * @param message  the message.
+   */
+  public static void warn (Object message)
+  {
+    log (LogTarget.WARN, message);
+  }
+
+  /**
+   * A convenience method for logging a 'warning' message.
+   *
+   * @param message  the message.
+   * @param e  the exception.
+   */
+  public static void warn (Object message, Exception e)
+  {
+    log (LogTarget.WARN, message, e);
+  }
+
+  /**
+   * A convenience method for logging an 'error' message.
+   *
+   * @param message  the message.
+   */
+  public static void error (Object message)
+  {
+    log (LogTarget.ERROR, message);
+  }
+
+  /**
+   * A convenience method for logging an 'error' message.
+   *
+   * @param message  the message.
+   * @param e  the exception.
+   */
+  public static void error (Object message, Exception e)
+  {
+    log (LogTarget.ERROR, message, e);
+  }
+
+  /**
+   * Logs a message to the main log stream.  All attached log targets will also
+   * receive this message. If the given log-level is higher than the given debug-level
+   * in the main config file, no logging will be done.
+   *
+   * @param level  log level of the message.
+   * @param message  text to be logged.
+   */
+  public static void log (int level, Object message)
+  {
+    org.jfree.util.Log.log(level, message);
+  }
+
+  /**
+   * Logs a message to the main log stream. All attached logTargets will also
+   * receive this message. If the given log-level is higher than the given debug-level
+   * in the main config file, no logging will be done.
+   *
+   * The exception's stacktrace will be appended to the log-stream
+   *
+   * @param level  log level of the message.
+   * @param message  text to be logged.
+   * @param e  the exception, which should be logged.
+   */
+  public static void log (int level, Object message, Exception e)
+  {
+    org.jfree.util.Log.log(level, message, e);
+  }
+
+
+  public static void main (String [] args)
+  {
+    org.jfree.util.Log.debug ("Test.org");
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: PageableLayoutStyleKeyFactory.java,v 1.6 2003/03/07 16:55:58 taqua Exp $
  *
  * Changes (from 19-Feb-2003)
  * -------------------------
@@ -55,6 +55,5 @@ public class PageableLayoutStyleKeyFactory extends AbstractStyleKeyFactory
   {
     addKey(BandLayoutManager.LAYOUTMANAGER);
     addKey(StaticLayoutManager.ABSOLUTE_POS);
-    addKey(StaticLayoutManager.DYNAMIC_HEIGHT);
   }
 }

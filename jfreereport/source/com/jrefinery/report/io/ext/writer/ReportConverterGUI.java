@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverterGUI.java,v 1.5 2003/02/25 14:07:29 taqua Exp $
+ * $Id: ReportConverterGUI.java,v 1.6 2003/04/08 14:09:28 mungady Exp $
  *
  * Changes
  * -------
@@ -255,6 +255,7 @@ public class ReportConverterGUI extends JFrame
    */
   public static void main (String [] args)
   {
+    Log.debug("start ... "); 
     ReportConverterGUI gui = new ReportConverterGUI();
     gui.addWindowListener(new WindowAdapter(){
       public void windowClosing(WindowEvent e)
@@ -432,6 +433,7 @@ public class ReportConverterGUI extends JFrame
       ReportConverter converter = new ReportConverter();
       try
       {
+        Log.debug ("Converting report ...");
         converter.convertReport(getSourceFile(), getTargetFile());
         return true;
       }

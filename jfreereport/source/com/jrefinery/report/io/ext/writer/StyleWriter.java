@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleWriter.java,v 1.9 2003/04/23 13:43:04 taqua Exp $
+ * $Id: StyleWriter.java,v 1.10 2003/04/24 18:08:53 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Properties;
 
 import com.jrefinery.report.ShapeElement;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.io.ext.StyleSheetHandler;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.factory.objects.ObjectDescription;
@@ -132,6 +133,7 @@ public class StyleWriter extends AbstractXMLDefinitionWriter
     ObjectDescription od = cc.getDescriptionForClass(key.getValueType());
     if (od == null)
     {
+      Log.warn ("Unable to find object description for native style key class: " + key.getValueType()); 
       od = cc.getDescriptionForClass(o.getClass());
       if (od == null)
       {
