@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageManager.java,v 1.1 2003/07/10 20:05:59 taqua Exp $
+ * $Id: PackageManager.java,v 1.2 2003/07/11 18:33:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -222,6 +222,11 @@ public class PackageManager
         }
       }
       return true;
+    }
+    catch (ClassNotFoundException cnfe)
+    {
+      Log.warn (new Log.SimpleMessage("Unresolved dependency for package: ", moduleInfo.getModuleClass()));
+      return false;
     }
     catch (Exception e)
     {

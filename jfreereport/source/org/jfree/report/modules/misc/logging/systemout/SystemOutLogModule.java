@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: SystemOutLogModule.java,v 1.1 2003/07/11 18:35:42 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -61,6 +61,7 @@ public class SystemOutLogModule extends AbstractModule
         (SystemOutLogTarget.class.getName()))
     {
       Log.getJFreeReportLog().addTarget(new SystemOutLogTarget());
+      Log.info ("System.out log target started ... previous log messages could have been ignored.");
     }
   }
 }
