@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ExcelContentCreator.java,v 1.6 2005/02/23 21:05:36 taqua Exp $
+ * $Id: ExcelContentCreator.java,v 1.7 2005/03/24 22:24:56 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -89,11 +89,11 @@ public class ExcelContentCreator extends TableContentCreator
    * that weird stuff in MS-Excel.
    * <p>
    * I now assume that Arial 10 is the default font (as given in the document
-   * above) and now assume that a character is 5 points wide
-   * (just guessing here [at least I'm not taking the same stuff as the
-   * original developer of that weird file format did as he wrote that stuff]).
+   * above) and now assume that a character is 4.5 points wide
+   * (just guessing here [at least I'm not taking the same stuff(drugs?) as the
+   * original developers of that weird file format did as he wrote that stuff]).
    */
-  private static final double SCALE_FACTOR = 2560f/50f;
+  private static final double SCALE_FACTOR = 2560f/45f;
 
   public ExcelContentCreator (final SheetLayoutCollection sheetLayoutCollection,
                               final OutputStream outputStream)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: TableCellBackground.java,v 1.20 2005/03/21 14:58:35 taqua Exp $
+ * $Id: TableCellBackground.java,v 1.21 2005/03/24 22:24:56 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,6 @@ import org.jfree.report.content.Content;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.geom.StrictBounds;
-import org.jfree.report.util.Log;
 
 /**
  * Encapsulates all TableCellBackground informations, such as borders and background
@@ -330,13 +329,7 @@ public strictfp class TableCellBackground
     // the this cell does not fully overlap the given cell
     // then do nothing ...
 
-    if (background.getColor() != null || getColor() != null)
-    {
-      Log.debug ("This must be interesting.");
-    }
     final Color color;
-//    final boolean b1 = StrictBounds.contains(bounds, cellBounds) == false;
-//    final boolean b2 = StrictBounds.contains(cellBounds, bounds) == false;
     if (otherIsALine == false && thisIsALine == false)
     {
       // create the unified color for both backgrounds ..

@@ -54,6 +54,11 @@ A list of changes in recent versions:
         * The Demo-Jar now uses the DemoFrontend class as Main class. This way,
           all demos are accessible when running that jar.
 
+        * The SimpleXML format now defines a new attribute for Number and Date
+          fields to supply an explicit cell format for the Excel export. Excel
+          does not really like the Java-Formats and as there is no reliable
+          specification  for the excel format strings on the net, this is a
+          workaround to get good looking excel exports. 
 
 0.8.5-2: (18-Mar-2005)
         * [BUG] FontPath caching did not validate the cache integrety. This way,

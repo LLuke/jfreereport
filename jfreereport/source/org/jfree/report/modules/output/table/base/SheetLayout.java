@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: SheetLayout.java,v 1.5 2005/02/22 20:18:32 taqua Exp $
+ * $Id: SheetLayout.java,v 1.6 2005/03/24 22:24:56 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -242,10 +242,6 @@ public class SheetLayout
   public void add (final MetaElement element)
   {
     final StrictBounds bounds = element.getBounds();
-    if (element instanceof TableCellBackground)
-    {
-      Log.debug ("Found a Background: " + element.getBounds());
-    }
 
     // collect the bounds and add them to the xBounds and yBounds collection
     // if necessary...
@@ -260,6 +256,18 @@ public class SheetLayout
     final boolean aux = (isBackground == false) && (isStrict() == false);
     ensureXMapping(elementRightX, aux);
     ensureYMapping(elementBottomY, aux);
+
+    // update the collected maximums
+    if (xMaxBounds < elementRightX)
+    {
+      xMaxBounds = elementRightX;
+      xMaxBoundsKey = new Long(xMaxBounds);
+    }
+    if (yMaxBounds < elementBottomY)
+    {
+      yMaxBounds = elementBottomY;
+      yMaxBoundsKey = new Long(yMaxBounds);
+    }
 
     if (isBackground)
     {
@@ -287,17 +295,6 @@ public class SheetLayout
       }
     }
 
-    // finally update the collected maximums
-    if (xMaxBounds < elementRightX)
-    {
-      xMaxBounds = elementRightX;
-      xMaxBoundsKey = new Long(xMaxBounds);
-    }
-    if (yMaxBounds < elementBottomY)
-    {
-      yMaxBounds = elementBottomY;
-      yMaxBoundsKey = new Long(yMaxBounds);
-    }
   }
 
   private void processVerticalLine (final Long[] yKeys, final Long xKey,
@@ -398,20 +395,14 @@ public class SheetLayout
     final long yVal = y.longValue();
     final Long[] xCuts = getXCuts();
     final Long[] yCuts = getYCuts();
-    try
+
+    final long x2Val = xCuts[findXPosition(xVal + 1, UPPER_BOUNDS)].longValue();
+    final long y2Val = yCuts[findYPosition(yVal + 1, UPPER_BOUNDS)].longValue();
+    if (input == null)
     {
-      final long x2Val = xCuts[findXPosition(xVal + 1, UPPER_BOUNDS)].longValue();
-      final long y2Val = yCuts[findYPosition(yVal + 1, UPPER_BOUNDS)].longValue();
-      if (input == null)
-      {
-        return new StrictBounds(xVal, yVal, x2Val - xVal, y2Val - yVal);
-      }
-      input.setRect(xVal, yVal, x2Val - xVal, y2Val - yVal);
+      return new StrictBounds(xVal, yVal, x2Val - xVal, y2Val - yVal);
     }
-    catch(ArrayIndexOutOfBoundsException ae)
-    {
-      final long y2Val = yCuts[findYPosition(yVal + 1, UPPER_BOUNDS)].longValue();
-    }
+    input.setRect(xVal, yVal, x2Val - xVal, y2Val - yVal);
     return input;
   }
 
@@ -485,10 +476,15 @@ public class SheetLayout
     // now copy all entries from old column to new column
     backend.copyColumn(oldColumn, newColumn);
 
-
-
-    for (int i = 0; i < backend.getRowCount(); i++)
+    // handle the backgrounds ..
+    final Long coordinateKey = new Long (coordinate);
+    StrictBounds cellBounds = null;
+    final Iterator entryIterator = yBounds.entrySet().iterator();
+    while (entryIterator.hasNext())
     {
+      final Map.Entry entry = (Map.Entry) entryIterator.next();
+      final BoundsCut bcut = (BoundsCut) entry.getValue();
+      final int i = bcut.getPosition();
       final TableCellBackground bg =
               (TableCellBackground) backend.getObject(i, newColumn);
       if (bg == null)
@@ -498,21 +494,10 @@ public class SheetLayout
 
       // a column has been inserted. We have to check, whether the background has
       // borders defined, which might be invalid now.
-      final StrictBounds bounds = bg.getBounds();
-      final StrictBounds mergedBounds = (StrictBounds) bounds.clone();
-
-      // cell areas do not grow by merging, they can only shrink ..
-      final long y = Math.max (mergedBounds.getY(), bg.getLeftBorderPos());
-      final long h = Math.max (0, Math.min
-              (mergedBounds.getHeight(), bg.getRightBorderPos() - y));
-
-      // if we have a valid width, then compute the intersection, else give 0
-      final long width = Math.max
-              (0, mergedBounds.getWidth() + mergedBounds.getX() - coordinate);
-      mergedBounds.setRect
-              (coordinate, y, width, h);
+      final StrictBounds bounds = bg.getCellBounds();
+      cellBounds = getCellBounds(cellBounds, coordinateKey, (Long) entry.getKey());
       final TableCellBackground newBackground =
-              bg.createMergedInstance(mergedBounds);
+              bg.createMergedInstance(cellBounds);
 
       if (bg.getColorLeft() != null)
       {

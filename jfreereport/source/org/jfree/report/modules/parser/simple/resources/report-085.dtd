@@ -500,9 +500,10 @@ fieldname            CDATA         #REQUIRED
 %basicform;
 %position;
 %fontdef;
-format		CDATA      #IMPLIED
-fieldname   CDATA    #REQUIRED
-nullstring  CDATA    #IMPLIED
+format		           CDATA        #IMPLIED
+fieldname            CDATA        #REQUIRED
+nullstring           CDATA        #IMPLIED
+excel-format		     CDATA        #IMPLIED
 >
 
 <!ELEMENT date-field   EMPTY>
@@ -513,6 +514,7 @@ nullstring  CDATA    #IMPLIED
 format		           CDATA         #IMPLIED
 fieldname            CDATA         #REQUIRED
 nullstring           CDATA         #IMPLIED
+excel-format		     CDATA         #IMPLIED
 >
 
 
