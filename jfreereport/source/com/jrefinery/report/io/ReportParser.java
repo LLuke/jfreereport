@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportParser.java,v 1.1 2003/04/23 16:26:08 taqua Exp $
+ * $Id: ReportParser.java,v 1.2 2003/04/24 18:08:48 taqua Exp $
  *
  * Changes
  * -------
@@ -36,9 +36,8 @@
  */
 package com.jrefinery.report.io;
 
-import org.jfree.xml.Parser;
-import org.jfree.xml.ElementDefinitionHandler;
 import com.jrefinery.report.JFreeReport;
+import org.jfree.xml.Parser;
 
 public class ReportParser extends Parser
 {
