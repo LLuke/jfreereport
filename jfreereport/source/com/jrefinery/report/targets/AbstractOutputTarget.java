@@ -81,8 +81,19 @@ public abstract class AbstractOutputTarget implements OutputTarget
     setPageFormat(format);
   }
 
+  /**
+   * Defines a property for this outputtarget. Properties are the standardway of configuring
+   * an outputtarget.
+   *
+   * @param property the name of the property to set
+   * @param value the value of the property. If value is null, the property is removed from the
+   * OutputTarget
+   * @throws NullPointerExecption if property is null
+   */
   public void setProperty (String property, Object value)
   {
+    if (property == null) throw new NullPointerException();
+
     if (value == null)
     {
       properties.remove(property);
@@ -93,13 +104,32 @@ public abstract class AbstractOutputTarget implements OutputTarget
     }
   }
 
+  /**
+   * Queries the property named with <code>property</code>. If the property is not found, <code>
+   * null</code> is returned.
+   *
+   * @returns the value stored under the given property name
+   * @param property the name of the property to be queried
+   * @throws NullPointerException if <code>property</code> is null
+   */
   public Object getProperty (String property)
   {
     return getProperty(property, null);
   }
 
+  /**
+   * Queries the property named with <code>property</code>. If the property is not found, the default
+   * value is returned.
+   *
+   * @returns the value stored under the given property name
+   * @param property the name of the property to be queried
+   * @param defaultValue the defaultvalue returned if there is no such property
+   * @throws NullPointerException if <code>property</code> is null
+   */
   public Object getProperty (String property, Object defaultValue)
   {
+    if (property == null) throw new NullPointerException();
+
     Object retval = properties.get (property);
     if (retval == null) return defaultValue;
     return retval;
@@ -466,6 +496,9 @@ public abstract class AbstractOutputTarget implements OutputTarget
     }
   }
 
+  /**
+   * Removes all whitespaces from the given String and replaces them with a space character.
+   */
   protected String clearWhitespaces(String text)
   {
     char[] textdata = text.toCharArray();

@@ -1,3 +1,30 @@
+/**
+ * =============================================================
+ * JFreeReport : an open source reporting class library for Java
+ * =============================================================
+ *
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -------------------------
+ * JFreeReportResources_de.java
+ * -------------------------
+ *
+ */
 package com.jrefinery.report.resources;
 
 import java.awt.event.KeyEvent;
@@ -72,11 +99,52 @@ public class JFreeReportResources_de extends JFreeReportResources
             {"statusline.pages", "Seite {0} von {1}"},
             {"statusline.error", "Die ReportGenerierung ist fehlgeschlagen: {0}"},
             {"error.processingfailed.title", "Fehler beim bearbeiten des Berichtes"},
-            {"error.processingfailed.message", "Die Berichtsgenerirung ist fehlgeschlagen: {0}"},
+            {"error.processingfailed.message", "Die Berichtsgenerierung ist fehlgeschlagen: {0}"},
             {"error.savefailed.message", "Der Bericht konnte nicht gespeichert werden: {0}"},
             {"error.savefailed.title", "Speichern fehlgeschlagen"},
             {"error.printfailed.message", "Das Drucken ist fehlgeschlagen: {0}"},
             {"error.printfailed.title", "Druck fehlgeschlagen"},
+
+            {"pdfsavedialog.dialogtitle", "Bericht in eine PDF-Datei speichern ..."},
+            {"pdfsavedialog.filename", "Dateiname"},
+            {"pdfsavedialog.author", "Autor"},
+            {"pdfsavedialog.title", "Titel"},
+            {"pdfsavedialog.selectFile", "Auswählen"},
+            {"pdfsavedialog.security", "Sicherheitseinstellungen und Verschlüsselung"},
+
+            {"pdfsavedialog.securityNone", "Keine Sicherheit"},
+            {"pdfsavedialog.security40bit", "Verschlüsselung mit 40Bit Schlüssel"},
+            {"pdfsavedialog.security128bit", "Verschlüsselung mit 128Bit Schlüssel"},
+            {"pdfsavedialog.userpassword", "Benutzerkennwort"},
+            {"pdfsavedialog.userpasswordconfirm", "Wiederholen"},
+            {"pdfsavedialog.userpasswordNoMatch", "Die Benutzerkennworte stimmen nicht überein."},
+            {"pdfsavedialog.ownerpassword", "Hauptkennwort"},
+            {"pdfsavedialog.ownerpasswordconfirm", "Wiederholen"},
+            {"pdfsavedialog.ownerpasswordNoMatch", "Die Hauptkennworte stimmen nicht überein."},
+
+            {"pdfsavedialog.errorTitle", "Fehler"},
+            {"pdfsavedialog.targetIsEmpty", "Bitte geben Sie einen Dateinamen für die PDF-Datei an."},
+            {"pdfsavedialog.targetIsNoFile", "Der Dateiname zeigt auf keine gewöhnliche Datei."},
+            {"pdfsavedialog.targetIsNotWritable", "Sie besitzen keine ausreichenden Rechte um die ausgewählte Datei zu überschreiben."},
+            {"pdfsavedialog.targetOverwriteConfirmation", "Die Datei ''{0}'' existiert bereits. Soll diese Datei überschrieben werden?"},
+            {"pdfsavedialog.targetOverwriteTitle", "Datei überschreiben?"},
+
+
+            {"pdfsavedialog.allowCopy", "Kopieren zulassen"},
+            {"pdfsavedialog.allowPrinting", "Drucken zulassen"},
+            {"pdfsavedialog.allowDegradedPrinting", "Drucken in verminderter Qualität zulassen"},
+            {"pdfsavedialog.allowScreenreader", "Inhaltszugriff für Sehbehinderte aktiveren"},
+            {"pdfsavedialog.allowAssembly", "Zusammensetzen erlauben"},
+            {"pdfsavedialog.allowModifyContents", "Inhalt darf geändert werden"},
+            {"pdfsavedialog.allowModifyAnnotations", "Anmerkungen dürfen geändert werden"},
+            {"pdfsavedialog.allowFillIn", "Formularfelder dürfen geändert werden"},
+
+            {"pdfsavedialog.option.noprinting", "Kein Drucken"},
+            {"pdfsavedialog.option.degradedprinting", "Drucken mit verminderter Qualität"},
+            {"pdfsavedialog.option.fullprinting", "Drucken erlaubt"},
+
+            {"pdfsavedialog.cancel", "Abbrechen"},
+            {"pdfsavedialog.confirm", "OK"},
 
           };
 }

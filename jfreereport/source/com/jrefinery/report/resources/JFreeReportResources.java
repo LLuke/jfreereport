@@ -1,3 +1,30 @@
+/**
+ * =============================================================
+ * JFreeReport : an open source reporting class library for Java
+ * =============================================================
+ *
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * -------------------------
+ * JFreeReportResources.java
+ * -------------------------
+ *
+ */
 package com.jrefinery.report.resources;
 
 import com.jrefinery.report.util.Log;
@@ -194,9 +221,10 @@ public class JFreeReportResources extends ListResourceBundle
             {"pdfsavedialog.ownerpasswordNoMatch", "The owner-passwords do not match."},
 
             {"pdfsavedialog.errorTitle", "Error"},
+            {"pdfsavedialog.targetIsEmpty", "Please specify a filename for the pdf file."},
             {"pdfsavedialog.targetIsNoFile", "The selected target is no ordinary file."},
             {"pdfsavedialog.targetIsNotWritable", "The selected file is not writable."},
-            {"pdfsavedialog.targetOverwriteConfirmation", "The file '{0}' exists. Overwrite it?"},
+            {"pdfsavedialog.targetOverwriteConfirmation", "The file ''{0}'' exists. Overwrite it?"},
             {"pdfsavedialog.targetOverwriteTitle", "Overwrite file?"},
 
 
@@ -208,6 +236,10 @@ public class JFreeReportResources extends ListResourceBundle
             {"pdfsavedialog.allowModifyContents", "Allow Modifications of Contents"},
             {"pdfsavedialog.allowModifyAnnotations", "Allow Modification Of Annotations"},
             {"pdfsavedialog.allowFillIn", "Allow Fill In of Formulardata"},
+
+            {"pdfsavedialog.option.noprinting", "No printing"},
+            {"pdfsavedialog.option.degradedprinting", "Low quality printing"},
+            {"pdfsavedialog.option.fullprinting", "Printing allowed"},
 
             {"pdfsavedialog.cancel", "Cancel"},
             {"pdfsavedialog.confirm", "Confirm"},

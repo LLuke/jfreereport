@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.20 2002/08/26 10:54:54 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.21 2002/08/26 22:02:13 taqua Exp $
  *
  * Changes
  * -------
@@ -58,6 +58,7 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.DefaultFontMapper;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfPatternPainter;
 import com.lowagie.text.pdf.PdfWriter;
@@ -206,7 +207,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    * The PDFFontFactory is used to find and register all TrueTypeFonts for embedding them
    * in the PDF-File.
    */
-  public static class PDFFontFactory
+  public static class PDFFontFactory extends DefaultFontMapper
   {
     private Hashtable fontsByName;
 
@@ -342,6 +343,8 @@ public class PDFOutputTarget extends AbstractOutputTarget
     {
       return (String) fontsByName.get(font);
     }
+
+
   }
 
   private static PDFFontFactory fontFactory;
@@ -787,6 +790,10 @@ public class PDFOutputTarget extends AbstractOutputTarget
     }
   }
 
+  /**
+   * Helperfunction to extract an image from an imagereference. If the image is contained as
+   * java.awt.Image object only, the image is recoded into an PNG-Image.
+   */
   private Image getImage(ImageReference imageRef) throws DocumentException, IOException
   {
     try
@@ -996,6 +1003,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
         }
         String userpassword = (String) getProperty(SECURITY_USERPASSWORD);
         String ownerpassword = (String) getProperty(SECURITY_OWNERPASSWORD);
+        Log.debug ("UserPassword: " + userpassword + " - OwnerPassword: " + ownerpassword);
         writer.setEncryption(encrypt.booleanValue(), userpassword, ownerpassword, getPermissions());
       }
 
@@ -1019,7 +1027,11 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
   }
 
-  protected int getPermissions ()
+  /**
+   * Extracts the permissions for this PDF. The permissions are returned as flags in the integer value.
+   * All permissions are defined as properties which have to be set before the target is opened.
+   */
+  protected int getPermissions()
   {
     Boolean allowPrinting = (Boolean) getProperty(SECURITY_ALLOW_PRINTING, Boolean.FALSE);
     Boolean allowModifyContents = (Boolean) getProperty(SECURITY_ALLOW_MODIFY_CONTENTS, Boolean.FALSE);
@@ -1032,14 +1044,14 @@ public class PDFOutputTarget extends AbstractOutputTarget
 
 
     int permissions = 0;
-    if (allowPrinting.booleanValue()) permissions += PdfWriter.AllowPrinting;
-    if (allowModifyContents.booleanValue()) permissions += PdfWriter.AllowModifyContents;
-    if (allowModifyAnnotations.booleanValue()) permissions += PdfWriter.AllowModifyAnnotations;
-    if (allowCopy.booleanValue()) permissions += PdfWriter.AllowCopy;
-    if (allowFillIn.booleanValue()) permissions += PdfWriter.AllowFillIn;
-    if (allowScreenReaders.booleanValue()) permissions += PdfWriter.AllowScreenReaders;
-    if (allowAssembly.booleanValue()) permissions += PdfWriter.AllowAssembly;
-    if (allowDegradedPrinting.booleanValue()) permissions += PdfWriter.AllowDegradedPrinting;
+    if (allowPrinting.booleanValue()) permissions |= PdfWriter.AllowPrinting;
+    if (allowModifyContents.booleanValue()) permissions |= PdfWriter.AllowModifyContents;
+    if (allowModifyAnnotations.booleanValue()) permissions |= PdfWriter.AllowModifyAnnotations;
+    if (allowCopy.booleanValue()) permissions |= PdfWriter.AllowCopy;
+    if (allowFillIn.booleanValue()) permissions |= PdfWriter.AllowFillIn;
+    if (allowScreenReaders.booleanValue()) permissions |= PdfWriter.AllowScreenReaders;
+    if (allowAssembly.booleanValue()) permissions |= PdfWriter.AllowAssembly;
+    if (allowDegradedPrinting.booleanValue()) permissions |= PdfWriter.AllowDegradedPrinting;
     return permissions;
   }
 

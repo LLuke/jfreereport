@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: OutputTarget.java,v 1.3 2002/08/08 13:40:14 taqua Exp $
+ * $Id: OutputTarget.java,v 1.4 2002/08/26 22:02:13 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
  * 20-May-2002 : Moved into new package. Extended to support Strokes, cursors and saveable states.
  *               Created beginPage() state callback to property initialize new pages. FillShape
  *               added.
+ * 31-Aug-2002 : Added properties to support a generic configuration interface
  */
 
 package com.jrefinery.report.targets;
@@ -70,9 +71,36 @@ public interface OutputTarget
    */
   public void open () throws OutputTargetException;
 
+  /**
+   * Defines a property for this outputtarget. Properties are the standardway of configuring
+   * an outputtarget.
+   *
+   * @param property the name of the property to set
+   * @param value the value of the property. If value is null, the property is removed from the
+   * OutputTarget
+   * @throws NullPointerExecption if property is null
+   */
   public void setProperty (String property, Object value);
 
+  /**
+   * Queries the property named with <code>property</code>. If the property is not found, <code>
+   * null</code> is returned.
+   *
+   * @returns the value stored under the given property name
+   * @param property the name of the property to be queried
+   * @throws NullPointerException if <code>property</code> is null
+   */
   public Object getProperty (String property);
+
+  /**
+   * Queries the property named with <code>property</code>. If the property is not found, the default
+   * value is returned.
+   *
+   * @returns the value stored under the given property name
+   * @param property the name of the property to be queried
+   * @param defaultValue the defaultvalue returned if there is no such property
+   * @throws NullPointerException if <code>property</code> is null
+   */
   public Object getProperty (String property, Object defaultValue);
 
   /**

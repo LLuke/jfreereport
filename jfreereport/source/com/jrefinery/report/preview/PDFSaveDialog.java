@@ -29,6 +29,8 @@
  * 26-Aug-2002 : Initial version
  * 29-Aug-2002 : Downport to JDK 1.2.2
  * 31-Aug-2002 : Documentation
+ * 01-Sep-2002 : Printing securitiy was inaccurate; bug (exception in JOptionPane) when file exists
+ *               More documentation
  */
 package com.jrefinery.report.preview;
 
@@ -53,6 +55,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -72,9 +76,17 @@ import java.util.ResourceBundle;
 /**
  * The PDFSaveDialog is used to perform the printing of an Report into a PDF-File. It is primarily used to
  * edit the properties of the PDFOutputTarget before the target is used to print the report.
+ * <p>
+ * The main method to call the dialog is PDFSaveDialog.savePDF(). Given a report and a pageformat, the
+ * dialog is shown and if the user approved the dialog, the pdf is saved using the settings made in the
+ * dialog.
  */
 public class PDFSaveDialog extends JDialog
 {
+  private static final int CBMODEL_NOPRINTING = 0;
+  private static final int CBMODEL_DEGRADED = 1;
+  private static final int CBMODEL_FULL = 2;
+
   /**
    * Internal action class to enable/disable the Security-Settings panel. Without encryption a pdf file
    * cannot have any security settings enabled.
@@ -94,11 +106,10 @@ public class PDFSaveDialog extends JDialog
       txConfUserPassword.setEnabled(b);
       cxAllowAssembly.setEnabled(b);
       cxAllowCopy.setEnabled(b);
-      cxAllowDegradedPrinting.setEnabled(b);
+      cbAllowPrinting.setEnabled(b);
       cxAllowFillIn.setEnabled(b);
       cxAllowModifyAnnotations.setEnabled(b);
       cxAllowModifyContents.setEnabled(b);
-      cxAllowPrinting.setEnabled(b);
       cxAllowScreenReaders.setEnabled(b);
     }
   }
@@ -175,14 +186,15 @@ public class PDFSaveDialog extends JDialog
   private JTextField txConfOwnerPassword;
 
   private JCheckBox cxAllowCopy;
-  private JCheckBox cxAllowPrinting;
-  private JCheckBox cxAllowDegradedPrinting;
   private JCheckBox cxAllowScreenReaders;
+  private JComboBox cbAllowPrinting;
 
   private JCheckBox cxAllowAssembly;
   private JCheckBox cxAllowModifyContents;
   private JCheckBox cxAllowModifyAnnotations;
   private JCheckBox cxAllowFillIn;
+
+  private DefaultComboBoxModel printingModel;
 
   private boolean confirmed;
 
@@ -214,6 +226,22 @@ public class PDFSaveDialog extends JDialog
     );
   }
 
+  /**
+   * @returns the combobox model containing the different values for the allowPrinting option.
+   */
+  private DefaultComboBoxModel getPrintingComboBoxModel ()
+  {
+    if (printingModel == null)
+    {
+      Object[] data = {
+        getResources().getString("pdfsavedialog.option.noprinting"),
+        getResources().getString("pdfsavedialog.option.degradedprinting"),
+        getResources().getString("pdfsavedialog.option.fullprinting")
+      };
+      printingModel = new DefaultComboBoxModel(data);
+    }
+    return printingModel;
+  }
 
   /**
    * Retrieves the resources for this PreviewFrame. If the resources are not initialized,
@@ -372,10 +400,10 @@ public class PDFSaveDialog extends JDialog
     JLabel lblUserPassConfirm = new JLabel(getResources().getString("pdfsavedialog.userpasswordconfirm"));
     JLabel lblOwnerPass = new JLabel(getResources().getString("pdfsavedialog.ownerpassword"));
     JLabel lblOwnerPassConfirm = new JLabel(getResources().getString("pdfsavedialog.ownerpasswordconfirm"));
+    JLabel lbAllowPrinting = new JLabel(getResources().getString("pdfsavedialog.allowPrinting"));
 
     cxAllowCopy = new JCheckBox(getResources().getString("pdfsavedialog.allowCopy"));
-    cxAllowPrinting = new JCheckBox(getResources().getString("pdfsavedialog.allowPrinting"));
-    cxAllowDegradedPrinting = new JCheckBox(getResources().getString("pdfsavedialog.allowDegradedPrinting"));
+    cbAllowPrinting = new JComboBox(getPrintingComboBoxModel());
     cxAllowScreenReaders = new JCheckBox(getResources().getString("pdfsavedialog.allowScreenreader"));
 
     cxAllowAssembly = new JCheckBox(getResources().getString("pdfsavedialog.allowAssembly"));
@@ -481,21 +509,14 @@ public class PDFSaveDialog extends JDialog
     gbc.gridwidth = 2;
     gbc.gridy = 4;
     gbc.anchor = GridBagConstraints.WEST;
-    securityPanel.add(cxAllowPrinting, gbc);
+    securityPanel.add(cxAllowScreenReaders, gbc);
 
     gbc = new GridBagConstraints();
     gbc.gridx = 0;
     gbc.gridwidth = 2;
     gbc.gridy = 5;
     gbc.anchor = GridBagConstraints.WEST;
-    securityPanel.add(cxAllowDegradedPrinting, gbc);
-
-    gbc = new GridBagConstraints();
-    gbc.gridx = 0;
-    gbc.gridwidth = 2;
-    gbc.gridy = 6;
-    gbc.anchor = GridBagConstraints.WEST;
-    securityPanel.add(cxAllowScreenReaders, gbc);
+    securityPanel.add(cxAllowFillIn, gbc);
 
     gbc = new GridBagConstraints();
     gbc.gridx = 2;
@@ -519,11 +540,18 @@ public class PDFSaveDialog extends JDialog
     securityPanel.add(cxAllowModifyAnnotations, gbc);
 
     gbc = new GridBagConstraints();
-    gbc.gridx = 2;
-    gbc.gridwidth = 2;
+    gbc.gridx = 0;
+    gbc.gridwidth = 1;
     gbc.gridy = 6;
     gbc.anchor = GridBagConstraints.WEST;
-    securityPanel.add(cxAllowFillIn, gbc);
+    securityPanel.add(lbAllowPrinting, gbc);
+
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridwidth = 3;
+    gbc.gridy = 6;
+    gbc.anchor = GridBagConstraints.WEST;
+    securityPanel.add(cbAllowPrinting, gbc);
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -555,6 +583,12 @@ public class PDFSaveDialog extends JDialog
     setContentPane(contentPane);
   }
 
+  /**
+   * returns the defined user password for the pdf file. The user password limits read-only access
+   * to the pdf in the PDF-Viewer. The reader/user has to enter the password when opening the file.
+   *
+   * @returns the defined password. The password can be null.
+   */
   public String getUserPassword()
   {
     String txt = txUserPassword.getText();
@@ -562,12 +596,25 @@ public class PDFSaveDialog extends JDialog
     return txt;
   }
 
+  /**
+   * Defines the user password for the pdf file. The user password limits read-only access
+   * to the pdf in the PDF-Viewer. The reader/user has to enter the password when opening the file.
+   *
+   * @param userPassword the defined password. The password can be null.
+   */
   public void setUserPassword(String userPassword)
   {
     txUserPassword.setText(userPassword);
     txConfUserPassword.setText(userPassword);
   }
 
+  /**
+   * Returns the owner password for the pdf file. The owner password limits writing access
+   * to the pdf in the PDF-Editor. The user has to enter the password when opening the file
+   * to enable editing functionality or to modify the file.
+   *
+   * @returns the defined password. The password can be null.
+   */
   public String getOwnerPassword()
   {
     String txt = txOwnerPassword.getText();
@@ -575,107 +622,216 @@ public class PDFSaveDialog extends JDialog
     return txt;
   }
 
+  /**
+   * Defines the owner password for the pdf file. The owner password limits writing access
+   * to the pdf in the PDF-Editor. The user has to enter the password when opening the file
+   * to enable editing functionality or to modify the file.
+   *
+   * @param userPassword the defined password. The password can be null.
+   */
   public void setOwnerPassword(String ownerPassword)
   {
     txOwnerPassword.setText(ownerPassword);
     txConfOwnerPassword.setText(ownerPassword);
   }
 
+  /**
+   * @returns true if a low quality printing is allowed, false otherwise.
+   */
   public boolean isAllowDegradedPrinting()
   {
-    return cxAllowDegradedPrinting.isSelected();
+    return cbAllowPrinting.getSelectedIndex() == CBMODEL_DEGRADED;
   }
 
+  /**
+   * Defines whether low quality printing is allowed for the pdf file. Be aware that
+   * the full-quality printing ability does also imply that low quality printing is allowed.
+   * <p>
+   * @param allowDegradedPrinting the boolean that defines whether to allow lowquality printing.
+   */
   public void setAllowDegradedPrinting(boolean allowDegradedPrinting)
   {
-    this.cxAllowDegradedPrinting.setSelected(allowDegradedPrinting);
+    this.cbAllowPrinting.setSelectedIndex(CBMODEL_DEGRADED);
   }
 
+  /**
+   * @returns true, if the generated pdf may be reassembled using an pdf editor.
+   */
   public boolean isAllowAssembly()
   {
     return cxAllowAssembly.isSelected();
   }
 
+  /**
+   * Defines whether the generated pdf may be reassembled.
+   */
   public void setAllowAssembly(boolean allowAssembly)
   {
     this.cxAllowAssembly.setSelected(allowAssembly);
   }
 
+  /**
+   * Defines whether the generated pdf may accessed using screenreaders. Screenreaders are
+   * used to make pdf files accessible for disabled people.
+   *
+   * @returns true, if screenreaders are allowed for accessing this file
+   */
   public boolean isAllowScreenreaders()
   {
     return cxAllowScreenReaders.isSelected();
   }
 
+  /**
+   * Defines whether the generated pdf may accessed using screenreaders. Screenreaders are
+   * used to make pdf files accessible for disabled people.
+   *
+   * @param allowScreenreaders a flag containing true, if screenreaders are allowed to access the
+   * content of this file, false otherwise
+   */
   public void setAllowScreenreaders(boolean allowScreenreaders)
   {
     this.cxAllowScreenReaders.setSelected(allowScreenreaders);
   }
 
+  /**
+   * Defines whether the contents of form fields may be changed by the user.
+   *
+   * @returns true, if the user may change the contents of formulars.
+   */
   public boolean isAllowFillIn()
   {
     return cxAllowFillIn.isSelected();
   }
 
+  /**
+   * Defines whether the contents of form fields may be changed by the user.
+   *
+   * @param allowFillIn set to true to allow the change/filling of form fields
+   */
   public void setAllowFillIn(boolean allowFillIn)
   {
     this.cxAllowFillIn.setSelected(allowFillIn);
   }
 
+  /**
+   * Defines whether the contents of the file are allowed to be copied.
+   *
+   * @returns true, if the user is allowed to copy the contents of the file.
+   */
   public boolean isAllowCopy()
   {
     return cxAllowCopy.isSelected();
   }
 
+  /**
+   * Defines whether the contents of the file are allowed to be copied.
+   *
+   * @param allowCopy set to true, if the user is allowed to copy the contents of the file.
+   */
   public void setAllowCopy(boolean allowCopy)
   {
     this.cxAllowCopy.setSelected(allowCopy);
   }
 
+  /**
+   * Defines whether the user is allowed to add or modify annotations in this file.
+   *
+   * @returns true, if this files annotations can be modified, false otherwise
+   */
   public boolean isAllowModifyAnnotations()
   {
     return cxAllowModifyAnnotations.isSelected();
   }
 
+  /**
+   * Defines whether the user is allowed to add or modify annotations in this file.
+   *
+   * @allowModifyAnnotations set to true, if this files annotations can be modified, false otherwise
+   */
   public void setAllowModifyAnnotations(boolean allowModifyAnnotations)
   {
     this.cxAllowModifyAnnotations.setSelected(allowModifyAnnotations);
   }
 
+  /**
+   * Defines whether the user is allowed to modify the contents of this file.
+   *
+   * @returns true, if this files content can be modified, false otherwise
+   */
   public boolean isAllowModifyContents()
   {
     return cxAllowModifyContents.isSelected();
   }
 
+  /**
+   * Defines whether the user is allowed to modify the contents of this file.
+   *
+   * @param allowModifyContents set to true, if this files content can be modified, false otherwise
+   */
   public void setAllowModifyContents(boolean allowModifyContents)
   {
     this.cxAllowModifyContents.setSelected(allowModifyContents);
   }
 
+  /**
+   * Defines whether the user is allowed to print the file. If this right is granted, the
+   * user is also able to print a degraded version of the file, regardless of the allowDegradedPrinting
+   * property
+   *
+   * @returns true, if this file can be printed, false otherwise
+   */
   public boolean isAllowPrinting()
   {
-    return cxAllowPrinting.isSelected();
+    return cbAllowPrinting.getSelectedIndex() == CBMODEL_FULL;
   }
 
+  /**
+   * Defines whether the user is allowed to print the file. If this right is granted, the
+   * user is also able to print a degraded version of the file, regardless of the allowDegradedPrinting
+   * property
+   *
+   * @param allowPrinting set to true, if this files can be printed, false otherwise
+   */
   public void setAllowPrinting(boolean allowPrinting)
   {
-    this.cxAllowPrinting.setSelected(allowPrinting);
+    this.cbAllowPrinting.setSelectedIndex(CBMODEL_FULL);
   }
 
+  /**
+   * Defines the filename of the pdf file.
+   *
+   * @returns the name of the file where to save the pdf file.
+   */
   public String getFilename()
   {
     return txFilename.getText();
   }
 
+  /**
+   * Defines the filename of the pdf file.
+   *
+   * @param filename the filename of the pdf file
+   */
   public void setFilename(String filename)
   {
     this.txFilename.setText(filename);
   }
 
+  /**
+   * Defines the title of the pdf file.
+   *
+   * @returns the title
+   */
   public String getPDFTitle()
   {
     return txTitle.getText();
   }
 
+  /**
+   * Defines the title of the pdf file.
+   *
+   * @param the title
+   */
   public void setPDFTitle(String title)
   {
     this.txTitle.setText(title);
@@ -763,14 +919,14 @@ public class PDFSaveDialog extends JDialog
 
     cxAllowAssembly.setSelected(false);
     cxAllowCopy.setSelected(false);
-    cxAllowDegradedPrinting.setSelected(false);
+    cbAllowPrinting.setSelectedIndex(CBMODEL_NOPRINTING);
     cxAllowFillIn.setSelected(false);
     cxAllowModifyAnnotations.setSelected(false);
     cxAllowModifyContents.setSelected(false);
-    cxAllowPrinting.setSelected(false);
     cxAllowScreenReaders.setSelected(false);
 
     rbSecurityNone.setSelected(true);
+    getActionSecuritySelection().actionPerformed(null);
   }
 
   /**
@@ -820,7 +976,15 @@ public class PDFSaveDialog extends JDialog
       }
     }
 
-    File f = new File (getFilename());
+    String filename = getFilename();
+    if (filename.trim().length() == 0)
+    {
+      JOptionPane.showMessageDialog(this,
+          getResources().getString("pdfsavedialog.targetIsEmpty"),
+          getResources().getString("pdfsavedialog.errorTitle"), JOptionPane.ERROR_MESSAGE);
+      return false;
+    }
+    File f = new File (filename);
     if (f.exists())
     {
       if (f.isFile() == false)
@@ -843,7 +1007,7 @@ public class PDFSaveDialog extends JDialog
               new Object[]{getFilename()}
           ),
           getResources().getString("pdfsavedialog.targetOverwriteTitle"),
-          JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION)
+          JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.NO_OPTION)
       {
         return false;
       }

@@ -28,6 +28,7 @@
  * Changes
  * -------
  * 16-May-2002 : Version 1 (DG);
+ * 31-Aug-2002 : Changed PrintStackTrace implementation to reveal the parent exception
  */
 package com.jrefinery.report.targets;
 

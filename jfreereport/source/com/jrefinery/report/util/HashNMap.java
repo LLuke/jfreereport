@@ -210,6 +210,9 @@ public class HashNMap implements Serializable, Cloneable
     return containsValue (value);
   }
 
+  /**
+   * Creates a deep copy of this HashNMap.
+   */
   public Object clone () throws CloneNotSupportedException
   {
     HashNMap map = (HashNMap) super.clone ();

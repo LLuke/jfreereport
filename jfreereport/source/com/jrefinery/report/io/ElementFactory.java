@@ -803,7 +803,7 @@ public class ElementFactory
   {
     getTextElementAttributes(atts);
     textElementNullString = ParserUtil.parseString(atts.getValue(NULLSTRING_ATT), "-");
-    textElementSourceName = atts.getValue(FIELDNAME_ATT);
+    textElementSourceName = atts.getValue(FUNCTIONNAME_ATT);
   }
 
 }

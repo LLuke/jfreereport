@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.27 2002/08/29 19:15:35 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.28 2002/08/31 16:50:48 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -213,73 +213,6 @@ public class PreviewFrame
     public void actionPerformed(ActionEvent arg0)
     {
       lastPage();
-    }
-
-    public Object getValue(String key)
-    {
-      return super.getValue(key);
-    }
-
-    public int hashCode()
-    {
-      return super.hashCode();
-    }
-
-    public synchronized void putValue(String key, Object newValue)
-    {
-      super.putValue(key, newValue);
-    }
-
-    public boolean equals(Object obj)
-    {
-      return super.equals(obj);
-    }
-
-    public boolean isEnabled()
-    {
-      return super.isEnabled();
-    }
-
-    public String toString()
-    {
-      return super.toString();
-    }
-
-    public synchronized void setEnabled(boolean newValue)
-    {
-      Log.debug("SetEnabled: " + newValue);
-      super.setEnabled(newValue);
-    }
-
-    protected void finalize() throws Throwable
-    {
-      super.finalize();
-    }
-
-    protected void firePropertyChange(String propertyName, Object oldValue, Object newValue)
-    {
-      Log.debug("FirePropertyChange: " + propertyName);
-      Log.debug("FirePropertyChange: " + oldValue);
-      Log.debug("FirePropertyChange: " + newValue);
-      super.firePropertyChange(propertyName, oldValue, newValue);
-    }
-
-    public synchronized void addPropertyChangeListener(PropertyChangeListener listener)
-    {
-      Log.debug("AddPropertyChangeListener: " + listener);
-      if (listener == null) throw new NullPointerException();
-      super.addPropertyChangeListener(listener);
-    }
-
-    public synchronized void removePropertyChangeListener(PropertyChangeListener listener)
-    {
-      Log.debug("RemovePropertyChangeListener: " + listener);
-      super.removePropertyChangeListener(listener);
-    }
-
-    protected Object clone() throws CloneNotSupportedException
-    {
-      return super.clone();
     }
   }
 
@@ -511,9 +444,6 @@ public class PreviewFrame
 
     reportPane = createReportPane(report);
     reportPane.addPropertyChangeListener(this);
-/*    reportPane.addPropertyChangeListener (ReportPane.NUMBER_OF_PAGES_PROPERTY, this);
-    reportPane.addPropertyChangeListener (ReportPane.PAGENUMBER_PROPERTY, this);
-    reportPane.addPropertyChangeListener (ReportPane.ERROR_PROPERTY, this);*/
 
     JPanel reportPaneHolder = new JPanel(new CenterLayout());
     reportPaneHolder.add(reportPane);
@@ -620,7 +550,7 @@ public class PreviewFrame
     PageFormat pf = pj.pageDialog(reportPane.getOutputTarget().getPageFormat());
 
     reportPane.setPageFormat(pf);
-    validate();
+    validateButtons();
     pack();
   }
 
@@ -666,7 +596,7 @@ public class PreviewFrame
   public void lastPage()
   {
     reportPane.setPageNumber(reportPane.getNumberOfPages());
-    validate();
+    //validateButtons();
   }
 
   /**
@@ -682,7 +612,7 @@ public class PreviewFrame
     if (pn < mp)
     {
       reportPane.setPageNumber(pn + 1);
-      validate();
+      //validateButtons();
     }
   }
 
@@ -694,7 +624,7 @@ public class PreviewFrame
     if (reportPane.getPageNumber() != 1)
     {
       reportPane.setPageNumber(1);
-      validate();
+      //validateButtons();
     }
   }
 
@@ -707,7 +637,7 @@ public class PreviewFrame
     if (pn > 1)
     {
       reportPane.setPageNumber(pn - 1);
-      validate();
+      //validateButtons();
     }
   }
 
@@ -725,7 +655,7 @@ public class PreviewFrame
     zoomSelect.setSelectedIndex(zoomIndex);
 
     reportPane.setZoomFactor(getZoomFactor());
-    validate();
+    //validateButtons();
   }
 
   /** Decreases the zoom factor for the report pane (unless it is already at the minimum zoom). */
@@ -739,7 +669,7 @@ public class PreviewFrame
     zoomSelect.setSelectedIndex(zoomIndex);
 
     reportPane.setZoomFactor(getZoomFactor());
-    validate();
+    //validateButtons();
   }
 
   /**
@@ -750,7 +680,7 @@ public class PreviewFrame
     zoomIndex = index;
     reportPane.setZoomFactor(getZoomFactor());
     zoomSelect.setSelectedIndex(zoomIndex);
-    validate();
+    //validateButtons();
   }
 
   /**
@@ -1110,7 +1040,7 @@ public class PreviewFrame
               params
           )
       );
-      validate();
+      validateButtons();
     }
     else if (property.equals(ReportPane.ERROR_PROPERTY))
     {
@@ -1126,14 +1056,19 @@ public class PreviewFrame
             )
         );
       }
-      validate();
+      validateButtons();
+    }
+    else if (property.equals(ReportPane.ZOOMFACTOR_PROPERTY))
+    {
+      Log.debug ("ZoomFactor changed!");
+      validateButtons();
     }
   }
 
   /**
    * Updates the states of all buttons to reflect the state of the assigned ReportPane.
    */
-  public void validate()
+  protected void validateButtons()
   {
     int pn = reportPane.getPageNumber();
     int mp = reportPane.getNumberOfPages();
@@ -1145,8 +1080,6 @@ public class PreviewFrame
 
     zoomOutAction.setEnabled(zoomSelect.getSelectedIndex() != 0);
     zoomInAction.setEnabled(zoomSelect.getSelectedIndex() != (zoomFactors.length - 1));
-
-    super.validate();
   }
 
   /**
@@ -1170,15 +1103,5 @@ public class PreviewFrame
   public void setLargeIconsEnabled(boolean b)
   {
     largeIconsEnabled = b;
-  }
-
-  public static void main(String[] args)
-  {
-    JFreeReport report = new JFreeReport();
-    report.setData(new DefaultTableModel());
-    PreviewFrame f = new PreviewFrame(report);
-    f.validate();
-    //f.pack();
-    //f.setVisible(true);
   }
 }

@@ -25,7 +25,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportPane.java,v 1.17 2002/08/28 14:09:37 taqua Exp $
+ * $Id: ReportPane.java,v 1.18 2002/08/29 19:15:35 taqua Exp $
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
@@ -37,6 +37,7 @@
  * 26-May-2002 : Changed Repagination bahaviour. Implemented the Pageable-interface
  * 08-Jun-2002 : Documentation
  * 22-Aug-2002 : BugFix: Errors while processing the report did not trigger a PropertyChangeEvent
+ * 01-Sep-2002 : BugFix: ZoomFactorProperty did not trigger a PropertyChangeEvent
  */
 
 package com.jrefinery.report.preview;
@@ -324,7 +325,7 @@ public class ReportPane extends JComponent implements Printable, Pageable
    */
   public void setZoomFactor (double factor)
   {
-    double oldzoom = factor;
+    double oldzoom = zoomFactor;
     zoomFactor = factor;
     graphCache = null;
 

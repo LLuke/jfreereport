@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.14 2002/08/26 22:02:13 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.15 2002/08/29 19:15:35 taqua Exp $
  *
  * Changes
  * -------
@@ -307,12 +307,6 @@ public class G2OutputTarget extends AbstractOutputTarget
     float elementLength = (float) (bounds.getX() + bounds.getWidth());
 
     GlyphVector gv = g2.getFont().createGlyphVector(frc, text);
-/*
-    Log.debug ("GV:FRC Alias: " + frc.isAntiAliased());
-    Log.debug ("GV:FRC fractional : " + frc.usesFractionalMetrics());
-    Log.debug ("GV:TextLength : " + gv.getLogicalBounds().getWidth());
-    Log.debug ("GV:ElementLength : " + gv.getVisualBounds().getWidth());
-*/
     FontMetrics fm = g2.getFontMetrics();
     float baseline = (float) (bounds.getY() + fm.getMaxAscent());
     if (alignment == Element.LEFT)
@@ -332,8 +326,6 @@ public class G2OutputTarget extends AbstractOutputTarget
     {
       Log.warn("Unable to display the string completely. Can display up to " + display + " chars.");
     }
-//    Log.debug ("X = " + x);
-//    g2.draw(new Rectangle2D.Float(x, (float) bounds.getY(), textLength, (float) (bounds.getHeight())));
     g2.drawString(text, x, baseline);
   }
 
