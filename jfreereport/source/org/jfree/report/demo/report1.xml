@@ -3,7 +3,7 @@
                         "http://jfreereport.sourceforge.net/report-085.dtd">
 
 <report name="Sample Report 1" orientation="portrait" pageformat="LETTER" topmargin="10" leftmargin="10" bottommargin="10" rightmargin="10">
-
+  
   <parser-config>
     <property name="title">Sample report 1</property>
   </parser-config>

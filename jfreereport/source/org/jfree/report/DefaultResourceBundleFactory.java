@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultResourceBundleFactory.java,v 1.2 2005/02/23 19:31:32 taqua Exp $
+ * $Id: DefaultResourceBundleFactory.java,v 1.3 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -44,7 +44,8 @@ import java.util.ResourceBundle;
  * A default implementation of the ResourceBundleFactory, that creates resource bundles
  * using the specified locale.
  * <p/>
- * If not defined otherwise, this implementation uses <code>Locale.getDefault()</code>
+ * If not defined otherwise, this implementation uses <code>Locale.getDefault()</code> as
+ * Locale.
  *
  * @author Thomas Morgner
  */
@@ -67,6 +68,9 @@ public class DefaultResourceBundleFactory implements ResourceBundleFactory
   /**
    * Creates a new DefaultResourceBundleFactory using the specified locale as factory
    * locale.
+   *
+   * @param locale the Locale instance that should be used when creating ResourceBundles.
+   * @throws NullPointerException if the given Locale is null.
    */
   public DefaultResourceBundleFactory (final Locale locale)
   {
@@ -88,9 +92,10 @@ public class DefaultResourceBundleFactory implements ResourceBundleFactory
   }
 
   /**
-   * Defines the locale.
+   * Redefines the locale. The locale given must not be null.
    *
    * @param locale the new locale (never null).
+   * @throws NullPointerException if the given locale is null.
    */
   public void setLocale (final Locale locale)
   {
@@ -105,9 +110,14 @@ public class DefaultResourceBundleFactory implements ResourceBundleFactory
    * Creates a resource bundle named by the given key and using the factory's defined
    * locale.
    *
-   * @param key the name of the resourcebundle
+   * @param key the name of the resourcebundle, never null.
    * @return the created resource bundle
    *
+   * @throws NullPointerException if <code>key</code> is
+   *                              <code>null</code>
+   * @throws java.util.MissingResourceException
+   *                              if no resource bundle for the specified base name can be
+   *                              found
    * @see ResourceBundle#getBundle(String,Locale)
    */
   public ResourceBundle getResourceBundle (final String key)

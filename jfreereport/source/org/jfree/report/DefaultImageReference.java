@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);Stefan Prange
  *
- * $Id: DefaultImageReference.java,v 1.7 2005/03/03 22:59:19 taqua Exp $
+ * $Id: DefaultImageReference.java,v 1.8 2005/03/04 12:08:16 taqua Exp $
  *
  * Changes:
  * --------
@@ -50,14 +50,18 @@ import java.net.URL;
 
 import org.jfree.report.resourceloader.ImageFactory;
 import org.jfree.util.WaitingImageObserver;
+import org.jfree.util.ObjectUtilities;
 
 /**
- * An image reference encapsulates the source of an image together with a
+ * An DefaultImageReference encapsulates the source of an image together with a
  * <code>java.awt.Image</code>. The source is used to create a higher resolution version
  * if needed. The source file/URL may also be inlined into the output target, to create
  * better results.
  * <p/>
- * An ImageReference is always used in conjunction with an ImageElement.
+ * An DefaultImageReference is always used in conjunction with an ImageElement.
+ * <p/>
+ * This implementation provides a reasonable default implementation to encapsualte local
+ * images into reports.
  *
  * @author Thomas Morgner
  */
@@ -101,6 +105,7 @@ public class DefaultImageReference
    *
    * @param url the source url. The url must be readable while generating reports.
    * @throws IOException if the url could not be read.
+   * @throws NullPointerException if the given URL is null.
    */
   public DefaultImageReference (final URL url)
           throws IOException
@@ -118,10 +123,12 @@ public class DefaultImageReference
   }
 
   /**
-   * Creates a new ImageReference without an assigned URL for the Image.
+   * Creates a new ImageReference without an assigned URL for the Image. This image
+   * reference will not be loadable and cannot be used to embedd the original rawdata
+   * of the image into the generated content.
    *
-   * @param img the image for this reference
-   * @throws NullPointerException if the image is null
+   * @param img the image for this reference.
+   * @throws NullPointerException if the image is null.
    */
   public DefaultImageReference (final Image img)
   {
@@ -137,7 +144,9 @@ public class DefaultImageReference
   }
 
   /**
-   * Creates a new image reference.
+   * Creates a new image reference without assigning either an Image or an URL.
+   * This DefaultImageReference will act as place holder to reserve space during
+   * the layouting, no content will be generated.
    *
    * @param w the width of the unscaled image.
    * @param h the height of the unscaled image.
@@ -148,8 +157,17 @@ public class DefaultImageReference
     this.height = h;
   }
 
+  /**
+   * Copies the contents of the given DefaultImageReference.
+   *
+   * @param parent the parent.
+   */
   public DefaultImageReference (final DefaultImageReference parent)
   {
+    if (parent == null)
+    {
+      throw new NullPointerException("The given parent must not be null.");
+    }
     this.width = parent.width;
     this.height = parent.height;
     this.image = parent.image;
@@ -157,9 +175,9 @@ public class DefaultImageReference
   }
 
   /**
-   * Returns the current image instance. <P> The image is not scaled in any way.
+   * Returns the original image if available.
    *
-   * @return The current image instance.
+   * @return The current image instance, or null, if no image has been assigned.
    */
   public Image getImage ()
   {
@@ -169,13 +187,20 @@ public class DefaultImageReference
   /**
    * Returns the source URL for the image.
    *
-   * @return The URL.
+   * @return The URL from where the image has been loaded, or null, if the source URL
+   * is not known.
    */
   public URL getSourceURL ()
   {
     return url;
   }
 
+  /**
+   * Returns the a string version of the source URL. If no URL has been assigned, this
+   * method will return null.
+   *
+   * @return a String representing the assigned URL.
+   */
   public String getSourceURLString ()
   {
     if (url == null)
@@ -198,6 +223,14 @@ public class DefaultImageReference
     buf.append(getSourceURL());
     buf.append(", image=");
     buf.append(getImage());
+    buf.append(", width=");
+    buf.append(getImageWidth());
+    buf.append(", height=");
+    buf.append(getImageHeight());
+    buf.append(", scaleX=");
+    buf.append(getScaleX());
+    buf.append(", scaleY=");
+    buf.append(getScaleY());
     buf.append("}");
 
     return buf.toString();
@@ -220,19 +253,27 @@ public class DefaultImageReference
       return false;
     }
     final DefaultImageReference ref = (DefaultImageReference) o;
-    if (ref.url == null && url == null)
-    {
-      return true;
-    }
-    if (ref.url == null)
+    if (ObjectUtilities.equal(url, ref.url) == false)
     {
       return false;
     }
-    if (url == null)
+    if (width != ref.width)
     {
       return false;
     }
-    return ref.url.equals(url);
+    if (height != ref.height)
+    {
+      return false;
+    }
+    if (scaleX != ref.scaleX)
+    {
+      return false;
+    }
+    if (scaleY != ref.scaleY)
+    {
+      return false;
+    }
+    return true;
   }
 
   /**
@@ -243,7 +284,11 @@ public class DefaultImageReference
   public int hashCode ()
   {
     int result;
-    result = (image != null ? image.hashCode() : 0);
+    result = width;
+    result = 29 * result + height;
+    result = 29 * result + Float.floatToIntBits(scaleX);
+    result = 29 * result + Float.floatToIntBits(scaleY);
+    result = 29 * result + (image != null ? image.hashCode() : 0);
     result = 29 * result + (url != null ? url.hashCode() : 0);
     return result;
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.15 2005/02/23 19:31:20 taqua Exp $
+ * $Id: Band.java,v 1.16 2005/03/03 14:42:26 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -79,23 +79,14 @@ import org.jfree.report.style.BandStyleKeys;
 import org.jfree.report.style.ElementDefaultStyleSheet;
 
 /**
- * A report band is a collection which can contain other Report-Elements. A band contains
- * a list of elements to be displayed, and represents one section of a report (the report
- * header or footer, the page header or footer, the group header or footer, or the items
- * within a group). <P> The elements in a report band can contain fixed values, field
- * values from the dataset, or function values. The elements are not required to have
- * unique names.
+ * A report band is a collection of other elements and bands, similiar to an
+ * AWT-Container.
  * <p/>
  * This implementation is not synchronized, to take care that you externally synchronize
- * it when using multiple threads.
+ * it when using multiple threads to modify instances of this class.
  * <p/>
- * A band's contents should not be modified after the report processing starts, so don't
- * add Elements to the band's contained in or aquired from an report-state.
+ * Bands automaticly inherit their style data to all their assigned childs.
  * <p/>
- * Bands contain a master stylesheet for all element contained in that band. This
- * StyleSheet is registered in the child when the element is added to the band.
- * <p/>
- * Bands now extend the Element-class, so it is possible to stack bands into another band.
  * Trying to add a parent of an band as child to the band, will result in an exception.
  *
  * @author David Gilbert
@@ -136,11 +127,6 @@ public class Band extends Element implements Serializable, Cloneable
     allElements = new ArrayList();
   }
 
-  protected ElementDefaultStyleSheet createGlobalDefaultStyle ()
-  {
-    return BandDefaultStyleSheet.getBandDefaultStyle();
-  }
-
   /**
    * Constructs a new band with the given pagebreak attributes. Pagebreak attributes have
    * no effect on subbands.
@@ -158,7 +144,19 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Returns the layout manager for the band.
+   * Returns the global stylesheet for all bands. This stylesheet provides
+   * the predefined default values for some of the stylekeys.
+   *
+   * @return the global default stylesheet.
+   */
+  protected ElementDefaultStyleSheet createGlobalDefaultStyle ()
+  {
+    return BandDefaultStyleSheet.getBandDefaultStyle();
+  }
+
+  /**
+   * Returns the layout manager for the band. Unless defined otherwise, the
+   * StaticBandLayoutManager is returned.
    *
    * @return The layout manager.
    */
@@ -192,7 +190,7 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Adds a report element to the band. The element will be inserted on the specified
+   * Adds a report element to the band. The element will be inserted at the specified
    * position.
    *
    * @param position the position where to insert the element
@@ -276,7 +274,7 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Returns the first element in the list that is registered by the given name.
+   * Returns the first element in the list that is known by the given name.
    *
    * @param name the element name.
    * @return the first element with the specified name, or <code>null</code> if there is
@@ -308,9 +306,6 @@ public class Band extends Element implements Serializable, Cloneable
 
   /**
    * Removes an element from the band.
-   * <p/>
-   * You should not use this method on a band acquired from a <code>ReportState</code> or
-   * <code>Function</code>.
    *
    * @param e the element to be removed.
    * @throws NullPointerException if the given element is null.
@@ -336,6 +331,7 @@ public class Band extends Element implements Serializable, Cloneable
    * Returns all child-elements of this band as immutable list.
    *
    * @return an immutable list of all registered elements for this band.
+   * @deprecated use <code>getElementArray()</code> instead.
    */
   public List getElements ()
   {
@@ -353,7 +349,11 @@ public class Band extends Element implements Serializable, Cloneable
   }
 
   /**
-   * Returns an array of the elements in the band. This method never returns null.
+   * Returns an array of the elements in the band. If the band is empty, an empty array
+   * is returned.
+   * <p>
+   * For performance reasons, a shared cached instance is returned. Do not modify the
+   * returned array or live with the consquences.
    *
    * @return the elements.
    */

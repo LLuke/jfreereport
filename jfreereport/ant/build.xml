@@ -108,7 +108,7 @@ module-file=$${module-${module}-file}</echo>
     <!-- copy across runtime jar files -->
     <copy todir="distribution">
       <fileset dir=".">
-        <include name="${jfreereport.name}-${jfreereport.version}-*.jar"/>
+        <include name="${jfreereport.name}-*-${jfreereport.version}.jar"/>
       </fileset>
     </copy>
 
@@ -170,7 +170,9 @@ module-file=$${module-${module}-file}</echo>
   </target>
 
 
-  <target name="maven-bundle" depends="build-all" >
+  <target name="maven-bundle" depends="init, build-all"> 
+  <!--  depends="build-all" > -->
+  
     <!-- make a temporary distribution directory -->
     <mkdir dir="distribution"/>
     <!-- copy across Licences -->
@@ -192,7 +194,7 @@ module-file=$${module-${module}-file}</echo>
     We assume that at least a JDK 1.2.2 is installed.
   </description>
 
-  <target name="all" depends="build-all, javadoc, make-targz, make-zip">
+  <target name="all" depends="build-all, javadoc, make-targz, make-zip, maven-bundle">
 
   </target>
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: CustomPageDefinition.java,v 1.4 2005/02/23 19:31:21 taqua Exp $
+ * $Id: CustomPageDefinition.java,v 1.5 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -50,6 +50,8 @@ import org.jfree.report.util.SerializerHelper;
 /**
  * A page definition, that consists of one or many pages. The pages are allowed to
  * overlapp or to leave areas of the page uncovered.
+ * <p>
+ * JFreeReport 0.8.5 does not yet support printing on multiple pages.
  *
  * @author Thomas Morgner
  * @see PageDefinition
@@ -98,9 +100,7 @@ public class CustomPageDefinition implements PageDefinition
     width = Math.max(width, (float) (format.getImageableWidth() + x));
     height = Math.max(height, (float) (format.getImageableHeight() + y));
     final Rectangle2D bounds = new Rectangle2D.Double
-            (x, y,
-                    format.getImageableWidth(),
-                    format.getImageableHeight());
+            (x, y,  format.getImageableWidth(), format.getImageableHeight());
     pageBoundsList.add(bounds);
     pageFormatList.add(format.clone());
   }
@@ -147,7 +147,6 @@ public class CustomPageDefinition implements PageDefinition
    * Returns all page positions as array.
    *
    * @return the collected page positions
-   *
    * @see PageDefinition#getPagePosition(int)
    */
   public Rectangle2D[] getPagePositions ()

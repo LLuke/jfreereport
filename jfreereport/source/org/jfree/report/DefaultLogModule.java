@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DefaultLogModule.java,v 1.4 2005/01/24 23:57:45 taqua Exp $
+ * $Id: DefaultLogModule.java,v 1.5 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -57,7 +57,8 @@ import org.jfree.report.util.SystemOutLogTarget;
 public class DefaultLogModule extends AbstractModule
 {
   /**
-   * DefaultConstructor. Loads the module specification.
+   * DefaultConstructor. Loads the module specification from a file called
+   * 'logmodule.properties'.
    *
    * @throws ModuleInitializeException if an error occured.
    */
@@ -75,10 +76,11 @@ public class DefaultLogModule extends AbstractModule
   }
 
   /**
-   * Initializes the module. Use this method to perform all initial setup operations. This
-   * method is called only once in a modules lifetime. If the initializing cannot be
-   * completed, throw a ModuleInitializeException to indicate the error,. The module will
-   * not be available to the system.
+   * Initializes the module. If the defined LogTarget from the configuration is the
+   * class name of the SystemOutLogTarget, then the SystemLogTarget is defined as
+   * log system.
+   * <p>
+   * If logging is disabled, no further initialization is done. 
    *
    * @param subSystem the subSystem.
    * @throws org.jfree.base.modules.ModuleInitializeException

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRow.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
+ * $Id: DataRow.java,v 1.4 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,9 @@ package org.jfree.report;
  * The DataRows depends on a unmodifiable row structure, so it is forbidden to add new
  * functions and expressions to the report or to modify the tablemodel after the report
  * processing has started.
+ * <p/>
+ * JFreeReport assumes, that the tablemodels given for reporting are immutable and do not
+ * change during the report processing.
  * <p/>
  * ReportProperties can only be queried if they are marked. Marked properties get
  * enumerated when the report processing starts. Marking properties after that point has

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: DrawableElement.java,v 1.3 2003/08/24 15:13:21 taqua Exp $
+ * $Id: DrawableElement.java,v 1.4 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes
  * -------
@@ -39,7 +39,9 @@
 package org.jfree.report;
 
 /**
- * The element returns a drawable container. Drawable elements always scale.
+ * The element returns a drawable container. Drawable elements always scale without
+ * obeying to an aspect ratio. It is the resposibility of the drawable implementation to
+ * implement such rules.
  *
  * @author Thomas Morgner
  */
@@ -58,16 +60,7 @@ public class DrawableElement extends Element
   }
 
   /**
-   * Defines the content-type for this element. The content-type is used as a hint how to
-   * process the contents of this element. An element implementation should restrict
-   * itself to the content-type set here, or the reportprocessing may fail or the element
-   * may not be printed.
-   * <p/>
-   * An element is not allowed to change its content-type after ther report processing has
-   * started.
-   * <p/>
-   * If an content-type is unknown to the output-target, the processor should ignore the
-   * content or clearly document its internal reprocessing. Ignoring is preferred.
+   * Defines the content-type for this element.
    *
    * @return the content-type as string.
    */

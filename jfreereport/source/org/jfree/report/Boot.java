@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Boot.java,v 1.8 2005/01/24 23:57:39 taqua Exp $
+ * $Id: Boot.java,v 1.9 2005/02/23 21:04:29 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -52,7 +52,7 @@ package org.jfree.report;
  * implementations.
  *
  * @author Thomas Morgner
- * @deprecated Use JFreeReportBoot now.
+ * @deprecated Use <code>JFreeReportBoot</code> now.
  */
 public final class Boot
 {
