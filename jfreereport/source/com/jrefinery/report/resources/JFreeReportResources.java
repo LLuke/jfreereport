@@ -70,13 +70,13 @@ public class JFreeReportResources extends ListResourceBundle
   }
 
   /** The resources to be localised. */
-  private static final Object[][] contents = 
+  private static final Object[][] contents =
     {
       { "project.name", "JFreeReport"},
-      { "project.version", "0.7.3"},
+      { "project.version", "0.7.5"},
       { "project.info", "http://www.object-refinery.com/jfreereport/index.html"},
       { "project.copyright", "(C)opyright 2000-2002, by Simba Management Limited and Contributors"},
-  
+
       { "action.save-as.name", "Save As..."},
       { "action.save-as.description", "Save to PDF format"},
       { "action.save-as.mnemonic", new Integer (KeyEvent.VK_A)},
@@ -96,7 +96,7 @@ public class JFreeReportResources extends ListResourceBundle
       { "action.print.accelerator", KeyStroke.getKeyStroke ("control P")},
       { "action.print.small-icon", getIcon("com/jrefinery/report/resources/Print16.gif")},
       { "action.print.icon", getIcon("com/jrefinery/report/resources/Print24.gif")},
-  
+
       { "action.close.name", "Close"},
       { "action.close.description", "Close print preview window"},
       { "action.close.mnemonic", new Integer(KeyEvent.VK_C) },
@@ -160,11 +160,11 @@ public class JFreeReportResources extends ListResourceBundle
 
     // preview frame...
       { "preview-frame.title", "Print Preview"},
-  
+
     // menu labels...
       { "menu.file.name", "File"},
       { "menu.file.mnemonic", new Character ('F')},
-  
+
       { "menu.help.name", "Help"},
       { "menu.help.mnemonic", new Character ('H')},
 
@@ -180,5 +180,5 @@ public class JFreeReportResources extends ListResourceBundle
 
 
     };
-  
+
 }
