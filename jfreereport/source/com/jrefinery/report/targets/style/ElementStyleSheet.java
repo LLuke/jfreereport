@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.1 2002/12/02 17:57:07 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.2 2002/12/05 12:18:05 mungady Exp $
  *
  * Changes
  * -------
@@ -52,7 +52,15 @@ import java.util.Hashtable;
 import java.util.List;
 
 /**
- * An element style-sheet.
+ * An element style-sheet contains zero, one or many attributes that affect the appearance of 
+ * report elements.  For each attribute, there is a predefined key that can be used to access 
+ * that attribute in the style sheet.
+ * <p>
+ * Every report element has an associated style-sheet.
+ * <p>
+ * A style-sheet maintains a list of parent style-sheets.  If an attribute is not defined in a
+ * style-sheet, the code refers to the parent style-sheets to see if the attribute is defined 
+ * there.
  *
  * @author Thomas Morgner
  */
@@ -124,7 +132,8 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
   private ArrayList parents;
   
   /**
-   * Creates a new element style-sheet with the given name.
+   * Creates a new element style-sheet with the given name.  The style-sheet initially contains
+   * no attributes, and has no parent style-sheets.
    *
    * @param name  the name (null not permitted).
    */
@@ -158,7 +167,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
   {
     if (parent == null) 
     {
-      throw new NullPointerException("ElementStyleSheet.addParent: parent is null.");
+      throw new NullPointerException("ElementStyleSheet.addParent(...): parent is null.");
     }
     parents.add (parent);
   }
@@ -172,7 +181,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
   {
     if (parent == null) 
     {
-      throw new NullPointerException("ElementStyleSheet.removeParent: parent is null.");
+      throw new NullPointerException("ElementStyleSheet.removeParent(...): parent is null.");
     }
     parents.remove (parent);
   }
@@ -188,7 +197,9 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
   }
 
   /**
-   * Returns the value of a style.
+   * Returns the value of a style.  If the style is not found in this style-sheet, the code looks
+   * in the parent style-sheets.  If the style is not found in any of the parent style-sheets, then
+   * <code>null</code> is returned.
    *
    * @param key  the style key.
    *
@@ -202,7 +213,7 @@ public class ElementStyleSheet implements StyleSheet, Cloneable, Serializable
   /**
    * Returns the value of a style.  If the style is not found in this style-sheet, the code looks
    * in the parent style-sheets.  If the style is not found in any of the parent style-sheets, then
-   * the default value (possibly null) is returned.
+   * the default value (possibly <code>null</code>) is returned.
    *
    * @param key  the style key.
    * @param defaultValue  the default value (null permitted).

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleKey.java,v 1.1 2002/12/02 17:57:08 taqua Exp $
+ * $Id: StyleKey.java,v 1.2 2002/12/05 12:18:05 mungady Exp $
  *
  * Changes
  * -------
@@ -42,10 +42,14 @@ import java.io.Serializable;
 import java.util.Hashtable;
 
 /**
- * A style key represents a (key, class) pair.
+ * A style key represents a (key, class) pair.  Style keys are used to access style attributes
+ * defined in a <code>BandStyleSheet</code> or an <code>ElementStyleSheet</code>
  * <p>
  * Note that this class also defines a static Hashtable in which all defined keys are 
  * stored.
+ *
+ * @see BandStyleSheet
+ * @see ElementStyleSheet
  *
  * @author Thomas Morgner
  */
@@ -85,13 +89,13 @@ public class StyleKey implements Serializable, Cloneable
   /**
    * Sets the name of the key.
    *
-   * @param name  the name.
+   * @param name  the name (null not permitted).
    */
   private void setName(String name)
   {
     if (name == null)
     {
-      throw new NullPointerException("Name must not be null");
+      throw new NullPointerException("StyleKey.setName(...): null not permitted.");
     }
     this.name = name;
   }
