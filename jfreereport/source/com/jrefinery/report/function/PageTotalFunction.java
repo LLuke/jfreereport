@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport;
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ----------------------
  * PageTotalFunction.java
- * -----------------------
- * (C)opyright 2002, by Thomas Morgner and Contributors.
+ * ----------------------
+ * (C)opyright 2002, 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.17 2003/04/02 21:14:31 taqua Exp $
+ * $Id: PageTotalFunction.java,v 1.18 2003/04/05 18:57:11 taqua Exp $
  *
  * ChangeLog
  * ---------
@@ -129,7 +129,7 @@ public class PageTotalFunction extends PageFunction
    */
   public PageTotalFunction()
   {
-    groupPages = new HashMap();
+    this.groupPages = new HashMap();
   }
 
   /**
@@ -184,6 +184,8 @@ public class PageTotalFunction extends PageFunction
 
   /**
    * Receives notification that a group has started.
+   * <p>
+   * If no group is specified for the function, then the event is ignored.
    *
    * @param event  the event.
    */

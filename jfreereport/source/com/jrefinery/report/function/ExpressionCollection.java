@@ -23,9 +23,20 @@
  * -------------------------
  * ExpressionCollection.java
  * -------------------------
- * (C)opyright 2000-2003, by Simba Management Limited.
+ * (C)opyright 2000-2003, by Thomas Morgner and Contributors.
  *
+<<<<<<< ExpressionCollection.java
+<<<<<<< ExpressionCollection.java
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ * 
+ * $Id: ExpressionCollection.java,v 1.6 2003/02/26 13:57:57 mungady Exp $
+=======
  * $Id: ExpressionCollection.java,v 1.7 2003/03/13 17:41:51 taqua Exp $
+>>>>>>> 1.7
+=======
+ * $Id: ExpressionCollection.java,v 1.8 2003/03/18 18:28:16 taqua Exp $
+>>>>>>> 1.8
  *
  * Changes
  * -------
@@ -108,19 +119,21 @@ public class ExpressionCollection implements Cloneable
   }
 
   /**
-   * Returns the Expression with the specified name (or null).
+   * Returns the {@link Expression} with the specified name (or <code>null</code>).
    *
-   * @param name  the expression name (null not permitted).
+   * @param name  the expression name (<code>null</code> not permitted).
    *
    * @return The expression.
    *
-   * @throws NullPointerException if the name given is null
+   * @throws NullPointerException if the name given is <code>null</code>.
    */
   public Expression get(String name)
   {
     Integer position = (Integer) expressionPositions.get(name);
     if (position == null)
+    {
       return null;
+    }
     return getExpression (position.intValue());
   }
 

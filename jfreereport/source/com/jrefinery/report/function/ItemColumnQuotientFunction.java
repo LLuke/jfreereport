@@ -6,7 +6,7 @@
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
  * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
- * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -20,15 +20,15 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * ---------------------------
+ * -------------------------------
  * ItemColumnQuotientFunction.java
- * ---------------------------
+ * -------------------------------
  * (C)opyright 2002, by Heiko Evermann and Contributors.
  *
  * Original Author:  Heiko Evermann (for Hawesko GmbH & Co KG);
  * Contributor(s):
  *
- * $Id: TotalGroupSumQuotienFunction.java,v 1.15 2002/12/12 12:26:56 mungady Exp $
+ * $Id: ItemColumnQuotientFunction.java,v 1.1 2003/02/27 22:59:48 taqua Exp $
  *
  * Changes
  * -------
@@ -38,12 +38,12 @@
 
 package com.jrefinery.report.function;
 
+import java.math.BigDecimal;
+
 import com.jrefinery.report.filter.DecimalFormatParser;
 import com.jrefinery.report.filter.NumberFormatParser;
 import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.util.Log;
-
-import java.math.BigDecimal;
 
 /**
  * A report function that calculates the quotient of two fields (columns)
@@ -238,7 +238,7 @@ public class ItemColumnQuotientFunction extends AbstractFunction
   }
 
   /**
-   * Return a completly separated copy of this function. The copy does no
+   * Return a completely separated copy of this function. The copy does no
    * longer share any changeable objects with the original function.
    *
    * @return a copy of this function.
