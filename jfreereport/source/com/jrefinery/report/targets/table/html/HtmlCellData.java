@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellData.java,v 1.6 2003/02/21 18:12:49 taqua Exp $
+ * $Id: HtmlCellData.java,v 1.7 2003/02/26 16:42:26 mungady Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ public abstract class HtmlCellData extends TableCellData
 {
   /** The assigned cell style. */
   private HtmlCellStyle style;
+  
   /** a flag indicating whether to generate XHTML for the output. */
   private boolean useXHTML;
 
