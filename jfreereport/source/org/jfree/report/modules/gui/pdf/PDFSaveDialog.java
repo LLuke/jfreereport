@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PDFSaveDialog.java,v 1.18 2005/02/25 00:12:52 taqua Exp $
+ * $Id: PDFSaveDialog.java,v 1.19 2005/03/01 10:09:21 taqua Exp $
  *
  * Changes
  * --------
@@ -55,6 +55,8 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.Properties;
+import java.util.ResourceBundle;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -144,9 +146,9 @@ public class PDFSaveDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ActionConfirm ()
+    public ActionConfirm (ResourceBundle resources)
     {
-      putValue(Action.NAME, getResources().getString("pdfsavedialog.confirm"));
+      putValue(Action.NAME, resources.getString("pdfsavedialog.confirm"));
     }
   }
 
@@ -158,9 +160,9 @@ public class PDFSaveDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ActionCancel ()
+    public ActionCancel (ResourceBundle resources)
     {
-      putValue(Action.NAME, getResources().getString("pdfsavedialog.cancel"));
+      putValue(Action.NAME, resources.getString("pdfsavedialog.cancel"));
     }
   }
 
@@ -172,9 +174,9 @@ public class PDFSaveDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ActionSelectFile ()
+    public ActionSelectFile (ResourceBundle resources)
     {
-      putValue(Action.NAME, getResources().getString("pdfsavedialog.selectFile"));
+      putValue(Action.NAME, resources.getString("pdfsavedialog.selectFile"));
     }
 
     /**
@@ -358,8 +360,9 @@ public class PDFSaveDialog extends AbstractExportDialog
    */
   private void initConstructor ()
   {
-    setCancelAction(new ActionCancel());
-    setConfirmAction(new ActionConfirm());
+    setCancelAction(new ActionCancel(getResources()));
+    setConfirmAction(new ActionConfirm(getResources()));
+    actionSelectFile = new ActionSelectFile(getResources());
 
     setTitle(getResources().getString("pdfsavedialog.dialogtitle"));
     initialize();
@@ -418,10 +421,6 @@ public class PDFSaveDialog extends AbstractExportDialog
    */
   private Action getActionSelectFile ()
   {
-    if (actionSelectFile == null)
-    {
-      actionSelectFile = new ActionSelectFile();
-    }
     return actionSelectFile;
   }
 

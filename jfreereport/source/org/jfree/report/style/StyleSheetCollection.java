@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: StyleSheetCollection.java,v 1.7 2005/01/30 23:37:26 taqua Exp $
+ * $Id: StyleSheetCollection.java,v 1.8 2005/02/23 21:06:05 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -86,6 +86,11 @@ public class StyleSheetCollection implements Cloneable, Serializable
       return styleSheet;
     }
 
+    protected void updateParentReference (ManagedStyleSheet self)
+    {
+      this.self = self;
+    }
+    
     public void invalidate ()
     {
       self.removeListener(getStyleSheet());
@@ -169,7 +174,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
       for (int i = 0; i < sheets.length; i++)
       {
         final ManagedStyleSheetCarrier msc = (ManagedStyleSheetCarrier) sheets[i];
-        msc.self = ms;
+        msc.updateParentReference(ms);
       }
       return ms;
     }

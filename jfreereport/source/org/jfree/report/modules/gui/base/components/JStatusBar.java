@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 
 import org.jfree.report.modules.gui.base.PreviewBaseModule;
-import org.jfree.util.Log;
 import org.jfree.util.ResourceBundleSupport;
 
 public class JStatusBar extends JComponent

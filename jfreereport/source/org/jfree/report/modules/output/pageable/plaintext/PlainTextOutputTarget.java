@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.18 2005/02/23 21:05:31 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.19 2005/03/03 14:42:36 taqua Exp $
  *
  * Changes
  * -------
@@ -231,7 +231,7 @@ public strictfp class PlainTextOutputTarget extends AbstractOutputTarget
         throw new IllegalArgumentException("EndPos > TextLength");
       }
 
-      return characterWidth * ((float) (endPos - lineStartPos));
+      return characterWidth * (endPos - lineStartPos);
     }
 
     /**

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.20 2005/03/02 18:23:51 taqua Exp $
+ * $Id: Element.java,v 1.21 2005/03/03 14:42:33 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -141,6 +141,10 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
       this.styleSheetID = styleSheet.getId();
     }
 
+    protected void updateParentReference (InternalElementStyleSheet self)
+    {
+      this.self = self;
+    }
     /**
      * Clones this reference. During cloning the stylesheet is removed. The stylesheets ID
      * is preserved to allow to recover the stylesheet later.
@@ -275,7 +279,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
       for (int i = 0; i < sheets.length; i++)
       {
         final InternalElementStyleSheetCarrier esc = (InternalElementStyleSheetCarrier) sheets[i];
-        esc.self = es;
+        esc.updateParentReference(es);
       }
       return es;
     }
@@ -294,6 +298,11 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
       {
         setCascadeStyleSheet(parent.getStyle());
       }
+    }
+    
+    protected void updateElementReference (Element e)
+    {
+      this.element = e; 
     }
 
     /**
@@ -500,7 +509,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     // dataSource clone disconnects the reportDefinition ..
     e.datasource = (DataSource) datasource.clone();
     e.parent = null;
-    e.style.element = e;
+    e.style.updateElementReference(e);
     e.reportDefinition = null;
     return e;
   }

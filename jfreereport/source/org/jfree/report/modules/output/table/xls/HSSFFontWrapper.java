@@ -28,7 +28,7 @@
  * Original Author:  Heiko Evermann
  * Contributor(s):   Thomas Morgner; David Gilbert (for Object Refinery Limited);
  *
- * $Id: HSSFFontWrapper.java,v 1.7 2005/01/25 00:16:37 taqua Exp $
+ * $Id: HSSFFontWrapper.java,v 1.8 2005/02/23 21:05:37 taqua Exp $
  *
  * Changes
  * -------
@@ -220,7 +220,7 @@ public final class HSSFFontWrapper
     {
       int result;
       result = fontName.hashCode();
-      result = 29 * result + (int) colorIndex;
+      result = 29 * result + colorIndex;
       result = 29 * result + fontHeight;
       result = 29 * result + (bold ? 1 : 0);
       result = 29 * result + (italic ? 1 : 0);

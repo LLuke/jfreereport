@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.25 2005/02/22 20:18:04 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.26 2005/02/23 21:05:30 taqua Exp $
  *
  * Changes
  * -------
@@ -831,7 +831,7 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
   protected void printText (final String text)
   {
     final StrictBounds bounds = getInternalPDFOperationBounds();
-    final int fontSize = getFont().getFontSize();
+    final float fontSize = getFont().getFontSize();
 
     final PdfContentByte cb = this.writer.getDirectContent();
     cb.beginText();
@@ -848,13 +848,13 @@ public strictfp class PDFOutputTarget extends AbstractOutputTarget
 
     if (getFont().isUnderline())
     {
-      final float underlinePosition = (((float) fontSize) - ascent) * 0.8f;
+      final float underlinePosition = (fontSize - ascent) * 0.8f;
       cb.moveTo(x1, getPageHeight() - y2 - underlinePosition);
       cb.lineTo(x2, getPageHeight() - y2 - underlinePosition);
     }
     if (getFont().isStrikeThrough())
     {
-      final float strikethroughPosition = (float) fontSize * 0.5f;
+      final float strikethroughPosition = fontSize * 0.5f;
       cb.moveTo(x1, getPageHeight() - y2 + strikethroughPosition);
       cb.lineTo(x2, getPageHeight() - y2 + strikethroughPosition);
     }

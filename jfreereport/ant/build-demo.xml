@@ -154,8 +154,11 @@
         <include name="**/*.xml"/>
         <include name="**/*.wmf"/>
         <include name="**/*.jpg"/>
+        <include name="**/*.png"/>
+        <include name="**/*.properties"/>
       </fileset>
     </copy>
+
     <copy file="source/org/jfree/report/demo/demo.properties"
       tofile="build/jfreereport.properties"/>
 

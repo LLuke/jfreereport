@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelExportDialog.java,v 1.13 2005/02/25 00:12:53 taqua Exp $
+ * $Id: ExcelExportDialog.java,v 1.14 2005/03/01 10:09:39 taqua Exp $
  *
  * Changes
  * --------
@@ -51,6 +51,8 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.Properties;
+import java.util.ResourceBundle;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -93,9 +95,9 @@ public class ExcelExportDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ConfirmAction ()
+    public ConfirmAction (ResourceBundle resources)
     {
-      putValue(Action.NAME, getResources().getString("excelexportdialog.confirm"));
+      putValue(Action.NAME, resources.getString("excelexportdialog.confirm"));
     }
   }
 
@@ -107,9 +109,9 @@ public class ExcelExportDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public CancelAction ()
+    public CancelAction (ResourceBundle resources)
     {
-      putValue(Action.NAME, getResources().getString("excelexportdialog.cancel"));
+      putValue(Action.NAME, resources.getString("excelexportdialog.cancel"));
     }
   }
 
@@ -121,9 +123,9 @@ public class ExcelExportDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ActionSelectFile ()
+    public ActionSelectFile (ResourceBundle resources)
     {
-      putValue(Action.NAME, getResources().getString("excelexportdialog.selectFile"));
+      putValue(Action.NAME, resources.getString("excelexportdialog.selectFile"));
     }
 
     /**
@@ -197,8 +199,10 @@ public class ExcelExportDialog extends AbstractExportDialog
    */
   private void initConstructor ()
   {
-    setCancelAction(new CancelAction());
-    setConfirmAction(new ConfirmAction());
+    actionSelectFile = new ActionSelectFile(getResources());
+
+    setCancelAction(new CancelAction(getResources()));
+    setConfirmAction(new ConfirmAction(getResources()));
 
     setTitle(getResources().getString("excelexportdialog.dialogtitle"));
     initialize();
@@ -212,10 +216,6 @@ public class ExcelExportDialog extends AbstractExportDialog
    */
   private Action getActionSelectFile ()
   {
-    if (actionSelectFile == null)
-    {
-      actionSelectFile = new ActionSelectFile();
-    }
     return actionSelectFile;
   }
 
@@ -469,7 +469,7 @@ public class ExcelExportDialog extends AbstractExportDialog
   {
     final String strict = config.getConfigProperty
             (ExcelProcessor.CONFIGURATION_PREFIX +
-            ExcelProcessor.STRICT_LAYOUT,
+            TableProcessor.STRICT_LAYOUT,
                     config.getConfigProperty(TableProcessor.STRICT_LAYOUT,
                             TableProcessor.STRICT_LAYOUT_DEFAULT));
     setStrictLayout(strict.equals("true"));
@@ -483,7 +483,7 @@ public class ExcelExportDialog extends AbstractExportDialog
   public void storeToConfiguration (final ReportConfiguration config)
   {
     config.setConfigProperty(ExcelProcessor.CONFIGURATION_PREFIX +
-            ExcelProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));
+        TableProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));
   }
 
   protected String getResourceBaseName ()

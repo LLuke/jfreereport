@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExportAction.java,v 1.5 2005/01/25 00:01:15 taqua Exp $
+ * $Id: ExportAction.java,v 1.6 2005/02/23 21:04:48 taqua Exp $
  *
  * Changes
  * --------
@@ -41,6 +41,7 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.SwingUtilities;
 
 import org.jfree.report.JFreeReport;
@@ -55,10 +56,15 @@ import org.jfree.ui.action.ActionDowngrade;
  */
 public class ExportAction extends AbstractAction implements ActionDowngrade, Runnable
 {
-  private class ExportPluginListener implements PropertyChangeListener
+  private static class ExportPluginListener implements PropertyChangeListener
   {
-    public ExportPluginListener ()
+    private ExportPlugin plugin;
+    private Action action;
+    
+    public ExportPluginListener (final Action action, final ExportPlugin plugin)
     {
+      this.plugin = plugin;
+      this.action = action;
     }
 
     /**
@@ -71,7 +77,7 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
     {
       if ("enabled".equals(evt.getPropertyName()))
       {
-        setEnabled(plugin.isEnabled());
+        action.setEnabled(plugin.isEnabled());
       }
     }
   }
@@ -100,18 +106,18 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
     }
 
     this.plugin = plugin;
-    plugin.addPropertyChangeListener(new ExportPluginListener());
+    plugin.addPropertyChangeListener(new ExportPluginListener(this, plugin));
     if (plugin.getAcceleratorKey() != null)
     {
       putValue(ActionDowngrade.ACCELERATOR_KEY, plugin.getAcceleratorKey());
     }
     if (plugin.getDisplayName() != null)
     {
-      putValue(ExportAction.NAME, plugin.getDisplayName());
+      putValue(Action.NAME, plugin.getDisplayName());
     }
     if (plugin.getSmallIcon() != null)
     {
-      putValue(ExportAction.SMALL_ICON, plugin.getSmallIcon());
+      putValue(Action.SMALL_ICON, plugin.getSmallIcon());
     }
     if (plugin.getLargeIcon() != null)
     {
@@ -123,7 +129,7 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
     }
     if (plugin.getShortDescription() != null)
     {
-      putValue(ExportAction.SHORT_DESCRIPTION, plugin.getShortDescription());
+      putValue(Action.SHORT_DESCRIPTION, plugin.getShortDescription());
     }
   }
 
@@ -163,7 +169,7 @@ public class ExportAction extends AbstractAction implements ActionDowngrade, Run
       run();
     }
   }
-
+  
   /**
    * When an object implementing interface <code>Runnable</code> is used to create a
    * thread, starting the thread causes the object's <code>run</code> method to be called

@@ -27,9 +27,12 @@
  *
  * Original Author:  Mimil;
  *
- * $Id: CSVReaderDemo.java,v 1.2 2005/02/23 19:31:42 taqua Exp $
+ * $Id: CSVReaderDemo.java,v 1.3 2005/02/23 21:04:37 taqua Exp $
  *
  * $Log: CSVReaderDemo.java,v $
+ * Revision 1.3  2005/02/23 21:04:37  taqua
+ * More build process fixes - ready for JDK 1.2.2 now
+ *
  * Revision 1.2  2005/02/23 19:31:42  taqua
  * First part of the ANT build update.
  *
@@ -256,6 +259,16 @@ public class CSVReaderDemo extends AbstractDemoFrame
     return mb;
   }
 
+  protected void setFirstColumnAsNames (final boolean b)
+  {
+    this.columnfirst = b;
+  }
+  
+  protected boolean isFirstColumnAsName()
+  {
+    return this.columnfirst;
+  }
+  
   protected class CSVReaderStringAutoApiAction extends AbstractActionDowngrade
   {
 
@@ -266,9 +279,9 @@ public class CSVReaderDemo extends AbstractDemoFrame
 
     public void actionPerformed (final ActionEvent e)
     {
-      columnfirst = true;
       try
       {
+        setFirstColumnAsNames(true);
         attemptStringApiPreview();
       }
       catch (IOException e1)
@@ -288,9 +301,9 @@ public class CSVReaderDemo extends AbstractDemoFrame
 
     public void actionPerformed (final ActionEvent e)
     {
-      columnfirst = true;
       try
       {
+        setFirstColumnAsNames(true);
         attemptStringDefApiPreview();
       }
       catch (IOException e1)
@@ -342,7 +355,7 @@ public class CSVReaderDemo extends AbstractDemoFrame
     }
   }
 
-  private void handleError (final String message, final Exception e)
+  protected void handleError (final String message, final Exception e)
   {
     ExceptionDialog.showExceptionDialog("Error", message, e);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVExportDialog.java,v 1.12 2005/02/25 00:12:51 taqua Exp $
+ * $Id: CSVExportDialog.java,v 1.13 2005/03/01 10:09:20 taqua Exp $
  *
  * Changes
  * --------
@@ -49,6 +49,8 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.Properties;
+import java.util.ResourceBundle;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -130,9 +132,9 @@ public class CSVExportDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ActionSelectFile ()
+    public ActionSelectFile (ResourceBundle resources)
     {
-      putValue(Action.NAME, getResources().getString("csvexportdialog.selectFile"));
+      putValue(Action.NAME, resources.getString("csvexportdialog.selectFile"));
     }
 
     /**
@@ -159,23 +161,23 @@ public class CSVExportDialog extends AbstractExportDialog
      */
     public void stateChanged (final ChangeEvent e)
     {
-      cbxColumnNamesAsFirstRow.setEnabled(rbExportData.isSelected());
+      updateRawExportSelection();
     }
   }
 
   private class CancelAction extends AbstractCancelAction
   {
-    public CancelAction ()
+    public CancelAction (ResourceBundle resources)
     {
-      putValue(Action.NAME, getResources().getString("csvexportdialog.cancel"));
+      putValue(Action.NAME, resources.getString("csvexportdialog.cancel"));
     }
   }
 
   private class ConfirmAction extends AbstractConfirmAction
   {
-    public ConfirmAction ()
+    public ConfirmAction (ResourceBundle resources)
     {
-      putValue(Action.NAME, getResources().getString("csvexportdialog.confirm"));
+      putValue(Action.NAME, resources.getString("csvexportdialog.confirm"));
     }
   }
 
@@ -285,8 +287,8 @@ public class CSVExportDialog extends AbstractExportDialog
    */
   private void initConstructor ()
   {
-    setCancelAction(new CancelAction());
-    setConfirmAction(new ConfirmAction());
+    setCancelAction(new CancelAction(getResources()));
+    setConfirmAction(new ConfirmAction(getResources()));
     setTitle(getResources().getString("csvexportdialog.dialogtitle"));
     initialize();
     clear();
@@ -309,7 +311,7 @@ public class CSVExportDialog extends AbstractExportDialog
 
     final JLabel lblFileName = new JLabel(getResources().getString("csvexportdialog.filename"));
     final JLabel lblEncoding = new JLabel(getResources().getString("csvexportdialog.encoding"));
-    final JButton btnSelect = new ActionButton(new ActionSelectFile());
+    final JButton btnSelect = new ActionButton(new ActionSelectFile(getResources()));
     cbxStrictLayout = new JCheckBox(getResources().getString("csvexportdialog.strict-layout"));
 
     txFilename = new JTextField();
@@ -943,6 +945,11 @@ public class CSVExportDialog extends AbstractExportDialog
   protected String getConfigurationSuffix ()
   {
     return "_csvexport";
+  }
+  
+  protected void updateRawExportSelection()
+  {
+    cbxColumnNamesAsFirstRow.setEnabled(rbExportData.isSelected());
   }
 
   public static void main (final String[] args)

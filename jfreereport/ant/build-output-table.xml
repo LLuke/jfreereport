@@ -267,6 +267,9 @@
   <target name="copy-resources-output-table-rtf">
     <copy file="source/org/jfree/report/modules/output/table/rtf/module.properties"
       tofile="build/org/jfree/report/modules/output/table/rtf/module.properties"/>
+
+    <copy file="source/org/jfree/report/modules/output/table/rtf/configuration.properties"
+      tofile="build/org/jfree/report/modules/output/table/rtf/configuration.properties"/>
   </target>
 
   <!-- ************************************************************** -->

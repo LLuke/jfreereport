@@ -47,6 +47,7 @@ module-file=$${module-${module}-file}</echo>
       windowtitle="JFreeReport Class Library"
       overview="source/overview.html">
       <classpath>
+        <pathelement location="${libdir}/${jcommon-xml-jar-file}" />
         <pathelement location="${libdir}/${jcommon-jar-file}" />
         <pathelement location="${libdir}/${jaxp-jar-file}" />
         <pathelement location="${libdir}/${beanshell-jar-file}" />

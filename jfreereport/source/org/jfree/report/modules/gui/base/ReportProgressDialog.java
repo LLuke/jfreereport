@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProgressDialog.java,v 1.10 2005/01/30 23:37:20 taqua Exp $
+ * $Id: ReportProgressDialog.java,v 1.11 2005/02/19 20:10:26 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -78,13 +78,16 @@ public class ReportProgressDialog extends JDialog
     private boolean prepare;
     private int maxRow;
     private int currentRow;
+    private JProgressBar progressBar; 
 
-    public ScreenUpdateRunnable (final int currentRow,
+    public ScreenUpdateRunnable (final JProgressBar progressBar, 
+        												 final int currentRow,
                                  final int maxRow,
                                  final int page,
                                  final int pass,
                                  final boolean prepare)
     {
+      this.progressBar = progressBar;
       this.currentRow = currentRow;
       this.maxRow = maxRow;
       this.page = page;
@@ -94,11 +97,11 @@ public class ReportProgressDialog extends JDialog
 
     public void run ()
     {
-      final boolean maxRowChanged = (lastMaxRow != maxRow);
+      final boolean maxRowSame = isSameMaxRow(maxRow);
       updatePageMessage(page);
       updatePassMessage(pass, prepare);
       updateRowsMessage(currentRow, maxRow);
-      if (maxRowChanged)
+      if (maxRowSame == false)
       {
         progressBar.setMaximum(maxRow);
       }
@@ -324,7 +327,7 @@ public class ReportProgressDialog extends JDialog
   public void repaginationUpdate (final RepaginationState state)
   {
     final ScreenUpdateRunnable runnable = new ScreenUpdateRunnable
-            (state.getCurrentRow(), state.getMaxRow(), state.getPage(),
+            (progressBar, state.getCurrentRow(), state.getMaxRow(), state.getPage(),
                     state.getPass(), state.isPrepare());
     if (SwingUtilities.isEventDispatchThread())
     {
@@ -516,4 +519,10 @@ public class ReportProgressDialog extends JDialog
     }
     this.layoutText = layoutText;
   }
+  
+  protected boolean isSameMaxRow (int row)
+  {
+    return lastMaxRow == row;
+  }
+  
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManager.java,v 1.19 2005/03/03 14:42:34 taqua Exp $
+ * $Id: StaticLayoutManager.java,v 1.20 2005/03/03 17:07:57 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@ import java.awt.geom.Point2D;
 
 import org.jfree.report.Band;
 import org.jfree.report.Element;
-import org.jfree.report.ReportHeader;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.StyleKey;
 import org.jfree.report.util.ElementLayoutInformation;
@@ -53,7 +52,6 @@ import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictDimension;
 import org.jfree.report.util.geom.StrictGeomUtility;
 import org.jfree.report.util.geom.StrictPoint;
-import org.jfree.util.Log;
 
 /**
  * An implementation of the BandLayoutManager interface.

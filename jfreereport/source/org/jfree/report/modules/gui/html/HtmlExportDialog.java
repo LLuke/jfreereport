@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlExportDialog.java,v 1.13 2005/02/25 00:12:52 taqua Exp $
+ * $Id: HtmlExportDialog.java,v 1.14 2005/03/01 10:09:20 taqua Exp $
  *
  * Changes
  * -------
@@ -48,11 +48,13 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.Properties;
+import java.util.ResourceBundle;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -69,6 +71,7 @@ import javax.swing.JRadioButton;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 
 import org.jfree.io.IOUtils;
 import org.jfree.report.JFreeReport;
@@ -107,9 +110,9 @@ public class HtmlExportDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ConfirmAction ()
+    public ConfirmAction (ResourceBundle resources)
     {
-      putValue(Action.NAME, getResources().getString("htmlexportdialog.confirm"));
+      putValue(Action.NAME, resources.getString("htmlexportdialog.confirm"));
     }
   }
 
@@ -121,9 +124,9 @@ public class HtmlExportDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public CancelAction ()
+    public CancelAction (ResourceBundle resources)
     {
-      putValue(Action.NAME, getResources().getString("htmlexportdialog.cancel"));
+      putValue(Action.NAME, resources.getString("htmlexportdialog.cancel"));
     }
   }
 
@@ -135,9 +138,9 @@ public class HtmlExportDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ActionSelectDirFile ()
+    public ActionSelectDirFile (ResourceBundle resources)
     {
-      putValue(Action.NAME, getResources().getString("htmlexportdialog.selectDirFile"));
+      putValue(Action.NAME, resources.getString("htmlexportdialog.selectDirFile"));
     }
 
     /**
@@ -147,7 +150,7 @@ public class HtmlExportDialog extends AbstractExportDialog
      */
     public void actionPerformed (final ActionEvent e)
     {
-      if (rbExportToZIPFile.isSelected())
+      if (getSelectedExportMethod() == EXPORT_ZIP)
       {
         performSelectFileZip();
       }
@@ -169,21 +172,7 @@ public class HtmlExportDialog extends AbstractExportDialog
      */
     public void actionPerformed (final ActionEvent e)
     {
-      if (rbExportToDirectory.isSelected())
-      {
-        txDataFilename.setEnabled(true);
-        cbxCopyExternalReferences.setEnabled(true);
-      }
-      else if (rbExportToStream.isSelected())
-      {
-        txDataFilename.setEnabled(false);
-        cbxCopyExternalReferences.setEnabled(false);
-      }
-      else if (rbExportToZIPFile.isSelected())
-      {
-        txDataFilename.setEnabled(true);
-        cbxCopyExternalReferences.setEnabled(true);
-      }
+      performUpdateExportTypeSelection();
     }
   }
 
@@ -293,8 +282,8 @@ public class HtmlExportDialog extends AbstractExportDialog
    */
   private void initConstructor ()
   {
-    setCancelAction(new CancelAction());
-    setConfirmAction(new ConfirmAction());
+    setCancelAction(new CancelAction(getResources()));
+    setConfirmAction(new ConfirmAction(getResources()));
 
     setTitle(getResources().getString("htmlexportdialog.dialogtitle"));
     initialize();
@@ -401,7 +390,7 @@ public class HtmlExportDialog extends AbstractExportDialog
     gbc.fill = GridBagConstraints.HORIZONTAL;
     gbc.gridx = 2;
     gbc.gridy = 1;
-    contentPane.add(new ActionButton(new ActionSelectDirFile()), gbc);
+    contentPane.add(new ActionButton(new ActionSelectDirFile(getResources())), gbc);
 
     gbc = new GridBagConstraints();
     gbc.fill = GridBagConstraints.NONE;
@@ -440,7 +429,7 @@ public class HtmlExportDialog extends AbstractExportDialog
     gbc.gridwidth = 3;
     gbc.insets = new Insets(8, 1, 8, 1);
     gbc.weightx = 1;
-    contentPane.add(new JSeparator(JSeparator.HORIZONTAL), gbc);
+    contentPane.add(new JSeparator(SwingConstants.HORIZONTAL), gbc);
 
 
     gbc = new GridBagConstraints();
@@ -503,7 +492,7 @@ public class HtmlExportDialog extends AbstractExportDialog
     gbc.gridwidth = 3;
     gbc.insets = new Insets(8, 1, 8, 1);
     gbc.weightx = 1;
-    contentPane.add(new JSeparator(JSeparator.HORIZONTAL), gbc);
+    contentPane.add(new JSeparator(SwingConstants.HORIZONTAL), gbc);
 
 
     gbc = new GridBagConstraints();
@@ -1022,18 +1011,18 @@ public class HtmlExportDialog extends AbstractExportDialog
   {
     final String strict = config.getConfigProperty
             (HtmlProcessor.CONFIGURATION_PREFIX +
-            HtmlProcessor.STRICT_LAYOUT,
+            TableProcessor.STRICT_LAYOUT,
                     config.getConfigProperty(TableProcessor.STRICT_LAYOUT,
                             TableProcessor.STRICT_LAYOUT_DEFAULT));
     setStrictLayout(strict.equals("true"));
 
     setAuthor
             (config.getConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
-            HtmlProcessor.AUTHOR, getAuthor()));
+                TableProcessor.AUTHOR, getAuthor()));
 
     setHTMLTitle
             (config.getConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
-            HtmlProcessor.TITLE, getHTMLTitle()));
+                TableProcessor.TITLE, getHTMLTitle()));
 
     final String encoding = config.getConfigProperty
             (HtmlProcessor.CONFIGURATION_PREFIX +
@@ -1056,16 +1045,38 @@ public class HtmlExportDialog extends AbstractExportDialog
     config.setConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
             HtmlProcessor.ENCODING, getEncoding());
     config.setConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
-            HtmlProcessor.AUTHOR, getAuthor());
+        TableProcessor.AUTHOR, getAuthor());
     config.setConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
-            HtmlProcessor.TITLE, getHTMLTitle());
+        TableProcessor.TITLE, getHTMLTitle());
     config.setConfigProperty(HtmlProcessor.CONFIGURATION_PREFIX +
-            HtmlProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));
+        TableProcessor.STRICT_LAYOUT, String.valueOf(isStrictLayout()));
   }
 
   protected String getResourceBaseName ()
   {
     return HtmlExportPlugin.BASE_RESOURCE_CLASS;
+  }
+
+  /**
+   * 
+   */
+  protected void performUpdateExportTypeSelection()
+  {
+    if (rbExportToDirectory.isSelected())
+    {
+      txDataFilename.setEnabled(true);
+      cbxCopyExternalReferences.setEnabled(true);
+    }
+    else if (rbExportToStream.isSelected())
+    {
+      txDataFilename.setEnabled(false);
+      cbxCopyExternalReferences.setEnabled(false);
+    }
+    else if (rbExportToZIPFile.isSelected())
+    {
+      txDataFilename.setEnabled(true);
+      cbxCopyExternalReferences.setEnabled(true);
+    }
   }
 
   public static void main (final String[] args)

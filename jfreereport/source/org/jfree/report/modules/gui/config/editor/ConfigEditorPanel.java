@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: ConfigEditorPanel.java,v 1.6 2005/01/25 00:04:30 taqua Exp $
+ * $Id: ConfigEditorPanel.java,v 1.7 2005/02/23 21:04:51 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -59,15 +59,6 @@ import org.jfree.report.util.ReportConfiguration;
  */
 public class ConfigEditorPanel extends JPanel
 {
-  /**
-   * The currently edited module.
-   */
-  private Module module;
-  /**
-   * The report configuration used to edit the module.
-   */
-  private ReportConfiguration config;
-
   /**
    * A component holding the module description.
    */
@@ -153,9 +144,6 @@ public class ConfigEditorPanel extends JPanel
                           final ReportConfiguration config,
                           final ConfigDescriptionEntry[] entries)
   {
-    this.module = module;
-    this.config = config;
-
     final Object[] params = new Object[4];
     params[0] = module.getName();
     params[1] = module.getMajorVersion();

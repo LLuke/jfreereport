@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportProgressBar.java,v 1.5 2005/01/25 00:01:34 taqua Exp $
+ * $Id: ReportProgressBar.java,v 1.6 2005/02/23 21:04:48 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -69,8 +69,8 @@ public class ReportProgressBar extends JProgressBar implements RepaginationListe
     public void run ()
     {
       updatePassMessage(page, pass, prepare);
-      final boolean maxRowChanged = lastMaxRow != maxRow;
-      if (maxRowChanged)
+      final boolean maxRowSame = isSameMaxRow(maxRow);
+      if (maxRowSame == false)
       {
         setMaximum(maxRow);
       }
@@ -157,7 +157,7 @@ public class ReportProgressBar extends JProgressBar implements RepaginationListe
     }
   }
 
-  private void updatePassMessage (final int page, final int pass, final boolean prepare)
+  protected void updatePassMessage (final int page, final int pass, final boolean prepare)
   {
 
     if (lastPage != page || lastPass != pass)
@@ -241,6 +241,11 @@ public class ReportProgressBar extends JProgressBar implements RepaginationListe
       throw new NullPointerException("LayoutText must not be null.");
     }
     this.layoutText = layoutText;
+  }
+
+  protected boolean isSameMaxRow (int row)
+  {
+    return lastMaxRow == row;
   }
 
 }

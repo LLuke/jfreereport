@@ -78,7 +78,7 @@
     <jar jarfile="${module-parser-base-file}"
          basedir="build">
       <manifest>
-          <attribute name="Class-Path" value="${core-jar-file} ${manifest-lib-prefix}${jaxp-jar-file}"/>
+          <attribute name="Class-Path" value="${core-jar-file} ${manifest-lib-prefix}${jaxp-jar-file} ${manifest-lib-prefix}${jcommon-xml-jar-file}"/>
       </manifest>
     </jar>
 
@@ -89,6 +89,9 @@
   <target name="copy-resources-parser-base">
     <copy file="source/org/jfree/report/modules/parser/base/module.properties"
       tofile="build/org/jfree/report/modules/parser/base/module.properties"/>
+
+    <copy file="source/org/jfree/report/modules/parser/base/configuration.properties"
+      tofile="build/org/jfree/report/modules/parser/base/configuration.properties"/>
   </target>
 
   <!-- ************************************************************** -->

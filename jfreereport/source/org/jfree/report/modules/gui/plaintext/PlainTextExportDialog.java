@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.16 2005/03/01 10:09:21 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.17 2005/03/03 14:42:34 taqua Exp $
  *
  * Changes
  * --------
@@ -52,6 +52,8 @@ import java.io.File;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Properties;
+import java.util.ResourceBundle;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
@@ -100,9 +102,9 @@ public class PlainTextExportDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ActionConfirm ()
+    public ActionConfirm (ResourceBundle resources)
     {
-      putValue(Action.NAME, getResources().getString("plain-text-exportdialog.confirm"));
+      putValue(Action.NAME, resources.getString("plain-text-exportdialog.confirm"));
     }
   }
 
@@ -114,9 +116,9 @@ public class PlainTextExportDialog extends AbstractExportDialog
     /**
      * Default constructor.
      */
-    public ActionCancel ()
+    public ActionCancel (ResourceBundle resources)
     {
-      putValue(Action.NAME, getResources().getString("plain-text-exportdialog.cancel"));
+      putValue(Action.NAME, resources.getString("plain-text-exportdialog.cancel"));
     }
   }
 
@@ -125,14 +127,17 @@ public class PlainTextExportDialog extends AbstractExportDialog
    */
   private class ActionSelectFile extends AbstractFileSelectionAction
   {
+    private final ResourceBundle resources;
+
     /**
      * Defines an <code>Action</code> object with a default description string and default
      * icon.
      */
-    public ActionSelectFile ()
+    public ActionSelectFile (ResourceBundle resources)
     {
       super(PlainTextExportDialog.this);
-      putValue(Action.NAME, getResources().getString("plain-text-exportdialog.selectFile"));
+      this.resources = resources;
+      putValue(Action.NAME, resources.getString("plain-text-exportdialog.selectFile"));
     }
 
     /**
@@ -142,7 +147,7 @@ public class PlainTextExportDialog extends AbstractExportDialog
      */
     protected String getFileDescription ()
     {
-      return getResources().getString("plain-text-exportdialog.fileDescription");
+      return resources.getString("plain-text-exportdialog.fileDescription");
     }
 
     /**
@@ -182,9 +187,9 @@ public class PlainTextExportDialog extends AbstractExportDialog
      * Defines an <code>Action</code> object with a default description string and default
      * icon.
      */
-    public ActionSelectPrinter (final int printer)
+    public ActionSelectPrinter (final String printerName, final int printer)
     {
-      putValue(NAME, getResources().getString(PRINTER_NAMES[printer]));
+      putValue(NAME, printerName);
       this.printer = printer;
     }
 
@@ -214,11 +219,11 @@ public class PlainTextExportDialog extends AbstractExportDialog
      */
     public void actionPerformed (final ActionEvent e)
     {
-      if (rbEpson9PrinterCommandSet.isSelected())
+      if (getSelectedPrinter() == TYPE_EPSON9_OUTPUT)
       {
         updateEpson9Encoding();
       }
-      else if (rbEpson24PrinterCommandSet.isSelected())
+      else if (getSelectedPrinter() == TYPE_EPSON24_OUTPUT)
       {
         updateEpson24Encoding();
       }
@@ -369,8 +374,8 @@ public class PlainTextExportDialog extends AbstractExportDialog
    */
   private void init ()
   {
-    setCancelAction(new ActionCancel());
-    setConfirmAction(new ActionConfirm());
+    setCancelAction(new ActionCancel(getResources()));
+    setConfirmAction(new ActionConfirm(getResources()));
     setTitle(getResources().getString("plain-text-exportdialog.dialogtitle"));
 
     epson9Printers = loadEpson9Printers();
@@ -398,10 +403,19 @@ public class PlainTextExportDialog extends AbstractExportDialog
     cbLinesPerInch = new JComboBox(new DefaultComboBoxModel(lpiModel));
     cbCharsPerInch = new JComboBox(new DefaultComboBoxModel(cpiModel));
 
-    rbPlainPrinterCommandSet = new ActionRadioButton(new ActionSelectPrinter(TYPE_PLAIN_OUTPUT));
-    rbEpson9PrinterCommandSet = new ActionRadioButton(new ActionSelectPrinter(TYPE_EPSON9_OUTPUT));
-    rbEpson24PrinterCommandSet = new ActionRadioButton(new ActionSelectPrinter(TYPE_EPSON24_OUTPUT));
-    rbIBMPrinterCommandSet = new ActionRadioButton(new ActionSelectPrinter(TYPE_IBM_OUTPUT));
+    final String plainPrinterName = getResources().getString(PRINTER_NAMES[TYPE_PLAIN_OUTPUT]);
+    final String epson9PrinterName = getResources().getString(PRINTER_NAMES[TYPE_EPSON9_OUTPUT]);
+    final String epson24PrinterName = getResources().getString(PRINTER_NAMES[TYPE_EPSON24_OUTPUT]);
+    final String ibmPrinterName = getResources().getString(PRINTER_NAMES[TYPE_IBM_OUTPUT]);
+    
+    rbPlainPrinterCommandSet = 
+      new ActionRadioButton(new ActionSelectPrinter(plainPrinterName, TYPE_PLAIN_OUTPUT));
+    rbEpson9PrinterCommandSet = 
+      new ActionRadioButton(new ActionSelectPrinter(epson9PrinterName, TYPE_EPSON9_OUTPUT));
+    rbEpson24PrinterCommandSet = 
+      new ActionRadioButton(new ActionSelectPrinter(epson24PrinterName, TYPE_EPSON24_OUTPUT));
+    rbIBMPrinterCommandSet = 
+      new ActionRadioButton(new ActionSelectPrinter(ibmPrinterName, TYPE_IBM_OUTPUT));
 
     txFilename = new JTextField();
     encodingSelector = new EncodingSelector();
@@ -482,7 +496,7 @@ public class PlainTextExportDialog extends AbstractExportDialog
             = new JLabel(getResources().getString("plain-text-exportdialog.filename"));
     final JLabel lblEncoding
             = new JLabel(getResources().getString("plain-text-exportdialog.encoding"));
-    final JButton btnSelect = new ActionButton(new ActionSelectFile());
+    final JButton btnSelect = new ActionButton(new ActionSelectFile(getResources()));
 
     final JLabel lblCharsPerInch = new JLabel(getResources().getString("plain-text-exportdialog.chars-per-inch"));
     final JLabel lblLinesPerInch = new JLabel(getResources().getString("plain-text-exportdialog.lines-per-inch"));
@@ -656,7 +670,7 @@ public class PlainTextExportDialog extends AbstractExportDialog
     return buttonCarrier;
   }
 
-  private void updateEpson9Encoding ()
+  protected void updateEpson9Encoding ()
   {
     final PrinterSpecification spec = (PrinterSpecification)
             epson9Printers.getSelectedKey();
@@ -671,7 +685,7 @@ public class PlainTextExportDialog extends AbstractExportDialog
     }
   }
 
-  private void updateEpson24Encoding ()
+  protected void updateEpson24Encoding ()
   {
     final PrinterSpecification spec = (PrinterSpecification)
             epson9Printers.getSelectedKey();

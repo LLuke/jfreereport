@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.14 2005/02/23 19:32:09 taqua Exp $
+ * $Id: ReportState.java,v 1.15 2005/02/23 21:06:04 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -521,7 +521,7 @@ public abstract class ReportState implements Cloneable
     public PageBreakSaveState (final ReportState state)
             throws CloneNotSupportedException
     {
-      this.backend = (DataRowBackend) state.dataRow.clone();
+      this.backend = (DataRowBackend) state.getDataRowBackend().clone();
       this.state = state.createShallowCopy();
     }
 
@@ -529,14 +529,20 @@ public abstract class ReportState implements Cloneable
             throws CloneNotSupportedException
     {
       final ReportState result = state;
-      result.dataRow = backend;
-      result.report.getDataRowConnector().setDataRowBackend(result.dataRow);
-      result.dataRowPreview = null;
+      result.handleRestore(backend);
       return result;
     }
 
   }
 
+  protected final void handleRestore (final DataRowBackend backend)
+  {
+    this.dataRow = backend;
+    this.report.getDataRowConnector().setDataRowBackend(backend);
+    this.dataRowPreview = null;
+    
+  }
+  
   protected ReportState createShallowCopy ()
           throws CloneNotSupportedException
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.16 2005/01/30 23:37:19 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.17 2005/02/23 21:04:47 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ public final class LevelledExpressionList implements ReportListener,
                                                      Cloneable, LayoutListener,
                                                      PageEventListener
 {
-  private static class LevelStorage
+  private static final class LevelStorage
   {
     private int levelNumber;
     private int[] activeExpressions;
@@ -94,7 +94,61 @@ public final class LevelledExpressionList implements ReportListener,
       this.expressions = expressions;
       this.prepareEventLayoutListeners = prepareEventLayoutListeners;
     }
-  }
+    
+    public int getLevelNumber ()
+    {
+      return levelNumber;
+    }
+
+    public int[] getFunctions ()
+    {
+      return functions;
+    }
+    
+    
+    /**
+     * @return Returns the activeExpressions.
+     */
+    public int[] getActiveExpressions()
+    {
+      return activeExpressions;
+    }
+    /**
+     * @return Returns the expressions.
+     */
+    public int[] getExpressions()
+    {
+      return expressions;
+    }
+    /**
+     * @return Returns the layoutListeners.
+     */
+    public int[] getLayoutListeners()
+    {
+      return layoutListeners;
+    }
+    /**
+     * @return Returns the pageEventListeners.
+     */
+    public int[] getPageEventListeners()
+    {
+      return pageEventListeners;
+    }
+    /**
+     * @return Returns the prepareEventLayoutListeners.
+     */
+    public int[] getPrepareEventLayoutListeners()
+    {
+      return prepareEventLayoutListeners;
+    }
+    /**
+     * @return Returns the prepareEventListeners.
+     */
+    public int[] getPrepareEventListeners()
+    {
+      return prepareEventListeners;
+    }
+}
 
   /**
    * error list stores the errors that occur during the event dispatching.
@@ -152,12 +206,12 @@ public final class LevelledExpressionList implements ReportListener,
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levelData[levelIdx].levelNumber;
+      final int level = levelData[levelIdx].getLevelNumber();
       if (level < getLevel())
       {
         break;
       }
-      final int[] functions = levelData[levelIdx].functions;
+      final int[] functions = levelData[levelIdx].getFunctions();
       for (int l = 0; l < functions.length; l++)
       {
         final Function e = (Function) flatData[functions[l]];
@@ -171,7 +225,7 @@ public final class LevelledExpressionList implements ReportListener,
         }
       }
 
-      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      final int[] activeExpressions = levelData[levelIdx].getActiveExpressions();
       for (int l = 0; l < activeExpressions.length; l++)
       {
         final Expression e = flatData[activeExpressions[l]];
@@ -198,12 +252,12 @@ public final class LevelledExpressionList implements ReportListener,
     clearError(); // has no prepare event ...
     for (int levelIndex = 0; levelIndex < levelData.length; levelIndex++)
     {
-      final int level = levelData[levelIndex].levelNumber;
+      final int level = levelData[levelIndex].getLevelNumber();
       if (level < getLevel())
       {
         break;
       }
-      final int[] functions = levelData[levelIndex].functions;
+      final int[] functions = levelData[levelIndex].getFunctions();
       for (int expressionIdx = 0; expressionIdx < functions.length; expressionIdx++)
       {
         final Function e = (Function) flatData[functions[expressionIdx]];
@@ -217,7 +271,7 @@ public final class LevelledExpressionList implements ReportListener,
         }
       }
 
-      final int[] activeExpressions = levelData[levelIndex].activeExpressions;
+      final int[] activeExpressions = levelData[levelIndex].getActiveExpressions();
       for (int exprIdx = 0; exprIdx < activeExpressions.length; exprIdx++)
       {
         final Expression e = flatData[activeExpressions[exprIdx]];
@@ -243,12 +297,12 @@ public final class LevelledExpressionList implements ReportListener,
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levelData[levelIdx].levelNumber;
+      final int level = levelData[levelIdx].getLevelNumber();
       if (level < getLevel())
       {
         break;
       }
-      final int[] functions = levelData[levelIdx].functions;
+      final int[] functions = levelData[levelIdx].getFunctions();
       for (int l = 0; l < functions.length; l++)
       {
         final Function e = (Function) flatData[functions[l]];
@@ -262,7 +316,7 @@ public final class LevelledExpressionList implements ReportListener,
         }
       }
 
-      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      final int[] activeExpressions = levelData[levelIdx].getActiveExpressions();
       for (int l = 0; l < activeExpressions.length; l++)
       {
         final Expression e = flatData[activeExpressions[l]];
@@ -287,12 +341,12 @@ public final class LevelledExpressionList implements ReportListener,
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levelData[levelIdx].levelNumber;
+      final int level = levelData[levelIdx].getLevelNumber();
       if (level < getLevel())
       {
         break;
       }
-      final int[] functions = levelData[levelIdx].pageEventListeners;
+      final int[] functions = levelData[levelIdx].getPageEventListeners();
       for (int l = 0; l < functions.length; l++)
       {
         final PageEventListener e = (PageEventListener) flatData[functions[l]];
@@ -306,7 +360,7 @@ public final class LevelledExpressionList implements ReportListener,
         }
       }
 
-      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      final int[] activeExpressions = levelData[levelIdx].getActiveExpressions();
       for (int l = 0; l < activeExpressions.length; l++)
       {
         final Expression e = flatData[activeExpressions[l]];
@@ -331,12 +385,12 @@ public final class LevelledExpressionList implements ReportListener,
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levelData[levelIdx].levelNumber;
+      final int level = levelData[levelIdx].getLevelNumber();
       if (level < getLevel())
       {
         break;
       }
-      final int[] functions = levelData[levelIdx].pageEventListeners;
+      final int[] functions = levelData[levelIdx].getPageEventListeners();
       for (int l = 0; l < functions.length; l++)
       {
         final PageEventListener e = (PageEventListener) flatData[functions[l]];
@@ -361,12 +415,12 @@ public final class LevelledExpressionList implements ReportListener,
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levelData[levelIdx].levelNumber;
+      final int level = levelData[levelIdx].getLevelNumber();
       if (level < getLevel())
       {
         break;
       }
-      final int[] functions = levelData[levelIdx].pageEventListeners;
+      final int[] functions = levelData[levelIdx].getPageEventListeners();
       for (int l = 0; l < functions.length; l++)
       {
         final PageEventListener e = (PageEventListener) flatData[functions[l]];
@@ -392,12 +446,12 @@ public final class LevelledExpressionList implements ReportListener,
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levelData[levelIdx].levelNumber;
+      final int level = levelData[levelIdx].getLevelNumber();
       if (level < getLevel())
       {
         break;
       }
-      final int[] functions = levelData[levelIdx].pageEventListeners;
+      final int[] functions = levelData[levelIdx].getPageEventListeners();
       for (int l = 0; l < functions.length; l++)
       {
         final PageEventListener e = (PageEventListener) flatData[functions[l]];
@@ -411,7 +465,7 @@ public final class LevelledExpressionList implements ReportListener,
         }
       }
 
-      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      final int[] activeExpressions = levelData[levelIdx].getActiveExpressions();
       for (int l = 0; l < activeExpressions.length; l++)
       {
         final Expression e = flatData[activeExpressions[l]];
@@ -437,12 +491,12 @@ public final class LevelledExpressionList implements ReportListener,
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levelData[levelIdx].levelNumber;
+      final int level = levelData[levelIdx].getLevelNumber();
       if (level < getLevel())
       {
         break;
       }
-      final int[] functions = levelData[levelIdx].functions;
+      final int[] functions = levelData[levelIdx].getFunctions();
       for (int l = 0; l < functions.length; l++)
       {
         final Function e = (Function) flatData[functions[l]];
@@ -456,7 +510,7 @@ public final class LevelledExpressionList implements ReportListener,
         }
       }
 
-      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      final int[] activeExpressions = levelData[levelIdx].getActiveExpressions();
       for (int l = 0; l < activeExpressions.length; l++)
       {
         final Expression e = flatData[activeExpressions[l]];
@@ -483,12 +537,12 @@ public final class LevelledExpressionList implements ReportListener,
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levelData[levelIdx].levelNumber;
+      final int level = levelData[levelIdx].getLevelNumber();
       if (level < getLevel())
       {
         break;
       }
-      final int[] functions = levelData[levelIdx].functions;
+      final int[] functions = levelData[levelIdx].getFunctions();
       for (int l = 0; l < functions.length; l++)
       {
         final Function e = (Function) flatData[functions[l]];
@@ -502,7 +556,7 @@ public final class LevelledExpressionList implements ReportListener,
         }
       }
 
-      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      final int[] activeExpressions = levelData[levelIdx].getActiveExpressions();
       for (int l = 0; l < activeExpressions.length; l++)
       {
         final Expression e = flatData[activeExpressions[l]];
@@ -528,12 +582,12 @@ public final class LevelledExpressionList implements ReportListener,
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levelData[levelIdx].levelNumber;
+      final int level = levelData[levelIdx].getLevelNumber();
       if (level < getLevel())
       {
         break;
       }
-      final int[] functions = levelData[levelIdx].functions;
+      final int[] functions = levelData[levelIdx].getFunctions();
       for (int l = 0; l < functions.length; l++)
       {
         final Function e = (Function) flatData[functions[l]];
@@ -547,7 +601,7 @@ public final class LevelledExpressionList implements ReportListener,
         }
       }
 
-      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      final int[] activeExpressions = levelData[levelIdx].getActiveExpressions();
       for (int l = 0; l < activeExpressions.length; l++)
       {
         final Expression e = flatData[activeExpressions[l]];
@@ -573,12 +627,12 @@ public final class LevelledExpressionList implements ReportListener,
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levelData[levelIdx].levelNumber;
+      final int level = levelData[levelIdx].getLevelNumber();
       if (level < getLevel())
       {
         break;
       }
-      final int[] functions = levelData[levelIdx].functions;
+      final int[] functions = levelData[levelIdx].getFunctions();
       for (int l = 0; l < functions.length; l++)
       {
         final Function e = (Function) flatData[functions[l]];
@@ -592,7 +646,7 @@ public final class LevelledExpressionList implements ReportListener,
         }
       }
 
-      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      final int[] activeExpressions = levelData[levelIdx].getActiveExpressions();
       for (int l = 0; l < activeExpressions.length; l++)
       {
         final Expression e = flatData[activeExpressions[l]];
@@ -618,12 +672,12 @@ public final class LevelledExpressionList implements ReportListener,
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levelData[levelIdx].levelNumber;
+      final int level = levelData[levelIdx].getLevelNumber();
       if (level < getLevel())
       {
         break;
       }
-      final int[] functions = levelData[levelIdx].functions;
+      final int[] functions = levelData[levelIdx].getFunctions();
       for (int l = 0; l < functions.length; l++)
       {
         final Function e = (Function) flatData[functions[l]];
@@ -637,7 +691,7 @@ public final class LevelledExpressionList implements ReportListener,
         }
       }
 
-      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      final int[] activeExpressions = levelData[levelIdx].getActiveExpressions();
       for (int l = 0; l < activeExpressions.length; l++)
       {
         final Expression e = flatData[activeExpressions[l]];
@@ -665,12 +719,12 @@ public final class LevelledExpressionList implements ReportListener,
 
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levelData[levelIdx].levelNumber;
+      final int level = levelData[levelIdx].getLevelNumber();
       if (level < getLevel())
       {
         break;
       }
-      final int[] functions = levelData[levelIdx].layoutListeners;
+      final int[] functions = levelData[levelIdx].getLayoutListeners();
       for (int l = 0; l < functions.length; l++)
       {
         final LayoutListener e = (LayoutListener) flatData[functions[l]];
@@ -684,7 +738,7 @@ public final class LevelledExpressionList implements ReportListener,
         }
       }
 
-      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      final int[] activeExpressions = levelData[levelIdx].getActiveExpressions();
       for (int l = 0; l < activeExpressions.length; l++)
       {
         final Expression e = flatData[activeExpressions[l]];
@@ -710,12 +764,12 @@ public final class LevelledExpressionList implements ReportListener,
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levelData[levelIdx].levelNumber;
+      final int level = levelData[levelIdx].getLevelNumber();
       if (level < getLevel())
       {
         break;
       }
-      final int[] functions = levelData[levelIdx].layoutListeners;
+      final int[] functions = levelData[levelIdx].getLayoutListeners();
       for (int l = 0; l < functions.length; l++)
       {
         final LayoutListener e = (LayoutListener) flatData[functions[l]];
@@ -742,12 +796,12 @@ public final class LevelledExpressionList implements ReportListener,
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levelData[levelIdx].levelNumber;
+      final int level = levelData[levelIdx].getLevelNumber();
       if (level < getLevel())
       {
         break;
       }
-      final int[] functions = levelData[levelIdx].functions;
+      final int[] functions = levelData[levelIdx].getFunctions();
       for (int l = 0; l < functions.length; l++)
       {
         final Function e = (Function) flatData[functions[l]];
@@ -761,7 +815,7 @@ public final class LevelledExpressionList implements ReportListener,
         }
       }
 
-      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      final int[] activeExpressions = levelData[levelIdx].getActiveExpressions();
       for (int l = 0; l < activeExpressions.length; l++)
       {
         final Expression e = flatData[activeExpressions[l]];
@@ -981,9 +1035,10 @@ public final class LevelledExpressionList implements ReportListener,
     for (int level = 0; level < levelData.length; level++)
     {
       final LevelStorage levelStorage = levelData[level];
-      for (int i = 0; i < levelStorage.expressions.length; i++)
+      final int[] expressions = levelStorage.getExpressions();
+      for (int i = 0; i < expressions.length; i++)
       {
-        final int idx = levelStorage.expressions[i];
+        final int idx = expressions[i];
         final Expression ex = flatData[idx];
         if (ex instanceof Function)
         {
@@ -1032,7 +1087,7 @@ public final class LevelledExpressionList implements ReportListener,
     for (int i = 0; i < levelData.length; i++)
     {
       final LevelStorage levelStorage = levelData[i];
-      levelIntegers[i] = new Integer(levelStorage.levelNumber);
+      levelIntegers[i] = new Integer(levelStorage.getLevelNumber());
     }
     return Collections.unmodifiableList(Arrays.asList(levelIntegers)).iterator();
   }
@@ -1047,7 +1102,7 @@ public final class LevelledExpressionList implements ReportListener,
     final Integer[] levelIntegers = new Integer[levelData.length];
     for (int i = 0; i < levelData.length; i++)
     {
-      levelIntegers[levelData.length - i - 1] = new Integer(levelData[i].levelNumber);
+      levelIntegers[levelData.length - i - 1] = new Integer(levelData[i].getLevelNumber());
     }
     return Collections.unmodifiableList(Arrays.asList(levelIntegers)).iterator();
   }
@@ -1122,12 +1177,12 @@ public final class LevelledExpressionList implements ReportListener,
     clearError();
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levelData[levelIdx].levelNumber;
+      final int level = levelData[levelIdx].getLevelNumber();
       if (level < getLevel())
       {
         break;
       }
-      final int[] functions = levelData[levelIdx].prepareEventListeners;
+      final int[] functions = levelData[levelIdx].getPrepareEventListeners();
       for (int l = 0; l < functions.length; l++)
       {
         final PrepareEventListener e = (PrepareEventListener) flatData[functions[l]];
@@ -1153,12 +1208,12 @@ public final class LevelledExpressionList implements ReportListener,
   {
     for (int levelIdx = 0; levelIdx < levelData.length; levelIdx++)
     {
-      final int level = levelData[levelIdx].levelNumber;
+      final int level = levelData[levelIdx].getLevelNumber();
       if (level < getLevel())
       {
         break;
       }
-      final int[] functions = levelData[levelIdx].prepareEventLayoutListeners;
+      final int[] functions = levelData[levelIdx].getPrepareEventLayoutListeners();
       for (int l = 0; l < functions.length; l++)
       {
         final PrepareEventListener e = (PrepareEventListener) flatData[functions[l]];
@@ -1172,7 +1227,7 @@ public final class LevelledExpressionList implements ReportListener,
         }
       }
 
-      final int[] activeExpressions = levelData[levelIdx].activeExpressions;
+      final int[] activeExpressions = levelData[levelIdx].getActiveExpressions();
       for (int l = 0; l < activeExpressions.length; l++)
       {
         final Expression e = flatData[activeExpressions[l]];

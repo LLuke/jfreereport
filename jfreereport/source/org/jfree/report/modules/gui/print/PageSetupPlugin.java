@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageSetupPlugin.java,v 1.11 2005/01/25 00:06:55 taqua Exp $
+ * $Id: PageSetupPlugin.java,v 1.12 2005/02/23 21:05:02 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -80,6 +80,7 @@ public class PageSetupPlugin extends AbstractExportPlugin
       if (ReportPane.PRINTING_PROPERTY.equals(evt.getPropertyName()) ||
               ReportPane.PAGINATING_PROPERTY.equals(evt.getPropertyName()))
       {
+        ReportPane reportPane = getReportPane();
         setEnabled((reportPane.isPrinting() == false) &&
                 (reportPane.isPaginating() == false));
       }
@@ -265,5 +266,10 @@ public class PageSetupPlugin extends AbstractExportPlugin
     reportPane.addPropertyChangeListener(repaginationListener);
     setEnabled((reportPane.isPrinting() == false) &&
             (reportPane.isPaginating() == false));
+  }
+  
+  protected ReportPane getReportPane()
+  {
+    return reportPane;
   }
 }

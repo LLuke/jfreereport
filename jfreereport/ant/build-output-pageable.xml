@@ -88,6 +88,9 @@
   <target name="copy-resources-output-pageable-base">
     <copy file="source/org/jfree/report/modules/output/pageable/base/module.properties"
       tofile="build/org/jfree/report/modules/output/pageable/base/module.properties"/>
+
+    <copy file="source/org/jfree/report/modules/output/pageable/base/configuration.properties"
+      tofile="build/org/jfree/report/modules/output/pageable/base/configuration.properties"/>
   </target>
 
   <!-- ************************************************************** -->

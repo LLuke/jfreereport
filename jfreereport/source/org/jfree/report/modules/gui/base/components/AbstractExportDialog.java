@@ -2,7 +2,6 @@ package org.jfree.report.modules.gui.base.components;
 
 import java.awt.Dialog;
 import java.awt.Frame;
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -103,6 +102,7 @@ public abstract class AbstractExportDialog extends JDialog
      */
     public void windowClosing (final WindowEvent e)
     {
+      final Action cancelAction = getCancelAction();
       if (cancelAction != null)
       {
         cancelAction.actionPerformed(null);
@@ -127,7 +127,6 @@ public abstract class AbstractExportDialog extends JDialog
    * owner.  A shared, hidden frame will be set as the owner of the dialog.
    */
   public AbstractExportDialog ()
-          throws HeadlessException
   {
     formValidator = new ExportDialogValidator();
     setModal(true);
@@ -145,7 +144,6 @@ public abstract class AbstractExportDialog extends JDialog
    * @param owner the <code>Frame</code> from which the dialog is displayed
    */
   public AbstractExportDialog (final Frame owner)
-          throws HeadlessException
   {
     super(owner);
     formValidator = new ExportDialogValidator();
@@ -161,7 +159,6 @@ public abstract class AbstractExportDialog extends JDialog
    * @param owner the non-null <code>Dialog</code> from which the dialog is displayed
    */
   public AbstractExportDialog (final Dialog owner)
-          throws HeadlessException
   {
     super(owner);
     formValidator = new ExportDialogValidator();

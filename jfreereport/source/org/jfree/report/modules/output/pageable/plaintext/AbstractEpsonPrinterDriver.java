@@ -106,7 +106,7 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
   private boolean firstPage;
 
   private int borderTop;
-  private int borderBottom;
+  //private int borderBottom;
   private DriverState driverState;
 
   protected AbstractEpsonPrinterDriver (final OutputStream out,
@@ -360,7 +360,7 @@ public abstract class AbstractEpsonPrinterDriver implements PrinterDriver
     sendDefineHorizontalBorders(borderLeft, borderRight);
 
     borderTop = (int) (fact.getTopBorder(paper) / lineHeightPoints);
-    borderBottom = (int) (fact.getBottomBorder(paper) / lineHeightPoints);
+    //borderBottom = (int) (fact.getBottomBorder(paper) / lineHeightPoints);
 
     // print the top margin ..
     for (int i = 0; i < borderTop; i++)
