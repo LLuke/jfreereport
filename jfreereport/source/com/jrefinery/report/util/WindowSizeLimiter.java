@@ -1,19 +1,53 @@
 /**
- * Date: Dec 10, 2002
- * Time: 10:52:06 PM
+ * =============================================================
+ * JFreeReport : an open source reporting class library for Java
+ * =============================================================
  *
- * $Id$
+ * Project Info:  http://www.object-refinery.com/jfreereport/index.html
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
+ *
+ * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation;
+ * either version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with this
+ * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
+ * Boston, MA 02111-1307, USA.
+ *
+ * ----------------------
+ * WindowSizeLimiter.java
+ * ----------------------
+ *
+ * $Id: WindowSizeLimiter.java,v 1.1 2002/12/10 22:27:43 taqua Exp $
+ *
+ *
+ * Changes
+ * -------
+ * 10-Dec-2002 : Initial version
+ *
  */
 package com.jrefinery.report.util;
 
-import java.awt.event.ComponentListener;
-import java.awt.event.ComponentEvent;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
-public class WindowSizeLimiter implements ComponentListener
+/**
+ * A small helper class to limit the maximum size of an element to the elements
+ * maximum size. If the element is resized, the defined maximum size is enforced
+ * on the element.
+ */
+public class WindowSizeLimiter extends ComponentAdapter
 {
   private Object currentSource;
+
   /**
    * Invoked when the component's size changes.
    */
@@ -33,26 +67,5 @@ public class WindowSizeLimiter implements ComponentListener
       currentSource = null;
     }
 
-  }
-
-  /**
-   * Invoked when the component's position changes.
-   */
-  public void componentMoved(ComponentEvent e)
-  {
-  }
-
-  /**
-   * Invoked when the component has been made visible.
-   */
-  public void componentShown(ComponentEvent e)
-  {
-  }
-
-  /**
-   * Invoked when the component has been made invisible.
-   */
-  public void componentHidden(ComponentEvent e)
-  {
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewDialog.java,v 1.3 2002/12/10 15:47:00 mungady Exp $
+ * $Id: PreviewDialog.java,v 1.4 2002/12/10 22:27:42 taqua Exp $
  *
  * Changes (from 4-Dec-2002)
  * -------------------------
@@ -129,11 +129,11 @@ public class PreviewDialog extends JDialog implements JFreeReportConstants
 {
   /** The default width of the report pane. */
   public static final int DEFAULT_REPORT_PANE_WIDTH = 640;
-  
+
   /** The default height of the report pane. */
   public static final int DEFAULT_REPORT_PANE_HEIGHT = 480;
 
-  /** 
+  /**
    * A wrapper action.
    */
   private class WrapperAction implements Action
@@ -168,7 +168,7 @@ public class PreviewDialog extends JDialog implements JFreeReportConstants
      */
     public void setParent(Action parent)
     {
-      if (parent == null) 
+      if (parent == null)
       {
         throw new NullPointerException();
       }
@@ -837,7 +837,7 @@ public class PreviewDialog extends JDialog implements JFreeReportConstants
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public PreviewDialog(Dialog owner, JFreeReport report, boolean modal) 
+  public PreviewDialog(Dialog owner, JFreeReport report, boolean modal)
       throws ReportProcessingException
   {
     super(owner, modal);
@@ -870,7 +870,7 @@ public class PreviewDialog extends JDialog implements JFreeReportConstants
    *
    * @throws ReportProcessingException if there is a problem processing the report.
    */
-  public PreviewDialog(Frame owner, JFreeReport report, boolean modal) 
+  public PreviewDialog(Frame owner, JFreeReport report, boolean modal)
       throws ReportProcessingException
   {
     super(owner, modal);
@@ -944,6 +944,13 @@ public class PreviewDialog extends JDialog implements JFreeReportConstants
     pdfSaveDialog.pack();
   }
 
+  /**
+   * Read the defined dimensions from the report's configuration and set them to
+   * the Dialog. If a maximum size is defined, add a WindowSizeLimiter to check the
+   * maximum size
+   *
+   * @param report the report of this dialog.
+   */
   private void applyDefinedDimension (JFreeReport report)
   {
     String width = report.getReportConfiguration().getConfigProperty(ReportConfiguration.PREVIEW_PREFERRED_WIDTH);
@@ -985,6 +992,15 @@ public class PreviewDialog extends JDialog implements JFreeReportConstants
     }
   }
 
+  /**
+   * Correct the given width and height. If the values are negative, the height and
+   * width is considered a proportional value where -100 corresponds to 100%.
+   * The proportional attributes are given is relation to the screen width and height.
+   *
+   * @param w the to be corrected width
+   * @param h the height that should be corrected
+   * @return the dimension of width and height, where all relative values are normalized.
+   */
   private Dimension createCorrectedDimensions (int w, int h)
   {
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -999,6 +1015,12 @@ public class PreviewDialog extends JDialog implements JFreeReportConstants
     return new Dimension(w, h);
   }
 
+  /**
+   * Returns the maximum size of this container.
+   *
+   * @see #getPreferredSize
+   * @return the maximum size of the dialog
+   */
   public Dimension getMaximumSize()
   {
     if (maximumSize == null)
@@ -1007,11 +1029,26 @@ public class PreviewDialog extends JDialog implements JFreeReportConstants
     return maximumSize;
   }
 
+  /**
+   * defines the maximum size of this container.
+   *
+   * @see #setPreferredSize
+   * @param maximumSize the maximum size of the dialog
+   */
   public void setMaximumSize(Dimension maximumSize)
   {
     this.maximumSize = maximumSize;
   }
 
+  /**
+   * Returns the preferred size of this container.
+   * @return    an instance of <code>Dimension</code> that represents
+   *                the preferred size of this container.
+   * @see       #getMinimumSize
+   * @see       #getLayout
+   * @see       java.awt.LayoutManager#preferredLayoutSize(java.awt.Container)
+   * @see       java.awt.Component#getPreferredSize
+   */
   public Dimension getPreferredSize()
   {
     if (preferredSize == null)
@@ -1020,6 +1057,12 @@ public class PreviewDialog extends JDialog implements JFreeReportConstants
     return preferredSize;
   }
 
+  /**
+   * defines the preferred size of this container.
+   *
+   * @see #setPreferredSize
+   * @param preferredSize
+   */
   public void setPreferredSize(Dimension preferredSize)
   {
     this.preferredSize = preferredSize;
@@ -1285,7 +1328,7 @@ public class PreviewDialog extends JDialog implements JFreeReportConstants
        */
       public void windowClosing(WindowEvent e)
       {
-        getCloseAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, 
+        getCloseAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED,
                                                          "CloseFrame"));
       }
     }

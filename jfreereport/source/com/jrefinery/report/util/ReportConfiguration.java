@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.14 2002/12/10 15:53:41 mungady Exp $
+ * $Id: ReportConfiguration.java,v 1.15 2002/12/10 22:27:42 taqua Exp $
  *
  * Changes
  * -------
@@ -102,6 +102,32 @@ import java.util.Properties;
  * </ul>
  * <h3>Local configuration keys</h3>
  * <p>The following keys can be redefined for all report-instances.
+ * <ul>
+ * <li>com.jrefinery.report.preview.PreferredWidth
+ * <p>
+ * Defines a preferred size for the preview frame. Both width and height must be set,
+ * proportional values are allowed (100%, 90% etc). They have the same syntax as the
+ * proportional values in the xml definition.
+ * <p>
+ * None of the values is defined by default
+ * <li>com.jrefinery.report.preview.PreferredHeight
+ * <p>
+ * Defines a preferred size for the preview frame. Both width and height must be set,
+ * proportional values are allowed (100%, 90% etc). They have the same syntax as the
+ * proportional values in the xml definition.
+ * <p>
+ * None of the values is defined by default
+ * <li>com.jrefinery.report.preview.MaximumWidth
+ * <p>
+ * Defines the maximum width for the preview frame. If the width is defined, a component
+ * listener will be used to enforce the defined width.
+ * The value is not defined by default
+ * <li>com.jrefinery.report.preview.MaximumHeight
+ * Defines the maximum height for the preview frame. If the height is defined, a component
+ * listener will be used to enforce that value.
+ * The value is not defined by default
+ * </ul>
+ * <p>
  * <h4>PDFOutputTarget properties</h4>
  * The PDFTarget can be configured using these properties. This will create a default configuration
  * which can be altered by the programm using the usual operations.
