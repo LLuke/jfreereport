@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ImageContentFactoryModule.java,v 1.9 2005/02/19 13:29:52 taqua Exp $
+ * $Id: ImageContentFactoryModule.java,v 1.10 2005/02/23 21:04:37 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import org.jfree.report.util.StringUtil;
 import org.jfree.report.util.geom.StrictBounds;
 import org.jfree.report.util.geom.StrictDimension;
 import org.jfree.report.util.geom.StrictPoint;
+import org.jfree.report.util.geom.StrictGeomUtility;
 
 /**
  * The ImageContentFactoryModule creates image content from the given element. The content
@@ -102,8 +103,8 @@ public strictfp class ImageContentFactoryModule implements ContentFactoryModule
 
     double scaleX = ir.getScaleX();
     double scaleY = ir.getScaleY();
-    final long w = ir.getImageWidth();
-    final long h = ir.getImageHeight();
+    final long w = StrictGeomUtility.toInternalValue(ir.getImageWidth());
+    final long h = StrictGeomUtility.toInternalValue(ir.getImageHeight());
 
     if (e.getStyle().getBooleanStyleProperty(ElementStyleSheet.SCALE))
     {

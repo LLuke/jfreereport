@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.19 2005/03/03 21:50:44 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.20 2005/03/03 23:00:01 taqua Exp $
  *
  * Changes
  * -------
@@ -489,8 +489,8 @@ public strictfp class G2OutputTarget extends AbstractOutputTarget
       // normalize the image to 72 DPI
       g2.scale(imageContainer.getScaleX(), imageContainer.getScaleY());
 
-      final double scaleX = imageWidth / imageArea.getWidth();
-      final double scaleY = imageHeight / imageArea.getHeight();
+      final double scaleX = bounds.getWidth() / (double) imageArea.getWidth();
+      final double scaleY = bounds.getHeight() / (double) imageArea.getHeight();
       // and apply the layouters scaling ..
       g2.scale(scaleX, scaleY);
 
