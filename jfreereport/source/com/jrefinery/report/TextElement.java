@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: TextElement.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
+ * $Id: TextElement.java,v 1.3 2002/05/15 20:47:23 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -36,6 +36,8 @@
  * 05-Mar-2002 : Modified constructors (DG);
  * 10-May-2002 : removed all but the default constructor. Added accessor functions for all properties.
  * 15-May-2002 : The null value is handled specially, initiated by thomas.rynne@edftrading.com
+ * 16-May-2002 : Line delimiters adjusted
+ *               using protected member m_paint instead of getter methode
  */
 
 package com.jrefinery.report;
@@ -61,7 +63,7 @@ public abstract class TextElement extends Element
   /**
    * Constructs an element using a Rectangle2D.
    */
-  protected TextElement ()
+  protected TextElement()
   {
     setNullString("-");
   }
@@ -70,7 +72,7 @@ public abstract class TextElement extends Element
    * Defines the font for this element. If no font is defined, on drawing time the bands font
    * is used.
    */
-  public void setFont (Font f)
+  public void setFont(Font f)
   {
     this.font = f;
   }
@@ -80,9 +82,9 @@ public abstract class TextElement extends Element
    *
    * @return the font or null if no font has been defined.
    */
-  public Font getFont ()
+  public Font getFont()
   {
-    return getFont (null);
+    return getFont(null);
   }
 
   /**
@@ -91,7 +93,7 @@ public abstract class TextElement extends Element
    * used to derive a new font from the band's default font.  If nothing at all has been
    * specified, the band's default font is used.
    */
-  public Font getFont (Band band)
+  public Font getFont(Band band)
   {
 
     if (band == null)
@@ -102,7 +104,7 @@ public abstract class TextElement extends Element
     if (this.font == null)
     {
 
-      result = band.getDefaultFont ();
+      result = band.getDefaultFont();
     }
     return result;
 
@@ -111,7 +113,7 @@ public abstract class TextElement extends Element
   /**
    * @returns the null value representation for this element
    */
-  public String getNullString ()
+  public String getNullString()
   {
     return nullString;
   }
@@ -119,7 +121,7 @@ public abstract class TextElement extends Element
   /**
    * Defines the null value representation for this element.
    */
-  public void setNullString (String s)
+  public void setNullString(String s)
   {
     nullString = (s == null) ? "null" : s;
   }
@@ -130,7 +132,7 @@ public abstract class TextElement extends Element
    *
    * @returns the alignment for this element
    */
-  public int getAlignment ()
+  public int getAlignment()
   {
     return alignment;
   }
@@ -141,12 +143,12 @@ public abstract class TextElement extends Element
    *
    * @param alignent the alignment for this element.
    */
-  public void setAlignment (int alignment)
+  public void setAlignment(int alignment)
   {
     if (alignment == LEFT || alignment == RIGHT || alignment == CENTER)
       this.alignment = alignment;
     else
-      throw new IllegalArgumentException ("The element alignment must be one of LEFT, RIGHT or CENTER");
+      throw new IllegalArgumentException("The element alignment must be one of LEFT, RIGHT or CENTER");
   }
 
   /**
@@ -157,46 +159,53 @@ public abstract class TextElement extends Element
    * @param bandX The x-coordinate of the report band.
    * @param bandY The y-coordinate of the report band.
    */
-  public void draw (OutputTarget target, Band band, float bandX, float bandY)
+  public void draw(OutputTarget target, Band band, float bandX, float bandY)
   {
-    Paint paint = getPaint ();
-
     // set the paint...
-    if (paint != null)
+    if (m_paint != null)
     {
-      target.setPaint (paint);
+      target.setPaint(m_paint);
     }
     else
     {
-      target.setPaint (band.getDefaultPaint ());
+      target.setPaint(band.getDefaultPaint());
     }
 
     // set the font...
+
     // what if no font is set in both band and element?
-    Font currentFont = getFont (band);
+
+    Font currentFont = getFont(band);
     if (currentFont != null)
     {
-      target.setFont (currentFont);
+      target.setFont(currentFont);
     }
     else
     {
-      throw new NullPointerException ("Neither band nor Item have a font set");
+      throw new NullPointerException("Neither band nor Item have a font set");
     }
 
     // draw the text...
-    Rectangle2D area = getBounds ();
-    float x1 = bandX + (float) area.getX ();
-    float y1 = bandY + (float) area.getY ();
-    float x2 = bandX + (float) area.getMaxX ();
-    float y2 = bandY + (float) area.getMaxY ();
+
+    Rectangle2D area = getBounds();
+    float x1 = bandX + (float) area.getX();
+    float y1 = bandY + (float) area.getY();
+    float x2 = bandX + (float) area.getMaxX();
+    float y2 = bandY + (float) area.getMaxY();
 
     if (x2 > x1)
     {
-      target.drawString (this.getFormattedText (), x1, y1, x2, y2, getAlignment ());
+      target.drawString(this.getFormattedText(), x1, y1, x2, y2, getAlignment());
     }
     else
     {
-      target.drawString (this.getFormattedText (), bandX, y1, bandX + target.getUsableWidth (), y2, getAlignment ());
+      target.drawString(
+        this.getFormattedText(),
+        bandX,
+        y1,
+        bandX + target.getUsableWidth(),
+        y2,
+        getAlignment());
     }
 
   }
@@ -207,25 +216,24 @@ public abstract class TextElement extends Element
    *
    * @return A formatted version of the data value.
    */
-  public abstract String getFormattedText ();
+  public abstract String getFormattedText();
 
   /**
    * Debugging: returns the String representation of this element.
    */
-  public String toString ()
+  public String toString()
   {
-    StringBuffer b = new StringBuffer ();
-    b.append (this.getClass().getName());
-    b.append ("={ name=");
-    b.append (getName ());
-    b.append (", bounds=");
-    b.append (getBounds ());
-    b.append (", font=");
-    b.append (getFont ());
-    b.append (", text=");
-    b.append (getFormattedText ());
-    b.append ("}");
-    return b.toString ();
+    StringBuffer b = new StringBuffer();
+    b.append(this.getClass().getName());
+    b.append("={ name=");
+    b.append(getName());
+    b.append(", bounds=");
+    b.append(getBounds());
+    b.append(", font=");
+    b.append(getFont());
+    b.append(", text=");
+    b.append(getFormattedText());
+    b.append("}");
+    return b.toString();
   }
-
 }
