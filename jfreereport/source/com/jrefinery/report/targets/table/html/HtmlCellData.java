@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellData.java,v 1.4 2003/01/27 03:17:43 taqua Exp $
+ * $Id: HtmlCellData.java,v 1.5 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -41,11 +41,25 @@ import com.jrefinery.report.targets.table.TableCellData;
 import java.awt.geom.Rectangle2D;
 import java.io.PrintWriter;
 
+/**
+ * The baseclass for all HTML-Content cells. The cell has a HtmlCellStyle assigned
+ * and carries a flag to indicate whether to create XHTML output.
+ */
 public abstract class HtmlCellData extends TableCellData
 {
+  /** The assigned cell style. */
   private HtmlCellStyle style;
+  /** a flag indicating whether to generate XHTML for the output. */
   private boolean useXHTML;
 
+  /**
+   * Creates a new HtmlCellData-object. The cell data will encapsulate images or
+   * text content.
+   *
+   * @param outerBounds the cell bounds.
+   * @param style the assigned cell style for this data cell.
+   * @param useXHTML a flag indicating whether to generate XHTML.
+   */
   public HtmlCellData(Rectangle2D outerBounds, HtmlCellStyle style, boolean useXHTML)
   {
     super(outerBounds);
@@ -53,13 +67,30 @@ public abstract class HtmlCellData extends TableCellData
     this.useXHTML = useXHTML;
   }
 
+  /**
+   * Writes the content of this cell into the print writer. The assigned HtmlFilesystem
+   * is used to create external references, if needed.
+   *
+   * @param pout the printwriter receiving the generated content.
+   * @param filesystem the filesystem used to create the external content.
+   */
   public abstract void write(PrintWriter pout, HtmlFilesystem filesystem);
 
+  /**
+   * Gets the assigned cell style.
+   *
+   * @return the assigned cell style.
+   */
   public HtmlCellStyle getStyle()
   {
     return style;
   }
 
+  /**
+   * Gets the XHTML-generator flag.
+   *
+   * @return true, if this cell should create XHTML output.
+   */
   public boolean isUseXHTML()
   {
     return useXHTML;

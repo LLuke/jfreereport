@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellDataFactory.java,v 1.7 2003/02/02 23:43:52 taqua Exp $
+ * $Id: HtmlCellDataFactory.java,v 1.8 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -50,17 +50,47 @@ import java.awt.Color;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 
+/**
+ * The cell data factory is responsible for converting elements into
+ * HTML cell data. The element style is converted using an external
+ * style factory. This factory reuses previously defined styles if
+ * possible, to increase the file creating efficiency.
+ */
 public class HtmlCellDataFactory extends AbstractTableCellDataFactory
 {
+  /** The StyleCollection stores all previously created CellStyles for later reuse */
   private HtmlStyleCollection styleCollection;
-  private boolean useXHTML;
+  /** A flag indicating whether to use XHTML */
+  private final boolean useXHTML;
 
+  /**
+   * Creates a new HTMLCellDataFactory, using the given StyleCollection to store
+   * the generated Styles.
+   *
+   * @param styleCollection the used style collection.
+   * @param useXHTML a flag indicating whether to generate XHTML.
+   */
   public HtmlCellDataFactory(HtmlStyleCollection styleCollection, boolean useXHTML)
   {
+    if (styleCollection == null) throw new NullPointerException();
     this.styleCollection = styleCollection;
     this.useXHTML = useXHTML;
   }
 
+  /**
+   * Creates the TableCellData for the given Element. The generated CellData
+   * should contain copies of all needed element attributes, as the element instance
+   * will be reused in the later report processing.
+   * <p>
+   * If the tablemodel does not support the element type, return null.
+   * <p>
+   * This implementation handles Shapes as backgrounds, Images and String contents.
+   *
+   * @param e the element that should be converted into TableCellData.
+   * @param rect the elements bounds within the table. The bounds are specified
+   * in points.
+   * @return null if element type is not supported or the generated TableCellData object.
+   */
   public TableCellData createCellData(Element e, Rectangle2D rect)
   {
     if (e.isVisible() == false)

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DirectoryHtmlFilesystem.java,v 1.5 2003/02/02 23:43:52 taqua Exp $
+ * $Id: DirectoryHtmlFilesystem.java,v 1.6 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,9 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.Hashtable;
 
+/**
+ * 
+ */
 public class DirectoryHtmlFilesystem implements HtmlFilesystem
 {
   private class CounterRef

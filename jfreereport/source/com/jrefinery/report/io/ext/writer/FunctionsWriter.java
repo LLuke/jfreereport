@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: FunctionsWriter.java,v 1.5 2003/02/21 11:31:13 mungady Exp $
  *
  * Changes
  * -------
@@ -162,19 +162,26 @@ public class FunctionsWriter extends AbstractXMLDefinitionWriter
       if (reportProperties.isMarked(name))
       {
         Object value = reportProperties.get(name);
-        ObjectDescription od = cfc.getDescriptionForClass(value.getClass());
-        if (od == null)
+        if (value == null)
         {
           writeTag(writer, FunctionsHandler.PROPERTY_REF_TAG, "name", name, CLOSE);
         }
         else
         {
-          Properties properties = new Properties();
-          properties.setProperty("name", name);
-          properties.setProperty("class", od.getObjectClass().getName());
-          writeTag(writer, FunctionsHandler.PROPERTY_REF_TAG, properties, OPEN);
-          writeObjectDescription(writer, od.getInstance(), value);
-          writeCloseTag(writer, FunctionsHandler.PROPERTY_REF_TAG);
+          ObjectDescription od = cfc.getDescriptionForClass(value.getClass());
+          if (od == null)
+          {
+            writeTag(writer, FunctionsHandler.PROPERTY_REF_TAG, "name", name, CLOSE);
+          }
+          else
+          {
+            Properties properties = new Properties();
+            properties.setProperty("name", name);
+            properties.setProperty("class", od.getObjectClass().getName());
+            writeTag(writer, FunctionsHandler.PROPERTY_REF_TAG, properties, OPEN);
+            writeObjectDescription(writer, od.getInstance(), value);
+            writeCloseTag(writer, FunctionsHandler.PROPERTY_REF_TAG);
+          }
         }
       }
     }

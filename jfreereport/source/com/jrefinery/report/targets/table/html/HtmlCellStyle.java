@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellStyle.java,v 1.7 2003/02/02 23:43:52 taqua Exp $
+ * $Id: HtmlCellStyle.java,v 1.8 2003/02/20 00:39:37 taqua Exp $
  *
  * Changes
  * -------
@@ -41,13 +41,30 @@ import com.jrefinery.report.targets.FontDefinition;
 
 import java.awt.Color;
 
+/**
+ * The HtmlCellStyle is used to define the style for the generated HTML-CellStyle.
+ * This style directly references to an CSS-StyleDefinition.
+ */
 public class HtmlCellStyle
 {
+  /** the font definition used for the text */
   private FontDefinition font;
+  /** the text color */
   private Color fontColor;
+  /* the vertical content alignment */
   private ElementAlignment verticalAlignment;
+  /** the horizontal content alignment */
   private ElementAlignment horizontalAlignment;
 
+  /**
+   * Creates a new HTML-StyleDefinition.
+   *
+   * @param font the font used to display text.
+   * @param fontColor the text color.
+   * @param verticalAlignment the vertical content alignment.
+   * @param horizontalAlignment the horizontal content alignment.
+   * @throws NullPointerException if any of the parameters is null.
+   */
   public HtmlCellStyle(FontDefinition font, Color fontColor, ElementAlignment verticalAlignment, ElementAlignment horizontalAlignment)
   {
     if (font == null) throw new NullPointerException("Font");
@@ -61,26 +78,53 @@ public class HtmlCellStyle
     this.horizontalAlignment = horizontalAlignment;
   }
 
+  /**
+   * Gets the font style for the cell.
+   *
+   * @return the defined font.
+   */
   public FontDefinition getFont()
   {
     return font;
   }
 
+  /**
+   * Gets the text color for the cell.
+   *
+   * @return the text color.
+   */
   public Color getFontColor()
   {
     return fontColor;
   }
 
+  /**
+   * Returns the vertical element alignment for the content of the cell.
+   *
+   * @return the vertical alignment.
+   */
   public ElementAlignment getVerticalAlignment()
   {
     return verticalAlignment;
   }
 
+  /**
+   * Returns the horizontal element alignment for the content of the cell.
+   *
+   * @return the horizontal alignment.
+   */
   public ElementAlignment getHorizontalAlignment()
   {
     return horizontalAlignment;
   }
 
+  /**
+   * Test, whether an other object equals this HtmlCellStyle.
+   *
+   * @param o the compared object.
+   * @return true, if the given object is a HtmlCellStyle with the same properties
+   * defined as this style.
+   */
   public boolean equals(Object o)
   {
     if (this == o) return true;
@@ -111,6 +155,11 @@ public class HtmlCellStyle
     return true;
   }
 
+  /**
+   * Gets the hashcode for this style definition.
+   *
+   * @return the hashcode.
+   */
   public int hashCode()
   {
     int result;
