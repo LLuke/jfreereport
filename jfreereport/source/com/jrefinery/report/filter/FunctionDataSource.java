@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -23,46 +23,93 @@
  * -----------------------
  * FunctionDataSource.java
  * -----------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ * 20-May-2002 : Initial version
+ * 06-Jun-2002 : Updated Javadoc comments (DG);
  *
  */
+
 package com.jrefinery.report.filter;
 
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.ReportState;
 
+/**
+ * The base class for a function data source.
+ */
 public class FunctionDataSource implements DataSource
 {
+
+  /** ??? */
   private String function;
+
+  /** The current value of the function. */
   private Object value;
 
+  /**
+   * Default constructor.
+   */
   public FunctionDataSource ()
   {
   }
 
+  /**
+   * Constructs a new function data source.
+   *
+   * @param function The function.
+   */
   public FunctionDataSource (String function)
   {
     setFunction(function);
   }
 
+  /**
+   * Sets the function.
+   *
+   * @param field ???
+   */
   public void setFunction (String field)
   {
     if (field == null) throw new NullPointerException();
     this.function = field;
   }
 
+  /**
+   * Returns the function.
+   *
+   * @return ???
+   */
   public String getFunction ()
   {
     return function;
   }
 
+  /**
+   * Sets the value of the function.
+   *
+   * @param value The value.
+   */
   public void setValue (Object value)
   {
     this.value = value;
   }
 
+  /**
+   * Returns the value of the function.
+   *
+   * @return The value.
+   */
   public Object getValue ()
   {
     return value;
   }
+
 }

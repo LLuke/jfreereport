@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -23,83 +23,167 @@
  * -----------------------
  * NumberFormatFilter.java
  * -----------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ * 06-Jun-2002 : Updated Javadoc comments (DG);
  *
  */
+
 package com.jrefinery.report.filter;
 
 import java.text.NumberFormat;
 import java.text.Format;
 
+/**
+ * A filter that formats the value from a data source as a number.
+ */
 public class NumberFormatFilter extends FormatFilter
 {
+  /**
+   * Default constructor.
+   * <P>
+   * Uses a general number format for the current locale.
+   */
   public NumberFormatFilter ()
   {
     setFormatter(NumberFormat.getInstance());
   }
 
+  /**
+   * Sets the number format.
+   *
+   * @param nf The number format.
+   */
   public void setNumberFormat (NumberFormat nf)
   {
     setFormatter(nf);
   }
 
+  /**
+   * Returns the number format.
+   *
+   * @return The number format.
+   */
   public NumberFormat getNumberFormat ()
   {
     return (NumberFormat) getFormatter();
   }
 
+  /**
+   * Sets the formatter.
+   *
+   * @param f The format.
+   */
   public void setFormatter (Format f)
   {
     super.setFormatter((NumberFormat) f);
   }
 
+  /**
+   * Turns grouping on or off for the current number format.
+   *
+   * @param newValue The new value of the grouping flag.
+   */
   public void setGroupingUsed(boolean newValue)
   {
     getNumberFormat().setGroupingUsed(newValue);
   }
 
+  /**
+   * Returns the value of the grouping flag for the current number format.
+   *
+   * @return The grouping flag.
+   */
   public boolean isGroupingUsed()
   {
     return getNumberFormat().isGroupingUsed();
   }
 
+  /**
+   * Sets the maximum number of fraction digits for the current number format.
+   *
+   * @param newValue The number of digits.
+   */
   public void setMaximumFractionDigits(int newValue)
   {
     getNumberFormat().setMaximumFractionDigits(newValue);
   }
 
+  /**
+   * Returns the maximum number of fraction digits.
+   *
+   * @return The digits.
+   */
   public int getMaximumFractionDigits()
   {
     return getNumberFormat().getMaximumFractionDigits();
   }
 
+  /**
+   * Sets the maximum number of digits in the integer part of the current number format.
+   *
+   * @param newValue The number of digits.
+   */
   public void setMaximumIntegerDigits(int newValue)
   {
     getNumberFormat().setMaximumFractionDigits(newValue);
   }
 
+  /**
+   * Returns the maximum number of integer digits.
+   *
+   * @return The digits.
+   */
   public int getMaximumIntegerDigits()
   {
     return getNumberFormat().getMaximumFractionDigits();
   }
 
+  /**
+   * Sets the minimum number of fraction digits for the current number format.
+   *
+   * @param newValue The number of digits.
+   */
   public void setMinimumFractionDigits(int newValue)
   {
     getNumberFormat().setMaximumFractionDigits(newValue);
   }
 
+  /**
+   * Returns the minimum number of fraction digits.
+   *
+   * @return The digits.
+   */
   public int getMinimumFractionDigits()
   {
     return getNumberFormat().getMaximumFractionDigits();
   }
 
+  /**
+   * Sets the minimum number of digits in the integer part of the current number format.
+   *
+   * @param newValue The number of digits.
+   */
   public void setMinimumIntegerDigits(int newValue)
   {
     getNumberFormat().setMaximumFractionDigits(newValue);
   }
 
+  /**
+   * Returns the minimum number of integer digits.
+   *
+   * @return The digits.
+   */
   public int getMinimumIntegerDigits()
   {
     return getNumberFormat().getMaximumFractionDigits();
   }
+
 }

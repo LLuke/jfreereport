@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,13 +20,23 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ---------------
  * DataFilter.java
- * -----------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * ---------------
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
  * 20-May-2002 : Initial version
+ * 06-Jun-2002 : Updated source header (DG);
+ *
  */
+
 package com.jrefinery.report.filter;
 
 /**

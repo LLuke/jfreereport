@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -23,7 +23,16 @@
  * -----------------------
  * DateFormatFilter.java
  * -----------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ * 06-Jun-2002 : Updated Javadoc comments (DG);
  *
  */
 package com.jrefinery.report.filter;
@@ -32,25 +41,48 @@ import java.text.SimpleDateFormat;
 import java.text.Format;
 import java.text.DateFormat;
 
+/**
+ * A date format filter.
+ */
 public class DateFormatFilter extends FormatFilter
 {
+  /**
+   * Default constructor.  Creates a new filter using the default date format for the current
+   * locale.
+   */
   public DateFormatFilter ()
   {
     setFormatter(DateFormat.getInstance());
   }
 
+  /**
+   * Returns the date format object.
+   *
+   * @return The date format object.
+   */
   public DateFormat getDateFormat ()
   {
     return (DateFormat) getFormatter ();
   }
 
+  /**
+   * Sets the date format for the filter.
+   *
+   * @param format The format.
+   */
   public void setDateFormat (DateFormat format)
   {
     super.setFormatter(format);
   }
 
+  /**
+   * Sets the formatter.
+   *
+   * @param format The format.
+   */
   public void setFormatter (Format format)
   {
     super.setFormatter((DateFormat) format);
   }
+
 }

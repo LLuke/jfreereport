@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,46 +20,97 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ---------------------
  * ReportDataSource.java
- * -----------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * ---------------------
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ * 20-May-2002 : Initial version
+ * 06-Jun-2002 : Updated Javadoc comments (DG);
  *
  */
+
 package com.jrefinery.report.filter;
 
+/**
+ * A data source that returns the value of a field in the report's TableModel.
+ * <P>
+ * The field is identified by the column name.
+ */
 public class ReportDataSource implements DataSource
 {
+
+  /** The field name. */
   private String fieldName;
+
+  /** The current value. */
   private Object value;
 
+  /**
+   * Default constructor.
+   */
   public ReportDataSource ()
   {
   }
 
+  /**
+   * Constructs a new report data source.
+   *
+   * @param field The field name.
+   */
   public ReportDataSource (String field)
   {
     setField(field);
   }
 
+  /**
+   * Sets the field name.
+   * <P>
+   * The field name should correspond to the name of one of the columns in the report's TableModel.
+   *
+   * @param field The field name.
+   */
   public void setField (String field)
   {
     if (field == null) throw new NullPointerException();
     this.fieldName = field;
   }
 
+  /**
+   * Returns the field name.
+   *
+   * @return The field name.
+   */
   public String getField ()
   {
     return fieldName;
   }
 
+  /**
+   * Sets the current value of the data source.
+   *
+   * @param value The value.
+   */
   public void setValue (Object value)
   {
     this.value = value;
   }
 
+  /**
+   * Returns the value of the data source.
+   *
+   * @return The value.
+   */
   public Object getValue ()
   {
     return value;
   }
+
 }

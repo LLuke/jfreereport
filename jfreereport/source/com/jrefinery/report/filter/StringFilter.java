@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -23,34 +23,70 @@
  * -----------------------
  * StringFilter.java
  * -----------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Thomas Morgner and Contributors.
  *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
  * 04-Jun-2002 : Officially documented. Added a public constructor and set the default null
  *               value.
+ * 06-Jun-2002 : Added Javadoc comments (DG);
+ *
  */
+
 package com.jrefinery.report.filter;
 
+/**
+ * A filter that returns the value from a data source as a String.
+ */
 public class StringFilter implements DataFilter
 {
+  /** The data source for this filter. */
   private DataSource source;
+
+  /** The string used to represent a null value. */
   private String nullvalue;
 
+  /**
+   * Default constructor.
+   */
   public StringFilter ()
   {
     nullvalue = "null";
   }
 
+  /**
+   * Sets the string used to represent a null value.
+   *
+   * @param nullvalue The null value.
+   */
   public void setNullValue (String nullvalue)
   {
     if (nullvalue == null) throw new NullPointerException();
     this.nullvalue = nullvalue;
   }
 
+  /**
+   * Returns the string used to represent a null value.
+   *
+   * @return The string.
+   */
   public String getNullValue ()
   {
     return nullvalue;
   }
 
+  /**
+   * Returns the value obtained from the data source.
+   * <P>
+   * The filter ensures that the returned value is a String, even though the return type is Object.
+   *
+   * @return The string.
+   */
   public Object getValue ()
   {
     DataSource ds = getDataSource();
@@ -64,14 +100,25 @@ public class StringFilter implements DataFilter
     return String.valueOf(o);
   }
 
+  /**
+   * Returns the data source for this filter.
+   *
+   * @return The data source.
+   */
   public DataSource getDataSource ()
   {
     return source;
   }
 
+  /**
+   * Sets the data source for this filter.
+   *
+   * @param ds The data source.
+   */
   public void setDataSource (DataSource ds)
   {
     if (ds == null) throw new NullPointerException();
     source = ds;
   }
+
 }

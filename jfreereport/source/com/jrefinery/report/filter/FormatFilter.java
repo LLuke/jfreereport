@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -23,34 +23,73 @@
  * -----------------------
  * FormatFilter.java
  * -----------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ * 20-May-2002 : Initial version
+ * 06-Jun-2002 : Updated Javadoc comments (DG);
  *
  */
+
 package com.jrefinery.report.filter;
 
 import java.text.Format;
 
+/**
+ * The base class for filters that format data.  Data is received from a DataSource and formatted.
+ * The data source might be a field in the TableModel or a report function, or even another
+ * format filter (since this class implements the DataSource interface).
+ */
 public class FormatFilter implements DataFilter
 {
+  /** The format. */
   private Format format;
+
+  /** The datasource. */
   private DataSource datasource;
+
+  /** The string used to represent null. */
   private String nullvalue;
 
+  /**
+   * Default constructor.
+   */
   protected FormatFilter ()
   {
   }
 
+  /**
+   * Sets the format for the filter.
+   *
+   * @param format The format.
+   */
   public void setFormatter (Format format)
   {
     if (format == null) throw new NullPointerException();
     this.format = format;
   }
 
+  /**
+   * Returns the format for the filter.
+   *
+   * @return The format.
+   */
   public Format getFormatter ()
   {
     return this.format;
   }
 
+  /**
+   * Returns the formatted value.
+   *
+   * @return The formatted value.
+   */
   public Object getValue ()
   {
     Format f = getFormatter();
@@ -72,25 +111,47 @@ public class FormatFilter implements DataFilter
     }
   }
 
+  /**
+   * Sets the value that will be displayed if the data source supplies a null value.
+   *
+   * @param nullvalue The string.
+   */
   public void setNullValue (String nullvalue)
   {
     if (nullvalue == null) throw new NullPointerException();
     this.nullvalue = nullvalue;
   }
 
+  /**
+   * Returns the string representing a null value from the data source.
+   *
+   * @return The string.
+   */
   public String getNullValue ()
   {
     return nullvalue;
   }
 
+  /**
+   * Returns the data source for the filter.
+   *
+   * @return The data source.
+   */
   public DataSource getDataSource ()
   {
     return datasource;
   }
 
+  /**
+   * Sets the data source.
+   *
+   * @param ds The data source.
+   */
   public void setDataSource (DataSource ds)
   {
     if (ds == null) throw new NullPointerException();
     this.datasource = ds;
   }
+
 }
+

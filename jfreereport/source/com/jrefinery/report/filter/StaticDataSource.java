@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -23,31 +23,65 @@
  * -----------------------
  * StaticDataSource.java
  * -----------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
+ *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
+ * 20-May-2002 : Initial version
+ * 06-Jun-2002 : Updated Javadoc comments (DG);
  *
  */
+
 package com.jrefinery.report.filter;
 
+/**
+ * A data source that returns a constant value.  An example is a label on a report.
+ */
 public class StaticDataSource implements DataSource
 {
+  /** The value. */
   private Object value;
 
+  /**
+   * Default constructor.
+   */
   public StaticDataSource ()
   {
   }
 
+  /**
+   * Constructs a new static data source.
+   *
+   * @param o The value.
+   */
   public StaticDataSource (Object o)
   {
     setValue(o);
   }
 
+  /**
+   * Sets the value of the data source.
+   *
+   * @param o The value.
+   */
   public void setValue (Object o)
   {
      this.value = o;
   }
 
+  /**
+   * Returns the value of the data source.
+   *
+   * @return The value.
+   */
   public Object getValue ()
   {
     return value;
   }
+
 }

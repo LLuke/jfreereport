@@ -4,7 +4,7 @@
  * =============================================================
  *
  * Project Info:  http://www.object-refinery.com/jfreereport/index.html
- * Project Lead:  David Gilbert (david.gilbert@object-refinery.com)
+ * Project Lead:  Thomas Morgner (taquera@sherito.org);
  *
  * (C) Copyright 2000-2002, by Simba Management Limited and Contributors.
  *
@@ -20,21 +20,36 @@
  * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
  * Boston, MA 02111-1307, USA.
  *
- * -----------------------
+ * ---------------
  * DataSource.java
- * -----------------------
- * (C)opyright 2000-2002, by Simba Management Limited.
+ * ---------------
+ * (C)opyright 2002, by Simba Management Limited and Contributors.
  *
+ * Original Author:  Thomas Morgner;
+ * Contributor(s):   David Gilbert (for Simba Management Limited);
+ *
+ * $Id$
+ *
+ * Changes
+ * -------
  * 20-May-2002 : Initial version
+ * 06-Jun-2002 : Updated Javadoc comments (DG);
+ *
  */
 package com.jrefinery.report.filter;
 
 /**
  * A DataSource is a producer in the data chain. Common Sources are StaticSources (predefined
  * data), ReportDataSources (data filled from the reports data set) or FunctionDataSource (the
- * data is filled by quering an assigned function).
+ * data is filled by querying an assigned function).
  */
 public interface DataSource
 {
+  /**
+   * Returns the current value for the data source.
+   *
+   * @return The value.
+   */
   public Object getValue ();
+
 }
