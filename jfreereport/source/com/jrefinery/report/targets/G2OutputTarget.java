@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.20 2002/10/15 20:37:30 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.21 2002/11/06 22:15:29 taqua Exp $
  *
  * Changes
  * -------
@@ -46,7 +46,6 @@ package com.jrefinery.report.targets;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.ImageReference;
 import com.jrefinery.report.util.Log;
-import com.jrefinery.report.util.NullOutputStream;
 import com.jrefinery.report.util.ReportConfiguration;
 
 import java.awt.Color;
@@ -58,7 +57,6 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -373,7 +371,7 @@ public class G2OutputTarget extends AbstractOutputTarget
     float textLength = (float) textBounds.getWidth();
     float elementLength = (float) bounds.getWidth();
 
-    GlyphVector gv = g2.getFont().createGlyphVector(frc, text);
+    //GlyphVector gv = g2.getFont().createGlyphVector(frc, text);
     FontMetrics fm = g2.getFontMetrics();
     float baseline = (float) (bounds.getY() + fm.getMaxAscent());
     if (alignment == Element.LEFT)
@@ -405,8 +403,7 @@ public class G2OutputTarget extends AbstractOutputTarget
    */
   protected float getFontHeight()
   {
-    FontMetrics fm = g2.getFontMetrics();
-    return fm.getAscent() - 1;
+    return getFont().getSize2D();
   }
 
   /**
