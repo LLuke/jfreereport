@@ -1,0 +1,75 @@
+String: "report-definition"           - <report-definition>
+
+String: "report-definition",
+String: "report-config"               - <report-config>
+
+String: "report-definition",
+String: "report-config",
+String: "page-definition"             - <page-definition>
+
+Object: ReportConfiguration           - <configuration>
+
+Object: ReportConfiguration,
+String: property name                 - <configuration><property name=?>
+
+Object: JFreeReport                   - <report-description>
+
+Object: org.jfree.report.Element      - <band>, <element>
+
+Object: org.jfree.report.Element,
+String: "datasource"                  - <element><datasource>
+
+Object: org.jfree.report.Element,
+String: "template"                    - <element><template>
+
+String: "report-definition",
+String: "parser-config"               - <parser-config>
+
+String: "report-definition",
+String: "parser-config",
+String: "object-factory"              - <object-factory>
+
+String: "report-definition",
+String: "parser-config",
+String: "element-factory"             - <element-factory>
+
+String: "report-definition",
+String: "parser-config",
+String: "stylekey-factory"            - <stylekey-factory>
+
+String: "report-definition",
+String: "parser-config",
+String: "template-factory"            - <template-factory>
+
+String: "report-definition",
+String: "parser-config",
+String: "datasource-factory"          - <datasource-factory>
+
+Object: ElementStyleSheet             - <style>
+
+Object: ElementStyleSheet,
+String: "extends"                     - <style><extends>
+
+Object: ElementStyleSheet,
+String: name of StyleKey              - <style><basic-key>, <style><compound-key>
+
+Object: ElementStyleSheet,
+String: name of StyleKey
+String: name of compound Object       - <style><compound-key><basic-object>*,
+                                        <style><compound-key><compound-object>*
+
+Object: Expression                    - <expression>,<function>
+
+Object: Expression,
+String: "properties"                  - <expression><properties>
+
+Object: Expression,
+String: "properties",
+String: property name                 - <expression><properties>property name=?>
+
+String: "report-definition",
+String: "functions"                   - <functions>
+
+String: "report-definition",
+String: "functions"
+String: "property-ref"                - <property-ref>
