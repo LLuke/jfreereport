@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGridPosition.java,v 1.8 2003/02/24 15:02:20 mungady Exp $
+ * $Id: TableGridPosition.java,v 1.9 2003/02/25 15:42:31 taqua Exp $
  *
  * Changes
  * -------
@@ -41,7 +41,7 @@ package com.jrefinery.report.targets.table;
 import java.awt.geom.Rectangle2D;
 
 /**
- * The TableGridPositition is used to bind the layouted table position to an
+ * The TableGridPosition is used to bind the layouted table position to an
  * TableCellData object.
  * 
  * @author Thomas Morgner

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableCellData.java,v 1.5 2003/02/11 20:20:18 taqua Exp $
+ * $Id: TableCellData.java,v 1.6 2003/02/24 15:02:20 mungady Exp $
  *
  * Changes
  * -------
@@ -66,7 +66,7 @@ public abstract class TableCellData
   {
     if (outerBounds == null) 
     {
-      throw new NullPointerException("TableCellData constructor : uuterBounds is null");
+      throw new NullPointerException("TableCellData constructor : outerBounds is null");
     }
     this.outerBounds = (Rectangle2D) outerBounds.clone();
   }
