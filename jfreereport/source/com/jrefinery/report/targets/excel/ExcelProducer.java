@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.1 2003/01/14 21:13:43 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.2 2003/01/14 23:48:12 taqua Exp $
  *
  * Changes
  * -------
@@ -85,7 +85,7 @@ public class ExcelProducer
   private OutputStream out;
 
   /** The Excel cell style factory */
-  private ExcelCellStyleFactory cellStyleFactory;
+  private ExcelCellDataFactory cellDataFactory;
 
   /** The list of all the cells to be generated within the XLS-file */
   private ArrayList cells;
@@ -119,7 +119,7 @@ public class ExcelProducer
     this.cells = new ArrayList();
     xCuts = null;
     yCuts = null;
-    cellStyleFactory = null;
+    cellDataFactory = null;
   }
 
   /**
@@ -128,7 +128,8 @@ public class ExcelProducer
   public void open()
   {
     workbook = new HSSFWorkbook();
-    cellStyleFactory = new ExcelCellStyleFactory(workbook);
+    ExcelCellStyleFactory cellStyleFactory = new ExcelCellStyleFactory(workbook);
+    cellDataFactory = new ExcelCellDataFactory(cellStyleFactory);
 
     // style for empty cells
 
@@ -338,12 +339,12 @@ public class ExcelProducer
       sheet.addMergedRegion(new Region(y, (short) x, (y + gridCell.getRowSpan() - 1), (short) (x + gridCell.getColSpan() - 1)));
     }
 
-    if (cellData.getText() != null && cellData.getText().length() > 0)
+    if (cellData.isEmpty() == false)
     {
       HSSFCell cell = row.createCell((short) x);
       cell.setEncoding(HSSFCell.ENCODING_UTF_16);
-      cell.setCellValue(cellData.getText());
-      cell.setCellStyle(cellData.getStyle());
+      cellData.applyCell(cell);
+
     }
   }
 
@@ -437,7 +438,7 @@ public class ExcelProducer
       throw new NullPointerException("No layout for element");
     }
     Rectangle2D drawBounds = translateSubRect(bounds, elementBounds);
-    cells.add(new ExcelCellData(e, drawBounds, cellStyleFactory.getExcelCellStyle(e)));
+    cells.add(cellDataFactory.createCellData(e, drawBounds));
   }
 
   /**

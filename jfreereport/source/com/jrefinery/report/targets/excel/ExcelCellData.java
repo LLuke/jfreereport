@@ -2,52 +2,42 @@
  * Date: Jan 14, 2003
  * Time: 2:53:00 PM
  *
- * $Id$
+ * $Id: ExcelCellData.java,v 1.1 2003/01/14 21:13:11 taqua Exp $
  */
 package com.jrefinery.report.targets.excel;
 
-import com.jrefinery.report.Element;
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 
 import java.awt.geom.Rectangle2D;
 
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-
-public class ExcelCellData
+public abstract class ExcelCellData
 {
-  /** The text to be used for the cell */
-  private String text;
-
   /** The position of the outer bounds of the cell */
   private Rectangle2D outerBounds;
 
   private HSSFCellStyle style;
+
   /**
-   * @param element
    * @param elementBounds are calculated outside
    */
-  public ExcelCellData(Element element, Rectangle2D elementBounds, HSSFCellStyle style)
+  public ExcelCellData(Rectangle2D elementBounds, HSSFCellStyle style)
   {
-    this.text = String.valueOf(element.getValue());
     if (elementBounds == null) throw new NullPointerException("OuterBounds is null");
     this.outerBounds = elementBounds;
     if (style == null) throw new NullPointerException("Style is null");
     this.style = style;
   }
 
+
   /**
    * @see java.lang.Object#toString()
    */
   public String toString()
   {
-    return "CellData: text=>>"
-        + text
+    return "CellData: " + getClass()
         + " outer bounds= "
         + outerBounds;
-  }
-
-  public String getText()
-  {
-    return text;
   }
 
   public Rectangle2D getBounds()
@@ -59,4 +49,9 @@ public class ExcelCellData
   {
     return style;
   }
+
+  public abstract void applyCell (HSSFCell cell);
+
+  public abstract boolean isEmpty ();
+
 }

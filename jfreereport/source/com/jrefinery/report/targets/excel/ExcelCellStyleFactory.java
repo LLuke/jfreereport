@@ -30,7 +30,7 @@
  * Contributor(s):   -;
  * based on ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: PDFOutputTarget.java,v 1.8 2002/12/11 01:10:41 mungady Exp $
+ * $Id: ExcelCellStyleFactory.java,v 1.1 2003/01/14 21:13:17 taqua Exp $
  *
  * Changes
  * -------
@@ -42,6 +42,7 @@ import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFFont;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 
 import java.util.ArrayList;
 import java.awt.Font;
@@ -64,6 +65,7 @@ public class ExcelCellStyleFactory
 
   private ExcelFontFactory fontFactory;
   private HSSFWorkbook workbook;
+  private HSSFDataFormat dataFormat;
 
 	/** The list of fonts that we have used so far */
 	private ArrayList cellStyleList = null;
@@ -148,5 +150,20 @@ public class ExcelCellStyleFactory
       emptyCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
     }
     return emptyCellStyle;
+  }
+
+  /**
+   * This needs POI 1.9, the version 1.5.1 is not able to set userdefined data
+   * formats
+   *
+   * @return
+   */
+  public HSSFDataFormat getDataFormat ()
+  {
+    if (dataFormat == null)
+    {
+      dataFormat = new HSSFDataFormat();
+    }
+    return dataFormat;
   }
 }
