@@ -1,21 +1,21 @@
 /**
- * Date: Jan 14, 2003
- * Time: 2:54:30 PM
+ * Date: Jan 18, 2003
+ * Time: 7:23:00 PM
  *
  * $Id$
  */
-package com.jrefinery.report.targets.excel;
+package com.jrefinery.report.targets.table;
 
-public class ExcelGridPosition
+public class TableGridPosition
 {
-  private ExcelCellData element;
+  private TableCellData element;
   private long width;
   private long height;
   private int colSpan;
   private int rowSpan;
 
-  public ExcelGridPosition(
-      ExcelCellData element,
+  public TableGridPosition(
+      TableCellData element,
       long width,
       long height,
       int colSpan,
@@ -28,7 +28,7 @@ public class ExcelGridPosition
     this.rowSpan = rowSpan;
   }
 
-  public ExcelCellData getElement()
+  public TableCellData getElement()
   {
     return element;
   }
@@ -52,4 +52,5 @@ public class ExcelGridPosition
   {
     return rowSpan;
   }
+
 }

@@ -2,18 +2,22 @@
  * Date: Jan 15, 2003
  * Time: 5:01:29 PM
  *
- * $Id$
+ * $Id: ExcelCellDataFactory.java,v 1.1 2003/01/15 16:54:52 taqua Exp $
  */
-package com.jrefinery.report.targets.excel;
+package com.jrefinery.report.targets.table.excel;
 
 import com.jrefinery.report.Element;
+import com.jrefinery.report.targets.table.TableCellData;
+import com.jrefinery.report.targets.table.TableCellDataFactory;
+import com.jrefinery.report.targets.table.excel.DefaultExcelCellData;
+import com.jrefinery.report.targets.table.excel.ExcelCellData;
 import com.jrefinery.report.filter.DataSource;
 import com.jrefinery.report.filter.templates.Template;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 
 import java.awt.geom.Rectangle2D;
 
-public class ExcelCellDataFactory
+public class ExcelCellDataFactory implements TableCellDataFactory
 {
   private ExcelCellStyleFactory styleFactory;
 
@@ -22,7 +26,7 @@ public class ExcelCellDataFactory
     this.styleFactory = styleFactory;
   }
 
-  public ExcelCellData createCellData (Element element, Rectangle2D bounds)
+  public TableCellData createCellData (Element element, Rectangle2D bounds)
   {
     DataSource ds = element.getDataSource();
     if (ds instanceof Template)

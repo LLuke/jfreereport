@@ -2,15 +2,13 @@
  * Date: Jan 14, 2003
  * Time: 2:32:12 PM
  *
- * $Id: ExcelWriter.java,v 1.1 2003/01/14 21:13:55 taqua Exp $
+ * $Id: TableWriter.java,v 1.2 2003/01/14 23:48:12 taqua Exp $
  */
-package com.jrefinery.report.targets.excel;
+package com.jrefinery.report.targets.table;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.ReportProcessingException;
-import com.jrefinery.report.PageHeader;
-import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.function.FunctionProcessingException;
@@ -22,24 +20,21 @@ import com.jrefinery.report.targets.pageable.bandlayout.BandLayoutManagerUtil;
 import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
-import com.jrefinery.report.util.PageFormatFactory;
 import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.print.PageFormat;
-import java.io.OutputStream;
 
-public class ExcelWriter extends AbstractFunction
+public class TableWriter extends AbstractFunction
 {
   public static final String SHEET_NAME_FUNCTION_PROPERTY =
-      "com.jrefinery.report.targets.excel.ExcelWriter.SheetNameFunction";
+      "com.jrefinery.report.targets.table.TableWriter.SheetNameFunction";
 
-  private OutputStream outputStream;
   private OutputTarget dummyOutputTarget;
   private ReportEvent currentEvent;
-  private ExcelProducer producer;
-  private ExcelWriterCursor cursor;
+  private TableProducer producer;
+  private TableWriterCursor cursor;
 
   private float maxWidth;
   private int depLevel;
@@ -53,7 +48,7 @@ public class ExcelWriter extends AbstractFunction
   /** A flag that indicates that the current pagebreak will be the last one. */
   private boolean isLastPageBreak;
 
-  public ExcelWriter()
+  public TableWriter()
   {
     setDependencyLevel(-1);
     setMaxWidth(1000);
@@ -71,12 +66,12 @@ public class ExcelWriter extends AbstractFunction
     return inEndPage;
   }
 
-  public ExcelWriterCursor getCursor()
+  public TableWriterCursor getCursor()
   {
     return cursor;
   }
 
-  public void setCursor(ExcelWriterCursor cursor)
+  public void setCursor(TableWriterCursor cursor)
   {
     this.cursor = cursor;
   }
@@ -95,16 +90,6 @@ public class ExcelWriter extends AbstractFunction
       dummyOutputTarget = new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), new PageFormat());
     }
     return dummyOutputTarget;
-  }
-
-  public OutputStream getOutputStream()
-  {
-    return outputStream;
-  }
-
-  public void setOutputStream(OutputStream outputStream)
-  {
-    this.outputStream = outputStream;
   }
 
   /**
@@ -208,7 +193,7 @@ public class ExcelWriter extends AbstractFunction
    *
    * @param b  the band.
    *
-   * @throws ReportProcessingException if the printing failed
+   * @throws com.jrefinery.report.ReportProcessingException if the printing failed
    */
   protected void print(Band b)
       throws ReportProcessingException
@@ -275,7 +260,6 @@ public class ExcelWriter extends AbstractFunction
       setCurrentEvent(event);
       Log.debug ("CurrentEvent: " + event.getState());
 
-      producer = new ExcelProducer(getOutputStream());
       producer.open();
 
       startPage();
@@ -319,7 +303,7 @@ public class ExcelWriter extends AbstractFunction
     try
     {
       // a new page has started, so reset the cursor ...
-      setCursor(new ExcelWriterCursor());
+      setCursor(new TableWriterCursor());
 
       String sheetName = null;
       if (getSheetNameFunction() != null)
@@ -533,4 +517,13 @@ public class ExcelWriter extends AbstractFunction
     this.currentEvent = currentEvent;
   }
 
+  public TableProducer getProducer()
+  {
+    return producer;
+  }
+
+  public void setProducer(TableProducer producer)
+  {
+    this.producer = producer;
+  }
 }

@@ -2,16 +2,16 @@
  * Date: Jan 14, 2003
  * Time: 5:16:03 PM
  *
- * $Id$
+ * $Id: TableWriterCursor.java,v 1.1 2003/01/14 21:14:04 taqua Exp $
  */
-package com.jrefinery.report.targets.excel;
+package com.jrefinery.report.targets.table;
 
-public class ExcelWriterCursor
+public class TableWriterCursor
 {
   /** The y-coordinate. */
   private float y;
 
-  public ExcelWriterCursor()
+  public TableWriterCursor()
   {
   }
 

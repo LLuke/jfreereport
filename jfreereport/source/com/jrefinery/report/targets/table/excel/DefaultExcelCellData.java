@@ -2,9 +2,9 @@
  * Date: Jan 15, 2003
  * Time: 5:19:00 PM
  *
- * $Id$
+ * $Id: DefaultExcelCellData.java,v 1.1 2003/01/15 16:54:52 taqua Exp $
  */
-package com.jrefinery.report.targets.excel;
+package com.jrefinery.report.targets.table.excel;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;

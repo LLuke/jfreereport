@@ -24,7 +24,7 @@
  * JFreeReportResources_de.java
  * ----------------------------
  *
- * $Id: JFreeReportResources_de.java,v 1.18 2002/11/21 13:03:12 taqua Exp $
+ * $Id: JFreeReportResources_de.java,v 1.19 2003/01/14 21:12:33 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -63,6 +63,10 @@ public class JFreeReportResources_de extends JFreeReportResources
             {"action.export-to-excel.name", "Export nach Excel..."},
             {"action.export-to-excel.description", "Speichert den Bericht im MS-Excel format"},
             {"action.export-to-excel.mnemonic", new Integer (KeyEvent.VK_E)},
+
+            {"action.export-to-html.name", "Export nach HTML..."},
+            {"action.export-to-html.description", "Speichert den Bericht im HTML format"},
+            {"action.export-to-html.mnemonic", new Integer (KeyEvent.VK_E)},
 
             {"action.print.name", "Drucken..."},
             {"action.print.description", "Druckt den Bericht"},
@@ -179,7 +183,7 @@ public class JFreeReportResources_de extends JFreeReportResources
             {"excelexportdialog.warningTitle", "Warnung"},
             {"excelexportdialog.errorTitle", "Fehler"},
             {"excelexportdialog.targetIsEmpty",
-                "Bitte geben Sie einen Dateinamen für die PDF-Datei an."},
+                "Bitte geben Sie einen Dateinamen für die Excel-Datei an."},
             {"excelexportdialog.targetIsNoFile", "Der Dateiname zeigt auf keine gewöhnliche Datei."},
             {"excelexportdialog.targetIsNotWritable",
                 "Sie besitzen keine ausreichenden Rechte um die ausgewählte Datei zu "
@@ -190,5 +194,26 @@ public class JFreeReportResources_de extends JFreeReportResources
 
             {"excelexportdialog.cancel", "Abbrechen"},
             {"excelexportdialog.confirm", "OK"},
+
+            {"htmlexportdialog.dialogtitle", "Bericht als eine Html-Datei speichern ..."},
+            {"htmlexportdialog.filename", "Dateiname"},
+            {"htmlexportdialog.author", "Autor"},
+            {"htmlexportdialog.title", "Titel"},
+            {"htmlexportdialog.selectFile", "Auswählen"},
+
+            {"htmlexportdialog.warningTitle", "Warnung"},
+            {"htmlexportdialog.errorTitle", "Fehler"},
+            {"htmlexportdialog.targetIsEmpty",
+                "Bitte geben Sie einen Dateinamen für die Html-Datei an."},
+            {"htmlexportdialog.targetIsNoFile", "Der Dateiname zeigt auf keine gewöhnliche Datei."},
+            {"htmlexportdialog.targetIsNotWritable",
+                "Sie besitzen keine ausreichenden Rechte um die ausgewählte Datei zu "
+              + "überschreiben."},
+            {"htmlexportdialog.targetOverwriteConfirmation",
+                "Die Datei ''{0}'' existiert bereits. Soll diese Datei überschrieben werden?"},
+            {"htmlexportdialog.targetOverwriteTitle", "Datei überschreiben?"},
+
+            {"htmlexportdialog.cancel", "Abbrechen"},
+            {"htmlexportdialog.confirm", "OK"},
           };
 }

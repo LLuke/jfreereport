@@ -30,7 +30,7 @@
                      based on PDFSaveDialog by Thomas Morgner, David Gilbert (for Simba Management Limited) and contributors
  * Contributor(s):
  *
- * $Id: PDFSaveDialog.java,v 1.20 2002/12/12 12:26:56 mungady Exp $
+ * $Id: ExcelExportDialog.java,v 1.1 2003/01/14 21:10:08 taqua Exp $
  *
  * Changes
  * --------
@@ -41,7 +41,7 @@ package com.jrefinery.report.preview;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.targets.pageable.PageableReportProcessor;
-import com.jrefinery.report.targets.excel.ExcelProcessor;
+import com.jrefinery.report.targets.table.excel.ExcelProcessor;
 import com.jrefinery.report.util.ActionButton;
 import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.ReportConfiguration;

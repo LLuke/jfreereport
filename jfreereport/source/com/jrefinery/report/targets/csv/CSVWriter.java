@@ -4,25 +4,61 @@
  *
  * $Id: XMLWriter.java,v 1.1 2003/01/07 17:34:29 taqua Exp $
  */
-package com.jrefinery.report.targets.xml;
+package com.jrefinery.report.targets.csv;
 
-import com.jrefinery.report.function.AbstractFunction;
-import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
 import com.jrefinery.report.Group;
+import com.jrefinery.report.TextElement;
+import com.jrefinery.report.event.ReportEvent;
+import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.util.Log;
 
-import java.io.Writer;
 import java.io.IOException;
+import java.io.Writer;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 
-public class XMLWriter extends AbstractFunction
+public class CSVWriter extends AbstractFunction
 {
+  private static class CSVRow
+  {
+    private ArrayList data;
+    private CSVQuoter quoter;
+
+    public CSVRow()
+    {
+      data = new ArrayList();
+      quoter = new CSVQuoter();
+    }
+
+    public void append (int d)
+    {
+      data.add (new Integer (d));
+    }
+
+    public void append (Object o)
+    {
+      data.add (o);
+    }
+
+    public void write (Writer w) throws IOException
+    {
+      Iterator it = data.iterator();
+      while (it.hasNext())
+      {
+        w.write(quoter.doQuoting(String.valueOf (it.next())));
+        if (it.hasNext())
+          w.write(",");
+      }
+    }
+  }
+
   private Writer w;
   private int depLevel;
 
-  public XMLWriter()
+  public CSVWriter()
   {
     setDependencyLevel(-1);
   }
@@ -37,28 +73,24 @@ public class XMLWriter extends AbstractFunction
     this.w = w;
   }
 
-  private void writeBand (Band b)
+  private void writeBand (Band b,CSVRow row)
     throws IOException
   {
-
     List l = b.getElements();
-    for (int i = 0; i < l.size(); i++)
+    Iterator it = l.iterator();
+    while (it.hasNext())
     {
-      Element e = (Element) l.get(i);
-      if (e.getContentType().startsWith("text"))
+      Element e = (Element) it.next();
+      if (e instanceof Band)
       {
-        w.write ("<element name=\"");
-        w.write (e.getName());
-        w.write ("\">");
-        w.write(String.valueOf(e.getValue()));
-        w.write ("</element>");
+        writeBand((Band) e, row);
+        continue;
       }
-      else if (e instanceof Band)
-      {
-        w.write("<band>");
-        writeBand((Band) e);
-        w.write("</band>");
-      }
+
+      if (e.getContentType().equals(TextElement.CONTENT_TYPE) == false)
+        continue;
+
+      row.append(e.getValue());
     }
   }
 
@@ -71,10 +103,11 @@ public class XMLWriter extends AbstractFunction
   {
     try
     {
-      w.write("<report>");
-      w.write("<reportheader>");
-      writeBand(event.getReport().getReportHeader());
-      w.write("</reportheader>");
+      CSVRow row = new CSVRow();
+      row.append(-1);
+      row.append("reportheader");
+      writeBand(event.getReport().getReportHeader(), row);
+      row.write(getWriter());
     }
     catch (IOException ioe)
     {
@@ -91,10 +124,11 @@ public class XMLWriter extends AbstractFunction
   {
     try
     {
-      w.write("<reportfooter>");
-      writeBand(event.getReport().getReportFooter());
-      w.write("</reportfooter>");
-      w.write("</report>");
+      CSVRow row = new CSVRow();
+      row.append(-1);
+      row.append("reportfooter");
+      writeBand(event.getReport().getReportFooter(), row);
+      row.write(getWriter());
     }
     catch (IOException ioe)
     {
@@ -111,12 +145,16 @@ public class XMLWriter extends AbstractFunction
   {
     try
     {
-      w.write("<groupheader name=\"");
-      Group g = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
-      w.write(g.getName());
-      w.write("\">");
-      writeBand(g.getHeader());
-      w.write("</groupheader>");
+      int currentIndex = event.getState().getCurrentGroupIndex();
+
+      CSVRow row = new CSVRow();
+      row.append(currentIndex);
+
+      Group g = event.getReport().getGroup(currentIndex);
+      String bandInfo = "groupheader name=\"" + g.getName()+ "\"";
+      row.append(bandInfo);
+      writeBand(g.getHeader(), row);
+      row.write(getWriter());
     }
     catch (IOException ioe)
     {
@@ -133,12 +171,16 @@ public class XMLWriter extends AbstractFunction
   {
     try
     {
-      w.write("<groupfooter name=\"");
-      Group g = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
-      w.write(g.getName());
-      w.write("\">");
-      writeBand(g.getFooter());
-      w.write("</groupfooter>");
+      int currentIndex = event.getState().getCurrentGroupIndex();
+
+      CSVRow row = new CSVRow();
+      row.append(currentIndex);
+
+      Group g = event.getReport().getGroup(currentIndex);
+      String bandInfo = "groupfooter name=\"" + g.getName()+ "\"";
+      row.append(bandInfo);
+      writeBand(g.getFooter(), row);
+      row.write(getWriter());
     }
     catch (IOException ioe)
     {
@@ -155,51 +197,15 @@ public class XMLWriter extends AbstractFunction
   {
     try
     {
-      w.write("<itemband>");
-      writeBand(event.getReport().getItemBand());
-      w.write("</itemband>");
+      CSVRow row = new CSVRow();
+      row.append(event.getState().getCurrentGroupIndex());
+      row.append("itemband");
+      writeBand(event.getReport().getItemBand(), row);
+      row.write(getWriter());
     }
     catch (IOException ioe)
     {
       Log.error ("Error writing the band", ioe);
-    }
-  }
-
-  /**
-   * Receives notification that a group of item bands is about to be processed.
-   * <P>
-   * The next events will be itemsAdvanced events until the itemsFinished event is raised.
-   *
-   * @param event The event.
-   */
-  public void itemsStarted(ReportEvent event)
-  {
-    try
-    {
-      w.write("<items>");
-    }
-    catch (IOException ioe)
-    {
-      Log.error ("Error writing the items tag", ioe);
-    }
-  }
-
-  /**
-   * Receives notification that a group of item bands has been completed.
-   * <P>
-   * The itemBand is finished, the report starts to close open groups.
-   *
-   * @param event The event.
-   */
-  public void itemsFinished(ReportEvent event)
-  {
-    try
-    {
-      w.write("</items>");
-    }
-    catch (IOException ioe)
-    {
-      Log.error ("Error writing the items tag", ioe);
     }
   }
 

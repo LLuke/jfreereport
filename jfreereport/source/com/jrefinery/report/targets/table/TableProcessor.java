@@ -1,33 +1,30 @@
 /**
- * Date: Jan 14, 2003
- * Time: 2:32:00 PM
+ * Date: Jan 18, 2003
+ * Time: 7:47:41 PM
  *
- * $Id: ExcelProcessor.java,v 1.1 2003/01/14 21:13:33 taqua Exp $
+ * $Id$
  */
-package com.jrefinery.report.targets.excel;
+package com.jrefinery.report.targets.table;
 
 import com.jrefinery.report.JFreeReport;
-import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.JFreeReportConstants;
-import com.jrefinery.report.util.NullOutputStream;
-import com.jrefinery.report.util.Log;
+import com.jrefinery.report.ReportProcessingException;
+import com.jrefinery.report.function.FunctionInitializeException;
+import com.jrefinery.report.states.FinishState;
 import com.jrefinery.report.states.ReportState;
 import com.jrefinery.report.states.StartState;
-import com.jrefinery.report.states.FinishState;
-import com.jrefinery.report.function.FunctionInitializeException;
+import com.jrefinery.report.util.Log;
 
-import java.io.OutputStream;
 import java.awt.print.PageFormat;
 import java.util.Iterator;
 
-public class ExcelProcessor
+public abstract class TableProcessor
 {
-  private static final String EXCEL_WRITER = "excel-writer";
+  private static final String TABLE_WRITER = "table-writer";
 
-  private OutputStream outputStream;
   private JFreeReport report;
 
-  public ExcelProcessor (JFreeReport report)
+  public TableProcessor (JFreeReport report)
       throws ReportProcessingException, FunctionInitializeException
   {
     if (report == null) throw new NullPointerException();
@@ -40,24 +37,14 @@ public class ExcelProcessor
       throw new ReportProcessingException("Initial Clone of Report failed");
     }
 
-    ExcelWriter lm = new ExcelWriter();
-    lm.setName(EXCEL_WRITER);
+    TableWriter lm = new TableWriter();
+    lm.setName(TABLE_WRITER);
     this.report.addFunction(lm);
   }
 
   public JFreeReport getReport()
   {
     return report;
-  }
-
-  public OutputStream getOutputStream()
-  {
-    return outputStream;
-  }
-
-  public void setOutputStream(OutputStream outputStream)
-  {
-    this.outputStream = outputStream;
   }
 
   /**
@@ -83,8 +70,8 @@ public class ExcelProcessor
     state.setProperty(JFreeReportConstants.REPORT_PAGEFORMAT_PROPERTY, p.clone());
 
     // now set a dummy writer into the xml-processor.
-    ExcelWriter w = (ExcelWriter) state.getDataRow().get(EXCEL_WRITER);
-    w.setOutputStream(new NullOutputStream());
+    TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
+    w.setProducer(createProducer(true));
 
     Iterator it = startState.getLevels();
     boolean hasNext = true;
@@ -143,8 +130,8 @@ public class ExcelProcessor
 
       Log.debug ("CDI " + state.getCurrentDisplayItem());
 
-      ExcelWriter w = (ExcelWriter) state.getDataRow().get(EXCEL_WRITER);
-      w.setOutputStream(getOutputStream());
+      TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
+      w.setProducer(createProducer(false));
       w.setMaxWidth((float) getReport().getDefaultPageFormat().getImageableWidth());
 
       while (!state.isFinish())
@@ -165,5 +152,7 @@ public class ExcelProcessor
       throw new ReportProcessingException("StateCopy was not supported");
     }
   }
+
+  public abstract TableProducer createProducer (boolean dummy);
 
 }

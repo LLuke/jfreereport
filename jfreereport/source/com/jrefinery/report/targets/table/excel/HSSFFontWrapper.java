@@ -2,9 +2,9 @@
  * Date: Jan 14, 2003
  * Time: 4:14:39 PM
  *
- * $Id$
+ * $Id: HSSFFontWrapper.java,v 1.1 2003/01/14 21:14:15 taqua Exp $
  */
-package com.jrefinery.report.targets.excel;
+package com.jrefinery.report.targets.table.excel;
 
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;

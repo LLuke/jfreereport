@@ -29,14 +29,14 @@
  * based on ideas and code from JRXlsExporter.java of JasperReports
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.8 2002/12/11 01:10:41 mungady Exp $
+ * $Id: ExcelFontFactory.java,v 1.1 2003/01/14 21:13:25 taqua Exp $
  *
  * Changes
  * -------
  * 06-Jan-2002 : initial version
  */
 
-package com.jrefinery.report.targets.excel;
+package com.jrefinery.report.targets.table.excel;
 
 import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;

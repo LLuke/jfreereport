@@ -31,7 +31,7 @@
   <configuration>
     <property name="com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.Encoding">Identity-H</property>
     <property name="com.jrefinery.report.targets.pageable.output.PDFOutputTarget.default.EmbedFonts">true</property>
-    <property name="com.jrefinery.report.targets.excel.ExcelWriter.SheetNameFunction">sheetNameExpression</property>
+    <property name="com.jrefinery.report.targets.table.TableWriter.SheetNameFunction">sheetNameExpression</property>
   </configuration>
 <!--
   Needs some better control when to display the page header. Group should be able to declare whether a

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources.java,v 1.34 2002/12/19 17:43:59 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.35 2003/01/14 21:12:11 taqua Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -166,6 +166,14 @@ public class JFreeReportResources extends ListResourceBundle
             // temporarily using the same icon as "Save to PDF", till we have a better one
             {"action.export-to-excel.small-icon", getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
             {"action.export-to-excel.icon", getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
+
+            {"action.export-to-html.name", "Export to html..."},
+            {"action.export-to-html.description", "Save to HTML format"},
+            {"action.export-to-html.mnemonic", new Integer (KeyEvent.VK_E)},
+            {"action.export-to-html.accelerator", KeyStroke.getKeyStroke ("control H")},
+            // temporarily using the same icon as "Save to PDF", till we have a better one
+            {"action.export-to-html.small-icon", getIcon ("com/jrefinery/report/resources/SaveAs16.gif")},
+            {"action.export-to-html.icon", getIcon ("com/jrefinery/report/resources/SaveAs24.gif")},
 
             {"action.page-setup.name", "Page Setup"},
             {"action.page-setup.description", "Page Setup"},
@@ -334,6 +342,24 @@ public class JFreeReportResources extends ListResourceBundle
 
             {"excelexportdialog.cancel", "Cancel"},
             {"excelexportdialog.confirm", "Confirm"},
+
+            {"htmlexportdialog.dialogtitle", "Export Report into an Html-File ..."},
+            {"htmlexportdialog.filename", "Filename"},
+            {"htmlexportdialog.author", "Author"},
+            {"htmlexportdialog.title", "Title"},
+            {"htmlexportdialog.selectFile", "Select File"},
+
+            {"htmlexportdialog.warningTitle", "Warning"},
+            {"htmlexportdialog.errorTitle", "Error"},
+            {"htmlexportdialog.targetIsEmpty", "Please specify a filename for the Html file."},
+            {"htmlexportdialog.targetIsNoFile", "The selected target is no ordinary file."},
+            {"htmlexportdialog.targetIsNotWritable", "The selected file is not writable."},
+            {"htmlexportdialog.targetOverwriteConfirmation",
+                "The file ''{0}'' exists. Overwrite it?"},
+            {"htmlexportdialog.targetOverwriteTitle", "Overwrite file?"},
+
+            {"htmlexportdialog.cancel", "Cancel"},
+            {"htmlexportdialog.confirm", "Confirm"},
           };
 
 }

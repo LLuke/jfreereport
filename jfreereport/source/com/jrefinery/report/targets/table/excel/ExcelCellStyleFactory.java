@@ -30,13 +30,13 @@
  * Contributor(s):   -;
  * based on ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelCellStyleFactory.java,v 1.1 2003/01/14 21:13:17 taqua Exp $
+ * $Id: ExcelCellStyleFactory.java,v 1.2 2003/01/15 16:54:10 taqua Exp $
  *
  * Changes
  * -------
  * 06-Jan-2002 : initial version
  */
-package com.jrefinery.report.targets.excel;
+package com.jrefinery.report.targets.table.excel;
 
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;

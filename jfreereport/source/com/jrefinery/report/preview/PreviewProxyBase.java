@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 6:50:48 PM
  *
- * $Id$
+ * $Id: PreviewProxyBase.java,v 1.1 2003/01/14 21:11:25 taqua Exp $
  */
 package com.jrefinery.report.preview;
 
@@ -11,6 +11,7 @@ import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.action.AboutAction;
 import com.jrefinery.report.action.ExportToExcelAction;
+import com.jrefinery.report.action.ExportToHtmlAction;
 import com.jrefinery.report.action.FirstPageAction;
 import com.jrefinery.report.action.GotoPageAction;
 import com.jrefinery.report.action.LastPageAction;
@@ -65,8 +66,6 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.print.PageFormat;
 import java.awt.print.Pageable;
 import java.awt.print.Printable;
@@ -114,6 +113,39 @@ public class PreviewProxyBase extends JComponent
     public void run()
     {
       attemptExportToExcel();
+    }
+  }
+
+
+  /**
+   * Default 'Export to Excel' action for the frame.
+   */
+  protected class DefaultExportToHtmlAction extends ExportToHtmlAction implements Runnable
+  {
+    /**
+     * Creates a 'save as' action.
+     */
+    public DefaultExportToHtmlAction()
+    {
+      super(getResources());
+    }
+
+    /**
+     * Closes the preview frame.
+     *
+     * @param e The action event.
+     */
+    public void actionPerformed(ActionEvent e)
+    {
+      SwingUtilities.invokeLater(this);
+    }
+
+    /**
+     * Passes control to the frame which will present a dialog to save the report in PDF format.
+     */
+    public void run()
+    {
+      attemptExportToHtml();
     }
   }
 
@@ -720,6 +752,7 @@ public class PreviewProxyBase extends JComponent
   private WrapperAction gotoAction;
 
   private WrapperAction exportToExcelAction;
+  private WrapperAction exportToHtmlAction;
 
   /** The available zoom factors. */
   private static final double[] ZOOM_FACTORS = {0.25, 0.5, 0.75, 1.0, 1.25, 1.5, 2.0, 3.0, 4.0};
@@ -761,6 +794,9 @@ public class PreviewProxyBase extends JComponent
 
   /** A dialog for specifying Excel file properties. */
   private ExcelExportDialog excelExportDialog;
+
+  /** A dialog for specifying Excel file properties. */
+  private HtmlExportDialog htmlExportDialog;
 
   /**
    * Creates a preview dialog.
@@ -839,19 +875,23 @@ public class PreviewProxyBase extends JComponent
     {
       pdfSaveDialog = new PDFSaveDialog((Frame) proxy);
       excelExportDialog = new ExcelExportDialog((Frame) proxy);
+      htmlExportDialog = new HtmlExportDialog((Frame) proxy);
     }
     else if (proxy instanceof Dialog)
     {
       pdfSaveDialog = new PDFSaveDialog((Dialog) proxy);
       excelExportDialog = new ExcelExportDialog((Dialog) proxy);
+      htmlExportDialog = new HtmlExportDialog((Dialog) proxy);
     }
     else
     {
       pdfSaveDialog = new PDFSaveDialog();
       excelExportDialog = new ExcelExportDialog();
+      htmlExportDialog = new HtmlExportDialog();
     }
     pdfSaveDialog.pack();
     excelExportDialog.pack();
+    htmlExportDialog.pack();
   }
 
   /**
@@ -1251,6 +1291,7 @@ public class PreviewProxyBase extends JComponent
     zoomInAction = new WrapperAction(createDefaultZoomInAction());
     zoomOutAction = new WrapperAction(createDefaultZoomOutAction());
     exportToExcelAction = new WrapperAction(createDefaultExportToExcelAction());
+    exportToHtmlAction = new WrapperAction(createDefaultExportToHtmlAction());
   }
 
   /**
@@ -1314,6 +1355,16 @@ public class PreviewProxyBase extends JComponent
   protected Action createDefaultExportToExcelAction()
   {
     return new DefaultExportToExcelAction();
+  }
+
+  /**
+   * Creates the ExportToExcel Action used in this previewframe.
+   *
+   * @return the 'export to Excel' action.
+   */
+  protected Action createDefaultExportToHtmlAction()
+  {
+    return new DefaultExportToHtmlAction();
   }
 
   /**
@@ -1436,6 +1487,7 @@ public class PreviewProxyBase extends JComponent
     fileMenu.add(createMenuItem(saveAsAction));
     fileMenu.addSeparator();
     fileMenu.add(createMenuItem(exportToExcelAction));
+    fileMenu.add(createMenuItem(exportToHtmlAction));
     fileMenu.addSeparator();
     fileMenu.add(createMenuItem(pageSetupAction));
     fileMenu.add(createMenuItem(printAction));
@@ -1687,6 +1739,46 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
+   * Returns the 'Export to HTML' action.
+   *
+   * @return the 'Export to HTML' action.
+   */
+  public Action getExportToHtmlAction()
+  {
+    return exportToHtmlAction.getParent();
+  }
+
+  /**
+   * Sets the 'Export to HTML' action.
+   *
+   * @param saveAsAction  the 'Export to HTML' action.
+   */
+  public void setExportToHtmlAction(Action saveAsAction)
+  {
+    this.exportToHtmlAction.setParent(saveAsAction);
+  }
+
+  /**
+   * Returns the 'Export to Excel' action.
+   *
+   * @return the 'Export to Excel' action.
+   */
+  public Action getExportToExcelAction()
+  {
+    return exportToExcelAction.getParent();
+  }
+
+  /**
+   * Sets the 'Export to Excel' action.
+   *
+   * @param saveAsAction  the 'Export to Excel' action.
+   */
+  public void setExportToExcelAction(Action saveAsAction)
+  {
+    this.exportToExcelAction.setParent(saveAsAction);
+  }
+
+  /**
    * Returns the 'Page Setup' action.
    *
    * @return the 'Page Setup' action.
@@ -1895,6 +1987,14 @@ public class PreviewProxyBase extends JComponent
   }
 
   /**
+   * Presents a "Export to Excel" dialog to the user, enabling him/her to save the report in MS Excel format.
+   */
+  protected void attemptExportToHtml()
+  {
+    getHtmlExportDialog().exportToHtml(reportPane.getReport());
+  }
+
+  /**
    * Returns the Excel export dialog.
    *
    * @return the Excel export dialog.
@@ -1902,5 +2002,15 @@ public class PreviewProxyBase extends JComponent
   public ExcelExportDialog getExcelExportDialog()
   {
     return excelExportDialog;
+  }
+
+  /**
+   * Returns the Excel export dialog.
+   *
+   * @return the Excel export dialog.
+   */
+  public HtmlExportDialog getHtmlExportDialog()
+  {
+    return htmlExportDialog;
   }
 }
