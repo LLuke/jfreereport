@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: OutputTarget.java,v 1.9 2003/02/09 18:43:05 taqua Exp $
+ * $Id: OutputTarget.java,v 1.10 2003/02/21 12:17:30 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.base.layout.LayoutSupport;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.ui.Drawable;
 
 import java.awt.Paint;
 import java.awt.Shape;
@@ -232,6 +233,13 @@ public interface OutputTarget extends LayoutSupport
    * @param shape  the shape to draw.
    */
   public void fillShape (Shape shape);
+
+  /**
+   * Draws a drawable relative to the current position.
+   *
+   * @param drawable the drawable to draw.
+   */
+  public void drawDrawable (Drawable drawable);
 
   /**
    * Draws a image relative to the specified coordinates.

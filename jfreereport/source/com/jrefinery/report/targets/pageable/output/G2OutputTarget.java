@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.23 2003/02/25 18:47:06 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.24 2003/02/27 10:35:40 mungady Exp $
  *
  * Changes
  * -------
@@ -68,6 +68,7 @@ import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.ui.Drawable;
 
 /**
  * A report output target that uses a Graphics2D object to draw the report.  This allows reports
@@ -576,5 +577,15 @@ public class G2OutputTarget extends AbstractOutputTarget
     super.setOperationBounds(bounds);
     // then apply the new bounds operation
     g2.transform(AffineTransform.getTranslateInstance(bounds.getX(), bounds.getY()));
+  }
+
+  /**
+   * Draws a drawable relative to the current position.
+   *
+   * @param drawable the drawable to draw.
+   */
+  public void drawDrawable(Drawable drawable)
+  {
+    drawable.draw(g2, getOperationBounds());
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ContentType.java,v 1.4 2002/12/16 17:31:01 mungady Exp $
+ * $Id: ContentType.java,v 1.1 2003/01/29 03:13:01 taqua Exp $
  *
  * Changes
  * -------
@@ -62,6 +62,9 @@ public class ContentType
 
   /** Image content type. */
   public static final ContentType IMAGE = new ContentType("Image");
+
+  /** drawable content type. */
+  public static final ContentType DRAWABLE = new ContentType("Drawable");
 
   /** Container content type. */
   public static final ContentType CONTAINER = new ContentType("Container");

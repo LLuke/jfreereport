@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.28 2003/02/25 18:47:07 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.29 2003/02/27 10:35:40 mungady Exp $
  *
  * Changes
  * -------
@@ -76,6 +76,7 @@ import com.jrefinery.report.targets.support.itext.BaseFontRecord;
 import com.jrefinery.report.targets.support.itext.BaseFontSupport;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.ui.Drawable;
 import com.keypoint.PngEncoder;
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.DocWriter;
@@ -1142,5 +1143,14 @@ public class PDFOutputTarget extends AbstractOutputTarget
   public Rectangle2D getInternalOperationBounds()
   {
     return internalOperationBounds;
+  }
+
+  /**
+   * Draws a drawable relative to the current position.
+   *
+   * @param drawable the drawable to draw.
+   */
+  public void drawDrawable(Drawable drawable)
+  {
   }
 }

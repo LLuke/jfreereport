@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
-<!--
- This DOCType declaration is valid, uncomment it to validate the report
- -->
 <!DOCTYPE report PUBLIC "-//JFreeReport//DTD report definition//EN//simple"
                         "http://jfreereport.sourceforge.net/report.dtd">
 <report name="Sample Report 2" pageformat="A4" topmargin="70" leftmargin="70" bottommargin="70" rightmargin="70">
@@ -110,13 +107,13 @@
         <property name="group">Letter Group</property>
       </properties>
     </function>
-    <function name="Sum1" class="com.jrefinery.report.function.ItemSumFunction">
+    <function name="Sum1" class="com.jrefinery.report.function.TotalGroupSumFunction">
       <properties>
         <property name="field">Double</property>
         <property name="group">Color Group</property>
       </properties>
     </function>
-    <function name="Sum2" class="com.jrefinery.report.function.ItemSumFunction">
+    <function name="Sum2" class="com.jrefinery.report.function.TotalGroupSumFunction">
       <properties>
         <property name="field">Double</property>
         <property name="group">Letter Group</property>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DummyOutputTarget.java,v 1.5 2003/02/25 18:47:04 taqua Exp $
+ * $Id: DummyOutputTarget.java,v 1.6 2003/02/27 10:35:39 mungady Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.ui.Drawable;
 
 /**
  * The dummy output target wraps an output target for the layouting process,
@@ -393,5 +394,14 @@ public class DummyOutputTarget extends AbstractOutputTarget
   public ContentFactory getContentFactory()
   {
     return backend.getContentFactory();
+  }
+
+  /**
+   * Draws a drawable relative to the current position.
+   *
+   * @param drawable the drawable to draw.
+   */
+  public void drawDrawable(Drawable drawable)
+  {
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.15 2003/02/25 18:47:08 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.16 2003/02/27 10:35:40 mungady Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,7 @@ import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.ui.Drawable;
 
 /**
  * An outputtarget, that generates plaintext. The text can be enriched with
@@ -592,4 +593,12 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     return contentFactory;
   }
 
+  /**
+   * Draws a drawable relative to the current position.
+   *
+   * @param drawable the drawable to draw.
+   */
+  public void drawDrawable(Drawable drawable)
+  {
+  }
 }
