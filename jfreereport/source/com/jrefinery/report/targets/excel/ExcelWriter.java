@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 2:32:12 PM
  *
- * $Id$
+ * $Id: ExcelWriter.java,v 1.1 2003/01/14 21:13:55 taqua Exp $
  */
 package com.jrefinery.report.targets.excel;
 
@@ -10,6 +10,7 @@ import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.ReportProcessingException;
 import com.jrefinery.report.PageHeader;
+import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.function.FunctionProcessingException;
@@ -22,6 +23,7 @@ import com.jrefinery.report.targets.pageable.output.G2OutputTarget;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.util.PageFormatFactory;
+import com.jrefinery.report.util.Log;
 
 import java.awt.geom.Dimension2D;
 import java.awt.geom.Rectangle2D;
@@ -30,6 +32,9 @@ import java.io.OutputStream;
 
 public class ExcelWriter extends AbstractFunction
 {
+  public static final String SHEET_NAME_FUNCTION_PROPERTY =
+      "com.jrefinery.report.targets.excel.ExcelWriter.SheetNameFunction";
+
   private OutputStream outputStream;
   private OutputTarget dummyOutputTarget;
   private ReportEvent currentEvent;
@@ -52,6 +57,13 @@ public class ExcelWriter extends AbstractFunction
   {
     setDependencyLevel(-1);
     setMaxWidth(1000);
+  }
+
+  public String getSheetNameFunction()
+  {
+    if (getCurrentEvent() == null)
+      return null;
+    return getCurrentEvent().getReport().getReportConfiguration().getConfigProperty(SHEET_NAME_FUNCTION_PROPERTY);
   }
 
   public boolean isInEndPage()
@@ -147,25 +159,10 @@ public class ExcelWriter extends AbstractFunction
   {
     int cellCount = producer.getCellCount();
 
-    if (!isInEndPage() && (isPageEmpty == false) &&
-        band.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
-    {
-      endPage();
-      startPage();
-    }
-
     // now print the band ...
     producer.processBand(bounds, band);
     getCursor().advance((float) bounds.getHeight());
-
-    if (!isInEndPage() && (isPageEmpty == false) &&
-        band.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER) == true)
-    {
-      endPage();
-      startPage();
-    }
-
-    if (cellCount > producer.getCellCount())
+    if (cellCount < producer.getCellCount())
     {
       isPageEmpty = false;
     }
@@ -174,6 +171,8 @@ public class ExcelWriter extends AbstractFunction
 
   public void endPage ()
   {
+    Log.debug ("EndPage;" + isPageEmpty + " + " + getCurrentEvent().getState());
+
     if (inEndPage == true)
     {
       throw new IllegalStateException ("Already in startPage or endPage");
@@ -183,6 +182,7 @@ public class ExcelWriter extends AbstractFunction
     ReportEvent currentEvent = getCurrentEvent();
     ReportState cEventState = getCurrentEvent().getState();
     cEventState.firePageFinishedEvent();
+    cEventState.nextPage();
     setCurrentEvent(currentEvent);
     inEndPage = false;
   }
@@ -213,6 +213,13 @@ public class ExcelWriter extends AbstractFunction
   protected void print(Band b)
       throws ReportProcessingException
   {
+    if (!isInEndPage() && (isPageEmpty == false) &&
+        b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
+    {
+      endPage();
+      startPage();
+    }
+
     float y = getCursor().getY();
     // don't save the state if the current page is currently being finished
     // or restarted; PageHeader and PageFooter are printed out of order and
@@ -221,6 +228,14 @@ public class ExcelWriter extends AbstractFunction
     Rectangle2D bounds = doLayout(b);
     bounds.setRect(0, y, bounds.getWidth(), bounds.getHeight());
     doPrint(bounds, b);
+
+    if (!isInEndPage() && (isPageEmpty == false) &&
+        b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_AFTER) == true)
+    {
+      Log.debug  ("PAGEBREAK AFTER PRINT");
+      endPage();
+      startPage();
+    }
   }
 
   /**
@@ -258,6 +273,8 @@ public class ExcelWriter extends AbstractFunction
     try
     {
       setCurrentEvent(event);
+      Log.debug ("CurrentEvent: " + event.getState());
+
       producer = new ExcelProducer(getOutputStream());
       producer.open();
 
@@ -303,7 +320,13 @@ public class ExcelWriter extends AbstractFunction
     {
       // a new page has started, so reset the cursor ...
       setCursor(new ExcelWriterCursor());
-      producer.beginPage("Page " + event.getState().getCurrentPage());
+
+      String sheetName = null;
+      if (getSheetNameFunction() != null)
+      {
+        sheetName = String.valueOf(getDataRow().get(getSheetNameFunction()));
+      }
+      producer.beginPage(sheetName);
 
       Band b = event.getReport().getPageHeader();
       if (event.getState().getCurrentPage() == 1)
@@ -495,7 +518,7 @@ public class ExcelWriter extends AbstractFunction
    */
   public void itemsFinished(ReportEvent event)
   {
-    // this event does nothing 
+    // this event does nothing
     setCurrentEvent(event);
     isInItemGroup = false;
   }
@@ -509,4 +532,5 @@ public class ExcelWriter extends AbstractFunction
   {
     this.currentEvent = currentEvent;
   }
+
 }

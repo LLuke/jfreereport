@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PDFOutputTarget.java,v 1.9 2002/12/13 10:45:59 mungady Exp $
+ * $Id: PDFOutputTarget.java,v 1.10 2002/12/13 18:39:05 taqua Exp $
  *
  * Changes
  * -------
@@ -869,7 +869,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
    */
   public void open() throws OutputTargetException
   {
-    Log.debug ("Opening PDFTarget: " + getFontEncoding());
+    Log.debug ("Opening PDFTarget: Encoding: " + getFontEncoding() + " DefaultEncoding: " + getDefaultFontEncoding());
 
     PageFormat pageFormat = getLogicalPage().getPhysicalPageFormat();
     float urx = (float) pageFormat.getWidth();
@@ -1209,6 +1209,7 @@ public class PDFOutputTarget extends AbstractOutputTarget
     {
       throw new NullPointerException();
     }
+    Log.debug ("Font defined !!! " + encoding);
     setProperty(ENCODING, encoding);
   }
 

@@ -2,7 +2,7 @@
  * Date: Jan 14, 2003
  * Time: 2:32:00 PM
  *
- * $Id$
+ * $Id: ExcelProcessor.java,v 1.1 2003/01/14 21:13:33 taqua Exp $
  */
 package com.jrefinery.report.targets.excel;
 
@@ -130,7 +130,9 @@ public class ExcelProcessor
     state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
 
     // part 3: (done by processing the ReportStateList:) Print the report
-    return retval;
+    StartState sretval = (StartState) retval;
+    sretval.resetState();
+    return sretval;
   }
 
   public void processReport () throws ReportProcessingException
@@ -138,6 +140,8 @@ public class ExcelProcessor
     try
     {
       ReportState state = repaginate();
+
+      Log.debug ("CDI " + state.getCurrentDisplayItem());
 
       ExcelWriter w = (ExcelWriter) state.getDataRow().get(EXCEL_WRITER);
       w.setOutputStream(getOutputStream());

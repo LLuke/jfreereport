@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.8 2002/12/16 17:31:05 mungady Exp $
+ * $Id: G2OutputTarget.java,v 1.9 2002/12/18 10:13:16 mungady Exp $
  *
  * Changes
  * -------
@@ -82,9 +82,12 @@ public class G2OutputTarget extends AbstractOutputTarget
   private static class BuggyFontRendererDetector
   {
     private boolean isBuggyVersion;
+    private boolean isAliased;
 
     public BuggyFontRendererDetector ()
     {
+      isAliased = ReportConfiguration.getGlobalConfig().isG2TargetUseAliasing();
+      
       // Another funny thing for the docs: On JDK 1.4 the font renderer changed.
       // in previous versions, the font renderer was sensitive to fractional metrics,
       // so that fonts were always rendered without FractionalMetrics enabled.
@@ -153,7 +156,7 @@ public class G2OutputTarget extends AbstractOutputTarget
 
     public boolean isAliased ()
     {
-      return ReportConfiguration.getGlobalConfig().isG2TargetUseAliasing();
+      return isAliased;
     }
 
     public boolean isBuggyVersion ()

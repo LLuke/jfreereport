@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackend.java,v 1.24 2002/12/06 17:59:32 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.25 2002/12/12 20:24:02 taqua Exp $
  *
  * Changes
  * -------
@@ -65,7 +65,7 @@ import java.util.Hashtable;
  */
 public class DataRowBackend implements Cloneable
 {
-  /** 
+  /**
    * A 'preview' data row backend. Shows how the next row would look like if there
    * were no events thrown. This class is used to calculate the differences between
    * two states. As function columns as ReportEventListeners are dependent on an
@@ -304,7 +304,7 @@ public class DataRowBackend implements Cloneable
    */
   public void setFunctions(LevelledExpressionList functions)
   {
-    if (functions == null) 
+    if (functions == null)
     {
       throw new NullPointerException();
     }
@@ -638,7 +638,7 @@ public class DataRowBackend implements Cloneable
    */
   public void setReportProperties(ReportPropertiesList properties)
   {
-    if (properties == null) 
+    if (properties == null)
     {
       throw new NullPointerException();
     }

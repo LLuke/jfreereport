@@ -2,7 +2,7 @@
  * Date: Jan 7, 2003
  * Time: 5:28:29 PM
  *
- * $Id$
+ * $Id: XMLProcessor.java,v 1.1 2003/01/07 17:34:28 taqua Exp $
  */
 package com.jrefinery.report.targets.xml;
 
@@ -100,7 +100,7 @@ public class XMLProcessor
       Log.debug (new Log.SimpleMessage("Processing Level " , new Integer(level)));
       if (level == -1)
       {
-        retval = state;
+        retval = state.copyState();
       }
       while (!state.isFinish())
       {
@@ -131,7 +131,9 @@ public class XMLProcessor
     state.setProperty(JFreeReportConstants.REPORT_PREPARERUN_PROPERTY, Boolean.FALSE);
 
     // part 3: (done by processing the ReportStateList:) Print the report
-    return retval;
+    StartState sretval = (StartState) retval;
+    sretval.resetState();
+    return sretval;
   }
 
   public void processReport () throws ReportProcessingException

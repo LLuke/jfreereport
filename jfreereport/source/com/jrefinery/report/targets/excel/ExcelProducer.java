@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: PDFOutputTarget.java,v 1.8 2002/12/11 01:10:41 mungady Exp $
+ * $Id: ExcelProducer.java,v 1.1 2003/01/14 21:13:43 taqua Exp $
  *
  * Changes
  * -------
@@ -138,13 +138,24 @@ public class ExcelProducer
 
   public void beginPage (String name)
   {
-    sheet = workbook.createSheet(name);
+    if(name == null)
+    {
+      sheet = workbook.createSheet();
+    }
+    else
+    {
+      sheet = workbook.createSheet(name);
+    }
   }
 
   public void endPage ()
   {
     layoutGrid();
     writeSheet();
+    cells.clear();
+    xCuts.clear();
+    yCuts.clear();
+
     sheet = null;
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.17 2003/01/07 17:34:26 taqua Exp $
+ * $Id: ReportState.java,v 1.18 2003/01/14 21:12:58 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -167,10 +167,13 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
    */
   protected void resetState ()
   {
+    Log.debug ("StateReset");
     setCurrentItem (BEFORE_FIRST_ROW);
     setCurrentPage (FIRST_PAGE);
     setCurrentGroupIndex (BEFORE_FIRST_GROUP);
     getDataRowBackend().setCurrentRow(getCurrentDisplayItem());
+
+    Log.debug ("GetDBR: " + getDataRowBackend().getCurrentRow());
   }
 
   /**
@@ -678,7 +681,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   public void firePageStartedEvent ()
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    Log.debug ("State: FirePageStart: " + getDataRowBackend().getCurrentRow());
+    Log.debug ("State: " + toString() +  " FirePageStart: " + getDataRowBackend().getCurrentRow());
     this.functions.pageStarted (new ReportEvent(this));
   }
 

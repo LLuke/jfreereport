@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.24 2003/01/12 21:33:54 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.25 2003/01/13 19:01:15 taqua Exp $
  *
  * Changes
  * -------
@@ -364,63 +364,6 @@ public class ReportConfiguration
   /** The global configuration. */
   private static ReportConfiguration globalConfig;
 
-  /** A report configuration that reads its values from the jfreereport.properties file. */
-  private static class PropertyFileReportConfiguration extends ReportConfiguration
-  {
-    /**
-     * Creates a new report properties configuration.
-     */
-    public PropertyFileReportConfiguration()
-    {
-      this.getConfiguration().put (DISABLE_LOGGING, DISABLE_LOGGING_DEFAULT);
-      this.getConfiguration().put (LOGLEVEL, LOGLEVEL_DEFAULT);
-      this.getConfiguration().put (PDFTARGET_AUTOINIT, PDFTARGET_AUTOINIT_DEFAULT);
-      this.getConfiguration().put (PDFTARGET_ENCODING, PDFTARGET_ENCODING_DEFAULT);
-
-      InputStream in = this.getClass().getResourceAsStream("/jfreereport.properties");
-      if (in != null)
-      {
-        try
-        {
-          this.getConfiguration().load(in);
-        }
-        catch (IOException ioe)
-        {
-          Log.warn ("Unable to read global configuration", ioe);
-        }
-      }
-      in = this.getClass().getResourceAsStream("/com/jrefinery/report/jfreereport.properties");
-      if (in != null)
-      {
-        try
-        {
-          this.getConfiguration().load(in);
-        }
-        catch (IOException ioe)
-        {
-          Log.warn ("Unable to read global configuration", ioe);
-        }
-      }
-    }
-  }
-
-  /**
-   * A property configuration based on system properties.
-   */
-  private static class SystemPropertyConfiguration extends ReportConfiguration
-  {
-    /**
-     * Creates a report configuration that includes all the system properties (whether they are
-     * related to reports or not).  The parent configuration is a
-     * <code>PropertyFileReportConfiguration</code>.
-     */
-    public SystemPropertyConfiguration()
-    {
-      super(new PropertyFileReportConfiguration());
-      this.getConfiguration().putAll (System.getProperties());
-    }
-  }
-
   /**
    * Default constructor.
    */
@@ -478,12 +421,6 @@ public class ReportConfiguration
         value = parentConfiguration.getConfigProperty(key, defaultValue);
       }
     }
-    /*
-    if (value == null)
-    {
-      Log.debug ("Unable to handle Property : " + key);
-    }
-    */
     return value;
   }
 
@@ -652,9 +589,30 @@ public class ReportConfiguration
   {
     if (globalConfig == null)
     {
-      globalConfig = new ReportConfiguration (new SystemPropertyConfiguration());
+      PropertyFileReportConfiguration rootProperty = new PropertyFileReportConfiguration();
+      rootProperty.load("/com/jrefinery/report/jfreereport.properties");
+
+      PropertyFileReportConfiguration baseProperty = new PropertyFileReportConfiguration();
+      baseProperty.load("/jfreereport.properties");
+      baseProperty.setParentConfig(rootProperty);
+
+      SystemPropertyConfiguration systemConfig = new SystemPropertyConfiguration();
+      systemConfig.setParentConfig(baseProperty);
+
+      globalConfig = new ReportConfiguration ();
+      globalConfig.setParentConfig(systemConfig);
+
     }
     return globalConfig;
+  }
+
+  /**
+   *
+   * @param config
+   */
+  protected void setParentConfig (ReportConfiguration config)
+  {
+    parentConfiguration = config;
   }
 
   /**
@@ -801,5 +759,10 @@ public class ReportConfiguration
   public Enumeration getConfigProperties ()
   {
     return configuration.keys();
+  }
+
+  public static void main (String [] args)
+  {
+    Log.debug (ReportConfiguration.getGlobalConfig().getPdfTargetEncoding());
   }
 }

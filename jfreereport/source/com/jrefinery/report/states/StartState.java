@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.5 2002/12/05 12:18:46 mungady Exp $
+ * $Id: StartState.java,v 1.6 2002/12/09 03:56:34 taqua Exp $
  *
  * Changes
  * -------
@@ -127,5 +127,13 @@ public class StartState extends ReportState
   public boolean isPrefetchState ()
   {
     return true;
+  }
+
+  /**
+   * Resets the state.
+   */
+  public void resetState()
+  {
+    super.resetState();
   }
 }
