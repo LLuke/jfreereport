@@ -24,7 +24,7 @@
  * AbstractActionDowngrade.java
  * ----------------------------
  *
- * $Id: AbstractActionDowngrade.java,v 1.4 2002/11/07 21:45:28 taqua Exp $
+ * $Id: AbstractActionDowngrade.java,v 1.5 2002/12/03 20:32:55 taqua Exp $
  *
  * Changes
  * -------
@@ -44,6 +44,20 @@ import java.util.Arrays;
  */
 public abstract class AbstractActionDowngrade extends AbstractAction implements ActionDowngrade
 {
+  // kills a compile error for JDK's >= 1.3
+  // ambiguous reference error ... 
+  /**
+   * The key used for storing a <code>KeyStroke</code> to be used as the
+   * accelerator for the action.
+   */
+  public static final String ACCELERATOR_KEY = ActionDowngrade.ACCELERATOR_KEY;
+
+  /**
+   * The key used for storing an int key code to be used as the mnemonic
+   * for the action.
+   */
+  public static final String MNEMONIC_KEY = ActionDowngrade.MNEMONIC_KEY;
+
   public static BufferedImage createTransparentImage (int width, int height)
   {
     BufferedImage img = new BufferedImage (width, height, BufferedImage.TYPE_INT_ARGB);
