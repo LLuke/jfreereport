@@ -312,99 +312,115 @@ public abstract class AbstractOutputTarget implements OutputTarget
    * textelement is assumed and the whole string is processed without obeying to any limit.
    */
   protected List breakLines(String mytext, final float width, int maxLines)
-  {
-    // Correct the linecount. We display at least a single line
-    // if (linecount < 1) linecount = 1;
+	{
+		// Correct the linecount. We display at least a single line
+		// if (linecount < 1) linecount = 1;
 
-    ArrayList bareLines = new ArrayList();
-    try
-    {
-      BufferedReader reader = new BufferedReader(new StringReader(mytext));
-      String readLine = reader.readLine();
-      while (readLine != null)
-      {
-        bareLines.add(readLine);
-        readLine = reader.readLine();
-      }
-      reader.close();
-    }
-    catch (IOException ioe)
-    {
-      // Will not happen
-    }
+		ArrayList bareLines = new ArrayList();
+		try
+		{
+			BufferedReader reader = new BufferedReader(new StringReader(mytext));
+			String readLine = null;
+			while ((readLine=reader.readLine()) != null)
+			{
+				bareLines.add(readLine);
+			}
+			reader.close();
+		}
+		catch (IOException ioe)
+		{
+		// Will not happen
+		}
 
-    /**
-     * Reserve some space for the last line if there is more than one line to display.
-     * If there is only one line, don't cut the line yet. Perhaps we intruduce the strict
-     * mode later, but without any visual editing it would be cruel to any report designer.
-     */
-    float reserved = getStringBounds(RESERVED_LITERAL, 0, RESERVED_LITERAL.length());
+		/**
+		* Reserve some space for the last line if there is more than one line to display.
+		* If there is only one line, don't cut the line yet. Perhaps we intruduce the strict
+		* mode later, but without any visual editing it would be cruel to any report designer.
+		*/
+		float reserved = getStringBounds(RESERVED_LITERAL, 0, RESERVED_LITERAL.length());
 
-    BreakIterator breakit = BreakIterator.getLineInstance();
-    ArrayList returnLines = new ArrayList();
+		BreakIterator breakit = BreakIterator.getLineInstance();
+		ArrayList returnLines = new ArrayList();
 
-    int linesToDo = bareLines.size();
+		int linesToDo = bareLines.size();
 
-    for (int i = 0; i < linesToDo; i++)
-    {
-      String currentLine = (String) bareLines.get(i);
-      breakit.setText(currentLine);
+		for (int i = 0; i < linesToDo; i++)
+		{
+			String currentLine = (String) bareLines.get(i);
+			breakit.setText(currentLine);
 
-      int lineStartPos = 0;
-      int lineLength = currentLine.length();
-      while (lineStartPos < lineLength)
-      {
-        int startPos = lineStartPos;
-        int endPos = breakit.next();
-        float x = 0;
+			int lineStartPos = 0;
+			int lineLength = currentLine.length();
+			while (lineStartPos < lineLength)
+			{
+				int startPos = lineStartPos;
+				int endPos = 0;
+				float x = 0;
 
-        float w = width;
+				float w = width;
 
-        while (endPos != BreakIterator.DONE)
-        {
-          x += (float) getStringBounds(currentLine, startPos, endPos);
-          if ((maxLines != 0) && (i == (maxLines - 1)))
-          {
-            if (x >= (w - reserved))
-            {
-              break;
-            }
-          }
-          else
-          {
-            if (x >= w)
-            {
-              break;
-            }
-          }
+				// add by leonlyong
+				int wordCnt=0;
 
-          startPos = endPos;
-          endPos = breakit.next();
-        }
+				while ((endPos=breakit.next()) != BreakIterator.DONE)
+				{
+					// add by leonlyong
+					wordCnt ++;
 
-        if (endPos == BreakIterator.DONE)
-        {
-          returnLines.add(currentLine.substring(lineStartPos));
-          return returnLines;
-        }
-        else
-        {
-          // if this is the last allowed row, add the RESERVED_LITERAL to the string ..
-          if ((maxLines != 0) && (i == (maxLines - 1)))
-          {
-            returnLines.add(currentLine.substring(lineStartPos, startPos) + RESERVED_LITERAL);
-            return returnLines;
-          }
-          else
-          {
-            returnLines.add(currentLine.substring(lineStartPos, startPos));
-            lineStartPos = startPos;
-          }
-        }
-      }
-    }
-    return returnLines;
-  }
+					x += (float) getStringBounds(currentLine, startPos, endPos);
+					if ((maxLines != 0) && (i == (maxLines - 1)))
+					{
+						if (x >= (w - reserved))
+						{
+							break;
+						}
+					}
+					else
+					{
+						if (x >= w)
+						{
+							// add by leonlyong
+							//when the first word of the line is too big
+							if(wordCnt == 1)
+							{
+								while((float) getStringBounds(currentLine, startPos, endPos) >= w)
+								{
+									endPos --;
+								}
+								startPos = endPos;
+								endPos = breakit.previous();
+							}
+
+							break;
+						}
+					}
+
+					startPos = endPos;
+				}
+
+				if (endPos == BreakIterator.DONE)
+				{
+					returnLines.add(currentLine.substring(lineStartPos));
+					return returnLines;
+				}
+				else
+				{
+					// if this is the last allowed row, add the RESERVED_LITERAL to the string ..
+					if ((maxLines != 0) && (i == (maxLines - 1)))
+					{
+						returnLines.add(currentLine.substring(lineStartPos, startPos) + RESERVED_LITERAL);
+						return returnLines;
+					}
+					else
+					{
+						returnLines.add(currentLine.substring(lineStartPos, startPos));
+						lineStartPos = startPos;
+					}
+				}
+			}
+		}
+		return returnLines;
+	}
 
   /**
    * Calculates the width of the specified String in the current Graphics context.
