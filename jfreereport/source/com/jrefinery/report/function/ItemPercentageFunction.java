@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemPercentageFunction.java,v 1.18 2003/06/01 17:39:26 taqua Exp $
+ * $Id: ItemPercentageFunction.java,v 1.19 2003/06/19 18:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -172,7 +172,7 @@ public class ItemPercentageFunction extends AbstractFunction implements Serializ
    */
   public void reportInitialized(ReportEvent event)
   {
-    totalSumFunction.reportStarted(event);
+    totalSumFunction.reportInitialized(event);
     currentValue = ZERO;
   }
 

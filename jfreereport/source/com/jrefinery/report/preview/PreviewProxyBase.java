@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.20 2003/06/13 22:54:00 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.21 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes
  * -------
@@ -503,7 +503,6 @@ public class PreviewProxyBase extends JComponent
     public void actionPerformed(ActionEvent e)
     {
       LayoutManagerCache.printResults();
-      ExcelCellStyleFactory.print();
     }
   }
 

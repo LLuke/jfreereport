@@ -76,7 +76,7 @@
   -->
 <!ENTITY % basicform
 " color          CDATA          #IMPLIED
-	name           CDATA          #IMPLIED"
+  name           CDATA          #IMPLIED"
  >
 
 <!ENTITY % fontdef

@@ -3,16 +3,15 @@
 ---------------
 A list of changes in recent versions:
 
-Hi,
+0.8.3d: ()
+        * BugFix: All table report processors had problems with reports, that
+          had a PageFormat with a imagable size > 1000 points. This issue was
+          pure stupidity and is fixed now...
 
-there's another release of JFreeReport. This one fixes the last known
-bugs, hopefully it will take some time before new ones appear :)
+        * BugFix: The ItemPercentageFunction did not initialize its private sum
+          function properly causing IndexOutOfBounds exceptions.
 
-This release will be the last release in the com.jrefinery.report
-package tree, the next release will migrate all packages to org.jfree.report.
-
-Have more fun,
-said Thomas
+        *  
 
 0.8.3c: (19-Jun-2003)
         * BugFix: The Area class is not able to clip lines, any attemp results

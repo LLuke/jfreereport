@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.47 2003/06/10 16:07:55 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.48 2003/06/19 18:44:11 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,9 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import org.jfree.util.Configuration;
 
@@ -704,25 +707,39 @@ public class ReportConfiguration implements Configuration, Serializable
    *
    * @return the global configuration.
    */
-  public static ReportConfiguration getGlobalConfig()
+  public synchronized static ReportConfiguration getGlobalConfig()
   {
     if (globalConfig == null)
     {
+      globalConfig = new ReportConfiguration();
+
       PropertyFileReportConfiguration rootProperty = new PropertyFileReportConfiguration();
       rootProperty.load("/com/jrefinery/report/jfreereport.properties");
+      globalConfig.insertConfiguration(rootProperty);
 
       PropertyFileReportConfiguration baseProperty = new PropertyFileReportConfiguration();
       baseProperty.load("/jfreereport.properties");
-      baseProperty.setParentConfig(rootProperty);
+      globalConfig.insertConfiguration(baseProperty);
 
       SystemPropertyConfiguration systemConfig = new SystemPropertyConfiguration();
-      systemConfig.setParentConfig(baseProperty);
+      globalConfig.insertConfiguration(systemConfig);
 
-      globalConfig = new ReportConfiguration();
-      globalConfig.setParentConfig(systemConfig);
-
+      // todo; loadExtensions ();
+      // rootProperty.insertConfiguration(); 
     }
     return globalConfig;
+  }
+
+  /**
+   * The new configuartion will be inserted into the list of report configuration,
+   * so that this configuration has the given report configuration instance as parent.
+   *
+   * @param config the new report configuration.
+   */
+  protected void insertConfiguration (ReportConfiguration config)
+  {
+    config.setParentConfig(getParentConfig());
+    setParentConfig(config);
   }
 
   /**
@@ -733,7 +750,22 @@ public class ReportConfiguration implements Configuration, Serializable
    */
   protected void setParentConfig(ReportConfiguration config)
   {
+    if (parentConfiguration == this)
+    {
+      throw new IllegalArgumentException("Cannot add myself as parent configuration.");
+    }
     parentConfiguration = config;
+  }
+
+  /**
+   * Returns the parent configuration. The parent configuration is queried, if the
+   * requested configuration values was not found in this report configuration.
+   *
+   * @return the parent configuration.
+   */
+  protected ReportConfiguration getParentConfig()
+  {
+    return parentConfiguration;
   }
 
   /**
@@ -1203,6 +1235,44 @@ public class ReportConfiguration implements Configuration, Serializable
     else
     {
       parentConfiguration = ReportConfiguration.getGlobalConfig();
+    }
+  }
+
+  /**
+   *
+   *
+   * @param prefix the prefix that all selected property keys should share
+   * @return the properties as iterator.
+   */
+  public Iterator findPropertyKeys (String prefix)
+  {
+    ArrayList keys = new ArrayList();
+    collectPropertyKeys(prefix, this, keys);
+    return Collections.unmodifiableList(keys).iterator();
+  }
+
+  /**
+   *
+   * @param prefix
+   * @param config
+   * @param collector
+   */
+  private void collectPropertyKeys (String prefix, ReportConfiguration config,
+                                    ArrayList collector)
+  {
+    Enumeration enum = config.getConfigProperties();
+    while (enum.hasMoreElements())
+    {
+      String key = (String) enum.nextElement();
+      if (key.startsWith(prefix))
+      {
+        collector.add(key);
+      }
+    }
+
+    if (parentConfiguration != null)
+    {
+      collectPropertyKeys(prefix, config.parentConfiguration, collector);
     }
   }
 }

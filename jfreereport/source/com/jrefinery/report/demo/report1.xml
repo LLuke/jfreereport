@@ -107,12 +107,14 @@
         <property name="group">Continent Group</property>
       </properties>
     </function>
+    <!--
     <function name="sum" class="com.jrefinery.report.function.TotalGroupSumFunction">
       <properties>
         <property name="field">Population</property>
         <property name="group">Continent Group</property>
       </properties>
     </function>
+    -->
     <function name="backgroundTrigger" class="com.jrefinery.report.function.ElementVisibilitySwitchFunction">
       <properties>
         <property name="element">background</property>
