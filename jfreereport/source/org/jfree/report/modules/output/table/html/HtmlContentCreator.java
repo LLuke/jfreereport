@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlContentCreator.java,v 1.10 2005/03/21 15:04:56 taqua Exp $
+ * $Id: HtmlContentCreator.java,v 1.11 2005/03/24 22:24:56 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -49,7 +49,6 @@ import java.util.TreeMap;
 import org.jfree.report.Anchor;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDefinition;
-import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.function.FunctionProcessingException;
 import org.jfree.report.modules.output.meta.MetaElement;
 import org.jfree.report.modules.output.table.base.GenericObjectTable;
@@ -61,6 +60,7 @@ import org.jfree.report.modules.output.table.html.metaelements.HtmlMetaElement;
 import org.jfree.report.modules.output.table.html.ref.HtmlReference;
 import org.jfree.report.modules.output.table.html.util.HtmlCharacterEntities;
 import org.jfree.report.modules.output.table.html.util.HtmlEncoderUtil;
+import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.geom.StrictGeomUtility;
 
@@ -91,6 +91,7 @@ public class HtmlContentCreator extends TableContentCreator
   private boolean useXHTML;
   private boolean isOpen;
   private boolean createBodyFragment;
+  private boolean emptyCellsUseCSS;
   private PrintWriter pout;
   private HtmlStyleCollection styleCollection;
 
@@ -195,7 +196,11 @@ public class HtmlContentCreator extends TableContentCreator
       style = "";
     }
 
-    style += "table-layout: fixed; empty-cells: show";
+    style += "table-layout: fixed;";
+    if (emptyCellsUseCSS)
+    {
+      style += "empty-cells: show";
+    }
 
     pout.print("<table cellspacing=\"0\" cellpadding=\"0\" style=\"");
     pout.print(style);
@@ -237,6 +242,9 @@ public class HtmlContentCreator extends TableContentCreator
     createBodyFragment = config.getConfigProperty
             (HtmlProcessor.CONFIGURATION_PREFIX + "." +
             HtmlProcessor.BODY_FRAGMENT, "false").equals("true");
+    emptyCellsUseCSS = config.getConfigProperty
+            (HtmlProcessor.CONFIGURATION_PREFIX + "." +
+            HtmlProcessor.EMPTY_CELLS_USE_CSS, "false").equals("true");
     final String encoding = config.getConfigProperty
             (HtmlProcessor.CONFIGURATION_PREFIX + "." +
             HtmlProcessor.ENCODING, HtmlProcessor.ENCODING_DEFAULT);
@@ -440,7 +448,7 @@ public class HtmlContentCreator extends TableContentCreator
         if (element instanceof HtmlMetaElement)
         {
           final HtmlMetaElement htmlElement = (HtmlMetaElement) element;
-          htmlElement.write(pout, filesystem);
+          htmlElement.write(pout, filesystem, emptyCellsUseCSS);
         }
         else if (isDebugReportLayout())
         {
@@ -605,7 +613,6 @@ public class HtmlContentCreator extends TableContentCreator
       pout.println("<!-- empty cell @(" + x + "," + y + ")-->");
     }
 
-//    final int width = (int) StrictGeomUtility.toExternalValue(layout.getCellWidth(x, x + 1));
     if (cellStyleName != null && (isCreateBodyFragment() == false))
     {
       pout.print("<td class=\"");
@@ -615,6 +622,10 @@ public class HtmlContentCreator extends TableContentCreator
     {
       pout.print("<td style=\"");
       pout.print(style.getCSSString(HtmlStyle.INLINE));
+    }
+    if (emptyCellsUseCSS == false)
+    {
+      pout.print("&nbsp;");
     }
     if (isUseXHTML())
     {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NumberFieldElementFactory.java,v 1.9 2005/02/19 13:29:54 taqua Exp $
+ * $Id: NumberFieldElementFactory.java,v 1.10 2005/02/23 21:04:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -135,7 +135,14 @@ public class NumberFieldElementFactory extends TextFieldElementFactory
    */
   public void setFormatString (final String formatString)
   {
-    setFormat(new DecimalFormat(formatString));
+    if (formatString == null)
+    {
+      format = null;
+    }
+    else
+    {
+      setFormat(new DecimalFormat(formatString));
+    }
   }
 
   /**

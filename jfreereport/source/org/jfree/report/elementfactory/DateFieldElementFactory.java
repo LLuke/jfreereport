@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DateFieldElementFactory.java,v 1.9 2005/02/19 13:29:54 taqua Exp $
+ * $Id: DateFieldElementFactory.java,v 1.10 2005/02/23 21:04:44 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -139,7 +139,7 @@ public class DateFieldElementFactory extends TextFieldElementFactory
   {
     if (formatString == null)
     {
-      setFormat(new SimpleDateFormat());
+      setFormat(null);
     }
     else
     {

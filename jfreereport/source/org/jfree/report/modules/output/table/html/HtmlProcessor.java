@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlProcessor.java,v 1.12 2005/02/23 21:05:34 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.13 2005/03/04 12:08:18 taqua Exp $
  *
  * Changes
  * -------
@@ -99,6 +99,7 @@ public class HtmlProcessor extends TableProcessor
    */
   public static final String BODY_FRAGMENT = "BodyFragment";
 
+  public static final String EMPTY_CELLS_USE_CSS = "EmptyCellsUseCSS";
 
   /**
    * Creates a new HtmlProcessor, which generates HTML4 output and uses the standard file
@@ -151,6 +152,7 @@ public class HtmlProcessor extends TableProcessor
             (getReportConfigurationPrefix() + "." + GENERATE_XHTML, String.valueOf(useXHTML));
   }
 
+
   /**
    * Gets the 'generateBodyFragment' flag.
    *
@@ -172,6 +174,33 @@ public class HtmlProcessor extends TableProcessor
   {
     getReport().getReportConfiguration().setConfigProperty
             (getReportConfigurationPrefix() + "." + BODY_FRAGMENT, String.valueOf(generateBodyFragment));
+  }
+
+  /**
+   * Gets the 'empty-cells-use-css' flag.
+   *
+   * @return true, if the target browser is CSS2 compatible, false otherwise.
+   */
+  public boolean isEmptyCellsUseCSS()
+  {
+    return getReport().getReportConfiguration().getConfigProperty
+            (getReportConfigurationPrefix() + "." + EMPTY_CELLS_USE_CSS, "false").equals("true");
+  }
+
+  /**
+   * Defines, whether CSS rules should be used to force the display of
+   * empty cells. Otherwise empty cells will be filled with a no-break-space entity
+   * to force the display.
+   * <p>
+   * As usual, the InternetExplorer is not able to handle standards and using
+   * 'true' in such environments causes troubles.
+   *
+   * @param emptyCellsUseCSS the 'empty-cells-use-css' flag.
+   */
+  public void setEmptyCellsUseCSS (final boolean emptyCellsUseCSS)
+  {
+    getReport().getReportConfiguration().setConfigProperty
+            (getReportConfigurationPrefix() + "." + EMPTY_CELLS_USE_CSS, String.valueOf(emptyCellsUseCSS));
   }
 
   public String getEncoding()

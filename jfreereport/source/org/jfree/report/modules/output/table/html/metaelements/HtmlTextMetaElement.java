@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlTextMetaElement.java,v 1.4 2005/02/05 18:35:19 taqua Exp $
+ * $Id: HtmlTextMetaElement.java,v 1.5 2005/03/03 17:07:59 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -48,14 +48,25 @@ import org.jfree.report.style.ElementStyleSheet;
 public class HtmlTextMetaElement extends HtmlMetaElement
 {
   public HtmlTextMetaElement (final RawContent elementContent,
-                              final ElementStyleSheet style, final boolean usesXHTML)
+                              final ElementStyleSheet style, 
+                              final boolean usesXHTML)
   {
     super(elementContent, style, usesXHTML);
   }
 
-  public void write (final PrintWriter pout, final HtmlFilesystem filesystem)
+  public void write (final PrintWriter pout, 
+                     final HtmlFilesystem filesystem,
+                     final boolean emptyCellsUseCSS)
   {
     final RawContent content = (RawContent) getContent();
-    HtmlEncoderUtil.printText(pout, String.valueOf(content.getContent()), isUsesXHTML());
+    final String text = String.valueOf(content.getContent());
+    if (text.trim().length() == 0)
+    {
+      pout.write("&nbsp;");
+    }
+    else
+    {
+      HtmlEncoderUtil.printText(pout, text, isUsesXHTML());
+    }
   }
 }

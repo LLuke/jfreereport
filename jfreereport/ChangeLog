@@ -3,6 +3,15 @@
 ---------------
 A list of changes in recent versions:
 0.8.5-3: (25-Mar-2005)
+        * The org.jfree.report.modules.output.table.html.EmptyCellsUseCSS
+          configuration property controls how empty cells are handled. By
+          default no CSS is used (as the InternetExplorer gets confused by
+          standards). This is a follow up to Bug #1165992.
+
+        * The location of the ReportControler can now be defined from
+          within the ReportControler.
+
+0.8.5-3: (25-Mar-2005)
         * [BUG] The GUI-ExportTasks now create missing directories, if
           necessary. The HTML-Directory Export's data directory is now
           relative to the specified HTML file and no longer to the current

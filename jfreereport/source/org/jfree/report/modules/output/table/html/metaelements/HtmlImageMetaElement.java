@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlImageMetaElement.java,v 1.7 2005/03/03 17:07:59 taqua Exp $
+ * $Id: HtmlImageMetaElement.java,v 1.8 2005/03/18 13:49:39 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -60,13 +60,16 @@ public class HtmlImageMetaElement extends HtmlMetaElement
     super(elementContent, style, usesXHTML);
   }
 
-  public void write (final PrintWriter pout, final HtmlFilesystem filesystem)
+  public void write (final PrintWriter pout, 
+                     final HtmlFilesystem filesystem,
+                     final boolean emptyCellsUseCSS)
   {
     final ImageContent content = (ImageContent) getContent();
     try
     {
       final ImageContainer image = content.getContent();
       final HtmlReference href = filesystem.createImageReference(image);
+      final String referenceData = href.getReferenceData();
       if (href.isExternal())
       {
         final StrictBounds imageArea = content.getBounds();
@@ -74,16 +77,16 @@ public class HtmlImageMetaElement extends HtmlMetaElement
         final int imageHeight = (int) StrictGeomUtility.toExternalValue(imageArea.getHeight());
 
         pout.print("<img src=\"");
-        pout.print(href.getReferenceData());
+        pout.print(referenceData);
         pout.print("\" width=\"");
         pout.write(String.valueOf(imageWidth));
         pout.print("\" height=\"");
         pout.write(String.valueOf(imageHeight));
-        if (href.getReferenceData() != null)
+        if (referenceData != null)
         {
           pout.print("\" alt=\"");
           pout.print(HtmlCharacterEntities.getEntityParser().
-                  encodeEntities(href.getReferenceData().toString()));
+                  encodeEntities(referenceData.toString()));
           pout.print("\"");
         }
         if (isUsesXHTML())
@@ -98,7 +101,15 @@ public class HtmlImageMetaElement extends HtmlMetaElement
       else
       {
         // this must not be encoded...
-        pout.print(href.getReferenceData());
+        if (emptyCellsUseCSS == false &&
+            (referenceData == null || referenceData.trim().length() == 0))
+        {
+          pout.print("&nbsp;");
+        }
+        else
+        {
+          pout.print(referenceData);
+        }
       }
     }
     catch (IOException ioe)

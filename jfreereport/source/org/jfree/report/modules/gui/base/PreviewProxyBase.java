@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewProxyBase.java,v 1.39 2005/03/04 13:52:07 taqua Exp $
+ * $Id: PreviewProxyBase.java,v 1.40 2005/03/25 16:37:54 taqua Exp $
  *
  * Changes
  * -------
@@ -907,13 +907,17 @@ public class PreviewProxyBase extends JComponent
    */
   private boolean closed;
 
+  private JPanel innerReportControlerHolder;
   private JPanel toolbarHolder;
   private JPanel reportPaneHolder;
   private ReportPanePropertyChangeListener reportPanePropertyChangeListener;
   private boolean progressDialogEnabled;
   private boolean progressBarEnabled;
   private ReportControler reportControler;
+  private boolean reportControlerInner;
+  private String reportControlerLocation;
   private JComponent reportControlerComponent;
+  private JPanel outerReportControlerHolder;
 
   /**
    * Creates a preview proxy.
@@ -965,29 +969,31 @@ public class PreviewProxyBase extends JComponent
     });
 
     this.exportWorkerPool = new WorkerPool
-            (10, "preview-dialog-export-worker");
+            (5, "preview-dialog-export-worker");
 
     createDefaultActions();
 
     reportPaneHolder = new JPanel(new CenterLayout());
-    reportPaneHolder.setDoubleBuffered(false);
+    //reportPaneHolder.setDoubleBuffered(false);
     reportPaneHolder.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
     final JScrollPane s1 = new JScrollPane(reportPaneHolder);
-    s1.setDoubleBuffered(false);
     s1.getVerticalScrollBar().setUnitIncrement(20);
 
-    final JPanel scrollPaneHolder = new JPanel();
-    scrollPaneHolder.setLayout(new BorderLayout());
-    scrollPaneHolder.add(s1, BorderLayout.CENTER);
-    scrollPaneHolder.setDoubleBuffered(false);
-    scrollPaneHolder.add(createStatusBar(), BorderLayout.SOUTH);
+    innerReportControlerHolder = new JPanel();
+    innerReportControlerHolder.setLayout(new BorderLayout());
+    innerReportControlerHolder.add(s1, BorderLayout.CENTER);
 
     toolbarHolder = new JPanel();
     toolbarHolder.setLayout(new BorderLayout());
-    toolbarHolder.add(scrollPaneHolder, BorderLayout.CENTER);
+    toolbarHolder.add(innerReportControlerHolder, BorderLayout.CENTER);
 
-    add(toolbarHolder, BorderLayout.CENTER);
+    outerReportControlerHolder = new JPanel();
+    outerReportControlerHolder.setLayout(new BorderLayout());
+    outerReportControlerHolder.add(toolbarHolder, BorderLayout.CENTER);
+
+    add(outerReportControlerHolder, BorderLayout.CENTER);
+    add(createStatusBar(), BorderLayout.SOUTH);
 
     zoomSelect = createZoomSelector();
   }
@@ -2544,6 +2550,11 @@ public class PreviewProxyBase extends JComponent
     setReport(report);
   }
 
+  /**
+   * Updates the report controler's binding to the UI.
+   * This updates the control panel as well as the menus if
+   * required.
+   */
   public void refreshControler()
   {
     // updates MenuBar and ToolBar ..
@@ -2553,27 +2564,63 @@ public class PreviewProxyBase extends JComponent
     if (reportControler != null)
     {
       final JComponent rcp = reportControler.getControlPanel();
-      if (reportControlerComponent != rcp)
+      if (reportControlerComponent != rcp ||
+          reportControlerInner != reportControler.isInnerComponent() ||
+          reportControlerLocation != reportControler.getControlerLocation())
       {
         if (reportControlerComponent != null)
         {
-          remove (reportControlerComponent);
+          outerReportControlerHolder.remove(reportControlerComponent);
+          innerReportControlerHolder.remove(reportControlerComponent);
         }
+        final String sanLocation = sanitizeLocation(reportControler.getControlerLocation());
+        final boolean innerComponent = reportControler.isInnerComponent();
         if (rcp != null)
         {
-          add(rcp, BorderLayout.NORTH);
+          if (innerComponent)
+          {
+            innerReportControlerHolder.add(rcp, sanLocation);
+          }
+          else
+          {
+            outerReportControlerHolder.add(rcp, sanLocation);
+          }
         }
         reportControlerComponent = rcp;
+        reportControlerLocation = sanLocation;
+        reportControlerInner = innerComponent;
       }
     }
     else
     {
       if (reportControlerComponent != null)
       {
-        remove (reportControlerComponent);
+        outerReportControlerHolder.remove(reportControlerComponent);
+        innerReportControlerHolder.remove(reportControlerComponent);
       }
       reportControlerComponent = null;
     }
+  }
+
+  private String sanitizeLocation (final String location)
+  {
+    if (BorderLayout.NORTH.equals(location))
+    {
+      return BorderLayout.NORTH;
+    }
+    if (BorderLayout.SOUTH.equals(location))
+    {
+      return BorderLayout.SOUTH;
+    }
+    if (BorderLayout.WEST.equals(location))
+    {
+      return BorderLayout.WEST;
+    }
+    if (BorderLayout.EAST.equals(location))
+    {
+      return BorderLayout.EAST;
+    }
+    return BorderLayout.NORTH;
   }
 
   public DowngradeActionMap getCustomActionMap ()

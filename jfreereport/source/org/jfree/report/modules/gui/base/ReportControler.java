@@ -31,7 +31,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   -;
  *
- * $Id: JCommon.java,v 1.1 2004/07/15 14:49:46 mungady Exp $
+ * $Id: ReportControler.java,v 1.1 2005/03/25 16:39:26 taqua Exp $
  *
  * Changes
  * -------
@@ -99,4 +99,21 @@ public interface ReportControler
    * @return the proxy base.
    */
   public PreviewProxyBase getPreviewBase ();
+
+  /**
+   * Defines, whether the controler component is placed between
+   * the report pane and the toolbar.
+   *
+   * @return true, if this is a inne component.
+   */
+  public boolean isInnerComponent ();
+
+  /**
+   * Returns the location for the report controler, one of
+   * BorderLayout.NORTH, BorderLayout.SOUTH, BorderLayout.EAST
+   * or BorderLayout.WEST.
+   *
+   * @return the location;
+   */
+  public String getControlerLocation ();
 }

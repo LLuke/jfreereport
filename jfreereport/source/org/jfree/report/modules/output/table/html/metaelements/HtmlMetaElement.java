@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: HtmlMetaElement.java,v 1.3 2005/01/25 00:13:49 taqua Exp $
+ * $Id: HtmlMetaElement.java,v 1.4 2005/02/23 21:05:34 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -63,5 +63,6 @@ public abstract class HtmlMetaElement extends MetaElement
   }
 
   public abstract void write (final PrintWriter pout,
-                              final HtmlFilesystem filesystem);
+                              final HtmlFilesystem filesystem,
+                              final boolean emptyCellsUseCSS);
 }
