@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: PreviewFrame.java,v 1.7 2002/05/21 23:06:19 taqua Exp $
+ * $Id: PreviewFrame.java,v 1.8 2002/05/26 13:47:39 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -44,6 +44,7 @@
  *               reset the mnemonics of the toolBar buttons
  * 17-May-2002 : KeyListener for zooming and navigation
  * 26-May-2002 : Added a statusline to the report to show errors and the current and total page number.
+ *               Printing supports the pageable interface.
  */
 
 package com.jrefinery.report.preview;
@@ -338,7 +339,7 @@ public class PreviewFrame
   {
     JFreeReport report = getReport();
     ReportPane reportPane = new ReportPane(report, new G2OutputTarget(G2OutputTarget.createEmptyGraphics(), getDefaultPageFormat()));
-    reportPane.addPropertyChangeListener(ReportPane.PAGECOUNT_PROPERTY, this);
+    reportPane.addPropertyChangeListener(ReportPane.NUMBER_OF_PAGES_PROPERTY, this);
     reportPane.addPropertyChangeListener(ReportPane.PAGENUMBER_PROPERTY, this);
     return reportPane;
   }
@@ -486,8 +487,7 @@ public class PreviewFrame
   public void attemptPrint()
   {
     PrinterJob pj = PrinterJob.getPrinterJob();
-    pj.validatePage(reportPane.getOutputTarget().getPageFormat());
-    pj.setPrintable(this.reportPane, reportPane.getOutputTarget().getPageFormat());
+    pj.setPageable(reportPane);
     if (pj.printDialog())
     {
       try
@@ -506,7 +506,7 @@ public class PreviewFrame
    */
   public void lastPage()
   {
-    reportPane.setPageNumber(reportPane.getCurrentPageCount());
+    reportPane.setPageNumber(reportPane.getNumberOfPages());
     validate();
   }
 
@@ -518,7 +518,7 @@ public class PreviewFrame
   public void increasePageNumber()
   {
     int pn = reportPane.getPageNumber();
-    int mp = reportPane.getCurrentPageCount();
+    int mp = reportPane.getNumberOfPages();
 
     if (pn < mp)
     {
@@ -528,8 +528,8 @@ public class PreviewFrame
   }
 
   /**
-   * Method firstPage changes to the first page if not already on the first page 
-   * 
+   * Method firstPage changes to the first page if not already on the first page
+   *
    */
   public void firstPage()
   {
@@ -555,9 +555,9 @@ public class PreviewFrame
     }
   }
 
-  /** 
-   * Increases the zoom factor for the report pane (unless it is already at maximum zoom). 
-   * 
+  /**
+   * Increases the zoom factor for the report pane (unless it is already at maximum zoom).
+   *
    */
   public void increaseZoom()
   {
@@ -797,9 +797,9 @@ public class PreviewFrame
     String property = event.getPropertyName();
 
     if (property.equals(ReportPane.PAGENUMBER_PROPERTY)
-      || property.equals(ReportPane.PAGECOUNT_PROPERTY))
+      || property.equals(ReportPane.NUMBER_OF_PAGES_PROPERTY))
     {
-      getStatus().setText("Page " + reportPane.getPageNumber() + " of " + reportPane.getCurrentPageCount());
+      getStatus().setText("Page " + reportPane.getPageNumber() + " of " + reportPane.getNumberOfPages());
       validate();
     }
     else if (property.equals(ReportPane.ERROR_PROPERTY))
@@ -818,7 +818,7 @@ public class PreviewFrame
   public void validate()
   {
     int pn = reportPane.getPageNumber();
-    int mp = reportPane.getCurrentPageCount();
+    int mp = reportPane.getNumberOfPages();
 
     if (pn < mp)
     {

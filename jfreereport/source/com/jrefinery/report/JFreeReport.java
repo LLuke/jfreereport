@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.8 2002/05/18 16:23:49 taqua Exp $
+ * $Id: JFreeReport.java,v 1.9 2002/05/21 23:06:18 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -45,6 +45,8 @@
  *               reportHeader, reportFooter, itemBand, functionCollection
  * 17-May-2002 : Fixed reportPropertyInitialisation and checked if the report is proceeding on
  *               print.
+ * 26-May-2002 : Changed repagination behaviour. Reports are repaginated before printed, so that
+ *               global initialisations can be done.
  */
 
 package com.jrefinery.report;
@@ -53,6 +55,7 @@ import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportProperties;
 import com.jrefinery.report.targets.OutputTarget;
 import com.jrefinery.report.targets.OutputTargetException;
 import com.jrefinery.ui.about.ProjectInfo;
@@ -60,10 +63,13 @@ import com.jrefinery.ui.about.ProjectInfo;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.print.PageFormat;
+import java.awt.Graphics2D;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.List;
+import java.util.LinkedList;
 
 /**
  * This class co-ordinates the process of generating a report from a TableModel.  The report is
@@ -78,7 +84,7 @@ public class JFreeReport implements JFreeReportConstants
   private String name;
 
   /** Storage for arbitrary properties that a user can assign to a report.*/
-  private Map properties;
+  private ReportProperties properties;
 
   /** An ordered list of report groups (each group defines its own header and footer). */
   private GroupList groups;
@@ -116,7 +122,7 @@ public class JFreeReport implements JFreeReportConstants
    */
   public JFreeReport()
   {
-    this.properties = new TreeMap();
+    this.properties = new ReportProperties();
     this.groups = new GroupList();
 
     setName(null);
@@ -221,14 +227,12 @@ public class JFreeReport implements JFreeReportConstants
    */
   public void setProperty(String key, Object value)
   {
-    if (value == null)
-    {
-      this.properties.remove(key);
-    }
-    else
-    {
-      this.properties.put(key, value);
-    }
+    properties.put(key, value);
+  }
+
+  public ReportProperties getProperties ()
+  {
+    return properties;
   }
 
   /**
@@ -239,8 +243,7 @@ public class JFreeReport implements JFreeReportConstants
    */
   public Object getProperty(String key)
   {
-    if (key == null)
-      throw new NullPointerException();
+    if (key == null) throw new NullPointerException();
     return this.properties.get(key);
   }
 
@@ -511,10 +514,12 @@ public class JFreeReport implements JFreeReportConstants
     ReportState rs = new ReportState.Start(this);
     ReportProcessor prc = new ReportProcessor(target, draw, getPageFooter());
 
+    // To a repagination
+    repaginate(target, rs);
+
     rs = rs.advance(prc);
     rs = processPage(target, rs, draw);
-
-    while (!(rs instanceof ReportState.Finish))
+    while (!rs.isFinish())
     {
       ReportState nrs = processPage(target, rs, draw);
       Log.error (String.valueOf (getProperty(REPORT_DATE_PROPERTY)));
@@ -525,6 +530,33 @@ public class JFreeReport implements JFreeReportConstants
       rs = nrs;
     }
     return rs;
+  }
+
+  /** Processes the entire report and records the state at the end of every page. */
+  public List repaginate (OutputTarget output, ReportState state)
+      throws ReportProcessingException
+  {
+    if (state.isStart() != true) throw new ReportProcessingException("Need a start state for repagination");
+    List pageStates = new LinkedList ();
+    ReportProcessor prc = new ReportProcessor (output, false, getPageFooter ());
+    state = state.advance (prc);
+
+    pageStates.add (state);
+    state = processPage (output, state, false);
+    while (!state.isFinish ())
+    {
+      pageStates.add (state);
+      ReportState oldstate = state;
+      state = processPage (output, state, false);
+
+      if (!state.isProceeding (oldstate))
+      {
+        throw new ReportProcessingException ("State did not proceed, bailing out!");
+      }
+    }
+    state.setProperty(REPORT_PAGECOUNT_PROPERTY, new Integer (state.getCurrentPage() - 1));
+    state.setProperty(REPORT_PAGEFORMAT_PROPERTY, output.getPageFormat());
+    return pageStates;
   }
 
   /**

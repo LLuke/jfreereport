@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPropertyFunction.java,v 1.4 2002/05/17 22:13:13 taqua Exp $
+ * $Id: ReportPropertyFunction.java,v 1.5 2002/05/18 16:23:51 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.ReportState;
 import com.jrefinery.report.event.ReportEvent;
 
 /**
@@ -54,7 +55,7 @@ import com.jrefinery.report.event.ReportEvent;
  * <P>
  * There are some properties that are defined for all reports: "report.name" and "report.date".
  * You can add arbitrary properties to a report using the setProperty method.
- *
+ * ReportProperties are now retrieved from the report state.
  */
 public class ReportPropertyFunction extends AbstractFunction
 {
@@ -93,8 +94,8 @@ public class ReportPropertyFunction extends AbstractFunction
    */
   public void reportStarted (ReportEvent event)
   {
-    JFreeReport report = event.getReport ();
-    value = report.getProperty (field);
+    ReportState state = event.getState();
+    value = state.getProperty (field);
   }
 
   /**

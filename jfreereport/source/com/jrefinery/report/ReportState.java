@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.6 2002/05/17 22:13:13 taqua Exp $
+ * $Id: ReportState.java,v 1.7 2002/05/18 16:23:49 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -48,10 +48,12 @@ package com.jrefinery.report;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.event.ReportListener;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.report.util.ReportProperties;
 
 import javax.swing.table.TableModel;
 import java.util.Date;
 import java.util.Vector;
+import java.util.Properties;
 
 /**
  * Captures state information for a report while it is in the process of being displayed or
@@ -84,7 +86,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       JFreeReport report = getReport();
       setCurrentPage(1);
 
-      // PropertyHandler should set the properties.
+      // A PropertyHandler should set the properties.
       report.setProperty(JFreeReport.REPORT_DATE_PROPERTY, new Date());
 
       // Initialize the report before any band (and especially before the pageheader)
@@ -594,7 +596,9 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   /** Band with an pending page break */
   private Band pband;
 
-  public abstract ReportState advance(ReportProcessor prc);
+  /** The report properties */
+  private ReportProperties reportProperties;
+
   public static final int BEFORE_FIRST_ROW = -1;
   public static final int BEFORE_FIRST_GROUP = -1;
   public static final int FIRST_PAGE = 1;
@@ -607,6 +611,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   protected ReportState(JFreeReport report)
   {
     setReport(report);
+    reportProperties = new ReportProperties ();
     setCurrentItem(BEFORE_FIRST_ROW);
     setCurrentPage(FIRST_PAGE);
     setCurrentGroupIndex(BEFORE_FIRST_GROUP);
@@ -621,6 +626,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   protected ReportState(ReportState clone)
   {
     setReport(clone.getReport());
+    reportProperties = clone.reportProperties;
     setCurrentItem(clone.getCurrentDataItem());
     setCurrentPage(clone.getCurrentPage());
     setCurrentGroupIndex(clone.getCurrentGroupIndex());
@@ -634,6 +640,11 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   {
     return report;
   }
+
+  /**
+   * The advance method is used to transform a report into a new state.
+   */
+  public abstract ReportState advance(ReportProcessor prc);
 
   /**
    * defines the report for this state. if the report is null, a NullPointerException is thrown.
@@ -739,6 +750,26 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
       throw new NullPointerException("Empty function collection?");
     }
     _functions = (FunctionCollection) pfunctions.clone();
+  }
+
+  public Object getProperty (String key)
+  {
+    return reportProperties.get(key);
+  }
+
+  public Object getProperty (String key, Object def)
+  {
+    return reportProperties.get(key, def);
+  }
+
+  public void setProperty (String key, Object o)
+  {
+    reportProperties.put(key, o);
+  }
+
+  public ReportProperties getProperties ()
+  {
+    return reportProperties;
   }
 
   /**

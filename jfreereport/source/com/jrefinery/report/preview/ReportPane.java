@@ -25,7 +25,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ReportPane.java,v 1.5 2002/05/21 23:06:19 taqua Exp $
+ * $Id: ReportPane.java,v 1.6 2002/05/26 13:47:39 taqua Exp $
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
@@ -34,6 +34,7 @@
  *               greater than 1500 pixels. Provides propertyChangeEvents for zoom and paginating.
  * 10-May-2002 : Updated code to work with last changes in report processing.
  * 20-May-2002 : Adjusted to catch ReportProcessingException on processPage.
+ * 26-May-2002 : Changed Repagination bahaviour. Implemented the Pageable-interface
  */
 
 package com.jrefinery.report.preview;
@@ -60,20 +61,22 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
+import java.awt.print.Pageable;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.LinkedList;
 
 /**
  * A panel used to display one page of a report. Works in tandem with a ReportPreviewFrame
  * to display a report.
  *
  */
-public class ReportPane extends JComponent implements Printable
+public class ReportPane extends JComponent implements Printable, Pageable
 {
   public static final String PAGINATED_PROPERTY = "paginated";
-  public static final String PAGECOUNT_PROPERTY = "pagecount";
+  public static final String NUMBER_OF_PAGES_PROPERTY = "NumberOfPages";
   public static final String PAGENUMBER_PROPERTY = "pagenumber";
   public static final String ZOOMFACTOR_PROPERTY = "zoomfactor";
   public static final String ERROR_PROPERTY = "error";
@@ -129,9 +132,9 @@ public class ReportPane extends JComponent implements Printable
     propsupp = new PropertyChangeSupport (this);
     this.target = target;
     this.report = report;
-    pageNumber = 1;
+    setPageNumber(1);
     setZoomFactor (1.0);
-    paginated = false;
+    setPaginated(false);
     pageStates = new ArrayList ();
   }
 
@@ -140,10 +143,34 @@ public class ReportPane extends JComponent implements Printable
    * @return The current page format;
    *
    */
-
   public PageFormat getPageFormat ()
   {
     return getOutputTarget ().getPageFormat ();
+  }
+
+  public PageFormat getPageFormat (int page)
+  {
+    return getPageFormat();
+  }
+
+  public Printable getPrintable (int page)
+  {
+    return this;
+  }
+
+  protected boolean isPaginated ()
+  {
+    return paginated;
+  }
+
+  protected void setPaginated (boolean b)
+  {
+    boolean oldval = isPaginated();
+    if (oldval == b)
+      return;
+
+    paginated = b;
+    firePropertyChange(PAGINATED_PROPERTY, oldval, paginated);
   }
 
   /**
@@ -157,7 +184,7 @@ public class ReportPane extends JComponent implements Printable
       throw new NullPointerException ("PageFormat must not be null");
 
     getOutputTarget ().setPageFormat (pageFormat);
-    paginated = false;
+    setPaginated(false);
     int w = (int) (pageFormat.getWidth () * zoomFactor);
     int h = (int) (pageFormat.getHeight () * zoomFactor);
     graphCache = null;
@@ -175,7 +202,7 @@ public class ReportPane extends JComponent implements Printable
   /**
    * @returns the page count for the current page settings.
    */
-  public int getCurrentPageCount ()
+  public int getNumberOfPages()
   {
     return this.pageCount;
   }
@@ -190,7 +217,7 @@ public class ReportPane extends JComponent implements Printable
   {
     int oldpc = pageCount;
     pageCount = pc;
-    propsupp.firePropertyChange (PAGECOUNT_PROPERTY, oldpc, pc);
+    propsupp.firePropertyChange (NUMBER_OF_PAGES_PROPERTY, oldpc, pc);
   }
 
   /**
@@ -217,21 +244,23 @@ public class ReportPane extends JComponent implements Printable
 
   /**
    * Sets the page number to be displayed.
-   * What happens when the page number is out of range?-Nothing!
+   * If the page number is negaitive it is corrected to 0. A page 0 is never printed.
    *
    * @param page The new page number;
    */
   public void setPageNumber (int page)
   {
-    if (page > pageCount)
+    if (page > getNumberOfPages())
+    {
       return;
+    }
 
     if (page < 1)
     {
-      page = 1;
+      page = 0;
     }
 
-    if (page <= pageCount)
+    if (page <= getNumberOfPages())
     {
       int oldpage = pageNumber;
       pageNumber = page;
@@ -330,7 +359,7 @@ public class ReportPane extends JComponent implements Printable
       target.setGraphics2D (g2);
       try
       {
-        if (!paginated)
+        if (!isPaginated())
         {
           repaginate (g2);
         }
@@ -370,15 +399,19 @@ public class ReportPane extends JComponent implements Printable
         g2.draw (printingArea);
       }
 
-      ReportState state = (ReportState) this.pageStates.get (pageNumber - 1);
-      try
+      int pageNumber = getPageNumber();
+      if (pageNumber > 0)
       {
-        ReportState s2 = report.processPage (target, state, true);
-      }
-      catch (ReportProcessingException rpe)
-      {
-        Log.error ("Repaginate failed: ", rpe);
-        setError (rpe);
+        ReportState state = (ReportState) this.pageStates.get (pageNumber - 1);
+        try
+        {
+          ReportState s2 = report.processPage (target, state, true);
+        }
+        catch (ReportProcessingException rpe)
+        {
+          Log.error ("Repaginate failed: ", rpe);
+          setError (rpe);
+        }
       }
 
       /** Paint Page Shadow */
@@ -466,7 +499,7 @@ public class ReportPane extends JComponent implements Printable
 
     try
     {
-      if (!paginated)
+      if (!isPaginated())
       {
         repaginate (g2);
       }
@@ -488,32 +521,24 @@ public class ReportPane extends JComponent implements Printable
     return PAGE_EXISTS;
   }
 
-  /** Processes the entire report and records the state at the end of every page. */
-  protected void repaginate (Graphics2D g2) throws ReportProcessingException
+  protected void repaginate (Graphics2D g2)
+    throws ReportProcessingException
   {
-    pageStates.clear ();
-    ReportState state = new ReportState.Start (report);
-    ReportProcessor prc = new ReportProcessor (getOutputTarget (), false, report.getPageFooter ());
-    state = state.advance (prc);
+    target.setGraphics2D(g2);
+    ReportState state = new ReportState.Start (getReport());
+    pageStates = getReport().repaginate(target, state);
 
-    pageStates.add (state);
-    state = report.processPage (target, state, false);
-    while (!state.isFinish ())
+    Number i = (Number) state.getProperty(JFreeReport.REPORT_PAGECOUNT_PROPERTY);
+    if (i == null)
     {
-      pageStates.add (state);
-      ReportState oldstate = state;
-      state = report.processPage (target, state, false);
-
-      if (!state.isProceeding (oldstate))
-      {
-        throw new ReportProcessingException ("State did not proceed, bailing out!");
-      }
+      setCurrentPageCount(0);
     }
-
-    setCurrentPageCount (state.getCurrentPage () - 1);
-    boolean oldpagination = paginated;
-    paginated = true;
-    propsupp.firePropertyChange (PAGINATED_PROPERTY, oldpagination, paginated);
+    else
+    {
+      setCurrentPageCount(i.intValue());
+      setPageNumber(1);
+    }
+    setPaginated(true);
   }
 
   public void addPropertyChangeListener (PropertyChangeListener l)

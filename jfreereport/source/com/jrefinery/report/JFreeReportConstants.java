@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportConstants.java,v 1.2 2002/05/07 14:22:58 mungady Exp $
+ * $Id: JFreeReportConstants.java,v 1.3 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes
  * -------
@@ -48,7 +48,8 @@ public interface JFreeReportConstants
 
   public static final String NAME_PROPERTY = "report.name";
   public static final String REPORT_DATE_PROPERTY = "report.date";
-  public static final String REPORT_STATE_PROPERTY = "report.state";
+  public static final String REPORT_PAGEFORMAT_PROPERTY = "report.pageformat";
+  public static final String REPORT_PAGECOUNT_PROPERTY = "report.pagecount";
 
   public static final String SAVE_AS_COMMAND = "SAVE AS";
   public static final String PAGE_SETUP_COMMAND = "PAGE SETUP";
