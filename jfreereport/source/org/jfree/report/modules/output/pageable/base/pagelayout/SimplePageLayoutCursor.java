@@ -6,7 +6,7 @@
  * Project Info:  http://www.jfree.org/jfreereport/index.html
  * Project Lead:  Thomas Morgner;
  *
- * (C) Copyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C) Copyright 2000-2003, by Object Refinery Limited and Contributors.
  *
  * This library is free software; you can redistribute it and/or modify it under the terms
  * of the GNU Lesser General Public License as published by the Free Software Foundation;
@@ -23,12 +23,12 @@
  * ---------------------------
  * SimplePageLayoutCursor.java
  * ---------------------------
- * (C)opyright 2000-2003, by Simba Management Limited and Contributors.
+ * (C)opyright 2000-2003, by Object Refinery Limited and Contributors.
  *
- * Original Author:  David Gilbert (for Simba Management Limited);
+ * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SimplePageLayoutCursor.java,v 1.3 2003/08/25 14:29:31 taqua Exp $
+ * $Id: SimplePageLayoutCursor.java,v 1.4 2003/09/13 15:14:40 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
