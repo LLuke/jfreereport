@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.50 2003/06/13 17:55:30 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.51 2003/06/13 18:58:04 taqua Exp $
  *
  * Changes
  * -------
@@ -701,7 +701,6 @@ public class SimplePageLayouter extends PageLayouter implements PrepareEventList
     Rectangle2D bounds = doLayout(b, true);
     bounds.setRect(0, getCursor().getPageBottomReserved() - bounds.getHeight(),
                    bounds.getWidth(), bounds.getHeight());
-    Log.debug ("The PageFooter will be spooled?" + spool);
     return doPrint(bounds, b, spool);
   }
 

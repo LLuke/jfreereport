@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.29 2003/05/30 16:57:21 taqua Exp $
+ * $Id: Element.java,v 1.30 2003/05/30 18:47:48 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -274,7 +274,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
   public Object clone() throws CloneNotSupportedException
   {
     Element e = (Element) super.clone();
-    e.style = (ElementStyleSheet) style.clone();
+    e.style = style.getCopy();
     e.datasource = (DataSource) datasource.clone();
     return e;
   }
@@ -305,6 +305,7 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
    * @return the content-type as string.
    */
   public abstract String getContentType ();
+
 
   /// DEPRECATED METHODS //////////////////////////////////////////////////////////////////////////
 

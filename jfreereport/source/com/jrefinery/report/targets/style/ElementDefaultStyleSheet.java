@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementDefaultStyleSheet.java,v 1.13 2003/05/02 12:40:36 taqua Exp $
+ * $Id: ElementDefaultStyleSheet.java,v 1.14 2003/06/10 12:11:56 taqua Exp $
  *
  * Changes
  * -------
@@ -146,5 +146,27 @@ public class ElementDefaultStyleSheet extends ElementStyleSheet
     }
   }
 
+  /**
+   * Clones the style-sheet. The assigned parent style sheets are not cloned.
+   * The stylesheets are not assigned to the contained stylesheet collection,
+   * you have to reassign them manually ...
+   *
+   * @return the clone.
+   */
+  public ElementStyleSheet getCopy()
+  {
+    return this;
+  }
 
+  /**
+   * Assigns a new stylesheet collection to this stylesheet.
+   * <p>
+   * DefaultStylesheets are shared among all reports, as they are unmodifyable.
+   *
+   * @param collection
+   * @throws IllegalArgumentException
+   */
+  public void setCollection(StyleSheetCollection collection)
+  {
+  }
 }

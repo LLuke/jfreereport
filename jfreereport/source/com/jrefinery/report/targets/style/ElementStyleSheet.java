@@ -28,15 +28,15 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.29 2003/06/10 16:07:55 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.30 2003/06/12 19:50:10 taqua Exp $
  *
  * Changes
  * -------
  * 05-Dec-2002 : Added Javadocs (DG);
  * 12-Dec-2002 : First BugFix: setFontStyle must use font.getName instead of font.getFontName
  *               or a totally different font family is used. 
- * 03-Jan-2002 : Javadoc updates (DG);
- * 
+ * 03-Jan-2003 : Javadoc updates (DG);
+ * 15-Jun-2003 : Cloning did not register the clone as change listener with the parents
  */
 
 package com.jrefinery.report.targets.style;
@@ -75,7 +75,7 @@ import com.jrefinery.report.targets.FontDefinition;
  *
  * @author Thomas Morgner
  */
-public class ElementStyleSheet implements Cloneable, Serializable, StyleChangeListener
+public class ElementStyleSheet implements Serializable, StyleChangeListener, Cloneable
 {
   /** A key for the 'minimum size' of an element. */
   public static final StyleKey MINIMUMSIZE   = StyleKey.getStyleKey("min-size", Dimension2D.class);
@@ -180,9 +180,6 @@ public class ElementStyleSheet implements Cloneable, Serializable, StyleChangeLi
   
   /** A flag that controls whether or not caching is allowed. */
   private boolean allowCaching;
-
-  /** A stylesheet collection manages all stylesheets of an report. */
-  private StyleSheetCollection collection;
 
   /**
    * Creates a new element style-sheet with the given name.  The style-sheet initially contains
@@ -292,6 +289,8 @@ public class ElementStyleSheet implements Cloneable, Serializable, StyleChangeLi
    * <p>
    * The default parents operations are reserved for the system internal stylesheet
    * operations. If you want to add own stylesheets, use the addParent methods.
+   * <p>
+   * Only default style sheets should be added with this method.
    *
    * @param position the position where to insert the parent style sheet
    * @param parent  the parent (<code>null</code> not permitted).
@@ -309,7 +308,6 @@ public class ElementStyleSheet implements Cloneable, Serializable, StyleChangeLi
     {
       defaultSheets.add (position, parent);
       defaultCached = null;
-      parent.addListener(this);
     }
     else
     {
@@ -567,23 +565,53 @@ public class ElementStyleSheet implements Cloneable, Serializable, StyleChangeLi
 
   /**
    * Clones the style-sheet. The assigned parent style sheets are not cloned.
+   * The stylesheets are not assigned to the contained stylesheet collection,
+   * you have to reassign them manually ...
    *
    * @return the clone.
-   *
-   * @throws CloneNotSupportedException should never happen.
    */
-  public Object clone () throws CloneNotSupportedException
+  public ElementStyleSheet getCopy()
   {
-    ElementStyleSheet sc = (ElementStyleSheet) super.clone();
-    sc.parents = (ArrayList) parents.clone();
-    sc.defaultSheets = (ArrayList) defaultSheets.clone();
-    sc.properties = (HashMap) properties.clone();
-    if (styleCache != null)
+    try
     {
-      sc.styleCache = new HashMap (styleCache);
+      ElementStyleSheet sc = (ElementStyleSheet) super.clone();
+      sc.properties = (HashMap) properties.clone();
+      if (styleCache != null)
+      {
+        sc.styleCache = new HashMap (styleCache);
+      }
+      sc.styleChangeSupport = new StyleChangeSupport(sc);
+      sc.parents = new ArrayList();// parents.clone();
+
+      if (parentsCached == null)
+      {
+        parentsCached = (ElementStyleSheet[])
+            parents.toArray(new ElementStyleSheet[parents.size()]);
+      }
+
+      for (int i = parentsCached.length - 1; i >= 0; i--)
+      {
+        sc.addParent(parentsCached[i]);
+      }
+
+      sc.defaultSheets = new ArrayList();// defaultSheets.clone();
+
+      if (defaultCached == null)
+      {
+        defaultCached = (ElementStyleSheet[])
+            defaultSheets.toArray(new ElementStyleSheet[defaultSheets.size()]);
+      }
+
+      for (int i = defaultCached.length - 1; i >= 0; i--)
+      {
+        sc.addDefaultParent(defaultCached[i]);
+      }
+      return sc;
     }
-    sc.styleChangeSupport = new StyleChangeSupport(sc);
-    return sc;
+    catch (CloneNotSupportedException cne)
+    {
+      throw new IllegalStateException("Clone failed.");
+    }
   }
 
   /**
@@ -837,7 +865,6 @@ public class ElementStyleSheet implements Cloneable, Serializable, StyleChangeLi
 
     final ElementStyleSheet elementStyleSheet = (ElementStyleSheet) o;
 
-    if (collection != null ? !collection.equals(elementStyleSheet.collection) : elementStyleSheet.collection != null) return false;
     if (!name.equals(elementStyleSheet.name)) return false;
 
     return true;
@@ -854,21 +881,17 @@ public class ElementStyleSheet implements Cloneable, Serializable, StyleChangeLi
   {
     int result;
     result = name.hashCode();
-    result = 29 * result + (collection != null ? collection.hashCode() : 0);
     return result;
   }
 
   /**
-   * Returns the stylesheet collection for that stylesheet. All StyleSheets on
-   * @return
+   * Creates and returns a copy of this object. This method calls getCopy().
+   *
+   * @return     a clone of this instance.
+   * @see Cloneable
    */
-  public StyleSheetCollection getCollection()
+  public Object clone()
   {
-    return collection;
-  }
-
-  public void setCollection(StyleSheetCollection collection)
-  {
-    this.collection = collection;
+    return getCopy();
   }
 }

@@ -28,17 +28,19 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: StyleSheetCollection.java,v 1.1 2003/06/12 19:52:14 taqua Exp $
  *
- * Changes 
+ * Changes
  * -------------------------
  * 12.06.2003 : Initial version
- *  
+ *
  */
 
 package com.jrefinery.report.targets.style;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 public class StyleSheetCollection implements Cloneable
 {
@@ -49,26 +51,77 @@ public class StyleSheetCollection implements Cloneable
     styleSheets = new HashMap();
   }
 
-  public void add (ElementStyleSheet style)
-  {
-    styleSheets.put(style.getName(), style);
-  }
-
-  public void remove (ElementStyleSheet style)
-  {
-    styleSheets.remove(style.getName());
-  }
-
-  public ElementStyleSheet get (String name)
+  public ElementStyleSheet get(String name)
   {
     return (ElementStyleSheet) styleSheets.get(name);
   }
 
-  public Object clone () throws CloneNotSupportedException
+  public Object clone() throws CloneNotSupportedException
   {
     StyleSheetCollection col = (StyleSheetCollection) super.clone();
-    col.styleSheets.clear();
+    col.styleSheets = new HashMap();
+    // clone all contained stylesheets ...
+    Iterator it = styleSheets.keySet().iterator();
+    while (it.hasNext())
+    {
+      Object key = it.next();
+      ElementStyleSheet es = (ElementStyleSheet) styleSheets.get(key);
+      ElementStyleSheet esCopy = es.getCopy();
+      styleSheets.put(esCopy.getName(), esCopy);
+    }
 
+    // next reconnect the stylesheets
+    // the default parents dont need to be updated, as they are shared among all
+    // stylesheets ...
+    it = col.styleSheets.keySet().iterator();
+    while (it.hasNext())
+    {
+      Object key = it.next();
+      ElementStyleSheet es = (ElementStyleSheet) col.styleSheets.get(key);
+
+      List parents = es.getParents();
+      // reversed add order .. last parent must be added first ..
+      ElementStyleSheet[] parentArray =
+          (ElementStyleSheet[]) parents.toArray(new ElementStyleSheet[parents.size()]);
+      for (int i = parentArray.length - 1; i >= 0; i++)
+      {
+        String name = parentArray[i].getName();
+        es.removeParent(parentArray[i]);
+        es.addParent(get(name));
+      }
+    }
     return col;
+  }
+
+  /**
+   * Updates a stylesheet reference from this collection. This is usually done after
+   * a clone() operation to update the parents of the given stylesheet.
+   * <p>
+   * This operation will remove all parents of the stylesheet and repace them with
+   * stylesheets from this collection with the same name.
+   *
+   * @param es
+   */
+  public void updateStyleSheet(ElementStyleSheet es)
+  {
+    if (styleSheets.containsKey(es.getName()) == false)
+    {
+      styleSheets.put(es.getName(), es);
+    }
+    else
+    {
+      styleSheets.put(es.getName(), es);
+
+      List parents = es.getParents();
+      // reversed add order .. last parent must be added first ..
+      ElementStyleSheet[] parentArray =
+          (ElementStyleSheet[]) parents.toArray(new ElementStyleSheet[parents.size()]);
+      for (int i = parentArray.length - 1; i >= 0; i++)
+      {
+        String name = parentArray[i].getName();
+        es.removeParent(parentArray[i]);
+        es.addParent(get(name));
+      }
+    }
   }
 }

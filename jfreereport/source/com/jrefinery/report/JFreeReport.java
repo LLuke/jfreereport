@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.51 2003/05/02 12:39:02 taqua Exp $
+ * $Id: JFreeReport.java,v 1.52 2003/06/01 17:39:23 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -463,6 +463,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     {
       throw new NullPointerException ("JFreeReport.setItemBand(...) : null not permitted.");
     }
+
     this.itemBand = band;
   }
 
@@ -772,6 +773,4 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     in.defaultReadObject ();
     defaultPageFormat = (PageFormat) SerializerHelper.getInstance().readObject(in);
   }
-
-
 }

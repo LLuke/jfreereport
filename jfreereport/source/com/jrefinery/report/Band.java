@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.56 2003/05/30 18:47:48 taqua Exp $
+ * $Id: Band.java,v 1.57 2003/06/10 12:11:15 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -409,14 +409,14 @@ public class Band extends Element implements Serializable, Cloneable
   public Object clone() throws CloneNotSupportedException
   {
     Band b = (Band) super.clone();
-    b.bandDefaults = (ElementStyleSheet) bandDefaults.clone();
+    b.bandDefaults = bandDefaults.getCopy();
     int elementSize = allElements.size();
     b.allElements = new ArrayList(elementSize);
     b.allElementsCached = new Element[elementSize];
     b.setParent(null);
 
-    ElementStyleSheet myBandDefaults = getBandDefaults();
-    ElementStyleSheet cloneBandDefaults = b.getBandDefaults();
+    ElementStyleSheet myBandDefaults = bandDefaults;
+    ElementStyleSheet cloneBandDefaults = b.bandDefaults;
 
     if (allElementsCached != null)
     {
@@ -457,6 +457,20 @@ public class Band extends Element implements Serializable, Cloneable
     return CONTENT_TYPE;
   }
 
+  /**
+   * Invalidates the layout. This method is called whenever a new element has been
+   * added. You should also call this method if you modified one of the elements of
+   * the band (eg. redefined the max, min or preferred size).
+   */
+  public void invalidateLayout ()
+  {
+    getLayout().invalidateLayout(this);
+    if (getParent() != null)
+    {
+      getParent().invalidateLayout();
+    }
+  }
+
   /// DEPRECATED METHODS //////////////////////////////////////////////////////////////////////////
 
   /**
@@ -488,19 +502,5 @@ public class Band extends Element implements Serializable, Cloneable
     Dimension2D d = (Dimension2D) getStyle().getStyleProperty(ElementStyleSheet.MINIMUMSIZE,
                                                               new FloatDimension(0, 0));
     return (float) d.getHeight();
-  }
-
-  /**
-   * Invalidates the layout. This method is called whenever a new element has been
-   * added. You should also call this method if you modified one of the elements of
-   * the band (eg. redefined the max, min or preferred size).
-   */
-  public void invalidateLayout ()
-  {
-    getLayout().invalidateLayout(this);
-    if (getParent() != null)
-    {
-      getParent().invalidateLayout();
-    }
   }
 }
