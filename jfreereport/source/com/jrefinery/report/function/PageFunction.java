@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.5 2002/09/13 15:38:08 mungady Exp $
+ * $Id: PageFunction.java,v 1.6 2002/10/16 18:33:41 taqua Exp $
  *
  * Changes
  * -------
@@ -36,7 +36,9 @@
  * 24-Apr-2002 : Changed the implementation to reflect the changes in Function and
  *               AbstractFunction
  * 10-May-2002 : Applied the ReportEvent interface
- * 05-Jun-2002 : Updated Javadoc comments (DG);
+ * 05-Jun-2002 : Updated Javadoc comments (DG)
+ * 11-Nov-2002 : Fixed errors reported by Checkstyle 2.4 (DG)
+ *
  */
 
 package com.jrefinery.report.function;
@@ -80,30 +82,31 @@ public class PageFunction extends AbstractFunction
    * Receives notification from the report engine that a new page is starting.  Grabs the page
    * number from the report state and stores it.
    *
-   * @param event Information about the event.
+   * @param event  information about the event.
    */
   public void pageStarted (ReportEvent event)
   {
-    this.setPage(getPage() + 1);
+    setPage(getPage() + 1);
   }
 
   /**
    * Receives notification that a group has started.
-   * <P>
-   * Maps the groupStarted-method to the legacy function startGroup (int).
    *
-   * @param event Information about the event.
+   * @param event  information about the event.
    */
   public void groupStarted(ReportEvent event)
   {
-    if (getGroup() == null) return;
+    if (getGroup() == null)
+    {
+      return;
+    }
 
     JFreeReport report = event.getReport ();
     ReportState state = event.getState ();
     Group group = report.getGroup (state.getCurrentGroupIndex ());
     if (getGroup ().equals (group.getName ()))
     {
-      this.setPage(getStartPage());
+      setPage(getStartPage());
     }
   }
 
@@ -153,23 +156,52 @@ public class PageFunction extends AbstractFunction
     }
   }
 
+  /**
+   * Returns the group (if any) for the function.
+   * <P>
+   * To set the group, use the setProperty("group", name) method inherited from the
+   * AbstractFunction class.
+   *
+   * @return the group.
+   */
   public String getGroup ()
   {
     return getProperty("group");
   }
 
+  /**
+   * Returns the start page for the function.
+   * <P>
+   * To set the start page, use the setProperty("start", value) method inherited from the
+   * AbstractFunction class.
+   *
+   * @return the start page for the function.
+   */
   public int getStartPage ()
   {
     return Integer.parseInt(getProperty("start", "1"));
   }
 
+  /**
+   * Returns the page number.
+   *
+   * @return the page number.
+   */
   public int getPage()
   {
     return page;
   }
 
+  /**
+   * Sets the page number.
+   * <P>
+   * This is the value returned by the function's getValue() method.
+   *
+   * @param page  the page number.
+   */
   public void setPage(int page)
   {
     this.page = page;
   }
+
 }

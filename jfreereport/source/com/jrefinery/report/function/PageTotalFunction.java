@@ -24,25 +24,29 @@
  * PageTotalFunction.java
  * -----------------------
  *
- * $Id$
+ * $Id: PageTotalFunction.java,v 1.5 2002/11/07 21:45:27 taqua Exp $
  *
  * ChangeLog
  * ----------------
  * 16-Oct-2002 : Initial version
  * 25-Oct-2002 : BugFix, grouped pagecounting was not working
+ * 11-Nov-2002 : Fixed errors reported by Checkstyle 2.4 (DG)
+ *
  */
+
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.states.ReportState;
-import com.jrefinery.report.util.Log;
-
 import java.util.Hashtable;
 
 /**
- * This function will only work as expected in group mode if the named group has pagebreak set to true.
+ * This function will only work as expected in group mode if the named group has pagebreak set to
+ * true.
+ *
+ * @author TM
  */
 public class PageTotalFunction extends PageFunction
 {
@@ -52,43 +56,65 @@ public class PageTotalFunction extends PageFunction
    */
   private static class PageStorage
   {
+    /** The page number. */
     private int page;
 
+    /**
+     * Creates a new page storage instance.
+     *
+     * @param page  the page number.
+     */
     public PageStorage(int page)
     {
       this.page = page;
     }
 
+    /**
+     * Returns the page number.
+     *
+     * @return the page number.
+     */
     public int getPage()
     {
       return page;
     }
 
+    /**
+     * Sets the page number.
+     *
+     * @param page  the page.
+     */
     public void setPage(int page)
     {
       this.page = page;
     }
   }
 
+  /** The page. */
   private PageStorage page;
+
+  /** Storage for ??. */
   private Hashtable groupPages;
 
+  /**
+   * Creates a new function.
+   */
   public PageTotalFunction()
   {
-    groupPages = new Hashtable();
+    this.groupPages = new Hashtable();
   }
 
   /**
    * Receives notification from the report engine that a new page is starting.  Grabs the page
    * number from the report state and stores it.
    *
-   * @param event Information about the event.
+   * @param event  information about the event.
    */
   public void pageStarted(ReportEvent event)
   {
     if (event.getState().isPrepareRun())
     {
-      this.setPage(getPage() + 1);
+      setPage(getPage() + 1);
     }
   }
 
@@ -97,11 +123,14 @@ public class PageTotalFunction extends PageFunction
    * <P>
    * Maps the groupStarted-method to the legacy function startGroup (int).
    *
-   * @param event Information about the event.
+   * @param event  information about the event.
    */
   public void groupStarted(ReportEvent event)
   {
-    if (getGroup() == null) return;
+    if (getGroup() == null)
+    {
+      return;
+    }
 
     JFreeReport report = event.getReport();
     ReportState state = event.getState();
@@ -112,10 +141,10 @@ public class PageTotalFunction extends PageFunction
       {
         // Correct the calculation:
         // at this point it is sure, that the previous group has finished. We cannot use the
-        // group finished event, as this event is fired before the layouting is done. So the groupfooter
-        // can move to the next page (without throwing another event), and a function will not get
-        // informed of this.
-        this.setPage(getPage() - 1);
+        // group finished event, as this event is fired before the layouting is done. So the
+        // groupfooter can move to the next page (without throwing another event), and a function
+        // will not get informed of this.
+        setPage(getPage() - 1);
 
         this.page = new PageStorage(getStartPage());
         groupPages.put(new Integer(event.getState().getCurrentDataItem()), this.page);
@@ -123,10 +152,12 @@ public class PageTotalFunction extends PageFunction
       else
       {
         // restore the saved state
-        this.page = (PageStorage) groupPages.get(new Integer(event.getState().getCurrentDataItem()));
+        this.page
+            = (PageStorage) groupPages.get(new Integer(event.getState().getCurrentDataItem()));
         if (page == null)
         {
-          throw new IllegalStateException("No page-storace for the current state: " + event.getState().getCurrentDataItem());
+          throw new IllegalStateException("No page-storace for the current state: "
+                                          + event.getState().getCurrentDataItem());
         }
       }
     }
@@ -148,11 +179,21 @@ public class PageTotalFunction extends PageFunction
     }
   }
 
+  /**
+   * Sets the page.
+   *
+   * @param page  the page.
+   */
   public void setPage(int page)
   {
     this.page.setPage(page);
   }
 
+  /**
+   * Returns the page.
+   *
+   * @return the page.
+   */
   public int getPage()
   {
     return this.page.getPage();
@@ -191,18 +232,34 @@ public class PageTotalFunction extends PageFunction
     }
   }
 
+  /**
+   * Returns the group for this function (possibly null).
+   *
+   * @return the group.
+   */
   public String getGroup()
   {
     return getProperty("group");
   }
 
+  /**
+   * Sets the group for this function.
+   *
+   * @param group  the group.
+   */
   public void setGroup(String group)
   {
     setProperty("group", group);
   }
 
+  /**
+   * Returns the start page for the function.
+   *
+   * @return the start page.
+   */
   public int getStartPage()
   {
     return Integer.parseInt(getProperty("start", "1"));
   }
+
 }
