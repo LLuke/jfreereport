@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SimplePageLayouter.java,v 1.12 2002/12/18 20:46:41 taqua Exp $
+ * $Id: SimplePageLayouter.java,v 1.13 2003/01/07 15:10:34 taqua Exp $
  *
  * Changes
  * -------
@@ -97,6 +97,11 @@ public class SimplePageLayouter extends PageLayouter
   /** A flag that indicates that the current pagebreak will be the last one. */
   private boolean isLastPageBreak;
 
+  /**
+   * A flag which indicates that a new page should be started before the next band
+   * is printed. Bool-or this flag with PageBreakBefore ...
+   */
+  private boolean startNewPage;
   /**
    * Represents the current state of the page layouter.
    */
@@ -456,6 +461,12 @@ public class SimplePageLayouter extends PageLayouter
    */
   private boolean printBand (Band b) throws ReportProcessingException
   {
+    if (isPageEnded())
+    {
+      createSaveState(b);
+      setStartNewPage(true);
+      return false;
+    }
     if (b.getStyle().getBooleanStyleProperty(BandStyleSheet.PAGEBREAK_BEFORE) == true)
     {
       createSaveState(b);
@@ -465,6 +476,7 @@ public class SimplePageLayouter extends PageLayouter
         return print(b, false);
       }
       // a pagebreak was requested, printing is delayed
+      setStartNewPage(true);
       return false;
     }
     else
@@ -709,6 +721,7 @@ public class SimplePageLayouter extends PageLayouter
   {
     SimpleLayoutManagerState state = (SimpleLayoutManagerState) getLayoutManagerState();
     // reset the report finished flag...
+    setStartNewPage(false);
     isLastPageBreak = false;
     if (state == null)
     {
@@ -718,6 +731,7 @@ public class SimplePageLayouter extends PageLayouter
       }
       return; // no state yet, maybe the first state?
     }
+
 
     Log.debug ("State: " + anchestor.getCurrentPage() + " " + anchestor.getCurrentDataItem() + " " + anchestor.getDataRow());
     startPage(anchestor);
@@ -784,6 +798,16 @@ public class SimplePageLayouter extends PageLayouter
     {
       return false;
     }
+  }
+
+  public boolean isStartNewPage()
+  {
+    return startNewPage;
+  }
+
+  public void setStartNewPage(boolean startNewPage)
+  {
+    this.startNewPage = startNewPage;
   }
 
   /**

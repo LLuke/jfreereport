@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FlowPageLayouter.java,v 1.2 2002/12/05 16:49:44 mungady Exp $
+ * $Id: FlowPageLayouter.java,v 1.3 2002/12/07 14:58:33 taqua Exp $
  *
  * Changes
  * -------
@@ -170,6 +170,11 @@ public class FlowPageLayouter extends PageLayouter
   public void initialize() throws FunctionInitializeException
   {
     super.initialize();
+  }
+
+  public boolean isStartNewPage()
+  {
+    return false;
   }
 
 }

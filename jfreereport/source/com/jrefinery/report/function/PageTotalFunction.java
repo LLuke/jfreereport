@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageTotalFunction.java,v 1.9 2002/12/11 01:10:41 mungady Exp $
+ * $Id: PageTotalFunction.java,v 1.10 2002/12/12 12:26:56 mungady Exp $
  *
  * ChangeLog
  * ---------
@@ -140,6 +140,7 @@ public class PageTotalFunction extends PageFunction
    */
   public void pageStarted(ReportEvent event)
   {
+    Log.debug ("PageStarted Fired:" + event);
     if (event.getState().isPrepareRun() && event.getState().getLevel() < 0)
     {
       if (isGroupStarted)

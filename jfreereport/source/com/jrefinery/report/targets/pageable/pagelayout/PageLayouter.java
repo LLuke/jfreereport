@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.10 2002/12/13 01:26:11 taqua Exp $
+ * $Id: PageLayouter.java,v 1.11 2002/12/13 10:43:45 mungady Exp $
  *
  * Changes
  * -------
@@ -349,6 +349,8 @@ public abstract class PageLayouter extends AbstractFunction
   {
     return getLogicalPage().isOpen() == false;
   }
+
+  public abstract boolean isStartNewPage();
 
   /**
    * Save the current state into the LayoutManagerState object. The concrete

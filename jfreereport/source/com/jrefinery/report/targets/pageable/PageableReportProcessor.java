@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.11 2002/12/13 13:55:28 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.12 2002/12/18 20:31:47 taqua Exp $
  *
  * Changes
  * -------
@@ -241,6 +241,7 @@ public class PageableReportProcessor
           if (level == -1)
           {
             pageStates.add(state);
+            Log.debug ("Added State: " + state);
           }
           ReportState oldstate = state;
           state = processPage(state, dummyOutput);
@@ -341,7 +342,7 @@ public class PageableReportProcessor
       // Do some real work.  The report header and footer, and the page headers and footers are
       // just decorations, as far as the report state is concerned.  The state only changes in
       // the following code...
-      while ((lm.isPageEnded() == false) && (state.isFinish() == false))
+      while ((lm.isStartNewPage() == false) && (state.isFinish() == false))
       {
         PageLayouter org = (PageLayouter) state.getDataRow().get(LAYOUTMANAGER_NAME);
         state = state.advance();
