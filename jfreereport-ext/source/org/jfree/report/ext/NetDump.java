@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: NetDump.java,v 1.2 2003/07/23 16:06:23 taqua Exp $
+ * $Id: NetDump.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
  *
  * Changes
  * -------
@@ -50,8 +50,16 @@ import org.jfree.report.util.Log;
  *
  * @author Thomas Morgner
  */
-public class NetDump
+public final class NetDump
 {
+  /**
+   * Default Constructor.
+   *
+   */
+  private NetDump()
+  {
+  }
+  
   /**
    * THe connection info is used to extract all necessary information from
    * the given URL.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: SwingResources.java,v 1.1 2003/09/12 17:51:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -45,8 +45,23 @@ import java.util.Arrays;
 import java.util.Collections;
 import javax.swing.UIManager;
 
-public class SwingResources
+/**
+ * Prints a list of all defined Swing-UI properties.
+ * 
+ * @author Thomas Morgner
+ */
+public final class SwingResources
 {
+  /**
+   * DefaultConstructor.
+   */
+  private SwingResources ()
+  {
+  }
+  /**
+   * Starts the program.
+   * @param args ignored
+   */
   public static void main(String[] args)
   {
     Hashtable table = UIManager.getDefaults();

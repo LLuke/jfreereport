@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14ConfigModule.java,v 1.1 2003/07/23 16:08:10 taqua Exp $
+ * $Id: Java14ConfigModule.java,v 1.2 2003/09/09 10:27:59 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,18 +42,35 @@ import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
 import org.jfree.report.util.ReportConfiguration;
 
+/**
+ * The module definition for the Java1.4 configuration target support module.
+ * 
+ * @author Thomas Morgner
+ */
 public class Java14ConfigModule extends AbstractModule
 {
+  /** The class name of the storage module. */
   private static final String JAVA14_CONFIG_STORE_CLASS =
       "org.jfree.report.ext.modules.java14config.Java14ConfigStorage";
+  /** The class name of the initializer class. */
   private static final String JAVA14_CONFIG_STORE_INITIALIZER =
       "org.jfree.report.ext.modules.java14config.Java14ConfigModuleInitializer";
 
+  /** 
+   * DefaultConstructor. Loads the module specification.
+   * @throws ModuleInitializeException if an error occured.
+   */
   public Java14ConfigModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
+  /**
+   * Initalizes the module. This method is empty. 
+   * @see org.jfree.report.modules.Module#initialize()
+   * 
+   * @throws ModuleInitializeException if an error occured.
+   */
   public void initialize() throws ModuleInitializeException
   {
     String value = ReportConfiguration.getGlobalConfig().getConfigProperty

@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14ConfigModuleInitializer.java,v 1.1 2003/07/23 16:08:10 taqua Exp $
+ * $Id: Java14ConfigModuleInitializer.java,v 1.2 2003/09/09 10:27:59 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 23.07.2003 : Initial version
+ * 23-Jul-2003 : Initial version
  *  
  */
 
@@ -45,12 +45,25 @@ import org.jfree.report.modules.ModuleInitializeException;
 import org.jfree.report.modules.ModuleInitializer;
 import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
 
+/**
+ * An initializer for the Java 1.4 configuration provider.
+ * @author Thomas Morgner
+ */
 public class Java14ConfigModuleInitializer implements ModuleInitializer
 {
+  /**
+   * Default Constructor.
+   */
   public Java14ConfigModuleInitializer()
   {
   }
 
+  /**
+   * Initializes the module and defines the storage implementation. 
+   * @see org.jfree.report.modules.ModuleInitializer#performInit()
+   * 
+   * @throws ModuleInitializeException if an error ocurred.
+   */
   public void performInit() throws ModuleInitializeException
   {
     ConfigFactory factory = ConfigFactory.getInstance();
