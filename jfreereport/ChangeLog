@@ -2,6 +2,16 @@
 5.  WHAT's NEW
 ---------------
 A list of changes in recent versions:
+0.8.5-1: (10-Mar-2005)
+        * [BUG] The PDF did not setup the first page correctly.
+
+        * [BUG] Images were not exported to PDF due to a bug in the
+          clipping setup.
+
+        * [BUG] filling shapes seemed to put the output target into an
+          invalid state; therefore an alternative way to draw and fill
+          shapes and process Drawables has been implemented.
+
 0.8.5: (4-Mar-2005)
         * The modules are now named after their java package names and
           correspond now with the jar file name.
