@@ -43,7 +43,7 @@
 
 	    <!-- GROUP HEADER -->
             <groupheader height="20" fontname="Monospaced" fontstyle="bold" fontsize="9">
-                <label name="Label 5" x="0" y="1" width="76" height="9" alignment="left">LETTER GROUP:</label>
+                <label name="Label 5" x="0" y="1" width="96" height="9" alignment="left">LETTER GROUP:</label>
                 <string-field name="Letter Element" x="96" y="1" width="76" height="9" alignment="left" fieldname="Letter"/>
                 <line name="line3" x1="0" y1="12" x2="0" y2="12" weight="0.25"></line>
                 <line name="line4" x1="0" y1="14" x2="0" y2="14" weight="0.25"></line>
@@ -51,7 +51,7 @@
 
             <!-- GROUP FOOTER -->
             <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
-                <label name="Label 6" x="0" y="0" width="468" height="12" alignment="left">Total for letter:</label>
+                <label name="Label 6" x="0" y="0" width="100%" height="12" alignment="left">Total for letter:</label>
                 <number-function name="total1" function="Sum2" format="#,##0.00" x="276" y="0" width="176" height="12" alignment="right"></number-function>
             </groupfooter>
 
@@ -66,7 +66,7 @@
 
   <!-- ITEMS -->
   <items height="10" fontname="Monospaced" fontstyle="plain" fontsize="8">
-    <string-field name="Name Element" x="0" y="0" width="76" height="8" alignment="left" fieldname="Name"/>
+    <string-field name="Name Element" x="0" y="0" width="140" height="8" alignment="left" fieldname="Name"/>
     <number-function name="element1" function="Count1" format="0" x="110" y="0" width="40" height="8" alignment="right"/>
     <string-field name="Letter Element" x="210" y="0" width="60" height="8" alignment="left" fieldname="Letter"/>
     <string-field name="Color Element" x="280" y="0" width="76" height="8" alignment="left" fieldname="Color"/>
