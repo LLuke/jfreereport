@@ -245,6 +245,7 @@
 <!ATTLIST label
   %basicform;
   %position;
+  nullstring  CDATA    #IMPLIED
 >
 
 <!--
@@ -259,23 +260,25 @@
 >
 
 <!--
-  A simple text field, no line break capability
+  A simple text field without line break capability
   -->
 <!ELEMENT string-field   EMPTY>
 <!ATTLIST string-field
   %basicform;
   %position;
   fieldname   CDATA    #REQUIRED
+  nullstring  CDATA    #IMPLIED
 >
 
 <!--
-  A simple text field, no line break capability
+  A simple text field with line break capability
   -->
 <!ELEMENT multiline-field   EMPTY>
 <!ATTLIST multiline-field
   %basicform;
   %position;
   fieldname   CDATA    #REQUIRED
+  nullstring  CDATA    #IMPLIED
 >
 
 <!ELEMENT number-field   EMPTY>
@@ -284,6 +287,7 @@
   %position;
   format		CDATA      #IMPLIED
   fieldname   CDATA    #REQUIRED
+  nullstring  CDATA    #IMPLIED
 >
 
 <!ELEMENT date-field   EMPTY>
@@ -292,6 +296,7 @@
   %position;
   format		CDATA      #IMPLIED
   fieldname   CDATA    #REQUIRED
+  nullstring  CDATA    #IMPLIED
 >
 
 <!--
@@ -307,6 +312,7 @@
   %basicform;
   %position;
   function    CDATA    #REQUIRED
+  nullstring  CDATA    #IMPLIED
 >
 
 <!--
@@ -319,6 +325,7 @@
   %basicform;
   %position;
   function    CDATA    #REQUIRED
+  nullstring  CDATA    #IMPLIED
 >
 
 <!ELEMENT number-function   EMPTY>
@@ -327,6 +334,7 @@
   %position;
   function    CDATA    #REQUIRED
   format		  CDATA    #IMPLIED
+  nullstring  CDATA    #IMPLIED
 >
 
 <!ELEMENT date-function   EMPTY>
@@ -335,6 +343,7 @@
   %position;
   function    CDATA    #REQUIRED
   format		  CDATA    #IMPLIED
+  nullstring  CDATA    #IMPLIED
 >
 
 <!ELEMENT general-function   EMPTY>

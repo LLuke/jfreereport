@@ -34,6 +34,7 @@ import com.jrefinery.report.Group;
 import com.jrefinery.report.GroupFooter;
 import com.jrefinery.report.GroupHeader;
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.util.Log;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -114,9 +115,9 @@ public class GroupFactory extends AbstractReportDefinitionHandler implements Rep
     }
     else if (elementName.equals (GROUP_TAG))
     {
-      System.out.println ("Add Group: " + currentGroup.getName());
-      System.out.println ("GroupHeader: " + currentGroup.getName() + " " + currentGroup.getHeader());
-      System.out.println ("GroupFooter: " + currentGroup.getName() + " " + currentGroup.getFooter());
+      Log.debug ("Add Group: " + currentGroup.getName());
+      Log.debug ("GroupHeader: " + currentGroup.getName() + " " + currentGroup.getHeader());
+      Log.debug ("GroupFooter: " + currentGroup.getName() + " " + currentGroup.getFooter());
       report.addGroup(currentGroup);
       setCurrentGroup(null);
     }

@@ -353,6 +353,10 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
           throws SAXException
   {
     element.setName (generateName (atts.getValue ("name")));
+    String nullString = atts.getValue("nullstring");
+    if (nullString != null)
+      element.setNullString(nullString);
+
     element.setBounds (getElementPosition (atts));
     element.setFont (fontFactory.createFont (atts));
 

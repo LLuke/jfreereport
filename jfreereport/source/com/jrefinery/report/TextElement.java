@@ -28,13 +28,14 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: TextElement.java,v 1.1.1.1 2002/04/25 17:02:24 taqua Exp $
+ * $Id: TextElement.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
  * 08-Feb-2002 : Updated code to work with latest version of the JCommon class library (DG);
  * 05-Mar-2002 : Modified constructors (DG);
  * 10-May-2002 : removed all but the default constructor. Added accessor functions for all properties.
+ * 15-May-2002 : The null value is handled specially, initiated by thomas.rynne@edftrading.com
  */
 
 package com.jrefinery.report;
@@ -48,6 +49,8 @@ import java.awt.geom.Rectangle2D;
  */
 public abstract class TextElement extends Element
 {
+  /** A string representing the text which is displayed when the elements value is null */
+  private String nullString;
 
   /** Font for displaying text. */
   private Font font;
@@ -60,6 +63,7 @@ public abstract class TextElement extends Element
    */
   protected TextElement ()
   {
+    setNullString("-");
   }
 
   /**
@@ -86,9 +90,6 @@ public abstract class TextElement extends Element
    * then it is used.  Otherwise, if a font name, style or size has been specified, this is
    * used to derive a new font from the band's default font.  If nothing at all has been
    * specified, the band's default font is used.
-   *
-   * @deprecated in the next release removed. DefaultFontHandling was not consistent and
-   * will be changed. There is no need to decide at report generation time which font to use.
    */
   public Font getFont (Band band)
   {
@@ -107,6 +108,28 @@ public abstract class TextElement extends Element
 
   }
 
+  /**
+   * @returns the null value representation for this element
+   */
+  public String getNullString ()
+  {
+    return nullString;
+  }
+
+  /**
+   * Defines the null value representation for this element.
+   */
+  public void setNullString (String s)
+  {
+    nullString = (s == null) ? "null" : s;
+  }
+
+  /**
+   * Returns the text alignment for this element's text. This is one of <code>ElementConstants.LEFT</code>,
+   * <code>ElementConstants.CENTER</code> or <code>ElementConstants.RIGHT</code>.
+   *
+   * @returns the alignment for this element
+   */
   public int getAlignment ()
   {
     return alignment;

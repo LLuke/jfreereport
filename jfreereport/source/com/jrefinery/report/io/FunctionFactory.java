@@ -33,6 +33,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import com.jrefinery.report.JFreeReport;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
 
@@ -124,6 +125,7 @@ public class FunctionFactory extends DefaultHandler implements ReportDefinitionT
     else if (elementName.equals (PROPERTY_TAG))
     {
       currentProperties.setProperty (currentProperty, currentText.toString ());
+      Log.debug ("FunctionProperty: " + currentProperty + " = " + currentText.toString ());
       currentText = null;
     }
     else

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.1.1.1 2002/04/25 17:02:32 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.2 2002/05/14 21:35:04 taqua Exp $
  *
  * Changes
  * -------
@@ -113,9 +113,10 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
 
   /**
    * Receives notification that a report is starting.
+   *
    * @deprecated Use the ReportListener interface instead.
    */
-  public void startReport (JFreeReport report)
+  public final void startReport (JFreeReport report)
   {
     // do nothing
   }
@@ -131,9 +132,10 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
 
   /**
    * Receives notification that a report is ending.
+   *
    * @deprecated Use the ReportListener interface instead.
    */
-  public void endReport (JFreeReport report)
+  public final void endReport (JFreeReport report)
   {
     // do nothing
   }
@@ -158,18 +160,20 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
 
   /**
    * Receives notification that a page is starting.
+   *
    * @deprecated Use the ReportListener interface instead.
    */
-  public void startPage (int page)
+  public final void startPage (int page)
   {
     // do nothing
   }
 
   /**
    * Receives notification that a page is ending.
+   *
    * @deprecated Use the ReportListener interface instead.
    */
-  public void endPage (int page)
+  public final void endPage (int page)
   {
     // do nothing
   }
@@ -196,18 +200,20 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
 
   /**
    * Receives notification that a group is starting.
+   *
    * @deprecated Use the ReportListener interface instead.
    */
-  public void startGroup (Group g)
+  public final void startGroup (Group g)
   {
     // do nothing
   }
 
   /**
    * Receives notification that a group is ending.
+   *
    * @deprecated Use the ReportListener interface instead.
    */
-  public void endGroup (Group g)
+  public final void endGroup (Group g)
   {
     // do nothing
   }
@@ -224,9 +230,10 @@ public abstract class AbstractFunction extends ReportListenerAdapter implements 
 
   /**
    * Processes a row of data.
+   *
    * @deprecated Use the ReportListener interface instead.
    */
-  public void advanceItems (TableModel data, int row)
+  public final void advanceItems (TableModel data, int row)
   {
     // do nothing
   }

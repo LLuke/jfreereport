@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionCollection.java,v 1.1.1.1 2002/04/25 17:02:13 taqua Exp $
+ * $Id: FunctionCollection.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes
  * -------
@@ -140,7 +140,14 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
     while (iterator.hasNext ())
     {
       Function f = (Function) iterator.next ();
-      f.reportStarted (event);
+      try
+      {
+        f.reportStarted (event);
+      }
+      catch (Exception e)
+      {
+        Log.warn ("Function " + f.getName() + " failed while processing 'reportStarted'", e);
+      }
     }
 
   }
@@ -156,7 +163,14 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
     while (iterator.hasNext ())
     {
       Function f = (Function) iterator.next ();
-      f.reportFinished(event);
+      try
+      {
+        f.reportFinished(event);
+      }
+      catch (Exception e)
+      {
+        Log.warn ("Function " + f.getName() + " failed while processing 'reportFinished'", e);
+      }
     }
 
   }
@@ -170,7 +184,15 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
     while (iterator.hasNext ())
     {
       Function f = (Function) iterator.next ();
-      f.pageStarted(event);
+      try
+      {
+        f.pageStarted(event);
+      }
+      catch (Exception e)
+      {
+        Log.warn ("Function " + f.getName() + " failed while processing 'pageStarted'", e);
+      }
+
     }
 
   }
@@ -187,7 +209,14 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
     while (iterator.hasNext ())
     {
       Function f = (Function) iterator.next ();
-      f.pageFinished(event);
+      try
+      {
+        f.pageFinished(event);
+      }
+      catch (Exception e)
+      {
+        Log.warn ("Function " + f.getName() + " failed while processing 'pageFinished'", e);
+      }
     }
 
   }
@@ -204,7 +233,15 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
     while (iterator.hasNext ())
     {
       Function f = (Function) iterator.next ();
-      f.groupStarted(event);
+      try
+      {
+        f.groupStarted(event);
+      }
+      catch (Exception e)
+      {
+        Log.warn ("Function " + f.getName() + " failed while processing 'groupStarted'", e);
+      }
+
     }
 
   }
@@ -220,7 +257,14 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
     while (iterator.hasNext ())
     {
       Function f = (Function) iterator.next ();
-      f.groupFinished(event);
+      try
+      {
+        f.groupFinished(event);
+      }
+      catch (Exception e)
+      {
+        Log.warn ("Function " + f.getName() + " failed while processing 'groupFinished'", e);
+      }
     }
 
   }
@@ -235,7 +279,14 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
     while (iterator.hasNext ())
     {
       Function f = (Function) iterator.next ();
-      f.itemsAdvanced(event);
+      try
+      {
+        f.itemsAdvanced(event);
+      }
+      catch (Exception e)
+      {
+        Log.warn ("Function " + f.getName() + " failed while processing 'itemsAdvanced'", e);
+      }
     }
   }
 
@@ -249,7 +300,15 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
     while (iterator.hasNext ())
     {
       Function f = (Function) iterator.next ();
-      f.itemsStarted(event);
+      try
+      {
+        f.itemsStarted(event);
+      }
+      catch (Exception e)
+      {
+        Log.warn ("Function " + f.getName() + " failed while processing 'itemsStarted'", e);
+      }
+
     }
   }
 
@@ -263,7 +322,14 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
     while (iterator.hasNext ())
     {
       Function f = (Function) iterator.next ();
-      f.itemsFinished(event);
+      try
+      {
+        f.itemsFinished(event);
+      }
+      catch (Exception e)
+      {
+        Log.warn ("Function " + f.getName() + " failed while processing 'itemsFinished'", e);
+      }
     }
   }
 
@@ -309,7 +375,7 @@ public class FunctionCollection extends ReportListenerAdapter implements Cloneab
       }
       catch (CloneNotSupportedException e)
       {
-        System.err.println ("FunctionCollection: problem cloning function.");
+        Log.error ("FunctionCollection: problem cloning function.", e);
       }
     }
 

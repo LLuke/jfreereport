@@ -57,7 +57,6 @@ public class ReportFactory extends AbstractReportDefinitionHandler implements Re
       String name = generateName (atts.getValue ("name"));
       this.report = new JFreeReport ();
       this.report.setName (name);
-      System.out.println ("CreatedReport: " + report);
     }
     else if (elementName.equals (REPORT_HEADER_TAG) ||
             elementName.equals (REPORT_FOOTER_TAG) ||

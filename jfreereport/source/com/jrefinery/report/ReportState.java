@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.1.1.1 2002/04/25 17:02:18 taqua Exp $
+ * $Id: ReportState.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -56,7 +56,7 @@ import java.util.Vector;
  * printed.  In most cases, we are interested in the report state at the end of a page, so that
  * we can begin the next page in the right manner.
  */
-public abstract class ReportState implements JFreeReportConstants, ReportStateConstants, Cloneable
+public abstract class ReportState implements JFreeReportConstants, Cloneable
 {
   /**
    * Initial state for an report. Prints the report header and proceeds to PostProcessHeader-State.<p>

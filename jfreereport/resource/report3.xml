@@ -85,6 +85,7 @@
     <function name="totalsum" class="com.jrefinery.report.function.ItemSumFunction">
       <properties>
         <property name="field">total</property>
+        <property name="group">Customer</property>
       </properties>
     </function>
     <function name="printdate" class="com.jrefinery.report.function.ReportPropertyFunction">

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ItemSumFunction.java,v 1.1.1.1 2002/04/25 17:02:33 taqua Exp $
+ * $Id: ItemSumFunction.java,v 1.2 2002/05/14 21:35:04 taqua Exp $
  *
  * Changes
  * -------
@@ -98,7 +98,7 @@ public class ItemSumFunction extends AbstractFunction
   /**
    * Receives notification that a new report is about to start.
    */
-  public void startReport (JFreeReport report)
+  public void reportStarted (ReportEvent event)
   {
     this.sum = ZERO;
   }
@@ -106,11 +106,14 @@ public class ItemSumFunction extends AbstractFunction
   /**
    * Receives notification that a new group is about to start.
    */
-  public void startGroup (Group group)
+  public void groupStarted (ReportEvent event)
   {
-    if (this.group != null)
+    Group group = event.getReport().getGroup(event.getState().getCurrentGroupIndex());
+
+    String mygroup = getGroup();
+    if (mygroup != null)
     {
-      if (this.group.equals (group.getName ()))
+      if (  this.group.equals (group.getName ()))
       {
         this.sum = ZERO;
       }
@@ -122,10 +125,10 @@ public class ItemSumFunction extends AbstractFunction
     return group;
   }
 
-  public void setGroup (String group)
+  public void setGroup (String _group)
   {
-    this.group = group;
-    setProperty ("group", group);
+    this.group = _group;
+    setProperty ("group", _group);
   }
 
   public String getField ()
