@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   -;
  *
- * $Id: XLSExportResources_fr.java,v 1.6 2003/08/24 15:08:19 taqua Exp $
+ * $Id: XLSExportResources_fr.java,v 1.7 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -100,8 +100,10 @@ public class XLSExportResources_fr extends JFreeReportResources
 
         {"excelexportdialog.cancel", "Annuler"},
         {"excelexportdialog.confirm", "Confirmer"},
-        {"excelexportdialog.strict-layout",
-         "Effectuer une disposition stricte pendant l'export."},
+        {"excelexportdialog.strict-layout","Effectuer une disposition stricte pendant l'export"},
+        
+        {"excel-export.progressdialog.title", "Exportation vers un fichier Excel ..."},
+        {"excel-export.progressdialog.message", "Le rapport est maintenant exporté en fichier Excel ..."}, //Excel workbook
 
       };
 

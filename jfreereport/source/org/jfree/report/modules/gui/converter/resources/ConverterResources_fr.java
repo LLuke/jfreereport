@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   -;
  *
- * $Id: ConverterResources_fr.java,v 1.6 2003/08/24 15:08:18 taqua Exp $
+ * $Id: ConverterResources_fr.java,v 1.7 2003/08/25 14:29:29 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -86,7 +86,10 @@ public class ConverterResources_fr extends JFreeReportResources
 
         {"convertdialog.title", "Convertisseur de rapport"},
 
-
+        {"ResultTableModel.Severity", "Gravité"},
+        {"ResultTableModel.Message", "Message"},
+        {"ResultTableModel.Line", "Ligne"},
+        {"ResultTableModel.Column", "Colone"},
       };
 
   /**

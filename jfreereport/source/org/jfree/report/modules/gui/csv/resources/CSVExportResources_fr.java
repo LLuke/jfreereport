@@ -92,7 +92,7 @@ public class CSVExportResources_fr extends JFreeReportResources
          "Le fichier ''{0}'' existe. Voulez vous l'écraser?"},
         {"csvexportdialog.targetOverwriteTitle", "Ecraser le fichier?"},
 
-        {"csvexportdialog.cancel", "*Annuler"},
+        {"csvexportdialog.cancel", "Annuler"},
         {"csvexportdialog.confirm", "Confirmer"},
 
         {"csvexportdialog.separator.tab", "Tabulation"},
@@ -108,10 +108,13 @@ public class CSVExportResources_fr extends JFreeReportResources
 
         {"error.processingfailed.title", "Echec du traitement du Report"},
         {"error.processingfailed.message", "Erreur lors du traitement de ce rapport: {0}"},
-        {"error.savefailed.message", "Erreur durant l'enregistrement en CSV : {0}"},
+        {"error.savefailed.message", "Erreur durant l'enregistrement en PDF : {0}"},
         {"error.savefailed.title", "Erreur durant l'enregistrement"},
 
         {"csvexportdialog.csv-file-description", "Fichiers séparés par une virgule."},
+        
+        {"cvs-export.progressdialog.title", "Exportation vers un fichier CSV ..."},
+        {"cvs-export.progressdialog.message", "Le rapport est maintenant exporté en fichier CSV ..."},
 
       };
 

@@ -123,11 +123,13 @@ public class HtmlExportResources_fr extends JFreeReportResources
 
         {"error.processingfailed.title", "Echec du traitement du Report"},
         {"error.processingfailed.message", "Erreur lors du traitement de ce rapport: {0}"},
-        {"error.savefailed.message", "Erreur durant l'enregistrement : {0}"},
+        {"error.savefailed.message", "Erreur durant l'enregistrement en PDF : {0}"},
         {"error.savefailed.title", "Erreur durant la sauvegarde"},
-        {"error.validationfailed.message",
-         "Erreur pendant la validation des entrées utilisateur."},
+        {"error.validationfailed.message","Erreur pendant la validation des entrées utilisateur."},
         {"error.validationfailed.title", "Erreur de validation"},
+        
+        {"html-export.progressdialog.title", "Exportation au format HTML ..."},
+        {"html-export.progressdialog.message", "Le rapport est maintenant exporté en fichier HTML ..."},
 
       };
 

@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReportResources_fr.java,v 1.4 2003/08/19 13:37:23 taqua Exp $
+ * $Id: JFreeReportResources_fr.java,v 1.5 2003/08/24 15:08:18 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -109,11 +109,114 @@ public class JFreeReportResources_fr extends JFreeReportResources
         {"menu.zoom.mnemonic", new Character('Z')},
 
         {"menu.help.name", "Aide"},
-        {"menu.help.mnemonic", new Character('A')},
+        {"menu.help.mnemonic", new Character('i')},
 
         {"statusline.pages", "Page {0} de {1}"},
         {"statusline.error", "Reportgeneration à produit une erreur: {0}"},
-        {"statusline.repaginate", "Calcule des sauts de page, veuillez patienter."},
+        {"statusline.repaginate", "Calcul des sauts de page, veuillez patienter."},
+
+
+        // these are the swing default values ...
+        {"FileChooser.acceptAllFileFilterText", "Tous les fichiers (*.*)"},
+        {"FileChooser.cancelButtonMnemonic", new Integer(KeyEvent.VK_A)},
+        {"FileChooser.cancelButtonText", "Annuler"},
+        {"FileChooser.cancelButtonToolTipText", "Quitte la boite de dialogue de sélection d’un fichier"},
+        {"FileChooser.detailsViewButtonAccessibleName", "Détails"},
+        {"FileChooser.detailsViewButtonToolTipText", "Détails"},
+        {"FileChooser.directoryDescriptionText", "Chemin"},
+        {"FileChooser.fileDescriptionText", "Fichier générique"},
+        {"FileChooser.fileNameLabelMnemonic", new Integer(KeyEvent.VK_N)},
+        {"FileChooser.fileNameLabelText", "Nom de fichier:"},
+        {"FileChooser.filesOfTypeLabelMnemonic", new Integer(KeyEvent.VK_T)},
+        {"FileChooser.filesOfTypeLabelText", "Type de fichier:"},
+        {"FileChooser.helpButtonMnemonic", new Integer(KeyEvent.VK_A)},
+        {"FileChooser.helpButtonText", "Aide"},
+        {"FileChooser.helpButtonToolTipText", "Aide sur la boite de dialogue de sélection d’un fichier"},
+        {"FileChooser.homeFolderAccessibleName", "Home"},
+        {"FileChooser.homeFolderToolTipText", "Home"},
+        {"FileChooser.listViewButtonAccessibleName", "Liste"},
+        {"FileChooser.listViewButtonToolTipText", "Liste"},
+        {"FileChooser.lookInLabelMnemonic", new Integer(KeyEvent.VK_R)},
+        {"FileChooser.lookInLabelText", "Regarder dans:"},
+        {"FileChooser.newFolderAccessibleName", "Nouveau dossier"},
+        {"FileChooser.newFolderErrorSeparator", ":"},
+        {"FileChooser.newFolderErrorText", "Erreur lors de la création du nouveau dossier"},
+        {"FileChooser.newFolderToolTipText", "Créer un nouveau dossier"},
+        {"FileChooser.openButtonMnemonic", new Integer(KeyEvent.VK_O)},
+        {"FileChooser.openButtonText", "Ouvrir"},
+        {"FileChooser.openButtonToolTipText", "Ouvrir le fichier sélectionné"},
+        {"FileChooser.saveButtonMnemonic", new Integer(KeyEvent.VK_S)},
+        {"FileChooser.saveButtonText", "Sauvegarder"},
+        {"FileChooser.saveButtonToolTipText", "Sauvegarder le fichier sélectionné"},
+        {"FileChooser.updateButtonMnemonic", new Integer(KeyEvent.VK_M)},
+        {"FileChooser.updateButtonText", "Actualiser"},
+        {"FileChooser.updateButtonToolTipText", "Actualiser le dossier"},
+        {"FileChooser.upFolderAccessibleName", "Monter"},
+        {"FileChooser.upFolderToolTipText", "Monter d'un niveau"},
+        {"FileChooser.openDialogTitleText", "Ouvrir"},
+        {"FileChooser.other.newFolder", "Nouveau dossier"},
+        {"FileChooser.other.newFolder.subsequent", "Nouveau dossier. {0}"},
+        {"FileChooser.saveDialogTitleText", "Sauvegarder"},
+        {"FileChooser.win32.newFolder", "Nouveau dossier"},
+        {"FileChooser.win32.newFolder.subsequent", "Nouveau dossier. ({0})"},
+
+        {"OptionPane.yesButtonText", "Oui"},
+        {"OptionPane.noButtonText", "Non"},
+        {"OptionPane.okButtonText", "OK"},
+        {"OptionPane.cancelButtonText", "Annuler"},
+        {"OptionPane.titleText", "Choisir une option"},
+
+        {"ColorChooser.cancelText", "Annuler"},
+        {"ColorChooser.hsbNameText", "HSB"},
+        {"ColorChooser.hsbHueText", "H"},
+        {"ColorChooser.hsbSaturationText", "S"},
+        {"ColorChooser.hsbBrightnessText", "B"},
+        {"ColorChooser.hsbRedText", "R"},
+        {"ColorChooser.hsbGreenText", "V"},
+        {"ColorChooser.hsbBlueText", "B"},
+        {"ColorChooser.okText", "OK"},
+        {"ColorChooser.previewText", "Aperçu"},
+        {"ColorChooser.resetText", "Reset"},
+        {"ColorChooser.rgbNameText", "RVB"},
+        {"ColorChooser.rgbRedMnemonic", new Integer(KeyEvent.VK_R)},
+        {"ColorChooser.rgbRedText", "Rouge"},
+        {"ColorChooser.rgbGreenMnemonic", new Integer(KeyEvent.VK_V)},
+        {"ColorChooser.rgbGreenText", "Vert"},
+        {"ColorChooser.rgbBlueMnemonic", new Integer(KeyEvent.VK_B)},
+        {"ColorChooser.rgbBlueText", "Bleu"},
+        {"ColorChooser.sampleText", "Exemple Exemple"},
+        //{"ColorChooser.swatchesNameText", "Swatches"}, i don t see what it means
+        {"ColorChooser.swatchesRecentText", "Récent:"},
+
+        {"InternalFrameTitlePane.closeButtonAccessibleName", "Fermer"},
+        {"InternalFrameTitlePane.iconifyButtonAccessibleName", "Iconifier"},
+        {"InternalFrameTitlePane.maximizeButtonAccessibleName", "Maximiser"},
+
+        {"FormView.resetButtonText", "Reset"},
+        {"FormView.submitButtonText", "Envoyer une requête"},
+
+        {"AbstractButton.clickText", "click"},
+
+        //{"AbstractDocument.additionText", "addition"}, i don t know where it is used
+        //{"AbstractDocument.deletionText", "deletion"}, i don t know where it is used
+        {"AbstractDocument.redoText", "Répéter"},
+        //{"AbstractDocument.styleChangeText", "style change"}, i don t know where it is used
+        {"AbstractDocument.undoText", "Annuler"},
+
+        {"AbstractUndoableEdit.redoText", "Répéter"},
+        {"AbstractUndoableEdit.undoText", "Annuler"},
+
+        {"ProgressMonitor.progressText", "Progression..."},
+
+        {"SplitPane.leftButtonText", "Bouton gauche"},
+        {"SplitPane.rightButtonText", "Bouton droit"},
+
+        // progress dialog defaults ...
+        {"progress-dialog.prepare-layout", "Préparation de la disposition pour le rendu."},
+        {"progress-dialog.perform-output", "Exécution du rendu pour le rapport demandé ..."},
+        {"progress-dialog.page-label", "Page: {0}"},
+        {"progress-dialog.rows-label", "Ligne: {0} / {1}"},
+        {"progress-dialog.pass-label", "Pass: {0} - Computing function values ..."},
 
       };
 

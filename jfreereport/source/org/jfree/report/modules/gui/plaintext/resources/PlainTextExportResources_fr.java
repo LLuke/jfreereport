@@ -21,7 +21,7 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * PlainTextExportResources.java
+ * PDFExportResources.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
@@ -76,7 +76,7 @@ public class PlainTextExportResources_fr extends JFreeReportResources
 
         {"error.processingfailed.title", "Echec du traitement du Report"},
         {"error.processingfailed.message", "Erreur lors du traitement de ce rapport: {0}"},
-        {"error.savefailed.message", "Erreur durant l'enregistrement en text : {0}"},
+        {"error.savefailed.message", "Erreur durant l'enregistrement en PDF : {0}"},
         {"error.savefailed.title", "Erreur durant l'enregistrement"},
 
         {"plain-text-exportdialog.dialogtitle",
@@ -107,6 +107,9 @@ public class PlainTextExportResources_fr extends JFreeReportResources
         {"plain-text-exportdialog.chars-per-inch", "cpi (Caractères par inch)"},
         {"plain-text-exportdialog.lines-per-inch", "lpi (Lignes par inch)"},
         {"plain-text-exportdialog.font-settings", "Paramètres de la police"},
+        
+        {"plaintext-export.progressdialog.title", "Exportation vers un fichier text ..."},
+        {"plaintext-export.progressdialog.message", "Le rapport est maintenant exporté en fichier text ..."},
 
       };
 

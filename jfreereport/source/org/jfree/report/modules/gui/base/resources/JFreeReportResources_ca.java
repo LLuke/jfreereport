@@ -28,7 +28,7 @@
  * Original Author:  Marc Casas;
  * Contributor(s):   -;
  *
- * $Id: $
+ * $Id: JFreeReportResources_ca.java,v 1.1 2003/09/08 18:41:45 taqua Exp $
  *
  */
 package org.jfree.report.modules.gui.base.resources;
@@ -98,6 +98,12 @@ public class JFreeReportResources_ca extends JFreeReportResources
 
         {"menu.file.name", "Arxiu"},
         {"menu.file.mnemonic", new Character('A')},
+
+        {"menu.navigation.name", "Navegació"},
+        {"menu.navigation.mnemonic", new Character('N')},
+
+        {"menu.zoom.name", "Zoom"},
+        {"menu.zoom.mnemonic", new Character('Z')},
 
         {"menu.help.name", "Ajuda"},
         {"menu.help.mnemonic", new Character('J')},
@@ -207,7 +213,7 @@ public class JFreeReportResources_ca extends JFreeReportResources
         {"progress-dialog.page-label", "Pàgina: {0}"},
         {"progress-dialog.rows-label", "Fila: {0} / {1}"},
         {"progress-dialog.pass-label", "Passada: {0} - Càlculant els valors de les funcions..."},
-     };
+      };
 
 
   /**

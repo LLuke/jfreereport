@@ -21,7 +21,7 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * PrintExportResources.java
+ * PDFExportResources.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
@@ -80,6 +80,9 @@ public class PrintExportResources_fr extends JFreeReportResources
 
         {"error.printfailed.message", "Erreur à l'impression du rapport: {0}"},
         {"error.printfailed.title", "Erreur à l'impression"},
+        
+        {"printing-export.progressdialog.title", "Impression du rapport ..."},
+        {"printing-export.progressdialog.message", "Le rapport va maintenant être imprimé ..."},
 
       };
 

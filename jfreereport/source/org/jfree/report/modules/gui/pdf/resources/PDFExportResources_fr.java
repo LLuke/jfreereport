@@ -28,7 +28,7 @@
  * Original Author:  PR;
  * Contributor(s):   -;
  *
- * $Id: PDFExportResources_fr.java,v 1.5 2003/08/24 15:08:19 taqua Exp $
+ * $Id: PDFExportResources_fr.java,v 1.6 2003/08/25 14:29:30 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -93,8 +93,8 @@ public class PDFExportResources_fr extends JFreeReportResources
         {"pdfsavedialog.encoding", "Encodage"},
 
         {"pdfsavedialog.securityNone", "Pas de sécurité"},
-        {"pdfsavedialog.security40bit", "Chiffrage en 40 bits"},
-        {"pdfsavedialog.security128bit", "Chiffrage en 128 bits"},
+        {"pdfsavedialog.security40bit", "Chiffrage clé 40 bits"},
+        {"pdfsavedialog.security128bit", "Chiffrage clé 128 bits"},
         {"pdfsavedialog.userpassword", "Mot de passe utilisateur"},
         {"pdfsavedialog.userpasswordconfirm", "Confirmer"},
         {"pdfsavedialog.userpasswordNoMatch", "Le mot de passe ne correspond pas."},
@@ -127,12 +127,14 @@ public class PDFExportResources_fr extends JFreeReportResources
         {"pdfsavedialog.allowFillIn", "Autoriser le remplissage des formules"},
 
         {"pdfsavedialog.option.noprinting", "Aucune impression"},
-        {"pdfsavedialog.option.degradedprinting", "Qualité basse d'impression"},
+        {"pdfsavedialog.option.degradedprinting", "Impression basse qualité"},
         {"pdfsavedialog.option.fullprinting", "Impression autorisée"},
 
         {"pdfsavedialog.cancel", "Annuler"},
         {"pdfsavedialog.confirm", "Confirmer"},
 
+        {"pdf-export.progressdialog.title", "Exportation vers un fichier PDF ..."},
+        {"pdf-export.progressdialog.message", "Le rapport est maintenant exporté en fichier PDF ..."},
       };
 
   /**
