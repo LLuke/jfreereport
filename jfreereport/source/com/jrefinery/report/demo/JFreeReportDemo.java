@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: JFreeReportDemo.java,v 1.42 2002/11/20 22:30:38 taqua Exp $
+ * $Id: JFreeReportDemo.java,v 1.43 2002/11/27 12:20:33 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -72,7 +72,6 @@ import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
 import javax.swing.table.TableModel;
-import javax.swing.table.DefaultTableModel;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Insets;
@@ -200,9 +199,6 @@ public class JFreeReportDemo extends JFrame
   /** A frame for displaying information about the demo application. */
   private AboutFrame aboutFrame;
 
-  /** A frame for displaying information about the system. */
-  private JFrame infoFrame;
-
   /** A tabbed pane for displaying the sample data sets. */
   private JTabbedPane tabbedPane;
 
@@ -257,7 +253,7 @@ public class JFreeReportDemo extends JFrame
     setJMenuBar(createMenuBar());
 
     JPanel content = (JPanel) getContentPane();
-    JToolBar toolbar = createToolBar(resources);
+    JToolBar toolbar = createToolBar();
     content.add(toolbar, BorderLayout.NORTH);
 
     tabbedPane = new JTabbedPane();
@@ -272,7 +268,6 @@ public class JFreeReportDemo extends JFrame
                       RefineryUtilities.createTablePanel(data2));
     tabbedPane.addTab("ItemHideFunction-Demo", RefineryUtilities.createTablePanel(data2));
     tabbedPane.addTab("Dynamic-Demo", RefineryUtilities.createTablePanel(data2));
-    tabbedPane.addTab("PDFBug", RefineryUtilities.createTablePanel(data1));
 
     content.add(tabbedPane);
 
@@ -353,10 +348,6 @@ public class JFreeReportDemo extends JFrame
     else if (index == 7)
     {
       preview("/com/jrefinery/report/demo/report2c.xml", data2);
-    }
-    else if (index == 8)
-    {
-      preview("/com/jrefinery/report/demo/report6.xml", data1);
     }
   }
 
@@ -597,11 +588,9 @@ public class JFreeReportDemo extends JFrame
   /**
    * Creates the demos toolbar.
    *
-   * @param resources localised resources.
-   *
    * @return the toolbar.
    */
-  private JToolBar createToolBar(ResourceBundle resources)
+  private JToolBar createToolBar()
   {
     JToolBar toolbar = new JToolBar();
     toolbar.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 0));
@@ -648,5 +637,4 @@ public class JFreeReportDemo extends JFrame
       th.printStackTrace();
     }
   }
-
 }
