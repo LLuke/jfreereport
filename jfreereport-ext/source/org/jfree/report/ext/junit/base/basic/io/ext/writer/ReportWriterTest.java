@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportWriterTest.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
+ * $Id: ReportWriterTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -95,7 +95,8 @@ public class ReportWriterTest extends TestCase
     final ReportWriter writer = createWriter();
     final ClassFactory cc = writer.getClassFactoryCollector();
     assertNotNull(cc.getDescriptionForClass(DataRowDataSource.class));
-    assertEquals(cc.getDescriptionForClass(DataRowDataSource.class).getObjectClass(), DataRowDataSource.class);
+    assertEquals(cc.getDescriptionForClass
+      (DataRowDataSource.class).getObjectClass(), DataRowDataSource.class);
     System.out.println(cc.getDescriptionForClass(DataRowDataSource.class));
   }
 

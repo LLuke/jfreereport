@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: IOTestSuite.java,v 1.1 2003/10/11 21:36:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -38,13 +38,8 @@
 
 package org.jfree.report.ext.junit.base.basic.io;
 
-import junit.framework.TestSuite;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import org.jfree.report.ext.junit.base.basic.layout.StaticLayoutManagerTest;
-import org.jfree.report.ext.junit.base.basic.layout.BandLayoutTest;
-import org.jfree.report.ext.junit.base.basic.layout.LayoutTestSuite;
 import org.jfree.report.ext.junit.base.basic.io.ext.ObjectFactoryTest;
 import org.jfree.report.ext.junit.base.basic.io.ext.writer.ReportWriterTest;
 
@@ -55,6 +50,13 @@ public class IOTestSuite extends TestSuite
     super(s);
     addTestSuite(ObjectFactoryTest.class);
     addTestSuite(ReportWriterTest.class);
+  }
+
+  /**
+   * Dummmy method to silence the checkstyle test.
+   */
+  public void dummy()
+  {
   }
 
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ShapeContentTest.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
+ * $Id: ShapeContentTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -67,7 +67,8 @@ public class ShapeContentTest extends TestCase
     final DefaultContentFactory df = new DefaultContentFactory();
     df.addModule(new ShapeContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
-    ElementLayoutInformation eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
+    ElementLayoutInformation eli = 
+      new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
     assertNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
 
     eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 0, 0));
@@ -81,7 +82,8 @@ public class ShapeContentTest extends TestCase
     final DefaultContentFactory df = new DefaultContentFactory();
     df.addModule(new ShapeContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
-    ElementLayoutInformation eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
+    ElementLayoutInformation eli = 
+      new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
     assertNotNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
 
     eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 0, 0));
@@ -95,7 +97,8 @@ public class ShapeContentTest extends TestCase
     final DefaultContentFactory df = new DefaultContentFactory();
     df.addModule(new ShapeContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
-    ElementLayoutInformation eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
+    ElementLayoutInformation eli = 
+      new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
     assertNotNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
 
     eli = new ElementLayoutInformation(new Rectangle2D.Float(40, 70, 140, 70));

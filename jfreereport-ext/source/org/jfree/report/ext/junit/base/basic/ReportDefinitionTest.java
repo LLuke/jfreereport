@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinitionTest.java,v 1.2 2003/09/09 10:27:57 taqua Exp $
+ * $Id: ReportDefinitionTest.java,v 1.3 2003/10/11 21:34:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -41,7 +41,6 @@ package org.jfree.report.ext.junit.base.basic;
 import junit.framework.TestCase;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportDefinition;
-import org.jfree.report.util.Log;
 import org.jfree.report.states.ReportDefinitionImpl;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.StyleKey;
@@ -67,7 +66,8 @@ public class ReportDefinitionTest extends TestCase
     final ReportDefinition rd = new ReportDefinitionImpl(report);
     assertEquals(rd.getReportHeader().getStyle().getStyleProperty(testKey), "Hello World!");
 
-    // redefining the outside stylesheet must not change the stylesheet inside the report definition.
+    // redefining the outside stylesheet must not change the stylesheet 
+    // inside the report definition.
     // check for deep-cloning!
     es.setStyleProperty(testKey, "Hello Little Green Man!");
     assertSame(rd.getReportHeader().getStyle().getStyleProperty(testKey), "Hello World!");

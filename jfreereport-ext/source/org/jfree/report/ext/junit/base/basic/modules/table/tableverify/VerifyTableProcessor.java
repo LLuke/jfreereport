@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: VerifyTableProcessor.java,v 1.1 2003/10/11 21:36:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -50,7 +50,8 @@ public class VerifyTableProcessor extends TableProcessor
   private boolean globalLayout;
   private VerifyPattern content;
 
-  public VerifyTableProcessor(final JFreeReport report) throws ReportProcessingException, FunctionInitializeException
+  public VerifyTableProcessor(final JFreeReport report) 
+      throws ReportProcessingException, FunctionInitializeException
   {
     super(report);
   }

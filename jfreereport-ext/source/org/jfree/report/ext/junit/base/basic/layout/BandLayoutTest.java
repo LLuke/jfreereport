@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandLayoutTest.java,v 1.4 2003/09/09 10:27:57 taqua Exp $
+ * $Id: BandLayoutTest.java,v 1.5 2003/10/11 21:34:10 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -117,6 +117,7 @@ public class BandLayoutTest extends TestCase
     Log.debug (BandLayoutManagerUtil.getBounds(element, null));
 
     BandLayoutManagerUtil.doLayout(report.getReportHeader(), new DefaultLayoutSupport(), 500, 200);
-    assertEquals(new Rectangle2D.Float(0, 0, 500, 70), BandLayoutManagerUtil.getBounds(report.getReportHeader(), null));
+    assertEquals(new Rectangle2D.Float(0, 0, 500, 70), 
+              BandLayoutManagerUtil.getBounds(report.getReportHeader(), null));
   }
 }

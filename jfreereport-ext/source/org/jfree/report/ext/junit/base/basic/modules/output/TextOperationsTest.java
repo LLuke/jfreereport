@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: TextOperationsTest.java,v 1.1 2003/09/12 17:51:05 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -79,7 +79,8 @@ public class TextOperationsTest extends TestCase
       "page:"
     };
 
-    final TextParagraph tp = new TextParagraph(new TextContentTest.DebugSizeCalculator(10, 10), 10, "..");
+    final TextParagraph tp = new TextParagraph
+        (new TextContentTest.DebugSizeCalculator(10, 10), 10, "..", false);
     tp.setContent(content, 0, 0, 345, 5000);
     assertEquals(new Rectangle2D.Float(0,0, 330, 100), tp.getMinimumContentSize());
 
@@ -129,7 +130,8 @@ public class TextOperationsTest extends TestCase
       "together."
     };
     Content tc = new TextContent
-        (content, 10, new Rectangle2D.Float(0, 0, 500, 5000), new TextContentTest.DebugSizeCalculator(10, 10), "..");
+        (content, 10, new Rectangle2D.Float(0, 0, 500, 5000),
+            new TextContentTest.DebugSizeCalculator(10, 10), "..", false);
     tc = tc.getContentForBounds(tc.getMinimumContentSize());
     final Content tp = tc.getContentPart(0);
     for (int i = 0; i < tp.getContentPartCount(); i++)
@@ -170,9 +172,10 @@ public class TextOperationsTest extends TestCase
 
   public void testLineBreaking2()
   {
-    final String content = "Thisisareallylongword, noone thought thatawordcanbethatlong, itwontfitonaline, but these words do, so heres the test!";
+    final String content = 
+      "Thisisareallylongword, noone thought thatawordcanbethatlong, " +      "itwontfitonaline, but these words do, so heres the test!";
     Content tc = new TextContent(content, 10, new Rectangle2D.Float(0, 0, 200, 5000),
-        new TextContentTest.DebugSizeCalculator(10, 10),"..");
+        new TextContentTest.DebugSizeCalculator(10, 10),"..", false);
 
     final String[] results = {
       "Thisisareallylongwor",
@@ -228,7 +231,7 @@ public class TextOperationsTest extends TestCase
     // 0. If this y influences the resulting operations, we discovered a
     // Bug (getBounds() instead of getMinimumBounds() used)
     Content tc = new TextContent(content, 10, new Rectangle2D.Float(0, 110, 200, 5000),
-        new TextContentTest.DebugSizeCalculator(10, 10),"..");
+        new TextContentTest.DebugSizeCalculator(10, 10),"..", false);
 
     Spool spool = new Spool();
     TextOperationModule tmod = new TextOperationModule();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupListTest.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
+ * $Id: GroupListTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -67,6 +67,7 @@ public class GroupListTest extends TestCase
     }
     catch (NullPointerException npe)
     {
+      // expected, ignored
     }
 
     final Group g1 = new Group();
@@ -91,6 +92,7 @@ public class GroupListTest extends TestCase
     }
     catch (IllegalArgumentException iea)
     {
+      // expected, ignored
     }
     assertTrue(gl.size() == 2);
   }

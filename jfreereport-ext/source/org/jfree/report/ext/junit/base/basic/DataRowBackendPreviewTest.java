@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackendPreviewTest.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
+ * $Id: DataRowBackendPreviewTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -75,6 +75,7 @@ public class DataRowBackendPreviewTest extends TestCase
     }
     catch (IllegalStateException e)
     {
+      // expected, ignored
     }
     try
     {
@@ -83,6 +84,7 @@ public class DataRowBackendPreviewTest extends TestCase
     }
     catch (IllegalStateException e)
     {
+      // expected, ignored
     }
     try
     {
@@ -91,6 +93,7 @@ public class DataRowBackendPreviewTest extends TestCase
     }
     catch (IllegalStateException e)
     {
+      // expected, ignored
     }
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventOrderFunction.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
+ * $Id: EventOrderFunction.java,v 1.3 2003/09/09 10:27:58 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -69,7 +69,8 @@ public class EventOrderFunction extends AbstractFunction implements PageEventLis
   {
     if ((event.getType() & ReportEvent.REPORT_INITIALIZED) != ReportEvent.REPORT_INITIALIZED)
     {
-      throw new IllegalArgumentException("ReportEvent was expected to be of type REPORT_INITIALIZED");
+      throw new IllegalArgumentException
+        ("ReportEvent was expected to be of type REPORT_INITIALIZED");
     }
 
     if (lastEventType != ReportEvent.REPORT_DONE && lastEventType != 0)

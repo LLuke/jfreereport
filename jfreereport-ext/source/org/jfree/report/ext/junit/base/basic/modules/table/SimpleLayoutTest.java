@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: SimpleLayoutTest.java,v 1.1 2003/10/11 21:36:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -46,7 +46,6 @@ import org.jfree.report.ext.junit.base.basic.modules.table.tableverify.VerifyCel
 import org.jfree.report.ext.junit.base.basic.modules.table.tableverify.VerifyCellContent;
 import org.jfree.report.modules.output.table.base.TableGrid;
 import org.jfree.report.modules.output.table.base.TableGridLayout;
-import org.jfree.report.util.Log;
 
 public class SimpleLayoutTest extends TestCase
 {

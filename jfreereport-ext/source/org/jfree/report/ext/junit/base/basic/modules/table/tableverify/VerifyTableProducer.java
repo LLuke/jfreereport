@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: VerifyTableProducer.java,v 1.1 2003/10/11 21:36:07 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -47,7 +47,6 @@ import org.jfree.report.modules.output.table.base.TableGridLayout;
 import org.jfree.report.modules.output.table.base.TableGridPosition;
 import org.jfree.report.modules.output.table.base.TableLayoutInfo;
 import org.jfree.report.modules.output.table.base.TableProducer;
-import org.jfree.report.util.Log;
 
 public class VerifyTableProducer extends TableProducer
 {
@@ -150,7 +149,8 @@ public class VerifyTableProducer extends TableProducer
     }
   }
 
-  public static TableCellBackground createStaticTableCellStyle(List background, Rectangle2D cellBounds)
+  public static TableCellBackground createStaticTableCellStyle
+      (List background, Rectangle2D cellBounds)
   {
     return TableProducer.createStaticTableCellStyle(background, cellBounds);
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticLayoutManagerTest.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
+ * $Id: StaticLayoutManagerTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -66,7 +66,9 @@ public class StaticLayoutManagerTest extends TestCase
    * @param height the height of the band and the rectangle
    * @return the created band
    */
-  private Band createBand (final String name, final Color color, final int x, final int y, final int width, final int height)
+  private Band createBand (final String name, final Color color, 
+                           final int x, final int y, 
+                           final int width, final int height)
   {
     final Band band = new Band ();
     band.setName("Band-" + name);

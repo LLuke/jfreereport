@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventOrderTest.java,v 1.2 2003/07/14 17:41:33 taqua Exp $
+ * $Id: EventOrderTest.java,v 1.3 2003/09/09 10:27:58 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -395,7 +395,8 @@ public class EventOrderTest extends TestCase
   public void testPageCount() throws Exception
   {
     JFreeReport report = null;
-    final URL url = this.getClass().getResource(FunctionalityTestLib.REPORTS[2].getReportDefinition());
+    final URL url = this.getClass().getResource
+      (FunctionalityTestLib.REPORTS[2].getReportDefinition());
     assertNotNull(url);
     report = ReportGenerator.getInstance().parseReport(url);
     report.setData(FunctionalityTestLib.REPORTS[2].getReportTableModel());

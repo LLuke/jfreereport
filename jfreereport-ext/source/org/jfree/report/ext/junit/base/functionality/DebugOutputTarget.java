@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DebugOutputTarget.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
+ * $Id: DebugOutputTarget.java,v 1.3 2003/09/09 10:27:58 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -267,7 +267,7 @@ public class DebugOutputTarget extends AbstractOutputTarget
    *
    * @return the size calculator.
    *
-   * @throws org.jfree.report.layout.SizeCalculatorException if there is a problem with the output target.
+   * @throws SizeCalculatorException if there is a problem with the output target.
    */
   public SizeCalculator createTextSizeCalculator(final FontDefinition font)
       throws SizeCalculatorException

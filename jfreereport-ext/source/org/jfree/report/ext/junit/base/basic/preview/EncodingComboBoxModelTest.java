@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModelTest.java,v 1.3 2003/07/23 16:06:24 taqua Exp $
+ * $Id: EncodingComboBoxModelTest.java,v 1.4 2003/09/09 10:27:57 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -81,7 +81,8 @@ public class EncodingComboBoxModelTest extends TestCase
 
   public void testSelectItemAllAvailable ()
   {
-    String org = ReportConfiguration.getGlobalConfig().getConfigProperty(EncodingComboBoxModel.AVAILABLE_ENCODINGS);
+    String org = ReportConfiguration.getGlobalConfig().getConfigProperty
+        (EncodingComboBoxModel.AVAILABLE_ENCODINGS);
     ReportConfiguration.getGlobalConfig().setConfigProperty
         (EncodingComboBoxModel.AVAILABLE_ENCODINGS, EncodingComboBoxModel.AVAILABLE_ENCODINGS_ALL);
     final EncodingComboBoxModel def = EncodingComboBoxModel.createDefaultModel();
@@ -106,7 +107,8 @@ public class EncodingComboBoxModelTest extends TestCase
 
   public void testSelectItemFileAvailable ()
   {
-    String org = ReportConfiguration.getGlobalConfig().getConfigProperty(EncodingComboBoxModel.AVAILABLE_ENCODINGS);
+    String org = ReportConfiguration.getGlobalConfig().getConfigProperty
+        (EncodingComboBoxModel.AVAILABLE_ENCODINGS);
     ReportConfiguration.getGlobalConfig().setConfigProperty
         (EncodingComboBoxModel.AVAILABLE_ENCODINGS, EncodingComboBoxModel.AVAILABLE_ENCODINGS_FILE);
     final EncodingComboBoxModel def = EncodingComboBoxModel.createDefaultModel();
@@ -131,7 +133,8 @@ public class EncodingComboBoxModelTest extends TestCase
 
   public void testSelectItemNoneAvailable ()
   {
-    String org = ReportConfiguration.getGlobalConfig().getConfigProperty(EncodingComboBoxModel.AVAILABLE_ENCODINGS);
+    String org = ReportConfiguration.getGlobalConfig().getConfigProperty
+        (EncodingComboBoxModel.AVAILABLE_ENCODINGS);
     ReportConfiguration.getGlobalConfig().setConfigProperty
         (EncodingComboBoxModel.AVAILABLE_ENCODINGS, EncodingComboBoxModel.AVAILABLE_ENCODINGS_NONE);
     final EncodingComboBoxModel def = EncodingComboBoxModel.createDefaultModel();
@@ -146,7 +149,8 @@ public class EncodingComboBoxModelTest extends TestCase
   public void testAllEncodingsDefined ()
   {
     final String encFile = ReportConfiguration.getGlobalConfig().getConfigProperty
-        (EncodingComboBoxModel.ENCODINGS_DEFINITION_FILE, EncodingComboBoxModel.ENCODINGS_DEFINITION_FILE_DEFAULT);
+        (EncodingComboBoxModel.ENCODINGS_DEFINITION_FILE, 
+         EncodingComboBoxModel.ENCODINGS_DEFINITION_FILE_DEFAULT);
     final InputStream in = this.getClass().getResourceAsStream(encFile);
     if (in == null)
     {
@@ -171,7 +175,8 @@ public class EncodingComboBoxModelTest extends TestCase
           {
             throw new IllegalStateException("Encoding not defined: " + enc);
           }
-          if (defined.equalsIgnoreCase("true")== false && defined.equalsIgnoreCase("false") == false)
+          if (defined.equalsIgnoreCase("true")== false && 
+              defined.equalsIgnoreCase("false") == false)
           {
             throw new IllegalStateException("Encoding not invalid: " + enc);
           }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineShapeCreateTest.java,v 1.3 2003/07/23 16:06:25 taqua Exp $
+ * $Id: LineShapeCreateTest.java,v 1.4 2003/09/09 10:27:58 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -173,7 +173,8 @@ public class LineShapeCreateTest extends TestCase
     report.getReportHeader().addElement(element);
     
     BandLayoutManagerUtil.doLayout(report.getReportHeader(), new DefaultLayoutSupport(), 500, 200);
-    assertEquals(new Rectangle2D.Float(0, 0, 500, 70), BandLayoutManagerUtil.getBounds(report.getReportHeader(), null));
+    assertEquals(new Rectangle2D.Float(0, 0, 500, 70), 
+        BandLayoutManagerUtil.getBounds(report.getReportHeader(), null));
 
 
     final PageFormatFactory pff = PageFormatFactory.getInstance();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: SubBandParsingTest.java,v 1.1 2003/10/11 21:36:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -87,7 +87,8 @@ public class SubBandParsingTest extends TestCase
     dialog.pack();
     dialog.setVisible(true);
 
-//    final ReportWriter rc = new ReportWriter(report, "UTF-8", ReportWriter.createDefaultConfiguration(report));
+//    final ReportWriter rc = new ReportWriter
+//        (report, "UTF-8", ReportWriter.createDefaultConfiguration(report));
 //    final OutputStreamWriter owriter = new OutputStreamWriter (System.out, "UTF-8");
 //    rc.write(owriter);
 //    owriter.close();

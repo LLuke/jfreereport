@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataRowBackendTest.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
+ * $Id: DataRowBackendTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -91,6 +91,7 @@ public class DataRowBackendTest extends TestCase
     }
     catch (IllegalArgumentException e)
     {
+      // expected, ignored
     }
 
     for (int i = 0; i < data.length; i++)

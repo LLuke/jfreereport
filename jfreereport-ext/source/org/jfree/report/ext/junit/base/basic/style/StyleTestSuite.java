@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleTestSuite.java,v 1.1 2003/07/11 20:07:56 taqua Exp $
+ * $Id: StyleTestSuite.java,v 1.2 2003/09/09 10:27:58 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -49,6 +49,12 @@ public class StyleTestSuite extends TestSuite
     addTestSuite(StyleSheetCollectionTest.class);
   }
 
+  /**
+   * Dummmy method to silence the checkstyle test.
+   */
+  public void dummy()
+  {
+  }
 
   public static Test suite()
   {

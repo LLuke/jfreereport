@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: WorkerPoolTest.java,v 1.1 2003/10/19 11:30:49 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -69,6 +69,7 @@ public class WorkerPoolTest extends TestCase
         }
         catch (InterruptedException ie)
         {
+          // expected, ignored
         }
       }
       Log.debug ("Finished: " + content[0]);
@@ -129,6 +130,7 @@ public class WorkerPoolTest extends TestCase
     }
     catch (InterruptedException ie)
     {
+      // expected, ignored
     }
     content[0] = new Boolean(true);
     try
@@ -137,6 +139,7 @@ public class WorkerPoolTest extends TestCase
     }
     catch (InterruptedException ie)
     {
+      // expected, ignored
     }
     assertTrue(pool.isWorkerAvailable());
   }
@@ -160,6 +163,7 @@ public class WorkerPoolTest extends TestCase
     }
     catch (InterruptedException ie)
     {
+      // expected, ignored
     }
     content[0] = new Boolean(true);
     try
@@ -168,6 +172,7 @@ public class WorkerPoolTest extends TestCase
     }
     catch (InterruptedException ie)
     {
+      // expected, ignored
     }
     assertTrue(pool.isWorkerAvailable());
   }

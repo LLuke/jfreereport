@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupTest.java,v 1.2 2003/07/23 16:06:24 taqua Exp $
+ * $Id: GroupTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -69,6 +69,7 @@ public class GroupTest extends TestCase
     }
     catch (NullPointerException npe)
     {
+      // expected, ignored
     }
     try
     {
@@ -77,6 +78,7 @@ public class GroupTest extends TestCase
     }
     catch (NullPointerException npe)
     {
+      // expected, ignored
     }
     try
     {
@@ -85,6 +87,7 @@ public class GroupTest extends TestCase
     }
     catch (NullPointerException npe)
     {
+      // expected, ignored
     }
     try
     {
@@ -93,6 +96,7 @@ public class GroupTest extends TestCase
     }
     catch (NullPointerException npe)
     {
+      // expected, ignored
     }
 
   }

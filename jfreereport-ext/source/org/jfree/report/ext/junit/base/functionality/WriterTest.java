@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: WriterTest.java,v 1.2 2003/07/23 16:06:25 taqua Exp $
+ * $Id: WriterTest.java,v 1.3 2003/09/09 10:27:58 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -66,7 +66,8 @@ public class WriterTest extends TestCase
     final ReportConverter rc = new ReportConverter();
     for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
     {
-      final URL url = this.getClass().getResource(FunctionalityTestLib.REPORTS[i].getReportDefinition());
+      final URL url = this.getClass().getResource
+        (FunctionalityTestLib.REPORTS[i].getReportDefinition());
       assertNotNull(url);
       final ByteArrayOutputStream bo = new ByteArrayOutputStream();
       try
@@ -89,7 +90,8 @@ public class WriterTest extends TestCase
   {
     for (int i = 0; i < FunctionalityTestLib.REPORTS.length; i++)
     {
-      final URL url = this.getClass().getResource(FunctionalityTestLib.REPORTS[i].getReportDefinition());
+      final URL url = this.getClass().getResource
+          (FunctionalityTestLib.REPORTS[i].getReportDefinition());
       assertNotNull(url);
       final ByteArrayOutputStream bo = new ByteArrayOutputStream();
       JFreeReport report = null;
@@ -114,7 +116,8 @@ public class WriterTest extends TestCase
       }
       try
       {
-        final ReportWriter rc = new ReportWriter(report, "UTF-16", ReportWriter.createDefaultConfiguration(report));
+        final ReportWriter rc = new ReportWriter
+          (report, "UTF-16", ReportWriter.createDefaultConfiguration(report));
         final OutputStreamWriter owriter = new OutputStreamWriter (bo, "UTF-16");
         rc.write(owriter);
         owriter.close();

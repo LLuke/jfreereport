@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: BandRemoveTest.java,v 1.1 2003/10/05 21:54:45 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -87,10 +87,10 @@ public class BandRemoveTest extends TestCase
     final Element element2 = factory.createElement();
     report.getItemBand().addElement(element2);
 
-    report.getStyleSheetCollection().debug();
+    //report.getStyleSheetCollection().debug();
 
     report.getItemBand().removeElement(element1);
-    report.getStyleSheetCollection().debug();
+    //report.getStyleSheetCollection().debug();
     FunctionalityTestLib.execGraphics2D(report);
   }
 
@@ -126,12 +126,12 @@ public class BandRemoveTest extends TestCase
     final Element element2 = factory.createElement();
     report.getItemBand().addElement(element2);
 
-    report.getStyleSheetCollection().debug();
+    //report.getStyleSheetCollection().debug();
 
     report.getItemBand().removeElement(element1);
     report.getItemBand().removeElement(element2);
 
-    report.getStyleSheetCollection().debug();
+    //report.getStyleSheetCollection().debug();
     FunctionalityTestLib.execGraphics2D(report);
 
   }

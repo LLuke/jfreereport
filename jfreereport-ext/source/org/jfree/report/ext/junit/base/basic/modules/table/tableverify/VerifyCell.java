@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: VerifyCell.java,v 1.1 2003/10/11 21:36:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -89,15 +89,24 @@ public class VerifyCell
 
   public boolean equals(Object o)
   {
-    if (this == o) return true;
-    if (!(o instanceof VerifyCell)) return false;
+    if (this == o)
+    { 
+      return true;
+    }
+    if (!(o instanceof VerifyCell))
+    { 
+      return false;
+    }
 
     final VerifyCell verifyCell = (VerifyCell) o;
 
-    if (colspan != verifyCell.colspan) return false;
-    if (rowspan != verifyCell.rowspan) return false;
-    if (x != verifyCell.x) return false;
-    if (y != verifyCell.y) return false;
+    if ((colspan != verifyCell.colspan) || 
+        (rowspan != verifyCell.rowspan) ||
+        (x != verifyCell.x) ||
+        (y != verifyCell.y))
+    {
+     return false;
+    }
 
     return true;
   }

@@ -1,3 +1,6 @@
+0.8.4-4: (1-Nov-2003):
+	* Removed obsolete test classes
+
 0.8.4: (19-Oct-2003) :
   * BugFix: Java1.4 printing did not show the progress monitor.
   

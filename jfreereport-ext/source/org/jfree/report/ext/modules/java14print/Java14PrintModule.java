@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Java14PrintModule.java,v 1.2 2003/08/20 19:24:58 taqua Exp $
+ * $Id: Java14PrintModule.java,v 1.3 2003/09/09 10:27:59 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -82,4 +82,5 @@ public class Java14PrintModule extends AbstractModule
     ExportPluginFactory.getInstance().registerPlugin
         (Java14PrintingPlugin.class, printOrder, PRINT_ENABLE_KEY);
   }
+
 }

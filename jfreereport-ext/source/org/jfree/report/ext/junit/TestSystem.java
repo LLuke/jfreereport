@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TestSystem.java,v 1.3 2003/08/20 19:24:51 taqua Exp $
+ * $Id: TestSystem.java,v 1.4 2003/09/09 10:27:57 taqua Exp $
  *
  * Changes
  * -------
@@ -36,21 +36,22 @@
  */
 package org.jfree.report.ext.junit;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.net.URL;
 import javax.swing.table.TableModel;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.demo.SampleData2;
-import org.jfree.report.modules.gui.base.PreviewFrame;
+import org.jfree.report.modules.gui.base.PreviewDialog;
 import org.jfree.report.modules.parser.base.ReportGenerator;
 import org.jfree.report.util.Log;
 import org.jfree.ui.RefineryUtilities;
 
-public class TestSystem
+public final class TestSystem
 {
+  private TestSystem()
+  {
+  }
 
   public static JFreeReport loadReport(final String urlname, final TableModel data)
   {
@@ -81,46 +82,27 @@ public class TestSystem
     return report1;
   }
 
-  public static void showPreviewFrame(final JFreeReport report1)
+  public static void showPreview(final JFreeReport report1)
       throws ReportProcessingException
   {
-    showPreviewFrameWExit(report1, false);
-  }
-
-  public static void showPreviewFrameWExit(final JFreeReport report1, final boolean close)
-      throws ReportProcessingException
-  {
-    final PreviewFrame frame1 = new PreviewFrame(report1);
+    final PreviewDialog frame1 = new PreviewDialog(report1);
+    frame1.setModal(true);
     frame1.pack();
     RefineryUtilities.positionFrameRandomly(frame1);
-    if (close)
-    {
-      frame1.addWindowListener(new WindowAdapter()
-      {
-        /**
-         * Invoked when a window is in the process of being closed.
-         * The close operation can be overridden at this point.
-         */
-        public void windowClosing(final WindowEvent e)
-        {
-          System.exit(0);
-        }
-      });
-    }
     frame1.setVisible(true);
-    frame1.requestFocus();
   }
 
   public static void main(final String[] args)
       throws Exception
   {
     final SampleData2 m_dataModel = new SampleData2();
-    final JFreeReport report = TestSystem.loadReport("/org/jfree/report/ext/junit/pagebreak.xml", m_dataModel);
+    final JFreeReport report = TestSystem.loadReport
+      ("/org/jfree/report/ext/junit/pagebreak.xml", m_dataModel);
     if (report == null)
     {
       System.exit(1);
     }
 
-    TestSystem.showPreviewFrame(report);
+    TestSystem.showPreview(report);
   }
 }

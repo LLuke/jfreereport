@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: VerifyPattern.java,v 1.1 2003/10/11 21:36:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -40,8 +40,13 @@ package org.jfree.report.ext.junit.base.basic.modules.table.tableverify;
 
 import java.util.ArrayList;
 
-import org.jfree.report.modules.output.table.base.TableCellData;
-
+/**
+ * A pattern to verify the report creationg process. The pattern contains 
+ * the expected results for the tablelayouter which is then matched against
+ * the created table.
+ * 
+ * @author Thomas Morgner
+ */
 public class VerifyPattern
 {
   private ArrayList rows;
@@ -72,12 +77,21 @@ public class VerifyPattern
 
   public boolean equals(Object o)
   {
-    if (this == o) return true;
-    if (!(o instanceof VerifyPattern)) return false;
+    if (this == o)
+    {
+      return true;
+    }
+    if (!(o instanceof VerifyPattern))
+    { 
+      return false;
+    }
 
     final VerifyPattern verifyPattern = (VerifyPattern) o;
 
-    if (!rows.equals(verifyPattern.rows)) return false;
+    if (!rows.equals(verifyPattern.rows))
+    { 
+      return false;
+    }
     return true;
   }
 

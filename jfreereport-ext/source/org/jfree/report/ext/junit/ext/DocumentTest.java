@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DocumentTest.java,v 1.2 2003/08/20 19:24:57 taqua Exp $
+ * $Id: DocumentTest.java,v 1.3 2003/09/09 10:27:58 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,12 +46,16 @@ import javax.swing.text.ElementIterator;
 
 public class DocumentTest
 {
+  private DocumentTest()
+  {
+  }
+  
   public static void main(final String[] args) throws Exception
   {
     final JEditorPane jpe = new JEditorPane();
     jpe.setContentType("text/html");
     jpe.setEditable(false);
-    jpe.setText("<html><head><title>A mans tale</title></head><body><p>This is a text<b>bold</b><i>and italic</i></p></body></html>");
+    jpe.setText("<html><head><title>A mans tale</title></head><body><p>" +      "This is a text<b>bold</b><i>and italic</i></p></body></html>");
     final Document doc = jpe.getDocument();
     System.out.println("Length: " + doc.getLength());
     final ElementIterator ei = new ElementIterator(doc);

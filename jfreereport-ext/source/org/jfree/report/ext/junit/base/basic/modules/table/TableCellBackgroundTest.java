@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: TableCellBackgroundTest.java,v 1.1 2003/10/11 21:36:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -60,9 +60,12 @@ public class TableCellBackgroundTest extends TestCase
   {
     Boot.start();
 
-    TableCellBackground bg1 = new TableCellBackground(new Rectangle2D.Float(0,0, 500, 20), Color.black);
-    TableCellBackground bgBottom = new TableCellBackground(new Rectangle2D.Float(0,20, 500, 0), Color.black);
-    TableCellBackground bgRight = new TableCellBackground(new Rectangle2D.Float(500, 0, 0, 20), Color.black);
+    TableCellBackground bg1 = new TableCellBackground
+      (new Rectangle2D.Float(0,0, 500, 20), Color.black);
+    TableCellBackground bgBottom = new TableCellBackground
+      (new Rectangle2D.Float(0,20, 500, 0), Color.black);
+    TableCellBackground bgRight = new TableCellBackground
+      (new Rectangle2D.Float(500, 0, 0, 20), Color.black);
 
     bgRight.setBorderLeft(Color.black, 10);
     bgBottom.setBorderTop(Color.black, 10);
@@ -80,12 +83,15 @@ public class TableCellBackgroundTest extends TestCase
   {
     Boot.start();
 
-    TableCellBackground bgLineBottom = new TableCellBackground(new Rectangle2D.Float(0, 536, 592, 0), Color.black);
-    TableCellBackground bgBackground = new TableCellBackground(new Rectangle2D.Float(0, 526, 592, 10), Color.black);
+    TableCellBackground bgLineBottom = 
+      new TableCellBackground(new Rectangle2D.Float(0, 536, 592, 0), Color.black);
+    TableCellBackground bgBackground = 
+      new TableCellBackground(new Rectangle2D.Float(0, 526, 592, 10), Color.black);
 
     bgLineBottom.setBorderTop(Color.black, 10);
 
-    TableCellBackground merge = bgBackground.merge(bgLineBottom, new Rectangle2D.Float(0, 526, 592, 10));
+    TableCellBackground merge = bgBackground.merge
+      (bgLineBottom, new Rectangle2D.Float(0, 526, 592, 10));
     assertEquals(Color.black, merge.getColorBottom());
     assertEquals(10f, merge.getBorderSizeBottom(), 0);
 
@@ -95,13 +101,16 @@ public class TableCellBackgroundTest extends TestCase
   {
     Boot.start();
 
-    TableCellBackground bgLineTop = new TableCellBackground(new Rectangle2D.Float(0, 126, 592, 0), Color.black);
-    TableCellBackground bgLineBottom = new TableCellBackground(new Rectangle2D.Float(0, 136, 592, 0), Color.black);
+    TableCellBackground bgLineTop = 
+      new TableCellBackground(new Rectangle2D.Float(0, 126, 592, 0), Color.black);
+    TableCellBackground bgLineBottom = 
+      new TableCellBackground(new Rectangle2D.Float(0, 136, 592, 0), Color.black);
 
     bgLineTop.setBorderTop(Color.red, 10);
     bgLineBottom.setBorderTop(Color.black, 10);
 
-    TableCellBackground merge = bgLineTop.merge(bgLineBottom, new Rectangle2D.Float(0, 126, 592, 10));
+    TableCellBackground merge = bgLineTop.merge
+      (bgLineBottom, new Rectangle2D.Float(0, 126, 592, 10));
     assertEquals(Color.red, merge.getColorTop());
     assertEquals(Color.black, merge.getColorBottom());
     assertEquals(10f, merge.getBorderSizeBottom(), 0);

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewTestSuite.java,v 1.1 2003/07/08 14:21:47 taqua Exp $
+ * $Id: PreviewTestSuite.java,v 1.2 2003/09/09 10:27:57 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -50,6 +50,12 @@ public class PreviewTestSuite extends TestSuite
     addTestSuite(PlainTextExportDialogTest.class);
   }
 
+  /**
+   * Dummmy method to silence the checkstyle test.
+   */
+  public void dummy()
+  {
+  }
 
   public static Test suite()
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: VerifyCellDataFactory.java,v 1.1 2003/10/11 21:36:07 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -39,18 +39,26 @@
 package org.jfree.report.ext.junit.base.basic.modules.table.tableverify;
 
 import java.awt.geom.Rectangle2D;
-import java.awt.Color;
 
 import org.jfree.report.modules.output.table.base.TableCellDataFactory;
 import org.jfree.report.modules.output.table.base.TableCellData;
-import org.jfree.report.modules.output.table.base.TableCellBackground;
 import org.jfree.report.Element;
 import org.jfree.report.ShapeElement;
 import org.jfree.report.Band;
 
+/**
+ * A cell data factory which creates test content, which can be verified
+ * against a predefined layout.
+ * 
+ * @author Thomas Morgner
+ */
 public class VerifyCellDataFactory implements TableCellDataFactory
 {
-
+  
+  /**
+   * Creates a new verify cell data factory.
+   *
+   */
   public VerifyCellDataFactory()
   {
   }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportTest.java,v 1.2 2003/07/23 16:06:25 taqua Exp $
+ * $Id: PlainTextExportTest.java,v 1.3 2003/09/09 10:27:58 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -73,7 +73,8 @@ public class PlainTextExportTest extends TestCase
     final PageableReportProcessor pr = new PageableReportProcessor(report);
     final OutputStream fout = new BufferedOutputStream(bo);
     final PrinterCommandSet pc = new PrinterCommandSet(fout, report.getDefaultPageFormat(), 10, 15);
-    final PlainTextOutputTarget target = new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
+    final PlainTextOutputTarget target = 
+      new PlainTextOutputTarget (report.getDefaultPageFormat(), pc);
     target.setDocumentEncoding(encoding);
 
     pr.setOutputTarget(target);

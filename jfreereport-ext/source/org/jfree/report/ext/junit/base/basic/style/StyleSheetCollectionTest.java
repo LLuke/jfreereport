@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetCollectionTest.java,v 1.3 2003/08/20 19:24:57 taqua Exp $
+ * $Id: StyleSheetCollectionTest.java,v 1.4 2003/09/09 10:27:58 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -112,6 +112,7 @@ public class StyleSheetCollectionTest extends TestCase
     }
     catch (Exception e)
     {
+      // expected, ignored
     }
   }
 
@@ -321,7 +322,8 @@ public class StyleSheetCollectionTest extends TestCase
       return;
     }
 
-    assertTrue(es.getName() + " " + es.hashCode() + " - " + es.getStyleSheetCollection(), es.getStyleSheetCollection() == sc);
+    assertTrue(es.getName() + " " + es.hashCode() + " - " + 
+        es.getStyleSheetCollection(), es.getStyleSheetCollection() == sc);
     List parents = es.getParents();
     for (int i = 0; i < parents.size(); i++)
     {

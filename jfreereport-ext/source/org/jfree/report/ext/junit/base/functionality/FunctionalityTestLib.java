@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionalityTestLib.java,v 1.4 2003/09/09 10:27:58 taqua Exp $
+ * $Id: FunctionalityTestLib.java,v 1.5 2003/10/11 21:34:10 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -95,9 +95,15 @@ public class FunctionalityTestLib
     new ReportTest ("/org/jfree/report/demo/shape-and-drawable.xml", new DefaultTableModel()),
     new ReportTest ("/org/jfree/report/demo/swing-icons.xml", new SwingIconsDemoTableModel()),
     new ReportTest ("/org/jfree/report/demo/cards/usercards.xml", CardDemo.createSimpleDemoModel()),
-    new ReportTest ("/org/jfree/report/modules/misc/referencedoc/ObjectReferenceReport.xml", ObjectReferenceGenerator.createData()),
-    new ReportTest ("/org/jfree/report/modules/misc/referencedoc/StyleKeyReferenceReport.xml", StyleKeyReferenceGenerator.createData()),
-    new ReportTest ("/org/jfree/report/modules/misc/referencedoc/DataSourceReferenceReport.xml", DataSourceReferenceGenerator.createData())
+    new ReportTest 
+      ("/org/jfree/report/modules/misc/referencedoc/ObjectReferenceReport.xml", 
+      ObjectReferenceGenerator.createData()),
+    new ReportTest 
+      ("/org/jfree/report/modules/misc/referencedoc/StyleKeyReferenceReport.xml", 
+      StyleKeyReferenceGenerator.createData()),
+    new ReportTest 
+      ("/org/jfree/report/modules/misc/referencedoc/DataSourceReferenceReport.xml", 
+      DataSourceReferenceGenerator.createData())
   };
 
   public static boolean createPlainText(final JFreeReport report)
@@ -106,8 +112,10 @@ public class FunctionalityTestLib
     {
       final PageableReportProcessor pr = new PageableReportProcessor(report);
       final OutputStream fout = new BufferedOutputStream(new NullOutputStream());
-      final PrinterCommandSet pc = new PrinterCommandSet(fout, report.getDefaultPageFormat(), 10, 15);
-      final PlainTextOutputTarget target = new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
+      final PrinterCommandSet pc = 
+          new PrinterCommandSet(fout, report.getDefaultPageFormat(), 10, 15);
+      final PlainTextOutputTarget target = 
+          new PlainTextOutputTarget(report.getDefaultPageFormat(), pc);
 
       pr.setOutputTarget(target);
       target.open();
@@ -296,5 +304,9 @@ public class FunctionalityTestLib
     {
       return reportTableModel;
     }
+  }
+  
+  private FunctionalityTestLib()
+  {
   }
 }

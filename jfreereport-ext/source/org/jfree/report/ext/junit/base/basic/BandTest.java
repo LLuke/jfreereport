@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
+ * $Id: BandTest.java,v 1.4 2003/10/05 21:53:52 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -48,7 +48,6 @@ import java.awt.geom.Point2D;
 import junit.framework.TestCase;
 import org.jfree.report.Band;
 import org.jfree.report.Element;
-import org.jfree.report.TextElement;
 import org.jfree.report.ElementAlignment;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.elementfactory.TextFieldElementFactory;
@@ -93,6 +92,7 @@ public class BandTest extends TestCase
     }
     catch (NullPointerException npe)
     {
+      // expected, ignored
     }
 
     try
@@ -102,6 +102,7 @@ public class BandTest extends TestCase
     }
     catch (NullPointerException npe)
     {
+      // expected, ignored
     }
 
     b.toString();
@@ -126,6 +127,7 @@ public class BandTest extends TestCase
     }
     catch (IllegalArgumentException iob)
     {
+      // expected, ignored
     }
     try
     {
@@ -134,6 +136,7 @@ public class BandTest extends TestCase
     }
     catch (NullPointerException npe)
     {
+      // expected, ignored
     }
     try
     {
@@ -142,6 +145,7 @@ public class BandTest extends TestCase
     }
     catch (IllegalArgumentException ia)
     {
+      // expected, ignored
     }
 
     try
@@ -156,6 +160,7 @@ public class BandTest extends TestCase
     }
     catch (IllegalArgumentException ia)
     {
+      // expected, ignored
     }
 
   }
@@ -192,12 +197,12 @@ public class BandTest extends TestCase
     final Element element2 = factory.createElement();
     report.getItemBand().addElement(element2);
 
-    report.getStyleSheetCollection().debug();
+    //report.getStyleSheetCollection().debug();
 
     report.getItemBand().removeElement(element1);
     report.getItemBand().removeElement(element2);
 
-    report.getStyleSheetCollection().debug();
+    //report.getStyleSheetCollection().debug();
 
   }
 

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TextContentTest.java,v 1.3 2003/09/09 10:27:57 taqua Exp $
+ * $Id: TextContentTest.java,v 1.4 2003/09/12 17:47:34 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -107,7 +107,8 @@ public class TextContentTest extends TestCase
     final DefaultContentFactory df = new DefaultContentFactory();
     df.addModule(new TextContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
-    ElementLayoutInformation eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
+    ElementLayoutInformation eli = 
+      new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
     assertNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
 
     eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 0, 0));
@@ -121,7 +122,8 @@ public class TextContentTest extends TestCase
     final DefaultContentFactory df = new DefaultContentFactory();
     df.addModule(new TextContentFactoryModule());
     assertTrue(df.canHandleContent(se.getContentType()));
-    ElementLayoutInformation eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
+    ElementLayoutInformation eli = 
+      new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 10, 10));
     assertNotNull(df.createContentForElement(se, eli, new DefaultLayoutSupport()));
 
     eli = new ElementLayoutInformation(new Rectangle2D.Float(0, 0, 0, 0));
@@ -133,7 +135,7 @@ public class TextContentTest extends TestCase
     final String textLeadWhite = "  abc\n  abc";
     final TextContent content = new TextContent
         (textLeadWhite, 10, new Rectangle2D.Float (0,0, 100, 10),
-            new DebugSizeCalculator(10, 10), "..");
+            new DebugSizeCalculator(10, 10), "..", false);
     assertEquals(new Rectangle2D.Float(0,0, 50, 10), content.getMinimumContentSize());
 
     final TextParagraph tp = (TextParagraph) content.getContentPart(0);
@@ -146,7 +148,7 @@ public class TextContentTest extends TestCase
   {
     final String content = "123 thousand people";
     final SizeCalculator ds = new DebugSizeCalculator(10, 10);
-    final TextParagraph tp = new TextParagraph(ds, 10, "..");
+    final TextParagraph tp = new TextParagraph(ds, 10, "..", false);
     tp.setContent(content, 0, 0, 100, 10);
 
     final TextLine tl = (TextLine) tp.getContentPart(0);
@@ -175,7 +177,8 @@ public class TextContentTest extends TestCase
       "page:"
     };
 
-    final TextParagraph tp = new TextParagraph(new DebugSizeCalculator(10, 10), 10, "..");
+    final TextParagraph tp = new TextParagraph
+        (new DebugSizeCalculator(10, 10), 10, "..", false);
     tp.setContent(content, 0, 0, 345, 5000);
     assertEquals(new Rectangle2D.Float(0,0, 330, 100), tp.getMinimumContentSize());
 
@@ -204,7 +207,8 @@ public class TextContentTest extends TestCase
       "together."
     };
     Content tc = new TextContent
-        (content, 10, new Rectangle2D.Float(0, 0, 500, 5000), new DebugSizeCalculator(10, 10), "..");
+        (content, 10, new Rectangle2D.Float(0, 0, 500, 5000),
+            new DebugSizeCalculator(10, 10), "..", false);
     tc = tc.getContentForBounds(tc.getMinimumContentSize());
     final Content tp = tc.getContentPart(0);
     for (int i = 0; i < tp.getContentPartCount(); i++)
@@ -223,9 +227,10 @@ public class TextContentTest extends TestCase
 
   public void testLineBreaking2()
   {
-    final String content = "Thisisareallylongword, noone thought thatawordcanbethatlong, itwontfitonaline, but these words do, so heres the test!";
+    final String content = 
+        "Thisisareallylongword, noone thought thatawordcanbethatlong, " +        "itwontfitonaline, but these words do, so heres the test!";
     Content tc = new TextContent(content, 10, new Rectangle2D.Float(0, 0, 200, 5000),
-        new DebugSizeCalculator(10, 10),"..");
+        new DebugSizeCalculator(10, 10),"..", false);
 
     final String[] results = {
       "Thisisareallylongwor",
