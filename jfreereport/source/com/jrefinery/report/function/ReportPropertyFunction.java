@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportPropertyFunction.java,v 1.7 2002/05/28 19:36:41 taqua Exp $
+ * $Id: ReportPropertyFunction.java,v 1.8 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@
  * 10-May-2002 : Applied the ReportEvent interface (TM);
  * 16-May-2002 : Changed 'field' to 'reportProperty' when looking up attributes.  Updated the
  *               Javadoc comments (DG);
+ * 18-Aug-2002 : Fixed a bug where a reportProperty is not read correctly.
  *
  */
 
@@ -61,11 +62,6 @@ public class ReportPropertyFunction extends AbstractFunction
 
   /** The function value. */
   private Object value;
-
-  /** The name of the report property that this function accesses. */
-  private String field;
-
-  // DEVNOTE: I'd recommend changing 'field' to 'propertyName' (DG);
 
   /**
    * Default constructor.
@@ -94,7 +90,55 @@ public class ReportPropertyFunction extends AbstractFunction
   public void reportStarted (ReportEvent event)
   {
     ReportState state = event.getState ();
-    value = state.getProperty (field);
+    value = state.getProperty (getField());
+  }
+
+  public void reportFinished(ReportEvent event)
+  {
+    ReportState state = event.getState ();
+    value = state.getProperty (getField());
+  }
+
+  public void pageStarted(ReportEvent event)
+  {
+    ReportState state = event.getState ();
+    value = state.getProperty (getField());
+  }
+
+  public void pageFinished(ReportEvent event)
+  {
+    ReportState state = event.getState ();
+    value = state.getProperty (getField());
+  }
+
+  public void groupStarted(ReportEvent event)
+  {
+    ReportState state = event.getState ();
+    value = state.getProperty (getField());
+  }
+
+  public void groupFinished(ReportEvent event)
+  {
+    ReportState state = event.getState ();
+    value = state.getProperty (getField());
+  }
+
+  public void itemsAdvanced(ReportEvent event)
+  {
+    ReportState state = event.getState ();
+    value = state.getProperty (getField());
+  }
+
+  public void itemsStarted(ReportEvent event)
+  {
+    ReportState state = event.getState ();
+    value = state.getProperty (getField());
+  }
+
+  public void itemsFinished(ReportEvent event)
+  {
+    ReportState state = event.getState ();
+    value = state.getProperty (getField());
   }
 
   /**
@@ -116,7 +160,7 @@ public class ReportPropertyFunction extends AbstractFunction
    */
   public String getField ()
   {
-    return field;
+    return getProperty("reportProperty");
   }
 
   /**
@@ -130,8 +174,7 @@ public class ReportPropertyFunction extends AbstractFunction
   {
     if (field == null)
       throw new NullPointerException ();
-    this.field = field;
-    setProperty ("field", field);
+    setProperty ("reportProperty", field);
   }
 
   /**

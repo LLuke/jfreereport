@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementVisibilitySwitchFunction.java,v 1.1 2002/06/19 19:46:45 taqua Exp $
+ * $Id: ElementVisibilitySwitchFunction.java,v 1.2 2002/08/08 15:28:43 taqua Exp $
  *
  * Changes (since 5-Jun-2002)
  * --------------------------
@@ -39,6 +39,7 @@
 package com.jrefinery.report.function;
 
 import com.jrefinery.report.Element;
+import com.jrefinery.report.util.Log;
 import com.jrefinery.report.event.ReportEvent;
 
 /**
@@ -79,11 +80,17 @@ public class ElementVisibilitySwitchFunction extends AbstractFunction
   {
     if (event.getState ().isPrepareRun ()) return;
 
+    Log.debug ("ElementVisibilitySwitch: Active");
+
     trigger = (!trigger);
     Element e = event.getReport ().getItemBand ().getElement (getElement ());
     if (e != null)
     {
       e.setVisible (trigger);
+    }
+    else
+    {
+      Log.debug ("e is null");
     }
   }
 

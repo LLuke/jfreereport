@@ -57,7 +57,7 @@
         <label name="label6"
                x="0" y="10" width="100%" height="24"
                alignment="left"
-            >REPORT TOTAL:</label>
+            >REPORT TOTAL: Ä</label>
 
         <number-function name="count1"
                          function="OverallCount"
@@ -77,9 +77,9 @@
     <!-- Displays the report name and date. -->
     <!-- Suppressed on the first page to avoid duplication with report header. -->
     <pageheader height="18"
-                onfirstpage="false" onlastpage="true"
+                onfirstpage="true" onlastpage="true"
                 fontname="SansSerif" fontstyle="bold" fontsize="9">
-
+<!--
         <label name="label7"
                x="0" y="0" width="76" height="9"
                alignment="left"
@@ -92,6 +92,10 @@
                        alignment="right"/>
 
         <line name="line3" x1="0" y1="12" x2="0" y2="12" weight="0.5"/>
+-->
+<rectangle x="0" y="0" width="100%" height="100%" color="#AFAFAF" weight="0" />
+<date-function name="df1" x="0" y="0" width="100%" height="14" alignment="right" baseline="12" format="d-MMM-yyyy" function="Date" />
+<line name="line1" x1="0" y1="16" x2="0" y2="16" color="#CFCFCF" weight="2.0" />
 
     </pageheader>
 

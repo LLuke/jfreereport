@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morger;
  *
- * $Id: ReportState.java,v 1.20 2002/08/08 15:28:38 taqua Exp $
+ * $Id: ReportState.java,v 1.21 2002/08/14 21:14:06 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -334,6 +334,10 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
 
       ReportEvent event = new ReportEvent (this);
       fireItemsStartedEvent (event);
+      if (getReport().getData().getRowCount() == 0)
+      {
+        return new PostItemGroup(this);
+      }
       return new InItemGroup (this);
     }
 

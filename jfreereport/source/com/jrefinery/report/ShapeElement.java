@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: ShapeElement.java,v 1.14 2002/08/08 15:28:38 taqua Exp $
+ * $Id: ShapeElement.java,v 1.15 2002/08/16 20:13:35 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -126,15 +126,12 @@ public abstract class ShapeElement extends Element
     // set the paint...
     target.setPaint (getPaint (band));
     target.setStroke (getStroke ());
-    System.out.println ("DRAW: " + isShouldDraw() + " FILL " + isShouldFill());
     if (isShouldDraw ())
     {
-      System.out.println ("Draw Rectangle!");
       target.drawShape (getShape ());
     }
     if (isShouldFill ())
     {
-      System.out.println ("Fill Rectangle!");
       target.fillShape (getShape ());
     }
   }
