@@ -28,19 +28,21 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalGroupCountFunction.java,v 1.2 2003/09/08 18:11:48 taqua Exp $
+ * $Id: TotalGroupCountFunction.java,v 1.3 2003/10/18 19:32:12 taqua Exp $
  *
  * Changes
  * -------------------------
- * 25.08.2003 : Initial version
- *
+ * 25-Aug-2003 : Initial version
+ * 08-Nov-2003 : BugFixes after JUnit complained ...
  */
 
 package org.jfree.report.function;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import org.jfree.report.event.ReportEvent;
+import org.jfree.report.util.Log;
 
 /**
  * A report function that counts the total of groups in a report.
@@ -48,18 +50,18 @@ import org.jfree.report.event.ReportEvent;
  * <p>
  * A group can be defined using the property "group".
  * If the group property is not set, all group starts get counted.
- * 
+ *
  * @author Thomas Morgner
  */
 public class TotalGroupCountFunction extends GroupCountFunction
 {
   /**
-   * An internal storage to collect the total value instead of the 
-   * current value. Values in this storage are not affected by cloning. 
+   * An internal storage to collect the total value instead of the
+   * current value. Values in this storage are not affected by cloning.
    */
   private static class GroupCountStorage implements Serializable
   {
-    /** The current group count.*/ 
+    /** The current group count.*/
     private int groupCount;
 
     /**
@@ -80,7 +82,7 @@ public class TotalGroupCountFunction extends GroupCountFunction
 
     /**
      * Defines the current group count.
-     * @param groupCount the new value for the group count. 
+     * @param groupCount the new value for the group count.
      */
     public void setGroupCount(final int groupCount)
     {
@@ -88,14 +90,21 @@ public class TotalGroupCountFunction extends GroupCountFunction
     }
   }
 
-  /** The storage used to save the computed total. */ 
+  /** The storage used to save the computed total. */
   private GroupCountStorage storage;
+
+  /** A list of results. */
+  private ArrayList results;
+
+  /** The current index. */
+  private int currentIndex;
 
   /**
    * Default constructor.
    */
   public TotalGroupCountFunction()
   {
+    results = new ArrayList();
   }
 
   /**
@@ -107,6 +116,69 @@ public class TotalGroupCountFunction extends GroupCountFunction
   public void reportInitialized(final ReportEvent event)
   {
     storage = null;
+    currentIndex = -1;
+    if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
+    {
+      results.clear();
+    }
+    else
+    {
+      Log.debug(results);
+    }
+  }
+
+  private boolean isParentGroupStart(ReportEvent event)
+  {
+    if (getParentGroup() == null)
+    {
+      return (event.getState().getCurrentGroupIndex() == 0);
+    }
+    else
+    {
+      return FunctionUtilities.isDefinedGroup(getParentGroup(), event);
+    }
+  }
+
+  /**
+   * Receives notification that a new group is about to start.
+   * Increases the count if all groups are counted or the name defines the current group.
+   *
+   * @param event the current report event received.
+   */
+  public void groupStarted(ReportEvent event)
+  {
+    if (isParentGroupStart(event))
+    {
+      // reset ...
+      if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
+      {
+        storage = new GroupCountStorage();
+        results.add(storage);
+
+        // if no group is defined, then count all groups, including the
+        // current one...
+        if (getGroup() == null)
+        {
+          setCount(getCount() + 1);
+        }
+      }
+      else
+      {
+        if (FunctionUtilities.isLayoutLevel(event))
+        {
+          // Activate the current group, which was filled in the prepare run.
+          currentIndex += 1;
+          storage = (GroupCountStorage) results.get(currentIndex);
+        }
+      }
+    }
+    else
+    {
+      if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
+      {
+        super.groupStarted(event);
+      }
+    }
   }
 
   /**
@@ -135,5 +207,20 @@ public class TotalGroupCountFunction extends GroupCountFunction
       storage = new GroupCountStorage();
     }
     storage.setGroupCount(count);
+  }
+
+  /**
+   * Return a completly separated copy of this function. The copy does no
+   * longer share any changeable objects with the original function.
+   *
+   * @return a copy of this function.
+   */
+  public Expression getInstance()
+  {
+    TotalGroupCountFunction fn =
+        (TotalGroupCountFunction) super.getInstance();
+    fn.storage = null;
+    fn.results = new ArrayList();
+    return fn;
   }
 }

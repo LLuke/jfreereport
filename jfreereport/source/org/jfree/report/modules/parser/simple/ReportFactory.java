@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *                   leonlyong;
  *
- * $Id: ReportFactory.java,v 1.6 2003/08/25 14:29:33 taqua Exp $
+ * $Id: ReportFactory.java,v 1.7 2003/11/05 17:31:53 taqua Exp $
  *
  * Changes
  * -------
@@ -418,11 +418,8 @@ public class ReportFactory extends AbstractReportDefinitionHandler
    * for SAX Events.
    *
    * @param atts  the element attributes.
-   *
-   * @throws SAXException if there is a parsing problem.
    */
   private void startGroups(final Attributes atts)
-      throws SAXException
   {
     getParser().pushFactory(new GroupFactory(getReportParser(), GROUPS_TAG));
   }

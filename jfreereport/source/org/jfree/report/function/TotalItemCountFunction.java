@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalItemCountFunction.java,v 1.6 2003/11/01 19:52:27 taqua Exp $
+ * $Id: TotalItemCountFunction.java,v 1.7 2003/11/07 18:33:49 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -117,11 +117,11 @@ public class TotalItemCountFunction extends AbstractFunction implements Serializ
    */
   public void reportInitialized(final ReportEvent event)
   {
-    groupResult = null;
     currentIndex = -1;
     if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
     {
       results.clear();
+      groupResult = null;
     }
   }
 
@@ -139,6 +139,18 @@ public class TotalItemCountFunction extends AbstractFunction implements Serializ
     return groupResult.getGroupCount();
   }
 
+  private boolean isGroupStart(ReportEvent event)
+  {
+    if (getGroup() == null)
+    {
+      return (event.getState().getCurrentGroupIndex() == 0);
+    }
+    else
+    {
+      return FunctionUtilities.isDefinedGroup(getGroup(), event);
+    }
+  }
+
   /**
    * Receives notification that a new group is about to start.
    * Increases the count if all groups are counted or the name defines the current group.
@@ -147,19 +159,14 @@ public class TotalItemCountFunction extends AbstractFunction implements Serializ
    */
   public void groupStarted(final ReportEvent event)
   {
-    if (FunctionUtilities.isDefinedGroup(getGroup(), event) == false)
+    if (isGroupStart(event))
     {
-      return;
-    }
-
-    if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
-    {
-        groupResult = new ItemCountStorage();
-        results.add(groupResult);
-    }
-    else
-    {
-      if (FunctionUtilities.isLayoutLevel(event))
+      if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
+      {
+          groupResult = new ItemCountStorage();
+          results.add(groupResult);
+      }
+      else
       {
         // Activate the current group, which was filled in the prepare run.
         currentIndex += 1;
@@ -237,7 +244,7 @@ public class TotalItemCountFunction extends AbstractFunction implements Serializ
   public Expression getInstance()
   {
     final TotalItemCountFunction function = (TotalItemCountFunction) super.getInstance();
-    function.groupResult = new TotalItemCountFunction.ItemCountStorage();
+    function.groupResult = new ItemCountStorage();
     function.results = new ArrayList();
     return function;
   }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: GroupCountFunction.java,v 1.3 2003/08/25 14:29:29 taqua Exp $
+ * $Id: GroupCountFunction.java,v 1.4 2003/10/17 17:39:33 taqua Exp $
  *
  * Changes
  * -------
@@ -41,6 +41,7 @@ package org.jfree.report.function;
 import java.io.Serializable;
 
 import org.jfree.report.Group;
+import org.jfree.report.util.Log;
 import org.jfree.report.event.ReportEvent;
 
 /**
@@ -162,12 +163,14 @@ public class GroupCountFunction extends AbstractFunction implements Serializable
     {
       // count all groups...
       setCount(getCount() + 1);
-      return;
     }
-
-    if (getGroup().equals(group.getName()))
+    else if (getGroup().equals(group.getName()))
     {
       setCount(getCount() + 1);
+    }
+    else
+    {
+      Log.debug ("Missmatch " + group.getName());
     }
 
   }
