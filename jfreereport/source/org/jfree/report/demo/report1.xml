@@ -48,6 +48,7 @@
       <groupheader height="18" fontname="Monospaced" fontstyle="bold" fontsize="9" vertical-alignment="middle" pagebreak="false">
         <label name="Continent-H0" x="0" y="1" width="100" height="9" alignment="left">CONTINENT:</label>
         <string-field name="Continent-H1" x="100" y="1" width="250" height="9" alignment="left" fieldname="Continent"/>
+        <number-field name="Continent-H3" x="350" y="0" width="116" height="9" alignment="right" format="#0" fieldname="count"/>
         <line name="Continent-H2" x1="0" y1="10" x2="0" y2="10" weight="0.5"/>
       </groupheader>
       <groupfooter height="18" fontname="Monospaced" fontstyle="bold" fontsize="9">
@@ -104,6 +105,12 @@
     <function name="percent" class="org.jfree.report.function.ItemPercentageFunction">
       <properties>
         <property name="field">Population</property>
+        <property name="group">Continent Group</property>
+      </properties>
+    </function>
+
+    <function name="count" class="org.jfree.report.function.TotalItemCountFunction">
+      <properties>
         <property name="group">Continent Group</property>
       </properties>
     </function>

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TotalItemCountFunction.java,v 1.2 2003/10/17 17:51:04 taqua Exp $
+ * $Id: TotalItemCountFunction.java,v 1.3 2003/10/18 19:32:12 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -206,7 +206,10 @@ public class TotalItemCountFunction extends AbstractFunction
    */
   public void itemsAdvanced(final ReportEvent event)
   {
-    setCount(getCount() + 1);
+    if (FunctionUtilities.isDefinedPrepareRunLevel(this, event))
+    {
+      setCount(getCount() + 1);
+    }
   }
 
   /**
