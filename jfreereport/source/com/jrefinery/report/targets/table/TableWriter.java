@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.21 2003/05/14 15:25:12 taqua Exp $
+ * $Id: TableWriter.java,v 1.22 2003/05/16 17:26:48 taqua Exp $
  *
  * Changes
  * -------
@@ -45,6 +45,7 @@ import java.util.ResourceBundle;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
+import com.jrefinery.report.event.PageEventListener;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.function.AbstractFunction;
 import com.jrefinery.report.states.ReportState;
@@ -66,7 +67,7 @@ import com.jrefinery.report.targets.style.BandStyleSheet;
  *
  * @author Thomas Morgner
  */
-public class TableWriter extends AbstractFunction
+public class TableWriter extends AbstractFunction implements PageEventListener
 {
   /**
    * The SheetName-function property, defines the name of an StringFunction
@@ -116,7 +117,6 @@ public class TableWriter extends AbstractFunction
   public TableWriter()
   {
     setDependencyLevel(-1);
-    setMaxWidth(1000);
     currentEffectiveGroupIndex = -1;
   }
 
@@ -444,8 +444,7 @@ public class TableWriter extends AbstractFunction
     }
 
     /**
-     * Repeating group header are only printed while ItemElements are
-     * processed.
+     * Repeating group header are printed on the top of every page, in reverse order.
      */
     for (int gidx = 0; gidx < currentEffectiveGroupIndex; gidx++)
     {
@@ -597,5 +596,33 @@ public class TableWriter extends AbstractFunction
   public void setProducer(TableProducer producer)
   {
     this.producer = producer;
+  }
+
+  /**
+   * Receives notification that a page was canceled by the ReportProcessor.
+   * This method is called, when a page was removed from the report after
+   * it was generated.
+   *
+   * @param event The event.
+   */
+  public void pageCanceled(ReportEvent event)
+  {
+    // we are fairly sure, that our table report processor does not invoke this
+    // method
+  }
+
+  /**
+   * Receives notification that report generation initializes the current run.
+   * <P>
+   * The event carries a ReportState.Started state.  Use this to initialize the report.
+   *
+   * @param event The event.
+   */
+  public void reportInitialized(ReportEvent event)
+  {
+    if (getMaxWidth() == 0)
+    {
+      throw new IllegalStateException("TableWriter function was not initialized properly");
+    }
   }
 }

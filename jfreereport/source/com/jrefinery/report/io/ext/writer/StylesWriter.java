@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StylesWriter.java,v 1.11 2003/06/12 23:17:14 taqua Exp $
+ * $Id: StylesWriter.java,v 1.12 2003/06/19 18:44:10 taqua Exp $
  *
  * Changes
  * -------
@@ -180,7 +180,6 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
     for (int i = 0; i < parents.size(); i++)
     {
       ElementStyleSheet es = (ElementStyleSheet) parents.get(i);
-      Log.debug ("About to add: [ELEMENT] " + es.getName());
       addCollectableStyleSheet(es);
     }
   }
@@ -217,9 +216,9 @@ public class StylesWriter extends AbstractXMLDefinitionWriter
     {
       reportStyles.add(es);
     }
-    else
+/*    else
     {
       Log.debug ("Already Added: " + es.getName());
-    }
+    }*/
   }
 }

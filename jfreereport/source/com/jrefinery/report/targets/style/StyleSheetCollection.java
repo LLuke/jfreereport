@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetCollection.java,v 1.4 2003/06/19 18:44:11 taqua Exp $
+ * $Id: StyleSheetCollection.java,v 1.5 2003/06/23 14:36:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -46,6 +46,7 @@ import java.util.Set;
 
 import com.jrefinery.report.util.HashNMap;
 import com.jrefinery.report.util.InstanceID;
+import com.jrefinery.report.util.Log;
 
 /**
  * The StyleSheet collection is assigned to all Elements, all StyleSheets and
@@ -120,18 +121,18 @@ public class StyleSheetCollection implements Cloneable, Serializable
         updateReferences();
       }
     }
-    /** assert: stylesheet collection set ...
+    // /** assert: stylesheet collection set ...
     else
     {
       if (es.isGlobalDefault() == false)
       {
         if (es.getStyleSheetCollection() != this)
         {
-          throw new IllegalStateException("Invalid StyleSheet detected!");
+          throw new IllegalStateException("Invalid StyleSheet detected!" + es.getClass());
         }
       }
     }
-    */
+  //  */
   }
 
   /**
@@ -257,6 +258,21 @@ public class StyleSheetCollection implements Cloneable, Serializable
         }
       }
     }
+    // until now, all cloned stylesheets are unregistered ...
+    // restore the registration now ...
+    it = col.styleSheets.keySet().iterator();
+    while (it.hasNext())
+    {
+      Object key = it.next();
+      Object[] allElements = col.styleSheets.toArray(key);
+      for (int i = 0; i < allElements.length; i++)
+      {
+        StyleCollectionEntry se = (StyleCollectionEntry) allElements[i];
+        ElementStyleSheet es = se.getStyleSheet();
+        es.registerStyleSheetCollection(col);
+      }
+    }
+
     return col;
   }
 
@@ -296,6 +312,11 @@ public class StyleSheetCollection implements Cloneable, Serializable
    */
   public void updateStyleSheet(ElementStyleSheet es)
   {
+    if (es.getStyleSheetCollection() != null)
+    {
+      throw new IllegalArgumentException
+          ("This stylesheet instance is already registered with an collection.");
+    }
     if (contains(es) == false)
     {
       throw new IllegalArgumentException("This stylesheet is not in the collection.");
@@ -323,6 +344,7 @@ public class StyleSheetCollection implements Cloneable, Serializable
         }
         es.addParent(seParent.getStyleSheet());
       }
+      es.registerStyleSheetCollection(this);
     }
   }
 

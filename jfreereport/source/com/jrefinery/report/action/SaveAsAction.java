@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: SaveAsAction.java,v 1.13 2002/12/12 12:26:55 mungady Exp $
+ * $Id: SaveAsAction.java,v 1.14 2003/05/02 12:39:33 taqua Exp $
  *
  * Changes
  * -------
@@ -51,6 +51,7 @@ import com.jrefinery.report.util.ActionDowngrade;
 /**
  * Save (to PDF) action for a print preview frame.
  *
+ * @deprecated Export modules are now defined by plugin-interfaces.
  * @author David Gilbert
  */
 public abstract class SaveAsAction extends AbstractActionDowngrade

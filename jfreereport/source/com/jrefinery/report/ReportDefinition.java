@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDefinition.java,v 1.7 2003/06/19 18:44:09 taqua Exp $
+ * $Id: ReportDefinition.java,v 1.8 2003/06/23 14:36:56 taqua Exp $
  *
  * Changes
  * -------
@@ -93,13 +93,13 @@ public class ReportDefinition implements Cloneable
     pageHeader = (PageHeader) report.getPageHeader().clone();
     itemBand = (ItemBand) report.getItemBand().clone();
     reportConfiguration = report.getReportConfiguration();
-    styleSheetCollection = new StyleSheetCollection();
-    groups.registerStyleSheetCollection(styleSheetCollection);
-    reportFooter.registerStyleSheetCollection(styleSheetCollection);
-    reportHeader.registerStyleSheetCollection(styleSheetCollection);
-    pageFooter.registerStyleSheetCollection(styleSheetCollection);
-    pageHeader.registerStyleSheetCollection(styleSheetCollection);
-    itemBand.registerStyleSheetCollection(styleSheetCollection);
+    styleSheetCollection = (StyleSheetCollection) report.getStyleSheetCollection().clone();
+    groups.updateStyleSheetCollection(styleSheetCollection);
+    itemBand.updateStyleSheetCollection(styleSheetCollection);
+    reportFooter.updateStyleSheetCollection(styleSheetCollection);
+    reportHeader.updateStyleSheetCollection(styleSheetCollection);
+    pageFooter.updateStyleSheetCollection(styleSheetCollection);
+    pageHeader.updateStyleSheetCollection(styleSheetCollection);
   }
 
   /**
@@ -241,13 +241,13 @@ public class ReportDefinition implements Cloneable
     report.properties = (ReportProperties) properties.clone ();
     report.reportFooter = (ReportFooter) reportFooter.clone ();
     report.reportHeader = (ReportHeader) reportHeader.clone ();
-    report.styleSheetCollection = new StyleSheetCollection();
-    report.groups.registerStyleSheetCollection(report.styleSheetCollection);
-    report.itemBand.registerStyleSheetCollection(report.styleSheetCollection);
-    report.reportFooter.registerStyleSheetCollection(report.styleSheetCollection);
-    report.reportHeader.registerStyleSheetCollection(report.styleSheetCollection);
-    report.pageFooter.registerStyleSheetCollection(report.styleSheetCollection);
-    report.pageHeader.registerStyleSheetCollection(report.styleSheetCollection);
+    report.styleSheetCollection = (StyleSheetCollection) styleSheetCollection.clone();
+    report.groups.updateStyleSheetCollection(report.styleSheetCollection);
+    report.itemBand.updateStyleSheetCollection(report.styleSheetCollection);
+    report.reportFooter.updateStyleSheetCollection(report.styleSheetCollection);
+    report.reportHeader.updateStyleSheetCollection(report.styleSheetCollection);
+    report.pageFooter.updateStyleSheetCollection(report.styleSheetCollection);
+    report.pageHeader.updateStyleSheetCollection(report.styleSheetCollection);
     return report;
   }
 }

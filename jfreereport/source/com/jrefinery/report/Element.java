@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Element.java,v 1.32 2003/06/19 18:44:08 taqua Exp $
+ * $Id: Element.java,v 1.33 2003/06/23 14:36:56 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -358,15 +358,18 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
 
   protected void handleUnregisterStyleSheetCollection ()
   {
-    getStyleSheetCollection().remove(getStyle());
+    //getStyleSheetCollection().remove(getStyle());
+    getStyle().unregisterStyleSheetCollection(getStyleSheetCollection());
   }
 
   protected void handleRegisterStyleSheetCollection ()
   {
-    getStyleSheetCollection().addStyleSheet(getStyle());
+    getStyle().registerStyleSheetCollection(getStyleSheetCollection());
+    // assert: 
     if (getStyle().getStyleSheetCollection() != getStyleSheetCollection())
     {
-      getStyleSheetCollection().addStyleSheet(getStyle());
+      getStyle().registerStyleSheetCollection(getStyleSheetCollection());
+//      getStyleSheetCollection().addStyleSheet(getStyle());
       throw new IllegalStateException(getStyle().getName() + " " + getName());
     }
   }
@@ -417,5 +420,21 @@ public abstract class Element implements DataTarget, Serializable, Cloneable
     {
       throw new IllegalArgumentException("This style-key requires a Color object");
     }
+  }
+
+  public void updateStyleSheetCollection (StyleSheetCollection sc)
+  {
+    if (sc == null)
+    {
+      throw new NullPointerException("StyleSheetCollection is null.");
+    }
+    if (getStyleSheetCollection() != null)
+    {
+      throw new NullPointerException("There is a stylesheet collection already registered.");
+    }
+
+    sc.updateStyleSheet(getStyle());
+
+    registerStyleSheetCollection(sc);
   }
 }

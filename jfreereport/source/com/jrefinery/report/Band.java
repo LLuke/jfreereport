@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Band.java,v 1.59 2003/06/19 18:44:08 taqua Exp $
+ * $Id: Band.java,v 1.60 2003/06/23 14:36:56 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -78,6 +78,7 @@ import com.jrefinery.report.targets.base.bandlayout.StaticLayoutManager;
 import com.jrefinery.report.targets.style.BandDefaultStyleSheet;
 import com.jrefinery.report.targets.style.BandStyleSheet;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.report.targets.style.StyleSheetCollection;
 import org.jfree.ui.FloatDimension;
 
 /**
@@ -522,7 +523,8 @@ public class Band extends Element implements Serializable, Cloneable
     {
       elements[i].unregisterStyleSheetCollection(getStyleSheetCollection());
     }
-    getStyleSheetCollection().remove(getBandDefaults());
+    //getStyleSheetCollection().remove(getBandDefaults());
+    getBandDefaults().unregisterStyleSheetCollection(getStyleSheetCollection());
     super.handleUnregisterStyleSheetCollection();
   }
 
@@ -533,7 +535,31 @@ public class Band extends Element implements Serializable, Cloneable
     {
       elements[i].registerStyleSheetCollection(getStyleSheetCollection());
     }
-    getStyleSheetCollection().addStyleSheet(getBandDefaults());
+    //getStyleSheetCollection().addStyleSheet(getBandDefaults());
+    getBandDefaults().registerStyleSheetCollection(getStyleSheetCollection());
     super.handleRegisterStyleSheetCollection();
+  }
+
+  public void updateStyleSheetCollection(StyleSheetCollection sc)
+  {
+    if (sc == null)
+    {
+      throw new NullPointerException("StyleSheetCollection is null.");
+    }
+    if (getStyleSheetCollection() != null)
+    {
+      throw new NullPointerException("There is a stylesheet collection already registered.");
+    }
+
+    Element[] elements = getElementArray();
+    for (int i = 0; i < elements.length; i++)
+    {
+      elements[i].updateStyleSheetCollection(sc);
+    }
+
+    sc.updateStyleSheet(getBandDefaults());
+    super.updateStyleSheetCollection(sc);
+
+    registerStyleSheetCollection(sc);
   }
 }

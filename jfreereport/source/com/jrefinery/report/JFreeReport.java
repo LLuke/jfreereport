@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: JFreeReport.java,v 1.55 2003/06/19 18:44:09 taqua Exp $
+ * $Id: JFreeReport.java,v 1.56 2003/06/23 14:36:56 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -57,7 +57,7 @@
  *               in Group.isLastItemInGroup()
  * 05-Dec-2002 : Updated Javadocs (DG);
  * 03-Jan-2003 : More Javadocs (DG);
- * 05-Feb-2003 : Fixed serialisation problem 
+ * 05-Feb-2003 : Fixed serialisation problem
  */
 
 package com.jrefinery.report;
@@ -83,8 +83,8 @@ import com.jrefinery.report.util.SerializerHelper;
 import com.jrefinery.report.targets.style.StyleSheetCollection;
 
 /**
- * This class co-ordinates the process of generating a report from a <code>TableModel</code>.  
- * The report is made up of 'bands', which are used repeatedly as necessary to generate small 
+ * This class co-ordinates the process of generating a report from a <code>TableModel</code>.
+ * The report is made up of 'bands', which are used repeatedly as necessary to generate small
  * sections of the report.
  * <p>
  * Accessing the bands and the elements:
@@ -103,8 +103,8 @@ import com.jrefinery.report.targets.style.StyleSheetCollection;
  * <code>getGroup(int groupLevel).getGroupHeader()<code> and
  * <code>getGroup(int groupLevel).getGroupFooter()<code>.
  * <p>
- * Elements on a band can be reached by using <code>Band.getElement (String elementName)</code> 
- * or by retrieving all elements using <code>Band.getElements()</code> and performing a search on 
+ * Elements on a band can be reached by using <code>Band.getElement (String elementName)</code>
+ * or by retrieving all elements using <code>Band.getElements()</code> and performing a search on
  * the returned list.
  *
  * @author David Gilbert
@@ -120,7 +120,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
 
   /** The page format for the report (determines the page size, and therefore the report width). */
   private transient PageFormat defaultPageFormat;
-  
+
   /** Storage for arbitrary properties that a user can assign to the report. */
   private ReportProperties properties;
 
@@ -312,7 +312,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   }
 
   /**
-   * Returns the report properties collection for this report. 
+   * Returns the report properties collection for this report.
    * <p>
    * These properties are inherited to all ReportStates generated for this report.
    *
@@ -435,7 +435,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
 
   /**
    * Returns the page header.
-   * 
+   *
    * @return the page header (never <code>null</code>).
    */
   public PageHeader getPageHeader ()
@@ -462,7 +462,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
 
   /**
    * Returns the page footer.
-   * 
+   *
    * @return the page footer (never <code>null</code>).
    */
   public PageFooter getPageFooter ()
@@ -489,7 +489,7 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
 
   /**
    * Returns the report's item band.
-   * 
+   *
    * @return the item band (never <code>null</code>).
    */
   public ItemBand getItemBand ()
@@ -669,8 +669,8 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
   /**
    * Sets the data for the report.
    * <P>
-   * Reports are generated from a {@link TableModel} (as used by Swing's 
-   * {@link javax.swing.JTable}). If you don't want to give data to the report, use an empty 
+   * Reports are generated from a {@link TableModel} (as used by Swing's
+   * {@link javax.swing.JTable}). If you don't want to give data to the report, use an empty
    * {@link TableModel} instead of <code>null</code>.
    *
    * @param data  the data for the report (<code>null</code> not permitted).
@@ -715,13 +715,13 @@ public class JFreeReport implements JFreeReportConstants, Cloneable, Serializabl
     report.reportHeader = (ReportHeader) reportHeader.clone ();
     report.functions = (ExpressionCollection) functions.clone ();
     report.expressions = (ExpressionCollection) expressions.clone();
-    report.styleSheetCollection = new StyleSheetCollection();
-    report.groups.registerStyleSheetCollection(report.styleSheetCollection);
-    report.itemBand.registerStyleSheetCollection(report.styleSheetCollection);
-    report.reportFooter.registerStyleSheetCollection(report.styleSheetCollection);
-    report.reportHeader.registerStyleSheetCollection(report.styleSheetCollection);
-    report.pageFooter.registerStyleSheetCollection(report.styleSheetCollection);
-    report.pageHeader.registerStyleSheetCollection(report.styleSheetCollection);
+    report.styleSheetCollection = (StyleSheetCollection) styleSheetCollection.clone();
+    report.groups.updateStyleSheetCollection(report.styleSheetCollection);
+    report.itemBand.updateStyleSheetCollection(report.styleSheetCollection);
+    report.reportFooter.updateStyleSheetCollection(report.styleSheetCollection);
+    report.reportHeader.updateStyleSheetCollection(report.styleSheetCollection);
+    report.pageFooter.updateStyleSheetCollection(report.styleSheetCollection);
+    report.pageHeader.updateStyleSheetCollection(report.styleSheetCollection);
     return report;
   }
 

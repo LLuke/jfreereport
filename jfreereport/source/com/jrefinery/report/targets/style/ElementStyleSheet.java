@@ -28,13 +28,13 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.32 2003/06/19 18:44:11 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.33 2003/06/23 14:36:57 taqua Exp $
  *
  * Changes
  * -------
  * 05-Dec-2002 : Added Javadocs (DG);
  * 12-Dec-2002 : First BugFix: setFontStyle must use font.getName instead of font.getFontName
- *               or a totally different font family is used. 
+ *               or a totally different font family is used.
  * 03-Jan-2003 : Javadoc updates (DG);
  * 15-Jun-2003 : Cloning did not register the clone as change listener with the parents
  */
@@ -145,7 +145,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
                                                                     Boolean.class);
 
   /** A key for an element's 'strikethrough' flag. */
-  public static final StyleKey STRIKETHROUGH = StyleKey.getStyleKey("font-strikethrough", 
+  public static final StyleKey STRIKETHROUGH = StyleKey.getStyleKey("font-strikethrough",
                                                                     Boolean.class);
 
   /** A key for an element's 'embedd' flag. */
@@ -172,7 +172,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   /** A key for the dynamic height flag for an element. */
   public static final StyleKey DYNAMIC_HEIGHT = StyleKey.getStyleKey("dynamic_height",
                                                                      Boolean.class);
-  
+
   /**
    * The Layout Cacheable stylekey. Set this stylekey to false, to define that the element
    * is not cachable. This key defaults to true.
@@ -196,16 +196,16 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
 
   /** Parent style sheet cache. */
   private transient ElementStyleSheet[] parentsCached;
-  
+
   /** Default style sheet cache. */
   private transient ElementStyleSheet[] defaultCached;
-  
+
   /** Style cache. */
   private transient HashMap styleCache;
 
   /** Style change support. */
   private transient StyleChangeSupport styleChangeSupport;
-  
+
   /** A flag that controls whether or not caching is allowed. */
   private boolean allowCaching;
 
@@ -236,7 +236,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
 
   /**
    * Returns <code>true</code> if caching is allowed, and <code>false</code> otherwise.
-   * 
+   *
    * @return A boolean.
    */
   public boolean isAllowCaching()
@@ -246,7 +246,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
 
   /**
    * Sets the flag that controls whether or not caching is allowed.
-   * 
+   *
    * @param allowCaching  the flag value.
    */
   public void setAllowCaching(boolean allowCaching)
@@ -613,7 +613,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     {
       if (key.getValueType().isAssignableFrom(value.getClass()) == false)
       {
-        throw new ClassCastException ("Value for key " + key.getName() 
+        throw new ClassCastException ("Value for key " + key.getName()
                                       + " is not assignable: " + value.getClass()
                                       + " is not assignable from " + key.getValueType());
       }
@@ -635,7 +635,6 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
    */
   public ElementStyleSheet getCopy()
   {
-    new IllegalAccessException().printStackTrace();
     try
     {
       ElementStyleSheet sc = (ElementStyleSheet) super.clone();
@@ -652,6 +651,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
       sc.defaultParentsListCached = null;
       sc.collectionHelper = new ElementStyleSheetCollectionHelper(sc);
 
+      // Clone all parents ...
       if (parentsCached == null)
       {
         parentsCached = (ElementStyleSheet[])
@@ -664,6 +664,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
         cl_parentsCached[i] = parentsCached[i];
       }
 
+      // Clone all default parents ...
       sc.defaultSheets = new ArrayList();// defaultSheets.clone();
 
       if (defaultCached == null)
@@ -790,7 +791,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     boolean embed = getBooleanStyleProperty(EMBEDDED_FONT);
     String encoding = (String) getStyleProperty(FONTENCODING);
 
-    FontDefinition retval = new FontDefinition(name, size, bold, italic, underlined, strike, 
+    FontDefinition retval = new FontDefinition(name, size, bold, italic, underlined, strike,
                                                encoding, embed);
     return retval;
   }
@@ -828,7 +829,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
 
   /**
    * Adds a {@link StyleChangeListener}.
-   * 
+   *
    * @param l  the listener.
    */
   public void addListener (StyleChangeListener l)
@@ -838,7 +839,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
 
   /**
    * Removes a {@link StyleChangeListener}.
-   * 
+   *
    * @param l  the listener.
    */
   public void removeListener (StyleChangeListener l)
@@ -848,7 +849,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
 
   /**
    * Sends a change event notification to all registered {@link StyleChangeListener} objects.
-   * 
+   *
    * @param source  the source of the change.
    * @param key  the style key.
    * @param value  the new value.
@@ -864,7 +865,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
 
   /**
    * Sends a change event notification to all registered {@link StyleChangeListener} objects.
-   * 
+   *
    * @param source  the source of the change.
    * @param key  the style key.
    */

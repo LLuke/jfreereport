@@ -29,7 +29,7 @@
  *                   JRXlsExporter.java of JasperReports;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelCellStyleFactory.java,v 1.13 2003/05/09 17:12:13 taqua Exp $
+ * $Id: ExcelCellStyleFactory.java,v 1.14 2003/05/14 22:26:40 taqua Exp $
  *
  * Changes
  * -------
@@ -45,7 +45,6 @@ import com.jrefinery.report.ElementAlignment;
 import com.jrefinery.report.targets.FontDefinition;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
 import com.jrefinery.report.targets.table.TableCellBackground;
-import com.jrefinery.report.util.Log;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -62,20 +61,6 @@ import org.apache.poi.hssf.util.HSSFColor;
  */
 public class ExcelCellStyleFactory
 {
-  /** An instance counter. */
-  private static int instanceCounter = 0;
-  
-  /** A usage counter. */
-  private static int usageCounter = 0;
-
-  /**
-   * Prints the instance and usage counters.
-   */
-  public static void print ()
-  {
-    Log.debug ("InstanceCount: " + instanceCounter + " Usage: " + usageCounter);
-  }
-
   /**
    * The style carrier is used to collect and compare fore- and background
    * style information of previously created cell styles.
@@ -339,14 +324,12 @@ public class ExcelCellStyleFactory
   public HSSFCellStyle createCellStyle (ExcelDataCellStyle style, TableCellBackground bg)
   {
     StyleCarrier carrier = new StyleCarrier(style, bg);
-    usageCounter++;
     if (styleCache.containsKey(carrier))
     {
       return (HSSFCellStyle) styleCache.get(carrier);
     }
 
     HSSFCellStyle hssfCellStyle = workbook.createCellStyle();
-    instanceCounter++;
     hssfCellStyle.setWrapText(true);
     hssfCellStyle.setFillForegroundColor(WHITE_INDEX);
     hssfCellStyle.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);

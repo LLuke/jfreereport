@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.14 2003/05/02 12:40:37 taqua Exp $
+ * $Id: TableProcessor.java,v 1.15 2003/05/11 13:39:18 taqua Exp $
  *
  * Changes
  * -------
@@ -61,6 +61,8 @@ import com.jrefinery.report.util.ReportConfiguration;
  * <p>
  * Implementing classes should supply a table producer by implementing the createProducer
  * method.
+ * <p>
+ * Like all other report processors, this implementation is not synchronized.
  *
  * @author Thomas Morgner
  */
@@ -77,6 +79,9 @@ public abstract class TableProcessor
 
   /** Storage for the output target properties. */
   private Properties properties;
+
+  /** The tablewriter function. */
+  private TableWriter tableWriter;
 
   /**
    * Creates a new TableProcessor. The TableProcessor creates a private copy
@@ -106,12 +111,17 @@ public abstract class TableProcessor
 
     properties = new Properties();
 
-    TableWriter lm = new TableWriter();
-    lm.setName(TABLE_WRITER);
-    this.report.addFunction(lm);
+    tableWriter = new TableWriter();
+    tableWriter.setName(TABLE_WRITER);
+    this.report.addFunction(tableWriter);
 
     // initialize with the report default.
     strictLayout = report.getReportConfiguration().isStrictTableLayout();
+  }
+
+  protected TableWriter getTableWriter()
+  {
+    return tableWriter;
   }
 
   /**
@@ -138,7 +148,7 @@ public abstract class TableProcessor
 
   /**
    * Returns the private copy of the used report. The report is initialized for the
-   * report writing, so handle with care.
+   * report writing, so handle this instance with care.
    *
    * @return the local report.
    */
@@ -450,5 +460,7 @@ public abstract class TableProcessor
       Object value = rc.getConfigProperty(key);
       setProperty(propKey, value);
     }
+
+    getTableWriter().setMaxWidth((float) getReport().getDefaultPageFormat().getImageableWidth());
   }
 }

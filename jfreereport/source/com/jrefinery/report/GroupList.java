@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupList.java,v 1.26 2003/06/19 18:44:08 taqua Exp $
+ * $Id: GroupList.java,v 1.27 2003/06/23 14:36:56 taqua Exp $
  *
  * Changes:
  * --------
@@ -122,7 +122,7 @@ public class GroupList implements Cloneable, Serializable
 
   /**
    * Creates a new group list.
-   * 
+   *
    * @param list  groups to add to the list.
    */
   public GroupList(GroupList list)
@@ -259,7 +259,7 @@ public class GroupList implements Cloneable, Serializable
 
   /**
    * Returns an iterator for the list.
-   * 
+   *
    * @return An iterator for the list.
    */
   public Iterator iterator ()
@@ -269,7 +269,7 @@ public class GroupList implements Cloneable, Serializable
 
   /**
    * Returns the number of groups in the list.
-   * 
+   *
    * @return The number of groups in the list.
    */
   public int size()
@@ -279,7 +279,7 @@ public class GroupList implements Cloneable, Serializable
 
   /**
    * Returns a string representation of the list (useful for debugging).
-   * 
+   *
    * @return A string.
    */
   public String toString ()
@@ -304,5 +304,18 @@ public class GroupList implements Cloneable, Serializable
   public void unregisterStyleSheetCollection(StyleSheetCollection styleSheetCollection)
   {
     styleSheetCollectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
+  }
+
+  public void updateStyleSheetCollection(StyleSheetCollection styleSheetCollection)
+  {
+    if (cache == null)
+    {
+      cache = backend.toArray();
+    }
+    for (int i = 0; i < cache.length; i++)
+    {
+      Group g = (Group) cache[i];
+      g.updateStyleSheetCollection(styleSheetCollection);
+    }
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: Group.java,v 1.24 2003/06/19 18:44:08 taqua Exp $
+ * $Id: Group.java,v 1.25 2003/06/23 14:36:56 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -179,9 +179,15 @@ public class Group implements Serializable, Cloneable, Comparable
     {
       throw new NullPointerException("Header must not be null");
     }
-    this.header.unregisterStyleSheetCollection(getStyleSheetCollection());
+    if (getStyleSheetCollection() != null)
+    {
+      this.header.unregisterStyleSheetCollection(getStyleSheetCollection());
+    }
     this.header = header;
-    this.header.registerStyleSheetCollection(getStyleSheetCollection());
+    if (getStyleSheetCollection() != null)
+    {
+      this.header.registerStyleSheetCollection(getStyleSheetCollection());
+    }
   }
 
   /**
@@ -205,9 +211,15 @@ public class Group implements Serializable, Cloneable, Comparable
     {
       throw new NullPointerException("The footer must not be null");
     }
-    this.footer.unregisterStyleSheetCollection(getStyleSheetCollection());
+    if (getStyleSheetCollection() != null)
+    {
+      this.footer.unregisterStyleSheetCollection(getStyleSheetCollection());
+    }
     this.footer = footer;
-    this.footer.registerStyleSheetCollection(getStyleSheetCollection());
+    if (getStyleSheetCollection() != null)
+    {
+      this.footer.registerStyleSheetCollection(getStyleSheetCollection());
+    }
   }
 
   /**
@@ -442,7 +454,7 @@ public class Group implements Serializable, Cloneable, Comparable
 
   /**
    * Returns a string representation of the group (useful for debugging).
-   * 
+   *
    * @return A string.
    */
   public String toString ()
@@ -475,4 +487,9 @@ public class Group implements Serializable, Cloneable, Comparable
     styleSheetCollectionHelper.unregisterStyleSheetCollection(styleSheetCollection);
   }
 
+  public void updateStyleSheetCollection (StyleSheetCollection sc)
+  {
+    footer.updateStyleSheetCollection(sc);
+    header.updateStyleSheetCollection(sc);
+  }
 }

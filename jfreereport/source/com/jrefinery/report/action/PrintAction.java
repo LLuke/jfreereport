@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PrintAction.java,v 1.16 2003/05/02 12:39:33 taqua Exp $
+ * $Id: PrintAction.java,v 1.17 2003/05/14 22:26:37 taqua Exp $
  *
  * Changes
  * -------
@@ -52,6 +52,7 @@ import com.jrefinery.report.util.ActionDowngrade;
 /**
  * Print action for a print preview frame.
  *
+ * @deprecated Export modules are now defined by plugin-interfaces.
  * @author David Gilbert
  */
 public abstract class PrintAction extends AbstractActionDowngrade implements Runnable
