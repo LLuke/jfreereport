@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionUtilities.java,v 1.3 2003/04/09 00:12:30 mungady Exp $
+ * $Id: FunctionUtilities.java,v 1.4 2003/04/09 15:47:30 mungady Exp $
  *
  * Changes
  * -------
@@ -81,14 +81,14 @@ public class FunctionUtilities
   }
 
   /**
-   * Returns true if ??.
+   * Returns true if the events current groupname is equal to the group name.
    * 
    * @param groupName  the group name.
    * @param event  the report event.
    * 
    * @return A boolean.
    */
-  public static boolean isGroupInGroup (String groupName, ReportEvent event)
+  public static boolean isDefinedGroup (String groupName, ReportEvent event)
   {
     if (groupName == null)
     {

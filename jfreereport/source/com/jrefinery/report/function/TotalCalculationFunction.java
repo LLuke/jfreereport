@@ -2,7 +2,7 @@
  * Date: Mar 7, 2003
  * Time: 6:36:32 PM
  *
- * $Id: TotalCalculationFunction.java,v 1.2 2003/04/05 18:57:11 taqua Exp $
+ * $Id: TotalCalculationFunction.java,v 1.3 2003/05/16 17:26:42 taqua Exp $
  */
 package com.jrefinery.report.function;
 
@@ -73,7 +73,7 @@ public class TotalCalculationFunction extends AbstractFunction
    */
   public void groupStarted(ReportEvent event)
   {
-    if (FunctionUtilities.isGroupInGroup(getGroup(), event) == false)
+    if (FunctionUtilities.isDefinedGroup(getGroup(), event) == false)
     {
       // wrong group ...
       return;
@@ -101,7 +101,7 @@ public class TotalCalculationFunction extends AbstractFunction
    */
   public void groupFinished(ReportEvent event)
   {
-    if (FunctionUtilities.isGroupInGroup(getGroup(), event) == false)
+    if (FunctionUtilities.isDefinedGroup(getGroup(), event) == false)
     {
       // wrong group ...
       return;

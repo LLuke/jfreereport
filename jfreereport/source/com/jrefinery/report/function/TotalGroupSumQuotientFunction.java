@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner, David Gilbert (for Simba Management Limited)
  *                   for programming TotalGroupSumFunction
  *
- * $Id: TotalGroupSumQuotientFunction.java,v 1.7 2003/04/05 18:57:12 taqua Exp $
+ * $Id: TotalGroupSumQuotientFunction.java,v 1.8 2003/05/16 17:26:42 taqua Exp $
  *
  * Changes
  * -------
@@ -49,7 +49,7 @@ import com.jrefinery.report.filter.StaticDataSource;
 import com.jrefinery.report.util.Log;
 
 /**
- * A report function that calculates the quotient of two summed fields (columns) from the 
+ * A report function that calculates the quotient of two summed fields (columns) from the
  * TableModel.
  * This function produces a global total. The total sum of the group is known when the group
  * processing starts and the report is not performing a prepare-run. The sum is calculated in
@@ -185,7 +185,7 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
    */
   public void groupStarted(ReportEvent event)
   {
-    if (FunctionUtilities.isGroupInGroup(getGroup(), event) == false)
+    if (FunctionUtilities.isDefinedGroup(getGroup(), event) == false)
     {
       // wrong group ...
       return;
@@ -291,7 +291,7 @@ public class TotalGroupSumQuotientFunction extends AbstractFunction
   {
     BigDecimal dividend = groupDividend.getResult();
     BigDecimal divisor  = groupDivisor.getResult();
-    if (divisor.intValue() == 0) 
+    if (divisor.intValue() == 0)
     {
         return "n/a";
     }
