@@ -29,6 +29,8 @@
  * 26-Aug-2002 : Coded all defined Postscript-PaperFormats as defined by Adobe.
  * 30-Aug-2002 : Added method to define the paper using a String constant referring to a constant
  *               defined in the class.
+ * 25-Sep-2002 : Fixed bug 613846 (Javadoc) (DG);
+ *
  */
 package com.jrefinery.report.util;
 
@@ -46,7 +48,7 @@ import java.lang.reflect.Field;
  * Usage for creating an printjob on A4 paper with 2.5 cm border:
  * <code>
  * Paper paper = PageFormatFactory.createPaper (PageFormatFactory.A4);
- * paper.setBordersMm (25, 25, 25, 25);
+ * PageFormatFactory.setBordersMm (paper, 25, 25, 25, 25);
  * PageFormat format = PageFormatFactory.createPageFormat (paper, PageFormat.PORTRAIT);
  * </code>
  *
