@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.2 2003/07/12 16:31:13 taqua Exp $
  *
  * Changes
  * -------
@@ -39,6 +39,7 @@
 package org.jfree.report.modules.parser.ext;
 
 import org.jfree.report.JFreeReport;
+import org.jfree.report.util.Log;
 import org.jfree.report.modules.parser.base.InitialReportHandler;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.StyleSheetCollection;
@@ -129,15 +130,24 @@ public class StyleSheetHandler implements ElementDefinitionHandler
       }
       final String className = attrs.getValue("class");
       Class c = null;
-      try
+      if (className != null)
       {
-        c = getClass().getClassLoader().loadClass(className);
-      }
-      catch (Exception e)
-      {
-        // ignore me ...
-        // if the specified class could not be loaded, the default implementation
-        // will be used.
+        try
+        {
+          c = getClass().getClassLoader().loadClass(className);
+        }
+        catch (ClassNotFoundException cnfe)
+        {
+          throw new ParseException("The specified class for key " + name + " was not valid: " + className,
+              getParser().getLocator());
+        }
+        catch (Exception e)
+        {
+          // ignore me ...
+          // if the specified class could not be loaded, the default implementation
+          // will be used.
+          Log.warn ("Non-fatal Exception while parsing: ", e);
+        }
       }
 
       basicFactory = new BasicStyleKeyHandler(getParser(), tagName, name, c);

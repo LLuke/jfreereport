@@ -28,11 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EncodingComboBoxModel.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
+ * $Id: EncodingComboBoxModel.java,v 1.2 2003/07/10 20:02:08 taqua Exp $
  *
  * Changes
  * --------
  * 25-Feb-2003 : Added standard header and Javadocs (DG);
+ * 14-Jul-2003 : Fixed several issues with the encodings selection.
  *
  */
 package org.jfree.report.modules.gui.base.components;
@@ -54,9 +55,8 @@ import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 
 /**
- * A model for the 'encoding' combo box.
- * <p>
- * This model is used in the {@link org.jfree.report.modules.gui.csv.CSVExportDialog} class (and possibly others).
+ * A model for the 'encoding' combo box. This combobox model presents a selection
+ * for all available string encodings.
  *
  * @author Thomas Morgner.
  */
@@ -92,7 +92,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    * &quot;/org/jfree/report/jfreereport-encodings.properties&quot;.
    */
   public static final String ENCODINGS_DEFINITION_FILE_DEFAULT
-      = "/org/jfree/report/jfreereport-encodings.properties";
+      = "/org/jfree/report/modules/gui/base/components/jfreereport-encodings.properties";
 
 
   /**
@@ -503,7 +503,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
    *
    * @return the singleton instance of the initialized default encoding names
    */
-  private static Properties getDefaultEncodings()
+  protected static Properties getDefaultEncodings()
   {
     if (defaultEncodings == null)
     {
@@ -679,13 +679,9 @@ public class EncodingComboBoxModel implements ComboBoxModel
       final Enumeration enum = encodings.keys();
       while (enum.hasMoreElements())
       {
+        // add all known properties...
         final String enc = (String) enum.nextElement();
-        // if not set to "true"
-        if (encodings.getProperty(enc, "false").equalsIgnoreCase("true"))
-        {
-          // if the encoding is disabled ...
-          ecb.addEncoding(enc, defaultEncodings.getProperty(enc, ENCODING_DEFAULT_DESCRIPTION));
-        }
+        ecb.addEncoding(enc, encodings.getProperty(enc, ENCODING_DEFAULT_DESCRIPTION));
       }
     }
     else if (availEncs.equals(AVAILABLE_ENCODINGS_FILE))
@@ -694,7 +690,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
       final InputStream in = ecb.getClass().getResourceAsStream(encFile);
       if (in == null)
       {
-        Log.warn(new org.jfree.util.Log.SimpleMessage
+        Log.warn(new Log.SimpleMessage
             ("The specified encodings definition file was not found: ", encFile));
       }
       else
@@ -721,7 +717,7 @@ public class EncodingComboBoxModel implements ComboBoxModel
         }
         catch (IOException e)
         {
-          Log.warn(new org.jfree.util.Log.SimpleMessage
+          Log.warn(new Log.SimpleMessage
               ("There was an error while reading the encodings definition file: ", encFile), e);
         }
       }

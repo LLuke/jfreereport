@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProcessor.java,v 1.15 2003/06/29 16:59:30 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -39,9 +39,9 @@ package org.jfree.report.modules.output.table.html;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.function.FunctionInitializeException;
+import org.jfree.report.modules.output.table.base.TableLayoutInfo;
 import org.jfree.report.modules.output.table.base.TableProcessor;
 import org.jfree.report.modules.output.table.base.TableProducer;
-import org.jfree.report.util.NullOutputStream;
 
 /**
  * The HtmlProcessor handles the initialisation of the report writer and starts and
@@ -148,28 +148,23 @@ public class HtmlProcessor extends TableProcessor
   }
 
   /**
-   * Creates a HTMLProducer. The HTMLProducer is responsible to create the table.
+   * Creates a dummy TableProducer. The TableProducer is responsible to compute the layout.
    *
-   * @param dummy true, if dummy mode is enabled, and no writing should be done, false otherwise.
    * @return the created table producer, never null.
    */
-  public TableProducer createProducer(final boolean dummy)
+  protected TableProducer createDummyProducer()
   {
-    final HtmlProducer prod;
-    if (dummy == true)
-    {
-      prod = new HtmlProducer(new StreamHtmlFilesystem(new NullOutputStream()),
-          isStrictLayout(), useXHTML);
-      prod.setDummy(true);
-    }
-    else
-    {
-      prod = new HtmlProducer(getFilesystem(),
-          isStrictLayout(), useXHTML);
-      prod.setDummy(false);
-    }
+    return new HtmlProducer(new HtmlLayoutInfo(false), isStrictLayout());
+  }
 
-    return prod;
+  /**
+   * Creates a TableProducer. The TableProducer is responsible to create the table.
+   *
+   * @return the created table producer, never null.
+   */
+  protected TableProducer createProducer(TableLayoutInfo gridLayoutBounds)
+  {
+    return new HtmlProducer(getFilesystem(), (HtmlLayoutInfo) gridLayoutBounds, isStrictLayout());
   }
 
   /**

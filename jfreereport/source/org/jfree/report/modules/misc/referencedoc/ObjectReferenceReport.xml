@@ -47,7 +47,7 @@
             <basic-object name="height">-100.0</basic-object>
             <basic-object name="width">-100.0</basic-object>
           </compound-key>
-          <basic-key name="stroke">0.0</basic-key>
+          <basic-key name="stroke" class="java.awt.BasicStroke">0.0</basic-key>
           <compound-key name="absolute_pos">
             <basic-object name="x">0.0</basic-object>
             <basic-object name="y">0.0</basic-object>

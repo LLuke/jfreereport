@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProcessor.java,v 1.12 2003/06/29 16:59:29 taqua Exp $
+ * $Id: CSVTableProcessor.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -39,16 +39,15 @@
 
 package org.jfree.report.modules.output.table.csv;
 
-import java.io.PrintWriter;
 import java.io.Writer;
 
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.function.FunctionInitializeException;
 import org.jfree.report.modules.output.csv.CSVProcessor;
+import org.jfree.report.modules.output.table.base.TableLayoutInfo;
 import org.jfree.report.modules.output.table.base.TableProcessor;
 import org.jfree.report.modules.output.table.base.TableProducer;
-import org.jfree.report.util.NullOutputStream;
 
 /**
  * The <code>CSVTableProcessor</code> coordinates the output for the layouted CSV output.
@@ -175,24 +174,18 @@ public class CSVTableProcessor extends TableProcessor
   /**
    * Creates the CSVTableProducer. The TableProducer is responsible to create the table.
    *
-   * @param dummy true, if dummy mode is enabled, and no writing should be done, false otherwise.
-   *
    * @return the created table producer, never null.
    */
-  public TableProducer createProducer(final boolean dummy)
+  public TableProducer createProducer(final TableLayoutInfo layoutBounds)
   {
-    final CSVTableProducer prod;
-    if (dummy)
-    {
-      prod = new CSVTableProducer(new PrintWriter(new NullOutputStream()),
-          isStrictLayout());
-    }
-    else
-    {
-      prod = new CSVTableProducer(new PrintWriter(getWriter()), isStrictLayout());
-    }
-    prod.setDummy(dummy);
-    return prod;
+    return new CSVTableProducer(layoutBounds, getWriter());
+  }
+
+  protected TableProducer createDummyProducer()
+  {
+    // csv always uses the global layout. We dont support pages, so why introduce
+    // artifical boundaries ...
+    return new CSVTableProducer(new TableLayoutInfo(true), isStrictLayout());
   }
 
   /**

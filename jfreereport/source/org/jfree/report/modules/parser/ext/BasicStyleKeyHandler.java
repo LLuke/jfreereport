@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BasicStyleKeyHandler.java,v 1.15 2003/06/29 16:59:25 taqua Exp $
+ * $Id: BasicStyleKeyHandler.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -90,7 +90,7 @@ public class BasicStyleKeyHandler implements ElementDefinitionHandler
    * @param parser  the parser.
    * @param finishTag  the finish tag.
    * @param name  the name.
-   * @param c  the class.
+   * @param c  the key value class.
    *
    * @throws SAXException if a parser error occurs or the validation failed.
    */

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LayoutManagerCache.java,v 1.8 2003/07/03 15:59:29 taqua Exp $
+ * $Id: LayoutManagerCache.java,v 1.1 2003/07/07 22:44:05 taqua Exp $
  *
  * Changes
  * -------
@@ -43,7 +43,6 @@ import java.util.WeakHashMap;
 import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.style.ElementStyleSheet;
-import org.jfree.report.util.Log;
 
 /**
  * A cache for a band layout manager. Not very usefull yet, maybe later.
@@ -104,12 +103,6 @@ public class LayoutManagerCache
     }
 
   }
-
-  /** The put count. */
-  private static int putCount;
-
-  /** The get count. */
-  private static int getCount;
 
   /** The element cache. */
   private WeakHashMap elementCache;
@@ -186,7 +179,6 @@ public class LayoutManagerCache
     {
       return;
     }
-    putCount++;
 
     ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(key);
     if (ec == null)
@@ -229,8 +221,6 @@ public class LayoutManagerCache
     {
       return;
     }
-    putCount++;
-
     ElementCacheCarrier ec = (ElementCacheCarrier) elementCache.get(key);
     if (ec == null)
     {
@@ -293,13 +283,5 @@ public class LayoutManagerCache
   public void flush()
   {
     elementCache.clear();
-  }
-
-  /**
-   * Prints debugging information.
-   */
-  public static void printResults()
-  {
-    Log.debug("CacheResults: " + getCount + ":" + putCount);
   }
 }

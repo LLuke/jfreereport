@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.25 2003/06/29 16:59:29 taqua Exp $
+ * $Id: TableWriter.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -235,16 +235,12 @@ public class TableWriter extends AbstractFunction implements PageEventListener
    */
   private void doPrint(final Rectangle2D bounds, final Band band)
   {
-    final int cellCount = producer.getCellCount();
-
     // now print the band ...
-    producer.processBand(bounds, band);
+    boolean printed = producer.processBand(bounds, band);
     getCursor().advance((float) bounds.getHeight());
-    if (cellCount < producer.getCellCount())
-    {
-      // something was printed ...
-      isPageEmpty = false;
-    }
+    // something was printed ...
+    isPageEmpty = (printed == false);
+    producer.commit();
   }
 
 

@@ -21,43 +21,46 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * ParserBaseModule.java
+ * FileConfigStoreModule.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtParserModule.java,v 1.3 2003/07/12 14:00:43 taqua Exp $
+ * $Id$
  *
  * Changes 
  * -------------------------
- * 06.07.2003 : Initial version
+ * 14.07.2003 : Initial version
  *  
  */
 
-package org.jfree.report.modules.parser.ext;
+package org.jfree.report.modules.misc.configstore.filesystem;
 
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
+import org.jfree.report.util.ReportConfiguration;
 
-public class ExtParserModule  extends AbstractModule
+public class FileConfigStoreModule extends AbstractModule
 {
-  public ExtParserModule() throws ModuleInitializeException
+  public FileConfigStoreModule() throws ModuleInitializeException
   {
     loadModuleInfo();
   }
 
   public void initialize() throws ModuleInitializeException
   {
-    if (isClassLoadable("org.xml.sax.ext.LexicalHandler") == false)
+    String value = ReportConfiguration.getGlobalConfig().getConfigProperty
+        ("org.jfree.report.ConfigStore", "<not defined>");
+    if (value.equals(FileConfigStorage.class.getName()))
     {
-      throw new ModuleInitializeException("Unable to load JAXP-1.1 classes. " +
-          "Check your classpath and XML parser configuration.");
+      performExternalInitialize(FileConfigStoreModuleInitializer.class.getName());
     }
-
-    performExternalInitialize(ExtParserModuleInit.class.getName());
   }
 
-
+  public static void main (String [] args)
+  {
+    ReportConfiguration.getGlobalConfig();
+  }
 }

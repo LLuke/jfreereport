@@ -25,7 +25,7 @@
  * ------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
- * $Id: NoCloseOutputStream.java,v 1.6 2003/06/29 16:59:30 taqua Exp $
+ * $Id: NoCloseOutputStream.java,v 1.1 2003/07/07 22:44:09 taqua Exp $
  *
  * Changes
  * -------
@@ -55,6 +55,10 @@ public class NoCloseOutputStream extends FilterOutputStream
   public NoCloseOutputStream(final OutputStream out)
   {
     super(out);
+    if (out == null)
+    {
+      throw new NullPointerException("Given Output Stream is null!");
+    }
   }
 
   /**

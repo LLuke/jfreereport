@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProducer.java,v 1.11 2003/06/29 16:59:29 taqua Exp $
+ * $Id: CSVTableProducer.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,14 @@
 package org.jfree.report.modules.output.table.csv;
 
 import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.Properties;
 
 import org.jfree.report.modules.output.csv.CSVQuoter;
 import org.jfree.report.modules.output.table.base.TableCellDataFactory;
 import org.jfree.report.modules.output.table.base.TableGridLayout;
 import org.jfree.report.modules.output.table.base.TableGridPosition;
+import org.jfree.report.modules.output.table.base.TableLayoutInfo;
 import org.jfree.report.modules.output.table.base.TableProducer;
 
 /**
@@ -81,19 +83,27 @@ public class CSVTableProducer extends TableProducer
    * Creates a new <code>CSVTableProducer</code>, using the given writer,
    * strict mode and separator.
    *
-   * @param writer  the character stream writer for writing the generated content.
    * @param strict  the strict mode that is used for the layouting.
    */
-  public CSVTableProducer(final PrintWriter writer, final boolean strict)
+  public CSVTableProducer(final TableLayoutInfo gridBoundsCollection, final boolean strict)
   {
-    super(strict);
+    super(gridBoundsCollection, strict);
+    this.cellDataFactory = new CSVCellDataFactory();
+  }
+
+  /**
+   *
+   * @param gridBoundsCollection
+   */
+  public CSVTableProducer(final TableLayoutInfo gridBoundsCollection, final Writer writer)
+  {
+    super(gridBoundsCollection);
     if (writer == null)
     {
       throw new NullPointerException("Writer is null");
     }
-
-    this.writer = writer;
     this.cellDataFactory = new CSVCellDataFactory();
+    this.writer = new PrintWriter(writer);
   }
 
   /**
@@ -113,16 +123,20 @@ public class CSVTableProducer extends TableProducer
   }
 
   /**
-   * Ends the page and layouts the generated grid. After the grid is written,
-   * the collected cells are removed from the TableGrid.
+   * Write the collected data. This method is called when ever it is safe to
+   * commit all previous content. An auto-commit is also performed after the page
+   * has ended.
+   * <p>
+   * Implementations have to take care, that empty commits do not produce any
+   * output.
    */
-  public void endPage()
+  public void commit()
   {
-    if (isDummy() == false)
+    if (isDummy() == false && isLayoutContainsContent())
     {
-      generatePage(layoutGrid());
+      generateContent(layoutGrid());
+      clearCells();
     }
-    clearCells();
   }
 
   /**
@@ -130,7 +144,7 @@ public class CSVTableProducer extends TableProducer
    *
    * @param layout  contains the layouted CSVCellData objects.
    */
-  private void generatePage(final TableGridLayout layout)
+  private void generateContent(final TableGridLayout layout)
   {
     for (int y = 0; y < layout.getHeight(); y++)
     {
@@ -178,16 +192,6 @@ public class CSVTableProducer extends TableProducer
   }
 
   /**
-   * Pages are not supported by this implementation.
-   *
-   * @param name the name of the page, not used.
-   */
-  public void beginPage(final String name)
-  {
-    // remains empty ...
-  }
-
-  /**
    * Gets the CSVTableProducer's table cell data factory.
    *
    * @return the TableProducers TableCellDataFactory, which is used to create
@@ -219,5 +223,10 @@ public class CSVTableProducer extends TableProducer
   {
     final String separator = configuration.getProperty(CSVTableProcessor.SEPARATOR_KEY, ",");
     this.quoter = new CSVQuoter(separator);
+  }
+
+  public boolean isGlobalLayout()
+  {
+    return true;
   }
 }

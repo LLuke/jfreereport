@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFProcessor.java,v 1.8 2003/06/29 16:59:30 taqua Exp $
+ * $Id: RTFProcessor.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -41,9 +41,9 @@ import java.io.OutputStream;
 import org.jfree.report.JFreeReport;
 import org.jfree.report.ReportProcessingException;
 import org.jfree.report.function.FunctionInitializeException;
+import org.jfree.report.modules.output.table.base.TableLayoutInfo;
 import org.jfree.report.modules.output.table.base.TableProcessor;
 import org.jfree.report.modules.output.table.base.TableProducer;
-import org.jfree.report.util.NullOutputStream;
 
 /**
  * The ExcelProcessor coordinates the output process for generating
@@ -90,27 +90,23 @@ public class RTFProcessor extends TableProcessor
   }
 
   /**
-   * Creates the RTFProducer. The TableProducer is responsible to create the table.
+   * Creates a TableProducer. The TableProducer is responsible to create the table.
    *
-   * @param dummy true, if dummy mode is enabled, and no writing should be done, false otherwise.
    * @return the created table producer, never null.
    */
-  public TableProducer createProducer(final boolean dummy)
+  protected TableProducer createProducer(TableLayoutInfo gridLayoutBounds)
   {
-    final RTFProducer prod;
-    if (dummy == true)
-    {
-      prod = new RTFProducer(new NullOutputStream(),
-          isStrictLayout());
-      prod.setDummy(true);
-    }
-    else
-    {
-      prod = new RTFProducer(getOutputStream(), isStrictLayout());
-      prod.setDummy(false);
-    }
+    return new RTFProducer((RTFLayoutInfo) gridLayoutBounds, getOutputStream());
+  }
 
-    return prod;
+  /**
+   * Creates a dummy TableProducer. The TableProducer is responsible to compute the layout.
+   *
+   * @return the created table producer, never null.
+   */
+  protected TableProducer createDummyProducer()
+  {
+    return new RTFProducer(new RTFLayoutInfo(false), isStrictLayout());
   }
 
   /**

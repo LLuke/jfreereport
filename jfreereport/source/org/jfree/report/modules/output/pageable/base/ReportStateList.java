@@ -24,7 +24,7 @@
  * ReportStateList.java
  * --------------------
  *
- * $Id: ReportStateList.java,v 1.18 2003/07/03 15:59:29 taqua Exp $
+ * $Id: ReportStateList.java,v 1.1 2003/07/07 22:44:06 taqua Exp $
  *
  * Changes
  * -------
@@ -155,10 +155,8 @@ public class ReportStateList
       for (int i = 0; i <= count; i++)
       {
         progress = state.createStateProgress(progress);
-        //Log.debug("o-State: " + state.getClass());
         state = master.getReportProcessor().processPage(state, master.getDummyWriter());
         set(state, i + 1);
-        //Log.debug("n-State: " + state.getClass());
         if (state.isFinish())
         {
           return state;

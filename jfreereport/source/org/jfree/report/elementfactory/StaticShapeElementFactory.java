@@ -28,12 +28,12 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StaticShapeElementFactory.java,v 1.3 2003/06/29 16:59:24 taqua Exp $
+ * $Id: StaticShapeElementFactory.java,v 1.1 2003/07/07 22:44:04 taqua Exp $
  *
  * Changes
  * -------------------------
- * 09.06.2003 : Initial version
- *
+ * 09-Jun-2003 : Initial version
+ * 14-Jul-2003 : LineShapes are still a killer :(
  */
 
 package org.jfree.report.elementfactory;
@@ -141,7 +141,6 @@ public class StaticShapeElementFactory extends ShapeElementFactory
           shape.getY1() - bounds.getY(),
           shape.getX2() - bounds.getX(),
           shape.getY2() - bounds.getY());
-      bounds.setRect(0, 0, bounds.getWidth(), bounds.getHeight());
       return createShapeElement(name, bounds, paint, stroke, shape, true, false, true);
     }
   }

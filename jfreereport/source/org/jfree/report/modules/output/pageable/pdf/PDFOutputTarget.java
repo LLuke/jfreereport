@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Object Refinery Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: PDFOutputTarget.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: PDFOutputTarget.java,v 1.2 2003/07/10 20:02:09 taqua Exp $
  *
  * Changes
  * -------
@@ -1067,7 +1067,12 @@ public class PDFOutputTarget extends AbstractOutputTarget
   {
     final String configValue = config.getConfigProperty(CONFIGURATION_PREFIX + key);
     final String propertyValue = getProperty(key, configValue);
-    
+    // property is neither set in the configuration nor in the properties ...
+    if (propertyValue == null)
+    {
+      return;
+    }
+
     if (propertyValue.equalsIgnoreCase("true"))
     {
       setProperty(key, getProperty(key, "true"));

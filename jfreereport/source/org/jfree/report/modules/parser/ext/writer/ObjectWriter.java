@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ObjectWriter.java,v 1.17 2003/06/29 16:59:27 taqua Exp $
+ * $Id: ObjectWriter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,8 @@ import org.jfree.report.util.Log;
 import org.jfree.xml.factory.objects.ClassFactoryCollector;
 import org.jfree.xml.factory.objects.ObjectDescription;
 import org.jfree.xml.factory.objects.ObjectFactoryException;
+import org.jfree.xml.factory.objects.URLObjectDescription;
+import org.jfree.xml.Parser;
 
 /**
  * A writer.
@@ -236,6 +238,12 @@ public class ObjectWriter extends AbstractXMLDefinitionWriter
 
     try
     {
+      if (parameterDescription instanceof URLObjectDescription)
+      {
+        Log.debug ("ParameterValue: " + parameterValue);
+        URLObjectDescription uod = (URLObjectDescription) parameterDescription;
+        Log.debug ("ContentBase: " + uod.getConfig().getConfigProperty(Parser.CONTENTBASE_KEY));
+      }
       parameterDescription.setParameterFromObject(parameterValue);
     }
     catch (ObjectFactoryException ofe)

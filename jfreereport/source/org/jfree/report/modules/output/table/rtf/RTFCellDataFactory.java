@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFCellDataFactory.java,v 1.11 2003/06/29 16:59:30 taqua Exp $
+ * $Id: RTFCellDataFactory.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -47,6 +47,7 @@ import org.jfree.report.modules.output.support.itext.BaseFontRecord;
 import org.jfree.report.modules.output.support.itext.BaseFontSupport;
 import org.jfree.report.modules.output.table.base.AbstractTableCellDataFactory;
 import org.jfree.report.modules.output.table.base.TableCellData;
+import org.jfree.report.modules.output.pageable.base.OutputTargetException;
 import org.jfree.report.style.ElementStyleSheet;
 import org.jfree.report.style.FontDefinition;
 import org.jfree.report.util.Log;
@@ -63,10 +64,9 @@ public class RTFCellDataFactory extends AbstractTableCellDataFactory
   /** The baseFontSupport is used to handle truetype fonts in iText. */
   private BaseFontSupport baseFontSupport;
 
-  /** Default Constructor. */
-  public RTFCellDataFactory()
+  public RTFCellDataFactory(BaseFontSupport baseFontSupport)
   {
-    baseFontSupport = new BaseFontSupport();
+    this.baseFontSupport = baseFontSupport;
   }
 
   /**
@@ -122,7 +122,7 @@ public class RTFCellDataFactory extends AbstractTableCellDataFactory
             (font, bf.getBaseFont(), color, valign, halign);
         return new RTFTextCellData(rect, (String) value, style);
       }
-      catch (org.jfree.report.modules.output.pageable.base.OutputTargetException ex)
+      catch (OutputTargetException ex)
       {
         Log.debug("Unable to create font: ", ex);
         return null;

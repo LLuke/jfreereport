@@ -3,6 +3,41 @@
 ---------------
 A list of changes in recent versions:
 
+0.8.4:
+        * BugFix: The Pageable targets created empty pages on
+          PageableProcessor.processReport();
+
+        * Table targets use some kind of repagination to prepare the layouting.
+          This makes it possible to compute the columns and styles before they
+          are written into the stream, so that we can create streaming content.
+
+        * The BaseFont-Support is now able to cache the collected fonts. This
+          reduces the startup time.
+
+        * We have modules to configure the functionality of JFreeReport ...
+
+        * HTML output can strip the file headers to make it easier to include
+          the generated content into other files.
+
+        * All code moved to org.jfree.report; all deprecated methods and classes
+          were removed. Major structural changes ... (write docs about that issue!)
+
+        * Simple ReportParser creates cleaner objects (undefined attributes are
+          no longer filled with unnecessary default values).
+
+        * The SheetName function property is more usable now.
+
+        * The GUI base module contains the option to translate the standard GUI
+          dialogs of Swing.
+
+        * The elementfactory package replaces the old ItemFactory. These factory
+          classes contain a bean like interface as well as the static methods of
+          the old ItemFactory.
+
+        * We now have templates for Rectangles and Hrizontal- and Vertical line
+          shapes. This reduces the definition code size when creating the common
+          shape use-cases.
+
 0.8.3d: (29-Jun-2003)
         * BugFix: All table report processors had problems with reports, that
           had a PageFormat with a imagable size > 1000 points. This issue was

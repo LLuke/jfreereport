@@ -21,43 +21,64 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * ParserBaseModule.java
+ * ConfigFactory.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtParserModule.java,v 1.3 2003/07/12 14:00:43 taqua Exp $
+ * $Id$
  *
  * Changes 
  * -------------------------
- * 06.07.2003 : Initial version
+ * 14.07.2003 : Initial version
  *  
  */
 
-package org.jfree.report.modules.parser.ext;
+package org.jfree.report.modules.misc.configstore.base;
 
-import org.jfree.report.modules.AbstractModule;
-import org.jfree.report.modules.ModuleInitializeException;
-
-public class ExtParserModule  extends AbstractModule
+public class ConfigFactory
 {
-  public ExtParserModule() throws ModuleInitializeException
-  {
-    loadModuleInfo();
-  }
+  public static final String CONFIG_TARGET_KEY = "org.jfree.report.ConfigStore";
 
-  public void initialize() throws ModuleInitializeException
+  private static ConfigFactory factory;
+  private ConfigStorage storage;
+
+  public static ConfigFactory getInstance()
   {
-    if (isClassLoadable("org.xml.sax.ext.LexicalHandler") == false)
+    if (factory == null)
     {
-      throw new ModuleInitializeException("Unable to load JAXP-1.1 classes. " +
-          "Check your classpath and XML parser configuration.");
+      factory = new ConfigFactory();
+      factory.defineStorage(new NullConfigStorage());
     }
-
-    performExternalInitialize(ExtParserModuleInit.class.getName());
+    return factory;
   }
 
+  public void defineStorage (ConfigStorage storage)
+  {
+    if (storage == null)
+    {
+      throw new NullPointerException();
+    }
+    this.storage = storage;
+  }
 
+  public ConfigStorage getStorage ()
+  {
+    return storage;
+  }
+
+  public static boolean isValidPath (String path)
+  {
+    char[] data = path.toCharArray();
+    for (int i = 0; i < data.length; i++)
+    {
+      if (Character.isJavaIdentifierPart(data[i]) == false)
+      {
+        return false;
+      }
+    }
+    return true;
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractModule.java,v 1.2 2003/07/10 20:02:08 taqua Exp $
+ * $Id: AbstractModule.java,v 1.3 2003/07/11 18:33:20 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -131,7 +131,6 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
       while (rh.hasNext())
       {
         String lastLineRead = rh.next();
-        //Log.debug ("Last line read ..." + lastLineRead);
         if (lastLineRead.startsWith("module-info:"))
         {
           readModuleInfo(rh);
@@ -185,7 +184,6 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     while (reader.hasNext())
     {
       String lastLineRead = reader.next();
-      //Log.debug ("Last line read + ..." + lastLineRead);
 
       if (Character.isWhitespace(lastLineRead.charAt(0)) == false)
       {
@@ -257,7 +255,6 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     while (reader.hasNext())
     {
       String lastLineRead = reader.next();
-      //Log.debug ("Last line read * ..." + lastLineRead);
 
       if (Character.isWhitespace(lastLineRead.charAt(0)) == false)
       {
@@ -408,6 +405,23 @@ public abstract class AbstractModule extends DefaultModuleInfo implements Module
     {
       return;
     }
-    org.jfree.report.modules.PackageManager.getInstance().getPackageConfiguration().load(in);
+    PackageManager.getInstance().getPackageConfiguration().load(in);
+  }
+
+  public void performExternalInitialize (String classname)
+    throws ModuleInitializeException
+  {
+    ModuleInitializer mi = null;
+    try
+    {
+      Class c = Thread.currentThread().getContextClassLoader().loadClass(classname);
+      mi = (ModuleInitializer) c.newInstance();
+    }
+    catch (Exception e)
+    {
+      throw new ModuleInitializeException("Failed to load specified initializer class.", e);
+    }
+    mi.performInit();
+
   }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.2 2003/07/10 20:02:09 taqua Exp $
  *
  * Changes
  * -------
@@ -42,8 +42,8 @@ package org.jfree.report.modules.output.support.itext;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.StringTokenizer;
 
 import com.lowagie.text.DocumentException;
@@ -52,6 +52,9 @@ import com.lowagie.text.pdf.DefaultFontMapper;
 import org.jfree.report.util.Log;
 import org.jfree.report.util.ReportConfiguration;
 import org.jfree.report.util.StringUtil;
+import org.jfree.report.modules.misc.configstore.base.ConfigFactory;
+import org.jfree.report.modules.misc.configstore.base.ConfigStorage;
+import org.jfree.report.modules.misc.configstore.base.ConfigStoreException;
 
 /**
  * The BaseFontFactory is used to find and register all TrueType fonts for embedding them
@@ -88,7 +91,7 @@ public class BaseFontFactory extends DefaultFontMapper
   private static BaseFontFactory fontFactory;
 
   /** Fonts stored by name. */
-  private HashMap fontsByName;
+  private Properties fontsByName;
 
   /** A flag to check whether this factory is initialized. */
   private boolean initialized;
@@ -153,12 +156,13 @@ public class BaseFontFactory extends DefaultFontMapper
   /** The singleton instance of the font path filter. */
   private static final FontPathFilter FONTPATHFILTER = new FontPathFilter();
 
+  private static final String FONTS_STORAGE_PATH = "registered_itext_fonts";
   /**
    * Creates a new factory.
    */
   private BaseFontFactory()
   {
-    fontsByName = new HashMap();
+    fontsByName = new Properties();
   }
 
   /**
@@ -168,6 +172,20 @@ public class BaseFontFactory extends DefaultFontMapper
    */
   public synchronized void registerDefaultFontPath()
   {
+    ConfigStorage store = ConfigFactory.getInstance().getStorage();
+    if (store.existsProperties(FONTS_STORAGE_PATH))
+    {
+      try
+      {
+        fontsByName.putAll(store.loadProperties(FONTS_STORAGE_PATH, null));
+        return;
+      }
+      catch (ConfigStoreException cse)
+      {
+        Log.info("Unable to load font configuration, rebuilding.");
+      }
+    }
+
     String encoding = getDefaultFontEncoding();
     // Correct the encoding for truetype fonts
     if (encoding.equals(BaseFont.IDENTITY_H) || encoding.equals(BaseFont.IDENTITY_V))
@@ -206,6 +224,15 @@ public class BaseFontFactory extends DefaultFontMapper
     }
     registerFontPath(new File(jrepath, "lib" + fs + "fonts"), encoding);
 
+    try
+    {
+      store.storeProperties(FONTS_STORAGE_PATH, fontsByName);
+    }
+    catch (ConfigStoreException cse)
+    {
+      Log.info ("Failed to store font configuration. This error is non-fatal, " +
+          "the font configuration will be rebuild from scratch, if necessary.");
+    }
     initialized = true;
   }
 
@@ -328,7 +355,7 @@ public class BaseFontFactory extends DefaultFontMapper
       final String[] ffi = fi[i];
       if (fontsByName.containsKey(ffi[3]) == false)
       {
-        fontsByName.put(ffi[3], font);
+        fontsByName.setProperty(ffi[3], font);
         Log.debug(new Log.SimpleMessage("Registered truetype font ", ffi[3], "; File=", font));
       }
     }

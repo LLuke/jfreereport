@@ -29,7 +29,7 @@
  * Contributor(s):   -;
  * The Excel layout uses ideas and code from JRXlsExporter.java of JasperReports
  *
- * $Id: ExcelProducer.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: ExcelProducer.java,v 1.2 2003/07/08 17:46:52 hevermann Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,7 @@ import org.jfree.report.modules.output.table.base.TableCellDataFactory;
 import org.jfree.report.modules.output.table.base.TableGridLayout;
 import org.jfree.report.modules.output.table.base.TableGridPosition;
 import org.jfree.report.modules.output.table.base.TableProducer;
+import org.jfree.report.modules.output.table.base.TableLayoutInfo;
 import org.jfree.report.util.Log;
 
 /**
@@ -84,21 +85,40 @@ public class ExcelProducer extends TableProducer
   /** the current excel sheet. */
   private HSSFSheet sheet;
 
+  private HSSFCellStyleProducer cellStyleProducer;
+
   /** cache the configuration value until there is a cell data factory. */
   private boolean mapData;
+  private boolean open;
+  private int layoutRowCount;
 
   /**
    * Creates a new Excel producer.
    *
    * @param out  the output stream.
+   *
+   */
+  public ExcelProducer(final TableLayoutInfo layout, final OutputStream out)
+  {
+    super(layout);
+    if (out == null)
+    {
+      throw new NullPointerException();
+    }
+    this.out = out;
+    cellDataFactory = null;
+  }
+
+  /**
+   * Creates a new Excel producer.
+   *
    * @param strict true, if a stricter layout should be used, false otherwise.
    *
-   * @see org.jfree.report.modules.output.table.base.TableGrid#isStrict
+   * @see org.jfree.report.modules.output.table.base.TableGridBounds#isStrict
    */
-  public ExcelProducer(final OutputStream out, final boolean strict)
+  public ExcelProducer(final boolean strict)
   {
-    super(strict);
-    this.out = out;
+    super(new TableLayoutInfo(false), strict);
     cellDataFactory = null;
   }
 
@@ -118,14 +138,17 @@ public class ExcelProducer extends TableProducer
    */
   public void open()
   {
-    workbook = new HSSFWorkbook();
-    final ExcelCellStyleFactory cellStyleFactory = new ExcelCellStyleFactory(workbook);
+    final ExcelCellStyleFactory cellStyleFactory = new ExcelCellStyleFactory();
     cellDataFactory = new ExcelCellDataFactory(cellStyleFactory);
     cellDataFactory.setDefineDataFormats(mapData);
-    // style for empty cells
 
-    // Clear list of cells
-    clearCells();
+    if (isDummy() == false)
+    {
+      workbook = new HSSFWorkbook();
+      this.cellStyleProducer = new HSSFCellStyleProducer(workbook);
+    }
+
+    open = true;
   }
 
   /**
@@ -139,27 +162,40 @@ public class ExcelProducer extends TableProducer
    */
   public void beginPage(final String name)
   {
-    if (name == null)
+    if (isDummy() == false)
     {
-      sheet = workbook.createSheet();
+      layoutRowCount = 0;
+      if (name == null)
+      {
+        sheet = workbook.createSheet();
+      }
+      else
+      {
+        sheet = workbook.createSheet(name);
+      }
     }
-    else
-    {
-      sheet = workbook.createSheet(name);
-    }
+    super.beginPage(name);
   }
 
   /**
    * Handles the end of a page, lays out the collected cells
    * and write the excel sheet.
    */
-  public void endPage()
+  public void commit()
   {
     if (isDummy() == false)
     {
       writeSheet(layoutGrid());
+      clearCells();
     }
-    clearCells();
+  }
+
+  /**
+   * Handles the end of a page. This calls commit() and clears the layout.
+   */
+  public void endPage()
+  {
+    super.endPage();
     sheet = null;
   }
 
@@ -179,19 +215,23 @@ public class ExcelProducer extends TableProducer
    */
   public void close()
   {
-    // now we have all cell data that we need. Let's generate the file
-    if (isPageOpen())
+    if (isDummy() == false)
     {
-      throw new IllegalStateException();
+      // now we have all cell data that we need. Let's generate the file
+      if (isPageOpen())
+      {
+        throw new IllegalStateException("Page seems to be open.");
+      }
+      try
+      {
+        workbook.write(out);
+      }
+      catch (IOException e)
+      {
+        Log.warn("could not write xls data. Message:", e);
+      }
     }
-    try
-    {
-      workbook.write(out);
-    }
-    catch (IOException e)
-    {
-      Log.warn("could not write xls data. Message:", e);
-    }
+    open = false;
   }
 
   /**
@@ -207,9 +247,11 @@ public class ExcelProducer extends TableProducer
       sheet.setColumnWidth((short) (i), (short) (width * XFACTOR));
     }
 
+    int startY = layoutRowCount;
+
     for (int y = 0; y < layout.getHeight(); y++)
     {
-      final HSSFRow row = sheet.createRow((short) y);
+      final HSSFRow row = sheet.createRow((short) y + startY);
 
       final float lastRowHeight = (layout.getRowEnd(y) - layout.getRowStart(y));
       row.setHeight((short) (lastRowHeight * YFACTOR));
@@ -232,7 +274,7 @@ public class ExcelProducer extends TableProducer
           if (bg != null)
           {
             final HSSFCell cell = row.createCell((short) x);
-            final HSSFCellStyle style = cellDataFactory.getStyleFactory().createCellStyle(null, bg);
+            final HSSFCellStyle style = cellStyleProducer.createCellStyle(null, bg);
             cell.setCellStyle(style);
           }
           continue;
@@ -240,10 +282,12 @@ public class ExcelProducer extends TableProducer
 
         if (root.isOrigin(x, y))
         {
-          exportCell(row, root, bg, (short) x, y);
+          exportCell(row, root, bg, (short) x, y + startY);
         }
       }
     }
+
+    layoutRowCount += layout.getHeight();
   }
 
   /**
@@ -270,8 +314,8 @@ public class ExcelProducer extends TableProducer
     final ExcelCellData contentCell = (ExcelCellData) content.getElement();
 
     final HSSFCell cell = row.createCell(x);
-    final HSSFCellStyle style = cellDataFactory.getStyleFactory()
-        .createCellStyle(contentCell.getExcelCellStyle(), bg);
+    final HSSFCellStyle style = cellStyleProducer.createCellStyle
+        (contentCell.getExcelCellStyle(), bg);
     cell.setCellStyle(style);
 
     if (contentCell.isEmpty() == false)
@@ -288,7 +332,7 @@ public class ExcelProducer extends TableProducer
    */
   public boolean isOpen()
   {
-    return workbook != null;
+    return open;
   }
 
   /**

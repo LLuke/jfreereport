@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableGrid.java,v 1.12 2003/06/29 16:59:29 taqua Exp $
+ * $Id: TableGrid.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,10 @@
 
 package org.jfree.report.modules.output.table.base;
 
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.TreeSet;
+import java.util.Iterator;
+import java.awt.geom.Rectangle2D;
 
 /**
  * The TableGrid is used to collect all table cells and to finally create the
@@ -72,17 +72,14 @@ import java.util.TreeSet;
  */
 public class TableGrid
 {
-  /** The XBounds, all vertical cell boundaries. */
-  private TreeSet xBounds;
+  /** The elements stored in the table grid. */
+  private ArrayList elements; 
+
+  private TableGridBounds bounds;
 
   /** The YBounds, all horizontal cell boundaries. */
   private TreeSet yBounds;
 
-  /** The elements stored in the table grid. */
-  private ArrayList elements;
-
-  /** A flag, defining whether to use strict layout mode. */
-  private boolean strict;
 
   /**
    * Creates a new TableGrid. If strict mode is enabled, all cell bounds are
@@ -92,10 +89,16 @@ public class TableGrid
    */
   public TableGrid(final boolean strict)
   {
-    xBounds = new TreeSet();
-    yBounds = new TreeSet();
+    this.bounds = new TableGridBounds(strict);
     elements = new ArrayList();
-    this.strict = strict;
+    yBounds = new TreeSet();
+  }
+
+  public TableGrid(final TableGridBounds bounds)
+  {
+    this.bounds = new TableGridBounds(bounds);
+    elements = new ArrayList();
+    yBounds = new TreeSet();
   }
 
   /**
@@ -106,36 +109,19 @@ public class TableGrid
    */
   public void addData(final TableCellData pos)
   {
-    if (pos == null)
-    {
-      throw new NullPointerException();
-    }
+    bounds.addData(pos);
     elements.add(pos);
-
     // collect the bounds and add them to the xBounds and yBounds collection.
     final Rectangle2D bounds = pos.getBounds();
-    final Integer x = new Integer((int) bounds.getX());
     final Integer y = new Integer((int) bounds.getY());
-    xBounds.add(x);
     yBounds.add(y);
 
-    if (isStrict())
+    if (this.bounds.isStrict())
     {
-      final Integer xW = new Integer((int) (bounds.getX() + bounds.getWidth()));
       final Integer yW = new Integer((int) (bounds.getY() + bounds.getHeight()));
-      xBounds.add(xW);
       yBounds.add(yW);
     }
-  }
 
-  /**
-   * Gets the strict mode flag.
-   *
-   * @return true, if strict mode is enabled, false otherwise.
-   */
-  public boolean isStrict()
-  {
-    return strict;
   }
 
   /**
@@ -149,7 +135,7 @@ public class TableGrid
         (TableCellData[]) elements.toArray(new TableCellData[elements.size()]);
 
     //Log.debug ("Performing Layout: " + positions.length);
-    final TableGridLayout layout = new TableGridLayout(getXCuts(), getYCuts(), positions);
+    final TableGridLayout layout = new TableGridLayout(bounds.getXCuts(), getYCuts(), positions);
     return layout;
   }
 
@@ -158,9 +144,9 @@ public class TableGrid
    */
   public void clear()
   {
-    xBounds.clear();
-    yBounds.clear();
+    bounds.clear();
     elements.clear();
+    yBounds.clear();
   }
 
   /**
@@ -171,40 +157,6 @@ public class TableGrid
   public int size()
   {
     return elements.size();
-  }
-
-  /**
-   * Returns the horizontal boundaries of the table cells. The array contains
-   * the start positions of the cells.
-   *
-   * @return the horizontal start position of the table cells.
-   */
-  public int[] getXCuts()
-  {
-    if (xBounds.size() == 0)
-    {
-      return new int[0];
-    }
-    final int[] xBoundsArray = new int[xBounds.size()];
-    final Iterator it = xBounds.iterator();
-    int count = 0;
-    while (it.hasNext())
-    {
-      final Integer i = (Integer) it.next();
-      xBoundsArray[count] = i.intValue();
-      count += 1;
-    }
-
-    if (!strict)
-    {
-      return xBoundsArray;
-    }
-    // in strict mode, all boundaries are added. The last boundry does
-    // not define a start of a cell, so it is removed.
-
-    final int[] retval = new int[xBoundsArray.length - 1];
-    System.arraycopy(xBoundsArray, 0, retval, 0, retval.length);
-    return retval;
   }
 
   /**
@@ -225,7 +177,7 @@ public class TableGrid
       count += 1;
     }
 
-    if (!strict)
+    if (!bounds.isStrict())
     {
       return yBoundsArray;
     }
@@ -236,4 +188,5 @@ public class TableGrid
     System.arraycopy(yBoundsArray, 0, retval, 0, retval.length);
     return retval;
   }
+
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVCellDataFactory.java,v 1.9 2003/06/29 16:59:29 taqua Exp $
+ * $Id: CSVCellDataFactory.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -53,6 +53,13 @@ import org.jfree.report.modules.output.table.base.TableCellDataFactory;
  */
 public class CSVCellDataFactory implements TableCellDataFactory
 {
+  /**
+   * Default Constructor.
+   */
+  public CSVCellDataFactory()
+  {
+  }
+
   /**
    * Creates the {@link TableCellData} for the given {@link Element}. The CellData is created,
    * when the element value is a string and not <code>null</code>.

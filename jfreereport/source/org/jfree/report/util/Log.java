@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: Log.java,v 1.2 2003/07/10 20:02:10 taqua Exp $
+ * $Id: Log.java,v 1.3 2003/07/11 18:33:20 taqua Exp $
  *
  * Changes
  * -------
@@ -114,7 +114,7 @@ public final class Log extends org.jfree.util.Log
     jfreeReportLog = new Log();
     org.jfree.util.Log.defineLog(jfreeReportLog);
     jfreeReportLog.addTarget(Log.DEFAULT_LOG_TARGET);
-    jfreeReportLog.setDebuglevel(WARN);
+    jfreeReportLog.setDebuglevel(DEBUG);
   }
 
   public static Log getJFreeReportLog ()

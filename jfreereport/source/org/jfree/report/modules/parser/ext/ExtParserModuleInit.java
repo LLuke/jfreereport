@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: ExtParserModuleInit.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -41,8 +41,10 @@ package org.jfree.report.modules.parser.ext;
 import java.net.URL;
 
 import org.jfree.report.modules.parser.base.ParserEntityResolver;
+import org.jfree.report.modules.ModuleInitializer;
+import org.jfree.report.modules.ModuleInitializeException;
 
-public class ExtParserModuleInit implements Runnable
+public class ExtParserModuleInit implements ModuleInitializer
 {
   /** the Public ID for the extensible version of JFreeReport XML definitions. */
   public static final String PUBLIC_ID_EXTENDED =
@@ -52,18 +54,8 @@ public class ExtParserModuleInit implements Runnable
   {
   }
 
-  /**
-   * When an object implementing interface <code>Runnable</code> is used
-   * to create a thread, starting the thread causes the object's
-   * <code>run</code> method to be called in that separately executing
-   * thread.
-   * <p>
-   * The general contract of the method <code>run</code> is that it may
-   * take any action whatsoever.
-   *
-   * @see     Thread#run()
-   */
-  public void run()
+
+  public void performInit() throws ModuleInitializeException
   {
     ParserEntityResolver res = ParserEntityResolver.getDefaultResolver();
 

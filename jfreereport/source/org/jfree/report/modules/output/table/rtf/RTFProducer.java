@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: RTFProducer.java,v 1.11 2003/06/29 16:59:30 taqua Exp $
+ * $Id: RTFProducer.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -61,9 +61,6 @@ import org.jfree.report.util.NoCloseOutputStream;
  * creation process and collects the generated TableCellData. The raw CellData
  * objects are later transformed into a TableGridLayout.
  *
- * todo: There is a memory leak when using iText images with the RTFWriter,
- * todo: but why?
- *
  * @author Thomas Morgner
  */
 public class RTFProducer extends TableProducer
@@ -77,22 +74,29 @@ public class RTFProducer extends TableProducer
   /** the cell factory. */
   private RTFCellDataFactory cellDataFactory;
 
-  /**
-   * Creates a new RTFProducer.
-   *
-   * @param outputStream the target output stream
-   * @param strictLayout the stric layout flag.
-   * @throws NullPointerException if the outputstream is null.
-   */
-  public RTFProducer(final OutputStream outputStream, final boolean strictLayout)
+  private boolean open;
+
+  public RTFProducer(final RTFLayoutInfo gridBoundsCollection, final OutputStream outputStream)
   {
-    super(strictLayout);
+    super(gridBoundsCollection);
     if (outputStream == null)
     {
       throw new NullPointerException();
     }
     this.outputStream = outputStream;
-    cellDataFactory = new RTFCellDataFactory();
+    cellDataFactory = new RTFCellDataFactory(gridBoundsCollection.getBaseFontSupport());
+  }
+
+  /**
+   * Creates a new RTFProducer.
+   *
+   * @param strictLayout the stric layout flag.
+   * @throws NullPointerException if the outputstream is null.
+   */
+  public RTFProducer(final RTFLayoutInfo gridBoundsCollection, final boolean strictLayout)
+  {
+    super(gridBoundsCollection, strictLayout);
+    cellDataFactory = new RTFCellDataFactory(gridBoundsCollection.getBaseFontSupport());
   }
 
   /**
@@ -100,10 +104,14 @@ public class RTFProducer extends TableProducer
    */
   public void open()
   {
-    // rtf does not support PageFormats or other meta data...
-    document = new Document();
-    RtfWriter.getInstance(document, new NoCloseOutputStream(outputStream));
-    document.open();
+    if (isDummy() == false)
+    {
+      // rtf does not support PageFormats or other meta data...
+      document = new Document();
+      RtfWriter.getInstance(document, new NoCloseOutputStream(outputStream));
+      document.open();
+    }
+    open = true;
   }
 
   /**
@@ -111,7 +119,11 @@ public class RTFProducer extends TableProducer
    */
   public void close()
   {
-    document.close();
+    if (isDummy() == false)
+    {
+      document.close();
+    }
+    open = false;
   }
 
   /**
@@ -130,8 +142,21 @@ public class RTFProducer extends TableProducer
       {
         throw new FunctionProcessingException("Failed to generate page", de);
       }
+      clearCells();
     }
-    clearCells();
+  }
+
+  /**
+   * Write the collected data. This method is called when ever it is safe to
+   * commit all previous content. An auto-commit is also performed after the page
+   * has ended.
+   * <p>
+   * Implementations have to take care, that empty commits do not produce any
+   * output. Successfully written content must be removed.
+   */
+  public void commit()
+  {
+    // does nothing, we write the table at the end of the page ...
   }
 
   /**
@@ -251,18 +276,6 @@ public class RTFProducer extends TableProducer
   }
 
   /**
-   * Handles the start of a new page. The page name is given as parameter.
-   * The TableWriter starts a new page whenever a manual pagebreak is found
-   * in the report definition. The ReportProducer has been opened before.
-   *
-   * @param name the page name
-   */
-  public void beginPage(final String name)
-  {
-    // ignore the event, not important ...
-  }
-
-  /**
    * Gets the TableProducer implementation of this TableProducer.
    *
    * @return the TableProducers TableCellDataFactory, which is used to create
@@ -281,11 +294,7 @@ public class RTFProducer extends TableProducer
    */
   public boolean isOpen()
   {
-    if (document == null)
-    {
-      return false;
-    }
-    return document.isOpen();
+    return open;
   }
 
   /**

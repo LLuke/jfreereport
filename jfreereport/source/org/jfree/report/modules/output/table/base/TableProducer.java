@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.23 2003/06/29 16:59:29 taqua Exp $
+ * $Id: TableProducer.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
  *
  * Changes
  * -------
@@ -42,7 +42,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
-
 import org.jfree.report.Band;
 import org.jfree.report.Element;
 import org.jfree.report.JFreeReport;
@@ -68,14 +67,27 @@ public abstract class TableProducer
   /** Literal text for the 'author' property name. */
   public static final String AUTHOR = "Author";
 
-  /** the grid, that stores the collected TableCellData. */
-  private TableGrid grid;
+  private static final int BEFORE_FIRST_PAGE = -1;
 
   /** the dummy mode flag. */
   private boolean dummy;
 
+  /** the strict layout flag. */
+  private boolean strictLayout;
+
   /** Storage for the output target properties. */
   private Properties properties;
+
+  /** The layout. If in dummy mode, then this contains only the Bounds. */
+  private TableGridBounds gridBounds;
+
+  private TableLayoutInfo gridBoundsCollection;
+
+  /** The layouted elements. Used during the non-dummy mode. */
+  private TableGrid grid;
+
+  /** The number of the current page. */
+  private int page;
 
   /**
    * Creates a new TableProducer.
@@ -83,11 +95,26 @@ public abstract class TableProducer
    * @param strictLayout the strict layout flag. Set to true, to enable the strict
    * layout mode.
    */
-  public TableProducer(final boolean strictLayout)
+  public TableProducer(final TableLayoutInfo gridBoundsCollection, final boolean strictLayout)
   {
-    properties = new Properties();
-    grid = new TableGrid(strictLayout);
-    dummy = false;
+    this.page = BEFORE_FIRST_PAGE;
+    this.properties = new Properties();
+    this.dummy = true;
+    this.strictLayout = strictLayout;
+    this.gridBoundsCollection = gridBoundsCollection;
+  }
+
+  public TableProducer(final TableLayoutInfo gridBoundsCollection)
+  {
+    if (gridBoundsCollection.getPageCount() == 0)
+    {
+      throw new IllegalArgumentException("The bounds collection must not be empty.");
+    }
+    this.page = BEFORE_FIRST_PAGE;
+    this.properties = new Properties();
+    this.dummy = false;
+    this.gridBoundsCollection = gridBoundsCollection;
+    this.grid = new TableGrid(gridBoundsCollection.getLayoutForPage(0).isStrict());
   }
 
   /** A useful constant for specifying the creator constant. */
@@ -98,29 +125,59 @@ public abstract class TableProducer
 
   /**
    * Starts the report writing. This method is called before any other report handling
-   * method is called.
+   * method is called. This method is called only once for a given instance.
    */
   public abstract void open();
 
   /**
    * Closes the report and finishs the report writing. Any used resource should
    * be freed when this method returns. The current page is already closed.
+   * This method is called only once for a given instance.
    */
   public abstract void close();
 
   /**
-   * Handles the end of a page.
+   * Handles the end of a page. This calls commit() and clears the layout.
    */
-  public abstract void endPage();
+  public void endPage()
+  {
+    commit();
+    if (isDummy() == false)
+    {
+      clearCells();
+    }
+  }
 
   /**
    * Handles the start of a new page. The page name is given as parameter.
    * The TableWriter starts a new page whenever a manual pagebreak is found
    * in the report definition. The ReportProducer has been opened before.
+   * <p>
+   * Always make sure that you call <code>super.beginPage()</code> before
+   * any elements are added by the producer.
    *
    * @param name the page name
    */
-  public abstract void beginPage(String name);
+  public void beginPage(String name)
+  {
+    page += 1;
+
+    // the global layout reuses the layout grid from the first page to
+    // unify the layout for all pages. The global layout is disabled by
+    // default.
+    if (isGlobalLayout() == false || page == 0)
+    {
+      if (isDummy())
+      {
+        gridBounds = new TableGridBounds(isStrictLayout());
+        gridBoundsCollection.addLayout (gridBounds);
+      }
+      else
+      {
+        gridBounds = gridBoundsCollection.getLayoutForPage(page);
+      }
+    }
+  }
 
   /**
    * Gets the TableProducer implementation of this TableProducer.
@@ -131,31 +188,50 @@ public abstract class TableProducer
   public abstract TableCellDataFactory getCellDataFactory();
 
   /**
-   * Clears the grid, removes all created cells.
+   * Clears the grid, removes all created cell bounds.
    */
-  public void clearCells()
+  public void clearCellsBounds()
   {
-    grid.clear();
+    gridBounds.clear();
+  }
+
+  public void clearCells ()
+  {
+    if (isDummy() == false)
+    {
+      grid.clear();
+    }
+    else
+    {
+      throw new IllegalStateException("This is the dummy mode, no layout possible.");
+    }
+  }
+
+  public boolean isLayoutContainsContent ()
+  {
+    if (grid == null)
+    {
+      return false;
+    }
+    return grid.size() != 0;
   }
 
   /**
-   * Calculates the positions for the Excel cells.
+   * Calculates the positions for the table cells.
    *
    * @return The table grid layout.
+   * @throws IllegalStateException if called while this producer is in dummy mode.
    */
   protected TableGridLayout layoutGrid()
   {
-    return grid.performLayout();
-  }
-
-  /**
-   * Gets the number of created cells in the grid.
-   *
-   * @return the number of stored cells in the grid.
-   */
-  public int getCellCount()
-  {
-    return grid.size();
+    if (isDummy() == false)
+    {
+      return grid.performLayout();
+    }
+    else
+    {
+      throw new IllegalStateException("This is the dummy mode, no layout possible.");
+    }
   }
 
   /**
@@ -165,7 +241,14 @@ public abstract class TableProducer
    */
   protected void addCell(final TableCellData data)
   {
-    grid.addData(data);
+    if (isDummy() == false)
+    {
+      grid.addData(data);
+    }
+    else
+    {
+      gridBounds.addData(data);
+    }
   }
 
   /**
@@ -183,28 +266,29 @@ public abstract class TableProducer
    *
    * @param bounds the bounds that define where to print the given band on this logical page
    * @param band the band that should be spooled/printed
+   * @return true, if at least one cell was accepted, false otherwise.
    */
-  public void processBand(final Rectangle2D bounds, final Band band)
+  public boolean processBand(final Rectangle2D bounds, final Band band)
   {
     if (isOpen() == false)
     {
-      throw new IllegalStateException("Band already closed");
+      throw new IllegalStateException("Producer already closed");
     }
 
     // do nothing if the band is invisble
     if (band.isVisible() == false)
     {
-      return;
+      return false;
     }
 
     // do nothing if the band has no height...
     if (bounds.getHeight() == 0)
     {
-      return;
+      return false;
     }
 
     // handle the band itself, the band's bounds are already translated.
-    processElement(bounds, band);
+    boolean retval = processElement(bounds, band);
 
     // process all elements
     final Element[] l = band.getElementArray();
@@ -214,7 +298,10 @@ public abstract class TableProducer
       if (e instanceof Band)
       {
         final Rectangle2D bbounds = (Rectangle2D) e.getStyle().getStyleProperty(ElementStyleSheet.BOUNDS);
-        processBand(translateSubRect(bbounds, bounds), (Band) e);
+        if (processBand(translateSubRect(bbounds, bounds), (Band) e) == true)
+        {
+          retval = true;
+        }
       }
       else
       {
@@ -227,9 +314,13 @@ public abstract class TableProducer
         }
 
         final Rectangle2D drawBounds = translateSubRect(bounds, elementBounds);
-        processElement(drawBounds, e);
+        if (processElement(drawBounds, e) == true)
+        {
+          retval = true;
+        }
       }
     }
+    return retval;
   }
 
   /**
@@ -264,13 +355,15 @@ public abstract class TableProducer
    * @throws NullPointerException if the element has no valid layout (no BOUNDS defined).
    * Bounds are usually defined by the BandLayoutManager.
    */
-  private void processElement(final Rectangle2D drawBounds, final Element e)
+  private boolean processElement(final Rectangle2D drawBounds, final Element e)
   {
     final TableCellData data = getCellDataFactory().createCellData(e, drawBounds);
     if (data != null)
     {
       addCell(data);
+      return true;
     }
+    return false;
   }
 
   /**
@@ -320,16 +413,6 @@ public abstract class TableProducer
   public boolean isDummy()
   {
     return dummy;
-  }
-
-  /**
-   * Defines the dummy mode.
-   *
-   * @param dummy set to true, to activate the dummy mode, so that all output is skipped.
-   */
-  public void setDummy(final boolean dummy)
-  {
-    this.dummy = dummy;
   }
 
   /**
@@ -410,4 +493,44 @@ public abstract class TableProducer
    * @param configuration the configuration supplied by the table processor.
    */
   public abstract void configure(Properties configuration);
+
+  /**
+   * Write the collected data. This method is called when ever it is safe to
+   * commit all previous content. An auto-commit is also performed after the page
+   * has ended.
+   * <p>
+   * Implementations have to take care, that empty commits do not produce any
+   * output. Successfully written content must be removed.
+   */
+  public abstract void commit ();
+
+  /**
+   * Returns true, if the strict layouting algorithm is used.
+   *
+   * @return true if strict layouting is used, false otherwise.
+   */
+  public boolean isStrictLayout()
+  {
+    return strictLayout;
+  }
+
+  /**
+   * Returns the value of the local gridBoundsCollection's Global Layout flag.
+   * 
+   * @return
+   */
+  protected boolean isGlobalLayout ()
+  {
+    return gridBoundsCollection.isGlobalLayout();
+  }
+
+  /**
+   * The collected layout information.
+   *
+   * @return
+   */
+  public TableLayoutInfo getGridBoundsCollection()
+  {
+    return gridBoundsCollection;
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: SimpleParserModule.java,v 1.1 2003/07/10 20:06:00 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -50,6 +50,6 @@ public class SimpleParserModule extends AbstractModule
 
   public void initialize() throws ModuleInitializeException
   {
-    new SimpleParserModuleInit().run();
+    performExternalInitialize(SimpleParserModuleInit.class.getName());
   }
 }

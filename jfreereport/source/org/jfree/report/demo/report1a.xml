@@ -4,7 +4,6 @@
          "http://jfreereport.sourceforge.net/extreport.dtd">
 <report-definition name="Sample Report 1">
   <parser-config>
-    <object-factory class="org.jfree.report.modules.parser.ext.factory.datasource.DataSourceCollector"/>
     <object-factory class="org.jfree.report.modules.parser.ext.factory.objects.DefaultClassFactory"/>
     <element-factory class="org.jfree.report.modules.parser.ext.factory.elements.DefaultElementFactory"/>
     <stylekey-factory class="org.jfree.report.modules.parser.ext.factory.stylekey.DefaultStyleKeyFactory"/>

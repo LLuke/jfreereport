@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageManager.java,v 1.2 2003/07/11 18:33:20 taqua Exp $
+ * $Id: PackageManager.java,v 1.3 2003/07/11 19:12:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -110,10 +110,6 @@ public class PackageManager
       {
         addModule(config.getConfigProperty(key));
       }
-      else
-      {
-        Log.debug ("Other Key: " + key);
-      }
     }
     Log.debug ("Loaded a total of " + modules.size() + " modules.");
     initializeModules();
@@ -152,7 +148,6 @@ public class PackageManager
       {
         Module mod = (Module) loadModules.get(i);
         modules.add (new PackageState(mod));
-        Log.debug (mod.getModuleClass());
       }
     }
   }

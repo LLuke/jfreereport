@@ -21,43 +21,38 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * ParserBaseModule.java
+ * ConfigStoreException.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtParserModule.java,v 1.3 2003/07/12 14:00:43 taqua Exp $
+ * $Id$
  *
  * Changes 
  * -------------------------
- * 06.07.2003 : Initial version
+ * 14.07.2003 : Initial version
  *  
  */
 
-package org.jfree.report.modules.parser.ext;
+package org.jfree.report.modules.misc.configstore.base;
 
-import org.jfree.report.modules.AbstractModule;
-import org.jfree.report.modules.ModuleInitializeException;
+import org.jfree.util.StackableException;
 
-public class ExtParserModule  extends AbstractModule
+public class ConfigStoreException extends StackableException
 {
-  public ExtParserModule() throws ModuleInitializeException
+  public ConfigStoreException()
   {
-    loadModuleInfo();
   }
 
-  public void initialize() throws ModuleInitializeException
+  public ConfigStoreException(String s, Exception e)
   {
-    if (isClassLoadable("org.xml.sax.ext.LexicalHandler") == false)
-    {
-      throw new ModuleInitializeException("Unable to load JAXP-1.1 classes. " +
-          "Check your classpath and XML parser configuration.");
-    }
-
-    performExternalInitialize(ExtParserModuleInit.class.getName());
+    super(s, e);
   }
 
-
+  public ConfigStoreException(String s)
+  {
+    super(s);
+  }
 }

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConverter.java,v 1.20 2003/06/29 16:59:27 taqua Exp $
+ * $Id: ReportConverter.java,v 1.1 2003/07/07 22:44:08 taqua Exp $
  *
  * Changes
  * -------
@@ -59,6 +59,7 @@ import org.jfree.report.modules.parser.ext.factory.templates.DefaultTemplateColl
 import org.jfree.report.util.Log;
 import org.jfree.xml.factory.objects.ArrayClassFactory;
 import org.jfree.xml.factory.objects.URLClassFactory;
+import org.jfree.xml.Parser;
 
 /**
  * A utility class for converting XML report definitions from the old format to the
@@ -94,6 +95,8 @@ public class ReportConverter
     {
       throw new NullPointerException("ContentBase is null");
     }
+    report.getReportConfiguration().setConfigProperty(Parser.CONTENTBASE_KEY, contentBase.toExternalForm());
+
     final ReportWriter writer = new ReportWriter(report, encoding);
     writer.addClassFactoryFactory(new URLClassFactory());
     writer.addClassFactoryFactory(new DefaultClassFactory());
@@ -231,6 +234,22 @@ public class ReportConverter
   public void convertReport(final URL in, final URL contentBase, final Writer w, final String encoding)
       throws IOException, ReportWriterException
   {
+    if (in == null)
+    {
+      throw new NullPointerException("Input URL is null");
+    }
+    if (contentBase == null)
+    {
+      throw new NullPointerException("ContentBase is null");
+    }
+    if (w == null)
+    {
+      throw new NullPointerException("Writer is null");
+    }
+    if (encoding == null)
+    {
+      throw new NullPointerException("Encoding is null.");
+    }
     final JFreeReport report = parseReport(in);
     write(report, w, contentBase, encoding);
     w.flush();

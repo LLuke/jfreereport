@@ -21,43 +21,46 @@
  * Boston, MA 02111-1307, USA.
  *
  * ------------------------------
- * ParserBaseModule.java
+ * ConfigStorage.java
  * ------------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtParserModule.java,v 1.3 2003/07/12 14:00:43 taqua Exp $
+ * $Id$
  *
  * Changes 
  * -------------------------
- * 06.07.2003 : Initial version
+ * 14.07.2003 : Initial version
  *  
  */
 
-package org.jfree.report.modules.parser.ext;
+package org.jfree.report.modules.misc.configstore.base;
 
-import org.jfree.report.modules.AbstractModule;
-import org.jfree.report.modules.ModuleInitializeException;
+import java.util.Properties;
 
-public class ExtParserModule  extends AbstractModule
+// A valid configuration path does not contain dots, semicolons or colons.
+// A valid path obeys to the same rules as java identifiers ..
+public interface ConfigStorage
 {
-  public ExtParserModule() throws ModuleInitializeException
-  {
-    loadModuleInfo();
-  }
+  public void storeProperties (String configPath, Properties properties)
+      throws ConfigStoreException;
 
-  public void initialize() throws ModuleInitializeException
-  {
-    if (isClassLoadable("org.xml.sax.ext.LexicalHandler") == false)
-    {
-      throw new ModuleInitializeException("Unable to load JAXP-1.1 classes. " +
-          "Check your classpath and XML parser configuration.");
-    }
+  /**
+   * Loads the properties from the given path, specifying the given properties
+   * as default.
+   *
+   * @param configPath
+   * @return
+   */
+  public Properties loadProperties (String configPath, Properties defaults)
+      throws ConfigStoreException;
 
-    performExternalInitialize(ExtParserModuleInit.class.getName());
-  }
-
-
+  /**
+   * Tests, whether some configuration data exists for the given configuration.
+   * @param configPath the configuration path to the property storage.
+   * @return true, if there are properties under this path, false otherwise.
+   */
+  public boolean existsProperties (String configPath);
 }

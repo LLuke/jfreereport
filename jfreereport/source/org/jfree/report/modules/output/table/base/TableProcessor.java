@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.1 2003/07/07 22:44:07 taqua Exp $
+ * $Id: TableProcessor.java,v 1.2 2003/07/10 20:02:09 taqua Exp $
  *
  * Changes
  * -------
@@ -212,7 +212,7 @@ public abstract class TableProcessor
     // now change the writer function to be a dummy writer. We don't want any
     // output in the prepare runs.
     final TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
-    w.setProducer(createProducer(true));
+    w.setProducer(createDummyProducer());
     w.getProducer().configure(getProperties());
 
     // now process all function levels.
@@ -316,7 +316,7 @@ public abstract class TableProcessor
       ReportState state = repaginate();
 
       final TableWriter w = (TableWriter) state.getDataRow().get(TABLE_WRITER);
-      w.setProducer(createProducer(false));
+      w.setProducer(createProducer(w.getProducer().getGridBoundsCollection()));
       w.getProducer().configure(getProperties());
 
       w.setMaxWidth((float) getReport().getDefaultPageFormat().getImageableWidth());
@@ -350,10 +350,16 @@ public abstract class TableProcessor
   /**
    * Creates a TableProducer. The TableProducer is responsible to create the table.
    *
-   * @param dummy true, if dummy mode is enabled, and no writing should be done, false otherwise.
    * @return the created table producer, never null.
    */
-  protected abstract TableProducer createProducer(boolean dummy);
+  protected abstract TableProducer createProducer(TableLayoutInfo gridLayoutBounds);
+
+  /**
+   * Creates a dummy TableProducer. The TableProducer is responsible to compute the layout.
+   *
+   * @return the created table producer, never null.
+   */
+  protected abstract TableProducer createDummyProducer();
 
   /**
    * Defines a property for this output target. Properties are the standard way of configuring
