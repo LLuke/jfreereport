@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextExportDialog.java,v 1.6 2003/03/04 20:28:50 taqua Exp $
+ * $Id: PlainTextExportDialog.java,v 1.7 2003/03/09 17:48:58 taqua Exp $
  *
  * Changes
  * --------
@@ -85,7 +85,6 @@ import com.jrefinery.report.util.ExceptionDialog;
 import com.jrefinery.report.util.NullOutputStream;
 import com.jrefinery.report.util.StringUtil;
 import com.jrefinery.report.util.ActionRadioButton;
-import com.jrefinery.report.util.Log;
 import com.jrefinery.ui.ExtensionFileFilter;
 
 /**

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);;
  *
- * $Id: PrinterCommandSet.java,v 1.8 2003/02/27 10:35:40 mungady Exp $
+ * $Id: PrinterCommandSet.java,v 1.9 2003/03/07 16:56:04 taqua Exp $
  *
  * Changes
  * -------
@@ -41,10 +41,10 @@ import java.awt.print.PageFormat;
 import java.awt.print.Paper;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
 import com.jrefinery.report.targets.FontDefinition;
+import com.jrefinery.report.util.EncodingSupport;
 import com.jrefinery.report.util.PageFormatFactory;
 
 /**
@@ -643,14 +643,11 @@ public class PrinterCommandSet
    */
   public boolean isEncodingSupported(String encoding)
   {
-    try
+    if (EncodingSupport.isSupportedEncoding(encoding))
     {
-      " ".getBytes(encoding);
+      // if already checked there, then use it ...
       return true;
     }
-    catch (UnsupportedEncodingException e)
-    {
-      return false;
-    }
+    return false;
   }
 }
