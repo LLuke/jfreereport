@@ -24,7 +24,7 @@
  * JFreeReportResources.java
  * -------------------------
  *
- * $Id: JFreeReportResources.java,v 1.27 2002/11/21 13:03:12 taqua Exp $
+ * $Id: JFreeReportResources.java,v 1.28 2002/11/29 12:00:59 mungady Exp $
  *
  */
 package com.jrefinery.report.resources;
@@ -125,7 +125,7 @@ public class JFreeReportResources extends ListResourceBundle
   private static final Object[][] CONTENTS =
           {
             {"project.name", "JFreeReport"},
-            {"project.version", "0.7.6-cvs"},
+            {"project.version", "0.8.0"},
             {"project.info", "http://www.object-refinery.com/jfreereport/index.html"},
             {"project.copyright",
                 "(C)opyright 2000-2002, by Simba Management Limited and Contributors"},
