@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportDescriptionHandler.java,v 1.6 2003/02/25 12:48:19 taqua Exp $
+ * $Id: ReportDescriptionHandler.java,v 1.7 2003/02/26 16:42:18 mungady Exp $
  *
  * Changes
  * -------
@@ -46,8 +46,8 @@ import com.jrefinery.report.PageHeader;
 import com.jrefinery.report.ReportFooter;
 import com.jrefinery.report.ReportHeader;
 import com.jrefinery.report.io.InitialReportHandler;
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ReportDefinitionHandler;
+import com.jrefinery.xml.ElementDefinitionHandler;
+import com.jrefinery.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -57,7 +57,7 @@ import org.xml.sax.SAXException;
  *
  * @author Thomas Morgner
  */
-public class ReportDescriptionHandler implements ReportDefinitionHandler
+public class ReportDescriptionHandler implements ElementDefinitionHandler
 {
   /** The 'report-header' tag name. */
   public static final String REPORT_HEADER_TAG = "report-header";

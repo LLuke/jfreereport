@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupHandler.java,v 1.5 2003/02/24 17:34:03 taqua Exp $
+ * $Id: GroupHandler.java,v 1.6 2003/02/25 12:48:19 taqua Exp $
  *
  * Changes
  * -------
@@ -42,9 +42,9 @@ import com.jrefinery.report.Band;
 import com.jrefinery.report.Group;
 import com.jrefinery.report.GroupFooter;
 import com.jrefinery.report.GroupHeader;
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ReportDefinitionHandler;
 import com.jrefinery.report.util.CharacterEntityParser;
+import com.jrefinery.xml.ElementDefinitionHandler;
+import com.jrefinery.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -53,7 +53,7 @@ import org.xml.sax.SAXException;
  *
  * @author Thomas Morgner.
  */
-public class GroupHandler implements ReportDefinitionHandler
+public class GroupHandler implements ElementDefinitionHandler
 {
   /** The 'fields' tag name. */
   public static final String FIELDS_TAG = "fields";

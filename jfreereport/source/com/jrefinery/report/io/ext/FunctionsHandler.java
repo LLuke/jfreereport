@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FunctionsHandler.java,v 1.5 2003/02/24 17:34:01 taqua Exp $
+ * $Id: FunctionsHandler.java,v 1.6 2003/02/25 12:48:19 taqua Exp $
  *
  * Changes
  * -------
@@ -43,11 +43,11 @@ import com.jrefinery.report.function.Expression;
 import com.jrefinery.report.function.Function;
 import com.jrefinery.report.function.FunctionInitializeException;
 import com.jrefinery.report.io.InitialReportHandler;
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ParserUtil;
-import com.jrefinery.report.io.ReportDefinitionHandler;
-import com.jrefinery.report.io.ext.factory.objects.ClassFactoryCollector;
-import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
+import com.jrefinery.xml.factory.objects.ClassFactoryCollector;
+import com.jrefinery.xml.factory.objects.ObjectDescription;
+import com.jrefinery.xml.ElementDefinitionHandler;
+import com.jrefinery.xml.Parser;
+import com.jrefinery.xml.ParserUtil;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -59,7 +59,7 @@ import java.util.Iterator;
  *
  * @author Thomas Morgner.
  */
-public class FunctionsHandler implements ReportDefinitionHandler
+public class FunctionsHandler implements ElementDefinitionHandler
 {
   /** The name of the function tag. */
   public static final String FUNCTION_TAG = "function";

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataDefinitionHandler.java,v 1.3 2003/02/24 10:37:53 mungady Exp $
+ * $Id: DataDefinitionHandler.java,v 1.4 2003/02/25 12:48:19 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,9 @@
 
 package com.jrefinery.report.io.ext;
 
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ReportDefinitionHandler;
 import org.xml.sax.Attributes;
+import com.jrefinery.xml.Parser;
+import com.jrefinery.xml.ElementDefinitionHandler;
 
 /**
  * Not fully implemented. Will serve as description of the used tables for the
@@ -48,7 +48,7 @@ import org.xml.sax.Attributes;
  * 
  * @author Thomas Morgner.
  */
-public class DataDefinitionHandler implements ReportDefinitionHandler
+public class DataDefinitionHandler implements ElementDefinitionHandler
 {
   /** The parser. */
   private Parser parser;

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportGenerator.java,v 1.27 2003/02/26 16:42:16 mungady Exp $
+ * $Id: ReportGenerator.java,v 1.28 2003/04/08 14:05:28 mungady Exp $
  *
  * Changes
  * -------
@@ -39,21 +39,15 @@
 
 package com.jrefinery.report.io;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.xml.ParserFrontend;
+import com.jrefinery.xml.ElementDefinitionException;
+import org.xml.sax.InputSource;
 
 /**
  * The reportgenerator initializes the parser and provides an interface
@@ -66,22 +60,10 @@ import com.jrefinery.report.util.ReportConfiguration;
  *
  * @author Thomas Morgner
  */
-public class ReportGenerator
+public class ReportGenerator extends ParserFrontend
 {
   /** The report generator. */
   private static ReportGenerator generator;
-
-  /** The report handler. */
-  private Parser defaulthandler;
-
-  /** The parser factory. */
-  private SAXParserFactory factory;
-
-  /** The DTD. */
-  private ParserEntityResolver entityResolver;
-
-  /** Validate the DTD? */
-  private boolean validateDTD;
 
   /**
    * Creates a new report generator. The generator uses the singleton pattern by default,
@@ -89,49 +71,8 @@ public class ReportGenerator
    */
   protected ReportGenerator ()
   {
-    defaulthandler = new Parser();
+    super(new ReportParser());
     initFromSystem ();
-  }
-
-  /**
-   * Returns <code>true</code> if the report definition should be validated against the DTD, and
-   * <code>false</code> otherwise.
-   * 
-   * @return A boolean.
-   */
-  public boolean isValidateDTD()
-  {
-    return validateDTD;
-  }
-
-  /**
-   * Sets a flag that controls whether or not the report definition is validated against the DTD.
-   * 
-   * @param validateDTD  the flag.
-   */
-  public void setValidateDTD(boolean validateDTD)
-  {
-    this.validateDTD = validateDTD;
-  }
-
-  /**
-   * Returns the entity resolver.
-   * 
-   * @return The entity resolver.
-   */
-  public ParserEntityResolver getEntityResolver()
-  {
-    return entityResolver;
-  }
-
-  /**
-   * Sets the entity resolver.
-   * 
-   * @param entityResolver  the entity resolver.
-   */
-  public void setEntityResolver(ParserEntityResolver entityResolver)
-  {
-    this.entityResolver = entityResolver;
   }
 
   /**
@@ -141,7 +82,7 @@ public class ReportGenerator
   public void initFromSystem ()
   {
     setValidateDTD(ReportConfiguration.getGlobalConfig().isValidateXML());
-    entityResolver = ParserEntityResolver.getDefaultResolver();
+    setEntityResolver(ParserEntityResolver.getDefaultResolver());
   }
 
   /**
@@ -153,9 +94,9 @@ public class ReportGenerator
    * @return the report.
    *
    * @throws IOException if an I/O error occurs.
-   * @throws ReportDefinitionException if there is a problem parsing the report template.
+   * @throws ElementDefinitionException if there is a problem parsing the report template.
    */
-  public JFreeReport parseReport (String file) throws IOException, ReportDefinitionException
+  public JFreeReport parseReport (String file) throws IOException, ElementDefinitionException
   {
     if (file == null)
     {
@@ -175,10 +116,10 @@ public class ReportGenerator
    * @return the report.
    *
    * @throws IOException if an I/O error occurs.
-   * @throws ReportDefinitionException if there is a problem parsing the report template.
+   * @throws ElementDefinitionException if there is a problem parsing the report template.
    */
   public JFreeReport parseReport (URL file)
-          throws ReportDefinitionException, IOException
+          throws ElementDefinitionException, IOException
   {
     return parseReport (file, file);
   }
@@ -197,20 +138,12 @@ public class ReportGenerator
    * @return the parsed report.
    *
    * @throws IOException if an I/O error occurs.
-   * @throws ReportDefinitionException if there is a problem parsing the report template.
+   * @throws ElementDefinitionException if there is a problem parsing the report template.
    */
   public JFreeReport parseReport (URL file, URL contentBase)
-          throws ReportDefinitionException, IOException
+          throws ElementDefinitionException, IOException
   {
-    if (file == null)
-    {
-      throw new NullPointerException ("File may not be null");
-    }
-
-    BufferedInputStream bin = new BufferedInputStream (file.openStream ());
-    InputSource in = new InputSource (bin);
-    in.setSystemId (file.toString ());
-    JFreeReport report = parseReport (in, contentBase);
+    JFreeReport report = (JFreeReport) parse (file, contentBase);
     report.setProperty(JFreeReport.REPORT_DEFINITION_SOURCE, file.toString());
     if (contentBase != null)
     {
@@ -220,7 +153,6 @@ public class ReportGenerator
     {
       report.setProperty(JFreeReport.REPORT_DEFINITION_CONTENTBASE, file.toString());
     }
-    bin.close ();
     return report;
   }
 
@@ -234,9 +166,9 @@ public class ReportGenerator
    * @return the parsed report.
    *
    * @throws IOException if an I/O error occurs.
-   * @throws ReportDefinitionException if there is a problem parsing the report template.
+   * @throws ElementDefinitionException if there is a problem parsing the report template.
    */
-  public JFreeReport parseReport (File file) throws IOException, ReportDefinitionException
+  public JFreeReport parseReport (File file) throws IOException, ElementDefinitionException
   {
     if (file == null)
     {
@@ -248,63 +180,6 @@ public class ReportGenerator
   }
 
   /**
-   * Returns a SAX parser.
-   *
-   * @return a SAXParser.
-   *
-   * @throws ParserConfigurationException if there is a problem configuring the parser.
-   * @throws SAXException if there is a problem with the parser initialisation
-   */
-  protected SAXParser getParser () throws ParserConfigurationException, SAXException
-  {
-    if (factory == null)
-    {
-      factory = SAXParserFactory.newInstance ();
-    }
-    return factory.newSAXParser ();
-  }
-
-  /**
-   * Sets the default handler used for parsing reports. This handler is used to
-   * initiate parsing.
-   *
-   * @param handler  the handler.
-   */
-  public void setDefaultHandler (Parser handler)
-  {
-    if (handler == null)
-    {
-      throw new NullPointerException ();
-    }
-    this.defaulthandler = handler;
-  }
-
-  /**
-   * Returns the ReportDefinitionHandler used for parsing reports.
-   *
-   * @return the report handler.
-   */
-  public Parser getDefaultHandler ()
-  {
-    return defaulthandler;
-  }
-
-  /**
-   * Creates a new instance of the currently set default handler and sets the contentbase
-   * for the handler to <code>contentBase</code>.
-   *
-   * @param contentBase  the content base.
-   *
-   * @return the report handler.
-   */
-  protected Parser createDefaultHandler (URL contentBase)
-  {
-    Parser handler = getDefaultHandler ().getInstance ();
-    handler.setConfigurationValue (Parser.CONTENTBASE_KEY, contentBase);
-    return handler;
-  }
-
-  /**
    * Parses an XML report template file.
    *
    * @param input  the input source.
@@ -312,42 +187,12 @@ public class ReportGenerator
    *
    * @return the report.
    *
-   * @throws ReportDefinitionException if an error occurred.
+   * @throws ElementDefinitionException if an error occurred.
    */
   public JFreeReport parseReport (InputSource input, URL contentBase)
-          throws ReportDefinitionException
+          throws ElementDefinitionException
   {
-    try
-    {
-      SAXParser parser = getParser ();
-      XMLReader reader = parser.getXMLReader();
-
-      reader.setFeature("http://xml.org/sax/features/validation", isValidateDTD());
-      reader.setEntityResolver(getEntityResolver());
-
-      Parser handler = createDefaultHandler (contentBase);
-      try
-      {
-        reader.setContentHandler(handler);
-        reader.setDTDHandler(handler);
-        reader.setEntityResolver(getEntityResolver());
-        reader.setErrorHandler(handler);
-        reader.parse (input);
-        return handler.getReport ();
-      }
-      catch (IOException e)
-      {
-        throw new ReportDefinitionException (e);
-      }
-    }
-    catch (ParserConfigurationException e)
-    {
-      throw new ReportDefinitionException (e);
-    }
-    catch (SAXException e)
-    {
-      throw new ReportDefinitionException (e);
-    }
+    return (JFreeReport) super.parse(input, contentBase);
   }
 
   /**

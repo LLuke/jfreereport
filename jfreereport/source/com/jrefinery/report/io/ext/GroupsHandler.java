@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: GroupsHandler.java,v 1.4 2003/02/24 17:34:04 taqua Exp $
+ * $Id: GroupsHandler.java,v 1.5 2003/02/25 12:48:19 taqua Exp $
  *
  * Changes
  * -------
@@ -40,8 +40,9 @@ package com.jrefinery.report.io.ext;
 
 import com.jrefinery.report.Group;
 import com.jrefinery.report.GroupList;
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ReportDefinitionHandler;
+import com.jrefinery.report.JFreeReport;
+import com.jrefinery.xml.ElementDefinitionHandler;
+import com.jrefinery.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -53,7 +54,7 @@ import org.xml.sax.SAXException;
  * @see GroupList
  * @author Thomas Morgner.
  */
-public class GroupsHandler implements ReportDefinitionHandler
+public class GroupsHandler implements ElementDefinitionHandler
 {
   /** The 'group' tag name. */
   public static final String GROUP_TAG = "group";
@@ -144,7 +145,8 @@ public class GroupsHandler implements ReportDefinitionHandler
   {
     if (tagName.equals(finishTag))
     {
-      getParser().getReport().setGroups(groupList);
+      JFreeReport report = (JFreeReport) getParser().getResult();
+      report.setGroups(groupList);
       getParser().popFactory().endElement(tagName);
     }
     else if (tagName.equals (GROUP_TAG))

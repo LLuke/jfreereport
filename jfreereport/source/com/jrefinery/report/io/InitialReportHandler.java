@@ -29,7 +29,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
 
- * $Id: InitialReportHandler.java,v 1.3 2003/02/25 14:07:28 taqua Exp $
+ * $Id: InitialReportHandler.java,v 1.4 2003/02/26 16:42:15 mungady Exp $
  *
  * Changes
  * -------
@@ -43,6 +43,8 @@ import org.xml.sax.SAXException;
 
 import com.jrefinery.report.io.ext.ExtReportHandler;
 import com.jrefinery.report.io.simple.ReportFactory;
+import com.jrefinery.xml.ElementDefinitionHandler;
+import com.jrefinery.xml.Parser;
 
 /**
  * The InitialReportHandler is used to decide, which parser profile to use
@@ -53,11 +55,11 @@ import com.jrefinery.report.io.simple.ReportFactory;
  * report definition format will be used.
  * <p>
  * Once one of the profiles is activated, the parser forwards all SAXEvents to
- * the selected ReportDefinitionHandler.
+ * the selected ElementDefinitionHandler.
  * 
  * @author Thomas Morgner
  */
-public class InitialReportHandler implements ReportDefinitionHandler
+public class InitialReportHandler implements ElementDefinitionHandler
 {
   /** the document element tag for the extended report format. */
   public static final String REPORT_DEFINITION_TAG = "report-definition";
@@ -92,7 +94,7 @@ public class InitialReportHandler implements ReportDefinitionHandler
   {
     if (tagName.equals(REPORT_DEFINITION_TAG))
     {
-      ReportDefinitionHandler reportDefinitionHandler = new ExtReportHandler(getParser(), tagName);
+      ElementDefinitionHandler reportDefinitionHandler = new ExtReportHandler(getParser(), tagName);
       getParser().pushFactory(reportDefinitionHandler);
     }
     else if (tagName.equals(OLD_REPORT_TAG))

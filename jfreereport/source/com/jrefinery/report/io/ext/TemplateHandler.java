@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplateHandler.java,v 1.7 2003/02/25 12:48:19 taqua Exp $
+ * $Id: TemplateHandler.java,v 1.8 2003/02/26 16:42:18 mungady Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,10 @@
 
 package com.jrefinery.report.io.ext;
 
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ReportDefinitionHandler;
-import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
+import com.jrefinery.xml.factory.objects.ObjectDescription;
 import com.jrefinery.report.io.ext.factory.templates.TemplateDescription;
+import com.jrefinery.xml.ElementDefinitionHandler;
+import com.jrefinery.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -51,7 +51,7 @@ import org.xml.sax.SAXException;
  * @see com.jrefinery.report.filter.templates.Template
  * @author Thomas Morgner.
  */
-public class TemplateHandler implements ReportDefinitionHandler
+public class TemplateHandler implements ElementDefinitionHandler
 {
   /** The compound object tag. */
   public static final String COMPOUND_OBJECT_TAG = "compound-object";

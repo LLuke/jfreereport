@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExtReportHandler.java,v 1.6 2003/02/25 12:48:19 taqua Exp $
+ * $Id: ExtReportHandler.java,v 1.7 2003/03/18 18:28:42 taqua Exp $
  *
  * Changes
  * -------
@@ -40,14 +40,14 @@ package com.jrefinery.report.io.ext;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.InitialReportHandler;
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ReportDefinitionHandler;
 import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
 import com.jrefinery.report.io.ext.factory.elements.ElementFactoryCollector;
-import com.jrefinery.report.io.ext.factory.objects.ClassFactoryCollector;
-import com.jrefinery.report.io.ext.factory.objects.URLClassFactory;
+import com.jrefinery.xml.factory.objects.ClassFactoryCollector;
+import com.jrefinery.xml.factory.objects.URLClassFactory;
 import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactoryCollector;
 import com.jrefinery.report.io.ext.factory.templates.TemplateCollector;
+import com.jrefinery.xml.ElementDefinitionHandler;
+import com.jrefinery.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -60,7 +60,7 @@ import java.util.HashMap;
  *
  * @author Thomas Morgner.
  */
-public class ExtReportHandler implements ReportDefinitionHandler
+public class ExtReportHandler implements ElementDefinitionHandler
 {
   /** The report definition tag name.*/
   public static final String REPORT_DEFINITION_TAG = InitialReportHandler.REPORT_DEFINITION_TAG;

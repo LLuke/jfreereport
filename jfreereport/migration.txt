@@ -144,4 +144,9 @@ The group fields are now enforced to have a subgroup relationship. This means, t
                       // There is no way to form a subgroup relationship between Group 1
                       // and Group 2. Group 1 does not contain all fields of Group 2 and
                       // neither does Group2 contain all fields from Group 1.
-                          
+
+All element coordinates must be smaller than the available page width, or the
+  repagination process will fail. So specifying x="110%" will be a killer as well
+  as specifying x="1000" when the page width is smaller than or equal to 1000.
+
+      

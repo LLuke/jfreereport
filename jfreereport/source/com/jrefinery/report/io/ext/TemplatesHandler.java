@@ -21,14 +21,14 @@
  * Boston, MA 02111-1307, USA.
  *
  * ----------------------------
- * ReportDefinitionHandler.java
+ * ElementDefinitionHandler.java
  * ----------------------------
  * (C)opyright 2003, by Thomas Morgner and Contributors.
  *
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TemplatesHandler.java,v 1.7 2003/02/25 12:48:19 taqua Exp $
+ * $Id: TemplatesHandler.java,v 1.8 2003/02/26 16:42:19 mungady Exp $
  *
  * Changes
  * -------
@@ -38,10 +38,10 @@
 
 package com.jrefinery.report.io.ext;
 
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ReportDefinitionHandler;
 import com.jrefinery.report.io.ext.factory.templates.TemplateCollector;
 import com.jrefinery.report.io.ext.factory.templates.TemplateDescription;
+import com.jrefinery.xml.ElementDefinitionHandler;
+import com.jrefinery.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -53,7 +53,7 @@ import org.xml.sax.SAXException;
  * @author Thomas Morgner.
  * @see com.jrefinery.report.filter.templates.Template 
  */
-public class TemplatesHandler implements ReportDefinitionHandler
+public class TemplatesHandler implements ElementDefinitionHandler
 {
   /** The template tag. */
   public static final String TEMPLATE_TAG = "template";

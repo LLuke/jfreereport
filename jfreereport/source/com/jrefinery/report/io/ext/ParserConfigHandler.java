@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ParserConfigHandler.java,v 1.8 2003/02/25 12:48:19 taqua Exp $
+ * $Id: ParserConfigHandler.java,v 1.9 2003/02/26 16:42:17 mungady Exp $
  *
  * Changes
  * -------
@@ -38,19 +38,19 @@
 
 package com.jrefinery.report.io.ext;
 
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ReportDefinitionHandler;
 import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
 import com.jrefinery.report.io.ext.factory.datasource.DataSourceFactory;
 import com.jrefinery.report.io.ext.factory.elements.ElementFactory;
 import com.jrefinery.report.io.ext.factory.elements.ElementFactoryCollector;
-import com.jrefinery.report.io.ext.factory.objects.ClassFactory;
-import com.jrefinery.report.io.ext.factory.objects.ClassFactoryCollector;
+import com.jrefinery.xml.factory.objects.ClassFactory;
+import com.jrefinery.xml.factory.objects.ClassFactoryCollector;
 import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactory;
 import com.jrefinery.report.io.ext.factory.stylekey.StyleKeyFactoryCollector;
 import com.jrefinery.report.io.ext.factory.templates.TemplateCollection;
 import com.jrefinery.report.io.ext.factory.templates.TemplateCollector;
 import com.jrefinery.report.util.Log;
+import com.jrefinery.xml.ElementDefinitionHandler;
+import com.jrefinery.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -63,7 +63,7 @@ import org.xml.sax.SAXException;
  *
  * @author Thomas Morgner
  */
-public class ParserConfigHandler implements ReportDefinitionHandler
+public class ParserConfigHandler implements ElementDefinitionHandler
 {
   /** The 'stylekey-factory' tag name. */
   public static final String STYLEKEY_FACTORY_TAG = "stylekey-factory";

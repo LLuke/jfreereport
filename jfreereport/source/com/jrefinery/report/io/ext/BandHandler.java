@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BandHandler.java,v 1.7 2003/02/25 12:48:18 taqua Exp $
+ * $Id: BandHandler.java,v 1.8 2003/03/04 20:28:48 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,9 @@ package com.jrefinery.report.io.ext;
 
 import com.jrefinery.report.Band;
 import com.jrefinery.report.Element;
-import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ext.factory.elements.ElementFactoryCollector;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

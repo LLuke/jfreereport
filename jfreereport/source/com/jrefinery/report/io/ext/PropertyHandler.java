@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PropertyHandler.java,v 1.6 2003/02/24 17:34:05 taqua Exp $
+ * $Id: PropertyHandler.java,v 1.7 2003/02/25 12:48:19 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,9 @@
 
 package com.jrefinery.report.io.ext;
 
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ReportDefinitionHandler;
 import com.jrefinery.report.util.CharacterEntityParser;
+import com.jrefinery.xml.ElementDefinitionHandler;
+import com.jrefinery.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -53,7 +53,7 @@ import java.util.Properties;
  *
  * @author Thomas Morgner.
  */
-public class PropertyHandler implements ReportDefinitionHandler
+public class PropertyHandler implements ElementDefinitionHandler
 {
   /** The 'property' tag name. */
   public static final String PROPERTY_TAG = "property";

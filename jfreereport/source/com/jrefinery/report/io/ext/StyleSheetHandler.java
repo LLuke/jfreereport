@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: StyleSheetHandler.java,v 1.11 2003/03/18 18:28:42 taqua Exp $
+ * $Id: StyleSheetHandler.java,v 1.12 2003/03/29 20:17:11 taqua Exp $
  *
  * Changes
  * -------
@@ -40,9 +40,9 @@ package com.jrefinery.report.io.ext;
 
 import java.util.HashMap;
 
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ReportDefinitionHandler;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.xml.ElementDefinitionHandler;
+import com.jrefinery.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -53,7 +53,7 @@ import org.xml.sax.SAXException;
  * @author Thomas Morgner.
  * @see ElementStyleSheet
  */
-public class StyleSheetHandler implements ReportDefinitionHandler
+public class StyleSheetHandler implements ElementDefinitionHandler
 {
   /** The 'compound-key' tag name. */
   public static final String COMPOUND_KEY_TAG = "compound-key";

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfigHandler.java,v 1.7 2003/02/25 12:48:19 taqua Exp $
+ * $Id: ReportConfigHandler.java,v 1.8 2003/02/26 16:42:17 mungady Exp $
  *
  * Changes
  * -------
@@ -40,12 +40,12 @@ package com.jrefinery.report.io.ext;
 
 import com.jrefinery.report.JFreeReport;
 import com.jrefinery.report.io.InitialReportHandler;
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ParserUtil;
-import com.jrefinery.report.io.ReportDefinitionHandler;
 import com.jrefinery.report.util.Log;
 import com.jrefinery.report.util.PageFormatFactory;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.xml.ElementDefinitionHandler;
+import com.jrefinery.xml.Parser;
+import com.jrefinery.xml.ParserUtil;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -63,7 +63,7 @@ import java.util.Properties;
  * @see JFreeReport#setDefaultPageFormat
  * @see JFreeReport#getDefaultPageFormat
  */
-public class ReportConfigHandler implements ReportDefinitionHandler
+public class ReportConfigHandler implements ElementDefinitionHandler
 {
   /** The 'default page format' tag name. */
   public static final String DEFAULT_PAGEFORMAT_TAG = "defaultpageformat";

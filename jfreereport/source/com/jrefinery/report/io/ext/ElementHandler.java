@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementHandler.java,v 1.6 2003/02/25 12:48:19 taqua Exp $
+ * $Id: ElementHandler.java,v 1.7 2003/03/18 18:28:42 taqua Exp $
  *
  * Changes
  * -------
@@ -43,11 +43,11 @@ import java.util.Map;
 
 import com.jrefinery.report.Element;
 import com.jrefinery.report.filter.DataSource;
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ReportDefinitionHandler;
 import com.jrefinery.report.io.ext.factory.templates.TemplateCollector;
 import com.jrefinery.report.io.ext.factory.templates.TemplateDescription;
 import com.jrefinery.report.targets.style.ElementStyleSheet;
+import com.jrefinery.xml.ElementDefinitionHandler;
+import com.jrefinery.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -59,7 +59,7 @@ import org.xml.sax.SAXException;
  *
  * @author Thomas Morgner.
  */
-public class ElementHandler implements ReportDefinitionHandler
+public class ElementHandler implements ElementDefinitionHandler
 {
   /** The 'style' tag. */
   public static final String STYLE_TAG = StylesHandler.STYLE_TAG;

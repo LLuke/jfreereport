@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CompoundStyleKeyHandler.java,v 1.7 2003/02/24 17:33:57 taqua Exp $
+ * $Id: CompoundStyleKeyHandler.java,v 1.8 2003/02/25 12:48:19 taqua Exp $
  *
  * Changes
  * -------
@@ -38,9 +38,9 @@
 
 package com.jrefinery.report.io.ext;
 
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ext.factory.objects.ClassFactory;
-import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
+import com.jrefinery.xml.factory.objects.ClassFactory;
+import com.jrefinery.xml.factory.objects.ObjectDescription;
+import com.jrefinery.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

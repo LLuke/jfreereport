@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: DataSourceHandler.java,v 1.5 2003/02/24 17:33:59 taqua Exp $
+ * $Id: DataSourceHandler.java,v 1.6 2003/02/25 12:48:19 taqua Exp $
  *
  * Changes
  * -------
@@ -39,9 +39,9 @@
 package com.jrefinery.report.io.ext;
 
 import com.jrefinery.report.filter.DataSource;
-import com.jrefinery.report.io.Parser;
 import com.jrefinery.report.io.ext.factory.datasource.DataSourceCollector;
-import com.jrefinery.report.io.ext.factory.objects.ObjectDescription;
+import com.jrefinery.xml.factory.objects.ObjectDescription;
+import com.jrefinery.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

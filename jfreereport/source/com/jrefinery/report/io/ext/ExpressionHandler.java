@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExpressionHandler.java,v 1.4 2003/02/24 17:33:59 taqua Exp $
+ * $Id: ExpressionHandler.java,v 1.5 2003/02/25 12:48:19 taqua Exp $
  *
  * Changes
  * -------
@@ -39,8 +39,8 @@
 package com.jrefinery.report.io.ext;
 
 import com.jrefinery.report.function.Expression;
-import com.jrefinery.report.io.Parser;
-import com.jrefinery.report.io.ReportDefinitionHandler;
+import com.jrefinery.xml.ElementDefinitionHandler;
+import com.jrefinery.xml.Parser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -52,7 +52,7 @@ import org.xml.sax.SAXException;
  * @see com.jrefinery.report.function.Function
  * @author Thomas Morgner
  */
-public class ExpressionHandler implements ReportDefinitionHandler
+public class ExpressionHandler implements ElementDefinitionHandler
 {
   /** The properties tag name. */
   public static final String PROPERTIES_TAG = "properties";
