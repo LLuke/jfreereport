@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementStyleSheet.java,v 1.5 2003/08/25 14:29:33 taqua Exp $
+ * $Id: ElementStyleSheet.java,v 1.6 2003/08/31 19:27:59 taqua Exp $
  *
  * Changes
  * -------
@@ -228,7 +228,7 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
   private transient List parentsListCached;
   /** An unmodifiable list, chaching the return value from getDefaultParents(). */
   private transient List defaultParentsListCached;
-
+  /** The cached font definition instance from this stylessheet. */
   private transient FontDefinition fontDefinition;
 
   /**
@@ -772,6 +772,13 @@ public class ElementStyleSheet implements Serializable, StyleChangeListener, Clo
     return i.intValue();
   }
 
+  /**
+   * Checks, whether the given key is one of the keys used to define the 
+   * font definition from this stylesheet.
+   * 
+   * @param key the key that should be checked.
+   * @return true, if the key is a font definition key, false otherwise.
+   */
   private boolean isFontDefinitionProperty (StyleKey key)
   {
     if (key.equals(FONT))

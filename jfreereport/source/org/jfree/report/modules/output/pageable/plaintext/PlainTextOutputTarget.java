@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.5 2003/08/24 15:05:18 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.6 2003/08/25 14:29:31 taqua Exp $
  *
  * Changes
  * -------
@@ -100,8 +100,9 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
 
   /** The property to define the encoding of the text. */
   public static final String ENCODING_PROPERTY = "Encoding";
-
+  /** The property to define the lines per inch of the text. */
   public static final String LINES_PER_INCH = "LinesPerInch";
+  /** The property to define the characters per inch of the text. */
   public static final String CHARS_PER_INCH = "CharsPerInch";
 
   /** The 'XML encoding' property key. */

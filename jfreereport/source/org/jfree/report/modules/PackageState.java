@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PackageState.java,v 1.6 2003/08/31 19:27:56 taqua Exp $
+ * $Id: PackageState.java,v 1.7 2003/09/02 15:05:32 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -42,7 +42,7 @@ import org.jfree.report.util.Log;
 
 /**
  * The package state class is used by the package manager to keep track of
- * the activation level of the installed packages.
+ * the activation level of the installed or errornous packages.
  *
  * @author Thomas Morgner
  */
@@ -75,9 +75,10 @@ public class PackageState
 
   /**
    * Creates a new package state for the given module. The module state will
-   * be initialized to STATE_NEW.
+   * be initialized to the given initial state.
    *
    * @param module the module.
+   * @param state the initial state
    */
   public PackageState(final Module module, final int state)
   {
@@ -184,6 +185,14 @@ public class PackageState
     return false;
   }
 
+  /**
+   * Compares this object with the given other object for equality. 
+   * @see java.lang.Object#equals(java.lang.Object)
+   * 
+   * @param o the other object to be compared
+   * @return true, if the other object is also a PackageState containing
+   * the same module, false otherwise. 
+   */
   public boolean equals(Object o)
   {
     if (this == o)
@@ -205,6 +214,12 @@ public class PackageState
     return true;
   }
 
+  /**
+   * Computes a hashcode for this package state. 
+   * @see java.lang.Object#hashCode()
+   * 
+   * @return the hashcode.
+   */
   public int hashCode()
   {
     return module.hashCode();

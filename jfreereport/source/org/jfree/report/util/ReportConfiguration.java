@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportConfiguration.java,v 1.8 2003/08/31 19:27:59 taqua Exp $
+ * $Id: ReportConfiguration.java,v 1.9 2003/09/02 15:05:34 taqua Exp $
  *
  * Changes
  * -------
@@ -653,6 +653,13 @@ public class ReportConfiguration implements Configuration, Serializable
     }
   }
 
+  /**
+   * Checks, whether the given key is localy defined in this instance or
+   * whether the key's value is inherited.
+   * 
+   * @param key the key that should be checked.
+   * @return true, if the key is defined locally, false otherwise.
+   */
   public boolean isLocallyDefined (String key)
   {
     return configuration.containsKey(key);

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.3 2003/08/24 15:13:23 taqua Exp $
+ * $Id: ReportState.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -205,8 +205,9 @@ public abstract class ReportState implements Cloneable
   }
 
   /**
-   * Implements a singleton datarow preview ...
-   * @return
+   * Implements a singleton datarow preview.
+   * 
+   * @return the preview instance of the datarow.
    */
   protected DataRowPreview getDataRowPreview()
   {
@@ -283,6 +284,12 @@ public abstract class ReportState implements Cloneable
     this.report = report;
   }
 
+  /**
+   * Returns the report definition implementation used as backend when generating
+   * the report. Don't play with it!
+   * 
+   * @return the internal report definition.
+   */
   protected ReportDefinitionImpl getReportDefinition()
   {
     return this.report;
@@ -845,6 +852,7 @@ public abstract class ReportState implements Cloneable
   /**
    * Returns true if this is the last item in the group, and false otherwise.
    *
+   * @param g the group that should be checked.
    * @param currentDataRow  the current data row.
    * @param nextDataRow   the next data row, or null, if this is the last datarow.
    *

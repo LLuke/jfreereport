@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ConfigResources.java,v 1.2 2003/08/31 19:27:57 taqua Exp $
+ * $Id: ConfigResources.java,v 1.3 2003/09/08 18:11:49 taqua Exp $
  *
  * Changes 
  * -------------------------
@@ -89,8 +89,36 @@ public class ConfigResources extends JFreeReportResources
           getIcon("org/jfree/report/modules/gui/config/resources/Save24.gif")},
 
         {"action.exit.name", "Exit"},
+        {"action.update.name", "Update"},
+        {"action.cancel.name", "Save"},
+        {"action.boolean.name", "Boolean"},
+
+        {"action.remove-enum-entry.name", "Remove"},
+        {"action.add-enum-entry.name", "Add"},
+        {"action.update-enum-entry.name", "Update"},
 
         {"default-editor.error-icon",
           getIcon("org/jfree/report/modules/gui/config/resources/Stop24.gif")},
+          
+        {"config-description-editor.import-complete", "Import complete"},
+        {"config-description-editor.unnamed-entry", "<unnamed entry>"},
+        {"config-description-editor.title", "Configuration Definition Editor"},
+        {"config-description-editor.xml-files", "XML files"},
+        {"config-description-editor.welcome", "Welcome..."},
+        {"config-description-editor.baseclass", "Baseclass:"},
+        {"config-description-editor.text-editor-message", 
+            "The text editor does not require any setup."},
+        {"config-description-editor.keyname", "Key-Name:"},
+        {"config-description-editor.description", "Description:"},
+        {"config-description-editor.type", "Type:"},
+        {"config-description-editor.global", "Global:"},
+        {"config-description-editor.type-text", "Text"},
+        {"config-description-editor.type-class", "Class"},
+        {"config-description-editor.type-enum", "Enum"},
+        {"config-description-editor.save-complete", "Saving was successfull."},
+        {"config-description-editor.save-failed", "Saving failed: {0}"},
+        {"config-description-editor.load-complete", "Loading was successfull."},
+        {"config-description-editor.load-failed", "Loading failed: {0}"},
+        {"config-description-editor.update-complete", "Updating the entry done."},
       };
 }

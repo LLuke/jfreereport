@@ -30,7 +30,7 @@
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
  *
- * $Id: ExcelDataCellStyle.java,v 1.2 2003/08/24 15:06:10 taqua Exp $
+ * $Id: ExcelDataCellStyle.java,v 1.3 2003/08/31 19:27:58 taqua Exp $
  *
  * Changes
  * -------
@@ -74,8 +74,17 @@ public final class ExcelDataCellStyle
   /** the data style. */
   private String dataStyle;
 
+  /** A cached hashcode. */
   private int hashCode;
 
+  /**
+   * Creates a new ExcelDataCellStyle object with the given attributes.
+   * 
+   * @param fontDefinition the font definition used in the cell.
+   * @param textColor the text color of the cell.
+   * @param horizontal the horizontal alignment of the cell contents.
+   * @param vertical the vertical alignment of the cell contents.
+   */
   public ExcelDataCellStyle(final FontDefinition fontDefinition, final Color textColor,
                             final ElementAlignment horizontal, final ElementAlignment vertical)
   {
@@ -86,12 +95,12 @@ public final class ExcelDataCellStyle
   /**
    * Creates a new ExcelDataCellStyle definition.
    *
-   * @param fontDefinition
-   * @param textColor
-   * @param horizontal
-   * @param vertical
-   * @param dataStyle
-   * @param wrapText
+   * @param fontDefinition the font definition used in the cell.
+   * @param textColor the text color of the cell.
+   * @param horizontal the horizontal alignment of the cell contents.
+   * @param vertical the vertical alignment of the cell contents.
+   * @param dataStyle the data style definition or null, if the default should be used.
+   * @param wrapText defines whether to wrap text in excel.
    */
   public ExcelDataCellStyle(final FontDefinition fontDefinition, final Color textColor,
                             final ElementAlignment horizontal, final ElementAlignment vertical,

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morger
  * Contributor(s):   Stefan Prange;
  *
- * $Id: SystemPropertyConfiguration.java,v 1.2 2003/08/24 15:13:23 taqua Exp $
+ * $Id: SystemPropertyConfiguration.java,v 1.3 2003/08/31 19:27:59 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -97,6 +97,13 @@ public class SystemPropertyConfiguration extends ReportConfiguration
     return super.getConfigProperty(key, defaultValue);
   }
 
+  /**
+   * Checks, whether the given key is locally defined in the system properties. 
+   * @see org.jfree.report.util.ReportConfiguration#isLocallyDefined(java.lang.String)
+   * 
+   * @param key the key that should be checked.
+   * @return true, if the key is defined in the system properties, false otherwise.
+   */
   public boolean isLocallyDefined(String key)
   {
     try

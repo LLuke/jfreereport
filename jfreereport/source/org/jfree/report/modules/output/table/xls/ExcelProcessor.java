@@ -29,7 +29,7 @@
  * Contributor(s):   Thomas Morgner;
  *                   David Gilbert (for Simba Management Limited);
  *
- * $Id: ExcelProcessor.java,v 1.5 2003/08/24 15:06:10 taqua Exp $
+ * $Id: ExcelProcessor.java,v 1.6 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -71,6 +71,10 @@ public class ExcelProcessor extends TableProcessor
   /** The output stream that is used to write the excel file. */
   private OutputStream outputStream;
 
+  /** 
+   * The configuration prefix when reading the configuration settings 
+   * from the report configuration.
+   */
   public static final String CONFIGURATION_PREFIX =
       "org.jfree.report.modules.output.table.xls.";
 

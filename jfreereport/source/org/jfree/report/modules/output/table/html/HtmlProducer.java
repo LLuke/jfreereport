@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProducer.java,v 1.8 2003/09/07 15:27:08 taqua Exp $
+ * $Id: HtmlProducer.java,v 1.9 2003/09/08 18:11:49 taqua Exp $
  *
  * Changes
  * -------
@@ -82,7 +82,7 @@ public class HtmlProducer extends TableProducer
 
   /** the Filesystem is used to store the main html file and any external content. */
   private HtmlFilesystem filesystem;
-
+  /** The configuration key that defines whether to generate XHTML code. */
   public static final String GENERATE_XHTML = "GenerateXHTML";
 
   /** the fileencoding for the main html file. */
@@ -301,17 +301,17 @@ public class HtmlProducer extends TableProducer
         csswriter.println();
       }
     }
-    final Iterator tableStyles = styleCollection.getRegisteredTableStyles();
-    while (tableStyles.hasNext())
-    {
-      final String style = (String) tableStyles.next();
-      final String styleName = styleCollection.getTableStyleClass(style);
-      csswriter.print(styleName);
-      csswriter.println(" { ");
-      csswriter.println(style);
-      csswriter.println(" } ");
-      csswriter.println();
-    }
+//    final Iterator tableStyles = styleCollection.getRegisteredTableStyles();
+//    while (tableStyles.hasNext())
+//    {
+//      final String style = (String) tableStyles.next();
+//      final String styleName = styleCollection.getTableStyleClass(style);
+//      csswriter.print(styleName);
+//      csswriter.println(" { ");
+//      csswriter.println(style);
+//      csswriter.println(" } ");
+//      csswriter.println();
+//    }
 
     return filesystem.createCSSReference(cssbuffer.toString());
   }
@@ -450,19 +450,19 @@ public class HtmlProducer extends TableProducer
       styleBuilder.append("pt");
 
       String trStyle = styleBuilder.toString();
-      String trStyleClass = styleCollection.getTableStyleClass(trStyle);
-      if (trStyleClass == null || isCreateBodyFragment())
-      {
+//      String trStyleClass = styleCollection.getTableStyleClass(trStyle);
+//      if (trStyleClass == null || isCreateBodyFragment())
+//      {
         pout.print("<tr style=\"");
         pout.print(trStyle);
         pout.println("\">");
-      }
-      else
-      {
-        pout.print("<tr class=\"");
-        pout.print(trStyleClass);
-        pout.println("\">");
-      }
+//      }
+//      else
+//      {
+//        pout.print("<tr class=\"");
+//        pout.print(trStyleClass);
+//        pout.println("\">");
+//      }
 
       for (int x = 0; x < layout.getWidth(); x++)
       {
@@ -478,19 +478,19 @@ public class HtmlProducer extends TableProducer
 
           pout.println("    <!-- No Element -->");
           String tdStyle = styleBuilder.toString();
-          String tdStyleClass = styleCollection.getTableStyleClass(tdStyle);
-          if (tdStyleClass == null || isCreateBodyFragment())
-          {
+//          String tdStyleClass = styleCollection.getTableStyleClass(tdStyle);
+//          if (tdStyleClass == null || isCreateBodyFragment())
+//          {
             pout.print("    <td style=\"");
             pout.print(tdStyle);
             pout.println("\">");
-          }
-          else
-          {
-            pout.print("    <td class=\"");
-            pout.print(tdStyleClass);
-            pout.println("\">");
-          }
+//          }
+//          else
+//          {
+//            pout.print("    <td class=\"");
+//            pout.print(tdStyleClass);
+//            pout.println("\">");
+//          }
           continue;
         }
 
@@ -524,17 +524,17 @@ public class HtmlProducer extends TableProducer
           styleBuilder.append(style);
         }
         String tdStyle = styleBuilder.toString();
-        String tdStyleClass = styleCollection.getTableStyleClass(tdStyle);
-        if (tdStyleClass == null || isCreateBodyFragment())
-        {
+//        String tdStyleClass = styleCollection.getTableStyleClass(tdStyle);
+//        if (tdStyleClass == null || isCreateBodyFragment())
+//        {
           pout.print("    <td style=\"");
           pout.print(tdStyle);
-        }
-        else
-        {
-          pout.print("    <td class=\"");
-          pout.print(tdStyleClass);
-        }
+//        }
+//        else
+//        {
+//          pout.print("    <td class=\"");
+//          pout.print(tdStyleClass);
+//        }
 
         // Something's wrong with the given grid position, we can't handle that
         if (gridPosition == null || gridPosition.isInvalidCell())
@@ -701,6 +701,11 @@ public class HtmlProducer extends TableProducer
     this.cellDataFactory = new HtmlCellDataFactory(styleCollection, isGenerateXHTML());
   }
 
+  /**
+   * Checks, whether this target should generate XHTML instead of HTML4 code.
+   * 
+   * @return true, if XHTML code should be generated, false otherwise.
+   */
   protected boolean isGenerateXHTML()
   {
     return getProperty(GENERATE_XHTML, "false").equals("true");

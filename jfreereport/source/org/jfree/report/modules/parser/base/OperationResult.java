@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id$
+ * $Id: OperationResult.java,v 1.1 2003/08/26 17:37:28 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 25.08.2003 : Initial version
+ * 25-Aug-2003 : Initial version
  *  
  */
 
@@ -40,41 +40,96 @@ package org.jfree.report.modules.parser.base;
 
 import java.io.Serializable;
 
+/**
+ * The OperationResult class provides the possibility to monitor the result of 
+ * the parsing progress and to handle warnings and errors.
+ *  
+ * @author Thomas Morgner
+ */
 public class OperationResult implements Serializable
 {
+  /** The message of the result object. */
   private String message;
+  /** The severity level of the message. */
   private SeverityLevel severity;
+  /** The column in the xml file where the result was generated. */
   private int column;
+  /** The line in the xml file where the result was generated. */
   private int line;
 
+  /**
+   * Creates a new operation result with the given message and severity.
+   * 
+   * @param message the message of this result object.
+   * @param severity the assigned severity.
+   * @throws NullPointerException if one of the parameters is null.
+   */
   public OperationResult(String message, SeverityLevel severity)
   {
     this (message, severity, -1, -1);
   }
 
+  /**
+   * Creates a new operation result with the given message, severity and
+   * parse position.
+   * 
+   * @param message the message of this result object.
+   * @param severity the assigned severity.
+   * @param column the column of the parse position
+   * @param line the line of the parse position.
+   * @throws NullPointerException if one of the parameters is null.
+   */
   public OperationResult(String message, SeverityLevel severity, int column, int line)
   {
+    if (message == null)
+    {
+      throw new NullPointerException("message must not be null.");
+    }
+    if (severity == null)
+    {
+      throw new NullPointerException("severity must not be null.");
+    }
     this.message = message;
     this.severity = severity;
     this.column = column;
     this.line = line;
   }
 
+  /**
+   * Returns the message of the operation result. The message is never null. 
+   * 
+   * @return the message.
+   */
   public String getMessage()
   {
     return message;
   }
 
+  /**
+   * Returns the severity of the message. The severity is never null.
+   * 
+   * @return the severity.
+   */
   public SeverityLevel getSeverity()
   {
     return severity;
   }
 
+  /**
+   * Returns the column of the parse position where this message occured.
+   * 
+   * @return the column of the parse position.
+   */
   public int getColumn()
   {
     return column;
   }
 
+  /**
+   * Returns the line of the parse position where this message occured.
+   * 
+   * @return the line of the parse position.
+   */
   public int getLine()
   {
     return line;

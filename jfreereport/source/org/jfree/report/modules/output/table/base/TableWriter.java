@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableWriter.java,v 1.3 2003/08/24 15:06:10 taqua Exp $
+ * $Id: TableWriter.java,v 1.4 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -67,6 +67,7 @@ import org.jfree.report.style.BandStyleSheet;
  */
 public class TableWriter extends AbstractFunction implements PageEventListener
 {
+  /** A constant defining the tablewriters default function level. */
   public static final int OUTPUT_LEVEL = -1;
 
   /**

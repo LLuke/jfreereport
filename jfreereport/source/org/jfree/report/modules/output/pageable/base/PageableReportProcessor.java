@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.5 2003/08/25 14:29:31 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.6 2003/08/31 19:27:58 taqua Exp $
  *
  * Changes
  * -------
@@ -70,6 +70,10 @@ import org.jfree.report.util.Log;
  */
 public class PageableReportProcessor
 {
+  /** 
+   * A compile time constant that defines how many events should be generated 
+   * during the report processing. 
+   */
   private static final int MAX_EVENTS_PER_RUN = 400;
 
   /** The level where the page function is executed. */
@@ -89,6 +93,7 @@ public class PageableReportProcessor
 
   /** Storage for listener references. */
   private ArrayList listeners;
+  /** The listeners as object array for faster access. */
   private Object[] listenersCache;
 
   /**
@@ -483,8 +488,10 @@ public class PageableReportProcessor
    * Processes all prepare levels to compute the function values.
    *
    * @param state the state state with which we beginn the processing.
+   * @param level the current processing level.
+   * @param maxRows the number of rows in the table model.
    * @return the finish state for the current level.
-   * @throws org.jfree.report.ReportProcessingException if processing failed or if there are
+   * @throws ReportProcessingException if processing failed or if there are
    * exceptions during the function execution.
    */
   private ReportState processPrepareLevels(ReportState state, final int level, final int maxRows)
@@ -568,7 +575,7 @@ public class PageableReportProcessor
    *
    * @return The report state suitable for the next page or ReportState.FinishState.
    *
-   * @throws java.lang.IllegalArgumentException if the given state is a start or a finish state.
+   * @throws IllegalArgumentException if the given state is a start or a finish state.
    * @throws ReportProcessingException if there is a problem processing the report or the
    *                                   current thread has been interrupted.
    */

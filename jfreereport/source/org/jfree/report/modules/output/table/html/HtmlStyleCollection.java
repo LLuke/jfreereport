@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlStyleCollection.java,v 1.3 2003/08/25 14:29:32 taqua Exp $
+ * $Id: HtmlStyleCollection.java,v 1.4 2003/09/07 15:27:08 taqua Exp $
  *
  * Changes
  * -------
@@ -51,7 +51,8 @@ import org.jfree.xml.factory.objects.ColorObjectDescription;
  * cell styles into Cascading StyleSheet code.
  * <p>
  * The collection reuses previously generated styles to create optimized code.
- *
+ * <p>
+ * Todo: the table cell styles should also be defined here ... 
  * @author Thomas Morgner
  */
 public class HtmlStyleCollection
@@ -64,12 +65,12 @@ public class HtmlStyleCollection
 
   /** contains all generated style sheets. */
   private final HashMap table;
-
-  private final HashMap cellStyleTable;
-  /** the name counter helps to create unique names for the tablerow-styles. */
-  private int rowCounter;
-  /** the name counter helps to create unique names for the tabledata-styles. */
-  private int cellCounter;
+//  /** contains all cell styles (not yet used). */
+//  private final HashMap cellStyleTable;
+//  /** the name counter helps to create unique names for the tablerow-styles. */
+//  private int rowCounter;
+//  /** the name counter helps to create unique names for the tabledata-styles. */
+//  private int cellCounter;
 
   /** the name counter helps to create unique names for the styles. */
   private int nameCounter;
@@ -81,7 +82,7 @@ public class HtmlStyleCollection
   {
     this.colorObjectDescription = new ColorObjectDescription();
     this.table = new HashMap();
-    this.cellStyleTable = new HashMap();
+//    this.cellStyleTable = new HashMap();
   }
 
   /**
@@ -374,27 +375,27 @@ public class HtmlStyleCollection
     return b.toString();
   }
 
-  public void registerTableStyle (String style, boolean isRowStyle)
-  {
-    if (isRowStyle)
-    {
-      cellStyleTable.put(style, "tr.report-style-" + rowCounter);
-      rowCounter++;
-    }
-    else
-    {
-      cellStyleTable.put(style, "td.report-style-" + cellCounter);
-      cellCounter++;
-    }
-  }
-
-  public String getTableStyleClass (String style)
-  {
-    return (String) cellStyleTable.get(style);
-  }
-
-  public Iterator getRegisteredTableStyles ()
-  {
-    return cellStyleTable.keySet().iterator();
-  }
+//  public void registerTableStyle (String style, boolean isRowStyle)
+//  {
+//    if (isRowStyle)
+//    {
+//      cellStyleTable.put(style, "tr.report-style-" + rowCounter);
+//      rowCounter++;
+//    }
+//    else
+//    {
+//      cellStyleTable.put(style, "td.report-style-" + cellCounter);
+//      cellCounter++;
+//    }
+//  }
+//
+//  public String getTableStyleClass (String style)
+//  {
+//    return (String) cellStyleTable.get(style);
+//  }
+//
+//  public Iterator getRegisteredTableStyles ()
+//  {
+//    return cellStyleTable.keySet().iterator();
+//  }
 }

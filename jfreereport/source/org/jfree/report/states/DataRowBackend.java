@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Object Refinery Limited);
  *
- * $Id: DataRowBackend.java,v 1.2 2003/08/25 14:29:33 taqua Exp $
+ * $Id: DataRowBackend.java,v 1.3 2003/08/27 20:19:54 taqua Exp $
  *
  * Changes
  * -------
@@ -103,6 +103,7 @@ public class DataRowBackend implements Cloneable
   /** The last row. */
   private int lastRow;
 
+  /** The datarow connector that is used to feed the functions.*/
   private DataRowConnector dataRowConnector;
 
   /**
@@ -139,11 +140,22 @@ public class DataRowBackend implements Cloneable
     revalidateColumnLock();
   }
 
+  /**
+   * Returns the datarow connector used to connect the functions and element
+   * with this datarow.
+   * 
+   * @return the datarow connector.
+   */
   protected DataRowConnector getDataRowConnector()
   {
     return dataRowConnector;
   }
 
+  /**
+   * Returns the public datarow instance used to query this datarow.. 
+   * 
+   * @return the datarow.
+   */
   public DataRow getDataRow()
   {
     return getDataRowConnector();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner
  * Contributor(s):   -;
  *
- * $Id: ExcelPrintSetupFactory.java,v 1.4 2003/08/26 16:03:10 taqua Exp $
+ * $Id: ExcelPrintSetupFactory.java,v 1.5 2003/08/27 20:19:54 taqua Exp $
  *
  * Changes
  * -------
@@ -279,6 +279,7 @@ public final class ExcelPrintSetupFactory
    * @param printSetup the print setup object of the current sheet.
    * @param pageformat the pageformat defined for the report.
    * @param paperdef the excel paper size property (may be null).
+   * @param paperOrientation the paper orientation, either "Landscape" or "Portrait"
    */
   public static void performPageSetup(final HSSFPrintSetup printSetup,
                                       final PageFormat pageformat,

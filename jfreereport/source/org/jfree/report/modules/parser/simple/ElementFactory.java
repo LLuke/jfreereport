@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ElementFactory.java,v 1.7 2003/08/25 14:29:33 taqua Exp $
+ * $Id: ElementFactory.java,v 1.8 2003/08/31 19:27:58 taqua Exp $
  *
  * Changes
  * -------
@@ -308,6 +308,11 @@ public class ElementFactory extends AbstractReportDefinitionHandler implements R
     }
   }
 
+  /**
+   * Handles the start of a new sub-band.
+   * @param attr the attribute set of the band-element.
+   * @throws SAXException if an error occurs.
+   */
   private void startBand(final Attributes attr) throws SAXException
   {
     // create the report header...

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTableProducer.java,v 1.5 2003/08/24 15:06:10 taqua Exp $
+ * $Id: CSVTableProducer.java,v 1.6 2003/08/25 14:29:32 taqua Exp $
  *
  * Changes
  * -------
@@ -231,6 +231,11 @@ public class CSVTableProducer extends TableProducer
     this.quoter = new CSVQuoter(getSeparator());
   }
 
+  /**
+   * Returns the field separator from the configuration.
+   * 
+   * @return the separator.
+   */
   protected String getSeparator()
   {
     return getProperty(CSVTableProcessor.SEPARATOR_KEY, ",");

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProducer.java,v 1.7 2003/08/25 14:29:32 taqua Exp $
+ * $Id: TableProducer.java,v 1.8 2003/09/07 15:27:08 taqua Exp $
  *
  * Changes
  * -------
@@ -568,7 +568,7 @@ public abstract class TableProducer
 
   /**
    * Returns the current page. 
-   * @return
+   * @return the currently processed page.
    */
   protected int getPage()
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlProcessor.java,v 1.6 2003/08/25 14:29:32 taqua Exp $
+ * $Id: HtmlProcessor.java,v 1.7 2003/08/28 17:45:44 taqua Exp $
  *
  * Changes
  * -------
@@ -71,8 +71,13 @@ public class HtmlProcessor extends TableProcessor
 {
   /** the filesystem implementation used for writing the generated content. */
   private HtmlFilesystem filesystem;
-
-  public static final String CONFIGURATION_PREFIX = "org.jfree.report.modules.output.table.html.";
+  
+  /** 
+   * The configuration prefix when reading the configuration settings 
+   * from the report configuration.
+   */
+  public static final String CONFIGURATION_PREFIX = 
+    "org.jfree.report.modules.output.table.html.";
 
   /**
    * Creates a new HtmlProcessor, which generates HTML4 output and uses the

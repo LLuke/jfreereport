@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontRecordKey.java,v 1.3 2003/08/25 14:29:32 taqua Exp $
+ * $Id: BaseFontRecordKey.java,v 1.4 2003/08/31 19:27:58 taqua Exp $
  *
  * Changes
  * -------
@@ -53,7 +53,9 @@ public final class BaseFontRecordKey
   /** The encoding. */
   private final String encoding;
 
+  /** The cached hashcode for this object. */
   private int hashCode;
+  
   /**
    * Creates a new key.
    *

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SystemOutLogTarget.java,v 1.3 2003/08/31 19:27:59 taqua Exp $
+ * $Id: SystemOutLogTarget.java,v 1.4 2003/09/02 15:05:34 taqua Exp $
  *
  * Changes
  * -------
@@ -55,7 +55,7 @@ public class SystemOutLogTarget implements LogTarget, Serializable
   private PrintStream printStream;
 
   /**
-   * The default constructor.
+   * The default constructor. Initializes this target with the system.out stream.
    * <p>
    * All {@link org.jfree.util.LogTarget} implementations need a default constructor.
    */
@@ -64,6 +64,11 @@ public class SystemOutLogTarget implements LogTarget, Serializable
     this (System.out);
   }
 
+  /**
+   * The default constructor. Initializes this target with the given stream.
+   * <p>
+   * @param printStream the print stream that is used to write the content.
+   */
   public SystemOutLogTarget(PrintStream printStream)
   {
     if (printStream == null)

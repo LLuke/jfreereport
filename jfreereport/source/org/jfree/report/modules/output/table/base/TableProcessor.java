@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: TableProcessor.java,v 1.8 2003/08/27 20:19:54 taqua Exp $
+ * $Id: TableProcessor.java,v 1.9 2003/08/31 19:27:58 taqua Exp $
  *
  * Changes
  * -------
@@ -70,6 +70,7 @@ import org.jfree.report.util.ReportConfiguration;
  */
 public abstract class TableProcessor
 {
+  /** A compile time constant to define how many events should be fired during the processing. */
   private static final int MAX_EVENTS_PER_RUN = 400;
 
   /** Enable stricter table layouting for all TableProcessors. */
@@ -93,11 +94,15 @@ public abstract class TableProcessor
 
   /** The tablewriter function. */
   private TableWriter tableWriter;
-
+  /** 
+   * A flag that controls, whether this processor should monitor the 
+   * thread's interrupted state. 
+   */
   private boolean handleInterruptedState;
 
   /** Storage for listener references. */
   private ArrayList listeners;
+  /** The listeners as object array for faster access. */
   private Object[] listenersCache;
 
   /**

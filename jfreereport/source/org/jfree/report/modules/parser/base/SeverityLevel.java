@@ -28,11 +28,11 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SeverityLevel.java,v 1.1 2003/08/26 17:37:28 taqua Exp $
+ * $Id: SeverityLevel.java,v 1.2 2003/08/27 20:19:54 taqua Exp $
  *
  * Changes 
  * -------------------------
- * 25.08.2003 : Initial version
+ * 25-Aug-2003 : Initial version
  *  
  */
 package org.jfree.report.modules.parser.base;
@@ -42,29 +42,56 @@ import java.io.Serializable;
 
 import org.jfree.report.util.ObjectStreamResolveException;
 
+/**
+ * An enumeration class to represent the severity level of an operation result.
+ * 
+ * @author Thomas Morgner
+ */
 public final class SeverityLevel implements Serializable
 {
+  /** Represents warning messages. */
   public static final SeverityLevel WARNING =
       new SeverityLevel("WARNING");
+  /** Represents error messages. */
   public static final SeverityLevel ERROR =
       new SeverityLevel("ERROR");
+  /** Represents fatal parse error messages. */
   public static final SeverityLevel FATAL_ERROR =
       new SeverityLevel("FATAL_ERROR");
+  /** Represents informational messages. */
   public static final SeverityLevel INFO =
       new SeverityLevel("INFO");
 
+  /** a string representation of this severity level. */
   private final String myName; // for debug only
 
+  /**
+   * Creates a new the severity level instance.
+   * @param name the name of the severity level.
+   */
   private SeverityLevel(String name)
   {
     myName = name;
   }
 
+  /**
+   * Returns the string representation of this severity level object. 
+   * @see java.lang.Object#toString()
+   * 
+   * @return a string representing this object.
+   */
   public String toString()
   {
     return myName;
   }
 
+  /**
+   * Compares the severity level for equality with the given object. 
+   * @see java.lang.Object#equals(java.lang.Object)
+   * 
+   * @param o the other object that should be compared.
+   * @return true, if both objects are equal, false otherwise.
+   */
   public boolean equals(Object o)
   {
     if (this == o)
@@ -87,17 +114,23 @@ public final class SeverityLevel implements Serializable
     return true;
   }
 
+  /**
+   * Computes an hashcode for this level object.  
+   * @see java.lang.Object#hashCode()
+   * 
+   * @return the hashcode.
+   */
   public int hashCode()
   {
     return myName.hashCode();
   }
 
   /**
-   * Replaces the automatically generated instance with one of the enumeration instances.
+   * Replaces the automatically generated instance with one of the 
+   * enumeration instances.
    *
    * @return the resolved element
-   *
-   * @throws java.io.ObjectStreamException if the element could not be resolved.
+   * @throws ObjectStreamException if the element could not be resolved.
    */
   protected Object readResolve() throws ObjectStreamException
   {

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewApplet.java,v 1.3 2003/08/31 19:27:57 taqua Exp $
+ * $Id: PreviewApplet.java,v 1.4 2003/09/06 18:09:16 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -232,6 +232,11 @@ public abstract class PreviewApplet extends JApplet implements PreviewProxy
     return base;
   }
 
+  /**
+   * Closes the applet and finishes all worker threads.
+   *  
+   * @see org.jfree.report.modules.gui.base.PreviewProxy#close()
+   */
   public void close()
   {
     base.close();

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: HtmlCellStyle.java,v 1.4 2003/08/25 14:29:32 taqua Exp $
+ * $Id: HtmlCellStyle.java,v 1.5 2003/08/31 19:27:58 taqua Exp $
  *
  * Changes
  * -------
@@ -61,6 +61,7 @@ public final class HtmlCellStyle
   /** the horizontal content alignment. */
   private ElementAlignment horizontalAlignment;
 
+  /** the cached hashcode. */
   private int hashCode;
 
   /**

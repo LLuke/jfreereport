@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontModule.java,v 1.5 2003/08/25 14:29:32 taqua Exp $
+ * $Id: BaseFontModule.java,v 1.6 2003/09/02 15:05:33 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -38,7 +38,6 @@
 
 package org.jfree.report.modules.output.support.itext;
 
-import org.jfree.report.Boot;
 import org.jfree.report.modules.AbstractModule;
 import org.jfree.report.modules.ModuleInitializeException;
 
@@ -81,9 +80,9 @@ public class BaseFontModule extends AbstractModule
     }
   }
 
-  public static void main (String[] args) throws Exception
-  {
-    System.setProperty("org.jfree.report.modules.output.support.itext.AutoInit", "onInit");
-    Boot.start();
-  }
+//  public static void main (String[] args) throws Exception
+//  {
+//    System.setProperty("org.jfree.report.modules.output.support.itext.AutoInit", "onInit");
+//    Boot.start();
+//  }
 }

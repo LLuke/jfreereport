@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: OperationModule.java,v 1.3 2003/09/07 15:27:08 taqua Exp $
+ * $Id: OperationModule.java,v 1.4 2003/09/09 02:29:13 taqua Exp $
  *
  * Changes
  * -------
@@ -136,6 +136,13 @@ public abstract class OperationModule
   public abstract void createOperations(PhysicalOperationsCollector col, Element e, Content value,
                                         Rectangle2D bounds);
 
+  /**
+   * Translates the given element alignment into a vertical alignment object.
+   *  
+   * @param va the element alignment.
+   * @param bounds the bounds of the element
+   * @return the created alignment object.
+   */
   public static VerticalBoundsAlignment getVerticalLayout (ElementAlignment va, Rectangle2D bounds)
   {
     if (va.equals(ElementAlignment.TOP))
@@ -152,6 +159,13 @@ public abstract class OperationModule
     }
   }
 
+  /**
+   * Translates the given element alignment into a horizontal alignment object.
+   *  
+   * @param ha the element alignment.
+   * @param bounds the bounds of the element
+   * @return the created alignment object.
+   */
   public static HorizontalBoundsAlignment getHorizontalLayout
       (ElementAlignment ha, Rectangle2D bounds)
   {
@@ -169,6 +183,14 @@ public abstract class OperationModule
     }
   }
 
+  /**
+   * Computes the alignment for the given element and content.
+   * 
+   * @param e the element that was used to create the content.
+   * @param content the content that should be displayed.
+   * @param bounds the bounds as computed from the layoutmanager.
+   * @return the aligned content bounds.
+   */
   public static Rectangle2D computeAlignmentBounds
       (Element e, Content content, Rectangle2D bounds)
   {

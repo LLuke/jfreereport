@@ -30,7 +30,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: CSVTokenizer.java,v 1.2 2003/08/27 20:19:53 taqua Exp $
+ * $Id: CSVTokenizer.java,v 1.1 2003/09/02 15:06:25 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -92,17 +92,26 @@ import java.util.NoSuchElementException;
  */
 public class CSVTokenizer implements Enumeration
 {
+  /** The complete record that should be separated into elements. */
   private String record;
+  /** The separator. */
   private String separator;
+  /** The quoting char. */
   private String quate;
 
+  /**the current parsing position. */ 
   private int currentIndex;
 
+  /** A possible separator constant. */ 
   public static final String SEPARATOR_COMMA = ",";
+  /** A possible separator constant. */ 
   public static final String SEPARATOR_TAB = "\t";
+  /** A possible separator constant. */ 
   public static final String SEPARATOR_SPACE = " ";
 
+  /** A possible quote character constant. */
   public static final String DOUBLE_QUATE = "\"";
+  /** A possible quote character constant. */
   public static final String SINGLE_QUATE = "'";
 
   /**
@@ -189,9 +198,9 @@ public class CSVTokenizer implements Enumeration
    * Returns the next token from this string tokenizer.
    *
    * @return     the next token from this string tokenizer.
-   * @exception  java.util.NoSuchElementException  if there are no more tokens in this
+   * @exception  NoSuchElementException  if there are no more tokens in this
    *               tokenizer's string.
-   * @exception  java.lang.IllegalArgumentException if given parameter string format was wrong
+   * @exception  IllegalArgumentException if given parameter string format was wrong
    */
   public String nextToken()
       throws NoSuchElementException, IllegalArgumentException

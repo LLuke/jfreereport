@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PreviewBaseModule.java,v 1.7 2003/08/25 14:29:29 taqua Exp $
+ * $Id: PreviewBaseModule.java,v 1.8 2003/08/31 19:27:57 taqua Exp $
  *
  * Changes
  * -------------------------
@@ -117,11 +117,5 @@ public class PreviewBaseModule extends AbstractModule
   {
     return ReportConfiguration.getGlobalConfig().getConfigProperty
         (SWING_TRANSLATE_KEY, "false").equals("true");
-  }
-
-  public static void main (String[] args) throws Exception
-  {
-
-    System.out.println(new PreviewBaseModule());
   }
 }

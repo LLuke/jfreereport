@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: FontDefinition.java,v 1.4 2003/08/25 14:29:33 taqua Exp $
+ * $Id: FontDefinition.java,v 1.5 2003/08/31 19:27:59 taqua Exp $
  *
  * Changes
  * -------
@@ -93,6 +93,7 @@ public class FontDefinition implements Serializable, Cloneable
   /** whether to embedd the font in the target documents, if supported. */
   private boolean embeddedFont;
 
+  /** a cached hashcode. */
   private transient int hashCode;
 
   // color is defined elsewhere
