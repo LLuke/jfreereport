@@ -28,17 +28,20 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   -;
  *
- * $Id: G2OutputTarget.java,v 1.1.1.1 2002/04/25 17:02:19 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.2 2002/05/14 21:35:02 taqua Exp $
  *
  * Changes
  * -------
  * 21-Feb-2002 : Version 1 (DG);
  * 18-Apr-2002 : MultilineText is working again, ImageElement support
+ * 16-May-2002 : Line thickness reduced to 0.5 
+ *               in future it should be a property in the line object (JS)
  *
  */
 
 package com.jrefinery.report;
 
+import java.awt.BasicStroke;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
@@ -57,6 +60,7 @@ import java.util.Vector;
  */
 public class G2OutputTarget implements OutputTarget
 {
+  private BasicStroke stroke = new BasicStroke(0.5f);
 
   /** The graphics device. */
   private Graphics2D g2;
@@ -288,6 +292,7 @@ public class G2OutputTarget implements OutputTarget
 
     AffineTransform saved = g2.getTransform ();
     g2.transform (AffineTransform.getTranslateInstance (x, y));
+    g2.setStroke(stroke);
     g2.draw (shape);
     g2.setTransform (saved);
 
