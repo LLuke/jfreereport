@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: G2OutputTarget.java,v 1.37 2003/05/09 17:12:13 taqua Exp $
+ * $Id: G2OutputTarget.java,v 1.38 2003/05/14 22:26:39 taqua Exp $
  *
  * Changes
  * -------
@@ -436,7 +436,7 @@ public class G2OutputTarget extends AbstractOutputTarget
 
     if (image.getImage() != null)
     {
-      Log.debug ("Drawing image from Reference!");
+      //Log.debug ("Drawing image from Reference!");
       Shape s = g2.getClip();
       AffineTransform transform = g2.getTransform();
       try

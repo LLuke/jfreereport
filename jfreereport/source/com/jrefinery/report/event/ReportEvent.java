@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: ReportEvent.java,v 1.16 2003/05/16 17:26:39 taqua Exp $
+ * $Id: ReportEvent.java,v 1.17 2003/05/26 13:30:58 taqua Exp $
  *
  * Changes (from 10-May-2002)
  * --------------------------
@@ -105,6 +105,10 @@ public class ReportEvent extends EventObject
     {
      throw new NullPointerException ("ReportEvent(ReportState) : null not permitted.");
     }
+    if (type <= 0)
+    {
+      throw new IllegalArgumentException("This is not a valid EventType: " + type);
+    }
     this.type = type;
   }
 
@@ -152,5 +156,15 @@ public class ReportEvent extends EventObject
   public DataRow getDataRow ()
   {
     return getState ().getDataRow ();
+  }
+
+  /**
+   * Returns the current function level.
+   *
+   * @return the function level.
+   */
+  public int getLevel ()
+  {
+    return getState().getLevel();
   }
 }

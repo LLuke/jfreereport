@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageLayouter.java,v 1.23 2003/04/09 15:53:28 mungady Exp $
+ * $Id: PageLayouter.java,v 1.24 2003/05/16 17:26:47 taqua Exp $
  *
  * Changes
  * -------
@@ -539,7 +539,7 @@ public abstract class PageLayouter extends AbstractFunction
     
     if (state == null)
     {
-      if (ancestor.getCurrentPage() != 1)
+      if (ancestor.getCurrentPage() != ReportState.BEFORE_FIRST_PAGE)
       {
         throw new IllegalStateException("State is null, but this is not the first page." 
                                         + ancestor.getCurrentPage());

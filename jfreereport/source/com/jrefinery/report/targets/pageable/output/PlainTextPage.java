@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextPage.java,v 1.12 2003/03/07 16:56:04 taqua Exp $
+ * $Id: PlainTextPage.java,v 1.13 2003/05/14 22:26:39 taqua Exp $
  *
  * Changes
  * -------
@@ -218,9 +218,9 @@ public class PlainTextPage
     }
     if (x + w > width)
     {
-      throw new IllegalArgumentException("X+W > bufferWidth");
+      throw new IllegalArgumentException("X+W [" + ( x+ w) + "] > bufferWidth [" + width + "]");
     }
-    if (y > height)
+    if (y >= height)
     {
       throw new IllegalArgumentException("Y > bufferHeight: " + text + " y=" + y + " h=" + height);
     }

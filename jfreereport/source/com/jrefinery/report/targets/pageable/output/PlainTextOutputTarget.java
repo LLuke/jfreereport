@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PlainTextOutputTarget.java,v 1.18 2003/03/07 16:56:04 taqua Exp $
+ * $Id: PlainTextOutputTarget.java,v 1.19 2003/05/14 22:26:39 taqua Exp $
  *
  * Changes
  * -------
@@ -56,6 +56,7 @@ import com.jrefinery.report.targets.pageable.OutputTarget;
 import com.jrefinery.report.targets.pageable.OutputTargetException;
 import com.jrefinery.report.targets.pageable.physicals.PhysicalPage;
 import com.jrefinery.report.util.ReportConfiguration;
+import com.jrefinery.report.util.Log;
 
 /**
  * An outputtarget, that generates plaintext. The text can be enriched with
@@ -350,8 +351,10 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
    */
   public void beginPage(PhysicalPage page)
   {
-    currentPageHeight = (int) (page.getPageFormat().getImageableHeight() / characterHeight);
-    currentPageWidth = (int) (page.getPageFormat().getImageableWidth() / characterWidth);
+    currentPageHeight = correctedDivisionFloor
+        ((float) page.getPageFormat().getImageableHeight(), characterHeight);
+    currentPageWidth = correctedDivisionFloor
+        ((float) page.getPageFormat().getImageableWidth(), characterWidth);
 
     this.pageBuffer = new PlainTextPage(currentPageWidth, currentPageHeight, getCommandSet());
     savedState = new PlainTextState(this);
@@ -464,7 +467,11 @@ public class PlainTextOutputTarget extends AbstractOutputTarget
     int x = correctedDivisionFloor((float) bounds.getX(), characterWidth);
     int y = correctedDivisionFloor((float) bounds.getY(), characterHeight);
     int w = correctedDivisionFloor((float) bounds.getWidth(), characterWidth);
-
+/*
+    Log.debug ("Bounds: " + bounds);
+    Log.debug ("CW: " + characterWidth);
+    Log.debug ("CH: " + characterHeight);
+*/
     pageBuffer.addTextChunk(x, y, w, text, getFont());
   }
 

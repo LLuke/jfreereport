@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: EventMonitorFunction.java,v 1.5 2003/03/26 10:49:22 taqua Exp $
+ * $Id: EventMonitorFunction.java,v 1.6 2003/06/01 17:39:26 taqua Exp $
  *
  * Changes
  * -------
@@ -61,6 +61,14 @@ public class EventMonitorFunction extends AbstractFunction implements Serializab
   {
   }
   
+  /**
+   * Creates a new function.
+   */
+  public EventMonitorFunction(String name)
+  {
+    setName(name);
+  }
+
   /**
    * Receives notification that the report has started.
    *
@@ -175,6 +183,19 @@ public class EventMonitorFunction extends AbstractFunction implements Serializab
   public void itemsFinished(ReportEvent event)
   {
     Log.info ("Items Finished: Level = " + event.getState().getLevel()
+                      + " Prepare Run: " + event.getState().isPrepareRun());
+  }
+
+  /**
+   * Receives notification that report generation initializes the current run.
+   * <P>
+   * The event carries a ReportState.Started state.  Use this to initialize the report.
+   *
+   * @param event The event.
+   */
+  public void reportInitialized(ReportEvent event)
+  {
+    Log.info ("Report Initialized: Level = " + event.getState().getLevel()
                       + " Prepare Run: " + event.getState().isPrepareRun());
   }
 

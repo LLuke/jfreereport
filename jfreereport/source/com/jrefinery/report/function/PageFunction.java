@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageFunction.java,v 1.13 2003/05/16 17:26:42 taqua Exp $
+ * $Id: PageFunction.java,v 1.14 2003/06/01 17:39:26 taqua Exp $
  *
  * Changes
  * -------
@@ -50,7 +50,13 @@ import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.states.ReportState;
 
 /**
- * A report function that counts pages.
+ * A report function that counts pages. This method is only useable when a
+ * report processor is used, which generated PageEvents. The PageableReportProcessor
+ * is one of them.
+ * <p>
+ * As with all page dependent functions: The function will only be active, when
+ * the page events get fired, this usually only happens during the last pagination
+ * run and the printing. The function level will be negative when this happens.  
  *
  * @author Thomas Morgner
  */

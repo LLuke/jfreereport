@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: BaseFontFactory.java,v 1.9 2003/05/29 16:36:25 taqua Exp $
+ * $Id: BaseFontFactory.java,v 1.10 2003/06/12 23:17:16 taqua Exp $
  *
  * Changes
  * -------
@@ -226,7 +226,9 @@ public class BaseFontFactory extends DefaultFontMapper
    */
   public synchronized void registerFontFile(String filename, String encoding)
   {
-    if (!filename.toLowerCase().endsWith("ttf"))
+    if (!filename.toLowerCase().endsWith(".ttf") &&
+        !filename.toLowerCase().endsWith(".afm") &&
+        !filename.toLowerCase().endsWith(".pfb"))
     {
       return;
     }

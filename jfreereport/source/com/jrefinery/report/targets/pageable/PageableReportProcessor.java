@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: PageableReportProcessor.java,v 1.38 2003/05/11 13:39:18 taqua Exp $
+ * $Id: PageableReportProcessor.java,v 1.39 2003/06/12 23:17:15 taqua Exp $
  *
  * Changes
  * -------
@@ -350,6 +350,7 @@ public class PageableReportProcessor
       boolean hasNext;
       ReportStateProgress progress = null;
       int level = ((Integer) it.next()).intValue();
+      boolean failOnError = getReport().getReportConfiguration().isStrictErrorHandling();
       // outer loop: process all function levels
       do
       {
@@ -362,7 +363,6 @@ public class PageableReportProcessor
           // inner loop: process the complete report, calculate the function values
           // for the current level. Higher level functions are not available in the
           // dataRow.
-          boolean failOnError = getReport().getReportConfiguration().isStrictErrorHandling();
 
           while (!state.isFinish())
           {
@@ -397,6 +397,21 @@ public class PageableReportProcessor
           {
             progress = state.createStateProgress(progress);
             state = state.advance();
+            if (failOnError)
+            {
+              if (state.isErrorOccured() == true)
+              {
+                throw new ReportEventException ("Failed to dispatch an event.", state.getErrors());
+              }
+            }
+            else
+            {
+              if (state.isErrorOccured() == true)
+              {
+                Log.error("Failed to dispatch an event.",
+                    new ReportEventException ("Failed to dispatch an event.", state.getErrors()));
+              }
+            }
             if (!state.isFinish())
             {
               // if the report processing is stalled, throw an exception; an infinite
@@ -419,7 +434,7 @@ public class PageableReportProcessor
           if (state instanceof FinishState)
           {
             state = new StartState((FinishState) state, level);
-            if (state.getCurrentPage() != 1)
+            if (state.getCurrentPage() != ReportState.BEFORE_FIRST_PAGE)
             {
               throw new IllegalStateException("State was not set up properly");
             }

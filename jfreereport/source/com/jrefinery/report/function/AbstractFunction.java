@@ -49,7 +49,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: AbstractFunction.java,v 1.31 2003/05/16 17:26:39 taqua Exp $
+ * $Id: AbstractFunction.java,v 1.32 2003/05/23 20:12:14 taqua Exp $
  *
  * Changes
  * -------
@@ -107,6 +107,16 @@ public abstract class AbstractFunction implements Function
   {
     this.properties = new Properties();
   }
+
+  /**
+   * Creates an named function.
+   */
+  protected AbstractFunction(String name)
+  {
+    this();
+    setName(name);
+  }
+
 
   /**
    * Returns the function name.

@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: SwingIconsDemoTableModel.java,v 1.5 2003/04/24 18:08:46 taqua Exp $
+ * $Id: SwingIconsDemoTableModel.java,v 1.6 2003/05/02 12:39:41 taqua Exp $
  *
  * Changes
  * -------
@@ -92,7 +92,7 @@ public class SwingIconsDemoTableModel extends IconTableModel
 
     try
     {
-      Log.debug ("Open URL: " + url);
+      //Log.debug ("Open URL: " + url, new Exception());
       InputStream in = new BufferedInputStream(url.openStream());
       readData(in);
       in.close();
@@ -125,7 +125,7 @@ public class SwingIconsDemoTableModel extends IconTableModel
           String name = getName(fullName);
           Image image = getImage(iconJar);
           Long bytes = new Long(ze.getSize());
-          Log.debug ("Add Icon: " + name);
+          //Log.debug ("Add Icon: " + name);
           addIconEntry(name, category, image, bytes);
         }
         iconJar.closeEntry();

@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: StartState.java,v 1.15 2003/05/16 17:26:46 taqua Exp $
+ * $Id: StartState.java,v 1.16 2003/05/30 16:57:54 taqua Exp $
  *
  * Changes
  * -------
@@ -104,17 +104,13 @@ public final class StartState extends ReportState
    */
   public ReportState advance ()
   {
-    setCurrentPage (1);
+    setCurrentPage (0);
 
     // a PropertyHandler should set the properties.
     setProperty (JFreeReport.REPORT_DATE_PROPERTY, new Date ());
 
     fireReportInitializedEvent();
-    firePrepareEvent(ReportEvent.REPORT_STARTED);
-
-    // initialise the report before any band (and especially before the pageheader) is printed.
-    fireReportStartedEvent ();
-    return new PreGroupHeaderState (this);
+    return new PostReportInitializedState(this);
   }
 
   /**

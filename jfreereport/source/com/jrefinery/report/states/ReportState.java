@@ -28,7 +28,7 @@
  * Original Author:  David Gilbert (for Simba Management Limited);
  * Contributor(s):   Thomas Morgner;
  *
- * $Id: ReportState.java,v 1.40 2003/05/30 16:57:53 taqua Exp $
+ * $Id: ReportState.java,v 1.41 2003/06/01 19:11:42 taqua Exp $
  *
  * Changes (from 8-Feb-2002)
  * -------------------------
@@ -119,7 +119,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   public static final int BEFORE_FIRST_GROUP = -1;
 
   /** The first page. */
-  public static final int FIRST_PAGE = 1;
+  public static final int BEFORE_FIRST_PAGE = 0;
 
   /** The ancestor hash code. */
   private int ancestorHashcode;
@@ -171,7 +171,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   protected void resetState ()
   {
     setCurrentItem (BEFORE_FIRST_ROW);
-    setCurrentPage (FIRST_PAGE);
+    setCurrentPage (BEFORE_FIRST_PAGE);
     setCurrentGroupIndex (BEFORE_FIRST_GROUP);
     getDataRowBackend().setCurrentRow(getCurrentDisplayItem());
   }
@@ -764,7 +764,7 @@ public abstract class ReportState implements JFreeReportConstants, Cloneable
   public void firePageFinishedEvent ()
   {
     getDataRowConnector ().setDataRowBackend (getDataRowBackend ());
-    this.functions.pageFinished (new ReportEvent(this, ReportEvent.REPORT_FINISHED));
+    this.functions.pageFinished (new ReportEvent(this, ReportEvent.PAGE_FINISHED));
   }
 
   /**

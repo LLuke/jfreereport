@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner;
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LevelledExpressionList.java,v 1.11 2003/05/07 20:27:26 taqua Exp $
+ * $Id: LevelledExpressionList.java,v 1.12 2003/05/16 17:26:40 taqua Exp $
  *
  * Changes
  * -------
@@ -50,6 +50,7 @@ import com.jrefinery.report.event.PrepareEventListener;
 import com.jrefinery.report.event.ReportEvent;
 import com.jrefinery.report.event.ReportListener;
 import com.jrefinery.report.util.LevelList;
+import com.jrefinery.report.util.Log;
 
 /**
  * A list of expressions/functions and associated levels.  This class listens for report events,
@@ -111,7 +112,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    */
   public void reportStarted(ReportEvent event)
   {
-    clearError();
+//    clearError(); is done in the prepare event ...
 
     for (int i = 0; i < levels.length; i++)
     {
@@ -164,7 +165,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    */
   public void reportInitialized(ReportEvent event)
   {
-    clearError();
+    clearError(); // has no prepare event ...
 
     for (int i = 0; i < levels.length; i++)
     {
@@ -215,7 +216,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    */
   public void reportFinished(ReportEvent event)
   {
-    clearError();
+    // clearError(); done in the prepare event ...
 
     for (int i = 0; i < levels.length; i++)
     {
@@ -365,7 +366,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    */
   public void groupStarted(ReportEvent event)
   {
-    clearError();
+    // clearError(); done in the prepare event ...
 
     for (int i = 0; i < levels.length; i++)
     {
@@ -417,7 +418,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    */
   public void groupFinished(ReportEvent event)
   {
-    clearError();
+    // clearError(); done in the prepare event ...
 
     for (int i = 0; i < levels.length; i++)
     {
@@ -469,7 +470,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    */
   public void itemsStarted(ReportEvent event)
   {
-    clearError();
+    // clearError(); done in the prepare event ...
 
     for (int i = 0; i < levels.length; i++)
     {
@@ -521,7 +522,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    */
   public void itemsFinished(ReportEvent event)
   {
-    clearError();
+    // clearError(); done in the prepare event ...
 
     for (int i = 0; i < levels.length; i++)
     {
@@ -573,7 +574,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    */
   public void itemsAdvanced(ReportEvent event)
   {
-    clearError();
+    // clearError(); done in the prepare event ...
 
     for (int i = 0; i < levels.length; i++)
     {
@@ -626,7 +627,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
   public void layoutComplete(LayoutEvent event)
   {
     // this is an internal event, no need to handle prepare outside ..
-    clearError();
+    // clearError();
     firePrepareEventLayoutListener(event);
 
     for (int i = 0; i < levels.length; i++)
@@ -664,7 +665,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    */
   public void reportDone(ReportEvent event)
   {
-    clearError();
+    // clearError(); done in the prepare event ...
 
     for (int i = 0; i < levels.length; i++)
     {
@@ -859,6 +860,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
     LevelledExpressionList ft = (LevelledExpressionList) super.clone();
     ft.expressionList = new LevelList(); // dont clone, too expensive ...
     ft.levels = levels;
+    ft.errorList = (ArrayList) errorList.clone();
 
     int size = expressionList.size();
     for (int i = 0; i < size; i++)
@@ -976,6 +978,10 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    */
   protected void clearError()
   {
+    if (hasErrors())
+    {
+      Log.debug ("Has Errors: ", new Exception());
+    }
     errorList.clear();
   }
 
@@ -986,6 +992,8 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    */
   public void firePrepareEvent (ReportEvent event)
   {
+    clearError();
+
     for (int i = 0; i < levels.length; i++)
     {
       int level = levels[i];
@@ -1020,6 +1028,7 @@ public class LevelledExpressionList implements ReportListener, Cloneable, Layout
    */
   protected void firePrepareEventLayoutListener (ReportEvent event)
   {
+    // no clear error here ...
     for (int i = 0; i < levels.length; i++)
     {
       int level = levels[i];
