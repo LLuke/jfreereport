@@ -28,7 +28,7 @@
  * Original Author:  Thomas Morgner (taquera@sherito.org);
  * Contributor(s):   David Gilbert (for Simba Management Limited);
  *
- * $Id: LineBreakIterator.java,v 1.4 2003/04/09 15:55:07 mungady Exp $
+ * $Id: LineBreakIterator.java,v 1.5 2003/05/02 12:40:47 taqua Exp $
  *
  * Changes
  * -------
@@ -54,9 +54,6 @@ public class LineBreakIterator implements Iterator
   
   /** The current position. */
   private int position;
-  
-  /** The last line break. */
-  private int lastFound;
 
   /**
    * Default constructor.
@@ -97,7 +94,6 @@ public class LineBreakIterator implements Iterator
 
     int nChars = text.length;
     int nextChar = position;
-    lastFound = position;
 
     for (; ;)
     {
@@ -162,7 +158,6 @@ public class LineBreakIterator implements Iterator
     }
     if (pos == text.length)
     {
-      lastFound = pos;
       position = DONE;
       return DONE;
     }
@@ -196,16 +191,6 @@ public class LineBreakIterator implements Iterator
   }
 
   /**
-   * Returns the position of the previous item.
-   * 
-   * @return The position.
-   */
-  public int previousPosition()
-  {
-    return lastFound;
-  }
-
-  /**
    * Returns <tt>true</tt> if the iteration has more elements. (In other
    * words, returns <tt>true</tt> if <tt>next</tt> would return an element
    * rather than throwing an exception.)
@@ -232,6 +217,7 @@ public class LineBreakIterator implements Iterator
       return null;
     }
 
+    int lastFound = position;
     int pos = nextWithEnd();
     if (pos == DONE)
     {
@@ -240,10 +226,16 @@ public class LineBreakIterator implements Iterator
     }
 
     // step one char back
-    for (; ((pos) >= lastFound) && ((text[pos - 1] == '\n') || text[pos - 1] == '\r'); pos--)
+    if (pos > 0)
     {
-      // search the end of the current linebreak sequence ..
+      int end = lastFound;
+      for (; ((pos) > end) && ((text[pos - 1] == '\n') || text[pos - 1] == '\r'); pos--)
+      {
+        // search the end of the current linebreak sequence ..
+      }
     }
+    //System.out.println ("text: " + new String (text));
+    //System.out.println ("pos: " + pos + " lastFound: " + lastFound);
     return new String (text, lastFound, pos - lastFound);
   }
 
@@ -276,6 +268,11 @@ public class LineBreakIterator implements Iterator
   {
     String test = "The lazy \n fox \r\n jumps \nover the funny tree\n";
     LineBreakIterator lbi = new LineBreakIterator(test);
+    while (lbi.hasNext())
+    {
+      System.out.println ("Text: " + lbi.next());
+    }
+    lbi = new LineBreakIterator("\n");
     while (lbi.hasNext())
     {
       System.out.println ("Text: " + lbi.next());
